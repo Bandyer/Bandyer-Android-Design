@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources>
+
+    <declare-styleable name="BandyerSDKDesign.CallWatermark">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_iconStyle" />
+        <attr name="bandyer_titleStyle" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.CallWatermark" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.CallWatermark.RootLayout</item>
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.CallWatermarkImageView</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.CallWatermark</item>
+    </style>
+
+    <style name="BandyerSDKDesign.CallWatermark.RootLayout" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:weightSum">1</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">@dimen/bandyer_dimen_space16</item>
+    </style>
+
+    <style name="BandyerSDKDesign.CallWatermarkImageView" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:paddingRight">@dimen/bandyer_dimen_space8</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space8</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.CallWatermark" parent="BandyerSDKDesign.TextView">
+        <item name="android:layout_gravity">start|center_vertical</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+</resources>

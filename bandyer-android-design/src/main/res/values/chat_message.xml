@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources>
+
+    <declare-styleable name="BandyerSDKDesign.ChatMessage">
+        <attr name="materialCardViewStyle"/>
+        <attr name="bandyer_messageStyle" format="reference" />
+        <attr name="bandyer_timestampStyle" format="reference" />
+        <attr name="bandyer_iconStyle"/>
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.ChatMessage" parent="" >
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ChatMessage.LoggedUser" parent="BandyerSDKDesign.ChatMessage">
+        <item name="materialCardViewStyle">@style/BandyerSDKDesign.ChatMessageBackground.LoggedUser</item>
+        <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.Subtitle.ChatMessageTimestamp.LoggedUser</item>
+        <item name="bandyer_messageStyle">@style/BandyerSDKDesign.TextView.ChatMessage.LoggedUser</item>
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.ChatMessageStatusImageView</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ChatMessage.OtherUser" parent="BandyerSDKDesign.ChatMessage">
+        <item name="materialCardViewStyle">@style/BandyerSDKDesign.ChatMessageBackground.OtherUser</item>
+        <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.Subtitle.ChatMessageTimestamp.OtherUser</item>
+        <item name="bandyer_messageStyle">@style/BandyerSDKDesign.TextView.ChatMessage.OtherUser</item>
+    </style>
+
+    <!-- Chat Message Text Data View Container -->
+
+    <style name="BandyerSDKDesign.ChatMessageBackground" parent="Widget.MaterialComponents.CardView">
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:descendantFocusability">blocksDescendants</item>
+        <item name="cardPreventCornerOverlap">false</item>
+        <item name="contentPaddingTop">@dimen/bandyer_dimen_space8</item>
+        <item name="contentPaddingBottom">@dimen/bandyer_dimen_space8</item>
+        <item name="contentPaddingLeft">@dimen/bandyer_dimen_space16</item>
+        <item name="contentPaddingRight">@dimen/bandyer_dimen_space16</item>
+        <item name="cardElevation">@dimen/bandyer_dimen_space0</item>
+        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ChatMessageBackground.LoggedUser" parent="BandyerSDKDesign.ChatMessageBackground">
+        <item name="cardBackgroundColor">?attr/colorSecondaryVariant</item>
+        <item name="shapeAppearance">@style/BandyerSDKDesign.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ChatMessageBackground.OtherUser" parent="BandyerSDKDesign.ChatMessageBackground">
+        <item name="cardBackgroundColor">?attr/colorPrimaryVariant</item>
+        <item name="shapeAppearance">@style/BandyerSDKDesign.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/bandyer_dimen_space12</item>
+        <item name="cornerSizeTopLeft">@dimen/bandyer_dimen_space24</item>
+        <item name="cornerSizeBottomRight">@dimen/bandyer_dimen_space0</item>
+        <item name="cornerSizeBottomLeft">@dimen/bandyer_dimen_space24</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/bandyer_dimen_space24</item>
+        <item name="cornerSizeTopLeft">@dimen/bandyer_dimen_space0</item>
+        <item name="cornerSizeBottomRight">@dimen/bandyer_dimen_space24</item>
+        <item name="cornerSizeBottomLeft">@dimen/bandyer_dimen_space12</item>
+    </style>
+
+</resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources>
+
+    <!-- BOTTOM SHEET BEHAVIOUR -->
+
+    <declare-styleable name="BandyerSDKDesign.BottomSheet.Behavior">
+        <attr name="bandyer_anchorPoint" format="dimension" />
+        <attr name="bandyer_defaultStatus" format="enum">
+            <enum name="stateAnchorPoint" value="3" />
+            <enum name="stateExpanded" value="4" />
+            <enum name="stateCollapsed" value="5" />
+            <enum name="stateHidden" value="6" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="BandyerSDKDesign.BottomSheet">
+        <attr name="bandyer_titleStyle" />
+        <attr name="bandyer_recyclerViewStyle"/>
+        <attr name="bandyer_lineStyle" />
+        <attr name="materialCardViewStyle" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.BottomSheet" parent="">
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.BottomSheet</item>
+        <item name="bandyer_recyclerViewStyle">@style/BandyerSDKDesign.BottomSheet.RecyclerView</item>
+        <item name="materialCardViewStyle">@style/BandyerSDKDesign.BottomSheetBackground</item>
+        <item name="bandyer_lineStyle">@style/BandyerSDKDesign.ImageButton.BottomSheetLine</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <!-- RecyclerView style -->
+    <style name="BandyerSDKDesign.BottomSheet.RecyclerView" parent="">
+        <item name="android:layout_gravity">center</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+    </style>
+
+</resources>

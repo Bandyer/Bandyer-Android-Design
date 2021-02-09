@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="@string/app_name">
+
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="@dimen/bandyer_dimen_space32"
+            android:paddingTop="@dimen/bandyer_dimen_space32">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_switch_night_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:text="@string/night_mode"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_chat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
+                android:layout_marginEnd="@dimen/bandyer_dimen_space16"
+                android:layout_marginRight="@dimen/bandyer_dimen_space16"
+                android:text="@string/chat"
+                app:layout_constraintEnd_toStartOf="@id/btn_call"
+                app:layout_constraintRight_toLeftOf="@id/btn_call"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_switch_night_mode" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_call"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/bandyer_dimen_space16"
+                android:layout_marginLeft="@dimen/bandyer_dimen_space16"
+                android:text="@string/call"
+                app:layout_constraintBottom_toBottomOf="@id/btn_chat"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_chat"
+                app:layout_constraintLeft_toRightOf="@id/btn_chat"
+                app:layout_constraintTop_toTopOf="@id/btn_chat" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_whiteboard_editor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
+                android:text="@string/whiteboard_editor"
+                app:layout_constraintTop_toBottomOf="@id/btn_chat" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_snapshot_preview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
+                android:text="@string/snapshot_preview"
+                app:layout_constraintTop_toBottomOf="@id/btn_whiteboard_editor" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_live_pointer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
+                android:text="@string/live_pointer"
+                app:layout_constraintTop_toBottomOf="@id/btn_snapshot_preview" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_bluetooth_audioroute"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
+                android:text="@string/bluetooth_audio_route"
+                app:layout_constraintTop_toBottomOf="@id/btn_live_pointer" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_whiteboard_file"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
+                android:text="@string/other"
+                app:layout_constraintTop_toBottomOf="@id/btn_bluetooth_audioroute" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

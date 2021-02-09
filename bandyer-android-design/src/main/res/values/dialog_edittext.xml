@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources>
+
+    <style name="BandyerSDKDesign.TextInputEditText.Dialog" parent="BandyerSDKDesign.TextInputEditText">
+        <item name="android:padding">@dimen/bandyer_dimen_space16</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextInputLayoutDialogMaterialThemeOverlay" parent="">
+        <item name="editTextStyle">@style/BandyerSDKDesign.TextInputEditText.Dialog</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextInputLayoutDialogMaterialThemeOverlay.Day" parent="BandyerSDKDesign.TextInputLayoutDialogMaterialThemeOverlay">
+        <item name="editTextStyle">@style/BandyerSDKDesign.TextInputEditText.Dialog.Day</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextInputEditText.Dialog.Day" parent="BandyerSDKDesign.TextInputEditText.Dialog">
+        <item name="android:background">@color/bandyer_colorSurface</item>
+        <item name="android:textColorHint">@color/bandyer_color_on_surface_50_day</item>
+        <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance.TextInputEditText.Dialog.Day</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextAppearance.TextInputEditText.Dialog.Day" parent="BandyerSDKDesign.TextAppearance.TextInputEditText">
+        <item name="android:textColor">@color/bandyer_colorOnSurface</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextInputLayout.Dialog" parent="BandyerSDKDesign.TextInputLayout">
+        <item name="materialThemeOverlay">@style/BandyerSDKDesign.TextInputLayoutDialogMaterialThemeOverlay</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextInputLayout.Dialog.Day" parent="BandyerSDKDesign.TextInputLayout">
+        <item name="materialThemeOverlay">@style/BandyerSDKDesign.TextInputLayoutDialogMaterialThemeOverlay.Day</item>
+    </style>
+
+</resources>

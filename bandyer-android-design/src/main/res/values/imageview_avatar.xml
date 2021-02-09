@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources>
+
+    <style name="BandyerSDKDesign.ImageViewAvatar" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:background">@color/bandyer_color_background</item>
+        <item name="android:src">@drawable/bandyer_chat_avatar_icon</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="shapeAppearance">@style/BandyerSDKDesign.ImageViewAvatar.ShapeAppearance</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageViewAvatar.ShapeAppearance" parent=""/>
+
+    <style name="BandyerSDKDesign.ChatMessageStatusImageView" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:tint">?attr/colorOnSecondary</item>
+        <item name="android:src">@drawable/bandyer_chat_status_icon</item>
+        <item name="android:scaleType">centerInside</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageViewAvatar.Chat" parent="BandyerSDKDesign.ImageViewAvatar">
+        <item name="android:background">@color/bandyer_color_grey_light</item>
+        <item name="android:src">@drawable/ic_bandyer_avatar_small</item>
+        <item name="android:tint">?attr/colorOnPrimary</item>
+        <item name="android:layout_width">@dimen/bandyer_dimen_chat_avatar_size</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_chat_avatar_size</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space16</item>
+    </style>
+</resources>

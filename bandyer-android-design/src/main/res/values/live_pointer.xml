@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+<resources>
+
+    <declare-styleable name="BandyerSDKDesign.LivePointer">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="materialButtonStyle" />
+        <attr name="android:textViewStyle" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.LivePointer" parent="">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.LivePointer</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.LivePointer</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.LivePointer" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:minWidth">@dimen/bandyer_dimen_normal_image_button</item>
+        <item name="android:minHeight">@dimen/bandyer_dimen_normal_image_button</item>
+        <item name="icon">@drawable/bandyer_circular_background</item>
+        <item name="iconTint">?attr/colorSecondary</item>
+        <item name="iconSize">@dimen/bandyer_dimen_space16</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.LivePointer" parent="BandyerSDKDesign.TextView.Subtitle">
+        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance</item>
+    </style>
+
+</resources>

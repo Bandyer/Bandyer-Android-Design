@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources>
+
+    <declare-styleable name="BandyerSDKDesign.BottomSheet.AudioRoute">
+        <attr name="bandyer_bluetoothItemStyle" format="reference" />
+        <attr name="bandyer_wiredHeadsetItemStyle" format="reference" />
+        <attr name="bandyer_loudspeakerItemStyle" format="reference" />
+        <attr name="bandyer_earpieceItemStyle" format="reference" />
+        <attr name="bandyer_mutedItemStyle" format="reference" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.BottomSheet.AudioRoute" parent="BandyerSDKDesign.BottomSheet">
+        <item name="bandyer_bluetoothItemStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute.Item.Bluetooth</item>
+        <item name="bandyer_wiredHeadsetItemStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute.Item.WiredHeadset</item>
+        <item name="bandyer_loudspeakerItemStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute.Item.Loudspeaker</item>
+        <item name="bandyer_earpieceItemStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute.Item.Earpiece</item>
+        <item name="bandyer_mutedItemStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute.Item.Muted</item>
+    </style>
+
+</resources>

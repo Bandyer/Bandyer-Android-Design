@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="BandyerSDKDesign.Theme.Chat">
+        <attr name="bandyer_chatInputWidgetStyle" format="reference" />
+        <attr name="bandyer_chatUnreadMessagesWidgetStyle" format="reference" />
+        <attr name="bandyer_chatInfoWidgetStyle" format="reference" />
+        <attr name="bandyer_chatTimestampStyle" format="reference" />
+        <attr name="bandyer_chatEmptyLoaderStyle" format="reference" />
+        <attr name="bandyer_chatNetworkLoaderStyle" format="reference" />
+        <attr name="toolbarStyle" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.Theme.Chat.DayNight" parent="BandyerSDKDesign.Theme.DayNight">
+        <item name="bandyer_chatInfoWidgetStyle">@style/BandyerSDKDesign.ChatInfo</item>
+        <item name="bandyer_chatInputWidgetStyle">@style/BandyerSDKDesign.ChatInput</item>
+        <item name="bandyer_chatTimestampStyle">@style/BandyerSDKDesign.Chat.ChatTimestamp</item>
+        <item name="bandyer_chatUnreadMessagesWidgetStyle">@style/BandyerSDKDesign.ImageButton.ChatUnreadMessages</item>
+        <item name="bandyer_chatEmptyLoaderStyle">@style/BandyerSDKDesign.ChatEmptyItem</item>
+        <item name="bandyer_chatNetworkLoaderStyle">@style/BandyerSDKDesign.ChatLoadingItem</item>
+        <item name="toolbarStyle">@style/BandyerSDKDesign.Theme.Chat.ToolBarStyle</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.Chat.Day" parent="BandyerSDKDesign.Theme.Day">
+        <item name="bandyer_chatInfoWidgetStyle">@style/BandyerSDKDesign.ChatInfo</item>
+        <item name="bandyer_chatInputWidgetStyle">@style/BandyerSDKDesign.ChatInput</item>
+        <item name="bandyer_chatTimestampStyle">@style/BandyerSDKDesign.Chat.ChatTimestamp</item>
+        <item name="bandyer_chatUnreadMessagesWidgetStyle">@style/BandyerSDKDesign.ImageButton.ChatUnreadMessages</item>
+        <item name="bandyer_chatEmptyLoaderStyle">@style/BandyerSDKDesign.ChatEmptyItem</item>
+        <item name="bandyer_chatNetworkLoaderStyle">@style/BandyerSDKDesign.ChatLoadingItem</item>
+        <item name="toolbarStyle">@style/BandyerSDKDesign.Theme.Chat.ToolBarStyle</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.Chat.Night" parent="BandyerSDKDesign.Theme.Night">
+        <item name="bandyer_chatInfoWidgetStyle">@style/BandyerSDKDesign.ChatInfo</item>
+        <item name="bandyer_chatInputWidgetStyle">@style/BandyerSDKDesign.ChatInput</item>
+        <item name="bandyer_chatTimestampStyle">@style/BandyerSDKDesign.Chat.ChatTimestamp</item>
+        <item name="bandyer_chatUnreadMessagesWidgetStyle">@style/BandyerSDKDesign.ImageButton.ChatUnreadMessages</item>
+        <item name="bandyer_chatEmptyLoaderStyle">@style/BandyerSDKDesign.ChatEmptyItem</item>
+        <item name="bandyer_chatNetworkLoaderStyle">@style/BandyerSDKDesign.ChatLoadingItem</item>
+        <item name="toolbarStyle">@style/BandyerSDKDesign.Theme.Chat.ToolBarStyle</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.Chat" parent="BandyerSDKDesign.Theme.Chat.Day" />
+
+    <style name="BandyerSDKDesign.Theme.Chat.ToolBarStyle" parent="@style/BandyerSDKDesign.ToolBarStyle">
+        <item name="materialThemeOverlay">@style/BandyerSDKDesign.Theme.Chat.ToolBarStyle.MaterialThemeOverlay</item>
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetStartWithNavigation">50dp</item>
+        <item name="android:touchscreenBlocksFocus" tools:targetApi="lollipop">false</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.Chat.ToolBarStyle.MaterialThemeOverlay" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+        <item name="drawableTint">?attr/colorOnPrimary</item>
+    </style>
+
+</resources>

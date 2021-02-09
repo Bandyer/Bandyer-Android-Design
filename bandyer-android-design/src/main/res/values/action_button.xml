@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ACTION BUTTON STYLEABLE -->
+
+    <declare-styleable name="BandyerSDKDesign.ActionButton" tools:ignore="MissingDefaultResource">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="materialButtonStyle" />
+        <attr name="android:textViewStyle" />
+    </declare-styleable>
+
+    <!-- ACTION BUTTON STYLES -->
+
+    <style name="BandyerSDKDesign.ActionButton">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ActionButton.RootLayout</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.RootLayout" parent="">
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:clipChildren">false</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:clickable">false</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space20</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.ConfirmButton" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Confirm</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextAppearance.ButtonLabel.Confirm</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.CancelButton" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Cancel</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextAppearance.ButtonLabel.Cancel</item>
+    </style>
+
+    <!-- CALL ACTION BUTTONS -->
+
+    <style name="BandyerSDKDesign.ActionButton.AudioRoute" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.AudioRoute</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.AudioRoute</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.Participants" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Participants</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Participants</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.Chat" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Chat</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Chat</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.Whiteboard" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Whiteboard</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Whiteboard</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.FileShare" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.FileShare</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.FileShare</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.Options" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Options</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Options</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.SwitchCamera" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.SwitchCamera</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SwitchCamera</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.HangUp" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.HangUp</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.HangUp</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.Answer" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Large.Answer</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.Answer</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.Decline" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Large.Decline</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.Decline</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.Microphone" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Microphone</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Microphone</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.Camera" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Camera</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Camera</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.ScreenShare" parent="BandyerSDKDesign.ActionButton">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.ScreenShare</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.ScreenShare</item>
+    </style>
+
+</resources>

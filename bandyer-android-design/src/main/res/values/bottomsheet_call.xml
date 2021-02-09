@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources>
+
+    <declare-styleable name="BandyerSDKDesign.BottomSheet.Call">
+        <attr name="bandyer_lineStyle" />
+        <attr name="bandyer_titleStyle" />
+        <attr name="bandyer_recyclerViewStyle" />
+        <attr name="materialCardViewStyle" />
+        <attr name="bandyer_microphoneStyle" format="reference" />
+        <attr name="bandyer_cameraStyle" format="reference" />
+        <attr name="bandyer_switchCameraStyle" format="reference" />
+        <attr name="bandyer_screenShareStyle" format="reference" />
+        <attr name="bandyer_whiteboardStyle" format="reference" />
+        <attr name="bandyer_participantsStyle" format="reference" />
+        <attr name="bandyer_chatStyle" format="reference" />
+        <attr name="bandyer_optionsStyle" format="reference" />
+        <attr name="bandyer_audioRouteStyle" format="reference" />
+        <attr name="bandyer_hangUpStyle" format="reference" />
+        <attr name="bandyer_fileShareStyle" format="reference" />
+    </declare-styleable>
+
+    <!-- CALL BOTTOM SHEET -->
+
+    <style name="BandyerSDKDesign.BottomSheet.Call" parent="BandyerSDKDesign.BottomSheet">
+        <item name="bandyer_cameraStyle">@style/BandyerSDKDesign.ActionButton.Camera</item>
+        <item name="bandyer_microphoneStyle">@style/BandyerSDKDesign.ActionButton.Microphone</item>
+        <item name="bandyer_screenShareStyle">@style/BandyerSDKDesign.ActionButton.ScreenShare</item>
+        <item name="bandyer_whiteboardStyle">@style/BandyerSDKDesign.ActionButton.Whiteboard</item>
+        <item name="bandyer_switchCameraStyle">@style/BandyerSDKDesign.ActionButton.SwitchCamera</item>
+        <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.ActionButton.Participants</item>
+        <item name="bandyer_chatStyle">@style/BandyerSDKDesign.ActionButton.Chat</item>
+        <item name="bandyer_optionsStyle">@style/BandyerSDKDesign.ActionButton.Options</item>
+        <item name="bandyer_audioRouteStyle">@style/BandyerSDKDesign.ActionButton.AudioRoute</item>
+        <item name="bandyer_fileShareStyle">@style/BandyerSDKDesign.ActionButton.FileShare</item>
+        <item name="bandyer_hangUpStyle">@style/BandyerSDKDesign.ActionButton.HangUp</item>
+    </style>
+
+</resources>

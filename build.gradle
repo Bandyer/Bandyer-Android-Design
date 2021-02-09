@@ -1,0 +1,76 @@
+/*
+ * Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *           http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+apply plugin: 'com.github.ben-manes.versions'
+
+buildscript {
+
+    ext.sdkVersion = 30
+    ext.buildToolsVersion = "30.0.2"
+    ext.kotlin_version = '1.4.20'
+    ext.serialization_version = '0.5.1'
+    ext.lifecycle_version = "1.1.1"
+    ext.bandyer_common = "1.0.10"
+
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://oss.sonatype.org/content/repositories/releases' }
+        maven {
+            url 'https://storage.googleapis.com/r8-releases/raw'
+        }
+    }
+
+    dependencies {
+        classpath 'com.android.tools:r8:2.1.78'
+        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.21.0'
+
+        //classpath dependencies to import library project
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        mavenLocal()
+        maven { url 'https://jitpack.io' }
+    }
+
+    configurations.all {
+        resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+        resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+
+        resolutionStrategy.force "com.bandyer:bandyer-android-common:$bandyer_common"
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

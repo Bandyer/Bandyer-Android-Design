@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="BandyerSDKDesign.Theme.Call">
+        <attr name="bandyer_bottomSheetCallStyle" format="reference" />
+        <attr name="bandyer_bottomSheetAudioRouteStyle" format="reference" />
+        <attr name="bandyer_bottomSheetRingingStyle" format="reference" />
+
+        <attr name="bandyer_answerHelperTextStyle" format="reference" />
+        <attr name="bandyer_livePointerStyle" format="reference" />
+
+        <attr name="bandyer_userInfoStyle" format="reference" />
+        <attr name="bandyer_callInfoStyle" format="reference" />
+        <attr name="bandyer_userStatusStyle" format="reference"/>
+
+        <attr name="bandyer_whiteboardDialogStyle" format="reference" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.Theme.Call.DayNight.V16" parent="BandyerSDKDesign.Theme.DayNight">
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="bandyer_answerHelperTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
+        <item name="bandyer_bottomSheetCallStyle">@style/BandyerSDKDesign.BottomSheet.Call</item>
+        <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
+        <item name="bandyer_bottomSheetRingingStyle">@style/BandyerSDKDesign.BottomSheet.Ringing</item>
+        <item name="bandyer_livePointerStyle">@style/BandyerSDKDesign.LivePointer</item>
+        <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>
+        <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
+        <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
+        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.Call.Day.V16" parent="BandyerSDKDesign.Theme.Day">
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="bandyer_answerHelperTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
+        <item name="bandyer_bottomSheetCallStyle">@style/BandyerSDKDesign.BottomSheet.Call</item>
+        <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
+        <item name="bandyer_bottomSheetRingingStyle">@style/BandyerSDKDesign.BottomSheet.Ringing</item>
+        <item name="bandyer_livePointerStyle">@style/BandyerSDKDesign.LivePointer</item>
+        <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>
+        <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
+        <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
+        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.Call.Night.V16" parent="BandyerSDKDesign.Theme.Night">
+        <item name="android:fitsSystemWindows">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="bandyer_answerHelperTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
+        <item name="bandyer_bottomSheetCallStyle">@style/BandyerSDKDesign.BottomSheet.Call</item>
+        <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
+        <item name="bandyer_bottomSheetRingingStyle">@style/BandyerSDKDesign.BottomSheet.Ringing</item>
+        <item name="bandyer_livePointerStyle">@style/BandyerSDKDesign.LivePointer</item>
+        <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>
+        <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
+        <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
+        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.DayNight.V16"/>
+
+    <style name="BandyerSDKDesign.Theme.Call.Day" parent="BandyerSDKDesign.Theme.Call.Day.V16"/>
+
+    <style name="BandyerSDKDesign.Theme.Call.Night" parent="BandyerSDKDesign.Theme.Call.Night.V16"/>
+
+    <style name="BandyerSDKDesign.Theme.Call" parent="BandyerSDKDesign.Theme.Call.Night">
+        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.Day</item>
+    </style>
+
+</resources>

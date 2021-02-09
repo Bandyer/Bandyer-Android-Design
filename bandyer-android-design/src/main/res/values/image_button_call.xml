@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- CALL BUTTONS -->
+
+    <style name="BandyerSDKDesign.ImageButton.Call" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:clipChildren">false</item>
+        <item name="backgroundTint">@color/bandyer_call_action_button_color</item>
+        <item name="iconTint">@color/bandyer_call_action_button_icon_color</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Large" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="android:layout_height">@dimen/bandyer_dimen_big_image_button</item>
+        <item name="android:layout_width">@dimen/bandyer_dimen_big_image_button</item>
+        <item name="elevation">@dimen/bandyer_dimen_space6</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/bandyer_dimen_space6</item>
+        <item name="iconTint">@android:color/white</item>
+        <item name="iconSize">@dimen/bandyer_dimen_big_image_button</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Large.Answer" parent="BandyerSDKDesign.ImageButton.Call.Large">
+        <item name="backgroundTint">@color/bandyer_color_answer_button</item>
+        <item name="icon">@drawable/ic_bandyer_answer</item>
+        <item name="android:contentDescription">@string/bandyer_ringing_decline</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Large.Decline" parent="BandyerSDKDesign.ImageButton.Call.Large">
+        <item name="backgroundTint">@color/bandyer_color_hang_up_button</item>
+        <item name="icon">@drawable/ic_bandyer_hangup</item>
+        <item name="android:contentDescription">@string/bandyer_ringing_decline</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Participants" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/ic_bandyer_participants</item>
+        <item name="android:contentDescription">@string/bandyer_call_action_participants</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Chat" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/ic_bandyer_chat</item>
+        <item name="android:contentDescription">@string/bandyer_call_action_chat</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Whiteboard" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/ic_bandyer_whiteboard</item>
+        <item name="android:contentDescription">@string/bandyer_call_action_whiteboard</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.FileShare" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/ic_bandyer_file_share</item>
+        <item name="android:contentDescription">@string/bandyer_call_action_file_share</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Camera" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/ic_bandyer_camera_off</item>
+        <item name="android:contentDescription">
+            @string/bandyer_call_action_disable_camera_description
+        </item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.SwitchCamera" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/ic_bandyer_switch_camera</item>
+        <item name="android:contentDescription">
+            @string/bandyer_call_action_switch_camera_description
+        </item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Options" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/ic_bandyer_options</item>
+        <item name="android:contentDescription">@string/bandyer_call_action_options</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Microphone" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/ic_bandyer_mic_off</item>
+        <item name="android:contentDescription">
+            @string/bandyer_call_action_disable_mic_description
+        </item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.ScreenShare" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/ic_bandyer_screen_share</item>
+        <item name="android:contentDescription">@string/bandyer_call_action_screen_share</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.HangUp" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="backgroundTint">@color/bandyer_color_hang_up_button</item>
+        <item name="iconTint">@android:color/white</item>
+        <item name="icon">@drawable/ic_bandyer_hangup</item>
+        <item name="android:contentDescription">@string/bandyer_call_hangup</item>
+    </style>
+
+    <!-- AUDIO ROUTE BOTTOM SHEET BUTTONS -->
+
+    <style name="BandyerSDKDesign.ImageButton.Call.AudioRoute" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/bandyer_call_action_button_audioroute_icon</item>
+        <item name="android:contentDescription">@string/bandyer_call_action_audio_route</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Muted" parent="BandyerSDKDesign.ImageButton.Call.AudioRoute">
+        <item name="icon">@drawable/ic_bandyer_muted</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Earpiece" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/ic_bandyer_earpiece</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Headset" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/ic_bandyer_wired_headset</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Bluetooth" parent="BandyerSDKDesign.ImageButton.Call">
+        <item name="icon">@drawable/ic_bandyer_bluetooth_headset</item>
+    </style>
+
+</resources>

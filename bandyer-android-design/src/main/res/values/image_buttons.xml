@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- IMAGE BUTTON STYLE -->
+
+    <style name="BandyerSDKDesign.ImageButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+        <item name="android:insetLeft">@dimen/bandyer_dimen_space0</item>
+        <item name="android:insetRight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:insetTop">@dimen/bandyer_dimen_space0</item>
+        <item name="android:insetBottom">@dimen/bandyer_dimen_space0</item>
+        <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:minWidth">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingRight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingLeft">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
+        <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
+        <item name="iconPadding">@dimen/bandyer_dimen_space0</item>
+        <item name="iconGravity">textStart</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="rippleColor">@color/bandyer_call_action_button_ripple_color</item>
+        <item name="iconSize">@dimen/bandyer_dimen_space56</item>
+        <item name="shapeAppearanceOverlay">@style/BandyerSDKDesign.ImageButton.ShapeAppearanceOverlay.Circle</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.ShapeAppearanceOverlay.Circle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.AudioRoute" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space48</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space48</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space16</item>
+        <item name="iconTint">@color/bandyer_audio_route_icon_color</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
+        <item name="rippleColor">@android:color/transparent</item>
+        <item name="android:focusableInTouchMode">false</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Send" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:layout_width">@dimen/bandyer_dimen_normal_image_button</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_normal_image_button</item>
+        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space8</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space8</item>
+        <item name="icon">@drawable/bandyer_chat_send_icon</item>
+        <item name="iconTint">@color/bandyer_input_layout_widget_send_color</item>
+        <item name="iconSize">@dimen/bandyer_dimen_space56</item>
+        <item name="android:contentDescription">@string/bandyer_chat_send</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Confirm" parent="BandyerSDKDesign.ImageButton">
+        <item name="icon">@drawable/ic_bandyer_confirm</item>
+        <item name="android:contentDescription">@string/bandyer_action_confirm</item>
+        <item name="iconTint">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Cancel" parent="BandyerSDKDesign.ImageButton">
+        <item name="icon">@drawable/bandyer_whiteboard_editor_cancel_button_icon</item>
+        <item name="iconTint">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Confirm.Day" parent="BandyerSDKDesign.ImageButton.Confirm">
+        <item name="iconTint">@color/bandyer_colorOnSurface</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Cancel.Day" parent="BandyerSDKDesign.ImageButton.Cancel">
+        <item name="iconTint">@color/bandyer_colorOnSurface</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Reload" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="icon">@drawable/ic_bandyer_reload</item>
+        <item name="android:clickable">false</item>
+        <item name="iconTint">@android:color/black</item>
+        <item name="iconSize">@dimen/bandyer_dimen_reload_image_button</item>
+        <item name="android:contentDescription">@string/bandyer_error_button_reload</item>
+    </style>
+
+    <!-- Line style -->
+    <style name="BandyerSDKDesign.ImageButton.BottomSheetLine" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:gravity">center</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space12</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space12</item>
+        <item name="icon">@drawable/bandyer_bottom_sheet_widget_line</item>
+        <item name="iconTint">@color/bandyer_call_line_color</item>
+        <item name="iconSize">0dp</item>
+        <item name="rippleColor">@android:color/transparent</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.BottomSheetLine.Ringing" parent="BandyerSDKDesign.ImageButton.BottomSheetLine">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- CALL USER INFO -->
+
+    <style name="BandyerSDKDesign.ImageButton.Snapshot" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:layout_margin">@dimen/bandyer_dimen_space16</item>
+        <item name="icon">@drawable/ic_bandyer_snapshot</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.FullScreen" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space8</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space8</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space12</item>
+        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space12</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="iconTint">@android:color/white</item>
+        <item name="android:visibility">visible</item>
+        <item name="rippleColor">@android:color/white</item>
+        <item name="icon">@drawable/bandyer_call_user_info_fullscreen_icon</item>
+        <item name="iconSize">@dimen/bandyer_dimen_space56</item>
+        <item name="android:contentDescription">@string/bandyer_fullscreen_button</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Close" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_gravity">left|start|top</item>
+        <item name="android:maxWidth">@dimen/bandyer_dimen_space48</item>
+        <item name="android:maxHeight">@dimen/bandyer_dimen_space48</item>
+        <item name="icon">@drawable/ic_bandyer_nav_close</item>
+        <item name="iconTint">@android:color/white</item>
+        <item name="android:contentDescription">@string/bandyer_snapshot_close</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Save" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space48</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space48</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space16</item>
+        <item name="icon">@drawable/ic_bandyer_nav_save</item>
+        <item name="iconTint">@android:color/white</item>
+        <item name="android:maxWidth">@dimen/bandyer_dimen_space48</item>
+        <item name="android:maxHeight">@dimen/bandyer_dimen_space48</item>
+        <item name="android:contentDescription">@string/bandyer_snapshot_save</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.UploadError" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:layout_width">@dimen/bandyer_dimen_progress_bar_circular_size</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_progress_bar_circular_size</item>
+        <item name="android:padding">@dimen/bandyer_dimen_space8</item>
+        <item name="icon">@drawable/ic_bandyer_close</item>
+        <item name="iconSize">@dimen/bandyer_dimen_progress_bar_circular_size</item>
+        <item name="iconTint">?attr/colorError</item>
+        <item name="android:clickable">false</item>
+        <item name="android:visibility">invisible</item>
+        <item name="rippleColor">@android:color/transparent</item>
+        <item name="android:contentDescription">@string/bandyer_upload_file_error</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.ChatUnreadMessages" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:minWidth">@dimen/bandyer_dimen_space32</item>
+        <item name="android:minHeight">@dimen/bandyer_dimen_space32</item>
+        <item name="android:gravity">end|center_vertical</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="backgroundTint">?attr/colorPrimary</item>m>
+        <item name="icon">@drawable/ic_bandyer_double_arrow_down</item>
+        <item name="iconGravity">textEnd</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconSize">@dimen/bandyer_dimen_space32</item>
+        <item name="iconTint">?attr/colorOnPrimary</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_normal</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="rippleColor">@color/mtrl_fab_ripple_color</item>
+        <item name="elevation">@dimen/bandyer_dimen_space4</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/bandyer_dimen_space4</item>
+        <item name="android:contentDescription">@string/bandyer_chat_unread_messages</item>
+    </style>
+
+</resources>

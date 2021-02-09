@@ -1,0 +1,140 @@
+<!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources>
+
+    <!-- Audio route labels -->
+    <string name="bandyer_call_action_audio_route_bluetooth">Bluetooth</string>
+    <string name="bandyer_call_action_audio_route_wired_headset">Wired headset</string>
+    <string name="bandyer_call_action_audio_route_loudspeaker">Loudspeaker</string>
+    <string name="bandyer_call_action_audio_route_earpiece">Earpiece</string>
+    <string name="bandyer_call_action_audio_route_muted">Muted</string>
+    <string name="bandyer_call_action_audio_route_bluetooth_connected">Connected</string>
+    <string name="bandyer_call_action_audio_route_bluetooth_deactivating">Deactivating…</string>
+    <string name="bandyer_call_action_audio_route_bluetooth_disconnected">Disconnected</string>
+    <string name="bandyer_call_action_audio_route_bluetooth_failed">Unable to connect to device. Please try turning it off and on again.</string>
+    <string name="bandyer_call_action_audio_route_bluetooth_activating">Activating…</string>
+    <string name="bandyer_call_action_audio_route_bluetooth_available">Available</string>
+    <string name="bandyer_call_action_audio_route_bluetooth_battery_level">Battery level:</string>
+
+    <!-- Action labels -->
+    <string name="bandyer_call_action_muted">Muted</string>
+    <string name="bandyer_call_action_mic_mute">Mute</string>
+    <string name="bandyer_call_action_video_disable">Disable</string>
+    <string name="bandyer_call_action_screen_share">Screen Share</string>
+    <string name="bandyer_call_action_switch_camera">Switch</string>
+    <string name="bandyer_call_action_chat">Chat</string>
+    <string name="bandyer_call_action_whiteboard">Whiteboard</string>
+    <string name="bandyer_call_action_file_share">File Share</string>
+    <string name="bandyer_call_action_participants">Participants</string>
+    <string name="bandyer_call_action_audio_route">Audio Output</string>
+    <string name="bandyer_call_action_options">Options</string>
+
+    <string name="bandyer_call_action_switch_camera_description">Switch camera</string>
+    <string name="bandyer_call_action_enable_mic_description">Enable microphone</string>
+    <string name="bandyer_call_action_disable_mic_description">Disable microphone</string>
+    <string name="bandyer_call_action_enable_camera_description">Enable camera</string>
+    <string name="bandyer_call_action_disable_camera_description">Disable camera</string>
+
+    <!-- Chat -->
+    <string name="bandyer_edit_text_input_placeholder">Write here &#8230;</string>
+    <string name="bandyer_chat_channel_loading">Loading &#8230;</string>
+    <string name="bandyer_chat_user_status_online">online</string>
+    <string name="bandyer_chat_user_status_last_login">last login:</string>
+    <string name="bandyer_chat_user_status_offline">seen recently</string>
+    <string name="bandyer_chat_user_status_typing">typing</string>
+    <string name="bandyer_chat_state_waiting_for_network">waiting for network&#8230;</string>
+    <string name="bandyer_chat_state_connecting">connecting&#8230;</string>
+    <string name="bandyer_chat_send">Send message</string>
+    <string name="bandyer_chat_unread_messages">Scroll to the last message</string>
+    <string name="bandyer_chat_msg_status_pending">Message pending</string>
+    <string name="bandyer_chat_msg_status_sent">Message sent</string>
+    <string name="bandyer_chat_msg_status_seen">Message seen</string>
+
+    <!-- Call -->
+    <string name="bandyer_call_status_dialing">Dialing &#8230;</string>
+
+    <plurals name="bandyer_call_status_ringing">
+        <item quantity="one">Ringing &#8230;</item>
+        <item quantity="other">Ringing &#8230;</item>
+    </plurals>
+
+    <string name="bandyer_call_status_connecting">Connecting…</string>
+
+    <string name="bandyer_call_status_ended">Call ended</string>
+
+    <string name="bandyer_call_status_user_disconnected">Internet connection has been interrupted.</string>
+
+    <plurals name="bandyer_call_status_declined">
+        <item quantity="one">The user has declined.</item>
+        <item quantity="other">All users have declined.</item>
+    </plurals>
+
+    <string name="bandyer_call_status_answered_on_other_device">You have answered on another device.</string>
+
+    <plurals name="bandyer_call_status_no_answer">
+        <item quantity="one">The user has not answered.</item>
+        <item quantity="other">No user has answered.</item>
+    </plurals>
+
+    <string name="bandyer_call_info_recording">This call will be recorded</string>
+    <string name="bandyer_call_info_ongoing_recording">This call is being recorded</string>
+    <string name="bandyer_action_dismiss">Dismiss</string>
+    <string name="bandyer_action_cancel">Cancel</string>
+    <string name="bandyer_action_discard_changes">Discard changes</string>
+    <string name="bandyer_action_confirm">Confirm</string>
+    <string name="bandyer_data_loss_confirm_message">Are you sure?\nAll data will be lost.</string>
+    <string name="bandyer_call_hangup">Hangup</string>
+    <string name="bandyer_ongoing_call_label">Tap to go back to call</string>
+    <string name="bandyer_call_left_alone">You are left alone</string>
+    <string name="bandyer_call_offline">You are offline</string>
+    <string name="bandyer_error_button_reload">Reload</string>
+    <string name="bandyer_error_title">An error occurred</string>
+    <string name="bandyer_error_subtitle">Please tap to reload</string>
+
+    <string name="bandyer_share_whiteboard">Share on whiteboard</string>
+    <string name="bandyer_download">Save</string>
+
+    <string name="bandyer_fullscreen_info">Fullscreen mode</string>
+    <string name="bandyer_fullscreen_button">Enter/exit fullscreen mode</string>
+
+    <string name="bandyer_ringing_answer">Answer</string>
+    <string name="bandyer_ringing_decline">Decline</string>
+
+    <!-- WHITEBOARD -->
+    <string name="bandyer_collaborate_button">Collaborate</string>
+
+    <string name="bandyer_confirm_message">Yes</string>
+    <string name="bandyer_cancel_message">No</string>
+
+    <string name="bandyer_snapshot_saved_in_gallery">Saved in gallery</string>
+    <string name="bandyer_alert_discard_snapshot_title">Do you want to discard the snapshot?</string>
+    <string name="bandyer_alert_discard_snapshot_message">This snapshot will not be available anymore if you don\'t save it locally.</string>
+    <string name="bandyer_alert_save_snapshot_title">Do you want to save the image locally?</string>
+    <string name="bandyer_alert_save_snapshot_message">This snapshot will not be available anymore if you don\'t save it locally.</string>
+
+    <string name="bandyer_upload_file_error">Error occurred uploading file image</string>
+
+    <!-- TEMPLATES -->
+    <string name="bandyer_bluetooth_info">%1$s%2$s%3$s</string>
+    <string name="bandyer_bluetooth_battery_info">&#160;| %1$s %2$d %%</string>
+    <string name="bandyer_bluetooth_connecting_status_info">&#160;| %1$s</string>
+
+    <!-- SNAPSHOT -->
+    <string name="bandyer_snapshot_save">Save screen snapshot</string>
+    <string name="bandyer_snapshot_close">Close snapshot dialog</string>
+
+</resources>
