@@ -16,36 +16,44 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="BandyerSDKDesign.Theme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorSecondary">@color/bandyer_colorSecondary</item>
-        <item name="colorOnSecondary">@color/bandyer_colorOnSecondary</item>
-        <item name="colorError">@color/bandyer_colorError</item>
-        <item name="android:statusBarColor" tools:targetApi="lollipop">?attr/colorPrimaryVariant</item>
-        <item name="colorControlNormal">?attr/colorOnPrimary</item>
+    <style name="BandyerSDKDesign.Theme.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
         <item name="fontFamily">@font/bandyer_font</item>
         <item name="android:fontFamily">@font/bandyer_font</item>
+
+        <item name="colorPrimary">@color/bandyer_colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/bandyer_colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/bandyer_colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/bandyer_colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/bandyer_colorOnSecondary</item>
+        <item name="colorSurface">@color/bandyer_colorSurface</item>
+        <item name="colorOnPrimary">@color/bandyer_colorOnPrimary</item>
+        <item name="colorOnSurface">@color/bandyer_colorOnSurface</item>
+        <item name="colorOnBackground">@color/bandyer_colorOnBackground</item>
+        <item name="colorError">@color/bandyer_colorError</item>
+        <item name="colorControlNormal">?attr/colorOnPrimary</item>
+
+        <item name="android:colorBackground">@color/bandyer_colorBackground</item>
+        <item name="android:windowBackground">@color/bandyer_colorBackground</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+
         <item name="elevationOverlayEnabled">false</item>
         <item name="toolbarStyle">@style/BandyerSDKDesign.ToolBarStyle</item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">?attr/colorPrimaryVariant
+        </item>
     </style>
 
     <style name="BandyerSDKDesign.ToolBarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Day" parent="BandyerSDKDesign.Theme">
-        <item name="colorPrimary">@color/bandyer_colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/bandyer_colorPrimaryVariant</item>
-        <item name="colorSecondaryVariant">@color/bandyer_colorSecondaryVariant</item>
-        <item name="colorSurface">@color/bandyer_colorSurface</item>
-        <item name="colorOnPrimary">@color/bandyer_colorOnPrimary</item>
-        <item name="colorOnSurface">@color/bandyer_colorOnSurface</item>
-        <item name="colorOnBackground">@color/bandyer_colorOnBackground</item>
-        <item name="android:colorBackground">@color/bandyer_colorBackground</item>
-        <item name="android:windowBackground">@color/bandyer_colorBackground</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    <style name="BandyerSDKDesign.ToolBarShadow" parent="">
+        <item name="android:visibility">visible</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Night" parent="BandyerSDKDesign.Theme">
+    <style name="BandyerSDKDesign.Theme.Base.Day" parent="BandyerSDKDesign.Theme" />
+
+    <style name="BandyerSDKDesign.Theme.Base.Night" parent="BandyerSDKDesign.Theme">
         <item name="colorPrimary">@color/bandyer_colorPrimary_night</item>
         <item name="colorPrimaryVariant">@color/bandyer_colorPrimaryVariant_night</item>
         <item name="colorSecondaryVariant">@color/bandyer_colorSecondaryVariant_night</item>
@@ -58,10 +66,12 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.DayNight" parent="BandyerSDKDesign.Theme.Day" />
+    <style name="BandyerSDKDesign.Theme" parent="BandyerSDKDesign.Theme.Base" />
 
-    <style name="BandyerSDKDesign.ToolBarShadow" parent="">
-        <item name="android:visibility">visible</item>
-    </style>
+    <style name="BandyerSDKDesign.Theme.Day" parent="BandyerSDKDesign.Theme.Base.Day" />
+
+    <style name="BandyerSDKDesign.Theme.Night" parent="BandyerSDKDesign.Theme.Base.Night" />
+
+    <style name="BandyerSDKDesign.Theme.DayNight" parent="BandyerSDKDesign.Theme.Day" />
 
 </resources>

@@ -82,7 +82,6 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:descendantFocusability="afterDescendants"
-            android:paddingBottom="70dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/timestamp_message"

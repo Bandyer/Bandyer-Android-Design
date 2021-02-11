@@ -170,14 +170,13 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
         }
 
         if (height == 0 || width == 0) return
-
-        val offsets: Rect? = decorView.getPrivateProperty("mFrameOffsets")
+        
         val currentInsets =  ViewCompat.getRootWindowInsets(decorView)?.stableInsets
 
-        val bottomMargin =offsets?.bottom ?: oldInsets?.displayCutout?.safeInsetBottom?.takeIf { it > 0 } ?: currentInsets?.bottom ?: (height - rect.bottom).takeIf { it >= 0 } ?: 0
-        val topMargin = offsets?.top ?: oldInsets?.displayCutout?.safeInsetTop?.takeIf { it > 0 } ?: currentInsets?.top ?: rect.top.takeIf { it >= 0 } ?: 0
-        val leftMargin = offsets?.left ?: oldInsets?.displayCutout?.safeInsetLeft?.takeIf { it > 0 } ?: currentInsets?.left ?: rect.left.takeIf { it >= 0 } ?: 0
-        val rightMargin =offsets?.right ?: oldInsets?.displayCutout?.safeInsetRight?.takeIf { it > 0 } ?: currentInsets?.right ?: (width - rect.right).takeIf { it >= 0 } ?: 0
+        val bottomMargin = oldInsets?.displayCutout?.safeInsetBottom?.takeIf { it > 0 } ?: currentInsets?.bottom ?: (height - rect.bottom).takeIf { it >= 0 } ?: 0
+        val topMargin = oldInsets?.displayCutout?.safeInsetTop?.takeIf { it > 0 } ?: currentInsets?.top ?: rect.top.takeIf { it >= 0 } ?: 0
+        val leftMargin = oldInsets?.displayCutout?.safeInsetLeft?.takeIf { it > 0 } ?: currentInsets?.left ?: rect.left.takeIf { it >= 0 } ?: 0
+        val rightMargin = oldInsets?.displayCutout?.safeInsetRight?.takeIf { it > 0 } ?: currentInsets?.right ?: (width - rect.right).takeIf { it >= 0 } ?: 0
 
         if (rightMargin >= width || leftMargin >= width || bottomMargin >= height || topMargin >= height) return
 
@@ -188,13 +187,6 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
 
         stopObserversListeningIfNeeded()
     }
-
-    @Suppress("UNCHECKED_CAST")
-    private inline fun <reified T : Any, R> T.getPrivateProperty(name: String): R? =
-            T::class.memberProperties
-                    .firstOrNull { it.name == name }
-                    ?.apply { isAccessible = true }
-                    ?.get(this) as? R
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         isPortrait = newConfig.orientation == Configuration.ORIENTATION_PORTRAIT

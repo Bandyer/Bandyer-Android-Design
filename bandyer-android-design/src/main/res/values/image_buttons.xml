@@ -62,9 +62,10 @@
         <item name="android:layout_height">@dimen/bandyer_dimen_normal_image_button</item>
         <item name="android:layout_marginRight">@dimen/bandyer_dimen_space8</item>
         <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space8</item>
-        <item name="icon">@drawable/bandyer_chat_send_icon</item>
+        <item name="icon">@drawable/ic_bandyer_send</item>
         <item name="iconTint">@color/bandyer_input_layout_widget_send_color</item>
         <item name="iconSize">@dimen/bandyer_dimen_space56</item>
+        <item name="android:rotation">@integer/auto_mirror</item>
         <item name="android:contentDescription">@string/bandyer_chat_send</item>
     </style>
 
