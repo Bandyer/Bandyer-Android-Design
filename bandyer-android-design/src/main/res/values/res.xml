@@ -3,6 +3,7 @@
     <item name="ic_bandyer_answer" type="drawable">@drawable/bandyer_answer_icon</item>
     <item name="ic_bandyer_audio_call" type="drawable">@drawable/bandyer_audio_call_icon</item>
     <item name="ic_bandyer_audio_upgradable_call" type="drawable">@drawable/bandyer_audio_upgradable_call_icon</item>
+    <item name="ic_bandyer_video_call" type="drawable">@drawable/bandyer_video_call_icon</item>
     <item name="ic_bandyer_avatar" type="drawable">@drawable/bandyer_avatar_icon</item>
     <item name="ic_bandyer_avatar_small" type="drawable">@drawable/bandyer_avatar_small_icon</item>
     <item name="ic_bandyer_avatars" type="drawable">@drawable/bandyer_avatars_icon</item>
@@ -41,7 +42,6 @@
     <item name="ic_bandyer_snapshot" type="drawable">@drawable/bandyer_snapshot_icon</item>
     <item name="ic_bandyer_switch_camera" type="drawable">@drawable/bandyer_switch_camera_icon</item>
     <item name="ic_bandyer_time" type="drawable">@drawable/bandyer_time_icon</item>
-    <item name="ic_bandyer_video_call" type="drawable">@drawable/bandyer_video_call_icon</item>
     <item name="ic_bandyer_whiteboard" type="drawable">@drawable/bandyer_whiteboard_icon</item>
     <item name="ic_bandyer_wired_headset" type="drawable">@drawable/bandyer_wired_headset_icon</item>
 </resources>
