@@ -27,6 +27,8 @@ This repository is the design library used by Bandyer's Android SDK
 
 [Color System](https://github.com/Bandyer/Bandyer-Android-Design/wiki/Color-System)
 
-[Change Themes](https://github.com/Bandyer/Bandyer-Android-Design/wiki/Change-Themes)
+[Customize Themes](https://github.com/Bandyer/Bandyer-Android-Design/wiki/Customize-Themes)
 
-[Change Font](https://github.com/Bandyer/Bandyer-Android-Design/wiki/Change-Font)
+[Customize Font](https://github.com/Bandyer/Bandyer-Android-Design/wiki/Customize-Font)
+
+[Customize Icons](https://github.com/Bandyer/Bandyer-Android-Design/wiki/Customize-Icons)
