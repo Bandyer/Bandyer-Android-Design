@@ -246,7 +246,10 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val callActi
      */
     @JvmOverloads
     fun show(onShowListener: OnShowListener? = null) {
-        if (!isHidden) return
+        if (!isHidden) {
+            onShowListener?.onShown()
+            return
+        }
         isHidden = false
         if (onShowListener != null) this.onShowListener = onShowListener
         when (currentShownBottomSheet) {
