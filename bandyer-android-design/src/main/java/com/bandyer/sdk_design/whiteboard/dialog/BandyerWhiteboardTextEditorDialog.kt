@@ -48,12 +48,15 @@ class BandyerWhiteboardTextEditorDialog : BandyerDialog<BandyerWhiteboardTextEdi
     override val id: String = "bandyerWhiteboardTextEditorDialog"
 
     override fun show(activity: androidx.fragment.app.FragmentActivity) {
+        if (dialog?.isVisible == true || dialog?.isAdded == true) return
         if (dialog == null) dialog = CustomTextEditorDialog()
         dialog!!.show(activity.supportFragmentManager, id)
+        activity.supportFragmentManager.executePendingTransactions()
     }
 
     fun show(activity: androidx.fragment.app.FragmentActivity, oldText: String? = null, listener: BandyerWhiteboardTextEditorWidgetListener): BandyerWhiteboardTextEditorDialog {
-        dialog = CustomTextEditorDialog()
+        if (dialog?.isVisible == true || dialog?.isAdded == true) return this
+        if (dialog == null) dialog = CustomTextEditorDialog()
         dialog!!.setListener(listener)
         dialog!!.arguments = Bundle()
         dialog!!.arguments!!.putString(TEXT_PLACEHOLDER, oldText)
