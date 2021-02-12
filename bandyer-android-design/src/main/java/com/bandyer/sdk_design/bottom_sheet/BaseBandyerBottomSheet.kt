@@ -457,6 +457,11 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
         val startValue = bottomMargin.toFloat()
         val endValue = bottomMarginNavigation.toFloat()
 
+        if (startValue == endValue) return
+
+        valueAnimator?.removeAllListeners()
+        valueAnimator?.cancel()
+
         valueAnimator = ValueAnimator.ofFloat(startValue, endValue)
         valueAnimator!!.interpolator = OvershootInterpolator()
 
@@ -473,8 +478,10 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
 
         valueAnimator?.addListener(
                 object : Animator.AnimatorListener {
+                    var isCanceled = false
                     override fun onAnimationRepeat(animation: Animator?) {}
                     override fun onAnimationEnd(animation: Animator?) {
+                        if (isCanceled) return
                         isAnimating = false
                         bottomSheetLayoutContent.updateBackgroundView()
                         when (state) {
@@ -486,6 +493,7 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
                     }
 
                     override fun onAnimationCancel(animation: Animator?) {
+                        isCanceled = true
                         isAnimating = false
                     }
 
