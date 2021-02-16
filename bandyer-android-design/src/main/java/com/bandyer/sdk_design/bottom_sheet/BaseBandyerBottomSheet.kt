@@ -203,7 +203,7 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
      * @param slideOffset Float
      */
     protected open fun slideAnimationReady(bottomSheet: BandyerBottomSheet?, state: Int, slideOffset: Float) {
-
+        fadeRecyclerViewLinesBelowNavigation()
     }
 
     private fun configureBottomSheet(bottomSheetLayoutContent: BottomSheetLayoutContent) {
@@ -539,6 +539,8 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
             this.setItems(views)
             this.configureBottomSheet(bottomSheetLayoutContent)
         }
+
+
         onStateChangedBottomSheetListener?.onShow(this)
     }
 
