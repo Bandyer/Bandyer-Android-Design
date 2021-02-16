@@ -16,7 +16,6 @@
 
 package com.bandyer.sdk_design.call.widgets
 
-import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.Gravity
@@ -47,6 +46,7 @@ import com.bandyer.sdk_design.widgets.HideableWidget
 
 /**
  * Widget used during a call to perform actions such as mute video/audio, change audioRoute etc.
+ * @param context Context
  * @param coordinatorLayout CoordinatorLayout
  * @param callActionItems items to use
  * @constructor
@@ -216,7 +216,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
             else callBottomSheet.anchor()
         }
         if (audioRouteBottomSheet.isVisible())
-            disposeBottomSheet(audioRouteBottomSheet)
+            audioRouteBottomSheet.hide()
     }
 
     /**

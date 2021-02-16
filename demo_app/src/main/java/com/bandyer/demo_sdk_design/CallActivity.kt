@@ -136,7 +136,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
     }
 
     private fun initializeBottomSheetLayout(savedInstanceState: Bundle?) {
-        callActionWidget = BandyerCallActionWidget(this, getActions(this, true, false, true, true, true,true))
+        callActionWidget = BandyerCallActionWidget(this, findViewById(R.id.coordinator_layout), getActions(this, true, false, true, true, true,true))
 
         callActionWidget!!.onAudioRoutesRequest = this
         callActionWidget!!.onClickListener = this
