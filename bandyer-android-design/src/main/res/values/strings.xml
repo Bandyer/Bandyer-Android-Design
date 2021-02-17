@@ -140,6 +140,6 @@
 
     <!-- SCREEN SHARE PICKER -->
     <string name="bandyer_screenshare_app_only">Share this app only</string>
-    <string name="bandyer_screenshare_full_device">Share full device</string>
+    <string name="bandyer_screenshare_full_device">Share whole device</string>
 
 </resources>
