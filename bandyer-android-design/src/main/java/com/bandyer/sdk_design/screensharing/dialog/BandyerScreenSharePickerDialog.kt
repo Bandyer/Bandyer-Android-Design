@@ -38,11 +38,11 @@ class BandyerScreenSharePickerDialog : BandyerDialog<BandyerBottomSheetDialog> {
         APP_ONLY,
 
         /**
-         * F u l l_d e v i c e
+         * W h o l e_d e v i c e
          *
-         * @constructor Create empty F u l l_d e v i c e
+         * @constructor Create empty W h o l e_d e v i c e
          */
-        FULL_DEVICE
+        WHOLE_DEVICE
     }
 
     override fun show(activity: androidx.fragment.app.FragmentActivity) {
@@ -86,7 +86,7 @@ class BandyerScreenSharePickerDialog : BandyerDialog<BandyerBottomSheetDialog> {
                     dismiss()
                 }
                 deviceButton?.setOnClickListener {
-                    onChoose?.invoke(SharingOption.FULL_DEVICE)
+                    onChoose?.invoke(SharingOption.WHOLE_DEVICE)
                     dismiss()
                 }
             }
