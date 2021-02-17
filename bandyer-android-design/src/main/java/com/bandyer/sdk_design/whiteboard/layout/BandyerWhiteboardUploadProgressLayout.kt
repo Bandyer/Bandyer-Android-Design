@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerProgressViewLayoutBinding
+import com.bandyer.sdk_design.whiteboard.BandyerCancelActionButtonState
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.progressindicator.CircularProgressIndicator
@@ -40,20 +41,12 @@ import com.google.android.material.textview.MaterialTextView
 class BandyerWhiteboardUploadProgressLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle) : MaterialCardView(context, attrs, defStyleAttr) {
 
     /**
-     * Its value change the visibility of the progress bar, the progress percentage and the error image
+     * The state of the upload progress card view
      */
-    var errorOccurred: Boolean = false
+    var state: State? = null
         set(value) {
             field = value
-            if(value) {
-                errorImage?.visibility = View.VISIBLE
-                progressText?.visibility = View.INVISIBLE
-                progressBar?.visibility = View.INVISIBLE
-            } else {
-                errorImage?.visibility = View.INVISIBLE
-                progressText?.visibility = View.VISIBLE
-                progressBar?.visibility = View.VISIBLE
-            }
+            updateView(field)
         }
 
     var progressTitle: MaterialTextView? = null
@@ -79,6 +72,77 @@ class BandyerWhiteboardUploadProgressLayout @JvmOverloads constructor(context: C
         progressText = binding.bandyerWhiteboardProgressProgressText
         progressBar = binding.bandyerWhiteboardProgressProgressBar
         errorImage = binding.bandyerWhiteboardProgressErrorImage
+        state = State.COMPLETED
+    }
+
+    private fun updateView(value: State?) {
+        if(value == null) return
+        when (value) {
+            State.UPLOADING -> {
+                visibility = View.VISIBLE
+                errorImage?.visibility = View.INVISIBLE
+                progressText?.visibility = View.VISIBLE
+                progressBar?.visibility = View.VISIBLE
+            }
+            State.ERROR -> {
+                visibility = View.VISIBLE
+                errorImage?.visibility = View.VISIBLE
+                progressText?.visibility = View.INVISIBLE
+                progressBar?.visibility = View.INVISIBLE
+            }
+            State.COMPLETED -> visibility = View.GONE
+        }
+    }
+
+    fun updateUploadingPercentage(percentage: Int) {
+        progressBar?.setProgressCompat(percentage, true)
+        progressText?.text = resources.getString(R.string.bandyer_file_upload_percentage, percentage)
+    }
+
+    fun showUploadingInfo(title: String, subtitle: String, percentage: Float) {
+        state = State.UPLOADING
+        updateTitleText(title, subtitle)
+        updateUploadingPercentage(percentage.toInt())
+    }
+
+    fun showUploadingError(title: String, subtitle: String) {
+        state = State.ERROR
+        updateTitleText(title, subtitle)
+        postDelayed({
+            state = State.COMPLETED
+        }, 3000)
+    }
+
+    private fun updateTitleText(title: String, subtitle: String) {
+        progressTitle?.text = title
+        progressSubtitle?.text = subtitle
+    }
+
+    /**
+     * States of a BandyerWhiteboardUploadProgressLayout
+     * @constructor
+     */
+    enum class State {
+        /**
+         * U p l o a d i n g
+         *
+         * @constructor Create empty U p l o a d i n g
+         */
+        UPLOADING,
+
+        /**
+         * E r r o r
+         *
+         * @constructor Create empty E r r o r
+         */
+        ERROR,
+
+        /**
+         * C o m p l e t e d
+         *
+         * @constructor Create empty C o m p l e t e d
+         */
+        COMPLETED,
     }
 
 }

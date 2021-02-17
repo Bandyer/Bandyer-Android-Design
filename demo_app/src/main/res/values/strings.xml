@@ -20,7 +20,8 @@
     <string name="call">Call</string>
     <string name="whiteboard_editor">Whiteboard text editor</string>
     <string name="snapshot_preview">Snapshot preview</string>
-    <string name="other">Other</string>
+    <string name="whiteboard">Whiteboard</string>
+    <string name="ringing">Call Ringing</string>
     <string name="bluetooth_audio_route">Bluetooth device states</string>
     <string name="live_pointer">Live pointer</string>
     <string name="night_mode">Night mode on/off</string>
@@ -31,4 +32,5 @@
     <string name="bandyer_start_video_call_description">Start video call</string>
     <string name="bandyer_start_audio_upgrade_call_description">Start audio upgradable call</string>
     <string name="screen_share_picker">Screen share picker</string>
+    <string name="bandyer_upload_file">Upload file</string>
 </resources>

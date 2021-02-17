@@ -19,18 +19,21 @@
 
     <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.Whiteboard">
         <attr name="bandyer_textEditorDialogStyle" format="reference" />
+        <attr name="bandyer_reloadStyle" format="reference" />
         <attr name="bandyer_uploadStyle" format="reference" />
     </declare-styleable>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard" parent="BandyerSDKDesign.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.Whiteboard</item>
         <item name="bandyer_textEditorDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.TextEditor</item>
+        <item name="bandyer_reloadStyle">@style/BandyerSDKDesign.LoadingError</item>
         <item name="bandyer_uploadStyle">@style/BandyerSDKDesign.UploadImage</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.Day" parent="BandyerSDKDesign.BottomSheetDialog.Day">
         <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.Whiteboard</item>
         <item name="bandyer_textEditorDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.TextEditor.Day</item>
+        <item name="bandyer_reloadStyle">@style/BandyerSDKDesign.LoadingError</item>
         <item name="bandyer_uploadStyle">@style/BandyerSDKDesign.UploadImage.Day</item>
     </style>
 

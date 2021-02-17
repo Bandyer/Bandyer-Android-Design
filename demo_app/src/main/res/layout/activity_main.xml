@@ -118,12 +118,20 @@
                 app:layout_constraintTop_toBottomOf="@id/btn_live_pointer" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_whiteboard_file"
+                android:id="@+id/btn_whiteboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/bandyer_dimen_space16"
-                android:text="@string/other"
+                android:text="@string/whiteboard"
                 app:layout_constraintTop_toBottomOf="@id/btn_bluetooth_audioroute" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_ringing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
+                android:text="@string/ringing"
+                app:layout_constraintTop_toBottomOf="@id/btn_whiteboard" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

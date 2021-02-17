@@ -121,6 +121,7 @@
     <string name="bandyer_alert_save_snapshot_message">Questo snapshot non sarà più disponibile se non viene effettuato il salvataggio locale.</string>
 
     <string name="bandyer_upload_file_error">Si è verificato una errore caricando il file immagine</string>
+    <string name="bandyer_file_upload_percentage">%1$d %%</string>
 
     <!-- TEMPLATES -->
     <string name="bandyer_bluetooth_info">%1$s%2$s%3$s</string>

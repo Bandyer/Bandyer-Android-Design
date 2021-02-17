@@ -127,6 +127,7 @@
     <string name="bandyer_alert_save_snapshot_message">This snapshot will not be available anymore if you don\'t save it locally.</string>
 
     <string name="bandyer_upload_file_error">Error occurred uploading file image</string>
+    <string name="bandyer_file_upload_percentage">%1$d %%</string>
 
     <!-- TEMPLATES -->
     <string name="bandyer_bluetooth_info">%1$s%2$s%3$s</string>
