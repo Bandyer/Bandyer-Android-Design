@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker">
+        <attr name="bandyer_screenShareAppOnlyButtonStyle" format="reference" />
+        <attr name="bandyer_screenShareDeviceButtonStyle" format="reference" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker" parent="BandyerSDKDesign.BottomSheetDialog" />
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.Layout" parent="">
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space16</item>
+        <item name="bandyer_screenShareAppOnlyButtonStyle">@style/BandyerSDKDesign.ImageButton.ScreenShare.AppOnly</item>
+        <item name="bandyer_screenShareDeviceButtonStyle">@style/BandyerSDKDesign.ImageButton.ScreenShare.Device</item>
+    </style>
+
+
+    <style name="BandyerSDKDesign.ImageButton.ScreenShare" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:text">Share this app only</item>
+        <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">viewStart</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="icon">@drawable/bandyer_screen_share_icon</item>
+        <item name="iconGravity">start</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.ScreenShare.AppOnly" parent="BandyerSDKDesign.ImageButton.ScreenShare">
+        <item name="android:text">@string/bandyer_screenshare_app_only</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.ScreenShare.Device" parent="BandyerSDKDesign.ImageButton.ScreenShare">
+        <item name="android:text">@string/bandyer_screenshare_full_device</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
+    </style>
+
+</resources>

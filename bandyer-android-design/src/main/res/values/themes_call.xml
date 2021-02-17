@@ -30,6 +30,7 @@
         <attr name="bandyer_userStatusStyle" format="reference"/>
 
         <attr name="bandyer_whiteboardDialogStyle" format="reference" />
+        <attr name="bandyer_screenShareDialogStyle" format="reference" />
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight.V16" parent="BandyerSDKDesign.Theme.DayNight">

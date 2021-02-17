@@ -24,11 +24,13 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.bandyer.sdk_design.call.dialogs.BandyerSnapshotDialog
+import com.bandyer.sdk_design.screensharing.dialog.BandyerScreenSharePickerDialog
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog.BandyerWhiteboardTextEditorWidgetListener
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivity : AppCompatActivity() {
@@ -79,12 +81,20 @@ class MainActivity : AppCompatActivity() {
             BandyerSnapshotDialog().show(this@MainActivity)
         }
 
+        findViewById<MaterialButton>(R.id.btn_screenshare_picker).setOnClickListener { view ->
+            BandyerScreenSharePickerDialog().show(this@MainActivity) {
+                Snackbar.make(view, it.name, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
         findViewById<MaterialButton>(R.id.btn_live_pointer).setOnClickListener { startActivity(Intent(this, PointerActivity::class.java)) }
 
         findViewById<MaterialButton>(R.id.btn_bluetooth_audioroute).setOnClickListener { startActivity(Intent(this, BluetoothAudioRouteActivity::class.java)) }
     }
 
-    private fun setActionBarTopMargin() { (findViewById<AppBarLayout>(R.id.app_bar_layout).layoutParams as ViewGroup.MarginLayoutParams).topMargin = getStatusBarHeight() }
+    private fun setActionBarTopMargin() {
+        (findViewById<AppBarLayout>(R.id.app_bar_layout).layoutParams as ViewGroup.MarginLayoutParams).topMargin = getStatusBarHeight()
+    }
 
     private fun getStatusBarHeight(): Int {
         var result = 0
