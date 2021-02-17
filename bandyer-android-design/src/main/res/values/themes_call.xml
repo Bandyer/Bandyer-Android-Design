@@ -30,6 +30,7 @@
         <attr name="bandyer_userStatusStyle" format="reference"/>
 
         <attr name="bandyer_whiteboardDialogStyle" format="reference" />
+        <attr name="bandyer_screenShareDialogStyle" format="reference" />
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight.V16" parent="BandyerSDKDesign.Theme.DayNight">
@@ -44,6 +45,7 @@
         <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
         <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
         <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
+        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.Day.V16" parent="BandyerSDKDesign.Theme.Day">
@@ -58,6 +60,7 @@
         <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
         <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
         <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
+        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.Night.V16" parent="BandyerSDKDesign.Theme.Night">
@@ -72,6 +75,7 @@
         <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
         <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
         <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
+        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.DayNight.V16"/>

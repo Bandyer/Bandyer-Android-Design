@@ -52,6 +52,10 @@ abstract class BandyerBottomSheetDialog : BottomSheetDialogFragment() {
 
     private var mDismissListener: DialogInterface.OnDismissListener? = null
 
+    open val isDraggable = false
+
+    open val isDismissable = false
+
     private val bottomSheetBehavior = object : BottomSheetBehavior.BottomSheetCallback() {
         override fun onSlide(p0: View, slideOffset: Float) {
             val offset = if (slideOffset < 0) 0f else slideOffset
@@ -85,7 +89,7 @@ abstract class BandyerBottomSheetDialog : BottomSheetDialogFragment() {
             setOnShowListener { dialog ->
                 setupBottomSheetBehaviour()
                 onDialogWillShow()
-                isCancelable = false
+                isCancelable = isDismissable
             }
         }
     }
@@ -97,7 +101,7 @@ abstract class BandyerBottomSheetDialog : BottomSheetDialogFragment() {
         bottomSheet.layoutParams = params
         behavior = BottomSheetBehavior.from(bottomSheet) as BottomSheetBehavior<View>
         behavior!!.state = BottomSheetBehavior.STATE_EXPANDED
-        behavior!!.isDraggable = false
+        behavior!!.isDraggable = isDraggable
         behavior!!.peekHeight = 0
         behavior!!.addBottomSheetCallback(bottomSheetBehavior)
     }

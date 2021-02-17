@@ -84,7 +84,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.btn_bluetooth_audioroute).setOnClickListener { startActivity(Intent(this, BluetoothAudioRouteActivity::class.java)) }
     }
 
-    private fun setActionBarTopMargin() { (findViewById<AppBarLayout>(R.id.app_bar_layout).layoutParams as ViewGroup.MarginLayoutParams).topMargin = getStatusBarHeight() }
+    private fun setActionBarTopMargin() {
+        (findViewById<AppBarLayout>(R.id.app_bar_layout).layoutParams as ViewGroup.MarginLayoutParams).topMargin = getStatusBarHeight()
+    }
 
     private fun getStatusBarHeight(): Int {
         var result = 0

@@ -137,4 +137,9 @@
     <string name="bandyer_snapshot_save">Save screen snapshot</string>
     <string name="bandyer_snapshot_close">Close snapshot dialog</string>
 
+
+    <!-- SCREEN SHARE PICKER -->
+    <string name="bandyer_screenshare_app_only">Share this app only</string>
+    <string name="bandyer_screenshare_full_device">Share whole device</string>
+
 </resources>
