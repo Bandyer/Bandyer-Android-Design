@@ -27,7 +27,7 @@ class WhiteboardActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.bandyer_whiteboard)
+        setContentView(R.layout.bandyer_dialog_whiteboard)
 
         initializeUi()
     }
@@ -72,7 +72,7 @@ class WhiteboardActivity : AppCompatActivity() {
 
     private fun initLoadingError() {
         findViewById<BandyerWhiteboardLoadingError>(R.id.loading_error).apply {
-            this.setReloadButtonCallback {  }
+            this.onReload {  }
         }
     }
 }

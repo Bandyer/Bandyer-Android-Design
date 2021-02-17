@@ -33,7 +33,7 @@ class BandyerWhiteboardLoadingError @JvmOverloads constructor(context: Context, 
         reloadButton = binding.bandyerReloadButton
     }
 
-    fun setReloadButtonCallback(callback: () -> Unit) =
+    fun onReload(callback: () -> Unit) =
             reloadButton?.setOnClickListener {
                 callback.invoke()
                 it.startAnimation(reloadAnimation)
