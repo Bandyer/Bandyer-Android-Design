@@ -14,23 +14,23 @@
   ~  limitations under the License.
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/bandyer_rootLayoutStyle"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+    android:layout_height="match_parent">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bandyer_app_screen_share"
         style="?attr/bandyer_screenShareAppOnlyButtonStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
 
     </com.google.android.material.button.MaterialButton>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bandyer_global_screen_share"
+        android:id="@+id/bandyer_device_screen_share"
         style="?attr/bandyer_screenShareDeviceButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,4 +38,4 @@
 
     </com.google.android.material.button.MaterialButton>
 
-</merge>
+</androidx.constraintlayout.widget.ConstraintLayout>

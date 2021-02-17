@@ -24,13 +24,11 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.bandyer.sdk_design.call.dialogs.BandyerSnapshotDialog
-import com.bandyer.sdk_design.screensharing.dialog.BandyerScreenSharePickerDialog
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog.BandyerWhiteboardTextEditorWidgetListener
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivity : AppCompatActivity() {
@@ -79,12 +77,6 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.btn_snapshot_preview).setOnClickListener {
             BandyerSnapshotDialog().show(this@MainActivity)
-        }
-
-        findViewById<MaterialButton>(R.id.btn_screenshare_picker).setOnClickListener { view ->
-            BandyerScreenSharePickerDialog().show(this@MainActivity) {
-                Snackbar.make(view, it.name, Snackbar.LENGTH_SHORT).show()
-            }
         }
 
         findViewById<MaterialButton>(R.id.btn_live_pointer).setOnClickListener { startActivity(Intent(this, PointerActivity::class.java)) }

@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.DialogFragment
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheetDialog
+import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.dialogs.BandyerDialog
-import com.bandyer.sdk_design.screensharing.layout.BandyerScreenSharePickerDialogLayout
+import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 
 /**
  * Bandyer screen share picker dialog
@@ -76,16 +76,16 @@ class BandyerScreenSharePickerDialog : BandyerDialog<BandyerBottomSheetDialog> {
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            setStyle(DialogFragment.STYLE_NO_TITLE, R.style.BandyerSDKDesign_BottomSheetDialog_ScreenSharePicker)
+            setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_screenShareDialogStyle))
         }
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-            return BandyerScreenSharePickerDialogLayout(ContextThemeWrapper(context, R.style.BandyerSDKDesign_BottomSheetDialog_ScreenSharePicker_Layout)).apply {
-                appButton?.setOnClickListener {
+            return inflater.inflate(R.layout.bandyer_screen_share_picker_dialog_layout, container).apply {
+                findViewById<View>(R.id.bandyer_app_screen_share)?.setOnClickListener {
                     onChoose?.invoke(SharingOption.APP_ONLY)
                     dismiss()
                 }
-                deviceButton?.setOnClickListener {
+                findViewById<View>(R.id.bandyer_device_screen_share)?.setOnClickListener {
                     onChoose?.invoke(SharingOption.WHOLE_DEVICE)
                     dismiss()
                 }
@@ -105,6 +105,8 @@ class BandyerScreenSharePickerDialog : BandyerDialog<BandyerBottomSheetDialog> {
 
         override fun onSlide(offset: Float) = Unit
 
-        override fun onStateChanged(newState: Int) = Unit
+        override fun onStateChanged(newState: Int) {
+            if (newState == BandyerBottomSheetBehaviour.STATE_HIDDEN) dismiss()
+        }
     }
 }

@@ -2,19 +2,22 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker">
+        <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_screenShareAppOnlyButtonStyle" format="reference" />
         <attr name="bandyer_screenShareDeviceButtonStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker" parent="BandyerSDKDesign.BottomSheetDialog" />
-
-    <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.Layout" parent="">
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space16</item>
+    <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker" parent="BandyerSDKDesign.BottomSheetDialog" >
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">?attr/colorSurface</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.Layout</item>
         <item name="bandyer_screenShareAppOnlyButtonStyle">@style/BandyerSDKDesign.ImageButton.ScreenShare.AppOnly</item>
         <item name="bandyer_screenShareDeviceButtonStyle">@style/BandyerSDKDesign.ImageButton.ScreenShare.Device</item>
     </style>
 
+    <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.Layout" parent="">
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space16</item>
+    </style>
 
     <style name="BandyerSDKDesign.ImageButton.ScreenShare" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:gravity">start|center_vertical</item>
