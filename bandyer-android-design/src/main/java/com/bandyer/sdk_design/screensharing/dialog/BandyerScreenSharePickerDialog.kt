@@ -67,7 +67,7 @@ class BandyerScreenSharePickerDialog : BandyerDialog<BandyerBottomSheetDialog> {
         show(activity)
     }
 
-    private class PickerDialog : BandyerBottomSheetDialog() {
+    internal class PickerDialog : BandyerBottomSheetDialog() {
 
         override val isDraggable = true
         override val isDismissable = true
