@@ -30,7 +30,6 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 
-
 class MainActivity : AppCompatActivity() {
 
     var mText: String? = null
@@ -40,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         val main = LayoutInflater.from(this).inflate(R.layout.activity_main, null)
         val viewGroup = window.decorView as ViewGroup
         viewGroup.addView(main)
-
         setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
         setActionBarTopMargin()
         initializeListeners()
@@ -50,6 +48,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.btn_chat).setOnClickListener { startActivity(Intent(this, ChatActivity::class.java)) }
 
         findViewById<MaterialButton>(R.id.btn_call).setOnClickListener { startActivity(Intent(this, CallActivity::class.java)) }
+
+        findViewById<MaterialButton>(R.id.btn_smartglasses_menu).setOnClickListener { startActivity(Intent(this, SmartglassMenuActivity::class.java)) }
 
         findViewById<MaterialButton>(R.id.btn_whiteboard_file).setOnClickListener { startActivity(Intent(this, OtherActivity::class.java)) }
 
@@ -84,7 +84,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.btn_bluetooth_audioroute).setOnClickListener { startActivity(Intent(this, BluetoothAudioRouteActivity::class.java)) }
     }
 
-    private fun setActionBarTopMargin() { (findViewById<AppBarLayout>(R.id.app_bar_layout).layoutParams as ViewGroup.MarginLayoutParams).topMargin = getStatusBarHeight() }
+    private fun setActionBarTopMargin() {
+        (findViewById<AppBarLayout>(R.id.app_bar_layout).layoutParams as ViewGroup.MarginLayoutParams).topMargin = getStatusBarHeight()
+    }
 
     private fun getStatusBarHeight(): Int {
         var result = 0
@@ -94,5 +96,4 @@ class MainActivity : AppCompatActivity() {
         }
         return result
     }
-
 }

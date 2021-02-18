@@ -40,6 +40,30 @@
         <item name="shapeAppearanceOverlay">@style/BandyerSDKDesign.ImageButton.ShapeAppearanceOverlay.Circle</item>
     </style>
 
+    <!-- IMAGE BUTTON SMARTGLASS STYLE -->
+
+    <style name="BandyerSDKDesign.ImageButton.Smartglass" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+        <item name="android:insetLeft">@dimen/bandyer_dimen_space0</item>
+        <item name="android:insetRight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:insetTop">@dimen/bandyer_dimen_space0</item>
+        <item name="android:insetBottom">@dimen/bandyer_dimen_space0</item>
+        <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:minWidth">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingRight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingLeft">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
+        <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
+        <item name="iconPadding">@dimen/bandyer_dimen_space0</item>
+        <item name="iconGravity">textStart</item>
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="rippleColor">@color/bandyer_call_action_button_ripple_color</item>
+        <item name="iconSize">@dimen/bandyer_dimen_space64</item>
+        <item name="shapeAppearanceOverlay">@style/BandyerSDKDesign.ImageButton.ShapeAppearanceOverlay.Circle</item>
+    </style>
+
     <style name="BandyerSDKDesign.ImageButton.ShapeAppearanceOverlay.Circle" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>

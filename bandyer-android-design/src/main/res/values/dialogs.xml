@@ -42,6 +42,13 @@
         <item name="backgroundTint">@color/bandyer_colorSurface</item>
     </style>
 
+    <style name="BandyerSDKDesign.DialogFragment.FullScreen" parent="BandyerSDKDesign.Theme.Night">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <style name="BandyerSDKDesign.BottomSheetDialog.V16.ToolbarNavigationButtonStyle" parent="">
         <item name="android:tint">?attr/colorOnPrimary</item>
     </style>

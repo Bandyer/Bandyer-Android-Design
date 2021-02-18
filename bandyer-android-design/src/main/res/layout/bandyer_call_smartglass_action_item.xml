@@ -13,16 +13,8 @@
   ~  See the License for the specific language governing permissions and
   ~  limitations under the License.
   -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/bandyer_button_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/bandyer_label_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-</merge>
+<com.bandyer.sdk_design.buttons.BandyerActionButton xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/bandyer_rootLayoutStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />

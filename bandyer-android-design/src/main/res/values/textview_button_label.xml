@@ -79,4 +79,68 @@
         <item name="android:text">@string/bandyer_call_hangup</item>
     </style>
 
+    <!-- Smartglass BUTTON LABELS -->
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_smartglass_menu</item>
+        <item name="android:padding">@dimen/bandyer_dimen_space16</item>
+        <item name="android:fontFamily">sans-serif-thin</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextAppearance.ButtonLabel.Cancel.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextAppearance.ButtonLabel.Confirm.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:text">@string/bandyer_action_confirm</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Microphone.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:text">@string/bandyer_call_action_mic_mute</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Participants.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:text">@string/bandyer_call_action_participants</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Chat.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:text">@string/bandyer_call_action_chat</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Whiteboard.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:text">@string/bandyer_call_action_whiteboard</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.FileShare.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:text">@string/bandyer_call_action_file_share</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.ScreenShare.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:text">@string/bandyer_call_action_screen_share</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Camera.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:text">@string/bandyer_call_action_video_disable</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SwitchCamera.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:text">@string/bandyer_call_action_switch_camera</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.AudioRoute.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:text">@string/bandyer_call_action_audio_route</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Options.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:text">@string/bandyer_call_action_options</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.HangUp.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+        <item name="android:text">@string/bandyer_call_hangup</item>
+    </style>
+
+
 </resources>
