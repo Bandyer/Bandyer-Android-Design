@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:padding="12dp">
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <com.bandyer.sdk_design.filesharing.BandyerFileTypeImageView
         android:id="@+id/bandyer_file_type"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -33,7 +33,6 @@
         android:id="@+id/bandyer_action"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_margin="12dp"
         android:background="@color/md_blue_700"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

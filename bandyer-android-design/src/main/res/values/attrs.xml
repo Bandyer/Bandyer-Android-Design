@@ -64,4 +64,11 @@
     <attr name="bandyer_state_anchored_line" format="boolean" />
     <attr name="bandyer_state_collapsed" format="boolean" />
 
+    <!-- File share file types -->
+    <attr name="bandyer_state_doc" format="boolean" />
+    <attr name="bandyer_state_image" format="boolean" />
+    <attr name="bandyer_state_video" format="boolean" />
+    <attr name="bandyer_state_archive" format="boolean" />
+    <attr name="bandyer_state_undefined" format="boolean" />
+
 </resources>
