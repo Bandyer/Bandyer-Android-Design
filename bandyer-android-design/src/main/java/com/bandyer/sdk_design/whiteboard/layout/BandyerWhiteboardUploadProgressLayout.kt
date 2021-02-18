@@ -94,23 +94,27 @@ class BandyerWhiteboardUploadProgressLayout @JvmOverloads constructor(context: C
         }
     }
 
-    fun updateUploadingPercentage(percentage: Int) {
+    fun updateUploadingProgress(percentage: Int) {
         progressBar?.setProgressCompat(percentage, true)
         progressText?.text = resources.getString(R.string.bandyer_file_upload_percentage, percentage)
     }
 
-    fun showUploadingInfo(title: String, subtitle: String, percentage: Float) {
+    fun showUploading(title: String, subtitle: String, percentage: Float) {
         state = State.UPLOADING
         updateTitleText(title, subtitle)
-        updateUploadingPercentage(percentage.toInt())
+        updateUploadingProgress(percentage.toInt())
     }
 
-    fun showUploadingError(title: String, subtitle: String) {
+    fun showError(title: String, subtitle: String) {
         state = State.ERROR
         updateTitleText(title, subtitle)
         postDelayed({
             state = State.COMPLETED
         }, 3000)
+    }
+
+    fun hide() {
+        state = State.COMPLETED
     }
 
     private fun updateTitleText(title: String, subtitle: String) {
