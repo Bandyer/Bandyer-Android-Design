@@ -1,26 +1,25 @@
 package com.bandyer.sdk_design.whiteboard.dialog
 
+import android.app.Dialog
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.*
 import android.webkit.*
+import android.widget.FrameLayout
 import android.widget.ProgressBar
-import android.widget.RelativeLayout
 import androidx.appcompat.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheetDialog
-import com.bandyer.sdk_design.databinding.BandyerActionButtonAudiorouteBinding
 import com.bandyer.sdk_design.databinding.BandyerDialogWhiteboardBinding
 import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.bandyer.sdk_design.whiteboard.layout.BandyerWhiteboardLoadingError
 import com.bandyer.sdk_design.whiteboard.layout.BandyerWhiteboardUploadProgressLayout
 
-abstract class BaseBandyerWhiteboardDialog<T: BaseBandyerWhiteboardDialog.BaseWhiteboardBottomSheetDialog>: BandyerDialog<T> {
+abstract class BaseBandyerWhiteboardDialog<T : BaseBandyerWhiteboardDialog.BaseWhiteboardBottomSheetDialog>: BandyerDialog<T> {
 
     override val id: String = "bandyerWhiteBoardDialog"
 
@@ -36,6 +35,8 @@ abstract class BaseBandyerWhiteboardDialog<T: BaseBandyerWhiteboardDialog.BaseWh
     abstract fun createDialog(session_id: String? = null) : T
 
     abstract class BaseWhiteboardBottomSheetDialog : BandyerBottomSheetDialog() {
+
+        private var binding: BandyerDialogWhiteboardBinding? = null
 
         private var toolbar: Toolbar? = null
 
@@ -70,18 +71,27 @@ abstract class BaseBandyerWhiteboardDialog<T: BaseBandyerWhiteboardDialog.BaseWh
             }
         }
 
+        override fun onStart() {
+            val parentLayout = dialog?.findViewById<ViewGroup>(R.id.design_bottom_sheet)
+            val layoutParams = parentLayout?.layoutParams
+            layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
+            parentLayout?.layoutParams = layoutParams
+            super.onStart()
+        }
+
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-//            setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_whiteboardDialogStyle))
+            setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_whiteboardDialogStyle))
         }
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-            dialogLayout = inflater.inflate(R.layout.bandyer_dialog_whiteboard, container) as CoordinatorLayout
-            toolbar = dialogLayout!!.findViewById(R.id.bandyer_toolbar)
-            progressBar = dialogLayout!!.findViewById(R.id.bandyer_progress_bar)
-            uploadProgressCard = dialogLayout!!.findViewById(R.id.bandyer_upload_progress)
-            loadingErrorLayout = dialogLayout!!.findViewById(R.id.bandyer_loading_error)
-            webViewStub = dialogLayout!!.findViewById(R.id.bandyer_webview)
+            binding = BandyerDialogWhiteboardBinding.inflate(inflater, container, false)
+            dialogLayout = binding!!.root
+            toolbar = binding!!.bandyerToolbar
+            progressBar = binding!!.bandyerProgressBar
+            uploadProgressCard = binding!!.bandyerUploadProgress
+            loadingErrorLayout = binding!!.bandyerLoadingError
+            webViewStub = binding!!.bandyerWebview
             loadingErrorLayout?.onReload(::onReload)
             return dialogLayout
         }
