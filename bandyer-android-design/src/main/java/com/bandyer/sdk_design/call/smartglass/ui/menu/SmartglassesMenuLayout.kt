@@ -23,7 +23,7 @@ import com.bandyer.sdk_design.utils.GlassGestureDetector
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 
 /**
- * Layout used to representing a smartglass swipaeble menu
+ * Layout used to represent a smartglass swipeable menu
  * @suppress
  * @property items List<ActionItem> the items to be listed in the menu
  * @property fastAdapter FastItemAdapter<AdapterActionItem> the items adapter
