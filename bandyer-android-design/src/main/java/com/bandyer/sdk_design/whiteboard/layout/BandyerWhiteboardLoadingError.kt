@@ -34,25 +34,10 @@ class BandyerWhiteboardLoadingError @JvmOverloads constructor(context: Context, 
         reloadButton = binding.bandyerReloadButton
     }
 
-    override fun setVisibility(visibility: Int) {
-        super.setVisibility(visibility)
-        if(visibility == View.VISIBLE) startReloadAnimation()
-        else stopReloadAnimation()
-    }
-
     fun onReload(callback: () -> Unit) =
             reloadButton?.setOnClickListener {
                 callback.invoke()
+                reloadButton?.startAnimation(reloadAnimation)
             }
-
-    private fun startReloadAnimation() {
-        reloadButton?.startAnimation(reloadAnimation)
-        reloadButton?.isClickable = false
-    }
-
-    private fun stopReloadAnimation() {
-        reloadButton?.clearAnimation()
-        reloadButton?.isClickable = true
-    }
 
 }
