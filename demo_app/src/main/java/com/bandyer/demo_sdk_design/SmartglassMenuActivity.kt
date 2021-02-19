@@ -7,8 +7,8 @@ import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.AudioRouteState
 import com.bandyer.sdk_design.call.bottom_sheet.items.AudioRoute
 import com.bandyer.sdk_design.call.bottom_sheet.items.SmartglassCallAction
-import com.bandyer.sdk_design.call.smartglass.ui.menu.SmartglassActionItemMenu
-import com.bandyer.sdk_design.call.smartglass.ui.menu.SmartglassesMenuLayout
+import com.bandyer.sdk_design.call.smartglass.SmartglassActionItemMenu
+import com.bandyer.sdk_design.call.smartglass.SmartglassesMenuLayout
 import java.util.*
 
 class SmartglassMenuActivity : AppCompatActivity() {

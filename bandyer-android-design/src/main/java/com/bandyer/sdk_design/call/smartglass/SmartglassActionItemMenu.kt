@@ -3,7 +3,7 @@
  *  See LICENSE.txt for licensing information
  */
 
-package com.bandyer.sdk_design.call.smartglass.ui.menu
+package com.bandyer.sdk_design.call.smartglass
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -19,7 +19,7 @@ import java.util.*
 /**
  * A smartglass swipeable menu widget. Selection happens with a tap on the desired item, dismiss happens with a swipe down gesture
  * @property items List<ActionItem>?
- * @property smartglassesMenuLayout SmartglassesMenuLayout?
+ * @property smartglassMenuLayout SmartglassesMenuLayout?
  * @property selectionListener OnSmartglassMenuSelectionListener?
  */
 class SmartglassActionItemMenu : DialogFragment() {
@@ -46,7 +46,7 @@ class SmartglassActionItemMenu : DialogFragment() {
 
     private var items: List<ActionItem>? = null
 
-    private var smartglassesMenuLayout: SmartglassesMenuLayout? = null
+    private var smartglassMenuLayout: SmartglassesMenuLayout? = null
         set(value) {
             field = value
             field ?: return
@@ -61,7 +61,7 @@ class SmartglassActionItemMenu : DialogFragment() {
     var selectionListener: SmartglassesMenuLayout.OnSmartglassMenuSelectionListener? = null
         set(value) {
             field = value
-            smartglassesMenuLayout?.onSmartglassMenuSelectionListener = selectionListener
+            smartglassMenuLayout?.onSmartglassMenuSelectionListener = selectionListener
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,10 +75,10 @@ class SmartglassActionItemMenu : DialogFragment() {
     override fun getTheme(): Int = R.style.BandyerSDKDesign_DialogFragment_FullScreen
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        smartglassesMenuLayout = SmartglassesMenuLayout(
+        smartglassMenuLayout = SmartglassesMenuLayout(
                 context!!,
                 items!!)
-        return smartglassesMenuLayout!!
+        return smartglassMenuLayout!!
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -90,7 +90,7 @@ class SmartglassActionItemMenu : DialogFragment() {
         super.onDestroy()
         items?.forEach { it.itemView = null }
         items = null
-        smartglassesMenuLayout = null
+        smartglassMenuLayout = null
         selectionListener = null
     }
 }

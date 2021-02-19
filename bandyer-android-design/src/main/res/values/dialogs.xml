@@ -42,7 +42,7 @@
         <item name="backgroundTint">@color/bandyer_colorSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.DialogFragment.FullScreen" parent="BandyerSDKDesign.Theme.Night">
+    <style name="BandyerSDKDesign.DialogFragment.FullScreen" parent="BandyerSDKDesign.Theme.Call">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsFloating">false</item>

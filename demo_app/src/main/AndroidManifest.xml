@@ -36,6 +36,10 @@
         android:supportsRtl="true"
         android:theme="@style/DesignDemoApp">
 
+        <meta-data
+            android:name="com.google.android.glass.TouchEnabledApplication"
+            android:value="true" />
+
         <activity
             android:name=".BluetoothAudioRouteActivity"
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
