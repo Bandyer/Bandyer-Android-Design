@@ -153,16 +153,12 @@ abstract class BandyerBottomSheetDialog : BottomSheetDialogFragment() {
 
     protected fun collapse() {
         isUserAction = true
-        behavior?.let {
-            it.state = BottomSheetBehavior.STATE_COLLAPSED
-        }
+        behavior?.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     protected fun expand() {
         isUserAction = true
-        behavior?.let {
-            it.state = BottomSheetBehavior.STATE_EXPANDED
-        }
+        behavior?.state = BottomSheetBehavior.STATE_EXPANDED
     }
 
 }
