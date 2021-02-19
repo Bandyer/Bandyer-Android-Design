@@ -42,7 +42,6 @@ class WhiteboardActivity : AppCompatActivity() {
         initToolbar()
         initProgressCard()
         initLoadingError()
-        findViewById<BandyerWhiteboardLoadingError>(R.id.bandyer_loading_error).visibility = View.VISIBLE
     }
 
     private fun initProgressCard() {
@@ -73,8 +72,7 @@ class WhiteboardActivity : AppCompatActivity() {
     }
 
     private fun initLoadingError() {
-        findViewById<BandyerWhiteboardLoadingError>(R.id.bandyer_loading_error).apply {
-            this.onReload {  }
-        }
+        findViewById<BandyerWhiteboardLoadingError>(R.id.bandyer_loading_error).visibility = View.VISIBLE
     }
+
 }
