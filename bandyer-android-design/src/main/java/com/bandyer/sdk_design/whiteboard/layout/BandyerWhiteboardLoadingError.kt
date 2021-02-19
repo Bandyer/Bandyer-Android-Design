@@ -3,6 +3,7 @@ package com.bandyer.sdk_design.whiteboard.layout
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -33,10 +34,25 @@ class BandyerWhiteboardLoadingError @JvmOverloads constructor(context: Context, 
         reloadButton = binding.bandyerReloadButton
     }
 
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+        if(visibility == View.VISIBLE) startReloadAnimation()
+        else stopReloadAnimation()
+    }
+
     fun onReload(callback: () -> Unit) =
             reloadButton?.setOnClickListener {
                 callback.invoke()
-                it.startAnimation(reloadAnimation)
             }
+
+    private fun startReloadAnimation(): Unit = with(reloadButton) {
+            startAnimation(reloadAnimation)
+            isClickable = false
+        }
+
+    private fun stopReloadAnimation(): Unit = with(reloadButton) {
+        clearAnimation()
+        isClickable = true
+    }
 
 }

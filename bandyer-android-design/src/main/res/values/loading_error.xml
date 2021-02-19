@@ -32,5 +32,6 @@
 
     <style name="BandyerSDKDesign.LoadingError.RootLayout" parent="">
         <item name="android:background">@color/bandyer_color_loading_whiteboard_background</item>
+        <item name="android:visibility">gone</item>
     </style>
 </resources>
