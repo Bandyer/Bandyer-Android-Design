@@ -18,6 +18,7 @@ package com.bandyer.demo_sdk_design
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bandyer.sdk_design.whiteboard.layout.BandyerWhiteboardLoadingError
 import com.bandyer.sdk_design.whiteboard.layout.BandyerWhiteboardUploadProgressLayout
@@ -41,10 +42,11 @@ class WhiteboardActivity : AppCompatActivity() {
         initToolbar()
         initProgressCard()
         initLoadingError()
+        findViewById<BandyerWhiteboardLoadingError>(R.id.bandyer_loading_error).visibility = View.VISIBLE
     }
 
     private fun initProgressCard() {
-        val progress = findViewById<BandyerWhiteboardUploadProgressLayout>(R.id.upload_progress)
+        val progress = findViewById<BandyerWhiteboardUploadProgressLayout>(R.id.bandyer_upload_progress)
         progress.progressBar!!.setProgressCompat(60, true)
         progress.progressText!!.text = "60%"
         progress.progressTitle!!.text = "Uploading file"
@@ -59,9 +61,9 @@ class WhiteboardActivity : AppCompatActivity() {
     }
 
     private fun initToolbar() {
-        findViewById<MaterialToolbar>(R.id.toolbar).apply {
-            inflateMenu(R.menu.whiteboard_menu)
-            val uploadButton = menu.findItem(R.id.upload_file)
+        findViewById<MaterialToolbar>(R.id.bandyer_toolbar).apply {
+            inflateMenu(R.menu.bandyer_whiteboard_menu)
+            val uploadButton = menu.findItem(R.id.bandyer_upload_file)
             setOnMenuItemClickListener {
                 uploadButton.isEnabled = false
                 true
@@ -71,7 +73,7 @@ class WhiteboardActivity : AppCompatActivity() {
     }
 
     private fun initLoadingError() {
-        findViewById<BandyerWhiteboardLoadingError>(R.id.loading_error).apply {
+        findViewById<BandyerWhiteboardLoadingError>(R.id.bandyer_loading_error).apply {
             this.onReload {  }
         }
     }
