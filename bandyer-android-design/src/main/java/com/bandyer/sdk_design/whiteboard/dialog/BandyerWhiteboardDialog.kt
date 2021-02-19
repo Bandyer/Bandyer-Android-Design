@@ -1,11 +1,8 @@
 package com.bandyer.sdk_design.whiteboard.dialog
 
-import android.app.Dialog
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.*
 import android.webkit.*
-import android.widget.FrameLayout
 import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -51,25 +48,6 @@ abstract class BaseBandyerWhiteboardDialog<T : BaseBandyerWhiteboardDialog.BaseW
         var uploadButton: MenuItem? = null
 
         var webViewStub: ViewStub? = null
-
-        var mWebViewClient = object : WebViewClient() {
-            override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                progressBar?.visibility = View.GONE
-            }
-
-            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
-                super.onReceivedError(view, request, error)
-                progressBar?.visibility = View.GONE
-                loadingErrorLayout?.visibility = View.VISIBLE
-            }
-
-            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                super.onPageStarted(view, url, favicon)
-                loadingErrorLayout?.visibility = View.GONE
-                progressBar?.visibility = View.VISIBLE
-            }
-        }
 
         override fun onStart() {
             val parentLayout = dialog?.findViewById<ViewGroup>(R.id.design_bottom_sheet)
