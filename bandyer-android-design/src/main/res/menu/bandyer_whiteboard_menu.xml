@@ -8,7 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/upload_file"
+        android:id="@+id/bandyer_upload_file"
         android:icon="@drawable/ic_bandyer_nav_upload"
         android:title="@string/bandyer_upload_file"
         app:contentDescription="@string/bandyer_upload_file"

@@ -33,5 +33,4 @@
     <string name="bandyer_start_video_call_description">Avvia videochiamata</string>
     <string name="bandyer_start_audio_upgrade_call_description">Avvia videochiamata con solo audio</string>
     <string name="screen_share_picker">Modalità screen share</string>
-    <string name="bandyer_upload_file">Carica file</string>
 </resources>

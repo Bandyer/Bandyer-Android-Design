@@ -128,6 +128,7 @@
 
     <string name="bandyer_upload_file_error">Error occurred uploading file image</string>
     <string name="bandyer_file_upload_percentage">%1$d %%</string>
+    <string name="bandyer_upload_file">Upload file</string>
 
     <!-- TEMPLATES -->
     <string name="bandyer_bluetooth_info">%1$s%2$s%3$s</string>
