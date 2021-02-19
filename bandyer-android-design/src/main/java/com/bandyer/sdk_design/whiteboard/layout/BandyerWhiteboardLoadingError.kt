@@ -45,14 +45,14 @@ class BandyerWhiteboardLoadingError @JvmOverloads constructor(context: Context, 
                 callback.invoke()
             }
 
-    private fun startReloadAnimation(): Unit = with(reloadButton) {
-            startAnimation(reloadAnimation)
-            isClickable = false
-        }
+    private fun startReloadAnimation() {
+        reloadButton?.startAnimation(reloadAnimation)
+        reloadButton?.isClickable = false
+    }
 
-    private fun stopReloadAnimation(): Unit = with(reloadButton) {
-        clearAnimation()
-        isClickable = true
+    private fun stopReloadAnimation() {
+        reloadButton?.clearAnimation()
+        reloadButton?.isClickable = true
     }
 
 }
