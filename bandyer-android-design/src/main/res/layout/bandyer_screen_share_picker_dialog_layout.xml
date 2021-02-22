@@ -20,22 +20,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/bandyer_app_screen_share"
-        style="?attr/bandyer_screenShareAppOnlyButtonStyle"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_title_screen_share"
+        style="?attr/bandyer_titleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </com.google.android.material.button.MaterialButton>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bandyer_device_screen_share"
         style="?attr/bandyer_screenShareDeviceButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/bandyer_app_screen_share">
+        app:layout_constraintTop_toBottomOf="@+id/bandyer_title_screen_share" />
 
-    </com.google.android.material.button.MaterialButton>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bandyer_app_screen_share"
+        style="?attr/bandyer_screenShareAppOnlyButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/bandyer_device_screen_share" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
