@@ -22,8 +22,8 @@ class SmartglassMenuActivity : AppCompatActivity() {
             appCompatActivity = this,
             items = SmartglassCallAction.getSmartglassActions(
                     ctx = this,
-                    micToggled = true,
-                    cameraToggled = false,
+                    micToggled = false,
+                    cameraToggled = true,
                     withChat = true,
                     withWhiteboard = true,
                     withFileShare = true,
