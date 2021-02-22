@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
+import com.bandyer.sdk_design.call.bottom_sheet.items.SmartglassCallAction
 import java.util.*
 
 /**
@@ -34,7 +35,7 @@ class SmartglassActionItemMenu : DialogFragment() {
          * @param items List<ActionItem> the action items to be displayed
          * @return SmartglassActionItemMenu
          */
-        fun show(appCompatActivity: AppCompatActivity, items: List<ActionItem>): SmartglassActionItemMenu {
+        fun show(appCompatActivity: AppCompatActivity, items: List<SmartglassCallAction>): SmartglassActionItemMenu {
             val dialogFragment = SmartglassActionItemMenu()
             dialogFragment.arguments = Bundle().apply {
                 this.putSerializable(ITEMS, ArrayList<ActionItem>().apply { this.addAll(items) })
@@ -44,7 +45,7 @@ class SmartglassActionItemMenu : DialogFragment() {
         }
     }
 
-    private var items: List<ActionItem>? = null
+    private var items: List<SmartglassCallAction>? = null
 
     private var smartglassMenuLayout: SmartglassesMenuLayout? = null
         set(value) {
@@ -67,8 +68,8 @@ class SmartglassActionItemMenu : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val itemsArrayList = arguments?.getSerializable(ITEMS)
-        items = mutableListOf<ActionItem>().apply {
-            this.addAll(itemsArrayList as ArrayList<ActionItem>)
+        items = mutableListOf<SmartglassCallAction>().apply {
+            this.addAll(itemsArrayList as ArrayList<SmartglassCallAction>)
         }
     }
 

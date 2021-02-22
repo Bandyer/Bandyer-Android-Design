@@ -24,12 +24,14 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StyleRes
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
+import com.bandyer.sdk_design.bottom_sheet.view.AudioRouteState
 import com.bandyer.sdk_design.buttons.AudioRouteButton
 import com.bandyer.sdk_design.buttons.BandyerActionButton
 import com.bandyer.sdk_design.call.buttons.BandyerAudioRouteActionButton
 import com.bandyer.sdk_design.extensions.getCallActionItemStyle
 import com.bandyer.sdk_design.extensions.getRingingActionItemStyle
 import com.bandyer.sdk_design.extensions.setAllEnabled
+import com.bandyer.sdk_design.extensions.setTextAppearance
 
 /**
  * Class representing a Smartglass Call Action
@@ -67,7 +69,7 @@ sealed class SmartglassCallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: 
      * @property toggled true to select, false otherwise
      * @constructor
      */
-    abstract class SmartglassTogglableCallAction(viewId: Int, var toggled: Boolean, viewLayoutRes: Int = 0, viewStyle: Int = 0) : SmartglassCallAction(viewId, viewLayoutRes, viewStyle) {
+    abstract class SmartglassTogglableCallAction(private val ctx: Context, viewId: Int, var toggled: Boolean, viewLayoutRes: Int = 0, viewStyle: Int = 0) : SmartglassCallAction(viewId, viewLayoutRes, viewStyle) {
 
         /**
          * Toggle the action button
@@ -81,9 +83,10 @@ sealed class SmartglassCallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: 
          * Toggle the action button
          * @param enable true to enable, false otherwise
          */
-        fun toggle(enable: Boolean) {
+        open fun toggle(enable: Boolean) {
             val actionButton = itemView?.findViewById<BandyerActionButton>(viewId) ?: return
             actionButton.isActivated = enable
+            actionButton.label?.isActivated = enable
             toggled = enable
             updateContentDescription(actionButton.button)
         }
@@ -105,11 +108,19 @@ sealed class SmartglassCallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: 
      * @property toggled true or false to toggle
      * @constructor
      */
-    open class SMARTGLASS_CAMERA(mToggled: Boolean, private val ctx: Context) : SmartglassTogglableCallAction(R.id.bandyer_id_camera, mToggled, R.layout.bandyer_call_smartglass_action_item, ctx.getCallActionItemStyle(R.styleable.BandyerSDKDesign_BottomSheet_Call_bandyer_smartglass_cameraStyle)) {
+    open class SMARTGLASS_CAMERA(mToggled: Boolean, private val ctx: Context) : SmartglassTogglableCallAction(ctx, R.id.bandyer_id_camera, mToggled, R.layout.bandyer_call_smartglass_action_item, ctx.getCallActionItemStyle(R.styleable.BandyerSDKDesign_BottomSheet_Call_bandyer_smartglass_cameraStyle)) {
 
         override fun updateContentDescription(button: View?) {
-            button?.contentDescription =
-                    if (toggled) ctx.resources.getString(R.string.bandyer_call_action_enable_camera_description)
+            val text = if (toggled) ctx.resources.getString(R.string.bandyer_call_action_enable_camera_description)
+            else ctx.resources.getString(R.string.bandyer_call_action_disable_camera_description)
+            button?.contentDescription = text
+        }
+
+        override fun toggle(enable: Boolean) {
+            super.toggle(enable)
+            val actionButton = itemView?.findViewById<BandyerActionButton>(viewId) ?: return
+            actionButton.label!!.text =
+                    if (enable) ctx.resources.getString(R.string.bandyer_call_action_enable_camera_description)
                     else ctx.resources.getString(R.string.bandyer_call_action_disable_camera_description)
         }
     }
@@ -119,11 +130,19 @@ sealed class SmartglassCallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: 
      * @property toggled true or false to toggle
      * @constructor
      */
-    open class SMARTGLASS_MICROPHONE(mToggled: Boolean, private val ctx: Context) : SmartglassTogglableCallAction(R.id.bandyer_id_microphone, mToggled, R.layout.bandyer_call_smartglass_action_item, ctx.getCallActionItemStyle(R.styleable.BandyerSDKDesign_BottomSheet_Call_bandyer_smartglass_microphoneStyle)) {
+    open class SMARTGLASS_MICROPHONE(mToggled: Boolean, private val ctx: Context) : SmartglassTogglableCallAction(ctx, R.id.bandyer_id_microphone, mToggled, R.layout.bandyer_call_smartglass_action_item, ctx.getCallActionItemStyle(R.styleable.BandyerSDKDesign_BottomSheet_Call_bandyer_smartglass_microphoneStyle)) {
 
         override fun updateContentDescription(button: View?) {
             button?.contentDescription =
                     if (toggled) ctx.resources.getString(R.string.bandyer_call_action_enable_mic_description)
+                    else ctx.resources.getString(R.string.bandyer_call_action_disable_mic_description)
+        }
+
+        override fun toggle(enable: Boolean) {
+            super.toggle(enable)
+            val actionButton = itemView?.findViewById<BandyerActionButton>(viewId) ?: return
+            actionButton.label!!.text =
+                    if (enable) ctx.resources.getString(R.string.bandyer_call_action_enable_mic_description)
                     else ctx.resources.getString(R.string.bandyer_call_action_disable_mic_description)
         }
     }
@@ -305,7 +324,7 @@ sealed class SmartglassCallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: 
      * @property toggled true or false to toggle
      * @constructor
      */
-    open class SMARTGLASS_SCREEN_SHARE(mToggled: Boolean = false, ctx: Context) : SmartglassTogglableCallAction(R.id.bandyer_id_screenshare, mToggled, R.layout.bandyer_call_smartglass_action_item, ctx.getCallActionItemStyle(R.styleable.BandyerSDKDesign_BottomSheet_Call_bandyer_smartglass_screenShareStyle))
+    open class SMARTGLASS_SCREEN_SHARE(mToggled: Boolean = false, ctx: Context) : SmartglassTogglableCallAction(ctx, R.id.bandyer_id_screenshare, mToggled, R.layout.bandyer_call_smartglass_action_item, ctx.getCallActionItemStyle(R.styleable.BandyerSDKDesign_BottomSheet_Call_bandyer_smartglass_screenShareStyle))
 
     /**
      * Called when the layout has been inflated

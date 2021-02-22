@@ -65,7 +65,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
-ssss
+
     <style name="BandyerSDKDesign.ActionButton.ConfirmButton" parent="BandyerSDKDesign.ActionButton">
         <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Confirm</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextAppearance.ButtonLabel.Confirm</item>

@@ -8,7 +8,6 @@ package com.bandyer.sdk_design.call.smartglass
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -16,15 +15,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
-import com.bandyer.sdk_design.call.smartglass.menu.adapter.SmartglassActionItemAdapter
+import com.bandyer.sdk_design.call.bottom_sheet.items.SmartglassCallAction
+import com.bandyer.sdk_design.call.smartglass.adapter.SmartglassActionItemAdapter
 import com.bandyer.sdk_design.databinding.BandyerWidgetSmartglassesMenuLayoutBinding
-import com.bandyer.sdk_design.utils.GlassGestureDetector
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 
 /**
  * Layout used to represent a smartglass swipeable menu
  * @suppress
- * @property items List<ActionItem> the items to be listed in the menu
+ * @property items List<SmartglassCallAction> the items to be listed in the menu
  * @property fastAdapter FastItemAdapter<AdapterActionItem> the items adapter
  * @property currentMenuItemIndex Int the current menu item index
  * @property onSmartglassMenuSelectionListener OnGoogleGlassMenuItemSelectionListener?
@@ -34,7 +33,7 @@ import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 @SuppressLint("ViewConstructor")
 class SmartglassesMenuLayout(
         context: Context,
-        private val items: List<ActionItem>) : ConstraintLayout(context, null,  com.bandyer.sdk_design.R.attr.bandyer_smartglassMenuStyle) {
+        private val items: List<SmartglassCallAction>) : ConstraintLayout(context, null, com.bandyer.sdk_design.R.attr.bandyer_smartglassMenuStyle) {
 
     /**
      * Smartglass menu selection listener
@@ -62,22 +61,6 @@ class SmartglassesMenuLayout(
     private var currentMenuItemIndex = 0
 
     private val binding: BandyerWidgetSmartglassesMenuLayoutBinding by lazy { BandyerWidgetSmartglassesMenuLayoutBinding.inflate(LayoutInflater.from(context), this) }
-
-    private val glassGestureDetector: GlassGestureDetector = GlassGestureDetector(
-            context,
-            object : GlassGestureDetector.OnGestureListener {
-                override fun onGesture(gesture: GlassGestureDetector.Gesture?): Boolean {
-                    return when (gesture) {
-                        GlassGestureDetector.Gesture.SWIPE_DOWN -> {
-                            val currentOnGoogleGlassMenuItemSelectionListener = onSmartglassMenuSelectionListener
-                            dispose()
-                            currentOnGoogleGlassMenuItemSelectionListener?.onDismiss()
-                            true
-                        }
-                        else -> false
-                    }
-                }
-            })
 
     init {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -115,10 +98,5 @@ class SmartglassesMenuLayout(
 
     private fun dispose() {
         onSmartglassMenuSelectionListener = null
-    }
-
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        glassGestureDetector.onTouchEvent(event)
-        return super.dispatchTouchEvent(event)
     }
 }

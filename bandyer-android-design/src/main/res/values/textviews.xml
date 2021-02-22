@@ -226,4 +226,22 @@
         <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space56</item>
     </style>
 
+    <!-- Smartglass call action -->
+
+    <style name="BandyerSDKDesign.TextView.Smarglass.Title.Microphone.TextAppearance.Activated" parent="BandyerSDKDesign.TextView.Title.AudioRoute.TextAppearance">
+        <item name="android:text">@string/bandyer_call_action_disable_mic_description</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Smarglass.Title.Microphone.TextAppearance.Disabled" parent="">
+        <item name="android:text">@string/bandyer_call_action_enable_mic_description</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Smarglass.Title.Camera.TextAppearance.Activated" parent="BandyerSDKDesign.TextView.Title.AudioRoute.TextAppearance">
+        <item name="android:text">@string/bandyer_call_action_disable_camera_description</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Smarglass.Title.Camera.TextAppearance.Disabled" parent="">
+        <item name="android:text">@string/bandyer_call_action_enable_camera_description</item>
+    </style>
+
 </resources>

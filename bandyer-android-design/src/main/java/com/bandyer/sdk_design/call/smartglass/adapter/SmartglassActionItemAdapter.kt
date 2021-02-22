@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.call.smartglass.menu.adapter
+package com.bandyer.sdk_design.call.smartglass.adapter
 
 import android.view.LayoutInflater
 import android.view.View
