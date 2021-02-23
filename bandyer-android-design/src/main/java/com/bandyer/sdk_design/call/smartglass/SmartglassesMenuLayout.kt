@@ -7,6 +7,7 @@ package com.bandyer.sdk_design.call.smartglass
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +19,7 @@ import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.call.bottom_sheet.items.SmartglassCallAction
 import com.bandyer.sdk_design.call.smartglass.adapter.SmartglassActionItemAdapter
 import com.bandyer.sdk_design.databinding.BandyerWidgetSmartglassesMenuLayoutBinding
+import com.bandyer.sdk_design.utils.isConfirmButton
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 
 /**
@@ -62,8 +64,11 @@ class SmartglassesMenuLayout(
 
     private val binding: BandyerWidgetSmartglassesMenuLayoutBinding by lazy { BandyerWidgetSmartglassesMenuLayoutBinding.inflate(LayoutInflater.from(context), this) }
 
+    private val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+    private val snapHelper: SnapHelper = PagerSnapHelper()
+
     init {
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.bandyerSmartglassesMenuRecyclerview.layoutManager = layoutManager
         binding.bandyerSmartglassesMenuRecyclerview.itemAnimator = null
         binding.bandyerSmartglassesMenuRecyclerview.setHasFixedSize(true)
@@ -71,7 +76,6 @@ class SmartglassesMenuLayout(
 //        binding.bandyerSmartglassesMenuRecyclerview.adapter = fastAdapter
 //        fastAdapter.set(items.map { AdapterActionItem(it) })
 
-        val snapHelper: SnapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(binding.bandyerSmartglassesMenuRecyclerview)
 
 
@@ -96,7 +100,11 @@ class SmartglassesMenuLayout(
         })
     }
 
-    private fun dispose() {
-        onSmartglassMenuSelectionListener = null
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+        if (event != null && event.action == KeyEvent.ACTION_UP && event.isConfirmButton()) {
+            snapHelper.findSnapView(layoutManager)?.performClick()
+            return true
+        }
+        return super.dispatchKeyEvent(event)
     }
 }
