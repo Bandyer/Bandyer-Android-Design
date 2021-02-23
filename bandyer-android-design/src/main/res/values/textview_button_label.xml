@@ -87,6 +87,9 @@
         <item name="android:textSize">@dimen/bandyer_dimen_text_smartglass_menu</item>
         <item name="android:padding">@dimen/bandyer_dimen_space16</item>
         <item name="android:fontFamily">sans-serif-thin</item>
+        <item name="android:maxLines">2</item>
+        <item name="android:gravity">center</item>
+        <item name="autoSizeTextType">uniform</item>
     </style>
 
     <style name="BandyerSDKDesign.TextAppearance.ButtonLabel.Cancel.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
