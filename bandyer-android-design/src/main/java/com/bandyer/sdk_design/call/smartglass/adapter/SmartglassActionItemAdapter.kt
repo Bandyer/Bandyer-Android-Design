@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.Toast
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
@@ -37,6 +38,7 @@ class SmartglassActionItemAdapter(private val onActionItemClickedListener: OnAct
     override fun onBindViewHolder(holder: ActionItemViewHolder, position: Int) {
         val actionItem = actionItems?.get(position) ?: return
         if (holder.itemView !is FrameLayout) return
+        holder.itemView.removeAllViews()
         val customView = LayoutInflater.from(ContextThemeWrapper(holder.itemView.context, actionItem.viewStyle)).inflate(actionItem.viewLayoutRes, holder.itemView, false).apply {
             id = actionItem.viewId
         }
