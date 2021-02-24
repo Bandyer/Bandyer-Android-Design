@@ -2,7 +2,6 @@ package com.bandyer.sdk_design.whiteboard.dialog
 
 import android.os.Bundle
 import android.view.*
-import android.webkit.*
 import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -16,6 +15,9 @@ import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.bandyer.sdk_design.whiteboard.layout.BandyerWhiteboardLoadingError
 import com.bandyer.sdk_design.whiteboard.layout.BandyerWhiteboardUploadProgressLayout
 
+/**
+ * @suppress
+ */
 abstract class BaseBandyerWhiteboardDialog<T : BaseBandyerWhiteboardDialog.BaseWhiteboardBottomSheetDialog>: BandyerDialog<T> {
 
     override val id: String = "bandyerWhiteBoardDialog"
@@ -29,8 +31,16 @@ abstract class BaseBandyerWhiteboardDialog<T : BaseBandyerWhiteboardDialog.BaseW
         activity.supportFragmentManager.executePendingTransactions()
     }
 
+    /**
+     * Called to create a dialog
+     * @param session_id the session id
+     * @return T the initialized bottom sheet dialog
+     */
     abstract fun createDialog(session_id: String? = null) : T
 
+    /**
+     * It initializes the UI of whiteboard bottom sheet dialog
+     */
     abstract class BaseWhiteboardBottomSheetDialog : BandyerBottomSheetDialog() {
 
         private var binding: BandyerDialogWhiteboardBinding? = null
@@ -93,6 +103,9 @@ abstract class BaseBandyerWhiteboardDialog<T : BaseBandyerWhiteboardDialog.BaseW
 
         override fun onStateChanged(newState: Int) = Unit
 
+        /**
+         * Called when clicking the reload button of the loadingErrorLayout
+         */
         abstract fun onReload()
     }
 }
