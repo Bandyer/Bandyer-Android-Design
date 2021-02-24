@@ -278,6 +278,20 @@ fun Context.getCallActionItemStyle(@StyleableRes styleAttribute: Int): Int {
 }
 
 /**
+ * Get the style for the specified smart glass call action item
+ * @receiver Context
+ * @param styleAttribute the call action item attribute for which you want to retrieve the style
+ * @return The style relative to the styleAttribute
+ */
+fun Context.getSmartGlassCallActionItemStyle(@StyleableRes styleAttribute: Int): Int {
+    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_smartGlassDialogMenuStyle), R.styleable.BandyerSDKDesign_SmartGlassDialogMenu)
+    val value = if(ta.hasValue(styleAttribute))
+        ta.getResourceId(styleAttribute, 0) else 0
+    ta.recycle()
+    return value
+}
+
+/**
  * Get the style for the specified call action item
  * @receiver Context
  * @param styleAttribute the call action item attribute for which you want to retrieve the style

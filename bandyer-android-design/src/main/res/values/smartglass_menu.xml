@@ -16,13 +16,19 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Smartglass.Menu">
+    <declare-styleable name="BandyerSDKDesign.SmartGlassDialogMenu">
         <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_smartGlassMicrophoneStyle" format="reference" />
+        <attr name="bandyer_smartGlassCameraStyle" format="reference" />
+        <attr name="bandyer_smartGlassParticipantsStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Smartglass.Menu" parent="">
+    <style name="BandyerSDKDesign.SmartGlassDialogMenu" >
         <item name="android:background">?attr/colorSurface</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space16</item>
+        <item name="bandyer_smartGlassMicrophoneStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.Microphone</item>
+        <item name="bandyer_smartGlassCameraStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.Camera</item>
+        <item name="bandyer_smartGlassParticipantsStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.Participants</item>
     </style>
 
 </resources>

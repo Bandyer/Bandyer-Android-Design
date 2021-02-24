@@ -3,7 +3,7 @@
  *  See LICENSE.txt for licensing information
  */
 
-package com.bandyer.sdk_design.call.smartglass
+package com.bandyer.sdk_design.smartglass.call.menu
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -15,30 +15,24 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
-import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
-import com.bandyer.sdk_design.call.bottom_sheet.items.SmartglassCallAction
-import com.bandyer.sdk_design.call.smartglass.adapter.SmartglassActionItemAdapter
+import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.databinding.BandyerWidgetSmartglassesMenuLayoutBinding
+import com.bandyer.sdk_design.smartglass.call.menu.adapter.SmartGlassActionItemAdapter
 import com.bandyer.sdk_design.utils.isConfirmButton
-import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 
 /**
- * Layout used to represent a smartglass swipeable menu
+ * Layout used to represent a smart glass swipeable menu
  * @suppress
- * @property items List<SmartglassCallAction> the items to be listed in the menu
- * @property fastAdapter FastItemAdapter<AdapterActionItem> the items adapter
- * @property currentMenuItemIndex Int the current menu item index
  * @property onSmartglassMenuSelectionListener OnGoogleGlassMenuItemSelectionListener?
- * @property glassGestureDetector GlassGestureDetector
  * @constructor
  */
 @SuppressLint("ViewConstructor")
-class SmartglassesMenuLayout(
+class SmartGlassMenuLayout(
         context: Context,
-        private val items: List<SmartglassCallAction>) : ConstraintLayout(context, null, com.bandyer.sdk_design.R.attr.bandyer_smartglassMenuStyle) {
+        private val items: List<CallAction>) : ConstraintLayout(context, null, com.bandyer.sdk_design.R.attr.bandyer_smartGlassDialogMenuStyle) {
 
     /**
-     * Smartglass menu selection listener
+     * Smart glass menu selection listener
      */
     interface OnSmartglassMenuSelectionListener {
         /**
@@ -48,17 +42,17 @@ class SmartglassesMenuLayout(
         fun onSelected(item: ActionItem)
 
         /**
-         * Called when the smartglass swipeable menu has been dismissed
+         * Called when the smart glass swipeable menu has been dismissed
          */
         fun onDismiss()
     }
 
     /**
-     * Smartglass menu selection listener
+     * Smart glass menu selection listener
      */
     var onSmartglassMenuSelectionListener: OnSmartglassMenuSelectionListener? = null
 
-    private val fastAdapter: FastItemAdapter<AdapterActionItem> = FastItemAdapter()
+//    private val fastAdapter: FastItemAdapter<AdapterActionItem> = FastItemAdapter()
 
     private var currentMenuItemIndex = 0
 
@@ -79,7 +73,7 @@ class SmartglassesMenuLayout(
         snapHelper.attachToRecyclerView(binding.bandyerSmartglassesMenuRecyclerview)
 
 
-        binding.bandyerSmartglassesMenuRecyclerview.adapter = SmartglassActionItemAdapter(object : SmartglassActionItemAdapter.OnActionItemClickedListener {
+        binding.bandyerSmartglassesMenuRecyclerview.adapter = SmartGlassActionItemAdapter(object : SmartGlassActionItemAdapter.OnActionItemClickedListener {
             override fun onActionItemClicked(actionItem: ActionItem) {
                 onSmartglassMenuSelectionListener?.onSelected(items[currentMenuItemIndex])
             }

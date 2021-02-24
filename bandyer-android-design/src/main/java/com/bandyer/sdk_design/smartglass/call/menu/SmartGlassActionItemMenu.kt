@@ -3,7 +3,7 @@
  *  See LICENSE.txt for licensing information
  */
 
-package com.bandyer.sdk_design.call.smartglass
+package com.bandyer.sdk_design.smartglass.call.menu
 
 import android.content.DialogInterface
 import android.os.Bundle
@@ -14,16 +14,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
-import com.bandyer.sdk_design.call.bottom_sheet.items.SmartglassCallAction
+import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import java.util.*
 
 /**
- * A smartglass swipeable menu widget. Selection happens with a tap on the desired item, dismiss happens with a swipe down gesture
- * @property items List<ActionItem>?
- * @property smartglassMenuLayout SmartglassesMenuLayout?
+ * A smart glass swipeable menu widget. Selection happens with a tap on the desired item, dismiss happens with a swipe down gesture
  * @property selectionListener OnSmartglassMenuSelectionListener?
  */
-class SmartglassActionItemMenu : DialogFragment() {
+class SmartGlassActionItemMenu : DialogFragment() {
 
     companion object {
         private const val TAG = "SmartglassActionItemMenu"
@@ -32,11 +30,11 @@ class SmartglassActionItemMenu : DialogFragment() {
         /**
          * Shows the smartglass swipeable menu
          * @param appCompatActivity AppCompatActivity context
-         * @param items List<ActionItem> the action items to be displayed
+         * @param items List<CallAction> the action items to be displayed
          * @return SmartglassActionItemMenu
          */
-        fun show(appCompatActivity: AppCompatActivity, items: List<SmartglassCallAction>): SmartglassActionItemMenu {
-            val dialogFragment = SmartglassActionItemMenu()
+        fun show(appCompatActivity: AppCompatActivity, items: List<CallAction>): SmartGlassActionItemMenu {
+            val dialogFragment = SmartGlassActionItemMenu()
             dialogFragment.arguments = Bundle().apply {
                 this.putSerializable(ITEMS, ArrayList<ActionItem>().apply { this.addAll(items) })
             }
@@ -45,9 +43,9 @@ class SmartglassActionItemMenu : DialogFragment() {
         }
     }
 
-    private var items: List<SmartglassCallAction>? = null
+    private var items: List<CallAction>? = null
 
-    private var smartglassMenuLayout: SmartglassesMenuLayout? = null
+    private var smartglassMenuLayout: SmartGlassMenuLayout? = null
         set(value) {
             field = value
             field ?: return
@@ -57,9 +55,9 @@ class SmartglassActionItemMenu : DialogFragment() {
         }
 
     /**
-     * Smartglass menu selection listener
+     * Smart glass menu selection listener
      */
-    var selectionListener: SmartglassesMenuLayout.OnSmartglassMenuSelectionListener? = null
+    var selectionListener: SmartGlassMenuLayout.OnSmartglassMenuSelectionListener? = null
         set(value) {
             field = value
             smartglassMenuLayout?.onSmartglassMenuSelectionListener = selectionListener
@@ -68,17 +66,15 @@ class SmartglassActionItemMenu : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val itemsArrayList = arguments?.getSerializable(ITEMS)
-        items = mutableListOf<SmartglassCallAction>().apply {
-            this.addAll(itemsArrayList as ArrayList<SmartglassCallAction>)
+        items = mutableListOf<CallAction>().apply {
+            this.addAll(itemsArrayList as ArrayList<CallAction>)
         }
     }
 
-    override fun getTheme(): Int = R.style.BandyerSDKDesign_DialogFragment_FullScreen
+    override fun getTheme(): Int = R.style.BandyerSDKDesign_FullScreenDialog
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        smartglassMenuLayout = SmartglassesMenuLayout(
-                context!!,
-                items!!)
+        smartglassMenuLayout = SmartGlassMenuLayout(context!!, items!!)
         return smartglassMenuLayout!!
     }
 

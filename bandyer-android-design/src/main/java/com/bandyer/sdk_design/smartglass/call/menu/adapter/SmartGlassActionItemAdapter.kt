@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.call.smartglass.adapter
+package com.bandyer.sdk_design.smartglass.call.menu.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 
 /**
- * Adapter class for the action items swipeable smartglass menu
+ * Adapter class for the action items swipeable smart glass menu
  * @suppress
  */
-class SmartglassActionItemAdapter(private val onActionItemClickedListener: OnActionItemClickedListener? = null): RecyclerView.Adapter<SmartglassActionItemAdapter.ActionItemViewHolder>() {
+class SmartGlassActionItemAdapter(private val onActionItemClickedListener: OnActionItemClickedListener? = null): RecyclerView.Adapter<SmartGlassActionItemAdapter.ActionItemViewHolder>() {
 
     private var actionItems: List<ActionItem>? = null
 
@@ -22,7 +22,7 @@ class SmartglassActionItemAdapter(private val onActionItemClickedListener: OnAct
     }
 
     /**
-     * The smartglass action item view holder
+     * The smart glass action item view holder
      * @suppress
      * @constructor
      */

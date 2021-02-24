@@ -32,23 +32,8 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ActionButton.RootLayout</item>
     </style>
 
-    <style name="BandyerSDKDesign.ActionButton.Smartglass">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+    <style name="BandyerSDKDesign.ActionButton.SmartGlass" parent="BandyerSDKDesign.ActionButton">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ActionButton.RootLayout.Smartglass</item>
-    </style>
-
-    <style name="BandyerSDKDesign.ActionButton.RootLayout.Smartglass" parent="">
-        <item name="android:orientation">vertical</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:gravity">center</item>
-        <item name="android:clipToPadding">false</item>
-        <item name="android:clipChildren">false</item>
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">false</item>
-        <item name="android:clickable">false</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
     </style>
 
     <style name="BandyerSDKDesign.ActionButton.RootLayout" parent="">
@@ -62,8 +47,11 @@
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:clickable">false</item>
         <item name="android:paddingTop">@dimen/bandyer_dimen_space20</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.RootLayout.Smartglass" parent="BandyerSDKDesign.ActionButton.RootLayout">
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space0</item>
     </style>
 
     <style name="BandyerSDKDesign.ActionButton.ConfirmButton" parent="BandyerSDKDesign.ActionButton">
@@ -145,17 +133,17 @@
 
     <!-- SMARTGLASS CALL ACTION BUTTONS -->
 
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.Microphone" parent="BandyerSDKDesign.ActionButton.Smartglass">
+    <style name="BandyerSDKDesign.ActionButton.Smartglass.Microphone" parent="BandyerSDKDesign.ActionButton.SmartGlass">
         <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Microphone.Smartglass</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Microphone.Smartglass</item>
     </style>
 
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.Camera" parent="BandyerSDKDesign.ActionButton.Smartglass">
+    <style name="BandyerSDKDesign.ActionButton.Smartglass.Camera" parent="BandyerSDKDesign.ActionButton.SmartGlass">
         <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Camera.Smartglass</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Camera.Smartglass</item>
     </style>
 
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.Participants" parent="BandyerSDKDesign.ActionButton.Smartglass">
+    <style name="BandyerSDKDesign.ActionButton.Smartglass.Participants" parent="BandyerSDKDesign.ActionButton.SmartGlass">
         <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Participants.Smartglass</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Participants.Smartglass</item>
     </style>

@@ -102,13 +102,9 @@
     <!-- SMARTGLASS CALL BUTTONS -->
 
     <style name="BandyerSDKDesign.ImageButton.Call.Smartglass" parent="BandyerSDKDesign.ImageButton.Call">
-        <item name="android:focusable">false</item>
-        <item name="android:focusableInTouchMode">false</item>
-        <item name="android:clipChildren">false</item>
         <item name="iconTint">?attr/colorOnSurface</item>
         <item name="backgroundTint">@android:color/transparent</item>
-        <item name="iconSize">@dimen/bandyer_dimen_space72</item>
-        <item name="android:padding">0dp</item>
+        <item name="iconSize">@dimen/bandyer_dimen_space64</item>
     </style>
 
     <style name="BandyerSDKDesign.ImageButton.Call.Microphone.Smartglass" parent="BandyerSDKDesign.ImageButton.Call.Smartglass">

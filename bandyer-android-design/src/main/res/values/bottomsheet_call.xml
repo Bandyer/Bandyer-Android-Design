@@ -32,10 +32,6 @@
         <attr name="bandyer_audioRouteStyle" format="reference" />
         <attr name="bandyer_hangUpStyle" format="reference" />
         <attr name="bandyer_fileShareStyle" format="reference" />
-
-        <attr name="bandyer_smartglass_microphoneStyle" format="reference" />
-        <attr name="bandyer_smartglass_cameraStyle" format="reference" />
-        <attr name="bandyer_smartglass_participantsStyle" format="reference" />
     </declare-styleable>
 
     <!-- CALL BOTTOM SHEET -->
@@ -52,10 +48,6 @@
         <item name="bandyer_audioRouteStyle">@style/BandyerSDKDesign.ActionButton.AudioRoute</item>
         <item name="bandyer_fileShareStyle">@style/BandyerSDKDesign.ActionButton.FileShare</item>
         <item name="bandyer_hangUpStyle">@style/BandyerSDKDesign.ActionButton.HangUp</item>
-
-        <item name="bandyer_smartglass_cameraStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.Camera</item>
-        <item name="bandyer_smartglass_microphoneStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.Microphone</item>
-        <item name="bandyer_smartglass_participantsStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.Participants</item>
     </style>
 
 </resources>
