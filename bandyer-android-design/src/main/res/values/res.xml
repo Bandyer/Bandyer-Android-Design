@@ -46,4 +46,5 @@
     <item name="ic_bandyer_time" type="drawable">@drawable/bandyer_time_icon</item>
     <item name="ic_bandyer_whiteboard" type="drawable">@drawable/bandyer_whiteboard_icon</item>
     <item name="ic_bandyer_wired_headset" type="drawable">@drawable/bandyer_wired_headset_icon</item>
+    <item name="ic_add" type="drawable">@drawable/bandyer_add</item>
 </resources>
