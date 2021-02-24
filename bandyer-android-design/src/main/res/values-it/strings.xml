@@ -134,4 +134,9 @@
     <!-- SCREEN SHARE PICKER -->
     <string name="bandyer_screenshare_app_only">Condividi solo quest\'app</string>
     <string name="bandyer_screenshare_full_device">Condividi l\'intero dispositivo</string>
+
+    <!-- FILE SHARE -->
+    <string name="bandyer_fileshare_add">Aggiungi</string>
+    <string name="bandyer_fileshare_add_description">Carica nuovo file</string>
+
 </resources>

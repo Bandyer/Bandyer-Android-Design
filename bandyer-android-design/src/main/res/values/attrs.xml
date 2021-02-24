@@ -15,6 +15,10 @@
   -->
 <resources>
 
+    <!-- Attributes used for different views -->
+    <attr name="bandyer_state_download" format="boolean" />
+    <attr name="bandyer_state_cancel" format="boolean" />
+
     <!-- Roundable styleable properties-->
     <attr name="bandyer_round" format="boolean" />
     <attr name="bandyer_corner_radius" format="dimension" />
@@ -32,7 +36,6 @@
     <attr name="bandyer_state_muted" format="boolean" />
 
     <!-- WhiteboardTextEditorLayout states-->
-    <attr name="bandyer_state_cancel" format="boolean" />
     <attr name="bandyer_state_dismiss" format="boolean" />
     <attr name="bandyer_state_discard_changes" format="boolean" />
 
@@ -65,10 +68,16 @@
     <attr name="bandyer_state_collapsed" format="boolean" />
 
     <!-- File share file types -->
-    <attr name="bandyer_state_doc" format="boolean" />
-    <attr name="bandyer_state_image" format="boolean" />
-    <attr name="bandyer_state_video" format="boolean" />
+    <attr name="bandyer_state_file" format="boolean" />
+    <attr name="bandyer_state_media" format="boolean" />
     <attr name="bandyer_state_archive" format="boolean" />
-    <attr name="bandyer_state_undefined" format="boolean" />
+
+    <!-- File share operation types -->
+    <attr name="bandyer_state_upload" format="boolean" />
+
+    <!-- File share action types -->
+    <attr name="bandyer_state_redownload" format="boolean" />
+    <attr name="bandyer_state_open" format="boolean" />
+    <attr name="bandyer_state_retry" format="boolean" />
 
 </resources>

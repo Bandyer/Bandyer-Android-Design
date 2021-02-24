@@ -142,4 +142,8 @@
     <string name="bandyer_screenshare_app_only">Share this app only</string>
     <string name="bandyer_screenshare_full_device">Share whole device</string>
 
+    <!-- FILE SHARE -->
+    <string name="bandyer_fileshare_add">Add</string>
+    <string name="bandyer_fileshare_add_description">Upload a new file</string>
+
 </resources>
