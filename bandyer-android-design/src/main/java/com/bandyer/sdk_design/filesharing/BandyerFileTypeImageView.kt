@@ -7,7 +7,7 @@ import com.google.android.material.imageview.ShapeableImageView
 
 class BandyerFileTypeImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ShapeableImageView(context, attrs, defStyleAttr) {
 
-    var type: Type? = Type.UNDEFINED
+    var type: Type? = Type.FILE
         set(value) {
             field = value
             refreshDrawableState()
@@ -33,27 +33,17 @@ class BandyerFileTypeImageView @JvmOverloads constructor(context: Context, attrs
         /**
          * d o c
          */
-        DOC(intArrayOf(R.attr.bandyer_state_doc)),
+        FILE(intArrayOf(R.attr.bandyer_state_file)),
 
         /**
-         * i m a g e
+         * m e d i a
          */
-        IMAGE(intArrayOf(R.attr.bandyer_state_image)),
-
-        /**
-         * v i d e o
-         */
-        VIDEO(intArrayOf(R.attr.bandyer_state_video)),
+        MEDIA(intArrayOf(R.attr.bandyer_state_media)),
 
         /**
          * a r c h i v e
          */
         ARCHIVE(intArrayOf(R.attr.bandyer_state_archive)),
-
-        /**
-         * u n d e f i n e d
-         */
-        UNDEFINED(intArrayOf(R.attr.bandyer_state_undefined))
     }
 
 }
