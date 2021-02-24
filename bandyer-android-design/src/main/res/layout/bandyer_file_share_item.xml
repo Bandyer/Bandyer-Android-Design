@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/bandyer_dimen_space16">
+
+    <com.bandyer.sdk_design.filesharing.BandyerFileTypeImageView
+        android:id="@+id/bandyer_file_type"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@color/md_grey_300"
+        android:src="@drawable/ic_image"
+        android:tint="@android:color/white"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        app:contentPadding="10dp"
+        app:shapeAppearance="@style/BandyerSDKDesign.FileType.ShapeAppearance"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_file_size"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bandyer_file_name"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_file_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@id/bandyer_file_type"
+        app:layout_constraintStart_toStartOf="@id/bandyer_file_type"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_file_type"
+        tools:text="78 MB" />
+
+    <com.bandyer.sdk_design.filesharing.BandyerFileShareActionButton
+        android:id="@+id/bandyer_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/BandyerSDKDesign.ImageButton"
+        android:backgroundTint="@color/md_blue_700"
+        app:icon="@drawable/ic_bandyer_close"
+        app:iconSize="@dimen/bandyer_dimen_space16"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_progress_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bandyer_progress_bar" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_file_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bandyer_dimen_space16"
+        android:layout_marginEnd="@dimen/bandyer_dimen_space24"
+        android:ellipsize="middle"
+        android:singleLine="true"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/bandyer_action"
+        app:layout_constraintStart_toEndOf="@id/bandyer_file_type"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Contratto019_ginopino_90987_mario_848.pdf" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/bandyer_progress_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:trackThickness="@dimen/bandyer_dimen_space4"
+        app:indicatorColor="?attr/colorSecondary"
+        app:layout_constraintEnd_toEndOf="@+id/bandyer_file_name"
+        app:layout_constraintStart_toStartOf="@+id/bandyer_file_name"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_file_name"
+        app:trackColor="@color/md_light_green_200"
+        app:trackCornerRadius="3dp" />
+
+    <com.bandyer.sdk_design.filesharing.BandyerFileShareOpTypeImageView
+        android:id="@+id/bandyer_operation"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:background="@color/md_blue_700"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_user"
+        app:layout_constraintStart_toStartOf="@id/bandyer_file_name"
+        app:layout_constraintTop_toTopOf="@id/bandyer_user" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_user"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="24dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@id/bandyer_progress_text"
+        app:layout_constraintStart_toEndOf="@id/bandyer_operation"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_progress_bar"
+        tools:text="Mario Draghi" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/bandyer_dimen_space8"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/bandyer_file_name"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_user"
+        tools:text="Upload failed - Retry" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_progress_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="@id/bandyer_file_name"
+        app:layout_constraintTop_toTopOf="@id/bandyer_user"
+        tools:text="85%" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
