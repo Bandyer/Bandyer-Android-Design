@@ -35,15 +35,7 @@
 
         <attr name="bandyer_smartglass_microphoneStyle" format="reference" />
         <attr name="bandyer_smartglass_cameraStyle" format="reference" />
-        <attr name="bandyer_smartglass_switchCameraStyle" format="reference" />
-        <attr name="bandyer_smartglass_screenShareStyle" format="reference" />
-        <attr name="bandyer_smartglass_whiteboardStyle" format="reference" />
         <attr name="bandyer_smartglass_participantsStyle" format="reference" />
-        <attr name="bandyer_smartglass_chatStyle" format="reference" />
-        <attr name="bandyer_smartglass_optionsStyle" format="reference" />
-        <attr name="bandyer_smartglass_audioRouteStyle" format="reference" />
-        <attr name="bandyer_smartglass_hangUpStyle" format="reference" />
-        <attr name="bandyer_smartglass_fileShareStyle" format="reference" />
     </declare-styleable>
 
     <!-- CALL BOTTOM SHEET -->
@@ -63,15 +55,7 @@
 
         <item name="bandyer_smartglass_cameraStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.Camera</item>
         <item name="bandyer_smartglass_microphoneStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.Microphone</item>
-        <item name="bandyer_smartglass_screenShareStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.ScreenShare</item>
-        <item name="bandyer_smartglass_whiteboardStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.Whiteboard</item>
-        <item name="bandyer_smartglass_switchCameraStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.SwitchCamera</item>
         <item name="bandyer_smartglass_participantsStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.Participants</item>
-        <item name="bandyer_smartglass_chatStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.Chat</item>
-        <item name="bandyer_smartglass_optionsStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.Options</item>
-        <item name="bandyer_smartglass_audioRouteStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.AudioRoute</item>
-        <item name="bandyer_smartglass_fileShareStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.FileShare</item>
-        <item name="bandyer_smartglass_hangUpStyle">@style/BandyerSDKDesign.ActionButton.Smartglass.HangUp</item>
     </style>
 
 </resources>

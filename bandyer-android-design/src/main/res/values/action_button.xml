@@ -145,46 +145,6 @@
 
     <!-- SMARTGLASS CALL ACTION BUTTONS -->
 
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.AudioRoute" parent="BandyerSDKDesign.ActionButton.Smartglass">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.AudioRoute.Smartglass</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.AudioRoute.Smartglass</item>
-    </style>
-
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.Participants" parent="BandyerSDKDesign.ActionButton.Smartglass">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Participants.Smartglass</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Participants.Smartglass</item>
-    </style>
-
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.Chat" parent="BandyerSDKDesign.ActionButton.Smartglass">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Chat.Smartglass</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Chat.Smartglass</item>
-    </style>
-
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.Whiteboard" parent="BandyerSDKDesign.ActionButton.Smartglass">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Whiteboard.Smartglass</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Whiteboard.Smartglass</item>
-    </style>
-
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.FileShare" parent="BandyerSDKDesign.ActionButton.Smartglass">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.FileShare.Smartglass</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.FileShare.Smartglass</item>
-    </style>
-
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.Options" parent="BandyerSDKDesign.ActionButton.Smartglass">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Options.Smartglass</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Options.Smartglass</item>
-    </style>
-
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.SwitchCamera" parent="BandyerSDKDesign.ActionButton.Smartglass">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.SwitchCamera.Smartglass</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SwitchCamera.Smartglass</item>
-    </style>
-
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.HangUp" parent="BandyerSDKDesign.ActionButton.Smartglass">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.HangUp.Smartglass</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.HangUp.Smartglass</item>
-    </style>
-
     <style name="BandyerSDKDesign.ActionButton.Smartglass.Microphone" parent="BandyerSDKDesign.ActionButton.Smartglass">
         <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Microphone.Smartglass</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Microphone.Smartglass</item>
@@ -195,9 +155,9 @@
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Camera.Smartglass</item>
     </style>
 
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.ScreenShare" parent="BandyerSDKDesign.ActionButton.Smartglass">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.ScreenShare.Smartglass</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.ScreenShare.Smartglass</item>
+    <style name="BandyerSDKDesign.ActionButton.Smartglass.Participants" parent="BandyerSDKDesign.ActionButton.Smartglass">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Participants.Smartglass</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Participants.Smartglass</item>
     </style>
 
 </resources>

@@ -23,45 +23,16 @@ class SmartglassMenuActivity : AppCompatActivity() {
             items = SmartglassCallAction.getSmartglassActions(
                     ctx = this,
                     micToggled = false,
-                    cameraToggled = true,
-                    withChat = true,
-                    withWhiteboard = true,
-                    withFileShare = true,
-                    withScreenShare = true)).apply {
-        selectionListener = object : SmartglassesMenuLayout.OnSmartglassMenuSelectionListener {
-            override fun onSelected(item: ActionItem) {
-                Toast.makeText(applicationContext, item::class.java.simpleName, Toast.LENGTH_SHORT).show()
-                if (item !is SmartglassCallAction.SMARTGLASS_AUDIOROUTE) return
-                selectionListener = null
-                dismiss()
-                showAudioRoutes()
+                    cameraToggled = false))
+            .apply {
+                selectionListener = object : SmartglassesMenuLayout.OnSmartglassMenuSelectionListener {
+                    override fun onSelected(item: ActionItem) {
+                        Toast.makeText(applicationContext, item::class.java.simpleName, Toast.LENGTH_SHORT).show()
+                        dismiss()
+                        selectionListener = null
+                    }
+
+                    override fun onDismiss() = finish()
+                }
             }
-
-            override fun onDismiss() = finish()
-        }
-    }
-
-    private fun showAudioRoutes(): SmartglassActionItemMenu = SmartglassActionItemMenu.show(
-            appCompatActivity = this,
-            items = listOf(
-                    SmartglassCallAction.SMARTGLASS_AUDIOROUTE(this)
-                            .apply { setCurrent(AudioRoute.LOUDSPEAKER(this@SmartglassMenuActivity, UUID.randomUUID().toString(), "Loudspeaker")) },
-                    SmartglassCallAction.SMARTGLASS_AUDIOROUTE(this)
-                            .apply { setCurrent(AudioRoute.BLUETOOTH(this@SmartglassMenuActivity, UUID.randomUUID().toString(), "Bluetooth", bluetoothConnectionStatus = AudioRouteState.BLUETOOTH.CONNECTED())) },
-                    SmartglassCallAction.SMARTGLASS_AUDIOROUTE(this)
-                            .apply { setCurrent(AudioRoute.WIRED_HEADSET(this@SmartglassMenuActivity, UUID.randomUUID().toString(), "Wired headset")) },
-                    SmartglassCallAction.SMARTGLASS_AUDIOROUTE(this)
-                            .apply { setCurrent(AudioRoute.MUTED(this@SmartglassMenuActivity, UUID.randomUUID().toString(), "Muted")) }
-
-            )).apply {
-        selectionListener = object : SmartglassesMenuLayout.OnSmartglassMenuSelectionListener {
-            override fun onSelected(item: ActionItem) {
-                Toast.makeText(applicationContext, item::class.java.simpleName, Toast.LENGTH_SHORT).show()
-                dismiss()
-                showAudioRoutes()
-            }
-
-            override fun onDismiss() = finish()
-        }
-    }
 }
