@@ -21,10 +21,11 @@ buildscript {
 
     ext.sdkVersion = 30
     ext.buildToolsVersion = "30.0.2"
-    ext.kotlin_version = '1.4.20'
+    ext.kotlin_version = '1.4.30-RC'
     ext.serialization_version = '0.5.1'
     ext.lifecycle_version = "1.1.1"
     ext.bandyer_common = "1.0.10"
+    ext.compose_version = '1.0.0-alpha12'
 
     repositories {
         google()
@@ -39,7 +40,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools:r8:2.1.78'
-        classpath 'com.android.tools.build:gradle:4.1.1'
+        classpath 'com.android.tools.build:gradle:4.1.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.21.0'
 
