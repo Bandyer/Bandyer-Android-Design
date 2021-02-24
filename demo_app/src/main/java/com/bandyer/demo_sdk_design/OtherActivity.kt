@@ -16,11 +16,11 @@
 
 package com.bandyer.demo_sdk_design
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
@@ -46,7 +46,7 @@ class OtherActivity : AppCompatActivity() {
     }
 
     private fun initializeBottomSheetLayout() {
-        callActionWidget = BandyerCallActionWidget(this, CallAction.getActions(this, cameraToggled = false, micToggled = true, withChat = true, withWhiteboard = true, withFileShare = true, withScreenShare = true))
+        callActionWidget = BandyerCallActionWidget(this, findViewById(R.id.coordinator_layout), CallAction.getActions(this, cameraToggled = false, micToggled = true, withChat = true, withWhiteboard = true, withFileShare = true, withScreenShare = true))
         callActionWidget!!.showRingingControls()
     }
 

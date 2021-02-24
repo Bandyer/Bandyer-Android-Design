@@ -43,6 +43,9 @@ import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction.Items.getAction
 import com.bandyer.sdk_design.call.widgets.BandyerCallActionWidget
 import com.bandyer.sdk_design.call.widgets.BandyerCallInfoWidget
 import com.bandyer.sdk_design.extensions.getScreenSize
+import com.bandyer.sdk_design.screensharing.dialog.BandyerScreenSharePickerDialog
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
 class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, BandyerCallActionWidget.OnClickListener {
@@ -136,7 +139,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
     }
 
     private fun initializeBottomSheetLayout(savedInstanceState: Bundle?) {
-        callActionWidget = BandyerCallActionWidget(this, getActions(this, true, false, true, true, true,true))
+        callActionWidget = BandyerCallActionWidget(this, findViewById(R.id.coordinator_layout), getActions(this, true, false, true, true, true, true))
 
         callActionWidget!!.onAudioRoutesRequest = this
         callActionWidget!!.onClickListener = this
@@ -218,12 +221,20 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
     private fun getMutedAudioRoute() = AudioRoute.MUTED(this, UUID.randomUUID().toString(), resources.getString(R.string.bandyer_call_action_audio_route_muted), AudioCallSession.getInstance().currentAudioOutputDevice is AudioOutputDevice.NONE)
 
     override fun onCallActionClicked(item: CallAction, position: Int): Boolean {
-        if (item is CAMERA) {
-            // if permissions toggle
-            item.toggle()
-            return true
+        return when (item) {
+            is CallAction.SCREEN_SHARE -> {
+                BandyerScreenSharePickerDialog().show(this@CallActivity) {
+                    Snackbar.make(callActionWidget!!.coordinatorLayout, it.name, Snackbar.LENGTH_SHORT).show()
+                }
+                true
+            }
+            is CAMERA -> {
+                // if permissions toggle
+                item.toggle()
+                true
+            }
+            else -> false
         }
-        return false
     }
 
     override fun onDestroy() {

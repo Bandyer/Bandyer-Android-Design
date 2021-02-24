@@ -28,6 +28,7 @@ import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviou
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_COLLAPSED
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_EXPANDED
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
+import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutContent
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
 import com.bandyer.sdk_design.call.bottom_sheet.items.AudioRoute
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
@@ -135,88 +136,11 @@ open class CallBottomSheet<T>(val context: AppCompatActivity,
      */
     fun show(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) {
         super.show()
-        animationStartOffset = -1f
-        animationEndState = -1
-        animationEnabled = fixed == false
-        bottomSheetBehaviour!!.disableDragging = false
-
-        this.collapsible = collapsible
-
-        if (callActionItems.size <= MAX_ITEMS_PER_ROW) {
-            bottomSheetBehaviour!!.disableDragging = true
-        }
-
-        if (fixed == true) {
-            bottomSheetBehaviour!!.isHideable = false
-            bottomSheetBehaviour!!.skipCollapsed = true
-            bottomSheetBehaviour!!.disableDragging = true
-            expand()
-            return
-        }
-
-        var peekHeight: Int
-        var anchorOffset: Int
-
-        bottomSheetLayoutContent.post {
-            bottomSheetBehaviour ?: return@post
-
-            val oneLineHeight = (lineView?.getHeightWithVerticalMargin() ?: 0) +
-                    (titleView?.getHeightWithVerticalMargin() ?: 0) +
-                    (recyclerView?.layoutManager?.getChildAt(0)?.let {
-                        it.getHeightWithVerticalMargin() +  (it.paddingTop.takeIf { callActionItems.size > MAX_ITEMS_PER_ROW } ?: 0)
-                    } ?: 0)
-            when {
-                collapsible -> {
-                    peekHeight = bottomSheetLayoutContent.rootView.top + (lineView?.getHeightWithVerticalMargin()
-                            ?: 0)
-                    anchorOffset = oneLineHeight
-                    animationEndState = if (collapsed && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
-                    bottomSheetBehaviour!!.skipCollapsed = false
-                }
-                else -> {
-                    peekHeight = oneLineHeight
-                    anchorOffset = peekHeight
-                    bottomSheetBehaviour!!.skipCollapsed = true
-                }
-            }
-
-            with(bottomSheetBehaviour!!) {
-                this.peekHeight = peekHeight
-                this.anchorOffset = anchorOffset
-                skipAnchor = false
-                bottomSheetBehaviour!!.isHideable = false
-                state = if(callActionItems.size <= MAX_ITEMS_PER_ROW) STATE_EXPANDED else if (collapsed && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
-            }
-
-            if (animationEndState == -1) return@post
-            animationStartOffset = bottomSheetBehaviour!!.getStableStateSlideOffset(animationEndState)
-        }
-
-        bottomSheetLayoutContent.lineView?.state =
-                if (bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT
-                else State.ANCHORED_LINE
-
-        if (collapsed && collapsible) bottomSheetLayoutContent.backgroundView?.alpha = 0f
-
-       if (callActionItems.size  <= MAX_ITEMS_PER_ROW) {
-           lineView?.layoutParams?.height = context.dp2px(24f)
-           lineView?.visibility = View.INVISIBLE
-           lineView?.isClickable = false
-           lineView?.requestLayout()
-       }
-
-        lineView?.setOnClickListener {
-            if (state == STATE_COLLAPSED)
-                anchor()
-            else if (bottomSheetBehaviour?.skipCollapsed == true)
-                expand()
-        }
-
-        camera?.toggle(cameraToggled)
-        mic?.toggle(micToggled)
+        setup(collapsible, fixed, collapsed)
     }
 
     override fun slideAnimationReady(bottomSheet: BandyerBottomSheet?, state: Int, slideOffset: Float) {
+        super.slideAnimationReady(bottomSheet, state, slideOffset)
         if (!animationEnabled) return
         if (state == animationEndState) animationStartOffset = slideOffset
     }
@@ -295,5 +219,86 @@ open class CallBottomSheet<T>(val context: AppCompatActivity,
         (newItem as? CallAction.AUDIOROUTE)?.setCurrent(currentAudioRoute)
 
         replaceItems(oldItem, newItem)
+    }
+
+    private fun setup(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) = bottomSheetLayoutContent.post contentPost@ {
+        animationStartOffset = -1f
+        animationEndState = -1
+        animationEnabled = fixed == false
+        bottomSheetBehaviour!!.disableDragging = false
+
+        this.collapsible = collapsible
+
+        if (callActionItems.size <= MAX_ITEMS_PER_ROW) {
+            bottomSheetBehaviour!!.disableDragging = true
+        }
+
+        if (fixed == true) {
+            bottomSheetBehaviour!!.isHideable = false
+            bottomSheetBehaviour!!.skipCollapsed = true
+            bottomSheetBehaviour!!.disableDragging = true
+            expand()
+            return@contentPost
+        }
+
+        var peekHeight: Int
+        var anchorOffset: Int
+
+        val firstItem = recyclerView?.layoutManager?.getChildAt(0)
+
+        firstItem?.post {
+            val oneLineHeight = (lineView?.getHeightWithVerticalMargin() ?: 0) +
+                    (titleView?.getHeightWithVerticalMargin() ?: 0) +
+                    firstItem.getHeightWithVerticalMargin() +  (firstItem.paddingTop.takeIf { callActionItems.size > MAX_ITEMS_PER_ROW } ?: 0)
+
+            when {
+                collapsible -> {
+                    peekHeight = bottomSheetLayoutContent.rootView.top + (lineView?.getHeightWithVerticalMargin()
+                            ?: 0)
+                    anchorOffset = oneLineHeight
+                    animationEndState = if (collapsed && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
+                    bottomSheetBehaviour!!.skipCollapsed = false
+                }
+                else -> {
+                    peekHeight = oneLineHeight
+                    anchorOffset = peekHeight
+                    bottomSheetBehaviour!!.skipCollapsed = true
+                }
+            }
+
+            with(bottomSheetBehaviour!!) {
+                this.peekHeight = peekHeight
+                this.anchorOffset = anchorOffset
+                skipAnchor = false
+                bottomSheetBehaviour!!.isHideable = false
+                state = if(callActionItems.size <= MAX_ITEMS_PER_ROW) STATE_EXPANDED else if (collapsed && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
+            }
+
+            if (animationEndState == -1) return@post
+            animationStartOffset = bottomSheetBehaviour!!.getStableStateSlideOffset(animationEndState)
+        }
+
+        bottomSheetLayoutContent.lineView?.state =
+                if (bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT
+                else State.ANCHORED_LINE
+
+        if (collapsed && collapsible) bottomSheetLayoutContent.backgroundView?.alpha = 0f
+
+        if (callActionItems.size  <= MAX_ITEMS_PER_ROW) {
+            lineView?.layoutParams?.height = context.dp2px(24f)
+            lineView?.visibility = View.INVISIBLE
+            lineView?.isClickable = false
+            lineView?.requestLayout()
+        }
+
+        lineView?.setOnClickListener {
+            if (state == STATE_COLLAPSED)
+                anchor()
+            else if (bottomSheetBehaviour?.skipCollapsed == true)
+                expand()
+        }
+
+        camera?.toggle(cameraToggled)
+        mic?.toggle(micToggled)
     }
 }

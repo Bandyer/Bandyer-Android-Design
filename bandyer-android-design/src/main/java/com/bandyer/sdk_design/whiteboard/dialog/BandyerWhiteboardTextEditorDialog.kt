@@ -36,6 +36,7 @@ import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutOffsetListener
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog.CustomTextEditorDialog.Companion.TEXT_PLACEHOLDER
 import com.bandyer.sdk_design.whiteboard.layout.BandyerWhiteboardTextEditorLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
 
 
 /**
@@ -80,7 +81,8 @@ class BandyerWhiteboardTextEditorDialog : BandyerDialog<BandyerWhiteboardTextEdi
         private var mText: String? = null
 
         private var callback: BandyerWhiteboardTextEditorWidgetListener? = null
-        private var collapsed = false
+        private val collapsed: Boolean
+            get() = behavior?.state == STATE_COLLAPSED
 
         private var whiteboardTextEditorLayout: BandyerWhiteboardTextEditorLayout? = null
 
@@ -161,6 +163,7 @@ class BandyerWhiteboardTextEditorDialog : BandyerDialog<BandyerWhiteboardTextEdi
 
         override fun dismiss() {
             whiteboardTextEditorLayout?.inputTextField?.isCursorVisible = false
+            whiteboardTextEditorLayout?.inputTextField?.text = null
             whiteboardTextEditorLayout?.inputTextField?.removeTextChangedListener(this)
             whiteboardTextEditorLayout?.hideKeyboard(true)
             callback = null
@@ -169,6 +172,7 @@ class BandyerWhiteboardTextEditorDialog : BandyerDialog<BandyerWhiteboardTextEdi
 
         override fun onDismiss(dialog: DialogInterface) {
             whiteboardTextEditorLayout?.hideKeyboard(true)
+            whiteboardTextEditorLayout?.inputTextField?.text = null
             callback = null
             super.onDismiss(dialog)
         }
@@ -222,13 +226,11 @@ class BandyerWhiteboardTextEditorDialog : BandyerDialog<BandyerWhiteboardTextEdi
         }
 
         override fun onCollapsed() {
-            collapsed = true
             if (!textHasChanged()) dismiss()
             else whiteboardTextEditorLayout?.showDiscardChangesMode()
         }
 
         override fun onExpanded() {
-            collapsed = false
             whiteboardTextEditorLayout?.showEditMode(textHasChanged())
         }
 

@@ -37,6 +37,8 @@
     <item name="ic_bandyer_record" type="drawable">@drawable/bandyer_record_icon</item>
     <item name="ic_bandyer_reload" type="drawable">@drawable/bandyer_reload_icon</item>
     <item name="ic_bandyer_screen_share" type="drawable">@drawable/bandyer_screen_share_icon</item>
+    <item name="ic_bandyer_screen_share_device" type="drawable">@drawable/bandyer_screen_share_device_icon</item>
+    <item name="ic_bandyer_screen_share_app" type="drawable">@drawable/bandyer_screen_share_app_icon</item>
     <item name="ic_bandyer_send" type="drawable">@drawable/bandyer_send_icon</item>
     <item name="ic_bandyer_single_tick" type="drawable">@drawable/bandyer_single_tick_icon</item>
     <item name="ic_bandyer_snapshot" type="drawable">@drawable/bandyer_snapshot_icon</item>

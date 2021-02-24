@@ -46,12 +46,13 @@ import com.bandyer.sdk_design.widgets.HideableWidget
 
 /**
  * Widget used during a call to perform actions such as mute video/audio, change audioRoute etc.
- * @param context AppCompatActivity context
+ * @param context Context
+ * @param coordinatorLayout CoordinatorLayout
  * @param callActionItems items to use
  * @constructor
  * @author kristiyan
  */
-class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val callActionItems: List<CallAction>) : HideableWidget where T : ActionItem, F : BandyerBottomSheet {
+class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordinatorLayout: CoordinatorLayout, val callActionItems: List<CallAction>) : HideableWidget where T : ActionItem, F : BandyerBottomSheet {
 
     override var hidingTimer: CountDownTimer? = null
 
@@ -223,21 +224,17 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val callActi
      */
     @JvmOverloads
     fun hide(onHiddenListener: OnHiddenListener? = null) {
-        if (isHidden) return
+        if (isHidden) {
+            onHiddenListener?.onHidden()
+            return
+        }
         isHidden = true
         if (onHiddenListener != null) this.onHiddenListener = onHiddenListener
         when (currentShownBottomSheet) {
             callBottomSheet -> {
                 callBottomSheet.hide(true)
             }
-            audioRouteBottomSheet -> {
-                removeAnchorFromAnchoredView()
-                audioRouteBottomSheet.dispose()
-            }
-            ringingBottomSheet -> {
-                removeAnchorFromAnchoredView()
-                ringingBottomSheet.dispose()
-            }
+            else -> disposeBottomSheet(currentShownBottomSheet)
         }
     }
 
@@ -309,17 +306,16 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val callActi
     /**
      * Show ringing controls like Hangup and Answer
      */
-    fun showRingingControls() {
+    fun showRingingControls() = coordinatorLayout.post {
         isHidden = false
         currentBottomSheetLayout = ringingBottomSheet.bottomSheetLayoutContent
-        removeAnchorFromAnchoredView()
+
         ringingBottomSheet.bottomSheetLayoutContent.id = R.id.bandyer_id_bottom_sheet_ringing
         if (callBottomSheet.isVisible() || audioRouteBottomSheet.isVisible()) {
-            callBottomSheet.dispose()
-            audioRouteBottomSheet.dispose()
+            disposeBottomSheet(callBottomSheet)
+            disposeBottomSheet(audioRouteBottomSheet)
         }
         ringingBottomSheet.show()
-        anchorViews()
     }
 
     /**
@@ -329,7 +325,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val callActi
      * @param forceAnchor true to anchor no matter what, false otherwise
      */
     @JvmOverloads
-    fun setAnchoredView(anchoredView: View, gravity: Int, forceAnchor: Boolean = false) {
+    fun setAnchoredView(anchoredView: View, gravity: Int) {
         var hasAnchoredView = false
         anchoredViews.forEach {
             if (it.first == anchoredView) {
@@ -340,13 +336,11 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val callActi
         if (!hasAnchoredView) {
             anchoredViews.add(Pair(anchoredView, gravity))
             checkAnchoredViewInCoordinatorLayout()
-            if (forceAnchor) anchorViews()
         }
     }
 
-    private fun anchorViews() {
-        if (currentBottomSheetLayout == null) return
-
+    private fun anchorViews() = currentBottomSheetLayout?.post {
+        removeAnchorFromAnchoredView()
         anchoredViews.forEach { pair ->
             val lp = (pair.first.layoutParams as CoordinatorLayout.LayoutParams)
             lp.anchorId = currentBottomSheetLayout?.id ?: View.NO_ID
@@ -403,22 +397,16 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val callActi
      * @param collapsed optional initial state collapsed
      */
     @JvmOverloads
-    fun showCallControls(collapsible: Boolean, fixed: Boolean = false, collapsed: Boolean = false) {
+    fun showCallControls(collapsible: Boolean, fixed: Boolean = false, collapsed: Boolean = false) = coordinatorLayout.post {
         isHidden = false
         currentBottomSheetLayout = callBottomSheet.bottomSheetLayoutContent
-        removeAnchorFromAnchoredView()
-        ringingBottomSheet.bottomSheetLayoutContent.id = R.id.bandyer_id_bottom_sheet_ringing
-        if (ringingBottomSheet.isVisible())
-            ringingBottomSheet.dispose()
-        if (audioRouteBottomSheet.isVisible())
-            audioRouteBottomSheet.hide()
-
+        disposeBottomSheet(ringingBottomSheet)
+        disposeBottomSheet(audioRouteBottomSheet)
         this.collapsible = collapsible
         this.fixed = fixed
         callBottomSheet.bottomSheetLayoutContent.id = R.id.bandyer_id_bottom_sheet_call
         callBottomSheet.show(collapsible, fixed, collapsed)
         callBottomSheet.updateAudioRouteIcon(audioRouteBottomSheet.mCurrentAudioRoute)
-        anchorViews()
     }
 
     override fun onHidingTimerFinished() {
@@ -429,14 +417,12 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val callActi
     /**
      * Show the audioRoute bottomSheet
      */
-    fun showAudioRouteBottomSheet() {
+    fun showAudioRouteBottomSheet() = coordinatorLayout.post {
         isHidden = false
         audioRouteBottomSheet.bottomSheetLayoutContent.id = R.id.bandyer_id_bottom_sheet_audio_route
-        removeAnchorFromAnchoredView()
         callBottomSheet.hide(true)
         audioRouteBottomSheet.show()
         currentBottomSheetLayout = audioRouteBottomSheet.bottomSheetLayoutContent
-        anchorViews()
     }
 
     /**
@@ -540,9 +526,9 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val callActi
                 is CallBottomSheet<*> -> disableAutoHide()
                 is AudioRouteBottomSheet<*> -> {
                     if (!isHidden) showCallControls(collapsible, fixed)
-                    bottomSheet.dispose()
+                    disposeBottomSheet(bottomSheet)
                 }
-                is RingingBottomSheet<*> -> bottomSheet.dispose()
+                is RingingBottomSheet<*> -> disposeBottomSheet(bottomSheet)
             }
             onHiddenListener?.onHidden()
             onHiddenListener = null
@@ -610,6 +596,11 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val callActi
         callBottomSheet.dispose()
         audioRouteBottomSheet.dispose()
         ringingBottomSheet.dispose()
+    }
+
+    private fun disposeBottomSheet(bottomSheet: BaseBandyerBottomSheet?) {
+        removeAnchorFromAnchoredView()
+        bottomSheet?.dispose()
     }
 
     /**
