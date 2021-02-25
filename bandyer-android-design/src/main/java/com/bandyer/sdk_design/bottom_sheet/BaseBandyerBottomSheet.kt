@@ -351,9 +351,7 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
             hasMoved = true
         }
         fadeRecyclerViewLinesBelowNavigation(true)
-        val window = coordinatorLayout!!.context.getActivity<AppCompatActivity>()?.window ?: return
-        val cardViewBackgroundColor = bottomSheetLayoutContent.backgroundView?.cardBackgroundColor?.defaultColor ?: return
-        WindowInsetsControllerCompat(window, coordinatorLayout!!.rootView).isAppearanceLightNavigationBars = !cardViewBackgroundColor.requiresLightOverlay()
+        updateNavigationBar()
     }
 
     /**
@@ -392,7 +390,10 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
         bottomSheetLayoutContent.post {
             fadeRecyclerViewLinesBelowNavigation()
         }
+        updateNavigationBar()
+    }
 
+    private fun updateNavigationBar() {
         val window = coordinatorLayout!!.context.getActivity<AppCompatActivity>()?.window ?: return
         val cardViewBackgroundColor = bottomSheetLayoutContent.backgroundView?.cardBackgroundColor?.defaultColor ?: return
         WindowInsetsControllerCompat(window, coordinatorLayout!!.rootView).isAppearanceLightNavigationBars = !cardViewBackgroundColor.requiresLightOverlay()
@@ -573,12 +574,14 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
             behaviour.skipAnchor = false
             behaviour.state = BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT
         }
+        updateNavigationBar()
     }
 
     override fun expand() {
         bottomSheetLayoutContent.post {
             bottomSheetBehaviour?.state = BandyerBottomSheetBehaviour.STATE_EXPANDED
         }
+        updateNavigationBar()
     }
 
     override fun collapse(to: View?, offset: Int?) {
@@ -592,6 +595,7 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
             behaviour.skipCollapsed = false
             behaviour.state = BandyerBottomSheetBehaviour.STATE_COLLAPSED
         }
+        updateNavigationBar()
     }
 
     override fun toggle() {
