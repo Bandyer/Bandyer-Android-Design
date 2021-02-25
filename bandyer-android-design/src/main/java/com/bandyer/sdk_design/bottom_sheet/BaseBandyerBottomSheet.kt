@@ -197,6 +197,11 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
      */
     protected open fun slideAnimationUpdate(bottomSheet: BandyerBottomSheet?, slideOffset: Float) {
         if (slideOffset >= 0f) fadeRecyclerViewLinesBelowNavigation()
+        if (!animationEnabled || bottomSheetBehaviour?.lastStableState == state) return
+        when {
+            slideOffset <= 0f -> updateNavigationBar(false)
+            else -> updateNavigationBar()
+        }
     }
 
     /**
@@ -335,8 +340,7 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
         }
         bottomSheetLayoutContent.lineView?.state = BandyerLineButton.State.COLLAPSED
 
-        val window = coordinatorLayout!!.context.getActivity<AppCompatActivity>()?.window ?: return
-        WindowInsetsControllerCompat(window, coordinatorLayout!!.rootView).isAppearanceLightNavigationBars = false
+        updateNavigationBar(false)
 
         fadeRecyclerViewLinesBelowNavigation()
     }
@@ -393,10 +397,11 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
         updateNavigationBar()
     }
 
-    private fun updateNavigationBar() {
+    private fun updateNavigationBar(isLightNavigationBar: Boolean? = null) {
         val window = coordinatorLayout!!.context.getActivity<AppCompatActivity>()?.window ?: return
         val cardViewBackgroundColor = bottomSheetLayoutContent.backgroundView?.cardBackgroundColor?.defaultColor ?: return
-        WindowInsetsControllerCompat(window, coordinatorLayout!!.rootView).isAppearanceLightNavigationBars = !cardViewBackgroundColor.requiresLightOverlay()
+
+        WindowInsetsControllerCompat(window, coordinatorLayout!!.rootView).isAppearanceLightNavigationBars = isLightNavigationBar ?: !cardViewBackgroundColor.requiresLightOverlay()
     }
 
     /**
