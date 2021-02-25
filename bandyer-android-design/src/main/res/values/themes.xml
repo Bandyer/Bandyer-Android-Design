@@ -39,8 +39,9 @@
 
         <item name="elevationOverlayEnabled">false</item>
         <item name="toolbarStyle">@style/BandyerSDKDesign.ToolBarStyle</item>
-        <item name="android:statusBarColor" tools:targetApi="lollipop">?attr/colorPrimaryVariant
-        </item>
+        <item name="android:statusBarColor" tools:targetApi="lollipop">?attr/colorPrimaryVariant</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
+        <item name="android:enforceStatusBarContrast" tools:targetApi="q">false</item>
     </style>
 
     <style name="BandyerSDKDesign.ToolBarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
