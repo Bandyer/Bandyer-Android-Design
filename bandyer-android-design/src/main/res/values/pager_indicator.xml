@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BandyerSDKDesign.PagerIndicator">
+        <attr name="bandyer_pagerIndicatorDotCount" format="integer" />
+        <attr name="bandyer_pagerIndicatorFadingDotCount" format="integer" />
+        <attr name="bandyer_pagerIndicatorDotRadius" format="dimension" />
+        <attr name="bandyer_pagerIndicatorSelectedDotRadius" format="dimension" />
+        <attr name="bandyer_pagerIndicatorDotColor" format="color" />
+        <attr name="bandyer_pagerIndicatorSelectedDotColor" format="color" />
+        <attr name="bandyer_pagerIndicatorDotSeparation" format="dimension" />
+        <attr name="bandyer_pagerIndicatorVerticalSupport" format="boolean" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.PagerIndicatorStyle">
+        <item name="bandyer_pagerIndicatorDotCount">5</item>
+        <item name="bandyer_pagerIndicatorFadingDotCount">3</item>
+        <item name="bandyer_pagerIndicatorDotRadius">@dimen/bandyer_dimen_space4</item>
+        <item name="bandyer_pagerIndicatorSelectedDotRadius">@dimen/bandyer_dimen_space8</item>
+        <item name="bandyer_pagerIndicatorDotColor">?attr/colorOnSurface</item>
+        <item name="bandyer_pagerIndicatorSelectedDotColor">@color/bandyer_colorPrimary</item>
+        <item name="bandyer_pagerIndicatorDotSeparation">@dimen/bandyer_dimen_space24</item>
+        <item name="bandyer_pagerIndicatorVerticalSupport">false</item>
+    </style>
+</resources>

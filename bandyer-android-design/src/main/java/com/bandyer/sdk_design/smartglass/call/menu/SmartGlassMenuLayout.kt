@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.SnapHelper
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.databinding.BandyerWidgetSmartglassesMenuLayoutBinding
+import com.bandyer.sdk_design.extensions.isRtl
 import com.bandyer.sdk_design.smartglass.call.menu.adapter.SmartGlassActionItemAdapter
 import com.bandyer.sdk_design.utils.isConfirmButton
 
@@ -27,9 +28,7 @@ import com.bandyer.sdk_design.utils.isConfirmButton
  * @constructor
  */
 @SuppressLint("ViewConstructor")
-class SmartGlassMenuLayout(
-        context: Context,
-        private val items: List<CallAction>) : ConstraintLayout(context, null, com.bandyer.sdk_design.R.attr.bandyer_smartGlassDialogMenuStyle) {
+class SmartGlassMenuLayout(context: Context, private val items: List<CallAction>) : ConstraintLayout(context, null, com.bandyer.sdk_design.R.attr.bandyer_smartGlassDialogMenuStyle) {
 
     /**
      * Smart glass menu selection listener
@@ -58,33 +57,37 @@ class SmartGlassMenuLayout(
 
     private val binding: BandyerWidgetSmartglassesMenuLayoutBinding by lazy { BandyerWidgetSmartglassesMenuLayoutBinding.inflate(LayoutInflater.from(context), this) }
 
-    private val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    private val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, context.isRtl()).apply {
+        stackFromEnd = context.isRtl()
+    }
 
     private val snapHelper: SnapHelper = PagerSnapHelper()
 
     init {
-        binding.bandyerSmartglassesMenuRecyclerview.layoutManager = layoutManager
-        binding.bandyerSmartglassesMenuRecyclerview.itemAnimator = null
-        binding.bandyerSmartglassesMenuRecyclerview.setHasFixedSize(true)
+        binding.bandyerSmartGlassMenuRecyclerview.layoutManager = layoutManager
+        binding.bandyerSmartGlassMenuRecyclerview.itemAnimator = null
+        binding.bandyerSmartGlassMenuRecyclerview.setHasFixedSize(true)
 
 //        binding.bandyerSmartglassesMenuRecyclerview.adapter = fastAdapter
 //        fastAdapter.set(items.map { AdapterActionItem(it) })
 
-        snapHelper.attachToRecyclerView(binding.bandyerSmartglassesMenuRecyclerview)
+        snapHelper.attachToRecyclerView(binding.bandyerSmartGlassMenuRecyclerview)
 
 
-        binding.bandyerSmartglassesMenuRecyclerview.adapter = SmartGlassActionItemAdapter(object : SmartGlassActionItemAdapter.OnActionItemClickedListener {
+        binding.bandyerSmartGlassMenuRecyclerview.adapter = SmartGlassActionItemAdapter(object : SmartGlassActionItemAdapter.OnActionItemClickedListener {
             override fun onActionItemClicked(actionItem: ActionItem) {
                 onSmartglassMenuSelectionListener?.onSelected(items[currentMenuItemIndex])
             }
         }).apply {
             setHasStableIds(true)
-            setItems(items)
+            setItems(if (context.isRtl()) items.reversed() else items)
         }
 
-        binding.bandyerSmartglassesMenuRecyclerviewIndicator.attachToRecyclerView(binding.bandyerSmartglassesMenuRecyclerview)
+//        binding.bandyerSmartglassesMenuRecyclerviewIndicator.attachToRecyclerView(binding.bandyerSmartglassesMenuRecyclerview)
 
-        binding.bandyerSmartglassesMenuRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.bandyerSmartGlassMenuIndicator.attachToRecyclerView(binding.bandyerSmartGlassMenuRecyclerview)
+
+        binding.bandyerSmartGlassMenuRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState != RecyclerView.SCROLL_STATE_IDLE) return
