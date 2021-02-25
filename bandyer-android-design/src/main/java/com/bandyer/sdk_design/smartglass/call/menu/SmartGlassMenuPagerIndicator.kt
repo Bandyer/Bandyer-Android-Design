@@ -75,16 +75,14 @@ class SmartGlassMenuPagerIndicator @JvmOverloads constructor(context: Context, a
     private var offsetPercent: Float = 0f
 
     init {
-        attrs?.let {
-            dotCount = context.getPagerIndicatorIntAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorDotCount)
-            fadingDotCount = context.getPagerIndicatorIntAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorFadingDotCount)
-            dotRadiusPx = context.getPagerIndicatorDimensionPixelSizeAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorDotRadius)
-            selectedDotRadiusPx = context.getPagerIndicatorDimensionPixelSizeAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorSelectedDotRadius)
-            dotColor = context.getPagerIndicatorColorAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorDotColor)
-            selectedDotColor = context.getPagerIndicatorColorAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorSelectedDotColor)
-            dotSeparationDistancePx = context.getPagerIndicatorDimensionPixelSizeAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorDotSeparation)
-            verticalSupport = context.getPagerIndicatorBooleanAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorVerticalSupport)
-        }
+        dotCount = context.getPagerIndicatorIntAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorDotCount)
+        fadingDotCount = context.getPagerIndicatorIntAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorFadingDotCount)
+        dotRadiusPx = context.getPagerIndicatorDimensionPixelSizeAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorDotRadius)
+        selectedDotRadiusPx = context.getPagerIndicatorDimensionPixelSizeAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorSelectedDotRadius)
+        dotColor = context.getPagerIndicatorColorAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorDotColor)
+        selectedDotColor = context.getPagerIndicatorColorAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorSelectedDotColor)
+        dotSeparationDistancePx = context.getPagerIndicatorDimensionPixelSizeAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorDotSeparation)
+        verticalSupport = context.getPagerIndicatorBooleanAttribute(R.styleable.BandyerSDKDesign_PagerIndicator_bandyer_pagerIndicatorVerticalSupport)
 
         selectedDotPaint = getDefaultPaintConfig(defaultColor = selectedDotColor)
         dotPaint = getDefaultPaintConfig(defaultColor = dotColor)
