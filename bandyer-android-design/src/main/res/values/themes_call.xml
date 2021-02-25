@@ -35,6 +35,7 @@
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight.V16" parent="BandyerSDKDesign.Theme.DayNight">
         <item name="android:fitsSystemWindows">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="bandyer_answerHelperTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
         <item name="bandyer_bottomSheetCallStyle">@style/BandyerSDKDesign.BottomSheet.Call</item>
         <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
@@ -49,6 +50,7 @@
 
     <style name="BandyerSDKDesign.Theme.Call.Day.V16" parent="BandyerSDKDesign.Theme.Day">
         <item name="android:fitsSystemWindows">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="bandyer_answerHelperTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
         <item name="bandyer_bottomSheetCallStyle">@style/BandyerSDKDesign.BottomSheet.Call</item>
         <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
@@ -63,6 +65,7 @@
 
     <style name="BandyerSDKDesign.Theme.Call.Night.V16" parent="BandyerSDKDesign.Theme.Night">
         <item name="android:fitsSystemWindows">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="bandyer_answerHelperTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
         <item name="bandyer_bottomSheetCallStyle">@style/BandyerSDKDesign.BottomSheet.Call</item>
         <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
