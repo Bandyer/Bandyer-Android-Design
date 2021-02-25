@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.btn_call).setOnClickListener { startActivity(Intent(this, CallActivity::class.java)) }
 
-        findViewById<MaterialButton>(R.id.btn_whiteboard).setOnClickListener { startActivity(Intent(this, WhiteboardActivity::class.java)) }
+        findViewById<MaterialButton>(R.id.btn_whiteboard).setOnClickListener { WhiteBoardDialog().show(this@MainActivity) }
 
         findViewById<MaterialButton>(R.id.btn_ringing).setOnClickListener { startActivity(Intent(this, RingingActivity::class.java)) }
 

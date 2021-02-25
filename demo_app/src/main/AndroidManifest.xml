@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".App"
@@ -19,11 +20,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/DesignDemoApp">
-        <activity android:name=".RingingActivity"></activity>
+        <activity android:name=".RingingActivity"/>
         <activity
             android:name=".BluetoothAudioRouteActivity"
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
-        <activity android:name=".WhiteboardActivity" />
         <activity
             android:name=".CallActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
