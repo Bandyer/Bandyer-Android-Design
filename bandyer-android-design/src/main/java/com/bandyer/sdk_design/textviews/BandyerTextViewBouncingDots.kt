@@ -25,7 +25,6 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.getBouncingDotsBooleanAttribute
 import com.bandyer.sdk_design.extensions.getBouncingDotsDimensionAttribute
