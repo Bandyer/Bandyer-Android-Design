@@ -197,7 +197,6 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
      */
     protected open fun slideAnimationUpdate(bottomSheet: BandyerBottomSheet?, slideOffset: Float) {
         if (slideOffset >= 0f) fadeRecyclerViewLinesBelowNavigation()
-        if (!animationEnabled || bottomSheetBehaviour?.lastStableState == state) return
         when {
             slideOffset <= 0f -> updateNavigationBar(false)
             else -> updateNavigationBar()
