@@ -352,8 +352,8 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
         }
         fadeRecyclerViewLinesBelowNavigation(true)
         val window = coordinatorLayout!!.context.getActivity<AppCompatActivity>()?.window ?: return
-        val surfaceColor = bottomSheetLayoutContent.backgroundView?.cardBackgroundColor?.defaultColor ?: return
-        WindowInsetsControllerCompat(window, coordinatorLayout!!.rootView).isAppearanceLightNavigationBars = surfaceColor.requiresLightOverlay()
+        val cardViewBackgroundColor = bottomSheetLayoutContent.backgroundView?.cardBackgroundColor?.defaultColor ?: return
+        WindowInsetsControllerCompat(window, coordinatorLayout!!.rootView).isAppearanceLightNavigationBars = !cardViewBackgroundColor.requiresLightOverlay()
     }
 
     /**
@@ -395,7 +395,7 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
 
         val window = coordinatorLayout!!.context.getActivity<AppCompatActivity>()?.window ?: return
         val cardViewBackgroundColor = bottomSheetLayoutContent.backgroundView?.cardBackgroundColor?.defaultColor ?: return
-        WindowInsetsControllerCompat(window, coordinatorLayout!!.rootView).isAppearanceLightNavigationBars = cardViewBackgroundColor.requiresLightOverlay()
+        WindowInsetsControllerCompat(window, coordinatorLayout!!.rootView).isAppearanceLightNavigationBars = !cardViewBackgroundColor.requiresLightOverlay()
     }
 
     /**
