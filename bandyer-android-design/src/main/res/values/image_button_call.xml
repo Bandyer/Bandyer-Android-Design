@@ -101,24 +101,24 @@
 
     <!-- SMARTGLASS CALL BUTTONS -->
 
-    <style name="BandyerSDKDesign.ImageButton.Call.Smartglass" parent="BandyerSDKDesign.ImageButton.Call">
+    <style name="BandyerSDKDesign.ImageButton.Call.SmartGlass" parent="BandyerSDKDesign.ImageButton.Call">
         <item name="iconTint">?attr/colorOnSurface</item>
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="iconSize">@dimen/bandyer_dimen_space64</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.Call.Microphone.Smartglass" parent="BandyerSDKDesign.ImageButton.Call.Smartglass">
+    <style name="BandyerSDKDesign.ImageButton.Call.SmartGlass.Microphone" parent="BandyerSDKDesign.ImageButton.Call.SmartGlass">
         <item name="icon">@drawable/bandyer_glass_call_action_button_microphone_icon</item>
         <item name="android:contentDescription">@string/bandyer_call_action_disable_mic_description</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.Call.Camera.Smartglass" parent="BandyerSDKDesign.ImageButton.Call.Smartglass">
+    <style name="BandyerSDKDesign.ImageButton.Call.SmartGlass.Camera" parent="BandyerSDKDesign.ImageButton.Call.SmartGlass">
         <item name="icon">@drawable/bandyer_glass_call_action_button_camera_icon</item>
         <item name="android:contentDescription">@string/bandyer_call_action_disable_camera_description
         </item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.Call.Participants.Smartglass" parent="BandyerSDKDesign.ImageButton.Call.Smartglass">
+    <style name="BandyerSDKDesign.ImageButton.Call.SmartGlass.Participants" parent="BandyerSDKDesign.ImageButton.Call.SmartGlass">
         <item name="icon">@drawable/ic_bandyer_glass_participants</item>
         <item name="android:contentDescription">@string/bandyer_call_action_participants</item>
     </style>

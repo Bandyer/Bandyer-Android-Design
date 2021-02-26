@@ -101,7 +101,7 @@
                 android:layout_marginLeft="@dimen/bandyer_dimen_space16"
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
-                android:text="@string/smartglasses_menu"
+                android:text="@string/smart_glass_menu"
                 app:layout_constraintTop_toBottomOf="@id/btn_chat" />
 
             <com.google.android.material.button.MaterialButton

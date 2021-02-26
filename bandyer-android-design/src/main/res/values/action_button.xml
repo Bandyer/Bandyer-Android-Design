@@ -27,16 +27,16 @@
     <!-- ACTION BUTTON STYLES -->
 
     <style name="BandyerSDKDesign.ActionButton">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ActionButton.RootLayout</item>
     </style>
 
     <style name="BandyerSDKDesign.ActionButton.SmartGlass" parent="BandyerSDKDesign.ActionButton">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ActionButton.RootLayout.Smartglass</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ActionButton.RootLayout.SmartGlass</item>
     </style>
 
     <style name="BandyerSDKDesign.ActionButton.RootLayout" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
         <item name="android:orientation">vertical</item>
         <item name="android:layout_gravity">center</item>
@@ -49,7 +49,7 @@
         <item name="android:paddingTop">@dimen/bandyer_dimen_space20</item>
     </style>
 
-    <style name="BandyerSDKDesign.ActionButton.RootLayout.Smartglass" parent="BandyerSDKDesign.ActionButton.RootLayout">
+    <style name="BandyerSDKDesign.ActionButton.RootLayout.SmartGlass" parent="BandyerSDKDesign.ActionButton.RootLayout">
         <item name="android:paddingTop">@dimen/bandyer_dimen_space0</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space0</item>
     </style>
@@ -133,19 +133,19 @@
 
     <!-- SMARTGLASS CALL ACTION BUTTONS -->
 
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.Microphone" parent="BandyerSDKDesign.ActionButton.SmartGlass">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Microphone.Smartglass</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Microphone.Smartglass</item>
+    <style name="BandyerSDKDesign.ActionButton.SmartGlass.Microphone" parent="BandyerSDKDesign.ActionButton.SmartGlass">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.SmartGlass.Microphone</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Microphone</item>
     </style>
 
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.Camera" parent="BandyerSDKDesign.ActionButton.SmartGlass">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Camera.Smartglass</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Camera.Smartglass</item>
+    <style name="BandyerSDKDesign.ActionButton.SmartGlass.Camera" parent="BandyerSDKDesign.ActionButton.SmartGlass">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.SmartGlass.Camera</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Camera</item>
     </style>
 
-    <style name="BandyerSDKDesign.ActionButton.Smartglass.Participants" parent="BandyerSDKDesign.ActionButton.SmartGlass">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Participants.Smartglass</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Participants.Smartglass</item>
+    <style name="BandyerSDKDesign.ActionButton.SmartGlass.Participants" parent="BandyerSDKDesign.ActionButton.SmartGlass">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.SmartGlass.Participants</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Participants</item>
     </style>
 
 </resources>

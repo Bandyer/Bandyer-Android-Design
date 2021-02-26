@@ -53,7 +53,8 @@
             android:theme="@style/BandyerSDKDesign.Theme.Call"
             tools:targetApi="n" />
         <activity
-            android:name=".MainActivity">
+            android:name=".MainActivity"
+            android:theme="@style/BandyerSDKDesign.Theme.Call.DayNight">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -67,9 +68,7 @@
         <activity
             android:name=".PointerActivity"
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
-        <activity
-            android:name=".SmartglassMenuActivity"
-            android:theme="@style/BandyerSDKDesign.Theme.Call.DayNight" />
+
     </application>
 
 </manifest>

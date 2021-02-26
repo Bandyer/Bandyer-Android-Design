@@ -81,7 +81,7 @@
 
     <!-- Smartglass BUTTON LABELS -->
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_64sp</item>
@@ -92,15 +92,15 @@
         <item name="autoSizeTextType">uniform</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Microphone.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Microphone" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">
         <item name="android:text">@string/bandyer_call_action_mic_mute</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Camera.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Camera" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">
         <item name="android:text">@string/bandyer_call_action_video_disable</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Participants.Smartglass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Smartglass">
+    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Participants" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">
         <item name="android:text">@string/bandyer_call_action_participants</item>
     </style>
 
