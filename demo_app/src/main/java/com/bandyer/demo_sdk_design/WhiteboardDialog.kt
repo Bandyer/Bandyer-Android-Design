@@ -1,8 +1,10 @@
 package com.bandyer.demo_sdk_design
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.webkit.*
+import androidx.core.os.HandlerCompat.postDelayed
 import com.bandyer.sdk_design.extensions.replaceWith
 import com.bandyer.sdk_design.whiteboard.dialog.BaseBandyerWhiteboardDialog
 import com.bandyer.sdk_design.whiteboard.layout.BandyerWhiteboardUploadProgressLayout
@@ -23,7 +25,6 @@ class WhiteBoardDialog : BaseBandyerWhiteboardDialog<WhiteBoardDialog.Whiteboard
 
         var wvClient: WebViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
-                loadingErrorLayout?.visibility = View.GONE
                 progressBar?.visibility = View.GONE
                 webView!!.loadUrl("javascript:init(\"\",\"\")")
                 initProgressCard()
@@ -31,11 +32,15 @@ class WhiteBoardDialog : BaseBandyerWhiteboardDialog<WhiteBoardDialog.Whiteboard
             }
         }
 
+        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+            super.onViewCreated(view, savedInstanceState)
+            progressBar?.visibility = View.GONE
+        }
+
         private fun initProgressCard() {
             uploadProgressCard!!.showUploading("Uploading file", "compressing..", 60f)
             uploadProgressCard!!.setOnClickListener {
-                uploadProgressCard!!.showError("Error", "Something went wrong")
-            }
+                uploadProgressCard!!.showError("Error", "Something went wrong") }
         }
 
         private fun initWebView() {
@@ -62,6 +67,8 @@ class WhiteBoardDialog : BaseBandyerWhiteboardDialog<WhiteBoardDialog.Whiteboard
             }
 
             webViewStub?.replaceWith(webView!!)
+
+            loadingErrorLayout?.let { it.postDelayed({ it.visibility = View.GONE }, 300) }
         }
 
         override fun onReload() {
