@@ -27,6 +27,7 @@ class WhiteBoardDialog : BaseBandyerWhiteboardDialog<WhiteBoardDialog.Whiteboard
             override fun onPageFinished(view: WebView?, url: String?) {
                 progressBar?.visibility = View.GONE
                 webView!!.loadUrl("javascript:init(\"\",\"\")")
+                webView!!.visibility = View.VISIBLE
                 initProgressCard()
                 super.onPageFinished(view, url)
             }
@@ -64,9 +65,10 @@ class WhiteBoardDialog : BaseBandyerWhiteboardDialog<WhiteBoardDialog.Whiteboard
                 }
 
                 webViewClient = wvClient
-            }
 
-            webViewStub?.replaceWith(webView!!)
+                webViewStub?.replaceWith(this@apply)
+                visibility = View.GONE
+            }
 
             loadingErrorLayout?.let { it.postDelayed({ it.visibility = View.GONE }, 300) }
         }
