@@ -24,7 +24,7 @@ import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.extensions.getSmartGlassCallActionItemStyle
 
 /**
- * Get all actions for an audio&Video call that can be collapsed
+ * Get all available smart glass actions
  * @param ctx Context
  * @param cameraToggled True if by default the camera should be toggled, false otherwise, null if not desired as action
  * @param micToggled True if by default the microphone should be toggled, false otherwise, null if not desired as action
@@ -38,7 +38,7 @@ fun CallAction.Items.getSmartglassActions(ctx: Context, micToggled: Boolean?, ca
         }
 
 /**
- * Camera smartglass call action item
+ * Camera smart glass call action item
  * @property toggled true or false to toggle
  * @constructor
  */
@@ -60,7 +60,7 @@ open class SMART_GLASS_CAMERA(mToggled: Boolean, private val ctx: Context): Call
 }
 
 /**
- * Microphone smartglass call action item
+ * Microphone smart glass call action item
  * @property toggled true or false to toggle
  * @constructor
  */
@@ -82,7 +82,7 @@ open class SMART_GLASS_MICROPHONE(mToggled: Boolean, private val ctx: Context): 
 }
 
 /**
- * Participants smartglass call action item
+ * Participants smart glass call action item
  * @constructor
  */
 open class SMART_GLASS_PARTICIPANTS(ctx: Context): CallAction(R.id.bandyer_id_participants, R.layout.bandyer_smartglass_call_action_item, ctx.getSmartGlassCallActionItemStyle(R.styleable.BandyerSDKDesign_SmartGlassDialogMenu_bandyer_smartGlassParticipantsStyle))
