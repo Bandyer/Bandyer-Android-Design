@@ -26,7 +26,7 @@
         <attr name="toolbarStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Theme.Chat.DayNight" parent="BandyerSDKDesign.Theme.DayNight">
+    <style name="BandyerSDKDesign.Theme.Chat.DayNight.V16" parent="BandyerSDKDesign.Theme.DayNight">
         <item name="bandyer_chatInfoWidgetStyle">@style/BandyerSDKDesign.ChatInfo</item>
         <item name="bandyer_chatInputWidgetStyle">@style/BandyerSDKDesign.ChatInput</item>
         <item name="bandyer_chatTimestampStyle">@style/BandyerSDKDesign.Chat.ChatTimestamp</item>
@@ -36,7 +36,11 @@
         <item name="toolbarStyle">@style/BandyerSDKDesign.Theme.Chat.ToolBarStyle</item>
     </style>
 
+    <style name="BandyerSDKDesign.Theme.Chat.DayNight" parent="BandyerSDKDesign.Theme.Chat.DayNight.V16"/>
+
     <style name="BandyerSDKDesign.Theme.Chat.Day" parent="BandyerSDKDesign.Theme.Day">
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/white</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="bandyer_chatInfoWidgetStyle">@style/BandyerSDKDesign.ChatInfo</item>
         <item name="bandyer_chatInputWidgetStyle">@style/BandyerSDKDesign.ChatInput</item>
         <item name="bandyer_chatTimestampStyle">@style/BandyerSDKDesign.Chat.ChatTimestamp</item>
@@ -47,6 +51,8 @@
     </style>
 
     <style name="BandyerSDKDesign.Theme.Chat.Night" parent="BandyerSDKDesign.Theme.Night">
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/black</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="bandyer_chatInfoWidgetStyle">@style/BandyerSDKDesign.ChatInfo</item>
         <item name="bandyer_chatInputWidgetStyle">@style/BandyerSDKDesign.ChatInput</item>
         <item name="bandyer_chatTimestampStyle">@style/BandyerSDKDesign.Chat.ChatTimestamp</item>
@@ -56,7 +62,7 @@
         <item name="toolbarStyle">@style/BandyerSDKDesign.Theme.Chat.ToolBarStyle</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Chat" parent="BandyerSDKDesign.Theme.Chat.Day" />
+    <style name="BandyerSDKDesign.Theme.Chat" parent="BandyerSDKDesign.Theme.Chat.DayNight" />
 
     <style name="BandyerSDKDesign.Theme.Chat.ToolBarStyle" parent="@style/BandyerSDKDesign.ToolBarStyle">
         <item name="materialThemeOverlay">@style/BandyerSDKDesign.Theme.Chat.ToolBarStyle.MaterialThemeOverlay</item>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BandyerSDKDesign.Theme.Chat.DayNight.V27" parent="BandyerSDKDesign.Theme.Chat.DayNight.V16">
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.Chat.DayNight" parent="BandyerSDKDesign.Theme.Chat.DayNight.V27"/>
+
+</resources>

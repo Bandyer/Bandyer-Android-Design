@@ -16,6 +16,7 @@
 
 package com.bandyer.sdk_design.bottom_sheet
 
+import androidx.core.view.WindowInsetsControllerCompat
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -193,6 +194,10 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
      */
     protected open fun slideAnimationUpdate(bottomSheet: BandyerBottomSheet?, slideOffset: Float) {
         if (slideOffset >= 0f) fadeRecyclerViewLinesBelowNavigation()
+        when {
+            slideOffset <= 0f -> updateNavigationBar(false)
+            else -> updateNavigationBar()
+        }
     }
 
     /**
@@ -331,6 +336,8 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
         }
         bottomSheetLayoutContent.lineView?.state = BandyerLineButton.State.COLLAPSED
 
+        updateNavigationBar(false)
+
         fadeRecyclerViewLinesBelowNavigation()
     }
 
@@ -344,6 +351,7 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
             hasMoved = true
         }
         fadeRecyclerViewLinesBelowNavigation(true)
+        updateNavigationBar()
     }
 
     /**
@@ -368,7 +376,6 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
      * Called onDragging bottomSheet
      */
     open fun onDragging() {
-
     }
 
     /**
@@ -383,6 +390,14 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
         bottomSheetLayoutContent.post {
             fadeRecyclerViewLinesBelowNavigation()
         }
+        updateNavigationBar()
+    }
+
+    private fun updateNavigationBar(isLightNavigationBar: Boolean? = null) {
+        val window = coordinatorLayout!!.context.getActivity<AppCompatActivity>()?.window ?: return
+        val cardViewBackgroundColor = bottomSheetLayoutContent.backgroundView?.cardBackgroundColor?.defaultColor ?: return
+
+        WindowInsetsControllerCompat(window, coordinatorLayout!!.rootView).isAppearanceLightNavigationBars = isLightNavigationBar ?: !cardViewBackgroundColor.requiresLightOverlay()
     }
 
     /**
@@ -560,12 +575,14 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
             behaviour.skipAnchor = false
             behaviour.state = BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT
         }
+        updateNavigationBar()
     }
 
     override fun expand() {
         bottomSheetLayoutContent.post {
             bottomSheetBehaviour?.state = BandyerBottomSheetBehaviour.STATE_EXPANDED
         }
+        updateNavigationBar()
     }
 
     override fun collapse(to: View?, offset: Int?) {
@@ -579,6 +596,7 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
             behaviour.skipCollapsed = false
             behaviour.state = BandyerBottomSheetBehaviour.STATE_COLLAPSED
         }
+        updateNavigationBar()
     }
 
     override fun toggle() {
