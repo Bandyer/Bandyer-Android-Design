@@ -59,6 +59,7 @@ def fastAdapterVersion = "3.3.1"
 def lifecycleVersion = '2.2.0'
 def androidX = "1.1.0"
 def materialVersion = "1.3.0"
+def core_version = "1.5.0-beta02"
 
 android {
     compileSdkVersion sdkVersion
@@ -103,6 +104,7 @@ dependencies {
     implementation("androidx.vectordrawable:vectordrawable:$androidX")
     implementation("androidx.vectordrawable:vectordrawable-animated:$androidX")
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    implementation "androidx.core:core-ktx:$core_version"
     api "com.google.android.material:material:$materialVersion"
 
     /*** Testing ***/

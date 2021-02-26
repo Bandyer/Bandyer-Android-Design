@@ -134,6 +134,7 @@
     <string name="bandyer_snapshot_close">Chiudi finestra dello snapshot</string>
 
     <!-- SCREEN SHARE PICKER -->
-    <string name="bandyer_screenshare_app_only">Condividi solo quest\'app</string>
-    <string name="bandyer_screenshare_full_device">Condividi l\'intero dispositivo</string>
+    <string name="bandyer_screenshare_picker_title">Cosa vuoi condividere?</string>
+    <string name="bandyer_screenshare_app_only">Schermo app</string>
+    <string name="bandyer_screenshare_full_device">Schermo intero</string>
 </resources>

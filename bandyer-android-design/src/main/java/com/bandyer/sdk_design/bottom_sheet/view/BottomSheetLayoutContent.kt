@@ -57,7 +57,7 @@ class BottomSheetLayoutContent @kotlin.jvm.JvmOverloads constructor(context: Con
     /**
      * Background of the bottomSheet
      */
-    var backgroundView: MaterialCardView? = MaterialCardView(context, null, R.attr.materialCardViewStyle)
+    var backgroundView: MaterialCardView? = MaterialCardView(context, attrs, R.attr.materialCardViewStyle)
 
     /**
      * Height of the navigation bar
