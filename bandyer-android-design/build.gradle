@@ -65,7 +65,7 @@ android {
     compileSdkVersion sdkVersion
     buildToolsVersion buildToolsVersion
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         targetSdkVersion sdkVersion
         versionCode 1
         versionName version
