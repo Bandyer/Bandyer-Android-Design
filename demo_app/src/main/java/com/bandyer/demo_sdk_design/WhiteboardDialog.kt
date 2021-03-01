@@ -1,13 +1,10 @@
 package com.bandyer.demo_sdk_design
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
 import android.webkit.*
-import androidx.core.os.HandlerCompat.postDelayed
 import com.bandyer.sdk_design.extensions.replaceWith
 import com.bandyer.sdk_design.whiteboard.dialog.BaseBandyerWhiteboardDialog
-import com.bandyer.sdk_design.whiteboard.layout.BandyerWhiteboardUploadProgressLayout
 
 class WhiteBoardDialog : BaseBandyerWhiteboardDialog<WhiteBoardDialog.WhiteboardBottomSheetDialog>() {
 
@@ -25,8 +22,8 @@ class WhiteBoardDialog : BaseBandyerWhiteboardDialog<WhiteBoardDialog.Whiteboard
 
         var wvClient: WebViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
-                progressBar?.visibility = View.GONE
                 webView!!.loadUrl("javascript:init(\"\",\"\")")
+                progressBar?.visibility = View.GONE
                 webView!!.visibility = View.VISIBLE
                 initProgressCard()
                 super.onPageFinished(view, url)
@@ -40,8 +37,7 @@ class WhiteBoardDialog : BaseBandyerWhiteboardDialog<WhiteBoardDialog.Whiteboard
 
         private fun initProgressCard() {
             uploadProgressCard!!.showUploading("Uploading file", "compressing..", 60f)
-            uploadProgressCard!!.setOnClickListener {
-                uploadProgressCard!!.showError("Error", "Something went wrong") }
+            uploadProgressCard!!.setOnClickListener { uploadProgressCard!!.showError("Error", "Something went wrong") }
         }
 
         private fun initWebView() {
@@ -65,17 +61,17 @@ class WhiteBoardDialog : BaseBandyerWhiteboardDialog<WhiteBoardDialog.Whiteboard
                 }
 
                 webViewClient = wvClient
-
-                webViewStub?.replaceWith(this@apply)
-                visibility = View.GONE
             }
-
-            loadingErrorLayout?.let { it.postDelayed({ it.visibility = View.GONE }, 300) }
         }
 
         override fun onReload() {
             initWebView()
+            webViewStub?.replaceWith(webView!!)
+            webView!!.visibility = View.GONE
+            progressBar!!.visibility = View.VISIBLE
+            loadingErrorLayout!!.let { it.postDelayed({ it.visibility = View.GONE }, 300) }
             webView!!.loadUrl("https://sandbox.bandyer.com/connect/mobile-whiteboard")
         }
+
     }
 }
