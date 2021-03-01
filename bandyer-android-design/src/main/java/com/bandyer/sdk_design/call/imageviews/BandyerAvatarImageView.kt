@@ -56,6 +56,7 @@ class BandyerAvatarImageView @JvmOverloads constructor(context: Context, attrs: 
     fun setImageUrl(url: String, preventReload: Boolean = true) {
         if (preventReload && currentUrl == url) return
         this.currentUrl = url
+        imageTintList = null
         Picasso.get().load(url).into(this)
     }
 
@@ -67,6 +68,7 @@ class BandyerAvatarImageView @JvmOverloads constructor(context: Context, attrs: 
     fun setImageUri(uri: Uri, preventReload: Boolean = true) {
         if (preventReload && currentUri == uri) return
         this.currentUri = uri
+        imageTintList = null
         Picasso.get().load(uri).into(this)
     }
 
