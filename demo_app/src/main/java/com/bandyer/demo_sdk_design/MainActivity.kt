@@ -51,7 +51,9 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.btn_call).setOnClickListener { startActivity(Intent(this, CallActivity::class.java)) }
 
-        findViewById<MaterialButton>(R.id.btn_whiteboard_file).setOnClickListener { startActivity(Intent(this, OtherActivity::class.java)) }
+        findViewById<MaterialButton>(R.id.btn_whiteboard).setOnClickListener { WhiteBoardDialog().show(this@MainActivity) }
+
+        findViewById<MaterialButton>(R.id.btn_ringing).setOnClickListener { startActivity(Intent(this, RingingActivity::class.java)) }
 
         findViewById<MaterialButton>(R.id.btn_switch_night_mode).setOnClickListener {
             val isNightTheme = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
