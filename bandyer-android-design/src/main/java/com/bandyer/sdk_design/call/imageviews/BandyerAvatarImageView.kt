@@ -21,6 +21,7 @@ import android.net.Uri
 import android.util.AttributeSet
 import com.bandyer.sdk_design.R
 import com.google.android.material.imageview.ShapeableImageView
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 /**
@@ -56,8 +57,13 @@ class BandyerAvatarImageView @JvmOverloads constructor(context: Context, attrs: 
     fun setImageUrl(url: String, preventReload: Boolean = true) {
         if (preventReload && currentUrl == url) return
         this.currentUrl = url
-        imageTintList = null
-        Picasso.get().load(url).into(this)
+        Picasso.get().load(url).placeholder(drawable).error(drawable).into(this, object : Callback {
+            override fun onSuccess() {
+                imageTintList = null
+            }
+
+            override fun onError(e: Exception?) = Unit
+        })
     }
 
     /**
@@ -68,8 +74,13 @@ class BandyerAvatarImageView @JvmOverloads constructor(context: Context, attrs: 
     fun setImageUri(uri: Uri, preventReload: Boolean = true) {
         if (preventReload && currentUri == uri) return
         this.currentUri = uri
-        imageTintList = null
-        Picasso.get().load(uri).into(this)
+        Picasso.get().load(uri).placeholder(drawable).error(drawable).into(this, object : Callback {
+            override fun onSuccess() {
+                imageTintList = null
+            }
+
+            override fun onError(e: Exception?) = Unit
+        })
     }
 
     /**
