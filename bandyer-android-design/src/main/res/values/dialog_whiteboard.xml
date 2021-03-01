@@ -40,7 +40,7 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.RootLayout</item>
         <item name="bandyer_progressStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.LoadingProgressIndicator</item>
         <item name="bandyer_reloadStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.LoadingError</item>
-        <item name="bandyer_uploadStyle">@style/BandyerSDKDesign.UploadImage.Day</item>
+        <item name="bandyer_uploadStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.UploadImage.Day</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.RootLayout" parent="">
