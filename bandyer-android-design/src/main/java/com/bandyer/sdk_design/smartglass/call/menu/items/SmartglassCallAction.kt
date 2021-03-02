@@ -21,7 +21,7 @@ import android.view.View
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.buttons.BandyerActionButton
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
-import com.bandyer.sdk_design.extensions.getSmartGlassCallActionItemStyle
+import com.bandyer.sdk_design.extensions.getSmartGlassMenuAttribute
 
 /**
  * Get all available smart glass actions
@@ -42,7 +42,7 @@ fun CallAction.Items.getSmartglassActions(ctx: Context, micToggled: Boolean?, ca
  * @property toggled true or false to toggle
  * @constructor
  */
-open class SMART_GLASS_CAMERA(mToggled: Boolean, private val ctx: Context): CallAction.TogglableCallAction(R.id.bandyer_id_camera, mToggled, R.layout.bandyer_smartglass_call_action_item, ctx.getSmartGlassCallActionItemStyle(R.styleable.BandyerSDKDesign_SmartGlassDialogMenu_bandyer_smartGlassCameraStyle)) {
+open class SMART_GLASS_CAMERA(mToggled: Boolean, private val ctx: Context): CallAction.TogglableCallAction(R.id.bandyer_id_camera, mToggled, R.layout.bandyer_smartglass_call_action_item, ctx.getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenuStyle_bandyer_smartGlassCameraStyle)) {
 
     override fun updateContentDescription(button: View?) {
         button?.contentDescription =
@@ -64,7 +64,7 @@ open class SMART_GLASS_CAMERA(mToggled: Boolean, private val ctx: Context): Call
  * @property toggled true or false to toggle
  * @constructor
  */
-open class SMART_GLASS_MICROPHONE(mToggled: Boolean, private val ctx: Context): CallAction.TogglableCallAction(R.id.bandyer_id_microphone, mToggled, R.layout.bandyer_smartglass_call_action_item, ctx.getSmartGlassCallActionItemStyle(R.styleable.BandyerSDKDesign_SmartGlassDialogMenu_bandyer_smartGlassMicrophoneStyle)) {
+open class SMART_GLASS_MICROPHONE(mToggled: Boolean, private val ctx: Context): CallAction.TogglableCallAction(R.id.bandyer_id_microphone, mToggled, R.layout.bandyer_smartglass_call_action_item, ctx.getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenuStyle_bandyer_smartGlassMicrophoneStyle)) {
 
     override fun updateContentDescription(button: View?) {
         button?.contentDescription =
@@ -85,4 +85,4 @@ open class SMART_GLASS_MICROPHONE(mToggled: Boolean, private val ctx: Context): 
  * Participants smart glass call action item
  * @constructor
  */
-open class SMART_GLASS_PARTICIPANTS(ctx: Context): CallAction(R.id.bandyer_id_participants, R.layout.bandyer_smartglass_call_action_item, ctx.getSmartGlassCallActionItemStyle(R.styleable.BandyerSDKDesign_SmartGlassDialogMenu_bandyer_smartGlassParticipantsStyle))
+open class SMART_GLASS_PARTICIPANTS(ctx: Context): CallAction(R.id.bandyer_id_participants, R.layout.bandyer_smartglass_call_action_item, ctx.getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenuStyle_bandyer_smartGlassParticipantsStyle))

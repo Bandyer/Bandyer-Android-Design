@@ -105,6 +105,7 @@
         <item name="iconTint">?attr/colorOnSurface</item>
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="iconSize">@dimen/bandyer_dimen_space64</item>
+        <item name="android:clickable">false</item>
     </style>
 
     <style name="BandyerSDKDesign.ImageButton.Call.SmartGlass.Microphone" parent="BandyerSDKDesign.ImageButton.Call.SmartGlass">

@@ -13,9 +13,16 @@
   ~  See the License for the specific language governing permissions and
   ~  limitations under the License.
   -->
-
 <resources>
     <declare-styleable name="BandyerSDKDesign.SmartGlassDialogMenu">
+        <attr name="bandyer_smartGlassMenuStyle" format="reference" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.SmartGlassDialogMenu" parent="BandyerSDKDesign.FullScreenDialog">
+        <item name="bandyer_smartGlassMenuStyle">@style/BandyerSDKDesign.SmartGlassMenuStyle</item>
+    </style>
+
+    <declare-styleable name="BandyerSDKDesign.SmartGlassMenuStyle">
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_pagerIndicatorStyle" format="reference" />
         <attr name="bandyer_smartGlassMicrophoneStyle" format="reference" />
@@ -23,9 +30,13 @@
         <attr name="bandyer_smartGlassParticipantsStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.SmartGlassDialogMenu">
+    <style name="BandyerSDKDesign.SmartGlassDialogMenu.RootLayout">
         <item name="android:background">?attr/colorSurface</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space16</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlassMenuStyle" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlassDialogMenu.RootLayout</item>
         <item name="bandyer_smartGlassMicrophoneStyle">@style/BandyerSDKDesign.ActionButton.SmartGlass.Microphone</item>
         <item name="bandyer_smartGlassCameraStyle">@style/BandyerSDKDesign.ActionButton.SmartGlass.Camera</item>
         <item name="bandyer_smartGlassParticipantsStyle">@style/BandyerSDKDesign.ActionButton.SmartGlass.Participants</item>

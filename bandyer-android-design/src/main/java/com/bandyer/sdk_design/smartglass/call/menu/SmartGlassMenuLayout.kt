@@ -5,22 +5,35 @@
 
 package com.bandyer.sdk_design.smartglass.call.menu
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.bandyer.sdk_design.R
+import com.bandyer.sdk_design.bottom_sheet.BandyerActionBottomSheet
+import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
+import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.databinding.BandyerWidgetSmartglassesMenuLayoutBinding
 import com.bandyer.sdk_design.extensions.isRtl
 import com.bandyer.sdk_design.smartglass.call.menu.adapter.SmartGlassActionItemAdapter
 import com.bandyer.sdk_design.utils.isConfirmButton
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.IAdapter
+import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
+import com.mikepenz.fastadapter.listeners.ClickEventHook
+import com.mikepenz.fastadapter.listeners.EventHook
+import com.mikepenz.fastadapter.listeners.OnClickListener
 
 /**
  * Layout used to represent a smart glass swipeable menu
@@ -28,8 +41,7 @@ import com.bandyer.sdk_design.utils.isConfirmButton
  * @property onSmartglassMenuSelectionListener OnGoogleGlassMenuItemSelectionListener?
  * @constructor
  */
-@SuppressLint("ViewConstructor")
-class SmartGlassMenuLayout(context: Context, private val items: List<CallAction>) : ConstraintLayout(context, null, com.bandyer.sdk_design.R.attr.bandyer_smartGlassDialogMenuStyle) {
+class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle): ConstraintLayout(context, attrs, defStyleAttr) {
 
     /**
      * Smart glass menu selection listener
@@ -48,11 +60,21 @@ class SmartGlassMenuLayout(context: Context, private val items: List<CallAction>
     }
 
     /**
+     * Smart glass menu action items
+     */
+    var items: List<CallAction>? = null
+        set(value) {
+            field = value
+            value ?: return
+            fastAdapter.set((if (context.isRtl()) items!!.reversed() else items!!).map { AdapterActionItem(it) })
+        }
+
+    /**
      * Smart glass menu selection listener
      */
     var onSmartglassMenuSelectionListener: OnSmartglassMenuSelectionListener? = null
 
-//    private val fastAdapter: FastItemAdapter<AdapterActionItem> = FastItemAdapter()
+    private val fastAdapter: FastItemAdapter<AdapterActionItem> = FastItemAdapter()
 
     private var currentMenuItemIndex = 0
 
@@ -69,22 +91,14 @@ class SmartGlassMenuLayout(context: Context, private val items: List<CallAction>
         binding.bandyerSmartGlassMenuRecyclerview.itemAnimator = null
         binding.bandyerSmartGlassMenuRecyclerview.setHasFixedSize(true)
 
-//        binding.bandyerSmartglassesMenuRecyclerview.adapter = fastAdapter
-//        fastAdapter.set(items.map { AdapterActionItem(it) })
-
-        snapHelper.attachToRecyclerView(binding.bandyerSmartGlassMenuRecyclerview)
-
-
-        binding.bandyerSmartGlassMenuRecyclerview.adapter = SmartGlassActionItemAdapter(object : SmartGlassActionItemAdapter.OnActionItemClickedListener {
-            override fun onActionItemClicked(actionItem: ActionItem) {
-                onSmartglassMenuSelectionListener?.onSelected(items[currentMenuItemIndex])
-            }
-        }).apply {
-            setHasStableIds(true)
-            setItems(if (context.isRtl()) items.reversed() else items)
+        fastAdapter.withOnClickListener { v, adapter, item, position ->
+            onSmartglassMenuSelectionListener?.onSelected(item.item)
+            true
         }
 
-//        binding.bandyerSmartglassesMenuRecyclerviewIndicator.attachToRecyclerView(binding.bandyerSmartglassesMenuRecyclerview)
+        binding.bandyerSmartGlassMenuRecyclerview.adapter = fastAdapter
+
+        snapHelper.attachToRecyclerView(binding.bandyerSmartGlassMenuRecyclerview)
 
         binding.bandyerSmartGlassMenuIndicator.attachToRecyclerView(binding.bandyerSmartGlassMenuRecyclerview)
 

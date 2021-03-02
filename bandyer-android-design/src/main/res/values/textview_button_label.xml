@@ -90,6 +90,7 @@
         <item name="android:includeFontPadding">false</item>
         <item name="android:gravity">center</item>
         <item name="autoSizeTextType">uniform</item>
+        <item name="android:clickable">false</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Microphone" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">

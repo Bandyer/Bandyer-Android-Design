@@ -11,10 +11,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.DialogFragment
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
+import com.bandyer.sdk_design.extensions.getCallThemeAttribute
+import com.bandyer.sdk_design.extensions.getSmartGlassMenuDialogAttribute
+import com.bandyer.sdk_design.extensions.getTextEditorDialogAttribute
 import java.util.*
 
 /**
@@ -65,16 +69,16 @@ class SmartGlassActionItemMenu : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_smartGlassDialogMenuStyle))
         val itemsArrayList = arguments?.getSerializable(ITEMS)
         items = mutableListOf<CallAction>().apply {
             this.addAll(itemsArrayList as ArrayList<CallAction>)
         }
     }
 
-    override fun getTheme(): Int = R.style.BandyerSDKDesign_FullScreenDialog
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        smartglassMenuLayout = SmartGlassMenuLayout(context!!, items!!)
+        smartglassMenuLayout = SmartGlassMenuLayout(ContextThemeWrapper(requireContext(), requireContext().getSmartGlassMenuDialogAttribute(R.styleable.BandyerSDKDesign_SmartGlassDialogMenu_bandyer_smartGlassMenuStyle)))
+        smartglassMenuLayout!!.items = items
         return smartglassMenuLayout!!
     }
 
