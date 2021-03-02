@@ -17,7 +17,7 @@
         <item name="bandyer_pagerIndicatorDotRadius">@dimen/bandyer_dimen_space4</item>
         <item name="bandyer_pagerIndicatorSelectedDotRadius">@dimen/bandyer_dimen_space8</item>
         <item name="bandyer_pagerIndicatorDotColor">?attr/colorOnSurface</item>
-        <item name="bandyer_pagerIndicatorSelectedDotColor">@color/bandyer_colorPrimary</item>
+        <item name="bandyer_pagerIndicatorSelectedDotColor">?attr/colorSecondary</item>
         <item name="bandyer_pagerIndicatorDotSeparation">@dimen/bandyer_dimen_space24</item>
         <item name="bandyer_pagerIndicatorVerticalSupport">false</item>
     </style>
