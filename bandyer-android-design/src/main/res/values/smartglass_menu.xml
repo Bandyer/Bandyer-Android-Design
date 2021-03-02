@@ -19,10 +19,10 @@
     </declare-styleable>
 
     <style name="BandyerSDKDesign.SmartGlassDialogMenu" parent="BandyerSDKDesign.FullScreenDialog">
-        <item name="bandyer_smartGlassMenuStyle">@style/BandyerSDKDesign.SmartGlassMenuStyle</item>
+        <item name="bandyer_smartGlassMenuStyle">@style/BandyerSDKDesign.SmartGlassMenu</item>
     </style>
 
-    <declare-styleable name="BandyerSDKDesign.SmartGlassMenuStyle">
+    <declare-styleable name="BandyerSDKDesign.SmartGlassMenu">
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_pagerIndicatorStyle" format="reference" />
         <attr name="bandyer_smartGlassMicrophoneStyle" format="reference" />
@@ -35,11 +35,11 @@
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space16</item>
     </style>
 
-    <style name="BandyerSDKDesign.SmartGlassMenuStyle" parent="">
+    <style name="BandyerSDKDesign.SmartGlassMenu" parent="">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlassDialogMenu.RootLayout</item>
         <item name="bandyer_smartGlassMicrophoneStyle">@style/BandyerSDKDesign.ActionButton.SmartGlass.Microphone</item>
         <item name="bandyer_smartGlassCameraStyle">@style/BandyerSDKDesign.ActionButton.SmartGlass.Camera</item>
         <item name="bandyer_smartGlassParticipantsStyle">@style/BandyerSDKDesign.ActionButton.SmartGlass.Participants</item>
-        <item name="bandyer_pagerIndicatorStyle">@style/BandyerSDKDesign.PagerIndicatorStyle</item>
+        <item name="bandyer_pagerIndicatorStyle">@style/BandyerSDKDesign.PagerIndicator</item>
     </style>
 </resources>

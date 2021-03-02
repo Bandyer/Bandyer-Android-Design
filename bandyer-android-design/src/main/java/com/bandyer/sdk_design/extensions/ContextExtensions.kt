@@ -214,7 +214,7 @@ fun Context.getChatInfoStyle(@StyleableRes styleAttribute: Int): Int {
  * @return The value relative to the attribute
  */
 fun Context.getPagerIndicatorIntAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenuStyle_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
+    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
     val value = if(ta.hasValue(styleAttribute))
         ta.getInt(styleAttribute, 0) else 0
     ta.recycle()
@@ -228,7 +228,7 @@ fun Context.getPagerIndicatorIntAttribute(@StyleableRes styleAttribute: Int): In
  * @return The value relative to the attribute
  */
 fun Context.getPagerIndicatorBooleanAttribute(@StyleableRes styleAttribute: Int): Boolean {
-    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenuStyle_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
+    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
     val value = if(ta.hasValue(styleAttribute))
         ta.getBoolean(styleAttribute, false) else false
     ta.recycle()
@@ -243,7 +243,7 @@ fun Context.getPagerIndicatorBooleanAttribute(@StyleableRes styleAttribute: Int)
  * @return The value relative to the attribute
  */
 fun Context.getPagerIndicatorColorAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenuStyle_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
+    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
     val value = if(ta.hasValue(styleAttribute))
         ta.getColor(styleAttribute, 0) else 0
     ta.recycle()
@@ -257,7 +257,7 @@ fun Context.getPagerIndicatorColorAttribute(@StyleableRes styleAttribute: Int): 
  * @return The value relative to the attribute
  */
 fun Context.getPagerIndicatorDimensionPixelSizeAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenuStyle_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
+    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
     val value = if(ta.hasValue(styleAttribute))
         ta.getDimensionPixelSize(styleAttribute, 0) else 0
     ta.recycle()
@@ -341,7 +341,7 @@ fun Context.getCallActionItemStyle(@StyleableRes styleAttribute: Int): Int {
  * @return The style relative to the styleAttribute
  */
 fun Context.getSmartGlassMenuAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getSmartGlassMenuDialogAttribute(R.styleable.BandyerSDKDesign_SmartGlassDialogMenu_bandyer_smartGlassMenuStyle), R.styleable.BandyerSDKDesign_SmartGlassMenuStyle)
+    val ta = obtainStyledAttributes(getSmartGlassMenuDialogAttribute(R.styleable.BandyerSDKDesign_SmartGlassDialogMenu_bandyer_smartGlassMenuStyle), R.styleable.BandyerSDKDesign_SmartGlassMenu)
     val value = if(ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
