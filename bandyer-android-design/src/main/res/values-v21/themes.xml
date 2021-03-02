@@ -16,9 +16,11 @@
   -->
 
 <resources>
+    <style name="BandyerSDKDesign.Theme.Base" parent="BandyerSDKDesign.Theme.Base.V16">
+        <item name="android:statusBarColor">@android:color/black</item>
+    </style>
 
     <style name="BandyerSDKDesign.ToolBarShadow" parent="">
         <item name="android:visibility">gone</item>
     </style>
-
 </resources>
