@@ -49,6 +49,7 @@
 
     <style name="BandyerSDKDesign.ActionButton.RootLayout.SmartGlass" parent="BandyerSDKDesign.ActionButton.RootLayout">
         <item name="android:clickable">true</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:paddingTop">@dimen/bandyer_dimen_space0</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space0</item>
     </style>

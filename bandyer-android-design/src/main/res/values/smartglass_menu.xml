@@ -32,7 +32,6 @@
 
     <style name="BandyerSDKDesign.SmartGlassDialogMenu.RootLayout">
         <item name="android:background">?attr/colorSurface</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space16</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlassMenu" parent="">
