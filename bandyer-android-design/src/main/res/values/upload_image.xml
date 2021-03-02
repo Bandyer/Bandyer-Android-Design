@@ -25,7 +25,7 @@
         <attr name="bandyer_errorIconStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.UploadImage" parent="">
+    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.UploadImage" parent="">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.UploadImageRootLayout</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.UploadProgress</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.UploadProgress</item>
@@ -44,7 +44,7 @@
         <item name="cardUseCompatPadding">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.UploadImage.Day" parent="BandyerSDKDesign.UploadImage">
+    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.UploadImage.Day" parent="BandyerSDKDesign.BottomSheetDialog.Whiteboard.UploadImage">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.UploadImageRootLayout.Day</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.UploadProgress.Day</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.UploadProgress.Day</item>

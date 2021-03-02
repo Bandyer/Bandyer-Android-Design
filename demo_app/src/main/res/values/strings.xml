@@ -20,7 +20,8 @@
     <string name="call">Call</string>
     <string name="whiteboard_editor">Whiteboard text editor</string>
     <string name="snapshot_preview">Snapshot preview</string>
-    <string name="other">Other</string>
+    <string name="whiteboard">Whiteboard</string>
+    <string name="ringing">Call Ringing</string>
     <string name="bluetooth_audio_route">Bluetooth device states</string>
     <string name="live_pointer">Live pointer</string>
     <string name="night_mode">Night mode on/off</string>

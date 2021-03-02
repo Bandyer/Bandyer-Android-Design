@@ -21,7 +21,8 @@
     <string name="call">Call</string>
     <string name="whiteboard_editor">Text editor lavagna</string>
     <string name="snapshot_preview">Snapshot preview</string>
-    <string name="other">Altro</string>
+    <string name="whiteboard">Lavagna</string>
+    <string name="ringing">Call in entrata</string>
     <string name="live_pointer">Puntatore live</string>
     <string name="night_mode">Modalità notte on/off</string>
     <string name="bluetooth_audio_route">Stati disp. bluetooth</string>

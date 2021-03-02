@@ -1008,3 +1008,19 @@ fun View.setPaddingVertical(@Px px: Int) {
  * @return Int the height and the vertical margins
  */
 fun View.getHeightWithVerticalMargin(): Int = height + (this.layoutParams as ViewGroup.MarginLayoutParams).topMargin + (this.layoutParams as ViewGroup.MarginLayoutParams).bottomMargin
+
+/**
+ * Replace the view with the specified one
+ * @receiver View
+ * @param newView The view that replace the target one
+ */
+fun View.replaceWith(newView: View) {
+    val thisParent = parent as? ViewGroup ?: return
+    val otherParent = newView.parent as? ViewGroup
+    newView.id = id
+    newView.layoutParams = layoutParams
+    val index = thisParent.indexOfChild(this)
+    thisParent.removeView(this)
+    otherParent?.removeView(newView)
+    thisParent.addView(newView, index)
+}

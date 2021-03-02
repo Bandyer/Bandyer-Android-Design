@@ -29,31 +29,23 @@ import com.google.android.material.textview.MaterialTextView
 
 /**
  *
- * @property style BandyerWhiteboardUploadProgressLayoutState
- * @property progressTitle BandyerTextView?
- * @property progressSubtitle BandyerTextView?
- * @property progressText BandyerTextView?
- * @property progressBar ProgressBar?
- * @property errorImage ImageView?
+ * @property state BandyerWhiteboardUploadProgressLayout.State?
+ * @property progressTitle MaterialTextView?
+ * @property progressSubtitle MaterialTextView?
+ * @property progressText MaterialTextView?
+ * @property progressBar CircularProgressIndicator?
+ * @property errorImage MaterialButton?
  * @constructor
  */
 class BandyerWhiteboardUploadProgressLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle) : MaterialCardView(context, attrs, defStyleAttr) {
 
     /**
-     * Its value change the visibility of the progress bar, the progress percentage and the error image
+     * The state of the upload progress card view
      */
-    var errorOccurred: Boolean = false
+    var state: State? = null
         set(value) {
             field = value
-            if(value) {
-                errorImage?.visibility = View.VISIBLE
-                progressText?.visibility = View.INVISIBLE
-                progressBar?.visibility = View.INVISIBLE
-            } else {
-                errorImage?.visibility = View.INVISIBLE
-                progressText?.visibility = View.VISIBLE
-                progressBar?.visibility = View.VISIBLE
-            }
+            updateView(field)
         }
 
     var progressTitle: MaterialTextView? = null
@@ -79,6 +71,108 @@ class BandyerWhiteboardUploadProgressLayout @JvmOverloads constructor(context: C
         progressText = binding.bandyerWhiteboardProgressProgressText
         progressBar = binding.bandyerWhiteboardProgressProgressBar
         errorImage = binding.bandyerWhiteboardProgressErrorImage
+        state = State.COMPLETED
+    }
+
+    /**
+     * Update the UI based on the state value
+     * @param state the state value
+     */
+    private fun updateView(state: State?) {
+        if(state == null) return
+        when (state) {
+            State.UPLOADING -> {
+                visibility = View.VISIBLE
+                errorImage?.visibility = View.INVISIBLE
+                progressText?.visibility = View.VISIBLE
+                progressBar?.visibility = View.VISIBLE
+            }
+            State.ERROR -> {
+                visibility = View.VISIBLE
+                errorImage?.visibility = View.VISIBLE
+                progressText?.visibility = View.INVISIBLE
+                progressBar?.visibility = View.INVISIBLE
+            }
+            State.COMPLETED -> visibility = View.GONE
+        }
+    }
+
+    /**
+     * Update the progress bar and the percentage text
+     * @param percentage the new percentage value
+     */
+    fun updateUploadingProgress(percentage: Int) {
+        progressBar?.setProgressCompat(percentage, true)
+        progressText?.text = resources.getString(R.string.bandyer_file_upload_percentage, percentage)
+    }
+
+    /**
+     * Show the card in the uploading state
+     * @param title the title to be set
+     * @param subtitle the subtitle to be set
+     * @param percentage the percentage to be set
+     */
+    fun showUploading(title: String, subtitle: String, percentage: Float) {
+        state = State.UPLOADING
+        updateTitleText(title, subtitle)
+        updateUploadingProgress(percentage.toInt())
+    }
+
+    /**
+     * Show the card in the error state and automatically hide it after 3 seconds
+     * @param title the title to be set
+     * @param subtitle the subtitle to be set
+     */
+    fun showError(title: String, subtitle: String) {
+        state = State.ERROR
+        updateTitleText(title, subtitle)
+        postDelayed({
+            state = State.COMPLETED
+        }, 3000)
+    }
+
+    /**
+     * Hide the view
+     */
+    fun hide() {
+        state = State.COMPLETED
+    }
+
+    /**
+     * Update the title and subtitle text
+     * @param title the updated title text
+     * @param subtitle the updated subtitle text
+     */
+    private fun updateTitleText(title: String, subtitle: String) {
+        progressTitle?.text = title
+        progressSubtitle?.text = subtitle
+    }
+
+    /**
+     * States of a BandyerWhiteboardUploadProgressLayout
+     * @constructor
+     */
+    enum class State {
+        /**
+         * U p l o a d i n g
+         *
+         * @constructor Create empty U p l o a d i n g
+         */
+        UPLOADING,
+
+        /**
+         * E r r o r
+         *
+         * @constructor Create empty E r r o r
+         */
+        ERROR,
+
+        /**
+         * C o m p l e t e d
+         *
+         * @constructor Create empty C o m p l e t e d
+         */
+        COMPLETED,
     }
 
 }

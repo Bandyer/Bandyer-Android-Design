@@ -72,11 +72,12 @@ class AudioRouteBottomSheet<T : ActionItem>(val context: AppCompatActivity,
     }
 
     override fun saveInstanceState(saveInstanceState: Bundle?): Bundle? {
-        saveInstanceState?.putString("currentAudioRoute", mCurrentAudioRoute?.javaClass?.name.toString())
-        saveInstanceState?.putString("currentAudioRouteDeviceName", mCurrentAudioRoute?.name)
-        saveInstanceState?.putString("currentAudioRouteIdentifier", mCurrentAudioRoute?.identifier)
-        saveInstanceState?.putBoolean("isActive", mCurrentAudioRoute?.isActive ?: false)
-        (mCurrentAudioRoute!! as? AudioRoute.BLUETOOTH)?.let {
+        val currentAudioRoute = mCurrentAudioRoute ?: return onSaveInstanceState(saveInstanceState, "audio")
+        saveInstanceState?.putString("currentAudioRoute", currentAudioRoute.javaClass.name.toString())
+        saveInstanceState?.putString("currentAudioRouteDeviceName", currentAudioRoute.name)
+        saveInstanceState?.putString("currentAudioRouteIdentifier", currentAudioRoute.identifier)
+        saveInstanceState?.putBoolean("isActive", currentAudioRoute.isActive)
+        (currentAudioRoute as? AudioRoute.BLUETOOTH)?.let {
             saveInstanceState?.putSerializable("currentBluetoothConnectionStatus", it.bluetoothConnectionStatus)
         }
         return onSaveInstanceState(saveInstanceState, "audio")
@@ -87,7 +88,7 @@ class AudioRouteBottomSheet<T : ActionItem>(val context: AppCompatActivity,
         val currentAudioRoute = bundle?.getString("currentAudioRoute") ?: return
         val currentAudioRouteDeviceName = bundle.getString("currentAudioRouteDeviceName") ?: ""
         val currentAudioRouteIdentifier = bundle.getString("currentAudioRouteIdentifier") ?: ""
-        val isActive = bundle.getBoolean("isActive") ?: false
+        val isActive = bundle.getBoolean("isActive")
 
         val currentBluetoothConnectionStatus: AudioRouteState.BLUETOOTH? = bundle.getSerializable("currentBluetoothConnectionStatus") as? AudioRouteState.BLUETOOTH
 
