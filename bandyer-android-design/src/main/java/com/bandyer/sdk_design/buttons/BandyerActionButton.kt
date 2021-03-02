@@ -64,7 +64,7 @@ open class BandyerActionButton @JvmOverloads constructor(context: Context, attrs
      * @suppress
      */
     override fun setOnClickListener(l: OnClickListener?) {
-        if (!setClickListenerOnChildren) {
+        if (!setClickListenerOnChildren || isClickable) {
             super.setOnClickListener(l)
             return
         }
