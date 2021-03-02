@@ -110,8 +110,8 @@ class MainActivity : AppCompatActivity() {
             appCompatActivity = this,
             items = CallAction.getSmartglassActions(
                     ctx = this,
-                    micToggled = true,
-                    cameraToggled = true))
+                    micToggled = false,
+                    cameraToggled = false))
             .apply {
                 selectionListener = object : SmartGlassMenuLayout.OnSmartglassMenuSelectionListener {
                     override fun onSelected(item: ActionItem) {
