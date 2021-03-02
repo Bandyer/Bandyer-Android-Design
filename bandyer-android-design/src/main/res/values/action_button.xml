@@ -37,8 +37,7 @@
     <style name="BandyerSDKDesign.ActionButton.RootLayout" parent="">
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">top|center_horizontal</item>
         <item name="android:clipToPadding">false</item>
         <item name="android:clipChildren">false</item>
         <item name="android:focusable">true</item>
