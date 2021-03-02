@@ -45,8 +45,8 @@
     <string name="bandyer_call_hangup">Chiudi</string>
 
     <string name="bandyer_call_action_switch_camera_description">Cambia camera</string>
-    <string name="bandyer_call_action_enable_mic_description">Abilita microphone</string>
-    <string name="bandyer_call_action_disable_mic_description">Disabilita microphone</string>
+    <string name="bandyer_call_action_enable_mic_description">Abilita microfono</string>
+    <string name="bandyer_call_action_disable_mic_description">Disabilita microfono</string>
     <string name="bandyer_call_action_enable_camera_description">Abilita camera</string>
     <string name="bandyer_call_action_disable_camera_description">Disabilita camera</string>
 
@@ -121,6 +121,8 @@
     <string name="bandyer_alert_save_snapshot_message">Questo snapshot non sarà più disponibile se non viene effettuato il salvataggio locale.</string>
 
     <string name="bandyer_upload_file_error">Si è verificato una errore caricando il file immagine</string>
+    <string name="bandyer_file_upload_percentage">%1$d %%</string>
+    <string name="bandyer_upload_file">Carica file</string>
 
     <!-- TEMPLATES -->
     <string name="bandyer_bluetooth_info">%1$s%2$s%3$s</string>
@@ -132,8 +134,9 @@
     <string name="bandyer_snapshot_close">Chiudi finestra dello snapshot</string>
 
     <!-- SCREEN SHARE PICKER -->
-    <string name="bandyer_screenshare_app_only">Condividi solo quest\'app</string>
-    <string name="bandyer_screenshare_full_device">Condividi l\'intero dispositivo</string>
+    <string name="bandyer_screenshare_picker_title">Cosa vuoi condividere?</string>
+    <string name="bandyer_screenshare_app_only">Schermo app</string>
+    <string name="bandyer_screenshare_full_device">Schermo intero</string>
 
     <!-- FILE SHARE -->
     <string name="bandyer_fileshare_add">Aggiungi</string>

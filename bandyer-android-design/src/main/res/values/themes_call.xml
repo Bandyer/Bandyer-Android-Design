@@ -30,8 +30,10 @@
         <attr name="bandyer_userStatusStyle" format="reference"/>
 
         <attr name="bandyer_whiteboardDialogStyle" format="reference" />
+
         <attr name="bandyer_screenShareDialogStyle" format="reference" />
         <attr name="bandyer_fileShareDialogStyle" format="reference" />
+        <attr name="bandyer_smartGlassDialogMenuStyle" format="reference" />
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight.V16" parent="BandyerSDKDesign.Theme.DayNight">
@@ -42,6 +44,7 @@
         <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
         <item name="bandyer_bottomSheetRingingStyle">@style/BandyerSDKDesign.BottomSheet.Ringing</item>
         <item name="bandyer_livePointerStyle">@style/BandyerSDKDesign.LivePointer</item>
+        <item name="bandyer_smartGlassDialogMenuStyle">@style/BandyerSDKDesign.SmartGlassDialogMenu</item>
         <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>
         <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
         <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
@@ -58,6 +61,7 @@
         <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
         <item name="bandyer_bottomSheetRingingStyle">@style/BandyerSDKDesign.BottomSheet.Ringing</item>
         <item name="bandyer_livePointerStyle">@style/BandyerSDKDesign.LivePointer</item>
+        <item name="bandyer_smartGlassDialogMenuStyle">@style/BandyerSDKDesign.SmartGlassDialogMenu</item>
         <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>
         <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
         <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
@@ -74,6 +78,7 @@
         <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
         <item name="bandyer_bottomSheetRingingStyle">@style/BandyerSDKDesign.BottomSheet.Ringing</item>
         <item name="bandyer_livePointerStyle">@style/BandyerSDKDesign.LivePointer</item>
+        <item name="bandyer_smartGlassDialogMenuStyle">@style/BandyerSDKDesign.SmartGlassDialogMenu</item>
         <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>
         <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
         <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>

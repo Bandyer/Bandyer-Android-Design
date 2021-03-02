@@ -33,6 +33,7 @@
     <dimen name="bandyer_dimen_space32">32dp</dimen>
     <dimen name="bandyer_dimen_space48">48dp</dimen>
     <dimen name="bandyer_dimen_space56">56dp</dimen>
+    <dimen name="bandyer_dimen_space64">64dp</dimen>
     <dimen name="bandyer_dimen_space72">72dp</dimen>
 
     <!-- image button -->
@@ -52,6 +53,7 @@
     <dimen name="bandyer_dimen_text_normal">14sp</dimen>
     <dimen name="bandyer_dimen_text_small">12sp</dimen>
     <dimen name="bandyer_dimen_text_caption">10sp</dimen>
+    <dimen name="bandyer_dimen_text_64sp">64sp</dimen>
 
     <dimen name="bandyer_dimen_text_bouncing_dots">6dp</dimen>
 

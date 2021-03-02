@@ -15,7 +15,7 @@
   ~  limitations under the License.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="BandyerSDKDesign.ChatNetworkProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
         <item name="android:layout_width">wrap_content</item>
@@ -36,8 +36,11 @@
     </style>
 
     <style name="BandyerSDKDesign.LoadingProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
+        <item name="android:layout_marginTop">?attr/actionBarSize</item>
         <item name="trackThickness">@dimen/bandyer_dimen_space2</item>
         <item name="indicatorColor">?attr/colorSecondary</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/bandyer_dimen_space6</item>
+        <item name="elevation">@dimen/bandyer_dimen_space6</item>
     </style>
 
 </resources>

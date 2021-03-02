@@ -23,7 +23,7 @@
         <attr name="bandyer_subtitleStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.LoadingError" parent="">
+    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.LoadingError" parent="">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.LoadingError.RootLayout</item>
         <item name="bandyer_iconStyle">@style/BandyerSDKDesign.ImageButton.Reload</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.Reload</item>

@@ -20,7 +20,8 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowSoftInputMode">adjustResize|stateHidden</item>
-        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="o_mr1">shortEdges</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
+        <item name="android:enforceStatusBarContrast" tools:targetApi="q">false</item>
         <item name="elevationOverlayEnabled">false</item>
         <item name="toolbarStyle">@style/BandyerSDKDesign.BottomSheetDialogToolbarStyle</item>
         <item name="toolbarNavigationButtonStyle">@style/BandyerSDKDesign.BottomSheetDialog.V16.ToolbarNavigationButtonStyle</item>
@@ -40,6 +41,13 @@
 
     <style name="BandyerSDKDesign.BottomSheetModalStyle.Day" parent="BandyerSDKDesign.BottomSheetModalStyle">
         <item name="backgroundTint">@color/bandyer_colorSurface</item>
+    </style>
+
+    <style name="BandyerSDKDesign.FullScreenDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.V16.ToolbarNavigationButtonStyle" parent="">
