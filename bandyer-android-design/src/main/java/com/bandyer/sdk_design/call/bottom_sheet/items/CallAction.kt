@@ -112,6 +112,8 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
         override fun onReady() {
             toggle(toggled)
         }
+
+        override fun hashCode(): Int = super.hashCode() + if (toggled) 1 else 0
     }
 
     /**
