@@ -21,15 +21,20 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
+import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.call.dialogs.BandyerSnapshotDialog
+import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassActionItemMenu
+import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassMenuLayout
+import com.bandyer.sdk_design.smartglass.call.menu.items.getSmartglassActions
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog.BandyerWhiteboardTextEditorWidgetListener
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,6 +55,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.btn_chat).setOnClickListener { startActivity(Intent(this, ChatActivity::class.java)) }
 
         findViewById<MaterialButton>(R.id.btn_call).setOnClickListener { startActivity(Intent(this, CallActivity::class.java)) }
+
+        findViewById<MaterialButton>(R.id.btn_smartglasses_menu).setOnClickListener { showSmartGlassAction() }
 
         findViewById<MaterialButton>(R.id.btn_whiteboard).setOnClickListener { WhiteBoardDialog().show(this@MainActivity) }
 
@@ -99,4 +106,21 @@ class MainActivity : AppCompatActivity() {
         return result
     }
 
+    private fun showSmartGlassAction(): SmartGlassActionItemMenu = SmartGlassActionItemMenu.show(
+            appCompatActivity = this,
+            items = CallAction.getSmartglassActions(
+                    ctx = this,
+                    micToggled = false,
+                    cameraToggled = false))
+            .apply {
+                selectionListener = object : SmartGlassMenuLayout.OnSmartglassMenuSelectionListener {
+                    override fun onSelected(item: ActionItem) {
+                        Toast.makeText(applicationContext, item::class.java.simpleName, Toast.LENGTH_SHORT).show()
+                        dismiss()
+                        selectionListener = null
+                    }
+
+                    override fun onDismiss() = Unit
+                }
+            }
 }

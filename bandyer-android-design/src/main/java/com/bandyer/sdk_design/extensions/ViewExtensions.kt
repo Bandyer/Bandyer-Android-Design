@@ -109,7 +109,7 @@ fun View.resizeAndMove(toSize: Float, toTop: Float, toLeft: Float, toRight: Floa
     val leftMargin = if (!context.isRtl()) toLeft else toRight
     val rightMargin = if (!context.isRtl()) toRight else toLeft
 
-    val valueAnimator = ValueAnimator.ofFloat(layoutParams.height.toFloat(), toSize)
+    val valueAnimator = ValueAnimator.ofFloat(layoutParams.height.toFloat().takeIf { it != -1f } ?: height.toFloat(), toSize)
     val valueAnimator3 = ValueAnimator.ofFloat((layoutParams as ViewGroup.MarginLayoutParams).topMargin.toFloat(), toTop)
     val valueAnimator4 = ValueAnimator.ofFloat(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
         (layoutParams as ViewGroup.MarginLayoutParams).marginStart.toFloat()

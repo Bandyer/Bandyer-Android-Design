@@ -31,5 +31,6 @@
     <string name="bandyer_start_audio_call_description">Start call</string>
     <string name="bandyer_start_video_call_description">Start video call</string>
     <string name="bandyer_start_audio_upgrade_call_description">Start audio upgradable call</string>
+    <string name="smart_glass_menu">Smartglass menu</string>
     <string name="screen_share_picker">Screen share picker</string>
 </resources>

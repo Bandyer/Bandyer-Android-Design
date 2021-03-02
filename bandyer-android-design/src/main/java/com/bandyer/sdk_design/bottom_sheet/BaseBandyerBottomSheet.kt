@@ -16,6 +16,7 @@
 
 package com.bandyer.sdk_design.bottom_sheet
 
+import androidx.core.view.WindowInsetsControllerCompat
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -32,7 +33,6 @@ import android.widget.Space
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.view.WindowInsetsControllerCompat
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem

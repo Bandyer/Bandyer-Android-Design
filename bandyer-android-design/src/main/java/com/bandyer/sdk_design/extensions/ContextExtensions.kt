@@ -208,6 +208,63 @@ fun Context.getChatInfoStyle(@StyleableRes styleAttribute: Int): Int {
 }
 
 /**
+ * Get the value of an integer attribute relative to smart glass dialog menu
+ * @receiver Context
+ * @param styleAttribute the pager indicator attribute for which you want to retrieve the value
+ * @return The value relative to the attribute
+ */
+fun Context.getPagerIndicatorIntAttribute(@StyleableRes styleAttribute: Int): Int {
+    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
+    val value = if(ta.hasValue(styleAttribute))
+        ta.getInt(styleAttribute, 0) else 0
+    ta.recycle()
+    return value
+}
+
+/**
+ * Get the value of a boolean attribute relative to smart glass dialog menu
+ * @receiver Context
+ * @param styleAttribute the pager indicator attribute for which you want to retrieve the value
+ * @return The value relative to the attribute
+ */
+fun Context.getPagerIndicatorBooleanAttribute(@StyleableRes styleAttribute: Int): Boolean {
+    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
+    val value = if(ta.hasValue(styleAttribute))
+        ta.getBoolean(styleAttribute, false) else false
+    ta.recycle()
+    return value
+}
+
+
+/**
+ * Get the value of a color attribute relative to smart glass dialog menu
+ * @receiver Context
+ * @param styleAttribute the pager indicator attribute for which you want to retrieve the value
+ * @return The value relative to the attribute
+ */
+fun Context.getPagerIndicatorColorAttribute(@StyleableRes styleAttribute: Int): Int {
+    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
+    val value = if(ta.hasValue(styleAttribute))
+        ta.getColor(styleAttribute, 0) else 0
+    ta.recycle()
+    return value
+}
+
+/**
+ * Get the value of a pixel size attribute relative to smart glass dialog menu
+ * @receiver Context
+ * @param styleAttribute the pager indicator attribute for which you want to retrieve the value
+ * @return The value relative to the attribute
+ */
+fun Context.getPagerIndicatorDimensionPixelSizeAttribute(@StyleableRes styleAttribute: Int): Int {
+    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
+    val value = if(ta.hasValue(styleAttribute))
+        ta.getDimensionPixelSize(styleAttribute, 0) else 0
+    ta.recycle()
+    return value
+}
+
+/**
  * Get the value of an integer attribute relative to the bouncing dots style
  * @receiver Context
  * @param styleAttribute the bouncing dots attribute for which you want to retrieve the value
@@ -278,6 +335,20 @@ fun Context.getCallActionItemStyle(@StyleableRes styleAttribute: Int): Int {
 }
 
 /**
+ * Get the style for the specified smart glass call action item
+ * @receiver Context
+ * @param styleAttribute the call action item attribute for which you want to retrieve the style
+ * @return The style relative to the styleAttribute
+ */
+fun Context.getSmartGlassMenuAttribute(@StyleableRes styleAttribute: Int): Int {
+    val ta = obtainStyledAttributes(getSmartGlassMenuDialogAttribute(R.styleable.BandyerSDKDesign_SmartGlassDialogMenu_bandyer_smartGlassMenuStyle), R.styleable.BandyerSDKDesign_SmartGlassMenu)
+    val value = if(ta.hasValue(styleAttribute))
+        ta.getResourceId(styleAttribute, 0) else 0
+    ta.recycle()
+    return value
+}
+
+/**
  * Get the style for the specified call action item
  * @receiver Context
  * @param styleAttribute the call action item attribute for which you want to retrieve the style
@@ -327,6 +398,20 @@ fun Context.getWhiteboardDialogAttribute(@StyleableRes styleAttribute: Int): Int
  */
 fun Context.getTextEditorDialogAttribute(@StyleableRes styleAttribute: Int): Int {
     val ta = obtainStyledAttributes(getWhiteboardDialogAttribute(R.styleable.BandyerSDKDesign_BottomSheetDialog_Whiteboard_bandyer_textEditorDialogStyle), R.styleable.BandyerSDKDesign_BottomSheetDialog_TextEditor)
+    val value = if(ta.hasValue(styleAttribute))
+        ta.getResourceId(styleAttribute, 0) else 0
+    ta.recycle()
+    return value
+}
+
+/**
+ * Get the style related to a smartglass dialog menu attribute
+ * @receiver Context
+ * @param styleAttribute the attribute for which you want to retrieve the style
+ * @return The style relative to the styleAttribute
+ */
+fun Context.getSmartGlassMenuDialogAttribute(@StyleableRes styleAttribute: Int): Int {
+    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_smartGlassDialogMenuStyle), R.styleable.BandyerSDKDesign_SmartGlassDialogMenu)
     val value = if(ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
