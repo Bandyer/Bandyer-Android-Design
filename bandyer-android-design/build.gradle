@@ -53,7 +53,7 @@ def projectLicenseUrl = "https://github.com/Bandyer/Bandyer-Android-Design/LICEN
 def projectKeywords = ['bandyer-android-design', 'sdk-design', 'android-design', 'android', 'video', 'conference', 'helpdesk', 'bandyer', 'webrtc', 'call', 'audio']
 def developerFullName = "Bandyer Srl"
 group = projectGroup
-version = "1.0.4"
+version = "1.0.5"
 
 // Library versions
 def fastAdapterVersion = "3.3.1"
