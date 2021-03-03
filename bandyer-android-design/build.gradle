@@ -29,6 +29,7 @@ apply plugin: 'com.android.library'
 
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
+apply plugin: 'maven-publish'
 
 apply plugin: 'kotlin-android'
 apply plugin: 'org.jetbrains.dokka'
@@ -187,6 +188,32 @@ bintray {
     }
 }
 
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                name = 'Artifactory'
+                url = "https://bandyer.jfrog.io/artifactory/Bandyer"
+                credentials {
+                    username = properties.getProperty("artifactory.user")
+                    password = properties.getProperty("artifactory.apiKey")
+                }
+            }
+        }
+
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = projectGroup
+                artifactId = project.getName()
+                version = version
+                artifact kdocJar
+                artifact sourcesJar
+            }
+        }
+    }
+}
+
 task dokkaDoc() {
     dependsOn createApiDoc("genKDoc", "html", "kDoc")
 }
@@ -203,13 +230,13 @@ def createApiDoc(def name, def format, def dir) {
 }
 
 task kdocJar(type: Jar, dependsOn: dokkaDoc) {
-    classifier = 'kdoc'
+    archiveClassifier.set("javadoc")
     from "$buildDir/kDoc"
 }
 
 task sourcesJar(type: Jar) {
+    archiveClassifier.set("sources")
     from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
 }
 
 artifacts {
