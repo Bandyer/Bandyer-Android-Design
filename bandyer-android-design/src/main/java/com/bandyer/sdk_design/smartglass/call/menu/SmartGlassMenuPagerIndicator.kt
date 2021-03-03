@@ -88,6 +88,12 @@ class SmartGlassMenuPagerIndicator @JvmOverloads constructor(context: Context, a
         dotPaint = getDefaultPaintConfig(defaultColor = dotColor)
     }
 
+    /**
+     * On draw
+     *
+     * @param canvas
+     * @suppress
+     */
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         (0 until getItemCount())
@@ -102,6 +108,13 @@ class SmartGlassMenuPagerIndicator @JvmOverloads constructor(context: Context, a
                 }
     }
 
+    /**
+     * On measure
+     *
+     * @param widthMeasureSpec
+     * @param heightMeasureSpec
+     * @suppress
+     */
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         val minimumViewSize = 2 * selectedDotRadiusPx
         if (verticalSupport) setMeasuredDimension(minimumViewSize, getCalculatedWidth())
@@ -265,6 +278,14 @@ class SmartGlassMenuPagerIndicator @JvmOverloads constructor(context: Context, a
 
     private fun getRTLPosition(position: Int) = getItemCount() - position - 1
 
+    /**
+     * On page scrolled
+     *
+     * @param position
+     * @param positionOffset
+     * @param positionOffsetPixels
+     * @suppress
+     */
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
         if (context.isRtl()) {
             val currentPosition = getRTLPosition(position = position)
@@ -279,12 +300,24 @@ class SmartGlassMenuPagerIndicator @JvmOverloads constructor(context: Context, a
         invalidate()
     }
 
+    /**
+     * On page selected
+     *
+     * @param position
+     * @suppress
+     */
     override fun onPageSelected(position: Int) {
         intermediateSelectedItemPosition = selectedItemPosition
         selectedItemPosition = if (context.isRtl()) getRTLPosition(position = position) else position
         invalidate()
     }
 
+    /**
+     * On page scroll state changed
+     *
+     * @param state
+     * @suppress
+     */
     override fun onPageScrollStateChanged(state: Int) = Unit
 
     internal inner class InternalRecyclerScrollListener : RecyclerView.OnScrollListener() {
