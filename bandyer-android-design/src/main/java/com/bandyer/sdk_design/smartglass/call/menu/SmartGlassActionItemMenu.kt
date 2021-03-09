@@ -38,12 +38,10 @@ class SmartGlassActionItemMenu : DialogFragment() {
          * @return SmartglassActionItemMenu
          */
         fun show(appCompatActivity: AppCompatActivity, items: List<CallAction>): SmartGlassActionItemMenu {
-            val dialogFragment = SmartGlassActionItemMenu()
-            dialogFragment.arguments = Bundle().apply {
-                this.putSerializable(ITEMS, ArrayList<ActionItem>().apply { this.addAll(items) })
-            }
-            dialogFragment.show(appCompatActivity.supportFragmentManager, "$TAG ${System.currentTimeMillis()}")
-            return dialogFragment
+            val smartGlassActionItemMenu = SmartGlassActionItemMenu()
+            smartGlassActionItemMenu.items = items
+            smartGlassActionItemMenu.show(appCompatActivity.supportFragmentManager, "$TAG ${System.currentTimeMillis()}")
+            return smartGlassActionItemMenu
         }
     }
 
@@ -76,10 +74,6 @@ class SmartGlassActionItemMenu : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_smartGlassDialogMenuStyle))
-        val itemsArrayList = arguments?.getSerializable(ITEMS)
-        items = mutableListOf<CallAction>().apply {
-            this.addAll(itemsArrayList as ArrayList<CallAction>)
-        }
     }
 
     /**
