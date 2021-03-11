@@ -221,17 +221,12 @@ open class CallBottomSheet<T>(val context: AppCompatActivity,
         replaceItems(oldItem, newItem)
     }
 
-    private fun setup(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) = bottomSheetLayoutContent.post contentPost@ {
+    private fun setup(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) = bottomSheetLayoutContent.post contentPost@{
         animationStartOffset = -1f
         animationEndState = -1
         animationEnabled = fixed == false
-        bottomSheetBehaviour!!.disableDragging = false
-
         this.collapsible = collapsible
-
-        if (callActionItems.size <= MAX_ITEMS_PER_ROW) {
-            bottomSheetBehaviour!!.disableDragging = true
-        }
+        bottomSheetBehaviour!!.disableDragging = callActionItems.size <= MAX_ITEMS_PER_ROW
 
         if (fixed == true) {
             bottomSheetBehaviour!!.isHideable = false
