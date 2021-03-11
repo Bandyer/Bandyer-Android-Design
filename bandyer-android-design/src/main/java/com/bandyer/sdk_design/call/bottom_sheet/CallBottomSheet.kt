@@ -279,7 +279,7 @@ open class CallBottomSheet<T>(val context: AppCompatActivity,
         }
 
         bottomSheetLayoutContent.lineView?.state =
-                if (bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT
+                if (state == STATE_COLLAPSED || bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT
                 else State.ANCHORED_LINE
 
         if (collapsed && collapsible) bottomSheetLayoutContent.backgroundView?.alpha = 0f
