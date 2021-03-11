@@ -37,6 +37,7 @@ class BandyerLineButton @JvmOverloads constructor(context: Context, attrs: Attri
      */
     var state: State? = State.ANCHORED_DOT
         set(value) {
+            if (field == value) return
             field = value
             refreshDrawableState()
         }
