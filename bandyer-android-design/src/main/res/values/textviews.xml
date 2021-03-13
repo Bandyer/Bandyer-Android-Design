@@ -97,22 +97,19 @@
     </declare-styleable>
 
     <style name="BandyerSDKDesign.TextView.Subtitle.BouncingDots" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:textAllCaps">false</item>
-        <item name="android:includeFontPadding">false</item>
-        <item name="android:focusable">false</item>
-        <item name="android:focusableInTouchMode">false</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="bandyer_autoplay">false</item>
-        <item name="bandyer_animationHeight">@dimen/bandyer_dimen_space2</item>
+        <item name="bandyer_animationHeight">@dimen/bandyer_dimen_space3</item>
         <item name="bandyer_period">1000</item>
         <item name="android:textStyle">italic</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_bouncing_dots</item>
         <item name="android:textColor">@color/bandyer_color_on_primary_50</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space2</item>
-        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space2</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
         <item name="android:visibility">gone</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:fadingEdge">horizontal</item>
     </style>
 
     <!-- ANSWER CALL HELPER TEXTVIEW -->

@@ -19,27 +19,22 @@ package com.bandyer.sdk_design.chat.widgets
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.annotation.DrawableRes
 import android.util.AttributeSet
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.LinearLayout
+import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.call.imageviews.BandyerAvatarImageView
 import com.bandyer.sdk_design.databinding.BandyerWidgetChatInfoBinding
 import com.bandyer.sdk_design.extensions.setTextAppearance
-import com.bandyer.sdk_design.textviews.BandyerTextViewBouncingDots
 import com.google.android.material.textview.MaterialTextView
 
 /**
  * This class represent a widget used to display in-chat informations.
  * It has a tile, a subtitle and bouncing dots for typing action displaying.
  */
-class BandyerChatInfoWidget @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle)
-    : ConstraintLayout(context, attrs, defStyleAttr) {
+class BandyerChatInfoWidget @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle) : ConstraintLayout(context, attrs, defStyleAttr) {
     /**
      * View used to display contact names
      */
@@ -59,27 +54,22 @@ class BandyerChatInfoWidget @JvmOverloads constructor(context: Context, attrs: A
         private set
 
     /**
-     * View effect used in typing status
-     */
-    var typingDotsView: BandyerTextViewBouncingDots? = null
-        private set
-
-    /**
      * Change or get the current status of the contact
      */
     var state: BandyerChatInfoWidgetState? = BandyerChatInfoWidgetState.WAITING_FOR_NETWORK()
         @SuppressLint("SetTextI18n")
         set(value) {
             field = value
-            typingDotsView?.hideAndStop()
-            contactStatusView ?: return
-            showTyping(false)
+            if (value !is BandyerChatInfoWidgetState.TYPING) {
+                binding.bandyerSubtitleText.hideBouncingDots()
+                showTyping(false)
+            }
             when (value) {
                 is BandyerChatInfoWidgetState.OFFLINE -> {
                     context.setTextAppearance(binding.bandyerSubtitleText, R.style.BandyerSDKDesign_TextAppearance_Subtitle_Chat_Offline)
                     binding.bandyerSubtitleText.text = resources.getString(R.string.bandyer_chat_user_status_offline)
                     if (value.lastLogin != null && !value.lastLogin.isNullOrBlank())
-                        binding.bandyerSubtitleText.text = context.getString(R.string.bandyer_chat_user_status_last_login) + " " +  value.lastLogin!!
+                        binding.bandyerSubtitleText.text = context.getString(R.string.bandyer_chat_user_status_last_login) + " " + value.lastLogin!!
                     showSubtitle(true)
                 }
                 is BandyerChatInfoWidgetState.ONLINE -> {
@@ -88,7 +78,8 @@ class BandyerChatInfoWidget @JvmOverloads constructor(context: Context, attrs: A
                     showSubtitle(true)
                 }
                 is BandyerChatInfoWidgetState.TYPING -> {
-                    typingDotsView?.showAndPlay()
+                    if (!binding.bandyerSubtitleText.isShowingBouncingDots) binding.bandyerSubtitleText.showBouncingDots()
+                    binding.bandyerSubtitleText.showBouncingDots()
                     context.setTextAppearance(binding.bandyerSubtitleText, R.style.BandyerSDKDesign_TextAppearance_Subtitle_Chat_Typing)
                     binding.bandyerSubtitleText.text = resources.getString(R.string.bandyer_chat_user_status_typing)
                     showSubtitle(true)
@@ -113,21 +104,23 @@ class BandyerChatInfoWidget @JvmOverloads constructor(context: Context, attrs: A
 
     private val binding: BandyerWidgetChatInfoBinding by lazy { BandyerWidgetChatInfoBinding.inflate(LayoutInflater.from(context), this) }
 
-    private fun showSubtitle(visible: Boolean){
-        binding.bandyerSubtitleText.visibility = if(visible) View.VISIBLE else View.GONE
+    private fun showSubtitle(visible: Boolean) {
+        binding.bandyerSubtitleText.visibility = if (visible) View.VISIBLE else View.GONE
     }
-    private fun showTyping(visible: Boolean){
-        binding.bandyerSubtitleBouncingDots.visibility = if(visible) View.VISIBLE else View.GONE
+
+    private fun showTyping(visible: Boolean) {
+        binding.bandyerSubtitleText.visibility = if (visible) View.VISIBLE else View.GONE
+        if (visible) binding.bandyerSubtitleText.showBouncingDots()
+        else binding.bandyerSubtitleText.hideBouncingDots()
     }
 
     init {
         contactNameView = binding.bandyerTitle
-        contactNameView?.visibility = View.GONE
         contactStatusView = binding.bandyerSubtitleText
         contactImageView = binding.bandyerAvatar
-        typingDotsView = binding.bandyerSubtitleBouncingDots
-
-        contactNameView?.isSelected = true // activate marquee
+        binding.bandyerTitle.visibility = View.GONE
+        binding.bandyerTitle.isSelected = true // activate marquee
+        binding.bandyerSubtitleText?.isSelected = true // activate marquee
     }
 
     /**
@@ -135,32 +128,26 @@ class BandyerChatInfoWidget @JvmOverloads constructor(context: Context, attrs: A
      * @param name the name to display
      */
     fun setName(name: String) {
-        contactNameView?.text = name
+        binding.bandyerTitle.text = name
     }
 
     /**
      * Display contact image given the url
      * @param url image
      */
-    fun setImage(url: String) {
-        contactImageView?.setImageUrl(url)
-    }
+    fun setImage(url: String) = binding.bandyerAvatar.setImageUrl(url)
 
     /**
      * Display contact image given a resource
      * @param resId image
      */
-    fun setImage(@DrawableRes resId: Int) {
-        contactImageView?.setImageResource(resId)
-    }
+    fun setImage(@DrawableRes resId: Int) = binding.bandyerAvatar.setImageResource(resId)
 
     /**
      * Display contact image given a bitmap
      * @param bitmap image
      */
-    fun setImage(bitmap: Bitmap) {
-        contactImageView?.setImageBitmap(bitmap)
-    }
+    fun setImage(bitmap: Bitmap) = binding.bandyerAvatar.setImageBitmap(bitmap)
 
     /**
      * Bandyer Chat Info Widget States

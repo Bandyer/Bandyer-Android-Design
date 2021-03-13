@@ -34,25 +34,17 @@
         android:id="@+id/bandyer_title"
         style="?attr/bandyer_titleStyle"
         app:layout_constraintBottom_toTopOf="@id/bandyer_subtitle_text"
-        app:layout_constraintLeft_toRightOf="@id/bandyer_avatar"
         app:layout_constraintStart_toEndOf="@id/bandyer_avatar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.bandyer.sdk_design.textviews.BandyerTextViewBouncingDots
         android:id="@+id/bandyer_subtitle_text"
         style="?attr/bandyer_subtitleStyle"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="@id/bandyer_title"
         app:layout_constraintStart_toStartOf="@id/bandyer_title"
         app:layout_constraintTop_toBottomOf="@id/bandyer_title" />
-
-    <com.bandyer.sdk_design.textviews.BandyerTextViewBouncingDots
-        android:id="@+id/bandyer_subtitle_bouncing_dots"
-        style="?attr/bandyer_bouncingDotsStyle"
-        app:layout_constraintBottom_toBottomOf="@id/bandyer_subtitle_text"
-        app:layout_constraintLeft_toRightOf="@id/bandyer_subtitle_text"
-        app:layout_constraintStart_toEndOf="@id/bandyer_subtitle_text" />
 
 </merge>

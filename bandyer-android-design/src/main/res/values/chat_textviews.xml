@@ -19,30 +19,35 @@
     <!-- CHAT INFO STYLE -->
 
     <style name="BandyerSDKDesign.TextView.Title.ChatInfo" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space0</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:ellipsize">marquee</item>
-        <item name="android:fadingEdge">horizontal</item>
-        <item name="android:marqueeRepeatLimit">marquee_forever</item>
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space12</item>
         <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space12</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:fadingEdge">horizontal</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.Subtitle.ChatInfo" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
         <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space2</item>
         <item name="android:layout_marginRight">@dimen/bandyer_dimen_space3</item>
         <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space3</item>
-        <item name="android:maxLines">1</item>
         <item name="android:textColor">@color/bandyer_color_on_primary_50</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:marqueeRepeatLimit">marquee_forever</item>
+        <item name="android:fadingEdge">horizontal</item>
     </style>
 
     <style name="BandyerSDKDesign.TextAppearance.Subtitle.Chat" parent="BandyerSDKDesign.TextAppearance.Subtitle">

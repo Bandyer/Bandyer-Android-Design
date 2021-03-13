@@ -20,6 +20,7 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Context
 import android.text.SpannableString
 import android.text.Spanned
@@ -42,54 +43,84 @@ import kotlin.math.sin
 
 class BandyerTextViewBouncingDots @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : MaterialTextView(context, attrs, defStyleAttr) {
 
+    private var mAnimatorSet: AnimatorSet? = null
     private var dotOne: JumpingSpan? = null
     private var dotTwo: JumpingSpan? = null
     private var dotThree: JumpingSpan? = null
 
-    private val showSpeed = 700
-
+    private val showSpeed = resources.getInteger(android.R.integer.config_longAnimTime)
     private var jumpHeight: Int = 0
     private var autoPlay: Boolean = false
 
     /**
      * return true if the bouncing dots animation is playing
      */
-    var isPlaying: Boolean = false
-        private set
-    /**
-     * return true if the bouncing dots are hidden
-     */
-    var isHidden: Boolean = false
+    var isShowingBouncingDots: Boolean = false
         private set
 
+    private var dotChar = "•"
+    private var showDots = false
     private var period: Int = 0
-
-    private val mAnimatorSet = AnimatorSet()
     private var textWidth: Float = 0.toFloat()
 
     init {
-
         autoPlay = context.getBouncingDotsBooleanAttribute(R.styleable.BandyerSDKDesign_TextView_Subtitle_BouncingDots_bandyer_autoplay)
-
         period = context.getBouncingDotsIntAttribute(R.styleable.BandyerSDKDesign_TextView_Subtitle_BouncingDots_bandyer_period)
-
         jumpHeight = context.getBouncingDotsDimensionAttribute(R.styleable.BandyerSDKDesign_TextView_Subtitle_BouncingDots_bandyer_animationHeight).roundToInt()
+        if (dotOne == null) dotOne = JumpingSpan()
+        if (dotTwo == null) dotTwo = JumpingSpan()
+        if (dotThree == null) dotThree = JumpingSpan()
+    }
 
-        dotOne = JumpingSpan()
-        dotTwo = JumpingSpan()
-        dotThree = JumpingSpan()
+    /**
+     * Show dots and play bouncing dots animation
+     */
+    fun showBouncingDots() {
+        showDots = true
+        visibility = View.VISIBLE
+        text = text
 
-        val spannable = SpannableString("●●●")
-        spannable.setSpan(dotOne, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannable.setSpan(dotTwo, 1, 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spannable.setSpan(dotThree, 2, 3, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-        setText(spannable, BufferType.SPANNABLE)
+        val dotThreeMoveRightToLeft = createDotShowAnimator(dotThree, 2)
+        dotThreeMoveRightToLeft.addUpdateListener { invalidate() }
+        dotThreeMoveRightToLeft.start()
 
-        textWidth = paint.measureText("●", 0, 1)
+        val dotTwoMoveRightToLeft = createDotShowAnimator(dotTwo, 1)
+        dotTwoMoveRightToLeft.addUpdateListener { invalidate() }
+        dotTwoMoveRightToLeft.start()
 
-        val dotOneJumpAnimator = createDotJumpAnimator(dotOne!!, 0)
-        dotOneJumpAnimator.addUpdateListener { invalidate() }
-        mAnimatorSet.playTogether(dotOneJumpAnimator, createDotJumpAnimator(dotTwo!!, (period / 6).toLong()), createDotJumpAnimator(dotThree!!, (period * 2 / 6).toLong()))
+        start()
+    }
+
+    /**
+     * Hide dots and stop bouncing dots animation
+     */
+    fun hideBouncingDots() {
+        stop()
+        showDots = false
+
+        val dotThreeMoveRightToLeft = createDotHideAnimator(dotThree, 2f)
+        dotThreeMoveRightToLeft.addUpdateListener { invalidate() }
+        dotThreeMoveRightToLeft.start()
+
+        val dotTwoMoveRightToLeft = createDotHideAnimator(dotTwo, 1f)
+        dotTwoMoveRightToLeft.addUpdateListener { invalidate() }
+        dotTwoMoveRightToLeft.start()
+
+        text = text.toString().replace(dotChar, "").trim()
+    }
+
+    override fun setText(text: CharSequence?, type: BufferType?) {
+        if (text.toString() == this.text.toString()) return
+        if (!showDots) {
+            super.setText(text, type)
+            return
+        }
+        val spannable = SpannableString("${text.toString().replace(dotChar, "")} $dotChar$dotChar$dotChar")
+        spannable.setSpan(dotOne, spannable.length - 3, spannable.length - 2, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(dotTwo, spannable.length - 2, spannable.length - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(dotThree, spannable.length - 1, spannable.length, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        super.setText(spannable, BufferType.SPANNABLE)
+        textWidth = paint.measureText(dotChar, 0, 1)
     }
 
     /**
@@ -97,7 +128,7 @@ class BandyerTextViewBouncingDots @JvmOverloads constructor(context: Context, at
      */
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        isPlaying = autoPlay
+        isShowingBouncingDots = autoPlay
         if (autoPlay) start()
     }
 
@@ -106,52 +137,35 @@ class BandyerTextViewBouncingDots @JvmOverloads constructor(context: Context, at
      */
     override fun onDetachedFromWindow() {
         stop()
-        mAnimatorSet.cancel()
         super.onDetachedFromWindow()
     }
 
     private fun start() {
-        isPlaying = true
+        stop()
+        isShowingBouncingDots = true
+        mAnimatorSet = AnimatorSet()
+        mAnimatorSet?.playTogether(
+                createDotJumpAnimator(dotOne!!, 0).apply { this.addUpdateListener { this@BandyerTextViewBouncingDots.invalidate() } },
+                createDotJumpAnimator(dotTwo!!, (period / 6).toLong()),
+                createDotJumpAnimator(dotThree!!, (period * 2 / 6).toLong()))
         setAllAnimationsRepeatCount(ValueAnimator.INFINITE)
-        mAnimatorSet.start()
+        mAnimatorSet?.start()
     }
 
     private fun stop() {
-        isPlaying = false
+        isShowingBouncingDots = false
         setAllAnimationsRepeatCount(0)
+        mAnimatorSet?.cancel()
+        mAnimatorSet?.removeAllListeners()
     }
 
     private fun setAllAnimationsRepeatCount(repeatCount: Int) {
-        for (animator in mAnimatorSet.childAnimations) {
+        mAnimatorSet ?: return
+        for (animator in mAnimatorSet!!.childAnimations) {
             if (animator is ObjectAnimator) {
                 animator.repeatCount = repeatCount
             }
         }
-    }
-
-    private fun show() {
-        visibility = View.VISIBLE
-        val dotThreeMoveRightToLeft = createDotShowAnimator(dotThree, 2)
-
-        dotThreeMoveRightToLeft.start()
-
-        val dotTwoMoveRightToLeft = createDotShowAnimator(dotTwo, 1)
-        dotTwoMoveRightToLeft.addUpdateListener { invalidate() }
-
-        dotTwoMoveRightToLeft.start()
-        isHidden = false
-    }
-
-    private fun hide() {
-
-        createDotHideAnimator(dotThree, 2f).start()
-
-        val dotTwoMoveRightToLeft = createDotHideAnimator(dotTwo, 1f)
-        dotTwoMoveRightToLeft.addUpdateListener { invalidate() }
-
-        dotTwoMoveRightToLeft.start()
-        isHidden = true
-        visibility = View.GONE
     }
 
     private fun createDotHideAnimator(span: JumpingSpan?, widthMultiplier: Float): ObjectAnimator {
@@ -176,21 +190,5 @@ class BandyerTextViewBouncingDots @JvmOverloads constructor(context: Context, at
         jumpAnimator.repeatCount = ValueAnimator.INFINITE
         jumpAnimator.repeatMode = ValueAnimator.RESTART
         return jumpAnimator
-    }
-
-    /**
-     * show and play bouncing dots animation
-     */
-    fun showAndPlay() {
-        show()
-        start()
-    }
-
-    /**
-     * hide and stop bouncing dots animation
-     */
-    fun hideAndStop() {
-        hide()
-        stop()
     }
 }
