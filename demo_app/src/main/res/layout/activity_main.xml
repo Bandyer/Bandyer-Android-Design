@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
   ~
   ~  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +14,9 @@
   ~  limitations under the License.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
@@ -46,34 +44,35 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="@dimen/bandyer_dimen_space32">
+            android:paddingTop="@dimen/bandyer_dimen_space32"
+            android:paddingBottom="@dimen/bandyer_dimen_space32">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_switch_night_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:checked="false"
-                android:text="@string/night_mode"
                 android:layout_marginStart="@dimen/bandyer_dimen_space16"
                 android:layout_marginLeft="@dimen/bandyer_dimen_space16"
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
+                android:checked="false"
+                android:text="@string/night_mode"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_chat"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginStart="@dimen/bandyer_dimen_space16"
                 android:layout_marginLeft="@dimen/bandyer_dimen_space16"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
                 android:text="@string/chat"
                 app:layout_constraintEnd_toStartOf="@id/btn_call"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/btn_call"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/btn_switch_night_mode" />
 
             <com.google.android.material.button.MaterialButton
@@ -87,18 +86,18 @@
                 android:text="@string/call"
                 app:layout_constraintBottom_toBottomOf="@id/btn_chat"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/btn_chat"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintStart_toEndOf="@id/btn_chat"
-                app:layout_constraintLeft_toRightOf="@id/btn_chat"
                 app:layout_constraintTop_toTopOf="@id/btn_chat" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_smartglasses_menu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginStart="@dimen/bandyer_dimen_space16"
                 android:layout_marginLeft="@dimen/bandyer_dimen_space16"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
                 android:text="@string/smart_glass_menu"
@@ -108,9 +107,9 @@
                 android:id="@+id/btn_whiteboard_editor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginStart="@dimen/bandyer_dimen_space16"
                 android:layout_marginLeft="@dimen/bandyer_dimen_space16"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
                 android:text="@string/whiteboard_editor"
@@ -120,9 +119,9 @@
                 android:id="@+id/btn_snapshot_preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginStart="@dimen/bandyer_dimen_space16"
                 android:layout_marginLeft="@dimen/bandyer_dimen_space16"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
                 android:text="@string/snapshot_preview"
@@ -132,9 +131,9 @@
                 android:id="@+id/btn_live_pointer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginStart="@dimen/bandyer_dimen_space16"
                 android:layout_marginLeft="@dimen/bandyer_dimen_space16"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
                 android:text="@string/live_pointer"
@@ -144,9 +143,9 @@
                 android:id="@+id/btn_bluetooth_audioroute"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginStart="@dimen/bandyer_dimen_space16"
                 android:layout_marginLeft="@dimen/bandyer_dimen_space16"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
                 android:text="@string/bluetooth_audio_route"
@@ -156,9 +155,9 @@
                 android:id="@+id/btn_whiteboard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginStart="@dimen/bandyer_dimen_space16"
                 android:layout_marginLeft="@dimen/bandyer_dimen_space16"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
                 android:text="@string/whiteboard"
@@ -168,9 +167,10 @@
                 android:id="@+id/btn_ringing"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/bandyer_dimen_space16"
                 android:layout_marginStart="@dimen/bandyer_dimen_space16"
                 android:layout_marginLeft="@dimen/bandyer_dimen_space16"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
+                android:layout_marginBottom="@dimen/bandyer_dimen_space16"
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
                 android:text="@string/ringing"
