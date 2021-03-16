@@ -92,7 +92,7 @@ class ChatActivity : AppCompatActivity() {
 
         itemAdapter.add(BandyerChatTextMessageItem(BandyerChatTextMessage("How is the weather today?", timestamp, mine = true, pending = true, sent = false) { true }))
 
-        itemAdapter.add(BandyerChatTextMessageItem(BandyerChatTextMessage("It's a little cloudly", timestamp, mine = false, pending = false, sent = true) { false }))
+        itemAdapter.add(BandyerChatTextMessageItem(BandyerChatTextMessage("It's a little cloudy", timestamp, mine = false, pending = false, sent = true) { false }))
 
         itemAdapter.add(BandyerChatTextMessageItem(BandyerChatTextMessage("Have a nice weekend!", timestamp, mine = true, pending = true, sent = false) { false }))
 
