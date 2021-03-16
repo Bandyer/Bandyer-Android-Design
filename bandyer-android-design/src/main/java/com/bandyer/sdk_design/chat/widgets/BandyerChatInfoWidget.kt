@@ -128,6 +128,7 @@ class BandyerChatInfoWidget @JvmOverloads constructor(context: Context, attrs: A
         typingDotsView = binding.bandyerSubtitleBouncingDots
 
         contactNameView?.isSelected = true // activate marquee
+        contactStatusView?.isSelected = true // activate marquee
     }
 
     /**
