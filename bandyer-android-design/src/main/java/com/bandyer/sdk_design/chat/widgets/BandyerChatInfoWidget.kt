@@ -19,13 +19,10 @@ package com.bandyer.sdk_design.chat.widgets
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.annotation.DrawableRes
 import android.util.AttributeSet
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.LinearLayout
+import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.call.imageviews.BandyerAvatarImageView
@@ -71,15 +68,17 @@ class BandyerChatInfoWidget @JvmOverloads constructor(context: Context, attrs: A
         @SuppressLint("SetTextI18n")
         set(value) {
             field = value
-            typingDotsView?.hideAndStop()
+            if (value !is BandyerChatInfoWidgetState.TYPING) {
+                typingDotsView?.hideAndStop()
+                showTyping(false)
+            }
             contactStatusView ?: return
-            showTyping(false)
             when (value) {
                 is BandyerChatInfoWidgetState.OFFLINE -> {
                     context.setTextAppearance(binding.bandyerSubtitleText, R.style.BandyerSDKDesign_TextAppearance_Subtitle_Chat_Offline)
                     binding.bandyerSubtitleText.text = resources.getString(R.string.bandyer_chat_user_status_offline)
                     if (value.lastLogin != null && !value.lastLogin.isNullOrBlank())
-                        binding.bandyerSubtitleText.text = context.getString(R.string.bandyer_chat_user_status_last_login) + " " +  value.lastLogin!!
+                        binding.bandyerSubtitleText.text = context.getString(R.string.bandyer_chat_user_status_last_login) + " " + value.lastLogin!!
                     showSubtitle(true)
                 }
                 is BandyerChatInfoWidgetState.ONLINE -> {
@@ -88,7 +87,7 @@ class BandyerChatInfoWidget @JvmOverloads constructor(context: Context, attrs: A
                     showSubtitle(true)
                 }
                 is BandyerChatInfoWidgetState.TYPING -> {
-                    typingDotsView?.showAndPlay()
+                    if (typingDotsView?.isPlaying == false) typingDotsView?.showAndPlay()
                     context.setTextAppearance(binding.bandyerSubtitleText, R.style.BandyerSDKDesign_TextAppearance_Subtitle_Chat_Typing)
                     binding.bandyerSubtitleText.text = resources.getString(R.string.bandyer_chat_user_status_typing)
                     showSubtitle(true)
@@ -113,11 +112,12 @@ class BandyerChatInfoWidget @JvmOverloads constructor(context: Context, attrs: A
 
     private val binding: BandyerWidgetChatInfoBinding by lazy { BandyerWidgetChatInfoBinding.inflate(LayoutInflater.from(context), this) }
 
-    private fun showSubtitle(visible: Boolean){
-        binding.bandyerSubtitleText.visibility = if(visible) View.VISIBLE else View.GONE
+    private fun showSubtitle(visible: Boolean) {
+        binding.bandyerSubtitleText.visibility = if (visible) View.VISIBLE else View.GONE
     }
-    private fun showTyping(visible: Boolean){
-        binding.bandyerSubtitleBouncingDots.visibility = if(visible) View.VISIBLE else View.GONE
+
+    private fun showTyping(visible: Boolean) {
+        binding.bandyerSubtitleBouncingDots.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     init {
