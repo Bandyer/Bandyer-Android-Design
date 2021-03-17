@@ -155,5 +155,12 @@
     <string name="bandyer_fileshare_error_text">Upload Failed - Retry</string>
     <string name="bandyer_fileshare_upload">Upload</string>
     <string name="bandyer_fileshare_download">Download</string>
+    <string name="bandyer_fileshare_file">Generic file</string>
+    <string name="bandyer_fileshare_media">Media file</string>
+    <string name="bandyer_fileshare_archive">Archive file</string>
+    <string name="bandyer_fileshare_cancel">Cancel</string>
+    <string name="bandyer_fileshare_download_dcr">Start download</string>
+    <string name="bandyer_fileshare_redownload">Re-download</string>
+    <string name="bandyer_fileshare_retry">Retry</string>
 
 </resources>

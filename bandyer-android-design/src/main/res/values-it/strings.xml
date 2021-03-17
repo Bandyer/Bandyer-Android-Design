@@ -148,5 +148,12 @@
     <string name="bandyer_fileshare_error_text">Upload fallito - Riprovare</string>
     <string name="bandyer_fileshare_upload">Upload</string>
     <string name="bandyer_fileshare_download">Download</string>
+    <string name="bandyer_fileshare_file">File generico</string>
+    <string name="bandyer_fileshare_media">File multimediale</string>
+    <string name="bandyer_fileshare_archive">File archivio</string>
+    <string name="bandyer_fileshare_cancel">Annulla</string>
+    <string name="bandyer_fileshare_download_dcr">Avvia download</string>
+    <string name="bandyer_fileshare_redownload">Riscarica</string>
+    <string name="bandyer_fileshare_retry">Riprova</string>
 
 </resources>

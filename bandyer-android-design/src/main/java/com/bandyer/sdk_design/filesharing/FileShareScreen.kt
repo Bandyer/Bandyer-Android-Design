@@ -41,7 +41,7 @@ fun FileShare(onBackPressed: () -> Unit) {
               FileShareItem(
                   titleText = "documenti_ident.jpg",
                   fileSize = "58 Mb",
-                  fileType = FileType.FILE,
+                  fileType = FileType.MISC,
                   user = "Mario Draghi",
                   progress = 0.6f,
                   modifier = Modifier
