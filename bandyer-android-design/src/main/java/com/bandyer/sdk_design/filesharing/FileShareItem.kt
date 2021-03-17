@@ -1,8 +1,7 @@
 package com.bandyer.sdk_design.filesharing
 
-import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
@@ -10,26 +9,24 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.bandyer.sdk_design.R
-import com.google.android.material.composethemeadapter.MdcTheme
+import com.google.android.material.color.MaterialColors
 
 @Composable
 fun FileShareItem(modifier: Modifier = Modifier,
-                  titleText: String,
-                  fileSize: String,
-                  fileType: FileType,
-                  user: String,
-                  progress: Float,
+                  data: FileShareData,
+                  onButtonEvent: (FileShareButtonEvent) -> Unit,
                   onClick: () -> Unit) {
-    ConstraintLayout(modifier = modifier) {
+    ConstraintLayout(modifier = modifier
+        .fillMaxWidth()
+        .padding(16.dp)
+        .clickable(onClick = onClick)) {
 
         val (fileDetails, title, progressBar, subTitle, error, button) = createRefs()
 
@@ -38,14 +35,15 @@ fun FileShareItem(modifier: Modifier = Modifier,
                 start.linkTo(parent.start)
                 top.linkTo(title.top)
             }) {
-            when(fileType) {
-                FileType.MISC -> MiscFile(text = fileSize)
-                FileType.MEDIA -> MediaFile(text = fileSize)
-                FileType.ARCHIVE -> ArchiveFile(text = fileSize)
+            when(data.fileType) {
+                //TODO Add formatter for file size
+                FileType.MISC -> MiscFile(text = data.fileSize.toString())
+                FileType.MEDIA -> MediaFile(text = data.fileSize.toString())
+                FileType.ARCHIVE -> ArchiveFile(text = data.fileSize.toString())
             }
         }
 
-        Text(text = titleText,
+        Text(text = data.fileName,
             style = MaterialTheme.typography.subtitle1,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -59,7 +57,7 @@ fun FileShareItem(modifier: Modifier = Modifier,
                 })
 
         LinearProgressIndicator(
-            progress = progress,
+            progress = data.progress,
             color = MaterialTheme.colors.secondary,
             backgroundColor = MaterialTheme.colors.onSurface.copy(alpha = 0.2f),
             modifier = Modifier
@@ -71,17 +69,49 @@ fun FileShareItem(modifier: Modifier = Modifier,
                     width = Dimension.fillToConstraints
                 })
 
-        SubTitle(userText = user,
-            isUpload = false,
-            timeProgressText = "13:23",
-            modifier = Modifier
-                .padding(horizontal = 16.dp)
-                .constrainAs(subTitle) {
-                    start.linkTo(fileDetails.end)
-                    top.linkTo(progressBar.bottom)
-                    end.linkTo(button.start)
-                    width = Dimension.fillToConstraints
-                })
+        ConstraintLayout(modifier = Modifier
+            .padding(horizontal = 16.dp)
+            .constrainAs(subTitle) {
+                start.linkTo(fileDetails.end)
+                top.linkTo(progressBar.bottom)
+                end.linkTo(button.start)
+                width = Dimension.fillToConstraints
+            }) {
+
+            val (icon, user, time) = createRefs()
+
+            Icon(
+                painter = painterResource(if(data.isUpload) R.drawable.ic_upload_user else R.drawable.ic_download_user),
+                contentDescription = stringResource(if(data.isUpload) R.string.bandyer_fileshare_upload else R.string.bandyer_fileshare_download),
+                tint = if(data.isUpload) MaterialTheme.colors.onSurface else MaterialTheme.colors.secondary,
+                modifier = Modifier
+                    .size(10.dp)
+                    .constrainAs(icon) {
+                        start.linkTo(parent.start)
+                        centerVerticallyTo(parent)
+                    }
+            )
+
+            Text(text = data.sender,
+                style = MaterialTheme.typography.subtitle2,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .constrainAs(user) {
+                        start.linkTo(icon.end)
+                        centerVerticallyTo(parent)
+                    })
+
+            //TODO change text
+            Text(text = data.progress.toString(),
+                style = MaterialTheme.typography.subtitle2,
+                modifier = Modifier
+                    .constrainAs(time) {
+                        end.linkTo(parent.end)
+                        centerVerticallyTo(parent)
+                    })
+        }
 
         Text(text = stringResource(id = R.string.bandyer_fileshare_error_text),
             color = MaterialTheme.colors.error,
@@ -104,50 +134,13 @@ fun FileShareItem(modifier: Modifier = Modifier,
                     bottom.linkTo(progressBar.bottom)
                     end.linkTo(parent.end)
                 }) {
-            RetryButton(onClick = {  })
+//            TODO add condition
+//            when() {
+                  CancelButton(onClick = { onButtonEvent(FileShareButtonEvent.Cancel) })
+//                DownloadButton(onClick = { onButtonEvent(FileShareButtonEvent.Download) })
+//                ReDownloadButton(onClick = { onButtonEvent(FileShareButtonEvent.Download) })
+//                RetryButton(onClick = { onButtonEvent(FileShareButtonEvent.Retry) })
+//            }
         }
-
-    }
-}
-
-@Composable
-private fun SubTitle(userText: String, isUpload: Boolean, timeProgressText: String, modifier: Modifier = Modifier) {
-
-    val iconDrawable = if(isUpload) R.drawable.bandyer_add else R.drawable.bandyer_add
-    val iconDescription = if(isUpload) R.string.bandyer_fileshare_upload else R.string.bandyer_fileshare_download
-
-    ConstraintLayout(modifier = modifier) {
-
-        val (icon, user, time) = createRefs()
-
-        Icon(
-            painter = painterResource(iconDrawable),
-            contentDescription = stringResource(iconDescription),
-            modifier = Modifier
-                .size(10.dp)
-                .constrainAs(icon) {
-                    start.linkTo(parent.start)
-                    centerVerticallyTo(parent)
-                }
-        )
-
-        Text(text = userText,
-            style = MaterialTheme.typography.subtitle2,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .constrainAs(user) {
-                    start.linkTo(icon.end)
-                    centerVerticallyTo(parent)
-                })
-
-        Text(text = timeProgressText,
-            style = MaterialTheme.typography.subtitle2,
-            modifier = Modifier
-                .constrainAs(time) {
-                    end.linkTo(parent.end)
-                    centerVerticallyTo(parent)
-                })
     }
 }

@@ -8,6 +8,7 @@ package com.bandyer.sdk_design.filesharing
 * @property sender sender userAlias
 */
 data class FileShareData(var fileName: String,
+                         var progress: Float,
                          var isUpload: Boolean,
                          var sender: String,
                          var fileType: FileType,

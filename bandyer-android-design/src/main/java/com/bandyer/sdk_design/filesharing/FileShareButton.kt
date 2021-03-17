@@ -34,7 +34,7 @@ fun DownloadButton(modifier: Modifier = Modifier, onClick: () -> Unit) = FileSha
     onClick = onClick)
 
 @Composable
-fun RedownloadButton(modifier: Modifier = Modifier, onClick: () -> Unit) = FileShareButton(modifier = modifier,
+fun ReDownloadButton(modifier: Modifier = Modifier, onClick: () -> Unit) = FileShareButton(modifier = modifier,
     drawable = R.drawable.ic_download,
     iconColor = MaterialTheme.colors.onSecondary,
     borderColor = MaterialTheme.colors.secondary,
