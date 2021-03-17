@@ -40,12 +40,14 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="true"
+        android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:paddingTop="@dimen/bandyer_dimen_space32">
 
             <com.google.android.material.button.MaterialButton
@@ -150,6 +152,7 @@
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
                 android:text="@string/bluetooth_audio_route"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/btn_live_pointer" />
 
             <com.google.android.material.button.MaterialButton
@@ -162,6 +165,7 @@
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
                 android:text="@string/whiteboard"
+                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/btn_bluetooth_audioroute" />
 
             <com.google.android.material.button.MaterialButton
@@ -175,6 +179,18 @@
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
                 android:text="@string/ringing"
                 app:layout_constraintTop_toBottomOf="@id/btn_whiteboard" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_file_share"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
+                android:layout_marginStart="@dimen/bandyer_dimen_space16"
+                android:layout_marginLeft="@dimen/bandyer_dimen_space16"
+                android:layout_marginEnd="@dimen/bandyer_dimen_space16"
+                android:layout_marginRight="@dimen/bandyer_dimen_space16"
+                android:text="File Share"
+                app:layout_constraintTop_toBottomOf="@id/btn_ringing" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

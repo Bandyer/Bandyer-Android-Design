@@ -9,14 +9,14 @@ package com.bandyer.sdk_design.filesharing
 * @property fileUrl url of file
 * @property sender sender userAlias
 */
-data class FileShareData(val operationType: FILE_SHARE_OP_TYPE,
-                         val fileName: String,
-                         val fileType: String,
-                         val fileSize: Long,
-                         val fileUrl: String,
-                         val sender: String)
+data class FileShareData(var fileName: String,
+                         var isUpload: Boolean,
+                         var sender: String,
+                         var fileType: FileType,
+                         var fileSize: Long)
 
-enum class FILE_SHARE_OP_TYPE {
-    UPLOAD,
-    DOWNLOAD
+enum class FileType {
+    FILE,
+    MEDIA,
+    ARCHIVE
 }

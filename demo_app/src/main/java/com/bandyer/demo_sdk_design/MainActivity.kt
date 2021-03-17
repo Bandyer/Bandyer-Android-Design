@@ -62,6 +62,8 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.btn_ringing).setOnClickListener { startActivity(Intent(this, RingingActivity::class.java)) }
 
+        findViewById<MaterialButton>(R.id.btn_file_share).setOnClickListener { startActivity(Intent(this, ComposeActivity::class.java)) }
+
         findViewById<MaterialButton>(R.id.btn_switch_night_mode).setOnClickListener {
             val isNightTheme = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             when (isNightTheme) {

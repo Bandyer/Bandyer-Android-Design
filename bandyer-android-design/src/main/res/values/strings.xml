@@ -16,6 +16,9 @@
 
 <resources>
 
+    <!-- Common -->
+    <string name="bandyer_back">Back</string>
+
     <!-- Audio route labels -->
     <string name="bandyer_call_action_audio_route_bluetooth">Bluetooth</string>
     <string name="bandyer_call_action_audio_route_wired_headset">Wired headset</string>
@@ -146,7 +149,11 @@
     <string name="bandyer_screenshare_full_device">Whole device screen</string>
 
     <!-- FILE SHARE -->
-    <string name="bandyer_fileshare_add">Add</string>
+    <string name="bandyer_fileshare">File Share</string>
+    <string name="bandyer_fileshare_add">ADD</string>
     <string name="bandyer_fileshare_add_description">Upload a new file</string>
+    <string name="bandyer_fileshare_error_text">Upload Failed - Retry</string>
+    <string name="bandyer_fileshare_upload">Upload</string>
+    <string name="bandyer_fileshare_download">Download</string>
 
 </resources>

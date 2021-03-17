@@ -47,8 +47,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
+        useIR = true
+    }
+
+    buildFeatures {
+        compose true
+        viewBinding true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
     }
 }
 
@@ -58,7 +69,7 @@ dependencies {
 
 
     /*** Test implementation ***/
-    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
@@ -70,6 +81,16 @@ dependencies {
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation "com.ablanco.zoomy:zoomy:$zoomyVersion"
+
+    /*** Jetpack Compose ***/
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "androidx.activity:activity-compose:1.3.0-alpha04"
+    implementation 'androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha04'
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    implementation "com.google.android.material:compose-theme-adapter:1.0.0-beta02"
 
     /***  Leak Canary ***/
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'

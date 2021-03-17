@@ -64,7 +64,9 @@
         <activity
             android:name=".PointerActivity"
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
-
+        <activity
+            android:name=".ComposeActivity"
+            android:theme="@style/BandyerSDKDesign.Theme.Call.DayNight" />
     </application>
 
 </manifest>
