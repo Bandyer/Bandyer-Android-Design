@@ -47,6 +47,6 @@
     <item name="bandyer_id_muted" type="id" />
 
     <item name="bandyer_id_base_chat_message_layout" type="id" />
-    <item name="bandyer_id_file_share_item" type="id" />
+    <item name="bandyer_id_file_share_fragment" type="id" />
 
 </resources>

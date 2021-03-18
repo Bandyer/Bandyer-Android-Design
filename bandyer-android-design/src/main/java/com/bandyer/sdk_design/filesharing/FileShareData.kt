@@ -7,7 +7,8 @@ package com.bandyer.sdk_design.filesharing
 * @property fileSize size of file
 * @property sender sender userAlias
 */
-data class FileShareData(var fileName: String,
+data class FileShareData(var id: Int,
+                         var fileName: String,
                          var progress: Float,
                          var isUpload: Boolean,
                          var sender: String,

@@ -19,11 +19,11 @@ import com.bandyer.sdk_design.R
 @Composable
 fun FileShareItem(modifier: Modifier = Modifier,
                   data: FileShareData,
-                  onButtonEvent: (FileShareButtonEvent) -> Unit,
-                  onClick: () -> Unit) {
+                  onButtonEvent: (FileShareItemButtonEvent) -> Unit,
+                  onEvent: (FileShareItemEvent) -> Unit) {
     ConstraintLayout(modifier = modifier
         .fillMaxWidth()
-        .clickable(onClick = onClick)
+        .clickable(onClick = { onEvent(FileShareItemEvent(data.id)) })
         .padding(16.dp)
         ) {
 
@@ -137,10 +137,10 @@ fun FileShareItem(modifier: Modifier = Modifier,
                 }) {
 //            TODO add condition
 //            when() {
-                  CancelButton(onClick = { onButtonEvent(FileShareButtonEvent.Cancel) })
-//                DownloadButton(onClick = { onButtonEvent(FileShareButtonEvent.Download) })
-//                ReDownloadButton(onClick = { onButtonEvent(FileShareButtonEvent.Download) })
-//                RetryButton(onClick = { onButtonEvent(FileShareButtonEvent.Retry) })
+                  CancelButton(onClick = { onButtonEvent(FileShareItemButtonEvent.Cancel(data.id)) })
+//                DownloadButton(onClick = { onButtonEvent(FileShareButtonEvent.Download(data.id)) })
+//                ReDownloadButton(onClick = { onButtonEvent(FileShareButtonEvent.Download(data.id)) })
+//                RetryButton(onClick = { onButtonEvent(FileShareButtonEvent.Retry(data.id)) })
 //            }
         }
     }
@@ -152,6 +152,7 @@ fun FileShareItemPreview() {
     BandyerSdkDesignComposeTheme {
         Surface(color = MaterialTheme.colors.background) {
             FileShareItem(data = FileShareData(
+                0,
                 "documento_ident.jpg",
                 0.6f,
                 false,
@@ -160,7 +161,7 @@ fun FileShareItemPreview() {
                 500
             ),
                 onButtonEvent = {},
-                onClick = {})
+                onEvent = {})
         }
     }
 }
@@ -171,6 +172,7 @@ fun FileShareItemPreviewDark() {
     BandyerSdkDesignComposeTheme(darkTheme = true) {
         Surface(color = MaterialTheme.colors.background) {
             FileShareItem(data = FileShareData(
+                0,
                 "documento_ident.jpg",
                 0.6f,
                 false,
@@ -179,7 +181,7 @@ fun FileShareItemPreviewDark() {
                 500
             ),
                 onButtonEvent = {},
-                onClick = {})
+                onEvent = {})
         }
     }
 }

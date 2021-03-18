@@ -14,14 +14,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.bandyer.sdk_design.R
 
-sealed class FileShareButtonEvent {
-    object Cancel : FileShareButtonEvent()
-    object Download : FileShareButtonEvent()
-    object Retry : FileShareButtonEvent()
+sealed class FileShareItemButtonEvent {
+    data class Cancel(val id: Int) : FileShareItemButtonEvent()
+    data class Download(val id: Int) : FileShareItemButtonEvent()
+    data class Retry(val id: Int) : FileShareItemButtonEvent()
 }
 
+data class FileShareItemEvent(val id: Int)
+
 @Composable
-fun FileShare(onNavIconPressed: () -> Unit = { }, onAddButtonPressed: () -> Unit) {
+fun FileShare(sharedFiles: List<FileShareData>, onNavIconPressed: () -> Unit = { }, onAddButtonPressed: () -> Unit = { }, onItemButtonEvent: (FileShareItemButtonEvent) -> Unit = { }, onItemEvent: (FileShareItemEvent) -> Unit =  { }) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -43,32 +45,17 @@ fun FileShare(onNavIconPressed: () -> Unit = { }, onAddButtonPressed: () -> Unit
         backgroundColor = MaterialTheme.colors.background,
         contentColor = MaterialTheme.colors.onBackground,
         floatingActionButtonPosition = FabPosition.Center,
-        content = { FilesList(modifier = Modifier.fillMaxSize(), listOf(
-            FileShareData("documento_ident.jpg", 0.6f, false, "Gianfranco", FileType.MEDIA, 500),
-            FileShareData("moto.pdf", 0.8f, false, "Mario", FileType.MISC, 433),
-            FileShareData("pasqua.zip", 0f, true, "Luigi", FileType.ARCHIVE, 346)
-        )) }
+        content = { FilesList(modifier = Modifier.fillMaxSize(), sharedFiles, onItemButtonEvent, onItemEvent) }
     )
 }
 
 @Composable
-fun FilesList(modifier: Modifier = Modifier, fileShareItems: List<FileShareData>) {
+fun FilesList(modifier: Modifier = Modifier, fileShareItems: List<FileShareData>, onItemButtonEvent: (FileShareItemButtonEvent) -> Unit, onItemEvent: (FileShareItemEvent) -> Unit) {
     LazyColumn(modifier = modifier) {
         itemsIndexed(items = fileShareItems) { index, data ->
             FileShareItem(data = data,
-                onButtonEvent = { event ->
-                when (event) {
-                    FileShareButtonEvent.Cancel -> {
-                        // TODO
-                    }
-                    FileShareButtonEvent.Download -> {
-                        // TODO
-                    }
-                    FileShareButtonEvent.Retry -> {
-                        // TODO
-                    }
-                }
-            }, onClick = { /*TODO*/ })
+                onButtonEvent = onItemButtonEvent,
+                onEvent = onItemEvent)
             if(index != fileShareItems.size - 1) Divider(color = LocalContentColor.current.copy(alpha = 0.1f))
         }
     }
@@ -96,11 +83,17 @@ private fun TopAppBar(topAppBarText: String, onNavIconPressed: () -> Unit) {
     )
 }
 
+private val sharedFiles = listOf(
+    FileShareData(0,"documento_ident.jpg", 0.6f, false, "Gianfranco", FileType.MEDIA, 500),
+    FileShareData(1,"moto.pdf", 0.8f, false, "Mario", FileType.MISC, 433),
+    FileShareData(2,"pasqua.zip", 0f, true, "Luigi", FileType.ARCHIVE, 346)
+)
+
 @Preview(name = "File Share in light theme")
 @Composable
 fun FileSharePreview() {
     BandyerSdkDesignComposeTheme {
-        FileShare() {}
+        FileShare(sharedFiles = sharedFiles)
     }
 }
 
@@ -108,6 +101,6 @@ fun FileSharePreview() {
 @Composable
 fun FileSharePreviewDark() {
     BandyerSdkDesignComposeTheme(darkTheme = true) {
-        FileShare() {}
+        FileShare(sharedFiles = sharedFiles)
     }
 }
