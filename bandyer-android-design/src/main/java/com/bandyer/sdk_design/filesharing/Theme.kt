@@ -1,6 +1,5 @@
 package com.bandyer.sdk_design.filesharing
 
-import android.graphics.Color
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
@@ -20,8 +19,8 @@ object BandyerTheme {
         error = colorError,
         onPrimary = colorOnPrimary,
         onSecondary = colorOnSecondary,
-        onBackground = colorError,
-        onSurface = colorError,
+        onBackground = colorOnBackground,
+        onSurface = colorOnSurface,
         onError = colorOnError,
         isLight = true
     )
