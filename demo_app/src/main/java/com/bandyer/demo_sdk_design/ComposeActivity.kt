@@ -5,10 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import com.bandyer.sdk_design.filesharing.FileShare
-import com.bandyer.sdk_design.filesharing.FileShareComposeExperimentalTheme
 import com.google.android.material.composethemeadapter.MdcTheme
 
 class ComposeActivity : AppCompatActivity() {
@@ -22,15 +19,5 @@ class ComposeActivity : AppCompatActivity() {
                 }
             }
         }
-    }
-}
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun FileSharePreview() {
-    FileShareComposeExperimentalTheme {
-        FileShare() {}
     }
 }
