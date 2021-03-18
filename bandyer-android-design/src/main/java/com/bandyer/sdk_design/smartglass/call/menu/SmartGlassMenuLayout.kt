@@ -6,34 +6,26 @@
 package com.bandyer.sdk_design.smartglass.call.menu
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.Toast
+import android.view.MotionEvent
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.bottom_sheet.BandyerActionBottomSheet
-import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.databinding.BandyerWidgetSmartglassesMenuLayoutBinding
 import com.bandyer.sdk_design.extensions.isRtl
-import com.bandyer.sdk_design.smartglass.call.menu.adapter.SmartGlassActionItemAdapter
+import com.bandyer.sdk_design.smartglass.call.menu.utils.MotionEventInterceptableViewGroup
+import com.bandyer.sdk_design.smartglass.call.menu.utils.motionEventInterceptor
 import com.bandyer.sdk_design.utils.isConfirmButton
-import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
-import com.mikepenz.fastadapter.listeners.ClickEventHook
-import com.mikepenz.fastadapter.listeners.EventHook
-import com.mikepenz.fastadapter.listeners.OnClickListener
 
 /**
  * Layout used to represent a smart glass swipeable menu
@@ -41,7 +33,7 @@ import com.mikepenz.fastadapter.listeners.OnClickListener
  * @property onSmartglassMenuSelectionListener OnGoogleGlassMenuItemSelectionListener?
  * @constructor
  */
-class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle): ConstraintLayout(context, attrs, defStyleAttr) {
+class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle) : ConstraintLayout(context, attrs, defStyleAttr), MotionEventInterceptableViewGroup<ConstraintLayout> {
 
     /**
      * Smart glass menu selection listener
@@ -86,16 +78,23 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
 
     private val snapHelper: SnapHelper = PagerSnapHelper()
 
+    private val gestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            onSmartglassMenuSelectionListener?.onSelected(items!![currentMenuItemIndex])
+            return true
+        }
+
+        override fun onDown(e: MotionEvent?) = false
+        override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float) = false
+        override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float) = false
+        override fun onLongPress(e: MotionEvent?) = Unit
+        override fun onShowPress(e: MotionEvent?) = Unit
+    })
+
     init {
         binding.bandyerSmartGlassMenuRecyclerview.layoutManager = layoutManager
         binding.bandyerSmartGlassMenuRecyclerview.itemAnimator = null
         binding.bandyerSmartGlassMenuRecyclerview.setHasFixedSize(true)
-
-        fastAdapter.withOnClickListener { v, adapter, item, position ->
-            onSmartglassMenuSelectionListener?.onSelected(item.item)
-            true
-        }
-
         binding.bandyerSmartGlassMenuRecyclerview.adapter = fastAdapter
 
         snapHelper.attachToRecyclerView(binding.bandyerSmartGlassMenuRecyclerview)
@@ -118,5 +117,16 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
             return true
         }
         return super.dispatchKeyEvent(event)
+    }
+
+    override fun onDetachedFromWindow() {
+        motionEventInterceptor = null
+        super.onDetachedFromWindow()
+    }
+
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        val hasClicked = gestureDetector.onTouchEvent(ev)
+        if (!hasClicked) dispatchMotionEventToInterceptor(ev)
+        return super.onInterceptTouchEvent(ev)
     }
 }

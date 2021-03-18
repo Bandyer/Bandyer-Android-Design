@@ -17,6 +17,8 @@ import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.bandyer.sdk_design.extensions.getSmartGlassMenuDialogAttribute
+import com.bandyer.sdk_design.smartglass.call.menu.utils.MotionEventInterceptor
+import com.bandyer.sdk_design.smartglass.call.menu.utils.motionEventInterceptor
 
 /**
  * A smart glass swipeable menu widget. Selection happens with a tap on the desired item, dismiss happens with a swipe down gesture
@@ -63,6 +65,15 @@ class SmartGlassActionItemMenu : DialogFragment() {
         }
 
     /**
+     * Motion events interceptor for motion events that are generated from the smart glass action menu
+     */
+    var motionEventInterceptor: MotionEventInterceptor? = null
+        set(value) {
+            field = value
+            smartglassMenuLayout?.motionEventInterceptor = field
+        }
+
+    /**
      * On create
      *
      * @param savedInstanceState
@@ -89,6 +100,7 @@ class SmartGlassActionItemMenu : DialogFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         smartglassMenuLayout = SmartGlassMenuLayout(ContextThemeWrapper(requireContext(), requireContext().getSmartGlassMenuDialogAttribute(R.styleable.BandyerSDKDesign_SmartGlassDialogMenu_bandyer_smartGlassMenuStyle)))
         smartglassMenuLayout!!.items = items
+        motionEventInterceptor?.let { smartglassMenuLayout!!.motionEventInterceptor = motionEventInterceptor }
         return smartglassMenuLayout!!
     }
 
