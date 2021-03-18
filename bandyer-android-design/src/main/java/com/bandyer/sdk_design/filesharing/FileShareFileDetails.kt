@@ -4,10 +4,9 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,31 +16,40 @@ import androidx.compose.ui.unit.dp
 import com.bandyer.sdk_design.R
 
 @Composable
-fun MiscFile(modifier: Modifier = Modifier, text: String) = FileDetails(
-    modifier = modifier,
-    iconBackgroundColor = MaterialTheme.colors.onSurface.copy(alpha = 0.2f),
-    iconDrawable = R.drawable.ic_file,
-    iconTint = MaterialTheme.colors.surface,
-    iconContentDescription = stringResource(id = R.string.bandyer_fileshare_media),
-    text = text)
+fun MiscFile(modifier: Modifier = Modifier, text: String) {
+    FileDetails(
+        modifier = modifier,
+        iconBackgroundColor = LocalContentColor.current.copy(alpha = 0.2f),
+        iconDrawable = R.drawable.ic_file,
+        iconTint = MaterialTheme.colors.background,
+        iconContentDescription = stringResource(id = R.string.bandyer_fileshare_media),
+        text = text
+    )
+}
 
 @Composable
-fun ArchiveFile(modifier: Modifier = Modifier, text: String) = FileDetails(
-    modifier = modifier,
-    iconBackgroundColor = MaterialTheme.colors.onSurface.copy(alpha = 0.2f),
-    iconDrawable = R.drawable.ic_archive,
-    iconTint = MaterialTheme.colors.onSurface,
-    iconContentDescription = stringResource(id = R.string.bandyer_fileshare_media),
-    text = text)
+fun ArchiveFile(modifier: Modifier = Modifier, text: String) {
+    FileDetails(
+        modifier = modifier,
+        iconBackgroundColor = LocalContentColor.current.copy(alpha = 0.2f),
+        iconDrawable = R.drawable.ic_archive,
+        iconTint = LocalContentColor.current,
+        iconContentDescription = stringResource(id = R.string.bandyer_fileshare_media),
+        text = text
+    )
+}
 
 @Composable
-fun MediaFile(modifier: Modifier = Modifier, text: String) = FileDetails(
-    modifier = modifier,
-    iconBackgroundColor = MaterialTheme.colors.onSurface.copy(alpha = 0.9f),
-    iconDrawable = R.drawable.ic_media,
-    iconTint = MaterialTheme.colors.surface,
-    iconContentDescription = stringResource(id = R.string.bandyer_fileshare_media),
-    text = text)
+fun MediaFile(modifier: Modifier = Modifier, text: String) {
+    FileDetails(
+        modifier = modifier,
+        iconBackgroundColor = LocalContentColor.current.copy(alpha = 0.9f),
+        iconDrawable = R.drawable.ic_media,
+        iconTint = MaterialTheme.colors.background,
+        iconContentDescription = stringResource(id = R.string.bandyer_fileshare_media),
+        text = text
+    )
+}
 
 @Composable
 private fun FileDetails(modifier: Modifier = Modifier,
@@ -62,5 +70,7 @@ private fun FileDetails(modifier: Modifier = Modifier,
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = text, style = MaterialTheme.typography.subtitle2)
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Text(text = text, style = MaterialTheme.typography.subtitle2)
+        }
 }

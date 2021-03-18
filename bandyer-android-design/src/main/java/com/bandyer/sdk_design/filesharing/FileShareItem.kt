@@ -2,21 +2,19 @@ package com.bandyer.sdk_design.filesharing
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Icon
-import androidx.compose.material.LinearProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.bandyer.sdk_design.R
-import com.google.android.material.color.MaterialColors
 
 @Composable
 fun FileShareItem(modifier: Modifier = Modifier,
@@ -25,8 +23,9 @@ fun FileShareItem(modifier: Modifier = Modifier,
                   onClick: () -> Unit) {
     ConstraintLayout(modifier = modifier
         .fillMaxWidth()
+        .clickable(onClick = onClick)
         .padding(16.dp)
-        .clickable(onClick = onClick)) {
+        ) {
 
         val (fileDetails, title, progressBar, subTitle, error, button) = createRefs()
 
@@ -59,7 +58,7 @@ fun FileShareItem(modifier: Modifier = Modifier,
         LinearProgressIndicator(
             progress = data.progress,
             color = MaterialTheme.colors.secondary,
-            backgroundColor = MaterialTheme.colors.onSurface.copy(alpha = 0.2f),
+            backgroundColor = LocalContentColor.current.copy(alpha = 0.2f),
             modifier = Modifier
                 .padding(vertical = 8.dp, horizontal = 16.dp)
                 .constrainAs(progressBar) {
@@ -83,7 +82,7 @@ fun FileShareItem(modifier: Modifier = Modifier,
             Icon(
                 painter = painterResource(if(data.isUpload) R.drawable.ic_upload_user else R.drawable.ic_download_user),
                 contentDescription = stringResource(if(data.isUpload) R.string.bandyer_fileshare_upload else R.string.bandyer_fileshare_download),
-                tint = if(data.isUpload) MaterialTheme.colors.onSurface else MaterialTheme.colors.secondary,
+                tint = if(!data.isUpload) MaterialTheme.colors.secondary else LocalContentColor.current,
                 modifier = Modifier
                     .size(10.dp)
                     .constrainAs(icon) {
@@ -92,25 +91,27 @@ fun FileShareItem(modifier: Modifier = Modifier,
                     }
             )
 
-            Text(text = data.sender,
-                style = MaterialTheme.typography.subtitle2,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .constrainAs(user) {
-                        start.linkTo(icon.end)
-                        centerVerticallyTo(parent)
-                    })
+            CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+                Text(text = data.sender,
+                    style = MaterialTheme.typography.subtitle2,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .constrainAs(user) {
+                            start.linkTo(icon.end)
+                            centerVerticallyTo(parent)
+                        })
 
-            //TODO change text
-            Text(text = data.progress.toString(),
-                style = MaterialTheme.typography.subtitle2,
-                modifier = Modifier
-                    .constrainAs(time) {
-                        end.linkTo(parent.end)
-                        centerVerticallyTo(parent)
-                    })
+                //TODO change text
+                Text(text = data.progress.toString(),
+                    style = MaterialTheme.typography.subtitle2,
+                    modifier = Modifier
+                        .constrainAs(time) {
+                            end.linkTo(parent.end)
+                            centerVerticallyTo(parent)
+                        })
+            }
         }
 
         Text(text = stringResource(id = R.string.bandyer_fileshare_error_text),
@@ -141,6 +142,44 @@ fun FileShareItem(modifier: Modifier = Modifier,
 //                ReDownloadButton(onClick = { onButtonEvent(FileShareButtonEvent.Download) })
 //                RetryButton(onClick = { onButtonEvent(FileShareButtonEvent.Retry) })
 //            }
+        }
+    }
+}
+
+@Preview(name = "File Share Item in light theme")
+@Composable
+fun FileShareItemPreview() {
+    BandyerSdkDesignComposeTheme {
+        Surface(color = MaterialTheme.colors.background) {
+            FileShareItem(data = FileShareData(
+                "documento_ident.jpg",
+                0.6f,
+                false,
+                "Gianfranco",
+                FileType.MEDIA,
+                500
+            ),
+                onButtonEvent = {},
+                onClick = {})
+        }
+    }
+}
+
+@Preview(name = "File Share Item in dark theme")
+@Composable
+fun FileShareItemPreviewDark() {
+    BandyerSdkDesignComposeTheme(darkTheme = true) {
+        Surface(color = MaterialTheme.colors.background) {
+            FileShareItem(data = FileShareData(
+                "documento_ident.jpg",
+                0.6f,
+                false,
+                "Gianfranco",
+                FileType.MEDIA,
+                500
+            ),
+                onButtonEvent = {},
+                onClick = {})
         }
     }
 }

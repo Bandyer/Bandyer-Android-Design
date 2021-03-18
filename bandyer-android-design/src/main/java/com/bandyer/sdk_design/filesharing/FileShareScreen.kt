@@ -9,7 +9,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,12 +21,12 @@ sealed class FileShareButtonEvent {
 }
 
 @Composable
-fun FileShare(onBackPressed: () -> Unit) {
+fun FileShare(onNavIconPressed: () -> Unit = { }, onAddButtonPressed: () -> Unit) {
     Scaffold(
         topBar = {
             TopAppBar(
                 topAppBarText = stringResource(id = R.string.bandyer_fileshare),
-                onBackPressed = { onBackPressed() }
+                onNavIconPressed = { onNavIconPressed() }
             )
         },
         floatingActionButton = {
@@ -39,8 +38,10 @@ fun FileShare(onBackPressed: () -> Unit) {
                     contentDescription = stringResource(id = R.string.bandyer_fileshare_add_description)
                 )
             },
-            onClick = { /* TODO */ })
+            onClick = { onAddButtonPressed() })
         },
+        backgroundColor = MaterialTheme.colors.background,
+        contentColor = MaterialTheme.colors.onBackground,
         floatingActionButtonPosition = FabPosition.Center,
         content = { FilesList(modifier = Modifier.fillMaxSize(), listOf(
             FileShareData("documento_ident.jpg", 0.6f, false, "Gianfranco", FileType.MEDIA, 500),
@@ -68,14 +69,16 @@ fun FilesList(modifier: Modifier = Modifier, fileShareItems: List<FileShareData>
                     }
                 }
             }, onClick = { /*TODO*/ })
-            if(index != fileShareItems.size - 1) Divider(color = Color.Black)
+            if(index != fileShareItems.size - 1) Divider(color = LocalContentColor.current.copy(alpha = 0.1f))
         }
     }
 }
 
 @Composable
-private fun TopAppBar(topAppBarText: String, onBackPressed: () -> Unit) {
+private fun TopAppBar(topAppBarText: String, onNavIconPressed: () -> Unit) {
     TopAppBar(
+        backgroundColor = MaterialTheme.colors.surface,
+        contentColor = MaterialTheme.colors.onSurface,
         title = {
             Text(
                 text = topAppBarText,
@@ -83,21 +86,28 @@ private fun TopAppBar(topAppBarText: String, onBackPressed: () -> Unit) {
             )
         },
         navigationIcon = {
-            IconButton(onClick = onBackPressed) {
+            IconButton(onClick = onNavIconPressed) {
                 Icon(
                     imageVector = Icons.Filled.ExpandMore,
                     contentDescription = stringResource(id = R.string.bandyer_back)
                 )
             }
         },
-        backgroundColor = MaterialTheme.colors.primary,
     )
 }
 
-@Preview
+@Preview(name = "File Share in light theme")
 @Composable
 fun FileSharePreview() {
-    FileShareComposeExperimentalTheme {
-        FileShare {}
+    BandyerSdkDesignComposeTheme {
+        FileShare() {}
+    }
+}
+
+@Preview(name = "File Share in dark theme")
+@Composable
+fun FileSharePreviewDark() {
+    BandyerSdkDesignComposeTheme(darkTheme = true) {
+        FileShare() {}
     }
 }
