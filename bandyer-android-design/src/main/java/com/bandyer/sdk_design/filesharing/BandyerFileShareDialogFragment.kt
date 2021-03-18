@@ -11,15 +11,6 @@ import com.google.android.material.composethemeadapter.MdcTheme
 
 abstract class BandyerFileShareDialogFragment: DialogFragment() {
 
-    override fun onStart() {
-        val parentLayout = dialog?.findViewById<ViewGroup>(R.id.content)
-        val layoutParams = parentLayout?.layoutParams
-        layoutParams?.height = ViewGroup.LayoutParams.MATCH_PARENT
-        layoutParams?.width = ViewGroup.LayoutParams.MATCH_PARENT
-        parentLayout?.layoutParams = layoutParams
-        super.onStart()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
