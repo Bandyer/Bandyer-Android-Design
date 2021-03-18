@@ -32,8 +32,6 @@
         <item name="bandyer_bouncingDotsStyle">@style/BandyerSDKDesign.TextView.Subtitle.BouncingDots</item>
     </style>
 
-    <style name="BandyerSDKDesign.ChatInfo.RootLayout" parent="">
-        <item name="android:animateLayoutChanges">true</item>
-    </style>
+    <style name="BandyerSDKDesign.ChatInfo.RootLayout" parent="" />
 
 </resources>
