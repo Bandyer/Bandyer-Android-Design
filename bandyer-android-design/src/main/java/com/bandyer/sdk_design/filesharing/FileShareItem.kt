@@ -3,8 +3,8 @@ package com.bandyer.sdk_design.filesharing
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -18,12 +18,12 @@ import com.bandyer.sdk_design.R
 
 @Composable
 fun FileShareItem(modifier: Modifier = Modifier,
-                  data: FileShareData,
+                  item: FileShareItemData,
                   onButtonEvent: (FileShareItemButtonEvent) -> Unit,
                   onEvent: (FileShareItemEvent) -> Unit) {
     ConstraintLayout(modifier = modifier
         .fillMaxWidth()
-        .clickable(onClick = { onEvent(FileShareItemEvent(data.id)) })
+        .clickable(onClick = { onEvent(FileShareItemEvent(item)) })
         .padding(16.dp)
         ) {
 
@@ -34,15 +34,15 @@ fun FileShareItem(modifier: Modifier = Modifier,
                 start.linkTo(parent.start)
                 top.linkTo(title.top)
             }) {
-            when(data.fileType) {
+            when(item.fileType) {
                 //TODO Add formatter for file size
-                FileType.MISC -> MiscFile(text = data.fileSize.toString())
-                FileType.MEDIA -> MediaFile(text = data.fileSize.toString())
-                FileType.ARCHIVE -> ArchiveFile(text = data.fileSize.toString())
+                FileType.MISC -> MiscFile(text = item.fileSize.toString())
+                FileType.MEDIA -> MediaFile(text = item.fileSize.toString())
+                FileType.ARCHIVE -> ArchiveFile(text = item.fileSize.toString())
             }
         }
 
-        Text(text = data.fileName,
+        Text(text = item.fileName,
             style = MaterialTheme.typography.subtitle1,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -56,7 +56,7 @@ fun FileShareItem(modifier: Modifier = Modifier,
                 })
 
         LinearProgressIndicator(
-            progress = data.progress,
+            progress = item.progress,
             color = MaterialTheme.colors.secondary,
             backgroundColor = LocalContentColor.current.copy(alpha = 0.2f),
             modifier = Modifier
@@ -80,9 +80,9 @@ fun FileShareItem(modifier: Modifier = Modifier,
             val (icon, user, time) = createRefs()
 
             Icon(
-                painter = painterResource(if(data.isUpload) R.drawable.ic_upload_user else R.drawable.ic_download_user),
-                contentDescription = stringResource(if(data.isUpload) R.string.bandyer_fileshare_upload else R.string.bandyer_fileshare_download),
-                tint = if(!data.isUpload) MaterialTheme.colors.secondary else LocalContentColor.current,
+                painter = painterResource(if(item.isUpload) R.drawable.ic_upload_user else R.drawable.ic_download_user),
+                contentDescription = stringResource(if(item.isUpload) R.string.bandyer_fileshare_upload else R.string.bandyer_fileshare_download),
+                tint = if(!item.isUpload) MaterialTheme.colors.secondary else LocalContentColor.current,
                 modifier = Modifier
                     .size(10.dp)
                     .constrainAs(icon) {
@@ -92,7 +92,7 @@ fun FileShareItem(modifier: Modifier = Modifier,
             )
 
             CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                Text(text = data.sender,
+                Text(text = item.sender,
                     style = MaterialTheme.typography.subtitle2,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -104,7 +104,7 @@ fun FileShareItem(modifier: Modifier = Modifier,
                         })
 
                 //TODO change text
-                Text(text = data.progress.toString(),
+                Text(text = item.progress.toString(),
                     style = MaterialTheme.typography.subtitle2,
                     modifier = Modifier
                         .constrainAs(time) {
@@ -137,10 +137,10 @@ fun FileShareItem(modifier: Modifier = Modifier,
                 }) {
 //            TODO add condition
 //            when() {
-                  CancelButton(onClick = { onButtonEvent(FileShareItemButtonEvent.Cancel(data.id)) })
-//                DownloadButton(onClick = { onButtonEvent(FileShareButtonEvent.Download(data.id)) })
-//                ReDownloadButton(onClick = { onButtonEvent(FileShareButtonEvent.Download(data.id)) })
-//                RetryButton(onClick = { onButtonEvent(FileShareButtonEvent.Retry(data.id)) })
+                  item.CancelButton(onClick = { onButtonEvent(FileShareItemButtonEvent.Cancel(item)) })
+//                DownloadButton(onClick = { onButtonEvent(FileShareButtonEvent.Download(data)) })
+//                ReDownloadButton(onClick = { onButtonEvent(FileShareButtonEvent.Download(data)) })
+//                RetryButton(onClick = { onButtonEvent(FileShareButtonEvent.Retry(data)) })
 //            }
         }
     }
@@ -151,7 +151,7 @@ fun FileShareItem(modifier: Modifier = Modifier,
 fun FileShareItemPreview() {
     BandyerSdkDesignComposeTheme {
         Surface(color = MaterialTheme.colors.background) {
-            FileShareItem(data = FileShareData(
+            FileShareItem(item = FileShareItemData(
                 0,
                 "documento_ident.jpg",
                 0.6f,
@@ -171,8 +171,8 @@ fun FileShareItemPreview() {
 fun FileShareItemPreviewDark() {
     BandyerSdkDesignComposeTheme(darkTheme = true) {
         Surface(color = MaterialTheme.colors.background) {
-            FileShareItem(data = FileShareData(
-                0,
+            FileShareItem(item = FileShareItemData(
+                1,
                 "documento_ident.jpg",
                 0.6f,
                 false,

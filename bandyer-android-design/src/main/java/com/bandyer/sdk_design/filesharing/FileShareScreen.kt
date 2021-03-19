@@ -15,15 +15,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.bandyer.sdk_design.R
 
 sealed class FileShareItemButtonEvent {
-    data class Cancel(val id: Int) : FileShareItemButtonEvent()
-    data class Download(val id: Int) : FileShareItemButtonEvent()
-    data class Retry(val id: Int) : FileShareItemButtonEvent()
+    data class Cancel(val item: FileShareItemData) : FileShareItemButtonEvent()
+    data class Download(val item: FileShareItemData) : FileShareItemButtonEvent()
+    data class Retry(val item: FileShareItemData) : FileShareItemButtonEvent()
 }
 
-data class FileShareItemEvent(val id: Int)
+data class FileShareItemEvent(val item: FileShareItemData)
 
 @Composable
-fun FileShare(sharedFiles: List<FileShareData>, onNavIconPressed: () -> Unit = { }, onAddButtonPressed: () -> Unit = { }, onItemButtonEvent: (FileShareItemButtonEvent) -> Unit = { }, onItemEvent: (FileShareItemEvent) -> Unit =  { }) {
+fun FileShare(sharedFiles: List<FileShareItemData>, onNavIconPressed: () -> Unit = { }, onAddButtonPressed: () -> Unit = { }, onItemButtonEvent: (FileShareItemButtonEvent) -> Unit = { }, onItemEvent: (FileShareItemEvent) -> Unit =  { }) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -50,10 +50,10 @@ fun FileShare(sharedFiles: List<FileShareData>, onNavIconPressed: () -> Unit = {
 }
 
 @Composable
-fun FilesList(modifier: Modifier = Modifier, fileShareItems: List<FileShareData>, onItemButtonEvent: (FileShareItemButtonEvent) -> Unit, onItemEvent: (FileShareItemEvent) -> Unit) {
+fun FilesList(modifier: Modifier = Modifier, fileShareItems: List<FileShareItemData>, onItemButtonEvent: (FileShareItemButtonEvent) -> Unit, onItemEvent: (FileShareItemEvent) -> Unit) {
     LazyColumn(modifier = modifier) {
-        itemsIndexed(items = fileShareItems) { index, data ->
-            FileShareItem(data = data,
+        itemsIndexed(items = fileShareItems, key = { _, item -> item.id }) { index, data ->
+            FileShareItem(item = data,
                 onButtonEvent = onItemButtonEvent,
                 onEvent = onItemEvent)
             if(index != fileShareItems.size - 1) Divider(color = LocalContentColor.current.copy(alpha = 0.1f))
@@ -84,9 +84,9 @@ private fun TopAppBar(topAppBarText: String, onNavIconPressed: () -> Unit) {
 }
 
 private val sharedFiles = listOf(
-    FileShareData(0,"documento_ident.jpg", 0.6f, false, "Gianfranco", FileType.MEDIA, 500),
-    FileShareData(1,"moto.pdf", 0.8f, false, "Mario", FileType.MISC, 433),
-    FileShareData(2,"pasqua.zip", 0f, true, "Luigi", FileType.ARCHIVE, 346)
+    FileShareItemData(0,"documento_ident.jpg", 0.6f, false, "Gianfranco", FileType.MEDIA, 500),
+    FileShareItemData(1,"moto.pdf", 0.8f, false, "Mario", FileType.MISC, 433),
+    FileShareItemData(2,"pasqua.zip", 0f, true, "Luigi", FileType.ARCHIVE, 346)
 )
 
 @Preview(name = "File Share in light theme")

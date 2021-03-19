@@ -15,15 +15,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.bandyer.sdk_design.R
 
-@Composable
-fun CancelButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
-    FileShareButton(modifier = modifier,
-        drawable = R.drawable.ic_cancel_download,
-        iconColor = MaterialTheme.colors.secondary,
-        borderColor = MaterialTheme.colors.secondary,
-        backgroundColor = Color.Transparent,
-        contentDescription = stringResource(id = R.string.bandyer_fileshare_retry),
-        onClick = onClick)
+interface FileShareStyle {
+    @Composable
+    fun CancelButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+        FileShareButton(
+            modifier = modifier,
+            drawable = R.drawable.ic_cancel_download,
+            iconColor = MaterialTheme.colors.secondary,
+            borderColor = MaterialTheme.colors.secondary,
+            backgroundColor = Color.Transparent,
+            contentDescription = stringResource(id = R.string.bandyer_fileshare_retry),
+            onClick = onClick
+        )
+    }
 }
 
 @Composable

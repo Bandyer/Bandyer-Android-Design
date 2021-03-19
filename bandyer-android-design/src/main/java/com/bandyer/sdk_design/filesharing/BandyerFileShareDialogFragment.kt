@@ -27,11 +27,7 @@ abstract class BandyerFileShareDialogFragment: DialogFragment() {
 
             setContent {
                 MdcTheme {
-                    FileShare(sharedFiles = listOf(
-                        FileShareData(0,"documento_ident.jpg", 0.6f, false, "Gianfranco", FileType.MEDIA, 500),
-                        FileShareData(1,"moto.pdf", 0.8f, false, "Mario", FileType.MISC, 433),
-                        FileShareData(2,"pasqua.zip", 0f, true, "Luigi", FileType.ARCHIVE, 346)
-                    ),
+                    FileShare(sharedFiles = (::getSharedFiles)(),
                         onNavIconPressed = { dismiss() },
                         onAddButtonPressed = { (::onAddButtonPressed)() },
                         onItemEvent = { event -> (::onItemEvent)(event) },
@@ -41,6 +37,8 @@ abstract class BandyerFileShareDialogFragment: DialogFragment() {
             }
         }
     }
+
+    abstract fun getSharedFiles(): List<FileShareItemData>
 
     abstract fun onAddButtonPressed()
 
