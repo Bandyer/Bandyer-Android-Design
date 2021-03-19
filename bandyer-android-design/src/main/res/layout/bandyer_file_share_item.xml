@@ -8,15 +8,7 @@
 
     <com.bandyer.sdk_design.filesharing.BandyerFileTypeImageView
         android:id="@+id/bandyer_file_type"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:background="@color/md_grey_300"
-        android:src="@drawable/ic_image"
-        android:tint="@android:color/white"
-        android:scaleType="fitCenter"
-        android:adjustViewBounds="true"
-        app:contentPadding="10dp"
-        app:shapeAppearance="@style/BandyerSDKDesign.FileType.ShapeAppearance"
+        style="@style/BandyerSDKDesign.FileShare.FileType"
         app:layout_constraintBottom_toTopOf="@id/bandyer_file_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/bandyer_file_name"
@@ -74,9 +66,7 @@
 
     <com.bandyer.sdk_design.filesharing.BandyerFileShareOpTypeImageView
         android:id="@+id/bandyer_operation"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:background="@color/md_blue_700"
+        style="@style/BandyerSDKDesign.FileShare.OperationType"
         app:layout_constraintBottom_toBottomOf="@id/bandyer_user"
         app:layout_constraintStart_toStartOf="@id/bandyer_file_name"
         app:layout_constraintTop_toTopOf="@id/bandyer_user" />

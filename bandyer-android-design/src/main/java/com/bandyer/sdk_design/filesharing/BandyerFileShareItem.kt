@@ -31,7 +31,6 @@ class BandyerFileShareItem(var item: FileShareData) : AbstractItem<BandyerFileSh
             fileSize.text = "${item.item.fileSize}"
             user.text = item.item.sender
             error.text = "Upload failed - Retry"
-            progressText.
         }
 
         override fun unbindView(item: BandyerFileShareItem) {

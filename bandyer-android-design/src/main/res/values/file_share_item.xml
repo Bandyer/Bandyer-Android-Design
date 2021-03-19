@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="BandyerSDKDesign.FileShare.OperationType" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space10</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space10</item>
+        <item name="android:tint">@color/bandyer_op_type_icon_color</item>
+        <item name="srcCompat">@drawable/bandyer_op_type_icon</item>
+    </style>
+
+    <style name="BandyerSDKDesign.FileShare.FileType" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space40</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space40</item>
+        <item name="android:background">@color/bandyer_file_type_background_color</item>
+        <item name="android:tint">@color/bandyer_file_type_icon_color</item>
+        <item name="srcCompat">@drawable/bandyer_file_type_icon</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="contentPadding">@dimen/bandyer_dimen_space10</item>
+        <item name="shapeAppearance">@style/BandyerSDKDesign.FileType.ShapeAppearance</item>
+    </style>
+
     <style name="BandyerSDKDesign.FileType.ShapeAppearance" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">12dp</item>

@@ -47,7 +47,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private var uploadFileFab: ExtendedFloatingActionButton? = null
 
-        private val itemAdapter = ItemAdapter<BandyerChatTextMessageItem>()
+        private val itemAdapter = ItemAdapter<BandyerFileShareItem>()
 
         private val fastAdapter = FastAdapter.with<IItem<*, *>, ItemAdapter<*>>(itemAdapter)
 
@@ -94,6 +94,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private fun RecyclerView.init() {
             adapter = fastAdapter
+            itemAdapter.add(BandyerFileShareItem(FileShareData(FILE_SHARE_OP_TYPE.UPLOAD, "name", "pdf", 34L, "asdasd", "Giulio")))
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
         }
