@@ -40,4 +40,14 @@
         <item name="indicatorColor">?attr/colorSecondary</item>
     </style>
 
+    <style name="BandyerSDKDesign.FileShare.ProgressBar" parent="Widget.MaterialComponents.LinearProgressIndicator">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space0</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
+        <item name="trackThickness">@dimen/bandyer_dimen_space4</item>
+        <item name="indicatorColor">?attr/colorSecondary</item>
+        <item name="trackColor">@color/bandyer_color_on_background_20</item>
+        <item name="trackCornerRadius">@dimen/bandyer_dimen_space3</item>
+    </style>
+
 </resources>

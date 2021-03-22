@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
-    android:padding="@dimen/bandyer_dimen_space16">
+    android:theme="?attr/bandyer_fileShareItemStyle"
+    style="?attr/bandyer_rootLayoutStyle">
 
     <com.bandyer.sdk_design.filesharing.BandyerFileTypeImageView
         android:id="@+id/bandyer_file_type"
-        style="@style/BandyerSDKDesign.FileShare.FileType"
+        style="?attr/bandyer_fileTypeStyle"
         app:layout_constraintBottom_toTopOf="@id/bandyer_file_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/bandyer_file_name"
@@ -17,7 +18,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_file_size"
-        style="@style/BandyerSDKDesign.TextView.Subtitle.FileSize"
+        style="?attr/bandyer_fileSizeStyle"
         app:layout_constraintEnd_toEndOf="@id/bandyer_file_type"
         app:layout_constraintStart_toStartOf="@id/bandyer_file_type"
         app:layout_constraintTop_toBottomOf="@id/bandyer_file_type"
@@ -25,14 +26,14 @@
 
     <com.bandyer.sdk_design.filesharing.BandyerFileShareActionButton
         android:id="@+id/bandyer_action"
-        style="@style/BandyerSDKDesign.ImageButton.FileShareAction"
+        style="?attr/materialButtonStyle"
         app:layout_constraintBottom_toBottomOf="@id/bandyer_progress_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/bandyer_progress_bar" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_file_name"
-        style="@style/BandyerSDKDesign.TextView.Title.FileName"
+        style="?attr/bandyer_fileNameStyle"
         app:layout_constraintEnd_toStartOf="@id/bandyer_action"
         app:layout_constraintStart_toEndOf="@id/bandyer_file_type"
         app:layout_constraintTop_toTopOf="parent"
@@ -40,21 +41,21 @@
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/bandyer_progress_bar"
-        style="@style/BandyerSDKDesign.FileShare.ProgressBar"
+        style="?attr/bandyer_progressStyle"
         app:layout_constraintEnd_toEndOf="@+id/bandyer_file_name"
         app:layout_constraintStart_toStartOf="@+id/bandyer_file_name"
         app:layout_constraintTop_toBottomOf="@id/bandyer_file_name" />
 
     <com.bandyer.sdk_design.filesharing.BandyerFileShareOpTypeImageView
         android:id="@+id/bandyer_operation"
-        style="@style/BandyerSDKDesign.FileShare.OperationType"
-        app:layout_constraintBottom_toBottomOf="@id/bandyer_user"
+        style="?attr/bandyer_operationIconStyle"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_username"
         app:layout_constraintStart_toStartOf="@id/bandyer_file_name"
-        app:layout_constraintTop_toTopOf="@id/bandyer_user" />
+        app:layout_constraintTop_toTopOf="@id/bandyer_username" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/bandyer_user"
-        style="@style/BandyerSDKDesign.TextView.Subtitle.FileShareUser"
+        android:id="@+id/bandyer_username"
+        style="?attr/bandyer_usernameStyle"
         app:layout_constraintEnd_toStartOf="@id/bandyer_progress_text"
         app:layout_constraintStart_toEndOf="@id/bandyer_operation"
         app:layout_constraintTop_toBottomOf="@id/bandyer_progress_bar"
@@ -62,16 +63,16 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_error"
-        style="@style/BandyerSDKDesign.TextView.Subtitle.FileShareError"
+        style="?attr/bandyer_errorStyle"
         app:layout_constraintStart_toStartOf="@id/bandyer_file_name"
-        app:layout_constraintTop_toBottomOf="@id/bandyer_user"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_username"
         tools:text="Upload failed - Retry" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_progress_text"
-        style="@style/BandyerSDKDesign.TextView.Subtitle.FileShareProgress"
+        style="?attr/bandyer_progressTextStyle"
         app:layout_constraintEnd_toEndOf="@id/bandyer_file_name"
-        app:layout_constraintTop_toTopOf="@id/bandyer_user"
+        app:layout_constraintTop_toTopOf="@id/bandyer_username"
         tools:text="85%" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,13 +1,15 @@
 package com.bandyer.sdk_design.filesharing
 
+import android.content.Context
 import android.view.View
 import com.bandyer.sdk_design.R
+import com.bandyer.sdk_design.extensions.getCallActionItemStyle
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
-class BandyerFileShareItem(var item: FileShareData) : AbstractItem<BandyerFileShareItem, BandyerFileShareItem.ViewHolder>() {
+class BandyerFileShareItem(var data: FileShareData) : AbstractItem<BandyerFileShareItem, BandyerFileShareItem.ViewHolder>() {
 
     override fun getType(): Int = R.id.bandyer_id_file_share_item
 
@@ -23,13 +25,13 @@ class BandyerFileShareItem(var item: FileShareData) : AbstractItem<BandyerFileSh
         val fileName: MaterialTextView = view.findViewById(R.id.bandyer_file_name)
         val progressBar: LinearProgressIndicator = view.findViewById(R.id.bandyer_progress_bar)
         val operation: BandyerFileShareOpTypeImageView = view.findViewById(R.id.bandyer_operation)
-        val user: MaterialTextView = view.findViewById(R.id.bandyer_user)
+        val user: MaterialTextView = view.findViewById(R.id.bandyer_username)
         val error: MaterialTextView = view.findViewById(R.id.bandyer_error)
         val progressText: MaterialTextView = view.findViewById(R.id.bandyer_progress_text)
 
         override fun bindView(item: BandyerFileShareItem, payloads: MutableList<Any>) {
-            fileSize.text = "${item.item.fileSize}"
-            user.text = item.item.sender
+            fileSize.text = "${item.data.fileSize}"
+            user.text = item.data.sender
             error.text = "Upload failed - Retry"
             fileName.text = "Titolo"
             progressBar.progress = 60

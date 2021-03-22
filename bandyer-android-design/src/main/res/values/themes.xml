@@ -33,8 +33,8 @@
         <item name="colorError">@color/bandyer_colorError</item>
         <item name="colorControlNormal">?attr/colorOnPrimary</item>
 
-        <item name="android:colorBackground">@color/bandyer_colorBackground</item>
-        <item name="android:windowBackground">@color/bandyer_colorBackground</item>
+        <item name="android:colorBackground">@color/md_green_700</item>
+        <item name="android:windowBackground">@color/md_green_700</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 
         <item name="elevationOverlayEnabled">false</item>
