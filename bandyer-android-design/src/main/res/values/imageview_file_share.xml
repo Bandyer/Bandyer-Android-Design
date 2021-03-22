@@ -20,6 +20,7 @@
     </style>
 
     <style name="BandyerSDKDesign.FileShare.FileType.ShapeAppearance" parent="">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSize">12dp</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
 </resources>
