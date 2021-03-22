@@ -40,16 +40,10 @@
 
     <com.google.android.material.progressindicator.LinearProgressIndicator
         android:id="@+id/bandyer_progress_bar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:trackThickness="@dimen/bandyer_dimen_space4"
-        app:indicatorColor="?attr/colorSecondary"
+        style="@style/BandyerSDKDesign.FileShare.ProgressBar"
         app:layout_constraintEnd_toEndOf="@+id/bandyer_file_name"
         app:layout_constraintStart_toStartOf="@+id/bandyer_file_name"
-        app:layout_constraintTop_toBottomOf="@id/bandyer_file_name"
-        app:trackColor="@color/md_light_green_200"
-        app:trackCornerRadius="3dp" />
+        app:layout_constraintTop_toBottomOf="@id/bandyer_file_name" />
 
     <com.bandyer.sdk_design.filesharing.BandyerFileShareOpTypeImageView
         android:id="@+id/bandyer_operation"

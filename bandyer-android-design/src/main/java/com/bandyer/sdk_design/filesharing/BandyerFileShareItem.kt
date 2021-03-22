@@ -32,7 +32,7 @@ class BandyerFileShareItem(var item: FileShareData) : AbstractItem<BandyerFileSh
             user.text = item.item.sender
             error.text = "Upload failed - Retry"
             fileName.text = "Titolo"
-            progressBar.progress = 0.6f.toInt()
+            progressBar.progress = 60
             progressText.text = "13:21"
         }
 
