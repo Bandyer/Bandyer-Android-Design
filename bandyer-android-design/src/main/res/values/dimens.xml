@@ -25,11 +25,14 @@
     <dimen name="bandyer_dimen_space6">6dp</dimen>
     <dimen name="bandyer_dimen_space8">8dp</dimen>
     <dimen name="bandyer_dimen_space10">10dp</dimen>
+    <dimen name="bandyer_dimen_space11">11dp</dimen>
     <dimen name="bandyer_dimen_space12">12dp</dimen>
     <dimen name="bandyer_dimen_space13">13dp</dimen>
+    <dimen name="bandyer_dimen_space14">14dp</dimen>
     <dimen name="bandyer_dimen_space16">16dp</dimen>
     <dimen name="bandyer_dimen_space20">20dp</dimen>
     <dimen name="bandyer_dimen_space24">24dp</dimen>
+    <dimen name="bandyer_dimen_space26">26dp</dimen>
     <dimen name="bandyer_dimen_space28">28dp</dimen>
     <dimen name="bandyer_dimen_space32">32dp</dimen>
     <dimen name="bandyer_dimen_space40">40dp</dimen>

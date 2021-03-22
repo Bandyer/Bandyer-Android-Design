@@ -7,7 +7,7 @@ import com.google.android.material.button.MaterialButton
 
 class BandyerFileShareActionButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : MaterialButton(context, attrs, defStyleAttr) {
 
-    var type: Type? = null
+    var type: Type? = Type.RETRY
         set(value) {
             field = value
             refreshDrawableState()
@@ -44,11 +44,6 @@ class BandyerFileShareActionButton @JvmOverloads constructor(context: Context, a
          * r e d o w n l o a d
          */
         RE_DOWNLOAD(intArrayOf(R.attr.bandyer_state_redownload)),
-
-        /**
-         * o p e n
-         */
-        OPEN(intArrayOf(R.attr.bandyer_state_open)),
 
         /**
          * r e t r y

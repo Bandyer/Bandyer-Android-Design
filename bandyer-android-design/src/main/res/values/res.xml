@@ -46,5 +46,13 @@
     <item name="ic_bandyer_time" type="drawable">@drawable/bandyer_time_icon</item>
     <item name="ic_bandyer_whiteboard" type="drawable">@drawable/bandyer_whiteboard_icon</item>
     <item name="ic_bandyer_wired_headset" type="drawable">@drawable/bandyer_wired_headset_icon</item>
-    <item name="ic_add" type="drawable">@drawable/bandyer_add</item>
+    <item name="ic_bandyer_add" type="drawable">@drawable/bandyer_add_icon</item>
+    <item name="ic_bandyer_archive" type="drawable">@drawable/bandyer_archive_icon</item>
+    <item name="ic_bandyer_download" type="drawable">@drawable/bandyer_download_icon</item>
+    <item name="ic_bandyer_download_user" type="drawable">@drawable/bandyer_download_user_icon</item>
+    <item name="ic_bandyer_file" type="drawable">@drawable/bandyer_file_icon</item>
+    <item name="ic_bandyer_fileshare_cancel" type="drawable">@drawable/bandyer_fileshare_cancel_icon</item>
+    <item name="ic_bandyer_media" type="drawable">@drawable/bandyer_media_icon</item>
+    <item name="ic_bandyer_retry" type="drawable">@drawable/bandyer_retry_icon</item>
+    <item name="ic_bandyer_upload_user" type="drawable">@drawable/bandyer_upload_user_icon</item>
 </resources>

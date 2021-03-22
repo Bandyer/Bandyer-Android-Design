@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
     android:padding="@dimen/bandyer_dimen_space16">
 
     <com.bandyer.sdk_design.filesharing.BandyerFileTypeImageView
@@ -16,10 +17,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_file_size"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:layout_marginTop="8dp"
+        style="@style/BandyerSDKDesign.TextView.Subtitle.FileSize"
         app:layout_constraintEnd_toEndOf="@id/bandyer_file_type"
         app:layout_constraintStart_toStartOf="@id/bandyer_file_type"
         app:layout_constraintTop_toBottomOf="@id/bandyer_file_type"
@@ -27,25 +25,14 @@
 
     <com.bandyer.sdk_design.filesharing.BandyerFileShareActionButton
         android:id="@+id/bandyer_action"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/BandyerSDKDesign.ImageButton"
-        android:backgroundTint="@color/md_blue_700"
-        app:icon="@drawable/ic_bandyer_close"
-        app:iconSize="@dimen/bandyer_dimen_space16"
+        style="@style/BandyerSDKDesign.ImageButton.FileShareAction"
         app:layout_constraintBottom_toBottomOf="@id/bandyer_progress_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/bandyer_progress_bar" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_file_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/bandyer_dimen_space16"
-        android:layout_marginEnd="@dimen/bandyer_dimen_space24"
-        android:ellipsize="middle"
-        android:singleLine="true"
-        android:textSize="16sp"
+        style="@style/BandyerSDKDesign.TextView.Title.FileName"
         app:layout_constraintEnd_toStartOf="@id/bandyer_action"
         app:layout_constraintStart_toEndOf="@id/bandyer_file_type"
         app:layout_constraintTop_toTopOf="parent"
@@ -73,14 +60,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_user"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:textSize="12sp"
+        style="@style/BandyerSDKDesign.TextView.Subtitle.FileShareUser"
         app:layout_constraintEnd_toStartOf="@id/bandyer_progress_text"
         app:layout_constraintStart_toEndOf="@id/bandyer_operation"
         app:layout_constraintTop_toBottomOf="@id/bandyer_progress_bar"
@@ -88,20 +68,14 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_marginTop="@dimen/bandyer_dimen_space8"
-        android:textSize="13sp"
+        style="@style/BandyerSDKDesign.TextView.Subtitle.FileShareError"
         app:layout_constraintStart_toStartOf="@id/bandyer_file_name"
         app:layout_constraintTop_toBottomOf="@id/bandyer_user"
         tools:text="Upload failed - Retry" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_progress_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
+        style="@style/BandyerSDKDesign.TextView.Subtitle.FileShareProgress"
         app:layout_constraintEnd_toEndOf="@id/bandyer_file_name"
         app:layout_constraintTop_toTopOf="@id/bandyer_user"
         tools:text="85%" />

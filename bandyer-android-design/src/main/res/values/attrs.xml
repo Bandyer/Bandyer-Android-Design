@@ -77,7 +77,6 @@
 
     <!-- File share action types -->
     <attr name="bandyer_state_redownload" format="boolean" />
-    <attr name="bandyer_state_open" format="boolean" />
     <attr name="bandyer_state_retry" format="boolean" />
 
 </resources>
