@@ -10,6 +10,7 @@ class BandyerFileShareOpTypeImageView @JvmOverloads constructor(context: Context
     var type: Type? = Type.DOWNLOAD
     set(value) {
         field = value
+        setContentDescription(value)
         refreshDrawableState()
     }
 
@@ -20,6 +21,14 @@ class BandyerFileShareOpTypeImageView @JvmOverloads constructor(context: Context
         val drawableState = super.onCreateDrawableState(extraSpace + 2)
         val type = type ?: return drawableState
         return mergeDrawableStates(drawableState, type.value)
+    }
+
+    private fun setContentDescription(value: Type?) {
+        value ?: return
+        contentDescription = when (value) {
+            Type.UPLOAD -> resources.getString(R.string.bandyer_fileshare_upload)
+            else -> resources.getString(R.string.bandyer_fileshare_download)
+        }
     }
 
     /**

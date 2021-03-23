@@ -147,5 +147,14 @@
     <string name="bandyer_fileshare_add_description">Upload a new file</string>
     <string name="bandyer_fileshare_error_message">Upload failed - Retry</string>
     <string name="bandyer_fileshare_progress">%1$d %%</string>
+    <string name="bandyer_fileshare_upload">Upload</string>
+    <string name="bandyer_fileshare_download">Download</string>
+    <string name="bandyer_fileshare_file">Generic file</string>
+    <string name="bandyer_fileshare_media">Media file</string>
+    <string name="bandyer_fileshare_archive">Archive file</string>
+    <string name="bandyer_fileshare_cancel">Cancel</string>
+    <string name="bandyer_fileshare_download_descr">Start download</string>
+    <string name="bandyer_fileshare_redownload">Re-download</string>
+    <string name="bandyer_fileshare_retry">Retry</string>
 
 </resources>

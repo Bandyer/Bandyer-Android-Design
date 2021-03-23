@@ -10,6 +10,7 @@ class BandyerFileTypeImageView @JvmOverloads constructor(context: Context, attrs
     var type: Type? = Type.FILE
         set(value) {
             field = value
+            setContentDescription(value)
             refreshDrawableState()
         }
 
@@ -20,6 +21,15 @@ class BandyerFileTypeImageView @JvmOverloads constructor(context: Context, attrs
         val drawableState = super.onCreateDrawableState(extraSpace + 5)
         val type = type ?: return drawableState
         return mergeDrawableStates(drawableState, type.value)
+    }
+
+    private fun setContentDescription(value: Type?) {
+        value ?: return
+        contentDescription = when (value) {
+            Type.FILE -> resources.getString(R.string.bandyer_fileshare_file)
+            Type.MEDIA -> resources.getString(R.string.bandyer_fileshare_media)
+            else -> resources.getString(R.string.bandyer_fileshare_archive)
+        }
     }
 
     /**

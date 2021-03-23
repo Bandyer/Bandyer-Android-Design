@@ -10,6 +10,7 @@ class BandyerFileShareActionButton @JvmOverloads constructor(context: Context, a
     var type: Type? = Type.RETRY
         set(value) {
             field = value
+            setContentDescription(value)
             refreshDrawableState()
         }
 
@@ -20,6 +21,16 @@ class BandyerFileShareActionButton @JvmOverloads constructor(context: Context, a
         val drawableState = super.onCreateDrawableState(extraSpace + 5)
         val type = type ?: return drawableState
         return mergeDrawableStates(drawableState, type.value)
+    }
+
+    private fun setContentDescription(value: Type?) {
+        value ?: return
+        contentDescription = when (value) {
+            Type.CANCEL -> resources.getString(R.string.bandyer_fileshare_cancel)
+            Type.DOWNLOAD -> resources.getString(R.string.bandyer_fileshare_download_descr)
+            Type.RE_DOWNLOAD -> resources.getString(R.string.bandyer_fileshare_redownload)
+            else -> resources.getString(R.string.bandyer_fileshare_retry)
+        }
     }
 
     /**
