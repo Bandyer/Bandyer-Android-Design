@@ -19,6 +19,7 @@ package com.bandyer.demo_sdk_design
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -77,12 +78,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<MaterialButton>(R.id.btn_snapshot_preview).setOnClickListener {
-            BandyerFileShareDialog().show(this@MainActivity)
+            BandyerSnapshotDialog().show(this@MainActivity)
         }
 
         findViewById<MaterialButton>(R.id.btn_live_pointer).setOnClickListener { startActivity(Intent(this, PointerActivity::class.java)) }
 
         findViewById<MaterialButton>(R.id.btn_bluetooth_audioroute).setOnClickListener { startActivity(Intent(this, BluetoothAudioRouteActivity::class.java)) }
+
+        findViewById<MaterialButton>(R.id.btn_file_share).setOnClickListener {
+            BandyerFileShareDialog().show(this@MainActivity)
+        }
     }
 
     private fun setActionBarTopMargin() {
