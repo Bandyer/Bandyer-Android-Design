@@ -1,9 +1,7 @@
 package com.bandyer.sdk_design.filesharing
 
-import android.content.Context
 import android.view.View
 import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.extensions.getCallActionItemStyle
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
@@ -17,7 +15,7 @@ class BandyerFileShareItem(var data: FileShareData) : AbstractItem<BandyerFileSh
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
-    class ViewHolder(view: View) : FastAdapter.ViewHolder<BandyerFileShareItem>(view) {
+    class ViewHolder(val view: View) : FastAdapter.ViewHolder<BandyerFileShareItem>(view) {
 
         val fileType: BandyerFileTypeImageView = view.findViewById(R.id.bandyer_file_type)
         val fileSize: MaterialTextView = view.findViewById(R.id.bandyer_file_size)
@@ -32,16 +30,27 @@ class BandyerFileShareItem(var data: FileShareData) : AbstractItem<BandyerFileSh
         override fun bindView(item: BandyerFileShareItem, payloads: MutableList<Any>) {
             fileSize.text = "${item.data.fileSize}"
             user.text = item.data.sender
-            error.text = "Upload failed - Retry"
-            fileName.text = "Titolo"
-            progressBar.progress = 60
-            progressText.text = "13:21"
+            error.text = view.context.resources.getString(R.string.bandyer_fileshare_error_message)
+            fileName.text = item.data.fileName
+            operation.type = if(item.data.isUpload) BandyerFileShareOpTypeImageView.Type.UPLOAD else BandyerFileShareOpTypeImageView.Type.DOWNLOAD
+            progressBar.progress = item.data.progress
+            fileType.type = when(item.data.fileType) {
+                FileType.FILE -> BandyerFileTypeImageView.Type.FILE
+                FileType.MEDIA -> BandyerFileTypeImageView.Type.MEDIA
+                FileType.ARCHIVE -> BandyerFileTypeImageView.Type.ARCHIVE
+            }
+            progressText.text =  view.context.resources.getString(R.string.bandyer_fileshare_progress, item.data.progress)
         }
 
         override fun unbindView(item: BandyerFileShareItem) {
             fileSize.text = null
             user.text = null
             error.text = null
+            fileName.text = null
+            operation.type = null
+            progressBar.progress = 0
+            fileType.type = null
+            progressText.text =  null
         }
 
     }

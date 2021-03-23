@@ -94,9 +94,10 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private fun RecyclerView.init() {
             adapter = fastAdapter
-            itemAdapter.add(BandyerFileShareItem(FileShareData(FILE_SHARE_OP_TYPE.UPLOAD, "name", "pdf", 34L, "asdasd", "Giulio")))
+            itemAdapter.add(BandyerFileShareItem(FileShareData(true, "name", FileType.ARCHIVE, 34L, 60, "Giulio")))
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
+            // TODO add listener to item and the button
         }
     }
 }

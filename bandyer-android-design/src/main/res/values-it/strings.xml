@@ -138,5 +138,7 @@
     <!-- FILE SHARE -->
     <string name="bandyer_fileshare_add">Aggiungi</string>
     <string name="bandyer_fileshare_add_description">Carica nuovo file</string>
+    <string name="bandyer_fileshare_error_message">Upload fallito - Riprova</string>
+    <string name="bandyer_fileshare_progress">%1$d%%</string>
 
 </resources>
