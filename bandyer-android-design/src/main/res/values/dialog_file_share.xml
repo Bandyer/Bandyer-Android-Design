@@ -10,7 +10,7 @@
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>
         <item name="bandyer_fileShareItemStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item</item>
         <item name="extendedFloatingActionButtonStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.AddFab</item>
-        <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle</item>
+        <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView" parent="">
@@ -18,44 +18,14 @@
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item">
-        <attr name="bandyer_fileTypeStyle" format="reference" />
-        <attr name="bandyer_fileSizeStyle" format="reference" />
-        <attr name="bandyer_fileNameStyle" format="reference" />
-        <attr name="bandyer_operationIconStyle" format="reference" />
-        <attr name="bandyer_usernameStyle" format="reference" />
-        <attr name="bandyer_errorStyle" format="reference" />
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="materialButtonStyle" />
-        <attr name="bandyer_progressStyle"/>
-        <attr name="bandyer_progressTextStyle"/>
-    </declare-styleable>
-
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout</item>
-        <item name="bandyer_fileTypeStyle">@style/BandyerSDKDesign.FileShare.FileType</item>
-        <item name="bandyer_fileSizeStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileSize</item>
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.FileShareAction</item>
-        <item name="bandyer_fileNameStyle">@style/BandyerSDKDesign.TextView.Title.FileName</item>
-        <item name="bandyer_progressStyle">@style/BandyerSDKDesign.FileShare.ProgressBar</item>
-        <item name="bandyer_operationIconStyle">@style/BandyerSDKDesign.FileShare.OperationType</item>
-        <item name="bandyer_usernameStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareUser</item>
-        <item name="bandyer_errorStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareError</item>
-        <item name="bandyer_progressTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareProgress</item>
-    </style>
-
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout" parent="">
-        <item name="android:padding">@dimen/bandyer_dimen_space16</item>
-    </style>
-
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.AddFab" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
         <item name="android:layout_margin">@dimen/bandyer_dimen_space16</item>
         <item name="android:text">@string/bandyer_fileshare_add</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="android:contentDescription">@string/bandyer_fileshare_add_description</item>
-        <item name="android:backgroundTint" tools:targetApi="lollipop">?attr/colorPrimary</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">?attr/colorSecondary</item>
         <item name="icon">@drawable/ic_bandyer_add</item>
-        <item name="iconTint">?attr/colorOnPrimary</item>
+        <item name="iconTint">?attr/colorOnSecondary</item>
         <item name="iconGravity">textStart</item>
         <item name="iconSize">@dimen/bandyer_dimen_space24</item>
     </style>

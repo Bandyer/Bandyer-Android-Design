@@ -40,6 +40,7 @@
     <color name="bandyer_colorSecondary">#009FE3</color>
     <color name="bandyer_colorOnSecondary">#ffffff</color>
     <color name="bandyer_colorError">#C2E00000</color>
+    <color name="bandyer_colorOnError">#FFFFFF</color>
 
     <!-- hang up button -->
     <color name="bandyer_color_hang_up_button">#FF0000</color>
