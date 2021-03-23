@@ -99,7 +99,7 @@ class SmartGlassActionItemMenu : DialogFragment() {
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         smartglassMenuLayout = SmartGlassMenuLayout(ContextThemeWrapper(requireContext(), requireContext().getSmartGlassMenuDialogAttribute(R.styleable.BandyerSDKDesign_SmartGlassDialogMenu_bandyer_smartGlassMenuStyle)))
-        smartglassMenuLayout!!.items = items
+        smartglassMenuLayout!!.items = items ?: listOf()
         motionEventInterceptor?.let { smartglassMenuLayout!!.motionEventInterceptor = motionEventInterceptor }
         return smartglassMenuLayout!!
     }
@@ -113,6 +113,7 @@ class SmartGlassActionItemMenu : DialogFragment() {
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         selectionListener?.onDismiss()
+        smartglassMenuLayout?.motionEventInterceptor = null
     }
 
     /**
@@ -123,6 +124,7 @@ class SmartGlassActionItemMenu : DialogFragment() {
         super.onDestroy()
         items?.forEach { it.itemView = null }
         items = null
+        smartglassMenuLayout?.motionEventInterceptor = null
         smartglassMenuLayout = null
         selectionListener = null
     }

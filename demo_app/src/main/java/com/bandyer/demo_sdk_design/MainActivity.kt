@@ -19,6 +19,7 @@ package com.bandyer.demo_sdk_design
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,10 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val tag = "MainAcitivy"
+    }
 
     var mText: String? = null
 
@@ -111,7 +116,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 motionEventInterceptor = object : MotionEventInterceptor {
                     override fun onMotionEventIntercepted(event: MotionEvent?) {
-                        dispatchTouchEvent(event)
+                        Log.d(tag, "$event")
                     }
                 }
             }

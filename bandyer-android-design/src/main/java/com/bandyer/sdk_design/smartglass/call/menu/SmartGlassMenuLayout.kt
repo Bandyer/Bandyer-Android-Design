@@ -22,8 +22,9 @@ import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.databinding.BandyerWidgetSmartglassesMenuLayoutBinding
 import com.bandyer.sdk_design.extensions.isRtl
-import com.bandyer.sdk_design.smartglass.call.menu.utils.MotionEventInterceptableViewGroup
-import com.bandyer.sdk_design.smartglass.call.menu.utils.motionEventInterceptor
+import com.bandyer.sdk_design.extensions.performTap
+import com.bandyer.sdk_design.smartglass.call.menu.utils.MotionEventInterceptableView
+import com.bandyer.sdk_design.smartglass.call.menu.utils.dispatchMotionEventToInterceptor
 import com.bandyer.sdk_design.utils.isConfirmButton
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
 
@@ -33,7 +34,7 @@ import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
  * @property onSmartglassMenuSelectionListener OnGoogleGlassMenuItemSelectionListener?
  * @constructor
  */
-class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle) : ConstraintLayout(context, attrs, defStyleAttr), MotionEventInterceptableViewGroup<ConstraintLayout> {
+class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle) : ConstraintLayout(context, attrs, defStyleAttr), MotionEventInterceptableView<ConstraintLayout> {
 
     /**
      * Smart glass menu selection listener
@@ -54,11 +55,10 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
     /**
      * Smart glass menu action items
      */
-    var items: List<CallAction>? = null
+    var items: List<CallAction> = listOf()
         set(value) {
             field = value
-            value ?: return
-            fastAdapter.set((if (context.isRtl()) items!!.reversed() else items!!).map { AdapterActionItem(it) })
+            fastAdapter.set((if (context.isRtl()) items.reversed() else items).map { AdapterActionItem(it) })
         }
 
     /**
@@ -68,19 +68,17 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
 
     private val fastAdapter: FastItemAdapter<AdapterActionItem> = FastItemAdapter()
 
-    private var currentMenuItemIndex = 0
-
     private val binding: BandyerWidgetSmartglassesMenuLayoutBinding by lazy { BandyerWidgetSmartglassesMenuLayoutBinding.inflate(LayoutInflater.from(context), this) }
 
-    private val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, context.isRtl()).apply {
+    private val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, context.isRtl()).apply {
         stackFromEnd = context.isRtl()
     }
 
-    private val snapHelper: SnapHelper = PagerSnapHelper()
-
     private val gestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            onSmartglassMenuSelectionListener?.onSelected(items!![currentMenuItemIndex])
+            getCurrentMenuItemIndex().takeIf { it != -1 }?.let { currentMenuItemIndex ->
+                onSmartglassMenuSelectionListener?.onSelected(fastAdapter.getAdapterItem(currentMenuItemIndex).item)
+            }
             return true
         }
 
@@ -91,42 +89,28 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
         override fun onShowPress(e: MotionEvent?) = Unit
     })
 
+    private val snapHelper: SnapHelper = PagerSnapHelper()
+
     init {
-        binding.bandyerSmartGlassMenuRecyclerview.layoutManager = layoutManager
-        binding.bandyerSmartGlassMenuRecyclerview.itemAnimator = null
-        binding.bandyerSmartGlassMenuRecyclerview.setHasFixedSize(true)
-        binding.bandyerSmartGlassMenuRecyclerview.adapter = fastAdapter
-
-        snapHelper.attachToRecyclerView(binding.bandyerSmartGlassMenuRecyclerview)
-
-        binding.bandyerSmartGlassMenuIndicator.attachToRecyclerView(binding.bandyerSmartGlassMenuRecyclerview)
-
-        binding.bandyerSmartGlassMenuRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState != RecyclerView.SCROLL_STATE_IDLE) return
-                val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                currentMenuItemIndex = layoutManager.getPosition(foundView)
-            }
-        })
-    }
-
-    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
-        if (event != null && event.action == KeyEvent.ACTION_UP && event.isConfirmButton()) {
-            snapHelper.findSnapView(layoutManager)?.performClick()
-            return true
+        with(binding.bandyerSmartGlassMenuRecyclerview) {
+            layoutManager = linearLayoutManager
+            itemAnimator = null
+            setHasFixedSize(true)
+            adapter = fastAdapter
+            snapHelper.attachToRecyclerView(this)
+            binding.bandyerSmartGlassMenuIndicator.attachToRecyclerView(this)
         }
-        return super.dispatchKeyEvent(event)
     }
 
-    override fun onDetachedFromWindow() {
-        motionEventInterceptor = null
-        super.onDetachedFromWindow()
-    }
+    private fun getCurrentMenuItemIndex(): Int = snapHelper.findSnapView(linearLayoutManager)?.let { linearLayoutManager.getPosition(it) } ?: -1
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
         val hasClicked = gestureDetector.onTouchEvent(ev)
         if (!hasClicked) dispatchMotionEventToInterceptor(ev)
         return super.onInterceptTouchEvent(ev)
     }
+
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean =
+            if (event != null && event.action == KeyEvent.ACTION_UP && event.isConfirmButton()) performTap()
+            else super.dispatchKeyEvent(event)
 }
