@@ -6,34 +6,26 @@
 package com.bandyer.sdk_design.smartglass.call.menu
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.Toast
+import android.view.MotionEvent
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.bottom_sheet.BandyerActionBottomSheet
-import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.databinding.BandyerWidgetSmartglassesMenuLayoutBinding
 import com.bandyer.sdk_design.extensions.isRtl
-import com.bandyer.sdk_design.smartglass.call.menu.adapter.SmartGlassActionItemAdapter
+import com.bandyer.sdk_design.extensions.performTap
+import com.bandyer.sdk_design.smartglass.call.menu.utils.MotionEventInterceptableView
+import com.bandyer.sdk_design.smartglass.call.menu.utils.dispatchMotionEventToInterceptor
 import com.bandyer.sdk_design.utils.isConfirmButton
-import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.IAdapter
 import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
-import com.mikepenz.fastadapter.listeners.ClickEventHook
-import com.mikepenz.fastadapter.listeners.EventHook
-import com.mikepenz.fastadapter.listeners.OnClickListener
 
 /**
  * Layout used to represent a smart glass swipeable menu
@@ -41,7 +33,7 @@ import com.mikepenz.fastadapter.listeners.OnClickListener
  * @property onSmartglassMenuSelectionListener OnGoogleGlassMenuItemSelectionListener?
  * @constructor
  */
-class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle): ConstraintLayout(context, attrs, defStyleAttr) {
+class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle) : ConstraintLayout(context, attrs, defStyleAttr), MotionEventInterceptableView<ConstraintLayout> {
 
     /**
      * Smart glass menu selection listener
@@ -62,11 +54,10 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
     /**
      * Smart glass menu action items
      */
-    var items: List<CallAction>? = null
+    var items: List<CallAction> = listOf()
         set(value) {
             field = value
-            value ?: return
-            fastAdapter.set((if (context.isRtl()) items!!.reversed() else items!!).map { AdapterActionItem(it) })
+            fastAdapter.set((if (context.isRtl()) items.reversed() else items).map { AdapterActionItem(it) })
         }
 
     /**
@@ -76,47 +67,49 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
 
     private val fastAdapter: FastItemAdapter<AdapterActionItem> = FastItemAdapter()
 
-    private var currentMenuItemIndex = 0
-
     private val binding: BandyerWidgetSmartglassesMenuLayoutBinding by lazy { BandyerWidgetSmartglassesMenuLayoutBinding.inflate(LayoutInflater.from(context), this) }
 
-    private val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, context.isRtl()).apply {
+    private val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, context.isRtl()).apply {
         stackFromEnd = context.isRtl()
     }
+
+    private val gestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
+        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+            getCurrentMenuItemIndex().takeIf { it != -1 }?.let { currentMenuItemIndex ->
+                onSmartglassMenuSelectionListener?.onSelected(fastAdapter.getAdapterItem(currentMenuItemIndex).item)
+            }
+            return true
+        }
+
+        override fun onDown(e: MotionEvent?) = false
+        override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float) = false
+        override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float) = false
+        override fun onLongPress(e: MotionEvent?) = Unit
+        override fun onShowPress(e: MotionEvent?) = Unit
+    })
 
     private val snapHelper: SnapHelper = PagerSnapHelper()
 
     init {
-        binding.bandyerSmartGlassMenuRecyclerview.layoutManager = layoutManager
-        binding.bandyerSmartGlassMenuRecyclerview.itemAnimator = null
-        binding.bandyerSmartGlassMenuRecyclerview.setHasFixedSize(true)
-
-        fastAdapter.withOnClickListener { v, adapter, item, position ->
-            onSmartglassMenuSelectionListener?.onSelected(item.item)
-            true
+        with(binding.bandyerSmartGlassMenuRecyclerview) {
+            layoutManager = linearLayoutManager
+            itemAnimator = null
+            setHasFixedSize(true)
+            adapter = fastAdapter
+            snapHelper.attachToRecyclerView(this)
+            binding.bandyerSmartGlassMenuIndicator.attachToRecyclerView(this)
         }
-
-        binding.bandyerSmartGlassMenuRecyclerview.adapter = fastAdapter
-
-        snapHelper.attachToRecyclerView(binding.bandyerSmartGlassMenuRecyclerview)
-
-        binding.bandyerSmartGlassMenuIndicator.attachToRecyclerView(binding.bandyerSmartGlassMenuRecyclerview)
-
-        binding.bandyerSmartGlassMenuRecyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (newState != RecyclerView.SCROLL_STATE_IDLE) return
-                val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                currentMenuItemIndex = layoutManager.getPosition(foundView)
-            }
-        })
     }
 
-    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
-        if (event != null && event.action == KeyEvent.ACTION_UP && event.isConfirmButton()) {
-            snapHelper.findSnapView(layoutManager)?.performClick()
-            return true
-        }
-        return super.dispatchKeyEvent(event)
+    private fun getCurrentMenuItemIndex(): Int = snapHelper.findSnapView(linearLayoutManager)?.let { linearLayoutManager.getPosition(it) } ?: -1
+
+    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+        val hasClicked = gestureDetector.onTouchEvent(ev)
+        if (!hasClicked) dispatchMotionEventToInterceptor(ev)
+        return super.onInterceptTouchEvent(ev)
     }
+
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean =
+            if (event != null && event.action == KeyEvent.ACTION_UP && event.isConfirmButton()) performTap()
+            else super.dispatchKeyEvent(event)
 }

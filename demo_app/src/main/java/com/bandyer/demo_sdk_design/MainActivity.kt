@@ -19,8 +19,8 @@ package com.bandyer.demo_sdk_design
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
+import android.util.Log
+import android.view.MotionEvent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -30,13 +30,17 @@ import com.bandyer.sdk_design.call.dialogs.BandyerSnapshotDialog
 import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassActionItemMenu
 import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassMenuLayout
 import com.bandyer.sdk_design.smartglass.call.menu.items.getSmartglassActions
+import com.bandyer.sdk_design.smartglass.call.menu.utils.MotionEventInterceptor
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog.BandyerWhiteboardTextEditorWidgetListener
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val tag = "MainAcitivy"
+    }
 
     var mText: String? = null
 
@@ -90,13 +94,8 @@ class MainActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.btn_bluetooth_audioroute).setOnClickListener { startActivity(Intent(this, BluetoothAudioRouteActivity::class.java)) }
     }
 
-    private fun getStatusBarHeight(): Int {
-        var result = 0
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            result = resources.getDimensionPixelSize(resourceId)
-        }
-        return result
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        return super.dispatchTouchEvent(ev)
     }
 
     private fun showSmartGlassAction(): SmartGlassActionItemMenu = SmartGlassActionItemMenu.show(
@@ -114,6 +113,11 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     override fun onDismiss() = Unit
+                }
+                motionEventInterceptor = object : MotionEventInterceptor {
+                    override fun onMotionEventIntercepted(event: MotionEvent?) {
+                        Log.d(tag, "$event")
+                    }
                 }
             }
 }
