@@ -21,17 +21,12 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
 import android.widget.LinearLayout
-import androidx.appcompat.widget.AppCompatImageView
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerCallWatermarkBinding
 import com.bandyer.sdk_design.utils.bandyerSDKDesignPrefs
-import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.textview.MaterialTextView
 import com.squareup.picasso.Picasso
 import java.io.File
-
 
 /**
  * Bandyer watermark layout
@@ -40,44 +35,34 @@ import java.io.File
  */
 class BandyerCallWatermarkLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle) : LinearLayout(context, attrs, defStyleAttr) {
 
-    /**
-     * Image of the watermark
-     */
-    var watermarkImage: ShapeableImageView? = null
-        private set
-
-    /**
-     * Title of the watermark
-     */
-    var watermarkText: MaterialTextView? = null
-        private set
-
     private val binding: BandyerCallWatermarkBinding by lazy { BandyerCallWatermarkBinding.inflate(LayoutInflater.from(context), this) }
 
+    private val watermarkLogo = bandyerSDKDesignPrefs().getString("call_watermark_image_uri", null)
+    private val watermarkTitle = bandyerSDKDesignPrefs().getString("call_watermark_text", null)
+
     init {
-        watermarkImage = binding.bandyerLogoView
-        watermarkText = binding.bandyerLabelView
-
-        val watermarkLogo = bandyerSDKDesignPrefs().getString("call_watermark_image_uri", null)
-        val watermarkTitle = bandyerSDKDesignPrefs().getString("call_watermark_text", null)
-
-        post { setUp(watermarkLogo, watermarkTitle) }
+        updateVisibility()
+        setUp()
     }
 
+    private fun updateVisibility() = with(binding) {
+        val displayImage = watermarkLogo?.isBlank() == false || (bandyerLogoView.drawable != null && watermarkLogo == null)
+        val displayText = !watermarkTitle.isNullOrBlank()
+        bandyerLogoView.visibility = if (displayImage) View.VISIBLE else View.GONE
+        bandyerLabelView.visibility = if (displayText) View.VISIBLE else View.GONE
+        super.setVisibility(if (!displayImage && !displayText) View.GONE else View.VISIBLE)
+    }
 
-    private fun setUp(watermarkLogo: String?, watermarkTitle: String?) {
-        watermarkTitle?.let {
-            binding.bandyerLogoView.visibility = if (it.isBlank()) View.GONE else View.VISIBLE
-            binding.bandyerLabelView.text = it
-            binding.bandyerLabelView.requestLayout()
-        }
+    private fun setUp() = with(binding) {
+        if (bandyerLabelView.visibility == View.VISIBLE) bandyerLabelView.text = watermarkTitle
+        if (bandyerLogoView.visibility == View.GONE || watermarkLogo == null) return
+        val uri = if (watermarkLogo.startsWith("content") || watermarkLogo.startsWith("android.resource") || watermarkLogo.startsWith("file") || watermarkLogo.startsWith("http")) Uri.parse(watermarkLogo) else Uri.fromFile(File(watermarkLogo))
+        Picasso.get().load(uri).into(bandyerLogoView)
+    }
 
-        watermarkLogo?.let {
-            val uri = if (watermarkLogo.startsWith("content") || watermarkLogo.startsWith("android.resource") || watermarkLogo.startsWith("file") || watermarkLogo.startsWith("http")) Uri.parse(watermarkLogo) else Uri.fromFile(File(watermarkLogo))
-            Picasso.get().load(uri).into(binding.bandyerLogoView)
-            binding.bandyerLogoView.visibility = if (it.isBlank()) View.GONE else View.VISIBLE
-            binding.bandyerLogoView.requestLayout()
-
-        }
+    override fun setVisibility(visibility: Int) = when {
+        this.visibility == visibility -> Unit
+        visibility == View.VISIBLE -> updateVisibility()
+        else -> super.setVisibility(visibility)
     }
 }
