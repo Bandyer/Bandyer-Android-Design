@@ -242,6 +242,11 @@ open class CallBottomSheet<T>(val context: AppCompatActivity,
         val firstItem = recyclerView?.layoutManager?.getChildAt(0)
 
         firstItem?.post {
+            bottomSheetBehaviour ?: kotlin.run {
+                dispose()
+                return@post
+            }
+
             val oneLineHeight = (lineView?.getHeightWithVerticalMargin() ?: 0) +
                     (titleView?.getHeightWithVerticalMargin() ?: 0) +
                     firstItem.getHeightWithVerticalMargin() +  (firstItem.paddingTop.takeIf { callActionItems.size > MAX_ITEMS_PER_ROW } ?: 0)
