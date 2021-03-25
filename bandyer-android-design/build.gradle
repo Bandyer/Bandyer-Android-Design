@@ -192,11 +192,10 @@ afterEvaluate {
     publishing {
         repositories {
             maven {
-                name = 'Artifactory'
-                url = "https://bandyer.jfrog.io/artifactory/Bandyer"
-                credentials {
-                    username = properties.getProperty("artifactory.user")
-                    password = properties.getProperty("artifactory.apiKey")
+                url = "s3://maven-bandyer/releases/"
+                credentials(AwsCredentials) {
+                    accessKey = properties.getProperty("maven.accessKey")
+                    secretKey = properties.getProperty("maven.secretKey")
                 }
             }
         }
@@ -213,6 +212,15 @@ afterEvaluate {
         }
     }
 }
+
+task invalidateCache(type: Exec) {
+    workingDir '../scripts'
+    def publishPath = "releases"
+    def packageName = projectGroup + "." + project.getName()
+    commandLine 'python', './invalidate_s3_cache.py', properties.getProperty("maven.accessKey"), properties.getProperty("maven.secretKey"), properties.getProperty("maven.distributionId"), publishPath, packageName ,version
+}
+
+publish.finalizedBy invalidateCache
 
 task dokkaDoc() {
     dependsOn createApiDoc("genKDoc", "html", "kDoc")

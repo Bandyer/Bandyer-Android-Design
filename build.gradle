@@ -32,9 +32,8 @@ buildscript {
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://oss.sonatype.org/content/repositories/releases' }
-        maven {
-            url 'https://storage.googleapis.com/r8-releases/raw'
-        }
+        maven {url 'https://storage.googleapis.com/r8-releases/raw'}
+        maven { url 'https://maven.bandyer.com/releases' }
     }
 
     dependencies {
@@ -61,6 +60,7 @@ allprojects {
         mavenCentral()
         mavenLocal()
         maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.bandyer.com/releases' }
     }
 
     configurations.all {
