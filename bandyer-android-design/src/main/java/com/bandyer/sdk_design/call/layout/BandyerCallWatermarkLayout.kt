@@ -37,29 +37,32 @@ class BandyerCallWatermarkLayout @JvmOverloads constructor(context: Context, att
 
     private val binding: BandyerCallWatermarkBinding by lazy { BandyerCallWatermarkBinding.inflate(LayoutInflater.from(context), this) }
 
-    private val watermarkLogo = bandyerSDKDesignPrefs().getString("call_watermark_image_uri", null)
-    private val watermarkTitle = bandyerSDKDesignPrefs().getString("call_watermark_text", null)
+    private val watermarkUri = bandyerSDKDesignPrefs().getString("call_watermark_image_uri", null)
+    private val watermarkText = bandyerSDKDesignPrefs().getString("call_watermark_text", binding.bandyerLabelView.text.toString())
 
     init {
-        updateVisibility()
         setUp()
+        updateVisibility()
     }
 
     private fun updateVisibility() = with(binding) {
-        val displayImage = watermarkLogo?.isBlank() == false || (bandyerLogoView.drawable != null && watermarkLogo == null)
-        val displayText = !watermarkTitle.isNullOrBlank()
+        val displayImage = watermarkUri?.isBlank() == false || (bandyerLogoView.drawable != null && watermarkUri == null)
+        val displayText = !watermarkText.isNullOrBlank()
         bandyerLogoView.visibility = if (displayImage) View.VISIBLE else View.GONE
         bandyerLabelView.visibility = if (displayText) View.VISIBLE else View.GONE
         super.setVisibility(if (!displayImage && !displayText) View.GONE else View.VISIBLE)
     }
 
     private fun setUp() = with(binding) {
-        if (bandyerLabelView.visibility == View.VISIBLE) bandyerLabelView.text = watermarkTitle
-        if (bandyerLogoView.visibility == View.GONE || watermarkLogo == null) return
-        val uri = if (watermarkLogo.startsWith("content") || watermarkLogo.startsWith("android.resource") || watermarkLogo.startsWith("file") || watermarkLogo.startsWith("http")) Uri.parse(watermarkLogo) else Uri.fromFile(File(watermarkLogo))
+        bandyerLabelView.text = watermarkText
+        watermarkUri ?: return
+        val uri = if (watermarkUri.startsWith("content") || watermarkUri.startsWith("android.resource") || watermarkUri.startsWith("file") || watermarkUri.startsWith("http")) Uri.parse(watermarkUri) else Uri.fromFile(File(watermarkUri))
         Picasso.get().load(uri).into(bandyerLogoView)
     }
 
+    /**
+     * @suppress
+     */
     override fun setVisibility(visibility: Int) = when {
         this.visibility == visibility -> Unit
         visibility == View.VISIBLE -> updateVisibility()
