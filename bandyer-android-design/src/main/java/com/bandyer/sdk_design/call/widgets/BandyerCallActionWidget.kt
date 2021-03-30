@@ -340,6 +340,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
     }
 
     private fun anchorViews() = currentBottomSheetLayout?.post {
+        currentBottomSheetLayout?.parent ?: return@post
         removeAnchorFromAnchoredView()
         anchoredViews.forEach { pair ->
             val lp = (pair.first.layoutParams as CoordinatorLayout.LayoutParams)
