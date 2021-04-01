@@ -10,10 +10,13 @@
 
     <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker" parent="BandyerSDKDesign.BottomSheetDialog" >
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.ScreenSharePicker</item>
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">?attr/colorSurface</item>
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.Layout</item>
         <item name="bandyer_screenShareAppOnlyButtonStyle">@style/BandyerSDKDesign.ImageButton.ScreenShare.AppOnly</item>
         <item name="bandyer_screenShareDeviceButtonStyle">@style/BandyerSDKDesign.ImageButton.ScreenShare.Device</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.Night" parent="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker" >
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.Title.ScreenSharePicker" parent="BandyerSDKDesign.TextView.Title">
@@ -34,9 +37,11 @@
     <style name="BandyerSDKDesign.ImageButton.ScreenShare" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:gravity">start|center_vertical</item>
         <item name="android:text">Share this app only</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">viewStart</item>
         <item name="android:textAllCaps">false</item>
         <item name="iconGravity">start</item>
+        <item name="iconTint">?attr/colorOnSurface</item>
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="android:letterSpacing" tools:targetApi="lollipop">0</item>
     </style>
