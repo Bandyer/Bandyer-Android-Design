@@ -37,10 +37,9 @@
     <style name="BandyerSDKDesign.CallWatermarkImageView" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:paddingRight">@dimen/bandyer_dimen_space8</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space8</item>
-        <item name="android:scaleType">fitStart</item>
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
         <item name="layout_constraintHeight_min">@dimen/bandyer_watermark_min_height</item>
         <item name="layout_constraintHeight_max">@dimen/bandyer_watermark_max_height</item>
         <item name="android:layout_gravity">start|left</item>
@@ -48,6 +47,11 @@
         <item name="layout_constraintTop_toTopOf">parent</item>
         <item name="layout_constraintBottom_toBottomOf">parent</item>
         <item name="layout_constraintLeft_toLeftOf">parent</item>
+        <item name="layout_constraintRight_toLeftOf">@id/bandyer_label_view</item>
+        <item name="layout_constraintEnd_toStartOf">@id/bandyer_label_view</item>
+        <item name="layout_constraintHorizontal_bias">0.0</item>
+        <item name="layout_constraintHorizontal_chainStyle">packed</item>
+        <item name="layout_constraintWidth_default">wrap</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.CallWatermark" parent="BandyerSDKDesign.TextView.Title">
@@ -67,6 +71,9 @@
         <item name="layout_constraintEnd_toEndOf">parent</item>
         <item name="layout_constraintRight_toRightOf">parent</item>
         <item name="layout_constraintHeight_min">@dimen/bandyer_watermark_min_height</item>
+        <item name="layout_constraintHorizontal_chainStyle">packed</item>
+        <item name="layout_constraintWidth_default">percent</item>
+        <item name="layout_constraintWidth_percent">0.5</item>
     </style>
 
 </resources>
