@@ -34,8 +34,9 @@ import com.bandyer.sdk_design.views.ViewOverlayAttacher
  * Represents a view that can is attached to the views of an app or attached to the system's window
  * if the device has permissions to do it.
  * @property view the View that will be placed upon app or system's window.
+ * @property desiredType the request type of Overlay, by default is GLOBAL and fallbacks to CURRENT_APPLICATION
  */
-class AppViewOverlay(val view: View) {
+class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.OverlayType = ViewOverlayAttacher.OverlayType.GLOBAL) {
 
     private val viewOverlayAttacher = ViewOverlayAttacher(view)
 
@@ -51,12 +52,10 @@ class AppViewOverlay(val view: View) {
      * @param context Context used to attach the overlay view.
      */
     fun show(context: Context) {
-        if (!initialized) {
-            initialized = true
-            (context.applicationContext as Application).registerActivityLifecycleCallbacks(activityCallbacks)
-            watchOverlayPermission(context)
-        }
-
+        if (initialized) return
+        initialized = true
+        (context.applicationContext as Application).registerActivityLifecycleCallbacks(activityCallbacks)
+        if (desiredType == ViewOverlayAttacher.OverlayType.GLOBAL) watchOverlayPermission(context)
         viewOverlayAttacher.attach(context, getOverlayType(context))
     }
 
@@ -71,11 +70,10 @@ class AppViewOverlay(val view: View) {
         appOpsCallback = null
         initialized = false
         mainThreadHandler.removeCallbacksAndMessages(null)
-
     }
 
     private fun getOverlayType(context: Context): ViewOverlayAttacher.OverlayType {
-        return if (context.canDrawOverlays()) ViewOverlayAttacher.OverlayType.GLOBAL
+        return if (desiredType == ViewOverlayAttacher.OverlayType.GLOBAL && context.canDrawOverlays()) ViewOverlayAttacher.OverlayType.GLOBAL
         else ViewOverlayAttacher.OverlayType.CURRENT_APPLICATION
     }
 
@@ -83,12 +81,14 @@ class AppViewOverlay(val view: View) {
 
     private var activityCallbacks = object : Application.ActivityLifecycleCallbacks {
 
-        override fun onActivityResumed(activity: Activity) = viewOverlayAttacher.attach(activity, getOverlayType(activity))
-
+        override fun onActivityResumed(activity: Activity) {
+            if(!initialized) return
+            viewOverlayAttacher.attach(activity, getOverlayType(activity))
+        }
         override fun onActivityStopped(activity: Activity) = Unit
         override fun onActivityPaused(activity: Activity) = Unit
         override fun onActivityStarted(activity: Activity) = Unit
-        override fun onActivityDestroyed(activity: Activity) = Unit
+        override fun onActivityDestroyed(activity: Activity) = hide(activity)
         override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
     }
@@ -101,8 +101,8 @@ class AppViewOverlay(val view: View) {
         val applicationContext = context.applicationContext
         val pckName = applicationContext.packageName
         appOpsCallback = callback@{ op, packageName ->
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW != op || packageName != pckName) return@callback
-            mainThreadHandler.post { show(applicationContext) }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW != op || packageName != pckName || !initialized) return@callback
+            mainThreadHandler.post { show(context) }
         }
         applicationContext.startAppOpsWatch(AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW, appOpsCallback!!)
     }
