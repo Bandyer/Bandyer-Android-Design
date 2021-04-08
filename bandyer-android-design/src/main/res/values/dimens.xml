@@ -63,4 +63,7 @@
 
     <dimen name="bandyer_thumbnails_stream_stroke_size">1dp</dimen>
 
+    <dimen name="bandyer_watermark_max_height">80dp</dimen>
+    <dimen name="bandyer_watermark_min_height">64dp</dimen>
+
 </resources>
