@@ -53,7 +53,7 @@ def projectLicenseUrl = "https://github.com/Bandyer/Bandyer-Android-Design/LICEN
 def projectKeywords = ['bandyer-android-design', 'sdk-design', 'android-design', 'android', 'video', 'conference', 'helpdesk', 'bandyer', 'webrtc', 'call', 'audio']
 def developerFullName = "Bandyer Srl"
 group = projectGroup
-version = "1.0.7"
+version = "1.0.8"
 
 // Library versions
 def fastAdapterVersion = "3.3.1"
@@ -221,7 +221,14 @@ task invalidateCache(type: Exec) {
     commandLine 'python', './invalidate_s3_cache.py', properties.getProperty("maven.accessKey"), properties.getProperty("maven.secretKey"), properties.getProperty("maven.distributionId"), publishPath, packageName ,version
 }
 
-publish.finalizedBy invalidateCache
+task publishUpload {
+    def dryRun = true
+    def publishTask = 'publishToMavenLocal'
+    if(!dryRun) publishTask = 'publish'
+    dependsOn publishTask
+    dependsOn 'invalidateCache'
+    tasks.findByName('invalidateCache').mustRunAfter publishTask
+}
 
 task dokkaDoc() {
     dependsOn createApiDoc("genKDoc", "html", "kDoc")
