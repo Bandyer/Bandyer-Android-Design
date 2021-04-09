@@ -221,7 +221,14 @@ task invalidateCache(type: Exec) {
     commandLine 'python', './invalidate_s3_cache.py', properties.getProperty("maven.accessKey"), properties.getProperty("maven.secretKey"), properties.getProperty("maven.distributionId"), publishPath, packageName ,version
 }
 
-publish.finalizedBy invalidateCache
+task publishUpload {
+    def dryRun = true
+    def publishTask = 'publishToMavenLocal'
+    if(!dryRun) publishTask = 'publish'
+    dependsOn publishTask
+    dependsOn 'invalidateCache'
+    tasks.findByName('invalidateCache').mustRunAfter publishTask
+}
 
 task dokkaDoc() {
     dependsOn createApiDoc("genKDoc", "html", "kDoc")
