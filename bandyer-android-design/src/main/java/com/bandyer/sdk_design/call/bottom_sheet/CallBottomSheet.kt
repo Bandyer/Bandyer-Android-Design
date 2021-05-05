@@ -222,6 +222,7 @@ open class CallBottomSheet<T>(val context: AppCompatActivity,
     }
 
     private fun setup(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) = bottomSheetLayoutContent.post contentPost@{
+        bottomSheetBehaviour ?: return@contentPost
         animationStartOffset = -1f
         animationEndState = -1
         animationEnabled = fixed == false
