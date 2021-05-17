@@ -15,16 +15,16 @@
   ~  limitations under the License.
   -->
 
-<androidx.constraintlayout.widget.ConstraintLayout
+<merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bandyer_loading_error_root_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/BandyerSDKDesign.LoadingError"
-    style="?attr/bandyer_rootLayoutStyle"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bandyer_reload_button"
@@ -57,4 +57,4 @@
         app:layout_constraintTop_toBottomOf="@id/bandyer_reload_title"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</merge>

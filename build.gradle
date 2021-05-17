@@ -32,9 +32,8 @@ buildscript {
         mavenCentral()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://oss.sonatype.org/content/repositories/releases' }
-        maven {
-            url 'https://storage.googleapis.com/r8-releases/raw'
-        }
+        maven {url 'https://storage.googleapis.com/r8-releases/raw'}
+        maven { url 'https://maven.bandyer.com/releases' }
     }
 
     dependencies {
@@ -45,8 +44,6 @@ buildscript {
 
         //classpath dependencies to import library project
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
-
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
@@ -61,6 +58,7 @@ allprojects {
         mavenCentral()
         mavenLocal()
         maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.bandyer.com/releases' }
     }
 
     configurations.all {

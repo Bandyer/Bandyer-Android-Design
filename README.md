@@ -5,8 +5,7 @@ This repository is the design library used by Bandyer's Android SDK
 <img src="img/bandyer.png" alt="Bandyer" title="Bandyer" />
 </p>
 
-
-[ ![Download](https://api.bintray.com/packages/bandyer/Communication/Android-Design/images/download.svg) ](https://bintray.com/bandyer/Communication/Android-Design/_latestVersion)
+[![Download](https://badgen.net/maven/v/metadata-url/https/maven.bandyer.com/releases/com/bandyer/bandyer-android-design/maven-metadata.xml?label=maven.bandyer.com/releases) ](https://maven.bandyer.com/index.html#releases/com/bandyer/bandyer-android-design/)
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/follow?screen_name=bandyersrl)
 
 
@@ -30,5 +29,3 @@ This repository is the design library used by Bandyer's Android SDK
 🎑  &nbsp; [Customize Colors & Themes](https://github.com/Bandyer/Bandyer-Android-Design/wiki/Customize-Colors-&-Themes)
 
 🆎  &nbsp; [Customize Font](https://github.com/Bandyer/Bandyer-Android-Design/wiki/Customize-Font)
-
-👾  &nbsp; [Customize Icons](https://github.com/Bandyer/Bandyer-Android-Design/wiki/Customize-Icons)

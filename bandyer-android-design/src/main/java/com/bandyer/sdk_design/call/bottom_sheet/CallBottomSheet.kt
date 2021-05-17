@@ -221,17 +221,13 @@ open class CallBottomSheet<T>(val context: AppCompatActivity,
         replaceItems(oldItem, newItem)
     }
 
-    private fun setup(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) = bottomSheetLayoutContent.post contentPost@ {
+    private fun setup(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) = bottomSheetLayoutContent.post contentPost@{
+        bottomSheetBehaviour ?: return@contentPost
         animationStartOffset = -1f
         animationEndState = -1
         animationEnabled = fixed == false
-        bottomSheetBehaviour!!.disableDragging = false
-
         this.collapsible = collapsible
-
-        if (callActionItems.size <= MAX_ITEMS_PER_ROW) {
-            bottomSheetBehaviour!!.disableDragging = true
-        }
+        bottomSheetBehaviour!!.disableDragging = callActionItems.size <= MAX_ITEMS_PER_ROW
 
         if (fixed == true) {
             bottomSheetBehaviour!!.isHideable = false
@@ -247,6 +243,11 @@ open class CallBottomSheet<T>(val context: AppCompatActivity,
         val firstItem = recyclerView?.layoutManager?.getChildAt(0)
 
         firstItem?.post {
+            bottomSheetBehaviour ?: kotlin.run {
+                dispose()
+                return@post
+            }
+
             val oneLineHeight = (lineView?.getHeightWithVerticalMargin() ?: 0) +
                     (titleView?.getHeightWithVerticalMargin() ?: 0) +
                     firstItem.getHeightWithVerticalMargin() +  (firstItem.paddingTop.takeIf { callActionItems.size > MAX_ITEMS_PER_ROW } ?: 0)
@@ -279,7 +280,7 @@ open class CallBottomSheet<T>(val context: AppCompatActivity,
         }
 
         bottomSheetLayoutContent.lineView?.state =
-                if (bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT
+                if (state == STATE_COLLAPSED || bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT
                 else State.ANCHORED_LINE
 
         if (collapsed && collapsible) bottomSheetLayoutContent.backgroundView?.alpha = 0f

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+<resources>
+    <declare-styleable name="BandyerSDKDesign.SmartGlassDialogMenu">
+        <attr name="bandyer_smartGlassMenuStyle" format="reference" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.SmartGlassDialogMenu" parent="BandyerSDKDesign.FullScreenDialog">
+        <item name="bandyer_smartGlassMenuStyle">@style/BandyerSDKDesign.SmartGlassMenu</item>
+    </style>
+
+    <declare-styleable name="BandyerSDKDesign.SmartGlassMenu">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_pagerIndicatorStyle" format="reference" />
+        <attr name="bandyer_smartGlassMicrophoneStyle" format="reference" />
+        <attr name="bandyer_smartGlassCameraStyle" format="reference" />
+        <attr name="bandyer_smartGlassParticipantsStyle" format="reference" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.SmartGlassDialogMenu.RootLayout">
+        <item name="android:background">?attr/colorSurface</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlassMenu" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlassDialogMenu.RootLayout</item>
+        <item name="bandyer_smartGlassMicrophoneStyle">@style/BandyerSDKDesign.ActionButton.SmartGlass.Microphone</item>
+        <item name="bandyer_smartGlassCameraStyle">@style/BandyerSDKDesign.ActionButton.SmartGlass.Camera</item>
+        <item name="bandyer_smartGlassParticipantsStyle">@style/BandyerSDKDesign.ActionButton.SmartGlass.Participants</item>
+        <item name="bandyer_pagerIndicatorStyle">@style/BandyerSDKDesign.PagerIndicator</item>
+    </style>
+</resources>

@@ -22,29 +22,37 @@ import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.util.Log
+import android.view.MotionEvent
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
+import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.call.dialogs.BandyerSnapshotDialog
 import com.bandyer.sdk_design.filesharing.BandyerFileShareDialog
+import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassActionItemMenu
+import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassMenuLayout
+import com.bandyer.sdk_design.smartglass.call.menu.items.getSmartglassActions
+import com.bandyer.sdk_design.smartglass.call.menu.utils.MotionEventInterceptor
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog.BandyerWhiteboardTextEditorWidgetListener
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 
-
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val tag = "MainAcitivy"
+    }
 
     var mText: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val main = LayoutInflater.from(this).inflate(R.layout.activity_main, null)
-        val viewGroup = window.decorView as ViewGroup
-        viewGroup.addView(main)
+        setContentView(R.layout.activity_main)
 
         setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
-        setActionBarTopMargin()
         initializeListeners()
     }
 
@@ -53,7 +61,11 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.btn_call).setOnClickListener { startActivity(Intent(this, CallActivity::class.java)) }
 
-        findViewById<MaterialButton>(R.id.btn_whiteboard_file).setOnClickListener { startActivity(Intent(this, OtherActivity::class.java)) }
+        findViewById<MaterialButton>(R.id.btn_smartglasses_menu).setOnClickListener { showSmartGlassAction() }
+
+        findViewById<MaterialButton>(R.id.btn_whiteboard).setOnClickListener { WhiteBoardDialog().show(this@MainActivity) }
+
+        findViewById<MaterialButton>(R.id.btn_ringing).setOnClickListener { startActivity(Intent(this, RingingActivity::class.java)) }
 
         findViewById<MaterialButton>(R.id.btn_switch_night_mode).setOnClickListener {
             val isNightTheme = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -90,17 +102,30 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setActionBarTopMargin() {
-        (findViewById<AppBarLayout>(R.id.app_bar_layout).layoutParams as ViewGroup.MarginLayoutParams).topMargin = getStatusBarHeight()
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        return super.dispatchTouchEvent(ev)
     }
 
-    private fun getStatusBarHeight(): Int {
-        var result = 0
-        val resourceId = resources.getIdentifier("status_bar_height", "dimen", "android")
-        if (resourceId > 0) {
-            result = resources.getDimensionPixelSize(resourceId)
-        }
-        return result
-    }
+    private fun showSmartGlassAction(): SmartGlassActionItemMenu = SmartGlassActionItemMenu.show(
+            appCompatActivity = this,
+            items = CallAction.getSmartglassActions(
+                    ctx = this,
+                    micToggled = false,
+                    cameraToggled = false))
+            .apply {
+                selectionListener = object : SmartGlassMenuLayout.OnSmartglassMenuSelectionListener {
+                    override fun onSelected(item: ActionItem) {
+                        Toast.makeText(applicationContext, item::class.java.simpleName, Toast.LENGTH_SHORT).show()
+                        dismiss()
+                        selectionListener = null
+                    }
 
+                    override fun onDismiss() = Unit
+                }
+                motionEventInterceptor = object : MotionEventInterceptor {
+                    override fun onMotionEventIntercepted(event: MotionEvent?) {
+                        Log.d(tag, "$event")
+                    }
+                }
+            }
 }

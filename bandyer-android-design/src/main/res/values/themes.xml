@@ -16,7 +16,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="BandyerSDKDesign.Theme.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="BandyerSDKDesign.Theme.Base.V16" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <item name="fontFamily">@font/bandyer_font</item>
         <item name="android:fontFamily">@font/bandyer_font</item>
@@ -40,9 +40,11 @@
 
         <item name="elevationOverlayEnabled">false</item>
         <item name="toolbarStyle">@style/BandyerSDKDesign.ToolBarStyle</item>
-        <item name="android:statusBarColor" tools:targetApi="lollipop">?attr/colorPrimaryVariant
-        </item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
+        <item name="android:enforceStatusBarContrast" tools:targetApi="q">false</item>
     </style>
+
+    <style name="BandyerSDKDesign.Theme.Base" parent="BandyerSDKDesign.Theme.Base.V16"/>
 
     <style name="BandyerSDKDesign.ToolBarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:textColor">?attr/colorOnPrimary</item>

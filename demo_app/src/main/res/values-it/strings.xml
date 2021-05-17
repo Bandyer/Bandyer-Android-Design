@@ -21,7 +21,8 @@
     <string name="call">Call</string>
     <string name="whiteboard_editor">Text editor lavagna</string>
     <string name="snapshot_preview">Snapshot preview</string>
-    <string name="other">Altro</string>
+    <string name="whiteboard">Lavagna</string>
+    <string name="ringing">Call in entrata</string>
     <string name="live_pointer">Puntatore live</string>
     <string name="night_mode">Modalità notte on/off</string>
     <string name="bluetooth_audio_route">Stati disp. bluetooth</string>
@@ -32,5 +33,6 @@
     <string name="bandyer_start_video_call_description">Avvia videochiamata</string>
     <string name="bandyer_start_audio_upgrade_call_description">Avvia videochiamata con solo audio</string>
     <string name="screen_share_picker">Modalità screen share</string>
+    <string name="smart_glass_menu">Smartglass menu</string>
     <string name="file_share">File share</string>
 </resources>

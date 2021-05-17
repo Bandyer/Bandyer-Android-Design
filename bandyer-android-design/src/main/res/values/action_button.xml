@@ -30,19 +30,28 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ActionButton.RootLayout</item>
     </style>
 
+    <style name="BandyerSDKDesign.ActionButton.SmartGlass" parent="BandyerSDKDesign.ActionButton">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ActionButton.RootLayout.SmartGlass</item>
+    </style>
+
     <style name="BandyerSDKDesign.ActionButton.RootLayout" parent="">
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
         <item name="android:orientation">vertical</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">top|center_horizontal</item>
         <item name="android:clipToPadding">false</item>
         <item name="android:clipChildren">false</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:clickable">false</item>
         <item name="android:paddingTop">@dimen/bandyer_dimen_space20</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.RootLayout.SmartGlass" parent="BandyerSDKDesign.ActionButton.RootLayout">
+        <item name="android:clickable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space0</item>
     </style>
 
     <style name="BandyerSDKDesign.ActionButton.ConfirmButton" parent="BandyerSDKDesign.ActionButton">
@@ -120,6 +129,23 @@
     <style name="BandyerSDKDesign.ActionButton.ScreenShare" parent="BandyerSDKDesign.ActionButton">
         <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.ScreenShare</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.ScreenShare</item>
+    </style>
+
+    <!-- SMARTGLASS CALL ACTION BUTTONS -->
+
+    <style name="BandyerSDKDesign.ActionButton.SmartGlass.Microphone" parent="BandyerSDKDesign.ActionButton.SmartGlass">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.SmartGlass.Microphone</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Microphone</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.SmartGlass.Camera" parent="BandyerSDKDesign.ActionButton.SmartGlass">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.SmartGlass.Camera</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Camera</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.SmartGlass.Participants" parent="BandyerSDKDesign.ActionButton.SmartGlass">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.SmartGlass.Participants</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Participants</item>
     </style>
 
 </resources>

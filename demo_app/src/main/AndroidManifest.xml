@@ -14,7 +14,6 @@
   ~  See the License for the specific language governing permissions and
   ~  limitations under the License.
   -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bandyer.demo_sdk_design">
@@ -26,6 +25,7 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".App"
@@ -36,11 +36,13 @@
         android:supportsRtl="true"
         android:theme="@style/DesignDemoApp">
 
+        <meta-data
+            android:name="com.google.android.glass.TouchEnabledApplication"
+            android:value="true" />
+
+        <activity android:name=".RingingActivity"/>
         <activity
             android:name=".BluetoothAudioRouteActivity"
-            android:theme="@style/BandyerSDKDesign.Theme.Call" />
-        <activity
-            android:name=".OtherActivity"
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
         <activity
             android:name=".CallActivity"
@@ -64,6 +66,7 @@
         <activity
             android:name=".PointerActivity"
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
+
     </application>
 
 </manifest>

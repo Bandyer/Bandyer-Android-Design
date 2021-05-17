@@ -35,7 +35,7 @@ import com.bandyer.sdk_design.extensions.setAllEnabled
  * Class representing a Call Action
  * @constructor
  */
-sealed class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @StyleRes viewStyle: Int = 0) : ActionItem(viewId, viewLayoutRes, viewStyle) {
+open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @StyleRes viewStyle: Int = 0) : ActionItem(viewId, viewLayoutRes, viewStyle) {
 
     /**
      * Instance of Call Actions
@@ -95,7 +95,7 @@ sealed class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @
          * Toggle the action button
          * @param enable true to enable, false otherwise
          */
-        fun toggle(enable: Boolean) {
+        open fun toggle(enable: Boolean) {
             val actionButton = itemView?.findViewById<BandyerActionButton>(viewId) ?: return
             actionButton.isActivated = enable
             toggled = enable
