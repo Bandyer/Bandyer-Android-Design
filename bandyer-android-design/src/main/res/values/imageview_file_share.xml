@@ -3,7 +3,7 @@
     <style name="BandyerSDKDesign.FileShare.OperationType" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:layout_width">@dimen/bandyer_dimen_space10</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space10</item>
-        <item name="android:tint">@color/bandyer_op_type_icon_color</item>
+        <item name="android:tint">?attr/colorOnBackground</item>
         <item name="srcCompat">@drawable/bandyer_op_type_icon</item>
     </style>
 
