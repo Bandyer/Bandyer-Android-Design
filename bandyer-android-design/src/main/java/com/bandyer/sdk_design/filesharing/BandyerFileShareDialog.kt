@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,6 +17,7 @@ import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -44,7 +46,9 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private var filesRecyclerView: RecyclerView? = null
 
-        private var uploadFileFab: ExtendedFloatingActionButton? = null
+        private var uploadFileFab: LinearLayout? = null
+
+        private var uploadFileFabText: MaterialTextView? = null
 
         private val itemAdapter = ItemAdapter<BandyerFileShareItem>()
 
@@ -61,8 +65,10 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             toolbar = binding!!.bandyerToolbar
             filesRecyclerView = binding!!.bandyerRecyclerView
             uploadFileFab = binding!!.bandyerUploadFileFab
+            uploadFileFabText = binding!!.bandyerFileShareFabText
 
             filesRecyclerView?.init()
+            handleFab()
 
             return dialogLayout
         }
@@ -97,6 +103,15 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
             // TODO add listener to item and the button
+        }
+
+        private fun handleFab() {
+            uploadFileFab?.setOnClickListener {
+                if (uploadFileFabText?.visibility == View.VISIBLE)
+                    uploadFileFabText?.visibility = View.GONE
+                else
+                    uploadFileFabText?.visibility = View.VISIBLE
+            }
         }
     }
 }

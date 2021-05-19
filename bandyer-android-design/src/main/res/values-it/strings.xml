@@ -138,7 +138,7 @@
     <string name="bandyer_screenshare_app_only">Schermo app</string>
     <string name="bandyer_screenshare_full_device">Schermo intero</string>
     <!-- FILE SHARE -->
-    <string name="bandyer_fileshare_add">Aggiungi</string>
+    <string name="bandyer_fileshare_add">Carica</string>
     <string name="bandyer_fileshare_add_description">Carica nuovo file</string>
     <string name="bandyer_fileshare_error_message">Upload fallito - Riprova</string>
     <string name="bandyer_fileshare_progress">%1$d%%</string>

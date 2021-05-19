@@ -146,7 +146,7 @@
     <string name="bandyer_screenshare_full_device">Whole device screen</string>
 
     <!-- FILE SHARE -->
-    <string name="bandyer_fileshare_add">Add</string>
+    <string name="bandyer_fileshare_add">Upload</string>
     <string name="bandyer_fileshare_add_description">Upload a new file</string>
     <string name="bandyer_fileshare_error_message">Upload failed - Retry</string>
     <string name="bandyer_fileshare_progress">%1$d %%</string>
