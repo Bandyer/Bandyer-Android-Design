@@ -16,4 +16,10 @@
         <item name="android:adjustViewBounds">true</item>
     </style>
 
+    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space56</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space56</item>
+        <item name="srcCompat">@drawable/ic_bandyer_close</item>
+    </style>
+
 </resources>

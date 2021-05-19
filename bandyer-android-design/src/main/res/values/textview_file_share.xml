@@ -43,4 +43,20 @@
         <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
         <item name="android:textColor">@color/bandyer_color_on_background_80</item>
     </style>
+
+    <style name="BandyerSDKDesign.TextView.Title.EmptyListLayout" parent="BandyerSDKDesign.TextView.Title">
+        <item name="android:text">@string/bandyer_no_file_shared</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space32</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.EmptyListLayout" parent="BandyerSDKDesign.TextView.Subtitle">
+        <item name="android:text">@string/bandyer_click_to_share_file</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_space14</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
 </resources>
