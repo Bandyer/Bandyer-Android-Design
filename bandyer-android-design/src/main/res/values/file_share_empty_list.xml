@@ -11,7 +11,7 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout</item>
         <item name="bandyer_iconStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.EmptyListLayout</item>
-        <item name="bandyer_subtitleStyle">BandyerSDKDesign.TextView.Subtitle.EmptyListLayout</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.EmptyListLayout</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout" parent="">
