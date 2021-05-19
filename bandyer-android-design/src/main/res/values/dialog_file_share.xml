@@ -14,7 +14,7 @@
         <item name="bandyer_fileShareItemStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item</item>
         <item name="bandyer_emptyListLayoutStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout</item>
         <item name="floatingActionButtonStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Fab</item>
-        <item name="bandyer_fabTextStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.FabText</item>
+        <item name="bandyer_fabTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareFabText</item>
         <item name="bandyer_fabWrapperStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.FabWrapper</item>
         <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare</item>
     </style>

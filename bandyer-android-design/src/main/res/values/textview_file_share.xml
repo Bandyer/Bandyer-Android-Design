@@ -62,7 +62,7 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.FabText" parent="">
+    <style name="BandyerSDKDesign.TextView.Subtitle.FileShareFabText" parent="BandyerSDKDesign.TextView.Subtitle">
         <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space20</item>
         <item name="android:text">@string/bandyer_fileshare_add</item>
@@ -70,6 +70,6 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:focusable">false</item>
         <item name="android:clickable">false</item>
-        <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Button</item>
+        <item name="android:letterSpacing">0.0892857143</item>
     </style>
 </resources>
