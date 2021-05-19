@@ -159,5 +159,7 @@
     <string name="bandyer_fileshare_download_descr">Start download</string>
     <string name="bandyer_fileshare_redownload">Re-download</string>
     <string name="bandyer_fileshare_retry">Retry</string>
+    <string name="bandyer_no_file_shared">Still no file shared…</string>
+    <string name="bandyer_click_to_share_file">Click on “+” button to start sharing documents and images</string>
 
 </resources>

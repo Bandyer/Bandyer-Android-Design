@@ -3,12 +3,14 @@
 
     <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.FileShare">
         <attr name="bandyer_fileShareItemStyle" format="reference" />
+        <attr name="bandyer_emptyListLayoutStyle" format="reference" />
         <attr name="extendedFloatingActionButtonStyle"/>
     </declare-styleable>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare" parent="BandyerSDKDesign.BottomSheetDialog">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>
         <item name="bandyer_fileShareItemStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item</item>
+        <item name="bandyer_emptyListLayoutStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout</item>
         <item name="extendedFloatingActionButtonStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.AddFab</item>
         <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare</item>
     </style>
