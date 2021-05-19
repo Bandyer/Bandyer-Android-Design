@@ -17,6 +17,6 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:drawable="@drawable/ic_bandyer_file" app:bandyer_state_file="true"/>
-    <item android:drawable="@drawable/ic_bandyer_media" app:bandyer_state_media="true"/>
-    <item android:drawable="@drawable/ic_bandyer_archive" app:bandyer_state_archive="true"/>
+    <item android:drawable="@drawable/ic_bandyer_image" app:bandyer_state_media="true"/>
+    <item android:drawable="@drawable/ic_bandyer_folder" app:bandyer_state_archive="true"/>
 </selector>

@@ -47,13 +47,14 @@
     <item name="ic_bandyer_whiteboard" type="drawable">@drawable/bandyer_whiteboard_icon</item>
     <item name="ic_bandyer_wired_headset" type="drawable">@drawable/bandyer_wired_headset_icon</item>
     <item name="ic_bandyer_add" type="drawable">@drawable/bandyer_add_icon</item>
-    <item name="ic_bandyer_archive" type="drawable">@drawable/bandyer_archive_icon</item>
+    <item name="ic_bandyer_folder" type="drawable">@drawable/bandyer_folder_icon</item>
     <item name="ic_bandyer_download" type="drawable">@drawable/bandyer_download_icon</item>
     <item name="ic_bandyer_download_user" type="drawable">@drawable/bandyer_download_user_icon</item>
     <item name="ic_bandyer_file" type="drawable">@drawable/bandyer_file_icon</item>
     <item name="ic_bandyer_fileshare_cancel" type="drawable">@drawable/bandyer_fileshare_cancel_icon</item>
-    <item name="ic_bandyer_media" type="drawable">@drawable/bandyer_media_icon</item>
+    <item name="ic_bandyer_image" type="drawable">@drawable/bandyer_image_icon</item>
     <item name="ic_bandyer_retry" type="drawable">@drawable/bandyer_retry_icon</item>
+    <item name="ic_bandyer_check" type="drawable">@drawable/bandyer_check_icon</item>
     <item name="ic_bandyer_upload_user" type="drawable">@drawable/bandyer_upload_user_icon</item>
     <item name="ic_bandyer_glass_mic_off" type="drawable">@drawable/bandyer_glass_mic_off_icon</item>
     <item name="ic_bandyer_glass_mic_on" type="drawable">@drawable/bandyer_glass_mic_on_icon</item>
