@@ -10,8 +10,8 @@
     <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout" parent="">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout</item>
         <item name="bandyer_iconStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Title</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Subtitle</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.EmptyListLayout</item>
+        <item name="bandyer_subtitleStyle">BandyerSDKDesign.TextView.Subtitle.EmptyListLayout</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout" parent="">
@@ -19,20 +19,20 @@
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space50</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon" parent="">
+    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:layout_width">@dimen/bandyer_dimen_space56</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space56</item>
         <item name="srcCompat">@drawable/ic_bandyer_close</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Title" parent="">
+    <style name="BandyerSDKDesign.TextView.Title.EmptyListLayout" parent="BandyerSDKDesign.TextView.Title">
         <item name="android:text">@string/bandyer_no_file_shared</item>
-        <item name="android:textStyle">bold</item>
+        <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/bandyer_dimen_space16</item>
         <item name="android:layout_marginTop">@dimen/bandyer_dimen_space32</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Subtitle" parent="">
+    <style name="BandyerSDKDesign.TextView.Subtitle.EmptyListLayout" parent="BandyerSDKDesign.TextView.Subtitle">
         <item name="android:text">@string/bandyer_click_to_share_file</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/bandyer_dimen_space14</item>
