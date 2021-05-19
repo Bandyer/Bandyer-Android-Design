@@ -11,7 +11,6 @@
     <com.bandyer.sdk_design.filesharing.BandyerFileTypeImageView
         android:id="@+id/bandyer_file_type"
         style="?attr/bandyer_fileTypeStyle"
-        app:layout_constraintBottom_toTopOf="@id/bandyer_file_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/bandyer_file_name"
         app:layout_constraintVertical_chainStyle="packed" />
@@ -19,9 +18,9 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_file_size"
         style="?attr/bandyer_fileSizeStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/bandyer_username"
         app:layout_constraintEnd_toEndOf="@id/bandyer_file_type"
         app:layout_constraintStart_toStartOf="@id/bandyer_file_type"
-        app:layout_constraintTop_toBottomOf="@id/bandyer_file_type"
         tools:text="78 MB" />
 
     <com.bandyer.sdk_design.filesharing.BandyerFileShareActionButton

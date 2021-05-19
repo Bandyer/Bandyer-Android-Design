@@ -16,7 +16,6 @@ import com.bandyer.sdk_design.databinding.BandyerFileShareDialogLayoutBinding
 import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IItem
@@ -99,7 +98,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private fun RecyclerView.init() {
             adapter = fastAdapter
-            itemAdapter.add(BandyerFileShareItem(FileShareData(true, "name", FileType.ARCHIVE, 34L, 60, "Giulio")))
+            itemAdapter.add(BandyerFileShareItem(FileShareData(true, "name", FileType.IMAGE, 340L, 60, "Giulio")))
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
             // TODO add listener to item and the button

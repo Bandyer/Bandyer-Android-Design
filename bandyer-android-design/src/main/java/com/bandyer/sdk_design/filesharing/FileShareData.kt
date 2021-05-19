@@ -16,6 +16,6 @@ data class FileShareData(val isUpload: Boolean,
 
 enum class FileType {
     FILE,
-    MEDIA,
+    IMAGE,
     ARCHIVE
 }

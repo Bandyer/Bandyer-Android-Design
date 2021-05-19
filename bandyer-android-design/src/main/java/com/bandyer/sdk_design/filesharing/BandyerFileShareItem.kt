@@ -28,7 +28,7 @@ class BandyerFileShareItem(var data: FileShareData) : AbstractItem<BandyerFileSh
         val progressText: MaterialTextView = view.findViewById(R.id.bandyer_progress_text)
 
         override fun bindView(item: BandyerFileShareItem, payloads: MutableList<Any>) {
-            fileSize.text = "${item.data.fileSize}"
+            fileSize.text = "${item.data.fileSize} Gb"
             user.text = item.data.sender
             error.text = view.context.resources.getString(R.string.bandyer_fileshare_error_message)
             fileName.text = item.data.fileName
@@ -36,9 +36,10 @@ class BandyerFileShareItem(var data: FileShareData) : AbstractItem<BandyerFileSh
             progressBar.progress = item.data.progress
             fileType.type = when(item.data.fileType) {
                 FileType.FILE -> BandyerFileTypeImageView.Type.FILE
-                FileType.MEDIA -> BandyerFileTypeImageView.Type.MEDIA
+                FileType.IMAGE -> BandyerFileTypeImageView.Type.MEDIA
                 FileType.ARCHIVE -> BandyerFileTypeImageView.Type.ARCHIVE
             }
+            action.type = BandyerFileShareActionButton.Type.RE_DOWNLOAD
             progressText.text =  view.context.resources.getString(R.string.bandyer_fileshare_progress, item.data.progress)
         }
 
