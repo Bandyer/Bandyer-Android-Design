@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BandyerSDKDesign.FileShare.ProgressBar" parent="BandyerSDKDesign.FileShare.ProgressBar.V21">
+        <item name="trackColor">@color/bandyer_color_progressbar_night</item>
+    </style>
+</resources>

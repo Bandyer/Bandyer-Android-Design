@@ -62,4 +62,8 @@
     <!-- background color -->
     <color name="bandyer_color_background">#303030</color>
 
+    <!-- file share -->
+    <color name="bandyer_color_progressbar">#E6E6E6</color>
+    <color name="bandyer_color_progressbar_night">#2D2E2F</color>
+
 </resources>

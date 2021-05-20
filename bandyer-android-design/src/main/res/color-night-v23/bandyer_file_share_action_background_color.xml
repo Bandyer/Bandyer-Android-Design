@@ -21,7 +21,7 @@
 
     <item android:color="@android:color/transparent" app:bandyer_state_cancel="true" />
     <item android:color="@android:color/transparent" app:bandyer_state_download="true" />
-    <item android:color="?attr/colorOnBackground" app:bandyer_state_redownload="true" />
+    <item android:color="@color/bandyer_color_on_background_30" app:bandyer_state_redownload="true" />
     <item android:color="?attr/colorError" app:bandyer_state_retry="true" />
 
 </selector>
