@@ -23,7 +23,6 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
 
-
     override var dialog: FileShareBottomSheetDialog? = null
 
     override val id: String = "bandyerFileSharingDialog"
@@ -49,7 +48,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private var uploadFileFabText: MaterialTextView? = null
 
-        private val itemAdapter = ItemAdapter<BandyerFileShareItem>()
+        private val itemAdapter = ItemAdapter<BandyerFileShareItem<*, *>>()
 
         private val fastAdapter = FastAdapter.with<IItem<*, *>, ItemAdapter<*>>(itemAdapter)
 
@@ -98,7 +97,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private fun RecyclerView.init() {
             adapter = fastAdapter
-            itemAdapter.add(BandyerFileShareItem(FileShareData(true, "name", FileType.IMAGE, 340L, 60, "Giulio")))
+//            itemAdapter.add(OldBandyerFileShareItem(FileShareData(true, "name", FileType.IMAGE, 340L, 60, "Giulio")))
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
             // TODO add listener to item and the button

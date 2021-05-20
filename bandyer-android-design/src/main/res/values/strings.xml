@@ -149,6 +149,8 @@
     <string name="bandyer_fileshare_add">Upload</string>
     <string name="bandyer_fileshare_add_description">Upload a new file</string>
     <string name="bandyer_fileshare_error_message">Upload failed - Retry</string>
+    <string name="bandyer_fileshare_na">N/A</string>
+    <string name="bandyer_fileshare_you_sender">%1$s (You)</string>
     <string name="bandyer_fileshare_progress">%1$d %%</string>
     <string name="bandyer_fileshare_upload">Upload</string>
     <string name="bandyer_fileshare_download">Download</string>
