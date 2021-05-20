@@ -34,4 +34,7 @@
     <string name="smart_glass_menu">Smartglass menu</string>
     <string name="screen_share_picker">Screen share picker</string>
     <string name="file_share">File share</string>
+    <string name="add_upload">Add upload</string>
+    <string name="add_download">Add download</string>
+    <string name="file_share_dialog">File Share Dialog</string
 </resources>
