@@ -27,7 +27,7 @@ class BandyerFileTypeImageView @JvmOverloads constructor(context: Context, attrs
         value ?: return
         contentDescription = when (value) {
             Type.FILE -> resources.getString(R.string.bandyer_fileshare_file)
-            Type.MEDIA -> resources.getString(R.string.bandyer_fileshare_media)
+            Type.IMAGE -> resources.getString(R.string.bandyer_fileshare_media)
             else -> resources.getString(R.string.bandyer_fileshare_archive)
         }
     }
@@ -48,7 +48,7 @@ class BandyerFileTypeImageView @JvmOverloads constructor(context: Context, attrs
         /**
          * m e d i a
          */
-        MEDIA(intArrayOf(R.attr.bandyer_state_media)),
+        IMAGE(intArrayOf(R.attr.bandyer_state_media)),
 
         /**
          * a r c h i v e
