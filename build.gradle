@@ -21,10 +21,11 @@ buildscript {
 
     ext.sdkVersion = 30
     ext.buildToolsVersion = "30.0.2"
-    ext.kotlin_version = '1.4.20'
+    ext.kotlin_version = '1.4.30'
     ext.serialization_version = '0.5.1'
     ext.lifecycle_version = "1.1.1"
     ext.bandyer_common = "1.0.10"
+    ext.bandyer_core_av = "2.3.5"
 
     repositories {
         google()
@@ -45,6 +46,7 @@ buildscript {
         //classpath dependencies to import library project
         classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

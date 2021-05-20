@@ -21,6 +21,7 @@ plugins {
 
 def zoomyVersion = '1.1.0'
 def bandyer_audio_session_version = '2.0.2'
+def kotlin_coroutines = "1.4.3"
 
 android {
     compileSdkVersion 30
@@ -55,6 +56,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation project(path: ':extension_file_share')
 
 
     /*** Test implementation ***/
@@ -70,6 +72,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation "com.ablanco.zoomy:zoomy:$zoomyVersion"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
 
     /***  Leak Canary ***/
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'

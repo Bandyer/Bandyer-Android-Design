@@ -14,4 +14,11 @@
  *  limitations under the License.
  */
 include ':demo_app',
-        ':bandyer-android-design'
+        ':bandyer-android-design',
+        ':communication_center',
+        ':extension_file_share'
+
+project(':communication_center').projectDir = file('../Bandyer-Android-CommunicationCenter/communication_center')
+project(':extension_file_share').projectDir = file('../Bandyer-Android-CommunicationCenter/extension_file_share')
+
+
