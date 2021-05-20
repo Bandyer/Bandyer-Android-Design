@@ -1,6 +1,5 @@
-package com.bandyer.demo_sdk_design
+package com.bandyer.demo_sdk_design.file_share
 
-import com.bandyer.communication_center.file_share.file_sharing_center.UploadState
 import com.bandyer.communication_center.file_share.file_sharing_center.request.DownloadState
 import com.bandyer.communication_center.file_share.file_sharing_center.request.HttpDownloader
 import com.bandyer.communication_center.file_share.file_sharing_center.request.HttpStack
