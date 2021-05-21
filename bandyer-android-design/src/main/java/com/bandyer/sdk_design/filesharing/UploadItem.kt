@@ -4,6 +4,7 @@ import android.text.format.Formatter
 import android.view.View
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.getMimeType
+import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
@@ -33,13 +34,16 @@ class UploadItem(val state: UploadState): BandyerFileShareItem<UploadItem, Uploa
         override fun bindView(item: UploadItem, payloads: MutableList<Any>) {
             val bytesFormatted = Formatter.formatShortFileSize(itemView.context, item.state.totalBytes)
             fileSize.text = if(bytesFormatted == "") itemView.context.resources.getString(R.string.bandyer_fileshare_na) else bytesFormatted
-            user.text = itemView.context.resources.getString(R.string.bandyer_fileshare_you_sender, item.state.sender)
+            user.text = itemView.context.resources.getString(R.string.bandyer_fileshare_you)
             error.text = itemView.context.resources.getString(R.string.bandyer_fileshare_error_message)
             fileName.text = item.state.file.name
             operation.type = BandyerFileShareOpTypeImageView.Type.UPLOAD
 
             when(item.state) {
-                is UploadState.Pending -> action.type = BandyerFileShareActionButton.Type.CANCEL
+                is UploadState.Pending -> {
+                    action.type = BandyerFileShareActionButton.Type.CANCEL
+                    progressText.text = item.state.startTime.parseToHHmm()
+                }
                 is UploadState.OnProgress -> {
                     val progress = (item.state.uploadedBytes * 100f / item.state.totalBytes).toInt()
                     progressBar.progress = progress
@@ -48,14 +52,16 @@ class UploadItem(val state: UploadState): BandyerFileShareItem<UploadItem, Uploa
                 }
                 is UploadState.Success -> {
                     action.type = BandyerFileShareActionButton.Type.RE_DOWNLOAD
+                    progressText.text = item.state.startTime.parseToHHmm()
                 }
                 is UploadState.Error -> {
                     error.visibility = View.VISIBLE
                     action.type = BandyerFileShareActionButton.Type.RETRY
+                    progressText.text = itemView.context.resources.getString(R.string.bandyer_fileshare_progress, 0)
                 }
             }
 
-            val mimeType = item.state.file.getMimeType()
+            val mimeType = item.state.file.toString().getMimeType()
             fileType.type = when(mimeType) {
                 "image/gif", "image/vnd.microsoft.icon", "image/jpeg", "image/png", "image/svg+xml", "image/tiff", "image/webp" -> BandyerFileTypeImageView.Type.IMAGE
                 "application/zip", "application/x-7z-compressed", "application/x-bzip", "application/x-bzip2", "application/gzip", "application/vnd.rar"-> BandyerFileTypeImageView.Type.ARCHIVE
