@@ -2,7 +2,9 @@ package com.bandyer.sdk_design.filesharing
 
 import android.view.View
 import com.bandyer.sdk_design.R
+import com.bandyer.sdk_design.extensions.getFileNameFromUrl
 import com.bandyer.sdk_design.extensions.getMimeType
+import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
@@ -33,11 +35,14 @@ class DownloadItem(val state: DownloadState): BandyerFileShareItem<DownloadItem,
             fileSize.text = itemView.context.resources.getString(R.string.bandyer_fileshare_na)
             user.text = item.state.sender
             error.text = itemView.context.resources.getString(R.string.bandyer_fileshare_error_message)
-            fileName.text = item.state.file.name
+            fileName.text = item.state.endpoint.getFileNameFromUrl()
             operation.type = BandyerFileShareOpTypeImageView.Type.DOWNLOAD
 
             when(item.state) {
-                is DownloadState.Pending -> action.type = BandyerFileShareActionButton.Type.DOWNLOAD
+                is DownloadState.Pending -> {
+                    action.type = BandyerFileShareActionButton.Type.DOWNLOAD
+                    progressText.text = item.state.startTime.parseToHHmm()
+                }
                 is DownloadState.OnProgress -> {
                     val progress = (item.state.downloadBytes * 100f / item.state.totalBytes).toInt()
                     progressBar.progress = progress
@@ -46,6 +51,7 @@ class DownloadItem(val state: DownloadState): BandyerFileShareItem<DownloadItem,
                 }
                 is DownloadState.Success -> {
                     action.type = BandyerFileShareActionButton.Type.RE_DOWNLOAD
+                    progressText.text = item.state.startTime.parseToHHmm()
                 }
                 is DownloadState.Error -> {
                     error.visibility = View.VISIBLE
