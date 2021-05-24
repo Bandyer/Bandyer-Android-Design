@@ -1,7 +1,10 @@
 package com.bandyer.sdk_design.extensions
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 fun Long.parseToHHmm(): String {
-    val mm = (this / (1000 * 60) % 60)
-    val hh = (this / (1000 * 60 * 60) % 24)
-    return "$hh:$mm"
+    val formatter = SimpleDateFormat("HH:mm", Locale.getDefault())
+    formatter.timeZone = TimeZone.getDefault()
+    return formatter.format(this)
 }

@@ -97,7 +97,12 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private fun RecyclerView.init() {
             adapter = fastAdapter
-//            itemAdapter.add(OldBandyerFileShareItem(FileShareData(true, "name", FileType.IMAGE, 340L, 60, "Giulio")))
+            val time = Date().time
+
+            itemAdapter.add(UploadItem(UploadState.OnProgress("", time, 1300000L, File("Pierluigi_Bersani.pdf"), 40000L)))
+            itemAdapter.add(UploadItem(UploadState.Pending("", time, 130000000L, File("Mario_Draghi.pdf"))))
+            itemAdapter.add(UploadItem(UploadState.Error("", time, 130000000000000000L, File("Piersilvio_Berlusconi.pdf"))))
+            itemAdapter.add(UploadItem(UploadState.Success("", time, 1300000000L, File("Mario_Draghi.pdf"))))
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
             // TODO add listener to item and the button
