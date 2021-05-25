@@ -54,6 +54,7 @@ class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): Bandy
                 }
                 is UploadData.Success -> {
                     action.type = BandyerFileShareActionButton.Type.RE_DOWNLOAD
+                    progressText.text = itemView.context.resources.getString(R.string.bandyer_fileshare_progress, 100)
                     progressText.text = item.data.startTime.parseToHHmm()
                 }
                 is UploadData.Error -> {
