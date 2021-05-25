@@ -24,7 +24,9 @@
         tools:listitem="@layout/bandyer_file_share_item"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <include layout="@layout/bandyer_file_share_empty_list_layout"/>
+    <include
+        android:id="@+id/bandyer_empty_list_layout"
+        layout="@layout/bandyer_file_share_empty_list_layout"/>
 
     <LinearLayout
         android:id="@+id/bandyer_upload_file_fab"

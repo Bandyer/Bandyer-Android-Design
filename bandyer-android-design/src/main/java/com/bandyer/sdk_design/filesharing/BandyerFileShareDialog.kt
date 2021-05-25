@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.constraintlayout.solver.state.State
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +23,11 @@ import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil
+import com.mikepenz.fastadapter.listeners.EventHook
+import com.mikepenz.fastadapter.listeners.OnClickListener
+import java.util.concurrent.ConcurrentHashMap
+
 
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
 
@@ -36,6 +44,8 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
     class FileShareBottomSheetDialog : BandyerBottomSheetDialog() {
 
+        private val viewModel: FileShareViewModel by activityViewModels()
+
         private var binding: BandyerFileShareDialogLayoutBinding? = null
 
         private var dialogLayout: CoordinatorLayout? = null
@@ -43,6 +53,8 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         private var toolbar: MaterialToolbar? = null
 
         private var filesRecyclerView: RecyclerView? = null
+
+        private var emptyListLayout: ConstraintLayout? = null
 
         private var uploadFileFab: LinearLayout? = null
 
@@ -64,9 +76,9 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             filesRecyclerView = binding!!.bandyerRecyclerView
             uploadFileFab = binding!!.bandyerUploadFileFab
             uploadFileFabText = binding!!.bandyerFileShareFabText
+            emptyListLayout = binding!!.bandyerEmptyListLayout.root
 
             filesRecyclerView?.init()
-            handleFab()
 
             return dialogLayout
         }
@@ -97,24 +109,34 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private fun RecyclerView.init() {
             adapter = fastAdapter
-            val time = Date().time
-
-            itemAdapter.add(UploadItem(UploadState.OnProgress("", time, 1300000L, File("Pierluigi_Bersani.pdf"), 40000L)))
-            itemAdapter.add(UploadItem(UploadState.Pending("", time, 130000000L, File("Mario_Draghi.pdf"))))
-            itemAdapter.add(UploadItem(UploadState.Error("", time, 130000000000000000L, File("Piersilvio_Berlusconi.pdf"))))
-            itemAdapter.add(UploadItem(UploadState.Success("", time, 1300000000L, File("Mario_Draghi.pdf"))))
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
-            // TODO add listener to item and the button
+
+            fastAdapter.withEventHook(UploadItem.UploadItemClickEvent() as EventHook<IItem<*, *>>)
+            fastAdapter.withEventHook(DownloadItem.DownloadItemClickEvent() as EventHook<IItem<*, *>>)
+            fastAdapter.withEventHook(DownloadAvailableItem.DownloadAvailableItemClickEvent() as EventHook<IItem<*, *>>)
+            fastAdapter.withSelectable(true)
+            // TODO add listener behaviour
+            fastAdapter.withOnClickListener(OnClickListener<BandyerFileShareItem<*,*>> { v, adapter, item, position -> true } as OnClickListener<IItem<*, *>>)
         }
 
-        private fun handleFab() {
-            uploadFileFab?.setOnClickListener {
-                if (uploadFileFabText?.visibility == View.VISIBLE)
-                    uploadFileFabText?.visibility = View.GONE
-                else
-                    uploadFileFabText?.visibility = View.VISIBLE
+        fun setFabOnClickCallback(callback: () -> Unit) = uploadFileFab?.setOnClickListener { callback.invoke() }
+
+//        fun addDownloadAvailable(data: DownloadAvailableData) = itemAdapter.add(0, DownloadAvailableItem(data, viewModel))
+
+        fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) {
+            uploadFileFabText?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
+            emptyListLayout?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
+            val items: List<BandyerFileShareItem<*,*>> = data.values.map {
+                when(it) {
+                    is UploadData -> UploadItem(it, viewModel)
+                    is DownloadData -> DownloadItem(it, viewModel)
+                    else -> DownloadAvailableItem(it as DownloadAvailableData, viewModel)
+                }
             }
+            val sortedItems = items.toMutableList().apply { sortByDescending { item -> item.startTime } }
+            val diff = FastAdapterDiffUtil.calculateDiff(itemAdapter, sortedItems, true)
+            FastAdapterDiffUtil.set(itemAdapter, diff)
         }
     }
 }
