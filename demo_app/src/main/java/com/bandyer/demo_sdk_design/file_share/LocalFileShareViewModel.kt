@@ -1,17 +1,20 @@
 package com.bandyer.demo_sdk_design.file_share
 
-import com.bandyer.sdk_design.filesharing.FileShareItemData
+import com.bandyer.communication_center.file_share.file_sharing_center.UploadState
+import com.bandyer.communication_center.file_share.file_sharing_center.request.DownloadState
 import com.bandyer.sdk_design.filesharing.FileShareViewModel
+import kotlinx.coroutines.flow.SharedFlow
 import java.io.File
-import java.util.concurrent.ConcurrentHashMap
 
 class LocalFileShareViewModel: FileShareViewModel() {
-
-    override var itemsData: ConcurrentHashMap<String, FileShareItemData> = ConcurrentHashMap()
 
     private val uploader =  LocalUploadManager.newInstance()
 
     private val downloader = LocalDownloadManager.newInstance()
+
+    val uploadEvents: SharedFlow<UploadState> = uploader.events
+
+    val downloadEvents: SharedFlow<DownloadState> = downloader.events
 
     override fun upload(uploadId: String?, file: File, keepFileOnSuccess: Boolean) =
         if(uploadId == null) uploader.upload(file = file, keepFileOnSuccess = keepFileOnSuccess)
