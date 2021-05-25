@@ -2,16 +2,16 @@ package com.bandyer.sdk_design.filesharing
 
 import java.io.File
 
-data class DownloadAvailable(
+data class DownloadAvailableData(
     val downloadId: String,
     val sender: String,
     val endpoint: String,
     val file: File,
     val startTime: Long
-) {
+): FileShareItemData {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is DownloadAvailable) return false
+        if (other !is DownloadAvailableData) return false
 
         if (downloadId != other.downloadId) return false
         if (sender != other.sender) return false

@@ -2,8 +2,8 @@ package com.bandyer.sdk_design.filesharing
 
 import java.io.File
 
-sealed class UploadState(val uploadId: String, val startTime: Long, val totalBytes: Long, val file: File) {
-    class Pending(uploadId: String, startTime: Long, totalBytes: Long, file: File) : UploadState(uploadId, startTime, totalBytes, file) {
+sealed class UploadData(val uploadId: String, val startTime: Long, val totalBytes: Long, val file: File): FileShareItemData {
+    class Pending(uploadId: String, startTime: Long, totalBytes: Long, file: File) : UploadData(uploadId, startTime, totalBytes, file) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is Pending) return false
@@ -14,7 +14,7 @@ sealed class UploadState(val uploadId: String, val startTime: Long, val totalByt
         override fun hashCode(): Int = super.hashCode() + this::class.java.simpleName.hashCode()
     }
 
-    class Success(uploadId: String, startTime: Long, totalBytes: Long, file: File) : UploadState(uploadId, startTime, totalBytes, file) {
+    class Success(uploadId: String, startTime: Long, totalBytes: Long, file: File) : UploadData(uploadId, startTime, totalBytes, file) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is Success) return false
@@ -25,7 +25,7 @@ sealed class UploadState(val uploadId: String, val startTime: Long, val totalByt
         override fun hashCode(): Int = super.hashCode() + this::class.java.simpleName.hashCode()
     }
 
-    class Error(uploadId: String, startTime: Long, totalBytes: Long, file: File) : UploadState(uploadId, startTime, totalBytes, file) {
+    class Error(uploadId: String, startTime: Long, totalBytes: Long, file: File) : UploadData(uploadId, startTime, totalBytes, file) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is Error) return false
@@ -36,7 +36,7 @@ sealed class UploadState(val uploadId: String, val startTime: Long, val totalByt
         override fun hashCode(): Int = super.hashCode() + this::class.java.simpleName.hashCode()
     }
 
-    class OnProgress(uploadId: String, startTime: Long, totalBytes: Long, file: File, val uploadedBytes: Long) : UploadState(uploadId, startTime, totalBytes, file) {
+    class OnProgress(uploadId: String, startTime: Long, totalBytes: Long, file: File, val uploadedBytes: Long) : UploadData(uploadId, startTime, totalBytes, file) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is OnProgress) return false
@@ -52,7 +52,7 @@ sealed class UploadState(val uploadId: String, val startTime: Long, val totalByt
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other !is UploadState) return false
+        if (other !is UploadData) return false
 
         if (uploadId != other.uploadId) return false
         if (startTime != other.startTime) return false
