@@ -1,6 +1,7 @@
 package com.bandyer.sdk_design.filesharing
 
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.getFileNameFromUrl
 import com.bandyer.sdk_design.extensions.getMimeType
@@ -8,8 +9,9 @@ import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.listeners.ClickEventHook
 
-class DownloadAvailableItem(var data: DownloadAvailable): BandyerFileShareItem<DownloadAvailableItem, DownloadAvailableItem.ViewHolder>(data.startTime) {
+class DownloadAvailableItem(var data: DownloadAvailableData, val viewModel: FileShareViewModel): BandyerFileShareItem<DownloadAvailableItem, DownloadAvailableItem.ViewHolder>(data.startTime, data.file) {
 
     override fun getIdentifier(): Long = data.hashCode().toLong()
 
@@ -62,19 +64,19 @@ class DownloadAvailableItem(var data: DownloadAvailable): BandyerFileShareItem<D
         }
     }
 
-//    class DownloadAvailableItemClickEvent: ClickEventHook<DownloadAvailableItem>() {
-//        override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
-//            //return the views on which you want to bind this event
-//            return if (viewHolder is ViewHolder) {
-//                viewHolder.button
-//            } else {
-//                null
-//            }
-//        }
-//
-//        override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<DownloadAvailableItem>, item: DownloadAvailableItem) {
-//            item.fsm.download(item.data.url, item.data.file, item.data.downloadId)
-//        }
-//    }
+    class DownloadAvailableItemClickEvent: ClickEventHook<DownloadAvailableItem>() {
+        override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
+            //return the views on which you want to bind this event
+            return if (viewHolder is ViewHolder) {
+                viewHolder.action
+            } else {
+                null
+            }
+        }
+
+        override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<DownloadAvailableItem>, item: DownloadAvailableItem) {
+            item.viewModel.download(item.data.downloadId, item.data.endpoint, item.data.file)
+        }
+    }
 
 }
