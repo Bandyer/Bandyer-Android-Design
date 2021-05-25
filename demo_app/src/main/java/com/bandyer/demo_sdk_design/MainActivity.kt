@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.btn_bluetooth_audioroute).setOnClickListener { startActivity(Intent(this, BluetoothAudioRouteActivity::class.java)) }
 
         findViewById<MaterialButton>(R.id.btn_file_share).setOnClickListener {
-            BandyerFileShareDialog().show(this@MainActivity)
+            startActivity(Intent(this, FileShareActivity::class.java))
         }
     }
 

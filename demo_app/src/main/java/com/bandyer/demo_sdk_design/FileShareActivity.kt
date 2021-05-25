@@ -2,17 +2,14 @@ package com.bandyer.demo_sdk_design
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.bandyer.communication_center.file_share.file_sharing_center.FileSharingConfig
-import com.bandyer.demo_sdk_design.file_share.FileShareViewModel
-import com.bandyer.demo_sdk_design.file_share.MockFileSharingManager
+import androidx.activity.viewModels
+import com.bandyer.demo_sdk_design.file_share.LocalFileShareViewModel
 import com.bandyer.sdk_design.filesharing.BandyerFileShareDialog
 import com.google.android.material.button.MaterialButton
 
 class FileShareActivity : AppCompatActivity() {
 
-//    private var adapterItems: ConcurrentHashMap<String, CustomAbstractItem<*, *>> = ConcurrentHashMap()
-    private val fsm = MockFileSharingManager.newInstance(FileSharingConfig(""))
-
+    val viewModel: LocalFileShareViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
