@@ -8,11 +8,11 @@ abstract class FileShareViewModel : ViewModel() {
 
     abstract var itemsData: ConcurrentHashMap<String, FileShareItemData>
 
-    abstract fun upload(uploadId: String, file: File, keepFileOnSuccess: Boolean = false)
+    abstract fun upload(uploadId: String? = null, file: File, keepFileOnSuccess: Boolean = false): String
 
     abstract fun cancelUpload(uploadId: String)
 
-    abstract fun download(downloadId: String, endpoint: String, file: File)
+    abstract fun download(downloadId: String? = null, endpoint: String, file: File): String
 
     abstract fun cancelDownload(downloadId: String)
 }
