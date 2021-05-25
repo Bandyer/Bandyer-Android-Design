@@ -1,5 +1,6 @@
 package com.bandyer.sdk_design.filesharing
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,6 @@ import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +27,6 @@ import com.mikepenz.fastadapter.listeners.EventHook
 import com.mikepenz.fastadapter.listeners.OnClickListener
 import java.util.concurrent.ConcurrentHashMap
 
-
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
 
     override var dialog: FileShareBottomSheetDialog? = null
@@ -37,13 +36,24 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
     override fun show(activity: androidx.fragment.app.FragmentActivity) {
         if (dialog?.isVisible == true || dialog?.isAdded == true) return
         if (dialog == null) dialog = FileShareBottomSheetDialog()
+
         dialog!!.show(activity.supportFragmentManager, id)
         activity.supportFragmentManager.executePendingTransactions()
     }
 
-    class FileShareBottomSheetDialog : BandyerBottomSheetDialog() {
+    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel) {
+        if (dialog?.isVisible == true || dialog?.isAdded == true) return
+        if (dialog == null) dialog = FileShareBottomSheetDialog(viewModel)
 
-        private val viewModel: FileShareViewModel by activityViewModels()
+        dialog!!.show(activity.supportFragmentManager, id)
+        activity.supportFragmentManager.executePendingTransactions()
+    }
+
+    fun setFabOnClickCallback(callback: () -> Unit) = dialog?.setFabOnClickCallback(callback)
+
+    fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) = dialog?.updateRecyclerViewItems(data)
+
+    class FileShareBottomSheetDialog(val viewModel: FileShareViewModel? = null) : BandyerBottomSheetDialog() {
 
         private var binding: BandyerFileShareDialogLayoutBinding? = null
 
@@ -106,10 +116,16 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         override fun onExpanded() = Unit
 
+        override fun onDismiss(dialog: DialogInterface) {
+            super.onDismiss(dialog)
+            filesRecyclerView = null
+        }
+
         private fun RecyclerView.init() {
             adapter = fastAdapter
             layoutManager = LinearLayoutManager(requireContext())
             addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
+            itemAnimator = null
 
             fastAdapter.withEventHook(UploadItem.UploadItemClickEvent() as EventHook<IItem<*, *>>)
             fastAdapter.withEventHook(DownloadItem.DownloadItemClickEvent() as EventHook<IItem<*, *>>)
@@ -121,16 +137,16 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         fun setFabOnClickCallback(callback: () -> Unit) = uploadFileFab?.setOnClickListener { callback.invoke() }
 
-//        fun addDownloadAvailable(data: DownloadAvailableData) = itemAdapter.add(0, DownloadAvailableItem(data, viewModel))
+//      fun addDownloadAvailable(data: DownloadAvailableData) = itemAdapter.add(0, DownloadAvailableItem(data, viewModel))
 
         fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) {
             uploadFileFabText?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
             emptyListLayout?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
             val items: List<BandyerFileShareItem<*,*>> = data.values.map {
                 when(it) {
-                    is UploadData -> UploadItem(it, viewModel)
-                    is DownloadData -> DownloadItem(it, viewModel)
-                    else -> DownloadAvailableItem(it as DownloadAvailableData, viewModel)
+                    is UploadData -> UploadItem(it, viewModel!!)
+                    is DownloadData -> DownloadItem(it, viewModel!!)
+                    else -> DownloadAvailableItem(it as DownloadAvailableData, viewModel!!)
                 }
             }
             val sortedItems = items.toMutableList().apply { sortByDescending { item -> item.startTime } }
