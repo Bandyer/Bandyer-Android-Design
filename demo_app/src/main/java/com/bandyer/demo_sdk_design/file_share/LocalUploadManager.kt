@@ -1,9 +1,9 @@
 package com.bandyer.demo_sdk_design.file_share
 
+import com.bandyer.communication_center.file_share.file_sharing_center.FileSharingConfig
 import com.bandyer.communication_center.file_share.file_sharing_center.UploadState
-import com.bandyer.communication_center.file_share.file_sharing_center.networking.models.AmazonTransferPolicy
-import com.bandyer.communication_center.file_share.file_sharing_center.request.AmazonUploader
 import com.bandyer.communication_center.file_share.file_sharing_center.request.HttpStack
+import com.bandyer.communication_center.file_share.file_sharing_center.request.HttpUploader
 import com.bandyer.communication_center.file_share.file_sharing_center.request.invokeOnCancelled
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -13,7 +13,11 @@ import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-class MockUploadManager(override val httpStack: HttpStack, override val scope: CoroutineScope): AmazonUploader {
+class LocalUploadManager(override val httpStack: HttpStack, override val scope: CoroutineScope): HttpUploader {
+
+    companion object {
+        fun newInstance(config: FileSharingConfig = FileSharingConfig()): HttpUploader = LocalUploadManager(config.httpStack, config.ioScope)
+    }
 
     private val jobs: ConcurrentHashMap<String, Job> = ConcurrentHashMap()
 
@@ -23,7 +27,6 @@ class MockUploadManager(override val httpStack: HttpStack, override val scope: C
 
     override fun upload(
         uploadId: String,
-        policy: AmazonTransferPolicy,
         file: File,
         keepFileOnSuccess: Boolean
     ): String {

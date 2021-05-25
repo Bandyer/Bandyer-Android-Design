@@ -1,5 +1,6 @@
 package com.bandyer.demo_sdk_design.file_share
 
+import com.bandyer.communication_center.file_share.file_sharing_center.FileSharingConfig
 import com.bandyer.communication_center.file_share.file_sharing_center.request.DownloadState
 import com.bandyer.communication_center.file_share.file_sharing_center.request.HttpDownloader
 import com.bandyer.communication_center.file_share.file_sharing_center.request.HttpStack
@@ -12,7 +13,11 @@ import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-class MockDownloadManager(override val httpStack: HttpStack, override val scope: CoroutineScope): HttpDownloader {
+class LocalDownloadManager(override val httpStack: HttpStack, override val scope: CoroutineScope): HttpDownloader {
+
+    companion object {
+        fun newInstance(config: FileSharingConfig = FileSharingConfig()): HttpDownloader = LocalDownloadManager(config.httpStack, config.ioScope)
+    }
 
     private val jobs: ConcurrentHashMap<String, Job> = ConcurrentHashMap()
 
