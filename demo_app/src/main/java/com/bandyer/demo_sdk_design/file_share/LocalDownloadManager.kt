@@ -13,7 +13,7 @@ import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-class LocalDownloadManager(override val httpStack: HttpStack, override val scope: CoroutineScope): HttpDownloader {
+class LocalDownloadManager private constructor(override val httpStack: HttpStack, override val scope: CoroutineScope): HttpDownloader {
 
     companion object {
         fun newInstance(config: FileSharingConfig = FileSharingConfig()): HttpDownloader = LocalDownloadManager(config.httpStack, config.ioScope)

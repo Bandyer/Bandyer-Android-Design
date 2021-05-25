@@ -13,7 +13,7 @@ import java.io.File
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-class LocalUploadManager(override val httpStack: HttpStack, override val scope: CoroutineScope): HttpUploader {
+class LocalUploadManager private constructor(override val httpStack: HttpStack, override val scope: CoroutineScope): HttpUploader {
 
     companion object {
         fun newInstance(config: FileSharingConfig = FileSharingConfig()): HttpUploader = LocalUploadManager(config.httpStack, config.ioScope)
