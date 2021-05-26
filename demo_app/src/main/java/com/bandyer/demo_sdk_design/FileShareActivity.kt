@@ -15,11 +15,11 @@ import java.util.concurrent.ConcurrentHashMap
 
 class FileShareActivity : AppCompatActivity() {
 
-    val viewModel: LocalFileShareViewModel by viewModels()
+    private val viewModel: LocalFileShareViewModel by viewModels()
 
-    val itemsData: ConcurrentHashMap<String, FileShareItemData> = ConcurrentHashMap()
+    private val itemsData: ConcurrentHashMap<String, FileShareItemData> = ConcurrentHashMap()
 
-    var fileShareDialog: BandyerFileShareDialog? = null
+    private var fileShareDialog: BandyerFileShareDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +38,7 @@ class FileShareActivity : AppCompatActivity() {
                     is UploadState.Error -> itemsData[it.uploadId] = UploadData.Error(it.uploadId, it.startTime, it.totalBytes, it.file)
                     is UploadState.Cancelled -> itemsData.remove(it.uploadId)
                 }
-                fileShareDialog?.updateRecyclerViewItems(itemsData)
+                if(fileShareDialog?.isVisible == true) fileShareDialog?.updateRecyclerViewItems(itemsData)
             }
         }
 
@@ -51,7 +51,7 @@ class FileShareActivity : AppCompatActivity() {
                    is DownloadState.Error -> itemsData[it.downloadId] = DownloadData.Error(it.downloadId, it.endpoint, it.file, it.startTime, it.totalBytes, it.throwable, "John Smith")
                    is DownloadState.Cancelled -> itemsData.remove(it.downloadId)
                }
-               fileShareDialog?.updateRecyclerViewItems(itemsData)
+               if(fileShareDialog?.isVisible == true) fileShareDialog?.updateRecyclerViewItems(itemsData)
            }
         }
     }
@@ -59,6 +59,11 @@ class FileShareActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         fileShareDialog?.dismiss()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        fileShareDialog = null
     }
 
     private fun initListeners() {
@@ -71,7 +76,7 @@ class FileShareActivity : AppCompatActivity() {
         }
 
         findViewById<MaterialButton>(R.id.btn_file_share).setOnClickListener {
-            fileShareDialog?.show(this@FileShareActivity, viewModel)
+            fileShareDialog?.show(this@FileShareActivity, viewModel, itemsData)
         }
     }
 }
