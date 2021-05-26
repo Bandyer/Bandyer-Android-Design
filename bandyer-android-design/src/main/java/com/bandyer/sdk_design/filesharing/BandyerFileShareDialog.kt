@@ -41,9 +41,9 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         activity.supportFragmentManager.executePendingTransactions()
     }
 
-    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel) {
+    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel, itemsData: ConcurrentHashMap<String, FileShareItemData>) {
         if (dialog?.isVisible == true || dialog?.isAdded == true) return
-        if (dialog == null) dialog = FileShareBottomSheetDialog(viewModel)
+        if (dialog == null) dialog = FileShareBottomSheetDialog(viewModel, itemsData)
 
         dialog!!.show(activity.supportFragmentManager, id)
         activity.supportFragmentManager.executePendingTransactions()
@@ -53,7 +53,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
     fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) = dialog?.updateRecyclerViewItems(data)
 
-    class FileShareBottomSheetDialog(val viewModel: FileShareViewModel? = null) : BandyerBottomSheetDialog() {
+    class FileShareBottomSheetDialog(val viewModel: FileShareViewModel? = null, val itemsData: ConcurrentHashMap<String, FileShareItemData>? = null) : BandyerBottomSheetDialog() {
 
         private var binding: BandyerFileShareDialogLayoutBinding? = null
 
@@ -69,9 +69,9 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private var uploadFileFabText: MaterialTextView? = null
 
-        private val itemAdapter = ItemAdapter<BandyerFileShareItem<*, *>>()
+        private var itemAdapter: ItemAdapter<BandyerFileShareItem<*, *>>? = null
 
-        private val fastAdapter = FastAdapter.with<IItem<*, *>, ItemAdapter<*>>(itemAdapter)
+        private var fastAdapter: FastAdapter<IItem<*, *>>? = null
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -87,7 +87,10 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             uploadFileFabText = binding!!.bandyerFileShareFabText
             emptyListLayout = binding!!.bandyerEmptyListLayout.root
 
-            filesRecyclerView?.init()
+            itemAdapter = ItemAdapter<BandyerFileShareItem<*, *>>()
+            fastAdapter = FastAdapter.with<IItem<*, *>, ItemAdapter<*>>(itemAdapter)
+
+            initRecyclerView(filesRecyclerView!!)
 
             return dialogLayout
         }
@@ -106,6 +109,19 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             super.onStart()
         }
 
+        override fun onDismiss(dialog: DialogInterface) {
+            super.onDismiss(dialog)
+            binding = null
+            dialogLayout = null
+            toolbar = null
+            filesRecyclerView = null
+            uploadFileFab = null
+            uploadFileFabText = null
+            emptyListLayout = null
+            itemAdapter = null
+            fastAdapter = null
+        }
+
         override fun onCollapsed() = Unit
 
         override fun onDialogWillShow() = Unit
@@ -116,23 +132,20 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         override fun onExpanded() = Unit
 
-        override fun onDismiss(dialog: DialogInterface) {
-            super.onDismiss(dialog)
-            filesRecyclerView = null
-        }
+        private fun initRecyclerView(rv: RecyclerView) {
+            rv.adapter = fastAdapter
+            rv.layoutManager = LinearLayoutManager(requireContext())
+            rv.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
+            rv.itemAnimator = null
 
-        private fun RecyclerView.init() {
-            adapter = fastAdapter
-            layoutManager = LinearLayoutManager(requireContext())
-            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
-            itemAnimator = null
-
-            fastAdapter.withEventHook(UploadItem.UploadItemClickEvent() as EventHook<IItem<*, *>>)
-            fastAdapter.withEventHook(DownloadItem.DownloadItemClickEvent() as EventHook<IItem<*, *>>)
-            fastAdapter.withEventHook(DownloadAvailableItem.DownloadAvailableItemClickEvent() as EventHook<IItem<*, *>>)
-            fastAdapter.withSelectable(true)
+            fastAdapter!!.withEventHook(UploadItem.UploadItemClickEvent() as EventHook<IItem<*, *>>)
+            fastAdapter!!.withEventHook(DownloadItem.DownloadItemClickEvent() as EventHook<IItem<*, *>>)
+            fastAdapter!!.withEventHook(DownloadAvailableItem.DownloadAvailableItemClickEvent() as EventHook<IItem<*, *>>)
+            fastAdapter!!.withSelectable(true)
             // TODO add listener behaviour
-            fastAdapter.withOnClickListener(OnClickListener<BandyerFileShareItem<*,*>> { v, adapter, item, position -> true } as OnClickListener<IItem<*, *>>)
+            fastAdapter!!.withOnClickListener(OnClickListener<BandyerFileShareItem<*,*>> { v, adapter, item, position -> true } as OnClickListener<IItem<*, *>>)
+
+            updateRecyclerViewItems(itemsData!!)
         }
 
         fun setFabOnClickCallback(callback: () -> Unit) = uploadFileFab?.setOnClickListener { callback.invoke() }
