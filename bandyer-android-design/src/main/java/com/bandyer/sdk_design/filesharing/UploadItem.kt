@@ -4,6 +4,7 @@ import android.text.format.Formatter
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.R
+import com.bandyer.sdk_design.extensions.getFileName
 import com.bandyer.sdk_design.extensions.getMimeType
 import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -11,7 +12,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 
-class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): BandyerFileShareItem<UploadItem, UploadItem.ViewHolder>(data.startTime, data.file) {
+class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): BandyerFileShareItem<UploadItem, UploadItem.ViewHolder>(data.startTime, data.uri) {
 
     override fun getIdentifier(): Long = data.hashCode().toLong()
 
@@ -38,7 +39,7 @@ class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): Bandy
             fileSize.text = if(bytesFormatted == "") itemView.context.resources.getString(R.string.bandyer_fileshare_na) else bytesFormatted
             user.text = itemView.context.resources.getString(R.string.bandyer_fileshare_you)
             error.text = itemView.context.resources.getString(R.string.bandyer_fileshare_error_message)
-            fileName.text = item.data.file.name
+            fileName.text = item.data.uri.getFileName(itemView.context)
             operation.type = BandyerFileShareOpTypeImageView.Type.UPLOAD
 
             when(item.data) {
@@ -64,7 +65,7 @@ class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): Bandy
                 }
             }
 
-            val mimeType = item.data.file.toString().getMimeType()
+            val mimeType = item.data.uri.getMimeType(itemView.context)
             fileType.type = when(mimeType) {
                 "image/gif", "image/vnd.microsoft.icon", "image/jpeg", "image/png", "image/svg+xml", "image/tiff", "image/webp" -> BandyerFileTypeImageView.Type.IMAGE
                 "application/zip", "application/x-7z-compressed", "application/x-bzip", "application/x-bzip2", "application/gzip", "application/vnd.rar"-> BandyerFileTypeImageView.Type.ARCHIVE
@@ -101,7 +102,7 @@ class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): Bandy
                 is UploadData.OnProgress -> item.viewModel.cancelUpload(item.data.uploadId)
                 is UploadData.Success -> {
                 }
-                is UploadData.Error -> item.viewModel.upload(item.data.uploadId, item.data.file, true)
+                is UploadData.Error -> item.viewModel.upload(item.data.uploadId, v.context, item.data.uri)
             }
         }
     }

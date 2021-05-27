@@ -1,6 +1,8 @@
 package com.bandyer.sdk_design.filesharing
 
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +10,9 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.FileProvider
+import androidx.core.net.toFile
+import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,6 +22,7 @@ import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheetDialog
 import com.bandyer.sdk_design.databinding.BandyerFileShareDialogLayoutBinding
 import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
+import com.bandyer.sdk_design.extensions.getMimeType
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
@@ -25,7 +31,9 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.listeners.EventHook
 import com.mikepenz.fastadapter.listeners.OnClickListener
+import java.lang.Exception
 import java.util.concurrent.ConcurrentHashMap
+
 
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
 
@@ -41,19 +49,17 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         activity.supportFragmentManager.executePendingTransactions()
     }
 
-    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel, itemsData: ConcurrentHashMap<String, FileShareItemData>) {
+    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel, itemsData: ConcurrentHashMap<String, FileShareItemData>, fabCallback: () -> Unit) {
         if (dialog?.isVisible == true || dialog?.isAdded == true) return
-        if (dialog == null) dialog = FileShareBottomSheetDialog(viewModel, itemsData)
+        if (dialog == null) dialog = FileShareBottomSheetDialog(viewModel, itemsData, fabCallback)
 
         dialog!!.show(activity.supportFragmentManager, id)
         activity.supportFragmentManager.executePendingTransactions()
     }
 
-    fun setFabOnClickCallback(callback: () -> Unit) = dialog?.setFabOnClickCallback(callback)
-
     fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) = dialog?.updateRecyclerViewItems(data)
 
-    class FileShareBottomSheetDialog(val viewModel: FileShareViewModel? = null, val itemsData: ConcurrentHashMap<String, FileShareItemData>? = null) : BandyerBottomSheetDialog() {
+    class FileShareBottomSheetDialog(val viewModel: FileShareViewModel? = null, val itemsData: ConcurrentHashMap<String, FileShareItemData>? = null, val fabCallback: (() -> Unit)? = null) : BandyerBottomSheetDialog() {
 
         private var binding: BandyerFileShareDialogLayoutBinding? = null
 
@@ -89,6 +95,8 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
             itemAdapter = ItemAdapter<BandyerFileShareItem<*, *>>()
             fastAdapter = FastAdapter.with<IItem<*, *>, ItemAdapter<*>>(itemAdapter)
+
+            setFabOnClickCallback(fabCallback!!)
 
             initRecyclerView(filesRecyclerView!!)
 
@@ -132,6 +140,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         override fun onExpanded() = Unit
 
+        @Suppress("UNCHECKED_CAST")
         private fun initRecyclerView(rv: RecyclerView) {
             rv.adapter = fastAdapter
             rv.layoutManager = LinearLayoutManager(requireContext())
@@ -143,12 +152,26 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             fastAdapter!!.withEventHook(DownloadAvailableItem.DownloadAvailableItemClickEvent() as EventHook<IItem<*, *>>)
             fastAdapter!!.withSelectable(true)
             // TODO add listener behaviour
-            fastAdapter!!.withOnClickListener(OnClickListener<BandyerFileShareItem<*,*>> { v, adapter, item, position -> true } as OnClickListener<IItem<*, *>>)
+            fastAdapter!!.withOnClickListener(OnClickListener<BandyerFileShareItem<*,*>> {
+                    _, _, item, _ ->
+                try {
+                    val mimeType = item.uri.getMimeType(requireContext()) ?: return@OnClickListener true
+                    val intent = Intent(Intent.ACTION_VIEW)
+//               val uri: Uri = FileProvider.getUriForFile(requireContext(), requireContext().applicationContext.packageName + ".provider", item.file)
+
+                    intent.setDataAndType(item.uri, mimeType)
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    requireContext().startActivity(intent)
+                } catch(ex: Exception) {
+                    // TODO show something
+                }
+                true
+            } as OnClickListener<IItem<*, *>>)
 
             updateRecyclerViewItems(itemsData!!)
         }
 
-        fun setFabOnClickCallback(callback: () -> Unit) = uploadFileFab?.setOnClickListener { callback.invoke() }
+        private fun setFabOnClickCallback(callback: () -> Unit) = uploadFileFab?.setOnClickListener { callback.invoke() }
 
 //      fun addDownloadAvailable(data: DownloadAvailableData) = itemAdapter.add(0, DownloadAvailableItem(data, viewModel))
 

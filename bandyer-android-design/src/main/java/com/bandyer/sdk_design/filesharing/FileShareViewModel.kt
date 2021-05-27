@@ -1,10 +1,12 @@
 package com.bandyer.sdk_design.filesharing
 
+import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import java.io.File
 
 abstract class FileShareViewModel : ViewModel() {
-    abstract fun upload(uploadId: String? = null, file: File, keepFileOnSuccess: Boolean = false): String
+    abstract fun upload(uploadId: String?, context: Context, uri: Uri): String
 
     abstract fun cancelUpload(uploadId: String)
 

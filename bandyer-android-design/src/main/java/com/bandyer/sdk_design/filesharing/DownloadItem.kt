@@ -10,8 +10,9 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
+import java.io.File
 
-class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): BandyerFileShareItem<DownloadItem, DownloadItem.ViewHolder>(data.startTime, data.file) {
+class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): BandyerFileShareItem<DownloadItem, DownloadItem.ViewHolder>(data.startTime, data.uri) {
 
     override fun getIdentifier(): Long = data.hashCode().toLong()
 
@@ -99,7 +100,7 @@ class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): B
                 is DownloadData.OnProgress -> item.viewModel.cancelDownload(item.data.downloadId)
                 is DownloadData.Success -> {
                 }
-                is DownloadData.Error -> item.viewModel.download(item.data.downloadId, item.data.endpoint, item.data.file)
+                is DownloadData.Error -> item.viewModel.download(item.data.downloadId, item.data.endpoint, File(""))
             }
         }
     }

@@ -1,9 +1,9 @@
 package com.bandyer.sdk_design.filesharing
 
-import java.io.File
+import android.net.Uri
 
-sealed class DownloadData(val downloadId: String, val endpoint: String, val file: File, val startTime: Long, val totalBytes: Long, val sender: String): FileShareItemData {
-    class Pending(downloadId: String, endpoint: String, file: File, startTime: Long, totalBytes: Long, sender: String) : DownloadData(downloadId, endpoint, file, startTime, totalBytes, sender) {
+sealed class DownloadData(val downloadId: String, val endpoint: String, val startTime: Long, val totalBytes: Long, val sender: String, val uri: Uri): FileShareItemData {
+    class Pending(downloadId: String, endpoint: String, startTime: Long, totalBytes: Long, sender: String, uri: Uri) : DownloadData(downloadId, endpoint, startTime, totalBytes, sender, uri) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is Pending) return false
@@ -14,7 +14,7 @@ sealed class DownloadData(val downloadId: String, val endpoint: String, val file
         override fun hashCode(): Int = super.hashCode() + this::class.java.simpleName.hashCode()
     }
 
-    class Success(downloadId: String, endpoint: String, file: File, startTime: Long, totalBytes: Long, sender: String) : DownloadData(downloadId, endpoint, file, startTime, totalBytes, sender) {
+    class Success(downloadId: String, endpoint: String, startTime: Long, totalBytes: Long, sender: String, uri: Uri) : DownloadData(downloadId, endpoint, startTime, totalBytes, sender, uri) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is Success) return false
@@ -25,7 +25,7 @@ sealed class DownloadData(val downloadId: String, val endpoint: String, val file
         override fun hashCode(): Int = super.hashCode() + this::class.java.simpleName.hashCode()
     }
 
-    class Error(downloadId: String, endpoint: String, file: File, startTime: Long, totalBytes: Long, val throwable: Throwable, sender: String) : DownloadData(downloadId, endpoint, file, startTime, totalBytes, sender) {
+    class Error(downloadId: String, endpoint: String, startTime: Long, totalBytes: Long, val throwable: Throwable, sender: String, uri: Uri) : DownloadData(downloadId, endpoint, startTime, totalBytes, sender, uri) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is Error) return false
@@ -39,7 +39,7 @@ sealed class DownloadData(val downloadId: String, val endpoint: String, val file
         override fun hashCode(): Int = super.hashCode() + this::class.java.simpleName.hashCode() + throwable.hashCode()
     }
 
-    class OnProgress(downloadId: String, endpoint: String, file: File, startTime: Long, totalBytes: Long, val downloadBytes: Long, sender: String) : DownloadData(downloadId, endpoint, file, startTime, totalBytes, sender) {
+    class OnProgress(downloadId: String, endpoint: String, startTime: Long, totalBytes: Long, val downloadBytes: Long, sender: String, uri: Uri) : DownloadData(downloadId, endpoint, startTime, totalBytes, sender, uri) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is OnProgress) return false
@@ -59,12 +59,12 @@ sealed class DownloadData(val downloadId: String, val endpoint: String, val file
 
         if (downloadId != other.downloadId) return false
         if (endpoint != other.endpoint) return false
-        if (file != other.file) return false
         if (startTime != other.startTime) return false
         if (totalBytes != other.totalBytes) return false
+        if (uri != other.uri) return false
 
         return true
     }
 
-    override fun hashCode(): Int = this::class.java.simpleName.hashCode() + downloadId.hashCode() + endpoint.hashCode() + file.hashCode() + startTime.hashCode() + totalBytes.hashCode()
+    override fun hashCode(): Int = this::class.java.simpleName.hashCode() + downloadId.hashCode() + endpoint.hashCode() + startTime.hashCode() + totalBytes.hashCode() + uri.hashCode()
 }
