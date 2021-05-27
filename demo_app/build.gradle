@@ -19,8 +19,7 @@ plugins {
     id 'kotlin-kapt'
 }
 
-def zoomyVersion = '1.1.0'
-def bandyer_audio_session_version = '2.0.2'
+def bandyer_audio_session_version = '2.0.5'
 
 android {
     compileSdkVersion 30
@@ -69,7 +68,7 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation "com.ablanco.zoomy:zoomy:$zoomyVersion"
+    implementation "com.github.imablanco:Zoomy:1ee82834df"
 
     /***  Leak Canary ***/
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'

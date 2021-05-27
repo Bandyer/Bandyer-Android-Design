@@ -27,12 +27,13 @@ buildscript {
     ext.bandyer_common = "1.0.10"
 
     repositories {
+        mavenLocal()
         google()
-        jcenter()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://oss.sonatype.org/content/repositories/releases' }
-        maven {url 'https://storage.googleapis.com/r8-releases/raw'}
+        maven { url 'https://storage.googleapis.com/r8-releases/raw' }
         maven { url 'https://maven.bandyer.com/releases' }
     }
 
@@ -53,11 +54,13 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
-        jcenter()
-        mavenCentral()
         mavenLocal()
+        google()
+        mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://oss.sonatype.org/content/repositories/releases' }
+        maven { url 'https://storage.googleapis.com/r8-releases/raw' }
         maven { url 'https://maven.bandyer.com/releases' }
     }
 

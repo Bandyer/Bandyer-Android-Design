@@ -18,7 +18,7 @@ buildscript{
     ext.dokka_version = "0.10.1"
 
     repositories {
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
@@ -115,7 +115,7 @@ dependencies {
     androidTestImplementation 'org.mockito:mockito-android:2.+'
     androidTestImplementation('androidx.test.espresso:espresso-core:3.3.0')
 
-    compileOnly 'com.ablanco.zoomy:zoomy:1.1.0'
+    compileOnly 'com.github.imablanco:Zoomy:1ee82834df'
 
     /*** UI ***/
     api 'com.squareup.picasso:picasso:2.71828'
@@ -124,7 +124,7 @@ dependencies {
     api "com.mikepenz:fastadapter-extensions:$fastAdapterVersion"
     api "com.mikepenz:fastadapter-commons:$fastAdapterVersion"
     implementation("androidx.recyclerview:recyclerview:$androidX")
-    api 'com.google.android:flexbox:2.0.1'
+    api 'com.google.android.flexbox:flexbox:3.0.0'
 
     /*** BANDYER ***/
     implementation "com.bandyer:bandyer-android-common:$bandyer_common"
