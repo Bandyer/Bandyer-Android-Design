@@ -36,4 +36,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_add_upload" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_add_download_available"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_download_available"
+        android:layout_marginHorizontal="@dimen/bandyer_dimen_space16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_add_download" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

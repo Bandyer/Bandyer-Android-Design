@@ -11,12 +11,11 @@ import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.bandyer.communication_center.file_share.file_sharing_center.UploadState
 import com.bandyer.communication_center.file_share.file_sharing_center.request.DownloadState
-import com.bandyer.demo_sdk_design.file_share.FileUtils
 import com.bandyer.demo_sdk_design.file_share.LocalFileShareViewModel
 import com.bandyer.sdk_design.filesharing.*
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.flow.collect
-import java.io.File
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class FileShareActivity : AppCompatActivity() {
@@ -76,9 +75,8 @@ class FileShareActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == FILE_REQUEST_CODE && resultCode == RESULT_OK) {
             val uri: Uri = data?.data ?: return
-            val file: File? = try { FileUtils.from(this, uri) } catch (ex: Exception) { Log.e(this.javaClass.name, "Impossible getting the file!"); null }
 
-            if(file != null) viewModel.upload(uploadId = null, context = this, uri = uri)
+            viewModel.upload(uploadId = null, context = this, uri = uri)
         }
     }
 
@@ -88,7 +86,13 @@ class FileShareActivity : AppCompatActivity() {
         }
 
         findViewById<MaterialButton>(R.id.btn_add_download).setOnClickListener {
-            viewModel.download(file = File(""), endpoint = "")
+            viewModel.download(downloadId = null, endpoint = "", context = this)
+        }
+
+        findViewById<MaterialButton>(R.id.btn_add_download_available).setOnClickListener {
+            val downloadId = UUID.randomUUID().toString()
+            itemsData[downloadId] = DownloadAvailableData(downloadId = downloadId, sender = "Will Smith", endpoint = "", startTime = 0L, uri = "".toUri())
+            fileShareDialog?.updateRecyclerViewItems(itemsData)
         }
 
         findViewById<MaterialButton>(R.id.btn_file_share).setOnClickListener {

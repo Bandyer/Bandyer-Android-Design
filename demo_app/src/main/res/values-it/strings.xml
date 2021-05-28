@@ -37,5 +37,6 @@
     <string name="file_share">File share</string>
     <string name="add_upload">Aggiungi upload</string>
     <string name="add_download">Aggiungi download</string>
+    <string name="add_download_available">Aggiungi download disp.</string>
     <string name="file_share_dialog">File Share Dialog</string>
 </resources>
