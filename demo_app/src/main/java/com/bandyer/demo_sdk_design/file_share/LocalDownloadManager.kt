@@ -1,6 +1,8 @@
 package com.bandyer.demo_sdk_design.file_share
 
+import android.content.Context
 import android.net.Uri
+import androidx.core.net.toUri
 import com.bandyer.communication_center.file_share.file_sharing_center.FileSharingConfig
 import com.bandyer.communication_center.file_share.file_sharing_center.request.DownloadState
 import com.bandyer.communication_center.file_share.file_sharing_center.request.HttpDownloader
@@ -9,6 +11,7 @@ import com.bandyer.communication_center.file_share.file_sharing_center.request.i
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.io.File
 import java.io.OutputStream
@@ -27,10 +30,11 @@ class LocalDownloadManager private constructor(override val httpStack: HttpStack
 
     override val events = MutableSharedFlow<DownloadState>()
 
-    override fun download(downloadId: String, endpoint: String, outputStream: OutputStream, uri: Uri): String {
+    override fun download(downloadId: String, endpoint: String, context: Context): String {
         val startTime = Date().time
         val totalBytes = 100L
         val nOfUpdates = 10
+        val uri = "".toUri()
 
         scope.launch(start = CoroutineStart.LAZY) {
             events.emit(DownloadState.Pending(downloadId,"", uri, startTime, totalBytes))
