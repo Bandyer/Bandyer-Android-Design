@@ -1,18 +1,19 @@
 package com.bandyer.sdk_design.filesharing
 
+import android.Manifest
+import android.app.DownloadManager
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.content.FileProvider
-import androidx.core.net.toFile
-import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,9 +32,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.listeners.EventHook
 import com.mikepenz.fastadapter.listeners.OnClickListener
-import java.lang.Exception
 import java.util.concurrent.ConcurrentHashMap
-
 
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
 
@@ -61,6 +60,10 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
     class FileShareBottomSheetDialog(val viewModel: FileShareViewModel? = null, val itemsData: ConcurrentHashMap<String, FileShareItemData>? = null, val fabCallback: (() -> Unit)? = null) : BandyerBottomSheetDialog() {
 
+        internal companion object {
+            const val PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        }
+
         private var binding: BandyerFileShareDialogLayoutBinding? = null
 
         private var dialogLayout: CoordinatorLayout? = null
@@ -79,6 +82,13 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private var fastAdapter: FastAdapter<IItem<*, *>>? = null
 
+        val requestPermissionLauncher =
+            registerForActivityResult(
+                ActivityResultContracts.RequestPermission()
+            ) { isGranted: Boolean ->
+                if (!isGranted) showPermissionDeniedDialog(requireContext())
+            }
+
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_fileShareDialogStyle))
@@ -96,7 +106,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             itemAdapter = ItemAdapter<BandyerFileShareItem<*, *>>()
             fastAdapter = FastAdapter.with<IItem<*, *>, ItemAdapter<*>>(itemAdapter)
 
-            setFabOnClickCallback(fabCallback!!)
+            if(fabCallback != null) setFabOnClickCallback(fabCallback)
 
             initRecyclerView(filesRecyclerView!!)
 
@@ -151,7 +161,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             fastAdapter!!.withEventHook(DownloadItem.DownloadItemClickEvent() as EventHook<IItem<*, *>>)
             fastAdapter!!.withEventHook(DownloadAvailableItem.DownloadAvailableItemClickEvent() as EventHook<IItem<*, *>>)
             fastAdapter!!.withSelectable(true)
-            // TODO add listener behaviour
+
             fastAdapter!!.withOnClickListener(OnClickListener<BandyerFileShareItem<*,*>> { _, _, item, _ ->
                 onItemClick(item)
                 true
@@ -170,7 +180,6 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             try {
                 val mimeType = uri.getMimeType(requireContext()) ?: return
                 val intent = Intent(Intent.ACTION_VIEW)
-//               val uri: Uri = FileProvider.getUriForFile(requireContext(), requireContext().applicationContext.packageName + ".provider", item.file)
 
                 intent.setDataAndType(uri, mimeType)
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
@@ -178,25 +187,31 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             } catch(ex: Exception) {
                 requireContext().startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
             }
-                true
-            } as OnClickListener<IItem<*, *>>)
-
-            updateRecyclerViewItems(itemsData!!)
         }
 
         private fun setFabOnClickCallback(callback: () -> Unit) = uploadFileFab?.setOnClickListener { callback.invoke() }
 
-//      fun addDownloadAvailable(data: DownloadAvailableData) = itemAdapter.add(0, DownloadAvailableItem(data, viewModel))
+        private fun showPermissionDeniedDialog(context: Context) = AlertDialog.Builder(context, R.style.BandyerSDKDesign_AlertDialogTheme)
+            .setTitle(R.string.bandyer_write_permission_dialog_title)
+            .setMessage(R.string.bandyer_write_permission_dialog_descr)
+            .setCancelable(true)
+            .setPositiveButton(R.string.bandyer_button_ok) { di, _ ->
+                di.dismiss()
+            }.show()
 
         fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) {
             uploadFileFabText?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
             emptyListLayout?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
-            val items: List<BandyerFileShareItem<*,*>> = data.values.map {
+            val items = arrayListOf<BandyerFileShareItem<*,*>>()
+            data.values.forEach {
                 when(it) {
                     is UploadData -> UploadItem(it, viewModel!!)
                     is DownloadData -> DownloadItem(it, viewModel!!)
-                    else -> DownloadAvailableItem(it as DownloadAvailableData, viewModel!!)
-                }
+                    is DownloadAvailableData -> DownloadAvailableItem(it, viewModel!!) {
+                        requestPermissionLauncher.launch(PERMISSION)
+                    }
+                    else -> null
+                }?.let { item -> items.add(item) }
             }
             val sortedItems = items.toMutableList().apply { sortByDescending { item -> item.startTime } }
             val diff = FastAdapterDiffUtil.calculateDiff(itemAdapter, sortedItems, true)
