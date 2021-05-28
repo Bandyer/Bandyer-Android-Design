@@ -8,3 +8,13 @@ fun String.getMimeType(): String = MimeTypeMap.getFileExtensionFromUrl(this)
     ?: ""
 
 fun String.getFileNameFromUrl() = this.substring(this.lastIndexOf('/') + 1)
+
+fun String.getFileTypeFromMimeType(): String {
+    val imageTypes = listOf("image/gif", "image/vnd.microsoft.icon", "image/jpeg", "image/png", "image/svg+xml", "image/tiff", "image/webp", "image/x-photoshop")
+    val archiveType = listOf("application/zip", "application/x-7z-compressed", "application/x-bzip", "application/x-bzip2", "application/gzip", "application/vnd.rar")
+    return when {
+        imageTypes.contains(this) -> "image"
+        archiveType.contains(this) -> "archive"
+        else -> "file"
+    }
+}

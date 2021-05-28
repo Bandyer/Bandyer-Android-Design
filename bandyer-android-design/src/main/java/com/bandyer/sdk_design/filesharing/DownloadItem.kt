@@ -4,6 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.getFileNameFromUrl
+import com.bandyer.sdk_design.extensions.getFileTypeFromMimeType
 import com.bandyer.sdk_design.extensions.getMimeType
 import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -64,9 +65,9 @@ class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): B
             }
 
             val mimeType = item.data.endpoint.getMimeType()
-            fileType.type = when(mimeType) {
-                "image/gif", "image/vnd.microsoft.icon", "image/jpeg", "image/png", "image/svg+xml", "image/tiff", "image/webp" -> BandyerFileTypeImageView.Type.IMAGE
-                "application/zip", "application/x-7z-compressed", "application/x-bzip", "application/x-bzip2", "application/gzip", "application/vnd.rar"-> BandyerFileTypeImageView.Type.ARCHIVE
+            fileType.type = when(mimeType.getFileTypeFromMimeType()) {
+                "image" -> BandyerFileTypeImageView.Type.IMAGE
+                "archive" -> BandyerFileTypeImageView.Type.ARCHIVE
                 else -> BandyerFileTypeImageView.Type.FILE
             }
         }
