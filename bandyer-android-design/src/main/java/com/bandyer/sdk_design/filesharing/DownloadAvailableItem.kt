@@ -5,7 +5,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.getFileNameFromUrl
@@ -17,7 +16,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 
-class DownloadAvailableItem(var data: DownloadAvailableData, val viewModel: FileShareViewModel, val askPermissionCallback: () -> Unit): BandyerFileShareItem<DownloadAvailableItem, DownloadAvailableItem.ViewHolder>(data.startTime, "".toUri()) {
+class DownloadAvailableItem(var data: DownloadAvailableData, val viewModel: FileShareViewModel, val askPermissionCallback: () -> Unit): BandyerFileShareItem<DownloadAvailableItem, DownloadAvailableItem.ViewHolder>(data.startTime) {
 
     override fun getIdentifier(): Long = data.hashCode().toLong()
 

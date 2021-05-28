@@ -13,7 +13,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 
-class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): BandyerFileShareItem<UploadItem, UploadItem.ViewHolder>(data.startTime, data.uri) {
+class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): BandyerFileShareItem<UploadItem, UploadItem.ViewHolder>(data.startTime) {
 
     override fun getIdentifier(): Long = data.hashCode().toLong()
 

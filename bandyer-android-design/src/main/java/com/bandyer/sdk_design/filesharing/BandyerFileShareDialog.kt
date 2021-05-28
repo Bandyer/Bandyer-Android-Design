@@ -152,19 +152,32 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             fastAdapter!!.withEventHook(DownloadAvailableItem.DownloadAvailableItemClickEvent() as EventHook<IItem<*, *>>)
             fastAdapter!!.withSelectable(true)
             // TODO add listener behaviour
-            fastAdapter!!.withOnClickListener(OnClickListener<BandyerFileShareItem<*,*>> {
-                    _, _, item, _ ->
-                try {
-                    val mimeType = item.uri.getMimeType(requireContext()) ?: return@OnClickListener true
-                    val intent = Intent(Intent.ACTION_VIEW)
+            fastAdapter!!.withOnClickListener(OnClickListener<BandyerFileShareItem<*,*>> { _, _, item, _ ->
+                onItemClick(item)
+                true
+            } as OnClickListener<IItem<*, *>>)
+
+            if (itemsData != null) updateRecyclerViewItems(itemsData)
+        }
+
+        private fun onItemClick(item: BandyerFileShareItem<*,*>) {
+            val uri = when(item) {
+                is UploadItem -> item.data.uri
+                is DownloadItem -> item.data.uri
+                else -> null
+            } ?: return
+
+            try {
+                val mimeType = uri.getMimeType(requireContext()) ?: return
+                val intent = Intent(Intent.ACTION_VIEW)
 //               val uri: Uri = FileProvider.getUriForFile(requireContext(), requireContext().applicationContext.packageName + ".provider", item.file)
 
-                    intent.setDataAndType(item.uri, mimeType)
-                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    requireContext().startActivity(intent)
-                } catch(ex: Exception) {
-                    // TODO show something
-                }
+                intent.setDataAndType(uri, mimeType)
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                requireContext().startActivity(intent)
+            } catch(ex: Exception) {
+                requireContext().startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
+            }
                 true
             } as OnClickListener<IItem<*, *>>)
 

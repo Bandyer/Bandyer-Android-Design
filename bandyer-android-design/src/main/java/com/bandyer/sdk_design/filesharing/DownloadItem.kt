@@ -11,9 +11,8 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
-import java.io.File
 
-class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): BandyerFileShareItem<DownloadItem, DownloadItem.ViewHolder>(data.startTime, data.uri) {
+class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): BandyerFileShareItem<DownloadItem, DownloadItem.ViewHolder>(data.startTime) {
 
     override fun getIdentifier(): Long = data.hashCode().toLong()
 
