@@ -10,7 +10,7 @@ abstract class FileShareViewModel : ViewModel() {
 
     abstract fun cancelUpload(uploadId: String)
 
-    abstract fun download(downloadId: String? = null, endpoint: String, file: File): String
+    abstract fun download(downloadId: String?, endpoint: String, context: Context): String
 
     abstract fun cancelDownload(downloadId: String)
 }
