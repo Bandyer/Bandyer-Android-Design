@@ -1,10 +1,15 @@
 package com.bandyer.sdk_design.filesharing
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.getFileNameFromUrl
+import com.bandyer.sdk_design.extensions.getFileTypeFromMimeType
 import com.bandyer.sdk_design.extensions.getMimeType
 import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -12,7 +17,7 @@ import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 
-class DownloadAvailableItem(var data: DownloadAvailableData, val viewModel: FileShareViewModel): BandyerFileShareItem<DownloadAvailableItem, DownloadAvailableItem.ViewHolder>(data.startTime, "".toUri()) {
+class DownloadAvailableItem(var data: DownloadAvailableData, val viewModel: FileShareViewModel, val askPermissionCallback: () -> Unit): BandyerFileShareItem<DownloadAvailableItem, DownloadAvailableItem.ViewHolder>(data.startTime, "".toUri()) {
 
     override fun getIdentifier(): Long = data.hashCode().toLong()
 
@@ -45,9 +50,9 @@ class DownloadAvailableItem(var data: DownloadAvailableData, val viewModel: File
             action.type = BandyerFileShareActionButton.Type.DOWNLOAD
 
             val mimeType = item.data.endpoint.getMimeType()
-            fileType.type = when(mimeType) {
-                "image/gif", "image/vnd.microsoft.icon", "image/jpeg", "image/png", "image/svg+xml", "image/tiff", "image/webp" -> BandyerFileTypeImageView.Type.IMAGE
-                "application/zip", "application/x-7z-compressed", "application/x-bzip", "application/x-bzip2", "application/gzip", "application/vnd.rar"-> BandyerFileTypeImageView.Type.ARCHIVE
+            fileType.type = when(mimeType.getFileTypeFromMimeType()) {
+                "image" -> BandyerFileTypeImageView.Type.IMAGE
+                "archive"-> BandyerFileTypeImageView.Type.ARCHIVE
                 else -> BandyerFileTypeImageView.Type.FILE
             }
         }
@@ -66,18 +71,26 @@ class DownloadAvailableItem(var data: DownloadAvailableData, val viewModel: File
     }
 
     class DownloadAvailableItemClickEvent: ClickEventHook<DownloadAvailableItem>() {
-        override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
-            //return the views on which you want to bind this event
-            return if (viewHolder is ViewHolder) {
-                viewHolder.action
-            } else {
-                null
+            override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
+                //return the views on which you want to bind this event
+                return if (viewHolder is ViewHolder) {
+                    viewHolder.action
+                } else {
+                    null
+                }
             }
-        }
 
-        override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<DownloadAvailableItem>, item: DownloadAvailableItem) {
-            item.viewModel.download(item.data.downloadId, item.data.endpoint, item.data.file)
-        }
+            override fun onClick(
+                v: View,
+                position: Int,
+                fastAdapter: FastAdapter<DownloadAvailableItem>,
+                item: DownloadAvailableItem
+            ) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || ContextCompat.checkSelfPermission(v.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+                    item.viewModel.download(item.data.downloadId, item.data.endpoint, v.context)
+                else
+                    item.askPermissionCallback.invoke()
+            }
     }
 
 }
