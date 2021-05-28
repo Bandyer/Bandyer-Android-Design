@@ -101,7 +101,7 @@ class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): B
                 is DownloadData.OnProgress -> item.viewModel.cancelDownload(item.data.downloadId)
                 is DownloadData.Success -> {
                 }
-                is DownloadData.Error -> item.viewModel.download(item.data.downloadId, item.data.endpoint, File(""))
+                is DownloadData.Error -> item.viewModel.download(item.data.downloadId, item.data.endpoint, v.context)
             }
         }
     }
