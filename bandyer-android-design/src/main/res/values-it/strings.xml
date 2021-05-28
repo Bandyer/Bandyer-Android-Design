@@ -155,5 +155,8 @@
     <string name="bandyer_fileshare_retry">Riprova</string>
     <string name="bandyer_no_file_shared">Ancora nessun file scambiato…</string>
     <string name="bandyer_click_to_share_file">Clicca il tasto “+” per iniziare a condividere documenti e immagini</string>
+    <string name="bandyer_write_permission_dialog_descr">Permessi di memora necessari per condividere i file</string>
+    <string name="bandyer_write_permission_dialog_title">Permesso di memoria negato</string>
+    <string name="bandyer_button_ok">Ok</string>
 
 </resources>

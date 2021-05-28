@@ -163,5 +163,8 @@
     <string name="bandyer_fileshare_retry">Retry</string>
     <string name="bandyer_no_file_shared">Still no file shared…</string>
     <string name="bandyer_click_to_share_file">Click on “+” button to start sharing documents and images</string>
+    <string name="bandyer_write_permission_dialog_descr">Memory permission needed to download files</string>
+    <string name="bandyer_write_permission_dialog_title">Memory permission denied</string>
+    <string name="bandyer_button_ok">Ok</string>
 
 </resources>
