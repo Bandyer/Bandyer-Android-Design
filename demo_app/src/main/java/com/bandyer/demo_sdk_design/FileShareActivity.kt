@@ -49,11 +49,12 @@ class FileShareActivity : AppCompatActivity() {
 
         lifecycleScope.launchWhenStarted {
            viewModel.downloadEvents.collect {
+               val sender = itemsData[it.downloadId]?.let { itemData -> (itemData as DownloadItemData).sender } ?: ""
                when(it) {
-                   is DownloadState.Pending -> itemsData[it.downloadId] = DownloadData.Pending(it.downloadId, it.endpoint, it.startTime, it.totalBytes, "John Smith", "".toUri())
-                   is DownloadState.OnProgress -> itemsData[it.downloadId] = DownloadData.OnProgress(it.downloadId, it.endpoint, it.startTime, it.totalBytes, it.downloadBytes, "John Smith", "".toUri())
-                   is DownloadState.Success -> itemsData[it.downloadId] = DownloadData.Success(it.downloadId, it.endpoint, it.startTime, it.totalBytes, "John Smith", "".toUri())
-                   is DownloadState.Error -> itemsData[it.downloadId] = DownloadData.Error(it.downloadId, it.endpoint, it.startTime, it.totalBytes, it.throwable, "John Smith", "".toUri())
+                   is DownloadState.Pending -> itemsData[it.downloadId] = DownloadData.Pending(it.downloadId, it.endpoint, it.startTime, it.totalBytes, sender, "".toUri())
+                   is DownloadState.OnProgress -> itemsData[it.downloadId] = DownloadData.OnProgress(it.downloadId, it.endpoint, it.startTime, it.totalBytes, it.downloadBytes, sender, "".toUri())
+                   is DownloadState.Success -> itemsData[it.downloadId] = DownloadData.Success(it.downloadId, it.endpoint, it.startTime, it.totalBytes, sender, "".toUri())
+                   is DownloadState.Error -> itemsData[it.downloadId] = DownloadData.Error(it.downloadId, it.endpoint, it.startTime, it.totalBytes, it.throwable, sender, "".toUri())
                    is DownloadState.Cancelled -> itemsData.remove(it.downloadId)
                }
                if(fileShareDialog?.isVisible == true) fileShareDialog?.updateRecyclerViewItems(itemsData)
@@ -91,7 +92,7 @@ class FileShareActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.btn_add_download_available).setOnClickListener {
             val downloadId = UUID.randomUUID().toString()
-            itemsData[downloadId] = DownloadAvailableData(downloadId = downloadId, sender = "Will Smith", endpoint = "", startTime = 0L)
+            itemsData[downloadId] = DownloadAvailableData(id = downloadId, sender = "Will Smith", endpoint = "", startTime = Date().time, totalBytes = 0L)
             fileShareDialog?.updateRecyclerViewItems(itemsData)
         }
 

@@ -1,9 +1,8 @@
 package com.bandyer.sdk_design.filesharing
 
 import android.net.Uri
-import java.io.File
 
-sealed class UploadData(val uploadId: String, val startTime: Long, val totalBytes: Long, val uri: Uri): FileShareItemData {
+sealed class UploadData(override val id: String, override val startTime: Long, override val totalBytes: Long, override val uri: Uri): UploadItemData {
     class Pending(uploadId: String, startTime: Long, totalBytes: Long, uri: Uri) : UploadData(uploadId, startTime, totalBytes, uri) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -55,7 +54,7 @@ sealed class UploadData(val uploadId: String, val startTime: Long, val totalByte
         if (this === other) return true
         if (other !is UploadData) return false
 
-        if (uploadId != other.uploadId) return false
+        if (id != other.id) return false
         if (startTime != other.startTime) return false
         if (totalBytes != other.totalBytes) return false
         if (uri != other.uri) return false
@@ -63,5 +62,5 @@ sealed class UploadData(val uploadId: String, val startTime: Long, val totalByte
         return true
     }
 
-    override fun hashCode(): Int = this::class.java.simpleName.hashCode() + uploadId.hashCode() + startTime.hashCode() + totalBytes.hashCode() + uri.hashCode()
+    override fun hashCode(): Int = this::class.java.simpleName.hashCode() + id.hashCode() + startTime.hashCode() + totalBytes.hashCode() + uri.hashCode()
 }

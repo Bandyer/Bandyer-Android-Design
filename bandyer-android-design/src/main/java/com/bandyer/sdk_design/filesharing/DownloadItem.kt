@@ -96,11 +96,11 @@ class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): B
 
         override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<DownloadItem>, item: DownloadItem) {
             when(item.data) {
-                is DownloadData.Pending -> item.viewModel.cancelDownload(item.data.downloadId)
-                is DownloadData.OnProgress -> item.viewModel.cancelDownload(item.data.downloadId)
+                is DownloadData.Pending -> item.viewModel.cancelDownload(item.data.id)
+                is DownloadData.OnProgress -> item.viewModel.cancelDownload(item.data.id)
                 is DownloadData.Success -> {
                 }
-                is DownloadData.Error -> item.viewModel.download(item.data.downloadId, item.data.endpoint, v.context)
+                is DownloadData.Error -> item.viewModel.download(item.data.id, item.data.endpoint, v.context)
             }
         }
     }

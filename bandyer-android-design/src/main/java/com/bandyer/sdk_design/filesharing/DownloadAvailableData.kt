@@ -1,22 +1,29 @@
 package com.bandyer.sdk_design.filesharing
 
+import android.net.Uri
+
 data class DownloadAvailableData(
-    val downloadId: String,
-    val sender: String,
-    val endpoint: String,
-    val startTime: Long
-): FileShareItemData {
+    override val id: String,
+    override val endpoint: String,
+    override val startTime: Long,
+    override val totalBytes: Long,
+    override val sender: String,
+    override val uri: Uri? = null
+): DownloadItemData {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is DownloadAvailableData) return false
 
-        if (downloadId != other.downloadId) return false
-        if (sender != other.sender) return false
+        if (id != other.id) return false
         if (endpoint != other.endpoint) return false
         if (startTime != other.startTime) return false
+        if (totalBytes != other.totalBytes) return false
+        if (sender != other.sender) return false
+        if (uri != other.uri) return false
 
         return true
     }
 
-    override fun hashCode(): Int = this::class.java.simpleName.hashCode() + endpoint.hashCode() + downloadId.hashCode() + startTime.hashCode() + sender.hashCode()
+    override fun hashCode(): Int = this::class.java.simpleName.hashCode() + endpoint.hashCode() + id.hashCode() + startTime.hashCode() + sender.hashCode() + totalBytes.hashCode() + uri.hashCode()
+
 }

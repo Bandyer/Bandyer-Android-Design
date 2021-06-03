@@ -99,11 +99,11 @@ class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): Bandy
 
         override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<UploadItem>, item: UploadItem) {
             when (item.data) {
-                is UploadData.Pending -> item.viewModel.cancelUpload(item.data.uploadId)
-                is UploadData.OnProgress -> item.viewModel.cancelUpload(item.data.uploadId)
+                is UploadData.Pending -> item.viewModel.cancelUpload(item.data.id)
+                is UploadData.OnProgress -> item.viewModel.cancelUpload(item.data.id)
                 is UploadData.Success -> {
                 }
-                is UploadData.Error -> item.viewModel.upload(item.data.uploadId, v.context, item.data.uri)
+                is UploadData.Error -> item.viewModel.upload(item.data.id, v.context, item.data.uri)
             }
         }
     }
