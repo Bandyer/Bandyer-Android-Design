@@ -93,7 +93,7 @@ class FileShareActivity : AppCompatActivity() {
         findViewById<MaterialButton>(R.id.btn_add_download_available).setOnClickListener {
             val downloadId = UUID.randomUUID().toString()
             itemsData[downloadId] = DownloadAvailableData(id = downloadId, sender = "Will Smith", endpoint = "", startTime = Date().time, totalBytes = 0L)
-            fileShareDialog?.updateRecyclerViewItems(itemsData)
+            if(fileShareDialog?.isVisible == true) fileShareDialog?.updateRecyclerViewItems(itemsData)
         }
 
         findViewById<MaterialButton>(R.id.btn_file_share).setOnClickListener {
