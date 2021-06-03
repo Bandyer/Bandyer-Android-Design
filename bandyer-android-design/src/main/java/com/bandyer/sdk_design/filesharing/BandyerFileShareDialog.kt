@@ -4,7 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager.*
+import android.content.pm.PackageManager.MATCH_DEFAULT_ONLY
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,11 +14,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheetDialog
 import com.bandyer.sdk_design.databinding.BandyerFileShareDialogLayoutBinding
@@ -34,9 +35,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.listeners.EventHook
 import com.mikepenz.fastadapter.listeners.OnClickListener
-import java.io.File
 import java.util.concurrent.ConcurrentHashMap
-
 
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
 
@@ -86,6 +85,8 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private var fastAdapter: FastAdapter<IItem<*, *>>? = null
 
+        var smoothScroller: SmoothScroller? = null
+
         val requestPermissionLauncher =
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
@@ -96,6 +97,11 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_fileShareDialogStyle))
+            smoothScroller = object : LinearSmoothScroller(requireContext()) {
+                override fun getVerticalSnapPreference(): Int {
+                    return SNAP_TO_START
+                }
+            }
         }
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -203,11 +209,16 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                 di.dismiss()
             }.show()
 
+        private fun scrollToTop() = filesRecyclerView?.layoutManager?.startSmoothScroll(smoothScroller?.apply { targetPosition = 0 })
+
         fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) {
             uploadFileFabText?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
             emptyListLayout?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
             val items = arrayListOf<BandyerFileShareItem<*,*>>()
             data.values.forEach {
+                if(it is UploadData.Pending || it is DownloadData.Pending)
+                    scrollToTop()
+
                 when(it) {
                     is UploadData -> UploadItem(it, viewModel!!)
                     is DownloadData -> DownloadItem(it, viewModel!!)
