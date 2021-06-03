@@ -158,5 +158,7 @@
     <string name="bandyer_write_permission_dialog_descr">Permessi di memora necessari per condividere i file</string>
     <string name="bandyer_write_permission_dialog_title">Permesso di memoria negato</string>
     <string name="bandyer_button_ok">Ok</string>
+    <string name="bandyer_fileshare_chooser_title">Scegli un applicazione</string>
+    <string name="bandyer_fileshare_impossible_open_file">Impossibile aprire il file</string>
 
 </resources>

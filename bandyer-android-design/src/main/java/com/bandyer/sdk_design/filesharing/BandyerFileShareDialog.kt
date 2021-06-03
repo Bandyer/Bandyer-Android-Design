@@ -1,10 +1,10 @@
 package com.bandyer.sdk_design.filesharing
 
 import android.Manifest
-import android.app.DownloadManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager.*
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +14,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +26,7 @@ import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.bandyer.sdk_design.extensions.getMimeType
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IItem
@@ -32,7 +34,9 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.listeners.EventHook
 import com.mikepenz.fastadapter.listeners.OnClickListener
+import java.io.File
 import java.util.concurrent.ConcurrentHashMap
+
 
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
 
@@ -171,22 +175,22 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         }
 
         private fun onItemClick(item: BandyerFileShareItem<*,*>) {
-            val uri = when(item) {
+            val uri = when (item) {
                 is UploadItem -> item.data.uri
                 is DownloadItem -> item.data.uri
                 else -> null
             } ?: return
 
-            try {
-                val mimeType = uri.getMimeType(requireContext()) ?: return
-                val intent = Intent(Intent.ACTION_VIEW)
-
-                intent.setDataAndType(uri, mimeType)
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                requireContext().startActivity(intent)
-            } catch(ex: Exception) {
-                requireContext().startActivity(Intent(DownloadManager.ACTION_VIEW_DOWNLOADS))
-            }
+            val mimeType = uri.getMimeType(requireContext()) ?: return
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setDataAndType(uri, mimeType)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            val packageManager = requireContext().packageManager
+            val resolveInfo = packageManager.resolveActivity(intent, MATCH_DEFAULT_ONLY)
+            if (resolveInfo != null) {
+                val chooser = Intent.createChooser(intent, requireContext().getString(R.string.bandyer_fileshare_chooser_title))
+                requireContext().startActivity(chooser)
+            } else Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_impossible_open_file, Snackbar.LENGTH_SHORT).show()
         }
 
         private fun setFabOnClickCallback(callback: () -> Unit) = uploadFileFab?.setOnClickListener { callback.invoke() }

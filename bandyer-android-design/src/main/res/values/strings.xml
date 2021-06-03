@@ -166,5 +166,7 @@
     <string name="bandyer_write_permission_dialog_descr">Memory permission needed to download files</string>
     <string name="bandyer_write_permission_dialog_title">Memory permission denied</string>
     <string name="bandyer_button_ok">Ok</string>
+    <string name="bandyer_fileshare_chooser_title">Choose an application</string>
+    <string name="bandyer_fileshare_impossible_open_file">Can\'t open file</string>
 
 </resources>
