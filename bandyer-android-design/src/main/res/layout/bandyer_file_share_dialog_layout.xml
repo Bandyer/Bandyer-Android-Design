@@ -33,7 +33,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        style="?attr/bandyer_fabWrapperStyle">
+        style="?attr/bandyer_fabWrapperStyle"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/bandyer_file_share_fab"
