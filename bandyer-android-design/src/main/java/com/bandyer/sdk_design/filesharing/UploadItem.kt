@@ -40,6 +40,7 @@ class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): Bandy
             fileSize.text = if(bytesFormatted == "") itemView.context.resources.getString(R.string.bandyer_fileshare_na) else bytesFormatted
             user.text = itemView.context.resources.getString(R.string.bandyer_fileshare_you)
             error.text = itemView.context.resources.getString(R.string.bandyer_fileshare_error_message)
+            error.visibility = View.GONE
             fileName.text = item.data.uri.getFileName(itemView.context)
             operation.type = BandyerFileShareOpTypeImageView.Type.UPLOAD
 

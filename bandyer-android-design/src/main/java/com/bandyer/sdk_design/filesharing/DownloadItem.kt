@@ -38,6 +38,7 @@ class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): B
             fileSize.text = itemView.context.resources.getString(R.string.bandyer_fileshare_na)
             user.text = item.data.sender
             error.text = itemView.context.resources.getString(R.string.bandyer_fileshare_error_message)
+            error.visibility = View.GONE
             fileName.text = item.data.endpoint.getFileNameFromUrl()
             operation.type = BandyerFileShareOpTypeImageView.Type.DOWNLOAD
 
