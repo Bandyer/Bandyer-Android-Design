@@ -22,8 +22,7 @@
         android:theme="@style/DesignDemoApp">
         <activity
             android:name=".FileShareActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"/>
-
+></activity>
         <meta-data
             android:name="com.google.android.glass.TouchEnabledApplication"
             android:value="true" />
