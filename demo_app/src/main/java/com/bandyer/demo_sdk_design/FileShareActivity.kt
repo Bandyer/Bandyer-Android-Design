@@ -16,13 +16,11 @@ import com.bandyer.sdk_design.filesharing.*
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.flow.collect
 import java.util.*
-import java.util.concurrent.ConcurrentHashMap
 
 class FileShareActivity : AppCompatActivity() {
 
     private val viewModel: LocalFileShareViewModel by viewModels()
 
-    private val itemsData: ConcurrentHashMap<String, FileShareItemData> = ConcurrentHashMap()
 
     private var fileShareDialog: BandyerFileShareDialog? = null
 
@@ -37,27 +35,27 @@ class FileShareActivity : AppCompatActivity() {
         lifecycleScope.launchWhenStarted {
             viewModel.uploadEvents.collect {
                 when(it) {
-                    is UploadState.Pending -> itemsData[it.uploadId] = UploadData.Pending(it.uploadId, it.startTime, it.totalBytes, it.fileUri)
-                    is UploadState.OnProgress -> itemsData[it.uploadId] = UploadData.OnProgress(it.uploadId, it.startTime, it.totalBytes, it.fileUri, it.uploadedBytes)
-                    is UploadState.Success -> itemsData[it.uploadId] = UploadData.Success(it.uploadId, it.startTime, it.totalBytes, it.fileUri)
-                    is UploadState.Error -> itemsData[it.uploadId] = UploadData.Error(it.uploadId, it.startTime, it.totalBytes, it.fileUri)
-                    is UploadState.Cancelled -> itemsData.remove(it.uploadId)
+                    is UploadState.Pending -> viewModel.itemsData[it.uploadId] = UploadData.Pending(it.uploadId, it.startTime, it.totalBytes, it.fileUri)
+                    is UploadState.OnProgress -> viewModel.itemsData[it.uploadId] = UploadData.OnProgress(it.uploadId, it.startTime, it.totalBytes, it.fileUri, it.uploadedBytes)
+                    is UploadState.Success -> viewModel.itemsData[it.uploadId] = UploadData.Success(it.uploadId, it.startTime, it.totalBytes, it.fileUri)
+                    is UploadState.Error -> viewModel.itemsData[it.uploadId] = UploadData.Error(it.uploadId, it.startTime, it.totalBytes, it.fileUri)
+                    is UploadState.Cancelled -> viewModel.itemsData.remove(it.uploadId)
                 }
-                if(fileShareDialog?.isVisible == true) fileShareDialog?.updateRecyclerViewItems(itemsData)
+                if(fileShareDialog?.isVisible == true) fileShareDialog?.updateRecyclerViewItems(viewModel.itemsData)
             }
         }
 
         lifecycleScope.launchWhenStarted {
            viewModel.downloadEvents.collect {
-               val sender = itemsData[it.downloadId]?.let { itemData -> (itemData as DownloadItemData).sender } ?: ""
+               val sender = viewModel.itemsData[it.downloadId]?.let { itemData -> (itemData as DownloadItemData).sender } ?: ""
                when(it) {
-                   is DownloadState.Pending -> itemsData[it.downloadId] = DownloadData.Pending(it.downloadId, it.endpoint, it.startTime, it.totalBytes, sender, "".toUri())
-                   is DownloadState.OnProgress -> itemsData[it.downloadId] = DownloadData.OnProgress(it.downloadId, it.endpoint, it.startTime, it.totalBytes, it.downloadBytes, sender, "".toUri())
-                   is DownloadState.Success -> itemsData[it.downloadId] = DownloadData.Success(it.downloadId, it.endpoint, it.startTime, it.totalBytes, sender, "".toUri())
-                   is DownloadState.Error -> itemsData[it.downloadId] = DownloadData.Error(it.downloadId, it.endpoint, it.startTime, it.totalBytes, it.throwable, sender, "".toUri())
-                   is DownloadState.Cancelled -> itemsData.remove(it.downloadId)
+                   is DownloadState.Pending -> viewModel.itemsData[it.downloadId] = DownloadData.Pending(it.downloadId, it.endpoint, it.startTime, it.totalBytes, sender, "".toUri())
+                   is DownloadState.OnProgress -> viewModel.itemsData[it.downloadId] = DownloadData.OnProgress(it.downloadId, it.endpoint, it.startTime, it.totalBytes, it.downloadBytes, sender, "".toUri())
+                   is DownloadState.Success -> viewModel.itemsData[it.downloadId] = DownloadData.Success(it.downloadId, it.endpoint, it.startTime, it.totalBytes, sender, "".toUri())
+                   is DownloadState.Error -> viewModel.itemsData[it.downloadId] = DownloadData.Error(it.downloadId, it.endpoint, it.startTime, it.totalBytes, it.throwable, sender, "".toUri())
+                   is DownloadState.Cancelled -> viewModel.itemsData.remove(it.downloadId)
                }
-               if(fileShareDialog?.isVisible == true) fileShareDialog?.updateRecyclerViewItems(itemsData)
+               if(fileShareDialog?.isVisible == true) fileShareDialog?.updateRecyclerViewItems(viewModel.itemsData)
            }
         }
     }
@@ -92,8 +90,8 @@ class FileShareActivity : AppCompatActivity() {
 
         findViewById<MaterialButton>(R.id.btn_add_download_available).setOnClickListener {
             val downloadId = UUID.randomUUID().toString()
-            itemsData[downloadId] = DownloadAvailableData(id = downloadId, sender = "Will Smith", endpoint = "", startTime = Date().time, totalBytes = 0L)
-            if(fileShareDialog?.isVisible == true) fileShareDialog?.updateRecyclerViewItems(itemsData)
+            viewModel.itemsData[downloadId] = DownloadAvailableData(id = downloadId, sender = "Will Smith", endpoint = "", startTime = Date().time, totalBytes = 0L)
+            if(fileShareDialog?.isVisible == true) fileShareDialog?.updateRecyclerViewItems(viewModel.itemsData)
         }
 
         findViewById<MaterialButton>(R.id.btn_file_share).setOnClickListener {
