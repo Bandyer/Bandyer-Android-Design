@@ -3,6 +3,7 @@ package com.bandyer.demo_sdk_design.file_share
 import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
+import com.bandyer.communication_center.file_share.file_sharing_center.DefaultFileSharingConfig
 import com.bandyer.communication_center.file_share.file_sharing_center.FileSharingConfig
 import com.bandyer.communication_center.file_share.file_sharing_center.request.DownloadState
 import com.bandyer.communication_center.file_share.file_sharing_center.request.HttpDownloader
@@ -21,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap
 class LocalDownloadManager private constructor(override val httpStack: HttpStack, override val scope: CoroutineScope): HttpDownloader {
 
     companion object {
-        fun newInstance(config: FileSharingConfig = FileSharingConfig()): HttpDownloader = LocalDownloadManager(config.httpStack, config.ioScope)
+        fun newInstance(config: FileSharingConfig = DefaultFileSharingConfig): HttpDownloader = LocalDownloadManager(config.httpStack, config.ioScope)
     }
 
     private val jobs: ConcurrentHashMap<String, Job> = ConcurrentHashMap()
