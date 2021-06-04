@@ -1,14 +1,18 @@
 package com.bandyer.demo_sdk_design
 
+import android.app.Dialog
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
+import androidx.savedstate.SavedStateRegistry
 import com.bandyer.communication_center.file_share.file_sharing_center.UploadState
 import com.bandyer.communication_center.file_share.file_sharing_center.request.DownloadState
 import com.bandyer.demo_sdk_design.file_share.LocalFileShareViewModel
@@ -20,7 +24,6 @@ import java.util.*
 class FileShareActivity : AppCompatActivity() {
 
     private val viewModel: LocalFileShareViewModel by viewModels()
-
 
     private var fileShareDialog: BandyerFileShareDialog? = null
 
@@ -70,15 +73,6 @@ class FileShareActivity : AppCompatActivity() {
         fileShareDialog = null
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == FILE_REQUEST_CODE && resultCode == RESULT_OK) {
-            val uri: Uri = data?.data ?: return
-
-            viewModel.upload(uploadId = null, context = this, uri = uri)
-        }
-    }
-
     private fun initListeners() {
         findViewById<MaterialButton>(R.id.btn_add_upload).setOnClickListener {
             viewModel.upload(uploadId = null, context = this, uri = "".toUri())
@@ -95,23 +89,7 @@ class FileShareActivity : AppCompatActivity() {
         }
 
         findViewById<MaterialButton>(R.id.btn_file_share).setOnClickListener {
-            fileShareDialog?.show(this@FileShareActivity, viewModel, itemsData) {
-                val fileintent = Intent(Intent.ACTION_GET_CONTENT)
-                fileintent.type = "*/*"
-                fileintent.addCategory(Intent.CATEGORY_OPENABLE)
-                try {
-                    startActivityForResult(fileintent, FILE_REQUEST_CODE)
-                } catch (e: ActivityNotFoundException) {
-                    Log.e(
-                        this.javaClass.name,
-                        "No activity can handle picking a file. Showing alternatives."
-                    )
-                }
-            }
+            fileShareDialog?.show(this@FileShareActivity, viewModel)
         }
-    }
-
-    companion object {
-        const val FILE_REQUEST_CODE = 654
     }
 }

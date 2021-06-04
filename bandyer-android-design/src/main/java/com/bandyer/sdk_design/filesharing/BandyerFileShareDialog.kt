@@ -1,24 +1,26 @@
 package com.bandyer.sdk_design.filesharing
 
 import android.Manifest
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.animation.TimeInterpolator
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager.MATCH_DEFAULT_ONLY
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.DialogFragment
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheetDialog
@@ -35,7 +37,10 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.listeners.EventHook
 import com.mikepenz.fastadapter.listeners.OnClickListener
+import com.mikepenz.itemanimators.AlphaInAnimator
+import com.mikepenz.itemanimators.SlideUpAlphaAnimator
 import java.util.concurrent.ConcurrentHashMap
+
 
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
 
@@ -51,9 +56,9 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         activity.supportFragmentManager.executePendingTransactions()
     }
 
-    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel, itemsData: ConcurrentHashMap<String, FileShareItemData>, fabCallback: () -> Unit) {
+    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel) {
         if (dialog?.isVisible == true || dialog?.isAdded == true) return
-        if (dialog == null) dialog = FileShareBottomSheetDialog(viewModel, itemsData, fabCallback)
+        if (dialog == null) dialog = FileShareBottomSheetDialog(viewModel)
 
         dialog!!.show(activity.supportFragmentManager, id)
         activity.supportFragmentManager.executePendingTransactions()
@@ -61,7 +66,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
     fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) = dialog?.updateRecyclerViewItems(data)
 
-    class FileShareBottomSheetDialog(val viewModel: FileShareViewModel? = null, val itemsData: ConcurrentHashMap<String, FileShareItemData>? = null, val fabCallback: (() -> Unit)? = null) : BandyerBottomSheetDialog() {
+    class FileShareBottomSheetDialog(private var viewModel: FileShareViewModel? = null) : BandyerBottomSheetDialog() {
 
         internal companion object {
             const val PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -85,22 +90,24 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private var fastAdapter: FastAdapter<IItem<*, *>>? = null
 
-        var smoothScroller: SmoothScroller? = null
+        private var smoothScroller: SmoothScroller? = null
 
-        val requestPermissionLauncher =
+        private val requestPermissionLauncher =
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
             ) { isGranted: Boolean ->
                 if (!isGranted) showPermissionDeniedDialog(requireContext())
             }
 
+        private var getContent: ActivityResultLauncher<String>? = null
+
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_fileShareDialogStyle))
-            smoothScroller = object : LinearSmoothScroller(requireContext()) {
-                override fun getVerticalSnapPreference(): Int {
-                    return SNAP_TO_START
-                }
+            smoothScroller = LinearSmoothScroller(requireContext())
+            getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                uri ?: return@registerForActivityResult
+                viewModel?.upload(uploadId = null, context = this.requireContext(), uri = uri)
             }
         }
 
@@ -116,7 +123,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             itemAdapter = ItemAdapter<BandyerFileShareItem<*, *>>()
             fastAdapter = FastAdapter.with<IItem<*, *>, ItemAdapter<*>>(itemAdapter)
 
-            if(fabCallback != null) setFabOnClickCallback(fabCallback)
+            uploadFileFab?.setOnClickListener { getContent?.launch("*/*") }
 
             initRecyclerView(filesRecyclerView!!)
 
@@ -164,8 +171,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         private fun initRecyclerView(rv: RecyclerView) {
             rv.adapter = fastAdapter
             rv.layoutManager = LinearLayoutManager(requireContext())
-            rv.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.HORIZONTAL))
-            rv.itemAnimator = null
+            rv.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
             fastAdapter!!.withEventHook(UploadItem.UploadItemClickEvent() as EventHook<IItem<*, *>>)
             fastAdapter!!.withEventHook(DownloadItem.DownloadItemClickEvent() as EventHook<IItem<*, *>>)
@@ -177,7 +183,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                 true
             } as OnClickListener<IItem<*, *>>)
 
-            if (itemsData != null) updateRecyclerViewItems(itemsData)
+            if (viewModel != null) updateRecyclerViewItems(viewModel!!.itemsData)
         }
 
         private fun onItemClick(item: BandyerFileShareItem<*,*>) {
@@ -198,8 +204,6 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                 requireContext().startActivity(chooser)
             } else Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_impossible_open_file, Snackbar.LENGTH_SHORT).show()
         }
-
-        private fun setFabOnClickCallback(callback: () -> Unit) = uploadFileFab?.setOnClickListener { callback.invoke() }
 
         private fun showPermissionDeniedDialog(context: Context) = AlertDialog.Builder(context, R.style.BandyerSDKDesign_AlertDialogTheme)
             .setTitle(R.string.bandyer_write_permission_dialog_title)
