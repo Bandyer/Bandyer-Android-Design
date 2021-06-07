@@ -82,19 +82,17 @@ class ChatActivity : AppCompatActivity() {
 
     private fun initializeChatUI() {
         val messages = findViewById<RecyclerView>(R.id.message_recycler_view)
-        val itemAdapter = ItemAdapter<BandyerChatTextMessageItem>()
-        val fastAdapter = FastAdapter.with<IItem<*, *>, ItemAdapter<*>>(itemAdapter)
+        val fastItemAdapter = ItemAdapter<BandyerChatTextMessageItem>()
+        val fastAdapter = FastAdapter.with(fastItemAdapter)
         messages.adapter = fastAdapter
         messages.layoutManager = LinearLayoutManager(this)
         messages.addItemDecoration(ChatRecyclerViewItemDecorator())
 
         val timestamp = Calendar.getInstance().timeInMillis - 8640000000
 
-        itemAdapter.add(BandyerChatTextMessageItem(BandyerChatTextMessage("How is the weather today?", timestamp, mine = true, pending = true, sent = false) { true }))
-
-        itemAdapter.add(BandyerChatTextMessageItem(BandyerChatTextMessage("It's a little cloudy", timestamp, mine = false, pending = false, sent = true) { false }))
-
-        itemAdapter.add(BandyerChatTextMessageItem(BandyerChatTextMessage("Have a nice weekend!", timestamp, mine = true, pending = true, sent = false) { false }))
+        fastItemAdapter.add(BandyerChatTextMessageItem(BandyerChatTextMessage("How is the weather today?", timestamp, mine = true, pending = true, sent = false) { true }))
+        fastItemAdapter.add(BandyerChatTextMessageItem(BandyerChatTextMessage("It's a little cloudy", timestamp, mine = false, pending = false, sent = true) { false }))
+        fastItemAdapter.add(BandyerChatTextMessageItem(BandyerChatTextMessage("Have a nice weekend!", timestamp, mine = true, pending = true, sent = false) { false }))
 
         findViewById<MaterialTextView>(R.id.timestamp_message).text = DateUtils.getRelativeTimeSpanString(timestamp)
     }

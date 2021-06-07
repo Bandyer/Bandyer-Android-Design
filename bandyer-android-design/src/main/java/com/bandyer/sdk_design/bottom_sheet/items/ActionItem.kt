@@ -66,7 +66,7 @@ abstract class ActionItem(@IdRes var viewId: Int, @LayoutRes var viewLayoutRes: 
     override fun hashCode(): Int = viewId
 
     /**
-     * Method called when the layout has been inflated and binded
+     * Method called when the layout has been inflated and bound
      */
     abstract fun onReady()
 }

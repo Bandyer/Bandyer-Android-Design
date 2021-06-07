@@ -29,12 +29,13 @@ import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 
 @Suppress("UNCHECKED_CAST")
 open class RingingBottomSheet<T>(context: AppCompatActivity, bottomSheetStyle: Int) : BandyerClickableBottomSheet<T>(
-        context,
-        CallAction.getIncomingCallActions(context) as List<T>,
-        2,
-        0,
-        BottomSheetLayoutType.GRID,
-        bottomSheetStyle) where T : ActionItem {
+    context,
+    CallAction.getIncomingCallActions(context) as List<T>,
+    2,
+    0,
+    BottomSheetLayoutType.GRID,
+    bottomSheetStyle
+) where T : ActionItem {
 
     override fun show() {
         super.show()

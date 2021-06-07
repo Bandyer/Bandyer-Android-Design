@@ -449,10 +449,9 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
      */
     fun updateAudioRoute(audioRoute: AudioRoute) {
         var position = -1
-
-        audioRouteBottomSheet.fastAdapter.itemAdapter.adapterItems.forEach {
+        audioRouteBottomSheet.fastItemAdapter.adapterItems.forEach {
             if ((it.item as AudioRoute).identifier == audioRoute.identifier)
-                position = audioRouteBottomSheet.fastAdapter.itemAdapter.getAdapterPosition(it)
+                position = audioRouteBottomSheet.fastItemAdapter.getAdapterPosition(it)
         }
         if (position == -1) return
         audioRouteBottomSheet.setItem(audioRoute, position)

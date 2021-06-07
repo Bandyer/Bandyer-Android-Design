@@ -16,7 +16,6 @@
 
 package com.bandyer.sdk_design.bottom_sheet
 
-import androidx.core.view.WindowInsetsControllerCompat
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -33,6 +32,7 @@ import android.widget.Space
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.view.WindowInsetsControllerCompat
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
@@ -46,7 +46,8 @@ import com.bandyer.sdk_design.utils.item_adapter_animators.AlphaCrossFadeAnimato
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutObserver
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutOffsetListener
 import com.google.android.material.textview.MaterialTextView
-import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.select.SelectExtension
 import java.lang.ref.WeakReference
 import java.math.RoundingMode
@@ -62,12 +63,14 @@ import java.text.DecimalFormat
  * @constructor
  * @author kristiyan
  */
-open class BaseBandyerBottomSheet(context: AppCompatActivity,
-                                  private val views: List<ActionItem>,
-                                  spanSize: Int,
-                                  private val peekHeight: Int?,
-                                  bottomSheetLayoutType: BottomSheetLayoutType,
-                                  @StyleRes val bottomSheetLayoutStyle: Int) : BandyerBottomSheet, SystemViewLayoutObserver {
+open class BaseBandyerBottomSheet(
+    context: AppCompatActivity,
+    private val views: List<ActionItem>,
+    spanSize: Int,
+    private val peekHeight: Int?,
+    bottomSheetLayoutType: BottomSheetLayoutType,
+    @StyleRes val bottomSheetLayoutStyle: Int
+) : BandyerBottomSheet, SystemViewLayoutObserver {
 
     private var initialized = false
     private var isAnimating = false
@@ -96,7 +99,6 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
         return child
     }
 
-
     private val bottomSheetBehaviorCallback = object : BandyerBottomSheetBehaviour.BottomSheetCallback() {
 
         override fun onDrawn(bottomSheet: View, state: Int, slideOffset: Float) {
@@ -119,8 +121,9 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
             if ((slideOffset == 0f && bottomSheetBehaviour?.skipCollapsed == false) &&
-                    (bottomSheetBehaviour?.lastStableState == BandyerBottomSheetBehaviour.STATE_COLLAPSED ||
-                            bottomSheetBehaviour?.lastStableState == BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT)) return
+                (bottomSheetBehaviour?.lastStableState == BandyerBottomSheetBehaviour.STATE_COLLAPSED ||
+                        bottomSheetBehaviour?.lastStableState == BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT)
+            ) return
             onStateChangedBottomSheetListener?.onSlide(this@BaseBandyerBottomSheet, slideOffset)
             bottomSheetLayoutContent.updateBackgroundView()
             slideAnimationUpdate(this@BaseBandyerBottomSheet, slideOffset)
@@ -140,7 +143,8 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
     /**
      * RecyclerView adapter
      */
-    var fastAdapter: FastItemAdapter<AdapterActionItem> = FastItemAdapter()
+    var fastItemAdapter: ItemAdapter<AdapterActionItem> = ItemAdapter()
+    var fastAdapter = FastAdapter.with(fastItemAdapter)
 
     /**
      * Layout Content
@@ -292,9 +296,10 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
                         val view = Space(this?.context)
                         this?.addView(view, 0, ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height))
                         parent.addView(
-                                this,
-                                position,
-                                ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
+                            this,
+                            position,
+                            ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                        )
                     }
 
                 }
@@ -491,28 +496,28 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
         }
 
         valueAnimator?.addListener(
-                object : Animator.AnimatorListener {
-                    var isCanceled = false
-                    override fun onAnimationRepeat(animation: Animator?) {}
-                    override fun onAnimationEnd(animation: Animator?) {
-                        if (isCanceled) return
-                        isAnimating = false
-                        bottomSheetLayoutContent.updateBackgroundView()
-                        when (state) {
-                            BandyerBottomSheetBehaviour.STATE_COLLAPSED -> onCollapsed()
-                            BandyerBottomSheetBehaviour.STATE_EXPANDED -> onExpanded()
-                            BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> onAnchor()
-                            BandyerBottomSheetBehaviour.STATE_HIDDEN -> onHidden()
-                        }
+            object : Animator.AnimatorListener {
+                var isCanceled = false
+                override fun onAnimationRepeat(animation: Animator?) {}
+                override fun onAnimationEnd(animation: Animator?) {
+                    if (isCanceled) return
+                    isAnimating = false
+                    bottomSheetLayoutContent.updateBackgroundView()
+                    when (state) {
+                        BandyerBottomSheetBehaviour.STATE_COLLAPSED -> onCollapsed()
+                        BandyerBottomSheetBehaviour.STATE_EXPANDED -> onExpanded()
+                        BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> onAnchor()
+                        BandyerBottomSheetBehaviour.STATE_HIDDEN -> onHidden()
                     }
+                }
 
-                    override fun onAnimationCancel(animation: Animator?) {
-                        isCanceled = true
-                        isAnimating = false
-                    }
+                override fun onAnimationCancel(animation: Animator?) {
+                    isCanceled = true
+                    isAnimating = false
+                }
 
-                    override fun onAnimationStart(animation: Animator?) {}
-                })
+                override fun onAnimationStart(animation: Animator?) {}
+            })
 
         valueAnimator!!.duration = 300
         valueAnimator!!.start()
@@ -554,7 +559,6 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
             this.configureBottomSheet(bottomSheetLayoutContent)
         }
 
-
         onStateChangedBottomSheetListener?.onShow(this)
     }
 
@@ -562,7 +566,6 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
         valueAnimator?.cancel()
         bottomSheetLayoutContent.backgroundView?.parent?.let { (it as ViewGroup).removeView(bottomSheetLayoutContent.backgroundView) }
         if (!initialized) return
-
 
         coordinatorLayout?.removeView(bottomSheetLayoutContent)
         bottomSheetBehaviour = null
@@ -631,41 +634,41 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
     }
 
     override fun setItems(items: List<ActionItem>) {
-        fastAdapter.set(items.map { AdapterActionItem(it) })
+        fastItemAdapter.set(items.map { AdapterActionItem(it) })
     }
 
     override fun getItem(position: Int): ActionItem? {
-        return fastAdapter.getAdapterItem(position).item
+        return fastItemAdapter.getAdapterItem(position).item
     }
 
     override fun getItemIndex(item: ActionItem): Int {
-        return fastAdapter.adapterItems.indexOfFirst { it.item == item }
+        return fastItemAdapter.adapterItems.indexOfFirst { it.item == item }
     }
 
     override fun removeItem(item: ActionItem) {
-        val position = fastAdapter.adapterItems.indexOfFirst { it.item == item }
+        val position = fastItemAdapter.adapterItems.indexOfFirst { it.item == item }
         if (position != -1) {
             fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.deselect(position)
-            fastAdapter.remove(position)
+            fastItemAdapter.remove(position)
         }
     }
 
     override fun addItem(item: ActionItem, position: Int) {
         val bottomSheetItem = AdapterActionItem(item)
-        if (bottomSheetItem !in fastAdapter.adapterItems)
-            fastAdapter.add(position, bottomSheetItem)
+        if (bottomSheetItem !in fastItemAdapter.adapterItems)
+            fastItemAdapter.add(position, bottomSheetItem)
     }
 
     @Suppress("UNCHECKED_CAST")
     final override fun <T : ActionItem> firstOrNull(actionItem: Class<T>): T? {
-        return fastAdapter.adapterItems.firstOrNull { it.item.javaClass.name.contains(actionItem.name) }?.item as T?
+        return fastItemAdapter.adapterItems.firstOrNull { it.item.javaClass.name.contains(actionItem.name) }?.item as T?
     }
 
     override fun setItem(item: ActionItem, position: Int) {
         if (position < 0)
             return
-        if (item.viewLayoutRes != fastAdapter.getAdapterItem(position).item.viewLayoutRes)
-            fastAdapter.set(position, AdapterActionItem(item))
+        if (item.viewLayoutRes != fastItemAdapter.getAdapterItem(position).item.viewLayoutRes)
+            fastItemAdapter[position] = AdapterActionItem(item)
     }
 
     override fun replaceItems(old: ActionItem, new: ActionItem) {

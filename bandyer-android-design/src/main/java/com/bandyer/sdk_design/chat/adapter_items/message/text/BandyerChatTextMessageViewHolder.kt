@@ -30,7 +30,7 @@ class BandyerChatTextMessageViewHolder(view: View) : BandyerBaseChatMessageViewH
     /**
      * @suppress
      */
-    override fun bind(item: BandyerChatTextMessageItem, itemView: BandyerChatTextMessageLayout, payloads: MutableList<Any>) {
+    override fun bind(item: BandyerChatTextMessageItem, itemView: BandyerChatTextMessageLayout, payloads: List<Any>) {
         itemView.messageTextView?.text = item.data.message
         itemView.messageTextView?.maxWidth = itemView.context.getScreenSize().x / 2
     }
