@@ -41,7 +41,6 @@ import com.mikepenz.itemanimators.AlphaInAnimator
 import com.mikepenz.itemanimators.SlideUpAlphaAnimator
 import java.util.concurrent.ConcurrentHashMap
 
-
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
 
     override var dialog: FileShareBottomSheetDialog? = null
@@ -171,6 +170,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         private fun initRecyclerView(rv: RecyclerView) {
             rv.adapter = fastAdapter
             rv.layoutManager = LinearLayoutManager(requireContext())
+            rv.itemAnimator = null
             rv.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
             fastAdapter!!.withEventHook(UploadItem.UploadItemClickEvent() as EventHook<IItem<*, *>>)
