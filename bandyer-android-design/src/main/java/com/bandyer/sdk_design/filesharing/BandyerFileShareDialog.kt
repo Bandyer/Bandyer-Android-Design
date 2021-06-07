@@ -1,9 +1,6 @@
 package com.bandyer.sdk_design.filesharing
 
 import android.Manifest
-import android.animation.Animator
-import android.animation.AnimatorListenerAdapter
-import android.animation.TimeInterpolator
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -37,8 +34,6 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.listeners.EventHook
 import com.mikepenz.fastadapter.listeners.OnClickListener
-import com.mikepenz.itemanimators.AlphaInAnimator
-import com.mikepenz.itemanimators.SlideUpAlphaAnimator
 import java.util.concurrent.ConcurrentHashMap
 
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
