@@ -18,17 +18,16 @@ package com.bandyer.sdk_design.chat.adapter_items.message.abstract_message
 
 import com.mikepenz.fastadapter.items.AbstractItem
 
-
 /**
  * Base Bandyer Chat Message Item containing data of type T
  * @property data contained in the message
  * @constructor
  * @author kristiyan
  */
-abstract class BandyerBaseChatMessageItem<T : BandyerBaseChatMessage>(var data: T) : AbstractItem<BandyerBaseChatMessageItem<*>, BandyerBaseChatMessageViewHolder<*, *>>() {
+abstract class BandyerBaseChatMessageItem<T : BandyerBaseChatMessage>(var data: T) : AbstractItem<BandyerBaseChatMessageViewHolder<*, *>>() {
 
     /**
      * @suppress
      */
-    override fun getType() = data.hashCode()
+    override val type = data.hashCode()
 }

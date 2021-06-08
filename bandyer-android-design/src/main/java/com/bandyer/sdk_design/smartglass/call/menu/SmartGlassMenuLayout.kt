@@ -25,7 +25,8 @@ import com.bandyer.sdk_design.extensions.performTap
 import com.bandyer.sdk_design.smartglass.call.menu.utils.MotionEventInterceptableView
 import com.bandyer.sdk_design.smartglass.call.menu.utils.dispatchMotionEventToInterceptor
 import com.bandyer.sdk_design.utils.isConfirmButton
-import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 
 /**
  * Layout used to represent a smart glass swipeable menu
@@ -57,7 +58,7 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
     var items: List<CallAction> = listOf()
         set(value) {
             field = value
-            fastAdapter.set((if (context.isRtl()) items.reversed() else items).map { AdapterActionItem(it) })
+            fastItemAdapter.set((if (context.isRtl()) items.reversed() else items).map { AdapterActionItem(it) })
         }
 
     /**
@@ -65,7 +66,8 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
      */
     var onSmartglassMenuSelectionListener: OnSmartglassMenuSelectionListener? = null
 
-    private val fastAdapter: FastItemAdapter<AdapterActionItem> = FastItemAdapter()
+    private val fastItemAdapter = ItemAdapter<AdapterActionItem>()
+    private val fastAdapter = FastAdapter.with(fastItemAdapter)
 
     private val binding: BandyerWidgetSmartglassesMenuLayoutBinding by lazy { BandyerWidgetSmartglassesMenuLayoutBinding.inflate(LayoutInflater.from(context), this) }
 
@@ -76,7 +78,7 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
     private val gestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
             getCurrentMenuItemIndex().takeIf { it != -1 }?.let { currentMenuItemIndex ->
-                onSmartglassMenuSelectionListener?.onSelected(fastAdapter.getAdapterItem(currentMenuItemIndex).item)
+                onSmartglassMenuSelectionListener?.onSelected(fastItemAdapter.getAdapterItem(currentMenuItemIndex).item)
             }
             return true
         }

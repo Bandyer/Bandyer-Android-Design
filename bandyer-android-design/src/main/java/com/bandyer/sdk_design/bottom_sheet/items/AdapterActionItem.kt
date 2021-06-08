@@ -28,15 +28,13 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * View holder for the action items
  * @suppress
  */
-class AdapterActionItem(var item: ActionItem) : AbstractItem<AdapterActionItem, AdapterActionItem.Holder>() {
+class AdapterActionItem(var item: ActionItem) : AbstractItem<AdapterActionItem.Holder>() {
 
     override fun getViewHolder(v: View): Holder = Holder(v)
 
-    override fun getType(): Int = item.hashCode()
-
-    override fun getIdentifier(): Long = item.hashCode().toLong()
-
-    override fun getLayoutRes(): Int = item.viewLayoutRes
+    override val layoutRes= item.viewLayoutRes
+    override val type: Int = item.hashCode()
+    override var identifier: Long = item.hashCode().toLong()
 
     override fun createView(ctx: Context, parent: ViewGroup?): View = LayoutInflater.from(ContextThemeWrapper(ctx, item.viewStyle)).inflate(layoutRes, parent, false).apply {
         id = item.viewId
@@ -44,9 +42,9 @@ class AdapterActionItem(var item: ActionItem) : AbstractItem<AdapterActionItem, 
 
     class Holder internal constructor(view: View) : FastAdapter.ViewHolder<AdapterActionItem>(view) {
 
-        override fun bindView(listItem: AdapterActionItem, payloads: List<Any>) {
-            listItem.item.itemView = itemView
-            listItem.item.onReady()
+        override fun bindView(adapterItem: AdapterActionItem, payloads: List<Any>) {
+            adapterItem.item.itemView = itemView
+            adapterItem.item.onReady()
         }
 
         override fun unbindView(item: AdapterActionItem) {

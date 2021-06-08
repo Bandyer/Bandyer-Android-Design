@@ -40,7 +40,7 @@ open class BandyerClickableBottomSheet<T> constructor(context: AppCompatActivity
                                                       @StyleRes bottomSheetLayoutStyle: Int) : BandyerActionBottomSheet<T>(context, views, spanSize, peekHeight, bottomSheetLayoutType, bottomSheetLayoutStyle) where T : ActionItem {
 
     init {
-        fastAdapter.withEventHook(object : ClickEventHook<AdapterActionItem>() {
+        fastAdapter.addEventHook(object : ClickEventHook<AdapterActionItem>() {
             override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<AdapterActionItem>, item: AdapterActionItem) {
                 if (item.item.itemView == null) return
                 val listener = onActionBottomSheetListener as? OnActionBottomSheetListener<ActionItem, BandyerBottomSheet>
