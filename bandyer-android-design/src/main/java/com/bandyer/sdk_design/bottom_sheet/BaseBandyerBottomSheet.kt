@@ -416,7 +416,7 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
                 fade ?: kotlin.run {
                     val viewBottom = view.getCoordinates().y + view.height
                         val hidden = viewBottom - navigationLimit
-                        view.alpha = (1 - hidden / view.height.toFloat()).takeIf { it > 0.18 }?.apply {
+                        view.alpha = (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.apply {
                             recyclerViewAlphaDecimalFormat.format(this)
                         } ?: 0f
                     return@let
