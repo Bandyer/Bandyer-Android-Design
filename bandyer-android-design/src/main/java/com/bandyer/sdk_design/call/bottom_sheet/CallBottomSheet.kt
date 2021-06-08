@@ -157,13 +157,10 @@ open class CallBottomSheet<T>(
         bottomSheetLayoutContent.backgroundView?.alpha = if (state == STATE_HIDDEN || isShowingBottomSheetFromBottom) 0f else 1f
 
         bottomSheetLayoutContent.lineView?.state = when {
-            isShowingBottomSheetFromBottom -> State.COLLAPSED
-            state == STATE_EXPANDED -> State.ANCHORED_LINE
-            state == STATE_COLLAPSED -> State.COLLAPSED
-            state == STATE_ANCHOR_POINT && fixed == true -> State.ANCHORED_DOT
-            state == STATE_DRAGGING && slideOffset > 0f -> State.ANCHORED_LINE
-            state == STATE_SETTLING || state == STATE_DRAGGING -> bottomSheetLayoutContent.lineView?.state
-            else -> State.COLLAPSED
+            isShowingBottomSheetFromBottom                                                                    -> State.COLLAPSED
+            state == STATE_ANCHOR_POINT && fixed == true                                                      -> State.ANCHORED_DOT
+            state == STATE_EXPANDED || state == STATE_SETTLING || state == STATE_DRAGGING || slideOffset > 0f -> State.ANCHORED_LINE
+            else                                                                                              -> State.COLLAPSED
         }
     }
 
@@ -273,7 +270,7 @@ open class CallBottomSheet<T>(
                     animationEndState = if (collapsed && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
                     bottomSheetBehaviour!!.skipCollapsed = false
                 }
-                else -> {
+                else        -> {
                     peekHeight = oneLineHeight
                     anchorOffset = peekHeight
                     bottomSheetBehaviour!!.skipCollapsed = true
@@ -289,11 +286,9 @@ open class CallBottomSheet<T>(
             }
 
             bottomSheetLayoutContent.lineView?.state = when {
-                state == STATE_EXPANDED -> State.ANCHORED_LINE
-                state == STATE_COLLAPSED -> State.COLLAPSED
-                state == STATE_ANCHOR_POINT && fixed == true -> State.ANCHORED_DOT
-                state == STATE_SETTLING || state == STATE_DRAGGING -> bottomSheetLayoutContent.lineView?.state
-                else -> State.COLLAPSED
+                state == STATE_ANCHOR_POINT && fixed == true                                  -> State.ANCHORED_DOT
+                state == STATE_EXPANDED || state == STATE_SETTLING || state == STATE_DRAGGING -> State.ANCHORED_LINE
+                else                                                                          -> State.COLLAPSED
             }
 
             if (animationEndState == -1) return@post
