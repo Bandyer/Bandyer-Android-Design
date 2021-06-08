@@ -471,6 +471,7 @@ open class BaseBandyerBottomSheet(context: AppCompatActivity,
         val startValue = bottomMargin.toFloat()
         val endValue = bottomMarginNavigation.toFloat()
         if (startValue == endValue) {
+            bottomSheetLayoutContent.updateBackgroundView()
             fadeRecyclerViewLinesBelowNavigation()
             return
         }
