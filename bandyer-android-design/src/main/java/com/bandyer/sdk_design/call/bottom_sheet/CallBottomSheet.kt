@@ -23,16 +23,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.BandyerClickableBottomSheet
-import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_ANCHOR_POINT
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_COLLAPSED
+import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_DRAGGING
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_EXPANDED
+import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_HIDDEN
+import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_SETTLING
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
-import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutContent
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
 import com.bandyer.sdk_design.call.bottom_sheet.items.AudioRoute
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
-import com.bandyer.sdk_design.call.buttons.BandyerLineButton
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton.State
 import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.extensions.getHeightWithVerticalMargin
@@ -61,7 +61,7 @@ open class CallBottomSheet<T>(
     private var mic: CallAction.MICROPHONE? = null
     private var audioRoute: CallAction.AUDIOROUTE? = null
     private var currentAudioRoute: AudioRoute? = null
-
+    private var fixed: Boolean? = null
     private var animationStartOffset = -1f
     private var animationEndState = -1
     private var lineAnimator: ValueAnimator? = null
@@ -151,23 +151,27 @@ open class CallBottomSheet<T>(
     override fun slideAnimationUpdate(bottomSheet: BandyerBottomSheet?, slideOffset: Float) {
         super.slideAnimationUpdate(bottomSheet, slideOffset)
         if (!animationEnabled || bottomSheetBehaviour?.lastStableState == state) return
-        bottomSheetLayoutContent.lineView?.state = when {
-            slideOffset <= 0f -> BandyerLineButton.State.COLLAPSED
-            bottomSheetBehaviour?.skipCollapsed == true -> State.ANCHORED_DOT
-            else -> State.ANCHORED_LINE
-        }
-    }
 
-    override fun onSettling() {
-        super.onSettling()
-        if (bottomSheetBehaviour?.lastStableState != BandyerBottomSheetBehaviour.STATE_HIDDEN && bottomSheetLayoutContent.visibility == View.VISIBLE)
-            bottomSheetLayoutContent.backgroundView?.alpha = 1f
+        val isShowingBottomSheetFromBottom = slideOffset <= 0f && fixed == false && bottomSheetBehaviour?.skipCollapsed == false
+
+        bottomSheetLayoutContent.backgroundView?.alpha = if (state == STATE_HIDDEN || isShowingBottomSheetFromBottom) 0f else 1f
+
+        if (state == STATE_SETTLING) return
+
+        bottomSheetLayoutContent.lineView?.state = when {
+            slideOffset > 0f -> State.ANCHORED_LINE
+            state == STATE_COLLAPSED -> State.COLLAPSED
+            state == STATE_ANCHOR_POINT || fixed == true -> State.ANCHORED_DOT
+            state == STATE_EXPANDED -> State.EXPANDED
+            state == STATE_DRAGGING && slideOffset > 0f -> State.ANCHORED_LINE
+            else -> bottomSheetLayoutContent.lineView?.state
+        }
     }
 
     override fun onExpanded() {
         super.onExpanded()
-        replaceOptionItem()
-        bottomSheetLayoutContent.lineView?.state = BandyerLineButton.State.EXPANDED
+        bottomSheetLayoutContent.backgroundView?.alpha = 1f
+        bottomSheetLayoutContent.lineView?.state = State.EXPANDED
     }
 
     override fun onDragging() {
@@ -178,24 +182,21 @@ open class CallBottomSheet<T>(
     override fun onHidden() {
         super.onHidden()
         lineAnimator?.removeAllUpdateListeners()
-        replaceOptionItem(true)
         cameraToggled = camera?.toggled == true
         micToggled = mic?.toggled == true
+        bottomSheetLayoutContent.lineView?.state = if (bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT else State.ANCHORED_LINE
     }
 
     override fun onCollapsed() {
         super.onCollapsed()
-        replaceOptionItem(true)
-        bottomSheetLayoutContent.lineView?.state = BandyerLineButton.State.COLLAPSED
+        bottomSheetLayoutContent.lineView?.state = State.COLLAPSED
         bottomSheetLayoutContent.backgroundView?.alpha = 0f
     }
+    
 
     override fun onAnchor() {
         super.onAnchor()
-        replaceOptionItem(true)
-        bottomSheetLayoutContent.lineView?.state =
-            if (bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT
-            else State.ANCHORED_LINE
+        bottomSheetLayoutContent.lineView?.state = if (bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT else State.ANCHORED_LINE
     }
 
     /**
@@ -203,28 +204,15 @@ open class CallBottomSheet<T>(
      * @param audioRoute new AudioRoute? to be displayed
      */
     fun updateAudioRouteIcon(audioRoute: AudioRoute?) {
-        this@CallBottomSheet.audioRoute = firstOrNull(CallAction.AUDIOROUTE::class.java)
-        this@CallBottomSheet.audioRoute?.setCurrent(audioRoute)
+        this.audioRoute = firstOrNull(CallAction.AUDIOROUTE::class.java)
+        this.audioRoute?.setCurrent(audioRoute)
         currentAudioRoute = audioRoute
-        if (state == STATE_EXPANDED) replaceOptionItem()
     }
 
-    private fun replaceOptionItem(withOptionActionItem: Boolean = false) {
-        val options = callActionItems.firstOrNull { it is CallAction.OPTIONS } as? CallAction.OPTIONS ?: return
 
-        val oldItem = firstOrNull(options.switchWith::class.java) ?: options
-
-        if (withOptionActionItem && oldItem is CallAction.OPTIONS) return
-
-        val newItem = if (!withOptionActionItem) options.switchWith else options
-
-        (newItem as? CallAction.AUDIOROUTE)?.setCurrent(currentAudioRoute)
-
-        replaceItems(oldItem, newItem)
-    }
-
-    private fun setup(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) = bottomSheetLayoutContent.post contentPost@{
-        bottomSheetBehaviour ?: return@contentPost
+    private fun setup(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) = bottomSheetLayoutContent.post {
+        bottomSheetBehaviour ?: return@post
+        this.fixed = fixed!!
         animationStartOffset = -1f
         animationEndState = -1
         animationEnabled = fixed == false
@@ -236,7 +224,7 @@ open class CallBottomSheet<T>(
             bottomSheetBehaviour!!.skipCollapsed = true
             bottomSheetBehaviour!!.disableDragging = true
             expand()
-            return@contentPost
+            return@post
         }
 
         var peekHeight: Int
@@ -262,7 +250,7 @@ open class CallBottomSheet<T>(
                     animationEndState = if (collapsed && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
                     bottomSheetBehaviour!!.skipCollapsed = false
                 }
-                else -> {
+                else        -> {
                     peekHeight = oneLineHeight
                     anchorOffset = peekHeight
                     bottomSheetBehaviour!!.skipCollapsed = true
@@ -277,15 +265,18 @@ open class CallBottomSheet<T>(
                 state = if (callActionItems.size <= MAX_ITEMS_PER_ROW) STATE_EXPANDED else if (collapsed && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
             }
 
+            bottomSheetLayoutContent.lineView?.state = when {
+                state == STATE_ANCHOR_POINT || fixed == true -> State.ANCHORED_DOT
+                state == STATE_EXPANDED                      -> State.EXPANDED
+                state == STATE_SETTLING                      -> bottomSheetLayoutContent.lineView?.state
+                else                                         -> State.COLLAPSED
+            }
+
             if (animationEndState == -1) return@post
             animationStartOffset = bottomSheetBehaviour!!.getStableStateSlideOffset(animationEndState)
         }
 
-        bottomSheetLayoutContent.lineView?.state =
-            if (state == STATE_COLLAPSED || bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT
-            else State.ANCHORED_LINE
-
-        if (collapsed && collapsible) bottomSheetLayoutContent.backgroundView?.alpha = 0f
+        bottomSheetLayoutContent.backgroundView?.alpha = if (collapsed && collapsible) 0f else 1f
 
         if (callActionItems.size <= MAX_ITEMS_PER_ROW) {
             lineView?.layoutParams?.height = context.dp2px(24f)
@@ -295,6 +286,8 @@ open class CallBottomSheet<T>(
         }
 
         lineView?.setOnClickListener {
+            bottomSheetLayoutContent.backgroundView?.alpha = 1f
+            bottomSheetLayoutContent.lineView?.state = State.ANCHORED_LINE
             if (state == STATE_COLLAPSED)
                 anchor()
             else if (bottomSheetBehaviour?.skipCollapsed == true)

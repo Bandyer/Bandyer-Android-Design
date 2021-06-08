@@ -33,6 +33,7 @@ import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
@@ -197,7 +198,7 @@ open class BaseBandyerBottomSheet(
      * @param slideOffset Float
      */
     protected open fun slideAnimationUpdate(bottomSheet: BandyerBottomSheet?, slideOffset: Float) {
-        if (slideOffset >= 0f) fadeRecyclerViewLinesBelowNavigation()
+        if ((slideOffset >= 0f && hasMoved && !isAnimating) || slideOffset < 0f) fadeRecyclerViewLinesBelowNavigation()
         when {
             slideOffset <= 0f -> updateNavigationBar(false)
             else -> updateNavigationBar()
@@ -210,9 +211,7 @@ open class BaseBandyerBottomSheet(
      * @param state Int
      * @param slideOffset Float
      */
-    protected open fun slideAnimationReady(bottomSheet: BandyerBottomSheet?, state: Int, slideOffset: Float) {
-        fadeRecyclerViewLinesBelowNavigation()
-    }
+    protected open fun slideAnimationReady(bottomSheet: BandyerBottomSheet?, state: Int, slideOffset: Float) = Unit
 
     private fun configureBottomSheet(bottomSheetLayoutContent: BottomSheetLayoutContent) {
         val context = bottomSheetLayoutContent.context.getActivity<Activity>() ?: return
@@ -391,10 +390,7 @@ open class BaseBandyerBottomSheet(
         if (!hasMoved) {
             moveBottomSheet()
             hasMoved = true
-        }
-        bottomSheetLayoutContent.post {
-            fadeRecyclerViewLinesBelowNavigation()
-        }
+        } else fadeRecyclerViewLinesBelowNavigation()
         updateNavigationBar()
     }
 
@@ -413,15 +409,19 @@ open class BaseBandyerBottomSheet(
         val navigationLimit = if (fade == null) (bottomSheetLayoutContent.context.getScreenSize().y - bottomMarginNavigation) else 0
         (0..recyclerView?.adapter?.itemCount!!).forEach { i ->
             recyclerView?.layoutManager?.findViewByPosition(i)?.let { view ->
+                val isGrid = recyclerView?.layoutManager is GridLayoutManager
+
+                if ((!hasMoved || isAnimating) && isGrid) {
+                    view.alpha = if (i < (recyclerView?.layoutManager as GridLayoutManager).spanCount) 1f else 0f
+                    return@let
+                }
+
                 fade ?: kotlin.run {
                     val viewBottom = view.getCoordinates().y + view.height
-                    if (bottomMarginNavigation != 0 && viewBottom > navigationLimit) {
                         val hidden = viewBottom - navigationLimit
-                        view.alpha = (1 - hidden / view.height.toFloat()).takeIf { it > 0.18 }?.apply {
+                        view.alpha = (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.apply {
                             recyclerViewAlphaDecimalFormat.format(this)
                         } ?: 0f
-                    } else view.alpha = 1f
-
                     return@let
                 }
                 view.alpha = if (fade) 1f else 0f
@@ -466,8 +466,6 @@ open class BaseBandyerBottomSheet(
         if (isAnimating) valueAnimator?.cancel()
         if (state == -1) return
 
-        isAnimating = true
-
         coordinatorLayout ?: return
 
         val lp = coordinatorLayout!!.layoutParams as ViewGroup.MarginLayoutParams
@@ -475,8 +473,13 @@ open class BaseBandyerBottomSheet(
 
         val startValue = bottomMargin.toFloat()
         val endValue = bottomMarginNavigation.toFloat()
+        if (startValue == endValue) {
+            bottomSheetLayoutContent.updateBackgroundView()
+            fadeRecyclerViewLinesBelowNavigation()
+            return
+        }
 
-        if (startValue == endValue) return
+        isAnimating = true
 
         valueAnimator?.removeAllListeners()
         valueAnimator?.cancel()
@@ -485,39 +488,40 @@ open class BaseBandyerBottomSheet(
         valueAnimator!!.interpolator = OvershootInterpolator()
 
         valueAnimator!!.addUpdateListener {
-
             kotlin.runCatching {
                 val value = it.animatedValue as Float
                 lp.bottomMargin = value.toInt()
                 coordinatorLayout?.requestLayout()
                 bottomSheetLayoutContent.updateBackgroundView()
+                fadeRecyclerViewLinesBelowNavigation()
                 onStateChangedBottomSheetListener?.onSlide(this@BaseBandyerBottomSheet, bottomSheetLayoutContent.top.toFloat())
             }
         }
 
         valueAnimator?.addListener(
-            object : Animator.AnimatorListener {
-                var isCanceled = false
-                override fun onAnimationRepeat(animation: Animator?) {}
-                override fun onAnimationEnd(animation: Animator?) {
-                    if (isCanceled) return
-                    isAnimating = false
-                    bottomSheetLayoutContent.updateBackgroundView()
-                    when (state) {
-                        BandyerBottomSheetBehaviour.STATE_COLLAPSED -> onCollapsed()
-                        BandyerBottomSheetBehaviour.STATE_EXPANDED -> onExpanded()
-                        BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> onAnchor()
-                        BandyerBottomSheetBehaviour.STATE_HIDDEN -> onHidden()
+                object : Animator.AnimatorListener {
+                    var isCanceled = false
+                    override fun onAnimationRepeat(animation: Animator?) {}
+                    override fun onAnimationEnd(animation: Animator?) {
+                        fadeRecyclerViewLinesBelowNavigation()
+                        isAnimating = false
+                        if (isCanceled) return
+                        bottomSheetLayoutContent.updateBackgroundView()
+                        when (state) {
+                            BandyerBottomSheetBehaviour.STATE_COLLAPSED    -> onCollapsed()
+                            BandyerBottomSheetBehaviour.STATE_EXPANDED     -> onExpanded()
+                            BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> onAnchor()
+                            BandyerBottomSheetBehaviour.STATE_HIDDEN       -> onHidden()
+                        }
                     }
-                }
 
-                override fun onAnimationCancel(animation: Animator?) {
-                    isCanceled = true
-                    isAnimating = false
-                }
+                    override fun onAnimationCancel(animation: Animator?) {
+                        isCanceled = true
+                        isAnimating = false
+                    }
 
-                override fun onAnimationStart(animation: Animator?) {}
-            })
+                    override fun onAnimationStart(animation: Animator?) = fadeRecyclerViewLinesBelowNavigation()
+                })
 
         valueAnimator!!.duration = 300
         valueAnimator!!.start()
@@ -566,7 +570,6 @@ open class BaseBandyerBottomSheet(
         valueAnimator?.cancel()
         bottomSheetLayoutContent.backgroundView?.parent?.let { (it as ViewGroup).removeView(bottomSheetLayoutContent.backgroundView) }
         if (!initialized) return
-
         coordinatorLayout?.removeView(bottomSheetLayoutContent)
         bottomSheetBehaviour = null
         initialized = false
