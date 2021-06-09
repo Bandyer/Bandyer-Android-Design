@@ -161,5 +161,6 @@
     <string name="bandyer_fileshare_chooser_title">Scegli un applicazione</string>
     <string name="bandyer_fileshare_impossible_open_file">Impossibile aprire il file</string>
     <string name="bandyer_fileshare_file_cancelled">File cancellato</string>
+    <string name="bandyer_fileshare_file_trashed">File cestinato</string>
 
 </resources>

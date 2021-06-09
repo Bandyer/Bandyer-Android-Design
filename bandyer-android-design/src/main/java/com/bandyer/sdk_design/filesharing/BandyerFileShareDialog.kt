@@ -7,13 +7,16 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager.MATCH_DEFAULT_ONLY
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -190,8 +193,12 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                     else -> null
                 } ?: return
 
+                val isFileInTrash = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { isFileInTrash(requireContext(), uri) } else false
+
                 if(!doesFileExists(requireContext(), uri))
                     Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_file_cancelled, Snackbar.LENGTH_SHORT).show()
+                else if (isFileInTrash)
+                    Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_file_trashed, Snackbar.LENGTH_SHORT).show()
                 else
                     openFileOrShowMessage(requireContext(), uri)
             }
@@ -216,6 +223,16 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                 cursor?.close()
                 doesExist
             }.getOrNull() ?: false
+
+        @RequiresApi(Build.VERSION_CODES.R)
+        private fun isFileInTrash(context: Context, uri: Uri): Boolean {
+            return kotlin.runCatching {
+                val cursor = context.contentResolver.query(uri, null, MediaStore.MediaColumns.IS_TRASHED, null, null)
+                val isInTrash = cursor != null && cursor.moveToFirst()
+                cursor?.close()
+                return isInTrash
+            }.getOrNull() ?: false
+        }
 
         private fun showPermissionDeniedDialog(context: Context) = AlertDialog.Builder(context, R.style.BandyerSDKDesign_AlertDialogTheme)
             .setTitle(R.string.bandyer_write_permission_dialog_title)
