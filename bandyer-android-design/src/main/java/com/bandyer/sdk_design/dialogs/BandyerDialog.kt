@@ -52,7 +52,7 @@ interface BandyerDialog<T : BandyerBottomSheetDialog> {
      * Call this method to dismiss the dialog
      */
     fun dismiss() {
-        if (dialog?.fragmentManager != null) dialog?.dismiss()
+        if (dialog?.fragmentManager != null) dialog?.dismissAllowingStateLoss()
     }
 
     /**
