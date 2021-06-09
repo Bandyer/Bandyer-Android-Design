@@ -27,7 +27,6 @@ import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
 import com.bandyer.sdk_design.call.bottom_sheet.items.AudioRoute
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton.State
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.select.SelectExtension
 
 /**
@@ -65,13 +64,15 @@ class AudioRouteBottomSheet<T : ActionItem>(
 
     override fun show() {
         super.show()
-        onAudioRoutesRequest?.onAudioRoutesRequested()?.let { setItems(it) }
-        selectItem(mCurrentAudioRoute)
-        bottomSheetBehaviour!!.skipCollapsed = true
-        bottomSheetBehaviour!!.isHideable = true
-        bottomSheetBehaviour!!.skipAnchor = true
-        bottomSheetLayoutContent.backgroundView?.alpha = 1f
-        expand()
+        onAudioRoutesRequest?.onAudioRoutesRequested()?.let {
+            setItems(it)
+            selectItem(mCurrentAudioRoute)
+            bottomSheetBehaviour!!.skipCollapsed = true
+            bottomSheetBehaviour!!.isHideable = true
+            bottomSheetBehaviour!!.skipAnchor = true
+            bottomSheetLayoutContent.backgroundView?.alpha = 1f
+            expand()
+        }
     }
 
     override fun saveInstanceState(saveInstanceState: Bundle?): Bundle? {
@@ -113,7 +114,7 @@ class AudioRouteBottomSheet<T : ActionItem>(
      * @param actionItem ActionItem to select
      */
     override fun selectItem(actionItem: ActionItem?) {
-        if (actionItem == null || (actionItem as? AudioRoute) == null)
+        if (actionItem == null || (actionItem as? AudioRoute) == null || actionItem == currentItemSelected?.item)
             return
 
         currentItemSelected = AdapterActionItem(actionItem)
@@ -123,18 +124,15 @@ class AudioRouteBottomSheet<T : ActionItem>(
         val position = fastItemAdapter.adapterItems.indexOfFirst {
             (it.item as AudioRoute).identifier == actionItem.identifier
         }.takeIf { it != -1 } ?: fastItemAdapter.adapterItems.indexOfFirst {
-            it.item is AudioRoute.MUTED
+            return
         }
 
         kotlin.runCatching { fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.select(position) }
     }
 
     override fun setItems(items: List<ActionItem>) {
-        val diffResult = FastAdapterDiffUtil.calculateDiff(fastItemAdapter, items.map { AdapterActionItem(it) })
-        FastAdapterDiffUtil[fastItemAdapter] = diffResult
-
-        mCurrentAudioRoute?.let { selectItem(it) }
-
+        super.setItems(items)
+        if (items.contains(mCurrentAudioRoute)) mCurrentAudioRoute?.let { selectItem(it) }
         if (state == BottomSheetBehavior.STATE_EXPANDED || state == BottomSheetBehavior.STATE_COLLAPSED) moveBottomSheet()
     }
 

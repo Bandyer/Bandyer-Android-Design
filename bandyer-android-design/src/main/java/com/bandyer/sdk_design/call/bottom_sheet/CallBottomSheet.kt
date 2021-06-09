@@ -159,12 +159,12 @@ open class CallBottomSheet<T>(
         if (state == STATE_SETTLING) return
 
         bottomSheetLayoutContent.lineView?.state = when {
-            slideOffset > 0f -> State.ANCHORED_LINE
-            state == STATE_COLLAPSED -> State.COLLAPSED
+            slideOffset > 0f                             -> State.ANCHORED_LINE
+            state == STATE_COLLAPSED                     -> State.COLLAPSED
             state == STATE_ANCHOR_POINT || fixed == true -> State.ANCHORED_DOT
-            state == STATE_EXPANDED -> State.EXPANDED
-            state == STATE_DRAGGING && slideOffset > 0f -> State.ANCHORED_LINE
-            else -> bottomSheetLayoutContent.lineView?.state
+            state == STATE_EXPANDED                      -> State.EXPANDED
+            state == STATE_DRAGGING && slideOffset > 0f  -> State.ANCHORED_LINE
+            else                                         -> bottomSheetLayoutContent.lineView?.state
         }
     }
 
@@ -192,7 +192,7 @@ open class CallBottomSheet<T>(
         bottomSheetLayoutContent.lineView?.state = State.COLLAPSED
         bottomSheetLayoutContent.backgroundView?.alpha = 0f
     }
-    
+
 
     override fun onAnchor() {
         super.onAnchor()
@@ -204,8 +204,8 @@ open class CallBottomSheet<T>(
      * @param audioRoute new AudioRoute? to be displayed
      */
     fun updateAudioRouteIcon(audioRoute: AudioRoute?) {
-        this.audioRoute = firstOrNull(CallAction.AUDIOROUTE::class.java)
-        this.audioRoute?.setCurrent(audioRoute)
+        this@CallBottomSheet.audioRoute = firstOrNull(CallAction.AUDIOROUTE::class.java)
+        this@CallBottomSheet.audioRoute?.setCurrent(audioRoute)
         currentAudioRoute = audioRoute
     }
 

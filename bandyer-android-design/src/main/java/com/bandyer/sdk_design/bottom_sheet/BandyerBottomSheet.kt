@@ -126,6 +126,12 @@ interface BandyerBottomSheet {
     fun setItem(item: ActionItem, position: Int)
 
     /**
+     * Update the item if present
+     * @param item ActionItem to be updated
+     */
+    fun updateItem(item: ActionItem)
+
+    /**
      * Get an item given a position
      * @param position of the item to get
      * @return ActionItem found at position null if not present
