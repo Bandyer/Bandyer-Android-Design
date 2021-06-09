@@ -64,15 +64,13 @@ class AudioRouteBottomSheet<T : ActionItem>(
 
     override fun show() {
         super.show()
-        onAudioRoutesRequest?.onAudioRoutesRequested()?.let {
-            setItems(it)
-            selectItem(mCurrentAudioRoute)
-            bottomSheetBehaviour!!.skipCollapsed = true
-            bottomSheetBehaviour!!.isHideable = true
-            bottomSheetBehaviour!!.skipAnchor = true
-            bottomSheetLayoutContent.backgroundView?.alpha = 1f
-            expand()
-        }
+        onAudioRoutesRequest?.onAudioRoutesRequested()?.let { setItems(it) }
+        selectItem(mCurrentAudioRoute)
+        bottomSheetBehaviour!!.skipCollapsed = true
+        bottomSheetBehaviour!!.isHideable = true
+        bottomSheetBehaviour!!.skipAnchor = true
+        bottomSheetLayoutContent.backgroundView?.alpha = 1f
+        expand()
     }
 
     override fun saveInstanceState(saveInstanceState: Bundle?): Bundle? {
