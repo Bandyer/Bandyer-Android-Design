@@ -486,7 +486,6 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
      */
     @JvmOverloads
     fun showCallControls(collapsible: Boolean, fixed: Boolean = false, collapsed: Boolean = false) = coordinatorLayout.post {
-        if (callBottomSheet != null && currentBottomSheetLayout == callBottomSheet!!.bottomSheetLayoutContent) return@post
         createCallBottomSheet()
         isHidden = false
         currentBottomSheetLayout = callBottomSheet?.bottomSheetLayoutContent
