@@ -20,27 +20,17 @@ import android.annotation.SuppressLint
 import android.content.ComponentCallbacks
 import android.content.res.Configuration
 import android.graphics.Rect
-import android.hardware.input.InputManager
 import android.os.Build
-import android.os.SystemClock
-import android.util.Log
 import android.view.*
-import androidx.core.view.InputDeviceCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.viewpager.widget.ViewPager
 import com.bandyer.android_common.LifecycleEvents
 import com.bandyer.android_common.LifecyleBinder
 import com.bandyer.sdk_design.extensions.checkIsInMultiWindowMode
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutObserver
 import java.lang.ref.WeakReference
-import java.lang.reflect.InvocationTargetException
-import java.lang.reflect.Method
 import kotlin.math.abs
-import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.isAccessible
-
 
 internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewControlsAwareInstance, SystemViewLayoutObserver, ComponentCallbacks, View.OnLayoutChangeListener {
     private var context: WeakReference<FragmentActivity>? = null
@@ -82,39 +72,26 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
             window?.decorView?.post { resetMargins() }
         }
 
-        if (Build.VERSION.SDK_INT >= 21) {
-            val layout = (window!!.decorView as ViewGroup).getChildAt(0)
-            ViewCompat.setOnApplyWindowInsetsListener(layout) { v, insets ->
-                val isInPiP = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) && context?.get()?.isInPictureInPictureMode == true
-                val hasInsetsChanged = insets.hasInsetsChanged(oldInsets)
-                val isChangingPiPConfiguration = wasInPiP != isInPiP
-                wasInPiP = isInPiP
-                oldInsets = insets
+        val layout = (window!!.decorView as ViewGroup).getChildAt(0)
+        ViewCompat.setOnApplyWindowInsetsListener(layout) { v, insets ->
+            val isInPiP = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) && context?.get()?.isInPictureInPictureMode == true
+            val rootInsets = v.rootView.rootWindowInsets
+            val hasInsetsChanged = WindowInsetsCompat.toWindowInsetsCompat(rootInsets).getInsets(WindowInsetsCompat.Type.systemBars()) != oldInsets?.getInsets(WindowInsetsCompat.Type.systemBars())
+            val isChangingPiPConfiguration = wasInPiP != isInPiP
+            wasInPiP = isInPiP
+            oldInsets = WindowInsetsCompat.toWindowInsetsCompat(rootInsets)
 
-                if (isChangingPiPConfiguration || !hasInsetsChanged)
-                    return@setOnApplyWindowInsetsListener insets.consumeSystemWindowInsets()
+            if (isChangingPiPConfiguration || !hasInsetsChanged)
+                return@setOnApplyWindowInsetsListener WindowInsetsCompat.CONSUMED
 
-                v.post { resetMargins() }
-                return@setOnApplyWindowInsetsListener insets.consumeSystemWindowInsets()
-            }
+            v.post { resetMargins() }
+            return@setOnApplyWindowInsetsListener WindowInsetsCompat.CONSUMED
         }
 
         return this
     }
 
     private var wasInPiP = false
-
-    private fun WindowInsetsCompat.hasInsetsChanged(other: WindowInsetsCompat?): Boolean {
-        return other == null ||
-                stableInsetTop != other.stableInsetTop ||
-                stableInsetLeft != other.stableInsetLeft ||
-                stableInsetRight != other.stableInsetRight ||
-                stableInsetBottom != other.stableInsetBottom ||
-                systemWindowInsetTop != other.systemWindowInsetTop ||
-                systemWindowInsetLeft != other.systemWindowInsetLeft ||
-                systemWindowInsetRight != other.systemWindowInsetRight ||
-                systemWindowInsetBottom != other.systemWindowInsetBottom
-    }
 
     private var oldInsets: WindowInsetsCompat? = null
 
@@ -170,8 +147,8 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
         }
 
         if (height == 0 || width == 0) return
-        
-        val currentInsets =  ViewCompat.getRootWindowInsets(decorView)?.stableInsets
+
+        val currentInsets = ViewCompat.getRootWindowInsets(decorView)?.stableInsets
 
         val bottomMargin = oldInsets?.displayCutout?.safeInsetBottom?.takeIf { it > 0 } ?: currentInsets?.bottom ?: (height - rect.bottom).takeIf { it >= 0 } ?: 0
         val topMargin = oldInsets?.displayCutout?.safeInsetTop?.takeIf { it > 0 } ?: currentInsets?.top ?: rect.top.takeIf { it >= 0 } ?: 0
