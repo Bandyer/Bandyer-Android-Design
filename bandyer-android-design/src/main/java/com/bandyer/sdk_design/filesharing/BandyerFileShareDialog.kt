@@ -1,6 +1,7 @@
 package com.bandyer.sdk_design.filesharing
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -197,17 +198,14 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         }
 
         private fun openFileOrShowMessage(context: Context, uri: Uri) {
-            kotlin.runCatching {
-                val mimeType = uri.getMimeType(context)
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.setDataAndType(uri, mimeType)
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                val packageManager = context.packageManager
-                val resolveInfo = packageManager.resolveActivity(intent, MATCH_DEFAULT_ONLY)
-                if (resolveInfo != null) {
-                    val chooser = Intent.createChooser(intent, context.getString(R.string.bandyer_fileshare_chooser_title))
-                    context.startActivity(chooser)
-                } else Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_impossible_open_file, Snackbar.LENGTH_SHORT).show()
+            val mimeType = uri.getMimeType(context)
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setDataAndType(uri, mimeType)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            try {
+                context.startActivity(intent)
+            } catch (ex: ActivityNotFoundException) {
+                Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_impossible_open_file, Snackbar.LENGTH_SHORT).show()
             }
         }
 
