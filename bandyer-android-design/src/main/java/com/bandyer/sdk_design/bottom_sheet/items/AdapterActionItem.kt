@@ -40,6 +40,17 @@ class AdapterActionItem(var item: ActionItem) : AbstractItem<AdapterActionItem.H
         id = item.viewId
     }
 
+    override fun equals(other: Any?): Boolean = item == other
+
+    override fun hashCode(): Int {
+        var result = super.hashCode()
+        result = 31 * result + item.hashCode()
+        result = 31 * result + layoutRes
+        result = 31 * result + type
+        result = 31 * result + identifier.hashCode()
+        return result
+    }
+
     class Holder internal constructor(view: View) : FastAdapter.ViewHolder<AdapterActionItem>(view) {
 
         override fun bindView(adapterItem: AdapterActionItem, payloads: List<Any>) {

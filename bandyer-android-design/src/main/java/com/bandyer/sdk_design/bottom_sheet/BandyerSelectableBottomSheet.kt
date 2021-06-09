@@ -16,14 +16,11 @@
 
 package com.bandyer.sdk_design.bottom_sheet
 
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
-import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.ISelectionListener
-import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.mikepenz.fastadapter.select.SelectExtension
 import com.mikepenz.fastadapter.select.getSelectExtension
 
@@ -32,14 +29,15 @@ import com.mikepenz.fastadapter.select.getSelectExtension
  * @author kristiyan
  */
 @Suppress("UNCHECKED_CAST")
-open class BandyerSelectableBottomSheet<T : ActionItem>(context: AppCompatActivity,
-                                                        selection: Int = -1,
-                                                        views: List<T>,
-                                                        spanSize: Int,
-                                                        peekHeight: Int?,
-                                                        bottomSheetLayoutType: BottomSheetLayoutType,
-                                                        bottomSheetStyle: Int)
-    : BandyerActionBottomSheet<T>(context, views, spanSize, peekHeight, bottomSheetLayoutType, bottomSheetStyle) {
+open class BandyerSelectableBottomSheet<T : ActionItem>(
+    context: AppCompatActivity,
+    selection: Int = -1,
+    views: List<T>,
+    spanSize: Int,
+    peekHeight: Int?,
+    bottomSheetLayoutType: BottomSheetLayoutType,
+    bottomSheetStyle: Int
+) : BandyerActionBottomSheet<T>(context, views, spanSize, peekHeight, bottomSheetLayoutType, bottomSheetStyle) {
 
     /**
      * Current item selected
@@ -55,7 +53,7 @@ open class BandyerSelectableBottomSheet<T : ActionItem>(context: AppCompatActivi
         selectExtension.selectWithItemUpdate = true
         selectExtension.selectionListener = object : ISelectionListener<AdapterActionItem> {
             override fun onSelectionChanged(item: AdapterActionItem, selected: Boolean) {
-                if (!selected || currentItemSelected != null) return
+                if (!selected || (currentItemSelected != null && currentItemSelected!!.item::class == item.item::class)) return
                 currentItemSelected = item
                 notifyItemSelected(item, fastItemAdapter.adapterItems.indexOf(item))
             }
