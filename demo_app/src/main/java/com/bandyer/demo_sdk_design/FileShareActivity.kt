@@ -1,18 +1,10 @@
 package com.bandyer.demo_sdk_design
 
-import android.app.Dialog
-import android.content.ActivityNotFoundException
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
-import androidx.savedstate.SavedStateRegistry
 import com.bandyer.communication_center.file_share.file_sharing_center.UploadState
 import com.bandyer.communication_center.file_share.file_sharing_center.request.DownloadState
 import com.bandyer.demo_sdk_design.file_share.LocalFileShareViewModel

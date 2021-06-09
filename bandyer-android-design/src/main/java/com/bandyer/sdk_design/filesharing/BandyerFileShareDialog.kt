@@ -182,23 +182,42 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         }
 
         private fun onItemClick(item: BandyerFileShareItem<*,*>) {
-            val uri = when (item) {
-                is UploadItem -> item.data.uri
-                is DownloadItem -> item.data.uri
-                else -> null
-            } ?: return
+            kotlin.runCatching {
+                val uri = when (item) {
+                    is UploadItem -> item.data.uri
+                    is DownloadItem -> if(item.data is DownloadData.Success) item.data.uri else null
+                    else -> null
+                } ?: return
 
-            val mimeType = uri.getMimeType(requireContext()) ?: return
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.setDataAndType(uri, mimeType)
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            val packageManager = requireContext().packageManager
-            val resolveInfo = packageManager.resolveActivity(intent, MATCH_DEFAULT_ONLY)
-            if (resolveInfo != null) {
-                val chooser = Intent.createChooser(intent, requireContext().getString(R.string.bandyer_fileshare_chooser_title))
-                requireContext().startActivity(chooser)
-            } else Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_impossible_open_file, Snackbar.LENGTH_SHORT).show()
+                if(!doesFileExists(requireContext(), uri))
+                    Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_file_cancelled, Snackbar.LENGTH_SHORT).show()
+                else
+                    openFileOrShowMessage(requireContext(), uri)
+            }
         }
+
+        private fun openFileOrShowMessage(context: Context, uri: Uri) {
+            kotlin.runCatching {
+                val mimeType = uri.getMimeType(context)
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setDataAndType(uri, mimeType)
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                val packageManager = context.packageManager
+                val resolveInfo = packageManager.resolveActivity(intent, MATCH_DEFAULT_ONLY)
+                if (resolveInfo != null) {
+                    val chooser = Intent.createChooser(intent, context.getString(R.string.bandyer_fileshare_chooser_title))
+                    context.startActivity(chooser)
+                } else Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_impossible_open_file, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
+        private fun doesFileExists(context: Context, uri: Uri): Boolean =
+            kotlin.runCatching {
+                val cursor = context.contentResolver.query(uri, null, null, null, null)
+                val doesExist = cursor != null && cursor.moveToFirst()
+                cursor?.close()
+                doesExist
+            }.getOrNull() ?: false
 
         private fun showPermissionDeniedDialog(context: Context) = AlertDialog.Builder(context, R.style.BandyerSDKDesign_AlertDialogTheme)
             .setTitle(R.string.bandyer_write_permission_dialog_title)

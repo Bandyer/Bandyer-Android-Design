@@ -168,5 +168,6 @@
     <string name="bandyer_button_ok">Ok</string>
     <string name="bandyer_fileshare_chooser_title">Choose an application</string>
     <string name="bandyer_fileshare_impossible_open_file">Can\'t open file</string>
+    <string name="bandyer_fileshare_file_cancelled">File cancelled</string>
 
 </resources>
