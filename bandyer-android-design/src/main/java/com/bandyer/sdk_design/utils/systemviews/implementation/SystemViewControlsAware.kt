@@ -19,29 +19,18 @@ package com.bandyer.sdk_design.utils.systemviews.implementation
 import android.annotation.SuppressLint
 import android.content.ComponentCallbacks
 import android.content.res.Configuration
-import android.graphics.Insets
 import android.graphics.Rect
-import android.hardware.input.InputManager
 import android.os.Build
-import android.os.SystemClock
-import android.util.Log
 import android.view.*
-import androidx.core.view.InputDeviceCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.viewpager.widget.ViewPager
 import com.bandyer.android_common.LifecycleEvents
 import com.bandyer.android_common.LifecyleBinder
 import com.bandyer.sdk_design.extensions.checkIsInMultiWindowMode
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutObserver
 import java.lang.ref.WeakReference
-import java.lang.reflect.InvocationTargetException
-import java.lang.reflect.Method
 import kotlin.math.abs
-import kotlin.reflect.full.memberProperties
-import kotlin.reflect.jvm.isAccessible
-
 
 internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewControlsAwareInstance, SystemViewLayoutObserver, ComponentCallbacks, View.OnLayoutChangeListener {
     private var context: WeakReference<FragmentActivity>? = null
