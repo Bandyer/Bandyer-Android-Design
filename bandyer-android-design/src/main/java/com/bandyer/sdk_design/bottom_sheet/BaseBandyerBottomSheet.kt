@@ -34,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
@@ -408,19 +409,18 @@ open class BaseBandyerBottomSheet(
     fun fadeRecyclerViewLinesBelowNavigation(fade: Boolean? = null) {
         if (!animationEnabled) return
         val navigationLimit = if (fade == null) (bottomSheetLayoutContent.context.getScreenSize().y - bottomMarginNavigation) else 0
+        val hasNavigationBar = navigationLimit == mContext.get()?.getScreenSize()?.y
         (0..recyclerView?.adapter?.itemCount!!).forEach { i ->
             recyclerView?.layoutManager?.findViewByPosition(i)?.let { view ->
-                val isGrid = recyclerView?.layoutManager is GridLayoutManager
-
-                if ((!hasMoved || isAnimating) && isGrid) {
-                    view.alpha = if (i < (recyclerView?.layoutManager as GridLayoutManager).spanCount) 1f else 0f
+                if ((!hasMoved || isAnimating) && recyclerView.isFirstRow(i) || hasNavigationBar) {
+                    view.alpha = 1f
                     return@let
                 }
 
                 fade ?: kotlin.run {
                     val viewBottom = view.getCoordinates().y + view.height
                     val hidden = viewBottom - navigationLimit
-                    view.alpha = (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.apply {
+                    view.alpha = (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.coerceAtMost(1f)?.apply {
                         recyclerViewAlphaDecimalFormat.format(this)
                     } ?: 0f
                     return@let
@@ -428,6 +428,11 @@ open class BaseBandyerBottomSheet(
                 view.alpha = if (fade) 1f else 0f
             }
         }
+    }
+
+    private fun RecyclerView?.isFirstRow(position: Int) = when (val manager = this?.layoutManager) {
+        is GridLayoutManager -> position < manager.spanCount
+        else                 -> position == 0
     }
 
     override fun isVisible() = bottomSheetLayoutContent.visibility == View.VISIBLE && initialized
