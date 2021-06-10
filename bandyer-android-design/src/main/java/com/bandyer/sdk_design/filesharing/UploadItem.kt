@@ -67,7 +67,7 @@ class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): Bandy
                 }
             }
 
-            val mimeType = item.data.uri.getMimeType(itemView.context) ?: ""
+            val mimeType = item.data.uri.getMimeType(itemView.context)
             fileType.type = when(mimeType.getFileTypeFromMimeType()) {
                 "image" -> BandyerFileTypeImageView.Type.IMAGE
                 "archive" -> BandyerFileTypeImageView.Type.ARCHIVE

@@ -21,8 +21,7 @@
         android:supportsRtl="true"
         android:theme="@style/DesignDemoApp">
         <activity
-            android:name=".FileShareActivity"
-></activity>
+            android:name=".FileShareActivity"/>
         <meta-data
             android:name="com.google.android.glass.TouchEnabledApplication"
             android:value="true" />

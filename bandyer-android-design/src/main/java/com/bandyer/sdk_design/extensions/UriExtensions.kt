@@ -23,7 +23,7 @@ fun Uri.getMimeType(context: Context): String {
 fun Uri.getFileName(context: Context): String {
     return kotlin.runCatching {
         var result: String? = null
-        if (this.scheme == "content") {
+        if (ContentResolver.SCHEME_CONTENT == this.scheme) {
             val cursor = context.contentResolver.query(this, null, null, null, null)
             try {
                 if (cursor != null && cursor.moveToFirst()) {
@@ -44,4 +44,22 @@ fun Uri.getFileName(context: Context): String {
         }
         result
     }.getOrNull() ?: ""
+}
+
+fun Uri.getFileBytes(context: Context): Long {
+    return kotlin.runCatching {
+        var bytes = 0L
+        if (ContentResolver.SCHEME_CONTENT == this.scheme) {
+            val cursor = context.contentResolver.query(this, null, null, null, null)
+            try {
+                if (cursor != null && cursor.moveToFirst())
+                    bytes = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE))
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                cursor?.close()
+            }
+        }
+        bytes
+    }.getOrNull() ?: 0L
 }

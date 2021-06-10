@@ -162,5 +162,7 @@
     <string name="bandyer_fileshare_impossible_open_file">Impossibile aprire il file</string>
     <string name="bandyer_fileshare_file_cancelled">File cancellato</string>
     <string name="bandyer_fileshare_file_trashed">File cestinato</string>
+    <string name="bandyer_max_bytes_dialog_descr">È consentito condividere file fino a 150 MB</string>
+    <string name="bandyer_max_bytes_dialog_title">Limite condivisione file</string>
 
 </resources>

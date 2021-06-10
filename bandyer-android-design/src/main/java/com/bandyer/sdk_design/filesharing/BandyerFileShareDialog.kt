@@ -5,11 +5,11 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager.MATCH_DEFAULT_ONLY
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +28,7 @@ import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheetDialog
 import com.bandyer.sdk_design.databinding.BandyerFileShareDialogLayoutBinding
 import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
+import com.bandyer.sdk_design.extensions.getFileBytes
 import com.bandyer.sdk_design.extensions.getMimeType
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
@@ -68,6 +69,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         internal companion object {
             const val PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
+            const val MAX_FILE_BYTES = 150 * 1000 * 1000
         }
 
         private var binding: BandyerFileShareDialogLayoutBinding? = null
@@ -105,6 +107,10 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             smoothScroller = LinearSmoothScroller(requireContext())
             getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 uri ?: return@registerForActivityResult
+                if(uri.getFileBytes(requireContext()) > MAX_FILE_BYTES) {
+                    showMaxBytesDialog(requireContext())
+                    return@registerForActivityResult
+                }
                 viewModel?.upload(uploadId = null, context = this.requireContext(), uri = uri)
             }
         }
@@ -237,6 +243,14 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         private fun showPermissionDeniedDialog(context: Context) = AlertDialog.Builder(context, R.style.BandyerSDKDesign_AlertDialogTheme)
             .setTitle(R.string.bandyer_write_permission_dialog_title)
             .setMessage(R.string.bandyer_write_permission_dialog_descr)
+            .setCancelable(true)
+            .setPositiveButton(R.string.bandyer_button_ok) { di, _ ->
+                di.dismiss()
+            }.show()
+
+        private fun showMaxBytesDialog(context: Context) = AlertDialog.Builder(context, R.style.BandyerSDKDesign_AlertDialogTheme)
+            .setTitle(R.string.bandyer_max_bytes_dialog_title)
+            .setMessage(R.string.bandyer_max_bytes_dialog_descr)
             .setCancelable(true)
             .setPositiveButton(R.string.bandyer_button_ok) { di, _ ->
                 di.dismiss()
