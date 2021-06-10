@@ -4,7 +4,6 @@ import android.text.format.Formatter
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.extensions.getFileName
 import com.bandyer.sdk_design.extensions.getFileTypeFromMimeType
 import com.bandyer.sdk_design.extensions.getMimeType
 import com.bandyer.sdk_design.extensions.parseToHHmm
@@ -41,7 +40,7 @@ class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): Bandy
             user.text = itemView.context.resources.getString(R.string.bandyer_fileshare_you)
             error.text = itemView.context.resources.getString(R.string.bandyer_fileshare_error_message)
             error.visibility = View.GONE
-            fileName.text = item.data.uri.getFileName(itemView.context)
+            fileName.text = item.data.fileName
             operation.type = BandyerFileShareOpTypeImageView.Type.UPLOAD
 
             when(item.data) {

@@ -3,7 +3,6 @@ package com.bandyer.sdk_design.filesharing
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.extensions.getFileNameFromUrl
 import com.bandyer.sdk_design.extensions.getFileTypeFromMimeType
 import com.bandyer.sdk_design.extensions.getMimeType
 import com.bandyer.sdk_design.extensions.parseToHHmm
@@ -39,7 +38,7 @@ class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): B
             user.text = item.data.sender
             error.text = itemView.context.resources.getString(R.string.bandyer_fileshare_error_message)
             error.visibility = View.GONE
-            fileName.text = item.data.endpoint.getFileNameFromUrl()
+            fileName.text = item.data.fileName
             operation.type = BandyerFileShareOpTypeImageView.Type.DOWNLOAD
 
             when(item.data) {

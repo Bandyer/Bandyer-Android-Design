@@ -7,4 +7,5 @@ interface FileShareItemData {
     val startTime: Long
     val totalBytes: Long
     val uri: Uri?
+    val fileName: String
 }

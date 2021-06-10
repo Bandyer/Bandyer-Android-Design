@@ -7,7 +7,6 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.extensions.getFileNameFromUrl
 import com.bandyer.sdk_design.extensions.getFileTypeFromMimeType
 import com.bandyer.sdk_design.extensions.getMimeType
 import com.bandyer.sdk_design.extensions.parseToHHmm
@@ -42,7 +41,7 @@ class DownloadAvailableItem(var data: DownloadAvailableData, val viewModel: File
             fileSize.text = itemView.context.resources.getString(R.string.bandyer_fileshare_na)
             user.text = item.data.sender
             error.text = itemView.context.resources.getString(R.string.bandyer_fileshare_error_message)
-            fileName.text = item.data.endpoint.getFileNameFromUrl()
+            fileName.text = item.data.fileName
             operation.type = BandyerFileShareOpTypeImageView.Type.DOWNLOAD
             progressBar.progress = 0
             progressText.text = item.data.startTime.parseToHHmm()
