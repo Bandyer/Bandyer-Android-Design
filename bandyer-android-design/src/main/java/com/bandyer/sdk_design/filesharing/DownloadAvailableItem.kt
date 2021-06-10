@@ -85,7 +85,7 @@ class DownloadAvailableItem(var data: DownloadAvailableData, val viewModel: File
                 fastAdapter: FastAdapter<DownloadAvailableItem>,
                 item: DownloadAvailableItem
             ) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q || ContextCompat.checkSelfPermission(v.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R || ContextCompat.checkSelfPermission(v.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     item.viewModel.download(item.data.id, item.data.endpoint, v.context)
                 } else
                     item.askPermissionCallback.invoke()
