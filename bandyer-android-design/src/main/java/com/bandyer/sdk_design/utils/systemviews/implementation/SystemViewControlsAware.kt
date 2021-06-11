@@ -148,7 +148,7 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
 
         if (height == 0 || width == 0) return
 
-        val currentInsets = ViewCompat.getRootWindowInsets(decorView)?.stableInsets
+        val currentInsets = ViewCompat.getRootWindowInsets(decorView)?.getInsets(WindowInsetsCompat.Type.systemBars())
 
         val bottomMargin = oldInsets?.displayCutout?.safeInsetBottom?.takeIf { it > 0 } ?: currentInsets?.bottom ?: (height - rect.bottom).takeIf { it >= 0 } ?: 0
         val topMargin = oldInsets?.displayCutout?.safeInsetTop?.takeIf { it > 0 } ?: currentInsets?.top ?: rect.top.takeIf { it >= 0 } ?: 0
