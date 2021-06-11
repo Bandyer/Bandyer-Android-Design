@@ -184,7 +184,7 @@ open class CallBottomSheet<T>(
         lineAnimator?.removeAllUpdateListeners()
         cameraToggled = camera?.toggled == true
         micToggled = mic?.toggled == true
-        bottomSheetLayoutContent.lineView?.state = if (bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT else State.ANCHORED_LINE
+        bottomSheetLayoutContent.lineView?.state = if (bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT else State.COLLAPSED
     }
 
     override fun onCollapsed() {
