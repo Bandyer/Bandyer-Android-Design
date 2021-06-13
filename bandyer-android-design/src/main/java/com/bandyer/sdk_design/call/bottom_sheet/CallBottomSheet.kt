@@ -196,6 +196,7 @@ open class CallBottomSheet<T>(
 
     override fun onAnchor() {
         super.onAnchor()
+        bottomSheetLayoutContent.backgroundView?.alpha = 1f
         bottomSheetLayoutContent.lineView?.state = if (bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT else State.ANCHORED_LINE
     }
 
@@ -209,6 +210,12 @@ open class CallBottomSheet<T>(
         currentAudioRoute = audioRoute
     }
 
+    override fun updateLayout() {
+        bottomSheetBehaviour ?: return
+        fixed ?: return
+        collapsible ?: return
+        setup(collapsible, fixed, isCollapsed())
+    }
 
     private fun setup(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) = bottomSheetLayoutContent.post {
         bottomSheetBehaviour ?: return@post
@@ -275,8 +282,6 @@ open class CallBottomSheet<T>(
             if (animationEndState == -1) return@post
             animationStartOffset = bottomSheetBehaviour!!.getStableStateSlideOffset(animationEndState)
         }
-
-        bottomSheetLayoutContent.backgroundView?.alpha = if (collapsed && collapsible) 0f else 1f
 
         if (callActionItems.size <= MAX_ITEMS_PER_ROW) {
             lineView?.layoutParams?.height = context.dp2px(24f)

@@ -79,6 +79,8 @@ open class BaseBandyerBottomSheet(
     private var isAnimating = false
     private var hasMoved = false
     private var shouldMoveBottomSheetOnBottomInset = false
+    private var wasInMultiWindowMode = false
+    private var wasInPictureInPictureMode = false
 
     /**
      * If animation is enabled
@@ -172,8 +174,6 @@ open class BaseBandyerBottomSheet(
      * Height of bottom navigation
      */
     var bottomMarginNavigation = -1
-
-    private var wasInMultiWindow = false
 
     override var onStateChangedBottomSheetListener: OnStateChangedBottomSheetListener<BandyerBottomSheet>? = null
 
@@ -281,6 +281,8 @@ open class BaseBandyerBottomSheet(
         }
         initialized = true
     }
+
+    open fun updateLayout() = Unit
 
     private fun addBackground() {
         val parent = coordinatorLayout?.parent as? ViewGroup
@@ -405,17 +407,11 @@ open class BaseBandyerBottomSheet(
      */
     fun fadeRecyclerViewLinesBelowNavigation(fade: Boolean? = null) {
         if (!animationEnabled) return
-        val decorViewHeight = mContext.get()!!.window.decorView.height
-        val screenSize = bottomSheetLayoutContent.context.getScreenSize().y
-        val navigationLimit = if (fade == null && decorViewHeight == screenSize) (bottomSheetLayoutContent.context.getScreenSize().y - bottomMarginNavigation) else 0
+        val navigationLimit = if (fade == null) (bottomSheetLayoutContent.context.getScreenSize().y - bottomMarginNavigation) else 0
         val hasNavigationBar = navigationLimit < mContext.get()!!.getScreenSize().y
         (0..recyclerView?.adapter?.itemCount!!).forEach { index ->
             recyclerView?.layoutManager?.findViewByPosition(index)?.let { view ->
                 when {
-                    decorViewHeight < screenSize -> {
-                        view.alpha = 0f
-                        return@let
-                    }
                     (!hasMoved || (isAnimating && (if (!bottomSheetBehaviour!!.skipCollapsed) slideOffset > 0f else slideOffset >= 0))) && recyclerView.isFirstRow(index) || !hasNavigationBar -> {
                         view.alpha = 1f
                         return@let
@@ -458,13 +454,26 @@ open class BaseBandyerBottomSheet(
     final override fun onTopInsetChanged(pixels: Int) = Unit
 
     final override fun onBottomInsetChanged(pixels: Int) {
+        var calculatedPixels = pixels
         val screenHeight = coordinatorLayout?.context?.getScreenSize()?.y ?: 0
-        val isInMultiWindow = mContext.get()?.checkIsInMultiWindowMode() ?: false
-        val guessKeyboardShown = screenHeight > 0 && pixels > screenHeight * 0.15f
-        if (guessKeyboardShown && !isInMultiWindow) return
-        shouldMoveBottomSheetOnBottomInset = bottomMarginNavigation != pixels && hasMoved && !isAnimating
-        bottomMarginNavigation = pixels
-        bottomSheetLayoutContent.navigationBarHeight = pixels
+        val guessKeyboardShown = screenHeight > 0 && calculatedPixels > screenHeight * 0.15f
+        if (guessKeyboardShown) return
+
+        val isInPictureInPictureMode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            mContext.get()?.isInPictureInPictureMode == true else false
+
+        val isInMultiWindowMode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            mContext.get()?.isInMultiWindowMode == true && mContext.get()?.isInPictureInPictureMode == false else false
+
+        if (isInMultiWindowMode && !isInPictureInPictureMode || (wasInMultiWindowMode && !wasInPictureInPictureMode)) updateLayout()
+
+        if (!isInMultiWindowMode && wasInMultiWindowMode) wasInMultiWindowMode = false
+        if (!isInPictureInPictureMode && wasInPictureInPictureMode) wasInPictureInPictureMode = false
+
+        shouldMoveBottomSheetOnBottomInset = (bottomMarginNavigation != calculatedPixels && hasMoved && !isAnimating)
+
+        bottomMarginNavigation = calculatedPixels
+        bottomSheetLayoutContent.navigationBarHeight = calculatedPixels
         if (shouldMoveBottomSheetOnBottomInset) moveBottomSheet()
         onStateChangedBottomSheetListener?.onSlide(this@BaseBandyerBottomSheet, bottomSheetLayoutContent.top.toFloat())
     }
