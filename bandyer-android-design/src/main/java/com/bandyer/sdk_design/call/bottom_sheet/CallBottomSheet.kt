@@ -19,7 +19,6 @@ package com.bandyer.sdk_design.call.bottom_sheet
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -50,7 +49,7 @@ import com.bandyer.sdk_design.extensions.getHeightWithVerticalMargin
  */
 @Suppress("UNCHECKED_CAST")
 open class CallBottomSheet<T>(
-    val context: AppCompatActivity,
+    context: AppCompatActivity,
     private val callActionItems: List<CallAction>,
     bottomSheetStyle: Int
 ) : BandyerClickableBottomSheet<T>(
@@ -74,10 +73,15 @@ open class CallBottomSheet<T>(
      * Describes if CallBottomSheet can be collapsed
      */
     var collapsible = true
-    private var collapsed = false
+    private var collapsed: Boolean? = null
 
     private var cameraToggled = false
     private var micToggled = false
+
+    private val lifecycleObserver = object: LifecycleObserver {
+        @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        fun onResume() = calculateBottomSheetDimensions()
+    }
 
     /**
      * Singleton of the call bottom sheet
@@ -97,6 +101,8 @@ open class CallBottomSheet<T>(
                 ?: it?.switchWith as? CallAction.MICROPHONE
         }
         recyclerView?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        context.lifecycle.addObserver(lifecycleObserver)
+
     }
 
     override fun saveInstanceState(saveInstanceState: Bundle?): Bundle? {
@@ -113,12 +119,13 @@ open class CallBottomSheet<T>(
     }
 
     override fun restoreInstanceState(bundle: Bundle?) {
+        mContext.get() ?: return
         onRestoreInstanceState(bundle, "action")
         val currentAudioRoute = bundle?.getString("currentAudioRoute") ?: return
         val currentAudioRouteDeviceName = bundle.getString("audioRouteDeviceName") ?: ""
         val currentAudioRouteIdentifier = bundle.getString("audioRouteDeviceIdentifier") ?: ""
         val currentAudioRouteIsActive = bundle.getBoolean("audioRouteDeviceIsActive")
-        updateAudioRouteIcon(AudioRoute.getAudioRoute(context, Class.forName(currentAudioRoute) as Class<AudioRoute>, currentAudioRouteIdentifier, currentAudioRouteDeviceName, currentAudioRouteIsActive))
+        updateAudioRouteIcon(AudioRoute.getAudioRoute(mContext.get()!!, Class.forName(currentAudioRoute) as Class<AudioRoute>, currentAudioRouteIdentifier, currentAudioRouteDeviceName, currentAudioRouteIsActive))
 
         bundle.getBoolean("micIsToggled", false).let {
             mic?.toggle(it)
@@ -239,15 +246,10 @@ open class CallBottomSheet<T>(
             return@post
         }
 
-        mContext.get()!!.lifecycle.addObserver(object: LifecycleObserver {
-            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-            fun onResume() = calculateBottomSheetDimensions()
-        })
-
         calculateBottomSheetDimensions()
 
         if (callActionItems.size <= MAX_ITEMS_PER_ROW) {
-            lineView?.layoutParams?.height = context.dp2px(24f)
+            lineView?.layoutParams?.height = mContext.get()?.dp2px(24f)
             lineView?.visibility = View.INVISIBLE
             lineView?.isClickable = false
             lineView?.requestLayout()
@@ -267,6 +269,8 @@ open class CallBottomSheet<T>(
     }
 
     private fun calculateBottomSheetDimensions() {
+        collapsed ?: return
+
         var peekHeight: Int
         var anchorOffset: Int
 
@@ -287,7 +291,7 @@ open class CallBottomSheet<T>(
                     peekHeight = bottomSheetLayoutContent.rootView.top + (lineView?.getHeightWithVerticalMargin()
                         ?: 0)
                     anchorOffset = oneLineHeight
-                    animationEndState = if (collapsed && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
+                    animationEndState = if (collapsed!! && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
                     bottomSheetBehaviour!!.skipCollapsed = false
                 }
                 else        -> {
@@ -302,7 +306,8 @@ open class CallBottomSheet<T>(
                 this.anchorOffset = anchorOffset
                 skipAnchor = false
                 bottomSheetBehaviour!!.isHideable = false
-                if (state == STATE_HIDDEN) state = if (callActionItems.size <= MAX_ITEMS_PER_ROW) STATE_EXPANDED else if (collapsed && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
+                val newState = if (callActionItems.size <= MAX_ITEMS_PER_ROW) STATE_EXPANDED else if (collapsed!! && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
+                if (state == STATE_HIDDEN && state != STATE_SETTLING) state = newState
             }
 
             bottomSheetLayoutContent.lineView?.state = when {
