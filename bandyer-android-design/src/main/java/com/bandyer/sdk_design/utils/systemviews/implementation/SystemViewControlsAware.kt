@@ -139,6 +139,13 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
         val height = decorView.height
         val width = decorView.width
 
+        if (!context.checkIsInMultiWindowMode() && (isPortrait && width > height || !isPortrait && height > width)) {
+            decorView.post {
+                resetMargins()
+            }
+            return
+        }
+
         if (height == 0 || width == 0) return
 
         val currentInsets = ViewCompat.getRootWindowInsets(decorView)?.getInsets(WindowInsetsCompat.Type.systemBars())
