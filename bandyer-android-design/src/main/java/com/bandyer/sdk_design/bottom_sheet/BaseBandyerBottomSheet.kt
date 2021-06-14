@@ -78,7 +78,6 @@ open class BaseBandyerBottomSheet(
     private var initialized = false
     private var isAnimating = false
     private var hasMoved = false
-    private var shouldMoveBottomSheetOnBottomInset = false
     private var wasInMultiWindowMode = false
     private var wasInPictureInPictureMode = false
 
@@ -387,10 +386,9 @@ open class BaseBandyerBottomSheet(
      */
     open fun onAnchor() {
         onStateChangedBottomSheetListener?.onAnchor(this)
-        if (!hasMoved || shouldMoveBottomSheetOnBottomInset) {
+        if (!hasMoved) {
             moveBottomSheet()
             hasMoved = true
-            shouldMoveBottomSheetOnBottomInset = false
         } else fadeRecyclerViewLinesBelowNavigation()
         updateNavigationBar()
     }
@@ -471,11 +469,9 @@ open class BaseBandyerBottomSheet(
         if (!isInMultiWindowMode && wasInMultiWindowMode) wasInMultiWindowMode = false
         if (!isInPictureInPictureMode && wasInPictureInPictureMode) wasInPictureInPictureMode = false
 
-        shouldMoveBottomSheetOnBottomInset = (bottomMarginNavigation != calculatedPixels && hasMoved && !isAnimating)
-
         bottomMarginNavigation = calculatedPixels
         bottomSheetLayoutContent.navigationBarHeight = calculatedPixels
-        if (shouldMoveBottomSheetOnBottomInset) moveBottomSheet()
+        moveBottomSheet()
         onStateChangedBottomSheetListener?.onSlide(this@BaseBandyerBottomSheet, bottomSheetLayoutContent.top.toFloat())
     }
 
@@ -524,6 +520,7 @@ open class BaseBandyerBottomSheet(
                     if (isCanceled) return
                     bottomSheetLayoutContent.updateBackgroundView()
                     when (state) {
+                        BandyerBottomSheetBehaviour.STATE_SETTLING -> onSettling()
                         BandyerBottomSheetBehaviour.STATE_COLLAPSED -> onCollapsed()
                         BandyerBottomSheetBehaviour.STATE_EXPANDED -> onExpanded()
                         BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> onAnchor()

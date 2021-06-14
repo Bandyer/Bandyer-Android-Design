@@ -19,7 +19,11 @@ package com.bandyer.sdk_design.call.bottom_sheet
 import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.BandyerClickableBottomSheet
@@ -70,6 +74,7 @@ open class CallBottomSheet<T>(
      * Describes if CallBottomSheet can be collapsed
      */
     var collapsible = true
+    private var collapsed = false
 
     private var cameraToggled = false
     private var micToggled = false
@@ -213,8 +218,7 @@ open class CallBottomSheet<T>(
     override fun updateLayout() {
         bottomSheetBehaviour ?: return
         fixed ?: return
-        collapsible ?: return
-        setup(collapsible, fixed, isCollapsed())
+        calculateBottomSheetDimensions()
     }
 
     private fun setup(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) = bottomSheetLayoutContent.post {
@@ -224,6 +228,7 @@ open class CallBottomSheet<T>(
         animationEndState = -1
         animationEnabled = fixed == false
         this.collapsible = collapsible
+        this.collapsed = collapsed
         bottomSheetBehaviour!!.disableDragging = callActionItems.size <= MAX_ITEMS_PER_ROW
 
         if (fixed == true) {
@@ -234,6 +239,34 @@ open class CallBottomSheet<T>(
             return@post
         }
 
+        mContext.get()!!.lifecycle.addObserver(object: LifecycleObserver {
+            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+            fun onResume() = calculateBottomSheetDimensions()
+        })
+
+        calculateBottomSheetDimensions()
+
+        if (callActionItems.size <= MAX_ITEMS_PER_ROW) {
+            lineView?.layoutParams?.height = context.dp2px(24f)
+            lineView?.visibility = View.INVISIBLE
+            lineView?.isClickable = false
+            lineView?.requestLayout()
+        }
+
+        lineView?.setOnClickListener {
+            bottomSheetLayoutContent.backgroundView?.alpha = 1f
+            bottomSheetLayoutContent.lineView?.state = State.ANCHORED_LINE
+            if (state == STATE_COLLAPSED)
+                anchor()
+            else if (bottomSheetBehaviour?.skipCollapsed == true)
+                expand()
+        }
+
+        camera?.toggle(cameraToggled)
+        mic?.toggle(micToggled)
+    }
+
+    private fun calculateBottomSheetDimensions() {
         var peekHeight: Int
         var anchorOffset: Int
 
@@ -269,7 +302,7 @@ open class CallBottomSheet<T>(
                 this.anchorOffset = anchorOffset
                 skipAnchor = false
                 bottomSheetBehaviour!!.isHideable = false
-                state = if (callActionItems.size <= MAX_ITEMS_PER_ROW) STATE_EXPANDED else if (collapsed && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
+                if (state == STATE_HIDDEN) state = if (callActionItems.size <= MAX_ITEMS_PER_ROW) STATE_EXPANDED else if (collapsed && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
             }
 
             bottomSheetLayoutContent.lineView?.state = when {
@@ -282,24 +315,5 @@ open class CallBottomSheet<T>(
             if (animationEndState == -1) return@post
             animationStartOffset = bottomSheetBehaviour!!.getStableStateSlideOffset(animationEndState)
         }
-
-        if (callActionItems.size <= MAX_ITEMS_PER_ROW) {
-            lineView?.layoutParams?.height = context.dp2px(24f)
-            lineView?.visibility = View.INVISIBLE
-            lineView?.isClickable = false
-            lineView?.requestLayout()
-        }
-
-        lineView?.setOnClickListener {
-            bottomSheetLayoutContent.backgroundView?.alpha = 1f
-            bottomSheetLayoutContent.lineView?.state = State.ANCHORED_LINE
-            if (state == STATE_COLLAPSED)
-                anchor()
-            else if (bottomSheetBehaviour?.skipCollapsed == true)
-                expand()
-        }
-
-        camera?.toggle(cameraToggled)
-        mic?.toggle(micToggled)
     }
 }
