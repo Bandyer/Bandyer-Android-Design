@@ -453,24 +453,23 @@ open class BaseBandyerBottomSheet(
     final override fun onTopInsetChanged(pixels: Int) = Unit
 
     final override fun onBottomInsetChanged(pixels: Int) {
-        var calculatedPixels = pixels
-        val screenHeight = coordinatorLayout?.context?.getScreenSize()?.y ?: 0
-        val guessKeyboardShown = screenHeight > 0 && calculatedPixels > screenHeight * 0.15f
+        val activity = mContext.get() ?: return
+
+        val screenHeight = activity.getScreenSize()?.y ?: 0
+        val guessKeyboardShown = screenHeight > 0 && pixels > screenHeight * 0.15f
+
         if (guessKeyboardShown) return
+        val isInPictureInPictureMode = activity.checkIsInPictureInPictureMode()
 
-        val isInPictureInPictureMode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            mContext.get()?.isInPictureInPictureMode == true else false
-
-        val isInMultiWindowMode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            mContext.get()?.isInMultiWindowMode == true && mContext.get()?.isInPictureInPictureMode == false else false
+        val isInMultiWindowMode = activity.checkIsInMultiWindowMode() && !isInPictureInPictureMode
 
         if (isInMultiWindowMode && !isInPictureInPictureMode || (wasInMultiWindowMode && !wasInPictureInPictureMode)) updateLayout()
 
         if (!isInMultiWindowMode && wasInMultiWindowMode) wasInMultiWindowMode = false
         if (!isInPictureInPictureMode && wasInPictureInPictureMode) wasInPictureInPictureMode = false
 
-        bottomMarginNavigation = calculatedPixels
-        bottomSheetLayoutContent.navigationBarHeight = calculatedPixels
+        bottomMarginNavigation = pixels
+        bottomSheetLayoutContent.navigationBarHeight = pixels
         moveBottomSheet()
         onStateChangedBottomSheetListener?.onSlide(this@BaseBandyerBottomSheet, bottomSheetLayoutContent.top.toFloat())
     }

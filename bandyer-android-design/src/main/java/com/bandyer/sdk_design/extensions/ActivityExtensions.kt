@@ -119,3 +119,12 @@ fun Activity.findNextDPADFocus(keyCode: Int, rootView: ViewGroup): View? = Focus
 fun Activity.checkIsInMultiWindowMode(): Boolean = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
     this.isInMultiWindowMode
 } else false
+
+/**
+ * Check if activity is currently displayed in picture-in-picture mode.
+ * @receiver Activity
+ * @return Boolean
+ */
+fun Activity.checkIsInPictureInPictureMode(): Boolean = if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+    this.isInPictureInPictureMode
+} else false
