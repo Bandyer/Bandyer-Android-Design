@@ -407,7 +407,8 @@ open class BaseBandyerBottomSheet(
      */
     fun fadeRecyclerViewLinesBelowNavigation(fade: Boolean? = null) {
         if (!animationEnabled) return
-        val navigationLimit = if (fade == null) (bottomSheetLayoutContent.context.getScreenSize().y - bottomMarginNavigation) else 0
+        val screenHeight = bottomSheetLayoutContent.context.getScreenSize().y
+        val navigationLimit = if (fade == null) (screenHeight - bottomMarginNavigation) else 0
         val hasNavigationBar = navigationLimit < mContext.get()!!.getScreenSize().y
         (0..recyclerView?.adapter?.itemCount!!).forEach { index ->
             recyclerView?.layoutManager?.findViewByPosition(index)?.let { view ->
@@ -417,7 +418,7 @@ open class BaseBandyerBottomSheet(
                         return@let
                     }
                     fade == null -> {
-                        val viewBottom = view.getCoordinates().y + view.height
+                        val viewBottom = view.getCoordinates().y + view.height + (screenHeight - mContext.get()!!.window.decorView.height)
                         val hidden = viewBottom - navigationLimit
                         view.alpha = (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.coerceAtMost(1f)?.apply {
                             recyclerViewAlphaDecimalFormat.format(this)
