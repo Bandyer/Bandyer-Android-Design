@@ -455,12 +455,11 @@ open class BaseBandyerBottomSheet(
     final override fun onBottomInsetChanged(pixels: Int) {
         val activity = mContext.get() ?: return
 
-        val screenHeight = activity.getScreenSize()?.y ?: 0
+        val screenHeight = activity.getScreenSize().y
         val guessKeyboardShown = screenHeight > 0 && pixels > screenHeight * 0.15f
-
         if (guessKeyboardShown) return
-        val isInPictureInPictureMode = activity.checkIsInPictureInPictureMode()
 
+        val isInPictureInPictureMode = activity.checkIsInPictureInPictureMode()
         val isInMultiWindowMode = activity.checkIsInMultiWindowMode() && !isInPictureInPictureMode
 
         if (isInMultiWindowMode && !isInPictureInPictureMode || (wasInMultiWindowMode && !wasInPictureInPictureMode)) updateLayout()
