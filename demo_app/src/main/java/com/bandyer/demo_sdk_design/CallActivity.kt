@@ -243,13 +243,19 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
         AudioCallSession.getInstance().dispose()
     }
 
+    override fun onBackPressed() {
+        if (!enterPip()) moveTaskToBack(true)
+    }
 
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            enterPictureInPictureMode(PictureInPictureParams.Builder().setAspectRatio(Rational(getScreenSize().x, getScreenSize().y)).build())
-        }
+        enterPip()
     }
+
+    private fun enterPip() =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            enterPictureInPictureMode(PictureInPictureParams.Builder().setAspectRatio(Rational(getScreenSize().x, getScreenSize().y)).build())
+        else false
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
