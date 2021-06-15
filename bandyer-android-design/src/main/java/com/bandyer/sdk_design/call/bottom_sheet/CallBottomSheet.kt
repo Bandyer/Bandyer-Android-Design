@@ -193,6 +193,7 @@ open class CallBottomSheet<T>(
 
     override fun onHidden() {
         super.onHidden()
+        collapsed = null
         lineAnimator?.removeAllUpdateListeners()
         cameraToggled = camera?.toggled == true
         micToggled = mic?.toggled == true
