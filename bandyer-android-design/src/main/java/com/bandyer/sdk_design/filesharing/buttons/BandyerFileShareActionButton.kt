@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.filesharing
+package com.bandyer.sdk_design.filesharing.buttons
 
 import android.content.Context
 import android.util.AttributeSet

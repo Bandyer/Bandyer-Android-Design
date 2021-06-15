@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.filesharing
+package com.bandyer.sdk_design.filesharing.adapter_items
 
 import android.content.ActivityNotFoundException
 import android.content.Context

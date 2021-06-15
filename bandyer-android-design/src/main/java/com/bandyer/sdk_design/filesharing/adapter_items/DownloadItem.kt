@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.filesharing
+package com.bandyer.sdk_design.filesharing.adapter_items
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
@@ -6,6 +6,11 @@ import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.getFileTypeFromMimeType
 import com.bandyer.sdk_design.extensions.getMimeType
 import com.bandyer.sdk_design.extensions.parseToHHmm
+import com.bandyer.sdk_design.filesharing.*
+import com.bandyer.sdk_design.filesharing.buttons.BandyerFileShareActionButton
+import com.bandyer.sdk_design.filesharing.imageviews.BandyerFileShareOpTypeImageView
+import com.bandyer.sdk_design.filesharing.imageviews.BandyerFileTypeImageView
+import com.bandyer.sdk_design.filesharing.model.DownloadData
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
