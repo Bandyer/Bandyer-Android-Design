@@ -276,6 +276,8 @@ open class CallBottomSheet<T>(
         val firstItem = recyclerView?.layoutManager?.getChildAt(0)
 
         firstItem?.post {
+            collapsed ?: return@post
+
             bottomSheetBehaviour ?: kotlin.run {
                 dispose()
                 return@post
