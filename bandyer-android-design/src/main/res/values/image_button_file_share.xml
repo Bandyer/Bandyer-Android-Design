@@ -3,6 +3,8 @@
     <style name="BandyerSDKDesign.ImageButton.FileShareAction" parent="BandyerSDKDesign.ImageButton">
         <item name="android:layout_width">@dimen/bandyer_dimen_space32</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
+        <item name="android:clickable">false</item>
+        <item name="android:focusable">false</item>
         <item name="backgroundTint">@color/bandyer_file_share_action_background_color</item>
         <item name="strokeWidth">@dimen/bandyer_dimen_space2</item>
         <item name="strokeColor">@color/bandyer_file_share_action_stroke_color</item>

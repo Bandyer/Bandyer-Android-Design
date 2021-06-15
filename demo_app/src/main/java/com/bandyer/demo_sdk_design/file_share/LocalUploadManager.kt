@@ -37,7 +37,7 @@ class LocalUploadManager private constructor(override val httpStack: HttpStack, 
                 if(!isActive) break
                 events.emit(UploadEvent.OnProgress(uploadId, startTime, totalBytes, uri,(totalBytes / nOfUpdates) * i))
             }
-            events.emit(UploadEvent.Error(uploadId, startTime, totalBytes, uri, Throwable()))
+            events.emit(UploadEvent.Success(uploadId, startTime, totalBytes, uri,"", ""))
         }.apply {
             jobs[uploadId] = this
             invokeOnCompletion {

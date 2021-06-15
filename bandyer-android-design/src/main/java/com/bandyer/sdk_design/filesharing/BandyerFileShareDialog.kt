@@ -1,22 +1,16 @@
 package com.bandyer.sdk_design.filesharing
 
 import android.Manifest
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -29,16 +23,13 @@ import com.bandyer.sdk_design.databinding.BandyerFileShareDialogLayoutBinding
 import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.bandyer.sdk_design.extensions.getFileBytes
-import com.bandyer.sdk_design.extensions.getMimeType
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.IItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.listeners.EventHook
-import com.mikepenz.fastadapter.listeners.OnClickListener
 import java.util.concurrent.ConcurrentHashMap
 
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
@@ -181,63 +172,8 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             fastAdapter!!.withEventHook(UploadItem.UploadItemClickEvent() as EventHook<IItem<*, *>>)
             fastAdapter!!.withEventHook(DownloadItem.DownloadItemClickEvent() as EventHook<IItem<*, *>>)
             fastAdapter!!.withEventHook(DownloadAvailableItem.DownloadAvailableItemClickEvent() as EventHook<IItem<*, *>>)
-            fastAdapter!!.withSelectable(true)
-
-            fastAdapter!!.withOnClickListener(OnClickListener<BandyerFileShareItem<*,*>> { _, _, item, _ ->
-                onItemClick(item)
-                true
-            } as OnClickListener<IItem<*, *>>)
 
             if (viewModel != null) updateRecyclerViewItems(viewModel!!.itemsData)
-        }
-
-        private fun onItemClick(item: BandyerFileShareItem<*,*>) {
-            kotlin.runCatching {
-                val uri = when (item) {
-                    is UploadItem -> item.data.uri
-                    is DownloadItem -> if(item.data is DownloadData.Success) item.data.uri else null
-                    else -> null
-                } ?: return
-
-                val isFileInTrash = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { isFileInTrash(requireContext(), uri) } else false
-
-                if(!doesFileExists(requireContext(), uri))
-                    Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_file_cancelled, Snackbar.LENGTH_SHORT).show()
-                else if (isFileInTrash)
-                    Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_file_trashed, Snackbar.LENGTH_SHORT).show()
-                else
-                    openFileOrShowMessage(requireContext(), uri)
-            }
-        }
-
-        private fun openFileOrShowMessage(context: Context, uri: Uri) {
-            val mimeType = uri.getMimeType(context)
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.setDataAndType(uri, mimeType)
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            try {
-                context.startActivity(intent)
-            } catch (ex: ActivityNotFoundException) {
-                Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_impossible_open_file, Snackbar.LENGTH_SHORT).show()
-            }
-        }
-
-        private fun doesFileExists(context: Context, uri: Uri): Boolean =
-            kotlin.runCatching {
-                val cursor = context.contentResolver.query(uri, null, null, null, null)
-                val doesExist = cursor != null && cursor.moveToFirst()
-                cursor?.close()
-                doesExist
-            }.getOrNull() ?: false
-
-        @RequiresApi(Build.VERSION_CODES.R)
-        private fun isFileInTrash(context: Context, uri: Uri): Boolean {
-            return kotlin.runCatching {
-                val cursor = context.contentResolver.query(uri, null, MediaStore.MediaColumns.IS_TRASHED, null, null)
-                val isInTrash = cursor != null && cursor.moveToFirst()
-                cursor?.close()
-                return isInTrash
-            }.getOrNull() ?: false
         }
 
         private fun showPermissionDeniedDialog(context: Context) = AlertDialog.Builder(context, R.style.BandyerSDKDesign_AlertDialogTheme)

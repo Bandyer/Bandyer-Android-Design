@@ -33,6 +33,7 @@ class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): Bandy
         val user: MaterialTextView = view.findViewById(R.id.bandyer_username)
         val error: MaterialTextView = view.findViewById(R.id.bandyer_error)
         val progressText: MaterialTextView = view.findViewById(R.id.bandyer_progress_text)
+        val clickArea: View = view.findViewById(R.id.bandyer_action_click_area)
 
         override fun bindView(item: UploadItem, payloads: MutableList<Any>) {
             val bytesFormatted = Formatter.formatShortFileSize(itemView.context, item.data.totalBytes)
@@ -91,7 +92,7 @@ class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): Bandy
         override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
             //return the views on which you want to bind this event
             return if (viewHolder is ViewHolder) {
-                viewHolder.action
+                viewHolder.clickArea
             } else {
                 null
             }
@@ -101,8 +102,7 @@ class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): Bandy
             when (item.data) {
                 is UploadData.Pending -> item.viewModel.cancelUpload(item.data.id)
                 is UploadData.OnProgress -> item.viewModel.cancelUpload(item.data.id)
-                is UploadData.Success -> {
-                }
+                is UploadData.Success -> item.openFile(v.context, item.data.uri, v)
                 is UploadData.Error -> item.viewModel.upload(item.data.id, v.context, item.data.uri)
             }
         }

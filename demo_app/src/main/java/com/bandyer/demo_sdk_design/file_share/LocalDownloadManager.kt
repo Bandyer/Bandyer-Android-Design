@@ -36,7 +36,7 @@ class LocalDownloadManager private constructor(override val httpStack: HttpStack
                 if(!isActive) break
                 events.emit(DownloadEvent.OnProgress(downloadId,"", uri, startTime, totalBytes,(totalBytes / nOfUpdates) * i))
             }
-            events.emit(DownloadEvent.Success(downloadId,"", uri, startTime, totalBytes))
+            events.emit(DownloadEvent.Error(downloadId,"", uri, startTime, totalBytes, Throwable()))
         }.apply {
             jobs[downloadId] = this
             invokeOnCompletion {

@@ -24,12 +24,15 @@ import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.graphics.Point
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.annotation.StyleableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -454,4 +457,22 @@ fun Context.setTextAppearance(textView: MaterialTextView?, resId: Int) {
         textView?.setTextAppearance(this, resId)
     else
         textView?.setTextAppearance(resId)
+}
+
+fun Context.doesFileExists(uri: Uri): Boolean =
+    runCatching {
+        val cursor = contentResolver.query(uri, null, null, null, null)
+        val doesExist = cursor != null && cursor.moveToFirst()
+        cursor?.close()
+        doesExist
+    }.getOrNull() ?: false
+
+@RequiresApi(Build.VERSION_CODES.R)
+fun Context.isFileInTrash(uri: Uri): Boolean {
+    return runCatching {
+        val cursor = contentResolver.query(uri, null, MediaStore.MediaColumns.IS_TRASHED, null, null)
+        val isInTrash = cursor != null && cursor.moveToFirst()
+        cursor?.close()
+        return isInTrash
+    }.getOrNull() ?: false
 }

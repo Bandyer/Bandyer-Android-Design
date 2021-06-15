@@ -32,6 +32,7 @@ class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): B
         val user: MaterialTextView = view.findViewById(R.id.bandyer_username)
         val error: MaterialTextView = view.findViewById(R.id.bandyer_error)
         val progressText: MaterialTextView = view.findViewById(R.id.bandyer_progress_text)
+        val clickArea: View = view.findViewById(R.id.bandyer_action_click_area)
 
         override fun bindView(item: DownloadItem, payloads: MutableList<Any>) {
             fileSize.text = itemView.context.resources.getString(R.string.bandyer_fileshare_na)
@@ -88,7 +89,7 @@ class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): B
         override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
             //return the views on which you want to bind this event
             return if (viewHolder is ViewHolder) {
-                viewHolder.action
+                viewHolder.clickArea
             } else {
                 null
             }
@@ -98,8 +99,7 @@ class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): B
             when(item.data) {
                 is DownloadData.Pending -> item.viewModel.cancelDownload(item.data.id)
                 is DownloadData.OnProgress -> item.viewModel.cancelDownload(item.data.id)
-                is DownloadData.Success -> {
-                }
+                is DownloadData.Success -> item.openFile(v.context, item.data.uri, v)
                 is DownloadData.Error -> item.viewModel.download(item.data.id, item.data.endpoint, v.context)
             }
         }
