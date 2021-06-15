@@ -10,6 +10,10 @@ import com.bandyer.communication_center.file_share.events.UploadEvent
 import com.bandyer.demo_sdk_design.file_share.LocalFileShareViewModel
 import com.bandyer.sdk_design.extensions.getFileName
 import com.bandyer.sdk_design.filesharing.*
+import com.bandyer.sdk_design.filesharing.model.DownloadAvailableData
+import com.bandyer.sdk_design.filesharing.model.DownloadData
+import com.bandyer.sdk_design.filesharing.model.DownloadItemData
+import com.bandyer.sdk_design.filesharing.model.UploadData
 import com.google.android.material.button.MaterialButton
 import java.util.*
 import kotlinx.coroutines.flow.collect

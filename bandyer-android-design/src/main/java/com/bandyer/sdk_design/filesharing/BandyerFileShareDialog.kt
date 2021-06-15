@@ -23,6 +23,14 @@ import com.bandyer.sdk_design.databinding.BandyerFileShareDialogLayoutBinding
 import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.bandyer.sdk_design.extensions.getFileBytes
+import com.bandyer.sdk_design.filesharing.adapter_items.BandyerFileShareItem
+import com.bandyer.sdk_design.filesharing.adapter_items.DownloadAvailableItem
+import com.bandyer.sdk_design.filesharing.adapter_items.DownloadItem
+import com.bandyer.sdk_design.filesharing.adapter_items.UploadItem
+import com.bandyer.sdk_design.filesharing.model.DownloadAvailableData
+import com.bandyer.sdk_design.filesharing.model.DownloadData
+import com.bandyer.sdk_design.filesharing.model.FileShareItemData
+import com.bandyer.sdk_design.filesharing.model.UploadData
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
@@ -197,7 +205,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) {
             uploadFileFabText?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
             emptyListLayout?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
-            val items = arrayListOf<BandyerFileShareItem<*,*>>()
+            val items = arrayListOf<BandyerFileShareItem<*, *>>()
             data.values.forEach {
                 if(it is UploadData.Pending || it is DownloadData.Pending)
                     scrollToTop()

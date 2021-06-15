@@ -22,7 +22,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.bandyer.sdk_design.filesharing.BandyerFileTypeImageView
+        <com.bandyer.sdk_design.filesharing.imageviews.BandyerFileTypeImageView
             android:id="@+id/bandyer_file_type"
             style="?attr/bandyer_fileTypeStyle"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
             app:layout_constraintStart_toStartOf="@id/bandyer_file_type"
             tools:text="78 MB" />
 
-        <com.bandyer.sdk_design.filesharing.BandyerFileShareActionButton
+        <com.bandyer.sdk_design.filesharing.buttons.BandyerFileShareActionButton
             android:id="@+id/bandyer_action"
             style="?attr/materialButtonStyle"
             app:layout_constraintBottom_toBottomOf="@id/bandyer_progress_bar"
@@ -58,7 +58,7 @@
             app:layout_constraintStart_toStartOf="@+id/bandyer_file_name"
             app:layout_constraintTop_toBottomOf="@id/bandyer_file_name" />
 
-        <com.bandyer.sdk_design.filesharing.BandyerFileShareOpTypeImageView
+        <com.bandyer.sdk_design.filesharing.imageviews.BandyerFileShareOpTypeImageView
             android:id="@+id/bandyer_operation"
             style="?attr/bandyer_operationIconStyle"
             app:layout_constraintBottom_toBottomOf="@id/bandyer_username"

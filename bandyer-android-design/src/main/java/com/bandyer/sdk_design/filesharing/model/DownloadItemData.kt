@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.filesharing
+package com.bandyer.sdk_design.filesharing.model
 
 interface DownloadItemData: FileShareItemData {
     val endpoint: String

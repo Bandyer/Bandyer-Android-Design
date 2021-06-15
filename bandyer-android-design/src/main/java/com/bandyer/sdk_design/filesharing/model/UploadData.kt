@@ -1,8 +1,9 @@
-package com.bandyer.sdk_design.filesharing
+package com.bandyer.sdk_design.filesharing.model
 
 import android.net.Uri
 
-sealed class UploadData(override val id: String, override val startTime: Long, override val totalBytes: Long, override val uri: Uri, override val fileName: String): UploadItemData {
+sealed class UploadData(override val id: String, override val startTime: Long, override val totalBytes: Long, override val uri: Uri, override val fileName: String):
+    UploadItemData {
     class Pending(uploadId: String, startTime: Long, totalBytes: Long, uri: Uri, fileName: String) : UploadData(uploadId, startTime, totalBytes, uri, fileName) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
