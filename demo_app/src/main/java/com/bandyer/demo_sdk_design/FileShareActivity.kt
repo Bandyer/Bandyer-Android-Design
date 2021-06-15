@@ -5,14 +5,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
-import com.bandyer.communication_center.file_share.file_sharing_center.UploadState
-import com.bandyer.communication_center.file_share.file_sharing_center.request.DownloadState
+import com.bandyer.communication_center.file_share.events.DownloadEvent
+import com.bandyer.communication_center.file_share.events.UploadEvent
 import com.bandyer.demo_sdk_design.file_share.LocalFileShareViewModel
 import com.bandyer.sdk_design.extensions.getFileName
 import com.bandyer.sdk_design.filesharing.*
 import com.google.android.material.button.MaterialButton
-import kotlinx.coroutines.flow.collect
 import java.util.*
+import kotlinx.coroutines.flow.collect
 
 class FileShareActivity : AppCompatActivity() {
 
@@ -32,11 +32,11 @@ class FileShareActivity : AppCompatActivity() {
             viewModel.uploadEvents.collect {
                 val fileName = viewModel.itemsData[it.uploadId]?.fileName ?: it.fileUri.getFileName(this@FileShareActivity)
                 when(it) {
-                    is UploadState.Pending -> viewModel.itemsData[it.uploadId] = UploadData.Pending(it.uploadId, it.startTime, it.totalBytes, it.fileUri, fileName)
-                    is UploadState.OnProgress -> viewModel.itemsData[it.uploadId] = UploadData.OnProgress(it.uploadId, it.startTime, it.totalBytes, it.fileUri, fileName, it.uploadedBytes)
-                    is UploadState.Success -> viewModel.itemsData[it.uploadId] = UploadData.Success(it.uploadId, it.startTime, it.totalBytes, it.fileUri, fileName)
-                    is UploadState.Error -> viewModel.itemsData[it.uploadId] = UploadData.Error(it.uploadId, it.startTime, it.totalBytes, it.fileUri, fileName)
-                    is UploadState.Cancelled -> viewModel.itemsData.remove(it.uploadId)
+                    is UploadEvent.Pending -> viewModel.itemsData[it.uploadId] = UploadData.Pending(it.uploadId, it.startTime, it.totalBytes, it.fileUri, fileName)
+                    is UploadEvent.OnProgress -> viewModel.itemsData[it.uploadId] = UploadData.OnProgress(it.uploadId, it.startTime, it.totalBytes, it.fileUri, fileName, it.uploadedBytes)
+                    is UploadEvent.Success -> viewModel.itemsData[it.uploadId] = UploadData.Success(it.uploadId, it.startTime, it.totalBytes, it.fileUri, fileName)
+                    is UploadEvent.Error -> viewModel.itemsData[it.uploadId] = UploadData.Error(it.uploadId, it.startTime, it.totalBytes, it.fileUri, fileName)
+                    is UploadEvent.Cancelled -> viewModel.itemsData.remove(it.uploadId)
                 }
                 if(fileShareDialog?.isVisible == true) fileShareDialog?.updateRecyclerViewItems(viewModel.itemsData)
             }
@@ -46,11 +46,11 @@ class FileShareActivity : AppCompatActivity() {
            viewModel.downloadEvents.collect {
                val sender = viewModel.itemsData[it.downloadId]?.let { itemData -> (itemData as DownloadItemData).sender } ?: ""
                when(it) {
-                   is DownloadState.Pending -> viewModel.itemsData[it.downloadId] = DownloadData.Pending(it.downloadId, it.endpoint, it.startTime, it.totalBytes, sender, "".toUri(), "")
-                   is DownloadState.OnProgress -> viewModel.itemsData[it.downloadId] = DownloadData.OnProgress(it.downloadId, it.endpoint, it.startTime, it.totalBytes, it.downloadBytes, sender, "".toUri(), "")
-                   is DownloadState.Success -> viewModel.itemsData[it.downloadId] = DownloadData.Success(it.downloadId, it.endpoint, it.startTime, it.totalBytes, sender, "".toUri(), "")
-                   is DownloadState.Error -> viewModel.itemsData[it.downloadId] = DownloadData.Error(it.downloadId, it.endpoint, it.startTime, it.totalBytes, it.throwable, sender, "".toUri(), "")
-                   is DownloadState.Cancelled -> viewModel.itemsData.remove(it.downloadId)
+                   is DownloadEvent.Pending -> viewModel.itemsData[it.downloadId] = DownloadData.Pending(it.downloadId, it.endpoint, it.startTime, it.totalBytes, sender, "".toUri(), "")
+                   is DownloadEvent.OnProgress -> viewModel.itemsData[it.downloadId] = DownloadData.OnProgress(it.downloadId, it.endpoint, it.startTime, it.totalBytes, it.downloadBytes, sender, "".toUri(), "")
+                   is DownloadEvent.Success -> viewModel.itemsData[it.downloadId] = DownloadData.Success(it.downloadId, it.endpoint, it.startTime, it.totalBytes, sender, "".toUri(), "")
+                   is DownloadEvent.Error -> viewModel.itemsData[it.downloadId] = DownloadData.Error(it.downloadId, it.endpoint, it.startTime, it.totalBytes, it.throwable, sender, "".toUri(), "")
+                   is DownloadEvent.Cancelled -> viewModel.itemsData.remove(it.downloadId)
                }
                if(fileShareDialog?.isVisible == true) fileShareDialog?.updateRecyclerViewItems(viewModel.itemsData)
            }

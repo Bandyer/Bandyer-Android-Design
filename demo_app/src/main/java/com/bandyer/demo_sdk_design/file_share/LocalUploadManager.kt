@@ -2,22 +2,19 @@ package com.bandyer.demo_sdk_design.file_share
 
 import android.content.Context
 import android.net.Uri
-import com.bandyer.communication_center.file_share.file_sharing_center.DefaultFileSharingConfig
-import com.bandyer.communication_center.file_share.file_sharing_center.FileSharingConfig
-import com.bandyer.communication_center.file_share.file_sharing_center.UploadState
-import com.bandyer.communication_center.file_share.file_sharing_center.request.HttpStack
-import com.bandyer.communication_center.file_share.file_sharing_center.request.HttpUploader
-import com.bandyer.communication_center.file_share.file_sharing_center.request.invokeOnCancelled
+import com.bandyer.communication_center.file_share.config.DefaultFileSharingConfig
+import com.bandyer.communication_center.file_share.config.FileSharingConfig
+import com.bandyer.communication_center.file_share.events.UploadEvent
+import com.bandyer.communication_center.file_share.http_stack.HttpStack
+import com.bandyer.communication_center.file_share.uploader.HttpUploader
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import java.io.File
-import java.lang.Exception
 import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
-class LocalUploadManager private constructor(override val httpStack: HttpStack, override val scope: CoroutineScope): HttpUploader {
+class LocalUploadManager private constructor(override val httpStack: HttpStack, override val scope: CoroutineScope):
+    HttpUploader {
 
     companion object {
         fun newInstance(config: FileSharingConfig = DefaultFileSharingConfig): HttpUploader = LocalUploadManager(config.httpStack, config.ioScope)
@@ -25,9 +22,7 @@ class LocalUploadManager private constructor(override val httpStack: HttpStack, 
 
     private val jobs: ConcurrentHashMap<String, Job> = ConcurrentHashMap()
 
-    override val uploads: StateFlow<HashMap<String, UploadState>> = MutableStateFlow(hashMapOf())
-
-    override val events = MutableSharedFlow<UploadState>()
+    override val events = MutableSharedFlow<UploadEvent>()
 
     override fun upload(uploadId: String, context: Context, uri: Uri): String {
         val startTime = Date().time
@@ -36,17 +31,17 @@ class LocalUploadManager private constructor(override val httpStack: HttpStack, 
         val totalBytes = if(file.length() != 0L) file.length() else 100L
 
         scope.launch(start = CoroutineStart.LAZY) {
-            events.emit(UploadState.Pending(uploadId, startTime, totalBytes, uri))
+            events.emit(UploadEvent.Pending(uploadId, startTime, totalBytes, uri))
             for(i in 0..nOfUpdates) {
                 delay(500)
                 if(!isActive) break
-                events.emit(UploadState.OnProgress(uploadId, startTime, totalBytes, uri,(totalBytes / nOfUpdates) * i))
+                events.emit(UploadEvent.OnProgress(uploadId, startTime, totalBytes, uri,(totalBytes / nOfUpdates) * i))
             }
-            events.emit(UploadState.Success(uploadId, startTime, totalBytes, uri,"", ""))
+            events.emit(UploadEvent.Error(uploadId, startTime, totalBytes, uri, Throwable()))
         }.apply {
             jobs[uploadId] = this
-            invokeOnCancelled(scope.coroutineContext) {
-                events.emit(UploadState.Cancelled(uploadId, startTime, totalBytes, uri))
+            invokeOnCompletion {
+                if(it is CancellationException) scope.launch {  events.emit(UploadEvent.Cancelled(uploadId, startTime, totalBytes, uri)) }
             }
             start()
         }

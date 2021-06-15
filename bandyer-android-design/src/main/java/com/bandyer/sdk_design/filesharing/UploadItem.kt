@@ -55,7 +55,7 @@ class UploadItem(val data: UploadData, val viewModel: FileShareViewModel): Bandy
                     action.type = BandyerFileShareActionButton.Type.CANCEL
                 }
                 is UploadData.Success -> {
-                    action.type = BandyerFileShareActionButton.Type.RE_DOWNLOAD
+                    action.type = BandyerFileShareActionButton.Type.CHECK
                     progressBar.progress = 100
                     progressText.text = item.data.startTime.parseToHHmm()
                 }

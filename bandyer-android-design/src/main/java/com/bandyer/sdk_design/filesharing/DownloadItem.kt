@@ -53,7 +53,7 @@ class DownloadItem(val data: DownloadData, val viewModel: FileShareViewModel): B
                     action.type = BandyerFileShareActionButton.Type.CANCEL
                 }
                 is DownloadData.Success -> {
-                    action.type = BandyerFileShareActionButton.Type.RE_DOWNLOAD
+                    action.type = BandyerFileShareActionButton.Type.CHECK
                     progressBar.progress = 100
                     progressText.text = item.data.startTime.parseToHHmm()
                 }
