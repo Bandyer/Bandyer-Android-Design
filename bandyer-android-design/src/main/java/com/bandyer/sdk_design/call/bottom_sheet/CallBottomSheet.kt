@@ -168,8 +168,6 @@ open class CallBottomSheet<T>(
 
         bottomSheetLayoutContent.backgroundView?.alpha = if (state == STATE_HIDDEN || isShowingBottomSheetFromBottom) 0f else 1f
 
-        if (state == STATE_SETTLING) return
-
         bottomSheetLayoutContent.lineView?.state = when {
             slideOffset > 0f                             -> State.ANCHORED_LINE
             state == STATE_COLLAPSED                     -> State.COLLAPSED
