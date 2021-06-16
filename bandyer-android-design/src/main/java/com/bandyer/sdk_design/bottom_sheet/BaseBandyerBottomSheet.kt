@@ -114,8 +114,10 @@ open class BaseBandyerBottomSheet(
 
         @SuppressLint("SwitchIntDef")
         override fun onStateChanged(bottomSheet: View, newState: Int) {
-            if (newState != BandyerBottomSheetBehaviour.STATE_HIDDEN)
+            if (newState != BandyerBottomSheetBehaviour.STATE_HIDDEN) {
                 bottomSheetLayoutContent.updateBackgroundView()
+                moveBottomSheet()
+            }
             when (newState) {
                 BandyerBottomSheetBehaviour.STATE_HIDDEN -> onHidden()
                 BandyerBottomSheetBehaviour.STATE_COLLAPSED -> onCollapsed()
