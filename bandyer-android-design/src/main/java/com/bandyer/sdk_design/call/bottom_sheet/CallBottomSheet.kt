@@ -204,7 +204,6 @@ open class CallBottomSheet<T>(
         bottomSheetLayoutContent.backgroundView?.alpha = 0f
     }
 
-
     override fun onAnchor() {
         super.onAnchor()
         bottomSheetLayoutContent.backgroundView?.alpha = 1f
@@ -268,15 +267,13 @@ open class CallBottomSheet<T>(
     }
 
     private fun calculateBottomSheetDimensions() {
-        collapsed ?: return
-
         var peekHeight: Int
         var anchorOffset: Int
 
         val firstItem = recyclerView?.layoutManager?.getChildAt(0)
 
         firstItem?.post {
-            collapsed ?: return@post
+            if (collapsed == null) collapsed = bottomSheetBehaviour?.skipCollapsed != true
 
             bottomSheetBehaviour ?: kotlin.run {
                 dispose()
