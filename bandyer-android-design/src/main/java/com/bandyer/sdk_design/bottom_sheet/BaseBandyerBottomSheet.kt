@@ -36,7 +36,6 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
-import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_COLLAPSED
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.BandyerBottomSheetLayout
@@ -105,7 +104,7 @@ open class BaseBandyerBottomSheet(
         return child
     }
 
-    var slideOffset = -1f
+    private var slideOffset = -1f
 
     private val bottomSheetBehaviorCallback = object : BandyerBottomSheetBehaviour.BottomSheetCallback() {
 
@@ -155,6 +154,10 @@ open class BaseBandyerBottomSheet(
      * RecyclerView adapter
      */
     var fastItemAdapter: ItemAdapter<AdapterActionItem> = ItemAdapter()
+
+    /**
+     * Fast adapter
+     */
     var fastAdapter = FastAdapter.with(fastItemAdapter)
 
     /**
@@ -291,7 +294,10 @@ open class BaseBandyerBottomSheet(
         initialized = true
     }
 
-    open fun updateLayout() = Unit
+    /**
+     * On configuration changed
+     */
+    open fun onConfigurationChanged() = Unit
 
     private fun addBackground() {
         val parent = coordinatorLayout?.parent as? ViewGroup
@@ -472,7 +478,7 @@ open class BaseBandyerBottomSheet(
         val isInPictureInPictureMode = activity.checkIsInPictureInPictureMode()
         val isInMultiWindowMode = activity.checkIsInMultiWindowMode() && !isInPictureInPictureMode
 
-        if (isInMultiWindowMode && !isInPictureInPictureMode || (wasInMultiWindowMode && !wasInPictureInPictureMode)) updateLayout()
+        if (isInMultiWindowMode && !isInPictureInPictureMode || (wasInMultiWindowMode && !wasInPictureInPictureMode)) onConfigurationChanged()
 
         if (!isInMultiWindowMode && wasInMultiWindowMode) wasInMultiWindowMode = false
         if (!isInPictureInPictureMode && wasInPictureInPictureMode) wasInPictureInPictureMode = false

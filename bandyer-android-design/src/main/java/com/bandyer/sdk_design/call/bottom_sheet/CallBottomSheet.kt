@@ -220,7 +220,7 @@ open class CallBottomSheet<T>(
         currentAudioRoute = audioRoute
     }
 
-    override fun updateLayout() {
+    override fun onConfigurationChanged() {
         bottomSheetBehaviour ?: return
         fixed ?: return
         calculateBottomSheetDimensions()
