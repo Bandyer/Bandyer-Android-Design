@@ -598,6 +598,10 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
     override fun onNestedPreScroll(coordinatorLayout: CoordinatorLayout, child: V, target: View,
                                    dx: Int, dy: Int, consumed: IntArray,
                                    @ViewCompat.NestedScrollType type: Int) {
+        if (type == ViewCompat.TYPE_NON_TOUCH) {
+            // Ignore fling here. The ViewDragHelper handles it.
+            return
+        }
         val scrollingChild = mNestedScrollingChildRef?.get()
         if (target != scrollingChild) return
 
@@ -621,6 +625,10 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
                 ViewCompat.offsetTopAndBottom(child, -consumed[1])
                 setStateInternal(STATE_EXPANDED)
             } else {
+                if (disableDragging) {
+                    // Prevent dragging
+                    return
+                }
                 consumed[1] = dy
                 ViewCompat.offsetTopAndBottom(child, -dy)
                 setStateInternal(STATE_DRAGGING)
@@ -628,18 +636,17 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
         } else if (dy < 0) { // Downward
             if (!target.canScrollVertically(-1)) {
                 if (newTop <= mMaxOffset || isHideable) {
-                    // Restrict STATE_COLLAPSED if restrictedState is set
+                    if (disableDragging) {
+                        // Prevent dragging
+                        return
+                    }
                     consumed[1] = dy
                     ViewCompat.offsetTopAndBottom(child, -dy)
                     setStateInternal(STATE_DRAGGING)
                 } else {
                     consumed[1] = currentTop - mMaxOffset
                     ViewCompat.offsetTopAndBottom(child, -consumed[1])
-                    when {
-                        !skipCollapsed -> setStateInternal(STATE_COLLAPSED)
-                        !skipAnchor -> setStateInternal(STATE_ANCHOR_POINT)
-                        else -> setStateInternal(lastStableState)
-                    }
+                    setStateInternal(STATE_COLLAPSED)
                 }
             }
         }
@@ -650,7 +657,10 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
     override fun onStopNestedScroll(coordinatorLayout: CoordinatorLayout, child: V, target: View,
                                     @ViewCompat.NestedScrollType type: Int) {
 
-        if (child.top == mMinOffset) return
+        if (child.top == mMinOffset) {
+            setStateInternal(STATE_EXPANDED)
+            return
+        }
 
         if (mNestedScrollingChildRef == null || target != mNestedScrollingChildRef?.get() || !mNestedScrolled)
             return
@@ -679,6 +689,9 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
             } else if (!skipCollapsed) {
                 top = mMaxOffset
                 targetState = STATE_COLLAPSED
+            } else if(isHideable){
+                top = mParentHeight
+                targetState = STATE_HIDDEN
             }
         } else {
             // Collapse? Multiply by 1.25 to account for parallax. The currentTop needs to be pulled down 50% of the anchor point before collapsing.
