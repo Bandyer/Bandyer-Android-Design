@@ -201,7 +201,7 @@ open class CallBottomSheet<T>(
     override fun onCollapsed() {
         super.onCollapsed()
         bottomSheetLayoutContent.lineView?.state = State.COLLAPSED
-        bottomSheetLayoutContent.backgroundView?.alpha = 0f
+        if (bottomSheetBehaviour?.skipCollapsed == false) bottomSheetLayoutContent.backgroundView?.alpha = 0f
     }
 
     override fun onAnchor() {
