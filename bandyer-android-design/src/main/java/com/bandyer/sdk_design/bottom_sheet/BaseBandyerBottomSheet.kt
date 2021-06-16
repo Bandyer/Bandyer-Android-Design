@@ -233,6 +233,13 @@ open class BaseBandyerBottomSheet(
         if (initialized)
             return
 
+        coordinatorLayout!!.setOnTouchListener { v, event ->
+            if (recyclerView!!.canScrollVertically(-1)) {
+                recyclerView!!.onTouchEvent(event)
+                true
+            } else false
+        }
+
         coordinatorLayout!!.addView(bottomSheetLayoutContent, 0, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         addBackground()
         val params = bottomSheetLayoutContent.layoutParams as androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams
