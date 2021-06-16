@@ -25,7 +25,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.OvershootInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import android.widget.Space
@@ -36,6 +36,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
+import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_COLLAPSED
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.BandyerBottomSheetLayout
@@ -78,6 +79,8 @@ open class BaseBandyerBottomSheet(
     private var initialized = false
     private var isAnimating = false
     private var hasMoved = false
+    private var wasInMultiWindowMode = false
+    private var wasInPictureInPictureMode = false
 
     /**
      * If animation is enabled
@@ -102,6 +105,8 @@ open class BaseBandyerBottomSheet(
         return child
     }
 
+    var slideOffset = -1f
+
     private val bottomSheetBehaviorCallback = object : BandyerBottomSheetBehaviour.BottomSheetCallback() {
 
         override fun onDrawn(bottomSheet: View, state: Int, slideOffset: Float) {
@@ -110,19 +115,22 @@ open class BaseBandyerBottomSheet(
 
         @SuppressLint("SwitchIntDef")
         override fun onStateChanged(bottomSheet: View, newState: Int) {
-            if (newState != BandyerBottomSheetBehaviour.STATE_HIDDEN)
+            if (newState != BandyerBottomSheetBehaviour.STATE_HIDDEN) {
                 bottomSheetLayoutContent.updateBackgroundView()
+                moveBottomSheet()
+            }
             when (newState) {
-                BandyerBottomSheetBehaviour.STATE_HIDDEN       -> onHidden()
-                BandyerBottomSheetBehaviour.STATE_COLLAPSED    -> onCollapsed()
-                BandyerBottomSheetBehaviour.STATE_EXPANDED     -> onExpanded()
-                BandyerBottomSheetBehaviour.STATE_SETTLING     -> onSettling()
+                BandyerBottomSheetBehaviour.STATE_HIDDEN -> onHidden()
+                BandyerBottomSheetBehaviour.STATE_COLLAPSED -> onCollapsed()
+                BandyerBottomSheetBehaviour.STATE_EXPANDED -> onExpanded()
+                BandyerBottomSheetBehaviour.STATE_SETTLING -> onSettling()
                 BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> onAnchor()
-                BandyerBottomSheetBehaviour.STATE_DRAGGING     -> onDragging()
+                BandyerBottomSheetBehaviour.STATE_DRAGGING -> onDragging()
             }
         }
 
         override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            this@BaseBandyerBottomSheet.slideOffset = slideOffset
             if ((slideOffset == 0f && bottomSheetBehaviour?.skipCollapsed == false) &&
                 (bottomSheetBehaviour?.lastStableState == BandyerBottomSheetBehaviour.STATE_COLLAPSED ||
                         bottomSheetBehaviour?.lastStableState == BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT)
@@ -169,8 +177,6 @@ open class BaseBandyerBottomSheet(
      */
     var bottomMarginNavigation = -1
 
-    private var wasInMultiWindow = false
-
     override var onStateChangedBottomSheetListener: OnStateChangedBottomSheetListener<BandyerBottomSheet>? = null
 
     /**
@@ -203,7 +209,7 @@ open class BaseBandyerBottomSheet(
         if ((slideOffset >= 0f && hasMoved && !isAnimating) || slideOffset < 0f) fadeRecyclerViewLinesBelowNavigation()
         when {
             slideOffset <= 0f -> updateNavigationBar(false)
-            else              -> updateNavigationBar()
+            else -> updateNavigationBar()
         }
     }
 
@@ -228,6 +234,13 @@ open class BaseBandyerBottomSheet(
         if (initialized)
             return
 
+        coordinatorLayout!!.setOnTouchListener { v, event ->
+            if (recyclerView!!.canScrollVertically(-1)) {
+                recyclerView!!.onTouchEvent(event)
+                true
+            } else false
+        }
+
         coordinatorLayout!!.addView(bottomSheetLayoutContent, 0, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT))
         addBackground()
         val params = bottomSheetLayoutContent.layoutParams as androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams
@@ -250,33 +263,35 @@ open class BaseBandyerBottomSheet(
             }
 
             when (behaviour.state) {
-                BandyerBottomSheetBehaviour.STATE_EXPANDED     -> {
+                BandyerBottomSheetBehaviour.STATE_EXPANDED -> {
                     behaviour.state = when {
                         !behaviour.skipCollapsed -> BandyerBottomSheetBehaviour.STATE_COLLAPSED
-                        behaviour.isHideable     -> BandyerBottomSheetBehaviour.STATE_HIDDEN
-                        !behaviour.skipAnchor    -> BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT
-                        else                     -> return@setOnKeyListener false
+                        behaviour.isHideable -> BandyerBottomSheetBehaviour.STATE_HIDDEN
+                        !behaviour.skipAnchor -> BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT
+                        else -> return@setOnKeyListener false
                     }
                     true
                 }
                 BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> {
                     behaviour.state = when {
                         !behaviour.skipCollapsed -> BandyerBottomSheetBehaviour.STATE_COLLAPSED
-                        behaviour.isHideable     -> BandyerBottomSheetBehaviour.STATE_HIDDEN
-                        else                     -> return@setOnKeyListener false
+                        behaviour.isHideable -> BandyerBottomSheetBehaviour.STATE_HIDDEN
+                        else -> return@setOnKeyListener false
                     }
                     true
                 }
-                BandyerBottomSheetBehaviour.STATE_COLLAPSED    -> {
+                BandyerBottomSheetBehaviour.STATE_COLLAPSED -> {
                     if (behaviour.isHideable)
                         behaviour.state = BandyerBottomSheetBehaviour.STATE_HIDDEN
                     return@setOnKeyListener behaviour.isHideable
                 }
-                else                                           -> false
+                else -> false
             }
         }
         initialized = true
     }
+
+    open fun updateLayout() = Unit
 
     private fun addBackground() {
         val parent = coordinatorLayout?.parent as? ViewGroup
@@ -356,21 +371,13 @@ open class BaseBandyerBottomSheet(
             moveBottomSheet()
             hasMoved = true
         }
-        fadeRecyclerViewLinesBelowNavigation(true)
         updateNavigationBar()
     }
 
     /**
      * Called onHidden bottomSheet
      */
-    open fun onHidden() {
-        onStateChangedBottomSheetListener?.onHide(this)
-        if (!hasMoved) {
-            moveBottomSheet()
-            hasMoved = true
-        }
-        fadeRecyclerViewLinesBelowNavigation(false)
-    }
+    open fun onHidden() = onStateChangedBottomSheetListener?.onHide(this)
 
     /**
      * Called onSettling bottomSheet
@@ -408,31 +415,33 @@ open class BaseBandyerBottomSheet(
      */
     fun fadeRecyclerViewLinesBelowNavigation(fade: Boolean? = null) {
         if (!animationEnabled) return
-        val navigationLimit = if (fade == null) (bottomSheetLayoutContent.context.getScreenSize().y - bottomMarginNavigation) else 0
-        val hasNavigationBar = navigationLimit == mContext.get()?.getScreenSize()?.y
-        (0..recyclerView?.adapter?.itemCount!!).forEach { i ->
-            recyclerView?.layoutManager?.findViewByPosition(i)?.let { view ->
-                if ((!hasMoved || isAnimating) && recyclerView.isFirstRow(i) || hasNavigationBar) {
-                    view.alpha = 1f
-                    return@let
+        val screenHeight = bottomSheetLayoutContent.context.getScreenSize().y
+        val navigationLimit = if (fade == null) (screenHeight - bottomMarginNavigation) else 0
+        val hasNavigationBar = navigationLimit < mContext.get()!!.getScreenSize().y
+        (0..recyclerView?.adapter?.itemCount!!).forEach { index ->
+            recyclerView?.layoutManager?.findViewByPosition(index)?.let { view ->
+                when {
+                    (!hasMoved || (isAnimating && (if (!bottomSheetBehaviour!!.skipCollapsed) slideOffset > 0f else slideOffset >= 0))) && recyclerView.isFirstRow(index) || !hasNavigationBar -> {
+                        view.alpha = 1f
+                        return@let
+                    }
+                    fade == null -> {
+                        val viewBottom = view.getCoordinates().y + view.height + (screenHeight - mContext.get()!!.window.decorView.height)
+                        val hidden = viewBottom - navigationLimit
+                        view.alpha = (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.coerceAtMost(1f)?.apply {
+                            recyclerViewAlphaDecimalFormat.format(this)
+                        } ?: 0f
+                        return@let
+                    }
+                    else -> view.alpha = if (fade) 1f else 0f
                 }
-
-                fade ?: kotlin.run {
-                    val viewBottom = view.getCoordinates().y + view.height
-                    val hidden = viewBottom - navigationLimit
-                    view.alpha = (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.coerceAtMost(1f)?.apply {
-                        recyclerViewAlphaDecimalFormat.format(this)
-                    } ?: 0f
-                    return@let
-                }
-                view.alpha = if (fade) 1f else 0f
             }
         }
     }
 
     private fun RecyclerView?.isFirstRow(position: Int) = when (val manager = this?.layoutManager) {
         is GridLayoutManager -> position < manager.spanCount
-        else                 -> position == 0
+        else -> position == 0
     }
 
     override fun isVisible() = bottomSheetLayoutContent.visibility == View.VISIBLE && initialized
@@ -454,13 +463,23 @@ open class BaseBandyerBottomSheet(
     final override fun onTopInsetChanged(pixels: Int) = Unit
 
     final override fun onBottomInsetChanged(pixels: Int) {
-        val screenHeight = coordinatorLayout?.context?.getScreenSize()?.y ?: 0
-        val isInMultiWindow = mContext.get()?.checkIsInMultiWindowMode() ?: false
+        val activity = mContext.get() ?: return
+
+        val screenHeight = activity.getScreenSize().y
         val guessKeyboardShown = screenHeight > 0 && pixels > screenHeight * 0.15f
-        if (guessKeyboardShown && !isInMultiWindow) return
+        if (guessKeyboardShown) return
+
+        val isInPictureInPictureMode = activity.checkIsInPictureInPictureMode()
+        val isInMultiWindowMode = activity.checkIsInMultiWindowMode() && !isInPictureInPictureMode
+
+        if (isInMultiWindowMode && !isInPictureInPictureMode || (wasInMultiWindowMode && !wasInPictureInPictureMode)) updateLayout()
+
+        if (!isInMultiWindowMode && wasInMultiWindowMode) wasInMultiWindowMode = false
+        if (!isInPictureInPictureMode && wasInPictureInPictureMode) wasInPictureInPictureMode = false
+
         bottomMarginNavigation = pixels
         bottomSheetLayoutContent.navigationBarHeight = pixels
-        if (hasMoved) moveBottomSheet()
+        moveBottomSheet()
         onStateChangedBottomSheetListener?.onSlide(this@BaseBandyerBottomSheet, bottomSheetLayoutContent.top.toFloat())
     }
 
@@ -479,11 +498,6 @@ open class BaseBandyerBottomSheet(
 
         val startValue = bottomMargin.toFloat()
         val endValue = bottomMarginNavigation.toFloat()
-        if (startValue == endValue) {
-            bottomSheetLayoutContent.post { bottomSheetLayoutContent.updateBackgroundView() }
-            fadeRecyclerViewLinesBelowNavigation()
-            return
-        }
 
         isAnimating = true
 
@@ -491,7 +505,7 @@ open class BaseBandyerBottomSheet(
         valueAnimator?.cancel()
 
         valueAnimator = ValueAnimator.ofFloat(startValue, endValue)
-        valueAnimator!!.interpolator = OvershootInterpolator()
+        valueAnimator!!.interpolator = DecelerateInterpolator()
 
         valueAnimator!!.addUpdateListener {
             kotlin.runCatching {
@@ -499,7 +513,7 @@ open class BaseBandyerBottomSheet(
                 lp.bottomMargin = value.toInt()
                 coordinatorLayout?.requestLayout()
                 bottomSheetLayoutContent.updateBackgroundView()
-                fadeRecyclerViewLinesBelowNavigation()
+                if(bottomMarginNavigation>0) fadeRecyclerViewLinesBelowNavigation()
                 onStateChangedBottomSheetListener?.onSlide(this@BaseBandyerBottomSheet, bottomSheetLayoutContent.top.toFloat())
             }
         }
@@ -513,12 +527,7 @@ open class BaseBandyerBottomSheet(
                     isAnimating = false
                     if (isCanceled) return
                     bottomSheetLayoutContent.updateBackgroundView()
-                    when (state) {
-                        BandyerBottomSheetBehaviour.STATE_COLLAPSED    -> onCollapsed()
-                        BandyerBottomSheetBehaviour.STATE_EXPANDED     -> onExpanded()
-                        BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> onAnchor()
-                        BandyerBottomSheetBehaviour.STATE_HIDDEN       -> onHidden()
-                    }
+                    if (endValue != lp.bottomMargin.toFloat()) moveBottomSheet()
                 }
 
                 override fun onAnimationCancel(animation: Animator?) {
@@ -526,13 +535,10 @@ open class BaseBandyerBottomSheet(
                     isAnimating = false
                 }
 
-
-                override fun onAnimationStart(animation: Animator?) = fadeRecyclerViewLinesBelowNavigation()
+                override fun onAnimationStart(animation: Animator?) = Unit
             })
 
-
-
-        valueAnimator!!.duration = 300
+        valueAnimator!!.duration = 200
         valueAnimator!!.start()
     }
 
@@ -618,8 +624,8 @@ open class BaseBandyerBottomSheet(
         bottomSheetBehaviour?.let {
             when (it.state) {
                 BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> it.state = if (it.isHideable) BandyerBottomSheetBehaviour.STATE_HIDDEN else if (!it.skipCollapsed) BandyerBottomSheetBehaviour.STATE_COLLAPSED else BandyerBottomSheetBehaviour.STATE_EXPANDED
-                BandyerBottomSheetBehaviour.STATE_EXPANDED     -> it.state = if (it.isHideable) BandyerBottomSheetBehaviour.STATE_HIDDEN else if (!it.skipCollapsed) BandyerBottomSheetBehaviour.STATE_COLLAPSED else if (!it.skipAnchor) BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT else BandyerBottomSheetBehaviour.STATE_EXPANDED
-                BandyerBottomSheetBehaviour.STATE_COLLAPSED    -> it.state = if (!it.skipAnchor) BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT else BandyerBottomSheetBehaviour.STATE_EXPANDED
+                BandyerBottomSheetBehaviour.STATE_EXPANDED -> it.state = if (it.isHideable) BandyerBottomSheetBehaviour.STATE_HIDDEN else if (!it.skipCollapsed) BandyerBottomSheetBehaviour.STATE_COLLAPSED else if (!it.skipAnchor) BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT else BandyerBottomSheetBehaviour.STATE_EXPANDED
+                BandyerBottomSheetBehaviour.STATE_COLLAPSED -> it.state = if (!it.skipAnchor) BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT else BandyerBottomSheetBehaviour.STATE_EXPANDED
             }
         }
     }

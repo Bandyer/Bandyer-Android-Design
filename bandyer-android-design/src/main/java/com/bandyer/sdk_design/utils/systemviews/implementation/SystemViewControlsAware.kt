@@ -19,9 +19,9 @@ package com.bandyer.sdk_design.utils.systemviews.implementation
 import android.annotation.SuppressLint
 import android.content.ComponentCallbacks
 import android.content.res.Configuration
-import android.graphics.Rect
 import android.os.Build
 import android.view.*
+import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentActivity
@@ -33,22 +33,19 @@ import java.lang.ref.WeakReference
 import kotlin.math.abs
 
 internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewControlsAwareInstance, SystemViewLayoutObserver, ComponentCallbacks, View.OnLayoutChangeListener {
-    private var context: WeakReference<FragmentActivity>? = null
-    private var isPortrait = true
-    private var hasChangedConfiguration = false
 
+    private var context: WeakReference<FragmentActivity>? = null
+    private var hasChangedConfiguration = false
+    private var wasInPiP = false
+    private var currentSystemBarsInsets: Insets? = null
     /**
      * Mapping of observers and requests to keep listening on global layout channges
      */
     private var systemUiObservers = mutableListOf<Pair<SystemViewLayoutObserver, Boolean>>()
 
-    private var window: Window? = null
-
     @SuppressLint("NewApi")
     fun bind(activity: FragmentActivity): SystemViewControlsAware {
         context = WeakReference(activity)
-
-        isPortrait = activity.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
         LifecyleBinder.bind(activity, object : LifecycleEvents {
             override fun destroy() = dispose()
@@ -59,41 +56,44 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
             override fun stop() = Unit
         })
 
-        this.window = activity.window
+        val decorView = activity.window!!.decorView
 
-        window!!.decorView.post {
-            val context = context?.get() ?: return@post
-            context.registerComponentCallbacks(this)
-            window?.decorView?.addOnLayoutChangeListener(this)
+        decorView.post {
+            activity.registerComponentCallbacks(this)
+            decorView.addOnLayoutChangeListener(this)
             resetMargins()
         }
 
-        window!!.decorView.setOnSystemUiVisibilityChangeListener {
-            window?.decorView?.post { resetMargins() }
+        decorView.setOnSystemUiVisibilityChangeListener {
+            decorView.post {
+                resetMargins()
+            }
         }
 
-        val layout = (window!!.decorView as ViewGroup).getChildAt(0)
-        ViewCompat.setOnApplyWindowInsetsListener(layout) { v, insets ->
-            val isInPiP = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) && context?.get()?.isInPictureInPictureMode == true
-            val rootInsets = v.rootView.rootWindowInsets
-            val hasInsetsChanged = WindowInsetsCompat.toWindowInsetsCompat(rootInsets).getInsets(WindowInsetsCompat.Type.systemBars()) != oldInsets?.getInsets(WindowInsetsCompat.Type.systemBars())
+        ViewCompat.setOnApplyWindowInsetsListener(decorView) { v, insets ->
+            val context = context?.get() ?: return@setOnApplyWindowInsetsListener WindowInsetsCompat.CONSUMED
+            val isInPiP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && context.isInPictureInPictureMode
+            val systemBarInsets = getSystemBarsInsets(decorView)
+
+            val hasInsetsChanged = systemBarInsets != currentSystemBarsInsets
+            currentSystemBarsInsets = systemBarInsets
+
             val isChangingPiPConfiguration = wasInPiP != isInPiP
             wasInPiP = isInPiP
-            oldInsets = WindowInsetsCompat.toWindowInsetsCompat(rootInsets)
+
 
             if (isChangingPiPConfiguration || !hasInsetsChanged)
                 return@setOnApplyWindowInsetsListener WindowInsetsCompat.CONSUMED
 
-            v.post { resetMargins() }
+            v.post {
+                resetMargins()
+            }
+
             return@setOnApplyWindowInsetsListener WindowInsetsCompat.CONSUMED
         }
 
         return this
     }
-
-    private var wasInPiP = false
-
-    private var oldInsets: WindowInsetsCompat? = null
 
     override fun addObserver(observer: SystemViewLayoutObserver, removeOnInsetChanged: Boolean): SystemViewControlsAware {
         val addedObserver = systemUiObservers.firstOrNull { it.first == observer }?.first
@@ -109,9 +109,7 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
         return this
     }
 
-    override fun getOffsets() {
-        resetMargins()
-    }
+    override fun getOffsets() = resetMargins()
 
     override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
         if (!hasChangedConfiguration && (oldRight == right || oldLeft == left || oldTop == top || oldBottom == bottom)) return
@@ -121,8 +119,8 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
 
     private fun resetMargins() {
         val context = context?.get() ?: return
-        window ?: return
-        val decorView = window!!.decorView as ViewGroup
+        val decorView = context.window.decorView ?: return
+
         if (decorView.width == 0 || decorView.height == 0) return
 
         if (context.checkIsInMultiWindowMode() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && decorView.elevation > 0.0f) {
@@ -134,58 +132,47 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
             return
         }
 
-        val rect = Rect()
-        decorView.getWindowVisibleDisplayFrame(rect)
-        val height = decorView.height
-        val width = decorView.width
+        val decorViewHeight = decorView.height
+        val decorViewWidth = decorView.width
 
-        if (!context.checkIsInMultiWindowMode() && (isPortrait && width > height || !isPortrait && height > width)) {
+        if (!context.checkIsInMultiWindowMode() && (isPortrait() && decorViewWidth > decorViewHeight || !isPortrait() && decorViewHeight > decorViewWidth)) {
             decorView.post {
                 resetMargins()
             }
             return
         }
 
-        if (height == 0 || width == 0) return
+        if (decorViewHeight == 0 || decorViewWidth == 0) return
 
-        val currentInsets = ViewCompat.getRootWindowInsets(decorView)?.stableInsets
+        val currentInsets = getSystemBarsInsets(decorView) ?: return
 
-        val bottomMargin = oldInsets?.displayCutout?.safeInsetBottom?.takeIf { it > 0 } ?: currentInsets?.bottom ?: (height - rect.bottom).takeIf { it >= 0 } ?: 0
-        val topMargin = oldInsets?.displayCutout?.safeInsetTop?.takeIf { it > 0 } ?: currentInsets?.top ?: rect.top.takeIf { it >= 0 } ?: 0
-        val leftMargin = oldInsets?.displayCutout?.safeInsetLeft?.takeIf { it > 0 } ?: currentInsets?.left ?: rect.left.takeIf { it >= 0 } ?: 0
-        val rightMargin = oldInsets?.displayCutout?.safeInsetRight?.takeIf { it > 0 } ?: currentInsets?.right ?: (width - rect.right).takeIf { it >= 0 } ?: 0
+        val bottomInset = currentInsets.bottom
+        val topInset = currentInsets.top
+        val leftInset = currentInsets.left
+        val rightInset = currentInsets.right
 
-        if (rightMargin >= width || leftMargin >= width || bottomMargin >= height || topMargin >= height) return
+        if (rightInset >= decorViewWidth || leftInset >= decorViewWidth || bottomInset >= decorViewHeight || topInset >= decorViewHeight) return
 
-        onTopInsetChanged(abs(topMargin))
-        onBottomInsetChanged(abs(bottomMargin))
-        onLeftInsetChanged(abs(leftMargin))
-        onRightInsetChanged(abs(rightMargin))
+        onTopInsetChanged(abs(topInset))
+        onBottomInsetChanged(abs(bottomInset))
+        onLeftInsetChanged(abs(leftInset))
+        onRightInsetChanged(abs(rightInset))
 
         stopObserversListeningIfNeeded()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
-        isPortrait = newConfig.orientation == Configuration.ORIENTATION_PORTRAIT
         hasChangedConfiguration = true
         getOffsets()
     }
 
-    override fun onTopInsetChanged(pixels: Int) {
-        systemUiObservers.forEach { it.first.onTopInsetChanged(pixels) }
-    }
+    override fun onTopInsetChanged(pixels: Int) = systemUiObservers.forEach { it.first.onTopInsetChanged(pixels) }
 
-    override fun onBottomInsetChanged(pixels: Int) {
-        systemUiObservers.forEach { it.first.onBottomInsetChanged(pixels) }
-    }
+    override fun onBottomInsetChanged(pixels: Int) = systemUiObservers.forEach { it.first.onBottomInsetChanged(pixels) }
 
-    override fun onLeftInsetChanged(pixels: Int) {
-        systemUiObservers.forEach { it.first.onLeftInsetChanged(pixels) }
-    }
+    override fun onLeftInsetChanged(pixels: Int) = systemUiObservers.forEach { it.first.onLeftInsetChanged(pixels) }
 
-    override fun onRightInsetChanged(pixels: Int) {
-        systemUiObservers.forEach { it.first.onRightInsetChanged(pixels) }
-    }
+    override fun onRightInsetChanged(pixels: Int) = systemUiObservers.forEach { it.first.onRightInsetChanged(pixels) }
 
     private fun stopObserversListeningIfNeeded() {
         systemUiObservers = systemUiObservers.filter { !it.second }.toMutableList()
@@ -196,8 +183,12 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
     private fun dispose() {
         systemUiObservers.clear()
         val context = context?.get() ?: return
-        window?.decorView?.removeOnLayoutChangeListener(this)
+        context.window.decorView.removeOnLayoutChangeListener(this)
         context.unregisterComponentCallbacks(this)
         this@SystemViewControlsAware.finished()
     }
+
+    private fun isPortrait() = context?.get()?.resources?.configuration?.orientation == Configuration.ORIENTATION_PORTRAIT
+
+    private fun getSystemBarsInsets(view: View): Insets? = ViewCompat.getRootWindowInsets(view)?.getInsets(WindowInsetsCompat.Type.systemBars())
 }

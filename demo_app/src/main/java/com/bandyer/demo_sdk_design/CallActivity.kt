@@ -18,6 +18,7 @@ package com.bandyer.demo_sdk_design
 
 import android.annotation.SuppressLint
 import android.app.PictureInPictureParams
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -242,12 +243,24 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
         AudioCallSession.getInstance().dispose()
     }
 
+    override fun onBackPressed() {
+        if (!enterPip()) moveTaskToBack(true)
+    }
 
     override fun onUserLeaveHint() {
         super.onUserLeaveHint()
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        enterPip()
+    }
+
+    private fun enterPip() =
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             enterPictureInPictureMode(PictureInPictureParams.Builder().setAspectRatio(Rational(getScreenSize().x, getScreenSize().y)).build())
-        }
+        else false
+
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+        if (isInPictureInPictureMode) callActionWidget!!.hide()
+        else callActionWidget!!.show()
     }
 }
 

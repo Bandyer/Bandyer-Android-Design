@@ -17,10 +17,15 @@
 package com.bandyer.sdk_design.call.imageviews
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.AttributeSet
+import android.util.TypedValue
+import androidx.core.content.ContextCompat
 import com.bandyer.sdk_design.R
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.internal.ThemeEnforcement.obtainStyledAttributes
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
@@ -34,9 +39,16 @@ class BandyerAvatarImageView @JvmOverloads constructor(context: Context, attrs: 
     private var currentUrl: String? = null
     private var currentUri: Uri? = null
 
+    private var fallbackDrawable: Drawable? = null
+    private var fallbackTintList: ColorStateList? = null
+
     var type: Type? = Type.USER
         set(value) {
             field = value
+            currentUri = null
+            currentUrl = null
+            setImageDrawable(fallbackDrawable)
+            imageTintList = fallbackTintList
             refreshDrawableState()
         }
 
@@ -81,6 +93,11 @@ class BandyerAvatarImageView @JvmOverloads constructor(context: Context, attrs: 
 
             override fun onError(e: Exception?) = Unit
         })
+    }
+
+    init {
+        fallbackDrawable = drawable
+        fallbackTintList = imageTintList
     }
 
     /**

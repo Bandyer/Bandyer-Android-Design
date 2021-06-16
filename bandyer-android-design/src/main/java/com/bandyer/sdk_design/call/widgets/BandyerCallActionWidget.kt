@@ -406,6 +406,24 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
     }
 
     /**
+     * Check if the call controls are currently shown.
+     * @return true if shown, false otherwise
+     */
+    fun isShowingCallControls(): Boolean = currentShownBottomSheet is CallBottomSheet<*>
+
+    /**
+     * Check if the audio output route controls are currently shown.
+     * @return true if shown, false otherwise
+     */
+    fun isShowingAudioRouteControls(): Boolean = currentShownBottomSheet is AudioRouteBottomSheet<*>
+
+    /**
+     * Check if the ringing controls are currently shown.
+     * @return true if shown, false otherwise
+     */
+    fun isShowingRingingControls(): Boolean = currentShownBottomSheet is RingingBottomSheet<*>
+
+    /**
      * Anchor a view to the widget
      * @param anchoredView View to anchor
      * @param gravity gravity to apply
