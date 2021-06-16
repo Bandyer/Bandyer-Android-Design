@@ -36,6 +36,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
+import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_COLLAPSED
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.BandyerBottomSheetLayout
@@ -512,7 +513,7 @@ open class BaseBandyerBottomSheet(
                 lp.bottomMargin = value.toInt()
                 coordinatorLayout?.requestLayout()
                 bottomSheetLayoutContent.updateBackgroundView()
-                fadeRecyclerViewLinesBelowNavigation()
+                if(bottomMarginNavigation>0) fadeRecyclerViewLinesBelowNavigation()
                 onStateChangedBottomSheetListener?.onSlide(this@BaseBandyerBottomSheet, bottomSheetLayoutContent.top.toFloat())
             }
         }
@@ -534,7 +535,7 @@ open class BaseBandyerBottomSheet(
                     isAnimating = false
                 }
 
-                override fun onAnimationStart(animation: Animator?) = fadeRecyclerViewLinesBelowNavigation()
+                override fun onAnimationStart(animation: Animator?) = Unit
             })
 
         valueAnimator!!.duration = 200
