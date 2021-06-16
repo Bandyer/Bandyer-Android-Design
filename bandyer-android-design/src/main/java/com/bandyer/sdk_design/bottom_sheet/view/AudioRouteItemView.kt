@@ -126,6 +126,9 @@ sealed class AudioRouteState(val value: IntArray) : Serializable {
          */
         fun isConnecting(): Boolean = this is ACTIVE || this is CONNECTING || this is ACTIVATING || this is CONNECTING_AUDIO
 
+        /**
+         * @suppress
+         */
         override fun equals(other: Any?): Boolean {
             return if (other !is AudioRouteState) false
             else this::class.simpleName == other::class.simpleName
