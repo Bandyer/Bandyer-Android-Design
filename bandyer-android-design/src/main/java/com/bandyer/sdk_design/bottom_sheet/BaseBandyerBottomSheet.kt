@@ -519,13 +519,6 @@ open class BaseBandyerBottomSheet(
                     isAnimating = false
                     if (isCanceled) return
                     bottomSheetLayoutContent.updateBackgroundView()
-                    when (state) {
-                        BandyerBottomSheetBehaviour.STATE_SETTLING -> onSettling()
-                        BandyerBottomSheetBehaviour.STATE_COLLAPSED -> onCollapsed()
-                        BandyerBottomSheetBehaviour.STATE_EXPANDED -> onExpanded()
-                        BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> onAnchor()
-                        BandyerBottomSheetBehaviour.STATE_HIDDEN -> onHidden()
-                    }
                     if (endValue != lp.bottomMargin.toFloat()) moveBottomSheet()
                 }
 
