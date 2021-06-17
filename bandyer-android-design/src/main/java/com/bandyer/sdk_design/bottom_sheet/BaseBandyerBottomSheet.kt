@@ -425,10 +425,11 @@ open class BaseBandyerBottomSheet(
         val screenHeight = bottomSheetLayoutContent.context.getScreenSize().y
         val navigationLimit = if (fade == null) (screenHeight - bottomMarginNavigation) else 0
         val hasNavigationBar = navigationLimit < mContext.get()!!.getScreenSize().y
+        val canShowFirstRowWhenCollapsed = bottomSheetBehaviour?.skipCollapsed == true || (bottomSheetBehaviour?.skipCollapsed == false && bottomSheetBehaviour!!.lastStableState != BandyerBottomSheetBehaviour.STATE_COLLAPSED)
         (0..recyclerView?.adapter?.itemCount!!).forEach { index ->
             recyclerView?.layoutManager?.findViewByPosition(index)?.let { view ->
                 when {
-                    (!hasMoved || (isAnimating && (if (!bottomSheetBehaviour!!.skipCollapsed) slideOffset > 0.1f else slideOffset >= 0.1f))) && recyclerView.isFirstRow(index) || (!hasNavigationBar && isVisible()) -> {
+                    (!hasMoved || (isAnimating && (if (!bottomSheetBehaviour!!.skipCollapsed) slideOffset > 0.1f else slideOffset >= 0.1f))) && recyclerView.isFirstRow(index) || (!hasNavigationBar && isVisible() && canShowFirstRowWhenCollapsed) -> {
                         view.alpha = 1f
                         return@let
                     }
