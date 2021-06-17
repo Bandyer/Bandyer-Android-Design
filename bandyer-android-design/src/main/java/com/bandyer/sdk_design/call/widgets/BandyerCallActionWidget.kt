@@ -209,8 +209,9 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
 
         override fun onSlide(bottomSheet: BandyerBottomSheet, slideOffset: Float) {
             if (slideOffset == 0.0f) return
-            disableAutoHide()
             val top = currentBottomSheetLayout?.top ?: return
+            if (currentShownBottomSheet!!.state == BandyerBottomSheetBehaviour.STATE_SETTLING || currentShownBottomSheet!!.state == BandyerBottomSheetBehaviour.STATE_DRAGGING)
+                disableAutoHide()
             slidingListener?.onSlide(
                 top,
                 (currentShownBottomSheet?.state == BandyerBottomSheetBehaviour.STATE_COLLAPSED || currentShownBottomSheet?.state == BandyerBottomSheetBehaviour.STATE_HIDDEN)
