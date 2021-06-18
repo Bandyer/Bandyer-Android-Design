@@ -68,7 +68,7 @@ import java.text.DecimalFormat
  */
 open class BaseBandyerBottomSheet(
     context: AppCompatActivity,
-    private val views: List<ActionItem>,
+    private var views: List<ActionItem>,
     spanSize: Int,
     private val peekHeight: Int?,
     bottomSheetLayoutType: BottomSheetLayoutType,
@@ -426,23 +426,23 @@ open class BaseBandyerBottomSheet(
         val navigationLimit = if (fade == null) (screenHeight - bottomMarginNavigation) else 0
         val hasNavigationBar = navigationLimit < mContext.get()!!.getScreenSize().y
         val canShowFirstRowWhenCollapsed = bottomSheetBehaviour?.skipCollapsed == true || (bottomSheetBehaviour?.skipCollapsed == false && bottomSheetBehaviour!!.lastStableState != BandyerBottomSheetBehaviour.STATE_COLLAPSED)
-        (0..recyclerView?.adapter?.itemCount!!).forEach { index ->
-            recyclerView?.layoutManager?.findViewByPosition(index)?.let { view ->
-                when {
-                    (!hasMoved || (isAnimating && (if (!bottomSheetBehaviour!!.skipCollapsed) slideOffset > 0.1f else slideOffset >= 0.1f))) && recyclerView.isFirstRow(index) || (!hasNavigationBar && isVisible() && canShowFirstRowWhenCollapsed) -> {
-                        view.alpha = 1f
-                        return@let
-                    }
-                    fade == null -> {
-                        val viewBottom = view.getCoordinates().y + view.height + (screenHeight - mContext.get()!!.window.decorView.height)
-                        val hidden = viewBottom - navigationLimit
-                        view.alpha = if (!hasNavigationBar) 1f else  (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.coerceAtMost(1f)?.apply {
-                            recyclerViewAlphaDecimalFormat.format(this)
-                        } ?: 0f
-                        return@let
-                    }
-                    else -> view.alpha = if (fade) 1f else 0f
+
+        views.forEachIndexed { index, itemView ->
+            val view = itemView.itemView ?: return@forEachIndexed
+            when {
+                (!hasMoved || (isAnimating && (if (!bottomSheetBehaviour!!.skipCollapsed) slideOffset > 0.1f else slideOffset >= 0.1f))) && recyclerView.isFirstRow(index) || (!hasNavigationBar && isVisible() && canShowFirstRowWhenCollapsed) -> {
+                    view.alpha = 1f
+                    return@forEachIndexed
                 }
+                fade == null -> {
+                    val viewBottom = view.getCoordinates().y + view.height + (screenHeight - mContext.get()!!.window.decorView.height)
+                    val hidden = viewBottom - navigationLimit
+                    view.alpha = if (!hasNavigationBar) 1f else (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.coerceAtMost(1f)?.apply {
+                        recyclerViewAlphaDecimalFormat.format(this)
+                    } ?: 0f
+                    return@forEachIndexed
+                }
+                else -> view.alpha = if (fade) 1f else 0f
             }
         }
     }
@@ -521,7 +521,7 @@ open class BaseBandyerBottomSheet(
                 lp.bottomMargin = value.toInt()
                 coordinatorLayout?.requestLayout()
                 bottomSheetLayoutContent.updateBackgroundView()
-                if(bottomMarginNavigation > 0 && !isStable) fadeRecyclerViewLinesBelowNavigation()
+                if (bottomMarginNavigation > 0 && !isStable) fadeRecyclerViewLinesBelowNavigation()
                 onStateChangedBottomSheetListener?.onSlide(this@BaseBandyerBottomSheet, bottomSheetLayoutContent.top.toFloat())
             }
         }
@@ -660,6 +660,7 @@ open class BaseBandyerBottomSheet(
     }
 
     override fun setItems(items: List<ActionItem>) {
+        this.views = items
         val diffResult = FastAdapterDiffUtil.calculateDiff(fastItemAdapter, items.map { AdapterActionItem(it) })
         FastAdapterDiffUtil[fastItemAdapter] = diffResult
     }
