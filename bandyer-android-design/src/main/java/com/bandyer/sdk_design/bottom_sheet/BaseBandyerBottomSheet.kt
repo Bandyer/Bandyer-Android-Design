@@ -119,12 +119,12 @@ open class BaseBandyerBottomSheet(
                 moveBottomSheet()
             }
             when (newState) {
-                BandyerBottomSheetBehaviour.STATE_HIDDEN -> onHidden()
-                BandyerBottomSheetBehaviour.STATE_COLLAPSED -> onCollapsed()
-                BandyerBottomSheetBehaviour.STATE_EXPANDED -> onExpanded()
-                BandyerBottomSheetBehaviour.STATE_SETTLING -> onSettling()
+                BandyerBottomSheetBehaviour.STATE_HIDDEN       -> onHidden()
+                BandyerBottomSheetBehaviour.STATE_COLLAPSED    -> onCollapsed()
+                BandyerBottomSheetBehaviour.STATE_EXPANDED     -> onExpanded()
+                BandyerBottomSheetBehaviour.STATE_SETTLING     -> onSettling()
                 BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> onAnchor()
-                BandyerBottomSheetBehaviour.STATE_DRAGGING -> onDragging()
+                BandyerBottomSheetBehaviour.STATE_DRAGGING     -> onDragging()
             }
         }
 
@@ -212,7 +212,7 @@ open class BaseBandyerBottomSheet(
         if ((slideOffset >= 0f && hasMoved && !isAnimating) || slideOffset < 0f) fadeRecyclerViewLinesBelowNavigation()
         when {
             slideOffset <= 0f -> updateNavigationBar(false)
-            else -> updateNavigationBar()
+            else              -> updateNavigationBar()
         }
     }
 
@@ -266,29 +266,29 @@ open class BaseBandyerBottomSheet(
             }
 
             when (behaviour.state) {
-                BandyerBottomSheetBehaviour.STATE_EXPANDED -> {
+                BandyerBottomSheetBehaviour.STATE_EXPANDED     -> {
                     behaviour.state = when {
                         !behaviour.skipCollapsed -> BandyerBottomSheetBehaviour.STATE_COLLAPSED
-                        behaviour.isHideable -> BandyerBottomSheetBehaviour.STATE_HIDDEN
-                        !behaviour.skipAnchor -> BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT
-                        else -> return@setOnKeyListener false
+                        behaviour.isHideable     -> BandyerBottomSheetBehaviour.STATE_HIDDEN
+                        !behaviour.skipAnchor    -> BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT
+                        else                     -> return@setOnKeyListener false
                     }
                     true
                 }
                 BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> {
                     behaviour.state = when {
                         !behaviour.skipCollapsed -> BandyerBottomSheetBehaviour.STATE_COLLAPSED
-                        behaviour.isHideable -> BandyerBottomSheetBehaviour.STATE_HIDDEN
-                        else -> return@setOnKeyListener false
+                        behaviour.isHideable     -> BandyerBottomSheetBehaviour.STATE_HIDDEN
+                        else                     -> return@setOnKeyListener false
                     }
                     true
                 }
-                BandyerBottomSheetBehaviour.STATE_COLLAPSED -> {
+                BandyerBottomSheetBehaviour.STATE_COLLAPSED    -> {
                     if (behaviour.isHideable)
                         behaviour.state = BandyerBottomSheetBehaviour.STATE_HIDDEN
                     return@setOnKeyListener behaviour.isHideable
                 }
-                else -> false
+                else                                           -> false
             }
         }
         initialized = true
@@ -424,32 +424,30 @@ open class BaseBandyerBottomSheet(
         if (!animationEnabled) return
         val screenHeight = bottomSheetLayoutContent.context.getScreenSize().y
         val navigationLimit = if (fade == null) (screenHeight - bottomMarginNavigation) else 0
-        val hasNavigationBar = navigationLimit < mContext.get()!!.getScreenSize().y
+        val hasNavigationBar = bottomMarginNavigation > 0
         val canShowFirstRowWhenCollapsed = bottomSheetBehaviour?.skipCollapsed == true || (bottomSheetBehaviour?.skipCollapsed == false && bottomSheetBehaviour!!.lastStableState != BandyerBottomSheetBehaviour.STATE_COLLAPSED)
-
         views.forEachIndexed { index, itemView ->
             val view = itemView.itemView ?: return@forEachIndexed
+            val canShowSecondRowWhenAnchored = isAnimating && !recyclerView.isFirstRow(index) && bottomSheetBehaviour?.lastStableState == BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT
+
             when {
-                (!hasMoved || (isAnimating && (if (!bottomSheetBehaviour!!.skipCollapsed) slideOffset > 0.1f else slideOffset >= 0.1f))) && recyclerView.isFirstRow(index) || (!hasNavigationBar && isVisible() && canShowFirstRowWhenCollapsed) -> {
-                    view.alpha = 1f
-                    return@forEachIndexed
-                }
-                fade == null -> {
+                canShowSecondRowWhenAnchored                                                                                                                                                                                                     -> view.alpha = 0f
+                (!hasMoved || (isAnimating && (if (!bottomSheetBehaviour!!.skipCollapsed) slideOffset > 0.1f else slideOffset >= 0.1f))) && recyclerView.isFirstRow(index) || (!hasNavigationBar && isVisible() && canShowFirstRowWhenCollapsed) -> view.alpha = 1f
+                fade == null                                                                                                                                                                                                                     -> {
                     val viewBottom = view.getCoordinates().y + view.height + (screenHeight - mContext.get()!!.window.decorView.height)
                     val hidden = viewBottom - navigationLimit
                     view.alpha = if (!hasNavigationBar) 1f else (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.coerceAtMost(1f)?.apply {
                         recyclerViewAlphaDecimalFormat.format(this)
                     } ?: 0f
-                    return@forEachIndexed
                 }
-                else -> view.alpha = if (fade) 1f else 0f
+                else                                                                                                                                                                                                                             -> view.alpha = if (fade) 1f else 0f
             }
         }
     }
 
     private fun RecyclerView?.isFirstRow(position: Int) = when (val manager = this?.layoutManager) {
         is GridLayoutManager -> position < manager.spanCount
-        else -> position == 0
+        else                 -> position == 0
     }
 
     override fun isVisible() = bottomSheetLayoutContent.visibility == View.VISIBLE && initialized
@@ -632,8 +630,8 @@ open class BaseBandyerBottomSheet(
         bottomSheetBehaviour?.let {
             when (it.state) {
                 BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT -> it.state = if (it.isHideable) BandyerBottomSheetBehaviour.STATE_HIDDEN else if (!it.skipCollapsed) BandyerBottomSheetBehaviour.STATE_COLLAPSED else BandyerBottomSheetBehaviour.STATE_EXPANDED
-                BandyerBottomSheetBehaviour.STATE_EXPANDED -> it.state = if (it.isHideable) BandyerBottomSheetBehaviour.STATE_HIDDEN else if (!it.skipCollapsed) BandyerBottomSheetBehaviour.STATE_COLLAPSED else if (!it.skipAnchor) BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT else BandyerBottomSheetBehaviour.STATE_EXPANDED
-                BandyerBottomSheetBehaviour.STATE_COLLAPSED -> it.state = if (!it.skipAnchor) BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT else BandyerBottomSheetBehaviour.STATE_EXPANDED
+                BandyerBottomSheetBehaviour.STATE_EXPANDED     -> it.state = if (it.isHideable) BandyerBottomSheetBehaviour.STATE_HIDDEN else if (!it.skipCollapsed) BandyerBottomSheetBehaviour.STATE_COLLAPSED else if (!it.skipAnchor) BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT else BandyerBottomSheetBehaviour.STATE_EXPANDED
+                BandyerBottomSheetBehaviour.STATE_COLLAPSED    -> it.state = if (!it.skipAnchor) BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT else BandyerBottomSheetBehaviour.STATE_EXPANDED
             }
         }
     }
