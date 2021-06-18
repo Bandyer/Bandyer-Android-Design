@@ -79,7 +79,7 @@ open class CallBottomSheet<T>(
     private var cameraToggled = false
     private var micToggled = false
 
-    private val lifecycleObserver = object: LifecycleObserver {
+    private val lifecycleObserver = object : LifecycleObserver {
         @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
         fun onResume() = calculateBottomSheetDimensions()
     }
@@ -308,7 +308,7 @@ open class CallBottomSheet<T>(
                 val newState = if (callActionItems.size <= MAX_ITEMS_PER_ROW) STATE_EXPANDED else if (collapsed!! && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
                 if (state == newState) {
                     when (newState) {
-                        STATE_COLLAPSED -> onCollapsed()
+                        STATE_COLLAPSED    -> onCollapsed()
                         STATE_ANCHOR_POINT -> onAnchor()
                     }
                 }
@@ -316,10 +316,11 @@ open class CallBottomSheet<T>(
             }
 
             bottomSheetLayoutContent.lineView?.state = when {
-                state == STATE_ANCHOR_POINT || fixed == true -> State.ANCHORED_DOT
-                state == STATE_EXPANDED                      -> State.EXPANDED
-                state == STATE_SETTLING                      -> bottomSheetLayoutContent.lineView?.state
-                else                                         -> State.COLLAPSED
+                bottomSheetBehaviour!!.skipCollapsed && state == STATE_ANCHOR_POINT || fixed == true -> State.ANCHORED_DOT
+                state == STATE_ANCHOR_POINT                                                          -> State.ANCHORED_LINE
+                state == STATE_EXPANDED                                                              -> State.EXPANDED
+                state == STATE_SETTLING                                                              -> bottomSheetLayoutContent.lineView?.state
+                else                                                                                 -> State.COLLAPSED
             }
 
             if (animationEndState == -1) return@post
