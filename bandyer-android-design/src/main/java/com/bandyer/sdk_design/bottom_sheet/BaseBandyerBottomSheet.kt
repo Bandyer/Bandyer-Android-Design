@@ -436,7 +436,7 @@ open class BaseBandyerBottomSheet(
                     fade == null -> {
                         val viewBottom = view.getCoordinates().y + view.height + (screenHeight - mContext.get()!!.window.decorView.height)
                         val hidden = viewBottom - navigationLimit
-                        view.alpha = (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.coerceAtMost(1f)?.apply {
+                        view.alpha = if (!hasNavigationBar) 1f else  (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.coerceAtMost(1f)?.apply {
                             recyclerViewAlphaDecimalFormat.format(this)
                         } ?: 0f
                         return@let
