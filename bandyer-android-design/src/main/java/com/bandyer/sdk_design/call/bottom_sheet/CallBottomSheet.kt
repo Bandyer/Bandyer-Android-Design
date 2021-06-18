@@ -26,6 +26,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.BandyerClickableBottomSheet
+import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_ANCHOR_POINT
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_COLLAPSED
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_DRAGGING
@@ -78,7 +79,7 @@ open class CallBottomSheet<T>(
     private var cameraToggled = false
     private var micToggled = false
 
-    private val lifecycleObserver = object: LifecycleObserver {
+    private val lifecycleObserver = object : LifecycleObserver {
         @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
         fun onResume() = calculateBottomSheetDimensions()
     }
@@ -305,14 +306,21 @@ open class CallBottomSheet<T>(
                 skipAnchor = false
                 bottomSheetBehaviour!!.isHideable = false
                 val newState = if (callActionItems.size <= MAX_ITEMS_PER_ROW) STATE_EXPANDED else if (collapsed!! && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
-                if (state == STATE_HIDDEN && state != STATE_SETTLING) state = newState
+                if (state == newState) {
+                    when (newState) {
+                        STATE_COLLAPSED    -> onCollapsed()
+                        STATE_ANCHOR_POINT -> onAnchor()
+                    }
+                }
+                if (state == STATE_HIDDEN && state != STATE_SETTLING && state != newState) state = newState
             }
 
             bottomSheetLayoutContent.lineView?.state = when {
-                state == STATE_ANCHOR_POINT || fixed == true -> State.ANCHORED_DOT
-                state == STATE_EXPANDED                      -> State.EXPANDED
-                state == STATE_SETTLING                      -> bottomSheetLayoutContent.lineView?.state
-                else                                         -> State.COLLAPSED
+                bottomSheetBehaviour!!.skipCollapsed && state == STATE_ANCHOR_POINT || fixed == true -> State.ANCHORED_DOT
+                state == STATE_ANCHOR_POINT                                                          -> State.ANCHORED_LINE
+                state == STATE_EXPANDED                                                              -> State.EXPANDED
+                state == STATE_SETTLING                                                              -> bottomSheetLayoutContent.lineView?.state
+                else                                                                                 -> State.COLLAPSED
             }
 
             if (animationEndState == -1) return@post

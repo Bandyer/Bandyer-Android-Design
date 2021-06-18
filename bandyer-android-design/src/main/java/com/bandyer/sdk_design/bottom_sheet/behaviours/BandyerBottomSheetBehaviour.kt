@@ -157,10 +157,10 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
 
             val top = when {
                 !skipAnchor && state == STATE_ANCHOR_POINT -> mAnchorPoint
-                state == STATE_COLLAPSED -> mMaxOffset
-                state == STATE_EXPANDED -> mMinOffset
-                isHideable && state == STATE_HIDDEN -> mParentHeight
-                else -> throw IllegalArgumentException("Illegal state argument: $state")
+                state == STATE_COLLAPSED                   -> mMaxOffset
+                state == STATE_EXPANDED                    -> mMinOffset
+                isHideable && state == STATE_HIDDEN        -> mParentHeight
+                else                                       -> throw IllegalArgumentException("Illegal state argument: $state")
             }
 
             if (state != mState)
@@ -176,7 +176,7 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
 
         override fun tryCaptureView(child: View, pointerId: Int): Boolean {
             when {
-                mState == STATE_DRAGGING || mTouchingScrollingChild -> return true
+                mState == STATE_DRAGGING || mTouchingScrollingChild       -> return true
                 mState == STATE_EXPANDED && mActivePointerId == pointerId -> // Let the content scroll up
                     if (mNestedScrollingChildRef?.get()?.canScrollVertically(-1) == true)
                         return true
@@ -223,9 +223,9 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
                     targetState = STATE_HIDDEN
                 } else {
                     top = when (lastStableState) {
-                        STATE_COLLAPSED -> mMaxOffset
+                        STATE_COLLAPSED    -> mMaxOffset
                         STATE_ANCHOR_POINT -> mAnchorPoint
-                        else -> mMinOffset
+                        else               -> mMinOffset
                     }
                     targetState = if (lastStableState == STATE_HIDDEN) STATE_EXPANDED else lastStableState
                 }
@@ -241,9 +241,9 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
                     targetState = STATE_HIDDEN
                 } else {
                     top = when (lastStableState) {
-                        STATE_COLLAPSED -> mMaxOffset
+                        STATE_COLLAPSED    -> mMaxOffset
                         STATE_ANCHOR_POINT -> mAnchorPoint
-                        else -> mMinOffset
+                        else               -> mMinOffset
                     }
                     targetState = if (lastStableState == STATE_HIDDEN) STATE_EXPANDED else lastStableState
                 }
@@ -355,7 +355,7 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
         // Intermediate states are restored as collapsed state
         mState = when {
             ss.state == STATE_DRAGGING || ss.state == STATE_SETTLING -> STATE_COLLAPSED
-            else -> ss.state
+            else                                                     -> ss.state
         }
 
         lastStableState = mState
@@ -382,10 +382,10 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
          * New behavior
          */
         when (mState) {
-            STATE_ANCHOR_POINT -> ViewCompat.offsetTopAndBottom(child, mAnchorPoint)
-            STATE_EXPANDED -> ViewCompat.offsetTopAndBottom(child, mMinOffset)
-            STATE_HIDDEN -> ViewCompat.offsetTopAndBottom(child, mParentHeight)
-            STATE_COLLAPSED -> ViewCompat.offsetTopAndBottom(child, mMaxOffset)
+            STATE_ANCHOR_POINT             -> ViewCompat.offsetTopAndBottom(child, mAnchorPoint)
+            STATE_EXPANDED                 -> ViewCompat.offsetTopAndBottom(child, mMinOffset)
+            STATE_HIDDEN                   -> ViewCompat.offsetTopAndBottom(child, mParentHeight)
+            STATE_COLLAPSED                -> ViewCompat.offsetTopAndBottom(child, mMaxOffset)
             STATE_DRAGGING, STATE_SETTLING -> ViewCompat.offsetTopAndBottom(child, savedTop - child.top)
         }
 
@@ -421,8 +421,8 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
     fun getStableStateSlideOffset(state: Int): Float {
         return when (state) {
             STATE_ANCHOR_POINT -> (mMaxOffset - mAnchorPoint).toFloat() / (mMaxOffset - mMinOffset)
-            STATE_EXPANDED -> 1f
-            else -> 0f
+            STATE_EXPANDED     -> 1f
+            else               -> 0f
         }
     }
 
@@ -460,7 +460,7 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
                         return false
                     }
                 }
-                MotionEvent.ACTION_DOWN -> {
+                MotionEvent.ACTION_DOWN                          -> {
                     mInitialY = event.y.toInt()
                     val scroll = if (mNestedScrollingChildRef != null) mNestedScrollingChildRef!!.get() else null
                     if (scroll != null && isVisible(child)) {
@@ -471,7 +471,7 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
                 }
             }
 
-            if(mViewDragHelper!!.capturedView != null && mViewDragHelper!!.capturedView !is BottomSheetLayoutContent)
+            if (mViewDragHelper!!.capturedView != null && mViewDragHelper!!.capturedView !is BottomSheetLayoutContent)
                 return false
 
             if (!mIgnoreEvents && mViewDragHelper != null && mViewDragHelper!!.shouldInterceptTouchEvent(event)) {
@@ -561,9 +561,11 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
         return false
     }
 
-    override fun onStartNestedScroll(coordinatorLayout: CoordinatorLayout, child: V,
-                                     directTargetChild: View, target: View, nestedScrollAxes: Int,
-                                     @ViewCompat.NestedScrollType type: Int): Boolean {
+    override fun onStartNestedScroll(
+        coordinatorLayout: CoordinatorLayout, child: V,
+        directTargetChild: View, target: View, nestedScrollAxes: Int,
+        @ViewCompat.NestedScrollType type: Int
+    ): Boolean {
         if (disableDragging)
             return false
 
@@ -595,9 +597,11 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
         }
     }
 
-    override fun onNestedPreScroll(coordinatorLayout: CoordinatorLayout, child: V, target: View,
-                                   dx: Int, dy: Int, consumed: IntArray,
-                                   @ViewCompat.NestedScrollType type: Int) {
+    override fun onNestedPreScroll(
+        coordinatorLayout: CoordinatorLayout, child: V, target: View,
+        dx: Int, dy: Int, consumed: IntArray,
+        @ViewCompat.NestedScrollType type: Int
+    ) {
         if (type == ViewCompat.TYPE_NON_TOUCH) {
             // Ignore fling here. The ViewDragHelper handles it.
             return
@@ -643,10 +647,11 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
                     consumed[1] = dy
                     ViewCompat.offsetTopAndBottom(child, -dy)
                     setStateInternal(STATE_DRAGGING)
-                } else {
+                } else if(!skipCollapsed || !skipAnchor) {
                     consumed[1] = currentTop - mMaxOffset
                     ViewCompat.offsetTopAndBottom(child, -consumed[1])
-                    setStateInternal(STATE_COLLAPSED)
+                    if (!skipCollapsed) setStateInternal(STATE_COLLAPSED)
+                    if (!skipAnchor) setStateInternal(STATE_ANCHOR_POINT)
                 }
             }
         }
@@ -654,11 +659,13 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
         mNestedScrolled = true
     }
 
-    override fun onStopNestedScroll(coordinatorLayout: CoordinatorLayout, child: V, target: View,
-                                    @ViewCompat.NestedScrollType type: Int) {
+    override fun onStopNestedScroll(
+        coordinatorLayout: CoordinatorLayout, child: V, target: View,
+        @ViewCompat.NestedScrollType type: Int
+    ) {
 
         if (child.top == mMinOffset) {
-            setStateInternal(STATE_EXPANDED)
+            if(lastStableState != STATE_EXPANDED) setStateInternal(STATE_EXPANDED)
             return
         }
 
@@ -689,7 +696,7 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
             } else if (!skipCollapsed) {
                 top = mMaxOffset
                 targetState = STATE_COLLAPSED
-            } else if(isHideable){
+            } else if (isHideable) {
                 top = mParentHeight
                 targetState = STATE_HIDDEN
             }
@@ -700,20 +707,20 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
                     top = mMaxOffset
                     targetState = STATE_COLLAPSED
                 }
-                else -> {
+                else                               -> {
                     top = mMinOffset
                     targetState = STATE_EXPANDED
                 }
             } else when { // Expand?
-                top > mAnchorPoint * 1.25 -> { // Multiply by 1.25 to account for parallax. The currentTop needs to be pulled down 50% of the anchor point before collapsing.
+                top > mAnchorPoint * 1.25 && !skipCollapsed -> { // Multiply by 1.25 to account for parallax. The currentTop needs to be pulled down 50% of the anchor point before collapsing.
                     top = mMaxOffset
                     targetState = STATE_COLLAPSED
                 }
-                top < mAnchorPoint * 0.5 -> {
+                top < mAnchorPoint * 0.5  -> {
                     top = mMinOffset
                     targetState = STATE_EXPANDED
                 }
-                else -> {
+                !skipAnchor                      -> {
                     top = mAnchorPoint
                     targetState = STATE_ANCHOR_POINT
                 }
@@ -731,13 +738,17 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
         mNestedScrolled = false
     }
 
-    override fun onNestedPreFling(coordinatorLayout: CoordinatorLayout, child: V, target: View,
-                                  velocityX: Float, velocityY: Float): Boolean {
+    override fun onNestedPreFling(
+        coordinatorLayout: CoordinatorLayout, child: V, target: View,
+        velocityX: Float, velocityY: Float
+    ): Boolean {
         if (disableDragging)
             return false
 
-        return target === mNestedScrollingChildRef?.get() && (mState != STATE_EXPANDED || super.onNestedPreFling(coordinatorLayout, child, target,
-                velocityX, velocityY))
+        return target === mNestedScrollingChildRef?.get() && (mState != STATE_EXPANDED || super.onNestedPreFling(
+            coordinatorLayout, child, target,
+            velocityX, velocityY
+        ))
     }
 
     /**
@@ -834,13 +845,15 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
         mViewRef?.get()?.let {
             when {
                 top > mMaxOffset -> notifyOnSlideToListeners(it, (mMaxOffset - top).toFloat() / peekHeight)
-                else -> notifyOnSlideToListeners(it, (mMaxOffset - top).toFloat() / (mMaxOffset - mMinOffset))
+                else             -> notifyOnSlideToListeners(it, (mMaxOffset - top).toFloat() / (mMaxOffset - mMinOffset))
             }
         }
     }
 
-    private inner class SettleRunnable(private val mView: View,
-                                       private val mTargetState: Int) : Runnable {
+    private inner class SettleRunnable(
+        private val mView: View,
+        private val mTargetState: Int
+    ) : Runnable {
         override fun run() {
             if (mViewDragHelper!!.continueSettling(true))
                 ViewCompat.postOnAnimation(mView, this)
@@ -929,9 +942,9 @@ class BandyerBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
         @Suppress("UNCHECKED_CAST")
         fun <V : View> from(view: V): BandyerBottomSheetBehaviour<V> {
             val params = view.layoutParams as? CoordinatorLayout.LayoutParams
-                    ?: throw IllegalArgumentException("The view is not a child of CoordinatorLayout")
+                ?: throw IllegalArgumentException("The view is not a child of CoordinatorLayout")
             return params.behavior as? BandyerBottomSheetBehaviour<V>
-                    ?: throw IllegalArgumentException("The view is not associated with BandyerBottomSheetBehaviour")
+                ?: throw IllegalArgumentException("The view is not associated with BandyerBottomSheetBehaviour")
         }
 
         private const val HIDE_THRESHOLD = 0.5f
