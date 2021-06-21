@@ -12,11 +12,9 @@ import com.bandyer.sdk_design.extensions.doesFileExists
 import com.bandyer.sdk_design.extensions.getMimeType
 import com.bandyer.sdk_design.extensions.isFileInTrash
 import com.google.android.material.snackbar.Snackbar
-import com.mikepenz.fastadapter.IClickable
-import com.mikepenz.fastadapter.IItem
 import com.mikepenz.fastadapter.items.AbstractItem
 
-abstract class BandyerFileShareItem<I, VH>(var startTime: Long): AbstractItem<I, VH>() where I: IItem<*, *>, I: IClickable<*>, VH: RecyclerView.ViewHolder {
+abstract class BandyerFileShareItem<VH>(var startTime: Long): AbstractItem<VH>() where VH: RecyclerView.ViewHolder {
     protected fun openFile(context: Context, uri: Uri, view: View) {
         kotlin.runCatching {
             if (!context.doesFileExists(uri))

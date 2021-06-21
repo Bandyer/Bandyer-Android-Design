@@ -1,16 +1,21 @@
 package com.bandyer.sdk_design.filesharing
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -23,6 +28,7 @@ import com.bandyer.sdk_design.databinding.BandyerFileShareDialogLayoutBinding
 import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.bandyer.sdk_design.extensions.getFileBytes
+import com.bandyer.sdk_design.extensions.getMimeType
 import com.bandyer.sdk_design.filesharing.adapter_items.BandyerFileShareItem
 import com.bandyer.sdk_design.filesharing.adapter_items.DownloadAvailableItem
 import com.bandyer.sdk_design.filesharing.adapter_items.DownloadItem
@@ -32,12 +38,12 @@ import com.bandyer.sdk_design.filesharing.model.DownloadData
 import com.bandyer.sdk_design.filesharing.model.FileShareItemData
 import com.bandyer.sdk_design.filesharing.model.UploadData
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.IItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil
-import com.mikepenz.fastadapter.listeners.EventHook
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
+import com.mikepenz.fastadapter.dsl.itemAdapter
 import java.util.concurrent.ConcurrentHashMap
 
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
@@ -85,9 +91,9 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private var uploadFileFabText: MaterialTextView? = null
 
-        private var itemAdapter: ItemAdapter<BandyerFileShareItem<*, *>>? = null
+        private var itemAdapter: ItemAdapter<BandyerFileShareItem<*>>? = null
 
-        private var fastAdapter: FastAdapter<IItem<*, *>>? = null
+        private var fastAdapter: FastAdapter<BandyerFileShareItem<*>>? = null
 
         private var smoothScroller: SmoothScroller? = null
 
@@ -110,7 +116,8 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                     showMaxBytesDialog(requireContext())
                     return@registerForActivityResult
                 }
-                viewModel?.upload(uploadId = null, context = this.requireContext(), uri = uri)
+                // TODO fix this
+//                viewModel?.upload(context = this.requireContext(), )
             }
         }
 
@@ -123,8 +130,8 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             uploadFileFabText = binding!!.bandyerFileShareFabText
             emptyListLayout = binding!!.bandyerEmptyListLayout.root
 
-            itemAdapter = ItemAdapter<BandyerFileShareItem<*, *>>()
-            fastAdapter = FastAdapter.with<IItem<*, *>, ItemAdapter<*>>(itemAdapter)
+            itemAdapter = ItemAdapter()
+            fastAdapter = FastAdapter.with(itemAdapter!!)
 
             uploadFileFab?.setOnClickListener { getContent?.launch("*/*") }
 
@@ -177,9 +184,14 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             rv.itemAnimator = null
             rv.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
-            fastAdapter!!.withEventHook(UploadItem.UploadItemClickEvent() as EventHook<IItem<*, *>>)
-            fastAdapter!!.withEventHook(DownloadItem.DownloadItemClickEvent() as EventHook<IItem<*, *>>)
-            fastAdapter!!.withEventHook(DownloadAvailableItem.DownloadAvailableItemClickEvent() as EventHook<IItem<*, *>>)
+            fastAdapter!!.addEventHook(UploadItem.UploadItemClickEvent())
+            fastAdapter!!.addEventHook(DownloadItem.DownloadItemClickEvent())
+            fastAdapter!!.addEventHook(DownloadAvailableItem.DownloadAvailableItemClickEvent())
+
+            fastAdapter!!.onClickListener = { _, _, item, _ ->
+                onItemClick(item)
+                true
+            }
 
             if (viewModel != null) updateRecyclerViewItems(viewModel!!.itemsData)
         }
@@ -202,10 +214,60 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private fun scrollToTop() = filesRecyclerView?.layoutManager?.startSmoothScroll(smoothScroller?.apply { targetPosition = 0 })
 
+        private fun onItemClick(item: BandyerFileShareItem<*>) {
+            kotlin.runCatching {
+                val uri = when (item) {
+                    is UploadItem -> if(item.data is UploadData.Success) item.data.uri else null
+                    is DownloadItem -> if(item.data is DownloadData.Success) item.data.uri else null
+                    else -> null
+                } ?: return
+
+                val isFileInTrash = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { isFileInTrash(requireContext(), uri) } else false
+
+                if(!doesFileExists(requireContext(), uri))
+                    Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_file_cancelled, Snackbar.LENGTH_SHORT).show()
+                else if (isFileInTrash)
+                    Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_file_trashed, Snackbar.LENGTH_SHORT).show()
+                else
+                    openFileOrShowMessage(requireContext(), uri)
+            }
+        }
+
+        private fun openFileOrShowMessage(context: Context, uri: Uri) {
+            val mimeType = uri.getMimeType(context)
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setDataAndType(uri, mimeType)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            try {
+                context.startActivity(intent)
+            } catch (ex: ActivityNotFoundException) {
+                Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_impossible_open_file, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
+        private fun doesFileExists(context: Context, uri: Uri): Boolean =
+            kotlin.runCatching {
+                val cursor = context.contentResolver.query(uri, null, null, null, null)
+                val doesExist = cursor != null && cursor.moveToFirst()
+                cursor?.close()
+                doesExist
+            }.getOrNull() ?: false
+
+        @RequiresApi(Build.VERSION_CODES.R)
+        private fun isFileInTrash(context: Context, uri: Uri): Boolean {
+            return kotlin.runCatching {
+                val cursor = context.contentResolver.query(uri, null, MediaStore.MediaColumns.IS_TRASHED, null, null)
+                val isInTrash = cursor != null && cursor.moveToFirst()
+                cursor?.close()
+                return isInTrash
+            }.getOrNull() ?: false
+        }
+
+
         fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) {
             uploadFileFabText?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
             emptyListLayout?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
-            val items = arrayListOf<BandyerFileShareItem<*, *>>()
+            val items = arrayListOf<BandyerFileShareItem<*>>()
             data.values.forEach {
                 if(it is UploadData.Pending || it is DownloadData.Pending)
                     scrollToTop()
@@ -220,8 +282,8 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                 }?.let { item -> items.add(item) }
             }
             val sortedItems = items.toMutableList().apply { sortByDescending { item -> item.startTime } }
-            val diff = FastAdapterDiffUtil.calculateDiff(itemAdapter, sortedItems, true)
-            FastAdapterDiffUtil.set(itemAdapter, diff)
+            val diff = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, sortedItems, true)
+            FastAdapterDiffUtil[itemAdapter!!] = diff
         }
     }
 }
