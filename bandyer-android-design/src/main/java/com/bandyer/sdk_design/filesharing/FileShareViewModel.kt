@@ -1,7 +1,6 @@
 package com.bandyer.sdk_design.filesharing
 
 import android.content.Context
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import com.bandyer.sdk_design.filesharing.model.FileShareItemData
 import java.util.concurrent.ConcurrentHashMap
@@ -9,11 +8,11 @@ import java.util.concurrent.ConcurrentHashMap
 abstract class FileShareViewModel : ViewModel() {
     val itemsData: ConcurrentHashMap<String, FileShareItemData> = ConcurrentHashMap()
 
-    abstract fun upload(uploadId: String?, context: Context, uri: Uri): String
+    abstract fun <T, F> upload(context: Context, info: F): T
 
-    abstract fun cancelUpload(uploadId: String)
+    abstract fun <T> cancelUpload(upload: T)
 
-    abstract fun download(downloadId: String?, endpoint: String, context: Context): String
+    abstract fun <T, F> download(context: Context, info: F): T
 
-    abstract fun cancelDownload(downloadId: String)
+    abstract fun <T> cancelDownload(download: T)
 }
