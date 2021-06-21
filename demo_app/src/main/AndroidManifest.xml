@@ -34,6 +34,7 @@
             android:name=".CallActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:supportsPictureInPicture="true"
+            android:launchMode="singleInstance"
             android:theme="@style/BandyerSDKDesign.Theme.Call"
             tools:targetApi="n" />
         <activity
@@ -48,6 +49,7 @@
         <activity
             android:name=".ChatActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
+            android:launchMode="singleInstance"
             android:theme="@style/BandyerSDKDesign.Theme.Chat" />
         <activity
             android:name=".PointerActivity"

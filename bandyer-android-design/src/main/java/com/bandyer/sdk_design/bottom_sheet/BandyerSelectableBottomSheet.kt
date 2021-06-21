@@ -16,28 +16,28 @@
 
 package com.bandyer.sdk_design.bottom_sheet
 
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
-import com.mikepenz.fastadapter.IAdapter
-import com.mikepenz.fastadapter.listeners.OnClickListener
+import com.mikepenz.fastadapter.ISelectionListener
 import com.mikepenz.fastadapter.select.SelectExtension
+import com.mikepenz.fastadapter.select.getSelectExtension
 
 /**
  * This class represents a bottom sheet displaying selectable items.
  * @author kristiyan
  */
 @Suppress("UNCHECKED_CAST")
-open class BandyerSelectableBottomSheet<T : ActionItem>(context: AppCompatActivity,
-                                                        selection: Int = -1,
-                                                        views: List<T>,
-                                                        spanSize: Int,
-                                                        peekHeight: Int?,
-                                                        bottomSheetLayoutType: BottomSheetLayoutType,
-                                                        bottomSheetStyle: Int)
-    : BandyerActionBottomSheet<T>(context, views, spanSize, peekHeight, bottomSheetLayoutType, bottomSheetStyle) {
+open class BandyerSelectableBottomSheet<T : ActionItem>(
+    context: AppCompatActivity,
+    selection: Int = -1,
+    views: List<T>,
+    spanSize: Int,
+    peekHeight: Int?,
+    bottomSheetLayoutType: BottomSheetLayoutType,
+    bottomSheetStyle: Int
+) : BandyerActionBottomSheet<T>(context, views, spanSize, peekHeight, bottomSheetLayoutType, bottomSheetStyle) {
 
     /**
      * Current item selected
@@ -45,23 +45,23 @@ open class BandyerSelectableBottomSheet<T : ActionItem>(context: AppCompatActivi
     protected var currentItemSelected: AdapterActionItem? = null
 
     init {
-        fastAdapter.withSelectable(true)
-        fastAdapter.withAllowDeselection(false)
-        fastAdapter.withMultiSelect(false)
-        fastAdapter.withSelectWithItemUpdate(true)
 
-        fastAdapter.withOnClickListener(object: OnClickListener<AdapterActionItem> {
-            override fun onClick(v: View?, adapter: IAdapter<AdapterActionItem>, item: AdapterActionItem, position: Int): Boolean {
-                if (!item.isSelected) return false
+        val selectExtension = fastAdapter.getSelectExtension()
+        selectExtension.isSelectable = true
+        selectExtension.allowDeselection = false
+        selectExtension.multiSelect = false
+        selectExtension.selectWithItemUpdate = true
+        selectExtension.selectionListener = object : ISelectionListener<AdapterActionItem> {
+            override fun onSelectionChanged(item: AdapterActionItem, selected: Boolean) {
+                if (!selected || (currentItemSelected != null && currentItemSelected!!.item::class == item.item::class)) return
                 currentItemSelected = item
-                notifyItemSelected(item, position)
-                return true
+                notifyItemSelected(item, fastItemAdapter.adapterItems.indexOf(item))
             }
-        })
+        }
 
         if (selection != -1) {
             fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.select(selection)
-            currentItemSelected = fastAdapter.getAdapterItem(selection)
+            currentItemSelected = fastItemAdapter.getAdapterItem(selection)
         }
     }
 
@@ -82,7 +82,7 @@ open class BandyerSelectableBottomSheet<T : ActionItem>(context: AppCompatActivi
 
         fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.deselect()
 
-        val position = fastAdapter.adapterItems.indexOfFirst { it.item == actionItem }
+        val position = fastItemAdapter.adapterItems.indexOfFirst { it.item == actionItem }
         fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.select(position)
     }
 }

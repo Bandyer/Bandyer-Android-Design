@@ -16,7 +16,6 @@
 
 package com.bandyer.sdk_design.chat.adapter_items.message.abstract_message
 
-import androidx.constraintlayout.widget.ConstraintSet
 import android.text.format.DateUtils
 import android.view.View
 import com.bandyer.sdk_design.chat.imageviews.BandyerChatMessageStatusImageView
@@ -40,7 +39,7 @@ abstract class BandyerBaseChatMessageViewHolder<F, T> constructor(view: View) : 
     /**
      * @suppress
      */
-    final override fun bindView(item: T, payloads: MutableList<Any>) {
+    final override fun bindView(item: T, payloads: List<Any>) {
         bind(item, messageLayout, payloads)
 
         val pending = item.data.pending
@@ -69,7 +68,7 @@ abstract class BandyerBaseChatMessageViewHolder<F, T> constructor(view: View) : 
      * @param itemView F Message Item
      * @param payloads MutableList<Any> of payload
      */
-    abstract fun bind(item: T, itemView: F, payloads: MutableList<Any>)
+    abstract fun bind(item: T, itemView: F, payloads: List<Any>)
 
     /**
      * On unBind of the message

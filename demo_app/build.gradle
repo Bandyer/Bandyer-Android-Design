@@ -20,8 +20,8 @@ plugins {
 }
 
 def zoomyVersion = '1.1.0'
-def bandyer_audio_session_version = '2.0.2'
 def kotlin_coroutines = "1.4.3"
+def bandyer_audio_session_version = '2.0.5'
 
 android {
     compileSdkVersion 30

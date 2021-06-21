@@ -27,7 +27,6 @@ import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
 import com.bandyer.sdk_design.call.bottom_sheet.items.AudioRoute
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton.State
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.mikepenz.fastadapter.commons.utils.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.select.SelectExtension
 
 /**
@@ -38,17 +37,20 @@ import com.mikepenz.fastadapter.select.SelectExtension
  * @author kristiyan
  */
 @Suppress("UNCHECKED_CAST")
-class AudioRouteBottomSheet<T : ActionItem>(val context: AppCompatActivity,
-                                            audioRouteItems: List<AudioRoute>?,
-                                            initial_selection: Int = -1,
-                                            bottomSheetStyle: Int,
-                                            var onAudioRoutesRequest: OnAudioRouteBottomSheetListener?) : BandyerSelectableBottomSheet<T>(
-        context,
-        initial_selection,
-        audioRouteItems as List<T>? ?: listOf<T>(),
-        0, 0,
-        BottomSheetLayoutType.LIST,
-        bottomSheetStyle) {
+class AudioRouteBottomSheet<T : ActionItem>(
+    val context: AppCompatActivity,
+    audioRouteItems: List<AudioRoute>?,
+    initial_selection: Int = -1,
+    bottomSheetStyle: Int,
+    var onAudioRoutesRequest: OnAudioRouteBottomSheetListener?
+) : BandyerSelectableBottomSheet<T>(
+    context,
+    initial_selection,
+    audioRouteItems as List<T>? ?: listOf<T>(),
+    0, 0,
+    BottomSheetLayoutType.LIST,
+    bottomSheetStyle
+) {
 
     /**
      * Returns the current selected Audio Route
@@ -101,7 +103,6 @@ class AudioRouteBottomSheet<T : ActionItem>(val context: AppCompatActivity,
      */
     fun selectAudioRoute(audioRoute: AudioRoute?) {
         if (audioRoute == null || mCurrentAudioRoute == audioRoute) return
-
         mCurrentAudioRoute = audioRoute
         selectItem(audioRoute)
     }
@@ -111,28 +112,25 @@ class AudioRouteBottomSheet<T : ActionItem>(val context: AppCompatActivity,
      * @param actionItem ActionItem to select
      */
     override fun selectItem(actionItem: ActionItem?) {
-        if (actionItem == null || (actionItem as? AudioRoute) == null)
+        if (actionItem == null || (actionItem as? AudioRoute) == null || actionItem == currentItemSelected?.item)
             return
 
         currentItemSelected = AdapterActionItem(actionItem)
 
         fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.deselect()
 
-        val position = fastAdapter.adapterItems.indexOfFirst {
+        val position = fastItemAdapter.adapterItems.indexOfFirst {
             (it.item as AudioRoute).identifier == actionItem.identifier
-        }.takeIf { it != -1 } ?: fastAdapter.adapterItems.indexOfFirst {
-            it.item is AudioRoute.MUTED
+        }.takeIf { it != -1 } ?: fastItemAdapter.adapterItems.indexOfFirst {
+            return
         }
 
-        fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.select(position)
+        kotlin.runCatching { fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.select(position) }
     }
 
     override fun setItems(items: List<ActionItem>) {
-        val diffResult = FastAdapterDiffUtil.calculateDiff(fastAdapter, items.map { AdapterActionItem(it) })
-        FastAdapterDiffUtil.set(fastAdapter, diffResult)
-
-        mCurrentAudioRoute?.let { selectItem(it) }
-
+        super.setItems(items)
+        if (items.contains(mCurrentAudioRoute)) mCurrentAudioRoute?.let { selectItem(it) }
         if (state == BottomSheetBehavior.STATE_EXPANDED || state == BottomSheetBehavior.STATE_COLLAPSED) moveBottomSheet()
     }
 
@@ -151,7 +149,7 @@ class AudioRouteBottomSheet<T : ActionItem>(val context: AppCompatActivity,
     fun addAudioRouteItem(audioRoute: AudioRoute) {
         val position = if (fastAdapter.itemCount == 0) 0
         else onAudioRoutesRequest?.onAudioRoutesRequested()?.indexOf(audioRoute)?.takeIf { it >= 0 }
-                ?: 0
+            ?: 0
         addItem(audioRoute, position)
     }
 
@@ -160,7 +158,7 @@ class AudioRouteBottomSheet<T : ActionItem>(val context: AppCompatActivity,
         if (!animationEnabled || bottomSheetBehaviour?.lastStableState == state) return
         bottomSheetLayoutContent.lineView?.state = when {
             slideOffset <= 0f -> State.COLLAPSED
-            else -> State.EXPANDED
+            else              -> State.EXPANDED
         }
     }
 

@@ -48,6 +48,5 @@ class BandyerChatTextMessageItem(val chatTextMessage: BandyerChatTextMessage) : 
     /**
      * @suppress
      */
-    override fun getLayoutRes(): Int = R.layout.bandyer_chat_message_text
-
+    override val layoutRes: Int = R.layout.bandyer_chat_message_text
 }

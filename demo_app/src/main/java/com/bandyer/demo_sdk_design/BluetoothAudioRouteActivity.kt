@@ -24,11 +24,13 @@ import com.bandyer.android_audiosession.model.AudioOutputDevice
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.AudioRouteState
 import com.bandyer.sdk_design.call.bottom_sheet.items.AudioRoute
-import com.mikepenz.fastadapter.commons.adapters.FastItemAdapter
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 
 class BluetoothAudioRouteActivity : AppCompatActivity() {
 
-    var fastAdapter: FastItemAdapter<AdapterActionItem> = FastItemAdapter()
+    var fastItemAdapter = ItemAdapter<AdapterActionItem>()
+    var fastAdapter = FastAdapter.with(fastItemAdapter)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +45,7 @@ class BluetoothAudioRouteActivity : AppCompatActivity() {
 
         val routes = initDummyDevices()
 
-        fastAdapter.set(routes.map { AdapterActionItem(it) })
+        fastItemAdapter.set(routes.map { AdapterActionItem(it) })
     }
 
     private fun initDummyDevices(): List<AudioRoute> {

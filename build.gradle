@@ -21,19 +21,20 @@ buildscript {
 
     ext.sdkVersion = 30
     ext.buildToolsVersion = "30.0.2"
-    ext.kotlin_version = '1.4.30'
+    ext.kotlin_version = '1.4.32'
     ext.serialization_version = '0.5.1'
     ext.lifecycle_version = "1.1.1"
     ext.bandyer_common = "1.0.10"
     ext.bandyer_core_av = "2.3.5"
 
     repositories {
+        mavenLocal()
         google()
-        jcenter()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://oss.sonatype.org/content/repositories/releases' }
-        maven {url 'https://storage.googleapis.com/r8-releases/raw'}
+        maven { url 'https://storage.googleapis.com/r8-releases/raw' }
         maven { url 'https://maven.bandyer.com/releases' }
     }
 
@@ -55,11 +56,13 @@ buildscript {
 
 allprojects {
     repositories {
-        google()
-        jcenter()
-        mavenCentral()
         mavenLocal()
+        google()
+        mavenCentral()
         maven { url 'https://jitpack.io' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+        maven { url 'https://oss.sonatype.org/content/repositories/releases' }
+        maven { url 'https://storage.googleapis.com/r8-releases/raw' }
         maven { url 'https://maven.bandyer.com/releases' }
     }
 

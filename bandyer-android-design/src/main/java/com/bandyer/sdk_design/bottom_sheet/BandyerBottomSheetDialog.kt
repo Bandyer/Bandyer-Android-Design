@@ -120,7 +120,9 @@ abstract class BandyerBottomSheetDialog : BottomSheetDialogFragment() {
         }
     }
 
-    override fun dismiss() {
+    override fun dismiss() = dismissAllowingStateLoss()
+
+    override fun dismissAllowingStateLoss() {
         clean()
         if (isVisible && !isStateSaved) super.dismissAllowingStateLoss()
     }
