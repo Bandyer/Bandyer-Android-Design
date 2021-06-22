@@ -19,18 +19,15 @@ package com.bandyer.demo_sdk_design
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import android.util.Log
 import android.view.MotionEvent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import com.bandyer.demo_sdk_design.databinding.ActivityMainBinding
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.call.dialogs.BandyerSnapshotDialog
-import com.bandyer.sdk_design.filesharing.BandyerFileShareDialog
 import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassActionItemMenu
 import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassMenuLayout
 import com.bandyer.sdk_design.smartglass.call.menu.items.getSmartglassActions
@@ -38,7 +35,6 @@ import com.bandyer.sdk_design.smartglass.call.menu.utils.MotionEventInterceptor
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog
 import com.bandyer.sdk_design.whiteboard.dialog.BandyerWhiteboardTextEditorDialog.BandyerWhiteboardTextEditorWidgetListener
 import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.button.MaterialButton
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,26 +44,29 @@ class MainActivity : AppCompatActivity() {
 
     var mText: String? = null
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
         initializeListeners()
     }
 
     private fun initializeListeners() {
-        findViewById<MaterialButton>(R.id.btn_chat).setOnClickListener { startActivity(Intent(this, ChatActivity::class.java)) }
+        binding.btnChat.setOnClickListener { startActivity(Intent(this, ChatActivity::class.java)) }
 
-        findViewById<MaterialButton>(R.id.btn_call).setOnClickListener { startActivity(Intent(this, CallActivity::class.java)) }
+        binding.btnCall.setOnClickListener { startActivity(Intent(this, CallActivity::class.java)) }
 
-        findViewById<MaterialButton>(R.id.btn_smartglasses_menu).setOnClickListener { showSmartGlassAction() }
+        binding.btnSmartglassesMenu.setOnClickListener { showSmartGlassAction() }
 
-        findViewById<MaterialButton>(R.id.btn_whiteboard).setOnClickListener { WhiteBoardDialog().show(this@MainActivity) }
+        binding.btnWhiteboard.setOnClickListener { WhiteBoardDialog().show(this@MainActivity) }
 
-        findViewById<MaterialButton>(R.id.btn_ringing).setOnClickListener { startActivity(Intent(this, RingingActivity::class.java)) }
+        binding.btnRinging.setOnClickListener { startActivity(Intent(this, RingingActivity::class.java)) }
 
-        findViewById<MaterialButton>(R.id.btn_switch_night_mode).setOnClickListener {
+        binding.btnSwitchNightMode.setOnClickListener {
             val isNightTheme = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             when (isNightTheme) {
                 Configuration.UI_MODE_NIGHT_YES -> {
@@ -81,7 +80,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<MaterialButton>(R.id.btn_whiteboard_editor).setOnClickListener {
+        binding.btnWhiteboardEditor.setOnClickListener {
             BandyerWhiteboardTextEditorDialog().show(this@MainActivity, mText, object : BandyerWhiteboardTextEditorWidgetListener {
                 override fun onTextEditConfirmed(newText: String) {
                     mText = newText
@@ -89,17 +88,15 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        findViewById<MaterialButton>(R.id.btn_snapshot_preview).setOnClickListener {
+        binding.btnSnapshotPreview.setOnClickListener {
             BandyerSnapshotDialog().show(this@MainActivity)
         }
 
-        findViewById<MaterialButton>(R.id.btn_live_pointer).setOnClickListener { startActivity(Intent(this, PointerActivity::class.java)) }
+        binding.btnLivePointer.setOnClickListener { startActivity(Intent(this, PointerActivity::class.java)) }
 
-        findViewById<MaterialButton>(R.id.btn_bluetooth_audioroute).setOnClickListener { startActivity(Intent(this, BluetoothAudioRouteActivity::class.java)) }
+        binding.btnBluetoothAudioroute.setOnClickListener { startActivity(Intent(this, BluetoothAudioRouteActivity::class.java)) }
 
-        findViewById<MaterialButton>(R.id.btn_file_share).setOnClickListener {
-            startActivity(Intent(this, FileShareActivity::class.java))
-        }
+        binding.btnFileShare.setOnClickListener { startActivity(Intent(this, FileShareActivity::class.java)) }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

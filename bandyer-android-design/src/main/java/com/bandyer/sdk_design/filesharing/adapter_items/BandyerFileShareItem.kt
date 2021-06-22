@@ -100,13 +100,15 @@ class BandyerFileShareItem(val data: FileTransfer, val viewModel: FileShareViewM
                 }
             }
 
-            when(item.data.type) {
+            when(val type = item.data.type) {
                 is FileTransfer.Type.Upload -> {
                     binding.bandyerOperation.type = BandyerFileShareOpTypeImageView.Type.UPLOAD
                     binding.bandyerUsername.text = itemView.context.resources.getString(R.string.bandyer_fileshare_you)
                     binding.bandyerFileSize.text = Formatter.formatShortFileSize(itemView.context, item.data.info.size)
                 }
                 else -> {
+                    if(type is FileTransfer.Type.DownloadAvailable) binding.bandyerAction.type = BandyerFileShareActionButton.Type.DOWNLOAD
+
                     binding.bandyerOperation.type = BandyerFileShareOpTypeImageView.Type.DOWNLOAD
                     binding.bandyerUsername.text = item.data.info.sender
                     binding.bandyerFileSize.text =
