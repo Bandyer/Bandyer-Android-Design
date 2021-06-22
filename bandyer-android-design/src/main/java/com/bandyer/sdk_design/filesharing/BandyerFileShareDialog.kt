@@ -28,8 +28,10 @@ import com.bandyer.sdk_design.databinding.BandyerFileShareDialogLayoutBinding
 import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.bandyer.sdk_design.extensions.getFileBytes
+import com.bandyer.sdk_design.extensions.getFileName
 import com.bandyer.sdk_design.extensions.getMimeType
 import com.bandyer.sdk_design.filesharing.adapter_items.BandyerFileShareItem
+import com.bandyer.sdk_design.filesharing.model.FileInfo
 import com.bandyer.sdk_design.filesharing.model.FileTransfer
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
@@ -109,8 +111,10 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                     showMaxBytesDialog(requireContext())
                     return@registerForActivityResult
                 }
-                // TODO add sender
-//                viewModel?.upload(context = this.requireContext(), uri)
+                
+                val fileInfo = FileInfo(uri = uri, name = uri.getFileName(requireContext()), mimeType = uri.getMimeType(requireContext()), sender = "")
+                val fileTransfer = FileTransfer(fileInfo, FileTransfer.State.Pending, FileTransfer.Type.Upload)
+                viewModel?.upload(context = this.requireContext(), fileTransfer)
             }
         }
 
