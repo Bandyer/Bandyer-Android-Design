@@ -33,7 +33,7 @@
         <item name="android:layout_width">@dimen/bandyer_dimen_space0</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space28</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space28</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space20</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
         <item name="android:includeFontPadding">false</item>

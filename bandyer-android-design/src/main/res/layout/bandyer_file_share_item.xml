@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     style="?attr/bandyer_rootLayoutStyle"
-    android:theme="@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item">
+    android:theme="?attr/bandyer_fileShareItemStyle">
 
     <com.bandyer.sdk_design.filesharing.imageviews.BandyerFileTypeImageView
         android:id="@+id/bandyer_file_type"
@@ -27,9 +27,9 @@
         android:id="@+id/bandyer_action_click_area"
         android:layout_width="@dimen/bandyer_dimen_space48"
         android:layout_height="@dimen/bandyer_dimen_space48"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/bandyer_username"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="@+id/bandyer_file_name">
 
         <com.bandyer.sdk_design.filesharing.buttons.BandyerFileShareActionButton
             android:id="@+id/bandyer_action"

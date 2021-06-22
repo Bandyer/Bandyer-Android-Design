@@ -27,7 +27,10 @@
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout" parent="">
-        <item name="android:padding">@dimen/bandyer_dimen_space20</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space20</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space20</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space10</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space12</item>
     </style>
 
 </resources>
