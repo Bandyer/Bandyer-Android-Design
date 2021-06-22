@@ -9,11 +9,9 @@ import java.util.concurrent.ConcurrentHashMap
 abstract class FileShareViewModel : ViewModel() {
     val itemsData: ConcurrentHashMap<String, FileTransfer> = ConcurrentHashMap()
 
-    abstract fun upload(context: Context, uri: Uri, sender: String): String
+    abstract fun upload(context: Context, transfer: FileTransfer): FileTransfer
 
-    abstract fun cancelUpload(uploadId: String)
+    abstract fun download(context: Context, transfer: FileTransfer): FileTransfer
 
-    abstract fun download(context: Context, uri: Uri, sender: String): String
-
-    abstract fun cancelDownload(uploadId: String)
+    abstract fun cancel(transfer: FileTransfer)
 }

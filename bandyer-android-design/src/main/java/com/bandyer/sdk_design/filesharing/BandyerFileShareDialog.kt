@@ -30,13 +30,7 @@ import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.bandyer.sdk_design.extensions.getFileBytes
 import com.bandyer.sdk_design.extensions.getMimeType
 import com.bandyer.sdk_design.filesharing.adapter_items.BandyerFileShareItem
-import com.bandyer.sdk_design.filesharing.adapter_items.DownloadAvailableItem
-import com.bandyer.sdk_design.filesharing.adapter_items.DownloadItem
-import com.bandyer.sdk_design.filesharing.adapter_items.UploadItem
-import com.bandyer.sdk_design.filesharing.model.Download
-import com.bandyer.sdk_design.filesharing.model.DownloadAvailable
 import com.bandyer.sdk_design.filesharing.model.FileTransfer
-import com.bandyer.sdk_design.filesharing.model.Upload
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
@@ -90,9 +84,9 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private var uploadFileFabText: MaterialTextView? = null
 
-        private var itemAdapter: ItemAdapter<BandyerFileShareItem<*>>? = null
+        private var itemAdapter: ItemAdapter<BandyerFileShareItem>? = null
 
-        private var fastAdapter: FastAdapter<BandyerFileShareItem<*>>? = null
+        private var fastAdapter: FastAdapter<BandyerFileShareItem>? = null
 
         private var smoothScroller: SmoothScroller? = null
 
@@ -183,9 +177,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             rv.itemAnimator = null
             rv.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
-            fastAdapter!!.addEventHook(UploadItem.UploadItemClickEvent())
-            fastAdapter!!.addEventHook(DownloadItem.DownloadItemClickEvent())
-            fastAdapter!!.addEventHook(DownloadAvailableItem.DownloadAvailableItemClickEvent())
+            fastAdapter!!.addEventHook(BandyerFileShareItem.ItemClickEvent())
 
             fastAdapter!!.onClickListener = { _, _, item, _ ->
                 onItemClick(item)
@@ -213,17 +205,13 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private fun scrollToTop() = filesRecyclerView?.layoutManager?.startSmoothScroll(smoothScroller?.apply { targetPosition = 0 })
 
-        private fun onItemClick(item: BandyerFileShareItem<*>) {
+        private fun onItemClick(item: BandyerFileShareItem) {
             kotlin.runCatching {
+                val type = item.data.type
                 val state = item.data.state
-                val isSuccess = state is FileTransfer.State.Success
-                if(!isSuccess) return
-                val uri = when (item) {
-                    is UploadItem -> item.data.info.uri
-                    is DownloadItem -> (state as FileTransfer.State.Success).uri
-                    else -> null
-                } ?: return
+                if(type is FileTransfer.Type.DownloadAvailable || state !is FileTransfer.State.Success) return
 
+                val uri = if(type is FileTransfer.Type.Upload) item.data.info.uri else state.uri
                 val isFileInTrash = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { isFileInTrash(requireContext(), uri) } else false
 
                 if(!doesFileExists(requireContext(), uri))
@@ -268,21 +256,19 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileTransfer>) {
             uploadFileFabText?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
             emptyListLayout?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
-            val items = arrayListOf<BandyerFileShareItem<*>>()
+            val items = arrayListOf<BandyerFileShareItem>()
             data.values.forEach {
-                if(it.state == FileTransfer.State.Pending)
+                if(it.type is FileTransfer.Type.DownloadAvailable) {
+                    items.add(BandyerFileShareItem(it, viewModel!!) { requestPermissionLauncher.launch(PERMISSION) })
+                    return@forEach
+                }
+
+                if(it.state is FileTransfer.State.Pending)
                     scrollToTop()
 
-                items.add(
-                    when(it) {
-                        is Upload -> UploadItem(it, viewModel!!)
-                        is Download -> DownloadItem(it, viewModel!!)
-                        else -> DownloadAvailableItem(it, viewModel!!) {
-                            requestPermissionLauncher.launch(PERMISSION)
-                        }
-                    }
-                )
+                items.add(BandyerFileShareItem(it, viewModel!!))
             }
+
             val sortedItems = items.toMutableList().apply { sortByDescending { item -> item.data.info.creationTime } }
             val diff = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, sortedItems, true)
             FastAdapterDiffUtil[itemAdapter!!] = diff
