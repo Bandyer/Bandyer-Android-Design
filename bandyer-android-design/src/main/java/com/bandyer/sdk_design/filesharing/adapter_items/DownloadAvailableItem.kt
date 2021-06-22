@@ -9,17 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerFileShareItemBinding
 import com.bandyer.sdk_design.extensions.getFileTypeFromMimeType
-import com.bandyer.sdk_design.extensions.getMimeType
 import com.bandyer.sdk_design.extensions.parseToHHmm
-import com.bandyer.sdk_design.filesharing.*
+import com.bandyer.sdk_design.filesharing.FileShareViewModel
 import com.bandyer.sdk_design.filesharing.buttons.BandyerFileShareActionButton
 import com.bandyer.sdk_design.filesharing.imageviews.BandyerFileShareOpTypeImageView
 import com.bandyer.sdk_design.filesharing.imageviews.BandyerFileTypeImageView
-import com.bandyer.sdk_design.filesharing.model.DownloadAvailableData
+import com.bandyer.sdk_design.filesharing.model.FileTransfer
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 
-class DownloadAvailableItem(var data: DownloadAvailableData, val viewModel: FileShareViewModel, val askPermissionCallback: () -> Unit): BandyerFileShareItem<DownloadAvailableItem.ViewHolder>(data.startTime) {
+class DownloadAvailableItem(data: FileTransfer, viewModel: FileShareViewModel, val askPermissionCallback: () -> Unit): BandyerFileShareItem<DownloadAvailableItem.ViewHolder>(data, viewModel) {
 
     override var identifier: Long = data.hashCode().toLong()
 
@@ -37,15 +36,15 @@ class DownloadAvailableItem(var data: DownloadAvailableData, val viewModel: File
 
         override fun bindView(item: DownloadAvailableItem, payloads: List<Any>) {
             binding.bandyerFileSize.text = itemView.context.resources.getString(R.string.bandyer_fileshare_na)
-            binding.bandyerUsername.text = item.data.sender
+            binding.bandyerUsername.text = item.data.info.sender
             binding.bandyerError.text = itemView.context.resources.getString(R.string.bandyer_fileshare_error_message)
-            binding.bandyerFileName.text = item.data.fileName
+            binding.bandyerFileName.text = item.data.info.name
             binding.bandyerOperation.type = BandyerFileShareOpTypeImageView.Type.DOWNLOAD
             binding.bandyerProgressBar.progress = 0
-            binding.bandyerProgressText.text = item.data.startTime.parseToHHmm()
+            binding.bandyerProgressText.text = item.data.info.creationTime.parseToHHmm()
             binding.bandyerAction.type = BandyerFileShareActionButton.Type.DOWNLOAD
 
-            val mimeType = item.data.endpoint.getMimeType()
+            val mimeType = item.data.info.mimeType
             binding.bandyerFileType.type = when(mimeType.getFileTypeFromMimeType()) {
                 "image" -> BandyerFileTypeImageView.Type.IMAGE
                 "archive"-> BandyerFileTypeImageView.Type.ARCHIVE
@@ -83,7 +82,7 @@ class DownloadAvailableItem(var data: DownloadAvailableData, val viewModel: File
                 item: DownloadAvailableItem
             ) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R || ContextCompat.checkSelfPermission(v.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    item.viewModel.download(v.context, item.data)
+                    item.viewModel.download(v.context, item.data.info.uri, item.data.info.sender)
                 } else
                     item.askPermissionCallback.invoke()
             }
