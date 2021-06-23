@@ -9,7 +9,7 @@ import androidx.core.net.toFile
 import java.io.File
 import java.util.*
 
-fun Uri.getMimeType(context: Context): String {
+internal fun Uri.getMimeType(context: Context): String {
     return kotlin.runCatching {
         if (ContentResolver.SCHEME_CONTENT == this.scheme) {
             val cr: ContentResolver = context.applicationContext.contentResolver
@@ -21,7 +21,7 @@ fun Uri.getMimeType(context: Context): String {
     }.getOrNull() ?: ""
 }
 
-fun Uri.getFileName(context: Context): String {
+internal fun Uri.getFileName(context: Context): String {
     return kotlin.runCatching {
         if (ContentResolver.SCHEME_CONTENT == this.scheme)
             context.contentResolver.query(this, null, null, null, null)?.use {
@@ -31,7 +31,7 @@ fun Uri.getFileName(context: Context): String {
     }.getOrNull() ?: ""
 }
 
-fun Uri.getFileSize(context: Context): Long = kotlin.runCatching {
+internal fun Uri.getFileSize(context: Context): Long = kotlin.runCatching {
     if (ContentResolver.SCHEME_CONTENT == this.scheme)
         context.contentResolver.query(this, null, null, null, null)
             .use { if (it?.moveToFirst() == true) it.getLong(it.getColumnIndex(OpenableColumns.SIZE)) else -1L }
