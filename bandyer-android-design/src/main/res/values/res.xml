@@ -47,6 +47,7 @@
     <item name="ic_bandyer_whiteboard" type="drawable">@drawable/bandyer_whiteboard_icon</item>
     <item name="ic_bandyer_wired_headset" type="drawable">@drawable/bandyer_wired_headset_icon</item>
     <item name="ic_bandyer_add" type="drawable">@drawable/bandyer_add_icon</item>
+    <item name="ic_bandyer_empty_folder" type="drawable">@drawable/bandyer_empty_folder_icon</item>
     <item name="ic_bandyer_folder" type="drawable">@drawable/bandyer_folder_icon</item>
     <item name="ic_bandyer_download" type="drawable">@drawable/bandyer_download_icon</item>
     <item name="ic_bandyer_file" type="drawable">@drawable/bandyer_file_icon</item>
