@@ -3,6 +3,7 @@
     <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item">
         <attr name="bandyer_fileTypeStyle" format="reference" />
         <attr name="bandyer_fileSizeStyle" format="reference" />
+        <attr name="bandyer_buttonClickArea" format="reference" />
         <attr name="bandyer_fileNameStyle" format="reference" />
         <attr name="bandyer_operationIconStyle" format="reference" />
         <attr name="bandyer_usernameStyle" format="reference" />
@@ -17,6 +18,7 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout</item>
         <item name="bandyer_fileTypeStyle">@style/BandyerSDKDesign.FileShare.FileType</item>
         <item name="bandyer_fileSizeStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileSize</item>
+        <item name="bandyer_buttonClickArea">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item.ButtonClickArea</item>
         <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.FileShareAction</item>
         <item name="bandyer_fileNameStyle">@style/BandyerSDKDesign.TextView.Title.FileName</item>
         <item name="bandyer_progressStyle">@style/BandyerSDKDesign.FileShare.ProgressBar</item>
@@ -31,6 +33,12 @@
         <item name="android:paddingStart">@dimen/bandyer_dimen_space20</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space10</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space12</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item.ButtonClickArea" parent="">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space48</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space48</item>
+        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space10</item>
     </style>
 
 </resources>

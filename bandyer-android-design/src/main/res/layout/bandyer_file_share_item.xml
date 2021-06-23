@@ -25,11 +25,10 @@
 
     <FrameLayout
         android:id="@+id/bandyer_action_click_area"
-        android:layout_width="@dimen/bandyer_dimen_space48"
-        android:layout_height="@dimen/bandyer_dimen_space48"
-        app:layout_constraintBottom_toBottomOf="@+id/bandyer_username"
+        style="?attr/bandyer_buttonClickArea"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/bandyer_file_name">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.bandyer.sdk_design.filesharing.buttons.BandyerFileShareActionButton
             android:id="@+id/bandyer_action"
