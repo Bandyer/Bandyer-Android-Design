@@ -80,8 +80,9 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_progress_text"
         style="?attr/bandyer_progressTextStyle"
+        app:layout_constraintBottom_toBottomOf="@+id/bandyer_username"
         app:layout_constraintEnd_toEndOf="@id/bandyer_file_name"
-        app:layout_constraintTop_toTopOf="@id/bandyer_username"
+        app:layout_constraintTop_toTopOf="@+id/bandyer_username"
         tools:text="85%" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
