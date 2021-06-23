@@ -22,7 +22,6 @@
     <style name="BandyerSDKDesign.TextView.Title.ScreenSharePicker" parent="BandyerSDKDesign.TextView.Title">
         <item name="android:text">@string/bandyer_screenshare_picker_title</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
         <item name="android:padding">@dimen/bandyer_dimen_space8</item>
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
         <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space16</item>

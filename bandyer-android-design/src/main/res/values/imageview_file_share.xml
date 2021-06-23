@@ -11,6 +11,7 @@
         <item name="android:layout_width">@dimen/bandyer_dimen_space24</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space24</item>
         <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space12</item>
+
         <item name="tint">?attr/colorOnBackground</item>
         <item name="srcCompat">@drawable/bandyer_file_type_icon</item>
         <item name="android:scaleType">fitCenter</item>

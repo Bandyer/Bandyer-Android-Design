@@ -20,7 +20,7 @@
         <item name="bandyer_fileSizeStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileSize</item>
         <item name="bandyer_buttonClickArea">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item.ButtonClickArea</item>
         <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.FileShareAction</item>
-        <item name="bandyer_fileNameStyle">@style/BandyerSDKDesign.TextView.Title.FileName</item>
+        <item name="bandyer_fileNameStyle">@style/BandyerSDKDesign.TextView.FileName</item>
         <item name="bandyer_progressStyle">@style/BandyerSDKDesign.FileShare.ProgressBar</item>
         <item name="bandyer_operationIconStyle">@style/BandyerSDKDesign.FileShare.OperationType</item>
         <item name="bandyer_usernameStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareUser</item>
@@ -29,16 +29,18 @@
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout" parent="">
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space20</item>
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space20</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space10</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space12</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space18</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space2</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item.ButtonClickArea" parent="">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space48</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space48</item>
-        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space10</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_height">0dp</item>
     </style>
 
 </resources>

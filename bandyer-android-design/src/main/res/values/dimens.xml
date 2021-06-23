@@ -28,6 +28,7 @@
     <dimen name="bandyer_dimen_space12">12dp</dimen>
     <dimen name="bandyer_dimen_space13">13dp</dimen>
     <dimen name="bandyer_dimen_space16">16dp</dimen>
+    <dimen name="bandyer_dimen_space18">18dp</dimen>
     <dimen name="bandyer_dimen_space20">20dp</dimen>
     <dimen name="bandyer_dimen_space24">24dp</dimen>
     <dimen name="bandyer_dimen_space28">28dp</dimen>
@@ -49,8 +50,7 @@
     <dimen name="bandyer_dimen_text_h1">24sp</dimen>
     <dimen name="bandyer_dimen_text_h2">19sp</dimen>
     <dimen name="bandyer_dimen_text_h3">16sp</dimen>
-    <dimen name="bandyer_dimen_text_h4">14sp</dimen>
-    <dimen name="bandyer_dimen_text_h5">12sp</dimen>
+
     <dimen name="bandyer_dimen_text_normal">14sp</dimen>
     <dimen name="bandyer_dimen_text_small">12sp</dimen>
     <dimen name="bandyer_dimen_text_caption">10sp</dimen>

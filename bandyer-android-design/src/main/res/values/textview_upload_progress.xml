@@ -19,7 +19,6 @@
 
     <style name="BandyerSDKDesign.TextView.Title.UploadProgress" parent="BandyerSDKDesign.TextView.Title">
         <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.Title.UploadProgress.Day" parent="BandyerSDKDesign.TextView.Title.UploadProgress">
