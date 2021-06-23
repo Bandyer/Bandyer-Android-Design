@@ -64,8 +64,8 @@ class BandyerFileShareItem(val data: FileShareItemData, val viewModel: FileShare
         val binding: BandyerFileShareItemBinding = BandyerFileShareItemBinding.bind(view)
 
         override fun bindView(item: BandyerFileShareItem, payloads: List<Any>) {
+            if(item.data.state !is FileShareItemData.State.Success) binding.root.background = null
             binding.bandyerProgressBar.progress = 0
-            binding.bandyerError.text = itemView.context.resources.getString(R.string.bandyer_fileshare_error_message)
             binding.bandyerError.visibility = View.GONE
             binding.bandyerFileName.text = item.data.info.name
             binding.bandyerFileType.type = when (item.data.info.mimeType.getFileTypeFromMimeType()) {
@@ -102,6 +102,7 @@ class BandyerFileShareItem(val data: FileShareItemData, val viewModel: FileShare
 
             when(val type = item.data.type) {
                 is FileShareItemData.Type.Upload -> {
+                    binding.bandyerError.text = itemView.context.resources.getString(R.string.bandyer_fileshare_upload_error)
                     binding.bandyerOperation.type = BandyerFileShareOpTypeImageView.Type.UPLOAD
                     binding.bandyerUsername.text = itemView.context.resources.getString(R.string.bandyer_fileshare_you)
                     binding.bandyerFileSize.text = Formatter.formatShortFileSize(itemView.context, item.data.info.size)
@@ -109,6 +110,7 @@ class BandyerFileShareItem(val data: FileShareItemData, val viewModel: FileShare
                 else -> {
                     if(type is FileShareItemData.Type.DownloadAvailable) binding.bandyerAction.type = BandyerFileShareActionButton.Type.DOWNLOAD
 
+                    binding.bandyerError.text = itemView.context.resources.getString(R.string.bandyer_fileshare_download_error)
                     binding.bandyerOperation.type = BandyerFileShareOpTypeImageView.Type.DOWNLOAD
                     binding.bandyerUsername.text = item.data.info.sender
                     binding.bandyerFileSize.text =
