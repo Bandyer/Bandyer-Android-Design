@@ -26,13 +26,10 @@ import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheetDialog
 import com.bandyer.sdk_design.databinding.BandyerFileShareDialogLayoutBinding
 import com.bandyer.sdk_design.dialogs.BandyerDialog
-import com.bandyer.sdk_design.extensions.getCallThemeAttribute
-import com.bandyer.sdk_design.extensions.getFileBytes
-import com.bandyer.sdk_design.extensions.getFileName
-import com.bandyer.sdk_design.extensions.getMimeType
+import com.bandyer.sdk_design.extensions.*
 import com.bandyer.sdk_design.filesharing.adapter_items.BandyerFileShareItem
 import com.bandyer.sdk_design.filesharing.model.FileInfo
-import com.bandyer.sdk_design.filesharing.model.FileTransfer
+import com.bandyer.sdk_design.filesharing.model.FileShareItemData
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
@@ -63,7 +60,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         activity.supportFragmentManager.executePendingTransactions()
     }
 
-    fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileTransfer>) = dialog?.updateRecyclerViewItems(data)
+    fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) = dialog?.updateRecyclerViewItems(data)
 
     class FileShareBottomSheetDialog(private var viewModel: FileShareViewModel? = null) : BandyerBottomSheetDialog() {
 
@@ -111,9 +108,9 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                     showMaxBytesDialog(requireContext())
                     return@registerForActivityResult
                 }
-                
+
                 val fileInfo = FileInfo(uri = uri, name = uri.getFileName(requireContext()), mimeType = uri.getMimeType(requireContext()), sender = "")
-                val fileTransfer = FileTransfer(fileInfo, FileTransfer.State.Pending, FileTransfer.Type.Upload)
+                val fileTransfer = FileShareItemData(fileInfo, FileShareItemData.State.Pending, FileShareItemData.Type.Upload)
                 viewModel?.upload(context = this.requireContext(), fileTransfer)
             }
         }
@@ -213,9 +210,9 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             kotlin.runCatching {
                 val type = item.data.type
                 val state = item.data.state
-                if(type is FileTransfer.Type.DownloadAvailable || state !is FileTransfer.State.Success) return
+                if(type is FileShareItemData.Type.DownloadAvailable || state !is FileShareItemData.State.Success) return
 
-                val uri = if(type is FileTransfer.Type.Upload) item.data.info.uri else state.uri
+                val uri = if(type is FileShareItemData.Type.Upload) item.data.info.uri else state.uri
                 val isFileInTrash = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { isFileInTrash(requireContext(), uri) } else false
 
                 if(!doesFileExists(requireContext(), uri))
@@ -257,17 +254,17 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             }.getOrNull() ?: false
         }
 
-        fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileTransfer>) {
+        fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) {
             uploadFileFabText?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
             emptyListLayout?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
             val items = arrayListOf<BandyerFileShareItem>()
             data.values.forEach {
-                if(it.type is FileTransfer.Type.DownloadAvailable) {
+                if(it.type is FileShareItemData.Type.DownloadAvailable) {
                     items.add(BandyerFileShareItem(it, viewModel!!) { requestPermissionLauncher.launch(PERMISSION) })
                     return@forEach
                 }
 
-                if(it.state is FileTransfer.State.Pending)
+                if(it.state is FileShareItemData.State.Pending)
                     scrollToTop()
 
                 items.add(BandyerFileShareItem(it, viewModel!!))

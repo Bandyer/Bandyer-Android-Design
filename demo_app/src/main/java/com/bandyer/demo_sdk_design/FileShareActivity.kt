@@ -9,8 +9,9 @@ import com.bandyer.demo_sdk_design.databinding.ActivityFileShareBinding
 import com.bandyer.sdk_design.filesharing.BandyerFileShareDialog
 import com.bandyer.sdk_design.filesharing.FileShareViewModel
 import com.bandyer.sdk_design.filesharing.model.FileInfo
-import com.bandyer.sdk_design.filesharing.model.FileTransfer
+import com.bandyer.sdk_design.filesharing.model.FileShareItemData
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 class FileShareActivity : AppCompatActivity() {
 
@@ -23,22 +24,23 @@ class FileShareActivity : AppCompatActivity() {
         binding = ActivityFileShareBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.itemsData["id_1"] = FileTransfer(FileInfo(uri = "".toUri(), name = "razer.jpg", mimeType = "image/jpeg", sender = "Gianluigi", size = 100L), FileTransfer.State.Pending, FileTransfer.Type.DownloadAvailable)
-        viewModel.itemsData["id_2"] = FileTransfer(FileInfo(uri = "".toUri(), name = "identity_card.pdf", mimeType = "", sender = "Mario", size = 100L), FileTransfer.State.Success("".toUri()), FileTransfer.Type.Download)
-        viewModel.itemsData["id_3"] = FileTransfer(FileInfo(uri = "".toUri(), name = "car.zip", mimeType = "application/zip", sender = "Luigi", size = 1000L), FileTransfer.State.OnProgress(600L), FileTransfer.Type.Download)
-        viewModel.itemsData["id_4"] = FileTransfer(FileInfo(uri = "".toUri(), name = "phone.doc", mimeType = "", sender = "Gianni", size = 23000000L), FileTransfer.State.Error(Throwable()), FileTransfer.Type.Upload)
-        viewModel.itemsData["id_5"] = FileTransfer(FileInfo(uri = "".toUri(), name = "address.jpg", mimeType = "image/jpeg", sender = "Marco", size = 1000L), FileTransfer.State.Pending, FileTransfer.Type.Upload)
+        viewModel.itemsData["id_1"] = FileShareItemData(FileInfo(uri = "".toUri(), name = "razer.jpg", mimeType = "image/jpeg", sender = "Gianluigi", size = 100L), FileShareItemData.State.Pending, FileShareItemData.Type.DownloadAvailable)
+        viewModel.itemsData["id_2"] = FileShareItemData(FileInfo(uri = "".toUri(), name = "identity_card.pdf", mimeType = "", sender = "Mario", size = 100L), FileShareItemData.State.Success("".toUri()), FileShareItemData.Type.Download)
+        viewModel.itemsData["id_3"] = FileShareItemData(FileInfo(uri = "".toUri(), name = "car.zip", mimeType = "application/zip", sender = "Luigi", size = 1000L), FileShareItemData.State.OnProgress(600L), FileShareItemData.Type.Download)
+        viewModel.itemsData["id_4"] = FileShareItemData(FileInfo(uri = "".toUri(), name = "phone.doc", mimeType = "", sender = "Gianni", size = 23000000L), FileShareItemData.State.Error(Throwable()), FileShareItemData.Type.Upload)
+        viewModel.itemsData["id_5"] = FileShareItemData(FileInfo(uri = "".toUri(), name = "address.jpg", mimeType = "image/jpeg", sender = "Marco", size = 1000L), FileShareItemData.State.Pending, FileShareItemData.Type.Upload)
 
         binding.btnFileShare.setOnClickListener { BandyerFileShareDialog().show(this@FileShareActivity, viewModel) }
     }
 }
 
 class LocalFileShareViewModel: FileShareViewModel() {
+    override val itemsData: ConcurrentHashMap<String, FileShareItemData> = ConcurrentHashMap()
 
-    override fun upload(context: Context, transfer: FileTransfer) = FileTransfer(FileInfo(uri = "".toUri(), name = "", mimeType = "", sender = ""), FileTransfer.State.Pending, FileTransfer.Type.Upload)
+    override fun upload(context: Context, shareItemData: FileShareItemData) = FileShareItemData(FileInfo(uri = "".toUri(), name = "", mimeType = "", sender = ""), FileShareItemData.State.Pending, FileShareItemData.Type.Upload)
 
-    override fun download(context: Context, transfer: FileTransfer) = FileTransfer(FileInfo(uri = "".toUri(), name = "", mimeType = "", sender = ""), FileTransfer.State.Pending, FileTransfer.Type.Download)
+    override fun download(context: Context, shareItemData: FileShareItemData) = FileShareItemData(FileInfo(uri = "".toUri(), name = "", mimeType = "", sender = ""), FileShareItemData.State.Pending, FileShareItemData.Type.Download)
 
-    override fun cancel(transfer: FileTransfer) = Unit
+    override fun cancel(shareItemData: FileShareItemData) = Unit
 }
 
