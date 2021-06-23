@@ -109,7 +109,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                     return@registerForActivityResult
                 }
 
-                val fileInfo = FileInfo(uri = uri, name = uri.getFileName(requireContext()), mimeType = uri.getMimeType(requireContext()), sender = "")
+                val fileInfo = FileInfo.create(requireContext(), uri = uri, sender = "")
                 val fileTransfer = FileShareItemData(fileInfo, FileShareItemData.State.Pending, FileShareItemData.Type.Upload)
                 viewModel?.upload(context = this.requireContext(), fileTransfer)
             }
