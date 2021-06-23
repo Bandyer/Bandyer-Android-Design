@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
     style="?attr/bandyer_rootLayoutStyle"
-    android:theme="@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item">
+    android:theme="?attr/bandyer_fileShareItemStyle">
 
     <com.bandyer.sdk_design.filesharing.imageviews.BandyerFileTypeImageView
         android:id="@+id/bandyer_file_type"
