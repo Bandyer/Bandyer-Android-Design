@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.webkit.MimeTypeMap
+import androidx.core.net.toFile
 import java.io.File
 import java.util.*
 
@@ -22,44 +23,17 @@ fun Uri.getMimeType(context: Context): String {
 
 fun Uri.getFileName(context: Context): String {
     return kotlin.runCatching {
-        var result: String? = null
-        if (ContentResolver.SCHEME_CONTENT == this.scheme) {
-            val cursor = context.contentResolver.query(this, null, null, null, null)
-            try {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME))
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                cursor?.close()
+        if (ContentResolver.SCHEME_CONTENT == this.scheme)
+            context.contentResolver.query(this, null, null, null, null)?.use {
+                if(it.moveToFirst()) it.getString(it.getColumnIndex(OpenableColumns.DISPLAY_NAME)) else null
             }
-        }
-        if (result == null) {
-            result = this.path
-            val cut = result!!.lastIndexOf(File.separator)
-            if (cut != -1) {
-                result = result.substring(cut + 1)
-            }
-        }
-        result
+        else File(this.path!!).name
     }.getOrNull() ?: ""
 }
 
-fun Uri.getFileBytes(context: Context): Long {
-    return kotlin.runCatching {
-        var bytes = 0L
-        if (ContentResolver.SCHEME_CONTENT == this.scheme) {
-            val cursor = context.contentResolver.query(this, null, null, null, null)
-            try {
-                if (cursor != null && cursor.moveToFirst())
-                    bytes = cursor.getLong(cursor.getColumnIndex(OpenableColumns.SIZE))
-            } catch (e: Exception) {
-                e.printStackTrace()
-            } finally {
-                cursor?.close()
-            }
-        }
-        bytes
-    }.getOrNull() ?: 0L
-}
+fun Uri.getFileSize(context: Context): Long = kotlin.runCatching {
+    if (ContentResolver.SCHEME_CONTENT == this.scheme)
+        context.contentResolver.query(this, null, null, null, null)
+            .use { if (it?.moveToFirst() == true) it.getLong(it.getColumnIndex(OpenableColumns.SIZE)) else -1L }
+    else this.toFile().run { if (exists()) length() else -1L }
+}.getOrNull() ?: -1L

@@ -107,7 +107,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             smoothScroller = LinearSmoothScroller(requireContext())
             getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 uri ?: return@registerForActivityResult
-                if(uri.getFileBytes(requireContext()) > MAX_FILE_BYTES) {
+                if(uri.getFileSize(requireContext()) > MAX_FILE_BYTES) {
                     showMaxBytesDialog(requireContext())
                     return@registerForActivityResult
                 }
