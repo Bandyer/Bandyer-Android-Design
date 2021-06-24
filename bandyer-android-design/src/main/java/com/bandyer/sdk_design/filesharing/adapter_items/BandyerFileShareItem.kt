@@ -136,6 +136,9 @@ class BandyerFileShareItem(val data: FileShareItemData, val viewModel: FileShare
             when (item.data.state) {
                 is FileShareItemData.State.Pending -> item.viewModel.cancel(item.data)
                 is FileShareItemData.State.OnProgress -> item.viewModel.cancel(item.data)
+                is FileShareItemData.State.Success -> {
+                    (v.parent as View).apply { isPressed = true; performClick(); isPressed = false }
+                }
                 is FileShareItemData.State.Error -> {
                     if(item.data.type is FileShareItemData.Type.Upload) item.viewModel.upload(v.context, item.data)
                     else item.viewModel.download(v.context, item.data)
