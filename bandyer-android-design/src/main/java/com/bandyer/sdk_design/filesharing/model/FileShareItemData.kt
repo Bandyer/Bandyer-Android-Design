@@ -9,6 +9,7 @@ data class FileShareItemData(val info: FileInfo, val state: State, val type: Typ
         data class OnProgress(val bytesTransferred: Long) : State()
         data class Success(val uri: Uri) : State()
         data class Error(val throwable: Throwable) : State()
+        object Cancelled: State()
     }
 
     sealed class Type {
