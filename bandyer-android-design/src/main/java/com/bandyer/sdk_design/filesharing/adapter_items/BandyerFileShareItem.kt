@@ -37,39 +37,14 @@ class BandyerFileShareItem(val data: FileShareItemData, val viewModel: FileShare
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
-    private fun openFile(uri: Uri, view: View) {
-        kotlin.runCatching {
-            if (!view.context.doesFileExists(uri))
-                Snackbar.make(view, R.string.bandyer_fileshare_file_cancelled, Snackbar.LENGTH_SHORT).show()
-            else {
-                val isFileInTrash = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) view.context.isFileInTrash(uri) else false
-                if (isFileInTrash) Snackbar.make(view, R.string.bandyer_fileshare_file_trashed, Snackbar.LENGTH_SHORT).show()
-                else sendOpenFileIntent(uri, view)
-            }
-        }
-    }
-
-    private fun sendOpenFileIntent(uri: Uri, view: View) {
-        val mimeType = uri.getMimeType(view.context)
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.setDataAndType(uri, mimeType)
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-        try {
-            view.context.startActivity(intent)
-        } catch (ex: ActivityNotFoundException) {
-            Snackbar.make(view, R.string.bandyer_fileshare_impossible_open_file, Snackbar.LENGTH_SHORT).show()
-        }
-    }
-
     class ViewHolder(view: View) : FastAdapter.ViewHolder<BandyerFileShareItem>(view) {
 
         val binding: BandyerFileShareItemBinding = BandyerFileShareItemBinding.bind(view)
 
         override fun bindView(item: BandyerFileShareItem, payloads: List<Any>) {
-            if (item.data.state !is FileShareItemData.State.Success) {
-                binding.root.background = null
-                binding.bandyerActionClickArea.background = null
-            }
+            if (item.data.state !is FileShareItemData.State.Success) binding.root.background = null
+            else binding.bandyerActionClickArea.background = null
+
             binding.bandyerProgressBar.progress = 0
             binding.bandyerError.visibility = View.GONE
             binding.bandyerFileName.text = item.data.info.name
@@ -145,11 +120,8 @@ class BandyerFileShareItem(val data: FileShareItemData, val viewModel: FileShare
     class ItemClickEvent : ClickEventHook<BandyerFileShareItem>() {
         override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
             //return the views on which you want to bind this event
-            return if (viewHolder is ViewHolder) {
-                viewHolder.binding.bandyerActionClickArea
-            } else {
-                null
-            }
+            return if (viewHolder is ViewHolder) viewHolder.binding.bandyerActionClickArea
+            else null
         }
 
         override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<BandyerFileShareItem>, item: BandyerFileShareItem) {
@@ -161,17 +133,14 @@ class BandyerFileShareItem(val data: FileShareItemData, val viewModel: FileShare
                 return
             }
 
-            when (val state = item.data.state) {
-                is FileShareItemData.State.Pending    -> item.viewModel.cancel(item.data)
+            when (item.data.state) {
+                is FileShareItemData.State.Pending -> item.viewModel.cancel(item.data)
                 is FileShareItemData.State.OnProgress -> item.viewModel.cancel(item.data)
-                is FileShareItemData.State.Success    -> {
-                    if (item.data.type is FileShareItemData.Type.Upload) item.openFile(item.data.info.uri, v)
-                    else item.openFile(state.uri, v)
-                }
-                is FileShareItemData.State.Error      -> {
-                    if (item.data.type is FileShareItemData.Type.Upload) item.viewModel.upload(v.context, item.data)
+                is FileShareItemData.State.Error -> {
+                    if(item.data.type is FileShareItemData.Type.Upload) item.viewModel.upload(v.context, item.data)
                     else item.viewModel.download(v.context, item.data)
                 }
+                else -> { }
             }
         }
     }

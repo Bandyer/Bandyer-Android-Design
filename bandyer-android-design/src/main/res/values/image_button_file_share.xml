@@ -5,6 +5,7 @@
         <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
         <item name="android:clickable">false</item>
         <item name="android:focusable">false</item>
+        <item name="rippleColor">@android:color/transparent</item>
         <item name="backgroundTint">@color/bandyer_file_share_action_background_color</item>
         <item name="strokeWidth">@dimen/bandyer_dimen_space2</item>
         <item name="strokeColor">@color/bandyer_file_share_action_stroke_color</item>
