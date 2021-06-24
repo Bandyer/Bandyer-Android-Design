@@ -44,6 +44,7 @@
             android:id="@+id/bandyer_file_share_fab_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             style="?attr/bandyer_fabTextStyle"/>
 
     </LinearLayout>

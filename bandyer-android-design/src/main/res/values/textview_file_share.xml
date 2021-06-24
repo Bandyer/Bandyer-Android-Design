@@ -76,6 +76,10 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:focusable">false</item>
         <item name="android:clickable">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_normal</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
         <item name="android:letterSpacing">0.0892857143</item>
     </style>
 </resources>
