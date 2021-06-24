@@ -1,16 +1,16 @@
 package com.bandyer.sdk_design.filesharing
 
 import android.content.Context
+import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.bandyer.sdk_design.filesharing.model.*
-import java.util.concurrent.ConcurrentHashMap
+import java.util.*
 
 abstract class FileShareViewModel : ViewModel() {
-    abstract val itemsData: ConcurrentHashMap<String, FileShareItemData>
+    abstract fun upload(context: Context, id: String = UUID.randomUUID().toString(), uri: Uri, sender: String)
 
-    abstract fun upload(context: Context, itemData: FileShareItemData): FileShareItemData
+    abstract fun download(context: Context, id: String = UUID.randomUUID().toString(), uri: Uri, sender: String)
 
-    abstract fun download(context: Context, itemData: FileShareItemData): FileShareItemData
+    abstract fun cancelUpload(uploadId: String)
 
-    abstract fun cancel(itemData: FileShareItemData)
+    abstract fun cancelDownload(downloadId: String)
 }
