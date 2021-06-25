@@ -5,14 +5,20 @@ import android.util.AttributeSet
 import com.bandyer.sdk_design.R
 import com.google.android.material.imageview.ShapeableImageView
 
-class BandyerFileShareOpTypeImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ShapeableImageView(context, attrs, defStyleAttr) {
+/**
+ * This ImageView defines the transfer type (either upload or download)
+ */
+class BandyerTransferTypeImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ShapeableImageView(context, attrs, defStyleAttr) {
 
+    /**
+     * The type of the ImageView. It changes the drawable state and the content description
+     */
     var type: Type? = Type.DOWNLOAD
-    set(value) {
-        field = value
-        setContentDescription(value)
-        refreshDrawableState()
-    }
+        set(value) {
+            field = value
+            setContentDescription(value)
+            refreshDrawableState()
+        }
 
     /**
      * @suppress

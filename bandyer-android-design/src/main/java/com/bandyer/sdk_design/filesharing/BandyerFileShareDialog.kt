@@ -27,8 +27,8 @@ import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheetDialog
 import com.bandyer.sdk_design.databinding.BandyerFileShareDialogLayoutBinding
 import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.*
-import com.bandyer.sdk_design.filesharing.adapter_items.BandyerFileShareItem
-import com.bandyer.sdk_design.filesharing.model.FileShareItemData
+import com.bandyer.sdk_design.filesharing.adapter_items.BandyerFileTransferItem
+import com.bandyer.sdk_design.filesharing.model.TransferData
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
@@ -37,6 +37,10 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import java.util.concurrent.ConcurrentHashMap
 
+
+/**
+ * The file share dialog
+ */
 class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
 
     override var dialog: FileShareBottomSheetDialog? = null
@@ -51,7 +55,14 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         activity.supportFragmentManager.executePendingTransactions()
     }
 
-    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel, itemsData: ConcurrentHashMap<String, FileShareItemData>) {
+    /**
+     * It shows the dialog
+     *
+     * @param activity The activity
+     * @param viewModel The activity view model
+     * @param itemsData The transfers' data
+     */
+    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel, itemsData: ConcurrentHashMap<String, TransferData>) {
         if (dialog?.isVisible == true || dialog?.isAdded == true) return
         if (dialog == null) dialog = FileShareBottomSheetDialog(viewModel, itemsData)
 
@@ -59,9 +70,17 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         activity.supportFragmentManager.executePendingTransactions()
     }
 
-    fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) = dialog?.updateRecyclerViewItems(data)
+    /**
+     * It update the recycler view items' data
+     *
+     * @param data The transfers' data
+     */
+    fun updateItemsData(data: ConcurrentHashMap<String, TransferData>) = dialog?.updateRecyclerViewItems(data)
 
-    class FileShareBottomSheetDialog(private var viewModel: FileShareViewModel? = null, private val itemsData: ConcurrentHashMap<String, FileShareItemData>? = null) : BandyerBottomSheetDialog() {
+    /**
+     * @suppress
+     */
+    class FileShareBottomSheetDialog(private var viewModel: FileShareViewModel? = null, private val itemsData: ConcurrentHashMap<String, TransferData>? = null) : BandyerBottomSheetDialog() {
 
         internal companion object {
             const val PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -82,9 +101,9 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private var uploadFileFabText: MaterialTextView? = null
 
-        private var itemAdapter: ItemAdapter<BandyerFileShareItem>? = null
+        private var itemAdapter: ItemAdapter<BandyerFileTransferItem>? = null
 
-        private var fastAdapter: FastAdapter<BandyerFileShareItem>? = null
+        private var fastAdapter: FastAdapter<BandyerFileTransferItem>? = null
 
         private var smoothScroller: SmoothScroller? = null
 
@@ -169,13 +188,13 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         override fun onExpanded() = Unit
 
         @Suppress("UNCHECKED_CAST")
-        private fun initRecyclerView(rv: RecyclerView, itemsData: ConcurrentHashMap<String, FileShareItemData>) {
+        private fun initRecyclerView(rv: RecyclerView, itemsData: ConcurrentHashMap<String, TransferData>) {
             rv.adapter = fastAdapter
             rv.layoutManager = LinearLayoutManager(requireContext())
             rv.itemAnimator = null
             rv.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
 
-            fastAdapter!!.addEventHook(BandyerFileShareItem.ItemClickEvent())
+            fastAdapter!!.addEventHook(BandyerFileTransferItem.ItemClickEvent())
 
             fastAdapter!!.onClickListener = { _, _, item, _ ->
                 onItemClick(item)
@@ -203,13 +222,13 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
         private fun scrollToTop() = filesRecyclerView?.layoutManager?.startSmoothScroll(smoothScroller?.apply { targetPosition = 0 })
 
-        private fun onItemClick(item: BandyerFileShareItem) {
+        private fun onItemClick(item: BandyerFileTransferItem) {
             kotlin.runCatching {
                 val type = item.data.type
                 val state = item.data.state
-                if(type is FileShareItemData.Type.DownloadAvailable || state !is FileShareItemData.State.Success) return
+                if(type is TransferData.Type.DownloadAvailable || state !is TransferData.State.Success) return
 
-                val uri = if(type is FileShareItemData.Type.Upload) item.data.info.uri else state.uri
+                val uri = if(type is TransferData.Type.Upload) item.data.data.uri else state.uri
                 val isFileInTrash = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { isFileInTrash(requireContext(), uri) } else false
 
                 if(!doesFileExists(requireContext(), uri))
@@ -247,23 +266,23 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                 }
             }.getOrNull() ?: false
 
-        fun updateRecyclerViewItems(data: ConcurrentHashMap<String, FileShareItemData>) {
+        fun updateRecyclerViewItems(data: ConcurrentHashMap<String, TransferData>) {
             uploadFileFabText?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
             emptyListLayout?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
-            val items = arrayListOf<BandyerFileShareItem>()
+            val items = arrayListOf<BandyerFileTransferItem>()
             data.values.forEach {
-                if(it.type is FileShareItemData.Type.DownloadAvailable) {
-                    items.add(BandyerFileShareItem(it, viewModel!!) { requestPermissionLauncher.launch(PERMISSION) })
+                if(it.type is TransferData.Type.DownloadAvailable) {
+                    items.add(BandyerFileTransferItem(it, viewModel!!) { requestPermissionLauncher.launch(PERMISSION) })
                     return@forEach
                 }
 
-                if(it.state is FileShareItemData.State.Pending)
+                if(it.state is TransferData.State.Pending)
                     scrollToTop()
 
-                items.add(BandyerFileShareItem(it, viewModel!!))
+                items.add(BandyerFileTransferItem(it, viewModel!!))
             }
 
-            val sortedItems = items.toMutableList().apply { sortByDescending { item -> item.data.info.creationTime } }
+            val sortedItems = items.toMutableList().apply { sortByDescending { item -> item.data.data.creationTime } }
             val diff = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, sortedItems, true)
             FastAdapterDiffUtil[itemAdapter!!] = diff
         }

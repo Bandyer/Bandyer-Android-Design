@@ -5,8 +5,14 @@ import android.util.AttributeSet
 import com.bandyer.sdk_design.R
 import com.google.android.material.imageview.ShapeableImageView
 
+/**
+ * This ImageView defines the transfer type (either upload or download)
+ */
 class BandyerFileTypeImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ShapeableImageView(context, attrs, defStyleAttr) {
 
+    /**
+     * The type of the ImageView. It changes the drawable state and the content description
+     */
     var type: Type? = Type.FILE
         set(value) {
             field = value

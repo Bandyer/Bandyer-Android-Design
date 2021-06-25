@@ -5,6 +5,9 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import java.util.*
 
+/**
+ * View model for the file sharing
+ */
 abstract class FileShareViewModel : ViewModel() {
     abstract fun upload(context: Context, id: String = UUID.randomUUID().toString(), uri: Uri, sender: String)
 

@@ -14,15 +14,23 @@ import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.bandyer.sdk_design.extensions.setPaddingBottom
 import com.bandyer.sdk_design.extensions.setPaddingTop
 import com.bandyer.sdk_design.filesharing.FileShareViewModel
-import com.bandyer.sdk_design.filesharing.buttons.BandyerFileShareActionButton
-import com.bandyer.sdk_design.filesharing.imageviews.BandyerFileShareOpTypeImageView
+import com.bandyer.sdk_design.filesharing.buttons.BandyerFileTransferActionButton
+import com.bandyer.sdk_design.filesharing.imageviews.BandyerTransferTypeImageView
 import com.bandyer.sdk_design.filesharing.imageviews.BandyerFileTypeImageView
-import com.bandyer.sdk_design.filesharing.model.FileShareItemData
+import com.bandyer.sdk_design.filesharing.model.TransferData
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 
-class BandyerFileShareItem(val data: FileShareItemData, val viewModel: FileShareViewModel, val askPermissionCallback: (() -> Unit)? = null) : AbstractItem<BandyerFileShareItem.ViewHolder>() {
+/**
+ * BandyerFileShareItem
+ *
+ * @property data The data to bind to the item view
+ * @property viewModel A [FileShareViewModel] instance
+ * @property askPermissionCallback The callback which perform the permission request on the activity
+ * @constructor
+ */
+class BandyerFileTransferItem(val data: TransferData, val viewModel: FileShareViewModel, val askPermissionCallback: (() -> Unit)? = null) : AbstractItem<BandyerFileTransferItem.ViewHolder>() {
 
     override var identifier: Long = data.hashCode().toLong()
 
@@ -34,18 +42,21 @@ class BandyerFileShareItem(val data: FileShareItemData, val viewModel: FileShare
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
-    class ViewHolder(view: View) : FastAdapter.ViewHolder<BandyerFileShareItem>(view) {
+    /**
+     * The view holder for a BandyerFileShareItem
+     */
+    class ViewHolder(view: View) : FastAdapter.ViewHolder<BandyerFileTransferItem>(view) {
 
         val binding: BandyerFileShareItemBinding = BandyerFileShareItemBinding.bind(view)
 
-        override fun bindView(item: BandyerFileShareItem, payloads: List<Any>) {
-            binding.root.isEnabled = item.data.state is FileShareItemData.State.Success
-            if(item.data.state is FileShareItemData.State.Success) binding.bandyerActionClickArea.background =  null
+        override fun bindView(item: BandyerFileTransferItem, payloads: List<Any>) {
+            binding.root.isEnabled = item.data.state is TransferData.State.Success
+            if(item.data.state is TransferData.State.Success) binding.bandyerActionClickArea.background =  null
 
             binding.bandyerProgressBar.progress = 0
             binding.bandyerError.visibility = View.GONE
-            binding.bandyerFileName.text = item.data.info.name
-            binding.bandyerFileType.type = when (item.data.info.mimeType.getFileTypeFromMimeType()) {
+            binding.bandyerFileName.text = item.data.data.name
+            binding.bandyerFileType.type = when (item.data.data.mimeType.getFileTypeFromMimeType()) {
                 "image"   -> BandyerFileTypeImageView.Type.IMAGE
                 "archive" -> BandyerFileTypeImageView.Type.ARCHIVE
                 else      -> BandyerFileTypeImageView.Type.FILE
@@ -54,27 +65,27 @@ class BandyerFileShareItem(val data: FileShareItemData, val viewModel: FileShare
             binding.root.setPaddingBottom(binding.root.context.resources.getDimensionPixelSize(R.dimen.bandyer_dimen_space18))
 
             when (val state = item.data.state) {
-                is FileShareItemData.State.Pending    -> {
-                    binding.bandyerAction.type = BandyerFileShareActionButton.Type.CANCEL
-                    binding.bandyerProgressText.text = item.data.info.creationTime.parseToHHmm()
+                is TransferData.State.Pending    -> {
+                    binding.bandyerAction.type = BandyerFileTransferActionButton.Type.CANCEL
+                    binding.bandyerProgressText.text = item.data.data.creationTime.parseToHHmm()
                 }
-                is FileShareItemData.State.OnProgress -> {
-                    val progress = (state.bytesTransferred * 100f / item.data.info.size).toInt()
+                is TransferData.State.OnProgress -> {
+                    val progress = (state.bytesTransferred * 100f / item.data.data.size).toInt()
                     binding.bandyerProgressBar.progress = progress
                     binding.bandyerProgressText.text = itemView.context.resources.getString(
                         R.string.bandyer_fileshare_progress,
                         progress
                     )
-                    binding.bandyerAction.type = BandyerFileShareActionButton.Type.CANCEL
+                    binding.bandyerAction.type = BandyerFileTransferActionButton.Type.CANCEL
                 }
-                is FileShareItemData.State.Success    -> {
-                    binding.bandyerAction.type = BandyerFileShareActionButton.Type.CHECK
+                is TransferData.State.Success    -> {
+                    binding.bandyerAction.type = BandyerFileTransferActionButton.Type.CHECK
                     binding.bandyerProgressBar.progress = 100
-                    binding.bandyerProgressText.text = item.data.info.creationTime.parseToHHmm()
+                    binding.bandyerProgressText.text = item.data.data.creationTime.parseToHHmm()
                 }
-                is FileShareItemData.State.Error      -> {
+                is TransferData.State.Error      -> {
                     binding.bandyerError.visibility = View.VISIBLE
-                    binding.bandyerAction.type = BandyerFileShareActionButton.Type.RETRY
+                    binding.bandyerAction.type = BandyerFileTransferActionButton.Type.RETRY
                     binding.bandyerProgressText.text = itemView.context.resources.getString(R.string.bandyer_fileshare_progress, 0)
                     binding.root.setPaddingBottom(binding.root.context.resources.getDimensionPixelSize(R.dimen.bandyer_dimen_space8))
                     binding.root.setPaddingTop(binding.root.context.resources.getDimensionPixelSize(R.dimen.bandyer_dimen_space28))
@@ -82,26 +93,26 @@ class BandyerFileShareItem(val data: FileShareItemData, val viewModel: FileShare
             }
 
             when (val type = item.data.type) {
-                is FileShareItemData.Type.Upload -> {
+                is TransferData.Type.Upload -> {
                     binding.bandyerError.text = itemView.context.resources.getString(R.string.bandyer_fileshare_upload_error)
-                    binding.bandyerOperation.type = BandyerFileShareOpTypeImageView.Type.UPLOAD
+                    binding.bandyerOperation.type = BandyerTransferTypeImageView.Type.UPLOAD
                     binding.bandyerUsername.text = itemView.context.resources.getString(R.string.bandyer_fileshare_you)
-                    binding.bandyerFileSize.text = Formatter.formatShortFileSize(itemView.context, item.data.info.size)
+                    binding.bandyerFileSize.text = Formatter.formatShortFileSize(itemView.context, item.data.data.size)
                 }
                 else                             -> {
-                    if (type is FileShareItemData.Type.DownloadAvailable) binding.bandyerAction.type = BandyerFileShareActionButton.Type.DOWNLOAD
+                    if (type is TransferData.Type.DownloadAvailable) binding.bandyerAction.type = BandyerFileTransferActionButton.Type.DOWNLOAD
 
                     binding.bandyerError.text = itemView.context.resources.getString(R.string.bandyer_fileshare_download_error)
-                    binding.bandyerOperation.type = BandyerFileShareOpTypeImageView.Type.DOWNLOAD
-                    binding.bandyerUsername.text = item.data.info.sender
+                    binding.bandyerOperation.type = BandyerTransferTypeImageView.Type.DOWNLOAD
+                    binding.bandyerUsername.text = item.data.data.sender
                     binding.bandyerFileSize.text =
-                        if (item.data.state is FileShareItemData.State.OnProgress || item.data.state is FileShareItemData.State.Success) Formatter.formatShortFileSize(itemView.context, item.data.info.size)
+                        if (item.data.state is TransferData.State.OnProgress || item.data.state is TransferData.State.Success) Formatter.formatShortFileSize(itemView.context, item.data.data.size)
                         else itemView.context.resources.getString(R.string.bandyer_fileshare_na)
                 }
             }
         }
 
-        override fun unbindView(item: BandyerFileShareItem) {
+        override fun unbindView(item: BandyerFileTransferItem) {
             binding.bandyerFileType.type = null
             binding.bandyerFileSize.text = null
             binding.bandyerAction.type = null
@@ -114,33 +125,33 @@ class BandyerFileShareItem(val data: FileShareItemData, val viewModel: FileShare
         }
     }
 
-    class ItemClickEvent : ClickEventHook<BandyerFileShareItem>() {
+    class ItemClickEvent : ClickEventHook<BandyerFileTransferItem>() {
         override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
             //return the views on which you want to bind this event
             return if (viewHolder is ViewHolder) viewHolder.binding.bandyerActionClickArea
             else null
         }
 
-        override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<BandyerFileShareItem>, item: BandyerFileShareItem) {
-            if (item.data.type is FileShareItemData.Type.DownloadAvailable) {
+        override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<BandyerFileTransferItem>, item: BandyerFileTransferItem) {
+            if (item.data.type is TransferData.Type.DownloadAvailable) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R || ContextCompat.checkSelfPermission(v.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-                    item.viewModel.download(context = v.context, item.data.info.id, item.data.info.uri, item.data.info.sender)
+                    item.viewModel.download(context = v.context, item.data.data.id, item.data.data.uri, item.data.data.sender)
                 else
                     item.askPermissionCallback?.invoke()
                 return
             }
 
             when (item.data.state) {
-                is FileShareItemData.State.Pending, is FileShareItemData.State.OnProgress -> {
-                    if(item.data.type is FileShareItemData.Type.Upload) item.viewModel.cancelUpload(item.data.info.id)
-                    else item.viewModel.cancelDownload(item.data.info.id)
+                is TransferData.State.Pending, is TransferData.State.OnProgress -> {
+                    if(item.data.type is TransferData.Type.Upload) item.viewModel.cancelUpload(item.data.data.id)
+                    else item.viewModel.cancelDownload(item.data.data.id)
                 }
-                is FileShareItemData.State.Success -> {
+                is TransferData.State.Success -> {
                     (v.parent as View).apply { isPressed = true; performClick(); isPressed = false }
                 }
-                is FileShareItemData.State.Error -> {
-                    if(item.data.type is FileShareItemData.Type.Upload) item.viewModel.upload(v.context, item.data.info.id, item.data.info.uri, item.data.info.sender)
-                    else item.viewModel.download(v.context,  item.data.info.id, item.data.info.uri, item.data.info.sender)
+                is TransferData.State.Error -> {
+                    if(item.data.type is TransferData.Type.Upload) item.viewModel.upload(v.context, item.data.data.id, item.data.data.uri, item.data.data.sender)
+                    else item.viewModel.download(v.context,  item.data.data.id, item.data.data.uri, item.data.data.sender)
                 }
             }
         }

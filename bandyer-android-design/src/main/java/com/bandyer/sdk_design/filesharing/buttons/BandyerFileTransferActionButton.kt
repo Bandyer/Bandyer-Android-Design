@@ -5,8 +5,14 @@ import android.util.AttributeSet
 import com.bandyer.sdk_design.R
 import com.google.android.material.button.MaterialButton
 
-class BandyerFileShareActionButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : MaterialButton(context, attrs, defStyleAttr) {
+/**
+ * A button which represent the performable action on the file transfer
+ */
+class BandyerFileTransferActionButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : MaterialButton(context, attrs, defStyleAttr) {
 
+    /**
+     * The type of the button. It changes the drawable state and the content description
+     */
     var type: Type? = Type.RETRY
         set(value) {
             field = value
@@ -34,7 +40,7 @@ class BandyerFileShareActionButton @JvmOverloads constructor(context: Context, a
     }
 
     /**
-     * Enum representing operation type
+     * Enum representing action button type
      *
      * @param value state drawable resource
      * @constructor
