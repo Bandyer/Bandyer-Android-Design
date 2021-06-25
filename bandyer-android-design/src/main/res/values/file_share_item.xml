@@ -39,7 +39,6 @@
         <item name="android:layout_width">0dp</item>
         <item name="layout_constraintDimensionRatio">1:1</item>
         <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space4</item>
-        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space4</item>
         <item name="android:layout_height">0dp</item>
     </style>
 

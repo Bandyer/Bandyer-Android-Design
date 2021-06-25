@@ -20,24 +20,24 @@ class FileShareActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFileShareBinding
 
-    private val itemsData: ConcurrentHashMap<String, FileShareItemData> = ConcurrentHashMap()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFileShareBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        itemsData["id_1"] = FileShareItemData(FileInfo(id = "1", uri = "".toUri(), name = "razer.jpg", mimeType = "image/jpeg", sender = "Gianluigi", size = 100L), FileShareItemData.State.Pending, FileShareItemData.Type.DownloadAvailable)
-        itemsData["id_2"] = FileShareItemData(FileInfo(id = "2", uri = "".toUri(), name = "identity_card.pdf", mimeType = "", sender = "Mario", size = 100L), FileShareItemData.State.Success("".toUri()), FileShareItemData.Type.Download)
-        itemsData["id_3"] = FileShareItemData(FileInfo(id = "3", uri = "".toUri(), name = "car.zip", mimeType = "application/zip", sender = "Luigi", size = 1000L), FileShareItemData.State.OnProgress(600L), FileShareItemData.Type.Download)
-        itemsData["id_4"] = FileShareItemData(FileInfo(id = "4", uri = "".toUri(), name = "phone.doc", mimeType = "", sender = "Gianni", size = 23000000L), FileShareItemData.State.Error(Throwable()), FileShareItemData.Type.Upload)
-        itemsData["id_5"] = FileShareItemData(FileInfo(id = "5", uri = "".toUri(), name = "address.jpg", mimeType = "image/jpeg", sender = "Marco", size = 1000L), FileShareItemData.State.Pending, FileShareItemData.Type.Upload)
+        viewModel.itemsData["id_1"] = FileShareItemData(FileInfo(id = "1", uri = "".toUri(), name = "razer.jpg", mimeType = "image/jpeg", sender = "Gianluigi", size = 100L), FileShareItemData.State.Pending, FileShareItemData.Type.DownloadAvailable)
+        viewModel.itemsData["id_2"] = FileShareItemData(FileInfo(id = "2", uri = "".toUri(), name = "identity_card.pdf", mimeType = "", sender = "Mario", size = 100L), FileShareItemData.State.Success("".toUri()), FileShareItemData.Type.Download)
+        viewModel.itemsData["id_3"] = FileShareItemData(FileInfo(id = "3", uri = "".toUri(), name = "car.zip", mimeType = "application/zip", sender = "Luigi", size = 1000L), FileShareItemData.State.OnProgress(600L), FileShareItemData.Type.Download)
+        viewModel.itemsData["id_4"] = FileShareItemData(FileInfo(id = "4", uri = "".toUri(), name = "phone.doc", mimeType = "", sender = "Gianni", size = 23000000L), FileShareItemData.State.Error(Throwable()), FileShareItemData.Type.Upload)
+        viewModel.itemsData["id_5"] = FileShareItemData(FileInfo(id = "5", uri = "".toUri(), name = "address.jpg", mimeType = "image/jpeg", sender = "Marco", size = 1000L), FileShareItemData.State.Pending, FileShareItemData.Type.Upload)
 
-        binding.btnFileShare.setOnClickListener { BandyerFileShareDialog().show(this@FileShareActivity, viewModel, itemsData) }
+        binding.btnFileShare.setOnClickListener { BandyerFileShareDialog().show(this@FileShareActivity, viewModel, viewModel.itemsData) }
     }
 }
 
 class LocalFileShareViewModel: FileShareViewModel() {
+    val itemsData: ConcurrentHashMap<String, FileShareItemData> = ConcurrentHashMap()
+
     override fun upload(context: Context, id: String, uri: Uri, sender: String) = Unit
 
     override fun download(context: Context, id: String, uri: Uri, sender: String) = Unit
