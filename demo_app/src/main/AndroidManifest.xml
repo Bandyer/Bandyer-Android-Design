@@ -20,8 +20,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/DesignDemoApp">
-        <activity
-            android:name=".FileShareActivity"/>
         <meta-data
             android:name="com.google.android.glass.TouchEnabledApplication"
             android:value="true" />
@@ -39,6 +37,7 @@
             tools:targetApi="n" />
         <activity
             android:name=".MainActivity"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:theme="@style/BandyerSDKDesign.Theme.Call.DayNight">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

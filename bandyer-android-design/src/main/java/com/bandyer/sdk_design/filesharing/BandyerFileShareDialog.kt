@@ -28,7 +28,6 @@ import com.bandyer.sdk_design.databinding.BandyerFileShareDialogLayoutBinding
 import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.*
 import com.bandyer.sdk_design.filesharing.adapter_items.BandyerFileShareItem
-import com.bandyer.sdk_design.filesharing.model.FileInfo
 import com.bandyer.sdk_design.filesharing.model.FileShareItemData
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
