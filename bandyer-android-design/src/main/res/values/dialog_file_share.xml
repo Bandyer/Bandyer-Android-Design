@@ -36,6 +36,7 @@
         <item name="elevation">0dp</item>
         <item name="fabSize">normal</item>
         <item name="srcCompat">@drawable/ic_bandyer_add</item>
+        <item name="tint">?android:attr/colorBackground</item>
         <item name="useCompatPadding">false</item>
         <item name="rippleColor">@android:color/transparent</item>
         <item name="android:focusable">false</item>
