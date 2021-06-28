@@ -21,7 +21,7 @@
 
     <item android:color="@android:color/transparent" app:bandyer_state_cancel="true" />
     <item android:color="@android:color/transparent" app:bandyer_state_download="true" />
-    <item android:color="?attr/colorSecondary" app:bandyer_state_check="true" />
+    <item android:color="?attr/colorSecondary" app:bandyer_state_success="true" />
     <item android:color="?attr/colorError" app:bandyer_state_retry="true" />
 
 </selector>
