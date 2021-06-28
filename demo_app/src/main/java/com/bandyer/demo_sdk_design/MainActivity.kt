@@ -17,12 +17,14 @@
 package com.bandyer.demo_sdk_design
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -64,15 +66,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById<MaterialToolbar>(R.id.toolbar))
         initializeListeners()
-        initFileShareItems()
-    }
-
-    private fun initFileShareItems() {
-        viewModel.itemsData["id_1"] = TransferData(FileData(id = "1", uri = "".toUri(), name = "razer.jpg", mimeType = "image/jpeg", sender = "Gianluigi", size = 100L), TransferData.State.Pending, TransferData.Type.DownloadAvailable)
-        viewModel.itemsData["id_2"] = TransferData(FileData(id = "2", uri = "".toUri(), name = "identity_card.pdf", mimeType = "", sender = "Mario", size = 100L), TransferData.State.Success("".toUri()), TransferData.Type.Download)
-        viewModel.itemsData["id_3"] = TransferData(FileData(id = "3", uri = "".toUri(), name = "car.zip", mimeType = "application/zip", sender = "Luigi", size = 1000L), TransferData.State.OnProgress(600L), TransferData.Type.Download)
-        viewModel.itemsData["id_4"] = TransferData(FileData(id = "4", uri = "".toUri(), name = "phone.doc", mimeType = "", sender = "Gianni", size = 23000000L), TransferData.State.Error(Throwable()), TransferData.Type.Upload)
-        viewModel.itemsData["id_5"] = TransferData(FileData(id = "5", uri = "".toUri(), name = "address.jpg", mimeType = "image/jpeg", sender = "Marco", size = 1000L), TransferData.State.Pending, TransferData.Type.Upload)
     }
 
     private fun initializeListeners() {
@@ -93,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                     window.setWindowAnimations(R.style.Bandyer_ThemeTransitionAnimation)
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
-                Configuration.UI_MODE_NIGHT_NO -> {
+                Configuration.UI_MODE_NIGHT_NO  -> {
                     window.setWindowAnimations(R.style.Bandyer_ThemeTransitionAnimation)
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 }
@@ -116,7 +109,19 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnBluetoothAudioroute.setOnClickListener { startActivity(Intent(this, BluetoothAudioRouteActivity::class.java)) }
 
-        binding.btnFileShare.setOnClickListener { BandyerFileShareDialog().show(this@MainActivity, viewModel, viewModel.itemsData) }
+        binding.btnFileShare.setOnClickListener {
+            val fileShareDialog = BandyerFileShareDialog()
+            fileShareDialog.show(this@MainActivity, viewModel)
+            fileShareDialog.dialog?.view?.findViewById<View>(R.id.bandyer_upload_file_fab)?.setOnClickListener {
+                viewModel.itemsData["id_1"] = TransferData(FileData(id = "1", uri = "".toUri(), name = "razer.jpg", mimeType = "image/jpeg", sender = "Gianluigi", size = 100L), TransferData.State.Pending, TransferData.Type.DownloadAvailable)
+                viewModel.itemsData["id_2"] = TransferData(FileData(id = "2", uri = "".toUri(), name = "identity_card.pdf", mimeType = "", sender = "Mario", size = 100L), TransferData.State.Success("".toUri()), TransferData.Type.Download)
+                viewModel.itemsData["id_3"] = TransferData(FileData(id = "3", uri = "".toUri(), name = "car.zip", mimeType = "application/zip", sender = "Luigi", size = 1000L), TransferData.State.OnProgress(600L), TransferData.Type.Download)
+                viewModel.itemsData["id_4"] = TransferData(FileData(id = "4", uri = "".toUri(), name = "phone.doc", mimeType = "", sender = "Gianni", size = 23000000L), TransferData.State.Error(Throwable()), TransferData.Type.Upload)
+                viewModel.itemsData["id_5"] = TransferData(FileData(id = "5", uri = "".toUri(), name = "address.jpg", mimeType = "image/jpeg", sender = "Marco", size = 1000L), TransferData.State.Pending, TransferData.Type.Upload)
+                fileShareDialog.notifyDataSetChanged()
+            }
+            fileShareDialog.setOnDismissListener { viewModel.itemsData.clear() }
+        }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
@@ -124,31 +129,34 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showSmartGlassAction(): SmartGlassActionItemMenu = SmartGlassActionItemMenu.show(
-            appCompatActivity = this,
-            items = CallAction.getSmartglassActions(
-                    ctx = this,
-                    micToggled = false,
-                    cameraToggled = false))
-            .apply {
-                selectionListener = object : SmartGlassMenuLayout.OnSmartglassMenuSelectionListener {
-                    override fun onSelected(item: ActionItem) {
-                        Toast.makeText(applicationContext, item::class.java.simpleName, Toast.LENGTH_SHORT).show()
-                        dismiss()
-                        selectionListener = null
-                    }
-
-                    override fun onDismiss() = Unit
+        appCompatActivity = this,
+        items = CallAction.getSmartglassActions(
+            ctx = this,
+            micToggled = false,
+            cameraToggled = false
+        )
+    )
+        .apply {
+            selectionListener = object : SmartGlassMenuLayout.OnSmartglassMenuSelectionListener {
+                override fun onSelected(item: ActionItem) {
+                    Toast.makeText(applicationContext, item::class.java.simpleName, Toast.LENGTH_SHORT).show()
+                    dismiss()
+                    selectionListener = null
                 }
-                motionEventInterceptor = object : MotionEventInterceptor {
-                    override fun onMotionEventIntercepted(event: MotionEvent?) {
-                        Log.d(tag, "$event")
-                    }
+
+                override fun onDismiss() = Unit
+            }
+            motionEventInterceptor = object : MotionEventInterceptor {
+                override fun onMotionEventIntercepted(event: MotionEvent?) {
+                    Log.d(tag, "$event")
                 }
             }
+        }
 }
 
-class LocalFileShareViewModel: FileShareViewModel() {
-    val itemsData: ConcurrentHashMap<String, TransferData> = ConcurrentHashMap()
+class LocalFileShareViewModel : FileShareViewModel() {
+
+    override val itemsData: MutableMap<String, TransferData> = ConcurrentHashMap()
 
     override fun uploadFile(context: Context, id: String, uri: Uri, sender: String) = Unit
 

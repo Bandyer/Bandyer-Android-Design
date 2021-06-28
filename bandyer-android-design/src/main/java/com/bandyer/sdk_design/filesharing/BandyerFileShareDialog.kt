@@ -6,16 +6,13 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -36,12 +33,14 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.properties.ReadWriteProperty
+import kotlin.reflect.KProperty
 
 
 /**
  * The file share dialog
  */
-class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
+class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBottomSheetDialog> {
 
     override var dialog: FileShareBottomSheetDialog? = null
 
@@ -60,27 +59,24 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
      *
      * @param activity The activity
      * @param viewModel The activity view model
-     * @param itemsData The transfers' data
      */
-    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel, itemsData: ConcurrentHashMap<String, TransferData>) {
+    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel) {
         if (dialog?.isVisible == true || dialog?.isAdded == true) return
-        if (dialog == null) dialog = FileShareBottomSheetDialog(viewModel, itemsData)
+        if (dialog == null) dialog = FileShareBottomSheetDialog(viewModel)
 
         dialog!!.show(activity.supportFragmentManager, id)
         activity.supportFragmentManager.executePendingTransactions()
     }
 
     /**
-     * It update the recycler view items' data
-     *
-     * @param data The transfers' data
+     * Update the recycler view items' data
      */
-    fun updateItemsData(data: ConcurrentHashMap<String, TransferData>) = dialog?.updateRecyclerViewItems(data)
+    fun notifyDataSetChanged() = dialog?.notifyDataSetChanged()
 
     /**
      * @suppress
      */
-    class FileShareBottomSheetDialog(private var viewModel: FileShareViewModel? = null, private val itemsData: ConcurrentHashMap<String, TransferData>? = null) : BandyerBottomSheetDialog() {
+    class FileShareBottomSheetDialog(private var viewModel: FileShareViewModel? = null) : BandyerBottomSheetDialog() {
 
         internal companion object {
             const val PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -122,12 +118,11 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             smoothScroller = LinearSmoothScroller(requireContext())
             getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 uri ?: return@registerForActivityResult
-                if(uri.getFileSize(requireContext()) > MAX_FILE_BYTES) {
+                if (uri.getFileSize(requireContext()) > MAX_FILE_BYTES) {
                     showMaxBytesDialog(requireContext())
                     return@registerForActivityResult
                 }
-
-                viewModel?.uploadFile(this.requireContext(), uri = uri,  sender = "")
+                viewModel?.uploadFile(this.requireContext(), uri = uri, sender = "")
             }
         }
 
@@ -145,7 +140,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
 
             uploadFileFab?.setOnClickListener { getContent?.launch("*/*") }
 
-            if(itemsData != null) initRecyclerView(filesRecyclerView!!, itemsData)
+            initRecyclerView(filesRecyclerView!!)
 
             return dialogLayout
         }
@@ -188,7 +183,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         override fun onExpanded() = Unit
 
         @Suppress("UNCHECKED_CAST")
-        private fun initRecyclerView(rv: RecyclerView, itemsData: ConcurrentHashMap<String, TransferData>) {
+        private fun initRecyclerView(rv: RecyclerView) {
             rv.adapter = fastAdapter
             rv.layoutManager = LinearLayoutManager(requireContext())
             rv.itemAnimator = null
@@ -201,7 +196,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                 true
             }
 
-            updateRecyclerViewItems(itemsData)
+            notifyDataSetChanged()
         }
 
         private fun showPermissionDeniedDialog(context: Context) = AlertDialog.Builder(context, R.style.BandyerSDKDesign_AlertDialogTheme)
@@ -226,11 +221,11 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
             kotlin.runCatching {
                 val type = item.data.type
                 val state = item.data.state
-                if(type is TransferData.Type.DownloadAvailable || state !is TransferData.State.Success) return
+                if (type is TransferData.Type.DownloadAvailable || state !is TransferData.State.Success) return
 
-                val uri = if(type is TransferData.Type.Upload) item.data.data.uri else state.uri
+                val uri = if (type is TransferData.Type.Upload) item.data.data.uri else state.uri
 
-                if(!doesFileExists(requireContext(), uri))
+                if (!doesFileExists(requireContext(), uri))
                     Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_file_cancelled, Snackbar.LENGTH_SHORT).show()
                 else
                     openFileOrShowMessage(requireContext(), uri)
@@ -256,17 +251,18 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                 }
             }.getOrNull() ?: false
 
-        fun updateRecyclerViewItems(data: ConcurrentHashMap<String, TransferData>) {
-            uploadFileFabText?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
-            emptyListLayout?.visibility = if(data.isEmpty()) View.VISIBLE else View.GONE
+        fun notifyDataSetChanged() {
+            val data = viewModel?.itemsData ?: return
+            uploadFileFabText?.visibility = if (data.isEmpty()) View.VISIBLE else View.GONE
+            emptyListLayout?.visibility = if (data.isEmpty()) View.VISIBLE else View.GONE
             val items = arrayListOf<BandyerFileTransferItem>()
             data.values.forEach {
-                if(it.type is TransferData.Type.DownloadAvailable) {
+                if (it.type is TransferData.Type.DownloadAvailable) {
                     items.add(BandyerFileTransferItem(it, viewModel!!) { requestPermissionLauncher.launch(PERMISSION) })
                     return@forEach
                 }
 
-                if(it.state is TransferData.State.Pending)
+                if (it.state is TransferData.State.Pending)
                     scrollToTop()
 
                 items.add(BandyerFileTransferItem(it, viewModel!!))
