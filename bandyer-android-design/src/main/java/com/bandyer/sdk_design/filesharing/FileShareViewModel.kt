@@ -9,11 +9,15 @@ import java.util.*
  * View model for the file sharing
  */
 abstract class FileShareViewModel : ViewModel() {
-    abstract fun upload(context: Context, id: String = UUID.randomUUID().toString(), uri: Uri, sender: String)
+    abstract fun uploadFile(context: Context, id: String = UUID.randomUUID().toString(), uri: Uri, sender: String)
 
-    abstract fun download(context: Context, id: String = UUID.randomUUID().toString(), uri: Uri, sender: String)
+    abstract fun downloadFile(context: Context, id: String = UUID.randomUUID().toString(), uri: Uri, sender: String)
 
-    abstract fun cancelUpload(uploadId: String)
+    abstract fun cancelFileUpload(uploadId: String)
 
-    abstract fun cancelDownload(downloadId: String)
+    abstract fun cancelFileDownload(downloadId: String)
+
+    abstract fun cancelAllFileUploads()
+
+    abstract fun cancelAllFileDownloads()
 }

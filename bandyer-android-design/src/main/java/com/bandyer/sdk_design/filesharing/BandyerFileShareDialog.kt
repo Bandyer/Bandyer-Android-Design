@@ -127,7 +127,7 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                     return@registerForActivityResult
                 }
 
-                viewModel?.upload(this.requireContext(), uri = uri,  sender = "")
+                viewModel?.uploadFile(this.requireContext(), uri = uri,  sender = "")
             }
         }
 

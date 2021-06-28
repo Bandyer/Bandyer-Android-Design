@@ -135,7 +135,7 @@ class BandyerFileTransferItem(val data: TransferData, val viewModel: FileShareVi
         override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<BandyerFileTransferItem>, item: BandyerFileTransferItem) {
             if (item.data.type is TransferData.Type.DownloadAvailable) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R || ContextCompat.checkSelfPermission(v.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-                    item.viewModel.download(context = v.context, item.data.data.id, item.data.data.uri, item.data.data.sender)
+                    item.viewModel.downloadFile(context = v.context, item.data.data.id, item.data.data.uri, item.data.data.sender)
                 else
                     item.askPermissionCallback?.invoke()
                 return
@@ -143,15 +143,15 @@ class BandyerFileTransferItem(val data: TransferData, val viewModel: FileShareVi
 
             when (item.data.state) {
                 is TransferData.State.Pending, is TransferData.State.OnProgress -> {
-                    if(item.data.type is TransferData.Type.Upload) item.viewModel.cancelUpload(item.data.data.id)
-                    else item.viewModel.cancelDownload(item.data.data.id)
+                    if(item.data.type is TransferData.Type.Upload) item.viewModel.cancelFileUpload(item.data.data.id)
+                    else item.viewModel.cancelFileDownload(item.data.data.id)
                 }
                 is TransferData.State.Success -> {
                     (v.parent as View).apply { isPressed = true; performClick(); isPressed = false }
                 }
                 is TransferData.State.Error -> {
-                    if(item.data.type is TransferData.Type.Upload) item.viewModel.upload(v.context, item.data.data.id, item.data.data.uri, item.data.data.sender)
-                    else item.viewModel.download(v.context,  item.data.data.id, item.data.data.uri, item.data.data.sender)
+                    if(item.data.type is TransferData.Type.Upload) item.viewModel.uploadFile(v.context, item.data.data.id, item.data.data.uri, item.data.data.sender)
+                    else item.viewModel.downloadFile(v.context,  item.data.data.id, item.data.data.uri, item.data.data.sender)
                 }
             }
         }
