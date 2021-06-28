@@ -85,7 +85,7 @@ class BandyerFileTransferItem(val data: TransferData, val viewModel: FileShareVi
                     bandyerAction.type = BandyerFileTransferActionButton.Type.RETRY
                     bandyerError.visibility = View.VISIBLE
                     root.setPaddingBottom(binding.root.context.resources.getDimensionPixelSize(R.dimen.bandyer_dimen_space8))
-                    root.setPaddingTop(binding.root.context.resources.getDimensionPixelSize(R.dimen.bandyer_dimen_space28))
+                    root.setPaddingTop(binding.root.context.resources.getDimensionPixelSize(R.dimen.bandyer_dimen_space26))
                 }
                 TransferData.State.Cancelled                                    -> Unit
             }
