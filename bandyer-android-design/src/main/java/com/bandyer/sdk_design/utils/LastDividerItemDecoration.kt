@@ -46,7 +46,7 @@ import kotlin.math.roundToInt
 //Find out original java version: https://gist.github.com/johnwatsondev/720730cf6b8c59fa6abe4f31dbaf59d7
 
 @SuppressLint("LogNotTimber")
-class LastDividerItemDecoration(context: Context, orientation: Int = DividerItemDecoration.VERTICAL, isShowInLastItem: Boolean = false) : ItemDecoration() {
+internal class LastDividerItemDecoration(context: Context, orientation: Int = DividerItemDecoration.VERTICAL, isShowInLastItem: Boolean = false) : ItemDecoration() {
     private var mDivider: Drawable?
 
     /**
