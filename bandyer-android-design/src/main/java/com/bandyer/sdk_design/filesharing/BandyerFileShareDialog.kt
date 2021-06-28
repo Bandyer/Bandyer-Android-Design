@@ -229,12 +229,9 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
                 if(type is TransferData.Type.DownloadAvailable || state !is TransferData.State.Success) return
 
                 val uri = if(type is TransferData.Type.Upload) item.data.data.uri else state.uri
-                val isFileInTrash = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) { isFileInTrash(requireContext(), uri) } else false
 
                 if(!doesFileExists(requireContext(), uri))
                     Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_file_cancelled, Snackbar.LENGTH_SHORT).show()
-                else if (isFileInTrash)
-                    Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_file_trashed, Snackbar.LENGTH_SHORT).show()
                 else
                     openFileOrShowMessage(requireContext(), uri)
             }
@@ -255,13 +252,6 @@ class BandyerFileShareDialog: BandyerDialog<BandyerFileShareDialog.FileShareBott
         private fun doesFileExists(context: Context, uri: Uri): Boolean =
             kotlin.runCatching {
                 context.contentResolver.query(uri, null, null, null, null)?.use {
-                    it.moveToFirst()
-                }
-            }.getOrNull() ?: false
-
-        @RequiresApi(Build.VERSION_CODES.R)
-        private fun isFileInTrash(context: Context, uri: Uri): Boolean = kotlin.runCatching {
-                context.contentResolver.query(uri, null, MediaStore.MediaColumns.IS_TRASHED, null, null)?.use {
                     it.moveToFirst()
                 }
             }.getOrNull() ?: false

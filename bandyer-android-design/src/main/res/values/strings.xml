@@ -170,7 +170,6 @@
     <string name="bandyer_fileshare_chooser_title">Choose an application</string>
     <string name="bandyer_fileshare_impossible_open_file">Can\'t open file</string>
     <string name="bandyer_fileshare_file_cancelled">File cancelled</string>
-    <string name="bandyer_fileshare_file_trashed">File trashed</string>
     <string name="bandyer_max_bytes_dialog_descr">It is allowed to share files up to 150 MB</string>
     <string name="bandyer_max_bytes_dialog_title">File share limit</string>
 
