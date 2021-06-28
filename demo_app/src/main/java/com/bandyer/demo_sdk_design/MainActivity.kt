@@ -150,11 +150,15 @@ class MainActivity : AppCompatActivity() {
 class LocalFileShareViewModel: FileShareViewModel() {
     val itemsData: ConcurrentHashMap<String, TransferData> = ConcurrentHashMap()
 
-    override fun upload(context: Context, id: String, uri: Uri, sender: String) = Unit
+    override fun uploadFile(context: Context, id: String, uri: Uri, sender: String) = Unit
 
-    override fun download(context: Context, id: String, uri: Uri, sender: String) = Unit
+    override fun downloadFile(context: Context, id: String, uri: Uri, sender: String) = Unit
 
-    override fun cancelUpload(uploadId: String) = Unit
+    override fun cancelFileUpload(uploadId: String) = Unit
 
-    override fun cancelDownload(downloadId: String) = Unit
+    override fun cancelFileDownload(downloadId: String) = Unit
+
+    override fun cancelAllFileUploads() = Unit
+
+    override fun cancelAllFileDownloads() = Unit
 }
