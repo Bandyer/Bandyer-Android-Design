@@ -72,7 +72,7 @@
         <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space20</item>
         <item name="android:text">@string/bandyer_fileshare_add</item>
-        <item name="android:textColor">?attr/colorOnSecondary</item>
+        <item name="android:textColor">?android:attr/colorBackground</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:focusable">false</item>
         <item name="android:clickable">false</item>
