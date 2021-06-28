@@ -19,16 +19,12 @@ import java.util.*
  * @constructor
  */
 data class FileData(
-    val id: String,
+    val context: Context,
+    val id: String = UUID.randomUUID().toString(),
     val uri: Uri,
-    val name: String,
-    val mimeType: String,
+    val name: String = uri.getMimeType(context),
+    val mimeType: String = uri.getMimeType(context),
     val sender: String,
     val creationTime: Long = Date().time,
     val size: Long = -1L
-) {
-    companion object {
-        fun create(context: Context, id: String = UUID.randomUUID().toString(), uri: Uri, sender: String) = FileData(id, uri, uri.getFileName(context), uri.getMimeType(context), sender)
-        fun create(context: Context, id: String = UUID.randomUUID().toString(), uri: Uri, sender: String, creationTime: Long, size: Long) = FileData(id, uri, uri.getFileName(context), uri.getMimeType(context), sender, creationTime, size)
-    }
-}
+)

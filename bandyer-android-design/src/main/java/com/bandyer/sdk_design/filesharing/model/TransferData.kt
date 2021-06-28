@@ -10,25 +10,32 @@ import android.net.Uri
  * @property type Type The transfer's type
  * @constructor
  */
-data class TransferData(val data: FileData, val state: State, val type: Type){
+data class TransferData(
+    val data: FileData,
+    val state: State,
+    val type: Type
+) {
+
+    var bytesTransferred: Long = 0L
+    var successUri: Uri? = null
 
     /**
      * The states of the transfer
      */
     sealed class State {
+        object Available : State()
         object Pending : State()
-        data class OnProgress(val bytesTransferred: Long) : State()
-        data class Success(val uri: Uri) : State()
-        data class Error(val throwable: Throwable) : State()
-        object Cancelled: State()
+        object OnProgress : State()
+        object Success : State()
+        object Error : State()
+        object Cancelled : State()
     }
 
     /**
      * The types of the transfer
      */
     sealed class Type {
-        object Upload: Type()
-        object Download: Type()
-        object DownloadAvailable: Type()
+        object Upload : Type()
+        object Download : Type()
     }
 }

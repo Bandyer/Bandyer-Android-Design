@@ -152,7 +152,7 @@
     <string name="bandyer_fileshare_archive">File compresso</string>
     <string name="bandyer_fileshare_cancel">Annulla</string>
     <string name="bandyer_fileshare_download_descr">Avvia download</string>
-    <string name="bandyer_fileshare_redownload">Re-scarica</string>
+    <string name="bandyer_fileshare_success">File condiviso</string>
     <string name="bandyer_fileshare_retry">Riprova</string>
     <string name="bandyer_no_file_shared">Ancora nessun file scambiato…</string>
     <string name="bandyer_click_to_share_file">Clicca il tasto “+” per iniziare a condividere documenti e immagini</string>

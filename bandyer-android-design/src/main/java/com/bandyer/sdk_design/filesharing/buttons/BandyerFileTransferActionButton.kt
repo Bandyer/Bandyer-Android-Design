@@ -34,8 +34,8 @@ class BandyerFileTransferActionButton @JvmOverloads constructor(context: Context
         contentDescription = when (value) {
             Type.CANCEL -> resources.getString(R.string.bandyer_fileshare_cancel)
             Type.DOWNLOAD -> resources.getString(R.string.bandyer_fileshare_download_descr)
-            Type.CHECK -> resources.getString(R.string.bandyer_fileshare_redownload)
-            else -> resources.getString(R.string.bandyer_fileshare_retry)
+            Type.SUCCESS  -> resources.getString(R.string.bandyer_fileshare_success)
+            else          -> resources.getString(R.string.bandyer_fileshare_retry)
         }
     }
 
@@ -60,7 +60,7 @@ class BandyerFileTransferActionButton @JvmOverloads constructor(context: Context
         /**
          * r e d o w n l o a d
          */
-        CHECK(intArrayOf(R.attr.bandyer_state_check)),
+        SUCCESS(intArrayOf(R.attr.bandyer_state_success)),
 
         /**
          * r e t r y

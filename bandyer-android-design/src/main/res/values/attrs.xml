@@ -76,7 +76,7 @@
     <attr name="bandyer_state_upload" format="boolean" />
 
     <!-- File share action types -->
-    <attr name="bandyer_state_check" format="boolean" />
+    <attr name="bandyer_state_success" format="boolean" />
     <attr name="bandyer_state_retry" format="boolean" />
 
 </resources>

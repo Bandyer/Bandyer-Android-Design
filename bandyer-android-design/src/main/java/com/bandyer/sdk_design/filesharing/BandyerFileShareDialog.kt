@@ -219,9 +219,9 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
             kotlin.runCatching {
                 val type = item.data.type
                 val state = item.data.state
-                if (type is TransferData.Type.DownloadAvailable || state !is TransferData.State.Success) return
+                if (state !is TransferData.State.Success) return
 
-                val uri = if (type is TransferData.Type.Upload) item.data.data.uri else state.uri
+                val uri = if (type is TransferData.Type.Upload) item.data.data.uri else item.data.successUri!!
 
                 if (!doesFileExists(requireContext(), uri))
                     Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_file_cancelled, Snackbar.LENGTH_SHORT).show()
@@ -255,7 +255,7 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
             emptyListLayout?.visibility = if (data.isEmpty()) View.VISIBLE else View.GONE
             val items = arrayListOf<BandyerFileTransferItem>()
             data.values.forEach {
-                if (it.type is TransferData.Type.DownloadAvailable) {
+                if (it.state is TransferData.State.Available) {
                     items.add(BandyerFileTransferItem(it, viewModel!!) { requestPermissionLauncher.launch(PERMISSION) })
                     return@forEach
                 }
