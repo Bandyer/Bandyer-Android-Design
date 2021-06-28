@@ -5,6 +5,7 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,16 +27,13 @@ import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.*
 import com.bandyer.sdk_design.filesharing.adapter_items.BandyerFileTransferItem
 import com.bandyer.sdk_design.filesharing.model.TransferData
+import com.bandyer.sdk_design.utils.LastDividerItemDecoration
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
-import java.util.concurrent.ConcurrentHashMap
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
-
 
 /**
  * The file share dialog
@@ -187,7 +185,7 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
             rv.adapter = fastAdapter
             rv.layoutManager = LinearLayoutManager(requireContext())
             rv.itemAnimator = null
-            rv.addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+            rv.addItemDecoration(LastDividerItemDecoration(requireContext()))
 
             fastAdapter!!.addEventHook(BandyerFileTransferItem.ItemClickEvent())
 
