@@ -24,6 +24,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.getScreenSize
@@ -142,14 +143,12 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
             this.addUpdateListener { animation ->
                 // Use animation position to blend colors.
                 val position = animation.animatedFraction
-                val blended = blendColors(Color.TRANSPARENT, Color.RED, position)
+                val color = ContextCompat.getColor(getContext(), R.color.bandyer_screen_share_color)
+                val blended = blendColors(Color.TRANSPARENT, color, position)
                 // Apply blended color to the view.
                 setBackgroundColor(blended)
             }
         }
-
-
-
     }
 
 }

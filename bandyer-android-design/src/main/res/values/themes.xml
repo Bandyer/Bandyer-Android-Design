@@ -24,7 +24,6 @@
         <item name="colorPrimary">@color/bandyer_colorPrimary</item>
         <item name="colorPrimaryVariant">@color/bandyer_colorPrimaryVariant</item>
         <item name="colorSecondary">@color/bandyer_colorSecondary</item>
-        <item name="colorSecondaryVariant">@color/bandyer_colorSecondaryVariant</item>
         <item name="colorOnSecondary">@color/bandyer_colorOnSecondary</item>
         <item name="colorSurface">@color/bandyer_colorSurface</item>
         <item name="colorOnPrimary">@color/bandyer_colorOnPrimary</item>
@@ -58,7 +57,7 @@
     <style name="BandyerSDKDesign.Theme.Base.Night" parent="BandyerSDKDesign.Theme">
         <item name="colorPrimary">@color/bandyer_colorPrimary_night</item>
         <item name="colorPrimaryVariant">@color/bandyer_colorPrimaryVariant_night</item>
-        <item name="colorSecondaryVariant">@color/bandyer_colorSecondaryVariant_night</item>
+        <item name="colorSecondary">@color/bandyer_colorSecondary_night</item>
         <item name="colorSurface">@color/bandyer_colorSurface_night</item>
         <item name="colorOnPrimary">@color/bandyer_colorOnPrimary_night</item>
         <item name="colorOnSurface">@color/bandyer_colorOnSurface_night</item>

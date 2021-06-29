@@ -33,7 +33,7 @@
     <style name="DesignDemoApp" parent="BaseDesignDemoApp">
         <item name="colorPrimary">@color/bandyer_colorPrimary</item>
         <item name="colorPrimaryVariant">@color/bandyer_colorPrimaryVariant</item>
-        <item name="colorSecondaryVariant">@color/bandyer_colorSecondaryVariant</item>
+        <item name="colorSecondary">@color/bandyer_colorSecondary</item>
         <item name="colorSurface">@color/bandyer_colorSurface</item>
         <item name="colorOnPrimary">@color/bandyer_colorOnPrimary</item>
         <item name="colorOnSurface">@color/bandyer_colorOnSurface</item>

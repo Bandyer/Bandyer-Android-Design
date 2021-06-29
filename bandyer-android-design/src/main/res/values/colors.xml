@@ -20,7 +20,7 @@
     <color name="bandyer_colorPrimary">#ffffff</color>
     <color name="bandyer_colorPrimaryVariant">#EFEFEF</color>
     <color name="bandyer_colorOnPrimary">#000000</color>
-    <color name="bandyer_colorSecondaryVariant">#009FE3</color>
+    <color name="bandyer_colorSecondary">#009FE3</color>
     <color name="bandyer_colorBackground">#FFFFFF</color>
     <color name="bandyer_colorOnBackground">#0E0E0E</color>
     <color name="bandyer_colorSurface">#ffffff</color>
@@ -30,16 +30,15 @@
     <color name="bandyer_colorPrimary_night">#303030</color>
     <color name="bandyer_colorPrimaryVariant_night">#1E1E1E</color>
     <color name="bandyer_colorOnPrimary_night">#FFFFFF</color>
-    <color name="bandyer_colorSecondaryVariant_night">#0C2E41</color>
+    <color name="bandyer_colorSecondary_night">#0071B1</color>
     <color name="bandyer_colorBackground_night">#0E0E0E</color>
     <color name="bandyer_colorOnBackground_night">#FFFFFF</color>
     <color name="bandyer_colorSurface_night">#242424</color>
     <color name="bandyer_colorOnSurface_night">#FFFFFF</color>
 
     <!-- Light/dark theme common colors -->
-    <color name="bandyer_colorSecondary">#009FE3</color>
     <color name="bandyer_colorOnSecondary">#ffffff</color>
-    <color name="bandyer_colorError">#C2E00000</color>
+    <color name="bandyer_colorError">#B00020</color>
 
     <!-- hang up button -->
     <color name="bandyer_color_hang_up_button">#FF0000</color>
@@ -60,5 +59,8 @@
 
     <!-- background color -->
     <color name="bandyer_color_background">#303030</color>
+
+    <!-- screen share color -->
+    <color name="bandyer_screen_share_color">#D50000</color>
 
 </resources>
