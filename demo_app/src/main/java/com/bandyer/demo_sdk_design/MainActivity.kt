@@ -17,7 +17,6 @@
 package com.bandyer.demo_sdk_design
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
@@ -36,7 +35,6 @@ import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.call.dialogs.BandyerSnapshotDialog
 import com.bandyer.sdk_design.filesharing.BandyerFileShareDialog
 import com.bandyer.sdk_design.filesharing.FileShareViewModel
-import com.bandyer.sdk_design.filesharing.model.FileData
 import com.bandyer.sdk_design.filesharing.model.TransferData
 import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassActionItemMenu
 import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassMenuLayout
@@ -113,11 +111,11 @@ class MainActivity : AppCompatActivity() {
             val fileShareDialog = BandyerFileShareDialog()
             fileShareDialog.show(this@MainActivity, viewModel)
             fileShareDialog.dialog?.view?.findViewById<View>(R.id.bandyer_upload_file_fab)?.setOnClickListener {
-                viewModel.itemsData["id_1"] = TransferData(FileData(this, id = "1", uri = "".toUri(), name = "razer.jpg", mimeType = "image/jpeg", sender = "Gianluigi", size = 100L), TransferData.State.Available, TransferData.Type.Download)
-                viewModel.itemsData["id_2"] = TransferData(FileData(this, id = "2", uri = "".toUri(), name = "identity_card.pdf", mimeType = "", sender = "Mario", size = 100L), TransferData.State.Success, TransferData.Type.Download).apply { successUri = "".toUri(); bytesTransferred = data.size}
-                viewModel.itemsData["id_3"] = TransferData(FileData(this, id = "3", uri = "".toUri(), name = "car.zip", mimeType = "application/zip", sender = "Luigi", size = 1000L), TransferData.State.OnProgress, TransferData.Type.Download).apply { bytesTransferred = 600L }
-                viewModel.itemsData["id_4"] = TransferData(FileData(this, id = "4", uri = "".toUri(), name = "phone.doc", mimeType = "", sender = "Gianni", size = 23000000L), TransferData.State.Error, TransferData.Type.Upload)
-                viewModel.itemsData["id_5"] = TransferData(FileData(this, id = "5", uri = "".toUri(), name = "address.jpg", mimeType = "image/jpeg", sender = "Marco", size = 1000L), TransferData.State.Pending, TransferData.Type.Upload)
+                viewModel.itemsData["id_1"] = TransferData(this,"1", "".toUri(), "razer.jpg", "image/jpeg","Gianluigi", size = 100L, state = TransferData.State.Available, type = TransferData.Type.Download)
+                viewModel.itemsData["id_2"] = TransferData(this,"2", "".toUri(), "identity_card.pdf", "","Mario", size =100L, state = TransferData.State.Success, type = TransferData.Type.Download)
+                viewModel.itemsData["id_3"] = TransferData(this,"3", "".toUri(), "car.zip", "application/zip","Luigi", size =1000L, state = TransferData.State.OnProgress, type = TransferData.Type.Download)
+                viewModel.itemsData["id_4"] = TransferData(this,"4", "".toUri(), "phone.doc", "","Gianni",size = 23000000L, state = TransferData.State.Error, type = TransferData.Type.Upload)
+                viewModel.itemsData["id_5"] = TransferData(this,"5", "".toUri(), "address.jpg", "image/jpeg","Marco",size = 1000L, state = TransferData.State.Pending, type = TransferData.Type.Upload)
                 fileShareDialog.notifyDataSetChanged()
             }
             fileShareDialog.setOnDismissListener { viewModel.itemsData.clear() }

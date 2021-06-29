@@ -458,21 +458,3 @@ fun Context.setTextAppearance(textView: MaterialTextView?, resId: Int) {
     else
         textView?.setTextAppearance(resId)
 }
-
-fun Context.doesFileExists(uri: Uri): Boolean =
-    runCatching {
-        val cursor = contentResolver.query(uri, null, null, null, null)
-        val doesExist = cursor != null && cursor.moveToFirst()
-        cursor?.close()
-        doesExist
-    }.getOrNull() ?: false
-
-@RequiresApi(Build.VERSION_CODES.R)
-fun Context.isFileInTrash(uri: Uri): Boolean {
-    return runCatching {
-        val cursor = contentResolver.query(uri, null, MediaStore.MediaColumns.IS_TRASHED, null, null)
-        val isInTrash = cursor != null && cursor.moveToFirst()
-        cursor?.close()
-        return isInTrash
-    }.getOrNull() ?: false
-}

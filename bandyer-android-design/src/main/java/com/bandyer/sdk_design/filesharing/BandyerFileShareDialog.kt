@@ -5,7 +5,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -221,7 +220,7 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
                 val state = item.data.state
                 if (state !is TransferData.State.Success) return
 
-                val uri = if (type is TransferData.Type.Upload) item.data.data.uri else item.data.successUri!!
+                val uri = if (type is TransferData.Type.Upload) item.data.uri else item.data.successUri!!
 
                 if (!doesFileExists(requireContext(), uri))
                     Snackbar.make(dialogLayout as View, R.string.bandyer_fileshare_file_cancelled, Snackbar.LENGTH_SHORT).show()
@@ -266,7 +265,7 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
                 items.add(BandyerFileTransferItem(it, viewModel!!))
             }
 
-            val sortedItems = items.toMutableList().apply { sortByDescending { item -> item.data.data.creationTime } }
+            val sortedItems = items.toMutableList().apply { sortByDescending { item -> item.data.creationTime } }
             val diff = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, sortedItems, true)
             FastAdapterDiffUtil[itemAdapter!!] = diff
         }
