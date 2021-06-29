@@ -30,7 +30,7 @@ import com.mikepenz.fastadapter.listeners.ClickEventHook
  * @property askPermissionCallback The callback which perform the permission request on the activity
  * @constructor
  */
-class BandyerFileTransferItem(val data: TransferData, val viewModel: FileShareViewModel, val askPermissionCallback: (() -> Unit)? = null) : AbstractItem<BandyerFileTransferItem.ViewHolder>() {
+class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFileTransferItem.ViewHolder>() {
 
     /**
      * @suppress
@@ -137,7 +137,7 @@ class BandyerFileTransferItem(val data: TransferData, val viewModel: FileShareVi
      * Item click event
      * @suppress
      */
-    internal class ItemClickEvent : ClickEventHook<BandyerFileTransferItem>() {
+    internal class ItemClickEvent(val viewModel: FileShareViewModel, val askPermissionCallback: (() -> Unit)? = null) : ClickEventHook<BandyerFileTransferItem>() {
         override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
             //return the views on which you want to bind this event
             return if (viewHolder is ViewHolder) viewHolder.binding.bandyerActionClickArea
@@ -149,20 +149,20 @@ class BandyerFileTransferItem(val data: TransferData, val viewModel: FileShareVi
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ||
                     ContextCompat.checkSelfPermission(v.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
                 )
-                    item.viewModel.downloadFile(context = v.context, item.data.id, item.data.uri, item.data.sender)
-                else item.askPermissionCallback?.invoke()
+                    viewModel.downloadFile(context = v.context, item.data.id, item.data.uri, item.data.sender)
+                else askPermissionCallback?.invoke()
                 return
             }
 
             when (item.data.state) {
                 is TransferData.State.Pending, is TransferData.State.OnProgress -> {
-                    if (item.data.type is TransferData.Type.Upload) item.viewModel.cancelFileUpload(item.data.id)
-                    else item.viewModel.cancelFileDownload(item.data.id)
+                    if (item.data.type is TransferData.Type.Upload) viewModel.cancelFileUpload(item.data.id)
+                    else viewModel.cancelFileDownload(item.data.id)
                 }
                 is TransferData.State.Success                                   -> (v.parent as View).apply { isPressed = true; performClick(); isPressed = false }
                 is TransferData.State.Error                                     -> {
-                    if (item.data.type is TransferData.Type.Upload) item.viewModel.uploadFile(v.context, item.data.id, item.data.uri, item.data.sender)
-                    else item.viewModel.downloadFile(v.context, item.data.id, item.data.uri, item.data.sender)
+                    if (item.data.type is TransferData.Type.Upload) viewModel.uploadFile(v.context, item.data.id, item.data.uri, item.data.sender)
+                    else viewModel.downloadFile(v.context, item.data.id, item.data.uri, item.data.sender)
                 }
                 else                                                            -> Unit
             }

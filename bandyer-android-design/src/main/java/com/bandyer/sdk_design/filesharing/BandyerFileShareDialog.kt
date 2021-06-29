@@ -186,7 +186,9 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
             rv.itemAnimator = null
             rv.addItemDecoration(LastDividerItemDecoration(requireContext()))
 
-            fastAdapter!!.addEventHook(BandyerFileTransferItem.ItemClickEvent())
+            fastAdapter!!.addEventHook(BandyerFileTransferItem.ItemClickEvent(viewModel!!) {
+                requestPermissionLauncher.launch(PERMISSION)
+            })
 
             fastAdapter!!.onClickListener = { _, _, item, _ ->
                 onItemClick(item)
@@ -255,14 +257,14 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
             val items = arrayListOf<BandyerFileTransferItem>()
             data.values.forEach {
                 if (it.state is TransferData.State.Available) {
-                    items.add(BandyerFileTransferItem(it, viewModel!!) { requestPermissionLauncher.launch(PERMISSION) })
+                    items.add(BandyerFileTransferItem(it))
                     return@forEach
                 }
 
                 if (it.state is TransferData.State.Pending)
                     scrollToTop()
 
-                items.add(BandyerFileTransferItem(it, viewModel!!))
+                items.add(BandyerFileTransferItem(it))
             }
 
             val sortedItems = items.toMutableList().apply { sortByDescending { item -> item.data.creationTime } }
