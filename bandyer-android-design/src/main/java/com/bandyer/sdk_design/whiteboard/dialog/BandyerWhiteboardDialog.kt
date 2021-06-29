@@ -9,7 +9,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheetDialog
-import com.bandyer.sdk_design.databinding.BandyerDialogWhiteboardBinding
+import com.bandyer.sdk_design.databinding.BandyerWhiteboardDialogBinding
 import com.bandyer.sdk_design.dialogs.BandyerDialog
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.bandyer.sdk_design.whiteboard.layout.BandyerWhiteboardLoadingError
@@ -43,7 +43,7 @@ abstract class BaseBandyerWhiteboardDialog<T : BaseBandyerWhiteboardDialog.BaseW
      */
     abstract class BaseWhiteboardBottomSheetDialog : BandyerBottomSheetDialog() {
 
-        private var binding: BandyerDialogWhiteboardBinding? = null
+        private var binding: BandyerWhiteboardDialogBinding? = null
 
         private var toolbar: Toolbar? = null
 
@@ -73,7 +73,7 @@ abstract class BaseBandyerWhiteboardDialog<T : BaseBandyerWhiteboardDialog.BaseW
         }
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-            binding = BandyerDialogWhiteboardBinding.inflate(inflater, container, false)
+            binding = BandyerWhiteboardDialogBinding.inflate(inflater, container, false)
             dialogLayout = binding!!.root
             toolbar = binding!!.bandyerToolbar
             progressBar = binding!!.bandyerProgressBar
