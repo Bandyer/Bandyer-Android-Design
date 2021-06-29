@@ -47,16 +47,16 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
     fun bind(activity: FragmentActivity): SystemViewControlsAware {
         context = WeakReference(activity)
 
+        val decorView = activity.window!!.decorView
+
         LifecyleBinder.bind(activity, object : LifecycleEvents {
             override fun destroy() = dispose()
             override fun create() = Unit
             override fun pause() = Unit
-            override fun resume() = resetMargins()
+            override fun resume() { decorView.post { resetMargins() } }
             override fun start() = Unit
             override fun stop() = Unit
         })
-
-        val decorView = activity.window!!.decorView
 
         decorView.post {
             activity.registerComponentCallbacks(this)

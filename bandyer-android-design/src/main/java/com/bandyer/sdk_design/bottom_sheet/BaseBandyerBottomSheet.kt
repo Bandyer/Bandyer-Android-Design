@@ -421,26 +421,33 @@ open class BaseBandyerBottomSheet(
      * Fade animation to recycler view rows if below navigation bar
      */
     fun fadeRecyclerViewLinesBelowNavigation(fade: Boolean? = null) {
-        if (!animationEnabled) return
-        val screenHeight = bottomSheetLayoutContent.context.getScreenSize().y
-        val navigationLimit = if (fade == null) (screenHeight - bottomMarginNavigation) else 0
-        val hasNavigationBar = bottomMarginNavigation > 0
-        val canShowFirstRowWhenCollapsed = bottomSheetBehaviour?.skipCollapsed == true || (bottomSheetBehaviour?.skipCollapsed == false && bottomSheetBehaviour!!.lastStableState != BandyerBottomSheetBehaviour.STATE_COLLAPSED)
-        views.forEachIndexed { index, itemView ->
-            val view = itemView.itemView ?: return@forEachIndexed
-            val canShowSecondRowWhenAnchored = isAnimating && !recyclerView.isFirstRow(index) && bottomSheetBehaviour?.lastStableState == BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT
+        val decorView = mContext.get()?.window?.decorView ?: return
+        decorView.post {
+            if (!animationEnabled) return@post
+            val screenHeight = bottomSheetLayoutContent.context.getScreenSize().y
+            val navigationLimit = if (fade == null) (screenHeight - bottomMarginNavigation) else 0
+            val hasNavigationBar = bottomMarginNavigation > 0
+            val canShowFirstRowWhenCollapsed = bottomSheetBehaviour?.skipCollapsed == true || (bottomSheetBehaviour?.skipCollapsed == false && bottomSheetBehaviour!!.lastStableState != BandyerBottomSheetBehaviour.STATE_COLLAPSED)
+            views.forEachIndexed { index, itemView ->
+                val view = itemView.itemView ?: return@forEachIndexed
+                val canShowSecondRowWhenAnchored = isAnimating && !recyclerView.isFirstRow(index) && bottomSheetBehaviour?.lastStableState == BandyerBottomSheetBehaviour.STATE_ANCHOR_POINT
 
-            when {
-                canShowSecondRowWhenAnchored                                                                                                                                                                                                     -> view.alpha = 0f
-                (!hasMoved || (isAnimating && (if (!bottomSheetBehaviour!!.skipCollapsed) slideOffset > 0.1f else slideOffset >= 0.1f))) && recyclerView.isFirstRow(index) || (!hasNavigationBar && isVisible() && canShowFirstRowWhenCollapsed) -> view.alpha = 1f
-                fade == null                                                                                                                                                                                                                     -> {
-                    val viewBottom = view.getCoordinates().y + view.height + (screenHeight - mContext.get()!!.window.decorView.height)
-                    val hidden = viewBottom - navigationLimit
-                    view.alpha = if (!hasNavigationBar) 1f else (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.coerceAtMost(1f)?.apply {
-                        recyclerViewAlphaDecimalFormat.format(this)
-                    } ?: 0f
+                when {
+                    canShowSecondRowWhenAnchored -> {
+                        view.alpha = 0f
+                    }
+                    (!hasMoved || (isAnimating && (if (!bottomSheetBehaviour!!.skipCollapsed) slideOffset > 0.1f else slideOffset >= 0.1f))) && recyclerView.isFirstRow(index) || (!hasNavigationBar && isVisible() && canShowFirstRowWhenCollapsed) -> {
+                        view.alpha = 1f
+                    }
+                    fade == null -> {
+                        val viewBottom = view.getCoordinates().y + view.height + (screenHeight - decorView.height)
+                        val hidden = viewBottom - navigationLimit
+                        view.alpha = if (!hasNavigationBar) 1f else (1 - hidden / view.height.toFloat()).takeIf { it > 0.23 }?.coerceAtMost(1f)?.apply {
+                            recyclerViewAlphaDecimalFormat.format(this)
+                        } ?: 0f
+                    }
+                    else -> view.alpha = if (fade) 1f else 0f
                 }
-                else                                                                                                                                                                                                                             -> view.alpha = if (fade) 1f else 0f
             }
         }
     }
