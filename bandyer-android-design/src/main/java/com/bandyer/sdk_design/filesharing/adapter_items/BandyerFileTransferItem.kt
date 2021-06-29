@@ -63,6 +63,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
         val binding: BandyerFileShareItemBinding = BandyerFileShareItemBinding.bind(view)
 
         override fun bindView(item: BandyerFileTransferItem, payloads: List<Any>) = with(binding) {
+            bandyerError.visibility = View.GONE
             bandyerFileName.text = item.data.name
             bandyerFileType.type = when (item.data.mimeType.getFileTypeFromMimeType()) {
                 "image"   -> BandyerFileTypeImageView.Type.IMAGE
