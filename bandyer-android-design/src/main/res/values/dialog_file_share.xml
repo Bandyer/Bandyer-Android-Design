@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.FileShare">
+        <attr name="bandyer_fileShareItemStyle" format="reference" />
+        <attr name="bandyer_emptyListLayoutStyle" format="reference" />
+        <attr name="bandyer_fabTextStyle" format="reference" />
+        <attr name="bandyer_fabWrapperStyle" format="reference" />
+        <attr name="floatingActionButtonStyle"/>
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Day" parent="BandyerSDKDesign.BottomSheetDialog">
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>
+        <item name="bandyer_fileShareItemStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item</item>
+        <item name="bandyer_emptyListLayoutStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout</item>
+        <item name="floatingActionButtonStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Fab</item>
+        <item name="bandyer_fabTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareFabText</item>
+        <item name="bandyer_fabWrapperStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.FabWrapper</item>
+        <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.Day"/>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView" parent="">
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space72</item>
+        <item name="android:clipToPadding">false</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare" parent="BandyerSDKDesign.BottomSheetModalStyle">
+        <item name="backgroundTint">?android:attr/colorBackground</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Fab" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="borderWidth">0dp</item>
+        <item name="elevation">0dp</item>
+        <item name="fabSize">normal</item>
+        <item name="srcCompat">@drawable/ic_bandyer_add</item>
+        <item name="tint">?android:attr/colorBackground</item>
+        <item name="useCompatPadding">false</item>
+        <item name="rippleColor">@android:color/transparent</item>
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
+        <item name="hoveredFocusedTranslationZ">@dimen/bandyer_dimen_space0</item>
+        <item name="pressedTranslationZ">@dimen/bandyer_dimen_space0</item>
+        <item name="android:contentDescription">@string/bandyer_fileshare_add_description</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.FabWrapper" parent="">
+        <item name="android:layout_margin">@dimen/bandyer_dimen_space32</item>
+        <item name="android:background">@drawable/bandyer_file_share_fab_corner</item>
+        <item name="android:clipToPadding">false</item>
+        <item name="android:elevation">@dimen/bandyer_dimen_space6</item>
+        <item name="android:animateLayoutChanges">true</item>
+        <item name="android:outlineProvider">background</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/bandyer_color_on_secondary_24">
+    <item android:id="@android:id/mask">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/bandyer_color_on_secondary_24" />
+            <corners android:radius="@dimen/bandyer_dimen_space48" />
+        </shape>
+    </item>
+
+    <item android:id="@android:id/background">
+        <shape android:shape="rectangle">
+            <solid
+                android:color="?attr/colorSecondary"/>
+
+            <corners
+                android:radius="@dimen/bandyer_dimen_space48"/>
+        </shape>
+    </item>
+</ripple>

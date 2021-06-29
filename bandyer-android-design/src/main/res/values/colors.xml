@@ -38,7 +38,8 @@
 
     <!-- Light/dark theme common colors -->
     <color name="bandyer_colorOnSecondary">#ffffff</color>
-    <color name="bandyer_colorError">#B00020</color>
+    <color name="bandyer_colorError">#c70000</color>
+    <color name="bandyer_colorOnError">#FFFFFF</color>
 
     <!-- hang up button -->
     <color name="bandyer_color_hang_up_button">#FF0000</color>
@@ -59,6 +60,10 @@
 
     <!-- background color -->
     <color name="bandyer_color_background">#303030</color>
+
+    <!-- file share -->
+    <color name="bandyer_color_progressbar">#E6E6E6</color>
+    <color name="bandyer_color_progressbar_night">#2D2E2F</color>
 
     <!-- screen share color -->
     <color name="bandyer_screen_share_color">#D50000</color>

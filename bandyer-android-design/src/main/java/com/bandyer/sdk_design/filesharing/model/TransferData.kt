@@ -1,0 +1,88 @@
+package com.bandyer.sdk_design.filesharing.model
+
+import android.content.Context
+import android.net.Uri
+import com.bandyer.sdk_design.extensions.getFileName
+import com.bandyer.sdk_design.extensions.getMimeType
+import java.util.*
+
+/**
+ *
+ * @property context Context
+ * @property id The id of the file transferred
+ * @property uri The uri which specifies the file location
+ * @property name The file's name
+ * @property mimeType The file's mime type
+ * @property sender The user who sent the file
+ * @property creationTime The creation time of the file
+ * @property bytesTransferred The bytes of the file transferred
+ * @property size The size of the file
+ * @property successUri The
+ * @property state The transfer's state
+ * @property type The transfer's type
+ * @constructor
+ */
+data class TransferData(
+    val context: Context,
+    val id: String = UUID.randomUUID().toString(),
+    val uri: Uri,
+    val name: String = uri.getFileName(context),
+    val mimeType: String = uri.getMimeType(context),
+    val sender: String,
+    val creationTime: Long = Date().time,
+    val bytesTransferred: Long = 0L,
+    val size: Long = -1L,
+    val successUri: Uri? = null,
+    val state: State,
+    val type: Type
+) {
+    /**
+     * The states of the transfer
+     */
+    sealed class State {
+        /**
+         * The file is available to download
+         */
+        object Available : State()
+
+        /**
+         * The file transfer is pending
+         */
+        object Pending : State()
+
+        /**
+         * The file transfer is on progress
+         */
+        object OnProgress : State()
+
+        /**
+         * The file transfer has been successful
+         */
+        object Success : State()
+
+        /**
+         * An error occurred during the file transfer
+         */
+        object Error : State()
+
+        /**
+         * The file transfer has been cancelled
+         */
+        object Cancelled : State()
+    }
+
+    /**
+     * The types of the transfer
+     */
+    sealed class Type {
+        /**
+         * The file transfer is an upload
+         */
+        object Upload : Type()
+
+        /**
+         * The file transfer is a download
+         */
+        object Download : Type()
+    }
+}

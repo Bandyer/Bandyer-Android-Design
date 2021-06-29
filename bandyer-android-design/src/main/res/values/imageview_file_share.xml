@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BandyerSDKDesign.FileShare.OperationType" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space12</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space12</item>
+        <item name="tint">@color/bandyer_color_on_background_80</item>
+        <item name="srcCompat">@drawable/bandyer_op_type_icon</item>
+    </style>
+
+    <style name="BandyerSDKDesign.FileShare.FileType" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space24</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space24</item>
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space12</item>
+        <item name="tint">?attr/colorOnBackground</item>
+        <item name="srcCompat">@drawable/bandyer_file_type_icon</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space72</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space72</item>
+        <item name="srcCompat">@drawable/ic_bandyer_empty_folder</item>
+        <item name="tint">@color/bandyer_color_on_background_30</item>
+    </style>
+
+</resources>

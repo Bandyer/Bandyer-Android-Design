@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item">
+        <attr name="bandyer_fileTypeStyle" format="reference" />
+        <attr name="bandyer_fileSizeStyle" format="reference" />
+        <attr name="bandyer_buttonClickArea" format="reference" />
+        <attr name="bandyer_fileNameStyle" format="reference" />
+        <attr name="bandyer_operationIconStyle" format="reference" />
+        <attr name="bandyer_usernameStyle" format="reference" />
+        <attr name="bandyer_errorStyle" format="reference" />
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="materialButtonStyle" />
+        <attr name="bandyer_progressStyle"/>
+        <attr name="bandyer_progressTextStyle"/>
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout</item>
+        <item name="bandyer_fileTypeStyle">@style/BandyerSDKDesign.FileShare.FileType</item>
+        <item name="bandyer_fileSizeStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileSize</item>
+        <item name="bandyer_buttonClickArea">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item.ButtonClickArea</item>
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.FileShareAction</item>
+        <item name="bandyer_fileNameStyle">@style/BandyerSDKDesign.TextView.FileName</item>
+        <item name="bandyer_progressStyle">@style/BandyerSDKDesign.FileShare.ProgressBar</item>
+        <item name="bandyer_operationIconStyle">@style/BandyerSDKDesign.FileShare.OperationType</item>
+        <item name="bandyer_usernameStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareUser</item>
+        <item name="bandyer_errorStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareError</item>
+        <item name="bandyer_progressTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareProgress</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout" parent="">
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space18</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space2</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item.ButtonClickArea" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="layout_constraintDimensionRatio">1:1</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+
+</resources>

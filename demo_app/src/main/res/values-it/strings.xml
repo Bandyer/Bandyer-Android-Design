@@ -34,4 +34,9 @@
     <string name="bandyer_start_audio_upgrade_call_description">Avvia videochiamata con solo audio</string>
     <string name="screen_share_picker">Modalità screen share</string>
     <string name="smart_glass_menu">Smartglass menu</string>
+    <string name="file_share">File share</string>
+    <string name="add_upload">Aggiungi upload</string>
+    <string name="add_download">Aggiungi download</string>
+    <string name="add_download_available">Aggiungi download disp.</string>
+    <string name="file_share_dialog">File Share Dialog</string>
 </resources>

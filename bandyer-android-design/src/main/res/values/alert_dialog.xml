@@ -23,11 +23,11 @@
     </style>
 
     <style name="BandyerSDKDesign.AlertDialogThemeNegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:textColor">?attr/colorSecondary</item>
     </style>
 
     <style name="BandyerSDKDesign.AlertDialogThemePositiveButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-        <item name="android:textColor">?attr/colorAccent</item>
+        <item name="android:textColor">?attr/colorSecondary</item>
     </style>
 
 </resources>

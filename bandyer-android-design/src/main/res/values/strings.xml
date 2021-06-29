@@ -145,4 +145,32 @@
     <string name="bandyer_screenshare_app_only">App only screen</string>
     <string name="bandyer_screenshare_full_device">Whole device screen</string>
 
+    <!-- FILE SHARE -->
+    <string name="bandyer_fileshare_add">Upload</string>
+    <string name="bandyer_fileshare_add_description">Upload a new file</string>
+    <string name="bandyer_fileshare_upload_error">Upload failed - Retry</string>
+    <string name="bandyer_fileshare_download_error">Download failed - Retry</string>
+    <string name="bandyer_fileshare_na">N/A</string>
+    <string name="bandyer_fileshare_you">You</string>
+    <string name="bandyer_fileshare_progress">%1$d %%</string>
+    <string name="bandyer_fileshare_upload">Upload</string>
+    <string name="bandyer_fileshare_download">Download</string>
+    <string name="bandyer_fileshare_file">Generic file</string>
+    <string name="bandyer_fileshare_media">Media file</string>
+    <string name="bandyer_fileshare_archive">Archive file</string>
+    <string name="bandyer_fileshare_cancel">Cancel</string>
+    <string name="bandyer_fileshare_download_descr">Start download</string>
+    <string name="bandyer_fileshare_success">File shared</string>
+    <string name="bandyer_fileshare_retry">Retry</string>
+    <string name="bandyer_no_file_shared">Still no file shared…</string>
+    <string name="bandyer_click_to_share_file">Click on “+” button to start sharing documents and images</string>
+    <string name="bandyer_write_permission_dialog_descr">Memory permission needed to download files</string>
+    <string name="bandyer_write_permission_dialog_title">Memory permission denied</string>
+    <string name="bandyer_button_ok">Ok</string>
+    <string name="bandyer_fileshare_chooser_title">Choose an application</string>
+    <string name="bandyer_fileshare_impossible_open_file">Can\'t open file</string>
+    <string name="bandyer_fileshare_file_cancelled">File cancelled</string>
+    <string name="bandyer_max_bytes_dialog_descr">It is allowed to share files up to 150 MB</string>
+    <string name="bandyer_max_bytes_dialog_title">File share limit</string>
+
 </resources>

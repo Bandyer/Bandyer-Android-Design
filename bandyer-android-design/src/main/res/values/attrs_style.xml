@@ -31,7 +31,7 @@
 
     <attr name="bandyer_lineStyle" format="reference" />
 
-    <!-- Style for CircularProgressIndicator -->
+    <!-- Style for ProgressIndicator -->
     <attr name="bandyer_progressStyle" format="reference" />
 
     <attr name="bandyer_progressTextStyle" format="reference" />

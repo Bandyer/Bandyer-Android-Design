@@ -25,14 +25,14 @@
 
     <style name="BandyerSDKDesign.TextEditorStyle" parent="">
         <item name="textInputStyle">@style/BandyerSDKDesign.TextInputLayout.Dialog</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.ConfirmDataLoss</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.ConfirmDataLoss</item>
         <item name="bandyer_negativeButtonStyle">@style/BandyerSDKDesign.ActionButton.CancelButton</item>
         <item name="bandyer_positiveButtonStyle">@style/BandyerSDKDesign.ActionButton.ConfirmButton</item>
     </style>
 
     <style name="BandyerSDKDesign.TextEditorStyle.Day" parent="">
         <item name="textInputStyle">@style/BandyerSDKDesign.TextInputLayout.Dialog.Day</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.ConfirmDataLoss.Day</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.ConfirmDataLoss.Day</item>
         <item name="bandyer_negativeButtonStyle">@style/BandyerSDKDesign.ActionButton.CancelButton.Day</item>
         <item name="bandyer_positiveButtonStyle">@style/BandyerSDKDesign.ActionButton.ConfirmButton.Day</item>
     </style>

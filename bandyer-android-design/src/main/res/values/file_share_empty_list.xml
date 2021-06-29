@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.FileShare.EmptyListLayout">
+        <attr name="bandyer_rootLayoutStyle"/>
+        <attr name="bandyer_iconStyle"/>
+        <attr name="bandyer_titleStyle" />
+        <attr name="bandyer_subtitleStyle" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout</item>
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.EmptyListLayout</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.EmptyListLayout</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout" parent="">
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space48</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space48</item>
+    </style>
+
+</resources>

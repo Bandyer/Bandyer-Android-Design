@@ -43,4 +43,16 @@
         <item name="elevation">@dimen/bandyer_dimen_space6</item>
     </style>
 
+    <style name="BandyerSDKDesign.FileShare.ProgressBar" parent="BandyerSDKDesign.FileShare.ProgressBar.V21"/>
+
+    <style name="BandyerSDKDesign.FileShare.ProgressBar.V21" parent="Widget.MaterialComponents.LinearProgressIndicator">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space0</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space6</item>
+        <item name="trackThickness">@dimen/bandyer_dimen_space4</item>
+        <item name="indicatorColor">?attr/colorSecondary</item>
+        <item name="trackColor">@color/bandyer_color_progressbar</item>
+        <item name="trackCornerRadius">@dimen/bandyer_dimen_space3</item>
+    </style>
+
 </resources>

@@ -19,6 +19,7 @@ plugins {
     id 'kotlin-kapt'
 }
 
+def kotlin_coroutines = "1.4.3"
 def bandyer_audio_session_version = '2.0.5'
 
 android {
@@ -42,10 +43,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -54,7 +61,6 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-
 
     /*** Test implementation ***/
     testImplementation 'junit:junit:4.13.1'
@@ -68,7 +74,9 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation "com.github.imablanco:Zoomy:1ee82834df"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
+    implementation 'androidx.fragment:fragment-ktx:1.3.4'
+    implementation 'androidx.activity:activity-ktx:1.2.3'
 
     /***  Leak Canary ***/
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
