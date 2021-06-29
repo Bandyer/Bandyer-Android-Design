@@ -112,8 +112,8 @@ class MainActivity : AppCompatActivity() {
             fileShareDialog.show(this@MainActivity, viewModel)
             fileShareDialog.dialog?.view?.findViewById<View>(R.id.bandyer_upload_file_fab)?.setOnClickListener {
                 viewModel.itemsData["id_1"] = TransferData(this,"1", "".toUri(), "razer.jpg", "image/jpeg","Gianluigi", size = 100L, state = TransferData.State.Available, type = TransferData.Type.Download)
-                viewModel.itemsData["id_2"] = TransferData(this,"2", "".toUri(), "identity_card.pdf", "","Mario", size =100L, state = TransferData.State.Success, type = TransferData.Type.Download)
-                viewModel.itemsData["id_3"] = TransferData(this,"3", "".toUri(), "car.zip", "application/zip","Luigi", size =1000L, state = TransferData.State.OnProgress, type = TransferData.Type.Download)
+                viewModel.itemsData["id_2"] = TransferData(this,"2", "".toUri(), "identity_card.pdf", "","Mario", bytesTransferred = 100L, size = 100L, state = TransferData.State.Success, type = TransferData.Type.Download)
+                viewModel.itemsData["id_3"] = TransferData(this,"3", "".toUri(), "car.zip", "application/zip","Luigi", bytesTransferred = 600L, size = 1000L, state = TransferData.State.OnProgress, type = TransferData.Type.Download)
                 viewModel.itemsData["id_4"] = TransferData(this,"4", "".toUri(), "phone.doc", "","Gianni",size = 23000000L, state = TransferData.State.Error, type = TransferData.Type.Upload)
                 viewModel.itemsData["id_5"] = TransferData(this,"5", "".toUri(), "address.jpg", "image/jpeg","Marco",size = 1000L, state = TransferData.State.Pending, type = TransferData.Type.Upload)
                 fileShareDialog.notifyDataSetChanged()
