@@ -60,4 +60,7 @@
     <!-- background color -->
     <color name="bandyer_color_background">#303030</color>
 
+    <!-- screen share color -->
+    <color name="bandyer_screen_share_color">#D50000</color>
+
 </resources>
