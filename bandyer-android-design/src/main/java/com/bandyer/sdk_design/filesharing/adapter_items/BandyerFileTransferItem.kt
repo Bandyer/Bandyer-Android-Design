@@ -83,6 +83,9 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
                 progress
             )
 
+            root.setPaddingBottom(binding.root.context.resources.getDimensionPixelSize(R.dimen.bandyer_dimen_space18))
+            root.setPaddingTop(binding.root.context.resources.getDimensionPixelSize(R.dimen.bandyer_dimen_space18))
+
             when (item.data.state) {
                 is TransferData.State.Available                                 -> {
                     bandyerAction.type = BandyerFileTransferActionButton.Type.DOWNLOAD
