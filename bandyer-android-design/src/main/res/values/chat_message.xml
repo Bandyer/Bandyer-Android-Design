@@ -60,7 +60,7 @@
     </style>
 
     <style name="BandyerSDKDesign.ChatMessageBackground.LoggedUser" parent="BandyerSDKDesign.ChatMessageBackground">
-        <item name="cardBackgroundColor">?attr/colorSecondaryVariant</item>
+        <item name="cardBackgroundColor">?attr/colorSecondary</item>
         <item name="shapeAppearance">@style/BandyerSDKDesign.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay</item>
     </style>
 
