@@ -47,10 +47,6 @@ import java.util.concurrent.ConcurrentHashMap
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        const val tag = "MainAcitivy"
-    }
-
     var mText: String? = null
 
     private lateinit var binding: ActivityMainBinding
@@ -66,18 +62,18 @@ class MainActivity : AppCompatActivity() {
         initializeListeners()
     }
 
-    private fun initializeListeners() {
-        binding.btnChat.setOnClickListener { startActivity(Intent(this, ChatActivity::class.java)) }
+    private fun initializeListeners() = with(binding) {
+        btnChat.setOnClickListener { startActivity(Intent(this@MainActivity, ChatActivity::class.java)) }
 
-        binding.btnCall.setOnClickListener { startActivity(Intent(this, CallActivity::class.java)) }
+        btnCall.setOnClickListener { startActivity(Intent(this@MainActivity, CallActivity::class.java)) }
 
-        binding.btnSmartglassesMenu.setOnClickListener { showSmartGlassAction() }
+        btnSmartglassesMenu.setOnClickListener { showSmartGlassAction() }
 
-        binding.btnWhiteboard.setOnClickListener { WhiteBoardDialog().show(this@MainActivity) }
+        btnWhiteboard.setOnClickListener { WhiteBoardDialog().show(this@MainActivity) }
 
-        binding.btnRinging.setOnClickListener { startActivity(Intent(this, RingingActivity::class.java)) }
+        btnRinging.setOnClickListener { startActivity(Intent(this@MainActivity, RingingActivity::class.java)) }
 
-        binding.btnSwitchNightMode.setOnClickListener {
+        btnSwitchNightMode.setOnClickListener {
             val isNightTheme = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             when (isNightTheme) {
                 Configuration.UI_MODE_NIGHT_YES -> {
@@ -91,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnWhiteboardEditor.setOnClickListener {
+        btnWhiteboardEditor.setOnClickListener {
             BandyerWhiteboardTextEditorDialog().show(this@MainActivity, mText, object : BandyerWhiteboardTextEditorWidgetListener {
                 override fun onTextEditConfirmed(newText: String) {
                     mText = newText
@@ -99,23 +95,23 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        binding.btnSnapshotPreview.setOnClickListener {
+        btnSnapshotPreview.setOnClickListener {
             BandyerSnapshotDialog().show(this@MainActivity)
         }
 
-        binding.btnLivePointer.setOnClickListener { startActivity(Intent(this, PointerActivity::class.java)) }
+        btnLivePointer.setOnClickListener { startActivity(Intent(this@MainActivity, PointerActivity::class.java)) }
 
-        binding.btnBluetoothAudioroute.setOnClickListener { startActivity(Intent(this, BluetoothAudioRouteActivity::class.java)) }
+        btnBluetoothAudioroute.setOnClickListener { startActivity(Intent(this@MainActivity, BluetoothAudioRouteActivity::class.java)) }
 
-        binding.btnFileShare.setOnClickListener {
+        btnFileShare.setOnClickListener {
             val fileShareDialog = BandyerFileShareDialog()
             fileShareDialog.show(this@MainActivity, viewModel)
             fileShareDialog.dialog?.view?.findViewById<View>(R.id.bandyer_upload_file_fab)?.setOnClickListener {
-                viewModel.itemsData["id_1"] = TransferData(this,"1", "".toUri(), "razer.jpg", "image/jpeg","Gianluigi", size = 100L, state = TransferData.State.Available, type = TransferData.Type.Download)
-                viewModel.itemsData["id_2"] = TransferData(this,"2", "".toUri(), "identity_card.pdf", "","Mario", bytesTransferred = 100L, size = 100L, state = TransferData.State.Success, type = TransferData.Type.Download)
-                viewModel.itemsData["id_3"] = TransferData(this,"3", "".toUri(), "car.zip", "application/zip","Luigi", bytesTransferred = 600L, size = 1000L, state = TransferData.State.OnProgress, type = TransferData.Type.Download)
-                viewModel.itemsData["id_4"] = TransferData(this,"4", "".toUri(), "phone.doc", "","Gianni", size = 23000000L, state = TransferData.State.Error, type = TransferData.Type.Upload)
-                viewModel.itemsData["id_5"] = TransferData(this,"5", "".toUri(), "address.jpg", "image/jpeg","Marco", size = 1000L, state = TransferData.State.Pending, type = TransferData.Type.Upload)
+                viewModel.itemsData["id_1"] = TransferData(this@MainActivity,"1", "".toUri(), "razer.jpg", "image/jpeg","Gianluigi", size = 100L, state = TransferData.State.Available, type = TransferData.Type.Download)
+                viewModel.itemsData["id_2"] = TransferData(this@MainActivity,"2", "".toUri(), "identity_card.pdf", "","Mario", bytesTransferred = 100L, size = 100L, state = TransferData.State.Success, type = TransferData.Type.Download)
+                viewModel.itemsData["id_3"] = TransferData(this@MainActivity,"3", "".toUri(), "car.zip", "application/zip","Luigi", bytesTransferred = 600L, size = 1000L, state = TransferData.State.OnProgress, type = TransferData.Type.Download)
+                viewModel.itemsData["id_4"] = TransferData(this@MainActivity,"4", "".toUri(), "phone.doc", "","Gianni", size = 23000000L, state = TransferData.State.Error, type = TransferData.Type.Upload)
+                viewModel.itemsData["id_5"] = TransferData(this@MainActivity,"5", "".toUri(), "address.jpg", "image/jpeg","Marco", size = 1000L, state = TransferData.State.Pending, type = TransferData.Type.Upload)
                 fileShareDialog.notifyDataSetChanged()
             }
             fileShareDialog.setOnDismissListener { viewModel.itemsData.clear() }

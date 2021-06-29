@@ -26,8 +26,6 @@ import com.mikepenz.fastadapter.listeners.ClickEventHook
  * BandyerFileShareItem
  *
  * @property data The data to bind to the item view
- * @property viewModel A [FileShareViewModel] instance
- * @property askPermissionCallback The callback which perform the permission request on the activity
  * @constructor
  */
 class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFileTransferItem.ViewHolder>() {
@@ -35,7 +33,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
     /**
      * @suppress
      */
-    override var identifier: Long = data.hashCode().toLong()
+    override var identifier: Long = data.id.hashCode().toLong()
 
     /**
      * @suppress
