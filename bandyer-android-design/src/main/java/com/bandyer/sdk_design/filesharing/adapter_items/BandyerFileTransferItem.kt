@@ -33,7 +33,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
     /**
      * @suppress
      */
-    override var identifier: Long = data.id.hashCode().toLong()
+    override var identifier: Long = data.hashCode().toLong()
 
     /**
      * @suppress
