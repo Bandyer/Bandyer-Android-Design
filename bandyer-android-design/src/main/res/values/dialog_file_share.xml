@@ -9,8 +9,7 @@
         <attr name="floatingActionButtonStyle"/>
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Day" parent="BandyerSDKDesign.BottomSheetDialog">
-        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.V21" parent="BandyerSDKDesign.BottomSheetDialog">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>
         <item name="bandyer_fileShareItemStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item</item>
         <item name="bandyer_emptyListLayoutStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout</item>
@@ -20,7 +19,17 @@
         <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.Day"/>
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21"/>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Day" parent="BandyerSDKDesign.BottomSheetDialog.Day">
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>
+        <item name="bandyer_fileShareItemStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item.Day</item>
+        <item name="bandyer_emptyListLayoutStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Day</item>
+        <item name="floatingActionButtonStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Fab.Day</item>
+        <item name="bandyer_fabTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareFabText.Day</item>
+        <item name="bandyer_fabWrapperStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.FabWrapper.Day</item>
+        <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.Day</item>
+    </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView" parent="">
         <item name="android:focusable">false</item>
@@ -31,6 +40,10 @@
 
     <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare" parent="BandyerSDKDesign.BottomSheetModalStyle">
         <item name="backgroundTint">?android:attr/colorBackground</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.Day" parent="BandyerSDKDesign.BottomSheetModalStyle.FileShare">
+        <item name="backgroundTint">@color/bandyer_colorBackground</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Fab" parent="Widget.MaterialComponents.FloatingActionButton">
@@ -49,6 +62,10 @@
         <item name="android:contentDescription">@string/bandyer_fileshare_add_description</item>
     </style>
 
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Fab.Day" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.Fab">
+        <item name="tint">@color/bandyer_colorBackground</item>
+    </style>
+
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.FabWrapper" parent="">
         <item name="android:layout_margin">@dimen/bandyer_dimen_space32</item>
         <item name="android:background">@drawable/bandyer_file_share_fab_corner</item>
@@ -60,4 +77,7 @@
         <item name="android:orientation">horizontal</item>
     </style>
 
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.FabWrapper.Day" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.FabWrapper">
+        <item name="android:background">@drawable/bandyer_file_share_fab_corner_day</item>
+    </style>
 </resources>
