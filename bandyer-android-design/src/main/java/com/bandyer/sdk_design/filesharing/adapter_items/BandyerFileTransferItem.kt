@@ -21,6 +21,7 @@ import com.bandyer.sdk_design.filesharing.model.TransferData
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.listeners.ClickEventHook
+import kotlin.math.roundToInt
 
 /**
  * BandyerFileShareItem
@@ -74,7 +75,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
 
         private fun updateItemByStatus(item: BandyerFileTransferItem) = with(binding) {
             root.isEnabled = item.data.state is TransferData.State.Success
-            val progress = (item.data.bytesTransferred * 100f / item.data.size).toInt()
+            val progress = (item.data.bytesTransferred * 100f / item.data.size).roundToInt()
             bandyerProgressBar.progress = progress
             bandyerProgressText.text = itemView.context.resources.getString(
                 R.string.bandyer_fileshare_progress,
