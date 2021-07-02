@@ -76,7 +76,6 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
 
         internal companion object {
             const val PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
-            const val MAX_FILE_BYTES = 150 * 1000 * 1000
         }
 
         private var binding: BandyerFileShareDialogLayoutBinding? = null
