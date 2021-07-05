@@ -14,4 +14,10 @@
         <item name="android:focusableInTouchMode">false</item>
         <item name="iconTint">@color/bandyer_file_share_action_icon_color</item>
     </style>
+
+    <style name="BandyerSDKDesign.ImageButton.FileShareAction.Day" parent="BandyerSDKDesign.ImageButton.FileShareAction">
+        <item name="backgroundTint">@color/bandyer_file_share_action_background_color_day</item>
+        <item name="strokeColor">@color/bandyer_file_share_action_stroke_color_day</item>
+        <item name="iconTint">@color/bandyer_file_share_action_icon_color_day</item>
+    </style>
 </resources>

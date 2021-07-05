@@ -45,6 +45,8 @@
 
     <style name="BandyerSDKDesign.FileShare.ProgressBar" parent="BandyerSDKDesign.FileShare.ProgressBar.V21"/>
 
+    <style name="BandyerSDKDesign.FileShare.ProgressBar.Day" parent="BandyerSDKDesign.FileShare.ProgressBar.V21.Day"/>
+
     <style name="BandyerSDKDesign.FileShare.ProgressBar.V21" parent="Widget.MaterialComponents.LinearProgressIndicator">
         <item name="android:layout_width">@dimen/bandyer_dimen_space0</item>
         <item name="android:layout_height">wrap_content</item>
@@ -53,6 +55,11 @@
         <item name="indicatorColor">?attr/colorSecondary</item>
         <item name="trackColor">@color/bandyer_color_progressbar</item>
         <item name="trackCornerRadius">@dimen/bandyer_dimen_space3</item>
+    </style>
+
+    <style name="BandyerSDKDesign.FileShare.ProgressBar.V21.Day" parent="BandyerSDKDesign.FileShare.ProgressBar.V21">
+        <item name="trackColor">@color/bandyer_color_progressbar</item>
+        <item name="indicatorColor">@color/bandyer_colorSecondary</item>
     </style>
 
 </resources>

@@ -2,6 +2,7 @@ package com.bandyer.sdk_design.filesharing.adapter_items
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.os.Build
 import android.text.format.Formatter
 import android.view.View
@@ -21,6 +22,7 @@ import com.bandyer.sdk_design.filesharing.model.TransferData
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.listeners.ClickEventHook
+import kotlin.math.roundToInt
 
 /**
  * BandyerFileShareItem
@@ -33,7 +35,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
     /**
      * @suppress
      */
-    override var identifier: Long = data.id.hashCode().toLong()
+    override var identifier: Long = data.hashCode().toLong()
 
     /**
      * @suppress
@@ -60,6 +62,8 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
 
         val binding: BandyerFileShareItemBinding = BandyerFileShareItemBinding.bind(view)
 
+        private val buttonAreaClickDefaultBackground = binding.bandyerActionClickArea.background
+
         override fun bindView(item: BandyerFileTransferItem, payloads: List<Any>) = with(binding) {
             bandyerError.visibility = View.GONE
             bandyerFileName.text = item.data.name
@@ -74,7 +78,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
 
         private fun updateItemByStatus(item: BandyerFileTransferItem) = with(binding) {
             root.isEnabled = item.data.state is TransferData.State.Success
-            val progress = (item.data.bytesTransferred * 100f / item.data.size).toInt()
+            val progress = (item.data.bytesTransferred * 100f / item.data.size).roundToInt()
             bandyerProgressBar.progress = progress
             bandyerProgressText.text = itemView.context.resources.getString(
                 R.string.bandyer_fileshare_progress,
@@ -93,6 +97,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
                 is TransferData.State.Success                                   -> {
                     bandyerAction.type = BandyerFileTransferActionButton.Type.SUCCESS
                     bandyerActionClickArea.background = null
+                    bandyerActionClickArea.isClickable = false
                     bandyerProgressText.text = item.data.creationTime.parseToHHmm()
                 }
                 is TransferData.State.Error                                     -> {
@@ -123,6 +128,8 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
         }
 
         override fun unbindView(item: BandyerFileTransferItem) = with(binding) {
+            bandyerActionClickArea.background = buttonAreaClickDefaultBackground
+            bandyerActionClickArea.isClickable = true
             bandyerFileType.type = null
             bandyerFileSize.text = null
             bandyerAction.type = null

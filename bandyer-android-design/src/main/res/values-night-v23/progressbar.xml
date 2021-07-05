@@ -3,4 +3,8 @@
     <style name="BandyerSDKDesign.FileShare.ProgressBar" parent="BandyerSDKDesign.FileShare.ProgressBar.V21">
         <item name="trackColor">@color/bandyer_color_on_background_20</item>
     </style>
+
+    <style name="BandyerSDKDesign.FileShare.ProgressBar.Day" parent="BandyerSDKDesign.FileShare.ProgressBar.V21.Day">
+        <item name="trackColor">@color/bandyer_color_on_background_20_day</item>
+    </style>
 </resources>
