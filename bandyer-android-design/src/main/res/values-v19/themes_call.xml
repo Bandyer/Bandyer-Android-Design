@@ -17,12 +17,12 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.Night.V16">
+    <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.DayNight.V16">
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Call.Day" parent="BandyerSDKDesign.Theme.Call.Night.V16">
+    <style name="BandyerSDKDesign.Theme.Call.Day" parent="BandyerSDKDesign.Theme.Call.Day.V16">
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>

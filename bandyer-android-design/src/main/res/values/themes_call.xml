@@ -88,9 +88,9 @@
         <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.Night.V16"/>
+    <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.DayNight.V16"/>
 
-    <style name="BandyerSDKDesign.Theme.Call.Day" parent="BandyerSDKDesign.Theme.Call.Night.V16"/>
+    <style name="BandyerSDKDesign.Theme.Call.Day" parent="BandyerSDKDesign.Theme.Call.Day.V16"/>
 
     <style name="BandyerSDKDesign.Theme.Call.Night" parent="BandyerSDKDesign.Theme.Call.Night.V16"/>
 

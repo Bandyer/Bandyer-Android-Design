@@ -17,13 +17,13 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.Theme.Call.DayNight.V21" parent="BandyerSDKDesign.Theme.Call.Night.V16">
+    <style name="BandyerSDKDesign.Theme.Call.DayNight.V21" parent="BandyerSDKDesign.Theme.Call.DayNight.V16">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:navigationBarColor">@android:color/black</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Call.Day.V21" parent="BandyerSDKDesign.Theme.Call.Night.V16">
+    <style name="BandyerSDKDesign.Theme.Call.Day.V21" parent="BandyerSDKDesign.Theme.Call.Day.V16">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:navigationBarColor">@android:color/black</item>
@@ -37,7 +37,7 @@
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.DayNight.V21"/>
 
-    <style name="BandyerSDKDesign.Theme.Call.Day" parent="BandyerSDKDesign.Theme.Call.Night.V21"/>
+    <style name="BandyerSDKDesign.Theme.Call.Day" parent="BandyerSDKDesign.Theme.Call.Day.V21"/>
 
     <style name="BandyerSDKDesign.Theme.Call.Night" parent="BandyerSDKDesign.Theme.Call.Night.V21"/>
 
