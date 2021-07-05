@@ -9,7 +9,13 @@ import androidx.core.net.toFile
 import java.io.File
 import java.util.*
 
-internal fun Uri.getMimeType(context: Context): String {
+/**
+ * Get mime type
+ *
+ * @param context Context
+ * @return mime type
+ */
+fun Uri.getMimeType(context: Context): String {
     return kotlin.runCatching {
         if (ContentResolver.SCHEME_CONTENT == this.scheme) {
             val cr: ContentResolver = context.applicationContext.contentResolver
@@ -21,7 +27,13 @@ internal fun Uri.getMimeType(context: Context): String {
     }.getOrNull() ?: ""
 }
 
-internal fun Uri.getFileName(context: Context): String {
+/**
+ * Get file name
+ *
+ * @param context Context
+ * @return name
+ */
+fun Uri.getFileName(context: Context): String {
     return kotlin.runCatching {
         if (ContentResolver.SCHEME_CONTENT == this.scheme)
             context.contentResolver.query(this, null, null, null, null)?.use {
@@ -31,7 +43,13 @@ internal fun Uri.getFileName(context: Context): String {
     }.getOrNull() ?: ""
 }
 
-internal fun Uri.getFileSize(context: Context): Long = kotlin.runCatching {
+/**
+ * Get file size
+ *
+ * @param context Context
+ * @return size
+ */
+fun Uri.getFileSize(context: Context): Long = kotlin.runCatching {
     if (ContentResolver.SCHEME_CONTENT == this.scheme)
         context.contentResolver.query(this, null, null, null, null)
             .use { if (it?.moveToFirst() == true) it.getLong(it.getColumnIndex(OpenableColumns.SIZE)) else -1L }
