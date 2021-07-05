@@ -28,6 +28,20 @@
         <item name="bandyer_progressTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareProgress</item>
     </style>
 
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item.Day" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.Item">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout</item>
+        <item name="bandyer_fileTypeStyle">@style/BandyerSDKDesign.FileShare.FileType.Day</item>
+        <item name="bandyer_fileSizeStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileSize.Day</item>
+        <item name="bandyer_buttonClickArea">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item.ButtonClickArea</item>
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.FileShareAction.Day</item>
+        <item name="bandyer_fileNameStyle">@style/BandyerSDKDesign.TextView.FileName.Day</item>
+        <item name="bandyer_progressStyle">@style/BandyerSDKDesign.FileShare.ProgressBar.Day</item>
+        <item name="bandyer_operationIconStyle">@style/BandyerSDKDesign.FileShare.OperationType.Day</item>
+        <item name="bandyer_usernameStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareUser.Day</item>
+        <item name="bandyer_errorStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareError.Day</item>
+        <item name="bandyer_progressTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareProgress.Day</item>
+    </style>
+
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout" parent="">
         <item name="android:paddingTop">@dimen/bandyer_dimen_space18</item>
         <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>

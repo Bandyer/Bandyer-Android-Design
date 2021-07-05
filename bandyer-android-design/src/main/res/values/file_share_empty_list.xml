@@ -14,6 +14,12 @@
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.EmptyListLayout</item>
     </style>
 
+    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Day" parent="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout">
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon.Day</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.EmptyListLayout.Day</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.EmptyListLayout.Day</item>
+    </style>
+
     <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout" parent="">
         <item name="android:paddingStart">@dimen/bandyer_dimen_space48</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space48</item>
