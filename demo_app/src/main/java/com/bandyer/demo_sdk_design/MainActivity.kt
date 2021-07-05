@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
 
         btnFileShare.setOnClickListener {
             val fileShareDialog = BandyerFileShareDialog()
-            fileShareDialog.show(this@MainActivity, viewModel)
+            fileShareDialog.show(this@MainActivity, viewModel) {}
             fileShareDialog.dialog?.view?.findViewById<View>(R.id.bandyer_upload_file_fab)?.setOnClickListener {
                 viewModel.itemsData["id_1"] = TransferData(this@MainActivity,"1", "".toUri(), "razer.jpg", "image/jpeg","Gianluigi", size = 100L, state = TransferData.State.Available, type = TransferData.Type.Download)
                 viewModel.itemsData["id_2"] = TransferData(this@MainActivity,"2", "".toUri(), "identity_card.pdf", "","Mario", bytesTransferred = 100L, size = 100L, state = TransferData.State.Success, type = TransferData.Type.Download)
