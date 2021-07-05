@@ -97,6 +97,7 @@
     <style name="BandyerSDKDesign.Theme.Call" parent="BandyerSDKDesign.Theme.Call.Night">
         <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.Day</item>
         <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.Night</item>
+        <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Day</item>
     </style>
 
 </resources>
