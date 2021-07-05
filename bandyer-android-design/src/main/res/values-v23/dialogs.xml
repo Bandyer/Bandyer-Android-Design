@@ -19,7 +19,7 @@
 
     <style name="BandyerSDKDesign.BottomSheetDialogStyle.V23" parent="BandyerSDKDesign.BottomSheetDialogStyle.V21">
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialogStyle.V23.Day" parent="BandyerSDKDesign.BottomSheetDialogStyle.V21.Day">

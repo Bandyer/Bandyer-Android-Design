@@ -4,12 +4,14 @@
     <style name="BandyerSDKDesign.BottomSheetDialogStyle.V27" parent="BandyerSDKDesign.BottomSheetDialogStyle.V23">
         <item name="android:navigationBarColor">?attr/colorSurface</item>
         <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialogStyle.V27.Day" parent="BandyerSDKDesign.BottomSheetDialogStyle.V23.Day">
         <item name="android:navigationBarColor">@color/bandyer_colorSurface</item>
         <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
