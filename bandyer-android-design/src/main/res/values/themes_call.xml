@@ -83,9 +83,9 @@
         <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>
         <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
         <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
-        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
-        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
-        <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare</item>
+        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.Night</item>
+        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.Night</item>
+        <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Night</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.DayNight.V16"/>
