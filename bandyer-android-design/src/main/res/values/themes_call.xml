@@ -77,7 +77,7 @@
         <item name="bandyer_answerHelperTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
         <item name="bandyer_bottomSheetCallStyle">@style/BandyerSDKDesign.BottomSheet.Call</item>
         <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
-        <item name="bandyer_bottomSheetRingingStyle">@style/BandyerSDKDesign.BottomSheet.Ringing</item>
+        <item name="bandyer_bottomSheetRingingStyle">@style/BandyerSDKDesign.BottomSheet.Ringing.Night</item>
         <item name="bandyer_livePointerStyle">@style/BandyerSDKDesign.LivePointer</item>
         <item name="bandyer_smartGlassDialogMenuStyle">@style/BandyerSDKDesign.SmartGlassDialogMenu</item>
         <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>

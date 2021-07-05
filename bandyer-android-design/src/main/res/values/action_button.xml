@@ -116,6 +116,14 @@
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.Decline</item>
     </style>
 
+    <style name="BandyerSDKDesign.ActionButton.Answer.Night" parent="BandyerSDKDesign.ActionButton.Answer">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Large.Answer.Night</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ActionButton.Decline.Night" parent="BandyerSDKDesign.ActionButton.Decline">
+        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Large.Decline.Night</item>
+    </style>
+
     <style name="BandyerSDKDesign.ActionButton.Microphone" parent="BandyerSDKDesign.ActionButton">
         <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Call.Microphone</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Microphone</item>
