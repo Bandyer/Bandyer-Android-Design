@@ -11,7 +11,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -57,9 +56,9 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
      * @param activity The activity
      * @param viewModel The activity view model
      */
-    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel) {
+    fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel, pickFileCallback: () -> Unit) {
         if (dialog?.isVisible == true || dialog?.isAdded == true) return
-        if (dialog == null) dialog = FileShareBottomSheetDialog(viewModel)
+        if (dialog == null) dialog = FileShareBottomSheetDialog(viewModel, pickFileCallback)
 
         dialog!!.show(activity.supportFragmentManager, id)
         activity.supportFragmentManager.executePendingTransactions()
@@ -73,11 +72,10 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
     /**
      * @suppress
      */
-    class FileShareBottomSheetDialog(private var viewModel: FileShareViewModel? = null) : BandyerBottomSheetDialog() {
+    class FileShareBottomSheetDialog(private val viewModel: FileShareViewModel? = null, private val pickFileCallback: (() -> Unit)? = null) : BandyerBottomSheetDialog() {
 
         internal companion object {
             const val PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE
-            const val MAX_FILE_BYTES = 150 * 1000 * 1000
         }
 
         private var binding: BandyerFileShareDialogLayoutBinding? = null
@@ -107,20 +105,10 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
                 if (!isGranted) showPermissionDeniedDialog(requireContext())
             }
 
-        private var getContent: ActivityResultLauncher<String>? = null
-
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_fileShareDialogStyle))
             smoothScroller = LinearSmoothScroller(requireContext())
-            getContent = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-                uri ?: return@registerForActivityResult
-                if (uri.getFileSize(requireContext()) > MAX_FILE_BYTES) {
-                    showMaxBytesDialog(requireContext())
-                    return@registerForActivityResult
-                }
-                viewModel?.uploadFile(this.requireContext(), uri = uri, sender = "")
-            }
         }
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -135,7 +123,7 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
             itemAdapter = ItemAdapter()
             fastAdapter = FastAdapter.with(itemAdapter!!)
 
-            uploadFileFab?.setOnClickListener { getContent?.launch("*/*") }
+            uploadFileFab?.setOnClickListener { pickFileCallback?.invoke() }
 
             initRecyclerView(filesRecyclerView!!)
 
@@ -201,14 +189,6 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
         private fun showPermissionDeniedDialog(context: Context) = AlertDialog.Builder(context, R.style.BandyerSDKDesign_AlertDialogTheme)
             .setTitle(R.string.bandyer_write_permission_dialog_title)
             .setMessage(R.string.bandyer_write_permission_dialog_descr)
-            .setCancelable(true)
-            .setPositiveButton(R.string.bandyer_button_ok) { di, _ ->
-                di.dismiss()
-            }.show()
-
-        private fun showMaxBytesDialog(context: Context) = AlertDialog.Builder(context, R.style.BandyerSDKDesign_AlertDialogTheme)
-            .setTitle(R.string.bandyer_max_bytes_dialog_title)
-            .setMessage(R.string.bandyer_max_bytes_dialog_descr)
             .setCancelable(true)
             .setPositiveButton(R.string.bandyer_button_ok) { di, _ ->
                 di.dismiss()

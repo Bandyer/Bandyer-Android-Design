@@ -85,4 +85,30 @@ data class TransferData(
          */
         object Download : Type()
     }
+
+//    override fun equals(other: Any?): Boolean {
+//        if (this === other) return true
+//        if (other !is TransferData) return false
+//
+//        if (id != other.id) return false
+//        if (uri != other.uri) return false
+//        if (name != other.name) return false
+//        if (mimeType != other.mimeType) return false
+//        if (sender != other.sender) return false
+//        if (creationTime != other.creationTime) return false
+//        if (bytesTransferred != other.bytesTransferred) return false
+//        if (size != other.size) return false
+//        if (successUri != other.successUri) return false
+//        if (state != other.state) return false
+//        if (type != other.type) return false
+//
+//        return true
+//    }
+//
+//    override fun hashCode(): Int {
+//        var result = id.hashCode()
+//        result = 31 * result + bytesTransferred.hashCode()
+//        result = 31 * result + state.hashCode()
+//        return result
+//    }
 }
