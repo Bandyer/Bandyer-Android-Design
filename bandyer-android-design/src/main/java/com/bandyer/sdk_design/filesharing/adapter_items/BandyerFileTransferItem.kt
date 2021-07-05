@@ -2,6 +2,7 @@ package com.bandyer.sdk_design.filesharing.adapter_items
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
 import android.os.Build
 import android.text.format.Formatter
 import android.view.View
@@ -61,6 +62,8 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
 
         val binding: BandyerFileShareItemBinding = BandyerFileShareItemBinding.bind(view)
 
+        private val buttonAreaClickDefaultBackground = binding.bandyerActionClickArea.background
+
         override fun bindView(item: BandyerFileTransferItem, payloads: List<Any>) = with(binding) {
             bandyerError.visibility = View.GONE
             bandyerFileName.text = item.data.name
@@ -94,6 +97,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
                 is TransferData.State.Success                                   -> {
                     bandyerAction.type = BandyerFileTransferActionButton.Type.SUCCESS
                     bandyerActionClickArea.background = null
+                    bandyerActionClickArea.isClickable = false
                     bandyerProgressText.text = item.data.creationTime.parseToHHmm()
                 }
                 is TransferData.State.Error                                     -> {
@@ -124,6 +128,8 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
         }
 
         override fun unbindView(item: BandyerFileTransferItem) = with(binding) {
+            bandyerActionClickArea.background = buttonAreaClickDefaultBackground
+            bandyerActionClickArea.isClickable = true
             bandyerFileType.type = null
             bandyerFileSize.text = null
             bandyerAction.type = null
