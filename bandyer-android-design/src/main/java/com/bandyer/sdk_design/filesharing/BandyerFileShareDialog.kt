@@ -100,13 +100,9 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
 
         private var permissionGrantedCallback: (() -> Unit)? = null
 
-        private val requestPermissionLauncher =
-            registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) { isGranted: Boolean ->
-                if (!isGranted) showPermissionDeniedDialog(requireContext())
-                else permissionGrantedCallback?.invoke()
-            }
+        private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+            if (it) permissionGrantedCallback?.invoke()
+        }
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
@@ -189,14 +185,6 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
 
             notifyDataSetChanged()
         }
-
-        private fun showPermissionDeniedDialog(context: Context) = AlertDialog.Builder(context, R.style.BandyerSDKDesign_AlertDialogTheme)
-            .setTitle(R.string.bandyer_write_permission_dialog_title)
-            .setMessage(R.string.bandyer_write_permission_dialog_descr)
-            .setCancelable(true)
-            .setPositiveButton(R.string.bandyer_button_ok) { di, _ ->
-                di.dismiss()
-            }.show()
 
         private fun scrollToTop() = filesRecyclerView?.layoutManager?.startSmoothScroll(smoothScroller?.apply { targetPosition = 0 })
 
