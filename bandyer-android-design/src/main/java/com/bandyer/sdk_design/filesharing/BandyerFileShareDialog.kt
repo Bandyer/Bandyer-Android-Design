@@ -172,6 +172,8 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
             rv.adapter = fastAdapter
             rv.layoutManager = LinearLayoutManager(requireContext())
             rv.itemAnimator = null
+            rv.isFocusable = false
+            rv.isFocusableInTouchMode = false
             rv.addItemDecoration(LastDividerItemDecoration(requireContext()))
 
             fastAdapter!!.addEventHook(BandyerFileTransferItem.ItemClickEvent(viewModel!!) {

@@ -76,7 +76,8 @@ class BottomSheetLayoutContent @kotlin.jvm.JvmOverloads constructor(context: Con
         lineView = binding.bandyerLine
         recyclerView = binding.bandyerRecyclerView
         recyclerView!!.overScrollMode = View.OVER_SCROLL_NEVER
-
+        recyclerView!!.isFocusable = false
+        recyclerView!!.isFocusableInTouchMode = false
         recyclerView!!.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) recyclerView?.layoutManager?.findViewByPosition(0)?.requestFocus()
         }
