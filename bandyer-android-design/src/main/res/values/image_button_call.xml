@@ -47,6 +47,14 @@
         <item name="android:contentDescription">@string/bandyer_ringing_decline</item>
     </style>
 
+    <style name="BandyerSDKDesign.ImageButton.Call.Large.Answer.Night" parent="BandyerSDKDesign.ImageButton.Call.Large.Answer">
+        <item name="backgroundTint">@color/bandyer_color_answer_button_night</item>
+    </style>
+
+    <style name="BandyerSDKDesign.ImageButton.Call.Large.Decline.Night" parent="BandyerSDKDesign.ImageButton.Call.Large.Decline">
+        <item name="backgroundTint">@color/bandyer_color_hang_up_button_night</item>
+    </style>
+
     <style name="BandyerSDKDesign.ImageButton.Call.Participants" parent="BandyerSDKDesign.ImageButton.Call">
         <item name="icon">@drawable/ic_bandyer_participants</item>
         <item name="android:contentDescription">@string/bandyer_call_action_participants</item>

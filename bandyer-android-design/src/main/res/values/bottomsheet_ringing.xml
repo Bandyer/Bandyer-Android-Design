@@ -32,6 +32,11 @@
         <item name="bandyer_answerStyle">@style/BandyerSDKDesign.ActionButton.Answer</item>
     </style>
 
+    <style name="BandyerSDKDesign.BottomSheet.Ringing.Night" parent="BandyerSDKDesign.BottomSheet.Ringing">
+        <item name="bandyer_declineStyle">@style/BandyerSDKDesign.ActionButton.Decline.Night</item>
+        <item name="bandyer_answerStyle">@style/BandyerSDKDesign.ActionButton.Answer.Night</item>
+    </style>
+
     <style name="BandyerSDKDesign.BottomSheetBackground.Ringing" parent="BandyerSDKDesign.BottomSheetBackground">
         <item name="cardBackgroundColor">@android:color/transparent</item>
     </style>

@@ -44,13 +44,18 @@
     <!-- hang up button -->
     <color name="bandyer_color_hang_up_button">#FF0000</color>
     <color name="bandyer_color_hang_up_button_dark">#C2E00000</color>
+    <color name="bandyer_color_hang_up_button_night">#c20000</color>
+    <color name="bandyer_color_hang_up_button_dark_night">#C2A50000</color>
 
     <!-- answer button -->
     <color name="bandyer_color_answer_button">#7ED321</color>
     <color name="bandyer_color_answer_button_dark">#C261A01B</color>
+    <color name="bandyer_color_answer_button_night">#48a100</color>
+    <color name="bandyer_color_answer_button_dark_night">#C22E7100</color>
 
     <!-- commons -->
     <color name="bandyer_color_link">#1797db</color>
+    <color name="bandyer_color_link_night">#0069a9</color>
 
     <color name="bandyer_color_grey">#80000000</color>
     <color name="bandyer_color_grey_light">#1E000000</color>
@@ -67,5 +72,6 @@
 
     <!-- screen share color -->
     <color name="bandyer_screen_share_color">#D50000</color>
+    <color name="bandyer_screen_share_color_night">#FF5131</color>
 
 </resources>

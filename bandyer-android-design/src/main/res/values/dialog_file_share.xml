@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.FileShare">
         <attr name="bandyer_fileShareItemStyle" format="reference" />
@@ -20,6 +20,12 @@
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21"/>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.V21.Night" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Night" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21.Night"/>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Day" parent="BandyerSDKDesign.BottomSheetDialog.Day">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>

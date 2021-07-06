@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- hang up button -->
-    <color name="bandyer_color_hang_up_button">#c20000</color>
-    <color name="bandyer_color_hang_up_button_dark">#C2A50000</color>
+    <color name="bandyer_color_hang_up_button">@color/bandyer_color_hang_up_button_night</color>
+    <color name="bandyer_color_hang_up_button_dark">@color/bandyer_color_hang_up_button_dark_night</color>
 
     <!-- answer button -->
-    <color name="bandyer_color_answer_button">#48a100</color>
-    <color name="bandyer_color_answer_button_dark">#C22E7100</color>
+    <color name="bandyer_color_answer_button">@color/bandyer_color_answer_button_night</color>
+    <color name="bandyer_color_answer_button_dark">@color/bandyer_color_answer_button_dark_night</color>
 
     <!-- commons -->
-    <color name="bandyer_color_link">#0069a9</color>
+    <color name="bandyer_color_link">@color/bandyer_color_link_night</color>
 
     <!-- screen share color -->
-    <color name="bandyer_screen_share_color">#FF5131</color>
+    <color name="bandyer_screen_share_color">@color/bandyer_screen_share_color_night</color>
 </resources>

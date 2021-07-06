@@ -38,6 +38,7 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
     private var hasChangedConfiguration = false
     private var wasInPiP = false
     private var currentSystemBarsInsets: Insets? = null
+
     /**
      * Mapping of observers and requests to keep listening on global layout channges
      */
@@ -53,7 +54,10 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
             override fun destroy() = dispose()
             override fun create() = Unit
             override fun pause() = Unit
-            override fun resume() { decorView.post { resetMargins() } }
+            override fun resume() {
+                decorView.post { resetMargins() }
+            }
+
             override fun start() = Unit
             override fun stop() = Unit
         })
@@ -70,7 +74,7 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
             }
         }
 
-        ViewCompat.setOnApplyWindowInsetsListener(decorView) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener((decorView as ViewGroup).getChildAt(0)) { v, insets ->
             val context = context?.get() ?: return@setOnApplyWindowInsetsListener WindowInsetsCompat.CONSUMED
             val isInPiP = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && context.isInPictureInPictureMode
             val systemBarInsets = getSystemBarsInsets(decorView)
