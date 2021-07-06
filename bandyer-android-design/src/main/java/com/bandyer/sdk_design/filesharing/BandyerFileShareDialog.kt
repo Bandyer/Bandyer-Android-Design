@@ -98,11 +98,14 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
 
         private var smoothScroller: SmoothScroller? = null
 
+        private var permissionGrantedCallback: (() -> Unit)? = null
+
         private val requestPermissionLauncher =
             registerForActivityResult(
                 ActivityResultContracts.RequestPermission()
             ) { isGranted: Boolean ->
                 if (!isGranted) showPermissionDeniedDialog(requireContext())
+                else permissionGrantedCallback?.invoke()
             }
 
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -174,8 +177,9 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
             rv.itemAnimator = null
             rv.addItemDecoration(LastDividerItemDecoration(requireContext()))
 
-            fastAdapter!!.addEventHook(BandyerFileTransferItem.ItemClickEvent(viewModel!!) {
+            fastAdapter!!.addEventHook(BandyerFileTransferItem.ItemClickEvent(viewModel!!) { callback ->
                 requestPermissionLauncher.launch(PERMISSION)
+                permissionGrantedCallback = callback
             })
 
             fastAdapter!!.onClickListener = { _, _, item, _ ->

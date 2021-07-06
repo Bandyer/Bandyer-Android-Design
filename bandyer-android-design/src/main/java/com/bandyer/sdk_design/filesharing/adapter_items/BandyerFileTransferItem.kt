@@ -146,7 +146,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
      * Item click event
      * @suppress
      */
-    internal class ItemClickEvent(val viewModel: FileShareViewModel, val askPermissionCallback: (() -> Unit)? = null) : ClickEventHook<BandyerFileTransferItem>() {
+    internal class ItemClickEvent(private val viewModel: FileShareViewModel, private val askPermissionCallback: ((() -> Unit) -> Unit)? = null) : ClickEventHook<BandyerFileTransferItem>() {
         override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
             //return the views on which you want to bind this event
             return if (viewHolder is ViewHolder) viewHolder.binding.bandyerActionClickArea
@@ -157,9 +157,8 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
             if (item.data.state is TransferData.State.Available) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ||
                     ContextCompat.checkSelfPermission(v.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                )
-                    viewModel.downloadFile(context = v.context, item.data.id, item.data.uri, item.data.sender)
-                else askPermissionCallback?.invoke()
+                ) viewModel.downloadFile(context = v.context, item.data.id, item.data.uri, item.data.sender)
+                else askPermissionCallback?.invoke { viewModel.downloadFile(context = v.context, item.data.id, item.data.uri, item.data.sender) }
                 return
             }
 
