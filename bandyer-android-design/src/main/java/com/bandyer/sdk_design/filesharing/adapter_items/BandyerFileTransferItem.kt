@@ -78,7 +78,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
 
         private fun updateItemByStatus(item: BandyerFileTransferItem) = with(binding) {
             root.isEnabled = item.data.state is TransferData.State.Success
-            val progress = (item.data.bytesTransferred * 100f / item.data.size).roundToInt()
+            val progress = item.data.size.let { if(it > 0) (item.data.bytesTransferred * 100f / it).roundToInt() else 0 }
             bandyerProgressBar.progress = progress
             bandyerProgressText.text = itemView.context.resources.getString(
                 R.string.bandyer_fileshare_progress,
