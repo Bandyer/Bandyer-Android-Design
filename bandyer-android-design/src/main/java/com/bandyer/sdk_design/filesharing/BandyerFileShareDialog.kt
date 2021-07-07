@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.DialogFragment
@@ -55,6 +54,7 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
      *
      * @param activity The activity
      * @param viewModel The activity view model
+     * @param pickFileCallback The callback to be executed on fab click
      */
     fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel, pickFileCallback: () -> Unit) {
         if (dialog?.isVisible == true || dialog?.isAdded == true) return
@@ -176,8 +176,8 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
             rv.addItemDecoration(LastDividerItemDecoration(requireContext()))
 
             fastAdapter!!.addEventHook(BandyerFileTransferItem.ItemClickEvent(viewModel!!) { callback ->
-                requestPermissionLauncher.launch(PERMISSION)
                 permissionGrantedCallback = callback
+                requestPermissionLauncher.launch(PERMISSION)
             })
 
             fastAdapter!!.onClickListener = { _, _, item, _ ->
