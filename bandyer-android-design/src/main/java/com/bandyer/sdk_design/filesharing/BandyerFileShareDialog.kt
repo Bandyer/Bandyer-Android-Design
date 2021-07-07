@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -100,14 +101,15 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
 
         private var permissionGrantedCallback: (() -> Unit)? = null
 
-        private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            if (it) permissionGrantedCallback?.invoke()
-        }
+        private var requestPermissionLauncher: ActivityResultLauncher<String>? = null
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_fileShareDialogStyle))
             smoothScroller = LinearSmoothScroller(requireContext())
+            requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                if (it) permissionGrantedCallback?.invoke()
+            }
         }
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -177,7 +179,7 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
 
             fastAdapter!!.addEventHook(BandyerFileTransferItem.ItemClickEvent(viewModel!!) { callback ->
                 permissionGrantedCallback = callback
-                requestPermissionLauncher.launch(PERMISSION)
+                requestPermissionLauncher?.launch(PERMISSION)
             })
 
             fastAdapter!!.onClickListener = { _, _, item, _ ->
