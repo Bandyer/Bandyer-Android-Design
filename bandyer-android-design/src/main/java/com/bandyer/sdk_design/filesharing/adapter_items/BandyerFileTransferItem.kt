@@ -1,8 +1,8 @@
 package com.bandyer.sdk_design.filesharing.adapter_items
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
-import android.content.res.ColorStateList
 import android.os.Build
 import android.text.format.Formatter
 import android.view.View
@@ -16,8 +16,8 @@ import com.bandyer.sdk_design.extensions.setPaddingBottom
 import com.bandyer.sdk_design.extensions.setPaddingTop
 import com.bandyer.sdk_design.filesharing.FileShareViewModel
 import com.bandyer.sdk_design.filesharing.buttons.BandyerFileTransferActionButton
-import com.bandyer.sdk_design.filesharing.imageviews.BandyerTransferTypeImageView
 import com.bandyer.sdk_design.filesharing.imageviews.BandyerFileTypeImageView
+import com.bandyer.sdk_design.filesharing.imageviews.BandyerTransferTypeImageView
 import com.bandyer.sdk_design.filesharing.model.TransferData
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
@@ -78,7 +78,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
 
         private fun updateItemByStatus(item: BandyerFileTransferItem) = with(binding) {
             root.isEnabled = item.data.state is TransferData.State.Success
-            val progress = (item.data.bytesTransferred * 100f / item.data.size).roundToInt()
+            val progress = item.data.size.let { if(it > 0) (item.data.bytesTransferred * 100f / it).roundToInt() else 0 }
             bandyerProgressBar.progress = progress
             bandyerProgressText.text = itemView.context.resources.getString(
                 R.string.bandyer_fileshare_progress,
@@ -146,7 +146,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
      * Item click event
      * @suppress
      */
-    internal class ItemClickEvent(val viewModel: FileShareViewModel, val askPermissionCallback: (() -> Unit)? = null) : ClickEventHook<BandyerFileTransferItem>() {
+    internal class ItemClickEvent(private val viewModel: FileShareViewModel, private val askPermissionCallback: ((() -> Unit) -> Unit)? = null) : ClickEventHook<BandyerFileTransferItem>() {
         override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
             //return the views on which you want to bind this event
             return if (viewHolder is ViewHolder) viewHolder.binding.bandyerActionClickArea
@@ -155,11 +155,7 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
 
         override fun onClick(v: View, position: Int, fastAdapter: FastAdapter<BandyerFileTransferItem>, item: BandyerFileTransferItem) {
             if (item.data.state is TransferData.State.Available) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ||
-                    ContextCompat.checkSelfPermission(v.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-                )
-                    viewModel.downloadFile(context = v.context, item.data.id, item.data.uri, item.data.sender)
-                else askPermissionCallback?.invoke()
+                checkPermissionAndStartDownload(v.context, item.data)
                 return
             }
 
@@ -171,10 +167,17 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
                 is TransferData.State.Success                                   -> (v.parent as View).apply { isPressed = true; performClick(); isPressed = false }
                 is TransferData.State.Error                                     -> {
                     if (item.data.type is TransferData.Type.Upload) viewModel.uploadFile(v.context, item.data.id, item.data.uri, item.data.sender)
-                    else viewModel.downloadFile(v.context, item.data.id, item.data.uri, item.data.sender)
+                    else checkPermissionAndStartDownload(v.context, item.data)
                 }
                 else                                                            -> Unit
             }
+        }
+
+        private fun checkPermissionAndStartDownload(context: Context, data: TransferData) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R ||
+                ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+            ) viewModel.downloadFile(context = context, data.id, data.uri, data.sender)
+            else askPermissionCallback?.invoke { viewModel.downloadFile(context = context, data.id, data.uri, data.sender) }
         }
     }
 }

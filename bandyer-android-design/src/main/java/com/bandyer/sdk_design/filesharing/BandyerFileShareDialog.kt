@@ -11,8 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.DialogFragment
@@ -55,6 +55,7 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
      *
      * @param activity The activity
      * @param viewModel The activity view model
+     * @param pickFileCallback The callback to be executed on fab click
      */
     fun show(activity: androidx.fragment.app.FragmentActivity, viewModel: FileShareViewModel, pickFileCallback: () -> Unit) {
         if (dialog?.isVisible == true || dialog?.isAdded == true) return
@@ -98,17 +99,17 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
 
         private var smoothScroller: SmoothScroller? = null
 
-        private val requestPermissionLauncher =
-            registerForActivityResult(
-                ActivityResultContracts.RequestPermission()
-            ) { isGranted: Boolean ->
-                if (!isGranted) showPermissionDeniedDialog(requireContext())
-            }
+        private var permissionGrantedCallback: (() -> Unit)? = null
+
+        private var requestPermissionLauncher: ActivityResultLauncher<String>? = null
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_fileShareDialogStyle))
             smoothScroller = LinearSmoothScroller(requireContext())
+            requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                if (it) permissionGrantedCallback?.invoke()
+            }
         }
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -176,8 +177,9 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
             rv.isFocusableInTouchMode = false
             rv.addItemDecoration(LastDividerItemDecoration(requireContext()))
 
-            fastAdapter!!.addEventHook(BandyerFileTransferItem.ItemClickEvent(viewModel!!) {
-                requestPermissionLauncher.launch(PERMISSION)
+            fastAdapter!!.addEventHook(BandyerFileTransferItem.ItemClickEvent(viewModel!!) { callback ->
+                permissionGrantedCallback = callback
+                requestPermissionLauncher?.launch(PERMISSION)
             })
 
             fastAdapter!!.onClickListener = { _, _, item, _ ->
@@ -187,14 +189,6 @@ class BandyerFileShareDialog : BandyerDialog<BandyerFileShareDialog.FileShareBot
 
             notifyDataSetChanged()
         }
-
-        private fun showPermissionDeniedDialog(context: Context) = AlertDialog.Builder(context, R.style.BandyerSDKDesign_AlertDialogTheme)
-            .setTitle(R.string.bandyer_write_permission_dialog_title)
-            .setMessage(R.string.bandyer_write_permission_dialog_descr)
-            .setCancelable(true)
-            .setPositiveButton(R.string.bandyer_button_ok) { di, _ ->
-                di.dismiss()
-            }.show()
 
         private fun scrollToTop() = filesRecyclerView?.layoutManager?.startSmoothScroll(smoothScroller?.apply { targetPosition = 0 })
 
