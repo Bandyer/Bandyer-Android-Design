@@ -76,8 +76,7 @@ class BandyerSnapshotDialog : BandyerDialog<BandyerSnapshotDialog.SnapshotDialog
         override fun onStart() {
             super.onStart()
             dialog ?: return
-            val window = dialog!!.window
-            window?.findViewById<View>(R.id.container)?.fitsSystemWindows = false
+            dialog!!.window!!.decorView.fitsSystemWindows = false
         }
 
         override fun onConfigurationChanged(newConfig: Configuration) {

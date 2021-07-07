@@ -31,14 +31,14 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:layout_marginTop="-150dp"
         android:animateLayoutChanges="true"
         android:background="@drawable/bandyer_shape_transparent_black_background"
         android:fitsSystemWindows="false"
-        android:paddingBottom="74dp" />
+        android:paddingBottom="74dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bandyer_snapshot_share_close_button"
