@@ -5,7 +5,7 @@ This repository is the design library used by Bandyer's Android SDK
 <img src="img/bandyer.png" alt="Bandyer" title="Bandyer" />
 </p>
 
-[![Download](https://badgen.net/maven/v/metadata-url/https/maven.bandyer.com/releases/com/bandyer/bandyer-android-design/maven-metadata.xml?label=maven.bandyer.com/releases) ](https://maven.bandyer.com/index.html#releases/com/bandyer/bandyer-android-design/)
+[![Download](https://badgen.net/maven/v/metadata-url/https/maven.bandyer.com/releases/com/bandyer/bandyer-android-design/maven-metadata.xml?label=maven.bandyer.com/releases) ](https://maven.bandyer.com/index.html#releases/com/bandyer/bandyer-android-design/)[![Android CI](https://github.com/Bandyer/Bandyer-Android-Design/actions/workflows/android.yml/badge.svg?branch=develop)](https://github.com/Bandyer/Bandyer-Android-Design/actions/workflows/android.yml)
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/follow?screen_name=bandyersrl)
 
 
