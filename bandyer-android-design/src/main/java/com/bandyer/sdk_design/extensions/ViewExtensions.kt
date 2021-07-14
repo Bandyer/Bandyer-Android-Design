@@ -858,8 +858,8 @@ fun View.performNestedClick(): Boolean {
 fun View.setAllViewsFocusableInTouchMode() {
     when {
         this is ViewGroup && !isFocusable -> {
-            for (i in 0 until childCount) {
-                val child = getChildAt(i)
+            (0 until childCount).forEach {
+                val child = getChildAt(it)
                 child.setAllViewsFocusableInTouchMode()
             }
         }
