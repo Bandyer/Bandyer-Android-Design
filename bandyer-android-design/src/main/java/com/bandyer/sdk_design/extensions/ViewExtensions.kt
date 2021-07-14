@@ -41,6 +41,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.InputDeviceCompat
 import com.bandyer.android_common.FieldProperty
 import com.bandyer.android_common.LifecycleEvents
+import com.bandyer.sdk_design.buttons.BandyerActionButton
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import kotlin.math.abs
@@ -849,6 +850,25 @@ fun View.performNestedClick(): Boolean {
     }
     return false
 }
+
+/**
+ * Let focusable views be also focusable in touch mode for single finger navigation gestures on google glass
+ * @receiver View
+ */
+fun View.setAllViewsFocusableInTouchMode() {
+    when {
+        this is ViewGroup && !isFocusable -> {
+            for (i in 0 until childCount) {
+                val child = getChildAt(i)
+                child.setAllViewsFocusableInTouchMode()
+            }
+        }
+        else -> if (isFocusable || this is BandyerActionButton) {
+            isFocusableInTouchMode = true
+        }
+    }
+}
+
 
 /**
  * Performs click and cancel pulse animation.
