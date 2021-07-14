@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.sdk_design.R
+import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.extensions.getScreenSize
 import com.bandyer.sdk_design.extensions.scanForFragmentActivity
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutObserver
@@ -49,9 +50,8 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
                                                      attrs: AttributeSet? = null,
                                                      defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr), SystemViewLayoutObserver, View.OnLayoutChangeListener {
 
-    companion object {
-        private const val STATUS_BAR_HEIGHT_LIMIT = 200
-    }
+
+    private val STATUS_BAR_HEIGHT_LIMIT = context.dp2px(25f)
 
 
     private var statusBarHeight = STATUS_BAR_HEIGHT_LIMIT
@@ -84,13 +84,13 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
     }
 
     override fun onTopInsetChanged(pixels: Int) {
-        if (pixels >= STATUS_BAR_HEIGHT_LIMIT || pixels == 0) return
-        statusBarHeight = pixels
+        if (pixels >= STATUS_BAR_HEIGHT_LIMIT) return
+        statusBarHeight = pixels.takeIf { it > 0 } ?: statusBarHeight
         updateHeight()
     }
 
     private fun updateHeight(height: Int = statusBarHeight) {
-        if (height >= STATUS_BAR_HEIGHT_LIMIT || height == 0 || layoutParams?.height == height) return
+        if (height > STATUS_BAR_HEIGHT_LIMIT || height == 0 || layoutParams?.height == height) return
         post {
             layoutParams ?: return@post
             if (layoutParams.height == height) return@post
