@@ -7,13 +7,13 @@
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialogStyle.V27.ForceDay" parent="BandyerSDKDesign.BottomSheetDialogStyle.V23.ForceDay">
+    <style name="BandyerSDKDesign.BottomSheetDialogStyle.V27.Day" parent="BandyerSDKDesign.BottomSheetDialogStyle.V23.Day">
         <item name="android:navigationBarColor">@color/bandyer_colorSurface</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog" parent="BandyerSDKDesign.BottomSheetDialogStyle.V27"/>
-    <style name="BandyerSDKDesign.BottomSheetDialog.ForceDay" parent="BandyerSDKDesign.BottomSheetDialogStyle.V27.ForceDay"/>
+    <style name="BandyerSDKDesign.BottomSheetDialog.Day" parent="BandyerSDKDesign.BottomSheetDialogStyle.V27.Day"/>
 
 </resources>

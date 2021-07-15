@@ -28,10 +28,10 @@
         <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.V16.ForceDay" parent="BandyerSDKDesign.BottomSheetDialog.V16">
-        <item name="toolbarStyle">@style/BandyerSDKDesign.BottomSheetDialogToolbarStyle.ForceDay</item>
-        <item name="toolbarNavigationButtonStyle">@style/BandyerSDKDesign.BottomSheetDialog.V16.ToolbarNavigationButtonStyle.ForceDay</item>
-        <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.ForceDay</item>
+    <style name="BandyerSDKDesign.BottomSheetDialog.V16.Day" parent="BandyerSDKDesign.BottomSheetDialog.V16">
+        <item name="toolbarStyle">@style/BandyerSDKDesign.BottomSheetDialogToolbarStyle.Day</item>
+        <item name="toolbarNavigationButtonStyle">@style/BandyerSDKDesign.BottomSheetDialog.V16.ToolbarNavigationButtonStyle.Day</item>
+        <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.Day</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetModalStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
@@ -39,7 +39,7 @@
         <item name="android:elevation" tools:targetApi="lollipop">0dp</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.ForceDay" parent="BandyerSDKDesign.BottomSheetModalStyle">
+    <style name="BandyerSDKDesign.BottomSheetModalStyle.Day" parent="BandyerSDKDesign.BottomSheetModalStyle">
         <item name="backgroundTint">@color/bandyer_colorSurface</item>
     </style>
 
@@ -54,7 +54,7 @@
         <item name="android:tint">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.V16.ToolbarNavigationButtonStyle.ForceDay" parent="">
+    <style name="BandyerSDKDesign.BottomSheetDialog.V16.ToolbarNavigationButtonStyle.Day" parent="">
         <item name="android:tint">@color/bandyer_colorOnPrimary</item>
     </style>
 
@@ -64,7 +64,7 @@
         <item name="navigationIcon">@drawable/ic_bandyer_back_down</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialogToolbarStyle.ForceDay" parent="BandyerSDKDesign.BottomSheetDialogToolbarStyle">
+    <style name="BandyerSDKDesign.BottomSheetDialogToolbarStyle.Day" parent="BandyerSDKDesign.BottomSheetDialogToolbarStyle">
         <item name="materialThemeOverlay">@style/BandyerSDKDesign.BottomSheetDialogToolbarStyle.MaterialThemeOverlay.Day</item>
         <item name="android:background">@color/bandyer_colorPrimary</item>
     </style>
@@ -77,7 +77,7 @@
         <item name="drawableTint">@color/bandyer_whiteboard_toolbar_menu_color_day</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.ForceDay" parent="BandyerSDKDesign.BottomSheetDialog.V16.ForceDay"/>
+    <style name="BandyerSDKDesign.BottomSheetDialog.Day" parent="BandyerSDKDesign.BottomSheetDialog.V16.Day"/>
     <style name="BandyerSDKDesign.BottomSheetDialog" parent="BandyerSDKDesign.BottomSheetDialog.V16"/>
 
 </resources>

@@ -22,12 +22,12 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialogStyle.V23.ForceDay" parent="BandyerSDKDesign.BottomSheetDialogStyle.V21.ForceDay">
+    <style name="BandyerSDKDesign.BottomSheetDialogStyle.V23.Day" parent="BandyerSDKDesign.BottomSheetDialogStyle.V21.Day">
         <item name="android:statusBarColor">@color/bandyer_colorPrimaryVariant</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog" parent="BandyerSDKDesign.BottomSheetDialogStyle.V23"/>
-    <style name="BandyerSDKDesign.BottomSheetDialog.ForceDay" parent="BandyerSDKDesign.BottomSheetDialogStyle.V23.ForceDay"/>
+    <style name="BandyerSDKDesign.BottomSheetDialog.Day" parent="BandyerSDKDesign.BottomSheetDialogStyle.V23.Day"/>
 
 </resources>
