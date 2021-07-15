@@ -15,6 +15,10 @@
         <item name="bandyer_screenShareDeviceButtonStyle">@style/BandyerSDKDesign.ImageButton.ScreenShare.Device</item>
     </style>
 
+    <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.Day" parent="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker" >
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
     <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.Night" parent="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker" >
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>

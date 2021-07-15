@@ -34,13 +34,17 @@
         <item name="bandyer_uploadStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.UploadImage</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.Day" parent="BandyerSDKDesign.BottomSheetDialog.Day">
+    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.ForceDay" parent="BandyerSDKDesign.BottomSheetDialog.ForceDay">
         <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.Whiteboard</item>
         <item name="bandyer_textEditorDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.TextEditor.Day</item>
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.RootLayout</item>
         <item name="bandyer_progressStyle">@style/BandyerSDKDesign.LoadingProgressIndicator</item>
         <item name="bandyer_reloadStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.LoadingError</item>
         <item name="bandyer_uploadStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.UploadImage.Day</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.Day" parent="BandyerSDKDesign.BottomSheetDialog.Whiteboard">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.Night" parent="BandyerSDKDesign.BottomSheetDialog.Whiteboard">

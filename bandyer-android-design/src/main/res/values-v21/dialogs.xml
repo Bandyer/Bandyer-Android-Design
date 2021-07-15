@@ -22,12 +22,12 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialogStyle.V21.Day" parent="BandyerSDKDesign.BottomSheetDialog.V16.Day">
+    <style name="BandyerSDKDesign.BottomSheetDialogStyle.V21.ForceDay" parent="BandyerSDKDesign.BottomSheetDialog.V16.ForceDay">
         <item name="android:statusBarColor">@android:color/black</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog" parent="BandyerSDKDesign.BottomSheetDialogStyle.V21"/>
-    <style name="BandyerSDKDesign.BottomSheetDialog.Day" parent="BandyerSDKDesign.BottomSheetDialogStyle.V21.Day"/>
+    <style name="BandyerSDKDesign.BottomSheetDialog.ForceDay" parent="BandyerSDKDesign.BottomSheetDialogStyle.V21.ForceDay"/>
 
 </resources>

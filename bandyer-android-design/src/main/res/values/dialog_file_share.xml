@@ -21,13 +21,15 @@
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21"/>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.V21.Night" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21">
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Day" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Night" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21">
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Night" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21.Night"/>
-
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Day" parent="BandyerSDKDesign.BottomSheetDialog.Day">
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.ForceDay" parent="BandyerSDKDesign.BottomSheetDialog.ForceDay">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>
         <item name="bandyer_fileShareItemStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item.Day</item>
         <item name="bandyer_emptyListLayoutStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Day</item>

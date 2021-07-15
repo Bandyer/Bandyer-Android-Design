@@ -41,7 +41,7 @@
         <item name="bandyer_textEditorStyle">@style/BandyerSDKDesign.TextEditorStyle</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.V16.Day" parent="BandyerSDKDesign.BottomSheetDialog.V16.Day">
+    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.V16.Day" parent="BandyerSDKDesign.BottomSheetDialog.V16.ForceDay">
         <item name="bandyer_textEditorStyle">@style/BandyerSDKDesign.TextEditorStyle.Day</item>
     </style>
 

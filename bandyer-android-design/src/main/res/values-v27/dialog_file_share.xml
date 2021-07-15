@@ -3,6 +3,4 @@
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21">
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>
     </style>
-
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Night" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21.Night"/>
 </resources>
