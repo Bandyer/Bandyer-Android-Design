@@ -21,11 +21,13 @@
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21"/>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.V21.Night" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21">
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.LightStatusBar" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Night" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21.Night"/>
+    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.DarkStatusBar" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21">
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+    </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Day" parent="BandyerSDKDesign.BottomSheetDialog.Day">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>
