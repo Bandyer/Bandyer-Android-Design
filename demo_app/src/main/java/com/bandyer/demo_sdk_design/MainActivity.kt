@@ -116,6 +116,8 @@ class MainActivity : AppCompatActivity() {
             }
             fileShareDialog.setOnDismissListener { viewModel.itemsData.clear() }
         }
+
+        btnSmartglass.setOnClickListener { startActivity(Intent(this@MainActivity, SmartGlassActivity::class.java)) }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

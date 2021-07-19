@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BottomActionBarItemView">
+        <attr name="gestureIcon" format="reference"/>
+        <attr name="gestureText" format="string"/>
+        <attr name="actionText" format="string"/>
+    </declare-styleable>
+    <declare-styleable name="BottomActionBarView">
+        <attr name="swipeText" format="string"/>
+        <attr name="tapText" format="string"/>
+        <attr name="swipeDownText" format="string"/>
+    </declare-styleable>
+    <declare-styleable name="ChatMessageView">
+        <attr name="messageText" format="string"/>
+        <attr name="messageRead" format="boolean"/>
+        <attr name="messageCollapsed" format="boolean"/>
+    </declare-styleable>
+</resources>

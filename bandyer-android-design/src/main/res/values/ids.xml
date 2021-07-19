@@ -51,5 +51,6 @@
     <item name="bandyer_id_upload_item" type="id" />
     <item name="bandyer_id_download_item" type="id" />
     <item name="bandyer_id_download_available_item" type="id" />
+    <item name="id_chat_item" type="id" />
 
 </resources>

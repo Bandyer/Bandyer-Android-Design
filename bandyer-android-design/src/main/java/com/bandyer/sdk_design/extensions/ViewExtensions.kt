@@ -36,6 +36,7 @@ import android.widget.RelativeLayout
 import androidx.annotation.Px
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.animation.doOnEnd
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.InputDeviceCompat
@@ -83,8 +84,7 @@ internal var View.isUnHooked: Boolean by FieldProperty { false }
  * @param to desired final size
  * @param interpolator animator interpolator
  */
-fun View.animateViewHeight(from: Int, to: Int, duration: Long, interpolator: Interpolator = LinearInterpolator()) {
-
+fun View.animateViewHeight(from: Int, to: Int, duration: Long, interpolator: Interpolator = LinearInterpolator(), doOnEnd: ((Animator) -> Unit)? = null) {
     val valueAnimator = ValueAnimator.ofFloat(from.toFloat(), to.toFloat())
     valueAnimator.interpolator = interpolator
     valueAnimator.duration = duration
@@ -93,6 +93,7 @@ fun View.animateViewHeight(from: Int, to: Int, duration: Long, interpolator: Int
         this.layoutParams.height = value.toInt()
         this.requestLayout()
     }
+    doOnEnd?.also { valueAnimator.doOnEnd(it) }
     valueAnimator.start()
 }
 
