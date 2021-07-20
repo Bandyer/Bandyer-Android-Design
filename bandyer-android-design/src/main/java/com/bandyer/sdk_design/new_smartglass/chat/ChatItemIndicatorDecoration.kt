@@ -5,14 +5,14 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.view.View
-import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.Interpolator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.utils.extensions.darkenColor
 import com.google.android.material.color.MaterialColors
+import java.util.*
+import kotlin.math.abs
 import kotlin.math.truncate
 
 /**
@@ -36,11 +36,6 @@ class ChatItemIndicatorDecoration(context: Context, private val height: Float) :
     private val colorInactive = colorActive.darkenColor(0.4f)
 
     /**
-     * Interpolation animation
-     */
-    private val interpolator: Interpolator = AccelerateDecelerateInterpolator()
-
-    /**
      * Paint used to draw
      */
     private val paint = Paint().apply {
@@ -49,6 +44,11 @@ class ChatItemIndicatorDecoration(context: Context, private val height: Float) :
         style = Paint.Style.STROKE
         isAntiAlias = true
     }
+
+    /**
+     * Tell if layout is rtl
+     */
+    private val isRTL = context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
@@ -65,13 +65,10 @@ class ChatItemIndicatorDecoration(context: Context, private val height: Float) :
 
         // find offset of active page (if the user is scrolling)
         val activeChild = layoutManager.findViewByPosition(activePosition) ?: return
-        val left = activeChild.left
+        val start = activeChild.left
         val width = activeChild.width
 
-        // on swipe the active item will be positioned from [-width, 0]
-        // interpolate offset for smooth animation
-        val progress = interpolator.getInterpolation(left * -1 / width.toFloat())
-        c.drawHighlights(parent, itemCount,truncate(itemWidth) + 1f, activePosition, progress)
+        c.drawHighlights(parent, itemCount, truncate(itemWidth) + 1f, activePosition, abs(start / width.toFloat()))
     }
 
     private fun Canvas.drawInactiveIndicator(parent: View) {
@@ -89,17 +86,19 @@ class ChatItemIndicatorDecoration(context: Context, private val height: Float) :
     ) {
         paint.color = colorActive
         val y = parent.height - this@ChatItemIndicatorDecoration.height / 2f
-        var highlightStart = itemWidth * highlightPosition
+        val parentStart = if (isRTL) parent.width else parent.left
+        var highlightStart = abs(parentStart - itemWidth * highlightPosition)
         // calculate partial highlight
         val partialHighlight = itemWidth * progress
+        val rtlMultiplier = if(isRTL) -1 else 1
 
         // draw the cut off highlight
-        drawLine(highlightStart + partialHighlight, y, highlightStart + itemWidth, y, paint)
+        drawLine(highlightStart + (partialHighlight * rtlMultiplier), y, highlightStart + (itemWidth * rtlMultiplier), y, paint)
 
         // draw the highlight overlapping to the next item as well
         if (highlightPosition < itemCount - 1) {
-            highlightStart += itemWidth
-            drawLine(highlightStart, y, highlightStart + partialHighlight, y, paint)
+            highlightStart += (itemWidth * rtlMultiplier)
+            drawLine(highlightStart, y, highlightStart + (partialHighlight * rtlMultiplier), y, paint)
         }
     }
 }
