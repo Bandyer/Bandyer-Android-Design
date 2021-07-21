@@ -19,7 +19,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 
 class ChatFragment : Fragment(), SmartGlassTouchEventListener, BottomBarHolder {
 
-//    private val activity by lazy { requireActivity() as MainActivity }
+    //    private val activity by lazy { requireActivity() as MainActivity }
     private lateinit var binding: BandyerFragmentChatBinding
 
     // recycler view
@@ -35,22 +35,21 @@ class ChatFragment : Fragment(), SmartGlassTouchEventListener, BottomBarHolder {
         // TODO handle this
 //        activity.hideNotification()
 
-        binding.messages.apply {
-            layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = fastAdapter
-            isFocusable = true
-            // TODO add decoration height through style
-            addItemDecoration(
-                ChatItemIndicatorDecoration(
-                    requireContext(),
-                    Resources.getSystem().displayMetrics.density * 4
-                )
+        val messages = binding.messages
+        messages.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        messages.adapter = fastAdapter
+        messages.isFocusable = true
+        // TODO add decoration height through style
+        messages.addItemDecoration(
+            ChatItemIndicatorDecoration(
+                requireContext(),
+                Resources.getSystem().displayMetrics.density * 4
             )
-        }
+        )
 
         val snapHelper: SnapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(binding.messages)
+        snapHelper.attachToRecyclerView(messages)
 
         itemAdapter.add(ChatItem("Mario: Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?"))
         itemAdapter.add(ChatItem("Francesco: La scatola è sulla sinistra"))

@@ -1,26 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.bandyer.sdk_design.new_smartglass.MenuFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/menu"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        tools:listitem="@layout/bandyer_chat_item_layout"/>
+        tools:listitem="@layout/bandyer_menu_item_layout"
+        app:layout_constraintBottom_toTopOf="@id/bottomActionBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
         android:id="@+id/bottomActionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#CB000000"
-        app:swipeText="tra i messaggi"
-        app:swipeDownText="chiudi" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:swipeDownText="chiudi"
+        app:swipeText="naviga"
+        app:tapText="seleziona" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
