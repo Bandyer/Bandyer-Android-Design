@@ -1,25 +1,18 @@
 package com.bandyer.sdk_design.new_smartglass
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentMenuBinding
-import com.bandyer.sdk_design.extensions.setPaddingEnd
-import com.bandyer.sdk_design.extensions.setPaddingStart
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import kotlin.math.roundToInt
 
 class MenuFragment : Fragment(), SmartGlassTouchEventListener, BottomBarHolder {
 
@@ -30,14 +23,17 @@ class MenuFragment : Fragment(), SmartGlassTouchEventListener, BottomBarHolder {
 
     private var currentMenuItemIndex = 0
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = BandyerFragmentMenuBinding.inflate(inflater, container, false)
 
+        val root = binding.root
         val menu = binding.menu
-        val layoutManager = CenterLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager =
+            CenterLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         menu.layoutManager = layoutManager
         menu.adapter = fastAdapter
         menu.clipToPadding = false
@@ -62,11 +58,13 @@ class MenuFragment : Fragment(), SmartGlassTouchEventListener, BottomBarHolder {
             }
         })
 
-        itemAdapter.add(MenuItem("Muta"))
         itemAdapter.add(MenuItem("Attiva microfono"))
+        itemAdapter.add(MenuItem("Muta camera"))
         itemAdapter.add(MenuItem("Volume"))
+        itemAdapter.add(MenuItem("Zoom"))
 
-        return binding.root
+        root.setOnTouchListener { _, event -> menu.onTouchEvent(event) }
+        return root
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean = false

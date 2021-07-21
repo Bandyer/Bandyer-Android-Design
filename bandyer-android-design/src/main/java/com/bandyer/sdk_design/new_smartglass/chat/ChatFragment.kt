@@ -1,5 +1,6 @@
 package com.bandyer.sdk_design.new_smartglass.chat
 
+import android.annotation.SuppressLint
 import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,6 +27,7 @@ class ChatFragment : Fragment(), SmartGlassTouchEventListener, BottomBarHolder {
     private val itemAdapter = ItemAdapter<ChatItem>()
     private val fastAdapter = FastAdapter.with(itemAdapter)
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,6 +37,7 @@ class ChatFragment : Fragment(), SmartGlassTouchEventListener, BottomBarHolder {
         // TODO handle this
 //        activity.hideNotification()
 
+        val root = binding.root
         val messages = binding.messages
         messages.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -55,7 +58,8 @@ class ChatFragment : Fragment(), SmartGlassTouchEventListener, BottomBarHolder {
         itemAdapter.add(ChatItem("Francesco: La scatola è sulla sinistra"))
         itemAdapter.add(ChatItem("Gianfranco: Mi piacciono i treni"))
 
-        return binding.root
+        root.setOnTouchListener { _, event -> messages.onTouchEvent(event) }
+        return root
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean =
