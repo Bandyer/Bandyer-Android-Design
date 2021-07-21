@@ -47,9 +47,9 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         batteryObserver = BatteryObserver(this)
         wifiObserver = WiFiObserver(this)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            notificationManager.show("Mario: Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?")
-        }, 5000)
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            notificationManager.show("Mario: Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?")
+//        }, 5000)
     }
 
     override fun onResume() {
@@ -104,10 +104,11 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 
     override fun onExpanded() {
         handleNotification = false
-        binding.navHostFragment.findNavController()
-            .navigate(R.id.action_menuFragment_to_chatFragment)
+        if(supportFragmentManager.currentNavigationFragment?.id != R.id.chatFragment)
+            binding.navHostFragment.findNavController().navigate(R.id.chatFragment)
         (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.showBottomBar()
         hideNotificationBottomBar()
+        hideNotification()
     }
 
     override fun onDismiss() {
