@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VolumeFragment">
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:contentDescription="description"
+        android:value="100.0"
+        android:valueFrom="0.0"
+        android:valueTo="100.0"
+        android:stepSize="10.0"
+        app:trackColorInactive="#63000000"
+        app:trackColorActive="?attr/colorSecondary"
+        app:thumbRadius="0dp"
+        app:haloRadius="0dp"
+        app:tickVisible="false"
+        app:trackHeight="72dp"
+        style="@style/Widget.MaterialComponents.Slider"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomActionBar"/>
+
+    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+        android:id="@+id/bottomActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:swipeDownText="annulla"
+        app:swipeText="modifica"
+        app:tapText="conferma e chiudi" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
