@@ -43,16 +43,17 @@ class MenuFragment : Fragment(), SmartGlassTouchEventListener, BottomBarHolder {
         menu.clipToPadding = false
         menu.isFocusable = true
 
-        // TODO add decoration height through style
-//        menu.addItemDecoration(
-//            MenuItemIndicatorDecoration(
-//                requireContext(),
-//                Resources.getSystem().displayMetrics.density * 4
-//            )
-//        )
-
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(menu)
+
+        // TODO add decoration height through style
+        menu.addItemDecoration(
+            MenuItemIndicatorDecoration(
+                requireContext(),
+                snapHelper,
+                Resources.getSystem().displayMetrics.density * 4
+            )
+        )
 
         menu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
