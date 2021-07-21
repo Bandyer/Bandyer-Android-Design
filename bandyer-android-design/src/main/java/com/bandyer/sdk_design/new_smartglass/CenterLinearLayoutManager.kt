@@ -6,7 +6,8 @@ import androidx.core.view.updatePaddingRelative
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-// ***Known problem***: The padding is wrong if both the first and the last item are visible
+// ***Known problem***
+// The padding is wrong if both the first and the last item are visible
 class CenterLinearLayoutManager constructor(
     context: Context, @RecyclerView.Orientation orientation: Int, reverseLayout: Boolean
 ) : LinearLayoutManager(context, orientation, reverseLayout) {
