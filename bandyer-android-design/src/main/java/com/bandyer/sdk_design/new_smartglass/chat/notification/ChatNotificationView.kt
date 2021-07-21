@@ -52,7 +52,7 @@ class ChatNotificationView @JvmOverloads constructor(
 
     private fun setVisibilityWithAnimation(visibility: Int) {
         TransitionManager.beginDelayedTransition(
-            this,
+            parent as ViewGroup,
             Slide(Gravity.TOP).apply { duration = ANIMATION_DURATION })
         this.visibility = visibility
     }
