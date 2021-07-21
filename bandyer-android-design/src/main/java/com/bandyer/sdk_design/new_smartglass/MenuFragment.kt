@@ -47,7 +47,7 @@ class MenuFragment : Fragment(), SmartGlassTouchEventListener, BottomBarHolder {
             MenuItemIndicatorDecoration(
                 requireContext(),
                 snapHelper,
-                Resources.getSystem().displayMetrics.density * 4
+                Resources.getSystem().displayMetrics.density * 3
             )
         )
 

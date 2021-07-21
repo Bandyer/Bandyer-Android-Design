@@ -10,7 +10,7 @@
         android:id="@+id/menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#CB000000"
+        android:background="#63000000"
         app:layout_constraintBottom_toTopOf="@id/bottomActionBar"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/bandyer_menu_item_layout" />
