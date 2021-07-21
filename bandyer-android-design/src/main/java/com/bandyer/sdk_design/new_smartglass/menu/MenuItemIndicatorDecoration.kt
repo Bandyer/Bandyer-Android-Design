@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass
+package com.bandyer.sdk_design.new_smartglass.menu
 
 import android.content.Context
 import android.graphics.Canvas

@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass
+package com.bandyer.sdk_design.new_smartglass.menu
 
 import android.annotation.SuppressLint
 import android.content.res.Resources
@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentMenuBinding
+import com.bandyer.sdk_design.new_smartglass.BottomBarHolder
+import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEventListener
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
