@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="0dp"
+        android:paddingEnd="0dp"
+        android:thumb="@null"
+        android:max="10"
+        android:progress="0"
+        app:tickMark="@null"
+        android:progressDrawable="@drawable/bandyer_seekbar_track"
+        android:background="@null"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        app:layout_constraintBottom_toTopOf="@+id/bottomActionBar"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/percentage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textSize="48sp"
+        android:textColor="@android:color/white"
+        tools:text="40%"/>
+</FrameLayout>
