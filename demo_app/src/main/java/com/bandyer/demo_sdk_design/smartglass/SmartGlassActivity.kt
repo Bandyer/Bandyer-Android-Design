@@ -1,4 +1,4 @@
-package com.bandyer.demo_sdk_design
+package com.bandyer.demo_sdk_design.smartglass
 
 import android.os.Bundle
 import android.view.KeyEvent
@@ -7,6 +7,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.bandyer.demo_sdk_design.R
 import com.bandyer.demo_sdk_design.databinding.ActivitySmartGlassBinding
 import com.bandyer.sdk_design.new_smartglass.GlassGestureDetector
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent

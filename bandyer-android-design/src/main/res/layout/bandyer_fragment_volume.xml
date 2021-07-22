@@ -19,8 +19,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:swipeDownText="annulla"
-        app:swipeText="modifica"
-        app:tapText="conferma e chiudi" />
+        app:kaleyra_swipeDownText="annulla"
+        app:kaleyra_swipeText="modifica"
+        app:kaleyra_tapText="conferma e chiudi" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

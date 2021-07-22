@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.bandyer.sdk_design.new_smartglass.menu.MenuFragment">
+    tools:context="com.bandyer.sdk_design.new_smartglass.menu.SmartGlassMenuFragment"
+    android:theme="?attr/bandyer_smartGlassMenuFragmentStyle">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#63000000"
         app:layout_constraintBottom_toTopOf="@id/bottomActionBar"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/bandyer_menu_item_layout" />
@@ -20,9 +20,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:swipeDownText="chiudi"
-        app:swipeText="naviga"
-        app:tapText="seleziona" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

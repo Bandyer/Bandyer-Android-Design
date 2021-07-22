@@ -12,17 +12,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentMenuBinding
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
-class MenuFragment : SmartGlassBaseFragment() {
+abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
 
     private lateinit var binding: BandyerFragmentMenuBinding
 
-    private val itemAdapter = ItemAdapter<MenuItem>()
-    private val fastAdapter = FastAdapter.with(itemAdapter)
+    protected val itemAdapter = ItemAdapter<MenuItem>()
+    protected val fastAdapter = FastAdapter.with(itemAdapter)
 
-    private var currentMenuItemIndex = 0
+    protected lateinit var root: View
+    protected lateinit var rvMenu: RecyclerView
+//    protected lateinit var bottomActionBar: BottomActionBarView
+
+    protected var currentMenuItemIndex = 0
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -31,20 +36,24 @@ class MenuFragment : SmartGlassBaseFragment() {
     ): View {
         binding = BandyerFragmentMenuBinding.inflate(inflater, container, false)
 
-        val root = binding.root
-        val menu = binding.menu
+        // set the views
+        root = binding.root
+        rvMenu = binding.menu
+//        bottomActionBar = binding.bottomActionBar
+
+        // init the recycler view
         val layoutManager =
             CenterLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        menu.layoutManager = layoutManager
-        menu.adapter = fastAdapter
-        menu.clipToPadding = false
-        menu.isFocusable = true
+        rvMenu.layoutManager = layoutManager
+        rvMenu.adapter = fastAdapter
+        rvMenu.clipToPadding = false
+        rvMenu.isFocusable = true
 
         val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(menu)
+        snapHelper.attachToRecyclerView(rvMenu)
 
         // TODO add decoration height through style
-        menu.addItemDecoration(
+        rvMenu.addItemDecoration(
             MenuItemIndicatorDecoration(
                 requireContext(),
                 snapHelper,
@@ -52,21 +61,18 @@ class MenuFragment : SmartGlassBaseFragment() {
             )
         )
 
-        menu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        // add scroll listener
+        rvMenu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val foundView = snapHelper.findSnapView(layoutManager) ?: return
                 currentMenuItemIndex = layoutManager.getPosition(foundView)
             }
         })
 
-        itemAdapter.add(MenuItem("Attiva microfono"))
-        itemAdapter.add(MenuItem("Muta camera"))
-        itemAdapter.add(MenuItem("Volume"))
-        itemAdapter.add(MenuItem("Zoom"))
-
-        root.setOnTouchListener { _, event -> menu.onTouchEvent(event) }
+        // pass the root view's touch event to the recycler view
+        root.setOnTouchListener { _, event -> rvMenu.onTouchEvent(event) }
         return root
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean = false
+    abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean
 }

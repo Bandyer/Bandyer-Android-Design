@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
+        <attr name="kaleyra_itemGestureIconStyle" format="reference"/>
+        <attr name="kaleyra_itemGestureTextStyle" format="reference"/>
+        <attr name="kaleyra_itemActionTextStyle" format="reference"/>
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item" parent="">
+        <item name="kaleyra_itemGestureIconStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.GestureIcon</item>
+        <item name="kaleyra_itemGestureTextStyle">@style/BandyerSDKDesign.TextView.BottomActionBar.Item.GestureText</item>
+        <item name="kaleyra_itemActionTextStyle">@style/BandyerSDKDesign.TextView.BottomActionBar.Item.ActionText</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.GestureIcon" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space24</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space24</item>
+        <item name="tint">?attr/colorSecondary</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.BottomActionBar.Item.GestureText" parent="BandyerSDKDesign.TextView">
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">?attr/colorSecondary</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.BottomActionBar.Item.ActionText" parent="BandyerSDKDesign.TextView">
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space4</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+</resources>

@@ -40,11 +40,11 @@
             android:name=".MainActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:theme="@style/BandyerSDKDesign.Theme.Call.DayNight">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".ChatActivity"
@@ -55,8 +55,14 @@
             android:name=".PointerActivity"
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
         <activity
-            android:name=".SmartGlassActivity"
-            android:theme="@style/BandyerSDKDesign.Theme.Call" />
+            android:name=".smartglass.SmartGlassActivity"
+            android:theme="@style/BandyerSDKDesign.Theme.Call" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

@@ -5,5 +5,5 @@
     android:id="@+id/message"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:messageCollapsed="false"
-    app:messageRead="false" />
+    app:kaleyra_messageCollapsed="false"
+    app:kaleyra_messageRead="false" />

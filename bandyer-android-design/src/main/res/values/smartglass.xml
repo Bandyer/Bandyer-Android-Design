@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Smart glass declare styleable-->
+    <declare-styleable name="BottomActionBarItemView">
+        <attr name="kaleyra_gestureIcon" format="reference"/>
+        <attr name="kaleyra_gestureText" format="string"/>
+        <attr name="kaleyra_actionText" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="BottomActionBarView">
+        <attr name="kaleyra_swipeText" format="string"/>
+        <attr name="kaleyra_tapText" format="string"/>
+        <attr name="kaleyra_swipeDownText" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="ChatMessageView">
+        <attr name="kaleyra_messageText" format="string"/>
+        <attr name="kaleyra_messageRead" format="boolean"/>
+        <attr name="kaleyra_messageCollapsed" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="BandyerSDKDesign.SmartGlass">
+        <attr name="kaleyra_statusBarStyle" format="reference"/>
+        <attr name="kaleyra_bottomActionBarStyle" format="reference"/>
+        <attr name="kaleyra_rootLayoutStyle" format="reference"/>
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.SmartGlass.MenuFragment" parent="">
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerView</item>
+        <item name="kaleyra_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerView" parent="">
+        <item name="android:background">#63000000</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar" parent="">
+        <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="kaleyra_swipeDownText">@string/kaleyra_close</item>
+        <item name="kaleyra_swipeText">@string/kaleyra_browse</item>
+        <item name="kaleyra_tapText">@string/kaleyra_select</item>
+<!--        <item name="pota">BandyerSDKDesign.SmartGlass.BottomActionBar</item>-->
+    </style>
+
+</resources>

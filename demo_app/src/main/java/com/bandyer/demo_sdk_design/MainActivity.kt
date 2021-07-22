@@ -30,6 +30,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import com.bandyer.demo_sdk_design.databinding.ActivityMainBinding
+import com.bandyer.demo_sdk_design.smartglass.SmartGlassActivity
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.call.dialogs.BandyerSnapshotDialog

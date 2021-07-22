@@ -9,21 +9,25 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
 import com.bandyer.sdk_design.databinding.BandyerFragmentChatBinding
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
-class ChatFragment : SmartGlassBaseFragment() {
+abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
 
-    //    private val activity by lazy { requireActivity() as MainActivity }
     private lateinit var binding: BandyerFragmentChatBinding
 
-    // recycler view
-    private val itemAdapter = ItemAdapter<ChatItem>()
-    private val fastAdapter = FastAdapter.with(itemAdapter)
+    protected val itemAdapter = ItemAdapter<ChatItem>()
+    protected val fastAdapter = FastAdapter.with(itemAdapter)
+
+    protected lateinit var root: View
+    protected lateinit var rvMessages: RecyclerView
+    protected lateinit var bottomActionBar: BottomActionBarView
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -32,17 +36,17 @@ class ChatFragment : SmartGlassBaseFragment() {
     ): View {
         binding = BandyerFragmentChatBinding.inflate(inflater, container, false)
 
-        // TODO handle this
-//        activity.hideNotification()
+        // set the views
+        root = binding.root
+        rvMessages = binding.messages
+        bottomActionBar = binding.bottomActionBar
 
-        val root = binding.root
-        val messages = binding.messages
-        messages.layoutManager =
+        rvMessages.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        messages.adapter = fastAdapter
-        messages.isFocusable = true
+        rvMessages.adapter = fastAdapter
+        rvMessages.isFocusable = true
         // TODO add decoration height through style
-        messages.addItemDecoration(
+        rvMessages.addItemDecoration(
             ChatItemIndicatorDecoration(
                 requireContext(),
                 Resources.getSystem().displayMetrics.density * 4
@@ -50,22 +54,12 @@ class ChatFragment : SmartGlassBaseFragment() {
         )
 
         val snapHelper: SnapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(messages)
+        snapHelper.attachToRecyclerView(rvMessages)
 
-        itemAdapter.add(ChatItem("Mario: Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?"))
-        itemAdapter.add(ChatItem("Francesco: La scatola è sulla sinistra"))
-        itemAdapter.add(ChatItem("Gianfranco: Mi piacciono i treni"))
-
-        root.setOnTouchListener { _, event -> messages.onTouchEvent(event) }
+        // pass the root view's touch event to the recycler view
+        root.setOnTouchListener { _, event -> rvMessages.onTouchEvent(event) }
         return root
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean =
-        when (event) {
-            SmartGlassTouchEvent.Event.SWIPE_DOWN -> {
-                findNavController().popBackStack()
-                true
-            }
-            else -> false
-        }
+    abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean
 }

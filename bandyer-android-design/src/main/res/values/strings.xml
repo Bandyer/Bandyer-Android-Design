@@ -173,4 +173,11 @@
     <string name="bandyer_max_bytes_dialog_descr">It is allowed to share files up to 150 MB</string>
     <string name="bandyer_max_bytes_dialog_title">File share limit</string>
 
+    <!-- SMART GLASSES -->
+    <string name="kaleyra_swipe">Swipe</string>
+    <string name="kaleyra_tap">Tap</string>
+    <string name="kaleyra_close">close</string>
+    <string name="kaleyra_browse">browse</string>
+    <string name="kaleyra_select">select</string>
+
 </resources>

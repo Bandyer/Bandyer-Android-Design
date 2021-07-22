@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.bandyer.sdk_design.new_smartglass.chat.ChatFragment">
+    tools:context="com.bandyer.sdk_design.new_smartglass.chat.SmartGlassChatFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messages"
@@ -20,7 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#CB000000"
-        app:swipeText="tra i messaggi"
-        app:swipeDownText="chiudi" />
+        app:kaleyra_swipeText="tra i messaggi"
+        app:kaleyra_swipeDownText="chiudi"
+        style="?attr/"/>
 
 </LinearLayout>

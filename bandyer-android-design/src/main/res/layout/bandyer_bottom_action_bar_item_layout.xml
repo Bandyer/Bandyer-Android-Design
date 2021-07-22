@@ -2,32 +2,26 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    style="?attr/kaleyra_rootLayoutStyle">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/gesture_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:tint="?attr/colorSecondary" />
+        android:id="@+id/kaleyra_gesture_icon"
+        style="?attr/kaleyra_itemGestureIconStyle"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/gesture_text"
+        android:id="@+id/kaleyra_gesture_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:textColor="?attr/colorSecondary"
-        android:textSize="14sp"
-        tools:text="Swipe" />
+        tools:text="Swipe"
+        style="?attr/kaleyra_itemGestureTextStyle"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/action_text"
+        android:id="@+id/kaleyra_action_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:maxLines="1"
-        android:textSize="14sp"
-        android:textColor="@android:color/white"
-        tools:text="cancel" />
+        tools:text="cancel"
+        style="?attr/kaleyra_itemActionTextStyle"/>
 
 </LinearLayout>

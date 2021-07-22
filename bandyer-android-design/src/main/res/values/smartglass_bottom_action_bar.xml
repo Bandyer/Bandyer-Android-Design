@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BandyerSDKDesign.SmartGlass.BottomActionBar">
+        <attr name="kaleyra_swipeItemStyle" format="reference"/>
+        <attr name="kaleyra_swipeDownItemStyle" format="reference"/>
+        <attr name="kaleyra_tapItemStyle" format="reference"/>
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar" parent="">
+        <item name="kaleyra_swipeItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe</item>
+        <item name="kaleyra_swipeDownItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown</item>
+        <item name="kaleyra_tapItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap</item>
+    </style>
+
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
+        <item name="kaleyra_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe.Root</item>
+        <item name="kaleyra_gestureIcon">@drawable/bandyer_close_icon</item>
+        <item name="kaleyra_gestureText">@string/kaleyra_swipe</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe.Root" parent="">
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space4</item>
+    </style>
+
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
+        <item name="kaleyra_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown.Root</item>
+        <item name="kaleyra_gestureIcon">@drawable/bandyer_close_icon</item>
+        <item name="kaleyra_gestureText">@string/kaleyra_tap</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown.Root" parent="">
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space8</item>
+    </style>
+
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
+        <item name="kaleyra_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap.Root</item>
+        <item name="kaleyra_gestureIcon">@drawable/bandyer_close_icon</item>
+        <item name="kaleyra_gestureText">@string/kaleyra_swipe</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap.Root" parent="">
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space8</item>
+    </style>
+</resources>

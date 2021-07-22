@@ -18,14 +18,14 @@ class BottomActionBarItemView @JvmOverloads constructor(
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.BottomActionBarItemView).apply {
-            binding.gestureIcon.setImageDrawable(getDrawable(R.styleable.BottomActionBarItemView_gestureIcon))
-            binding.gestureText.text = getString(R.styleable.BottomActionBarItemView_gestureText)
-            setActionText(getString(R.styleable.BottomActionBarItemView_actionText))
+            binding.kaleyraGestureIcon.setImageDrawable(getDrawable(R.styleable.BottomActionBarItemView_kaleyra_gestureIcon))
+            binding.kaleyraGestureText.text = getString(R.styleable.BottomActionBarItemView_kaleyra_gestureText)
+            setActionText(getString(R.styleable.BottomActionBarItemView_kaleyra_actionText))
             recycle()
         }
     }
 
     fun setActionText(text: String?) {
-        binding.actionText.text = text
+        binding.kaleyraActionText.text = text
     }
 }

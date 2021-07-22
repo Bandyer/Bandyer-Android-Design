@@ -19,18 +19,18 @@ class BottomActionBarView @JvmOverloads constructor(
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.BottomActionBarView).apply {
-            setSwipeText(getString(R.styleable.BottomActionBarView_swipeText))
-            setTapText(getString(R.styleable.BottomActionBarView_tapText))
-            setSwipeDownText(getString(R.styleable.BottomActionBarView_swipeDownText))
+            setSwipeText(getString(R.styleable.BottomActionBarView_kaleyra_swipeText))
+            setTapText(getString(R.styleable.BottomActionBarView_kaleyra_tapText))
+            setSwipeDownText(getString(R.styleable.BottomActionBarView_kaleyra_swipeDownText))
             recycle()
         }
     }
 
-    fun setSwipeText(text: String?) = binding.swipe.setActionTextOrHide(text)
+    fun setSwipeText(text: String?) = binding.kaleyraSwipe.setActionTextOrHide(text)
 
-    fun setTapText(text: String?) = binding.tap.setActionTextOrHide(text)
+    fun setTapText(text: String?) = binding.kaleyraTap.setActionTextOrHide(text)
 
-    fun setSwipeDownText(text: String?) = binding.swipeDown.setActionTextOrHide(text)
+    fun setSwipeDownText(text: String?) = binding.kaleyraSwipeDown.setActionTextOrHide(text)
 
     private fun BottomActionBarItemView.setActionTextOrHide(text: String?) =
         text?.let { setActionText(it) } ?: kotlin.run { visibility = View.GONE }
