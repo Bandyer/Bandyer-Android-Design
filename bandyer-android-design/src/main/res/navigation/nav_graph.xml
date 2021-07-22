@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/volumeFragment">
+    app:startDestination="@id/menuFragment">
 
     <fragment
         android:id="@+id/chatFragment"
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/volumeFragment"
-        android:name="com.bandyer.sdk_design.VolumeFragment"
+        android:name="com.bandyer.sdk_design.new_smartglass.volume.VolumeFragment"
         android:label="fragment_volume"
         tools:layout="@layout/bandyer_fragment_volume" />
 </navigation>

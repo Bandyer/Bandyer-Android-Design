@@ -45,6 +45,11 @@ class MenuItemIndicatorDecoration(
         isAntiAlias = true
     }
 
+    /**
+     * Tell if layout is rtl
+     */
+    private val isRTL = context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
         val y = parent.height - this@MenuItemIndicatorDecoration.height / 2f
@@ -76,11 +81,11 @@ class MenuItemIndicatorDecoration(
         val firstTextView = first.findViewById<View>(R.id.itemText)
         val lastTextView = last.findViewById<View>(R.id.itemText)
 
-        var startX = parent.left
-        var endX = parent.right
+        var startX = if(!isRTL) parent.left else parent.right
+        var endX = if(!isRTL) parent.right else parent.left
         when {
-            firstPos == 0 -> startX = first.left + firstTextView.left
-            lastPos == itemCount - 1 -> endX = last.left + lastTextView.left + lastTextView.width
+            firstPos == 0 -> startX = first.left + firstTextView.left + if(!isRTL) 0 else lastTextView.width
+            lastPos == itemCount - 1 -> endX = last.left + lastTextView.left + if(!isRTL) lastTextView.width else 0
         }
         drawLine(startX.toFloat(), y, endX.toFloat(), y, paint)
     }

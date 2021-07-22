@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design
+package com.bandyer.sdk_design.new_smartglass.volume
 
 import android.annotation.SuppressLint
 import android.os.Bundle

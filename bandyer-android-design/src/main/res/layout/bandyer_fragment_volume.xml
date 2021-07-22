@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VolumeFragment">
+    tools:context=".new_smartglass.volume.VolumeFragment">
 
     <com.bandyer.sdk_design.new_smartglass.BandyerSlider
         android:id="@+id/slider"
