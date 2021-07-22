@@ -1,8 +1,6 @@
 package com.bandyer.demo_sdk_design
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -10,13 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.bandyer.demo_sdk_design.databinding.ActivitySmartGlassBinding
-import com.bandyer.sdk_design.new_smartglass.BottomBarHolder
 import com.bandyer.sdk_design.new_smartglass.GlassGestureDetector
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEventListener
 import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationManager
+import com.bandyer.sdk_design.new_smartglass.utils.battery.BatteryObserver
 import com.bandyer.sdk_design.new_smartglass.utils.currentNavigationFragment
-import com.bandyer.sdk_design.new_smartglass.utils.network.BatteryObserver
 import com.bandyer.sdk_design.new_smartglass.utils.network.WiFiObserver
 
 class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener,
@@ -98,7 +95,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 
     override fun onShow() {
         handleNotification = true
-        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.hideBottomBar()
+//        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.hideBottomBar()
         showNotificationBottomBar()
     }
 
@@ -106,14 +103,14 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         handleNotification = false
         if(supportFragmentManager.currentNavigationFragment?.id != R.id.chatFragment)
             binding.navHostFragment.findNavController().navigate(R.id.chatFragment)
-        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.showBottomBar()
+//        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.showBottomBar()
         hideNotificationBottomBar()
         hideNotification()
     }
 
     override fun onDismiss() {
         handleNotification = false
-        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.showBottomBar()
+//        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.showBottomBar()
         hideNotificationBottomBar()
     }
 

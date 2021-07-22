@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass.utils.network.model
+package com.bandyer.sdk_design.new_smartglass.utils.network
 
 data class WiFiState(
     val state: State = State.UNKNOWN,

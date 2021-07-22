@@ -1,11 +1,10 @@
-package com.bandyer.sdk_design.new_smartglass.utils.network
+package com.bandyer.sdk_design.new_smartglass.utils.battery
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
-import com.bandyer.sdk_design.new_smartglass.utils.network.model.BatteryState
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.*
 import java.lang.ref.WeakReference

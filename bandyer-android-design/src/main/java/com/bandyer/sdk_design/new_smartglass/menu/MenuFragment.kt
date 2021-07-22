@@ -6,18 +6,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentMenuBinding
-import com.bandyer.sdk_design.new_smartglass.BottomBarHolder
+import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEventListener
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
-class MenuFragment : Fragment(), SmartGlassTouchEventListener, BottomBarHolder {
+class MenuFragment : SmartGlassBaseFragment() {
 
     private lateinit var binding: BandyerFragmentMenuBinding
 
@@ -71,12 +69,4 @@ class MenuFragment : Fragment(), SmartGlassTouchEventListener, BottomBarHolder {
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean = false
-
-    override fun showBottomBar() {
-        binding.bottomActionBar.visibility = View.VISIBLE
-    }
-
-    override fun hideBottomBar() {
-        binding.bottomActionBar.visibility = View.GONE
-    }
 }
