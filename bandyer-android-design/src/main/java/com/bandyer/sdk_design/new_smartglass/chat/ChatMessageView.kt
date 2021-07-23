@@ -24,9 +24,9 @@ class ChatMessageView @JvmOverloads constructor(
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.ChatMessageView).apply {
-            setMessageText(getString(R.styleable.ChatMessageView_kaleyra_messageText))
-            setMessageRead(getBoolean(R.styleable.ChatMessageView_kaleyra_messageRead, false))
-            setMessageCollapsed(getBoolean(R.styleable.ChatMessageView_kaleyra_messageCollapsed, false))
+            setMessageText(getString(R.styleable.ChatMessageView_bandyer_messageText))
+            setMessageRead(getBoolean(R.styleable.ChatMessageView_bandyer_messageRead, false))
+            setMessageCollapsed(getBoolean(R.styleable.ChatMessageView_bandyer_messageCollapsed, false))
             recycle()
         }
     }

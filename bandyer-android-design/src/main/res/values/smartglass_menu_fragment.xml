@@ -3,7 +3,7 @@
     <!-- MENU FRAGMENT -->
     <style name="BandyerSDKDesign.SmartGlass.MenuFragment" parent="">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerView</item>
-        <item name="kaleyra_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar</item>
+        <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar</item>
     </style>
 
     <!-- RECYCLER VIEW -->
@@ -13,10 +13,10 @@
 
     <!-- BOTTOM ACTION BAR -->
     <style name="BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
-        <item name="kaleyra_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar.Root</item>
-        <item name="kaleyra_swipeDownText">@string/kaleyra_close</item>
-        <item name="kaleyra_swipeText">@string/kaleyra_browse</item>
-        <item name="kaleyra_tapText">@string/kaleyra_select</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar.Root</item>
+        <item name="bandyer_swipeDownText">@string/bandyer_close</item>
+        <item name="bandyer_swipeText">@string/bandyer_browse</item>
+        <item name="bandyer_tapText">@string/bandyer_select</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar.Root" parent="">

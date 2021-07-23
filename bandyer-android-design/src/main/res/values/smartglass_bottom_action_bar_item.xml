@@ -2,15 +2,15 @@
 <resources>
     <!-- BOTTOM ACTION BAR ITEM -->
     <declare-styleable name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
-        <attr name="kaleyra_itemGestureIconStyle" format="reference"/>
-        <attr name="kaleyra_itemGestureTextStyle" format="reference"/>
-        <attr name="kaleyra_itemActionTextStyle" format="reference"/>
+        <attr name="bandyer_itemGestureIconStyle" format="reference"/>
+        <attr name="bandyer_itemGestureTextStyle" format="reference"/>
+        <attr name="bandyer_itemActionTextStyle" format="reference"/>
     </declare-styleable>
 
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item" parent="">
-        <item name="kaleyra_itemGestureIconStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.GestureIcon</item>
-        <item name="kaleyra_itemGestureTextStyle">@style/BandyerSDKDesign.TextView.BottomActionBar.Item.GestureText</item>
-        <item name="kaleyra_itemActionTextStyle">@style/BandyerSDKDesign.TextView.BottomActionBar.Item.ActionText</item>
+        <item name="bandyer_itemGestureIconStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.GestureIcon</item>
+        <item name="bandyer_itemGestureTextStyle">@style/BandyerSDKDesign.TextView.BottomActionBar.Item.GestureText</item>
+        <item name="bandyer_itemActionTextStyle">@style/BandyerSDKDesign.TextView.BottomActionBar.Item.ActionText</item>
     </style>
 
     <!-- GESTURE ICON -->

@@ -2,27 +2,26 @@
 <resources>
     <!-- Smart glass declare styleable-->
     <declare-styleable name="BottomActionBarItemView">
-        <attr name="kaleyra_gestureIcon" format="reference"/>
-        <attr name="kaleyra_gestureText" format="string"/>
-        <attr name="kaleyra_actionText" format="string"/>
+        <attr name="bandyer_gestureIcon" format="reference"/>
+        <attr name="bandyer_gestureText" format="string"/>
+        <attr name="bandyer_actionText" format="string"/>
     </declare-styleable>
 
     <declare-styleable name="BottomActionBarView">
-        <attr name="kaleyra_swipeText" format="string"/>
-        <attr name="kaleyra_tapText" format="string"/>
-        <attr name="kaleyra_swipeDownText" format="string"/>
+        <attr name="bandyer_swipeText" format="string"/>
+        <attr name="bandyer_tapText" format="string"/>
+        <attr name="bandyer_swipeDownText" format="string"/>
     </declare-styleable>
 
     <declare-styleable name="ChatMessageView">
-        <attr name="kaleyra_messageText" format="string"/>
-        <attr name="kaleyra_messageRead" format="boolean"/>
-        <attr name="kaleyra_messageCollapsed" format="boolean"/>
+        <attr name="bandyer_messageText" format="string"/>
+        <attr name="bandyer_messageRead" format="boolean"/>
+        <attr name="bandyer_messageCollapsed" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="BandyerSDKDesign.SmartGlass">
-        <attr name="kaleyra_statusBarStyle" format="reference"/>
-        <attr name="kaleyra_bottomActionBarStyle" format="reference"/>
-        <attr name="kaleyra_rootLayoutStyle" format="reference"/>
+        <attr name="bandyer_statusBarStyle" format="reference"/>
+        <attr name="bandyer_bottomActionBarStyle" format="reference"/>
     </declare-styleable>
 
 </resources>

@@ -28,7 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:kaleyra_swipeDownText="nascondi notifica"
-        app:kaleyra_tapText="leggi" />
+        app:bandyer_swipeDownText="nascondi notifica"
+        app:bandyer_tapText="leggi" />
 
 </LinearLayout>

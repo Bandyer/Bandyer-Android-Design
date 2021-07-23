@@ -20,8 +20,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#CB000000"
-        app:kaleyra_swipeText="tra i messaggi"
-        app:kaleyra_swipeDownText="chiudi"
+        app:bandyer_swipeText="tra i messaggi"
+        app:bandyer_swipeDownText="chiudi"
         style="?attr/"/>
 
 </LinearLayout>

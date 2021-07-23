@@ -4,26 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    style="?attr/kaleyra_rootLayoutStyle">
+    style="?attr/bandyer_rootLayoutStyle">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/kaleyra_gesture_icon"
+        android:id="@+id/bandyer_gesture_icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        style="?attr/kaleyra_itemGestureIconStyle"/>
+        style="?attr/bandyer_itemGestureIconStyle"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/kaleyra_gesture_text"
+        android:id="@+id/bandyer_gesture_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Swipe"
-        style="?attr/kaleyra_itemGestureTextStyle"/>
+        style="?attr/bandyer_itemGestureTextStyle"/>
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/kaleyra_action_text"
+        android:id="@+id/bandyer_action_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="cancel"
-        style="?attr/kaleyra_itemActionTextStyle"/>
+        style="?attr/bandyer_itemActionTextStyle"/>
 
 </LinearLayout>

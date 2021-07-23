@@ -2,22 +2,22 @@
 <resources>
     <!-- BOTTOM ACTION BAR -->
     <declare-styleable name="BandyerSDKDesign.SmartGlass.BottomActionBar">
-        <attr name="kaleyra_swipeItemStyle" format="reference"/>
-        <attr name="kaleyra_swipeDownItemStyle" format="reference"/>
-        <attr name="kaleyra_tapItemStyle" format="reference"/>
+        <attr name="bandyer_swipeItemStyle" format="reference"/>
+        <attr name="bandyer_swipeDownItemStyle" format="reference"/>
+        <attr name="bandyer_tapItemStyle" format="reference"/>
     </declare-styleable>
 
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar" parent="">
-        <item name="kaleyra_swipeItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe</item>
-        <item name="kaleyra_swipeDownItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown</item>
-        <item name="kaleyra_tapItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap</item>
+        <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe</item>
+        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown</item>
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap</item>
     </style>
 
     <!-- SWIPE ITEM -->
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
-        <item name="kaleyra_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe.Root</item>
-        <item name="kaleyra_gestureIcon">@drawable/bandyer_close_icon</item>
-        <item name="kaleyra_gestureText">@string/kaleyra_swipe</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe.Root</item>
+        <item name="bandyer_gestureIcon">@drawable/bandyer_close_icon</item>
+        <item name="bandyer_gestureText">@string/bandyer_swipe</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe.Root" parent="">
@@ -26,9 +26,9 @@
 
     <!-- SWIPE DOWN ITEM -->
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
-        <item name="kaleyra_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown.Root</item>
-        <item name="kaleyra_gestureIcon">@drawable/bandyer_close_icon</item>
-        <item name="kaleyra_gestureText">@string/kaleyra_tap</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown.Root</item>
+        <item name="bandyer_gestureIcon">@drawable/bandyer_close_icon</item>
+        <item name="bandyer_gestureText">@string/bandyer_tap</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown.Root" parent="">
@@ -37,9 +37,9 @@
 
     <!-- TAP ITEM -->
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
-        <item name="kaleyra_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap.Root</item>
-        <item name="kaleyra_gestureIcon">@drawable/bandyer_close_icon</item>
-        <item name="kaleyra_gestureText">@string/kaleyra_swipe</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap.Root</item>
+        <item name="bandyer_gestureIcon">@drawable/bandyer_close_icon</item>
+        <item name="bandyer_gestureText">@string/bandyer_swipe</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap.Root" parent="">

@@ -166,10 +166,10 @@
     <string name="bandyer_max_bytes_dialog_title">Limite condivisione file</string>
 
     <!-- SMART GLASSES -->
-    <string name="kaleyra_swipe">Scorri</string>
-    <string name="kaleyra_tap">Tocca</string>
-    <string name="kaleyra_close">chiudi</string>
-    <string name="kaleyra_browse">naviga</string>
-    <string name="kaleyra_select">seleziona</string>
+    <string name="bandyer_swipe">Scorri</string>
+    <string name="bandyer_tap">Tocca</string>
+    <string name="bandyer_close">chiudi</string>
+    <string name="bandyer_browse">naviga</string>
+    <string name="bandyer_select">seleziona</string>
 
 </resources>
