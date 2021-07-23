@@ -8,8 +8,8 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/itemText"
+        style="?android:attr/textViewStyle"
         android:layout_width="wrap_content"
-        android:layout_height="72dp"
         android:layout_gravity="bottom"
         tools:text="Snapshot" />
 
