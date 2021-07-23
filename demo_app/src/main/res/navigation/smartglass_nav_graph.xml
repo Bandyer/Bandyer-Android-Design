@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/smartglass_nav_graph"
-    app:startDestination="@id/menuFragment">
+    app:startDestination="@id/chatFragment">
 
     <fragment
         android:id="@+id/chatFragment"

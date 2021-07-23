@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -58,17 +59,15 @@ class ChatItemIndicatorDecoration(context: Context, private val height: Float) :
 
         c.drawInactiveIndicator(parent)
 
-        // find active page (which should be highlighted)
         val layoutManager = parent.layoutManager as LinearLayoutManager
         val activePosition = layoutManager.findFirstVisibleItemPosition()
         if (activePosition == RecyclerView.NO_POSITION) return
 
-        // find offset of active page (if the user is scrolling)
         val activeChild = layoutManager.findViewByPosition(activePosition) ?: return
         val start = activeChild.left
         val width = activeChild.width
 
-        c.drawHighlights(parent, itemCount, truncate(itemWidth) + 1f, activePosition, abs(start / width.toFloat()))
+        c.drawHighlights(parent, itemWidth, activePosition + 1, abs(start / width.toFloat()))
     }
 
     private fun Canvas.drawInactiveIndicator(parent: View) {
@@ -79,26 +78,14 @@ class ChatItemIndicatorDecoration(context: Context, private val height: Float) :
 
     private fun Canvas.drawHighlights(
         parent: View,
-        itemCount: Int,
         itemWidth: Float,
         highlightPosition: Int,
         progress: Float
     ) {
         paint.color = colorActive
         val y = parent.height - this@ChatItemIndicatorDecoration.height / 2f
-        val parentStart = if (isRTL) parent.width else parent.left
-        var highlightStart = abs(parentStart - itemWidth * highlightPosition)
-        // calculate partial highlight
-        val partialHighlight = itemWidth * progress
-        val rtlMultiplier = if(isRTL) -1 else 1
-
-        // draw the cut off highlight
-        drawLine(highlightStart + (partialHighlight * rtlMultiplier), y, highlightStart + (itemWidth * rtlMultiplier), y, paint)
-
-        // draw the highlight overlapping to the next item as well
-        if (highlightPosition < itemCount - 1) {
-            highlightStart += (itemWidth * rtlMultiplier)
-            drawLine(highlightStart, y, highlightStart + (partialHighlight * rtlMultiplier), y, paint)
-        }
+        val parentStart = if (isRTL) parent.right else parent.left
+        val highlightWidth = (highlightPosition + progress) * itemWidth
+        drawLine(parentStart.toFloat(), y, highlightWidth, y, paint)
     }
 }
