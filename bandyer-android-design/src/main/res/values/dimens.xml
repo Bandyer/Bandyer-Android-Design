@@ -48,6 +48,7 @@
 
     <!-- texts -->
 
+    <dimen name="bandyer_dimen_text_h0">30sp</dimen>
     <dimen name="bandyer_dimen_text_h1">24sp</dimen>
     <dimen name="bandyer_dimen_text_h2">19sp</dimen>
     <dimen name="bandyer_dimen_text_h3">16sp</dimen>

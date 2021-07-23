@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/bandyer_rootLayoutStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:paddingHorizontal="64dp">
+    android:theme="?attr/bandyer_recyclerViewItemStyle">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/itemText"
         android:layout_width="wrap_content"
         android:layout_height="72dp"
         android:layout_gravity="bottom"
-        android:gravity="center"
-        android:textColor="@android:color/white"
-        android:textSize="30sp"
         tools:text="Snapshot" />
 
 </FrameLayout>

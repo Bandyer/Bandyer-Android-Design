@@ -8,9 +8,16 @@
     </declare-styleable>
 
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Root</item>
         <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Root" parent="">
+        <item name="android:minHeight">@dimen/bandyer_dimen_space32</item>
+        <item name="android:maxHeight">@dimen/bandyer_dimen_space32</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <!-- SWIPE ITEM -->

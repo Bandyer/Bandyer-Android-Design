@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MENU FRAGMENT -->
+    <style name="BandyerSDKDesign.SmartGlass.ChatFragment" parent="">
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerView</item>
+        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem</item>
+        <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment.BottomActionBar</item>
+    </style>
+
+    <!-- RECYCLER VIEW -->
+    <style name="BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerView" parent="">
+        <item name="android:background">@color/bandyer_smartglass_background_color</item>
+    </style>
+
+    <!-- RECYCLER VIEW ITEM -->
+    <style name="BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem.Root</item>
+        <item name="bandyer_lineStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem.Line</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.RecyclerViewItem.ChatFragment.SmartGlass</item>
+        <item name="bandyer_messageCollapsed">false</item>
+        <item name="bandyer_messageRead">false</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem.Root" parent="">
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space28</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space28</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space24</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space24</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem.Line" parent="">
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:background">?attr/colorSecondary</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.RecyclerViewItem.ChatFragment.SmartGlass" parent="BandyerSDKDesign.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.SmartGlass.ChatFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Root.ChatFragment</item>
+        <item name="bandyer_swipeDownText">@string/bandyer_close</item>
+        <item name="bandyer_swipeText">@string/bandyer_browse</item>
+        <item name="bandyer_tapText">@string/bandyer_select</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Root.ChatFragment" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Root">
+        <item name="android:background">@color/bandyer_smartglass_background_color</item>
+    </style>
+</resources>

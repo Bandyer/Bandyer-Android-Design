@@ -179,5 +179,6 @@
     <string name="bandyer_close">close</string>
     <string name="bandyer_browse">browse</string>
     <string name="bandyer_select">select</string>
+    <string name="bandyer_browse_the_messages">browse the messages</string>
 
 </resources>

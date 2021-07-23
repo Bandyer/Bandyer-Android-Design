@@ -22,6 +22,7 @@
     <declare-styleable name="BandyerSDKDesign.SmartGlass">
         <attr name="bandyer_statusBarStyle" format="reference"/>
         <attr name="bandyer_bottomActionBarStyle" format="reference"/>
+        <attr name="bandyer_recyclerViewItemStyle" format="reference"/>
     </declare-styleable>
 
 </resources>

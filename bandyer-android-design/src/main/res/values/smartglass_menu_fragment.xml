@@ -3,25 +3,37 @@
     <!-- MENU FRAGMENT -->
     <style name="BandyerSDKDesign.SmartGlass.MenuFragment" parent="">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerView</item>
+        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerViewItem</item>
         <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar</item>
     </style>
 
     <!-- RECYCLER VIEW -->
     <style name="BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerView" parent="">
-        <item name="android:background">#63000000</item>
+        <item name="android:background">#CB000000</item>
+    </style>
+
+    <!-- RECYCLER VIEW ITEM -->
+    <style name="BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerViewItem" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerViewItem.Root</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.RecyclerViewItem.MenuFragment.SmartGlass</item>
+        <item name="bandyer_messageCollapsed">false</item>
+        <item name="bandyer_messageRead">false</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerViewItem.Root" parent="">
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space64</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space64</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.RecyclerViewItem.MenuFragment.SmartGlass" parent="BandyerSDKDesign.TextView">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h0</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->
     <style name="BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar.Root</item>
         <item name="bandyer_swipeDownText">@string/bandyer_close</item>
-        <item name="bandyer_swipeText">@string/bandyer_browse</item>
-        <item name="bandyer_tapText">@string/bandyer_select</item>
-    </style>
-
-    <style name="BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar.Root" parent="">
-        <item name="android:minHeight">@dimen/bandyer_dimen_space32</item>
-        <item name="android:maxHeight">@dimen/bandyer_dimen_space32</item>
-        <item name="android:gravity">center_vertical</item>
+        <item name="bandyer_swipeText">@string/bandyer_browse_the_messages</item>
     </style>
 </resources>

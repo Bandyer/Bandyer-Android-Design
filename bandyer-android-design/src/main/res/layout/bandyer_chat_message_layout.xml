@@ -1,32 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="?attr/bandyer_rootLayoutStyle"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingVertical="28dp"
-    android:paddingHorizontal="24dp"
-    android:background="#CB000000">
+    android:layout_height="match_parent">
 
     <View
         android:id="@+id/line"
-        android:layout_width="2dp"
+        style="?attr/bandyer_lineStyle"
+        android:layout_width="@dimen/bandyer_dimen_space2"
         android:layout_height="0dp"
-        android:layout_marginEnd="16dp"
-        android:background="?attr/colorSecondary"
-        app:layout_constraintTop_toTopOf="@id/message"
         app:layout_constraintBottom_toBottomOf="@id/message"
         app:layout_constraintEnd_toStartOf="@id/message"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/message" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Mario: Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\nConfermi?"
-        android:textColor="#fff"
-        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/line"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
