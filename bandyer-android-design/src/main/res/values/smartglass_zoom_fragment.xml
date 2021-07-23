@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MENU FRAGMENT -->
+    <style name="BandyerSDKDesign.SmartGlass.ZoomFragment" parent="">
+        <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.ZoomFragment.BottomActionBar</item>
+        <item name="bandyer_sliderStyle">@style/BandyerSDKDesign.SmartGlass.Slider.ZoomFragment</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.SmartGlass.ZoomFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
+        <item name="bandyer_swipeDownText">@string/bandyer_smartglass_cancel</item>
+        <item name="bandyer_swipeText">@string/bandyer_change</item>
+        <item name="bandyer_tapText">@string/bandyer_confirm_and_close</item>
+    </style>
+
+    <!-- SLIDER -->
+    <style name="BandyerSDKDesign.SmartGlass.Slider.ZoomFragment" parent="BandyerSDKDesign.SmartGlass.Slider">
+        <item name="bandyer_percentageText">@string/bandyer_zoom</item>
+    </style>
+</resources>

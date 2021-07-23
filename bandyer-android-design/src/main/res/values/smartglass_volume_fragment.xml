@@ -3,7 +3,7 @@
     <!-- MENU FRAGMENT -->
     <style name="BandyerSDKDesign.SmartGlass.VolumeFragment" parent="">
         <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment.BottomActionBar</item>
-        <item name="bandyer_sliderStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment.Slider</item>
+        <item name="bandyer_sliderStyle">@style/BandyerSDKDesign.SmartGlass.Slider.VolumeFragment</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->
@@ -14,31 +14,7 @@
     </style>
 
     <!-- SLIDER -->
-    <style name="BandyerSDKDesign.SmartGlass.VolumeFragment.Slider" parent="">
+    <style name="BandyerSDKDesign.SmartGlass.Slider.VolumeFragment" parent="BandyerSDKDesign.SmartGlass.Slider">
         <item name="bandyer_percentageText">@string/bandyer_volume</item>
-        <item name="seekBarStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment.SeekBar</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.SeekBar</item>
-    </style>
-
-    <!-- SLIDER SEEKBAR -->
-    <style name="BandyerSDKDesign.SmartGlass.VolumeFragment.SeekBar" parent="Widget.AppCompat.SeekBar.Discrete">
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
-        <item name="android:thumb">@null</item>
-        <item name="android:max">10</item>
-        <item name="android:progress">0</item>
-        <item name="tickMark">@null</item>
-        <item name="android:progressDrawable">@drawable/bandyer_seekbar_track</item>
-        <item name="android:background">@null</item>
-    </style>
-
-    <!-- SLIDER TEXT -->
-    <style name="BandyerSDKDesign.TextView.SeekBar" parent="BandyerSDKDesign.TextView">
-        <item name="android:gravity">center</item>
-        <item name="android:textAlignment">center</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
     </style>
 </resources>

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="?attr/bandyer_smartGlassMenuFragmentStyle"
-    tools:context="com.bandyer.sdk_design.new_smartglass.menu.SmartGlassMenuFragment">
+    android:theme="?attr/bandyer_smartGlassMenuFragmentStyle">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/menu"

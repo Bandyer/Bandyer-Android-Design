@@ -39,6 +39,7 @@
         <attr name="bandyer_smartGlassMenuFragmentStyle" format="reference" />
         <attr name="bandyer_smartGlassChatFragmentStyle" format="reference" />
         <attr name="bandyer_smartGlassVolumeFragmentStyle" format="reference" />
+        <attr name="bandyer_smartGlassZoomFragmentStyle" format="reference" />
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight.V16" parent="BandyerSDKDesign.Theme.DayNight">
@@ -59,6 +60,7 @@
         <item name="bandyer_smartGlassMenuFragmentStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment</item>
         <item name="bandyer_smartGlassChatFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment</item>
         <item name="bandyer_smartGlassVolumeFragmentStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment</item>
+        <item name="bandyer_smartGlassZoomFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ZoomFragment</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.Day.V16" parent="BandyerSDKDesign.Theme.Day">
@@ -79,6 +81,7 @@
         <item name="bandyer_smartGlassMenuFragmentStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment</item>
         <item name="bandyer_smartGlassChatFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment</item>
         <item name="bandyer_smartGlassVolumeFragmentStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment</item>
+        <item name="bandyer_smartGlassZoomFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ZoomFragment</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.Night.V16" parent="BandyerSDKDesign.Theme.Night">
@@ -99,6 +102,7 @@
         <item name="bandyer_smartGlassMenuFragmentStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment</item>
         <item name="bandyer_smartGlassChatFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment</item>
         <item name="bandyer_smartGlassVolumeFragmentStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment</item>
+        <item name="bandyer_smartGlassZoomFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ZoomFragment</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.DayNight.V16"/>

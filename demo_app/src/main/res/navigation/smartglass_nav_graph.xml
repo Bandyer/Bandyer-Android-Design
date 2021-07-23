@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/smartglass_nav_graph"
-    app:startDestination="@id/volumeFragment">
+    app:startDestination="@id/zoomFragment">
 
     <fragment
         android:id="@+id/chatFragment"
@@ -16,4 +16,8 @@
         android:id="@+id/volumeFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.VolumeFragment"
         android:label="VolumeFragment" />
+    <fragment
+        android:id="@+id/zoomFragment"
+        android:name="com.bandyer.demo_sdk_design.smartglass.ZoomFragment"
+        android:label="ZoomFragment" />
 </navigation>
