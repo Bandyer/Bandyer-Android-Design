@@ -2,8 +2,8 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    style="@style/BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar"
-    android:theme="@style/BandyerSDKDesign.SmartGlass.BottomActionBar">
+    android:layout_height="wrap_content"
+    style="?attr/kaleyra_rootLayoutStyle">
 
     <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarItemView
         android:id="@+id/kaleyra_swipe"

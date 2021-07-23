@@ -25,22 +25,4 @@
         <attr name="kaleyra_rootLayoutStyle" format="reference"/>
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.SmartGlass.MenuFragment" parent="">
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerView</item>
-        <item name="kaleyra_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar</item>
-    </style>
-
-    <style name="BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerView" parent="">
-        <item name="android:background">#63000000</item>
-    </style>
-
-    <style name="BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar" parent="">
-        <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="kaleyra_swipeDownText">@string/kaleyra_close</item>
-        <item name="kaleyra_swipeText">@string/kaleyra_browse</item>
-        <item name="kaleyra_tapText">@string/kaleyra_select</item>
-<!--        <item name="pota">BandyerSDKDesign.SmartGlass.BottomActionBar</item>-->
-    </style>
-
 </resources>

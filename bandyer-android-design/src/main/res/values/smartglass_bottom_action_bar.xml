@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- BOTTOM ACTION BAR -->
     <declare-styleable name="BandyerSDKDesign.SmartGlass.BottomActionBar">
         <attr name="kaleyra_swipeItemStyle" format="reference"/>
         <attr name="kaleyra_swipeDownItemStyle" format="reference"/>
@@ -12,7 +13,7 @@
         <item name="kaleyra_tapItemStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap</item>
     </style>
 
-
+    <!-- SWIPE ITEM -->
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
         <item name="kaleyra_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe.Root</item>
         <item name="kaleyra_gestureIcon">@drawable/bandyer_close_icon</item>
@@ -23,7 +24,7 @@
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space4</item>
     </style>
 
-
+    <!-- SWIPE DOWN ITEM -->
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
         <item name="kaleyra_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown.Root</item>
         <item name="kaleyra_gestureIcon">@drawable/bandyer_close_icon</item>
@@ -34,7 +35,7 @@
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space8</item>
     </style>
 
-
+    <!-- TAP ITEM -->
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
         <item name="kaleyra_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap.Root</item>
         <item name="kaleyra_gestureIcon">@drawable/bandyer_close_icon</item>
