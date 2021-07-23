@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.widget.FrameLayout
 import android.widget.SeekBar
+import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerSliderLayoutBinding
 
 class BandyerSlider @JvmOverloads constructor(
@@ -18,17 +19,36 @@ class BandyerSlider @JvmOverloads constructor(
     private var binding: BandyerSliderLayoutBinding =
         BandyerSliderLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
+    private val pattern = resources.getString(R.string.bandyer_slider_pattern)
+    private var percentageText: String
+
     init {
-        binding.seekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.percentage.text = "Volume: ${progress * 10} %"
-            }
+        val attributes = context.obtainStyledAttributes(attrs, R.styleable.BandyerSlider)
+        percentageText =
+            attributes.getString(R.styleable.BandyerSlider_bandyer_percentageText) ?: ""
+        attributes.recycle()
+
+        setPercentageText(0)
+
+        binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) =
+                setPercentageText(progress * 10)
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
-
             override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
-
         })
+    }
+
+    fun setProgress(value: Int) {
+        binding.seekbar.progress = value
+    }
+
+    private fun setPercentageText(progress: Int) {
+        binding.percentage.text = String.format(
+            pattern,
+            percentageText,
+            progress
+        )
     }
 
     @SuppressLint("ClickableViewAccessibility")

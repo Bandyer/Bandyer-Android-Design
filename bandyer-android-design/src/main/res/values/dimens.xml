@@ -48,7 +48,6 @@
 
     <!-- texts -->
 
-    <dimen name="bandyer_dimen_text_h0">30sp</dimen>
     <dimen name="bandyer_dimen_text_h1">24sp</dimen>
     <dimen name="bandyer_dimen_text_h2">19sp</dimen>
     <dimen name="bandyer_dimen_text_h3">16sp</dimen>
@@ -56,6 +55,7 @@
     <dimen name="bandyer_dimen_text_normal">14sp</dimen>
     <dimen name="bandyer_dimen_text_small">12sp</dimen>
     <dimen name="bandyer_dimen_text_caption">10sp</dimen>
+    <dimen name="bandyer_dimen_text_32sp">32sp</dimen>
     <dimen name="bandyer_dimen_text_64sp">64sp</dimen>
 
     <dimen name="bandyer_dimen_text_bouncing_dots">6dp</dimen>

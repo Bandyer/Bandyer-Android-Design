@@ -172,5 +172,8 @@
     <string name="bandyer_browse">naviga</string>
     <string name="bandyer_select">seleziona</string>
     <string name="bandyer_browse_the_messages">tra i messaggi</string>
+    <string name="bandyer_smartglass_cancel">annulla</string>
+    <string name="bandyer_change">modifica</string>
+    <string name="bandyer_confirm_and_close">conferma e chiudi</string>
 
 </resources>

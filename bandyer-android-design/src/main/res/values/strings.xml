@@ -180,5 +180,11 @@
     <string name="bandyer_browse">browse</string>
     <string name="bandyer_select">select</string>
     <string name="bandyer_browse_the_messages">browse the messages</string>
+    <string name="bandyer_smartglass_cancel">cancel</string>
+    <string name="bandyer_change">change</string>
+    <string name="bandyer_confirm_and_close">confirm and close</string>
+    <string name="bandyer_slider_pattern" translatable="false">%1$s: %2$d%%</string>
+    <string name="bandyer_volume" translatable="false">Volume</string>
+    <string name="bandyer_zoom" translatable="false">Zoom</string>
 
 </resources>

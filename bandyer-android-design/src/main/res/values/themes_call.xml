@@ -38,6 +38,7 @@
 
         <attr name="bandyer_smartGlassMenuFragmentStyle" format="reference" />
         <attr name="bandyer_smartGlassChatFragmentStyle" format="reference" />
+        <attr name="bandyer_smartGlassVolumeFragmentStyle" format="reference" />
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight.V16" parent="BandyerSDKDesign.Theme.DayNight">
@@ -57,6 +58,7 @@
         <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare</item>
         <item name="bandyer_smartGlassMenuFragmentStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment</item>
         <item name="bandyer_smartGlassChatFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment</item>
+        <item name="bandyer_smartGlassVolumeFragmentStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.Day.V16" parent="BandyerSDKDesign.Theme.Day">
@@ -76,6 +78,7 @@
         <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.LightStatusBar</item>
         <item name="bandyer_smartGlassMenuFragmentStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment</item>
         <item name="bandyer_smartGlassChatFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment</item>
+        <item name="bandyer_smartGlassVolumeFragmentStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.Night.V16" parent="BandyerSDKDesign.Theme.Night">
@@ -95,6 +98,7 @@
         <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.DarkStatusBar</item>
         <item name="bandyer_smartGlassMenuFragmentStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment</item>
         <item name="bandyer_smartGlassChatFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment</item>
+        <item name="bandyer_smartGlassVolumeFragmentStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.DayNight.V16"/>

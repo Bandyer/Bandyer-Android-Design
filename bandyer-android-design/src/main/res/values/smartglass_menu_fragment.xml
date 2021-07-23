@@ -28,7 +28,7 @@
     <style name="BandyerSDKDesign.TextView.RecyclerViewItem.MenuFragment.SmartGlass" parent="BandyerSDKDesign.TextView">
         <item name="android:gravity">center</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h0</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->

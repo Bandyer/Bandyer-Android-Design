@@ -25,7 +25,7 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
 
     protected lateinit var root: View
     protected lateinit var rvMenu: RecyclerView
-//    protected lateinit var bottomActionBar: BottomActionBarView
+    protected lateinit var bottomActionBar: BottomActionBarView
 
     protected var currentMenuItemIndex = 0
 
@@ -39,7 +39,7 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         // set the views
         root = binding.root
         rvMenu = binding.menu
-//        bottomActionBar = binding.bottomActionBar
+        bottomActionBar = binding.bottomActionBar
 
         // init the recycler view
         val layoutManager =
