@@ -28,6 +28,11 @@
         <attr name="bandyer_activatedText" format="boolean"/>
     </declare-styleable>
 
+    <declare-styleable name="BatteryView">
+        <attr name="bandyer_isCharging" format="boolean" />
+        <attr name="bandyer_charge" format="integer" />
+    </declare-styleable>
+
     <declare-styleable name="BandyerSDKDesign.SmartGlass">
         <attr name="bandyer_statusBarStyle" format="reference"/>
         <attr name="bandyer_bottomActionBarStyle" format="reference"/>

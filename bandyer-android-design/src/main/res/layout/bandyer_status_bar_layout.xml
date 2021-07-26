@@ -50,8 +50,7 @@
         app:layout_constraintBottom_toBottomOf="@id/bandyer_time"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@id/bandyer_wifi_icon"
-        app:layout_constraintTop_toTopOf="@id/bandyer_time"
-        app:srcCompat="@drawable/bandyer_close_icon" />
+        app:layout_constraintTop_toTopOf="@id/bandyer_time" />
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bandyer_wifi_icon"
@@ -60,8 +59,16 @@
         android:tint="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@id/bandyer_time"
         app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/bandyer_battery"
+        app:layout_constraintTop_toTopOf="@id/bandyer_time" />
+
+    <com.bandyer.sdk_design.new_smartglass.BatteryView
+        android:id="@+id/bandyer_battery"
+        android:layout_width="24dp"
+        android:layout_height="12dp"
+        app:bandyer_charge="55"
+        app:bandyer_isCharging="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/bandyer_time"
-        app:srcCompat="@drawable/bandyer_close_icon" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
