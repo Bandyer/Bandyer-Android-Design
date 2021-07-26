@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="8dp">
+
+    <TextClock
+        android:id="@+id/bandyer_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:textColor="@android:color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="13:48" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/bandyer_title_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_time"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toEndOf="@id/bandyer_time"
+        app:layout_constraintTop_toTopOf="@id/bandyer_time"
+        app:srcCompat="@drawable/bandyer_close_icon" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_time"
+        app:layout_constraintStart_toEndOf="@id/bandyer_title_icon"
+        app:layout_constraintTop_toTopOf="@id/bandyer_time"
+        tools:text="Mario" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/bandyer_mic_muted_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_time"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/bandyer_wifi_icon"
+        app:layout_constraintTop_toTopOf="@id/bandyer_time"
+        app:srcCompat="@drawable/bandyer_close_icon" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/bandyer_wifi_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_time"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bandyer_time"
+        app:srcCompat="@drawable/bandyer_close_icon" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
