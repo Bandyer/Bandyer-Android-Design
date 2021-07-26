@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:theme="?attr/bandyer_recyclerViewItemStyle">
 
-    <com.google.android.material.textview.MaterialTextView
+    <com.bandyer.sdk_design.new_smartglass.menu.ActivableTextView
         android:id="@+id/itemText"
         style="?android:attr/textViewStyle"
         android:layout_width="wrap_content"

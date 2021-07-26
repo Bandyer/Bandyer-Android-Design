@@ -17,10 +17,16 @@ class MenuFragment : SmartGlassMenuFragment() {
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        itemAdapter.add(MenuItem("Attiva microfono"))
-        itemAdapter.add(MenuItem("Muta camera"))
+        fastAdapter.onClickListener = { _, _, item, _ ->
+            item.isActive = !item.isActive
+            false
+        }
+
+        itemAdapter.add(MenuItem("Attiva microfono", "Muta microfono"))
+        itemAdapter.add(MenuItem("Attiva camera", "Muta camera"))
         itemAdapter.add(MenuItem("Volume"))
         itemAdapter.add(MenuItem("Zoom"))
+        itemAdapter.add(MenuItem("Chat"))
 
         return view
     }

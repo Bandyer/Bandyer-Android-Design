@@ -35,6 +35,7 @@
     <!-- BOTTOM ACTION BAR -->
     <style name="BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
         <item name="bandyer_swipeDownText">@string/bandyer_close</item>
-        <item name="bandyer_swipeText">@string/bandyer_browse_the_messages</item>
+        <item name="bandyer_swipeText">@string/bandyer_browse</item>
+        <item name="bandyer_tapText">@string/bandyer_select</item>
     </style>
 </resources>

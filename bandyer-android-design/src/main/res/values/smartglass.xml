@@ -23,6 +23,11 @@
         <attr name="bandyer_percentageText" format="string"/>
     </declare-styleable>
 
+    <declare-styleable name="ActivableTextView">
+        <attr name="bandyer_inactivatedText" format="string"/>
+        <attr name="bandyer_activatedText" format="boolean"/>
+    </declare-styleable>
+
     <declare-styleable name="BandyerSDKDesign.SmartGlass">
         <attr name="bandyer_statusBarStyle" format="reference"/>
         <attr name="bandyer_bottomActionBarStyle" format="reference"/>
