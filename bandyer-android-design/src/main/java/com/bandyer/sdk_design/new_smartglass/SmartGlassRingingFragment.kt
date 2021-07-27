@@ -12,10 +12,10 @@ abstract class SmartGlassRingingFragment: SmartGlassBaseFragment() {
 
     private lateinit var binding: BandyerFragmentRingingBinding
 
-    protected lateinit var root: View
-    protected lateinit var title: MaterialTextView
-    protected lateinit var subtitle: MaterialTextView
-    protected lateinit var bottomActionBar: BottomActionBarView
+    protected var root: View? = null
+    protected var title: MaterialTextView? = null
+    protected var subtitle: MaterialTextView? = null
+    protected var bottomActionBar: BottomActionBarView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,7 +26,15 @@ abstract class SmartGlassRingingFragment: SmartGlassBaseFragment() {
         title = binding.bandyerTitle
         subtitle = binding.bandyerSubtitle
         bottomActionBar = binding.bottomActionBar
-        return root
+        return root!!
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        root = null
+        title = null
+        subtitle = null
+        bottomActionBar = null
     }
 
     abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean

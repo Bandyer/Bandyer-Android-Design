@@ -12,8 +12,8 @@ abstract class SmartGlassCallFragment: Fragment(), SmartGlassTouchEventListener 
 
     private lateinit var binding: BandyerFragmentCallBinding
 
-    protected lateinit var root: View
-    protected lateinit var bottomActionBar: BottomActionBarView
+    protected var root: View? = null
+    protected var bottomActionBar: BottomActionBarView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -22,7 +22,13 @@ abstract class SmartGlassCallFragment: Fragment(), SmartGlassTouchEventListener 
         binding = BandyerFragmentCallBinding.inflate(inflater, container, false)
         root = binding.root
         bottomActionBar = binding.bottomActionBar
-        return root
+        return root!!
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        root = null
+        bottomActionBar = null
     }
 
     abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean

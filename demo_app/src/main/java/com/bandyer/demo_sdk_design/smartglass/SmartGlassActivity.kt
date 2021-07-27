@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentContainerView
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.demo_sdk_design.databinding.ActivitySmartGlassBinding
 import com.bandyer.sdk_design.new_smartglass.GlassGestureDetector
@@ -102,7 +106,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 
     override fun onExpanded() {
         handleNotification = false
-        if(supportFragmentManager.currentNavigationFragment?.id != R.id.chatFragment)
+        if (supportFragmentManager.currentNavigationFragment?.id != R.id.chatFragment)
             binding.navHostFragment.findNavController().navigate(R.id.chatFragment)
 //        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.showBottomBar()
         hideNotificationBottomBar()

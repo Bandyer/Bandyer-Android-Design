@@ -6,7 +6,7 @@ import com.bandyer.sdk_design.databinding.BandyerChatItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
-class ChatItem(val messageText: String): AbstractItem<ChatItem.ViewHolder>() {
+class ChatItem(val messageText: String) : AbstractItem<ChatItem.ViewHolder>() {
 
     override val layoutRes: Int
         get() = R.layout.bandyer_chat_item_layout
@@ -16,7 +16,7 @@ class ChatItem(val messageText: String): AbstractItem<ChatItem.ViewHolder>() {
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
-    class ViewHolder(view: View): FastAdapter.ViewHolder<ChatItem>(view) {
+    class ViewHolder(view: View) : FastAdapter.ViewHolder<ChatItem>(view) {
 
         private val binding: BandyerChatItemLayoutBinding = BandyerChatItemLayoutBinding.bind(view)
 
@@ -26,7 +26,6 @@ class ChatItem(val messageText: String): AbstractItem<ChatItem.ViewHolder>() {
 
         override fun unbindView(item: ChatItem) {
             binding.message.setMessageText(null)
-
         }
     }
 }

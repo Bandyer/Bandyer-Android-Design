@@ -11,7 +11,17 @@
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.MenuFragment"
-        android:label="MenuFragment" />
+        android:label="MenuFragment" >
+        <action
+            android:id="@+id/action_menuFragment_to_volumeFragment"
+            app:destination="@id/volumeFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_zoomFragment"
+            app:destination="@id/zoomFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
     <fragment
         android:id="@+id/volumeFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.VolumeFragment"
@@ -27,13 +37,28 @@
     <fragment
         android:id="@+id/endCallFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.EndCallFragment"
-        android:label="EndCallFragment" />
+        android:label="EndCallFragment" >
+        <action
+            android:id="@+id/action_endCallFragment_to_callEndedFragment"
+            app:destination="@id/callEndedFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ringingFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.RingingFragment"
-        android:label="RingingFragment" />
+        android:label="RingingFragment" >
+        <action
+            android:id="@+id/action_ringingFragment_to_callFragment"
+            app:destination="@id/callFragment" />
+    </fragment>
     <fragment
         android:id="@+id/callFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.CallFragment"
-        android:label="CallFragment" />
+        android:label="CallFragment" >
+        <action
+            android:id="@+id/action_callFragment_to_endCallFragment"
+            app:destination="@id/endCallFragment" />
+        <action
+            android:id="@+id/action_callFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
 </navigation>

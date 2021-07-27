@@ -25,9 +25,9 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
     protected val itemAdapter = ItemAdapter<ChatItem>()
     protected val fastAdapter = FastAdapter.with(itemAdapter)
 
-    protected lateinit var root: View
-    protected lateinit var rvMessages: RecyclerView
-    protected lateinit var bottomActionBar: BottomActionBarView
+    protected var root: View? = null
+    protected var rvMessages: RecyclerView? = null
+    protected var bottomActionBar: BottomActionBarView? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -41,12 +41,12 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         rvMessages = binding.messages
         bottomActionBar = binding.bottomActionBar
 
-        rvMessages.layoutManager =
+        rvMessages!!.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvMessages.adapter = fastAdapter
-        rvMessages.isFocusable = true
+        rvMessages!!.adapter = fastAdapter
+        rvMessages!!.isFocusable = true
         // TODO add decoration height through style
-        rvMessages.addItemDecoration(
+        rvMessages!!.addItemDecoration(
             ChatItemIndicatorDecoration(
                 requireContext(),
                 Resources.getSystem().displayMetrics.density * 4
@@ -57,8 +57,15 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         snapHelper.attachToRecyclerView(rvMessages)
 
         // pass the root view's touch event to the recycler view
-        root.setOnTouchListener { _, event -> rvMessages.onTouchEvent(event) }
-        return root
+        root!!.setOnTouchListener { _, event -> rvMessages!!.onTouchEvent(event) }
+        return root!!
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        root = null
+        rvMessages = null
+        bottomActionBar = null
     }
 
     abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean

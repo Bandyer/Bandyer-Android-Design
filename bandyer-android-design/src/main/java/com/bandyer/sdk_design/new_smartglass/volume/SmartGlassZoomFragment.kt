@@ -15,9 +15,9 @@ abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
 
     private lateinit var binding: BandyerFragmentZoomBinding
 
-    protected lateinit var root: View
-    protected lateinit var slider: BandyerSlider
-    protected lateinit var bottomActionBar: BottomActionBarView
+    protected var root: View? = null
+    protected var slider: BandyerSlider? = null
+    protected var bottomActionBar: BottomActionBarView? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -28,8 +28,15 @@ abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
         root = binding.root
         slider = binding.slider
         bottomActionBar = binding.bottomActionBar
-        root.setOnTouchListener { _, event -> binding.slider.onTouchEvent(event) }
-        return root
+        root!!.setOnTouchListener { _, event -> binding.slider.onTouchEvent(event) }
+        return root!!
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        root = null
+        slider = null
+        bottomActionBar = null
     }
 
     abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean

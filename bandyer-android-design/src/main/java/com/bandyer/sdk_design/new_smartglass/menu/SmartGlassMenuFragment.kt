@@ -23,9 +23,9 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
     protected val itemAdapter = ItemAdapter<MenuItem>()
     protected val fastAdapter = FastAdapter.with(itemAdapter)
 
-    protected lateinit var root: View
-    protected lateinit var rvMenu: RecyclerView
-    protected lateinit var bottomActionBar: BottomActionBarView
+    protected var root: View? = null
+    protected var rvMenu: RecyclerView? = null
+    protected var bottomActionBar: BottomActionBarView? = null
 
     protected var currentMenuItemIndex = 0
 
@@ -44,16 +44,16 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         // init the recycler view
         val layoutManager =
             CenterLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvMenu.layoutManager = layoutManager
-        rvMenu.adapter = fastAdapter
-        rvMenu.clipToPadding = false
-        rvMenu.isFocusable = true
+        rvMenu!!.layoutManager = layoutManager
+        rvMenu!!.adapter = fastAdapter
+        rvMenu!!.clipToPadding = false
+        rvMenu!!.isFocusable = true
 
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(rvMenu)
 
         // TODO add decoration height through style
-        rvMenu.addItemDecoration(
+        rvMenu!!.addItemDecoration(
             MenuItemIndicatorDecoration(
                 requireContext(),
                 snapHelper,
@@ -62,7 +62,7 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         )
 
         // add scroll listener
-        rvMenu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        rvMenu!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val foundView = snapHelper.findSnapView(layoutManager) ?: return
                 currentMenuItemIndex = layoutManager.getPosition(foundView)
@@ -70,8 +70,15 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         })
 
         // pass the root view's touch event to the recycler view
-        root.setOnTouchListener { _, event -> rvMenu.onTouchEvent(event) }
-        return root
+        root!!.setOnTouchListener { _, event -> rvMenu!!.onTouchEvent(event) }
+        return root!!
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        root = null
+        rvMenu = null
+        bottomActionBar = null
     }
 
     abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean
