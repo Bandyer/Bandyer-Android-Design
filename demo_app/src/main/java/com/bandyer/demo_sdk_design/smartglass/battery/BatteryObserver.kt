@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass.utils.battery
+package com.bandyer.demo_sdk_design.smartglass.battery
 
 import android.content.BroadcastReceiver
 import android.content.Context

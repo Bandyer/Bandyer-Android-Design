@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass.utils.network
+package com.bandyer.demo_sdk_design.smartglass.network
 
 import android.Manifest.permission.ACCESS_WIFI_STATE
 import android.content.BroadcastReceiver
