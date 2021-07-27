@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- RINGING FRAGMENT -->
+    <style name="BandyerSDKDesign.SmartGlass.RingingFragment" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.RingingFragment.Root</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.RingingFragment.SmartGlass.Title</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.RingingFragment.SmartGlass.Subtitle</item>
+        <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.RingingFragment.BottomActionBar</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.RingingFragment.Root" parent="">
+        <item name="android:background">@color/bandyer_smartglass_background_color</item>
+    </style>
+
+    <!-- TITLE -->
+    <style name="BandyerSDKDesign.TextView.RingingFragment.SmartGlass.Title" parent="BandyerSDKDesign.TextView">
+        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SUBTITLE -->
+    <style name="BandyerSDKDesign.TextView.RingingFragment.SmartGlass.Subtitle" parent="BandyerSDKDesign.TextView">
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
+        <item name="android:text">@string/bandyer_smartglass_is_calling</item>
+        <item name="android:textColor">@color/bandyer_color_white_30</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.SmartGlass.RingingFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Root.RingingFragment</item>
+        <item name="bandyer_swipeDownText">@string/bandyer_smartglass_decline</item>
+        <item name="bandyer_tapText">@string/bandyer_smartglass_accept</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Root.RingingFragment" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Root">
+        <item name="android:background">@color/bandyer_smartglass_background_color</item>
+    </style>
+</resources>

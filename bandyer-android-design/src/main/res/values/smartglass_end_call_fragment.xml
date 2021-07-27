@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- END CALL FRAGMENT -->
+    <style name="BandyerSDKDesign.SmartGlass.EndCallFragment" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.EndCallFragment.Root</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.EndCallFragment.SmartGlass.Title</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.EndCallFragment.SmartGlass.Subtitle</item>
+        <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.EndCallFragment.BottomActionBar</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.EndCallFragment.Root" parent="">
+        <item name="android:background">@color/bandyer_smartglass_background_color</item>
+    </style>
+
+    <!-- TITLE -->
+    <style name="BandyerSDKDesign.TextView.EndCallFragment.SmartGlass.Title" parent="BandyerSDKDesign.TextView">
+        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
+        <item name="android:text">@string/bandyer_smartglass_want_end_call</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SUBTITLE -->
+    <style name="BandyerSDKDesign.TextView.EndCallFragment.SmartGlass.Subtitle" parent="BandyerSDKDesign.TextView">
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
+        <item name="android:text">@string/bandyer_smartglass_confirm_end_call</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.SmartGlass.EndCallFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Root.EndCallFragment</item>
+        <item name="bandyer_swipeDownText">@string/bandyer_smartglass_cancel</item>
+        <item name="bandyer_tapText">@string/bandyer_smartglass_end_call</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Root.EndCallFragment" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Root">
+        <item name="android:background">@color/bandyer_smartglass_background_color</item>
+    </style>
+</resources>

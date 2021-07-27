@@ -23,7 +23,7 @@ class BandyerSlider @JvmOverloads constructor(
     private var binding: BandyerSliderLayoutBinding =
         BandyerSliderLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
-    private val pattern = resources.getString(R.string.bandyer_slider_pattern)
+    private val pattern = resources.getString(R.string.bandyer_smartglass_slider_pattern)
     private var percentageText: String
 
     var onSliderChangeListener: OnSliderChangeListener? = null

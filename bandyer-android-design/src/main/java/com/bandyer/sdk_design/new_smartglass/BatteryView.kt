@@ -46,6 +46,8 @@ class BatteryView @JvmOverloads constructor(
     private var chargeRectRightMax = 0f
     private var charge = 0
     private var isCharging = false
+    private var normalChargeColor = Color.WHITE
+    private var lowChargeColor = Color.RED
 
     // Charging
     private var chargingRect = RectF()
@@ -125,7 +127,7 @@ class BatteryView @JvmOverloads constructor(
     }
 
     private fun drawCharge(canvas: Canvas, charge: Int) {
-        chargePaint.color = if (charge > 25) Color.WHITE else Color.RED
+        chargePaint.color = if (charge > 25) normalChargeColor else lowChargeColor
         chargeRect.right =
             chargeRect.left + (chargeRectRightMax - chargeRect.left) * charge / 100
         canvas.drawRoundRect(chargeRect, radius, radius, chargePaint)

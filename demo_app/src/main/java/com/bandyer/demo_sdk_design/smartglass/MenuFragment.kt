@@ -15,6 +15,7 @@ class MenuFragment : SmartGlassMenuFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (requireActivity() as SmartGlassActivity).showStatusBar()
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         fastAdapter.onClickListener = { _, _, item, _ ->

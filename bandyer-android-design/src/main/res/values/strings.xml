@@ -174,17 +174,25 @@
     <string name="bandyer_max_bytes_dialog_title">File share limit</string>
 
     <!-- SMART GLASSES -->
-    <string name="bandyer_swipe">Swipe</string>
-    <string name="bandyer_tap">Tap</string>
-    <string name="bandyer_close">close</string>
-    <string name="bandyer_browse">browse</string>
-    <string name="bandyer_select">select</string>
-    <string name="bandyer_browse_the_messages">browse the messages</string>
+    <string name="bandyer_smartglass_slider_pattern" translatable="false">%1$s: %2$d%%</string>
+    <string name="bandyer_smartglass_swipe">Swipe</string>
+    <string name="bandyer_smartglass_tap">Tap</string>
+    <string name="bandyer_smartglass_close">close</string>
+    <string name="bandyer_smartglass_browse">browse</string>
+    <string name="bandyer_smartglass_select">select</string>
+    <string name="bandyer_smartglass_browse_the_messages">browse the messages</string>
     <string name="bandyer_smartglass_cancel">cancel</string>
-    <string name="bandyer_change">change</string>
-    <string name="bandyer_confirm_and_close">confirm and close</string>
-    <string name="bandyer_slider_pattern" translatable="false">%1$s: %2$d%%</string>
-    <string name="bandyer_volume" translatable="false">Volume</string>
-    <string name="bandyer_zoom" translatable="false">Zoom</string>
+    <string name="bandyer_smartglass_change">change</string>
+    <string name="bandyer_smartglass_confirm_and_close">confirm and close</string>
+    <string name="bandyer_smartglass_accept">answer</string>
+    <string name="bandyer_smartglass_decline">decline</string>
+    <string name="bandyer_smartglass_end_call">end call</string>
+    <string name="bandyer_smartglass_volume">Volume</string>
+    <string name="bandyer_smartglass_zoom">Zoom</string>
+    <string name="bandyer_smartglass_is_calling">is calling…</string>
+    <string name="bandyer_smartglass_want_end_call">End the call?</string>
+    <string name="bandyer_smartglass_confirm_end_call">Do you confirm to end the conversation?</string>
+    <string name="bandyer_smartglass_call_ended">Call ended</string>
+    <string name="bandyer_smartglass_thank_you">Thank you!</string>
 
 </resources>

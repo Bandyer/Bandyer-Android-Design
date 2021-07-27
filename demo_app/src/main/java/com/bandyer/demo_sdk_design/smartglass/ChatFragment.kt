@@ -18,6 +18,7 @@ class ChatFragment : SmartGlassChatFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (requireActivity() as SmartGlassActivity).showStatusBar()
         activity.hideNotification()
 
         val view = super.onCreateView(inflater, container, savedInstanceState)

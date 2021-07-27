@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/smartglass_nav_graph"
-    app:startDestination="@id/menuFragment">
+    app:startDestination="@id/ringingFragment">
 
     <fragment
         android:id="@+id/chatFragment"
@@ -20,4 +20,16 @@
         android:id="@+id/zoomFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.ZoomFragment"
         android:label="ZoomFragment" />
+    <fragment
+        android:id="@+id/callEndedFragment"
+        android:name="com.bandyer.demo_sdk_design.smartglass.CallEndedFragment"
+        android:label="CallEndedFragment" />
+    <fragment
+        android:id="@+id/endCallFragment"
+        android:name="com.bandyer.demo_sdk_design.smartglass.EndCallFragment"
+        android:label="EndCallFragment" />
+    <fragment
+        android:id="@+id/ringingFragment"
+        android:name="com.bandyer.demo_sdk_design.smartglass.RingingFragment"
+        android:label="RingingFragment" />
 </navigation>

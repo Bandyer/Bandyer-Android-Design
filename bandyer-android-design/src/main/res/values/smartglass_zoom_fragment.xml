@@ -9,12 +9,12 @@
     <!-- BOTTOM ACTION BAR -->
     <style name="BandyerSDKDesign.SmartGlass.ZoomFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
         <item name="bandyer_swipeDownText">@string/bandyer_smartglass_cancel</item>
-        <item name="bandyer_swipeText">@string/bandyer_change</item>
-        <item name="bandyer_tapText">@string/bandyer_confirm_and_close</item>
+        <item name="bandyer_swipeText">@string/bandyer_smartglass_change</item>
+        <item name="bandyer_tapText">@string/bandyer_smartglass_confirm_and_close</item>
     </style>
 
     <!-- SLIDER -->
     <style name="BandyerSDKDesign.SmartGlass.Slider.ZoomFragment" parent="BandyerSDKDesign.SmartGlass.Slider">
-        <item name="bandyer_percentageText">@string/bandyer_zoom</item>
+        <item name="bandyer_percentageText">@string/bandyer_smartglass_zoom</item>
     </style>
 </resources>

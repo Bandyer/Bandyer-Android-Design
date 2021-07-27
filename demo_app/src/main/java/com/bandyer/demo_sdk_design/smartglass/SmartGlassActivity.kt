@@ -120,6 +120,14 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         notificationManager.dismiss(false)
     }
 
+    fun hideStatusBar() {
+        binding.statusBar.visibility = View.GONE
+    }
+
+    fun showStatusBar() {
+        binding.statusBar.visibility = View.VISIBLE
+    }
+
     private fun enterImmersiveMode() {
         supportActionBar?.hide()
         decorView = window.decorView

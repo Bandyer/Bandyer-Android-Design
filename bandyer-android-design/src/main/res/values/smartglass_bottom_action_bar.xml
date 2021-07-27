@@ -24,7 +24,7 @@
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe.Root</item>
         <item name="bandyer_gestureIcon">@drawable/bandyer_close_icon</item>
-        <item name="bandyer_gestureText">@string/bandyer_swipe</item>
+        <item name="bandyer_gestureText">@string/bandyer_smartglass_swipe</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Swipe.Root" parent="">
@@ -35,7 +35,7 @@
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown.Root</item>
         <item name="bandyer_gestureIcon">@drawable/bandyer_close_icon</item>
-        <item name="bandyer_gestureText">@string/bandyer_tap</item>
+        <item name="bandyer_gestureText">@string/bandyer_smartglass_tap</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.SwipeDown.Root" parent="">
@@ -46,7 +46,7 @@
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Item">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap.Root</item>
         <item name="bandyer_gestureIcon">@drawable/bandyer_close_icon</item>
-        <item name="bandyer_gestureText">@string/bandyer_swipe</item>
+        <item name="bandyer_gestureText">@string/bandyer_smartglass_swipe</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.Tap.Root" parent="">
