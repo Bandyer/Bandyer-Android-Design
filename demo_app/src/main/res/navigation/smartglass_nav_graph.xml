@@ -32,4 +32,8 @@
         android:id="@+id/ringingFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.RingingFragment"
         android:label="RingingFragment" />
+    <fragment
+        android:id="@+id/callFragment"
+        android:name="com.bandyer.demo_sdk_design.smartglass.CallFragment"
+        android:label="CallFragment" />
 </navigation>

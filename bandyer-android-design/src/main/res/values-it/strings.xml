@@ -177,7 +177,7 @@
     <string name="bandyer_smartglass_confirm_and_close">conferma e chiudi</string>
     <string name="bandyer_smartglass_accept">accetta</string>
     <string name="bandyer_smartglass_decline">rifiuta</string>
-    <string name="bandyer_smartglass_end_call">termina</string>
+    <string name="bandyer_smartglass_end_call">termina chiamata</string>
     <string name="bandyer_smartglass_volume">Volume</string>
     <string name="bandyer_smartglass_zoom">Zoom</string>
     <string name="bandyer_smartglass_is_calling">ti sta chiamando…</string>
@@ -185,5 +185,7 @@
     <string name="bandyer_smartglass_confirm_end_call">Confermi di voler chiudere la conversazione?</string>
     <string name="bandyer_smartglass_call_ended">Chiamata terminata</string>
     <string name="bandyer_smartglass_thank_you">Grazie!</string>
+    <string name="bandyer_smartglass_participants_camera">video partecipanti</string>
+    <string name="bandyer_smartglass_open_menu">apri menu</string>
 
 </resources>

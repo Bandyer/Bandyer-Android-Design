@@ -13,9 +13,9 @@ import com.bandyer.sdk_design.new_smartglass.GlassGestureDetector
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEventListener
 import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationManager
-import com.bandyer.sdk_design.new_smartglass.utils.battery.BatteryObserver
+import com.bandyer.demo_sdk_design.smartglass.battery.BatteryObserver
 import com.bandyer.sdk_design.new_smartglass.utils.currentNavigationFragment
-import com.bandyer.sdk_design.new_smartglass.utils.network.WiFiObserver
+import com.bandyer.demo_sdk_design.smartglass.network.WiFiObserver
 
 class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener,
     NotificationManager.NotificationListener, SmartGlassTouchEventListener {

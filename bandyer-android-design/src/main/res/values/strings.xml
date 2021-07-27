@@ -194,5 +194,7 @@
     <string name="bandyer_smartglass_confirm_end_call">Do you confirm to end the conversation?</string>
     <string name="bandyer_smartglass_call_ended">Call ended</string>
     <string name="bandyer_smartglass_thank_you">Thank you!</string>
+    <string name="bandyer_smartglass_participants_camera">participants camera</string>
+    <string name="bandyer_smartglass_open_menu">open menu</string>
 
 </resources>
