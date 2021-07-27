@@ -52,12 +52,10 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(rvMenu)
 
-        // TODO add decoration height through style
         rvMenu!!.addItemDecoration(
             MenuItemIndicatorDecoration(
                 requireContext(),
-                snapHelper,
-                Resources.getSystem().displayMetrics.density * 3
+                snapHelper
             )
         )
 

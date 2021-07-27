@@ -4,17 +4,16 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.bandyer.sdk_design.R
+import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.new_smartglass.utils.extensions.darkenColor
 import com.google.android.material.color.MaterialColors
 import java.util.*
 import kotlin.math.abs
-import kotlin.math.truncate
 
 /**
  * LinePagerIndicatorDecoration
@@ -24,7 +23,7 @@ import kotlin.math.truncate
  *
  * @credits David Medenjak
  */
-class ChatItemIndicatorDecoration(context: Context, private val height: Float) : ItemDecoration() {
+class ChatItemIndicatorDecoration(context: Context) : ItemDecoration() {
 
     /**
      * Indicator active color
@@ -35,6 +34,11 @@ class ChatItemIndicatorDecoration(context: Context, private val height: Float) :
      * Indicator inactive color
      */
     private val colorInactive = colorActive.darkenColor(0.4f)
+
+    /**
+     * Indicator height
+     */
+    private val height = context.dp2px(3f).toFloat()
 
     /**
      * Paint used to draw

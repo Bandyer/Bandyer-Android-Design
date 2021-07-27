@@ -45,13 +45,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvMessages!!.adapter = fastAdapter
         rvMessages!!.isFocusable = true
-        // TODO add decoration height through style
-        rvMessages!!.addItemDecoration(
-            ChatItemIndicatorDecoration(
-                requireContext(),
-                Resources.getSystem().displayMetrics.density * 4
-            )
-        )
+        rvMessages!!.addItemDecoration(ChatItemIndicatorDecoration(requireContext()))
 
         val snapHelper: SnapHelper = PagerSnapHelper()
         snapHelper.attachToRecyclerView(rvMessages)

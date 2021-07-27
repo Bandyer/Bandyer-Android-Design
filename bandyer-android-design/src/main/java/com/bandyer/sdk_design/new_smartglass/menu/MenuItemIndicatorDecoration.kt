@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.R
+import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.new_smartglass.utils.extensions.darkenColor
 import com.google.android.material.color.MaterialColors
 
@@ -21,8 +22,7 @@ import com.google.android.material.color.MaterialColors
  */
 class MenuItemIndicatorDecoration(
     context: Context,
-    private val snapHelper: LinearSnapHelper,
-    private val height: Float
+    private val snapHelper: LinearSnapHelper
 ) : RecyclerView.ItemDecoration() {
 
     /**
@@ -34,6 +34,11 @@ class MenuItemIndicatorDecoration(
      * Indicator inactive color
      */
     private val colorInactive = colorActive.darkenColor(0.4f)
+
+    /**
+     * Indicator height
+     */
+    private val height = context.dp2px(3f).toFloat()
 
     /**
      * Paint used to draw
