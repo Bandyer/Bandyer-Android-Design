@@ -86,7 +86,7 @@ class BatteryView @JvmOverloads constructor(
         // Charge
         val chargeTopLeft = bodyStroke + spacing
         val chargeBottom = measureHeight - chargeTopLeft
-        chargeRectRightMax = bodyRight - chargeTopLeft
+        chargeRectRightMax = bodyRight - spacing - halfBodyStroke
         chargeRect = RectF(chargeTopLeft, chargeTopLeft, chargeRectRightMax, chargeBottom)
 
         // Charging Image

@@ -8,23 +8,26 @@ import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.demo_sdk_design.databinding.ActivitySmartGlassBinding
-import com.bandyer.sdk_design.new_smartglass.GlassGestureDetector
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEventListener
 import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationManager
 import com.bandyer.demo_sdk_design.smartglass.battery.BatteryObserver
+import com.bandyer.demo_sdk_design.smartglass.battery.BatteryState
 import com.bandyer.sdk_design.new_smartglass.utils.currentNavigationFragment
 import com.bandyer.demo_sdk_design.smartglass.network.WiFiObserver
+import com.bandyer.sdk_design.new_smartglass.*
+import kotlinx.coroutines.flow.collect
 
 class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener,
     NotificationManager.NotificationListener, SmartGlassTouchEventListener {
 
     private lateinit var binding: ActivitySmartGlassBinding
+
+    private var statusBar: StatusBarView? = null
 
     private val currentFragment: Fragment?
         get() = supportFragmentManager.currentNavigationFragment
@@ -40,6 +43,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySmartGlassBinding.inflate(layoutInflater)
+        statusBar = binding.statusBar
         setContentView(binding.root)
 
         enterImmersiveMode()
@@ -48,6 +52,13 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         notificationManager = NotificationManager(binding.content, this)
         batteryObserver = BatteryObserver(this)
         wifiObserver = WiFiObserver(this)
+
+        lifecycleScope.launchWhenStarted {
+            batteryObserver.observe().collect {
+                statusBar!!.setBatteryChargingState(it.status == BatteryState.Status.CHARGING)
+                statusBar!!.setBatteryCharge(it.percentage)
+            }
+        }
 
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            notificationManager.show("Mario: Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?")

@@ -26,6 +26,10 @@ class StatusBarView @JvmOverloads constructor(
     }
 
     fun showMicMutedIcon(value: Boolean) {
-        binding.bandyerMicMutedIcon.visibility = if(value) View.VISIBLE else View.GONE
+        binding.bandyerMicMutedIcon.visibility = if (value) View.VISIBLE else View.GONE
     }
+
+    fun setBatteryCharge(charge: Int) = binding.bandyerBattery.setCharge(charge)
+
+    fun setBatteryChargingState(isCharging: Boolean) = binding.bandyerBattery.setCharging(isCharging)
 }
