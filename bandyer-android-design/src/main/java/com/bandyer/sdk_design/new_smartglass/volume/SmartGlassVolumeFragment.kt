@@ -13,7 +13,8 @@ import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarVi
 
 abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
 
-    protected lateinit var binding: BandyerFragmentVolumeBinding
+    private lateinit var binding: BandyerFragmentVolumeBinding
+
     protected lateinit var root: View
     protected lateinit var slider: BandyerSlider
     protected lateinit var bottomActionBar: BottomActionBarView

@@ -9,7 +9,8 @@ import com.google.android.material.textview.MaterialTextView
 
 abstract class SmartGlassCallEndedFragment: SmartGlassBaseFragment() {
 
-    protected lateinit var binding: BandyerFragmentCallEndedBinding
+    private lateinit var binding: BandyerFragmentCallEndedBinding
+
     protected lateinit var root: View
     protected lateinit var title: MaterialTextView
     protected lateinit var subtitle: MaterialTextView

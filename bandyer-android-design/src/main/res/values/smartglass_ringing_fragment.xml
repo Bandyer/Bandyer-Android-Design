@@ -29,12 +29,7 @@
 
     <!-- BOTTOM ACTION BAR -->
     <style name="BandyerSDKDesign.SmartGlass.RingingFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Root.RingingFragment</item>
         <item name="bandyer_swipeDownText">@string/bandyer_smartglass_decline</item>
         <item name="bandyer_tapText">@string/bandyer_smartglass_accept</item>
-    </style>
-
-    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Root.RingingFragment" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Root">
-        <item name="android:background">@color/bandyer_smartglass_background_color</item>
     </style>
 </resources>
