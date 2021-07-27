@@ -18,10 +18,10 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 
 abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
 
-    private lateinit var binding: BandyerFragmentMenuBinding
+    private var binding: BandyerFragmentMenuBinding? = null
 
-    protected val itemAdapter = ItemAdapter<MenuItem>()
-    protected val fastAdapter = FastAdapter.with(itemAdapter)
+    protected var itemAdapter: ItemAdapter<MenuItem>? = null
+    protected var fastAdapter: FastAdapter<MenuItem>? = null
 
     protected var root: View? = null
     protected var rvMenu: RecyclerView? = null
@@ -37,11 +37,13 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         binding = BandyerFragmentMenuBinding.inflate(inflater, container, false)
 
         // set the views
-        root = binding.root
-        rvMenu = binding.menu
-        bottomActionBar = binding.bottomActionBar
+        root = binding!!.root
+        rvMenu = binding!!.menu
+        bottomActionBar = binding!!.bottomActionBar
 
         // init the recycler view
+        itemAdapter = ItemAdapter()
+        fastAdapter = FastAdapter.with(itemAdapter!!)
         val layoutManager =
             CenterLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvMenu!!.layoutManager = layoutManager
@@ -74,6 +76,9 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        itemAdapter = null
+        fastAdapter = null
+        binding = null
         root = null
         rvMenu = null
         bottomActionBar = null

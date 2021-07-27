@@ -9,7 +9,7 @@ import com.google.android.material.textview.MaterialTextView
 
 abstract class SmartGlassCallEndedFragment: SmartGlassBaseFragment() {
 
-    private lateinit var binding: BandyerFragmentCallEndedBinding
+    private var binding: BandyerFragmentCallEndedBinding? = null
 
     protected var root: View? = null
     protected var title: MaterialTextView? = null
@@ -20,14 +20,15 @@ abstract class SmartGlassCallEndedFragment: SmartGlassBaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = BandyerFragmentCallEndedBinding.inflate(inflater, container, false)
-        root = binding.root
-        title = binding.bandyerTitle
-        subtitle = binding.bandyerSubtitle
+        root = binding!!.root
+        title = binding!!.bandyerTitle
+        subtitle = binding!!.bandyerSubtitle
         return root!!
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding = null
         root = null
         title = null
         subtitle = null

@@ -23,9 +23,9 @@ class ChatFragment : SmartGlassChatFragment() {
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        itemAdapter.add(ChatItem("Mario: Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?"))
-        itemAdapter.add(ChatItem("Francesco: La scatola è sulla sinistra"))
-        itemAdapter.add(ChatItem("Gianfranco: Mi piacciono i treni"))
+        itemAdapter!!.add(ChatItem("Mario: Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?"))
+        itemAdapter!!.add(ChatItem("Francesco: La scatola è sulla sinistra"))
+        itemAdapter!!.add(ChatItem("Gianfranco: Mi piacciono i treni"))
 
         return view
     }

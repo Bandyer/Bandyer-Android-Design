@@ -13,7 +13,7 @@ import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarVi
 
 abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
 
-    private lateinit var binding: BandyerFragmentVolumeBinding
+    private var binding: BandyerFragmentVolumeBinding? = null
 
     protected var root: View? = null
     protected var slider: BandyerSlider? = null
@@ -25,15 +25,16 @@ abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = BandyerFragmentVolumeBinding.inflate(inflater, container, false)
-        root = binding.root
-        slider = binding.slider
-        bottomActionBar = binding.bottomActionBar
-        root!!.setOnTouchListener { _, event -> binding.slider.onTouchEvent(event) }
+        root = binding!!.root
+        slider = binding!!.slider
+        bottomActionBar = binding!!.bottomActionBar
+//        root!!.setOnTouchListener { _, event -> binding.slider.onTouchEvent(event) }
         return root!!
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding = null
         root = null
         slider = null
         bottomActionBar = null
