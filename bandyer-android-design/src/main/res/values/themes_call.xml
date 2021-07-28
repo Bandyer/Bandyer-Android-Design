@@ -36,6 +36,7 @@
 
         <attr name="bandyer_smartGlassDialogMenuStyle" format="reference" />
 
+        <attr name="bandyer_smartGlassStatusBarStyle" format="reference"/>
         <attr name="bandyer_smartGlassMenuFragmentStyle" format="reference" />
         <attr name="bandyer_smartGlassChatFragmentStyle" format="reference" />
         <attr name="bandyer_smartGlassVolumeFragmentStyle" format="reference" />
@@ -61,6 +62,7 @@
         <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
         <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
         <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare</item>
+        <item name="bandyer_smartGlassStatusBarStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar</item>
         <item name="bandyer_smartGlassMenuFragmentStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment</item>
         <item name="bandyer_smartGlassChatFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment</item>
         <item name="bandyer_smartGlassVolumeFragmentStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment</item>
@@ -86,6 +88,7 @@
         <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.LightStatusBar</item>
         <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.LightStatusBar</item>
         <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.LightStatusBar</item>
+        <item name="bandyer_smartGlassStatusBarStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar</item>
         <item name="bandyer_smartGlassMenuFragmentStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment</item>
         <item name="bandyer_smartGlassChatFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment</item>
         <item name="bandyer_smartGlassVolumeFragmentStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment</item>
@@ -111,6 +114,7 @@
         <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.DarkStatusBar</item>
         <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.DarkStatusBar</item>
         <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.DarkStatusBar</item>
+        <item name="bandyer_smartGlassStatusBarStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar</item>
         <item name="bandyer_smartGlassMenuFragmentStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment</item>
         <item name="bandyer_smartGlassChatFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment</item>
         <item name="bandyer_smartGlassVolumeFragmentStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment</item>

@@ -1,7 +1,6 @@
 package com.bandyer.sdk_design.new_smartglass
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -21,15 +20,16 @@ class StatusBarView @JvmOverloads constructor(
         binding.bandyerTitle.text = text
     }
 
-    fun setTitleIcon(drawable: Drawable?) {
-        binding.bandyerTitleIcon.setImageDrawable(drawable)
+    fun showMicMutedIcon() {
+        binding.bandyerMicMutedIcon.visibility = View.VISIBLE
     }
 
-    fun showMicMutedIcon(value: Boolean) {
-        binding.bandyerMicMutedIcon.visibility = if (value) View.VISIBLE else View.GONE
+    fun hideMicMutedIcon() {
+        binding.bandyerMicMutedIcon.visibility = View.GONE
     }
 
     fun setBatteryCharge(charge: Int) = binding.bandyerBattery.setCharge(charge)
 
-    fun setBatteryChargingState(isCharging: Boolean) = binding.bandyerBattery.setCharging(isCharging)
+    fun setBatteryChargingState(isCharging: Boolean) =
+        binding.bandyerBattery.setCharging(isCharging)
 }

@@ -4,17 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="16dp"
-    android:paddingTop="8dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="8dp">
+    android:theme="?attr/bandyer_smartGlassStatusBarStyle"
+    style="?attr/bandyer_rootLayoutStyle">
 
     <TextClock
         android:id="@+id/bandyer_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:includeFontPadding="false"
-        android:textColor="@android:color/white"
+        style="?android:attr/textViewStyle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="13:48" />
@@ -23,20 +20,16 @@
         android:id="@+id/bandyer_title_icon"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="24dp"
-        android:tint="@android:color/white"
+        style="?attr/bandyer_titleIconStyle"
         app:layout_constraintBottom_toBottomOf="@id/bandyer_time"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintStart_toEndOf="@id/bandyer_time"
-        app:layout_constraintTop_toTopOf="@id/bandyer_time"
-        app:srcCompat="@drawable/bandyer_close_icon" />
+        app:layout_constraintTop_toTopOf="@id/bandyer_time" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:includeFontPadding="false"
-        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="@id/bandyer_time"
         app:layout_constraintStart_toEndOf="@id/bandyer_title_icon"
         app:layout_constraintTop_toTopOf="@id/bandyer_time"
@@ -46,7 +39,17 @@
         android:id="@+id/bandyer_mic_muted_icon"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:tint="@android:color/white"
+        style="?attr/bandyer_micIconStyleStyle"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_time"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/bandyer_chat_icon"
+        app:layout_constraintTop_toTopOf="@id/bandyer_time" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/bandyer_chat_icon"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        style="?attr/bandyer_chatIconStyle"
         app:layout_constraintBottom_toBottomOf="@id/bandyer_time"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@id/bandyer_wifi_icon"
@@ -56,7 +59,7 @@
         android:id="@+id/bandyer_wifi_icon"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:tint="@android:color/white"
+        style="?attr/bandyer_wifiIconStyle"
         app:layout_constraintBottom_toBottomOf="@id/bandyer_time"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toStartOf="@id/bandyer_battery"
@@ -64,10 +67,9 @@
 
     <com.bandyer.sdk_design.new_smartglass.BatteryView
         android:id="@+id/bandyer_battery"
-        android:layout_width="24dp"
-        android:layout_height="12dp"
-        app:bandyer_charge="55"
+        style="?attr/bandyer_batteryStyle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_time"
+        app:layout_constraintTop_toTopOf="@id/bandyer_time"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
