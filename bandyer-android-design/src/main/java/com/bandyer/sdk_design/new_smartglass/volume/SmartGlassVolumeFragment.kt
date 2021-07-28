@@ -28,7 +28,7 @@ abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
         root = binding!!.root
         slider = binding!!.slider
         bottomActionBar = binding!!.bottomActionBar
-//        root!!.setOnTouchListener { _, event -> binding.slider.onTouchEvent(event) }
+        root!!.setOnTouchListener { _, event -> binding!!.slider.onTouchEvent(event) }
         return root!!
     }
 

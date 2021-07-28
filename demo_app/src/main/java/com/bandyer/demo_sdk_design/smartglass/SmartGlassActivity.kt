@@ -4,14 +4,10 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
-import androidx.annotation.IdRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.demo_sdk_design.databinding.ActivitySmartGlassBinding
 import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationManager
@@ -20,6 +16,7 @@ import com.bandyer.demo_sdk_design.smartglass.battery.BatteryState
 import com.bandyer.sdk_design.new_smartglass.utils.currentNavigationFragment
 import com.bandyer.demo_sdk_design.smartglass.network.WiFiObserver
 import com.bandyer.sdk_design.new_smartglass.*
+import com.bandyer.sdk_design.new_smartglass.status_bar.StatusBarView
 import kotlinx.coroutines.flow.collect
 
 class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener,

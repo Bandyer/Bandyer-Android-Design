@@ -1,6 +1,8 @@
 package com.bandyer.demo_sdk_design.smartglass
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,9 +26,13 @@ class ChatFragment : SmartGlassChatFragment() {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         itemAdapter!!.add(ChatItem("Mario: Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?"))
-        itemAdapter!!.add(ChatItem("Francesco: La scatola è sulla sinistra"))
-        itemAdapter!!.add(ChatItem("Gianfranco: Mi piacciono i treni"))
+//        itemAdapter!!.add(ChatItem("Francesco: La scatola è sulla sinistra"))
+//        itemAdapter!!.add(ChatItem("Gianfranco: Mi piacciono i treni"))
 
+        Handler(Looper.getMainLooper()).postDelayed({
+        itemAdapter!!.add(ChatItem("Francesco: La scatola è sulla sinistra"))
+
+        }, 200)
         return view
     }
 

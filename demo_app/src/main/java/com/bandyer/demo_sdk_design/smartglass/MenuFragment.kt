@@ -23,6 +23,7 @@ class MenuFragment : SmartGlassMenuFragment() {
         itemAdapter!!.add(MenuItem("Attiva camera", "Muta camera"))
         itemAdapter!!.add(MenuItem("Volume"))
         itemAdapter!!.add(MenuItem("Zoom"))
+        itemAdapter!!.add(MenuItem("Utenti"))
         itemAdapter!!.add(MenuItem("Chat"))
 
         fastAdapter!!.onClickListener = { _, _, item, _ ->
@@ -44,7 +45,7 @@ class MenuFragment : SmartGlassMenuFragment() {
                     findNavController().navigate(R.id.action_menuFragment_to_zoomFragment)
                     true
                 }
-                4 -> {
+                5 -> {
                     findNavController().navigate(R.id.action_menuFragment_to_chatFragment)
                     true
                 }

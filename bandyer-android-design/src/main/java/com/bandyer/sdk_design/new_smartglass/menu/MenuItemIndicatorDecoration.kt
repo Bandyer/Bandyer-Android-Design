@@ -88,10 +88,8 @@ class MenuItemIndicatorDecoration(
 
         var startX = if(!isRTL) parent.left else parent.right
         var endX = if(!isRTL) parent.right else parent.left
-        when {
-            firstPos == 0 -> startX = first.left + firstTextView.left + if(!isRTL) 0 else lastTextView.width
-            lastPos == itemCount - 1 -> endX = last.left + lastTextView.left + if(!isRTL) lastTextView.width else 0
-        }
+        if(firstPos == 0) startX = first.left + firstTextView.left + if(!isRTL) 0 else lastTextView.width
+        if(lastPos == itemCount - 1) endX = last.left + lastTextView.left + if(!isRTL) lastTextView.width else 0
         drawLine(startX.toFloat(), y, endX.toFloat(), y, paint)
     }
 

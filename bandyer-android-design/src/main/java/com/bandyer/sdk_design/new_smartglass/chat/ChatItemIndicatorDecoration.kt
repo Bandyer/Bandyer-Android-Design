@@ -58,6 +58,7 @@ class ChatItemIndicatorDecoration(context: Context) : ItemDecoration() {
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
         val itemCount = parent.adapter?.itemCount ?: return
+        if(itemCount < 2) return
         val parentWidth = parent.width.toFloat()
         val itemWidth = parentWidth / itemCount
 

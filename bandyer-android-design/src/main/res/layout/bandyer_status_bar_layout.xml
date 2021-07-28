@@ -65,7 +65,7 @@
         app:layout_constraintEnd_toStartOf="@id/bandyer_battery"
         app:layout_constraintTop_toTopOf="@id/bandyer_time" />
 
-    <com.bandyer.sdk_design.new_smartglass.BatteryView
+    <com.bandyer.sdk_design.new_smartglass.status_bar.BatteryView
         android:id="@+id/bandyer_battery"
         style="?attr/bandyer_batteryStyle"
         app:layout_constraintEnd_toEndOf="parent"
