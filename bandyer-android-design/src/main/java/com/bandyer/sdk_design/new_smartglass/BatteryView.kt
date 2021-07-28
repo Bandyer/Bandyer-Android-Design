@@ -10,13 +10,14 @@ import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.graphics.toRect
 import com.bandyer.sdk_design.R
+import com.bandyer.sdk_design.extensions.dp2px
 
 class BatteryView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    private var radius = 4f
+    private var radius = context.dp2px(3f).toFloat()
     private var spacingRatio = 0.04f
 
     // Cap
