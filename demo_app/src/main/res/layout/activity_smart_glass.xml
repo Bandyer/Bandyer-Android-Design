@@ -28,12 +28,4 @@
 
     </FrameLayout>
 
-    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-        android:id="@+id/notificationBottomActionBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:bandyer_swipeDownText="nascondi notifica"
-        app:bandyer_tapText="leggi" />
-
 </LinearLayout>
