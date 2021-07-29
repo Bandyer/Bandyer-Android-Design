@@ -1,14 +1,13 @@
 package com.bandyer.sdk_design.new_smartglass.chat
 
 import android.content.Context
-import android.graphics.Color
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
-import com.google.android.material.color.MaterialColors
+import com.bandyer.sdk_design.extensions.parseToHHmm
 
 class ChatMessageView @JvmOverloads constructor(
     context: Context,
@@ -19,30 +18,45 @@ class ChatMessageView @JvmOverloads constructor(
     private var binding: BandyerChatMessageLayoutBinding =
         BandyerChatMessageLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
-    private val readLineColor = Color.WHITE
-    private val unreadLineColor = MaterialColors.getColor(context, R.attr.colorSecondary, Color.BLACK)
-
     init {
         context.obtainStyledAttributes(attrs, R.styleable.ChatMessageView).apply {
-            setMessageText(getString(R.styleable.ChatMessageView_bandyer_messageText))
-            setMessageRead(getBoolean(R.styleable.ChatMessageView_bandyer_messageRead, false))
-            setMessageCollapsed(getBoolean(R.styleable.ChatMessageView_bandyer_messageCollapsed, false))
+            setName(getString(R.styleable.ChatMessageView_bandyer_nameText))
+            binding.bandyerTime.text = getString(R.styleable.ChatMessageView_bandyer_timeText)
+            setMessage(getString(R.styleable.ChatMessageView_bandyer_messageText))
+            setMessageCollapsed(
+                getBoolean(
+                    R.styleable.ChatMessageView_bandyer_messageCollapsed,
+                    false
+                )
+            )
+            setAvatar(
+                getResourceId(
+                    R.styleable.ChatMessageView_bandyer_avatarSrc,
+                    android.R.color.transparent
+                )
+            )
             recycle()
         }
     }
 
-    fun setMessageText(text: String?) {
-        binding.message.text = text
+    fun setAvatar(@DrawableRes resId: Int?) = binding.bandyerAvatar.setAvatar(resId)
+
+    fun setName(text: String?) {
+        binding.bandyerName.text = text
+        binding.bandyerAvatar.setText(text?.first().toString())
     }
 
-    fun setMessageRead(isMessageRead: Boolean) {
-        binding.line.setBackgroundColor(if (isMessageRead) readLineColor else unreadLineColor)
+    fun setMessage(text: String?) {
+        binding.bandyerMessage.text = text
+    }
+
+    fun setTime(millis: Long?) {
+        binding.bandyerTime.text = millis?.parseToHHmm()
     }
 
     private fun setMessageCollapsed(isMessageCollapsed: Boolean) {
-        binding.message.maxLines = if (isMessageCollapsed) COLLAPSED_MAX_LINES else Int.MAX_VALUE
-        binding.message.ellipsize =
-            if (isMessageCollapsed) TextUtils.TruncateAt.END else TextUtils.TruncateAt.MARQUEE
+        binding.bandyerMessage.maxLines =
+            if (isMessageCollapsed) COLLAPSED_MAX_LINES else Int.MAX_VALUE
     }
 
     private companion object {

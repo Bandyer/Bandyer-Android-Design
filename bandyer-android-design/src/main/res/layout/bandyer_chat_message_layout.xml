@@ -1,26 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="?attr/bandyer_rootLayoutStyle"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingStart="16dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="16dp">
 
-    <View
-        android:id="@+id/line"
-        style="?attr/bandyer_lineStyle"
-        android:layout_width="@dimen/bandyer_dimen_space2"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="@id/message"
-        app:layout_constraintEnd_toStartOf="@id/message"
+    <com.bandyer.sdk_design.new_smartglass.ContactAvatarView
+        android:id="@+id/bandyer_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/message" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/message"
-        android:layout_width="0dp"
+        android:id="@+id/bandyer_name"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_avatar"
+        app:layout_constraintStart_toEndOf="@id/bandyer_avatar"
+        app:layout_constraintTop_toTopOf="@id/bandyer_avatar"
+        tools:text="Mario Rossi" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/bandyer_color_white_30"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/line"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_avatar"
+        app:layout_constraintTop_toTopOf="@id/bandyer_avatar"
+        tools:text="10.36" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_message"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/bandyer_dimen_space8"
+        android:ellipsize="end"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/bandyer_name"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_name"
+        tools:text="Hello there" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

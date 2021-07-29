@@ -16,6 +16,7 @@ import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 import com.bandyer.sdk_design.new_smartglass.menu.MenuItem
+import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
@@ -28,6 +29,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
 
     protected var root: View? = null
     protected var rvMessages: RecyclerView? = null
+    protected var counter: MaterialTextView? = null
     protected var bottomActionBar: BottomActionBarView? = null
 
     @SuppressLint("ClickableViewAccessibility")
@@ -39,8 +41,9 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
 
         // set the views
         root = binding!!.root
-        rvMessages = binding!!.messages
-        bottomActionBar = binding!!.bottomActionBar
+        rvMessages = binding!!.bandyerMessages
+        counter = binding!!.bandyerCounter
+        bottomActionBar = binding!!.bandyerBottomActionBar
 
         // init the recycler view
         itemAdapter = ItemAdapter()
@@ -66,6 +69,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         binding = null
         root = null
         rvMessages = null
+        counter = null
         bottomActionBar = null
     }
 
