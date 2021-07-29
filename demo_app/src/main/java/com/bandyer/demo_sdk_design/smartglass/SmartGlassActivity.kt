@@ -109,7 +109,6 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
     override fun onShow() {
         handleNotification = true
 //        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.hideBottomBar()
-        showNotificationBottomBar()
     }
 
     override fun onExpanded() {
@@ -117,14 +116,12 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         if (supportFragmentManager.currentNavigationFragment?.id != R.id.chatFragment)
             binding.navHostFragment.findNavController().navigate(R.id.chatFragment)
 //        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.showBottomBar()
-        hideNotificationBottomBar()
         hideNotification()
     }
 
     override fun onDismiss() {
         handleNotification = false
 //        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.showBottomBar()
-        hideNotificationBottomBar()
     }
 
     fun hideNotification() {
@@ -158,13 +155,5 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)
-    }
-
-    private fun hideNotificationBottomBar() {
-        binding.notificationBottomActionBar.visibility = View.GONE
-    }
-
-    private fun showNotificationBottomBar() {
-        binding.notificationBottomActionBar.visibility = View.VISIBLE
     }
 }
