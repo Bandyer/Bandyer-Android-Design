@@ -14,8 +14,10 @@
     </declare-styleable>
 
     <declare-styleable name="ChatMessageView">
+        <attr name="bandyer_avatarSrc" format="reference"/>
+        <attr name="bandyer_nameText" format="string"/>
         <attr name="bandyer_messageText" format="string"/>
-        <attr name="bandyer_messageRead" format="boolean"/>
+        <attr name="bandyer_timeText" format="string"/>
         <attr name="bandyer_messageCollapsed" format="boolean"/>
     </declare-styleable>
 

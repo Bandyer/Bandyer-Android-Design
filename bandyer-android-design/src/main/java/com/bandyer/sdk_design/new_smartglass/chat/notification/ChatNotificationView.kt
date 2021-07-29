@@ -29,7 +29,7 @@ class ChatNotificationView @JvmOverloads constructor(
         BandyerChatNotificationLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun show(text: String) {
-        binding.message.setMessageText(text)
+        binding.message.setMessage(text)
         setVisibility(true, View.VISIBLE)
     }
 

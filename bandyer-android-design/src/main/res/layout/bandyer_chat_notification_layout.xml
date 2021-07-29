@@ -9,7 +9,6 @@
         android:id="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:bandyer_messageRead="false"
         app:bandyer_messageCollapsed="true" />
 
 </FrameLayout>
