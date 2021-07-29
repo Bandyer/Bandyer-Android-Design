@@ -38,4 +38,8 @@
         <attr name="bandyer_recyclerViewItemStyle" format="reference"/>
         <attr name="bandyer_sliderStyle" format="reference"/>
     </declare-styleable>
+
+    <style name="ShapeAppearanceOverlay.App.CornerSize50Percent" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>

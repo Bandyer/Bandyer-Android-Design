@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/bandyer_dimen_space24"
+    android:layout_height="@dimen/bandyer_dimen_space24"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/bandyer_avatar_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:background="@color/bandyer_colorSecondary"
+        android:scaleType="centerCrop"
+        app:strokeWidth="1dp"
+        app:strokeColor="@android:color/black"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_avatar_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp"
+        android:gravity="center"
+        android:maxLines="1"
+        app:autoSizeTextType="uniform"
+        app:autoSizeMaxTextSize="14sp"
+        app:autoSizeMinTextSize="2sp"
+        android:textColor="@android:color/white"
+        tools:text="M"/>
+
+</FrameLayout>
