@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BandyerSDKDesign.SmartGlass.ChatFragment">
+        <attr name="bandyer_counterStyle" format="reference"/>
+    </declare-styleable>
+
     <!-- MENU FRAGMENT -->
     <style name="BandyerSDKDesign.SmartGlass.ChatFragment" parent="">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerView</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem</item>
+        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.Counter.ChatFragment.SmartGlass</item>
         <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment.BottomActionBar</item>
     </style>
 
@@ -18,7 +23,6 @@
         <item name="bandyer_lineStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem.Line</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.RecyclerViewItem.ChatFragment.SmartGlass</item>
         <item name="bandyer_messageCollapsed">false</item>
-        <item name="bandyer_messageRead">false</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem.Root" parent="">
@@ -38,11 +42,19 @@
         <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
     </style>
 
+    <style name="BandyerSDKDesign.TextView.Counter.ChatFragment.SmartGlass" parent="BandyerSDKDesign.TextView">
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space8</item>
+        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_small</item>
+    </style>
+
     <!-- BOTTOM ACTION BAR -->
     <style name="BandyerSDKDesign.SmartGlass.ChatFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Root.ChatFragment</item>
         <item name="bandyer_swipeDownText">@string/bandyer_smartglass_close</item>
         <item name="bandyer_swipeText">@string/bandyer_smartglass_browse_the_messages</item>
+        <item name="bandyer_tapText">@string/bandyer_smartglass_contact_info</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Root.ChatFragment" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Root">
