@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false">
+
+    <com.bandyer.sdk_design.new_smartglass.ContactAvatarView
+        android:id="@+id/bandyer_first_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:elevation="@dimen/bandyer_dimen_space3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.bandyer.sdk_design.new_smartglass.ContactAvatarView
+        android:id="@+id/bandyer_second_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:elevation="@dimen/bandyer_dimen_space2"
+        android:layout_marginStart="@dimen/bandyer_dimen_space20"
+        app:layout_constraintStart_toStartOf="@id/bandyer_first_avatar"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.bandyer.sdk_design.new_smartglass.ContactAvatarView
+        android:id="@+id/bandyer_third_avatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:elevation="@dimen/bandyer_dimen_space1"
+        android:layout_marginStart="@dimen/bandyer_dimen_space20"
+        app:layout_constraintStart_toStartOf="@id/bandyer_second_avatar"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
