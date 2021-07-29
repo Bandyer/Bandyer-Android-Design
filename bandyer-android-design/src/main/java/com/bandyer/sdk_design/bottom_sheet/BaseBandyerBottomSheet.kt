@@ -414,7 +414,7 @@ open class BaseBandyerBottomSheet(
         val window = coordinatorLayout!!.context.getActivity<AppCompatActivity>()?.window ?: return
         val cardViewBackgroundColor = bottomSheetLayoutContent.backgroundView?.cardBackgroundColor?.defaultColor ?: return
 
-        WindowInsetsControllerCompat(window, coordinatorLayout!!.rootView).isAppearanceLightNavigationBars = isLightNavigationBar ?: !cardViewBackgroundColor.requiresLightOverlay()
+        WindowInsetsControllerCompat(window, coordinatorLayout!!.rootView).isAppearanceLightNavigationBars = isLightNavigationBar ?: !cardViewBackgroundColor.requiresLightColor()
     }
 
     /**

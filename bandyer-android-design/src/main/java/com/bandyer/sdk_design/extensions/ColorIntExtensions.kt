@@ -7,7 +7,7 @@ import android.graphics.Color
  * @receiver Int the IntColor
  * @return true if the color needs a light overlay
  */
-fun Int.requiresLightOverlay(): Boolean {
+fun Int.requiresLightColor(): Boolean {
     val red = Color.red(this)
     val green = Color.green(this)
     val blue = Color.blue(this)
