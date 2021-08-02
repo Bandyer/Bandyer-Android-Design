@@ -2,11 +2,11 @@ package com.bandyer.sdk_design.new_smartglass
 
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.databinding.BandyerContactGroupLayoutBinding
+import androidx.constraintlayout.widget.ConstraintSet
+import com.bandyer.sdk_design.extensions.dp2px
 
 class ContactAvatarGroupView @JvmOverloads constructor(
     context: Context,
@@ -14,26 +14,46 @@ class ContactAvatarGroupView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private val binding: BandyerContactGroupLayoutBinding =
-        BandyerContactGroupLayoutBinding.inflate(
-            LayoutInflater.from(context), this, true
-        )
-
-    init {
-
+    fun addAvatar(@DrawableRes imageResId: Int) {
+        addAvatar().setImage(imageResId)
     }
 
-    fun setFirstAvatar(@DrawableRes resId: Int?) = binding.bandyerFirstAvatar.setAvatar(resId)
+    fun setAvatar(text: String, @ColorInt color: Int?) =
+        addAvatar().apply {
+            setText(text)
+            setBackground(color)
+        }
 
-    fun setFirstAvatarLetter(text: String?) = binding.bandyerFirstAvatar.setText(text)
+    private fun addAvatar(): ContactAvatarView {
+        val set = ConstraintSet()
 
-    fun setSecondAvatar(@DrawableRes resId: Int?) = binding.bandyerSecondAvatar.setAvatar(resId)
+        val elevation = - childCount
+        val marginStart = if (childCount == 0) 0 else CHILD_START_MARGIN
+        val startId = this.getChildAt(childCount - 1)?.id ?: this.id
 
-    fun setSecondAvatarLetter(text: String?) = binding.bandyerSecondAvatar.setText(text)
+        // Create the child view
+        val child = ContactAvatarView(context)
+        child.id = generateViewId()
+        child.clipToPadding = false
+        child.elevation = context.dp2px(elevation.toFloat()).toFloat()
+        this.addView(child, childCount)
 
-    fun setGroupedAvatarsNumber(number: Int?) = binding.bandyerFirstAvatar.setText(number?.let {
-        resources.getString(
-            R.string.bandyer_smartglass_group_contacts_pattern, it
+        // Set the constraints
+        set.clone(this)
+        set.connect(
+            child.id, ConstraintSet.START, startId, ConstraintSet.START, context.dp2px(
+                marginStart.toFloat()
+            )
         )
-    })
+        set.connect(
+            child.id, ConstraintSet.TOP, this.id, ConstraintSet.TOP, 0
+        )
+        set.applyTo(this)
+
+        return child
+    }
+
+    private companion object {
+        const val CHILD_START_MARGIN = 16
+    }
 }
