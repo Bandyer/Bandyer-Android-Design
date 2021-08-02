@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import com.bandyer.sdk_design.databinding.BandyerContactAvatarLayoutBinding
 import com.bandyer.sdk_design.extensions.parseToColor
@@ -24,7 +25,7 @@ class ContactAvatarView @JvmOverloads constructor(
     private val defaultAvatar = android.R.color.transparent
     private val defaultBackgroundColor = Color.GRAY
 
-    fun setAvatar(@DrawableRes resId: Int?) {
+    fun setImage(@DrawableRes resId: Int?) {
         binding.bandyerAvatarImage.setImageResource(resId ?: defaultAvatar)
         binding.bandyerAvatarText.visibility = if (resId == null) VISIBLE else GONE
     }
@@ -33,8 +34,8 @@ class ContactAvatarView @JvmOverloads constructor(
         binding.bandyerAvatarText.text = text?.toUpperCase(Locale.getDefault())
     }
 
-    fun setBackground(text: String?) = binding.bandyerAvatarImage.setBackgroundColor(
-        text?.parseToColor() ?: defaultBackgroundColor
+    fun setBackground(@ColorInt color: Int?) = binding.bandyerAvatarImage.setBackgroundColor(
+        color ?: defaultBackgroundColor
     )
 }
 

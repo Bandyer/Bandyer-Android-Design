@@ -13,6 +13,7 @@
         android:background="@color/bandyer_colorSecondary"
         android:scaleType="centerCrop"
         app:strokeWidth="1dp"
+        android:padding="1dp"
         app:strokeColor="@android:color/black"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
