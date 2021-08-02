@@ -39,7 +39,7 @@ class ChatMessageView @JvmOverloads constructor(
         }
     }
 
-    fun setAvatar(@DrawableRes resId: Int?) = binding.bandyerAvatar.setAvatar(resId)
+    fun setAvatar(@DrawableRes resId: Int?) = binding.bandyerAvatar.setImage(resId)
 
     fun setName(text: String?) {
         binding.bandyerName.text = text
