@@ -22,7 +22,6 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem.Root</item>
         <item name="bandyer_lineStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem.Line</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.RecyclerViewItem.ChatFragment.SmartGlass</item>
-        <item name="bandyer_messageCollapsed">false</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem.Root" parent="">

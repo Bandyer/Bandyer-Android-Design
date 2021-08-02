@@ -3,6 +3,7 @@ package com.bandyer.sdk_design.new_smartglass.chat
 import android.view.View
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerChatItemLayoutBinding
+import com.bandyer.sdk_design.extensions.parseToColor
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -20,18 +21,22 @@ class ChatItem(val data: SmartGlassChatData) : AbstractItem<ChatItem.ViewHolder>
 
         private val binding: BandyerChatItemLayoutBinding = BandyerChatItemLayoutBinding.bind(view)
 
-        override fun bindView(item: ChatItem, payloads: List<Any>) {
-            binding.message.setAvatar(item.data.avatar)
-            binding.message.setName(item.data.name)
-            binding.message.setMessage(item.data.message)
-            binding.message.setTime(item.data.time)
-        }
+        override fun bindView(item: ChatItem, payloads: List<Any>): Unit =
+            with(binding.bandyerMessage) {
+                val data = item.data
+                setAvatar(data.avatar)
+                setName(data.name)
+                setAvatarBackground(data.userAlias?.parseToColor())
+                setMessage(data.message)
+                setTime(data.time)
+            }
 
-        override fun unbindView(item: ChatItem) {
-            binding.message.setAvatar(null)
-            binding.message.setName(null)
-            binding.message.setTime(null)
-            binding.message.setMessage(null)
+        override fun unbindView(item: ChatItem) = with(binding.bandyerMessage) {
+            setAvatar(null)
+            setName(null)
+            setAvatarBackground(null)
+            setTime(null)
+            setMessage(null)
         }
     }
 }

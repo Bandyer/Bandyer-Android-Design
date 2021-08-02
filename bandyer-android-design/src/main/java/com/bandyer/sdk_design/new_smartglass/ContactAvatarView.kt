@@ -1,6 +1,7 @@
 package com.bandyer.sdk_design.new_smartglass
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import com.bandyer.sdk_design.databinding.BandyerContactAvatarLayoutBinding
 import com.bandyer.sdk_design.extensions.parseToColor
+import com.bandyer.sdk_design.extensions.requiresLightColor
 import java.util.*
 
 class ContactAvatarView @JvmOverloads constructor(
@@ -25,17 +27,20 @@ class ContactAvatarView @JvmOverloads constructor(
     private val defaultAvatar = android.R.color.transparent
     private val defaultBackgroundColor = Color.GRAY
 
-    fun setImage(@DrawableRes resId: Int?) {
-        binding.bandyerAvatarImage.setImageResource(resId ?: defaultAvatar)
-        binding.bandyerAvatarText.visibility = if (resId == null) VISIBLE else GONE
+    fun setImage(@DrawableRes resId: Int?) = with(binding) {
+        bandyerAvatarImage.setImageResource(resId ?: defaultAvatar)
+        bandyerAvatarText.visibility = if (resId == null) VISIBLE else GONE
     }
 
     fun setText(text: String?) {
         binding.bandyerAvatarText.text = text?.toUpperCase(Locale.getDefault())
     }
 
-    fun setBackground(@ColorInt color: Int?) = binding.bandyerAvatarImage.setBackgroundColor(
-        color ?: defaultBackgroundColor
-    )
+    fun setBackground(@ColorInt color: Int?) = with(binding) {
+        bandyerAvatarImage.setBackgroundColor(
+            color ?: defaultBackgroundColor
+        )
+        bandyerAvatarText.setTextColor(if (color?.requiresLightColor() == true) Color.WHITE else Color.BLACK)
+    }
 }
 

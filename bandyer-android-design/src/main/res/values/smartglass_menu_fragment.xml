@@ -16,7 +16,6 @@
     <style name="BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerViewItem" parent="">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerViewItem.Root</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.RecyclerViewItem.MenuFragment.SmartGlass</item>
-        <item name="bandyer_messageCollapsed">false</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerViewItem.Root" parent="">

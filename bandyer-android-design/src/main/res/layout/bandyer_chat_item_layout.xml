@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.bandyer.sdk_design.new_smartglass.chat.ChatMessageView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/message"
+    android:id="@+id/bandyer_message"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="?attr/bandyer_recyclerViewItemStyle" />

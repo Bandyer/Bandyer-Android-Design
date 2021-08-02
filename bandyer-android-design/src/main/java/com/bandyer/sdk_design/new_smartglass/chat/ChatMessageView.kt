@@ -3,9 +3,9 @@ package com.bandyer.sdk_design.new_smartglass.chat
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
 import com.bandyer.sdk_design.extensions.parseToHHmm
 
@@ -18,33 +18,14 @@ class ChatMessageView @JvmOverloads constructor(
     private var binding: BandyerChatMessageLayoutBinding =
         BandyerChatMessageLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
-    init {
-        context.obtainStyledAttributes(attrs, R.styleable.ChatMessageView).apply {
-            setName(getString(R.styleable.ChatMessageView_bandyer_nameText))
-            binding.bandyerTime.text = getString(R.styleable.ChatMessageView_bandyer_timeText)
-            setMessage(getString(R.styleable.ChatMessageView_bandyer_messageText))
-            setMessageCollapsed(
-                getBoolean(
-                    R.styleable.ChatMessageView_bandyer_messageCollapsed,
-                    false
-                )
-            )
-            setAvatar(
-                getResourceId(
-                    R.styleable.ChatMessageView_bandyer_avatarSrc,
-                    android.R.color.transparent
-                )
-            )
-            recycle()
-        }
-    }
-
     fun setAvatar(@DrawableRes resId: Int?) = binding.bandyerAvatar.setImage(resId)
 
-    fun setName(text: String?) {
-        binding.bandyerName.text = text
-        binding.bandyerAvatar.setText(text?.first().toString())
+    fun setName(text: String?) = with(binding) {
+        bandyerName.text = text
+        bandyerAvatar.setText(text?.first().toString())
     }
+
+    fun setAvatarBackground(@ColorInt color: Int?) = binding.bandyerAvatar.setBackground(color)
 
     fun setMessage(text: String?) {
         binding.bandyerMessage.text = text

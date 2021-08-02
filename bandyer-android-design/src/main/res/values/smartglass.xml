@@ -13,14 +13,6 @@
         <attr name="bandyer_swipeDownText" format="string"/>
     </declare-styleable>
 
-    <declare-styleable name="ChatMessageView">
-        <attr name="bandyer_avatarSrc" format="reference"/>
-        <attr name="bandyer_nameText" format="string"/>
-        <attr name="bandyer_messageText" format="string"/>
-        <attr name="bandyer_timeText" format="string"/>
-        <attr name="bandyer_messageCollapsed" format="boolean"/>
-    </declare-styleable>
-
     <declare-styleable name="BandyerSlider">
         <attr name="bandyer_percentageText" format="string"/>
     </declare-styleable>
