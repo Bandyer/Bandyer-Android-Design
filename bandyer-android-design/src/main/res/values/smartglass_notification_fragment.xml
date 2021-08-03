@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BandyerSDKDesign.SmartGlass.NotificationFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Root.NotificationFragment</item>
+        <item name="bandyer_swipeDownText">@string/bandyer_smartglass_close</item>
+        <item name="bandyer_tapText">@string/bandyer_smartglass_contact_info</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Root.NotificationFragment" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Root">
+        <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:maxHeight">@dimen/bandyer_dimen_space0</item>
+    </style>
+</resources>

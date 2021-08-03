@@ -33,11 +33,14 @@ class ChatNotificationView @JvmOverloads constructor(
         BandyerChatNotificationLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun show(data: List<NotificationData>) = with(binding) {
-        val isSingleItem = data.size < 2
-        bandyerTitle.text =
-            if (isSingleItem) data[0].name else "${data.size} nuovi messaggi"
-        bandyerMessage.text =
-            if (isSingleItem) data[0].message else null
+        if (data.size < 2) {
+            bandyerTitle.text = data[0].name
+            bandyerMessage.text = data[0].message
+        } else {
+            bandyerTitle.text = resources.getString(R.string.bandyer_smartglass_new_messages_pattern, data.size)
+            binding.bandyerMessage.visibility = View.GONE
+            binding.bandyerTime.visibility = View.GONE
+        }
 
         data.forEachIndexed { index, item ->
             if (index > 1) return@forEachIndexed

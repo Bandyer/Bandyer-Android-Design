@@ -1,14 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/bandyer_dimen_space8"
+    android:paddingBottom="@dimen/bandyer_dimen_space8"
+    android:background="@color/bandyer_smartglass_background_color">
 
-    <com.bandyer.sdk_design.new_smartglass.chat.ChatMessageView
-        android:id="@+id/message"
+    <com.bandyer.sdk_design.new_smartglass.ContactAvatarGroupView
+        android:id="@+id/bandyer_avatars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bandyer_dimen_space16"
+        android:theme="@style/BandyerSDKDesign.SmartGlass.Chat.Avatar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:includeFontPadding="false"
+        android:lineSpacingExtra="0dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_avatars"
+        app:layout_constraintStart_toEndOf="@id/bandyer_avatars"
+        app:layout_constraintTop_toTopOf="@id/bandyer_avatars"
+        tools:text="Mario Rossi" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/bandyer_color_white_30"
+        android:textSize="12sp"
+        android:layout_marginEnd="@dimen/bandyer_dimen_space16"
+        android:text="Now"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_avatars"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bandyer_avatars"
+        tools:text="10.36" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_message"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/bandyer_dimen_space8"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/bandyer_time"
+        app:layout_constraintStart_toStartOf="@id/bandyer_title"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_title"
+        tools:text="Hello there" />
+
+    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+        android:id="@+id/bandyer_bottomActionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:bandyer_messageCollapsed="true" />
+        android:layout_marginTop="@dimen/bandyer_dimen_space16"
+        android:theme="@style/BandyerSDKDesign.SmartGlass.NotificationFragment.BottomActionBar"
+        app:bandyer_swipeDownText="nascondi notifica"
+        app:bandyer_tapText="leggi"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_message"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

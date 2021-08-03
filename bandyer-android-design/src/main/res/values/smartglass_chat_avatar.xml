@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BandyerSDKDesign.SmartGlass.Chat.Avatar">
+        <attr name="bandyer_imageViewStyle" format="reference" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.SmartGlass.Chat.Avatar" parent="">
+        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.SmartGlass.Chat.Avatar.Image
+        </item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Avatar.Chat.Smartglass
+        </item>
+    </style>
+
+    <!-- IMAGE -->
+    <style name="BandyerSDKDesign.SmartGlass.Chat.Avatar.Image" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="strokeWidth">@dimen/bandyer_dimen_space1</item>
+        <item name="android:padding">@dimen/bandyer_dimen_space1</item>
+        <item name="strokeColor">@android:color/black</item>
+        <item name="shapeAppearanceOverlay">
+            @style/BandyerSDKDesign.SmartGlass.Chat.Avatar.Image.ShapeAppearanceOverlay
+        </item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.Chat.Avatar.Image.ShapeAppearanceOverlay" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <!-- TEXT -->
+    <style name="BandyerSDKDesign.TextView.Avatar.Chat.Smartglass" parent="BandyerSDKDesign.TextView">
+        <item name="android:gravity">center</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_normal</item>
+        <item name="autoSizeMinTextSize">@dimen/bandyer_dimen_text_2sp</item>
+        <item name="autoSizeTextType">uniform</item>
+    </style>
+</resources>
