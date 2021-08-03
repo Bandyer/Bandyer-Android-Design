@@ -1,29 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/bandyer_rootLayoutStyle"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    style="?attr/bandyer_rootLayoutStyle">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bandyer_gesture_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        style="?attr/bandyer_itemGestureIconStyle"/>
+        style="?attr/bandyer_itemGestureIconStyle"
+        android:layout_width="@dimen/bandyer_dimen_space24"
+        android:layout_height="@dimen/bandyer_dimen_space24" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_gesture_text"
+        style="?attr/bandyer_itemGestureTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Swipe"
-        style="?attr/bandyer_itemGestureTextStyle"/>
+        tools:text="Swipe" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_action_text"
+        style="?attr/bandyer_itemActionTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="cancel"
-        style="?attr/bandyer_itemActionTextStyle"/>
+        tools:text="cancel" />
 
 </LinearLayout>

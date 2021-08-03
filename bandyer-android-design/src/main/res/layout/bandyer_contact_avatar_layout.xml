@@ -1,36 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/bandyer_dimen_space24"
-    android:layout_height="@dimen/bandyer_dimen_space24"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="@dimen/bandyer_dimen_space24">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bandyer_avatar_image"
+        style="?attr/bandyer_imageViewStyle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:adjustViewBounds="true"
-        android:background="@color/bandyer_colorSecondary"
-        android:scaleType="centerCrop"
-        app:strokeWidth="1dp"
-        android:padding="1dp"
-        app:strokeColor="@android:color/black"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
+        android:layout_height="match_parent" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_avatar_text"
+        style="?android:attr/textViewStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="14sp"
-        android:textAlignment="center"
-        android:includeFontPadding="false"
-        android:lineSpacingExtra="0dp"
-        android:gravity="center"
-        android:maxLines="1"
-        app:autoSizeTextType="uniform"
-        app:autoSizeMaxTextSize="14sp"
-        app:autoSizeMinTextSize="2sp"
-        android:textColor="@android:color/white"
-        tools:text="M"/>
-
+        tools:text="M" />
 </FrameLayout>

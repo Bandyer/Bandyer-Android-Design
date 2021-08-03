@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/bandyer_rootLayoutStyle"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    style="?attr/bandyer_rootLayoutStyle">
+    android:layout_height="wrap_content">
 
     <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarItemView
         android:id="@+id/bandyer_swipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:theme="?attr/bandyer_swipeItemStyle"/>
+        android:theme="?attr/bandyer_swipeItemStyle" />
 
     <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarItemView
         android:id="@+id/bandyer_tap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:theme="?attr/bandyer_tapItemStyle"/>
+        android:theme="?attr/bandyer_tapItemStyle" />
 
     <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarItemView
         android:id="@+id/bandyer_swipe_down"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:theme="?attr/bandyer_swipeDownItemStyle"/>
+        android:theme="?attr/bandyer_swipeDownItemStyle" />
 
 </LinearLayout>

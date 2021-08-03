@@ -166,6 +166,7 @@
     <string name="bandyer_max_bytes_dialog_title">Limite condivisione file</string>
 
     <!-- SMART GLASSES -->
+    <string name="bandyer_smartglass_new_messages_pattern">%1$d nuovi messaggi</string>
     <string name="bandyer_smartglass_swipe">Scorri</string>
     <string name="bandyer_smartglass_tap">Tocca</string>
     <string name="bandyer_smartglass_close">chiudi</string>
