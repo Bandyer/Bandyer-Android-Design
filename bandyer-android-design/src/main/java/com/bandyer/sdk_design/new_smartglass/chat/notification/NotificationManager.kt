@@ -52,10 +52,10 @@ class NotificationManager {
         notificationView?.show(notificationData)
         listener?.onShow()
 
-        notificationView?.postDelayed({
-            if (state != State.COLLAPSED) return@postDelayed
-            dismiss()
-        }, AUTO_HIDE_DELAY)
+//        notificationView?.postDelayed({
+//            if (state != State.COLLAPSED) return@postDelayed
+//            dismiss()
+//        }, AUTO_HIDE_DELAY)
     }
 
     fun dismiss(withAnimation: Boolean = true) {

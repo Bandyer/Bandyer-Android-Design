@@ -38,8 +38,8 @@ class ChatNotificationView @JvmOverloads constructor(
             bandyerMessage.text = data[0].message
         } else {
             bandyerTitle.text = resources.getString(R.string.bandyer_smartglass_new_messages_pattern, data.size)
-            binding.bandyerMessage.visibility = View.GONE
-            binding.bandyerTime.visibility = View.GONE
+            bandyerMessage.maxLines = 0
+            bandyerTime.visibility = View.GONE
         }
 
         data.forEachIndexed { index, item ->
@@ -71,7 +71,7 @@ class ChatNotificationView @JvmOverloads constructor(
 
     fun expand(onExpanded: ((Animator) -> Unit)? = null) {
         setVisibility(true, View.VISIBLE)
-        binding.bandyerMessage.animateViewHeight(
+        binding.root.animateViewHeight(
             height,
             (parent as ViewGroup).height,
             ANIMATION_DURATION,

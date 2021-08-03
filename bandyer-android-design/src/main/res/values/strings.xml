@@ -199,5 +199,7 @@
     <string name="bandyer_smartglass_participants_camera">participants camera</string>
     <string name="bandyer_smartglass_open_menu">open menu</string>
     <string name="bandyer_smartglass_contact_info">contact info</string>
-
+    <string name="bandyer_smartglass_now">Now</string>
+    <string name="bandyer_smartglass_read">read</string>
+    <string name="bandyer_smartglass_hide_notification">hide notification</string>
 </resources>

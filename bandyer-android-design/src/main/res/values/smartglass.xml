@@ -2,24 +2,24 @@
 <resources>
     <!-- Smart glass declare styleable-->
     <declare-styleable name="BottomActionBarItemView">
-        <attr name="bandyer_gestureIcon" format="reference"/>
-        <attr name="bandyer_gestureText" format="string"/>
-        <attr name="bandyer_actionText" format="string"/>
+        <attr name="bandyer_gestureIcon" format="reference" />
+        <attr name="bandyer_gestureText" format="string" />
+        <attr name="bandyer_actionText" format="string" />
     </declare-styleable>
 
     <declare-styleable name="BottomActionBarView">
-        <attr name="bandyer_swipeText" format="string"/>
-        <attr name="bandyer_tapText" format="string"/>
-        <attr name="bandyer_swipeDownText" format="string"/>
+        <attr name="bandyer_swipeText" format="string" />
+        <attr name="bandyer_tapText" format="string" />
+        <attr name="bandyer_swipeDownText" format="string" />
     </declare-styleable>
 
     <declare-styleable name="BandyerSlider">
-        <attr name="bandyer_percentageText" format="string"/>
+        <attr name="bandyer_percentageText" format="string" />
     </declare-styleable>
 
     <declare-styleable name="ActivableTextView">
-        <attr name="bandyer_inactivatedText" format="string"/>
-        <attr name="bandyer_activatedText" format="boolean"/>
+        <attr name="bandyer_inactivatedText" format="string" />
+        <attr name="bandyer_activatedText" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="BatteryView">
@@ -28,8 +28,9 @@
     </declare-styleable>
 
     <declare-styleable name="BandyerSDKDesign.SmartGlass">
-        <attr name="bandyer_bottomActionBarStyle" format="reference"/>
-        <attr name="bandyer_recyclerViewItemStyle" format="reference"/>
-        <attr name="bandyer_sliderStyle" format="reference"/>
+        <attr name="bandyer_bottomActionBarStyle" format="reference" />
+        <attr name="bandyer_recyclerViewItemStyle" format="reference" />
+        <attr name="bandyer_avatarStyle" format="reference" />
+        <attr name="bandyer_sliderStyle" format="reference" />
     </declare-styleable>
 </resources>

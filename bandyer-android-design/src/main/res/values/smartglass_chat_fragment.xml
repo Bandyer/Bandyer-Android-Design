@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BandyerSDKDesign.SmartGlass.ChatFragment">
-        <attr name="bandyer_counterStyle" format="reference"/>
-        <attr name="bandyer_avatarStyle" format="reference"/>
+        <attr name="bandyer_counterStyle" format="reference" />
     </declare-styleable>
 
     <!-- MENU FRAGMENT -->
@@ -24,7 +23,8 @@
         <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.SmartGlass.Chat.Avatar</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.RecyclerViewItem.ChatFragment.SmartGlass</item>
         <item name="bandyer_messageStyle">@style/BandyerSDKDesign.TextView.Message.RecyclerViewItem.ChatFragment.SmartGlass</item>
-        <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.Timestamp.RecyclerViewItem.ChatFragment.SmartGlass</item>
+        <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.Timestamp.RecyclerViewItem.ChatFragment.SmartGlass
+        </item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem.Root" parent="">

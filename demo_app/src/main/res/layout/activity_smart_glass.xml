@@ -10,7 +10,8 @@
     <com.bandyer.sdk_design.new_smartglass.status_bar.StatusBarView
         android:id="@+id/statusBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/bandyer_smartglass_background_color"/>
 
     <FrameLayout
         android:id="@+id/content"

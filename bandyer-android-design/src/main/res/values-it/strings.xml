@@ -189,5 +189,7 @@
     <string name="bandyer_smartglass_participants_camera">video partecipanti</string>
     <string name="bandyer_smartglass_open_menu">apri menu</string>
     <string name="bandyer_smartglass_contact_info">info contatto</string>
-
+    <string name="bandyer_smartglass_now">Adesso</string>
+    <string name="bandyer_smartglass_read">leggi</string>
+    <string name="bandyer_smartglass_hide_notification">nascondi notifica</string>
 </resources>

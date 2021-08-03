@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BandyerSDKDesign.SmartGlass.Chat.Notification" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.Chat.Notification.Root</item>
+        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.SmartGlass.Chat.Avatar</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.Notification.Chat.SmartGlass</item>
+        <item name="bandyer_messageStyle">@style/BandyerSDKDesign.TextView.Message.Notification.Chat.SmartGlass</item>
+        <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.Timestamp.Notification.Chat.SmartGlass</item>
+        <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Notification.Chat</item>
+    </style>
+
+    <!-- ROOT -->
+    <style name="BandyerSDKDesign.SmartGlass.Chat.Notification.Root" parent="">
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
+        <item name="android:background">@color/bandyer_smartglass_background_color</item>
+    </style>
+
+    <!-- TITLE -->
+    <style name="BandyerSDKDesign.TextView.Title.Notification.Chat.SmartGlass" parent="BandyerSDKDesign.TextView">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- MESSAGE -->
+    <style name="BandyerSDKDesign.TextView.Message.Notification.Chat.SmartGlass" parent="BandyerSDKDesign.TextView">
+        <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <!-- TIMESTAMP -->
+    <style name="BandyerSDKDesign.TextView.Timestamp.Notification.Chat.SmartGlass" parent="BandyerSDKDesign.TextView">
+        <item name="android:textColor">@color/bandyer_color_white_30</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_small</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:text">@string/bandyer_smartglass_now</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Notification.Chat" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Root.Notification.Chat</item>
+        <item name="bandyer_swipeDownText">@string/bandyer_smartglass_hide_notification</item>
+        <item name="bandyer_tapText">@string/bandyer_smartglass_read</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Root.Notification.Chat" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Root">
+        <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:maxHeight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space16</item>
+    </style>
+</resources>
