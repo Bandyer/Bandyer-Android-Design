@@ -18,7 +18,7 @@ class ContactAvatarGroupView @JvmOverloads constructor(
         addAvatar().setImage(imageResId)
     }
 
-    fun setAvatar(text: String, @ColorInt color: Int?) =
+    fun addAvatar(text: String, @ColorInt color: Int?) =
         addAvatar().apply {
             setText(text)
             setBackground(color)

@@ -3,6 +3,7 @@ package com.bandyer.sdk_design.new_smartglass.chat.notification
 import android.content.Context
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
+import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 
 class NotificationManager {
@@ -46,9 +47,9 @@ class NotificationManager {
         attacher = NotificationViewAttacher(notificationView!!)
     }
 
-    fun show(text: String) {
+    fun show(notificationData: List<NotificationData>) {
         state = State.COLLAPSED
-        notificationView?.show(text)
+        notificationView?.show(notificationData)
         listener?.onShow()
 
         notificationView?.postDelayed({

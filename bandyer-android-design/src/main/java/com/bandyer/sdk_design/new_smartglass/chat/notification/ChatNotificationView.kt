@@ -8,11 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.FrameLayout
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.transition.Slide
 import androidx.transition.TransitionManager
+import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerChatNotificationLayoutBinding
 import com.bandyer.sdk_design.extensions.animateViewHeight
+import com.bandyer.sdk_design.extensions.parseToColor
 
 /**
  * A chat notification view
@@ -23,13 +27,40 @@ class ChatNotificationView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private var binding: BandyerChatNotificationLayoutBinding =
         BandyerChatNotificationLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
-    fun show(text: String) {
-        binding.message.setMessage(text)
+    fun show(data: List<NotificationData>) = with(binding) {
+        val isSingleItem = data.size < 2
+        bandyerTitle.text =
+            if (isSingleItem) data[0].name else "${data.size} nuovi messaggi"
+        bandyerMessage.text =
+            if (isSingleItem) data[0].message else null
+
+        data.forEachIndexed { index, item ->
+            if (index > 1) return@forEachIndexed
+
+            with(bandyerAvatars) {
+                if (item.imageRes != null) addAvatar(item.imageRes)
+                else addAvatar(
+                    item.name.first().toUpperCase().toString(),
+                    item.userAlias.parseToColor()
+                )
+            }
+        }
+
+        val distinctUsers = data.distinctBy { it.userAlias }.size
+        if (distinctUsers > 2)
+            bandyerAvatars.addAvatar(
+                resources.getString(
+                    R.string.bandyer_smartglass_group_contacts_pattern,
+                    distinctUsers
+                ),
+                null
+            )
+
         setVisibility(true, View.VISIBLE)
     }
 
@@ -37,7 +68,7 @@ class ChatNotificationView @JvmOverloads constructor(
 
     fun expand(onExpanded: ((Animator) -> Unit)? = null) {
         setVisibility(true, View.VISIBLE)
-        binding.message.animateViewHeight(
+        binding.bandyerMessage.animateViewHeight(
             height,
             (parent as ViewGroup).height,
             ANIMATION_DURATION,
