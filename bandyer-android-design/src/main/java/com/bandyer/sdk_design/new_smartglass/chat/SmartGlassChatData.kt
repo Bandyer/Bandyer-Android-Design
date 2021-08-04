@@ -7,5 +7,6 @@ data class SmartGlassChatData(
     val userAlias: String? = null,
     val message: String? = null,
     val time: Long? = null,
-    @DrawableRes val avatar: Int? = null
+    @DrawableRes val avatar: Int? = null,
+    val isFirstMessagePage: Boolean = true
 )

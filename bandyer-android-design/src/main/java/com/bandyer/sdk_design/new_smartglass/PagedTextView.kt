@@ -12,10 +12,9 @@ import kotlin.math.min
 
 class PagedTextView : AppCompatTextView {
 
-    val pageList = arrayListOf<CharSequence>()
-
     private var needPaginate = false
     private var isPaginating = false
+    private val pageList = arrayListOf<CharSequence>()
     private var pageIndex: Int = 0
     private var pageHeight: Int = 0
     private var originalText: CharSequence = ""
@@ -24,7 +23,11 @@ class PagedTextView : AppCompatTextView {
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
+        context,
+        attrs,
+        defStyleAttr
+    )
 
     fun size(): Int = pageList.size
 
@@ -137,18 +140,13 @@ class PagedTextView : AppCompatTextView {
 
         for (i in 0 until lines) {
             if (height < layout.getLineBottom(i)) {
-                pageList.add(
-                    layout.text.subSequence(startOffset, layout.getLineStart(i))
-                )
-                startOffset = layout.getLineStart(i)
-                height = layout.getLineTop(i) + heightWithoutPaddings
+                pageList.add(layout.text.subSequence(startOffset, layout.getLineStart(i - 1)))
+                startOffset = layout.getLineStart(i - 1)
+                height = layout.getLineTop(i - 1) + heightWithoutPaddings
             }
 
-            if (i == lines - 1) {
-                pageList.add(
-                    layout.text.subSequence(startOffset, layout.getLineEnd(i))
-                )
-            }
+            if (i == lines - 1)
+                pageList.add(layout.text.subSequence(startOffset, layout.getLineEnd(i)))
         }
         return pageList
     }
@@ -163,7 +161,8 @@ class PagedTextView : AppCompatTextView {
                 layout.alignment,
                 lineSpacingMultiplier,
                 lineSpacingExtra,
-                includeFontPadding)
+                includeFontPadding
+            )
         } else {
             StaticLayout.Builder
                 .obtain(originalText, 0, originalText.length, paint, layout.width)

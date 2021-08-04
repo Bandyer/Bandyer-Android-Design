@@ -25,6 +25,10 @@ class ChatMessageView @JvmOverloads constructor(
         bandyerAvatar.setText(text?.first().toString())
     }
 
+    fun setNameVisibility(visibility: Int) {
+        binding.bandyerName.visibility = visibility
+    }
+
     fun setAvatarBackground(@ColorInt color: Int?) = binding.bandyerAvatar.setBackground(color)
 
     fun setMessage(text: String?) {

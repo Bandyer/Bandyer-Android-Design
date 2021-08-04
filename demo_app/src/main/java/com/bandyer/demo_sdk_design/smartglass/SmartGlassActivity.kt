@@ -69,19 +69,19 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
                         "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
                         R.drawable.sample_image
                     )
-                    ,
-                    NotificationData(
-                        "Gianfranco",
-                        "Gianfranco",
-                        "Mi piacciono i treni",
-                        null
-                    ),
-                    NotificationData(
-                        "Mario",
-                        "Mario",
-                        "Ciao",
-                        R.drawable.sample_image
-                    )
+//                    ,
+//                    NotificationData(
+//                        "Gianfranco",
+//                        "Gianfranco",
+//                        "Mi piacciono i treni",
+//                        null
+//                    ),
+//                    NotificationData(
+//                        "Mario",
+//                        "Mario",
+//                        "Ciao",
+//                        R.drawable.sample_image
+//                    )
                 )
             )
         }, 5000)

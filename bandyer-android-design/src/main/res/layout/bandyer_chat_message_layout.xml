@@ -19,9 +19,9 @@
         style="?attr/bandyer_titleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/bandyer_avatar"
         app:layout_constraintStart_toEndOf="@id/bandyer_avatar"
-        app:layout_constraintTop_toTopOf="@id/bandyer_avatar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_message"
         tools:text="Mario Rossi" />
 
     <com.google.android.material.textview.MaterialTextView
@@ -40,9 +40,8 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/bandyer_name"
+        app:layout_constraintEnd_toStartOf="@id/bandyer_time"
+        app:layout_constraintStart_toEndOf="@id/bandyer_avatar"
         app:layout_constraintTop_toBottomOf="@id/bandyer_name"
         tools:text="Hello there" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

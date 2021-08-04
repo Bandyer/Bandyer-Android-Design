@@ -176,9 +176,9 @@
     <!-- SMART GLASSES -->
     <string name="bandyer_smartglass_slider_pattern" translatable="false">%1$s: %2$d%%</string>
     <string name="bandyer_smartglass_group_contacts_pattern" translatable="false">+%1$d</string>
-    <string name="bandyer_smartglass_three_dots_start_pattern" translatable="false">…%1$s</string>
-    <string name="bandyer_smartglass_three_dots_pattern" translatable="false">…%1$s…</string>
-    <string name="bandyer_smartglass_three_dots_end_pattern" translatable="false">%1$s…</string>
+    <string name="bandyer_smartglass_three_dots_start_pattern" translatable="false">. . .%1$s</string>
+    <string name="bandyer_smartglass_three_dots_pattern" translatable="false">. . .%1$s. . .</string>
+    <string name="bandyer_smartglass_three_dots_end_pattern" translatable="false">%1$s. . .</string>
     <string name="bandyer_smartglass_new_messages_pattern">%1$d new messages</string>
     <string name="bandyer_smartglass_swipe">Swipe</string>
     <string name="bandyer_smartglass_tap">Tap</string>
