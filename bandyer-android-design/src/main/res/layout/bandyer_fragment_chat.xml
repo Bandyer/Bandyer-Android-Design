@@ -6,6 +6,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="?attr/bandyer_smartGlassChatFragmentStyle">
 
+    <com.bandyer.sdk_design.new_smartglass.chat.ChatMessageView
+        android:id="@+id/bandyer_chat_message"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        android:theme="?attr/bandyer_recyclerViewItemStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_bottomActionBar"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bandyer_messages"
         android:layout_width="match_parent"

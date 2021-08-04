@@ -1,21 +1,21 @@
 package com.bandyer.sdk_design.new_smartglass.chat
 
 import android.annotation.SuppressLint
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
+import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerFragmentChatBinding
+import com.bandyer.sdk_design.new_smartglass.PagedTextView
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-import com.bandyer.sdk_design.new_smartglass.menu.MenuItem
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -31,6 +31,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
     protected var rvMessages: RecyclerView? = null
     protected var counter: MaterialTextView? = null
     protected var bottomActionBar: BottomActionBarView? = null
+    protected var messageTextView: PagedTextView? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -44,6 +45,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         rvMessages = binding!!.bandyerMessages
         counter = binding!!.bandyerCounter
         bottomActionBar = binding!!.bandyerBottomActionBar
+        messageTextView = binding!!.bandyerChatMessage.findViewById(R.id.bandyer_message)
 
         // init the recycler view
         itemAdapter = ItemAdapter()
@@ -71,6 +73,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         rvMessages = null
         counter = null
         bottomActionBar = null
+        messageTextView = null
     }
 
     abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean
