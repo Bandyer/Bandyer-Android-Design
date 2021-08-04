@@ -21,8 +21,8 @@ class ChatItem(val data: SmartGlassChatData) : AbstractItem<ChatItem.ViewHolder>
 
         private val binding: BandyerChatItemLayoutBinding = BandyerChatItemLayoutBinding.bind(view)
 
-        override fun bindView(item: ChatItem, payloads: List<Any>): Unit =
-            with(binding.bandyerMessage) {
+        override fun bindView(item: ChatItem, payloads: List<Any>) =
+            with(binding.bandyerChatMessage) {
                 val data = item.data
                 setAvatar(data.avatar)
                 setName(data.name)
@@ -31,7 +31,7 @@ class ChatItem(val data: SmartGlassChatData) : AbstractItem<ChatItem.ViewHolder>
                 setTime(data.time)
             }
 
-        override fun unbindView(item: ChatItem) = with(binding.bandyerMessage) {
+        override fun unbindView(item: ChatItem) = with(binding.bandyerChatMessage) {
             setAvatar(null)
             setName(null)
             setAvatarBackground(null)
