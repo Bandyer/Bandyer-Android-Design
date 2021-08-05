@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
-import com.bandyer.sdk_design.R
+import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
 import com.bandyer.sdk_design.databinding.BandyerFragmentChatBinding
-import com.bandyer.sdk_design.new_smartglass.PagedTextView
+import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
@@ -31,7 +30,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
     protected var rvMessages: RecyclerView? = null
     protected var counter: MaterialTextView? = null
     protected var bottomActionBar: BottomActionBarView? = null
-    protected var messageTextView: PagedTextView? = null
+    protected var chatMessageView: ChatMessageView? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -45,7 +44,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         rvMessages = binding!!.bandyerMessages
         counter = binding!!.bandyerCounter
         bottomActionBar = binding!!.bandyerBottomActionBar
-        messageTextView = binding!!.bandyerChatMessage.findViewById(R.id.bandyer_message)
+        chatMessageView = binding!!.bandyerChatMessage
 
         // init the recycler view
         itemAdapter = ItemAdapter()
@@ -73,8 +72,31 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         rvMessages = null
         counter = null
         bottomActionBar = null
-        messageTextView = null
+        chatMessageView = null
     }
 
     abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean
+
+    protected fun addChatItem(data: SmartGlassChatData) =
+        chatMessageView?.post {
+            val binding = BandyerChatMessageLayoutBinding.bind(chatMessageView!!)
+            with(binding) {
+                bandyerName.text = data.name
+                bandyerTime.text = data.time!!.parseToHHmm()
+                bandyerMessage.text = data.message
+                val pageList = bandyerMessage.paginate()
+                for (i in pageList.indices) {
+                    val pageData = SmartGlassChatData(
+                        data.name,
+                        data.userAlias,
+                        pageList[i].toString(),
+                        data.time,
+                        data.avatar,
+                        i == 0
+                    )
+                    itemAdapter!!.add(ChatItem(pageData))
+                }
+            }
+        }
+
 }

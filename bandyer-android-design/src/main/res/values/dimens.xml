@@ -34,6 +34,7 @@
     <dimen name="bandyer_dimen_space26">26dp</dimen>
     <dimen name="bandyer_dimen_space28">28dp</dimen>
     <dimen name="bandyer_dimen_space32">32dp</dimen>
+    <dimen name="bandyer_dimen_space40">40dp</dimen>
     <dimen name="bandyer_dimen_space48">48dp</dimen>
     <dimen name="bandyer_dimen_space56">56dp</dimen>
     <dimen name="bandyer_dimen_space64">64dp</dimen>

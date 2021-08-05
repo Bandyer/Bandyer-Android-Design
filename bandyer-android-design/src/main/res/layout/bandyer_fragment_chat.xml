@@ -13,8 +13,8 @@
         android:visibility="invisible"
         android:theme="?attr/bandyer_recyclerViewItemStyle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bandyer_bottomActionBar"/>
+        app:layout_constraintTop_toTopOf="@id/bandyer_messages"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_messages"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/bandyer_messages"

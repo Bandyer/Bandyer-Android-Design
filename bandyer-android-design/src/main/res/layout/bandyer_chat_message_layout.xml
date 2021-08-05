@@ -37,11 +37,9 @@
     <com.bandyer.sdk_design.new_smartglass.PagedTextView
         android:id="@+id/bandyer_message"
         style="?attr/bandyer_messageStyle"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/bandyer_time"
-        app:layout_constraintStart_toEndOf="@id/bandyer_avatar"
         app:layout_constraintTop_toBottomOf="@id/bandyer_name"
         tools:text="Hello there" />
 </androidx.constraintlayout.widget.ConstraintLayout>

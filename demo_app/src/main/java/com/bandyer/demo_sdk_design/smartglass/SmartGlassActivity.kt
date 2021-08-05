@@ -138,6 +138,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 
     override fun onExpanded() {
         handleNotification = false
+        // TODO Fragment NavHostFragment{199be23} (47d28a1a-fa6e-41d5-81e7-090f54d21e92) has not been attached yet.
         if (supportFragmentManager.currentNavigationFragment?.id != R.id.chatFragment)
             binding.navHostFragment.findNavController().navigate(R.id.chatFragment)
 //        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.showBottomBar()

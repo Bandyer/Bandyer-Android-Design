@@ -1,150 +1,33 @@
 package com.bandyer.sdk_design.new_smartglass
 
-import android.annotation.TargetApi
 import android.content.Context
-import android.graphics.Typeface
 import android.os.Build
 import android.text.Layout
 import android.text.StaticLayout
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatTextView
-import kotlin.math.min
+import com.google.android.material.textview.MaterialTextView
 
-class PagedTextView : AppCompatTextView {
-
-    private var needPaginate = false
-    private var isPaginating = false
-    private val pageList = arrayListOf<CharSequence>()
-    private var pageIndex: Int = 0
-    private var pageHeight: Int = 0
-    private var originalText: CharSequence = ""
-
-    constructor(context: Context) : super(context)
-
-    constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    )
-
-    fun size(): Int = pageList.size
-
-//    fun next(index: Int) {
-//        pageIndex = index
-//        setPageText()
-//    }
-
-    private fun setPageText() {
-        isPaginating = true
-        text = pageList[pageIndex]
-        isPaginating = false
-    }
-
-    override fun setText(text: CharSequence?, type: BufferType?) {
-        if (!isPaginating) {
-            originalText = text ?: ""
-        }
-        super.setText(text, type)
-    }
-
-    override fun setTextSize(unit: Int, size: Float) {
-        super.setTextSize(unit, size)
-        needPaginate = true
-    }
-
-    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
-        super.setPadding(left, top, right, bottom)
-        needPaginate = true
-    }
-
-    override fun setPaddingRelative(start: Int, top: Int, end: Int, bottom: Int) {
-        super.setPaddingRelative(start, top, end, bottom)
-        needPaginate = true
-    }
-
-    override fun setTextScaleX(size: Float) {
-        if (size != textScaleX) {
-            needPaginate = true
-        }
-        super.setTextScaleX(size)
-    }
-
-    override fun setTypeface(tf: Typeface?) {
-        if (typeface != null && tf != typeface) {
-            needPaginate = true
-        }
-        super.setTypeface(tf)
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    override fun setLetterSpacing(letterSpacing: Float) {
-        if (letterSpacing != this.letterSpacing) {
-            needPaginate = true
-        }
-        super.setLetterSpacing(letterSpacing)
-    }
-
-    override fun setHorizontallyScrolling(whether: Boolean) {
-        super.setHorizontallyScrolling(false)
-    }
-
-    override fun setLineSpacing(add: Float, mult: Float) {
-        if (add != lineSpacingExtra || mult != lineSpacingMultiplier) {
-            needPaginate = true
-        }
-        super.setLineSpacing(add, mult)
-    }
-
-    override fun setMaxLines(maxLines: Int) {
-        if (maxLines != this.maxLines) {
-            needPaginate = true
-        }
-
-        super.setMaxLines(maxLines)
-    }
-
-    override fun setLines(lines: Int) {
-        super.setLines(lines)
-
-        if (lines != this.lineCount) {
-            needPaginate = true
-        }
-    }
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-
-        pageHeight = h
-    }
-
-    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
-        super.onLayout(changed, left, top, right, bottom)
-
-        if (changed || needPaginate) {
-            paginate()
-            setPageText()
-            needPaginate = false
-        }
-    }
+class PagedTextView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : MaterialTextView(context, attrs, defStyleAttr) {
 
     fun paginate(): List<CharSequence> {
-        pageList.clear()
+        val pageList = arrayListOf<CharSequence>()
 
         val layout = from(layout)
-        val lines = min(maxLines, layout.lineCount)
+        val lines = layout.lineCount
         var startOffset = 0
-        val heightWithoutPaddings = pageHeight - paddingTop - paddingBottom
-        var height = heightWithoutPaddings
+        var height = height
+        val heightWithoutPaddings = height - paddingTop - paddingBottom
 
         for (i in 0 until lines) {
             if (height < layout.getLineBottom(i)) {
-                pageList.add(layout.text.subSequence(startOffset, layout.getLineStart(i - 1)))
-                startOffset = layout.getLineStart(i - 1)
-                height = layout.getLineTop(i - 1) + heightWithoutPaddings
+                pageList.add(layout.text.subSequence(startOffset, layout.getLineStart(i)))
+                startOffset = layout.getLineStart(i)
+                height = layout.getLineTop(i) + heightWithoutPaddings
             }
-
             if (i == lines - 1)
                 pageList.add(layout.text.subSequence(startOffset, layout.getLineEnd(i)))
         }
@@ -155,7 +38,7 @@ class PagedTextView : AppCompatTextView {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             @Suppress("DEPRECATION")
             StaticLayout(
-                originalText,
+                text,
                 paint,
                 layout.width,
                 layout.alignment,
@@ -165,15 +48,13 @@ class PagedTextView : AppCompatTextView {
             )
         } else {
             StaticLayout.Builder
-                .obtain(originalText, 0, originalText.length, paint, layout.width)
+                .obtain(text, 0, text.length, paint, layout.width)
                 .setAlignment(layout.alignment)
                 .setLineSpacing(lineSpacingExtra, lineSpacingMultiplier)
                 .setIncludePad(includeFontPadding)
                 .setUseLineSpacingFromFallbacks()
                 .setBreakStrategy(breakStrategy)
                 .setHyphenationFrequency(hyphenationFrequency)
-                .setJustificationMode()
-                .setMaxLines(maxLines)
                 .build()
         }
 
