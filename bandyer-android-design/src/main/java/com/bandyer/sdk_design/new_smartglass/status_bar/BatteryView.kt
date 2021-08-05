@@ -17,7 +17,7 @@ class BatteryView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    private var radius = context.dp2px(3f).toFloat()
+    private var radius = context.dp2px(2f).toFloat()
     private var spacingRatio = 0.04f
 
     // Cap
@@ -52,7 +52,7 @@ class BatteryView @JvmOverloads constructor(
 
     // Charging
     private var chargingRect = RectF()
-    private var chargingBitmap = getBitmap(R.drawable.ic_bandyer_charging)
+    private var chargingBitmap = getBitmap(R.drawable.ic_bandyer_sg_charging)
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.BatteryView).apply {

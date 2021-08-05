@@ -33,18 +33,24 @@
 
     <style name="BandyerSDKDesign.SmartGlass.StatusBar.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:tint">@android:color/white</item>
-        <item name="srcCompat">@drawable/bandyer_close_icon</item>
+        <item name="srcCompat">@drawable/bandyer_sg_mic_off_icon</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.StatusBar.TitleIcon" parent="BandyerSDKDesign.SmartGlass.StatusBar.Icon">
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space24</item>
     </style>
 
-    <style name="BandyerSDKDesign.SmartGlass.StatusBar.MicIcon" parent="BandyerSDKDesign.SmartGlass.StatusBar.Icon"/>
+    <style name="BandyerSDKDesign.SmartGlass.StatusBar.MicIcon" parent="BandyerSDKDesign.SmartGlass.StatusBar.Icon">
+        <item name="srcCompat">@drawable/bandyer_sg_mic_off_icon</item>
+    </style>
 
-    <style name="BandyerSDKDesign.SmartGlass.StatusBar.ChatIcon" parent="BandyerSDKDesign.SmartGlass.StatusBar.Icon"/>
+    <style name="BandyerSDKDesign.SmartGlass.StatusBar.ChatIcon" parent="BandyerSDKDesign.SmartGlass.StatusBar.Icon">
+    <item name="srcCompat">@drawable/ic_bandyer_sg_badge_new_mess</item>
+    </style>
 
-    <style name="BandyerSDKDesign.SmartGlass.StatusBar.WifiIcon" parent="BandyerSDKDesign.SmartGlass.StatusBar.Icon"/>
+    <style name="BandyerSDKDesign.SmartGlass.StatusBar.WifiIcon" parent="BandyerSDKDesign.SmartGlass.StatusBar.Icon">
+        <item name="srcCompat">@drawable/ic_bandyer_sg_wifi_full</item>
+    </style>
 
     <style name="BandyerSDKDesign.SmartGlass.StatusBar.Battery" parent="">
         <item name="android:layout_width">@dimen/bandyer_dimen_space24</item>
