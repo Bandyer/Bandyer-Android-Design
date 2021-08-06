@@ -33,6 +33,7 @@ class ContactAvatarView @JvmOverloads constructor(
 
     fun setImage(url: String) = with(binding) {
         Picasso.get().load(url).placeholder(defaultAvatar).error(defaultAvatar).into(bandyerAvatarImage)
+        bandyerAvatarText.visibility = GONE
     }
 
     fun setText(text: String?) {
