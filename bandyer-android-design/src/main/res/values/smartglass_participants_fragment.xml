@@ -3,7 +3,7 @@
     <!-- PARTICIPANTS FRAGMENT -->
     <style name="BandyerSDKDesign.SmartGlass.ParticipantsFragment" parent="">
         <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.SmartGlass.Avatar.Participants</item>
-        <item name="bandyer_contactStateTextStyle">@style/BandyerSDKDesign.TextView.Participants</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Participants</item>
         <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.SmartGlass.RoundedImage.ContactState.Participants</item>
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.SmartGlass.MenuRecyclerView</item>
         <item name="bandyer_recyclerViewItemStyle">
@@ -18,7 +18,6 @@
     <style name="BandyerSDKDesign.SmartGlass.Avatar.Participants" parent="BandyerSDKDesign.SmartGlass.Avatar">
         <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.SmartGlass.RoundedImage.Avatar.Participants</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Avatar.Smartglass.Participants</item>
-
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.RoundedImage.Avatar.Participants" parent="BandyerSDKDesign.SmartGlass.RoundedImage">

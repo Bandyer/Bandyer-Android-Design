@@ -20,7 +20,7 @@ import com.google.android.material.color.MaterialColors
  * @constructor
  *
  */
-class MenuItemIndicatorDecoration(
+class ItemIndicatorDecoration(
     context: Context,
     private val snapHelper: LinearSnapHelper
 ) : RecyclerView.ItemDecoration() {
@@ -57,7 +57,7 @@ class MenuItemIndicatorDecoration(
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
-        val y = parent.height - this@MenuItemIndicatorDecoration.height / 2f
+        val y = parent.height - this@ItemIndicatorDecoration.height / 2f
 
         val layoutManager = parent.layoutManager as LinearLayoutManager
         val firstPos = layoutManager.findFirstVisibleItemPosition()

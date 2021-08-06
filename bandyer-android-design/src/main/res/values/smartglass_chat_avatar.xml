@@ -20,5 +20,6 @@
         <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_normal</item>
         <item name="autoSizeMinTextSize">@dimen/bandyer_dimen_text_2sp</item>
         <item name="autoSizeTextType">uniform</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

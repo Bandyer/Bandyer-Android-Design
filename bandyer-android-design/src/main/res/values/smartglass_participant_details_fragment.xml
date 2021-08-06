@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- PARTICIPANTS FRAGMENT -->
+    <style name="BandyerSDKDesign.SmartGlass.ParticipantDetailsFragment" parent="">
+        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.SmartGlass.Avatar.ParticipantDetails</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.ParticipantDetails</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.SubTitle.ParticipantDetails</item>
+        <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.SmartGlass.RoundedImage.ContactState.ParticipantDetails</item>
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.SmartGlass.MenuRecyclerView</item>
+        <item name="bandyer_recyclerViewItemStyle">
+            @style/BandyerSDKDesign.SmartGlass.MenuRecyclerViewItem
+        </item>
+        <item name="bandyer_bottomActionBarStyle">
+            @style/BandyerSDKDesign.SmartGlass.ParticipantDetailsFragment.BottomActionBar
+        </item>
+    </style>
+
+    <!-- AVATAR -->
+    <style name="BandyerSDKDesign.SmartGlass.Avatar.ParticipantDetails" parent="BandyerSDKDesign.SmartGlass.Avatar">
+        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.SmartGlass.RoundedImage.Avatar.ParticipantDetails</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Avatar.Smartglass.ParticipantDetails</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.RoundedImage.Avatar.ParticipantDetails" parent="BandyerSDKDesign.SmartGlass.RoundedImage">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space48</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space48</item>
+        <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Avatar.Smartglass.ParticipantDetails" parent="BandyerSDKDesign.TextView.Avatar.Smartglass">
+        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_h1</item>
+    </style>
+
+    <!-- CONTACT STATE DOT -->
+    <style name="BandyerSDKDesign.SmartGlass.RoundedImage.ContactState.ParticipantDetails" parent="BandyerSDKDesign.SmartGlass.RoundedImage">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space16</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:backgroundTint">@color/bandyer_color_contact_state_smartglasses</item>
+        <item name="strokeColor">@android:color/white</item>
+    </style>
+
+    <!-- NAME -->
+    <style name="BandyerSDKDesign.TextView.Title.ParticipantDetails" parent="BandyerSDKDesign.TextView.Title">
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space4</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+    </style>
+
+    <!-- CONTACT STATE TEXT -->
+    <style name="BandyerSDKDesign.TextView.SubTitle.ParticipantDetails" parent="BandyerSDKDesign.TextView.Subtitle">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.SmartGlass.ParticipantDetailsFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
+        <item name="bandyer_swipeDownText">@string/bandyer_smartglass_close</item>
+        <item name="bandyer_tapText">@string/bandyer_smartglass_select</item>
+        <item name="bandyer_swipeText">@string/bandyer_smartglass_browse</item>
+    </style>
+</resources>

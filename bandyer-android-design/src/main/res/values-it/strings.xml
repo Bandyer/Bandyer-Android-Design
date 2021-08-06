@@ -195,4 +195,6 @@
     <string name="bandyer_smartglass_online">Online</string>
     <string name="bandyer_smartglass_invited">Invitato</string>
     <string name="bandyer_smartglass_last_seen_pattern">Ultimo accesso: %1$s</string>
+    <string name="bandyer_smartglass_call">Chiama</string>
+    <string name="bandyer_smartglass_videocall">Videochiama</string>
 </resources>

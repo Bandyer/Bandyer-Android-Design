@@ -12,7 +12,7 @@ import com.bandyer.sdk_design.databinding.BandyerFragmentParticipantsBinding
 import com.bandyer.sdk_design.extensions.parseToColor
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 import com.bandyer.sdk_design.new_smartglass.menu.CenterLinearLayoutManager
-import com.bandyer.sdk_design.new_smartglass.menu.MenuItemIndicatorDecoration
+import com.bandyer.sdk_design.new_smartglass.menu.ItemIndicatorDecoration
 import com.google.android.material.imageview.ShapeableImageView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -62,7 +62,7 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
         snapHelper.attachToRecyclerView(rvParticipants)
 
         rvParticipants!!.addItemDecoration(
-            MenuItemIndicatorDecoration(
+            ItemIndicatorDecoration(
                 requireContext(),
                 snapHelper
             )
@@ -114,5 +114,8 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
         root = null
         rvParticipants = null
         bottomActionBar = null
+        avatar = null
+        contactStateDot = null
+        contactStateText = null
     }
 }
