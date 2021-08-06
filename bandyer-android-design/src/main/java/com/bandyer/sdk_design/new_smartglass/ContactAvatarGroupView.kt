@@ -14,9 +14,9 @@ class ContactAvatarGroupView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    fun addAvatar(@DrawableRes imageResId: Int) {
-        addAvatar().setImage(imageResId)
-    }
+    fun addAvatar(@DrawableRes imageResId: Int) = addAvatar().setImage(imageResId)
+
+    fun addAvatar(url: String) = addAvatar().setImage(url)
 
     fun addAvatar(text: String, @ColorInt color: Int?) =
         addAvatar().apply {

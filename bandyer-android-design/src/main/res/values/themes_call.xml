@@ -45,6 +45,7 @@
         <attr name="bandyer_smartGlassEndCallFragmentStyle" format="reference" />
         <attr name="bandyer_smartGlassCallEndedFragmentStyle" format="reference" />
         <attr name="bandyer_smartGlassCallFragmentStyle" format="reference" />
+        <attr name="bandyer_smartGlassParticipantsFragmentStyle" format="reference" />
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight.V16" parent="BandyerSDKDesign.Theme.DayNight">
@@ -71,6 +72,7 @@
         <item name="bandyer_smartGlassEndCallFragmentStyle">@style/BandyerSDKDesign.SmartGlass.EndCallFragment</item>
         <item name="bandyer_smartGlassCallEndedFragmentStyle">@style/BandyerSDKDesign.SmartGlass.CallEndedFragment</item>
         <item name="bandyer_smartGlassCallFragmentStyle">@style/BandyerSDKDesign.SmartGlass.CallFragment</item>
+        <item name="bandyer_smartGlassParticipantsFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ParticipantsFragment</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.Day.V16" parent="BandyerSDKDesign.Theme.Day">
@@ -97,6 +99,7 @@
         <item name="bandyer_smartGlassEndCallFragmentStyle">@style/BandyerSDKDesign.SmartGlass.EndCallFragment</item>
         <item name="bandyer_smartGlassCallEndedFragmentStyle">@style/BandyerSDKDesign.SmartGlass.CallEndedFragment</item>
         <item name="bandyer_smartGlassCallFragmentStyle">@style/BandyerSDKDesign.SmartGlass.CallFragment</item>
+        <item name="bandyer_smartGlassParticipantsFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ParticipantsFragment</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.Night.V16" parent="BandyerSDKDesign.Theme.Night">
@@ -123,6 +126,7 @@
         <item name="bandyer_smartGlassEndCallFragmentStyle">@style/BandyerSDKDesign.SmartGlass.EndCallFragment</item>
         <item name="bandyer_smartGlassCallEndedFragmentStyle">@style/BandyerSDKDesign.SmartGlass.CallEndedFragment</item>
         <item name="bandyer_smartGlassCallFragmentStyle">@style/BandyerSDKDesign.SmartGlass.CallFragment</item>
+        <item name="bandyer_smartGlassParticipantsFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ParticipantsFragment</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.DayNight.V16"/>

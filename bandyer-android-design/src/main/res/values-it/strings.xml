@@ -192,4 +192,7 @@
     <string name="bandyer_smartglass_now">Adesso</string>
     <string name="bandyer_smartglass_read">leggi</string>
     <string name="bandyer_smartglass_hide_notification">nascondi notifica</string>
+    <string name="bandyer_smartglass_online">Online</string>
+    <string name="bandyer_smartglass_invited">Invitato</string>
+    <string name="bandyer_smartglass_last_seen_pattern">Ultimo accesso: %1$s</string>
 </resources>

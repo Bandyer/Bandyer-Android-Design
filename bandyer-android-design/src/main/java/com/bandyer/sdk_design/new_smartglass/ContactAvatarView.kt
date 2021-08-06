@@ -1,7 +1,6 @@
 package com.bandyer.sdk_design.new_smartglass
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -9,8 +8,8 @@ import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import com.bandyer.sdk_design.databinding.BandyerContactAvatarLayoutBinding
-import com.bandyer.sdk_design.extensions.parseToColor
 import com.bandyer.sdk_design.extensions.requiresLightColor
+import com.squareup.picasso.Picasso
 import java.util.*
 
 class ContactAvatarView @JvmOverloads constructor(
@@ -30,6 +29,10 @@ class ContactAvatarView @JvmOverloads constructor(
     fun setImage(@DrawableRes resId: Int?) = with(binding) {
         bandyerAvatarImage.setImageResource(resId ?: defaultAvatar)
         bandyerAvatarText.visibility = if (resId == null) VISIBLE else GONE
+    }
+
+    fun setImage(url: String) = with(binding) {
+        Picasso.get().load(url).placeholder(defaultAvatar).error(defaultAvatar).into(bandyerAvatarImage)
     }
 
     fun setText(text: String?) {

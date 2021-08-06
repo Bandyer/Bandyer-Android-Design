@@ -24,7 +24,8 @@ class ChatItem(val data: SmartGlassChatData) : AbstractItem<ChatItem.ViewHolder>
         override fun bindView(item: ChatItem, payloads: List<Any>) =
             with(binding.bandyerChatMessage) {
                 val data = item.data
-                setAvatar(data.avatar)
+                if(data.avatarId != null) setAvatar(data.avatarId)
+                else if (data.avatarUrl != null) setAvatar(data.avatarUrl)
                 setAvatarBackground(data.userAlias?.parseToColor())
                 setMessage(data.message)
                 setTime(data.time)

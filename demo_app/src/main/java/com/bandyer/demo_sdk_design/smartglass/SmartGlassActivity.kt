@@ -60,15 +60,15 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
             }
         }
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            notificationManager.show(
-                listOf(
-                    NotificationData(
-                        "Mario",
-                        "Mario",
-                        "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
-                        R.drawable.sample_image
-                    )
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            notificationManager.show(
+//                listOf(
+//                    NotificationData(
+//                        "Mario",
+//                        "Mario",
+//                        "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
+//                        R.drawable.sample_image
+//                    )
 //                    ,
 //                    NotificationData(
 //                        "Gianfranco",
@@ -82,9 +82,9 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 //                        "Ciao",
 //                        R.drawable.sample_image
 //                    )
-                )
-            )
-        }, 5000)
+//                )
+//            )
+//        }, 5000)
     }
 
     override fun onResume() {

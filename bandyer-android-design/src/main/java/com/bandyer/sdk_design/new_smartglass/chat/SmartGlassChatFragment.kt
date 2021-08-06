@@ -13,7 +13,6 @@ import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
 import com.bandyer.sdk_design.databinding.BandyerFragmentChatBinding
 import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
@@ -75,8 +74,6 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         chatMessageView = null
     }
 
-    abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean
-
     protected fun addChatItem(data: SmartGlassChatData) =
         chatMessageView?.post {
             val binding = BandyerChatMessageLayoutBinding.bind(chatMessageView!!)
@@ -91,7 +88,8 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
                         data.userAlias,
                         pageList[i].toString(),
                         data.time,
-                        data.avatar,
+                        data.avatarId,
+                        data.avatarUrl,
                         i == 0
                     )
                     itemAdapter!!.add(ChatItem(pageData))

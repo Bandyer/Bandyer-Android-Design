@@ -31,6 +31,4 @@ abstract class SmartGlassCallFragment: Fragment(), SmartGlassTouchEventListener 
         root = null
         bottomActionBar = null
     }
-
-    abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean
 }

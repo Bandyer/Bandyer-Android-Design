@@ -69,7 +69,7 @@ class MenuItemIndicatorDecoration(
 
         // find active page (which should be highlighted)
         val activeChild = snapHelper.findSnapView(layoutManager) ?: return
-        val textView = activeChild.findViewById<View>(R.id.itemText)
+        val textView = activeChild.findViewById<View>(R.id.bandyer_text)
         c.drawHighlights(activeChild, textView, y)
     }
 
@@ -83,8 +83,8 @@ class MenuItemIndicatorDecoration(
     ) {
         paint.color = colorInactive
         val itemCount = parent.layoutManager!!.itemCount
-        val firstTextView = first.findViewById<View>(R.id.itemText)
-        val lastTextView = last.findViewById<View>(R.id.itemText)
+        val firstTextView = first.findViewById<View>(R.id.bandyer_text)
+        val lastTextView = last.findViewById<View>(R.id.bandyer_text)
 
         var startX = if(!isRTL) parent.left else parent.right
         var endX = if(!isRTL) parent.right else parent.left

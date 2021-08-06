@@ -6,12 +6,12 @@
     android:layout_height="wrap_content"
     android:theme="?attr/bandyer_recyclerViewItemStyle">
 
-    <com.bandyer.sdk_design.new_smartglass.menu.ActivableTextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_text"
         style="?android:attr/textViewStyle"
         android:layout_width="wrap_content"
         android:layout_gravity="bottom"
-        tools:text="Snapshot" />
+        tools:text="Mario Rossi" />
 
 </FrameLayout>
 

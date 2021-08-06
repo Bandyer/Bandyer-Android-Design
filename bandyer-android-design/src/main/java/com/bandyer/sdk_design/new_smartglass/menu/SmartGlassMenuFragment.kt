@@ -83,6 +83,4 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         rvMenu = null
         bottomActionBar = null
     }
-
-    abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean
 }

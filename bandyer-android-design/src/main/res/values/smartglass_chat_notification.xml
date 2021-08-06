@@ -2,7 +2,7 @@
 <resources>
     <style name="BandyerSDKDesign.SmartGlass.Chat.Notification" parent="">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.Chat.Notification.Root</item>
-        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.SmartGlass.Chat.Avatar</item>
+        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.SmartGlass.Avatar</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.Notification.Chat.SmartGlass</item>
         <item name="bandyer_messageStyle">@style/BandyerSDKDesign.TextView.Message.Notification.Chat.SmartGlass</item>
         <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.Timestamp.Notification.Chat.SmartGlass</item>

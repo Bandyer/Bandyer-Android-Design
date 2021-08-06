@@ -31,6 +31,8 @@
         <attr name="bandyer_bottomActionBarStyle" format="reference" />
         <attr name="bandyer_recyclerViewItemStyle" format="reference" />
         <attr name="bandyer_avatarStyle" format="reference" />
+        <attr name="bandyer_contactStateDotStyle" format="reference" />
+        <attr name="bandyer_contactStateTextStyle" format="reference" />
         <attr name="bandyer_sliderStyle" format="reference" />
     </declare-styleable>
 </resources>

@@ -202,4 +202,7 @@
     <string name="bandyer_smartglass_now">Now</string>
     <string name="bandyer_smartglass_read">read</string>
     <string name="bandyer_smartglass_hide_notification">hide notification</string>
+    <string name="bandyer_smartglass_online">Online</string>
+    <string name="bandyer_smartglass_invited">Invited</string>
+    <string name="bandyer_smartglass_last_seen_pattern">Last seen: %1$s</string>
 </resources>

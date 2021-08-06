@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- PARTICIPANTS FRAGMENT -->
+    <style name="BandyerSDKDesign.SmartGlass.ParticipantsFragment" parent="">
+        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.SmartGlass.Avatar.Participants</item>
+        <item name="bandyer_contactStateTextStyle">@style/BandyerSDKDesign.TextView.Participants</item>
+        <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.SmartGlass.RoundedImage.ContactState.Participants</item>
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.SmartGlass.MenuRecyclerView</item>
+        <item name="bandyer_recyclerViewItemStyle">
+            @style/BandyerSDKDesign.SmartGlass.MenuRecyclerViewItem
+        </item>
+        <item name="bandyer_bottomActionBarStyle">
+            @style/BandyerSDKDesign.SmartGlass.ParticipantsFragment.BottomActionBar
+        </item>
+    </style>
+
+    <!-- AVATAR -->
+    <style name="BandyerSDKDesign.SmartGlass.Avatar.Participants" parent="BandyerSDKDesign.SmartGlass.Avatar">
+        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.SmartGlass.RoundedImage.Avatar.Participants</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Avatar.Smartglass.Participants</item>
+
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.RoundedImage.Avatar.Participants" parent="BandyerSDKDesign.SmartGlass.RoundedImage">
+        <item name="android:layout_width">@dimen/bandyer_dimen_sg_participants_avatar_size</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_sg_participants_avatar_size</item>
+        <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Avatar.Smartglass.Participants" parent="BandyerSDKDesign.TextView.Avatar.Smartglass">
+        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_40sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- CONTACT STATE DOT -->
+    <style name="BandyerSDKDesign.SmartGlass.RoundedImage.ContactState.Participants" parent="BandyerSDKDesign.SmartGlass.RoundedImage">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space28</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space28</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:backgroundTint">@color/bandyer_color_contact_state_smartglasses</item>
+        <item name="strokeColor">@android:color/white</item>
+    </style>
+
+    <!-- CONTACT STATE TEXT -->
+    <style name="BandyerSDKDesign.TextView.Participants" parent="BandyerSDKDesign.TextView">
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.SmartGlass.ParticipantsFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
+        <item name="bandyer_swipeDownText">@string/bandyer_smartglass_close</item>
+        <item name="bandyer_swipeText">@string/bandyer_smartglass_browse</item>
+    </style>
+</resources>

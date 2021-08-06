@@ -30,17 +30,17 @@ class MenuItem(val text: String, val activeText: String? = null): AbstractItem<M
         private val binding: BandyerMenuItemLayoutBinding = BandyerMenuItemLayoutBinding.bind(view)
 
         override fun bindView(item: MenuItem, payloads: List<Any>) {
-            item.itemText = binding.itemText
-            binding.itemText.activatedText = item.activeText
-            binding.itemText.inactivatedText = item.text
-            binding.itemText.isActivated = item.isActive
+            item.itemText = binding.bandyerText
+            binding.bandyerText.activatedText = item.activeText
+            binding.bandyerText.inactivatedText = item.text
+            binding.bandyerText.isActivated = item.isActive
         }
 
         override fun unbindView(item: MenuItem) {
             item.itemText = null
-            binding.itemText.activatedText = null
-            binding.itemText.inactivatedText = null
-            binding.itemText.isActivated = false
+            binding.bandyerText.activatedText = null
+            binding.bandyerText.inactivatedText = null
+            binding.bandyerText.isActivated = false
         }
     }
 }

@@ -40,5 +40,5 @@ abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
         bottomActionBar = null
     }
 
-    abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean
+
 }

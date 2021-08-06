@@ -37,6 +37,4 @@ abstract class SmartGlassEndCallFragment: SmartGlassBaseFragment() {
         subtitle = null
         bottomActionBar = null
     }
-
-    abstract override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean
 }

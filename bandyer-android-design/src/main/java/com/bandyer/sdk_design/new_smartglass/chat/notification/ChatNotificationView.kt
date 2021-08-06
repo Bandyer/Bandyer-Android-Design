@@ -46,11 +46,12 @@ class ChatNotificationView @JvmOverloads constructor(
             if (index > 1) return@forEachIndexed
 
             with(bandyerAvatars) {
-                if (item.imageRes != null) addAvatar(item.imageRes)
-                else addAvatar(
+                addAvatar(
                     item.name.first().toUpperCase().toString(),
                     item.userAlias.parseToColor()
                 )
+                if (item.imageRes != null) addAvatar(item.imageRes)
+                else if (item.imageUrl != null) addAvatar(item.imageUrl)
             }
         }
 

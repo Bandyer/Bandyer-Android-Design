@@ -2,32 +2,9 @@
 <resources>
     <!-- MENU FRAGMENT -->
     <style name="BandyerSDKDesign.SmartGlass.MenuFragment" parent="">
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerView</item>
-        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerViewItem</item>
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.SmartGlass.MenuRecyclerView</item>
+        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.SmartGlass.MenuRecyclerViewItem</item>
         <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar</item>
-    </style>
-
-    <!-- RECYCLER VIEW -->
-    <style name="BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerView" parent="">
-        <item name="android:background">#CB000000</item>
-    </style>
-
-    <!-- RECYCLER VIEW ITEM -->
-    <style name="BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerViewItem" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerViewItem.Root</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.RecyclerViewItem.MenuFragment.SmartGlass</item>
-    </style>
-
-    <style name="BandyerSDKDesign.SmartGlass.MenuFragment.RecyclerViewItem.Root" parent="">
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space64</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space64</item>
-    </style>
-
-    <style name="BandyerSDKDesign.TextView.RecyclerViewItem.MenuFragment.SmartGlass" parent="BandyerSDKDesign.TextView">
-        <item name="android:layout_height">@dimen/bandyer_dimen_space72</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/bandyer_smartglass_menu_item_color</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->

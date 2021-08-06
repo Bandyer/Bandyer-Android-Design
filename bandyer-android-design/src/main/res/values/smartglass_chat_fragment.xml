@@ -20,7 +20,7 @@
     <!-- RECYCLER VIEW ITEM -->
     <style name="BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem" parent="">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerViewItem.Root</item>
-        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.SmartGlass.Chat.Avatar</item>
+        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.SmartGlass.Avatar</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.RecyclerViewItem.ChatFragment.SmartGlass</item>
         <item name="bandyer_messageStyle">@style/BandyerSDKDesign.TextView.Message.RecyclerViewItem.ChatFragment.SmartGlass</item>
         <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.Timestamp.RecyclerViewItem.ChatFragment.SmartGlass
