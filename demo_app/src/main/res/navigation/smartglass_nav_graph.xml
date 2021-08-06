@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/smartglass_nav_graph"
-    app:startDestination="@id/ringingFragment">
+    app:startDestination="@id/participantsFragment">
 
     <fragment
         android:id="@+id/chatFragment"
@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_menuFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_participantsFragment"
+            app:destination="@id/participantsFragment" />
     </fragment>
     <fragment
         android:id="@+id/volumeFragment"
@@ -63,4 +66,8 @@
             app:enterAnim="@android:anim/fade_in"
             app:exitAnim="@android:anim/fade_out" />
     </fragment>
+    <fragment
+        android:id="@+id/participantsFragment"
+        android:name="com.bandyer.demo_sdk_design.smartglass.ParticipantsFragment"
+        android:label="ParticipantsFragment" />
 </navigation>
