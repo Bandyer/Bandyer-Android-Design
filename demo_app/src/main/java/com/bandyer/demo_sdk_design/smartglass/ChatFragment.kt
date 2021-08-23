@@ -1,6 +1,8 @@
 package com.bandyer.demo_sdk_design.smartglass
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +29,7 @@ class ChatFragment : SmartGlassChatFragment() {
 
         addChatItem(
             SmartGlassChatData(
+                UUID.randomUUID().toString(),
                 "Mario",
                 "Mario",
                 "Sed euismod odio vitae lectus facilisis ornare. Suspendisse sodales dolor sapien, at vestibulum justo egestas ut. Curabitur dapibus, mi vel placerat iaculis, elit nisi lacinia magna, et cursus nulla mi ut metus. Mauris lobortis ullamcorper venenatis. Fusce auctor accumsan ipsum, eu tincidunt tortor ultrices ultrices. Cras mauris massa, eleifend sed elit a, viverra mattis urna. Sed finibus nunc in consectetur varius. Aenean vestibulum id nulla non pharetra. Proin consequat elit id neque tincidunt posuere. Donec commodo, augue nec consectetur scelerisque, elit ligula vehicula eros, a iaculis felis arcu eget dui. Sed euismod odio vitae lectus facilisis ornare. Suspendisse sodales dolor sapien, at vestibulum justo egestas ut",
@@ -36,6 +39,7 @@ class ChatFragment : SmartGlassChatFragment() {
         )
         addChatItem(
             SmartGlassChatData(
+                UUID.randomUUID().toString(),
                 "Ugo",
                 "Ugo",
                 "Come se fosse antani con lo scappellamento a sinistra",
@@ -44,6 +48,7 @@ class ChatFragment : SmartGlassChatFragment() {
         )
         addChatItem(
             SmartGlassChatData(
+                UUID.randomUUID().toString(),
                 "Gianfranco",
                 "Gianfranco",
                 "Mi piacciono i treni",
@@ -51,11 +56,18 @@ class ChatFragment : SmartGlassChatFragment() {
             )
         )
 
-        counter!!.text = "+3"
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            itemAdapter!!.add(ChatItem("Francesco: La scatola è sulla sinistra"))
-//
-//        }, 200)
+        Handler(Looper.getMainLooper()).postDelayed({
+            addChatItem(
+                SmartGlassChatData(
+                    UUID.randomUUID().toString(),
+                    "Gianfranco",
+                    "Gianfranco",
+                    "La scatola è sulla sinistra",
+                    Date().time
+                )
+            )
+
+        }, 1000)
         return view
     }
 
