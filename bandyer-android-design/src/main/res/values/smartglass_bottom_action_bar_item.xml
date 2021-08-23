@@ -15,8 +15,6 @@
 
     <!-- GESTURE ICON -->
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Item.GestureIcon" parent="Widget.MaterialComponents.ShapeableImageView">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space24</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space24</item>
         <item name="tint">?attr/colorSecondary</item>
     </style>
 
@@ -24,6 +22,7 @@
     <style name="BandyerSDKDesign.TextView.BottomActionBar.Item.GestureText" parent="BandyerSDKDesign.TextView">
         <item name="android:maxLines">1</item>
         <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
     </style>
 
     <!-- ACTION TEXT -->
@@ -31,5 +30,6 @@
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space4</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
     </style>
 </resources>

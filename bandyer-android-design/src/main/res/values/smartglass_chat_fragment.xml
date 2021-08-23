@@ -40,7 +40,7 @@
         <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space8</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -48,12 +48,12 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space40</item>
         <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space32</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.Timestamp.RecyclerViewItem.ChatFragment.SmartGlass" parent="BandyerSDKDesign.TextView">
         <item name="android:textColor">@color/bandyer_color_white_30</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_small</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.Counter.ChatFragment.SmartGlass" parent="BandyerSDKDesign.TextView">
