@@ -1,8 +1,7 @@
 package com.bandyer.demo_sdk_design.smartglass
 
+import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -12,14 +11,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.demo_sdk_design.databinding.ActivitySmartGlassBinding
-import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationManager
 import com.bandyer.demo_sdk_design.smartglass.battery.BatteryObserver
 import com.bandyer.demo_sdk_design.smartglass.battery.BatteryState
-import com.bandyer.sdk_design.new_smartglass.utils.currentNavigationFragment
+import com.bandyer.demo_sdk_design.smartglass.network.CellSignalObserver
 import com.bandyer.demo_sdk_design.smartglass.network.WiFiObserver
-import com.bandyer.sdk_design.new_smartglass.*
-import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationData
+import com.bandyer.sdk_design.new_smartglass.GlassGestureDetector
+import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEventListener
+import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationManager
 import com.bandyer.sdk_design.new_smartglass.status_bar.StatusBarView
+import com.bandyer.sdk_design.new_smartglass.utils.currentNavigationFragment
 import kotlinx.coroutines.flow.collect
 
 class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener,
@@ -38,6 +39,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
     private var handleNotification = false
     private lateinit var batteryObserver: BatteryObserver
     private lateinit var wifiObserver: WiFiObserver
+    private var cellSignalObserver: CellSignalObserver? = null
 //    private val internetObserver = InternetObserver(5000)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,12 +55,21 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         batteryObserver = BatteryObserver(this)
         wifiObserver = WiFiObserver(this)
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            cellSignalObserver = CellSignalObserver(this)
+
         lifecycleScope.launchWhenStarted {
             batteryObserver.observe().collect {
                 statusBar!!.setBatteryChargingState(it.status == BatteryState.Status.CHARGING)
                 statusBar!!.setBatteryCharge(it.percentage)
             }
         }
+
+//        lifecycleScope.launchWhenStarted {
+//            cellSignalObserver?.observe()?.collect {
+//
+//            }
+//        }
 
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            notificationManager.show(
@@ -96,6 +107,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         super.onDestroy()
         batteryObserver.stop()
         wifiObserver.stop()
+        cellSignalObserver?.stop()
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
