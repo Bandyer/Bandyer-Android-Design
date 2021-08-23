@@ -28,12 +28,14 @@
     <style name="BandyerSDKDesign.TextView.StatusBar.SmartGlass" parent="BandyerSDKDesign.TextView">
         <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.StatusBar.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:tint">@android:color/white</item>
         <item name="srcCompat">@drawable/bandyer_sg_mic_off_icon</item>
+        <item name="android:layout_width">@dimen/bandyer_dimen_space32</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.StatusBar.TitleIcon" parent="BandyerSDKDesign.SmartGlass.StatusBar.Icon">
@@ -53,7 +55,8 @@
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.StatusBar.Battery" parent="">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space24</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space12</item>
+        <item name="android:layout_width">@dimen/bandyer_dimen_space52</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
+        <item name="android:padding">@dimen/bandyer_dimen_space4</item>
     </style>
 </resources>

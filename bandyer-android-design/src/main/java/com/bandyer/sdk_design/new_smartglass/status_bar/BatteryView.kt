@@ -17,15 +17,18 @@ class BatteryView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    private var radius = context.dp2px(2f).toFloat()
-    private var spacingRatio = 0.04f
+    val spacing = context.dp2px(3f).toFloat()
 
     // Cap
-    private var capPaint =
-        PaintDrawable(Color.WHITE) // It allows to round only some corners
+    private var capPaint = Paint().apply {
+        color = Color.WHITE
+        style = Paint.Style.FILL
+        isAntiAlias = true
+    }
     private var capRect = RectF()
-    private var capWidthRatio = 0.05f
-    private var capHeightRatio = 0.33f
+    private var capWidthRatio = 0.10f
+    private var capHeightRatio = 0.50f
+    private var capStroke = context.dp2px(1.5f).toFloat()
 
     // Body
     private var bodyPaint = Paint().apply {
@@ -34,8 +37,8 @@ class BatteryView @JvmOverloads constructor(
         isAntiAlias = true
     }
     private var bodyRect = RectF()
-    private var bodyStrokeWidthRatio = 0.03f
-    private var bodyStroke = 0f
+//    private var bodyStrokeWidthRatio = 0.03f
+    private var bodyStroke = context.dp2px(3f).toFloat()
 
     // Charge
     private var chargePaint = Paint().apply {
@@ -68,33 +71,35 @@ class BatteryView @JvmOverloads constructor(
         val measureWidth = getDefaultSize(suggestedMinimumWidth, widthMeasureSpec)
         setMeasuredDimension(measureWidth, measureHeight)
 
-        bodyStroke = bodyStrokeWidthRatio * measureWidth
         val halfBodyStroke = bodyStroke / 2
-        val spacing = measureWidth * spacingRatio
 
         // Cap
-        val capTop = measureHeight * (1 - capHeightRatio) / 2
-        val capBottom = measureHeight - capTop
-        val capRight = measureWidth - halfBodyStroke
-        val capLeft = measureWidth - measureWidth * capWidthRatio
+        val capMargin = (measureHeight - paddingTop - paddingBottom) * ((1 - capHeightRatio) / 2)
+        val capTop = capMargin + paddingTop
+        val capBottom = measureHeight - capMargin - paddingBottom
+        val capRight = measureWidth - halfBodyStroke - paddingEnd
+        val capLeft = measureWidth - measureWidth * capWidthRatio - paddingEnd
         capRect = RectF(capLeft, capTop, capRight, capBottom)
 
         // Body
-        val bodyBottom = measureHeight - halfBodyStroke
+        val bodyTop = halfBodyStroke + paddingTop
+        val bodyBottom = measureHeight - halfBodyStroke - paddingBottom
         val bodyRight = capLeft - halfBodyStroke - spacing
-        bodyRect = RectF(halfBodyStroke, halfBodyStroke, bodyRight, bodyBottom)
+        val bodyLeft = halfBodyStroke + paddingStart
+        bodyRect = RectF(bodyLeft, bodyTop, bodyRight, bodyBottom)
 
         // Charge
-        val chargeTopLeft = bodyStroke + spacing
-        val chargeBottom = measureHeight - chargeTopLeft
+        val chargeTop = bodyStroke + spacing + paddingTop
+        val chargeLeft = bodyStroke + spacing + paddingStart
+        val chargeBottom = measureHeight - bodyStroke - spacing - paddingBottom
         chargeRectRightMax = bodyRight - spacing - halfBodyStroke
-        chargeRect = RectF(chargeTopLeft, chargeTopLeft, chargeRectRightMax, chargeBottom)
+        chargeRect = RectF(chargeLeft, chargeTop, chargeRectRightMax, chargeBottom)
 
         // Charging Image
-        val chargingTop = bodyStroke + spacing
-        val chargingBottom = measureHeight - chargingTop
-        val chargingLeft = bodyStroke + spacing
-        val chargingRight = bodyRight - chargingLeft
+        val chargingTop = bodyStroke + spacing + paddingTop
+        val chargingBottom = measureHeight - chargingTop - paddingBottom
+        val chargingLeft = bodyStroke + spacing + paddingStart
+        val chargingRight = bodyRight - chargingLeft - paddingEnd
         chargingRect = RectF(chargingLeft, chargingTop, chargingRight, chargingBottom)
     }
 
@@ -117,21 +122,20 @@ class BatteryView @JvmOverloads constructor(
     }
 
     private fun drawCap(canvas: Canvas) {
-        capPaint.bounds = capRect.toRect()
-        capPaint.setCornerRadii(floatArrayOf(0f, 0f, 50f, 50f, 50f, 50f, 0f, 0f))
-        capPaint.draw(canvas)
+        capPaint.strokeWidth = capStroke
+        canvas.drawRect(capRect, capPaint)
     }
 
     private fun drawBody(canvas: Canvas) {
         bodyPaint.strokeWidth = bodyStroke
-        canvas.drawRoundRect(bodyRect, radius, radius, bodyPaint)
+        canvas.drawRect(bodyRect, bodyPaint)
     }
 
     private fun drawCharge(canvas: Canvas, charge: Int) {
         chargePaint.color = if (charge > 25) normalChargeColor else lowChargeColor
         chargeRect.right =
             chargeRect.left + (chargeRectRightMax - chargeRect.left) * charge / 100
-        canvas.drawRoundRect(chargeRect, radius, radius, chargePaint)
+        canvas.drawRect(chargeRect, chargePaint)
     }
 
     private fun drawCharging(canvas: Canvas) {
