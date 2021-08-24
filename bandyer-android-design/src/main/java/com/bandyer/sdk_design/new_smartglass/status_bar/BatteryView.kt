@@ -3,15 +3,17 @@ package com.bandyer.sdk_design.new_smartglass.status_bar
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
-import android.graphics.drawable.PaintDrawable
 import android.util.AttributeSet
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.graphics.toRect
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.dp2px
 
+/**
+ * A custom battery view that can indicates the level of charge and can be set in the charging state
+ * @constructor
+ */
 class BatteryView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -37,7 +39,8 @@ class BatteryView @JvmOverloads constructor(
         isAntiAlias = true
     }
     private var bodyRect = RectF()
-//    private var bodyStrokeWidthRatio = 0.03f
+
+    //    private var bodyStrokeWidthRatio = 0.03f
     private var bodyStroke = context.dp2px(3f).toFloat()
 
     // Charge
@@ -74,9 +77,10 @@ class BatteryView @JvmOverloads constructor(
         val halfBodyStroke = bodyStroke / 2
 
         // Cap
-        val capMargin = (measureHeight - paddingTop - paddingBottom) * ((1 - capHeightRatio) / 2)
-        val capTop = capMargin + paddingTop
-        val capBottom = measureHeight - capMargin - paddingBottom
+        val capHorizontalPadding =
+            (measureHeight - paddingTop - paddingBottom) * ((1 - capHeightRatio) / 2)
+        val capTop = capHorizontalPadding + paddingTop
+        val capBottom = measureHeight - capHorizontalPadding - paddingBottom
         val capRight = measureWidth - halfBodyStroke - paddingEnd
         val capLeft = measureWidth - measureWidth * capWidthRatio - paddingEnd
         capRect = RectF(capLeft, capTop, capRight, capBottom)
@@ -96,11 +100,7 @@ class BatteryView @JvmOverloads constructor(
         chargeRect = RectF(chargeLeft, chargeTop, chargeRectRightMax, chargeBottom)
 
         // Charging Image
-        val chargingTop = bodyStroke + spacing + paddingTop
-        val chargingBottom = measureHeight - chargingTop - paddingBottom
-        val chargingLeft = bodyStroke + spacing + paddingStart
-        val chargingRight = bodyRight - chargingLeft - paddingEnd
-        chargingRect = RectF(chargingLeft, chargingTop, chargingRight, chargingBottom)
+        chargingRect = RectF(chargeLeft, chargeTop, chargeRectRightMax, chargeBottom)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -139,8 +139,10 @@ class BatteryView @JvmOverloads constructor(
     }
 
     private fun drawCharging(canvas: Canvas) {
-        if(chargingBitmap == null) return
-        canvas.drawBitmap(chargingBitmap!!, null, chargingRect, chargePaint)
+        if (chargingBitmap == null) return
+        val resizedBitmap = resize(chargingBitmap!!, chargingRect.width(), chargingRect.height())
+        val left = chargingRect.left + (chargingRect.width() - resizedBitmap.width) / 2f
+        canvas.drawBitmap(resizedBitmap, left, chargingRect.top, null)
     }
 
     private fun getBitmap(
@@ -156,5 +158,18 @@ class BatteryView @JvmOverloads constructor(
         drawable.setBounds(0, 0, canvas.width, canvas.height)
         drawable.draw(canvas)
         return bitmap
+    }
+
+    private fun resize(bitmap: Bitmap, maxWidth: Float, maxHeight: Float): Bitmap {
+        if (maxHeight <= 0 || maxWidth <= 0) return bitmap
+        val width = bitmap.width
+        val height = bitmap.height
+        val ratioBitmap = width.toFloat() / height.toFloat()
+        val ratioMax = maxWidth / maxHeight
+        var finalWidth = maxWidth
+        var finalHeight = maxHeight
+        if (ratioMax > ratioBitmap) finalWidth = maxHeight * ratioBitmap
+        else finalHeight = maxWidth / ratioBitmap
+        return Bitmap.createScaledBitmap(bitmap, finalWidth.toInt(), finalHeight.toInt(), true)
     }
 }
