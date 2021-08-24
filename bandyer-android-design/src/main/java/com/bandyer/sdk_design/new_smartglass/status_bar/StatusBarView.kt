@@ -13,6 +13,21 @@ class StatusBarView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    enum class CellSignalState {
+        MISSING,
+        LOW,
+        MODERATE,
+        GOOD,
+        FULL
+    }
+
+    enum class WiFiSignalState {
+        DISABLED,
+        LOW,
+        MODERATE,
+        FULL
+    }
+
     private var binding: BandyerStatusBarLayoutBinding =
         BandyerStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
@@ -32,4 +47,39 @@ class StatusBarView @JvmOverloads constructor(
 
     fun setBatteryChargingState(isCharging: Boolean) =
         binding.bandyerBattery.setCharging(isCharging)
+
+    fun showCellSignalIcon() {
+        binding.bandyerCellIcon.visibility = View.VISIBLE
+    }
+
+    fun hideCellSignalIcon() {
+        binding.bandyerCellIcon.visibility = View.GONE
+    }
+
+    fun setCellSignalState(state: CellSignalState) {
+        binding.bandyerCellIcon.state = when(state) {
+            CellSignalState.MISSING -> CellImageView.State.MISSING
+            CellSignalState.LOW -> CellImageView.State.LOW
+            CellSignalState.MODERATE -> CellImageView.State.MODERATE
+            CellSignalState.GOOD -> CellImageView.State.GOOD
+            CellSignalState.FULL -> CellImageView.State.FULL
+        }
+    }
+
+    fun showWiFiSignalIcon() {
+        binding.bandyerWifiIcon.visibility = View.VISIBLE
+    }
+
+    fun hideWiFiSignalIcon() {
+        binding.bandyerWifiIcon.visibility = View.GONE
+    }
+
+    fun setWiFiSignalState(state: WiFiSignalState) {
+        binding.bandyerWifiIcon.state = when(state) {
+            WiFiSignalState.DISABLED -> WifiImageView.State.DISABLED
+            WiFiSignalState.LOW -> WifiImageView.State.LOW
+            WiFiSignalState.MODERATE -> WifiImageView.State.MODERATE
+            WiFiSignalState.FULL -> WifiImageView.State.FULL
+        }
+    }
 }

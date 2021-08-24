@@ -14,7 +14,9 @@ import com.bandyer.demo_sdk_design.databinding.ActivitySmartGlassBinding
 import com.bandyer.demo_sdk_design.smartglass.battery.BatteryObserver
 import com.bandyer.demo_sdk_design.smartglass.battery.BatteryState
 import com.bandyer.demo_sdk_design.smartglass.network.CellSignalObserver
+import com.bandyer.demo_sdk_design.smartglass.network.SignalState
 import com.bandyer.demo_sdk_design.smartglass.network.WiFiObserver
+import com.bandyer.demo_sdk_design.smartglass.network.WiFiState
 import com.bandyer.sdk_design.new_smartglass.GlassGestureDetector
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEventListener
@@ -65,11 +67,37 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
             }
         }
 
-//        lifecycleScope.launchWhenStarted {
-//            cellSignalObserver?.observe()?.collect {
-//
-//            }
-//        }
+        lifecycleScope.launchWhenStarted {
+            cellSignalObserver?.observe()?.collect {
+                statusBar!!.setCellSignalState(
+                    when (it) {
+                        SignalState.NONE -> StatusBarView.CellSignalState.MISSING
+                        SignalState.POOR -> StatusBarView.CellSignalState.MODERATE
+                        SignalState.MODERATE -> StatusBarView.CellSignalState.MODERATE
+                        SignalState.GOOD -> StatusBarView.CellSignalState.GOOD
+                        SignalState.GREAT -> StatusBarView.CellSignalState.FULL
+                    }
+                )
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            wifiObserver.observe().collect {
+                statusBar!!.setWiFiSignalState(
+                    if (it.state == WiFiState.State.DISABLED)
+                        StatusBarView.WiFiSignalState.DISABLED
+                    else
+                        when (it.level) {
+                            WiFiState.Level.NO_SIGNAL -> StatusBarView.WiFiSignalState.LOW
+                            WiFiState.Level.POOR -> StatusBarView.WiFiSignalState.LOW
+                            WiFiState.Level.FAIR -> StatusBarView.WiFiSignalState.MODERATE
+                            WiFiState.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
+                            WiFiState.Level.EXCELLENT -> StatusBarView.WiFiSignalState.FULL
+                        }
+                )
+            }
+        }
+
 
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            notificationManager.show(

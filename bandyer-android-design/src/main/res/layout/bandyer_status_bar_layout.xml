@@ -44,10 +44,17 @@
         android:id="@+id/bandyer_chat_icon"
         style="?attr/bandyer_chatIconStyle"
         app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
+        app:layout_constraintEnd_toStartOf="@id/bandyer_cell_icon"
+        app:layout_constraintTop_toTopOf="@id/bandyer_battery" />
+
+    <com.bandyer.sdk_design.new_smartglass.status_bar.CellImageView
+        android:id="@+id/bandyer_cell_icon"
+        style="?attr/bandyer_cellIconStyle"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
         app:layout_constraintEnd_toStartOf="@id/bandyer_wifi_icon"
         app:layout_constraintTop_toTopOf="@id/bandyer_battery" />
 
-    <com.google.android.material.imageview.ShapeableImageView
+    <com.bandyer.sdk_design.new_smartglass.status_bar.WifiImageView
         android:id="@+id/bandyer_wifi_icon"
         style="?attr/bandyer_wifiIconStyle"
         app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"

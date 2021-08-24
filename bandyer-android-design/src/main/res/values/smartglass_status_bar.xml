@@ -4,6 +4,7 @@
         <attr name="bandyer_titleIconStyle" format="reference"/>
         <attr name="bandyer_micIconStyleStyle" format="reference"/>
         <attr name="bandyer_chatIconStyle" format="reference"/>
+        <attr name="bandyer_cellIconStyle" format="reference"/>
         <attr name="bandyer_wifiIconStyle" format="reference"/>
         <attr name="bandyer_batteryStyle" format="reference"/>
     </declare-styleable>
@@ -14,6 +15,7 @@
         <item name="bandyer_titleIconStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar.TitleIcon</item>
         <item name="bandyer_micIconStyleStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar.MicIcon</item>
         <item name="bandyer_chatIconStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar.ChatIcon</item>
+        <item name="bandyer_cellIconStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar.CellIcon</item>
         <item name="bandyer_wifiIconStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar.WifiIcon</item>
         <item name="bandyer_batteryStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar.Battery</item>
     </style>
@@ -51,7 +53,11 @@
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.StatusBar.WifiIcon" parent="BandyerSDKDesign.SmartGlass.StatusBar.Icon">
-        <item name="srcCompat">@drawable/ic_bandyer_sg_wifi_full</item>
+        <item name="srcCompat">@drawable/bandyer_sg_wifi_icon</item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.StatusBar.CellIcon" parent="BandyerSDKDesign.SmartGlass.StatusBar.Icon">
+        <item name="srcCompat">@drawable/bandyer_sg_cell_icon</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.StatusBar.Battery" parent="">

@@ -79,4 +79,17 @@
     <attr name="bandyer_state_success" format="boolean" />
     <attr name="bandyer_state_retry" format="boolean" />
 
+    <!-- Smartglass status bar wifi state -->
+    <attr name="bandyer_state_wifi_disabled" format="boolean" />
+    <attr name="bandyer_state_wifi_low" format="boolean" />
+    <attr name="bandyer_state_wifi_moderate" format="boolean" />
+    <attr name="bandyer_state_wifi_full" format="boolean" />
+
+    <!-- Smartglass status bar cell state -->
+    <attr name="bandyer_state_cell_missing" format="boolean" />
+    <attr name="bandyer_state_cell_low" format="boolean" />
+    <attr name="bandyer_state_cell_moderate" format="boolean" />
+    <attr name="bandyer_state_cell_good" format="boolean" />
+    <attr name="bandyer_state_cell_full" format="boolean" />
+
 </resources>
