@@ -3,6 +3,7 @@ package com.bandyer.sdk_design.new_smartglass.menu
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,7 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
     protected var bottomActionBar: BottomActionBarView? = null
 
     protected var currentMenuItemIndex = 0
+    private var lastMotionEventAction: Int? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -68,7 +70,13 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         })
 
         // pass the root view's touch event to the recycler view
-        root!!.setOnTouchListener { _, event -> rvMenu!!.onTouchEvent(event) }
+        root!!.setOnTouchListener { _, event ->
+            if (lastMotionEventAction == MotionEvent.ACTION_DOWN && event.action == MotionEvent.ACTION_UP)
+                rvMenu!!.getChildAt(currentMenuItemIndex).performClick()
+            lastMotionEventAction = event.action
+            rvMenu!!.onTouchEvent(event)
+        }
+
         return root!!
     }
 
