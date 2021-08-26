@@ -26,23 +26,27 @@ class MenuFragment : SmartGlassMenuFragment() {
         itemAdapter!!.add(MenuItem("Utenti"))
         itemAdapter!!.add(MenuItem("Chat"))
 
-        fastAdapter!!.onClickListener = { _, _, item, _ ->
-            item.isActive = !item.isActive
-            false
-        }
-
         return view
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean = when (event) {
         SmartGlassTouchEvent.Event.TAP -> {
             when (currentMenuItemIndex) {
+                0, 1 -> {
+                    val isActive = itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActive
+                    itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActive = !isActive
+                    true
+                }
                 2 -> {
                     findNavController().navigate(R.id.action_menuFragment_to_volumeFragment)
                     true
                 }
                 3 -> {
                     findNavController().navigate(R.id.action_menuFragment_to_zoomFragment)
+                    true
+                }
+                4 -> {
+                    findNavController().navigate(R.id.action_menuFragment_to_participantsFragment)
                     true
                 }
                 5 -> {
