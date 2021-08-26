@@ -38,6 +38,7 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment() {
             data.avatarImageUrl != null -> avatar!!.setImage(data.avatarImageUrl!!)
             else -> avatar!!.setImage(null)
         }
+        contactStateDot!!.isActivated = data.userState == SmartGlassParticipantData.UserState.ONLINE
 
         itemAdapter!!.add(ParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_videocall)))
         itemAdapter!!.add(ParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_call)))

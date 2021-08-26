@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentParticipantDetailsBinding
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-import com.bandyer.sdk_design.new_smartglass.menu.CenterLinearLayoutManager
 import com.bandyer.sdk_design.new_smartglass.menu.ItemIndicatorDecoration
+import com.bandyer.sdk_design.new_smartglass.menu.OffsetItemDecoration
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
@@ -54,7 +54,7 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
         itemAdapter = ItemAdapter()
         fastAdapter = FastAdapter.with(itemAdapter!!)
         val layoutManager =
-            CenterLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvActions!!.layoutManager = layoutManager
         rvActions!!.adapter = fastAdapter
         rvActions!!.clipToPadding = false
@@ -69,6 +69,7 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
                 snapHelper
             )
         )
+        rvActions!!.addItemDecoration(OffsetItemDecoration())
 
         // add scroll listener
         rvActions!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {

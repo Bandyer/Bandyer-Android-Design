@@ -1,18 +1,21 @@
 package com.bandyer.sdk_design.new_smartglass
 
 import android.annotation.SuppressLint
+import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.DimenRes
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentParticipantsBinding
 import com.bandyer.sdk_design.extensions.parseToColor
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-import com.bandyer.sdk_design.new_smartglass.menu.CenterLinearLayoutManager
 import com.bandyer.sdk_design.new_smartglass.menu.ItemIndicatorDecoration
+import com.bandyer.sdk_design.new_smartglass.menu.OffsetItemDecoration
 import com.google.android.material.imageview.ShapeableImageView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -21,8 +24,8 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
 
     private var binding: BandyerFragmentParticipantsBinding? = null
 
-    protected var itemAdapter: ItemAdapter<ParticipantsItem>? = null
-    protected var fastAdapter: FastAdapter<ParticipantsItem>? = null
+    protected var itemAdapter: ItemAdapter<ParticipantItem>? = null
+    protected var fastAdapter: FastAdapter<ParticipantItem>? = null
 
     protected var root: View? = null
     protected var avatar: ContactAvatarView? = null
@@ -52,7 +55,7 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
         itemAdapter = ItemAdapter()
         fastAdapter = FastAdapter.with(itemAdapter!!)
         val layoutManager =
-            CenterLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvParticipants!!.layoutManager = layoutManager
         rvParticipants!!.adapter = fastAdapter
         rvParticipants!!.clipToPadding = false
@@ -67,6 +70,7 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
                 snapHelper
             )
         )
+        rvParticipants!!.addItemDecoration(OffsetItemDecoration())
 
         // add scroll listener
         rvParticipants!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -81,9 +85,10 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
                     data.avatarImageUrl != null -> avatar!!.setImage(data.avatarImageUrl)
                     else -> avatar!!.setImage(null)
                 }
-                if(data.avatarImageId != null) avatar!!.setImage(data.avatarImageId)
-                else if(data.avatarImageUrl != null) avatar!!.setImage(data.avatarImageUrl)
-                contactStateDot!!.isActivated = data.userState == SmartGlassParticipantData.UserState.ONLINE
+                if (data.avatarImageId != null) avatar!!.setImage(data.avatarImageId)
+                else if (data.avatarImageUrl != null) avatar!!.setImage(data.avatarImageUrl)
+                contactStateDot!!.isActivated =
+                    data.userState == SmartGlassParticipantData.UserState.ONLINE
                 with(contactStateText!!) {
                     when (data.userState) {
                         SmartGlassParticipantData.UserState.INVITED -> setContactState(
@@ -119,3 +124,5 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
         contactStateText = null
     }
 }
+
+
