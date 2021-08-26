@@ -2,9 +2,12 @@ package com.bandyer.sdk_design.new_smartglass.volume
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.bandyer.sdk_design.databinding.BandyerFragmentVolumeBinding
 import com.bandyer.sdk_design.new_smartglass.BandyerSlider
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
@@ -28,7 +31,6 @@ abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
         root = binding!!.root
         slider = binding!!.slider
         bottomActionBar = binding!!.bottomActionBar
-        root!!.setOnTouchListener { _, event -> binding!!.slider.onTouchEvent(event) }
         return root!!
     }
 
@@ -40,5 +42,15 @@ abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
         bottomActionBar = null
     }
 
-
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean = when (event) {
+        SmartGlassTouchEvent.Event.SWIPE_FORWARD -> {
+            slider!!.incrementProgress()
+            true
+        }
+        SmartGlassTouchEvent.Event.SWIPE_BACKWARD -> {
+            slider!!.decrementProgress()
+            true
+        }
+        else -> false
+    }
 }

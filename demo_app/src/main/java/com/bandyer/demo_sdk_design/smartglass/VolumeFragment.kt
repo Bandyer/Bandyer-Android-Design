@@ -10,6 +10,6 @@ class VolumeFragment: SmartGlassVolumeFragment() {
             findNavController().popBackStack()
             true
         }
-        else -> false
+        else -> super.onSmartGlassTouchEvent(event)
     }
 }
