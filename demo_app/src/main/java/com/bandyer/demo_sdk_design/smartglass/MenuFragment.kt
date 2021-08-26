@@ -60,6 +60,6 @@ class MenuFragment : SmartGlassMenuFragment() {
             findNavController().popBackStack()
             true
         }
-        else -> false
+        else -> super.onSmartGlassTouchEvent(event)
     }
 }
