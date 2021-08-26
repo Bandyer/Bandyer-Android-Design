@@ -45,7 +45,7 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         itemAdapter = ItemAdapter()
         fastAdapter = FastAdapter.with(itemAdapter!!)
         val layoutManager =
-            CenterLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvMenu!!.layoutManager = layoutManager
         rvMenu!!.adapter = fastAdapter
         rvMenu!!.clipToPadding = false
@@ -60,6 +60,7 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
                 snapHelper
             )
         )
+        rvMenu!!.addItemDecoration(OffsetItemDecoration())
 
         // add scroll listener
         rvMenu!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
