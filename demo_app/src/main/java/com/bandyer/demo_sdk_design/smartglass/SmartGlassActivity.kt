@@ -2,6 +2,8 @@ package com.bandyer.demo_sdk_design.smartglass
 
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -20,6 +22,7 @@ import com.bandyer.demo_sdk_design.smartglass.network.WiFiState
 import com.bandyer.sdk_design.new_smartglass.GlassGestureDetector
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEventListener
+import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationData
 import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationManager
 import com.bandyer.sdk_design.new_smartglass.status_bar.StatusBarView
 import com.bandyer.sdk_design.new_smartglass.utils.currentNavigationFragment
@@ -98,7 +101,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
             }
         }
 
-
+//
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            notificationManager.show(
 //                listOf(
@@ -107,8 +110,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 //                        "Mario",
 //                        "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
 //                        R.drawable.sample_image
-//                    )
-//                    ,
+//                    ),
 //                    NotificationData(
 //                        "Gianfranco",
 //                        "Gianfranco",
@@ -144,17 +146,22 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         else super.dispatchTouchEvent(ev)
     }
 
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?) =
-        handleSmartGlassTouchEvent(SmartGlassTouchEvent.getEvent(keyCode, event)) ?: false
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
+        return if (
+            event?.action == MotionEvent.ACTION_DOWN &&
+            handleSmartGlassTouchEvent(SmartGlassTouchEvent.getEvent(event))
+        ) true
+        else super.dispatchKeyEvent(event)
+    }
 
     override fun onGesture(gesture: GlassGestureDetector.Gesture): Boolean =
-        handleSmartGlassTouchEvent(SmartGlassTouchEvent.getEvent(gesture)) ?: false
+        handleSmartGlassTouchEvent(SmartGlassTouchEvent.getEvent(gesture))
 
-    private fun handleSmartGlassTouchEvent(smartGlassEvent: SmartGlassTouchEvent.Event): Boolean? =
+    private fun handleSmartGlassTouchEvent(smartGlassEvent: SmartGlassTouchEvent.Event): Boolean =
         if (handleNotification) onSmartGlassTouchEvent(smartGlassEvent)
         else (currentFragment as? SmartGlassTouchEventListener)?.onSmartGlassTouchEvent(
             smartGlassEvent
-        )
+        ) ?: false
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean =
         when (event) {
