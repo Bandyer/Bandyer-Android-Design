@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.ParticipantsItem
 import com.bandyer.sdk_design.new_smartglass.SmartGlassParticipantData
 import com.bandyer.sdk_design.new_smartglass.SmartGlassParticipantsFragment
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
-import com.bandyer.sdk_design.new_smartglass.menu.MenuItem
 import java.util.*
 
 class ParticipantsFragment : SmartGlassParticipantsFragment() {
@@ -28,5 +28,17 @@ class ParticipantsFragment : SmartGlassParticipantsFragment() {
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean = false
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean = when(event) {
+        SmartGlassTouchEvent.Event.TAP -> {
+            val itemData = itemAdapter!!.getAdapterItem(currentParticipantIndex).data
+            val action = ParticipantsFragmentDirections.actionParticipantsFragmentToParticipantDetailsFragment(itemData)
+            findNavController().navigate(action)
+            true
+        }
+        SmartGlassTouchEvent.Event.SWIPE_DOWN -> {
+            findNavController().popBackStack()
+            true
+        }
+        else -> false
+    }
 }

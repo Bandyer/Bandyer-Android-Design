@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/smartglass_nav_graph"
-    app:startDestination="@id/participantDetailsFragment">
+    app:startDestination="@id/menuFragment">
 
     <fragment
         android:id="@+id/chatFragment"
@@ -69,13 +70,20 @@
     <fragment
         android:id="@+id/participantsFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.ParticipantsFragment"
-        android:label="ParticipantsFragment" >
+        android:label="ParticipantsFragment">
         <action
             android:id="@+id/action_participantsFragment_to_participantDetailsFragment"
-            app:destination="@id/participantDetailsFragment" />
+            app:destination="@id/participantDetailsFragment" >
+        </action>
     </fragment>
     <fragment
         android:id="@+id/participantDetailsFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.ParticipantDetailsFragment"
-        android:label="ParticipantDetailsFragment" />
+        android:label="ParticipantDetailsFragment" >
+        <argument
+            android:name="participantData"
+            app:argType="com.bandyer.sdk_design.new_smartglass.SmartGlassParticipantData"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
 </navigation>
