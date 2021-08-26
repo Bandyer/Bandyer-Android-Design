@@ -2,7 +2,7 @@
 <resources>
     <!-- RECYCLER VIEW -->
     <style name="BandyerSDKDesign.SmartGlass.MenuRecyclerView" parent="">
-        <item name="android:background">#CB000000</item>
+        <item name="android:background">@color/bandyer_smartglass_background_color</item>
     </style>
 
     <!-- RECYCLER VIEW ITEM -->
