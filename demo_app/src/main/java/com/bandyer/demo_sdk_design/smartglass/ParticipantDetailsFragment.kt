@@ -26,13 +26,20 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment() {
         avatar!!.setText(data.name.first().toString())
         avatar!!.setBackground(data.name.parseToColor())
         name!!.text = data.name
-        contactStateText!!.setContactState(
+        with(contactStateText!!) {
             when (data.userState) {
-                SmartGlassParticipantData.UserState.ONLINE -> ContactStateTextView.State.ONLINE
-                SmartGlassParticipantData.UserState.INVITED -> ContactStateTextView.State.INVITED
-                else -> ContactStateTextView.State.LAST_SEEN
+                SmartGlassParticipantData.UserState.INVITED -> setContactState(
+                    ContactStateTextView.State.INVITED
+                )
+                SmartGlassParticipantData.UserState.OFFLINE -> setContactState(
+                    ContactStateTextView.State.LAST_SEEN,
+                    data.lastSeenTime
+                )
+                else -> setContactState(
+                    ContactStateTextView.State.ONLINE
+                )
             }
-        )
+        }
         when {
             data.avatarImageId != null -> avatar!!.setImage(data.avatarImageId)
             data.avatarImageUrl != null -> avatar!!.setImage(data.avatarImageUrl!!)
