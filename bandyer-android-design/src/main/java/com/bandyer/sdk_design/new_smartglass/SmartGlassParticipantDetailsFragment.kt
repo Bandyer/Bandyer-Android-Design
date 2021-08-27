@@ -57,8 +57,8 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvActions!!.layoutManager = layoutManager
         rvActions!!.adapter = fastAdapter
-        rvActions!!.clipToPadding = false
-        rvActions!!.isFocusable = true
+        rvActions!!.isFocusable = false
+        rvActions!!.setHasFixedSize(true)
 
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(rvActions)

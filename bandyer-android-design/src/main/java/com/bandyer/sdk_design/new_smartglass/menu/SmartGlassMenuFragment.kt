@@ -50,8 +50,8 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvMenu!!.layoutManager = layoutManager
         rvMenu!!.adapter = fastAdapter
-        rvMenu!!.clipToPadding = false
-        rvMenu!!.isFocusable = true
+        rvMenu!!.isFocusable = false
+        rvMenu!!.setHasFixedSize(true)
 
         snapHelper = LinearSnapHelper()
         snapHelper!!.attachToRecyclerView(rvMenu)

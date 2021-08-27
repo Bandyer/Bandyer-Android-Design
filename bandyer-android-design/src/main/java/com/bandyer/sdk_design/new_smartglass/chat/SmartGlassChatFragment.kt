@@ -14,7 +14,10 @@ import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
 import com.bandyer.sdk_design.databinding.BandyerFragmentChatBinding
 import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
+import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -63,7 +66,9 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvMessages!!.layoutManager = layoutManager
         rvMessages!!.adapter = fastAdapter
-        rvMessages!!.isFocusable = true
+        rvMessages!!.isFocusable = false
+        rvMessages!!.setHasFixedSize(true)
+
         rvMessages!!.addItemDecoration(ChatItemIndicatorDecoration(requireContext()))
 
         val snapHelper: SnapHelper = PagerSnapHelper()
