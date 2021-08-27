@@ -2,6 +2,7 @@
 <resources>
     <!-- PARTICIPANTS FRAGMENT -->
     <style name="BandyerSDKDesign.SmartGlass.ParticipantDetailsFragment" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.ParticipantDetailsFragment.Root</item>
         <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.SmartGlass.Avatar.ParticipantDetails</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.ParticipantDetails</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.SubTitle.ParticipantDetails</item>
@@ -13,6 +14,10 @@
         <item name="bandyer_bottomActionBarStyle">
             @style/BandyerSDKDesign.SmartGlass.ParticipantDetailsFragment.BottomActionBar
         </item>
+    </style>
+
+    <style name="BandyerSDKDesign.SmartGlass.ParticipantDetailsFragment.Root" parent="">
+        <item name="android:background">@color/bandyer_smartglass_background_color</item>
     </style>
 
     <!-- AVATAR -->
