@@ -16,7 +16,7 @@ import java.util.*
 import kotlin.math.abs
 
 /**
- * LinePagerIndicatorDecoration
+ * An incremental line indicator while scrolling in the recycler view
  *
  * @property height Float
  * @constructor

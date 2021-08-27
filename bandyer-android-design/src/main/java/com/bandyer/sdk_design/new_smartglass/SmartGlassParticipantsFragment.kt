@@ -1,20 +1,17 @@
 package com.bandyer.sdk_design.new_smartglass
 
 import android.annotation.SuppressLint
-import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.DimenRes
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentParticipantsBinding
 import com.bandyer.sdk_design.extensions.parseToColor
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-import com.bandyer.sdk_design.new_smartglass.menu.ItemIndicatorDecoration
+import com.bandyer.sdk_design.new_smartglass.menu.LineItemIndicatorDecoration
 import com.bandyer.sdk_design.new_smartglass.menu.OffsetItemDecoration
 import com.google.android.material.imageview.ShapeableImageView
 import com.mikepenz.fastadapter.FastAdapter
@@ -65,7 +62,7 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
         snapHelper.attachToRecyclerView(rvParticipants)
 
         rvParticipants!!.addItemDecoration(
-            ItemIndicatorDecoration(
+            LineItemIndicatorDecoration(
                 requireContext(),
                 snapHelper
             )

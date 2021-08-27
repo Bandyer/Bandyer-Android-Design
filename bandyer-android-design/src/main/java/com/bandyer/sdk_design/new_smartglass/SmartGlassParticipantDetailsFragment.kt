@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentParticipantDetailsBinding
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-import com.bandyer.sdk_design.new_smartglass.menu.ItemIndicatorDecoration
+import com.bandyer.sdk_design.new_smartglass.menu.LineItemIndicatorDecoration
 import com.bandyer.sdk_design.new_smartglass.menu.OffsetItemDecoration
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
@@ -64,7 +64,7 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
         snapHelper.attachToRecyclerView(rvActions)
 
         rvActions!!.addItemDecoration(
-            ItemIndicatorDecoration(
+            LineItemIndicatorDecoration(
                 requireContext(),
                 snapHelper
             )

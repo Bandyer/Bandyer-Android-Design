@@ -7,6 +7,13 @@ import android.widget.LinearLayout
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerBottomActionBarItemLayoutBinding
 
+/*
+ * Bottom action bar item view, it describes an action the user performs on a given gesture
+ * It's made of:
+ * - gesture icon
+ * - gesture text
+ * - action text
+ */
 class BottomActionBarItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -25,6 +32,11 @@ class BottomActionBarItemView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Set the action's text
+     *
+     * @param text The text to set
+     */
     fun setActionText(text: String?) {
         binding.bandyerActionText.text = text
     }

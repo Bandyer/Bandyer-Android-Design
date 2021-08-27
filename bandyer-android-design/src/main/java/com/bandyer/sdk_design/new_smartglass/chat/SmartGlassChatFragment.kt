@@ -14,21 +14,20 @@ import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
 import com.bandyer.sdk_design.databinding.BandyerFragmentChatBinding
 import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
+/**
+ * SmartGlassChatFragment
+ */
 abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
 
     private var binding: BandyerFragmentChatBinding? = null
 
     protected var itemAdapter: ItemAdapter<ChatItem>? = null
     protected var fastAdapter: FastAdapter<ChatItem>? = null
-
     protected var root: View? = null
     protected var rvMessages: RecyclerView? = null
     protected var counter: MaterialTextView? = null
@@ -102,24 +101,29 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         chatMessageView = null
     }
 
-    protected fun addChatItem(data: SmartGlassChatData) {
+    /**
+     * Add a chat item to the recycler view
+     *
+     * @param data The [SmartGlassMessageData]
+     */
+    protected fun addChatItem(data: SmartGlassMessageData) {
         newMessagesCounter++
         chatMessageView?.post {
             val binding = BandyerChatMessageLayoutBinding.bind(chatMessageView!!)
             with(binding) {
-                bandyerName.text = data.name
+                bandyerName.text = data.sender
                 bandyerTime.text = data.time!!.parseToHHmm()
                 bandyerMessage.text = data.message
                 val pageList = bandyerMessage.paginate()
                 for (i in pageList.indices) {
-                    val pageData = SmartGlassChatData(
+                    val pageData = SmartGlassMessageData(
                         data.id,
-                        data.name,
+                        data.sender,
                         data.userAlias,
                         pageList[i].toString(),
                         data.time,
-                        data.avatarId,
-                        data.avatarUrl,
+                        data.userAvatarId,
+                        data.userAvatarUrl,
                         i == 0
                     )
                     itemAdapter!!.add(ChatItem(pageData))

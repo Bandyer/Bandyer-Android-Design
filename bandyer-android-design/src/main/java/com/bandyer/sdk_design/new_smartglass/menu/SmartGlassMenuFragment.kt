@@ -2,8 +2,6 @@ package com.bandyer.sdk_design.new_smartglass.menu
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.SystemClock
-import android.util.Log
 import android.view.*
 import androidx.recyclerview.widget.*
 import com.bandyer.sdk_design.databinding.BandyerFragmentMenuBinding
@@ -14,7 +12,6 @@ import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import kotlin.math.abs
 
 abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
 
@@ -57,7 +54,7 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         snapHelper!!.attachToRecyclerView(rvMenu)
 
         rvMenu!!.addItemDecoration(
-            ItemIndicatorDecoration(
+            LineItemIndicatorDecoration(
                 requireContext(),
                 snapHelper!!
             )

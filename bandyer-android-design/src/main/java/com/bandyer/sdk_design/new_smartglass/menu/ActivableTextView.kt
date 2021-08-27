@@ -5,6 +5,11 @@ import android.util.AttributeSet
 import com.bandyer.sdk_design.R
 import com.google.android.material.textview.MaterialTextView
 
+/**
+ * A textview which has two texts, one when is activated, the other when is not
+ *
+ * @constructor
+ */
 class ActivableTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -22,6 +27,11 @@ class ActivableTextView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Set the isActivated state. The text will update accordingly.
+     *
+     * @param activated True to set the activated state, false otherwise
+     */
     override fun setActivated(activated: Boolean) {
         text = if(activated) activatedText else inactivatedText
         super.setActivated(activated)

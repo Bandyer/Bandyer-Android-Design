@@ -7,7 +7,13 @@ import com.bandyer.sdk_design.extensions.parseToColor
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
-class ChatItem(val data: SmartGlassChatData) : AbstractItem<ChatItem.ViewHolder>() {
+/**
+ * A chat item
+ *
+ * @property data The data related to a chat message
+ * @constructor
+ */
+class ChatItem(val data: SmartGlassMessageData) : AbstractItem<ChatItem.ViewHolder>() {
 
     override val layoutRes: Int
         get() = R.layout.bandyer_chat_item_layout
@@ -24,13 +30,13 @@ class ChatItem(val data: SmartGlassChatData) : AbstractItem<ChatItem.ViewHolder>
         override fun bindView(item: ChatItem, payloads: List<Any>) =
             with(binding.bandyerChatMessage) {
                 val data = item.data
-                if(data.avatarId != null) setAvatar(data.avatarId)
-                else if (data.avatarUrl != null) setAvatar(data.avatarUrl)
+                if(data.userAvatarId != null) setAvatar(data.userAvatarId)
+                else if (data.userAvatarUrl != null) setAvatar(data.userAvatarUrl)
                 setAvatarBackground(data.userAlias?.parseToColor())
                 setMessage(data.message)
                 setTime(data.time)
-                if (!data.isFirstMessagePage) setNameVisibility(View.GONE)
-                else setName(data.name)
+                if (!data.isFirstPage) setNameVisibility(View.GONE)
+                else setName(data.sender)
             }
 
         override fun unbindView(item: ChatItem) = with(binding.bandyerChatMessage) {

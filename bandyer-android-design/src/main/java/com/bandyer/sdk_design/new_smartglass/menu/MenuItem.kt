@@ -6,6 +6,13 @@ import com.bandyer.sdk_design.databinding.BandyerMenuItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
+/**
+ * A menu item
+ *
+ * @property text The item's text
+ * @property activeText The item's text when active
+ * @constructor
+ */
 class MenuItem(val text: String, val activeText: String? = null): AbstractItem<MenuItem.ViewHolder>() {
 
     private var itemText: ActivableTextView? = null

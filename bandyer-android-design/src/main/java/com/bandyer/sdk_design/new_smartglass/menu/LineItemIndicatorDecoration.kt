@@ -14,13 +14,12 @@ import com.bandyer.sdk_design.new_smartglass.utils.extensions.darkenColor
 import com.google.android.material.color.MaterialColors
 
 /**
- * MenuPagerIndicatorDecoration
+ * A line item indicator
  *
- * @property height Float
+ * @property snapHelper The [LinearSnapHelper] associated to the recycler view
  * @constructor
- *
  */
-class ItemIndicatorDecoration(
+class LineItemIndicatorDecoration(
     context: Context,
     private val snapHelper: LinearSnapHelper
 ) : RecyclerView.ItemDecoration() {
@@ -57,7 +56,7 @@ class ItemIndicatorDecoration(
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
-        val y = parent.height - this@ItemIndicatorDecoration.height / 2f
+        val y = parent.height - this@LineItemIndicatorDecoration.height / 2f
 
         val layoutManager = parent.layoutManager as LinearLayoutManager
         val firstPos = layoutManager.findFirstVisibleItemPosition()

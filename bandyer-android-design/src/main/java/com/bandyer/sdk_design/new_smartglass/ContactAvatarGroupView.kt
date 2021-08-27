@@ -6,6 +6,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.children
 import com.bandyer.sdk_design.extensions.dp2px
 
 class ContactAvatarGroupView @JvmOverloads constructor(
@@ -52,6 +53,8 @@ class ContactAvatarGroupView @JvmOverloads constructor(
 
         return child
     }
+
+    fun clean() = removeAllViews()
 
     private companion object {
         const val CHILD_START_MARGIN = 16

@@ -8,7 +8,13 @@ import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 
-class NotificationViewAttacher(val view: View) {
+/**
+ * Class used to attach a view to a given layout
+ *
+ * @property view The view to be attached
+ * @constructor
+ */
+class ViewAttacher(val view: View) {
 
     private var parentView: ViewGroup? = null
 
@@ -19,6 +25,11 @@ class NotificationViewAttacher(val view: View) {
         }
     }
 
+    /**
+     * Attach the [view] to a [ConstraintLayout]
+     *
+     * @param layout The layout on which attach the [view]
+     */
     fun attach(layout: ConstraintLayout) {
         parentView = layout
 
@@ -49,6 +60,11 @@ class NotificationViewAttacher(val view: View) {
 
     }
 
+    /**
+     * Attach the [view] to a [FrameLayout]
+     *
+     * @param layout The layout on which attach the [view]
+     */
     fun attach(layout: FrameLayout) {
         parentView = layout
 
@@ -62,6 +78,11 @@ class NotificationViewAttacher(val view: View) {
         )
     }
 
+    /**
+     * Attach the [view] to a [RelativeLayout]
+     *
+     * @param layout The layout on which attach the [view]
+     */
     fun attach(layout: RelativeLayout) {
         parentView = layout
 
@@ -73,5 +94,8 @@ class NotificationViewAttacher(val view: View) {
         layout.addView(view, params)
     }
 
+    /**
+     *  Detach the [view] from the previously passed layout
+     */
     fun detach() = parentView?.removeView(view)
 }

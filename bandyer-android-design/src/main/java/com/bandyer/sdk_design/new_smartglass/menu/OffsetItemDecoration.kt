@@ -5,7 +5,10 @@ import android.view.View
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
 
-internal class OffsetItemDecoration : RecyclerView.ItemDecoration() {
+/**
+ * An item decoration to center the first and last element a the recycler view
+ */
+class OffsetItemDecoration : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
         outRect: Rect,

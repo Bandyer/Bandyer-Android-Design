@@ -32,16 +32,25 @@ class ChatNotificationView @JvmOverloads constructor(
     private var binding: BandyerChatNotificationLayoutBinding =
         BandyerChatNotificationLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
+    /**
+     * Show the notification
+     *
+     * @param data List<NotificationData>
+     */
     fun show(data: List<NotificationData>) = with(binding) {
         if (data.size < 2) {
             bandyerTitle.text = data[0].name
             bandyerMessage.text = data[0].message
+            bandyerMessage.maxLines = 2
+            bandyerTime.visibility = View.VISIBLE
         } else {
             bandyerTitle.text = resources.getString(R.string.bandyer_smartglass_new_messages_pattern, data.size)
+            bandyerMessage.text = null
             bandyerMessage.maxLines = 0
             bandyerTime.visibility = View.GONE
         }
 
+        bandyerAvatars.clean()
         data.forEachIndexed { index, item ->
             if (index > 1) return@forEachIndexed
 
@@ -68,8 +77,18 @@ class ChatNotificationView @JvmOverloads constructor(
         setVisibility(true, View.VISIBLE)
     }
 
+    /**
+     * Hide the view, either with or without slide to top animation
+     *
+     * @param withAnimation True to perform the hide animation, false otherwise
+     */
     fun hide(withAnimation: Boolean = true) = setVisibility(withAnimation, View.GONE)
 
+    /**
+     * Expand the view from its current height to the parent's height
+     *
+     * @param onExpanded Callback to be executed on end of the animation
+     */
     fun expand(onExpanded: ((Animator) -> Unit)? = null) {
         setVisibility(true, View.VISIBLE)
         binding.root.animateViewHeight(

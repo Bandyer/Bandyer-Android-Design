@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
-import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassChatData
+import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassMessageData
 import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassChatFragment
 import java.util.*
 
@@ -28,7 +28,7 @@ class ChatFragment : SmartGlassChatFragment() {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         addChatItem(
-            SmartGlassChatData(
+            SmartGlassMessageData(
                 UUID.randomUUID().toString(),
                 "Mario",
                 "Mario",
@@ -38,7 +38,7 @@ class ChatFragment : SmartGlassChatFragment() {
             )
         )
         addChatItem(
-            SmartGlassChatData(
+            SmartGlassMessageData(
                 UUID.randomUUID().toString(),
                 "Ugo",
                 "Ugo",
@@ -47,7 +47,7 @@ class ChatFragment : SmartGlassChatFragment() {
             )
         )
         addChatItem(
-            SmartGlassChatData(
+            SmartGlassMessageData(
                 UUID.randomUUID().toString(),
                 "Gianfranco",
                 "Gianfranco",
@@ -58,7 +58,7 @@ class ChatFragment : SmartGlassChatFragment() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             addChatItem(
-                SmartGlassChatData(
+                SmartGlassMessageData(
                     UUID.randomUUID().toString(),
                     "Gianfranco",
                     "Gianfranco",

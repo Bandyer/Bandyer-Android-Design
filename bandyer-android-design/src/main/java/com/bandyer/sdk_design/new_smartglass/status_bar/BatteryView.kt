@@ -11,8 +11,9 @@ import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.dp2px
 
 /**
- * A custom battery view that can indicates the level of charge and can be set in the charging state
- * @constructor
+ * A custom battery view created using a canvas.
+ *
+ *  @constructor
  */
 class BatteryView @JvmOverloads constructor(
     context: Context,
@@ -110,12 +111,23 @@ class BatteryView @JvmOverloads constructor(
         else drawCharging(canvas)
     }
 
+
+    /**
+     * Update the view's battery charge level
+     *
+     * @param charge The charge level
+     */
     fun setCharge(charge: Int) {
         if (charge > 100 || charge < 0) return
         this.charge = charge
         invalidate()
     }
 
+    /**
+     * Update the view's charging state. A lighting in the center of the battery is shows if the value is set to true
+     *
+     * @param isCharging True to show the lighting, false otherwise
+     */
     fun setCharging(isCharging: Boolean) {
         this.isCharging = isCharging
         invalidate()
