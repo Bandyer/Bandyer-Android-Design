@@ -19,15 +19,15 @@ class EndCallFragment: SmartGlassEndCallFragment() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean = when (event) {
-        SmartGlassTouchEvent.Event.TAP -> {
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
+        SmartGlassTouchEvent.Type.TAP -> {
             findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment)
             true
         }
-        SmartGlassTouchEvent.Event.SWIPE_DOWN -> {
+        SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true
         }
-        else -> false
+        else -> super.onSmartGlassTouchEvent(event)
     }
 }

@@ -5,11 +5,11 @@ import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 
 class CallEndedFragment: SmartGlassCallEndedFragment() {
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean = when (event) {
-        SmartGlassTouchEvent.Event.SWIPE_DOWN -> {
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
+        SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             requireActivity().finish()
             true
         }
-        else -> false
+        else -> super.onSmartGlassTouchEvent(event)
     }
 }

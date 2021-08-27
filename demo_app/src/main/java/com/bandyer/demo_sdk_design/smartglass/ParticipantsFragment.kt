@@ -28,17 +28,17 @@ class ParticipantsFragment : SmartGlassParticipantsFragment() {
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean = when(event) {
-        SmartGlassTouchEvent.Event.TAP -> {
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when(event.type) {
+        SmartGlassTouchEvent.Type.TAP -> {
             val itemData = itemAdapter!!.getAdapterItem(currentParticipantIndex).data
             val action = ParticipantsFragmentDirections.actionParticipantsFragmentToParticipantDetailsFragment(itemData)
             findNavController().navigate(action)
             true
         }
-        SmartGlassTouchEvent.Event.SWIPE_DOWN -> {
+        SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true
         }
-        else -> false
+        else -> super.onSmartGlassTouchEvent(event)
     }
 }

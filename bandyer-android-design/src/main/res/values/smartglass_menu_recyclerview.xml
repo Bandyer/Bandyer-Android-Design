@@ -9,6 +9,8 @@
     <style name="BandyerSDKDesign.SmartGlass.MenuRecyclerViewItem" parent="">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.MenuRecyclerViewItem.Root</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.MenuRecyclerViewItem.SmartGlass</item>
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.MenuRecyclerViewItem.Root" parent="">

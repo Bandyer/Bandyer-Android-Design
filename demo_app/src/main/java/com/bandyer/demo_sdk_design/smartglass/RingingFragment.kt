@@ -22,16 +22,16 @@ class RingingFragment: SmartGlassRingingFragment() {
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean =
-        when (event) {
-            SmartGlassTouchEvent.Event.TAP -> {
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean =
+        when (event.type) {
+            SmartGlassTouchEvent.Type.TAP -> {
                 findNavController().navigate(R.id.action_ringingFragment_to_callFragment)
                 true
             }
-            SmartGlassTouchEvent.Event.SWIPE_DOWN -> {
+            SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
                 requireActivity().finish()
                 true
             }
-            else -> false
+            else -> super.onSmartGlassTouchEvent(event)
         }
 }

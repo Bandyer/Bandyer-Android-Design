@@ -6,9 +6,8 @@ import com.bandyer.sdk_design.new_smartglass.utils.extensions.isDownButton
 import com.bandyer.sdk_design.new_smartglass.utils.extensions.isLeftButton
 import com.bandyer.sdk_design.new_smartglass.utils.extensions.isRightButton
 
-object SmartGlassTouchEvent {
-
-    enum class Event {
+data class SmartGlassTouchEvent(val type: Type, val source: Source) {
+    enum class Type {
         TAP,
         SWIPE_DOWN,
         SWIPE_FORWARD,
@@ -16,21 +15,46 @@ object SmartGlassTouchEvent {
         UNKNOWN
     }
 
-    fun getEvent(gesture: GlassGestureDetector.Gesture?) =
-        when (gesture) {
-            GlassGestureDetector.Gesture.TAP -> Event.TAP
-            GlassGestureDetector.Gesture.SWIPE_DOWN -> Event.SWIPE_DOWN
-            GlassGestureDetector.Gesture.SWIPE_FORWARD -> Event.SWIPE_FORWARD
-            GlassGestureDetector.Gesture.SWIPE_BACKWARD -> Event.SWIPE_BACKWARD
-            else -> Event.UNKNOWN
-        }
+    enum class Source {
+        GESTURE,
+        KEY
+    }
 
-    fun getEvent(event: KeyEvent?) =
-        when {
-            event?.isConfirmButton() == true -> Event.TAP
-            event?.isDownButton() == true -> Event.SWIPE_DOWN
-            event?.isRightButton() == true -> Event.SWIPE_FORWARD
-            event?.isLeftButton() == true -> Event.SWIPE_BACKWARD
-            else -> Event.UNKNOWN
-        }
+    companion object {
+        fun getEvent(gesture: GlassGestureDetector.Gesture?) =
+            when (gesture) {
+                GlassGestureDetector.Gesture.TAP -> SmartGlassTouchEvent(Type.TAP, Source.GESTURE)
+                GlassGestureDetector.Gesture.SWIPE_DOWN -> SmartGlassTouchEvent(
+                    Type.SWIPE_DOWN,
+                    Source.GESTURE
+                )
+                GlassGestureDetector.Gesture.SWIPE_FORWARD -> SmartGlassTouchEvent(
+                    Type.SWIPE_FORWARD,
+                    Source.GESTURE
+                )
+                GlassGestureDetector.Gesture.SWIPE_BACKWARD -> SmartGlassTouchEvent(
+                    Type.SWIPE_BACKWARD,
+                    Source.GESTURE
+                )
+                else -> SmartGlassTouchEvent(Type.UNKNOWN, Source.GESTURE)
+            }
+
+        fun getEvent(event: KeyEvent?) =
+            when {
+                event?.isConfirmButton() == true -> SmartGlassTouchEvent(Type.TAP, Source.KEY)
+                event?.isDownButton() == true -> SmartGlassTouchEvent(
+                    Type.SWIPE_DOWN,
+                    Source.KEY
+                )
+                event?.isRightButton() == true -> SmartGlassTouchEvent(
+                    Type.SWIPE_FORWARD,
+                    Source.KEY
+                )
+                event?.isLeftButton() == true -> SmartGlassTouchEvent(
+                    Type.SWIPE_BACKWARD,
+                    Source.KEY
+                )
+                else -> SmartGlassTouchEvent(Type.UNKNOWN, Source.KEY)
+            }
+    }
 }

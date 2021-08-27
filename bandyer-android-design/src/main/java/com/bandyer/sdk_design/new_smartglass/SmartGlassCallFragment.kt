@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.bandyer.sdk_design.databinding.BandyerFragmentCallBinding
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 
-abstract class SmartGlassCallFragment: Fragment(), SmartGlassTouchEventListener {
+abstract class SmartGlassCallFragment: SmartGlassBaseFragment(), SmartGlassTouchEventListener {
 
     private var binding: BandyerFragmentCallBinding? = null
 

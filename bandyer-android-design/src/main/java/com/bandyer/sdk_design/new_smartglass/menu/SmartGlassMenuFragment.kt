@@ -10,6 +10,8 @@ import com.bandyer.sdk_design.databinding.BandyerFragmentMenuBinding
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlin.math.abs
@@ -75,9 +77,7 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
             if (lastMotionEventAction == MotionEvent.ACTION_DOWN && event.action == MotionEvent.ACTION_UP)
                 rvMenu!!.getChildAt(currentMenuItemIndex).performClick()
             lastMotionEventAction = event.action
-            Log.e("touchEvent", event.toString())
             rvMenu!!.onTouchEvent(event)
-
         }
 
         return root!!
@@ -93,127 +93,19 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         bottomActionBar = null
     }
 
-    fun RecyclerView.swipeToNext() {
-        val screenWidth = resources.displayMetrics.widthPixels
-        val screenHeight = resources.displayMetrics.heightPixels
-        val startX = screenWidth / 2f
-        val startY = screenHeight / 2f
-
-        val layoutManager = (layoutManager!! as LinearLayoutManager)
-        val currentPos = layoutManager.findFirstCompletelyVisibleItemPosition()
-        if (currentPos == adapter!!.itemCount - 1) return
-        val nextView = findViewHolderForAdapterPosition(currentPos + 1)!!.itemView
-        val targetX = nextView.left + (nextView.right - nextView.left) / 2f
-
-        val downTime = SystemClock.uptimeMillis()
-        var eventTime = SystemClock.uptimeMillis()
-
-        root!!.dispatchTouchEvent(
-            MotionEvent.obtain(
-                downTime,
-                eventTime,
-                MotionEvent.ACTION_DOWN,
-                startX,
-                startY,
-                0
-            )
-        )
-
-        val steps = 20
-        val stepX = abs(targetX - startX) / steps
-        var deltaX = 0f
-        for (i in 0..steps) {
-            deltaX = startX - i * stepX
-            eventTime += 35
-            root!!.dispatchTouchEvent(
-                MotionEvent.obtain(
-                    downTime,
-                    eventTime,
-                    MotionEvent.ACTION_MOVE,
-                    deltaX,
-                    startY,
-                    0
-                )
-            )
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
+        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+            if(event.source == SmartGlassTouchEvent.Source.KEY) {
+                rvMenu!!.smoothScrollToNext(currentMenuItemIndex)
+                true
+            } else false
         }
-
-        root!!.dispatchTouchEvent(
-            MotionEvent.obtain(
-                downTime,
-                ++eventTime,
-                MotionEvent.ACTION_UP,
-                deltaX,
-                startY,
-                0
-            )
-        )
-    }
-
-    fun RecyclerView.swipeToPrevious() {
-        val screenWidth = resources.displayMetrics.widthPixels
-        val screenHeight = resources.displayMetrics.heightPixels
-        val startX = screenWidth / 2f
-        val startY = screenHeight / 2f
-
-        val layoutManager = (layoutManager!! as LinearLayoutManager)
-        val currentPos = layoutManager.findFirstCompletelyVisibleItemPosition()
-        if (currentPos == 0) return
-        val nextView = findViewHolderForAdapterPosition(currentPos - 1)!!.itemView
-        val targetX = nextView.left + (nextView.right - nextView.left) / 2f
-
-        val downTime = SystemClock.uptimeMillis()
-        var eventTime = SystemClock.uptimeMillis()
-
-        root!!.dispatchTouchEvent(
-            MotionEvent.obtain(
-                downTime,
-                eventTime,
-                MotionEvent.ACTION_DOWN,
-                startX,
-                startY,
-                0
-            )
-        )
-
-        val steps = 20
-        val stepX = abs(targetX - startX) / steps
-        var deltaX = 0f
-        for (i in 0..steps) {
-            deltaX = startX + i * stepX
-            eventTime += 35
-            root!!.dispatchTouchEvent(
-                MotionEvent.obtain(
-                    downTime,
-                    eventTime,
-                    MotionEvent.ACTION_MOVE,
-                    deltaX,
-                    startY,
-                    0
-                )
-            )
+        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if(event.source == SmartGlassTouchEvent.Source.KEY) {
+                rvMenu!!.smoothScrollToPrevious(currentMenuItemIndex)
+                true
+            } else false
         }
-
-        root!!.dispatchTouchEvent(
-            MotionEvent.obtain(
-                downTime,
-                ++eventTime,
-                MotionEvent.ACTION_UP,
-                deltaX,
-                startY,
-                0
-            )
-        )
-    }
-
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean = when (event) {
-        SmartGlassTouchEvent.Event.SWIPE_FORWARD -> {
-            rvMenu!!.swipeToNext()
-            true
-        }
-        SmartGlassTouchEvent.Event.SWIPE_BACKWARD -> {
-            rvMenu!!.swipeToPrevious()
-            true
-        }
-        else -> false
+        else -> super.onSmartGlassTouchEvent(event)
     }
 }

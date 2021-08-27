@@ -29,8 +29,8 @@ class MenuFragment : SmartGlassMenuFragment() {
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean = when (event) {
-        SmartGlassTouchEvent.Event.TAP -> {
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
+        SmartGlassTouchEvent.Type.TAP -> {
             when (currentMenuItemIndex) {
                 0, 1 -> {
                     val isActive = itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActive
@@ -56,7 +56,7 @@ class MenuFragment : SmartGlassMenuFragment() {
                 else -> false
             }
         }
-        SmartGlassTouchEvent.Event.SWIPE_DOWN -> {
+        SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true
         }

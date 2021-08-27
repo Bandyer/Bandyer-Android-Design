@@ -123,6 +123,22 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
         contactStateDot = null
         contactStateText = null
     }
+
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
+        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+            if(event.source == SmartGlassTouchEvent.Source.KEY) {
+                rvParticipants!!.smoothScrollToNext(currentParticipantIndex)
+                true
+            } else false
+        }
+        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if(event.source == SmartGlassTouchEvent.Source.KEY) {
+                rvParticipants!!.smoothScrollToPrevious(currentParticipantIndex)
+                true
+            } else false
+        }
+        else -> super.onSmartGlassTouchEvent(event)
+    }
 }
 
 

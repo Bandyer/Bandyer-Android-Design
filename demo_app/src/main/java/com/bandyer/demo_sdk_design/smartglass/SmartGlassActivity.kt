@@ -157,19 +157,19 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
     override fun onGesture(gesture: GlassGestureDetector.Gesture): Boolean =
         handleSmartGlassTouchEvent(SmartGlassTouchEvent.getEvent(gesture))
 
-    private fun handleSmartGlassTouchEvent(smartGlassEvent: SmartGlassTouchEvent.Event): Boolean =
+    private fun handleSmartGlassTouchEvent(smartGlassEvent: SmartGlassTouchEvent): Boolean =
         if (handleNotification) onSmartGlassTouchEvent(smartGlassEvent)
         else (currentFragment as? SmartGlassTouchEventListener)?.onSmartGlassTouchEvent(
             smartGlassEvent
         ) ?: false
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent.Event): Boolean =
-        when (event) {
-            SmartGlassTouchEvent.Event.TAP -> {
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean =
+        when (event.type) {
+            SmartGlassTouchEvent.Type.TAP -> {
                 notificationManager.expand()
                 true
             }
-            SmartGlassTouchEvent.Event.SWIPE_DOWN -> {
+            SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
                 notificationManager.dismiss()
                 true
             }
