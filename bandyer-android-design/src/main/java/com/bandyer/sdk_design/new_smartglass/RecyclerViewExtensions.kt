@@ -5,14 +5,16 @@ import androidx.recyclerview.widget.RecyclerView
 
 fun RecyclerView.smoothScrollToNext(currentIndex: Int) {
     if (currentIndex >= adapter!!.itemCount - 1) return
-    val target = findViewHolderForAdapterPosition(currentIndex + 1)?.itemView ?: return
-    scrollToTarget(target)
+    val target = findViewHolderForAdapterPosition(currentIndex + 1)?.itemView
+    if (target == null) smoothScrollBy(context.resources.displayMetrics.widthPixels, 0)
+    else scrollToTarget(target)
 }
 
 fun RecyclerView.smoothScrollToPrevious(currentIndex: Int) {
     if (currentIndex <= 0) return
-    val target = findViewHolderForAdapterPosition(currentIndex - 1)?.itemView ?: return
-    scrollToTarget(target)
+    val target = findViewHolderForAdapterPosition(currentIndex - 1)?.itemView
+    if (target == null) smoothScrollBy(-context.resources.displayMetrics.widthPixels, 0)
+    else scrollToTarget(target)
 }
 
 private fun RecyclerView.scrollToTarget(target: View) {

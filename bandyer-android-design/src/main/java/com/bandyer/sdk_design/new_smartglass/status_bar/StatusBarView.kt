@@ -70,35 +70,6 @@ class StatusBarView @JvmOverloads constructor(
         binding.bandyerBattery.setCharging(isCharging)
 
     /**
-     * Show the cellular signal icon
-     */
-    fun showCellSignalIcon() {
-        binding.bandyerCellIcon.visibility = View.VISIBLE
-    }
-
-    /**
-     * Hide the cellular signal icon
-     */
-    fun hideCellSignalIcon() {
-        binding.bandyerCellIcon.visibility = View.GONE
-    }
-
-    /**
-     * Set the cellular signal icon state
-     *
-     * @param state CellSignalState
-     */
-    fun setCellSignalState(state: CellSignalState) {
-        binding.bandyerCellIcon.state = when(state) {
-            CellSignalState.MISSING -> CellImageView.State.MISSING
-            CellSignalState.LOW -> CellImageView.State.LOW
-            CellSignalState.MODERATE -> CellImageView.State.MODERATE
-            CellSignalState.GOOD -> CellImageView.State.GOOD
-            CellSignalState.FULL -> CellImageView.State.FULL
-        }
-    }
-
-    /**
      * Show the WiFi signal icon
      */
     fun showWiFiSignalIcon() {

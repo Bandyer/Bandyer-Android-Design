@@ -14,7 +14,10 @@ import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
 import com.bandyer.sdk_design.databinding.BandyerFragmentChatBinding
 import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
+import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -34,11 +37,15 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
     protected var bottomActionBar: BottomActionBarView? = null
     protected var chatMessageView: ChatMessageView? = null
 
+    private var currentMsgItemIndex = 0
     private var newMessagesCounter = 0
         set(value) {
             field = value
             val counterValue = value - 1
-            counter?.text = resources.getString(R.string.bandyer_smartglass_message_counter_pattern, counterValue)
+            counter?.text = resources.getString(
+                R.string.bandyer_smartglass_message_counter_pattern,
+                counterValue
+            )
             counter?.visibility = if (counterValue > 0) View.VISIBLE else View.GONE
         }
     private var lastMsgIndex = 0
@@ -81,6 +88,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
                     newMessagesCounter--
                     lastMsgIndex = currentMsgIndex
                 }
+                currentMsgItemIndex = currentMsgIndex
             }
         })
 
@@ -131,6 +139,22 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
                 }
             }
         }
+    }
+
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
+        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+            if(event.source == SmartGlassTouchEvent.Source.KEY) {
+                rvMessages!!.smoothScrollToNext(currentMsgItemIndex)
+                true
+            } else false
+        }
+        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if(event.source == SmartGlassTouchEvent.Source.KEY) {
+                rvMessages!!.smoothScrollToPrevious(currentMsgItemIndex)
+                true
+            } else false
+        }
+        else -> super.onSmartGlassTouchEvent(event)
     }
 
 }

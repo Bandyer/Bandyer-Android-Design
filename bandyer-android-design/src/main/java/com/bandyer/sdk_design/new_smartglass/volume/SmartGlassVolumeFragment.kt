@@ -44,6 +44,7 @@ abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
         SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+
             slider!!.incrementProgress()
             true
         }
