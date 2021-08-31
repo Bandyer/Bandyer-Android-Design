@@ -75,7 +75,7 @@
     <color name="bandyer_screen_share_color_night">#FF5131</color>
 
     <!-- smartglasses -->
-    <color name="bandyer_smartglass_background_color">#C3000000</color>
+    <color name="bandyer_smartglass_background_color">#99000000</color>
     <color name="bandyer_smartglass_online_state_color">#43A047</color>
     <color name="bandyer_smartglass_offline_state_color">#9F9F9F</color>
 
