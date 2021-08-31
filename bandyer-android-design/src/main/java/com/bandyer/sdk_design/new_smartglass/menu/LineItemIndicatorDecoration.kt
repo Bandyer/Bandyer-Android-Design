@@ -37,7 +37,7 @@ class LineItemIndicatorDecoration(
     /**
      * Indicator height
      */
-    private val height = context.dp2px(3f).toFloat()
+    private val height = context.dp2px(4f).toFloat()
 
     /**
      * Paint used to draw

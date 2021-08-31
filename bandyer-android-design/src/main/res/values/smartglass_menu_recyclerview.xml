@@ -3,6 +3,7 @@
     <!-- RECYCLER VIEW -->
     <style name="BandyerSDKDesign.SmartGlass.MenuRecyclerView" parent="">
         <item name="android:background">@color/bandyer_smartglass_background_color</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space4</item>
     </style>
 
     <!-- RECYCLER VIEW ITEM -->
@@ -19,7 +20,7 @@
     </style>
 
     <style name="BandyerSDKDesign.TextView.MenuRecyclerViewItem.SmartGlass" parent="BandyerSDKDesign.TextView">
-        <item name="android:layout_height">@dimen/bandyer_dimen_space64</item>
+        <item name="android:minHeight">@dimen/bandyer_dimen_sg_menu_size</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/bandyer_smartglass_menu_item_color</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_40sp</item>

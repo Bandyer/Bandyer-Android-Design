@@ -66,6 +66,7 @@
     <dimen name="bandyer_dimen_text_bouncing_dots">6dp</dimen>
 
     <dimen name="bandyer_dimen_progress_bar_circular_size">80dp</dimen>
+    <dimen name="bandyer_dimen_sg_menu_size">68dp</dimen>
 
 
     <!-- streams -->
