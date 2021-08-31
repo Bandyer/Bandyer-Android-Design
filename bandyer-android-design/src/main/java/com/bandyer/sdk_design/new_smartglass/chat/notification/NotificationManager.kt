@@ -102,6 +102,6 @@ class NotificationManager {
     }
 
     companion object {
-        const val AUTO_HIDE_DELAY = 2000L
+        const val AUTO_HIDE_DELAY = 5000L
     }
 }
