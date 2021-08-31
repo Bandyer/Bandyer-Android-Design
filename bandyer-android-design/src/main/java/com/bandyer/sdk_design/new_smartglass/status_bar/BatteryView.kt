@@ -41,7 +41,6 @@ class BatteryView @JvmOverloads constructor(
     }
     private var bodyRect = RectF()
 
-    //    private var bodyStrokeWidthRatio = 0.03f
     private var bodyStroke = context.dp2px(3f).toFloat()
 
     // Charge
