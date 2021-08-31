@@ -67,7 +67,7 @@
     <style name="BandyerSDKDesign.SmartGlass.ChatFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.BottomActionBar.Root.ChatFragment</item>
         <item name="bandyer_swipeDownText">@string/bandyer_smartglass_close</item>
-        <item name="bandyer_swipeText">@string/bandyer_smartglass_browse_the_messages</item>
+        <item name="bandyer_swipeText">@string/bandyer_smartglass_browse</item>
         <item name="bandyer_tapText">@string/bandyer_smartglass_contact_info</item>
     </style>
 

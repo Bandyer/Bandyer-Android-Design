@@ -10,7 +10,7 @@
     <style name="BandyerSDKDesign.SmartGlass.ZoomFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
         <item name="bandyer_swipeDownText">@string/bandyer_smartglass_cancel</item>
         <item name="bandyer_swipeText">@string/bandyer_smartglass_change</item>
-        <item name="bandyer_tapText">@string/bandyer_smartglass_confirm_and_close</item>
+        <item name="bandyer_tapText">@string/bandyer_smartglass_confirm</item>
     </style>
 
     <!-- SLIDER -->
