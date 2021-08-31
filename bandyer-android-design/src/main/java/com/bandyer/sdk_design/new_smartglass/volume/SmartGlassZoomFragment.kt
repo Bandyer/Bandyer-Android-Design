@@ -28,7 +28,6 @@ abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
         root = binding!!.root
         slider = binding!!.slider
         bottomActionBar = binding!!.bottomActionBar
-        root!!.setOnTouchListener { _, event -> binding!!.slider.onTouchEvent(event) }
         return root!!
     }
 
@@ -40,5 +39,15 @@ abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
         bottomActionBar = null
     }
 
-
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
+        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+            slider!!.incrementProgress()
+            true
+        }
+        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            slider!!.decrementProgress()
+            true
+        }
+        else -> super.onSmartGlassTouchEvent(event)
+    }
 }

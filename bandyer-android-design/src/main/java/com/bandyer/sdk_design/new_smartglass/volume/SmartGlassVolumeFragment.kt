@@ -51,6 +51,6 @@ abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
             slider!!.decrementProgress()
             true
         }
-        else -> false
+        else -> super.onSmartGlassTouchEvent(event)
     }
 }
