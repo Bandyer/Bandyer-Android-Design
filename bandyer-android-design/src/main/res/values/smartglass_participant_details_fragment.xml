@@ -27,19 +27,19 @@
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.RoundedImage.Avatar.ParticipantDetails" parent="BandyerSDKDesign.SmartGlass.RoundedImage">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space48</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space48</item>
+        <item name="android:layout_width">@dimen/bandyer_dimen_space72</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space72</item>
         <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.Avatar.Smartglass.ParticipantDetails" parent="BandyerSDKDesign.TextView.Avatar.Smartglass">
-        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_h1</item>
+        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_32sp</item>
     </style>
 
     <!-- CONTACT STATE DOT -->
     <style name="BandyerSDKDesign.SmartGlass.RoundedImage.ContactState.ParticipantDetails" parent="BandyerSDKDesign.SmartGlass.RoundedImage">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_width">@dimen/bandyer_dimen_space20</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space20</item>
         <item name="android:background">@android:color/white</item>
         <item name="android:backgroundTint">@color/bandyer_color_contact_state_smartglasses</item>
         <item name="strokeColor">@android:color/white</item>
@@ -47,7 +47,7 @@
 
     <!-- NAME -->
     <style name="BandyerSDKDesign.TextView.Title.ParticipantDetails" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
         <item name="android:includeFontPadding">false</item>
@@ -56,9 +56,11 @@
 
     <!-- CONTACT STATE TEXT -->
     <style name="BandyerSDKDesign.TextView.SubTitle.ParticipantDetails" parent="BandyerSDKDesign.TextView.Subtitle">
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space4</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->

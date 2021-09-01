@@ -33,7 +33,6 @@
 
     <style name="BandyerSDKDesign.TextView.Avatar.Smartglass.Participants" parent="BandyerSDKDesign.TextView.Avatar.Smartglass">
         <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_40sp</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- CONTACT STATE DOT -->
