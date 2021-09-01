@@ -25,6 +25,7 @@
         <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
+        <item name="android:background">@drawable/bandyer_sg_status_bar_gradient</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.StatusBar.SmartGlass" parent="BandyerSDKDesign.TextView">

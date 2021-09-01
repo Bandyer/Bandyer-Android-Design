@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bandyer.demo_sdk_design.R
@@ -12,6 +13,7 @@ import com.bandyer.sdk_design.new_smartglass.*
 
 class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment() {
 
+    private val activity by lazy { requireActivity() as SmartGlassActivity }
     private val args: ParticipantDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -51,6 +53,16 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment() {
         itemAdapter!!.add(ParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_call)))
 
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_smartglass_background_color, null))
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activity.setStatusBarColor(null)
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when(event.type) {

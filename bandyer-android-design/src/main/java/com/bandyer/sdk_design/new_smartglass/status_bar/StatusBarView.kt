@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerStatusBarLayoutBinding
 
 /**
@@ -35,6 +37,16 @@ class StatusBarView @JvmOverloads constructor(
 
     private var binding: BandyerStatusBarLayoutBinding =
         BandyerStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+
+    /**
+     * Set the background color
+     *
+     * @param color The color. If it's null, the default background color is restored.
+     */
+    fun setBackgroundColor(@ColorInt color: Int?) = with(binding.root) {
+        if(color == null) setBackgroundResource(R.drawable.bandyer_sg_status_bar_gradient)
+        else setBackgroundColor(color)
+    }
 
     /**
      * Show the title icon

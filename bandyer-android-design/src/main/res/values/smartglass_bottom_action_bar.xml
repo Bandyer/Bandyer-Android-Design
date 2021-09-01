@@ -20,6 +20,7 @@
         <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/bandyer_sg_bottom_bar_gradient</item>
     </style>
 
     <!-- SWIPE ITEM -->

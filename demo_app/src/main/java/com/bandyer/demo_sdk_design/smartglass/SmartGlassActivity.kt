@@ -7,6 +7,7 @@ import android.os.Looper
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -205,6 +206,10 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 
     fun showStatusBarCenteredTitle() {
         binding.statusBar.showCenteredTitle()
+    }
+
+    fun setStatusBarColor(@ColorInt color: Int?) {
+        binding.statusBar.setBackgroundColor(color)
     }
 
     private fun enterImmersiveMode() {
