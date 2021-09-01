@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bandyer.sdk_design.databinding.BandyerFragmentCallEndedBinding
+import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 import com.google.android.material.textview.MaterialTextView
 
 abstract class SmartGlassCallEndedFragment: SmartGlassBaseFragment() {
@@ -14,6 +15,7 @@ abstract class SmartGlassCallEndedFragment: SmartGlassBaseFragment() {
     protected var root: View? = null
     protected var title: MaterialTextView? = null
     protected var subtitle: MaterialTextView? = null
+    protected var bottomActionBar: BottomActionBarView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,6 +25,7 @@ abstract class SmartGlassCallEndedFragment: SmartGlassBaseFragment() {
         root = binding!!.root
         title = binding!!.bandyerTitle
         subtitle = binding!!.bandyerSubtitle
+        bottomActionBar = binding!!.bottomActionBar
         return root!!
     }
 
@@ -32,5 +35,6 @@ abstract class SmartGlassCallEndedFragment: SmartGlassBaseFragment() {
         root = null
         title = null
         subtitle = null
+        bottomActionBar = null
     }
 }

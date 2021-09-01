@@ -5,6 +5,7 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.CallEndedFragment.Root</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.CallEndedFragment.SmartGlass.Title</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.CallEndedFragment.SmartGlass.Subtitle</item>
+        <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.CallEndedFragment.BottomActionBar</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.CallEndedFragment.Root" parent="">
@@ -25,5 +26,10 @@
         <item name="android:text">@string/bandyer_smartglass_thank_you</item>
         <item name="android:textColor">?attr/colorSecondary</item>
         <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.SmartGlass.CallEndedFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
+        <item name="bandyer_tapText">@string/bandyer_smartglass_close</item>
     </style>
 </resources>

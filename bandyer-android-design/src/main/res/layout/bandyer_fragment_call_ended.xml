@@ -24,10 +24,17 @@
         style="?attr/bandyer_subtitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottomActionBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bandyer_title"
         tools:text="@string/bandyer_smartglass_thank_you"/>
 
+    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+        android:id="@+id/bottomActionBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:theme="?attr/bandyer_bottomActionBarStyle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
