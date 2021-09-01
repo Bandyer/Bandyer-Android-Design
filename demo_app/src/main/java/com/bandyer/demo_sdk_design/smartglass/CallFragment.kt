@@ -17,7 +17,18 @@ class CallFragment : SmartGlassCallFragment() {
         savedInstanceState: Bundle?
     ): View {
         (requireActivity() as SmartGlassActivity).showStatusBar()
-        return super.onCreateView(inflater, container, savedInstanceState)
+
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+
+        bottomActionBar!!.setTapOnClickListener {
+            findNavController().navigate(R.id.action_callFragment_to_menuFragment)
+        }
+
+        bottomActionBar!!.setSwipeDownOnClickListener {
+            findNavController().navigate(R.id.action_callFragment_to_endCallFragment)
+        }
+
+        return view
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {

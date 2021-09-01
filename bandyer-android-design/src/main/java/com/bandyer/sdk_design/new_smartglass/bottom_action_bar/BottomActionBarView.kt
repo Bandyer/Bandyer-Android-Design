@@ -54,6 +54,36 @@ class BottomActionBarView @JvmOverloads constructor(
      */
     fun setSwipeDownText(text: String?) = binding.bandyerSwipeDown.setActionTextOrHide(text)
 
+    /**
+     * Set an on click listener on the swipe element. Needed for realwear glasses.
+     *
+     * @param callback function
+     */
+    fun setSwipeOnClickListener(callback: () -> Unit) =
+        binding.bandyerSwipe.setOnClickListener {
+            callback.invoke()
+        }
+
+    /**
+     * Set an on click listener on the tap element. Needed for realwear glasses.
+     *
+     * @param callback function
+     */
+    fun setTapOnClickListener(callback: () -> Unit) =
+        binding.bandyerTap.setOnClickListener {
+            callback.invoke()
+        }
+
+    /**
+     * Set an on click listener on the swipe down element. Needed for realwear glasses.
+     *
+     * @param callback function
+     */
+    fun setSwipeDownOnClickListener(callback: () -> Unit) =
+        binding.bandyerSwipeDown.setOnClickListener {
+            callback.invoke()
+        }
+
     private fun BottomActionBarItemView.setActionTextOrHide(text: String?) =
         text?.let { setActionText(it) } ?: kotlin.run { visibility = View.GONE }
 }

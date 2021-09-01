@@ -52,6 +52,10 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment() {
         itemAdapter!!.add(ParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_videocall)))
         itemAdapter!!.add(ParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_call)))
 
+        bottomActionBar!!.setSwipeDownOnClickListener {
+            findNavController().popBackStack()
+        }
+
         return view
     }
 

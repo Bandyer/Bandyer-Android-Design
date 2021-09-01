@@ -9,14 +9,28 @@ import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.SmartGlassEndCallFragment
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 
-class EndCallFragment: SmartGlassEndCallFragment() {
+class EndCallFragment : SmartGlassEndCallFragment() {
+
+    private val activity by lazy { requireActivity() as SmartGlassActivity }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (requireActivity() as SmartGlassActivity).hideStatusBar()
-        return super.onCreateView(inflater, container, savedInstanceState)
+        activity.hideStatusBar()
+
+        val view = super.onCreateView(inflater, container, savedInstanceState)
+
+        bottomActionBar!!.setTapOnClickListener {
+            findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment)
+        }
+
+        bottomActionBar!!.setSwipeDownOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        return view
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {

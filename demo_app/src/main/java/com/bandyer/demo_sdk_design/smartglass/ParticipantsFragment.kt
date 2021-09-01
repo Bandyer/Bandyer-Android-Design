@@ -28,6 +28,16 @@ class ParticipantsFragment : SmartGlassParticipantsFragment() {
         itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Felice Trapasso", "Felice Trapasso", SmartGlassParticipantData.UserState.OFFLINE, null, "https://i.imgur.com/9I2qAlW.jpeg", Date().time)))
         itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Francesco Sala", "Francesco Sala", SmartGlassParticipantData.UserState.INVITED, null, null, Date().time)))
 
+        bottomActionBar!!.setTapOnClickListener {
+            val itemData = itemAdapter!!.getAdapterItem(currentParticipantIndex).data
+            val action = ParticipantsFragmentDirections.actionParticipantsFragmentToParticipantDetailsFragment(itemData)
+            findNavController().navigate(action)
+        }
+
+        bottomActionBar!!.setSwipeDownOnClickListener {
+            findNavController().popBackStack()
+        }
+
         return view
     }
 

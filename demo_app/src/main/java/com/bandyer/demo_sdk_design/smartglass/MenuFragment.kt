@@ -26,40 +26,50 @@ class MenuFragment : SmartGlassMenuFragment() {
         itemAdapter!!.add(MenuItem("Utenti"))
         itemAdapter!!.add(MenuItem("Chat"))
 
+        bottomActionBar!!.setTapOnClickListener {
+            tapBehaviour()
+        }
+
+        bottomActionBar!!.setSwipeDownOnClickListener {
+            findNavController().popBackStack()
+        }
+
         return view
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
         SmartGlassTouchEvent.Type.TAP -> {
-            when (currentMenuItemIndex) {
-                0, 1 -> {
-                    val isActive = itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActive
-                    itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActive = !isActive
-                    true
-                }
-                2 -> {
-                    findNavController().navigate(R.id.action_menuFragment_to_volumeFragment)
-                    true
-                }
-                3 -> {
-                    findNavController().navigate(R.id.action_menuFragment_to_zoomFragment)
-                    true
-                }
-                4 -> {
-                    findNavController().navigate(R.id.action_menuFragment_to_participantsFragment)
-                    true
-                }
-                5 -> {
-                    findNavController().navigate(R.id.action_menuFragment_to_chatFragment)
-                    true
-                }
-                else -> false
-            }
+            tapBehaviour()
         }
         SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true
         }
         else -> super.onSmartGlassTouchEvent(event)
+    }
+
+    private fun tapBehaviour() = when (currentMenuItemIndex) {
+        0, 1 -> {
+            val isActive = itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActive
+            itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActive = !isActive
+            true
+        }
+        2 -> {
+            findNavController().navigate(R.id.action_menuFragment_to_volumeFragment)
+            true
+        }
+        3 -> {
+            findNavController().navigate(R.id.action_menuFragment_to_zoomFragment)
+            true
+        }
+        4 -> {
+            findNavController().navigate(R.id.action_menuFragment_to_participantsFragment)
+            true
+        }
+        5 -> {
+            findNavController().navigate(R.id.action_menuFragment_to_chatFragment)
+            true
+        }
+        else -> false
     }
 }

@@ -11,13 +11,25 @@ import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 
 class RingingFragment: SmartGlassRingingFragment() {
 
+    private val activity by lazy { requireActivity() as SmartGlassActivity }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (requireActivity() as SmartGlassActivity).hideStatusBar()
+        activity.hideStatusBar()
+
         val view = super.onCreateView(inflater, container, savedInstanceState)
+
+        bottomActionBar!!.setTapOnClickListener {
+            findNavController().navigate(R.id.action_ringingFragment_to_callFragment)
+        }
+
+        bottomActionBar!!.setSwipeDownOnClickListener {
+            findNavController().popBackStack()
+        }
+
         title!!.text = "Mario Draghi"
         return view
     }

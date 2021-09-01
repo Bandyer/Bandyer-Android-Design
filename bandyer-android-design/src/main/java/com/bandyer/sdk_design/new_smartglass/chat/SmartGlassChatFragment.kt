@@ -37,7 +37,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
     protected var bottomActionBar: BottomActionBarView? = null
     protected var chatMessageView: ChatMessageView? = null
 
-    private var currentMsgItemIndex = 0
+    protected var currentMsgItemIndex = 0
     private var newMessagesCounter = 0
         set(value) {
             field = value

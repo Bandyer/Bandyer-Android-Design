@@ -12,6 +12,7 @@ import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassMessageData
 import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassChatFragment
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import java.util.*
 
 class ChatFragment : SmartGlassChatFragment() {
@@ -69,6 +70,17 @@ class ChatFragment : SmartGlassChatFragment() {
             )
 
         }, 1000)
+
+        bottomActionBar!!.setTapText(null)
+
+        bottomActionBar!!.setSwipeOnClickListener {
+            rvMessages!!.smoothScrollToNext(currentMsgItemIndex)
+        }
+
+        bottomActionBar!!.setSwipeDownOnClickListener {
+            findNavController().popBackStack()
+        }
+
         return view
     }
 

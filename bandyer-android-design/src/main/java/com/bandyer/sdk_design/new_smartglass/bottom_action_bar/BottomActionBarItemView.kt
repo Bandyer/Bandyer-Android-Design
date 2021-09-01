@@ -26,10 +26,12 @@ class BottomActionBarItemView @JvmOverloads constructor(
     init {
         context.obtainStyledAttributes(attrs, R.styleable.BottomActionBarItemView).apply {
             binding.bandyerGestureIcon.setImageDrawable(getDrawable(R.styleable.BottomActionBarItemView_bandyer_gestureIcon))
-            binding.bandyerGestureText.text = getString(R.styleable.BottomActionBarItemView_bandyer_gestureText)
+            binding.bandyerGestureText.text =
+                getString(R.styleable.BottomActionBarItemView_bandyer_gestureText)
             setActionText(getString(R.styleable.BottomActionBarItemView_bandyer_actionText))
             recycle()
         }
+        isClickable = true
     }
 
     /**
@@ -39,5 +41,6 @@ class BottomActionBarItemView @JvmOverloads constructor(
      */
     fun setActionText(text: String?) {
         binding.bandyerActionText.text = text
+        contentDescription = text
     }
 }

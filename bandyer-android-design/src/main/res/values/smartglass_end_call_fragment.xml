@@ -31,6 +31,6 @@
     <!-- BOTTOM ACTION BAR -->
     <style name="BandyerSDKDesign.SmartGlass.EndCallFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
         <item name="bandyer_swipeDownText">@string/bandyer_smartglass_cancel</item>
-        <item name="bandyer_tapText">@string/bandyer_smartglass_end_call</item>
+        <item name="bandyer_tapText">@string/bandyer_smartglass_confirm</item>
     </style>
 </resources>

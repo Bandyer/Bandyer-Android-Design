@@ -52,7 +52,9 @@
         android:label="RingingFragment" >
         <action
             android:id="@+id/action_ringingFragment_to_callFragment"
-            app:destination="@id/callFragment" />
+            app:destination="@id/callFragment"
+            app:popUpTo="@id/ringingFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/callFragment"
