@@ -48,10 +48,17 @@ class ChatMessageView @JvmOverloads constructor(
     }
 
     /*
-     * Set the sender's name visibility
+     * Show the sender's name
      */
-    fun setNameVisibility(visibility: Int) {
-        binding.bandyerName.visibility = visibility
+    fun showName() {
+        binding.bandyerName.visibility = VISIBLE
+    }
+
+    /*
+     * Hide the sender's name
+     */
+    fun hideName() {
+        binding.bandyerName.visibility = GONE
     }
 
     /**

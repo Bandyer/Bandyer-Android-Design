@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="BandyerSDKDesign.SmartGlass.RoundedImage" parent="Widget.MaterialComponents.ShapeableImageView">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space32</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
+        <item name="android:layout_width">@dimen/bandyer_dimen_space40</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space40</item>
         <item name="android:adjustViewBounds">true</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="strokeWidth">@dimen/bandyer_dimen_space1</item>

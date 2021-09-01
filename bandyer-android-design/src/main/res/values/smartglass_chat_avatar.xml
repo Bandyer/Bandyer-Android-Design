@@ -17,7 +17,7 @@
         <item name="android:maxLines">1</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_normal</item>
+        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_h1</item>
         <item name="autoSizeMinTextSize">@dimen/bandyer_dimen_text_2sp</item>
         <item name="autoSizeTextType">uniform</item>
         <item name="android:textStyle">bold</item>

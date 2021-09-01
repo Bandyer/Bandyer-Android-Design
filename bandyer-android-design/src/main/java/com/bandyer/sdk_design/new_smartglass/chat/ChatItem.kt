@@ -35,14 +35,14 @@ class ChatItem(val data: SmartGlassMessageData) : AbstractItem<ChatItem.ViewHold
                 setAvatarBackground(data.userAlias?.parseToColor())
                 setMessage(data.message)
                 setTime(data.time)
-                if (!data.isFirstPage) setNameVisibility(View.GONE)
+                if (!data.isFirstPage) hideName()
                 else setName(data.sender)
             }
 
         override fun unbindView(item: ChatItem) = with(binding.bandyerChatMessage) {
             setAvatar(null)
             setName(null)
-            setNameVisibility(View.VISIBLE)
+            showName()
             setAvatarBackground(null)
             setTime(null)
             setMessage(null)

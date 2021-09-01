@@ -110,7 +110,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
     }
 
     /**
-     * Add a chat item to the recycler view
+     * Add a chat item to the recycler view. If the text is too long to fit in one screen, more than a chat item will be added
      *
      * @param data The [SmartGlassMessageData]
      */
