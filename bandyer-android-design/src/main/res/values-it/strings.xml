@@ -196,4 +196,5 @@
     <string name="bandyer_smartglass_last_seen_pattern">Ultimo accesso: %1$s</string>
     <string name="bandyer_smartglass_call">Chiama</string>
     <string name="bandyer_smartglass_videocall">Videochiama</string>
+    <string name="bandyer_smartglass_users_in_call">%1$d utenti in chiamata</string>
 </resources>

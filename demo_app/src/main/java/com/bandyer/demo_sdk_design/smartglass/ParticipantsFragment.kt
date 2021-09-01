@@ -14,6 +14,8 @@ import java.util.*
 
 class ParticipantsFragment : SmartGlassParticipantsFragment() {
 
+    val activity by lazy { requireActivity() as SmartGlassActivity }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -21,11 +23,18 @@ class ParticipantsFragment : SmartGlassParticipantsFragment() {
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
+        activity.showStatusBarCenteredTitle()
+
         itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Mario Rossi", "Mario Rossi", SmartGlassParticipantData.UserState.ONLINE, R.drawable.sample_image, null, Date().time)))
         itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Felice Trapasso", "Felice Trapasso", SmartGlassParticipantData.UserState.OFFLINE, null, "https://i.imgur.com/9I2qAlW.jpeg", Date().time)))
         itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Francesco Sala", "Francesco Sala", SmartGlassParticipantData.UserState.INVITED, null, null, Date().time)))
 
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        activity.hideStatusBarCenteredTitle()
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when(event.type) {

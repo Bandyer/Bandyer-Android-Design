@@ -11,6 +11,7 @@
         android:id="@+id/bandyer_text"
         style="?android:attr/textViewStyle"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
         tools:text="Mario Rossi" />
 

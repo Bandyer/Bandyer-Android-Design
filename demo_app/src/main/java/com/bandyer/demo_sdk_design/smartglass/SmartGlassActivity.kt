@@ -2,6 +2,8 @@ package com.bandyer.demo_sdk_design.smartglass
 
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -19,6 +21,7 @@ import com.bandyer.demo_sdk_design.smartglass.network.WiFiState
 import com.bandyer.sdk_design.new_smartglass.GlassGestureDetector
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEventListener
+import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationData
 import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationManager
 import com.bandyer.sdk_design.new_smartglass.status_bar.StatusBarView
 import com.bandyer.sdk_design.new_smartglass.utils.currentNavigationFragment
@@ -79,6 +82,8 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
             }
         }
 
+        statusBar!!.hideCenteredTitle()
+        statusBar!!.setCenteredText(resources.getString(R.string.bandyer_smartglass_users_in_call, 3))
 
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            notificationManager.show(
@@ -90,7 +95,6 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 //                    ))
 //            )
 //        }, 4000)
-
 
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            notificationManager.show(
@@ -169,7 +173,6 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 
     override fun onShow() {
         handleNotification = true
-//        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.hideBottomBar()
     }
 
     override fun onExpanded() {
@@ -177,12 +180,10 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         // TODO Fragment NavHostFragment{199be23} (47d28a1a-fa6e-41d5-81e7-090f54d21e92) has not been attached yet.
         if (supportFragmentManager.currentNavigationFragment?.id != R.id.chatFragment)
             binding.navHostFragment.findNavController().navigate(R.id.chatFragment)
-//        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.showBottomBar()
     }
 
     override fun onDismiss() {
         handleNotification = false
-//        (supportFragmentManager.currentNavigationFragment as? BottomBarHolder)?.showBottomBar()
     }
 
     fun hideNotification() {
@@ -196,6 +197,14 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 
     fun showStatusBar() {
         binding.statusBar.visibility = View.VISIBLE
+    }
+
+    fun hideStatusBarCenteredTitle() {
+        binding.statusBar.hideCenteredTitle()
+    }
+
+    fun showStatusBarCenteredTitle() {
+        binding.statusBar.showCenteredTitle()
     }
 
     private fun enterImmersiveMode() {

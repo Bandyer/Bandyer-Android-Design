@@ -37,12 +37,63 @@ class StatusBarView @JvmOverloads constructor(
         BandyerStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     /**
+     * Show the title icon
+     */
+    fun showTitleIcon() {
+        binding.bandyerTitleIcon.visibility = View.VISIBLE
+    }
+
+    /**
+     * Hide the title icon
+     */
+    fun hideTitleIcon() {
+        binding.bandyerTitleIcon.visibility = View.GONE
+    }
+
+    /**
      * Set the title
      *
-     * @param text The title
+     * @param text The text title
      */
     fun setTitleText(text: String?) {
         binding.bandyerTitle.text = text
+    }
+
+    /**
+     * Show the title
+     */
+    fun showTitle() {
+        binding.bandyerTitle.visibility = View.VISIBLE
+    }
+
+    /**
+     * Hide the title
+     */
+    fun hideTitle() {
+        binding.bandyerTitle.visibility = View.GONE
+    }
+
+    /**
+     * Set the centered title
+     *
+     * @param text The centered title text
+     */
+    fun setCenteredText(text: String) {
+        binding.bandyerCenteredTitle.text = text
+    }
+
+    /**
+     * Show the centered title
+     */
+    fun showCenteredTitle() {
+        binding.bandyerCenteredTitle.visibility = View.VISIBLE
+    }
+
+    /**
+     * Hide the centered title
+     */
+    fun hideCenteredTitle() {
+        binding.bandyerCenteredTitle.visibility = View.GONE
     }
 
     /**
@@ -66,6 +117,11 @@ class StatusBarView @JvmOverloads constructor(
      */
     fun setBatteryCharge(charge: Int) = binding.bandyerBattery.setCharge(charge)
 
+    /**
+     * Set the
+     *
+     * @param isCharging Boolean
+     */
     fun setBatteryChargingState(isCharging: Boolean) =
         binding.bandyerBattery.setCharging(isCharging)
 

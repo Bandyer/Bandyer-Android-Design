@@ -30,7 +30,7 @@
     <style name="BandyerSDKDesign.TextView.StatusBar.SmartGlass" parent="BandyerSDKDesign.TextView">
         <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.StatusBar.Icon" parent="Widget.MaterialComponents.ShapeableImageView">

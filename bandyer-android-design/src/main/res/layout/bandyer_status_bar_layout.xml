@@ -33,6 +33,16 @@
         app:layout_constraintTop_toTopOf="@id/bandyer_battery"
         tools:text="Mario" />
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_centered_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bandyer_battery"
+        tools:text="3 utenti in chiamata" />
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bandyer_mic_muted_icon"
         style="?attr/bandyer_micIconStyleStyle"

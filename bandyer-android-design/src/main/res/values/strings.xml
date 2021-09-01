@@ -207,4 +207,5 @@
     <string name="bandyer_smartglass_last_seen_pattern">Last seen: %1$s</string>
     <string name="bandyer_smartglass_call">Call</string>
     <string name="bandyer_smartglass_videocall">Video call</string>
+    <string name="bandyer_smartglass_users_in_call">%1$d users on call</string>
 </resources>
