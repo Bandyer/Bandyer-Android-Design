@@ -1,5 +1,6 @@
 package com.bandyer.demo_sdk_design.smartglass
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,25 @@ import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.menu.MenuItem
 import com.bandyer.sdk_design.new_smartglass.menu.SmartGlassMenuFragment
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
+import kotlin.math.roundToInt
 
-class MenuFragment : SmartGlassMenuFragment() {
+class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
+
+    private var tiltController: TiltController? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            tiltController =
+                TiltController(
+                    requireContext(),
+                    this
+                )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,5 +89,19 @@ class MenuFragment : SmartGlassMenuFragment() {
             true
         }
         else -> false
+    }
+
+    override fun onTilt(x: Float, y: Float) = rvMenu!!.scrollBy((x * 40).toInt(), 0)
+
+    override fun onResume() {
+        super.onResume()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            tiltController!!.requestAllSensors()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            tiltController!!.releaseAllSensors()
     }
 }

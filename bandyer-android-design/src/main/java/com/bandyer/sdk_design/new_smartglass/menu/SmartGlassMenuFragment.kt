@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.*
 import androidx.recyclerview.widget.*
-import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerFragmentMenuBinding
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
@@ -24,8 +23,6 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
     protected var root: ViewGroup? = null
     protected var rvMenu: RecyclerView? = null
     protected var bottomActionBar: BottomActionBarView? = null
-    private var browseRight: View? = null
-    private var browseLeft: View? = null
 
     protected var currentMenuItemIndex = 0
     private var lastMotionEventAction: Int? = null
@@ -42,8 +39,6 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         root = binding!!.root
         rvMenu = binding!!.menu
         bottomActionBar = binding!!.bottomActionBar
-        browseRight = binding!!.browseRight
-        browseLeft = binding!!.browseLeft
 
         // init the recycler view
         itemAdapter = ItemAdapter()
@@ -82,18 +77,6 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
             rvMenu!!.onTouchEvent(event)
         }
 
-        browseRight!!.isClickable = true
-        browseRight!!.contentDescription = resources.getString(R.string.bandyer_smartglass_browse_right)
-        browseRight!!.setOnClickListener {
-            rvMenu!!.smoothScrollToNext(currentMenuItemIndex)
-        }
-
-        browseLeft!!.isClickable = true
-        browseLeft!!.contentDescription = resources.getString(R.string.bandyer_smartglass_browse_left)
-        browseLeft!!.setOnClickListener {
-            rvMenu!!.smoothScrollToPrevious(currentMenuItemIndex)
-        }
-
         return root!!
     }
 
@@ -105,8 +88,6 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         root = null
         rvMenu = null
         bottomActionBar = null
-        browseRight = null
-        browseLeft = null
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
