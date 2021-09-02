@@ -41,11 +41,11 @@ abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
         SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-            slider!!.incrementProgress()
+            slider!!.increaseProgress()
             true
         }
         SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            slider!!.decrementProgress()
+            slider!!.decreaseProgress()
             true
         }
         else -> super.onSmartGlassTouchEvent(event)

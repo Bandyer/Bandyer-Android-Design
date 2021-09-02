@@ -2,12 +2,9 @@ package com.bandyer.sdk_design.new_smartglass.volume
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.bandyer.sdk_design.databinding.BandyerFragmentVolumeBinding
 import com.bandyer.sdk_design.new_smartglass.BandyerSlider
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
@@ -45,11 +42,11 @@ abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
         SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
 
-            slider!!.incrementProgress()
+            slider!!.increaseProgress()
             true
         }
         SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            slider!!.decrementProgress()
+            slider!!.decreaseProgress()
             true
         }
         else -> super.onSmartGlassTouchEvent(event)

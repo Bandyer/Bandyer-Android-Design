@@ -67,14 +67,14 @@ class BandyerSlider @JvmOverloads constructor(
         binding.seekbar.progress = value
     }
 
-    fun incrementProgress() = with(binding.seekbar) {
+    fun increaseProgress() = with(binding.seekbar) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             setProgress(progress + PROGRESS_DELTA, true)
         else
             progress += PROGRESS_DELTA
     }
 
-    fun decrementProgress() = with(binding.seekbar) {
+    fun decreaseProgress() = with(binding.seekbar) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
             setProgress(progress - PROGRESS_DELTA, true)
         else

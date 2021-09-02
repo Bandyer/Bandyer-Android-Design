@@ -1,9 +1,6 @@
 package com.bandyer.demo_sdk_design.smartglass
 
-import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -16,13 +13,11 @@ import com.bandyer.demo_sdk_design.R
 import com.bandyer.demo_sdk_design.databinding.ActivitySmartGlassBinding
 import com.bandyer.demo_sdk_design.smartglass.battery.BatteryObserver
 import com.bandyer.demo_sdk_design.smartglass.battery.BatteryState
-import com.bandyer.demo_sdk_design.smartglass.network.CellSignalObserver
 import com.bandyer.demo_sdk_design.smartglass.network.WiFiObserver
 import com.bandyer.demo_sdk_design.smartglass.network.WiFiState
 import com.bandyer.sdk_design.new_smartglass.GlassGestureDetector
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEventListener
-import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationData
 import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationManager
 import com.bandyer.sdk_design.new_smartglass.status_bar.StatusBarView
 import com.bandyer.sdk_design.new_smartglass.utils.currentNavigationFragment
