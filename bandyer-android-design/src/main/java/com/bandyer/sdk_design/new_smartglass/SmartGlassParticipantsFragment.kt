@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerFragmentParticipantsBinding
 import com.bandyer.sdk_design.extensions.parseToColor
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
@@ -30,6 +31,8 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
     protected var contactStateText: ContactStateTextView? = null
     protected var rvParticipants: RecyclerView? = null
     protected var bottomActionBar: BottomActionBarView? = null
+    private var browseRight: View? = null
+    private var browseLeft: View? = null
 
     protected var currentParticipantIndex = 0
 
@@ -47,6 +50,8 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
         contactStateText = binding!!.bandyerContactStateText
         rvParticipants = binding!!.bandyerParticipants
         bottomActionBar = binding!!.bandyerBottomActionBar
+        browseRight = binding!!.browseRight
+        browseLeft = binding!!.browseLeft
 
         // init the recycler view
         itemAdapter = ItemAdapter()
@@ -105,6 +110,19 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
 
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event -> rvParticipants!!.onTouchEvent(event) }
+
+        browseRight!!.isClickable = true
+        browseRight!!.contentDescription = resources.getString(R.string.bandyer_smartglass_browse_right)
+        browseRight!!.setOnClickListener {
+            rvParticipants!!.smoothScrollToNext(currentParticipantIndex)
+        }
+
+        browseLeft!!.isClickable = true
+        browseLeft!!.contentDescription = resources.getString(R.string.bandyer_smartglass_browse_left)
+        browseLeft!!.setOnClickListener {
+            rvParticipants!!.smoothScrollToPrevious(currentParticipantIndex)
+        }
+
         return root!!
     }
 
@@ -119,6 +137,8 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
         avatar = null
         contactStateDot = null
         contactStateText = null
+        browseRight = null
+        browseLeft = null
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {

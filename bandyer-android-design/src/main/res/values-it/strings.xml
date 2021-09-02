@@ -197,4 +197,6 @@
     <string name="bandyer_smartglass_call">Chiama</string>
     <string name="bandyer_smartglass_videocall">Videochiama</string>
     <string name="bandyer_smartglass_users_in_call">%1$d utenti in chiamata</string>
+    <string name="bandyer_smartglass_browse_right">naviga a destra</string>
+    <string name="bandyer_smartglass_browse_left">naviga a sinistra</string>
 </resources>

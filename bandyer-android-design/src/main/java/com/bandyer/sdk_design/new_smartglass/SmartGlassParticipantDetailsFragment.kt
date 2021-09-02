@@ -31,6 +31,8 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
     protected var name: MaterialTextView? = null
     protected var rvActions: RecyclerView? = null
     protected var bottomActionBar: BottomActionBarView? = null
+    private var browseRight: View? = null
+    private var browseLeft: View? = null
 
     protected var actionIndex = 0
 
@@ -49,6 +51,8 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
         name = binding!!.bandyerName
         rvActions = binding!!.bandyerParticipants
         bottomActionBar = binding!!.bandyerBottomActionBar
+        browseRight = binding!!.browseRight
+        browseLeft = binding!!.browseLeft
 
         // init the recycler view
         itemAdapter = ItemAdapter()
@@ -81,6 +85,19 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
 
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event -> rvActions!!.onTouchEvent(event) }
+
+        browseRight!!.isClickable = true
+        browseRight!!.contentDescription = resources.getString(com.bandyer.sdk_design.R.string.bandyer_smartglass_browse_right)
+        browseRight!!.setOnClickListener {
+            rvActions!!.smoothScrollToNext(actionIndex)
+        }
+
+        browseLeft!!.isClickable = true
+        browseLeft!!.contentDescription = resources.getString(com.bandyer.sdk_design.R.string.bandyer_smartglass_browse_left)
+        browseLeft!!.setOnClickListener {
+            rvActions!!.smoothScrollToPrevious(actionIndex)
+        }
+
         return root!!
     }
 
@@ -96,6 +113,8 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
         avatar = null
         contactStateDot = null
         contactStateText = null
+        browseRight = null
+        browseLeft = null
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {

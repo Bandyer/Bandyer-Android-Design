@@ -7,6 +7,22 @@
     style="?attr/bandyer_rootLayoutStyle"
     android:theme="?attr/bandyer_smartGlassParticipantsFragmentStyle">
 
+    <View
+        android:id="@+id/browse_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <View
+        android:id="@+id/browse_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <com.bandyer.sdk_design.new_smartglass.ContactAvatarView
         android:id="@+id/bandyer_avatar"
         android:layout_width="wrap_content"
