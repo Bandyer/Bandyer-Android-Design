@@ -7,17 +7,17 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
 /**
- * A menu item
+ * A menu item. If the active text is null, isActivated will always be false.
  *
- * @property text The item's text
+ * @property defaultText The item's text
  * @property activeText The item's text when active
  * @constructor
  */
-class MenuItem(val text: String, val activeText: String? = null): AbstractItem<MenuItem.ViewHolder>() {
+class MenuItem(val defaultText: String, val activeText: String? = null): AbstractItem<MenuItem.ViewHolder>() {
 
     private var itemText: ActivableTextView? = null
 
-    var isActive = false
+    var isActivated = false
         set(value) {
             if(activeText == null) return
             field = value
@@ -36,18 +36,18 @@ class MenuItem(val text: String, val activeText: String? = null): AbstractItem<M
 
         private val binding: BandyerMenuItemLayoutBinding = BandyerMenuItemLayoutBinding.bind(view)
 
-        override fun bindView(item: MenuItem, payloads: List<Any>) {
-            item.itemText = binding.bandyerText
-            binding.bandyerText.activatedText = item.activeText
-            binding.bandyerText.inactivatedText = item.text
-            binding.bandyerText.isActivated = item.isActive
+        override fun bindView(item: MenuItem, payloads: List<Any>) = with(binding.bandyerText) {
+            item.itemText = this
+            this.activeText = item.activeText
+            this.defaultText = item.defaultText
+            this.isActivated = item.isActivated
         }
 
-        override fun unbindView(item: MenuItem) {
+        override fun unbindView(item: MenuItem) = with(binding.bandyerText) {
             item.itemText = null
-            binding.bandyerText.activatedText = null
-            binding.bandyerText.inactivatedText = null
-            binding.bandyerText.isActivated = false
+            this.activeText = null
+            this.defaultText = null
+            this.isActivated = false
         }
     }
 }

@@ -16,13 +16,13 @@ class ActivableTextView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : MaterialTextView(context, attrs, defStyleAttr) {
 
-    var inactivatedText: String? = null
-    var activatedText: String? = null
+    var defaultText: String? = null
+    var activeText: String? = null
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.ActivableTextView).apply {
-            activatedText = getString(R.styleable.ActivableTextView_bandyer_activatedText)
-            inactivatedText = getString(R.styleable.ActivableTextView_bandyer_inactivatedText)
+            activeText = getString(R.styleable.ActivableTextView_bandyer_activatedText)
+            defaultText = getString(R.styleable.ActivableTextView_bandyer_inactivatedText)
             recycle()
         }
     }
@@ -33,7 +33,7 @@ class ActivableTextView @JvmOverloads constructor(
      * @param activated True to set the activated state, false otherwise
      */
     override fun setActivated(activated: Boolean) {
-        text = if(activated) activatedText else inactivatedText
+        text = if(activated) activeText else defaultText
         super.setActivated(activated)
     }
 }

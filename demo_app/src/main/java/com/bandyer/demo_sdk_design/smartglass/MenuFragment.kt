@@ -10,9 +10,6 @@ import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.menu.MenuItem
 import com.bandyer.sdk_design.new_smartglass.menu.SmartGlassMenuFragment
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
-import kotlin.math.roundToInt
 
 class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
 
@@ -44,8 +41,12 @@ class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
         itemAdapter!!.add(MenuItem("Utenti"))
         itemAdapter!!.add(MenuItem("Chat"))
 
+        fastAdapter!!.onClickListener = { _, _, _, position ->
+            tapBehaviour(position)
+        }
+
         bottomActionBar!!.setTapOnClickListener {
-            tapBehaviour()
+            tapBehaviour(currentMenuItemIndex)
         }
 
         bottomActionBar!!.setSwipeDownOnClickListener {
@@ -57,7 +58,7 @@ class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
         SmartGlassTouchEvent.Type.TAP -> {
-            tapBehaviour()
+            tapBehaviour(currentMenuItemIndex)
         }
         SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
@@ -66,10 +67,10 @@ class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
         else -> super.onSmartGlassTouchEvent(event)
     }
 
-    private fun tapBehaviour() = when (currentMenuItemIndex) {
+    private fun tapBehaviour(itemIndex: Int) = when (itemIndex) {
         0, 1 -> {
-            val isActive = itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActive
-            itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActive = !isActive
+            val isActivated = itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated
+            itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated = !isActivated
             true
         }
         2 -> {
