@@ -12,6 +12,7 @@ import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.new_smartglass.utils.extensions.darkenColor
 import com.google.android.material.color.MaterialColors
+import java.lang.ref.WeakReference
 
 /**
  * A line item indicator
@@ -21,8 +22,13 @@ import com.google.android.material.color.MaterialColors
  */
 class LineItemIndicatorDecoration(
     context: Context,
-    private val snapHelper: LinearSnapHelper
+    snapHelper: LinearSnapHelper
 ) : RecyclerView.ItemDecoration() {
+
+    /**
+     * SnapHelper reference
+     */
+    private val snapHelperWeakReference = WeakReference(snapHelper)
 
     /**
      * Indicator active color
@@ -67,7 +73,7 @@ class LineItemIndicatorDecoration(
         c.drawInactiveIndicator(parent, first, last, firstPos, lastPos, y)
 
         // find active page (which should be highlighted)
-        val activeChild = snapHelper.findSnapView(layoutManager) ?: return
+        val activeChild = snapHelperWeakReference.get()?.findSnapView(layoutManager) ?: return
         val textView = activeChild.findViewById<View>(R.id.bandyer_text)
         c.drawHighlights(activeChild, textView, y)
     }

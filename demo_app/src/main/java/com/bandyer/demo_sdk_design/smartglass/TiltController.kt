@@ -113,8 +113,8 @@ class TiltController constructor(
         val newZ = Math.toDegrees(orientation[0].toDouble()).toFloat()
 
         // How many degrees has the users head rotated since last time.
-        var deltaX = applyThreshold(newX - oldX)
-        var deltaZ = applyThreshold(newZ - oldZ)
+        var deltaX = applyThreshold(angularRounding(newX - oldX))
+        var deltaZ = applyThreshold(angularRounding(newZ - oldZ))
 
         // Ignore first head position in order to find base line
         if (!initialized) {
@@ -137,6 +137,19 @@ class TiltController constructor(
      */
     private fun applyThreshold(value: Float): Float =
         if (abs(value) > THRESHOLD_MOTION) value else 0f
+
+    /**
+     * Adjust the angle of rotation to take into account on the device orientation.
+     *
+     * @param rotation The rotation.
+     * @return The rotation taking into account the device orientation.
+     */
+    private fun angularRounding(rotation: Float) =
+        when {
+            rotation >= 180.0f -> rotation - 360.0f
+            rotation <= -180.0f -> 360 + rotation
+            else -> rotation
+        }
 
     /**
      * Request access to sensors

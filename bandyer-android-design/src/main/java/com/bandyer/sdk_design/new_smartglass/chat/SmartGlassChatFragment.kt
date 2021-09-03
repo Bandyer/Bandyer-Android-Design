@@ -73,7 +73,6 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         rvMessages!!.layoutManager = layoutManager
         rvMessages!!.adapter = fastAdapter
         rvMessages!!.isFocusable = false
-        rvMessages!!.setHasFixedSize(true)
 
         rvMessages!!.addItemDecoration(ChatItemIndicatorDecoration(requireContext()))
 
@@ -84,6 +83,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 val foundView = snapHelper.findSnapView(layoutManager) ?: return
                 val currentMsgIndex = layoutManager.getPosition(foundView)
+
                 if (currentMsgIndex > lastMsgIndex && pagesIds[currentMsgIndex] != pagesIds[lastMsgIndex]) {
                     newMessagesCounter--
                     lastMsgIndex = currentMsgIndex

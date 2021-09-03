@@ -15,9 +15,23 @@ import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassChatFragment
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import java.util.*
 
-class ChatFragment : SmartGlassChatFragment() {
+class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
+
+    private var tiltController: TiltController? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            tiltController =
+                TiltController(
+                    requireContext(),
+                    this
+                )
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -84,8 +98,12 @@ class ChatFragment : SmartGlassChatFragment() {
         return view
     }
 
+    override fun onTilt(x: Float, y: Float) = rvMessages!!.scrollBy( (x * 40).toInt(), 0)
+
     override fun onResume() {
         super.onResume()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            tiltController!!.requestAllSensors()
         activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_smartglass_background_color, null))
     }
 

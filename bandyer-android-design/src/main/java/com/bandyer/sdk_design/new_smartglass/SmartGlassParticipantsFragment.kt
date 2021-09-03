@@ -56,7 +56,6 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
         rvParticipants!!.layoutManager = layoutManager
         rvParticipants!!.adapter = fastAdapter
         rvParticipants!!.isFocusable = false
-        rvParticipants!!.setHasFixedSize(true)
 
         val snapHelper = LinearSnapHelper()
         snapHelper.attachToRecyclerView(rvParticipants)
