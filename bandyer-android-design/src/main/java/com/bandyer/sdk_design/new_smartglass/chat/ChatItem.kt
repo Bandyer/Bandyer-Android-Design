@@ -29,6 +29,7 @@ class ChatItem(val data: SmartGlassMessageData) : AbstractItem<ChatItem.ViewHold
 
         override fun bindView(item: ChatItem, payloads: List<Any>) =
             with(binding.bandyerChatMessage) {
+                itemView.isClickable = false
                 val data = item.data
                 if(data.userAvatarId != null) setAvatar(data.userAvatarId)
                 else if (data.userAvatarUrl != null) setAvatar(data.userAvatarUrl)
@@ -40,6 +41,7 @@ class ChatItem(val data: SmartGlassMessageData) : AbstractItem<ChatItem.ViewHold
             }
 
         override fun unbindView(item: ChatItem) = with(binding.bandyerChatMessage) {
+            itemView.isClickable = true
             setAvatar(null)
             setName(null)
             showName()

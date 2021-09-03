@@ -40,7 +40,6 @@ class TiltController constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ctx.display
         else windowManager.defaultDisplay
 
-
     private val rotationMatrix = FloatArray(9)
     private val adjustedRotationMatrix = FloatArray(9)
     private val orientation = FloatArray(3)
