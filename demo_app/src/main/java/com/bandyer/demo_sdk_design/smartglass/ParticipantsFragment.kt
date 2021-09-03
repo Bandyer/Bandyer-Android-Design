@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.sdk_design.new_smartglass.ParticipantItem
-import com.bandyer.sdk_design.new_smartglass.SmartGlassParticipantData
-import com.bandyer.sdk_design.new_smartglass.SmartGlassParticipantsFragment
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.*
 import java.util.*
 
 class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.TiltListener {
@@ -39,6 +36,9 @@ class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.Ti
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
+        if(Build.MODEL == resources.getString(R.string.bandyer_smartglass_realwear_model_name))
+            bottomActionBar!!.setSwipeText(resources.getString(R.string.bandyer_smartglass_right_left))
+
         itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Mario Rossi", "Mario Rossi", SmartGlassParticipantData.UserState.ONLINE, R.drawable.sample_image, null, Date().time)))
         itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Felice Trapasso", "Felice Trapasso", SmartGlassParticipantData.UserState.OFFLINE, null, "https://i.imgur.com/9I2qAlW.jpeg", Date().time)))
         itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Francesco Sala", "Francesco Sala", SmartGlassParticipantData.UserState.INVITED, null, null, Date().time)))
@@ -47,6 +47,10 @@ class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.Ti
             val itemData = itemAdapter!!.getAdapterItem(currentParticipantIndex).data
             val action = ParticipantsFragmentDirections.actionParticipantsFragmentToParticipantDetailsFragment(itemData)
             findNavController().navigate(action)
+        }
+
+        bottomActionBar!!.setSwipeOnClickListener {
+            rvParticipants!!.smoothScrollToNext(currentParticipantIndex)
         }
 
         bottomActionBar!!.setSwipeDownOnClickListener {

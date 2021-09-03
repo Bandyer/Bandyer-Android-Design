@@ -79,7 +79,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         }
 
         statusBar!!.hideCenteredTitle()
-        statusBar!!.setCenteredText(resources.getString(R.string.bandyer_smartglass_users_in_call, 3))
+        statusBar!!.setCenteredText(resources.getString(R.string.bandyer_smartglass_users_in_call_pattern, 3))
 
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            notificationManager.show(

@@ -38,6 +38,9 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment(), TiltC
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
+        if(Build.MODEL == resources.getString(R.string.bandyer_smartglass_realwear_model_name))
+            bottomActionBar!!.setSwipeText(resources.getString(R.string.bandyer_smartglass_right_left))
+
         val data = args.participantData!!
 
         avatar!!.setText(data.name.first().toString())
@@ -66,6 +69,10 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment(), TiltC
 
         itemAdapter!!.add(ParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_videocall)))
         itemAdapter!!.add(ParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_call)))
+
+        bottomActionBar!!.setSwipeOnClickListener {
+            rvActions!!.smoothScrollToNext(actionIndex)
+        }
 
         bottomActionBar!!.setSwipeDownOnClickListener {
             findNavController().popBackStack()

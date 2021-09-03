@@ -2,6 +2,7 @@ package com.bandyer.demo_sdk_design.smartglass
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.menu.MenuItem
 import com.bandyer.sdk_design.new_smartglass.menu.SmartGlassMenuFragment
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 
 class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
 
@@ -34,6 +36,9 @@ class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
+        if(Build.MODEL == resources.getString(R.string.bandyer_smartglass_realwear_model_name))
+            bottomActionBar!!.setSwipeText(resources.getString(R.string.bandyer_smartglass_right_left))
+
         itemAdapter!!.add(MenuItem("Attiva microfono", "Muta microfono"))
         itemAdapter!!.add(MenuItem("Attiva camera", "Muta camera"))
         itemAdapter!!.add(MenuItem("Volume"))
@@ -47,6 +52,10 @@ class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
 
         bottomActionBar!!.setTapOnClickListener {
             tapBehaviour(currentMenuItemIndex)
+        }
+
+        bottomActionBar!!.setSwipeOnClickListener {
+            rvMenu!!.smoothScrollToNext(currentMenuItemIndex)
         }
 
         bottomActionBar!!.setSwipeDownOnClickListener {

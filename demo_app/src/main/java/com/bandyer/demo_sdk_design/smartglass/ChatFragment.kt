@@ -1,5 +1,6 @@
 package com.bandyer.demo_sdk_design.smartglass
 
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -42,6 +43,9 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
         activity.hideNotification()
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
+
+        if(Build.MODEL == resources.getString(R.string.bandyer_smartglass_realwear_model_name))
+            bottomActionBar!!.setSwipeText(resources.getString(R.string.bandyer_smartglass_right_left))
 
         addChatItem(
             SmartGlassMessageData(
@@ -98,7 +102,7 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
         return view
     }
 
-    override fun onTilt(x: Float, y: Float) = rvMessages!!.scrollBy( (x * 40).toInt(), 0)
+    override fun onTilt(x: Float, y: Float) = rvMessages!!.scrollBy((x * 40).toInt(), 0)
 
     override fun onResume() {
         super.onResume()
@@ -107,8 +111,10 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
         activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_smartglass_background_color, null))
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onPause() {
+        super.onPause()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            tiltController!!.releaseAllSensors()
         activity.setStatusBarColor(null)
     }
 

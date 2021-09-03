@@ -23,7 +23,7 @@
     <style name="BandyerSDKDesign.TextView.BottomActionBar.Item.GestureText" parent="BandyerSDKDesign.TextView">
         <item name="android:maxLines">1</item>
         <item name="android:textColor">?attr/colorSecondary</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
@@ -34,7 +34,7 @@
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space4</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
