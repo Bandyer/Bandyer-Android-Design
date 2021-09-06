@@ -35,35 +35,34 @@ class TiltController constructor(
 
     private val windowManager = ctx.getSystemService(WindowManager::class.java)
     private val sensorManager = ctx.getSystemService(SensorManager::class.java)
-    private val rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
     private val display =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ctx.display
         else windowManager.defaultDisplay
 
-    private val rotationMatrix = FloatArray(9)
-    private val adjustedRotationMatrix = FloatArray(9)
-    private val orientation = FloatArray(3)
+    private val rotationMatrix = FloatArray(16)
+    private val orientation = FloatArray(9)
 
+    private var accuracy = 0
     private var initialized = false
 
-    private var lastAccuracy = 0
     private var oldZ = 0f
     private var oldX = 0f
 
     init {
-        sensorManager.registerListener(this, rotationSensor, SENSOR_DELAY_MICROS)
+       requestAllSensors()
     }
 
     override fun onSensorChanged(event: SensorEvent) {
-        if (lastAccuracy == SensorManager.SENSOR_STATUS_UNRELIABLE) return
+        if (accuracy < SensorManager.SENSOR_STATUS_ACCURACY_LOW)
+            return
 
-        if (event.sensor == rotationSensor)
+        if (event.sensor.type == Sensor.TYPE_ROTATION_VECTOR)
             updateRotation(event.values.clone())
     }
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
-        if (lastAccuracy != accuracy)
-            lastAccuracy = accuracy
+        if(this.accuracy != accuracy)
+            this.accuracy = accuracy
     }
 
     /**
@@ -101,11 +100,11 @@ class TiltController constructor(
             rotationMatrix,
             worldAxisForDeviceAxisX,
             worldAxisForDeviceAxisY,
-            adjustedRotationMatrix
+            rotationMatrix
         )
 
         // Transform rotation matrix into azimuth/pitch/roll
-        SensorManager.getOrientation(adjustedRotationMatrix, orientation)
+        SensorManager.getOrientation(rotationMatrix, orientation)
 
         // Convert radians to degrees and flat
         val newX = Math.toDegrees(orientation[1].toDouble()).toFloat()
@@ -154,18 +153,28 @@ class TiltController constructor(
      * Request access to sensors
      */
     fun requestAllSensors() {
-        sensorManager.registerListener(this, rotationSensor, SENSOR_DELAY_MICROS)
+        sensorManager.registerListener(
+            this,
+            sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
+            SensorManager.SENSOR_DELAY_GAME
+        )
+        // The rotation vector sensor doesn't give us accuracy updates, so we observe the
+        // magnetic field sensor solely for those.
+        sensorManager.registerListener(
+            this,
+            sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
+            SensorManager.SENSOR_DELAY_GAME
+        )
     }
 
     /**
      * Release the sensors when they are no longer used
      */
     fun releaseAllSensors() {
-        sensorManager.unregisterListener(this, rotationSensor)
+        sensorManager.unregisterListener(this)
     }
 
     private companion object {
         const val THRESHOLD_MOTION = 0.1f
-        const val SENSOR_DELAY_MICROS = 32 * 1000 // 32ms
     }
 }
