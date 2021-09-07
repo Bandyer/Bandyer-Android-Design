@@ -3,7 +3,6 @@ package com.bandyer.sdk_design.new_smartglass
 import android.content.Context
 import android.util.AttributeSet
 import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.extensions.parseToHHmm
 import com.google.android.material.textview.MaterialTextView
 
 class ContactStateTextView @JvmOverloads constructor(
@@ -21,7 +20,7 @@ class ContactStateTextView @JvmOverloads constructor(
             State.INVITED -> resources.getString(R.string.bandyer_smartglass_invited)
             State.LAST_SEEN -> resources.getString(
                 R.string.bandyer_smartglass_last_seen_pattern,
-                lastSeenTime.parseToHHmm()
+                Iso8601.parseTimestamp(context, lastSeenTime)
             )
         }
     }

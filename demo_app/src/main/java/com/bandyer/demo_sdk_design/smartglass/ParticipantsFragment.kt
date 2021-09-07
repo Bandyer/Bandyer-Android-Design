@@ -9,6 +9,8 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.*
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.TiltListener {
@@ -39,9 +41,9 @@ class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.Ti
         if(Build.MODEL == resources.getString(R.string.bandyer_smartglass_realwear_model_name))
             bottomActionBar!!.setSwipeText(resources.getString(R.string.bandyer_smartglass_right_left))
 
-        itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Mario Rossi", "Mario Rossi", SmartGlassParticipantData.UserState.ONLINE, R.drawable.sample_image, null, Date().time)))
-        itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Felice Trapasso", "Felice Trapasso", SmartGlassParticipantData.UserState.OFFLINE, null, "https://i.imgur.com/9I2qAlW.jpeg", Date().time)))
-        itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Francesco Sala", "Francesco Sala", SmartGlassParticipantData.UserState.INVITED, null, null, Date().time)))
+        itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Mario Rossi", "Mario Rossi", SmartGlassParticipantData.UserState.ONLINE, R.drawable.sample_image, null, Instant.now().toEpochMilli())))
+        itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Felice Trapasso", "Felice Trapasso", SmartGlassParticipantData.UserState.OFFLINE, null, "https://i.imgur.com/9I2qAlW.jpeg", Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli())))
+        itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Francesco Sala", "Francesco Sala", SmartGlassParticipantData.UserState.INVITED, null, null, Instant.now().toEpochMilli())))
 
         bottomActionBar!!.setTapOnClickListener {
             val itemData = itemAdapter!!.getAdapterItem(currentParticipantIndex).data

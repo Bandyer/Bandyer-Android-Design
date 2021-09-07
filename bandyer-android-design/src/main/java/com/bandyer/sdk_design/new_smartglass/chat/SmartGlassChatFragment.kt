@@ -13,11 +13,8 @@ import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
 import com.bandyer.sdk_design.databinding.BandyerFragmentChatBinding
 import com.bandyer.sdk_design.extensions.parseToHHmm
-import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.*
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -120,7 +117,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
             val binding = BandyerChatMessageLayoutBinding.bind(chatMessageView!!)
             with(binding) {
                 bandyerName.text = data.sender
-                bandyerTime.text = data.time!!.parseToHHmm()
+                bandyerTime.text = Iso8601.parseTimestamp(requireContext(), data.time!!)
                 bandyerMessage.text = data.message
                 val pageList = bandyerMessage.paginate()
                 for (i in pageList.indices) {

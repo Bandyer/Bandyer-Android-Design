@@ -7,7 +7,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
-import com.bandyer.sdk_design.extensions.parseToHHmm
+import com.bandyer.sdk_design.new_smartglass.Iso8601
 
 /**
  * ChatMessageView
@@ -83,6 +83,6 @@ class ChatMessageView @JvmOverloads constructor(
      * @param millis Time in millis
      */
     fun setTime(millis: Long?) {
-        binding.bandyerTime.text = millis?.parseToHHmm()
+        binding.bandyerTime.text = if(millis == null) null else Iso8601.parseTimestamp(context, millis)
     }
 }

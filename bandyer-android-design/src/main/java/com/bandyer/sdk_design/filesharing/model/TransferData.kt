@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import com.bandyer.sdk_design.extensions.getFileName
 import com.bandyer.sdk_design.extensions.getMimeType
+import java.time.Instant
 import java.util.*
 
 /**
@@ -29,7 +30,7 @@ data class TransferData(
     val name: String = uri.getFileName(context),
     val mimeType: String = uri.getMimeType(context),
     val sender: String,
-    val creationTime: Long = Date().time,
+    val creationTime: Long = Instant.now().toEpochMilli(),
     val bytesTransferred: Long = 0L,
     val size: Long = -1L,
     val successUri: Uri? = null,
