@@ -212,4 +212,6 @@
     <string name="bandyer_smartglass_browse_right">browse right</string>
     <string name="bandyer_smartglass_browse_left">browse left</string>
     <string name="bandyer_smartglass_right_left">scroll</string>
+    <string name="bandyer_today">today</string>
+    <string name="bandyer_yesterday">yesterday</string>
 </resources>

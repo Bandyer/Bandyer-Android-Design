@@ -83,6 +83,12 @@ android {
         unitTests.returnDefaultValues = true
     }
 
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     // For Kotlin projects
     kotlinOptions {
         jvmTarget = "1.8"
@@ -111,6 +117,7 @@ dependencies {
     api "com.google.android.material:material:$materialVersion"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     /*** Testing ***/
     testImplementation 'junit:junit:4.13.2'

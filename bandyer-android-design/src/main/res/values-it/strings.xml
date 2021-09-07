@@ -200,4 +200,6 @@
     <string name="bandyer_smartglass_browse_right">naviga a destra</string>
     <string name="bandyer_smartglass_browse_left">naviga a sinistra</string>
     <string name="bandyer_smartglass_right_left">scorri</string>
+    <string name="bandyer_today">oggi</string>
+    <string name="bandyer_yesterday">ieri</string>
 </resources>
