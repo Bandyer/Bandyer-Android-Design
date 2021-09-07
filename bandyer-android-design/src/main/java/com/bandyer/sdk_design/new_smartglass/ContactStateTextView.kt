@@ -5,6 +5,11 @@ import android.util.AttributeSet
 import com.bandyer.sdk_design.R
 import com.google.android.material.textview.MaterialTextView
 
+/**
+ * A TextView defining the user online status
+ *
+ * @constructor
+ */
 class ContactStateTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -13,6 +18,12 @@ class ContactStateTextView @JvmOverloads constructor(
 
     private var state: State = State.LAST_SEEN
 
+    /**
+     * Define the contact online status
+     *
+     * @param state The user status
+     * @param lastSeenTime The last time the user was online. Needed only if the state value is State.LastSeen.
+     */
     fun setContactState(state: State, lastSeenTime: Long = 0) {
         this.state = state
         text = when (state) {

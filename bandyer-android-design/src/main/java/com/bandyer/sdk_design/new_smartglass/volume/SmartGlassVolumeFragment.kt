@@ -11,6 +11,9 @@ import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 
+/**
+ * SmartGlassVolumeFragment. A base class for the volume fragment.
+ */
 abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
 
     private var binding: BandyerFragmentVolumeBinding? = null
@@ -41,12 +44,11 @@ abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
         SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-
-            slider!!.increaseProgress()
+            slider!!.increaseProgress(0.1f)
             true
         }
         SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            slider!!.decreaseProgress()
+            slider!!.decreaseProgress(0.1f)
             true
         }
         else -> super.onSmartGlassTouchEvent(event)

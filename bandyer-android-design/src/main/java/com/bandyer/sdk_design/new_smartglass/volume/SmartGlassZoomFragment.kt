@@ -11,6 +11,9 @@ import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 
+/**
+ * SmartGlassZoomFragment. A base class for the zoom fragment.
+ */
 abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
 
     private var binding: BandyerFragmentZoomBinding? = null

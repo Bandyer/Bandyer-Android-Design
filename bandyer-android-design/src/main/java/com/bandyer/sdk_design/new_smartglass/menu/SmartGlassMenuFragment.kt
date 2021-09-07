@@ -13,6 +13,9 @@ import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
+/**
+ * SmartGlassMenuFragment. A base class for the menu fragment.
+ */
 abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
 
     private var binding: BandyerFragmentMenuBinding? = null

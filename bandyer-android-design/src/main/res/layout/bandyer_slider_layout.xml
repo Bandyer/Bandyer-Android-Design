@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatSeekBar
-        android:id="@+id/seekbar"
+        android:id="@+id/bandyer_seekbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="false"
@@ -16,11 +16,11 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/percentage"
+        android:id="@+id/bandyer_percentage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="40%"
-        app:layout_constraintTop_toTopOf="@id/seekbar"
-        app:layout_constraintBottom_toBottomOf="@id/seekbar"
+        app:layout_constraintTop_toTopOf="@id/bandyer_seekbar"
+        app:layout_constraintBottom_toBottomOf="@id/bandyer_seekbar"
         app:layout_constraintStart_toStartOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

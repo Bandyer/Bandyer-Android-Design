@@ -5,6 +5,17 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 
+/**
+ * SmartGlassParticipantData
+ *
+ * @property name The name
+ * @property userAlias The user alias
+ * @property userState UserState
+ * @property avatarImageId The local avatar resource
+ * @property avatarImageUrl The remote avatar url resource
+ * @property lastSeenTime The last time the user was online expressed as a long timestamp
+ * @constructor
+ */
 @Keep
 @Parcelize
 data class SmartGlassParticipantData(

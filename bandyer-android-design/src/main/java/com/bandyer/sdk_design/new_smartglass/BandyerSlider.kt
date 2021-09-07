@@ -11,6 +11,11 @@ import android.widget.SeekBar
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerSliderLayoutBinding
 
+/**
+ *
+ * @property onSliderChangeListener OnSliderChangeListener?
+ * @constructor
+ */
 @SuppressLint("ClickableViewAccessibility")
 class BandyerSlider @JvmOverloads constructor(
     context: Context,
@@ -38,7 +43,7 @@ class BandyerSlider @JvmOverloads constructor(
 
         setPercentageText(0)
 
-        with(binding.seekbar) {
+        with(binding.bandyerSeekbar) {
             setOnTouchListener { _, _ -> true }
             max = MAX_VALUE
             // Apparently there is a bug is updating the visual representation of the progress if it is initialized to zero.
@@ -47,7 +52,7 @@ class BandyerSlider @JvmOverloads constructor(
             // different than zero, and then setting it to zero. In this way the visual representation is updated to the right value.
             progress = 1
             progress = 0
-            binding.seekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            binding.bandyerSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
                     seekBar: SeekBar?,
                     progress: Int,
@@ -63,26 +68,43 @@ class BandyerSlider @JvmOverloads constructor(
         }
     }
 
+    /**
+     * Set the slider progress value
+     *
+     * @param value Int
+     */
     fun setProgress(value: Int) {
-        binding.seekbar.progress = value
+        binding.bandyerSeekbar.progress = value
     }
 
-    fun increaseProgress() = with(binding.seekbar) {
+    /**
+     * Increase the progress by the specified percentage
+     *
+     * @param percentage Float
+     */
+    fun increaseProgress(percentage: Float) = with(binding.bandyerSeekbar) {
+        val deltaValue = (percentage * MAX_VALUE).coerceAtLeast(0f).toInt()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            setProgress(progress + PROGRESS_DELTA, true)
+            setProgress(progress + deltaValue, true)
         else
-            progress += PROGRESS_DELTA
+            progress += deltaValue
     }
 
-    fun decreaseProgress() = with(binding.seekbar) {
+    /**
+     * Decrease the progress by the specified percentage
+     *
+     * @param percentage Float
+     */
+    fun decreaseProgress(percentage: Float) = with(binding.bandyerSeekbar) {
+        val deltaValue = (percentage * MAX_VALUE).coerceAtLeast(0f).toInt()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            setProgress(progress - PROGRESS_DELTA, true)
+            setProgress(progress - deltaValue, true)
         else
-            progress -= PROGRESS_DELTA
+            progress -= deltaValue
     }
 
     private fun setPercentageText(progress: Int) {
-        binding.percentage.text = String.format(
+        binding.bandyerPercentage.text = String.format(
             pattern,
             percentageText,
             progress
@@ -91,11 +113,10 @@ class BandyerSlider @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return binding.seekbar.onTouchEvent(event)
+        return binding.bandyerSeekbar.onTouchEvent(event)
     }
 
     private companion object {
-        const val PROGRESS_DELTA = 1
         const val MAX_VALUE = 10
     }
 }

@@ -12,6 +12,11 @@ import com.bandyer.sdk_design.extensions.requiresLightColor
 import com.squareup.picasso.Picasso
 import java.util.*
 
+/**
+ * The contact avatar view.
+ *
+ * @constructor
+ */
 class ContactAvatarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -26,20 +31,41 @@ class ContactAvatarView @JvmOverloads constructor(
     private val defaultAvatar = android.R.color.transparent
     private val defaultBackgroundColor = Color.GRAY
 
+    /**
+     * Set a local resource as avatar.
+     *
+     * @param resId The resource id. If null, any avatar resource previously set (either local or remote) is removed and the background color and the text became visible again.
+     */
     fun setImage(@DrawableRes resId: Int?) = with(binding) {
         bandyerAvatarImage.setImageResource(resId ?: defaultAvatar)
         bandyerAvatarText.visibility = if (resId == null) VISIBLE else GONE
     }
 
+    /**
+     * Set a remote url resource as avatar.
+     *
+     * @param url The avatar's url
+     */
     fun setImage(url: String) = with(binding) {
         Picasso.get().load(url).placeholder(defaultAvatar).error(defaultAvatar).into(bandyerAvatarImage)
         bandyerAvatarText.visibility = GONE
     }
 
+    /**
+     * Set the avatar text
+     *
+     * @param text String?
+     */
     fun setText(text: String?) {
         binding.bandyerAvatarText.text = text?.toUpperCase(Locale.getDefault())
     }
 
+    /**
+     * Set the avatar background color. The background is overridden if a resource, either local or remote, is set.
+     * The avatar text adjust it's color on the defined value.
+     *
+     * @param color The color int resource. If null Color.GRAY is set as default.
+     */
     fun setBackground(@ColorInt color: Int?) = with(binding) {
         bandyerAvatarImage.setBackgroundColor(
             color ?: defaultBackgroundColor
