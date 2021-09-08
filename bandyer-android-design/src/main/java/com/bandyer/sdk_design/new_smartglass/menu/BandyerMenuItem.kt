@@ -13,9 +13,9 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property activeText The item's text when active
  * @constructor
  */
-class MenuItem(val defaultText: String, val activeText: String? = null): AbstractItem<MenuItem.ViewHolder>() {
+class BandyerMenuItem(val defaultText: String, val activeText: String? = null): AbstractItem<BandyerMenuItem.ViewHolder>() {
 
-    private var itemText: ActivableTextView? = null
+    private var itemText: BandyerActivableTextView? = null
 
     var isActivated = false
         set(value) {
@@ -32,18 +32,18 @@ class MenuItem(val defaultText: String, val activeText: String? = null): Abstrac
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
-    class ViewHolder(view: View): FastAdapter.ViewHolder<MenuItem>(view) {
+    class ViewHolder(view: View): FastAdapter.ViewHolder<BandyerMenuItem>(view) {
 
         private val binding: BandyerMenuItemLayoutBinding = BandyerMenuItemLayoutBinding.bind(view)
 
-        override fun bindView(item: MenuItem, payloads: List<Any>) = with(binding.bandyerText) {
+        override fun bindView(item: BandyerMenuItem, payloads: List<Any>) = with(binding.bandyerText) {
             item.itemText = this
             this.activeText = item.activeText
             this.defaultText = item.defaultText
             this.isActivated = item.isActivated
         }
 
-        override fun unbindView(item: MenuItem) = with(binding.bandyerText) {
+        override fun unbindView(item: BandyerMenuItem) = with(binding.bandyerText) {
             item.itemText = null
             this.activeText = null
             this.defaultText = null

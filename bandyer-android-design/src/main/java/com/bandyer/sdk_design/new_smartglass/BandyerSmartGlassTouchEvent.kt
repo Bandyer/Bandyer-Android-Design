@@ -13,7 +13,7 @@ import com.bandyer.sdk_design.new_smartglass.utils.extensions.isRightButton
  * @property source The event source
  * @constructor
  */
-data class SmartGlassTouchEvent(val type: Type, val source: Source) {
+data class BandyerSmartGlassTouchEvent(val type: Type, val source: Source) {
     enum class Type {
         TAP,
         SWIPE_DOWN,
@@ -36,20 +36,20 @@ data class SmartGlassTouchEvent(val type: Type, val source: Source) {
          */
         fun getEvent(gesture: GlassGestureDetector.Gesture?) =
             when (gesture) {
-                GlassGestureDetector.Gesture.TAP -> SmartGlassTouchEvent(Type.TAP, Source.GESTURE)
-                GlassGestureDetector.Gesture.SWIPE_DOWN -> SmartGlassTouchEvent(
+                GlassGestureDetector.Gesture.TAP -> BandyerSmartGlassTouchEvent(Type.TAP, Source.GESTURE)
+                GlassGestureDetector.Gesture.SWIPE_DOWN -> BandyerSmartGlassTouchEvent(
                     Type.SWIPE_DOWN,
                     Source.GESTURE
                 )
-                GlassGestureDetector.Gesture.SWIPE_FORWARD -> SmartGlassTouchEvent(
+                GlassGestureDetector.Gesture.SWIPE_FORWARD -> BandyerSmartGlassTouchEvent(
                     Type.SWIPE_FORWARD,
                     Source.GESTURE
                 )
-                GlassGestureDetector.Gesture.SWIPE_BACKWARD -> SmartGlassTouchEvent(
+                GlassGestureDetector.Gesture.SWIPE_BACKWARD -> BandyerSmartGlassTouchEvent(
                     Type.SWIPE_BACKWARD,
                     Source.GESTURE
                 )
-                else -> SmartGlassTouchEvent(Type.UNKNOWN, Source.GESTURE)
+                else -> BandyerSmartGlassTouchEvent(Type.UNKNOWN, Source.GESTURE)
             }
 
         /**
@@ -60,20 +60,20 @@ data class SmartGlassTouchEvent(val type: Type, val source: Source) {
          */
         fun getEvent(event: KeyEvent?) =
             when {
-                event?.isConfirmButton() == true -> SmartGlassTouchEvent(Type.TAP, Source.KEY)
-                event?.isDownButton() == true -> SmartGlassTouchEvent(
+                event?.isConfirmButton() == true -> BandyerSmartGlassTouchEvent(Type.TAP, Source.KEY)
+                event?.isDownButton() == true -> BandyerSmartGlassTouchEvent(
                     Type.SWIPE_DOWN,
                     Source.KEY
                 )
-                event?.isRightButton() == true -> SmartGlassTouchEvent(
+                event?.isRightButton() == true -> BandyerSmartGlassTouchEvent(
                     Type.SWIPE_FORWARD,
                     Source.KEY
                 )
-                event?.isLeftButton() == true -> SmartGlassTouchEvent(
+                event?.isLeftButton() == true -> BandyerSmartGlassTouchEvent(
                     Type.SWIPE_BACKWARD,
                     Source.KEY
                 )
-                else -> SmartGlassTouchEvent(Type.UNKNOWN, Source.KEY)
+                else -> BandyerSmartGlassTouchEvent(Type.UNKNOWN, Source.KEY)
             }
     }
 }

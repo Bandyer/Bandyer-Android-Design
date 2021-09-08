@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 /**
  * The notification manager
  */
-class NotificationManager {
+class BandyerNotificationManager {
 
     interface NotificationListener {
         fun onShow()
@@ -22,14 +22,14 @@ class NotificationManager {
         HIDDEN
     }
 
-    private var notificationView: ChatNotificationView? = null
-    private var attacher: ViewAttacher? = null
+    private var notificationView: BandyerChatNotificationView? = null
+    private var attacher: BandyerViewAttacher? = null
     private var listener: NotificationListener? = null
 
     private var state: State = State.HIDDEN
 
     /**
-     * @param layout The [ConstraintLayout] to which attach the [ChatNotificationView]
+     * @param layout The [ConstraintLayout] to which attach the [BandyerChatNotificationView]
      * @param listener An optional [NotificationListener]
      * @constructor
      */
@@ -39,7 +39,7 @@ class NotificationManager {
     }
 
     /**
-     * @param layout The [FrameLayout] to which attach the [ChatNotificationView]
+     * @param layout The [FrameLayout] to which attach the [BandyerChatNotificationView]
      * @param listener An optional [NotificationListener]
      * @constructor
      */
@@ -49,7 +49,7 @@ class NotificationManager {
     }
 
     /**
-     * @param layout The [RelativeLayout] to which attach the [ChatNotificationView]
+     * @param layout The [RelativeLayout] to which attach the [BandyerChatNotificationView]
      * @param listener An optional [NotificationListener]
      * @constructor
      */
@@ -60,16 +60,16 @@ class NotificationManager {
 
     private fun init(context: Context, listener: NotificationListener? = null) {
         this.listener = listener
-        notificationView = ChatNotificationView(context)
-        attacher = ViewAttacher(notificationView!!)
+        notificationView = BandyerChatNotificationView(context)
+        attacher = BandyerViewAttacher(notificationView!!)
     }
 
     /**
-     * Show the [ChatNotificationView] and automatically hide it after [AUTO_HIDE_DELAY] seconds
+     * Show the [BandyerChatNotificationView] and automatically hide it after [AUTO_HIDE_DELAY] seconds
      *
-     * @param notificationData The data needed for the [notification][ChatNotificationView]
+     * @param notificationData The data needed for the [notification][BandyerChatNotificationView]
      */
-    fun show(notificationData: List<NotificationData>) {
+    fun show(notificationData: List<BandyerNotificationData>) {
         state = State.COLLAPSED
         notificationView?.show(notificationData)
         listener?.onShow()
@@ -81,7 +81,7 @@ class NotificationManager {
     }
 
     /**
-     * Dismiss the [ChatNotificationView] either with or without animation
+     * Dismiss the [BandyerChatNotificationView] either with or without animation
      *
      * @param withAnimation True to enable the animation, false otherwise
      */

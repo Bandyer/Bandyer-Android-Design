@@ -14,7 +14,7 @@ import com.bandyer.sdk_design.new_smartglass.Iso8601
  *
  * @constructor
  */
-class ChatMessageView @JvmOverloads constructor(
+class BandyerChatMessageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

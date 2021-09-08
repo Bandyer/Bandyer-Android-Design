@@ -21,7 +21,7 @@ import com.bandyer.sdk_design.extensions.parseToColor
  *
  * @constructor
  */
-class ChatNotificationView @JvmOverloads constructor(
+class BandyerChatNotificationView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -35,7 +35,7 @@ class ChatNotificationView @JvmOverloads constructor(
      *
      * @param data List<NotificationData>
      */
-    fun show(data: List<NotificationData>) = with(binding) {
+    fun show(data: List<BandyerNotificationData>) = with(binding) {
         if (data.size < 2) {
             bandyerTitle.text = data[0].name
             bandyerMessage.text = data[0].message

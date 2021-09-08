@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentMenuBinding
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
-import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
@@ -21,12 +21,12 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
 
     private var binding: BandyerFragmentMenuBinding? = null
 
-    protected var itemAdapter: ItemAdapter<MenuItem>? = null
-    protected var fastAdapter: FastAdapter<MenuItem>? = null
+    protected var itemAdapter: ItemAdapter<BandyerMenuItem>? = null
+    protected var fastAdapter: FastAdapter<BandyerMenuItem>? = null
 
     protected var root: ViewGroup? = null
     protected var rvMenu: RecyclerView? = null
-    protected var bottomActionBar: BottomActionBarView? = null
+    protected var bottomActionBar: BandyerBottomActionBarView? = null
 
     protected var snapHelper: LinearSnapHelper? = null
 
@@ -61,7 +61,7 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
                 snapHelper!!
             )
         )
-        rvMenu!!.addItemDecoration(OffsetItemDecoration())
+        rvMenu!!.addItemDecoration(BandyerOffsetItemDecoration())
 
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event -> rvMenu!!.onTouchEvent(event) }

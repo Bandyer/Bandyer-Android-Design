@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
 import com.bandyer.sdk_design.new_smartglass.Iso8601
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
-import com.bandyer.sdk_design.new_smartglass.chat.ChatItem
+import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.chat.BandyerChatItem
 import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassMessageData
 import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassChatFragment
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
@@ -152,21 +152,21 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
         activity.setStatusBarColor(null)
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean =
+    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean =
         when (event.type) {
-            SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-                if(event.source == SmartGlassTouchEvent.Source.KEY) {
+            BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+                if(event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
                     rvMessages!!.smoothScrollToNext(currentMsgItemIndex)
                     true
                 } else false
             }
-            SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-                if(event.source == SmartGlassTouchEvent.Source.KEY) {
+            BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+                if(event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
                     rvMessages!!.smoothScrollToPrevious(currentMsgItemIndex)
                     true
                 } else false
             }
-            SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+            BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
                 findNavController().popBackStack()
                 true
             }
@@ -198,7 +198,7 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
                         data.userAvatarUrl,
                         i == 0
                     )
-                    itemAdapter!!.add(ChatItem(pageData))
+                    itemAdapter!!.add(BandyerChatItem(pageData))
                     pagesIds.add(data.id)
                 }
             }

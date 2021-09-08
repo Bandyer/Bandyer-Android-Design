@@ -17,7 +17,7 @@ import java.util.*
  *
  * @constructor
  */
-class ContactAvatarView @JvmOverloads constructor(
+class BandyerContactAvatarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

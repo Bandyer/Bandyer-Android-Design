@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import com.bandyer.sdk_design.databinding.BandyerFragmentZoomBinding
 import com.bandyer.sdk_design.new_smartglass.BandyerSlider
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
-import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
 
 /**
  * SmartGlassZoomFragment. A base class for the zoom fragment.
@@ -19,7 +19,7 @@ abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
 
     protected var root: View? = null
     protected var slider: BandyerSlider? = null
-    protected var bottomActionBar: BottomActionBarView? = null
+    protected var bottomActionBar: BandyerBottomActionBarView? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import com.bandyer.sdk_design.databinding.BandyerFragmentChatBinding
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
-import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -20,13 +20,13 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
 
     private var binding: BandyerFragmentChatBinding? = null
 
-    protected var itemAdapter: ItemAdapter<ChatItem>? = null
-    protected var fastAdapter: FastAdapter<ChatItem>? = null
+    protected var itemAdapter: ItemAdapter<BandyerChatItem>? = null
+    protected var fastAdapter: FastAdapter<BandyerChatItem>? = null
     protected var root: View? = null
     protected var rvMessages: RecyclerView? = null
     protected var counter: MaterialTextView? = null
-    protected var bottomActionBar: BottomActionBarView? = null
-    protected var chatMessageView: ChatMessageView? = null
+    protected var bottomActionBar: BandyerBottomActionBarView? = null
+    protected var chatMessageView: BandyerChatMessageView? = null
 
     protected var snapHelper: PagerSnapHelper? = null
 
@@ -53,7 +53,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         rvMessages!!.adapter = fastAdapter
         rvMessages!!.isFocusable = false
 
-        rvMessages!!.addItemDecoration(ChatItemIndicatorDecoration(requireContext()))
+        rvMessages!!.addItemDecoration(BandyerChatItemIndicatorDecoration(requireContext()))
 
         snapHelper = PagerSnapHelper()
         snapHelper!!.attachToRecyclerView(rvMessages)

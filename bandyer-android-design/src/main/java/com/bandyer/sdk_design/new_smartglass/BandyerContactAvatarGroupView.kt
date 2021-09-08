@@ -9,11 +9,11 @@ import androidx.constraintlayout.widget.ConstraintSet
 import com.bandyer.sdk_design.extensions.dp2px
 
 /**
- * A view aggregator of [ContactAvatarView]
+ * A view aggregator of [BandyerContactAvatarView]
  *
  * @constructor
  */
-class ContactAvatarGroupView @JvmOverloads constructor(
+class BandyerContactAvatarGroupView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -46,7 +46,7 @@ class ContactAvatarGroupView @JvmOverloads constructor(
         }
     }
 
-    private fun addAvatar(): ContactAvatarView {
+    private fun addAvatar(): BandyerContactAvatarView {
         val set = ConstraintSet()
 
         val elevation = - childCount
@@ -54,7 +54,7 @@ class ContactAvatarGroupView @JvmOverloads constructor(
         val startId = this.getChildAt(childCount - 1)?.id ?: this.id
 
         // Create the child view
-        val child = ContactAvatarView(context)
+        val child = BandyerContactAvatarView(context)
         child.id = generateViewId()
         child.clipToPadding = false
         child.elevation = context.dp2px(elevation.toFloat()).toFloat()

@@ -15,7 +15,7 @@ import com.bandyer.sdk_design.extensions.dp2px
  *
  *  @constructor
  */
-class BatteryView @JvmOverloads constructor(
+class BandyerBatteryView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

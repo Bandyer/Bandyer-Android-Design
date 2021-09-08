@@ -4,19 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import com.bandyer.sdk_design.databinding.BandyerFragmentCallBinding
-import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
 
 /**
  * SmartGlassCallFragment. A base class for the call fragment.
  */
-abstract class SmartGlassCallFragment: SmartGlassBaseFragment(), SmartGlassTouchEventListener {
+abstract class SmartGlassCallFragment: SmartGlassBaseFragment(), BandyerSmartGlassTouchEventListener {
 
     private var binding: BandyerFragmentCallBinding? = null
 
     protected var root: View? = null
-    protected var bottomActionBar: BottomActionBarView? = null
+    protected var bottomActionBar: BandyerBottomActionBarView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -14,7 +14,7 @@ import com.bandyer.sdk_design.databinding.BandyerBottomActionBarItemLayoutBindin
  * - gesture text
  * - action text
  */
-class BottomActionBarItemView @JvmOverloads constructor(
+class BandyerBottomActionBarItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

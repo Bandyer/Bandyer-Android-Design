@@ -14,7 +14,7 @@ import androidx.constraintlayout.widget.ConstraintSet
  * @property view The view to be attached
  * @constructor
  */
-class ViewAttacher(val view: View) {
+class BandyerViewAttacher(val view: View) {
 
     private var parentView: ViewGroup? = null
 

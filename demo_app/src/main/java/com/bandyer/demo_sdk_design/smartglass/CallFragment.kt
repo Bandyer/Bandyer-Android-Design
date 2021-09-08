@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.SmartGlassCallFragment
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
 
 class CallFragment : SmartGlassCallFragment() {
 
@@ -31,12 +31,12 @@ class CallFragment : SmartGlassCallFragment() {
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
-        SmartGlassTouchEvent.Type.TAP -> {
+    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
+        BandyerSmartGlassTouchEvent.Type.TAP -> {
             findNavController().navigate(R.id.action_callFragment_to_menuFragment)
             true
         }
-        SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().navigate(R.id.action_callFragment_to_endCallFragment)
             true
         }

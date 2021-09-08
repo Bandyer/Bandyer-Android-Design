@@ -50,15 +50,15 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment(), TiltC
         name!!.text = data.name
         with(contactStateText!!) {
             when (data.userState) {
-                SmartGlassParticipantData.UserState.INVITED -> setContactState(
-                    ContactStateTextView.State.INVITED
+                BandyerParticipantData.UserState.INVITED -> setContactState(
+                    BandyerContactStateTextView.State.INVITED
                 )
-                SmartGlassParticipantData.UserState.OFFLINE -> setContactState(
-                    ContactStateTextView.State.LAST_SEEN,
+                BandyerParticipantData.UserState.OFFLINE -> setContactState(
+                    BandyerContactStateTextView.State.LAST_SEEN,
                     data.lastSeenTime
                 )
                 else -> setContactState(
-                    ContactStateTextView.State.ONLINE
+                    BandyerContactStateTextView.State.ONLINE
                 )
             }
         }
@@ -67,10 +67,10 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment(), TiltC
             data.avatarImageUrl != null -> avatar!!.setImage(data.avatarImageUrl!!)
             else -> avatar!!.setImage(null)
         }
-        contactStateDot!!.isActivated = data.userState == SmartGlassParticipantData.UserState.ONLINE
+        contactStateDot!!.isActivated = data.userState == BandyerParticipantData.UserState.ONLINE
 
-        itemAdapter!!.add(ParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_videocall)))
-        itemAdapter!!.add(ParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_call)))
+        itemAdapter!!.add(BandyerParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_videocall)))
+        itemAdapter!!.add(BandyerParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_call)))
 
         bottomActionBar!!.setSwipeOnClickListener {
             rvActions!!.smoothScrollToNext(actionIndex)
@@ -108,20 +108,20 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment(), TiltC
             tiltController!!.releaseAllSensors()
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when(event.type) {
-        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-            if(event.source == SmartGlassTouchEvent.Source.KEY) {
+    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when(event.type) {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+            if(event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
                 rvActions!!.smoothScrollToNext(actionIndex)
                 true
             } else false
         }
-        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if(event.source == SmartGlassTouchEvent.Source.KEY) {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if(event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
                 rvActions!!.smoothScrollToPrevious(actionIndex)
                 true
             } else false
         }
-        SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true
         }

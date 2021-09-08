@@ -14,7 +14,7 @@ import com.bandyer.sdk_design.databinding.BandyerStatusBarLayoutBinding
  *
  * @constructor
  */
-class StatusBarView @JvmOverloads constructor(
+class BandyerStatusBarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -158,10 +158,10 @@ class StatusBarView @JvmOverloads constructor(
      */
     fun setWiFiSignalState(state: WiFiSignalState) {
         binding.bandyerWifiIcon.state = when(state) {
-            WiFiSignalState.DISABLED -> WifiImageView.State.DISABLED
-            WiFiSignalState.LOW -> WifiImageView.State.LOW
-            WiFiSignalState.MODERATE -> WifiImageView.State.MODERATE
-            WiFiSignalState.FULL -> WifiImageView.State.FULL
+            WiFiSignalState.DISABLED -> BandyerWifiImageView.State.DISABLED
+            WiFiSignalState.LOW -> BandyerWifiImageView.State.LOW
+            WiFiSignalState.MODERATE -> BandyerWifiImageView.State.MODERATE
+            WiFiSignalState.FULL -> BandyerWifiImageView.State.FULL
         }
     }
 }

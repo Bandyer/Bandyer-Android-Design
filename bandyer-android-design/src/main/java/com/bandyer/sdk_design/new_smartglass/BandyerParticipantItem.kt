@@ -12,7 +12,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property text The participant's name
  * @constructor
  */
-class ParticipantItem(val text: String): AbstractItem<ParticipantItem.ViewHolder>() {
+class BandyerParticipantItem(val text: String): AbstractItem<BandyerParticipantItem.ViewHolder>() {
 
     override val layoutRes: Int
         get() = R.layout.bandyer_participant_item_layout
@@ -22,15 +22,15 @@ class ParticipantItem(val text: String): AbstractItem<ParticipantItem.ViewHolder
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
-    class ViewHolder(view: View): FastAdapter.ViewHolder<ParticipantItem>(view) {
+    class ViewHolder(view: View): FastAdapter.ViewHolder<BandyerParticipantItem>(view) {
 
         private val binding: BandyerParticipantItemLayoutBinding = BandyerParticipantItemLayoutBinding.bind(view)
 
-        override fun bindView(item: ParticipantItem, payloads: List<Any>) {
+        override fun bindView(item: BandyerParticipantItem, payloads: List<Any>) {
             binding.bandyerText.text = item.text
         }
 
-        override fun unbindView(item: ParticipantItem) {
+        override fun unbindView(item: BandyerParticipantItem) {
             binding.bandyerText.text = null
         }
     }

@@ -4,19 +4,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarItemView
+    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarItemView
         android:id="@+id/bandyer_swipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:theme="?attr/bandyer_swipeItemStyle" />
 
-    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarItemView
+    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarItemView
         android:id="@+id/bandyer_tap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:theme="?attr/bandyer_tapItemStyle" />
 
-    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarItemView
+    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarItemView
         android:id="@+id/bandyer_swipe_down"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

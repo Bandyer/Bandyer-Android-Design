@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
-import com.bandyer.sdk_design.new_smartglass.menu.MenuItem
+import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.menu.BandyerMenuItem
 import com.bandyer.sdk_design.new_smartglass.menu.SmartGlassMenuFragment
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
@@ -42,12 +42,12 @@ class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
         if(Build.MODEL == resources.getString(R.string.bandyer_smartglass_realwear_model_name))
             bottomActionBar!!.setSwipeText(resources.getString(R.string.bandyer_smartglass_right_left))
 
-        itemAdapter!!.add(MenuItem("Attiva microfono", "Muta microfono"))
-        itemAdapter!!.add(MenuItem("Attiva camera", "Muta camera"))
-        itemAdapter!!.add(MenuItem("Volume"))
-        itemAdapter!!.add(MenuItem("Zoom"))
-        itemAdapter!!.add(MenuItem("Utenti"))
-        itemAdapter!!.add(MenuItem("Chat"))
+        itemAdapter!!.add(BandyerMenuItem("Attiva microfono", "Muta microfono"))
+        itemAdapter!!.add(BandyerMenuItem("Attiva camera", "Muta camera"))
+        itemAdapter!!.add(BandyerMenuItem("Volume"))
+        itemAdapter!!.add(BandyerMenuItem("Zoom"))
+        itemAdapter!!.add(BandyerMenuItem("Utenti"))
+        itemAdapter!!.add(BandyerMenuItem("Chat"))
 
         // add scroll listener
         rvMenu!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -77,23 +77,23 @@ class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
-        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-            if (event.source == SmartGlassTouchEvent.Source.KEY) {
+    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+            if (event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
                 rvMenu!!.smoothScrollToNext(currentMenuItemIndex)
                 true
             } else false
         }
-        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if (event.source == SmartGlassTouchEvent.Source.KEY) {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if (event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
                 rvMenu!!.smoothScrollToPrevious(currentMenuItemIndex)
                 true
             } else false
         }
-        SmartGlassTouchEvent.Type.TAP -> {
+        BandyerSmartGlassTouchEvent.Type.TAP -> {
             tapBehaviour(currentMenuItemIndex)
         }
-        SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true
         }

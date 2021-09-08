@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.SmartGlassRingingFragment
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
 
 class RingingFragment: SmartGlassRingingFragment() {
 
@@ -34,13 +34,13 @@ class RingingFragment: SmartGlassRingingFragment() {
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean =
+    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean =
         when (event.type) {
-            SmartGlassTouchEvent.Type.TAP -> {
+            BandyerSmartGlassTouchEvent.Type.TAP -> {
                 findNavController().navigate(R.id.action_ringingFragment_to_callFragment)
                 true
             }
-            SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+            BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
                 requireActivity().finish()
                 true
             }

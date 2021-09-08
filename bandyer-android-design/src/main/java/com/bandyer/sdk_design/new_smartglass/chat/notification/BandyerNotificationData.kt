@@ -12,7 +12,7 @@ import androidx.annotation.DrawableRes
  * @property imageUrl The remote resource url to be set as user avatar
  * @constructor
  */
-data class NotificationData(
+data class BandyerNotificationData(
     val name: String,
     val userAlias: String,
     val message: String? = null,

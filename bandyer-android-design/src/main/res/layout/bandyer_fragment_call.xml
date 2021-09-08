@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:theme="?attr/bandyer_smartGlassCallFragmentStyle">
 
-    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
         android:id="@+id/bandyer_bottom_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

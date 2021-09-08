@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentParticipantsBinding
-import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
 import com.bandyer.sdk_design.new_smartglass.menu.LineItemIndicatorDecoration
-import com.bandyer.sdk_design.new_smartglass.menu.OffsetItemDecoration
+import com.bandyer.sdk_design.new_smartglass.menu.BandyerOffsetItemDecoration
 import com.google.android.material.imageview.ShapeableImageView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -23,15 +23,15 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
 
     private var binding: BandyerFragmentParticipantsBinding? = null
 
-    protected var itemAdapter: ItemAdapter<ParticipantItem>? = null
-    protected var fastAdapter: FastAdapter<ParticipantItem>? = null
+    protected var itemAdapter: ItemAdapter<BandyerParticipantItem>? = null
+    protected var fastAdapter: FastAdapter<BandyerParticipantItem>? = null
 
     protected var root: View? = null
-    protected var avatar: ContactAvatarView? = null
+    protected var avatar: BandyerContactAvatarView? = null
     protected var contactStateDot: ShapeableImageView? = null
-    protected var contactStateText: ContactStateTextView? = null
+    protected var contactStateText: BandyerContactStateTextView? = null
     protected var rvParticipants: RecyclerView? = null
-    protected var bottomActionBar: BottomActionBarView? = null
+    protected var bottomActionBar: BandyerBottomActionBarView? = null
 
     protected var snapHelper: LinearSnapHelper? = null
 
@@ -68,7 +68,7 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
                 snapHelper!!
             )
         )
-        rvParticipants!!.addItemDecoration(OffsetItemDecoration())
+        rvParticipants!!.addItemDecoration(BandyerOffsetItemDecoration())
 
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event -> rvParticipants!!.onTouchEvent(event) }

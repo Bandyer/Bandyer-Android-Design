@@ -16,26 +16,26 @@ import com.bandyer.demo_sdk_design.smartglass.battery.BatteryState
 import com.bandyer.demo_sdk_design.smartglass.network.WiFiObserver
 import com.bandyer.demo_sdk_design.smartglass.network.WiFiState
 import com.bandyer.sdk_design.new_smartglass.GlassGestureDetector
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEventListener
-import com.bandyer.sdk_design.new_smartglass.chat.notification.NotificationManager
-import com.bandyer.sdk_design.new_smartglass.status_bar.StatusBarView
+import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEventListener
+import com.bandyer.sdk_design.new_smartglass.chat.notification.BandyerNotificationManager
+import com.bandyer.sdk_design.new_smartglass.status_bar.BandyerStatusBarView
 import com.bandyer.sdk_design.new_smartglass.utils.currentNavigationFragment
 import kotlinx.coroutines.flow.collect
 
 class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener,
-    NotificationManager.NotificationListener, SmartGlassTouchEventListener {
+    BandyerNotificationManager.NotificationListener, BandyerSmartGlassTouchEventListener {
 
     private lateinit var binding: ActivitySmartGlassBinding
 
-    private var statusBar: StatusBarView? = null
+    private var statusBar: BandyerStatusBarView? = null
 
     private val currentFragment: Fragment?
         get() = supportFragmentManager.currentNavigationFragment
     private lateinit var decorView: View
 
     private lateinit var glassGestureDetector: GlassGestureDetector
-    private lateinit var notificationManager: NotificationManager
+    private lateinit var notificationManager: BandyerNotificationManager
     private var handleNotification = false
     private lateinit var batteryObserver: BatteryObserver
     private lateinit var wifiObserver: WiFiObserver
@@ -50,7 +50,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         enterImmersiveMode()
 
         glassGestureDetector = GlassGestureDetector(this, this)
-        notificationManager = NotificationManager(binding.content, this)
+        notificationManager = BandyerNotificationManager(binding.content, this)
         batteryObserver = BatteryObserver(this)
         wifiObserver = WiFiObserver(this)
 
@@ -65,14 +65,14 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
             wifiObserver.observe().collect {
                 statusBar!!.setWiFiSignalState(
                     if (it.state == WiFiState.State.DISABLED)
-                        StatusBarView.WiFiSignalState.DISABLED
+                        BandyerStatusBarView.WiFiSignalState.DISABLED
                     else
                         when (it.level) {
-                            WiFiState.Level.NO_SIGNAL -> StatusBarView.WiFiSignalState.LOW
-                            WiFiState.Level.POOR -> StatusBarView.WiFiSignalState.LOW
-                            WiFiState.Level.FAIR -> StatusBarView.WiFiSignalState.MODERATE
-                            WiFiState.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
-                            WiFiState.Level.EXCELLENT -> StatusBarView.WiFiSignalState.FULL
+                            WiFiState.Level.NO_SIGNAL -> BandyerStatusBarView.WiFiSignalState.LOW
+                            WiFiState.Level.POOR -> BandyerStatusBarView.WiFiSignalState.LOW
+                            WiFiState.Level.FAIR -> BandyerStatusBarView.WiFiSignalState.MODERATE
+                            WiFiState.Level.GOOD -> BandyerStatusBarView.WiFiSignalState.MODERATE
+                            WiFiState.Level.EXCELLENT -> BandyerStatusBarView.WiFiSignalState.FULL
                         }
                 )
             }
@@ -138,27 +138,27 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
         return if (
             event?.action == MotionEvent.ACTION_DOWN &&
-            handleSmartGlassTouchEvent(SmartGlassTouchEvent.getEvent(event))
+            handleSmartGlassTouchEvent(BandyerSmartGlassTouchEvent.getEvent(event))
         ) true
         else super.dispatchKeyEvent(event)
     }
 
     override fun onGesture(gesture: GlassGestureDetector.Gesture): Boolean =
-        handleSmartGlassTouchEvent(SmartGlassTouchEvent.getEvent(gesture))
+        handleSmartGlassTouchEvent(BandyerSmartGlassTouchEvent.getEvent(gesture))
 
-    private fun handleSmartGlassTouchEvent(smartGlassEvent: SmartGlassTouchEvent): Boolean =
+    private fun handleSmartGlassTouchEvent(smartGlassEvent: BandyerSmartGlassTouchEvent): Boolean =
         if (handleNotification) onSmartGlassTouchEvent(smartGlassEvent)
-        else (currentFragment as? SmartGlassTouchEventListener)?.onSmartGlassTouchEvent(
+        else (currentFragment as? BandyerSmartGlassTouchEventListener)?.onSmartGlassTouchEvent(
             smartGlassEvent
         ) ?: false
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean =
+    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean =
         when (event.type) {
-            SmartGlassTouchEvent.Type.TAP -> {
+            BandyerSmartGlassTouchEvent.Type.TAP -> {
                 notificationManager.expand()
                 true
             }
-            SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+            BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
                 notificationManager.dismiss()
                 true
             }

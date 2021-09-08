@@ -8,8 +8,7 @@ import android.view.ViewGroup
 import com.bandyer.sdk_design.databinding.BandyerFragmentVolumeBinding
 import com.bandyer.sdk_design.new_smartglass.BandyerSlider
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
-import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
 
 /**
  * SmartGlassVolumeFragment. A base class for the volume fragment.
@@ -20,7 +19,7 @@ abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
 
     protected var root: View? = null
     protected var slider: BandyerSlider? = null
-    protected var bottomActionBar: BottomActionBarView? = null
+    protected var bottomActionBar: BandyerBottomActionBarView? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(

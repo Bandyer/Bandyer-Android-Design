@@ -7,7 +7,7 @@
     android:background="@drawable/factory"
     android:orientation="vertical">
 
-    <com.bandyer.sdk_design.new_smartglass.status_bar.StatusBarView
+    <com.bandyer.sdk_design.new_smartglass.status_bar.BandyerStatusBarView
         android:id="@+id/statusBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

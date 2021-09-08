@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/bandyer_menu_item_layout" />
 
-    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
+    <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
         android:id="@+id/bandyer_bottom_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

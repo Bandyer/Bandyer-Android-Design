@@ -13,7 +13,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property data The data related to a chat message
  * @constructor
  */
-class ChatItem(val data: SmartGlassMessageData) : AbstractItem<ChatItem.ViewHolder>() {
+class BandyerChatItem(val data: SmartGlassMessageData) : AbstractItem<BandyerChatItem.ViewHolder>() {
 
     override val layoutRes: Int
         get() = R.layout.bandyer_chat_item_layout
@@ -23,11 +23,11 @@ class ChatItem(val data: SmartGlassMessageData) : AbstractItem<ChatItem.ViewHold
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
-    class ViewHolder(view: View) : FastAdapter.ViewHolder<ChatItem>(view) {
+    class ViewHolder(view: View) : FastAdapter.ViewHolder<BandyerChatItem>(view) {
 
         private val binding: BandyerChatItemLayoutBinding = BandyerChatItemLayoutBinding.bind(view)
 
-        override fun bindView(item: ChatItem, payloads: List<Any>) =
+        override fun bindView(item: BandyerChatItem, payloads: List<Any>) =
             with(binding.bandyerChatMessage) {
                 itemView.isClickable = false
                 val data = item.data
@@ -40,7 +40,7 @@ class ChatItem(val data: SmartGlassMessageData) : AbstractItem<ChatItem.ViewHold
                 else setName(data.sender)
             }
 
-        override fun unbindView(item: ChatItem) = with(binding.bandyerChatMessage) {
+        override fun unbindView(item: BandyerChatItem) = with(binding.bandyerChatMessage) {
             itemView.isClickable = true
             setAvatar(null)
             setName(null)

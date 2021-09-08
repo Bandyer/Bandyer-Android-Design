@@ -12,7 +12,7 @@ import com.bandyer.sdk_design.databinding.BandyerBottomActionBarLayoutBinding
  * Bottom action bar view, it describes the actions the user performs
  * It is made of three inline [BottomActionBarItemView]
  */
-class BottomActionBarView @JvmOverloads constructor(
+class BandyerBottomActionBarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -32,7 +32,7 @@ class BottomActionBarView @JvmOverloads constructor(
 
     /**
      * Set the swipe action text. If it is set to null,
-     * the parent [BottomActionBarItemView]'s visibility is set to View.GONE
+     * the parent [BandyerBottomActionBarItemView]'s visibility is set to View.GONE
      *
      * @param text String?
      */
@@ -40,7 +40,7 @@ class BottomActionBarView @JvmOverloads constructor(
 
     /**
      * Set the tap action text. If it is set to null,
-     * the parent [BottomActionBarItemView]'s visibility is set to View.GONE
+     * the parent [BandyerBottomActionBarItemView]'s visibility is set to View.GONE
      *
      * @param text String?
      */
@@ -48,7 +48,7 @@ class BottomActionBarView @JvmOverloads constructor(
 
     /**
      * Set the swipe down action text. If it is set to null,
-     * the parent [BottomActionBarItemView]'s visibility is set to View.GONE
+     * the parent [BandyerBottomActionBarItemView]'s visibility is set to View.GONE
      *
      * @param text String?
      */
@@ -84,6 +84,6 @@ class BottomActionBarView @JvmOverloads constructor(
             callback.invoke()
         }
 
-    private fun BottomActionBarItemView.setActionTextOrHide(text: String?) =
+    private fun BandyerBottomActionBarItemView.setActionTextOrHide(text: String?) =
         text?.let { setActionText(it) } ?: kotlin.run { visibility = View.GONE }
 }

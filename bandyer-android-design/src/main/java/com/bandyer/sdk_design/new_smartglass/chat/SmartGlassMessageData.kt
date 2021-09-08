@@ -3,7 +3,7 @@ package com.bandyer.sdk_design.new_smartglass.chat
 import androidx.annotation.DrawableRes
 
 /**
- * The message data from the [ChatItem]
+ * The message data from the [BandyerChatItem]
  *
  * @property id Id of the message
  * @property sender The message sender

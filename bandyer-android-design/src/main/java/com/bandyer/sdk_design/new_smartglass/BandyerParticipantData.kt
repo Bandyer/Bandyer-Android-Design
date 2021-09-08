@@ -18,7 +18,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Keep
 @Parcelize
-data class SmartGlassParticipantData(
+data class BandyerParticipantData(
     val name: String,
     val userAlias: String,
     val userState: UserState,
