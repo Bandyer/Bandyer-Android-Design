@@ -52,6 +52,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         rvMessages!!.layoutManager = layoutManager
         rvMessages!!.adapter = fastAdapter
         rvMessages!!.isFocusable = false
+        rvMessages!!.setHasFixedSize(true)
 
         rvMessages!!.addItemDecoration(BandyerChatItemIndicatorDecoration(requireContext()))
 
