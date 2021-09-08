@@ -6,15 +6,15 @@
     android:theme="?attr/bandyer_smartGlassZoomFragmentStyle">
 
     <com.bandyer.sdk_design.new_smartglass.BandyerSlider
-        android:id="@+id/slider"
+        android:id="@+id/bandyer_slider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/bottomActionBar"
+        app:layout_constraintBottom_toTopOf="@+id/bandyer_bottom_action_bar"
         app:layout_constraintStart_toStartOf="parent"
         android:theme="?attr/bandyer_sliderStyle"/>
 
     <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-        android:id="@+id/bottomActionBar"
+        android:id="@+id/bandyer_bottom_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="?attr/bandyer_bottomActionBarStyle"

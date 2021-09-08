@@ -29,8 +29,8 @@ abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
     ): View {
         binding = BandyerFragmentVolumeBinding.inflate(inflater, container, false)
         root = binding!!.root
-        slider = binding!!.slider
-        bottomActionBar = binding!!.bottomActionBar
+        slider = binding!!.bandyerSlider
+        bottomActionBar = binding!!.bandyerBottomActionBar
         return root!!
     }
 

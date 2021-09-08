@@ -7,15 +7,15 @@
     android:theme="?attr/bandyer_smartGlassMenuFragmentStyle">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/menu"
+        android:id="@+id/bandyer_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/bottomActionBar"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_action_bar"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/bandyer_menu_item_layout" />
 
     <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-        android:id="@+id/bottomActionBar"
+        android:id="@+id/bandyer_bottom_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="?attr/bandyer_bottomActionBarStyle"

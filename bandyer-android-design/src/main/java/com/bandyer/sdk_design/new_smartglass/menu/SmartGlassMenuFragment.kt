@@ -29,7 +29,6 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
     protected var bottomActionBar: BottomActionBarView? = null
 
     protected var snapHelper: LinearSnapHelper? = null
-//    private var lastMotionEventAction: Int? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -40,8 +39,8 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
 
         // set the views
         root = binding!!.root
-        rvMenu = binding!!.menu
-        bottomActionBar = binding!!.bottomActionBar
+        rvMenu = binding!!.bandyerMenu
+        bottomActionBar = binding!!.bandyerBottomActionBar
 
         // init the recycler view
         itemAdapter = ItemAdapter()
@@ -65,12 +64,7 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         rvMenu!!.addItemDecoration(OffsetItemDecoration())
 
         // pass the root view's touch event to the recycler view
-        root!!.setOnTouchListener { _, event ->
-//            if (lastMotionEventAction == MotionEvent.ACTION_DOWN && event.action == MotionEvent.ACTION_UP)
-//                rvMenu!!.getChildAt(currentMenuItemIndex).performClick()
-//            lastMotionEventAction = event.action
-            rvMenu!!.onTouchEvent(event)
-        }
+        root!!.setOnTouchListener { _, event -> rvMenu!!.onTouchEvent(event) }
 
         return root!!
     }

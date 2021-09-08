@@ -28,8 +28,8 @@ abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
     ): View {
         binding = BandyerFragmentZoomBinding.inflate(inflater, container, false)
         root = binding!!.root
-        slider = binding!!.slider
-        bottomActionBar = binding!!.bottomActionBar
+        slider = binding!!.bandyerSlider
+        bottomActionBar = binding!!.bandyerBottomActionBar
         return root!!
     }
 

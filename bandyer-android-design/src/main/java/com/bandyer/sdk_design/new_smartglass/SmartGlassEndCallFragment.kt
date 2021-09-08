@@ -28,7 +28,7 @@ abstract class SmartGlassEndCallFragment: SmartGlassBaseFragment() {
         root = binding!!.root
         title = binding!!.bandyerTitle
         subtitle = binding!!.bandyerSubtitle
-        bottomActionBar = binding!!.bottomActionBar
+        bottomActionBar = binding!!.bandyerBottomActionBar
         return root!!
     }
 

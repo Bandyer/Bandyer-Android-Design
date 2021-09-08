@@ -24,7 +24,7 @@ abstract class SmartGlassCallFragment: SmartGlassBaseFragment(), SmartGlassTouch
     ): View {
         binding = BandyerFragmentCallBinding.inflate(inflater, container, false)
         root = binding!!.root
-        bottomActionBar = binding!!.bottomActionBar
+        bottomActionBar = binding!!.bandyerBottomActionBar
         return root!!
     }
 

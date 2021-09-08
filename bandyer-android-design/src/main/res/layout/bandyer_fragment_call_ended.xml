@@ -24,14 +24,14 @@
         style="?attr/bandyer_subtitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/bottomActionBar"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_action_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bandyer_title"
         tools:text="@string/bandyer_smartglass_thank_you"/>
 
     <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-        android:id="@+id/bottomActionBar"
+        android:id="@+id/bandyer_bottom_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

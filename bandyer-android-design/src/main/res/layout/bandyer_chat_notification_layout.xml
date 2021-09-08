@@ -41,7 +41,7 @@
         style="?attr/bandyer_messageStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/bandyer_bottomActionBar"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_action_bar"
         app:layout_constraintEnd_toEndOf="@id/bandyer_time"
         app:layout_constraintStart_toStartOf="@id/bandyer_title"
         app:layout_constraintTop_toBottomOf="@id/bandyer_title"
@@ -49,7 +49,7 @@
         tools:text="Hello there" />
 
     <com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-        android:id="@+id/bandyer_bottomActionBar"
+        android:id="@+id/bandyer_bottom_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="?attr/bandyer_bottomActionBarStyle"
