@@ -6,6 +6,12 @@ import com.bandyer.sdk_design.databinding.BandyerParticipantDetailsItemLayoutBin
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
+/**
+ * A participant details item.
+ *
+ * @property text The action text
+ * @constructor
+ */
 class ParticipantDetailsItem(val text: String): AbstractItem<ParticipantDetailsItem.ViewHolder>() {
 
     override val layoutRes: Int

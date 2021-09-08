@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentParticipantsBinding
-import com.bandyer.sdk_design.extensions.parseToColor
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 import com.bandyer.sdk_design.new_smartglass.menu.LineItemIndicatorDecoration
 import com.bandyer.sdk_design.new_smartglass.menu.OffsetItemDecoration
@@ -17,6 +16,9 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
+/**
+ * SmartGlassParticipantsFragment. A base class for the participants fragment.
+ */
 abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
 
     private var binding: BandyerFragmentParticipantsBinding? = null
@@ -31,7 +33,7 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
     protected var rvParticipants: RecyclerView? = null
     protected var bottomActionBar: BottomActionBarView? = null
 
-    protected var currentParticipantIndex = 0
+    protected var snapHelper: LinearSnapHelper? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -57,50 +59,16 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
         rvParticipants!!.adapter = fastAdapter
         rvParticipants!!.isFocusable = false
 
-        val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(rvParticipants)
+        snapHelper = LinearSnapHelper()
+        snapHelper!!.attachToRecyclerView(rvParticipants)
 
         rvParticipants!!.addItemDecoration(
             LineItemIndicatorDecoration(
                 requireContext(),
-                snapHelper
+                snapHelper!!
             )
         )
         rvParticipants!!.addItemDecoration(OffsetItemDecoration())
-
-        // add scroll listener
-        rvParticipants!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                currentParticipantIndex = layoutManager.getPosition(foundView)
-                val data = itemAdapter!!.getAdapterItem(currentParticipantIndex).data
-                avatar!!.setText(data.name.first().toString())
-                avatar!!.setBackground(data.userAlias.parseToColor())
-                when {
-                    data.avatarImageId != null -> avatar!!.setImage(data.avatarImageId)
-                    data.avatarImageUrl != null -> avatar!!.setImage(data.avatarImageUrl)
-                    else -> avatar!!.setImage(null)
-                }
-                if (data.avatarImageId != null) avatar!!.setImage(data.avatarImageId)
-                else if (data.avatarImageUrl != null) avatar!!.setImage(data.avatarImageUrl)
-                contactStateDot!!.isActivated =
-                    data.userState == SmartGlassParticipantData.UserState.ONLINE
-                with(contactStateText!!) {
-                    when (data.userState) {
-                        SmartGlassParticipantData.UserState.INVITED -> setContactState(
-                            ContactStateTextView.State.INVITED
-                        )
-                        SmartGlassParticipantData.UserState.OFFLINE -> setContactState(
-                            ContactStateTextView.State.LAST_SEEN,
-                            data.lastSeenTime
-                        )
-                        SmartGlassParticipantData.UserState.ONLINE -> setContactState(
-                            ContactStateTextView.State.ONLINE
-                        )
-                    }
-                }
-            }
-        })
 
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event -> rvParticipants!!.onTouchEvent(event) }
@@ -119,22 +87,7 @@ abstract class SmartGlassParticipantsFragment : SmartGlassBaseFragment() {
         avatar = null
         contactStateDot = null
         contactStateText = null
-    }
-
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
-        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-            if(event.source == SmartGlassTouchEvent.Source.KEY) {
-                rvParticipants!!.smoothScrollToNext(currentParticipantIndex)
-                true
-            } else false
-        }
-        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if(event.source == SmartGlassTouchEvent.Source.KEY) {
-                rvParticipants!!.smoothScrollToPrevious(currentParticipantIndex)
-                true
-            } else false
-        }
-        else -> super.onSmartGlassTouchEvent(event)
+        snapHelper = null
     }
 }
 

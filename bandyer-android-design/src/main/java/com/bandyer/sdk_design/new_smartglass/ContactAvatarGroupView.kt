@@ -6,24 +6,45 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import androidx.core.view.children
 import com.bandyer.sdk_design.extensions.dp2px
 
+/**
+ * A view aggregator of [ContactAvatarView]
+ *
+ * @constructor
+ */
 class ContactAvatarGroupView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    /**
+     * Add an avatar
+     *
+     * @param imageResId The local resource for the avatar
+     */
     fun addAvatar(@DrawableRes imageResId: Int) = addAvatar().setImage(imageResId)
 
+    /**
+     * Add an avatar
+     *
+     * @param url The url remote resource for the avatar
+     */
     fun addAvatar(url: String) = addAvatar().setImage(url)
 
-    fun addAvatar(text: String, @ColorInt color: Int?) =
-        addAvatar().apply {
-            setText(text)
-            setBackground(color)
+    /**
+     * Add an avatar
+     *
+     * @param text The avatar text, usually a letter
+     * @param color The background color
+     */
+    fun addAvatar(text: String, @ColorInt color: Int?) {
+        addAvatar().also {
+            it.setText(text)
+            it.setBackground(color)
         }
+    }
 
     private fun addAvatar(): ContactAvatarView {
         val set = ConstraintSet()

@@ -32,7 +32,7 @@ class ContactAvatarView @JvmOverloads constructor(
     private val defaultBackgroundColor = Color.GRAY
 
     /**
-     * Set a local resource as avatar.
+     * Set a local resource as avatar. The background and the text became no longer visible.
      *
      * @param resId The resource id. If null, any avatar resource previously set (either local or remote) is removed and the background color and the text became visible again.
      */
@@ -42,7 +42,7 @@ class ContactAvatarView @JvmOverloads constructor(
     }
 
     /**
-     * Set a remote url resource as avatar.
+     * Set a remote url resource as avatar. The background and the text became no longer visible.
      *
      * @param url The avatar's url
      */
@@ -61,8 +61,7 @@ class ContactAvatarView @JvmOverloads constructor(
     }
 
     /**
-     * Set the avatar background color. The background is overridden if a resource, either local or remote, is set.
-     * The avatar text adjust it's color on the defined value.
+     * Set the avatar background color. The avatar text adjust it's color on the defined value.
      *
      * @param color The color int resource. If null Color.GRAY is set as default.
      */

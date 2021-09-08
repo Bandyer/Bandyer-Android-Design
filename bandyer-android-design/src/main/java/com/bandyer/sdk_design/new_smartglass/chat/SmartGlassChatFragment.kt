@@ -5,22 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.SnapHelper
-import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
+import androidx.recyclerview.widget.*
 import com.bandyer.sdk_design.databinding.BandyerFragmentChatBinding
-import com.bandyer.sdk_design.extensions.parseToHHmm
-import com.bandyer.sdk_design.new_smartglass.*
+import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
 /**
- * SmartGlassChatFragment
+ * SmartGlassChatFragment. A base class for the chat fragment.
  */
 abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
 
@@ -34,19 +28,7 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
     protected var bottomActionBar: BottomActionBarView? = null
     protected var chatMessageView: ChatMessageView? = null
 
-    protected var currentMsgItemIndex = 0
-    private var newMessagesCounter = 0
-        set(value) {
-            field = value
-            val counterValue = value - 1
-            counter?.text = resources.getString(
-                R.string.bandyer_smartglass_message_counter_pattern,
-                counterValue
-            )
-            counter?.visibility = if (counterValue > 0) View.VISIBLE else View.GONE
-        }
-    private var lastMsgIndex = 0
-    private var pagesIds = arrayListOf<String>()
+    protected var snapHelper: PagerSnapHelper? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -73,21 +55,8 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
 
         rvMessages!!.addItemDecoration(ChatItemIndicatorDecoration(requireContext()))
 
-        val snapHelper: SnapHelper = PagerSnapHelper()
-        snapHelper.attachToRecyclerView(rvMessages)
-
-        rvMessages!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                val currentMsgIndex = layoutManager.getPosition(foundView)
-
-                if (currentMsgIndex > lastMsgIndex && pagesIds[currentMsgIndex] != pagesIds[lastMsgIndex]) {
-                    newMessagesCounter--
-                    lastMsgIndex = currentMsgIndex
-                }
-                currentMsgItemIndex = currentMsgIndex
-            }
-        })
+        snapHelper = PagerSnapHelper()
+        snapHelper!!.attachToRecyclerView(rvMessages)
 
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event -> rvMessages!!.onTouchEvent(event) }
@@ -104,54 +73,6 @@ abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
         counter = null
         bottomActionBar = null
         chatMessageView = null
+        snapHelper = null
     }
-
-    /**
-     * Add a chat item to the recycler view. If the text is too long to fit in one screen, more than a chat item will be added
-     *
-     * @param data The [SmartGlassMessageData]
-     */
-    protected fun addChatItem(data: SmartGlassMessageData) {
-        newMessagesCounter++
-        chatMessageView?.post {
-            val binding = BandyerChatMessageLayoutBinding.bind(chatMessageView!!)
-            with(binding) {
-                bandyerName.text = data.sender
-                bandyerTime.text = Iso8601.parseTimestamp(requireContext(), data.time!!)
-                bandyerMessage.text = data.message
-                val pageList = bandyerMessage.paginate()
-                for (i in pageList.indices) {
-                    val pageData = SmartGlassMessageData(
-                        data.id,
-                        data.sender,
-                        data.userAlias,
-                        pageList[i].toString(),
-                        data.time,
-                        data.userAvatarId,
-                        data.userAvatarUrl,
-                        i == 0
-                    )
-                    itemAdapter!!.add(ChatItem(pageData))
-                    pagesIds.add(data.id)
-                }
-            }
-        }
-    }
-
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
-        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-            if(event.source == SmartGlassTouchEvent.Source.KEY) {
-                rvMessages!!.smoothScrollToNext(currentMsgItemIndex)
-                true
-            } else false
-        }
-        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if(event.source == SmartGlassTouchEvent.Source.KEY) {
-                rvMessages!!.smoothScrollToPrevious(currentMsgItemIndex)
-                true
-            } else false
-        }
-        else -> super.onSmartGlassTouchEvent(event)
-    }
-
 }

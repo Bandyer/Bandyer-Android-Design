@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import com.bandyer.sdk_design.databinding.BandyerFragmentZoomBinding
 import com.bandyer.sdk_design.new_smartglass.BandyerSlider
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 
 /**
@@ -40,17 +39,5 @@ abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
         root = null
         slider = null
         bottomActionBar = null
-    }
-
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
-        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-            slider!!.increaseProgress()
-            true
-        }
-        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            slider!!.decreaseProgress()
-            true
-        }
-        else -> super.onSmartGlassTouchEvent(event)
     }
 }

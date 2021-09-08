@@ -8,6 +8,10 @@ import com.bandyer.sdk_design.databinding.BandyerFragmentRingingBinding
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 import com.google.android.material.textview.MaterialTextView
 
+/**
+ * SmartGlassRingingFragment. A base class for the ringing
+ *fragment.
+ */
 abstract class SmartGlassRingingFragment: SmartGlassBaseFragment() {
 
     private var binding: BandyerFragmentRingingBinding? = null

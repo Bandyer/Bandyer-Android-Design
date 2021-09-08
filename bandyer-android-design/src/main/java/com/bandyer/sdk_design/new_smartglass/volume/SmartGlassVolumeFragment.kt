@@ -41,16 +41,4 @@ abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
         slider = null
         bottomActionBar = null
     }
-
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
-        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-            slider!!.increaseProgress(0.1f)
-            true
-        }
-        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            slider!!.decreaseProgress(0.1f)
-            true
-        }
-        else -> super.onSmartGlassTouchEvent(event)
-    }
 }

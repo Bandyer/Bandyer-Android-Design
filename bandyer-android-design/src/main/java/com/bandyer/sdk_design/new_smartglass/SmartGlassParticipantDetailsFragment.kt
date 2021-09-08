@@ -17,6 +17,9 @@ import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
+/**
+ * SmartGlassParticipantDetailsFragment. A base class for the participant details fragment.
+ */
 abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
 
     private var binding: BandyerFragmentParticipantDetailsBinding? = null
@@ -32,7 +35,7 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
     protected var rvActions: RecyclerView? = null
     protected var bottomActionBar: BottomActionBarView? = null
 
-    protected var actionIndex = 0
+    protected var snapHelper: LinearSnapHelper? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -60,24 +63,16 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
         rvActions!!.isFocusable = false
         rvActions!!.setHasFixedSize(true)
 
-        val snapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(rvActions)
+        snapHelper = LinearSnapHelper()
+        snapHelper!!.attachToRecyclerView(rvActions)
 
         rvActions!!.addItemDecoration(
             LineItemIndicatorDecoration(
                 requireContext(),
-                snapHelper
+                snapHelper!!
             )
         )
         rvActions!!.addItemDecoration(OffsetItemDecoration())
-
-        // add scroll listener
-        rvActions!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                actionIndex = layoutManager.getPosition(foundView)
-            }
-        })
 
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event -> rvActions!!.onTouchEvent(event) }
@@ -97,21 +92,7 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
         avatar = null
         contactStateDot = null
         contactStateText = null
+        snapHelper = null
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
-        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-            if(event.source == SmartGlassTouchEvent.Source.KEY) {
-                rvActions!!.smoothScrollToNext(actionIndex)
-                true
-            } else false
-        }
-        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if(event.source == SmartGlassTouchEvent.Source.KEY) {
-                rvActions!!.smoothScrollToPrevious(actionIndex)
-                true
-            } else false
-        }
-        else -> super.onSmartGlassTouchEvent(event)
-    }
 }

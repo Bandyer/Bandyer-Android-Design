@@ -8,6 +8,9 @@ import com.bandyer.sdk_design.databinding.BandyerFragmentCallEndedBinding
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
 import com.google.android.material.textview.MaterialTextView
 
+/**
+ * SmartGlassCallEndedFragment. A base class for the call ended fragment.
+ */
 abstract class SmartGlassCallEndedFragment: SmartGlassBaseFragment() {
 
     private var binding: BandyerFragmentCallEndedBinding? = null

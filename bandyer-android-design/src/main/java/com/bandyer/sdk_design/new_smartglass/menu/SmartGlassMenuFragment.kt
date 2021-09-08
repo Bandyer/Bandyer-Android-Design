@@ -2,14 +2,15 @@ package com.bandyer.sdk_design.new_smartglass.menu
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.*
-import androidx.recyclerview.widget.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentMenuBinding
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
-import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BottomActionBarView
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
@@ -27,9 +28,8 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
     protected var rvMenu: RecyclerView? = null
     protected var bottomActionBar: BottomActionBarView? = null
 
-    protected var currentMenuItemIndex = 0
-    private var lastMotionEventAction: Int? = null
-    private var snapHelper: LinearSnapHelper? = null
+    protected var snapHelper: LinearSnapHelper? = null
+//    private var lastMotionEventAction: Int? = null
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
@@ -64,19 +64,11 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         )
         rvMenu!!.addItemDecoration(OffsetItemDecoration())
 
-        // add scroll listener
-        rvMenu!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
-                currentMenuItemIndex = layoutManager.getPosition(foundView)
-            }
-        })
-
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event ->
-            if (lastMotionEventAction == MotionEvent.ACTION_DOWN && event.action == MotionEvent.ACTION_UP)
-                rvMenu!!.getChildAt(currentMenuItemIndex).performClick()
-            lastMotionEventAction = event.action
+//            if (lastMotionEventAction == MotionEvent.ACTION_DOWN && event.action == MotionEvent.ACTION_UP)
+//                rvMenu!!.getChildAt(currentMenuItemIndex).performClick()
+//            lastMotionEventAction = event.action
             rvMenu!!.onTouchEvent(event)
         }
 
@@ -91,21 +83,6 @@ abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
         root = null
         rvMenu = null
         bottomActionBar = null
-    }
-
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
-        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-            if (event.source == SmartGlassTouchEvent.Source.KEY) {
-                rvMenu!!.smoothScrollToNext(currentMenuItemIndex)
-                true
-            } else false
-        }
-        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if (event.source == SmartGlassTouchEvent.Source.KEY) {
-                rvMenu!!.smoothScrollToPrevious(currentMenuItemIndex)
-                true
-            } else false
-        }
-        else -> super.onSmartGlassTouchEvent(event)
+        snapHelper = null
     }
 }

@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
+import com.bandyer.sdk_design.extensions.parseToColor
 import com.bandyer.sdk_design.new_smartglass.*
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -18,6 +20,10 @@ class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.Ti
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
     private var tiltController: TiltController? = null
+
+    private var currentParticipantIndex = -1
+
+    private var participantsData: List<SmartGlassParticipantData> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,16 +44,80 @@ class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.Ti
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        if(Build.MODEL == resources.getString(R.string.bandyer_smartglass_realwear_model_name))
+        if (Build.MODEL == resources.getString(R.string.bandyer_smartglass_realwear_model_name))
             bottomActionBar!!.setSwipeText(resources.getString(R.string.bandyer_smartglass_right_left))
 
-        itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Mario Rossi", "Mario Rossi", SmartGlassParticipantData.UserState.ONLINE, R.drawable.sample_image, null, Instant.now().toEpochMilli())))
-        itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Felice Trapasso", "Felice Trapasso", SmartGlassParticipantData.UserState.OFFLINE, null, "https://i.imgur.com/9I2qAlW.jpeg", Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli())))
-        itemAdapter!!.add(ParticipantItem(SmartGlassParticipantData("Francesco Sala", "Francesco Sala", SmartGlassParticipantData.UserState.INVITED, null, null, Instant.now().toEpochMilli())))
+        participantsData = listOf(
+            SmartGlassParticipantData(
+                "Mario Rossi",
+                "Mario Rossi",
+                SmartGlassParticipantData.UserState.ONLINE,
+                R.drawable.sample_image,
+                null,
+                Instant.now().toEpochMilli()
+            ),
+            SmartGlassParticipantData(
+                "Felice Trapasso",
+                "Felice Trapasso",
+                SmartGlassParticipantData.UserState.OFFLINE,
+                null,
+                "https://i.imgur.com/9I2qAlW.jpeg",
+                Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
+            ),
+            SmartGlassParticipantData(
+                "Francesco Sala",
+                "Francesco Sala",
+                SmartGlassParticipantData.UserState.INVITED,
+                null,
+                null,
+                Instant.now().toEpochMilli()
+            )
+        )
+
+        participantsData.forEach {
+            itemAdapter!!.add(ParticipantItem(it.userAlias))
+        }
+
+        rvParticipants!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = rvParticipants!!.layoutManager
+                val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
+                currentParticipantIndex = layoutManager!!.getPosition(foundView)
+                val data = participantsData[currentParticipantIndex]
+                avatar!!.setText(data.name.first().toString())
+                avatar!!.setBackground(data.userAlias.parseToColor())
+                when {
+                    data.avatarImageId != null -> avatar!!.setImage(data.avatarImageId)
+                    data.avatarImageUrl != null -> avatar!!.setImage(data.avatarImageUrl!!)
+                    else -> avatar!!.setImage(null)
+                }
+                if (data.avatarImageId != null) avatar!!.setImage(data.avatarImageId)
+                else if (data.avatarImageUrl != null) avatar!!.setImage(data.avatarImageUrl!!)
+                contactStateDot!!.isActivated =
+                    data.userState == SmartGlassParticipantData.UserState.ONLINE
+                with(contactStateText!!) {
+                    when (data.userState) {
+                        SmartGlassParticipantData.UserState.INVITED -> setContactState(
+                            ContactStateTextView.State.INVITED
+                        )
+                        SmartGlassParticipantData.UserState.OFFLINE -> setContactState(
+                            ContactStateTextView.State.LAST_SEEN,
+                            data.lastSeenTime
+                        )
+                        SmartGlassParticipantData.UserState.ONLINE -> setContactState(
+                            ContactStateTextView.State.ONLINE
+                        )
+                    }
+                }
+            }
+        })
 
         bottomActionBar!!.setTapOnClickListener {
-            val itemData = itemAdapter!!.getAdapterItem(currentParticipantIndex).data
-            val action = ParticipantsFragmentDirections.actionParticipantsFragmentToParticipantDetailsFragment(itemData)
+            if(currentParticipantIndex == -1) return@setTapOnClickListener
+            val action =
+                ParticipantsFragmentDirections.actionParticipantsFragmentToParticipantDetailsFragment(
+                    participantsData[currentParticipantIndex]
+                )
             findNavController().navigate(action)
         }
 
@@ -67,7 +137,13 @@ class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.Ti
     override fun onResume() {
         super.onResume()
         activity.showStatusBarCenteredTitle()
-        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_smartglass_background_color, null))
+        activity.setStatusBarColor(
+            ResourcesCompat.getColor(
+                resources,
+                R.color.bandyer_smartglass_background_color,
+                null
+            )
+        )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             tiltController!!.requestAllSensors()
     }
@@ -80,12 +156,28 @@ class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.Ti
             tiltController!!.releaseAllSensors()
     }
 
-    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when(event.type) {
+    override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
+        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+            if(event.source == SmartGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
+                rvParticipants!!.smoothScrollToNext(currentParticipantIndex)
+                true
+            } else false
+        }
+        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if(event.source == SmartGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
+                rvParticipants!!.smoothScrollToPrevious(currentParticipantIndex)
+                true
+            } else false
+        }
         SmartGlassTouchEvent.Type.TAP -> {
-            val itemData = itemAdapter!!.getAdapterItem(currentParticipantIndex).data
-            val action = ParticipantsFragmentDirections.actionParticipantsFragmentToParticipantDetailsFragment(itemData)
-            findNavController().navigate(action)
-            true
+            if(currentParticipantIndex != -1) {
+                val action =
+                    ParticipantsFragmentDirections.actionParticipantsFragmentToParticipantDetailsFragment(
+                        participantsData[currentParticipantIndex]
+                    )
+                findNavController().navigate(action)
+                true
+            } else false
         }
         SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()

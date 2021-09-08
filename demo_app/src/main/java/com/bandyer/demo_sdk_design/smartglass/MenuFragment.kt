@@ -2,20 +2,23 @@ package com.bandyer.demo_sdk_design.smartglass
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.SmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.menu.MenuItem
 import com.bandyer.sdk_design.new_smartglass.menu.SmartGlassMenuFragment
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 
 class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
 
     private var tiltController: TiltController? = null
+
+    private var currentMenuItemIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +49,15 @@ class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
         itemAdapter!!.add(MenuItem("Utenti"))
         itemAdapter!!.add(MenuItem("Chat"))
 
+        // add scroll listener
+        rvMenu!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = recyclerView.layoutManager
+                val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
+                currentMenuItemIndex = layoutManager!!.getPosition(foundView)
+            }
+        })
+
         fastAdapter!!.onClickListener = { _, _, _, position ->
             tapBehaviour(position)
         }
@@ -66,6 +78,18 @@ class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
+        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+            if (event.source == SmartGlassTouchEvent.Source.KEY) {
+                rvMenu!!.smoothScrollToNext(currentMenuItemIndex)
+                true
+            } else false
+        }
+        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if (event.source == SmartGlassTouchEvent.Source.KEY) {
+                rvMenu!!.smoothScrollToPrevious(currentMenuItemIndex)
+                true
+            } else false
+        }
         SmartGlassTouchEvent.Type.TAP -> {
             tapBehaviour(currentMenuItemIndex)
         }

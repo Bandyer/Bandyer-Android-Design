@@ -46,6 +46,14 @@ class VolumeFragment : SmartGlassVolumeFragment(), TiltController.TiltListener {
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when (event.type) {
+        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+            slider!!.increaseProgress(0.1f)
+            true
+        }
+        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            slider!!.decreaseProgress(0.1f)
+            true
+        }
         SmartGlassTouchEvent.Type.TAP, SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true
@@ -56,11 +64,11 @@ class VolumeFragment : SmartGlassVolumeFragment(), TiltController.TiltListener {
     override fun onTilt(x: Float, y: Float) {
         deltaX += x
         if (deltaX >= 2) {
-            slider!!.increaseProgress()
+            slider!!.increaseProgress(0.1f)
             deltaX = 0f
         }
         if (deltaX <= -2) {
-            slider!!.decreaseProgress()
+            slider!!.decreaseProgress(0.1f)
             deltaX = 0f
         }
     }

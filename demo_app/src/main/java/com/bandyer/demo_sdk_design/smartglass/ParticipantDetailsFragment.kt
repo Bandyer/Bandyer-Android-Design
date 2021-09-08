@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.extensions.parseToColor
 import com.bandyer.sdk_design.new_smartglass.*
@@ -18,6 +19,7 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment(), TiltC
     private val args: ParticipantDetailsFragmentArgs by navArgs()
 
     private var tiltController: TiltController? = null
+    private var actionIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,6 +80,15 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment(), TiltC
             findNavController().popBackStack()
         }
 
+        // add scroll listener
+        rvActions!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val layoutManager = recyclerView.layoutManager
+                val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
+                actionIndex = layoutManager!!.getPosition(foundView)
+            }
+        })
+
         return view
     }
 
@@ -98,6 +109,18 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment(), TiltC
     }
 
     override fun onSmartGlassTouchEvent(event: SmartGlassTouchEvent): Boolean = when(event.type) {
+        SmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+            if(event.source == SmartGlassTouchEvent.Source.KEY) {
+                rvActions!!.smoothScrollToNext(actionIndex)
+                true
+            } else false
+        }
+        SmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if(event.source == SmartGlassTouchEvent.Source.KEY) {
+                rvActions!!.smoothScrollToPrevious(actionIndex)
+                true
+            } else false
+        }
         SmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true

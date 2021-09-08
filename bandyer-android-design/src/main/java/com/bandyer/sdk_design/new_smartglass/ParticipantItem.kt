@@ -6,7 +6,13 @@ import com.bandyer.sdk_design.databinding.BandyerParticipantItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
-class ParticipantItem(val data: SmartGlassParticipantData): AbstractItem<ParticipantItem.ViewHolder>() {
+/**
+ * A participant item.
+ *
+ * @property text The participant's name
+ * @constructor
+ */
+class ParticipantItem(val text: String): AbstractItem<ParticipantItem.ViewHolder>() {
 
     override val layoutRes: Int
         get() = R.layout.bandyer_participant_item_layout
@@ -21,7 +27,7 @@ class ParticipantItem(val data: SmartGlassParticipantData): AbstractItem<Partici
         private val binding: BandyerParticipantItemLayoutBinding = BandyerParticipantItemLayoutBinding.bind(view)
 
         override fun bindView(item: ParticipantItem, payloads: List<Any>) {
-            binding.bandyerText.text = item.data.name
+            binding.bandyerText.text = item.text
         }
 
         override fun unbindView(item: ParticipantItem) {
