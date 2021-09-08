@@ -1,28 +1,33 @@
-package com.bandyer.sdk_design.new_smartglass
+package com.bandyer.sdk_design.new_smartglass.settings
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bandyer.sdk_design.databinding.BandyerFragmentCallBinding
+import com.bandyer.sdk_design.databinding.BandyerFragmentZoomBinding
+import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
 
 /**
- * SmartGlassCallFragment. A base class for the call fragment.
+ * SmartGlassZoomFragment. A base class for the zoom fragment.
  */
-abstract class SmartGlassCallFragment: SmartGlassBaseFragment(), BandyerSmartGlassTouchEventListener {
+abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
 
-    private var binding: BandyerFragmentCallBinding? = null
+    private var binding: BandyerFragmentZoomBinding? = null
 
     protected var root: View? = null
+    protected var slider: BandyerSlider? = null
     protected var bottomActionBar: BandyerBottomActionBarView? = null
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BandyerFragmentCallBinding.inflate(inflater, container, false)
+        binding = BandyerFragmentZoomBinding.inflate(inflater, container, false)
         root = binding!!.root
+        slider = binding!!.bandyerSlider
         bottomActionBar = binding!!.bandyerBottomActionBar
         return root!!
     }
@@ -31,6 +36,7 @@ abstract class SmartGlassCallFragment: SmartGlassBaseFragment(), BandyerSmartGla
         super.onDestroyView()
         binding = null
         root = null
+        slider = null
         bottomActionBar = null
     }
 }

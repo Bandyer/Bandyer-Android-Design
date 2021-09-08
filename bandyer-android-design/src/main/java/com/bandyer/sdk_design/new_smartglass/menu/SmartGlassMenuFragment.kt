@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.databinding.BandyerFragmentMenuBinding
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
+import com.bandyer.sdk_design.new_smartglass.common.item_decoration.BandyerOffsetItemDecoration
+import com.bandyer.sdk_design.new_smartglass.common.item_decoration.LineItemIndicatorDecoration
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 

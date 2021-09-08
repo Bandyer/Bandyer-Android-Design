@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass.menu
+package com.bandyer.sdk_design.new_smartglass.common.item_decoration
 
 import android.graphics.Rect
 import android.view.View

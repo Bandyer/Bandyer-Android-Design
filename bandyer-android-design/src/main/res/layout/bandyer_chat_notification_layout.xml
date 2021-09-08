@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:theme="@style/BandyerSDKDesign.SmartGlass.Chat.Notification">
 
-    <com.bandyer.sdk_design.new_smartglass.BandyerContactAvatarGroupView
+    <com.bandyer.sdk_design.new_smartglass.chat.notification.BandyerContactAvatarGroupView
         android:id="@+id/bandyer_avatars"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

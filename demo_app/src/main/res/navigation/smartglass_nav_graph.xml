@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/smartglass_nav_graph"
     app:startDestination="@id/ringingFragment">
 
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.ChatFragment"
-        android:label="ChatFragment" />
+        android:label="ChatFragment">
+        <action
+            android:id="@+id/action_chatFragment_to_contactDetailsFragment"
+            app:destination="@id/contactDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/menuFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.MenuFragment"
-        android:label="MenuFragment" >
+        android:label="MenuFragment">
         <action
             android:id="@+id/action_menuFragment_to_volumeFragment"
             app:destination="@id/volumeFragment" />
@@ -41,7 +44,7 @@
     <fragment
         android:id="@+id/endCallFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.EndCallFragment"
-        android:label="EndCallFragment" >
+        android:label="EndCallFragment">
         <action
             android:id="@+id/action_endCallFragment_to_callEndedFragment"
             app:destination="@id/callEndedFragment" />
@@ -49,7 +52,7 @@
     <fragment
         android:id="@+id/ringingFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.RingingFragment"
-        android:label="RingingFragment" >
+        android:label="RingingFragment">
         <action
             android:id="@+id/action_ringingFragment_to_callFragment"
             app:destination="@id/callFragment"
@@ -59,7 +62,7 @@
     <fragment
         android:id="@+id/callFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.CallFragment"
-        android:label="CallFragment" >
+        android:label="CallFragment">
         <action
             android:id="@+id/action_callFragment_to_endCallFragment"
             app:destination="@id/endCallFragment" />
@@ -72,20 +75,15 @@
     <fragment
         android:id="@+id/participantsFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.ParticipantsFragment"
-        android:label="ParticipantsFragment">
-        <action
-            android:id="@+id/action_participantsFragment_to_participantDetailsFragment"
-            app:destination="@id/participantDetailsFragment" >
-        </action>
-    </fragment>
+        android:label="ParticipantsFragment"/>
     <fragment
-        android:id="@+id/participantDetailsFragment"
-        android:name="com.bandyer.demo_sdk_design.smartglass.ParticipantDetailsFragment"
+        android:id="@+id/contactDetailsFragment"
+        android:name="com.bandyer.demo_sdk_design.smartglass.ContactDetailsFragment"
         android:label="ParticipantDetailsFragment" >
         <argument
-            android:name="participantData"
-            app:argType="com.bandyer.sdk_design.new_smartglass.SmartGlassParticipantData"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            android:name="contactData"
+            android:defaultValue="@null"
+            app:argType="com.bandyer.sdk_design.new_smartglass.contact.BandyerContactData"
+            app:nullable="true" />
     </fragment>
 </navigation>

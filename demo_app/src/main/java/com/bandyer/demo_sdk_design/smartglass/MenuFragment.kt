@@ -39,9 +39,6 @@ class MenuFragment : SmartGlassMenuFragment(), TiltController.TiltListener {
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        if(Build.MODEL == resources.getString(R.string.bandyer_smartglass_realwear_model_name))
-            bottomActionBar!!.setSwipeText(resources.getString(R.string.bandyer_smartglass_right_left))
-
         itemAdapter!!.add(BandyerMenuItem("Attiva microfono", "Muta microfono"))
         itemAdapter!!.add(BandyerMenuItem("Attiva camera", "Muta camera"))
         itemAdapter!!.add(BandyerMenuItem("Volume"))

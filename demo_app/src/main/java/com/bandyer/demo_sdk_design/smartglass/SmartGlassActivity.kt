@@ -15,7 +15,7 @@ import com.bandyer.demo_sdk_design.smartglass.battery.BatteryObserver
 import com.bandyer.demo_sdk_design.smartglass.battery.BatteryState
 import com.bandyer.demo_sdk_design.smartglass.network.WiFiObserver
 import com.bandyer.demo_sdk_design.smartglass.network.WiFiState
-import com.bandyer.sdk_design.new_smartglass.GlassGestureDetector
+import com.bandyer.sdk_design.new_smartglass.utils.GlassGestureDetector
 import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEventListener
 import com.bandyer.sdk_design.new_smartglass.chat.notification.BandyerNotificationManager

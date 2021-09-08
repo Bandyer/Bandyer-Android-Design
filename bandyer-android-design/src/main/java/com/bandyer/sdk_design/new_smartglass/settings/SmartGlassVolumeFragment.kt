@@ -1,33 +1,33 @@
-package com.bandyer.sdk_design.new_smartglass
+package com.bandyer.sdk_design.new_smartglass.settings
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bandyer.sdk_design.databinding.BandyerFragmentCallEndedBinding
+import com.bandyer.sdk_design.databinding.BandyerFragmentVolumeBinding
+import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
-import com.google.android.material.textview.MaterialTextView
 
 /**
- * SmartGlassCallEndedFragment. A base class for the call ended fragment.
+ * SmartGlassVolumeFragment. A base class for the volume fragment.
  */
-abstract class SmartGlassCallEndedFragment: SmartGlassBaseFragment() {
+abstract class SmartGlassVolumeFragment : SmartGlassBaseFragment() {
 
-    private var binding: BandyerFragmentCallEndedBinding? = null
+    private var binding: BandyerFragmentVolumeBinding? = null
 
     protected var root: View? = null
-    protected var title: MaterialTextView? = null
-    protected var subtitle: MaterialTextView? = null
+    protected var slider: BandyerSlider? = null
     protected var bottomActionBar: BandyerBottomActionBarView? = null
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BandyerFragmentCallEndedBinding.inflate(inflater, container, false)
+        binding = BandyerFragmentVolumeBinding.inflate(inflater, container, false)
         root = binding!!.root
-        title = binding!!.bandyerTitle
-        subtitle = binding!!.bandyerSubtitle
+        slider = binding!!.bandyerSlider
         bottomActionBar = binding!!.bandyerBottomActionBar
         return root!!
     }
@@ -36,8 +36,7 @@ abstract class SmartGlassCallEndedFragment: SmartGlassBaseFragment() {
         super.onDestroyView()
         binding = null
         root = null
-        title = null
-        subtitle = null
+        slider = null
         bottomActionBar = null
     }
 }

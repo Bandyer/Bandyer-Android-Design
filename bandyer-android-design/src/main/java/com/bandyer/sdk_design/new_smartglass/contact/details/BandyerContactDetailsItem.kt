@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass
+package com.bandyer.sdk_design.new_smartglass.contact.details
 
 import android.view.View
 import com.bandyer.sdk_design.R
@@ -12,7 +12,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property text The action text
  * @constructor
  */
-class BandyerParticipantDetailsItem(val text: String): AbstractItem<BandyerParticipantDetailsItem.ViewHolder>() {
+class BandyerContactDetailsItem(val text: String): AbstractItem<BandyerContactDetailsItem.ViewHolder>() {
 
     override val layoutRes: Int
         get() = R.layout.bandyer_participant_details_item_layout
@@ -22,15 +22,15 @@ class BandyerParticipantDetailsItem(val text: String): AbstractItem<BandyerParti
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
-    class ViewHolder(view: View): FastAdapter.ViewHolder<BandyerParticipantDetailsItem>(view) {
+    class ViewHolder(view: View): FastAdapter.ViewHolder<BandyerContactDetailsItem>(view) {
 
         private val binding: BandyerParticipantDetailsItemLayoutBinding = BandyerParticipantDetailsItemLayoutBinding.bind(view)
 
-        override fun bindView(item: BandyerParticipantDetailsItem, payloads: List<Any>) {
+        override fun bindView(item: BandyerContactDetailsItem, payloads: List<Any>) {
             binding.bandyerText.text = item.text
         }
 
-        override fun unbindView(item: BandyerParticipantDetailsItem) {
+        override fun unbindView(item: BandyerContactDetailsItem) {
             binding.bandyerText.text = null
         }
     }

@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass
+package com.bandyer.sdk_design.new_smartglass.contact
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
@@ -6,7 +6,7 @@ import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 
 /**
- * SmartGlassParticipantData
+ * BandyerContactData
  *
  * @property name The name
  * @property userAlias The user alias
@@ -18,7 +18,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Keep
 @Parcelize
-data class BandyerParticipantData(
+data class BandyerContactData(
     val name: String,
     val userAlias: String,
     val userState: UserState,

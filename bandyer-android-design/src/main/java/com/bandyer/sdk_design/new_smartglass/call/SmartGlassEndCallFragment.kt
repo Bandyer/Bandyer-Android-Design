@@ -1,34 +1,34 @@
-package com.bandyer.sdk_design.new_smartglass.volume
+package com.bandyer.sdk_design.new_smartglass.call
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bandyer.sdk_design.databinding.BandyerFragmentZoomBinding
-import com.bandyer.sdk_design.new_smartglass.BandyerSlider
+import com.bandyer.sdk_design.databinding.BandyerFragmentEndCallBinding
 import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
+import com.google.android.material.textview.MaterialTextView
 
 /**
- * SmartGlassZoomFragment. A base class for the zoom fragment.
+ * SmartGlassEndCallFragment. A base class for the end call fragment.
  */
-abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
+abstract class SmartGlassEndCallFragment: SmartGlassBaseFragment() {
 
-    private var binding: BandyerFragmentZoomBinding? = null
+    private var binding: BandyerFragmentEndCallBinding? = null
 
     protected var root: View? = null
-    protected var slider: BandyerSlider? = null
+    protected var title: MaterialTextView? = null
+    protected var subtitle: MaterialTextView? = null
     protected var bottomActionBar: BandyerBottomActionBarView? = null
 
-    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BandyerFragmentZoomBinding.inflate(inflater, container, false)
+        binding = BandyerFragmentEndCallBinding.inflate(inflater, container, false)
         root = binding!!.root
-        slider = binding!!.bandyerSlider
+        title = binding!!.bandyerTitle
+        subtitle = binding!!.bandyerSubtitle
         bottomActionBar = binding!!.bandyerBottomActionBar
         return root!!
     }
@@ -37,7 +37,8 @@ abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
         super.onDestroyView()
         binding = null
         root = null
-        slider = null
+        title = null
+        subtitle = null
         bottomActionBar = null
     }
 }

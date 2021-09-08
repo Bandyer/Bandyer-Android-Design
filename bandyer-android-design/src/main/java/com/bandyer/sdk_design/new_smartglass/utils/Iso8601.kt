@@ -3,7 +3,7 @@
  * See LICENSE.txt for licensing information
  */
 
-package com.bandyer.sdk_design.new_smartglass
+package com.bandyer.sdk_design.new_smartglass.utils
 
 import android.content.Context
 import com.bandyer.sdk_design.R

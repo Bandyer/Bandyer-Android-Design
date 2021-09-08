@@ -7,7 +7,7 @@
     style="?attr/bandyer_rootLayoutStyle"
     android:theme="?attr/bandyer_smartGlassParticipantsFragmentStyle">
 
-    <com.bandyer.sdk_design.new_smartglass.BandyerContactAvatarView
+    <com.bandyer.sdk_design.new_smartglass.common.BandyerContactAvatarView
         android:id="@+id/bandyer_avatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toEndOf="@id/bandyer_avatar"
         app:layout_constraintTop_toTopOf="@id/bandyer_avatar" />
 
-    <com.bandyer.sdk_design.new_smartglass.BandyerContactStateTextView
+    <com.bandyer.sdk_design.new_smartglass.contact.BandyerContactStateTextView
         android:id="@+id/bandyer_contact_state_text"
         style="?attr/bandyer_subtitleStyle"
         android:layout_width="wrap_content"

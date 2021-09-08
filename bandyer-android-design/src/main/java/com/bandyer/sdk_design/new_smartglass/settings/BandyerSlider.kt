@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass
+package com.bandyer.sdk_design.new_smartglass.settings
 
 import android.annotation.SuppressLint
 import android.content.Context

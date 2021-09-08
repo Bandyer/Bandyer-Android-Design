@@ -1,6 +1,7 @@
 package com.bandyer.sdk_design.new_smartglass
 
 import android.view.KeyEvent
+import com.bandyer.sdk_design.new_smartglass.utils.GlassGestureDetector
 import com.bandyer.sdk_design.new_smartglass.utils.extensions.isConfirmButton
 import com.bandyer.sdk_design.new_smartglass.utils.extensions.isDownButton
 import com.bandyer.sdk_design.new_smartglass.utils.extensions.isLeftButton

@@ -12,14 +12,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
-import com.bandyer.sdk_design.new_smartglass.Iso8601
 import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.chat.BandyerChatItem
-import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassMessageData
 import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassChatFragment
+import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassMessageData
+import com.bandyer.sdk_design.new_smartglass.contact.BandyerContactData
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
+import com.bandyer.sdk_design.new_smartglass.utils.Iso8601
 import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.*
 
 class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
@@ -41,6 +43,33 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
         }
     private var lastMsgIndex = 0
     private var pagesIds = arrayListOf<String>()
+
+    private val contactData = listOf(
+        BandyerContactData(
+            "Mario Rossi",
+            "Mario Rossi",
+            BandyerContactData.UserState.ONLINE,
+            R.drawable.sample_image,
+            null,
+            Instant.now().toEpochMilli()
+        ),
+        BandyerContactData(
+            "Ugo Trapasso",
+            "Ugo Trapasso",
+            BandyerContactData.UserState.OFFLINE,
+            null,
+            "https://i.imgur.com/9I2qAlW.jpeg",
+            Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
+        ),
+        BandyerContactData(
+            "Gianfranco Sala",
+            "Gianfranco Sala",
+            BandyerContactData.UserState.INVITED,
+            null,
+            null,
+            Instant.now().toEpochMilli()
+        )
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,9 +107,6 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
             }
         })
 
-        if(Build.MODEL == resources.getString(R.string.bandyer_smartglass_realwear_model_name))
-            bottomActionBar!!.setSwipeText(resources.getString(R.string.bandyer_smartglass_right_left))
-
         addChatItem(
             SmartGlassMessageData(
                 UUID.randomUUID().toString(),
@@ -97,7 +123,8 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
                 "Ugo",
                 "Ugo",
                 "Come se fosse antani con lo scappellamento a sinistra",
-                Instant.now().toEpochMilli()
+                Instant.now().toEpochMilli(),
+                userAvatarUrl = "https://i.imgur.com/9I2qAlW.jpeg"
             )
         )
         addChatItem(
@@ -109,21 +136,19 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
                 Instant.now().toEpochMilli()
             )
         )
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            addChatItem(
-                SmartGlassMessageData(
-                    UUID.randomUUID().toString(),
-                    "Gianfranco",
-                    "Gianfranco",
-                    "La scatola è sulla sinistra",
-                    Instant.now().toEpochMilli()
-                )
-            )
-
-        }, 1000)
-
-        bottomActionBar!!.setTapText(null)
+//
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            addChatItem(
+//                SmartGlassMessageData(
+//                    UUID.randomUUID().toString(),
+//                    "Gianfranco",
+//                    "Gianfranco",
+//                    "La scatola è sulla sinistra",
+//                    Instant.now().toEpochMilli()
+//                )
+//            )
+//
+//        }, 1000)
 
         bottomActionBar!!.setSwipeOnClickListener {
             rvMessages!!.smoothScrollToNext(currentMsgItemIndex)
@@ -136,13 +161,27 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
         return view
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        currentMsgItemIndex = 0
+        newMessagesCounter = 0
+        lastMsgIndex = 0
+        pagesIds = arrayListOf()
+    }
+
     override fun onTilt(x: Float, y: Float) = rvMessages!!.scrollBy((x * 40).toInt(), 0)
 
     override fun onResume() {
         super.onResume()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             tiltController!!.requestAllSensors()
-        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_smartglass_background_color, null))
+        activity.setStatusBarColor(
+            ResourcesCompat.getColor(
+                resources,
+                R.color.bandyer_smartglass_background_color,
+                null
+            )
+        )
     }
 
     override fun onPause() {
@@ -155,16 +194,25 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
     override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean =
         when (event.type) {
             BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-                if(event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
+                if (event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
                     rvMessages!!.smoothScrollToNext(currentMsgItemIndex)
                     true
                 } else false
             }
             BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-                if(event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
+                if (event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
                     rvMessages!!.smoothScrollToPrevious(currentMsgItemIndex)
                     true
                 } else false
+            }
+            BandyerSmartGlassTouchEvent.Type.TAP -> {
+                val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userAlias
+                val action =
+                    ChatFragmentDirections.actionChatFragmentToContactDetailsFragment(
+                        contactData.first { it.userAlias.contains(username!!) }
+                    )
+                findNavController().navigate(action)
+                true
             }
             BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
                 findNavController().popBackStack()

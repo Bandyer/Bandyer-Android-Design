@@ -10,12 +10,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.extensions.parseToColor
-import com.bandyer.sdk_design.new_smartglass.*
+import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.contact.BandyerContactData
+import com.bandyer.sdk_design.new_smartglass.contact.BandyerContactStateTextView
+import com.bandyer.sdk_design.new_smartglass.contact.call_participant.BandyerCallParticipantItem
+import com.bandyer.sdk_design.new_smartglass.contact.call_participant.SmartGlassCallParticipantsFragment
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.util.*
 
-class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.TiltListener {
+class ParticipantsFragment : SmartGlassCallParticipantsFragment(), TiltController.TiltListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -23,7 +28,7 @@ class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.Ti
 
     private var currentParticipantIndex = -1
 
-    private var participantsData: List<BandyerParticipantData> = listOf()
+    private var participantsData: List<BandyerContactData> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,30 +49,27 @@ class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.Ti
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        if (Build.MODEL == resources.getString(R.string.bandyer_smartglass_realwear_model_name))
-            bottomActionBar!!.setSwipeText(resources.getString(R.string.bandyer_smartglass_right_left))
-
         participantsData = listOf(
-            BandyerParticipantData(
+            BandyerContactData(
                 "Mario Rossi",
                 "Mario Rossi",
-                BandyerParticipantData.UserState.ONLINE,
+                BandyerContactData.UserState.ONLINE,
                 R.drawable.sample_image,
                 null,
                 Instant.now().toEpochMilli()
             ),
-            BandyerParticipantData(
+            BandyerContactData(
                 "Felice Trapasso",
                 "Felice Trapasso",
-                BandyerParticipantData.UserState.OFFLINE,
+                BandyerContactData.UserState.OFFLINE,
                 null,
                 "https://i.imgur.com/9I2qAlW.jpeg",
                 Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
             ),
-            BandyerParticipantData(
+            BandyerContactData(
                 "Francesco Sala",
                 "Francesco Sala",
-                BandyerParticipantData.UserState.INVITED,
+                BandyerContactData.UserState.INVITED,
                 null,
                 null,
                 Instant.now().toEpochMilli()
@@ -75,7 +77,7 @@ class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.Ti
         )
 
         participantsData.forEach {
-            itemAdapter!!.add(BandyerParticipantItem(it.userAlias))
+            itemAdapter!!.add(BandyerCallParticipantItem(it.userAlias))
         }
 
         rvParticipants!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -94,32 +96,23 @@ class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.Ti
                 if (data.avatarImageId != null) avatar!!.setImage(data.avatarImageId)
                 else if (data.avatarImageUrl != null) avatar!!.setImage(data.avatarImageUrl!!)
                 contactStateDot!!.isActivated =
-                    data.userState == BandyerParticipantData.UserState.ONLINE
+                    data.userState == BandyerContactData.UserState.ONLINE
                 with(contactStateText!!) {
                     when (data.userState) {
-                        BandyerParticipantData.UserState.INVITED -> setContactState(
+                        BandyerContactData.UserState.INVITED -> setContactState(
                             BandyerContactStateTextView.State.INVITED
                         )
-                        BandyerParticipantData.UserState.OFFLINE -> setContactState(
+                        BandyerContactData.UserState.OFFLINE -> setContactState(
                             BandyerContactStateTextView.State.LAST_SEEN,
                             data.lastSeenTime
                         )
-                        BandyerParticipantData.UserState.ONLINE -> setContactState(
+                        BandyerContactData.UserState.ONLINE -> setContactState(
                             BandyerContactStateTextView.State.ONLINE
                         )
                     }
                 }
             }
         })
-
-        bottomActionBar!!.setTapOnClickListener {
-            if(currentParticipantIndex == -1) return@setTapOnClickListener
-            val action =
-                ParticipantsFragmentDirections.actionParticipantsFragmentToParticipantDetailsFragment(
-                    participantsData[currentParticipantIndex]
-                )
-            findNavController().navigate(action)
-        }
 
         bottomActionBar!!.setSwipeOnClickListener {
             rvParticipants!!.smoothScrollToNext(currentParticipantIndex)
@@ -166,16 +159,6 @@ class ParticipantsFragment : SmartGlassParticipantsFragment(), TiltController.Ti
         BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
             if(event.source == BandyerSmartGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
                 rvParticipants!!.smoothScrollToPrevious(currentParticipantIndex)
-                true
-            } else false
-        }
-        BandyerSmartGlassTouchEvent.Type.TAP -> {
-            if(currentParticipantIndex != -1) {
-                val action =
-                    ParticipantsFragmentDirections.actionParticipantsFragmentToParticipantDetailsFragment(
-                        participantsData[currentParticipantIndex]
-                    )
-                findNavController().navigate(action)
                 true
             } else false
         }

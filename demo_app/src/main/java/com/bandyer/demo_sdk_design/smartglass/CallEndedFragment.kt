@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.sdk_design.new_smartglass.SmartGlassCallEndedFragment
+import com.bandyer.sdk_design.new_smartglass.call.SmartGlassCallEndedFragment
 import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
 
 class CallEndedFragment : SmartGlassCallEndedFragment() {

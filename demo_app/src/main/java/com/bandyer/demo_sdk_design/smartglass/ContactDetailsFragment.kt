@@ -11,12 +11,18 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.extensions.parseToColor
-import com.bandyer.sdk_design.new_smartglass.*
+import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
+import com.bandyer.sdk_design.new_smartglass.contact.BandyerContactData
+import com.bandyer.sdk_design.new_smartglass.contact.BandyerContactStateTextView
+import com.bandyer.sdk_design.new_smartglass.contact.details.BandyerContactDetailsItem
+import com.bandyer.sdk_design.new_smartglass.contact.details.SmartGlassContactDetailsFragment
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 
-class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment(), TiltController.TiltListener {
+class ContactDetailsFragment : SmartGlassContactDetailsFragment(), TiltController.TiltListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
-    private val args: ParticipantDetailsFragmentArgs by navArgs()
+    private val args: ContactDetailsFragmentArgs by navArgs()
 
     private var tiltController: TiltController? = null
     private var actionIndex = 0
@@ -40,20 +46,17 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment(), TiltC
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        if(Build.MODEL == resources.getString(R.string.bandyer_smartglass_realwear_model_name))
-            bottomActionBar!!.setSwipeText(resources.getString(R.string.bandyer_smartglass_right_left))
-
-        val data = args.participantData!!
+        val data = args.contactData!!
 
         avatar!!.setText(data.name.first().toString())
         avatar!!.setBackground(data.name.parseToColor())
         name!!.text = data.name
         with(contactStateText!!) {
             when (data.userState) {
-                BandyerParticipantData.UserState.INVITED -> setContactState(
+                BandyerContactData.UserState.INVITED -> setContactState(
                     BandyerContactStateTextView.State.INVITED
                 )
-                BandyerParticipantData.UserState.OFFLINE -> setContactState(
+                BandyerContactData.UserState.OFFLINE -> setContactState(
                     BandyerContactStateTextView.State.LAST_SEEN,
                     data.lastSeenTime
                 )
@@ -67,10 +70,10 @@ class ParticipantDetailsFragment : SmartGlassParticipantDetailsFragment(), TiltC
             data.avatarImageUrl != null -> avatar!!.setImage(data.avatarImageUrl!!)
             else -> avatar!!.setImage(null)
         }
-        contactStateDot!!.isActivated = data.userState == BandyerParticipantData.UserState.ONLINE
+        contactStateDot!!.isActivated = data.userState == BandyerContactData.UserState.ONLINE
 
-        itemAdapter!!.add(BandyerParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_videocall)))
-        itemAdapter!!.add(BandyerParticipantDetailsItem(resources.getString(R.string.bandyer_smartglass_call)))
+        itemAdapter!!.add(BandyerContactDetailsItem(resources.getString(R.string.bandyer_smartglass_videocall)))
+        itemAdapter!!.add(BandyerContactDetailsItem(resources.getString(R.string.bandyer_smartglass_call)))
 
         bottomActionBar!!.setSwipeOnClickListener {
             rvActions!!.smoothScrollToNext(actionIndex)

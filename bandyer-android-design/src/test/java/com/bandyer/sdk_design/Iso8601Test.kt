@@ -1,10 +1,10 @@
 package com.bandyer.sdk_design
 
 import com.bandyer.android_common.assertIsTrue
-import com.bandyer.sdk_design.new_smartglass.Iso8601
-import com.bandyer.sdk_design.new_smartglass.Iso8601.isLastWeek
-import com.bandyer.sdk_design.new_smartglass.Iso8601.isToday
-import com.bandyer.sdk_design.new_smartglass.Iso8601.isYesterday
+import com.bandyer.sdk_design.new_smartglass.utils.Iso8601
+import com.bandyer.sdk_design.new_smartglass.utils.Iso8601.isLastWeek
+import com.bandyer.sdk_design.new_smartglass.utils.Iso8601.isToday
+import com.bandyer.sdk_design.new_smartglass.utils.Iso8601.isYesterday
 import org.junit.Test
 import java.text.SimpleDateFormat
 import java.time.Instant

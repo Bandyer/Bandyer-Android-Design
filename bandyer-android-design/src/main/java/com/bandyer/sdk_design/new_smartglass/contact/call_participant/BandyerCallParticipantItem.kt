@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass
+package com.bandyer.sdk_design.new_smartglass.contact.call_participant
 
 import android.view.View
 import com.bandyer.sdk_design.R
@@ -12,7 +12,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property text The participant's name
  * @constructor
  */
-class BandyerParticipantItem(val text: String): AbstractItem<BandyerParticipantItem.ViewHolder>() {
+class BandyerCallParticipantItem(val text: String): AbstractItem<BandyerCallParticipantItem.ViewHolder>() {
 
     override val layoutRes: Int
         get() = R.layout.bandyer_participant_item_layout
@@ -22,15 +22,15 @@ class BandyerParticipantItem(val text: String): AbstractItem<BandyerParticipantI
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
-    class ViewHolder(view: View): FastAdapter.ViewHolder<BandyerParticipantItem>(view) {
+    class ViewHolder(view: View): FastAdapter.ViewHolder<BandyerCallParticipantItem>(view) {
 
         private val binding: BandyerParticipantItemLayoutBinding = BandyerParticipantItemLayoutBinding.bind(view)
 
-        override fun bindView(item: BandyerParticipantItem, payloads: List<Any>) {
+        override fun bindView(item: BandyerCallParticipantItem, payloads: List<Any>) {
             binding.bandyerText.text = item.text
         }
 
-        override fun unbindView(item: BandyerParticipantItem) {
+        override fun unbindView(item: BandyerCallParticipantItem) {
             binding.bandyerText.text = null
         }
     }

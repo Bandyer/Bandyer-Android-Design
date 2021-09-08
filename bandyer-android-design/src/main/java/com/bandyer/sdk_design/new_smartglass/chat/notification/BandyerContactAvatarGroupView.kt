@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass
+package com.bandyer.sdk_design.new_smartglass.chat.notification
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,6 +7,7 @@ import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import com.bandyer.sdk_design.extensions.dp2px
+import com.bandyer.sdk_design.new_smartglass.common.BandyerContactAvatarView
 
 /**
  * A view aggregator of [BandyerContactAvatarView]

@@ -1,19 +1,21 @@
-package com.bandyer.sdk_design.new_smartglass
+package com.bandyer.sdk_design.new_smartglass.call
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bandyer.sdk_design.databinding.BandyerFragmentEndCallBinding
+import com.bandyer.sdk_design.databinding.BandyerFragmentRingingBinding
+import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
 import com.google.android.material.textview.MaterialTextView
 
 /**
- * SmartGlassEndCallFragment. A base class for the end call fragment.
+ * SmartGlassRingingFragment. A base class for the ringing
+ *fragment.
  */
-abstract class SmartGlassEndCallFragment: SmartGlassBaseFragment() {
+abstract class SmartGlassRingingFragment: SmartGlassBaseFragment() {
 
-    private var binding: BandyerFragmentEndCallBinding? = null
+    private var binding: BandyerFragmentRingingBinding? = null
 
     protected var root: View? = null
     protected var title: MaterialTextView? = null
@@ -24,7 +26,7 @@ abstract class SmartGlassEndCallFragment: SmartGlassBaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BandyerFragmentEndCallBinding.inflate(inflater, container, false)
+        binding = BandyerFragmentRingingBinding.inflate(inflater, container, false)
         root = binding!!.root
         title = binding!!.bandyerTitle
         subtitle = binding!!.bandyerSubtitle

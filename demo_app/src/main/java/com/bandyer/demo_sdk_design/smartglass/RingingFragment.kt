@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.sdk_design.new_smartglass.SmartGlassRingingFragment
+import com.bandyer.sdk_design.new_smartglass.call.SmartGlassRingingFragment
 import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
 
 class RingingFragment: SmartGlassRingingFragment() {

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:theme="?attr/bandyer_smartGlassZoomFragmentStyle">
 
-    <com.bandyer.sdk_design.new_smartglass.BandyerSlider
+    <com.bandyer.sdk_design.new_smartglass.settings.BandyerSlider
         android:id="@+id/bandyer_slider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

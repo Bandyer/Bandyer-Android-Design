@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass
+package com.bandyer.sdk_design.new_smartglass.contact.call_participant
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,31 +8,32 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.sdk_design.databinding.BandyerFragmentParticipantDetailsBinding
+import com.bandyer.sdk_design.databinding.BandyerFragmentParticipantsBinding
 import com.bandyer.sdk_design.new_smartglass.bottom_action_bar.BandyerBottomActionBarView
-import com.bandyer.sdk_design.new_smartglass.menu.LineItemIndicatorDecoration
-import com.bandyer.sdk_design.new_smartglass.menu.BandyerOffsetItemDecoration
+import com.bandyer.sdk_design.new_smartglass.common.BandyerContactAvatarView
+import com.bandyer.sdk_design.new_smartglass.common.item_decoration.LineItemIndicatorDecoration
+import com.bandyer.sdk_design.new_smartglass.common.item_decoration.BandyerOffsetItemDecoration
+import com.bandyer.sdk_design.new_smartglass.SmartGlassBaseFragment
+import com.bandyer.sdk_design.new_smartglass.contact.BandyerContactStateTextView
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
 /**
- * SmartGlassParticipantDetailsFragment. A base class for the participant details fragment.
+ * SmartGlassParticipantsFragment. A base class for the participants fragment.
  */
-abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
+abstract class SmartGlassCallParticipantsFragment : SmartGlassBaseFragment() {
 
-    private var binding: BandyerFragmentParticipantDetailsBinding? = null
+    private var binding: BandyerFragmentParticipantsBinding? = null
 
-    protected var itemAdapter: ItemAdapter<BandyerParticipantDetailsItem>? = null
-    protected var fastAdapter: FastAdapter<BandyerParticipantDetailsItem>? = null
+    protected var itemAdapter: ItemAdapter<BandyerCallParticipantItem>? = null
+    protected var fastAdapter: FastAdapter<BandyerCallParticipantItem>? = null
 
     protected var root: View? = null
     protected var avatar: BandyerContactAvatarView? = null
     protected var contactStateDot: ShapeableImageView? = null
     protected var contactStateText: BandyerContactStateTextView? = null
-    protected var name: MaterialTextView? = null
-    protected var rvActions: RecyclerView? = null
+    protected var rvParticipants: RecyclerView? = null
     protected var bottomActionBar: BandyerBottomActionBarView? = null
 
     protected var snapHelper: LinearSnapHelper? = null
@@ -42,15 +43,14 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BandyerFragmentParticipantDetailsBinding.inflate(inflater, container, false)
+        binding = BandyerFragmentParticipantsBinding.inflate(inflater, container, false)
 
         // set the views
         root = binding!!.root
         avatar = binding!!.bandyerAvatar
         contactStateDot = binding!!.bandyerContactStateDot
         contactStateText = binding!!.bandyerContactStateText
-        name = binding!!.bandyerName
-        rvActions = binding!!.bandyerParticipants
+        rvParticipants = binding!!.bandyerParticipants
         bottomActionBar = binding!!.bandyerBottomActionBar
 
         // init the recycler view
@@ -58,24 +58,23 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
         fastAdapter = FastAdapter.with(itemAdapter!!)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvActions!!.layoutManager = layoutManager
-        rvActions!!.adapter = fastAdapter
-        rvActions!!.isFocusable = false
-        rvActions!!.setHasFixedSize(true)
+        rvParticipants!!.layoutManager = layoutManager
+        rvParticipants!!.adapter = fastAdapter
+        rvParticipants!!.isFocusable = false
 
         snapHelper = LinearSnapHelper()
-        snapHelper!!.attachToRecyclerView(rvActions)
+        snapHelper!!.attachToRecyclerView(rvParticipants)
 
-        rvActions!!.addItemDecoration(
+        rvParticipants!!.addItemDecoration(
             LineItemIndicatorDecoration(
                 requireContext(),
                 snapHelper!!
             )
         )
-        rvActions!!.addItemDecoration(BandyerOffsetItemDecoration())
+        rvParticipants!!.addItemDecoration(BandyerOffsetItemDecoration())
 
         // pass the root view's touch event to the recycler view
-        root!!.setOnTouchListener { _, event -> rvActions!!.onTouchEvent(event) }
+        root!!.setOnTouchListener { _, event -> rvParticipants!!.onTouchEvent(event) }
 
         return root!!
     }
@@ -86,13 +85,13 @@ abstract class SmartGlassParticipantDetailsFragment : SmartGlassBaseFragment() {
         fastAdapter = null
         binding = null
         root = null
-        rvActions = null
-        name = null
+        rvParticipants = null
         bottomActionBar = null
         avatar = null
         contactStateDot = null
         contactStateText = null
         snapHelper = null
     }
-
 }
+
+
