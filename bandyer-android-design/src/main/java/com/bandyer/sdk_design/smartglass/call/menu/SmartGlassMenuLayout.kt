@@ -6,15 +6,20 @@
 package com.bandyer.sdk_design.smartglass.call.menu
 
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SnapHelper
+import com.bandyer.sdk_design.utils.TiltController
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
@@ -35,6 +40,21 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
  * @constructor
  */
 class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle) : ConstraintLayout(context, attrs, defStyleAttr), MotionEventInterceptableView<ConstraintLayout> {
+
+    private var tiltController: TiltController? = null
+
+    private var tiltListener = object : TiltController.TiltListener {
+        override fun onTilt(x: Float, y: Float) {
+
+            Log.e("TILT", "$x, $y")
+            val layoutManager = binding.bandyerSmartGlassMenuRecyclerview.layoutManager
+            val isRecyclerViewHorizontal = ((layoutManager as? GridLayoutManager) ?: (layoutManager as? LinearLayoutManager))
+                ?.orientation  == RecyclerView.HORIZONTAL
+
+            if (isRecyclerViewHorizontal) binding.bandyerSmartGlassMenuRecyclerview.scrollBy(x.toInt() * 40, 0)
+            else binding.bandyerSmartGlassMenuRecyclerview.scrollBy(0, y.toInt() * 40)
+        }
+    }
 
     /**
      * Smart glass menu selection listener
@@ -100,7 +120,16 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
             adapter = fastAdapter
             snapHelper.attachToRecyclerView(this)
             binding.bandyerSmartGlassMenuIndicator.attachToRecyclerView(this)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                tiltController = TiltController(context, tiltListener)
+            }
         }
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
+        tiltController?.releaseAllSensors()
     }
 
     private fun getCurrentMenuItemIndex(): Int = snapHelper.findSnapView(linearLayoutManager)?.let { linearLayoutManager.getPosition(it) } ?: -1
