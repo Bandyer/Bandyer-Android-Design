@@ -58,7 +58,7 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
             "Ugo Trapasso",
             BandyerContactData.UserState.OFFLINE,
             null,
-            "https://i.imgur.com/9I2qAlW.jpeg",
+            "https://2.bp.blogspot.com/-jLEDf_NyZ1g/WmmyFZKOd-I/AAAAAAAAHd8/FZvIj2o_jqwl0S_yz4zBU16N1yGj-UCrACLcBGAs/s1600/heisenberg-breaking-bad.jpg",
             Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
         ),
         BandyerContactData(
@@ -90,6 +90,7 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
     ): View {
         (requireActivity() as SmartGlassActivity).showStatusBar()
         activity.hideNotification()
+        activity.setDnd(true)
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
@@ -124,7 +125,7 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
                 "Ugo",
                 "Come se fosse antani con lo scappellamento a sinistra",
                 Instant.now().toEpochMilli(),
-                userAvatarUrl = "https://i.imgur.com/9I2qAlW.jpeg"
+                userAvatarUrl = "https://2.bp.blogspot.com/-jLEDf_NyZ1g/WmmyFZKOd-I/AAAAAAAAHd8/FZvIj2o_jqwl0S_yz4zBU16N1yGj-UCrACLcBGAs/s1600/heisenberg-breaking-bad.jpg"
             )
         )
         addChatItem(
@@ -163,6 +164,7 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        activity.setDnd(false)
         currentMsgItemIndex = 0
         newMessagesCounter = 0
         lastMsgIndex = 0

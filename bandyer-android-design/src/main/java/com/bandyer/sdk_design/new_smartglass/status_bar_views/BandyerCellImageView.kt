@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass.status_bar
+package com.bandyer.sdk_design.new_smartglass.status_bar_views
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,9 +6,9 @@ import com.bandyer.sdk_design.R
 import com.google.android.material.imageview.ShapeableImageView
 
 /**
- * This ImageView defines the state of the wifi signal
+ * This ImageView defines the state of the cell signal
  */
-class BandyerWifiImageView @JvmOverloads constructor(
+class BandyerCellImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -17,7 +17,7 @@ class BandyerWifiImageView @JvmOverloads constructor(
     /**
      * The state of the ImageView. It changes the drawable state
      */
-    var state: State? = State.DISABLED
+    var state: State? = State.LOW
         set(value) {
             field = value
             refreshDrawableState()
@@ -27,7 +27,7 @@ class BandyerWifiImageView @JvmOverloads constructor(
      * @suppress
      */
     override fun onCreateDrawableState(extraSpace: Int): IntArray {
-        val drawableState = super.onCreateDrawableState(extraSpace + 4)
+        val drawableState = super.onCreateDrawableState(extraSpace + 5)
         val state = state ?: return drawableState
         return mergeDrawableStates(drawableState, state.value)
     }
@@ -41,23 +41,28 @@ class BandyerWifiImageView @JvmOverloads constructor(
     enum class State(val value: IntArray) {
 
         /**
-         * d i s a b l e d
+         * m i s s i n g
          */
-        DISABLED(intArrayOf(R.attr.bandyer_state_wifi_disabled)),
+        MISSING(intArrayOf(R.attr.bandyer_state_cell_missing)),
 
         /**
          * l o w
          */
-        LOW(intArrayOf(R.attr.bandyer_state_wifi_low)),
+        LOW(intArrayOf(R.attr.bandyer_state_cell_low)),
 
         /**
          * m o d e r a t e
          */
-        MODERATE(intArrayOf(R.attr.bandyer_state_wifi_moderate)),
+        MODERATE(intArrayOf(R.attr.bandyer_state_cell_moderate)),
+
+        /**
+         * g o o d
+         */
+        GOOD(intArrayOf(R.attr.bandyer_state_cell_good)),
 
         /**
          * f u l l
          */
-        FULL(intArrayOf(R.attr.bandyer_state_wifi_full)),
+        FULL(intArrayOf(R.attr.bandyer_state_cell_full)),
     }
 }

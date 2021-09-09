@@ -27,6 +27,7 @@ class BandyerNotificationManager {
     private var listener: NotificationListener? = null
 
     private var state: State = State.HIDDEN
+    var dnd: Boolean = false
 
     /**
      * @param layout The [ConstraintLayout] to which attach the [BandyerChatNotificationView]
@@ -70,6 +71,7 @@ class BandyerNotificationManager {
      * @param notificationData The data needed for the [notification][BandyerChatNotificationView]
      */
     fun show(notificationData: List<BandyerNotificationData>) {
+        if(dnd) return
         state = State.COLLAPSED
         notificationView?.show(notificationData)
         listener?.onShow()

@@ -1,6 +1,8 @@
 package com.bandyer.demo_sdk_design.smartglass
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -15,11 +17,12 @@ import com.bandyer.demo_sdk_design.smartglass.battery.BatteryObserver
 import com.bandyer.demo_sdk_design.smartglass.battery.BatteryState
 import com.bandyer.demo_sdk_design.smartglass.network.WiFiObserver
 import com.bandyer.demo_sdk_design.smartglass.network.WiFiState
-import com.bandyer.sdk_design.new_smartglass.utils.GlassGestureDetector
 import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
 import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEventListener
+import com.bandyer.sdk_design.new_smartglass.chat.notification.BandyerNotificationData
 import com.bandyer.sdk_design.new_smartglass.chat.notification.BandyerNotificationManager
-import com.bandyer.sdk_design.new_smartglass.status_bar.BandyerStatusBarView
+import com.bandyer.sdk_design.new_smartglass.status_bar_views.BandyerStatusBarView
+import com.bandyer.sdk_design.new_smartglass.utils.GlassGestureDetector
 import com.bandyer.sdk_design.new_smartglass.utils.currentNavigationFragment
 import kotlinx.coroutines.flow.collect
 
@@ -81,41 +84,41 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         statusBar!!.hideCenteredTitle()
         statusBar!!.setCenteredText(resources.getString(R.string.bandyer_smartglass_users_in_call_pattern, 3))
 
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            notificationManager.show(
-//                    listOf(NotificationData(
-//                        "Mario",
-//                        "Mario",
-//                        "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
-//                        R.drawable.sample_image
-//                    ))
-//            )
-//        }, 4000)
+        Handler(Looper.getMainLooper()).postDelayed({
+            notificationManager.show(
+                    listOf(BandyerNotificationData(
+                        "Mario",
+                        "Mario",
+                        "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
+                        R.drawable.sample_image
+                    ))
+            )
+        }, 4000)
 
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            notificationManager.show(
-//                listOf(
-//                    NotificationData(
-//                        "Mario",
-//                        "Mario",
-//                        "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
-//                        R.drawable.sample_image
-//                    ),
-//                    NotificationData(
-//                        "Gianfranco",
-//                        "Gianfranco",
-//                        "Mi piacciono i treni",
-//                        null
-//                    ),
-//                    NotificationData(
-//                        "Mario",
-//                        "Mario",
-//                        "Ciao",
-//                        R.drawable.sample_image
-//                    )
-//                )
-//            )
-//        }, 5000)
+        Handler(Looper.getMainLooper()).postDelayed({
+            notificationManager.show(
+                listOf(
+                    BandyerNotificationData(
+                        "Mario",
+                        "Mario",
+                        "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
+                        R.drawable.sample_image
+                    ),
+                    BandyerNotificationData(
+                        "Gianfranco",
+                        "Gianfranco",
+                        "Mi piacciono i treni",
+                        null
+                    ),
+                    BandyerNotificationData(
+                        "Mario",
+                        "Mario",
+                        "Ciao",
+                        R.drawable.sample_image
+                    )
+                )
+            )
+        }, 5000)
     }
 
     override fun onResume() {
@@ -205,6 +208,10 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 
     fun setStatusBarColor(@ColorInt color: Int?) {
         binding.statusBar.setBackgroundColor(color)
+    }
+
+    fun setDnd(value: Boolean) {
+        notificationManager.dnd = value
     }
 
     private fun enterImmersiveMode() {

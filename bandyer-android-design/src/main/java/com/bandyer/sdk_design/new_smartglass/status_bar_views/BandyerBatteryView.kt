@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.new_smartglass.status_bar
+package com.bandyer.sdk_design.new_smartglass.status_bar_views
 
 import android.annotation.SuppressLint
 import android.content.Context
