@@ -56,7 +56,7 @@
     </style>
 
     <style name="TitleWatermark" parent="BandyerSDKDesign.TextView.CallWatermark">
-        <item name="android:text">Bandyer</item>
+        <item name="android:text">@string/kaleyra</item>
     </style>
 
 </resources>
