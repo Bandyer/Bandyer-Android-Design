@@ -26,6 +26,7 @@ import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.BandyerClickableBottomSheet
+import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_ANCHOR_POINT
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_COLLAPSED
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_DRAGGING
@@ -39,7 +40,6 @@ import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton.State
 import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.extensions.getHeightWithVerticalMargin
-import com.bandyer.sdk_design.utils.isRealWearHTM1
 
 /**
  * Call BottomSheet to display actions and interact with the call
@@ -58,7 +58,7 @@ open class CallBottomSheet<T>(
     callActionItems as List<T>,
     callActionItems.size.takeIf { it < MAX_ITEMS_PER_ROW } ?: MAX_ITEMS_PER_ROW,
     0,
-    if (isRealWearHTM1()) BottomSheetLayoutType.LIST else BottomSheetLayoutType.GRID,
+    BottomSheetLayoutType.GRID,
     bottomSheetStyle) where T : ActionItem {
 
     private var camera: CallAction.CAMERA? = null

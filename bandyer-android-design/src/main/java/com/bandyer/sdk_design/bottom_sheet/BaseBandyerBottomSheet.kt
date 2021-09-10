@@ -34,9 +34,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.sdk_design.utils.TiltController
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
@@ -46,7 +44,7 @@ import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton.State
 import com.bandyer.sdk_design.extensions.*
-import com.bandyer.sdk_design.utils.isRealWearHTM1
+import com.bandyer.sdk_design.call.bottom_sheet.utils.RealWearItemDecorator
 import com.bandyer.sdk_design.utils.item_adapter_animators.AlphaCrossFadeAnimator
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutObserver
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutOffsetListener
@@ -140,19 +138,6 @@ open class BaseBandyerBottomSheet(
             onStateChangedBottomSheetListener?.onSlide(this@BaseBandyerBottomSheet, slideOffset)
             bottomSheetLayoutContent.updateBackgroundView()
             slideAnimationUpdate(this@BaseBandyerBottomSheet, slideOffset)
-        }
-    }
-
-    private var tiltController: TiltController? = null
-
-    private var tiltListener = object : TiltController.TiltListener {
-        override fun onTilt(x: Float, y: Float) {
-            val layoutManager = recyclerView?.layoutManager
-            val isRecyclerViewHorizontal = ((layoutManager as? GridLayoutManager) ?: (layoutManager as? LinearLayoutManager))
-                    ?.orientation  == RecyclerView.HORIZONTAL
-
-            if (isRecyclerViewHorizontal) recyclerView?.scrollBy(x.toInt() * 40, 0)
-            else recyclerView?.scrollBy(0, y.toInt() * 40)
         }
     }
 
@@ -476,20 +461,17 @@ open class BaseBandyerBottomSheet(
     override fun isVisible() = bottomSheetLayoutContent.visibility == View.VISIBLE && initialized
 
     init {
-
         when (bottomSheetLayoutType) {
             BottomSheetLayoutType.GRID -> {
                 recyclerView?.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, spanSize)
             }
             BottomSheetLayoutType.LIST -> {
-                recyclerView?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context, if (isRealWearHTM1()) LinearLayoutManager.HORIZONTAL else LinearLayoutManager.VERTICAL, false)
+                recyclerView?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
             }
         }
-
         recyclerView?.adapter = fastAdapter
         recyclerView?.itemAnimator = AlphaCrossFadeAnimator()
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && isRealWearHTM1()) { tiltController = TiltController(context, tiltListener) }
+        recyclerView?.addItemDecoration(RealWearItemDecorator())
     }
 
     final override fun onTopInsetChanged(pixels: Int) = Unit
@@ -578,8 +560,6 @@ open class BaseBandyerBottomSheet(
         dismiss()
         bottomSheetBehaviour?.removeBottomSheetCallback(bottomSheetBehaviorCallback)
         SystemViewLayoutOffsetListener.removeObserver(mContext.get()!!, this)
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
-        tiltController?.releaseAllSensors()
     }
 
     override fun onRightInsetChanged(pixels: Int) {

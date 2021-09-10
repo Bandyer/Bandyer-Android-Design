@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.utils
+package com.bandyer.sdk_design.call.bottom_sheet.utils
 
 import android.content.Context
 import android.hardware.Sensor
@@ -12,7 +12,7 @@ import androidx.annotation.RequiresApi
 import kotlin.math.abs
 
 /**
- * TiltController
+ * TiltController used to scroll a recyclerview using inputs from SensorManager.
  *
  * @param ctx The context
  * @param listener The listener for tilt events.
@@ -23,6 +23,9 @@ class TiltController constructor(
     private val listener: TiltListener
 ) : SensorEventListener {
 
+    /**
+     *
+     */
     interface TiltListener {
         /**
          * Return the degrees of the movement
@@ -52,6 +55,9 @@ class TiltController constructor(
        requestAllSensors()
     }
 
+    /**
+     * @suppress
+     */
     override fun onSensorChanged(event: SensorEvent) {
         if (accuracy < SensorManager.SENSOR_STATUS_ACCURACY_LOW)
             return
@@ -60,6 +66,9 @@ class TiltController constructor(
             updateRotation(event.values.clone())
     }
 
+    /**
+     * @suppress
+     */
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
         if(this.accuracy != accuracy)
             this.accuracy = accuracy
@@ -175,6 +184,9 @@ class TiltController constructor(
     }
 
     private companion object {
+        /**
+         * Threshold used to interact with data coming from SensorManager
+         */
         const val THRESHOLD_MOTION = 0.1f
     }
 }
