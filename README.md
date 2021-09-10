@@ -1,5 +1,5 @@
-# Bandyer-Android-Design
-This repository is the design library used by Bandyer's Android SDK
+# Bandyer-Android-Design - (now Kaleyra Video Android Design)
+This repository is the design library used by Bandyer's Android SDK - (now [Kaleyra Video Android SDK](https://github.com/Bandyer/Bandyer-Android-SDK))
 
 <p align="center">
 <img src="img/kaleyra.png" alt="Kaleyra" title="Kaleyra" />
