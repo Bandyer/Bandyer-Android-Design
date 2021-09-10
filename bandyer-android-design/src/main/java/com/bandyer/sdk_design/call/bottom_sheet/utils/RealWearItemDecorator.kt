@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.buttons.BandyerActionButton
 import com.bandyer.sdk_design.call.buttons.BandyerAudioRouteActionButton
 import com.bandyer.sdk_design.extensions.dp2px
+import com.bandyer.sdk_design.extensions.getScreenSize
 import com.bandyer.sdk_design.extensions.isRtl
 import com.bandyer.sdk_design.extensions.scanForFragmentActivity
 import com.bandyer.sdk_design.utils.isRealWearHTM1
@@ -25,6 +26,8 @@ import com.bandyer.sdk_design.utils.isRealWearHTM1
 class RealWearItemDecorator : RecyclerView.ItemDecoration() {
 
     private var recyclerView: RecyclerView? = null
+    private val halfScreenDivider: Int by lazy { recyclerView!!.context.getScreenSize().x / 2 }
+    private val itemDivider: Int by lazy { recyclerView!!.context.dp2px(32f) }
 
     private val tiltController by lazy {
         TiltController(recyclerView!!.context!!, object : TiltController.TiltListener {
@@ -65,14 +68,18 @@ class RealWearItemDecorator : RecyclerView.ItemDecoration() {
      * @suppress
      */
     override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
-        if (!isRealWearHTM1()) return
+        if (!isRealWearHTM1() || recyclerView == null) return
 
         customizeAdapterItemView((parent.layoutManager as LinearLayoutManager).findViewByPosition(itemPosition)!!)
 
-        val horizontalSpacing = parent.context.dp2px(32f)
-        outRect.left = horizontalSpacing
-        if (itemPosition != parent.adapter!!.itemCount - 1) return
-        outRect.right = horizontalSpacing
+        when (itemPosition) {
+            in 1..parent.adapter!!.itemCount - 2 -> outRect.right = itemDivider
+            0 -> {
+                outRect.left = if (parent.adapter!!.itemCount >= 4) halfScreenDivider else itemDivider
+                outRect.right = itemDivider
+            }
+            parent.adapter!!.itemCount - 1 -> outRect.right = if (parent.adapter!!.itemCount >= 4 ) halfScreenDivider else itemDivider
+        }
     }
 
     private fun customizeAdapterItemView(adapterItemView: View) {
