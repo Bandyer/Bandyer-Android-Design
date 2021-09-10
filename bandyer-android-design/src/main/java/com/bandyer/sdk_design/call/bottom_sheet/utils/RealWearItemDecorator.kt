@@ -42,7 +42,7 @@ class RealWearItemDecorator : RecyclerView.ItemDecoration() {
         customizeRecyclerView(parent)
     }
 
-    private fun customizeRecyclerView(recyclerView: RecyclerView) {
+    private fun customizeRecyclerView(recyclerView: RecyclerView) = recyclerView.post {
         this@RealWearItemDecorator.recyclerView = recyclerView
 
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, recyclerView.context.isRtl())
