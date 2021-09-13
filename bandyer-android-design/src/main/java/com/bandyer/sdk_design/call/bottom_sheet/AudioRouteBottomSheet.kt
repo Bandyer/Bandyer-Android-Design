@@ -47,8 +47,8 @@ class AudioRouteBottomSheet<T : ActionItem>(
     context,
     initial_selection,
     audioRouteItems as List<T>? ?: listOf<T>(),
-    0, 0,
-    BottomSheetLayoutType.LIST,
+    0,
+    BottomSheetLayoutType.LIST(),
     bottomSheetStyle
 ) {
 

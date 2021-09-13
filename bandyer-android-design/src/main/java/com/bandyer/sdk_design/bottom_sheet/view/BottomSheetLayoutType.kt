@@ -19,15 +19,15 @@ package com.bandyer.sdk_design.bottom_sheet.view
 /**
  * Bandyer bottom sheet layout types supported
  */
-enum class BottomSheetLayoutType {
+sealed class BottomSheetLayoutType {
 
     /**
      * Grid layout
      */
-    GRID,
+    class GRID(val spanSize: Int): BottomSheetLayoutType()
 
     /**
      * List layout
      */
-    LIST
+    class LIST: BottomSheetLayoutType()
 }

@@ -34,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
@@ -41,10 +42,12 @@ import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.BandyerBottomSheetLayout
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutContent
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
+import com.bandyer.sdk_design.call.bottom_sheet.utils.BandyerBottomSheetLayoutManagerApplier
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton.State
 import com.bandyer.sdk_design.extensions.*
 import com.bandyer.sdk_design.call.bottom_sheet.utils.RealWearItemDecorator
+import com.bandyer.sdk_design.utils.isRealWearHTM1
 import com.bandyer.sdk_design.utils.item_adapter_animators.AlphaCrossFadeAnimator
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutObserver
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutOffsetListener
@@ -70,7 +73,6 @@ import java.text.DecimalFormat
 open class BaseBandyerBottomSheet(
     context: AppCompatActivity,
     private var views: List<ActionItem>,
-    spanSize: Int,
     private val peekHeight: Int?,
     bottomSheetLayoutType: BottomSheetLayoutType,
     @StyleRes val bottomSheetLayoutStyle: Int
@@ -461,17 +463,9 @@ open class BaseBandyerBottomSheet(
     override fun isVisible() = bottomSheetLayoutContent.visibility == View.VISIBLE && initialized
 
     init {
-        when (bottomSheetLayoutType) {
-            BottomSheetLayoutType.GRID -> {
-                recyclerView?.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, spanSize)
-            }
-            BottomSheetLayoutType.LIST -> {
-                recyclerView?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-            }
-        }
-        recyclerView?.adapter = fastAdapter
-        recyclerView?.itemAnimator = AlphaCrossFadeAnimator()
-        recyclerView?.addItemDecoration(RealWearItemDecorator())
+        BandyerBottomSheetLayoutManagerApplier(recyclerView!!, bottomSheetLayoutType)
+        recyclerView!!.adapter = fastAdapter
+        recyclerView!!.itemAnimator = AlphaCrossFadeAnimator()
     }
 
     final override fun onTopInsetChanged(pixels: Int) = Unit

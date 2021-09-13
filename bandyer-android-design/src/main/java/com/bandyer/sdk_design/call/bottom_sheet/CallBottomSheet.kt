@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.BandyerClickableBottomSheet
@@ -40,6 +41,7 @@ import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton.State
 import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.extensions.getHeightWithVerticalMargin
+import com.bandyer.sdk_design.utils.isRealWearHTM1
 
 /**
  * Call BottomSheet to display actions and interact with the call
@@ -56,9 +58,8 @@ open class CallBottomSheet<T>(
 ) : BandyerClickableBottomSheet<T>(
     context,
     callActionItems as List<T>,
-    callActionItems.size.takeIf { it < MAX_ITEMS_PER_ROW } ?: MAX_ITEMS_PER_ROW,
     0,
-    BottomSheetLayoutType.GRID,
+    BottomSheetLayoutType.GRID(callActionItems.size.takeIf { it < MAX_ITEMS_PER_ROW } ?: MAX_ITEMS_PER_ROW),
     bottomSheetStyle) where T : ActionItem {
 
     private var camera: CallAction.CAMERA? = null
@@ -281,9 +282,16 @@ open class CallBottomSheet<T>(
                 return@post
             }
 
+            val layoutManager = recyclerView?.layoutManager ?: return@post
+
+            val oneLineHeightPadding  = when {
+                layoutManager is LinearLayoutManager && layoutManager.orientation == LinearLayoutManager.HORIZONTAL ->  firstItem.paddingBottom
+                else -> firstItem.paddingTop.takeIf { callActionItems.size > MAX_ITEMS_PER_ROW } ?: 0
+            }
+
             val oneLineHeight = (lineView?.getHeightWithVerticalMargin() ?: 0) +
                     (titleView?.getHeightWithVerticalMargin() ?: 0) +
-                    firstItem.getHeightWithVerticalMargin() + (firstItem.paddingTop.takeIf { callActionItems.size > MAX_ITEMS_PER_ROW } ?: 0)
+                    firstItem.getHeightWithVerticalMargin() + oneLineHeightPadding
 
             when {
                 collapsible -> {

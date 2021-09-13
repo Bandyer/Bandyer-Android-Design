@@ -31,9 +31,8 @@ import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 open class RingingBottomSheet<T>(context: AppCompatActivity, bottomSheetStyle: Int) : BandyerClickableBottomSheet<T>(
     context,
     CallAction.getIncomingCallActions(context) as List<T>,
-    2,
     0,
-    BottomSheetLayoutType.GRID,
+    BottomSheetLayoutType.GRID(2),
     bottomSheetStyle
 ) where T : ActionItem {
 

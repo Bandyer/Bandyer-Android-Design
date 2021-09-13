@@ -33,11 +33,10 @@ open class BandyerSelectableBottomSheet<T : ActionItem>(
     context: AppCompatActivity,
     selection: Int = -1,
     views: List<T>,
-    spanSize: Int,
     peekHeight: Int?,
     bottomSheetLayoutType: BottomSheetLayoutType,
     bottomSheetStyle: Int
-) : BandyerActionBottomSheet<T>(context, views, spanSize, peekHeight, bottomSheetLayoutType, bottomSheetStyle) {
+) : BandyerActionBottomSheet<T>(context, views, peekHeight, bottomSheetLayoutType, bottomSheetStyle) {
 
     /**
      * Current item selected

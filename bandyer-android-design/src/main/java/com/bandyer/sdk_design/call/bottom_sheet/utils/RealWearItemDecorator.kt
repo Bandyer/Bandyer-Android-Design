@@ -23,31 +23,23 @@ import com.bandyer.sdk_design.utils.isRealWearHTM1
  * RealWearItemDecorator performs optimization for RealWear HMT-1 recyclerview navigation.
  */
 @SuppressLint("NewApi")
-class RealWearItemDecorator : RecyclerView.ItemDecoration() {
+class RealWearItemDecorator(val recyclerView: RecyclerView) : RecyclerView.ItemDecoration() {
 
-    private var recyclerView: RecyclerView? = null
-    private val halfScreenDivider: Int by lazy { recyclerView!!.context.getScreenSize().x / 2 }
-    private val itemDivider: Int by lazy { recyclerView!!.context.dp2px(32f) }
+    private val halfScreenDivider: Int by lazy { recyclerView.context.getScreenSize().x / 2 }
+    private val itemDivider: Int by lazy { recyclerView.context.dp2px(32f) }
 
     private val tiltController by lazy {
-        TiltController(recyclerView!!.context!!, object : TiltController.TiltListener {
+        TiltController(recyclerView.context!!, object : TiltController.TiltListener {
             val tiltMultiplier = recyclerView!!.context!!.scanForFragmentActivity()!!.resources!!.displayMetrics!!.densityDpi / 5f
             override fun onTilt(x: Float, y: Float) = recyclerView!!.scrollBy((x * tiltMultiplier).toInt(), 0)
         })
     }
 
-    /**
-     * @suppress
-     */
-    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-        super.onDraw(c, parent, state)
-        if (!isRealWearHTM1() || recyclerView != null) return
-        customizeRecyclerView(parent)
+    init {
+        if (isRealWearHTM1()) customizeRecyclerView(recyclerView)
     }
 
-    private fun customizeRecyclerView(recyclerView: RecyclerView) = recyclerView.post {
-        this@RealWearItemDecorator.recyclerView = recyclerView
-
+    private fun customizeRecyclerView(recyclerView: RecyclerView) {
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, recyclerView.context.isRtl())
 
         val fragmentActivity = recyclerView.context!!.scanForFragmentActivity()!!
@@ -68,18 +60,9 @@ class RealWearItemDecorator : RecyclerView.ItemDecoration() {
      * @suppress
      */
     override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
-        if (!isRealWearHTM1() || recyclerView == null) return
-
+        if (!isRealWearHTM1()) return
         customizeAdapterItemView((parent.layoutManager as LinearLayoutManager).findViewByPosition(itemPosition)!!)
-
-        when (itemPosition) {
-            in 1..parent.adapter!!.itemCount - 2 -> outRect.right = itemDivider
-            0 -> {
-                outRect.left = if (parent.adapter!!.itemCount >= 4) halfScreenDivider else itemDivider
-                outRect.right = itemDivider
-            }
-            parent.adapter!!.itemCount - 1 -> outRect.right = if (parent.adapter!!.itemCount >= 4 ) halfScreenDivider else itemDivider
-        }
+        addItemViewDividers(outRect, itemPosition)
     }
 
     private fun customizeAdapterItemView(adapterItemView: View) {
@@ -88,9 +71,19 @@ class RealWearItemDecorator : RecyclerView.ItemDecoration() {
         (adapterItemView as? BandyerActionButton)?.let {
             it.orientation = LinearLayout.HORIZONTAL
             it.label!!.isEnabled = false
-        } ?: (adapterItemView as? BandyerAudioRouteActionButton)?.let{
+        } ?: (adapterItemView as? BandyerAudioRouteActionButton)?.let {
             it.orientation = LinearLayout.HORIZONTAL
             it.label!!.isEnabled = false
         }
+    }
+
+    private fun addItemViewDividers(outRect: Rect, itemPosition: Int) = when (itemPosition) {
+        in 1..recyclerView.adapter!!.itemCount - 2 -> outRect.right = itemDivider
+        0 -> {
+            outRect.left = if (recyclerView.adapter!!.itemCount >= 4) halfScreenDivider else itemDivider
+            outRect.right = itemDivider
+        }
+        // last position
+        else -> outRect.right = if (recyclerView.adapter!!.itemCount >= 4) halfScreenDivider else itemDivider
     }
 }
