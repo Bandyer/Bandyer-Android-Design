@@ -83,7 +83,7 @@
         <argument
             android:name="contactData"
             android:defaultValue="@null"
-            app:argType="com.bandyer.sdk_design.new_smartglass.contact.BandyerContactData"
+            app:argType="com.bandyer.video_android_glass_ui.contact.BandyerContactData"
             app:nullable="true" />
     </fragment>
 </navigation>

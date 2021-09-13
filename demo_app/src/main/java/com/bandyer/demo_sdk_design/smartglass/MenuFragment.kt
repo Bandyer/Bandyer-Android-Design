@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
@@ -38,12 +39,12 @@ class MenuFragment : com.bandyer.video_android_glass_ui.menu.SmartGlassMenuFragm
     ): View {
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        itemAdapter!!.add(com.bandyer.video_android_glass_ui.menu.BandyerMenuItem("Attiva microfono", "Muta microfono"))
-        itemAdapter!!.add(com.bandyer.video_android_glass_ui.menu.BandyerMenuItem("Attiva camera", "Muta camera"))
-        itemAdapter!!.add(com.bandyer.video_android_glass_ui.menu.BandyerMenuItem("Volume"))
-        itemAdapter!!.add(com.bandyer.video_android_glass_ui.menu.BandyerMenuItem("Zoom"))
-        itemAdapter!!.add(com.bandyer.video_android_glass_ui.menu.BandyerMenuItem("Utenti"))
-        itemAdapter!!.add(com.bandyer.video_android_glass_ui.menu.BandyerMenuItem("Chat"))
+        itemAdapter!!.add(BandyerMenuItem("Attiva microfono", "Muta microfono"))
+        itemAdapter!!.add(BandyerMenuItem("Attiva camera", "Muta camera"))
+        itemAdapter!!.add(BandyerMenuItem("Volume"))
+        itemAdapter!!.add(BandyerMenuItem("Zoom"))
+        itemAdapter!!.add(BandyerMenuItem("Utenti"))
+        itemAdapter!!.add(BandyerMenuItem("Chat"))
 
         // add scroll listener
         rvMenu!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -73,27 +74,27 @@ class MenuFragment : com.bandyer.video_android_glass_ui.menu.SmartGlassMenuFragm
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
-        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD  -> {
-            if (event.source == com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Source.KEY) {
+    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD  -> {
+            if (event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
                 rvMenu!!.smoothScrollToNext(currentMenuItemIndex)
                 true
             } else false
         }
-        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if (event.source == com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Source.KEY) {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if (event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
                 rvMenu!!.smoothScrollToPrevious(currentMenuItemIndex)
                 true
             } else false
         }
-        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.TAP            -> {
+        BandyerSmartGlassTouchEvent.Type.TAP            -> {
             tapBehaviour(currentMenuItemIndex)
         }
-        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN     -> {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN     -> {
             findNavController().popBackStack()
             true
         }
-        else                                                                               -> super.onSmartGlassTouchEvent(event)
+        else                                            -> super.onSmartGlassTouchEvent(event)
     }
 
     private fun tapBehaviour(itemIndex: Int) = when (itemIndex) {

@@ -26,19 +26,19 @@ import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
 import kotlinx.coroutines.flow.collect
 
-class SmartGlassActivity : AppCompatActivity(), com.bandyer.video_android_glass_ui.utils.GlassGestureDetector.OnGestureListener,
-                           com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationManager.NotificationListener, com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEventListener {
+class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener,
+                           BandyerNotificationManager.NotificationListener, BandyerSmartGlassTouchEventListener {
 
     private lateinit var binding: ActivitySmartGlassBinding
 
-    private var statusBar: com.bandyer.video_android_glass_ui.status_bar_views.BandyerStatusBarView? = null
+    private var statusBar: BandyerStatusBarView? = null
 
     private val currentFragment: Fragment?
         get() = supportFragmentManager.currentNavigationFragment
     private lateinit var decorView: View
 
-    private lateinit var glassGestureDetector: com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
-    private lateinit var notificationManager: com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationManager
+    private lateinit var glassGestureDetector: GlassGestureDetector
+    private lateinit var notificationManager: BandyerNotificationManager
     private var handleNotification = false
     private lateinit var batteryObserver: BatteryObserver
     private lateinit var wifiObserver: WiFiObserver
@@ -52,8 +52,8 @@ class SmartGlassActivity : AppCompatActivity(), com.bandyer.video_android_glass_
 
         enterImmersiveMode()
 
-        glassGestureDetector = com.bandyer.video_android_glass_ui.utils.GlassGestureDetector(this, this)
-        notificationManager = com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationManager(binding.content, this)
+        glassGestureDetector = GlassGestureDetector(this, this)
+        notificationManager = BandyerNotificationManager(binding.content, this)
         batteryObserver = BatteryObserver(this)
         wifiObserver = WiFiObserver(this)
 
@@ -68,14 +68,14 @@ class SmartGlassActivity : AppCompatActivity(), com.bandyer.video_android_glass_
             wifiObserver.observe().collect {
                 statusBar!!.setWiFiSignalState(
                     if (it.state == WiFiState.State.DISABLED)
-                        com.bandyer.video_android_glass_ui.status_bar_views.BandyerStatusBarView.WiFiSignalState.DISABLED
+                        BandyerStatusBarView.WiFiSignalState.DISABLED
                     else
                         when (it.level) {
-                            WiFiState.Level.NO_SIGNAL -> com.bandyer.video_android_glass_ui.status_bar_views.BandyerStatusBarView.WiFiSignalState.LOW
-                            WiFiState.Level.POOR -> com.bandyer.video_android_glass_ui.status_bar_views.BandyerStatusBarView.WiFiSignalState.LOW
-                            WiFiState.Level.FAIR -> com.bandyer.video_android_glass_ui.status_bar_views.BandyerStatusBarView.WiFiSignalState.MODERATE
-                            WiFiState.Level.GOOD -> com.bandyer.video_android_glass_ui.status_bar_views.BandyerStatusBarView.WiFiSignalState.MODERATE
-                            WiFiState.Level.EXCELLENT -> com.bandyer.video_android_glass_ui.status_bar_views.BandyerStatusBarView.WiFiSignalState.FULL
+                            WiFiState.Level.NO_SIGNAL -> BandyerStatusBarView.WiFiSignalState.LOW
+                            WiFiState.Level.POOR -> BandyerStatusBarView.WiFiSignalState.LOW
+                            WiFiState.Level.FAIR -> BandyerStatusBarView.WiFiSignalState.MODERATE
+                            WiFiState.Level.GOOD -> BandyerStatusBarView.WiFiSignalState.MODERATE
+                            WiFiState.Level.EXCELLENT -> BandyerStatusBarView.WiFiSignalState.FULL
                         }
                 )
             }
@@ -87,7 +87,7 @@ class SmartGlassActivity : AppCompatActivity(), com.bandyer.video_android_glass_
         Handler(Looper.getMainLooper()).postDelayed({
             notificationManager.show(
                     listOf(
-                        com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationData(
+                        BandyerNotificationData(
                             "Mario",
                             "Mario",
                             "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
@@ -100,19 +100,19 @@ class SmartGlassActivity : AppCompatActivity(), com.bandyer.video_android_glass_
         Handler(Looper.getMainLooper()).postDelayed({
             notificationManager.show(
                 listOf(
-                    com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationData(
+                    BandyerNotificationData(
                         "Mario",
                         "Mario",
                         "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
                         R.drawable.sample_image
                     ),
-                    com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationData(
+                    BandyerNotificationData(
                         "Gianfranco",
                         "Gianfranco",
                         "Mi piacciono i treni",
                         null
                     ),
-                    com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationData(
+                    BandyerNotificationData(
                         "Mario",
                         "Mario",
                         "Ciao",
@@ -143,27 +143,27 @@ class SmartGlassActivity : AppCompatActivity(), com.bandyer.video_android_glass_
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
         return if (
             event?.action == MotionEvent.ACTION_DOWN &&
-            handleSmartGlassTouchEvent(com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.getEvent(event))
+            handleSmartGlassTouchEvent(BandyerSmartGlassTouchEvent.getEvent(event))
         ) true
         else super.dispatchKeyEvent(event)
     }
 
-    override fun onGesture(gesture: com.bandyer.video_android_glass_ui.utils.GlassGestureDetector.Gesture): Boolean =
-        handleSmartGlassTouchEvent(com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.getEvent(gesture))
+    override fun onGesture(gesture: GlassGestureDetector.Gesture): Boolean =
+        handleSmartGlassTouchEvent(BandyerSmartGlassTouchEvent.getEvent(gesture))
 
-    private fun handleSmartGlassTouchEvent(smartGlassEvent: com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent): Boolean =
+    private fun handleSmartGlassTouchEvent(smartGlassEvent: BandyerSmartGlassTouchEvent): Boolean =
         if (handleNotification) onSmartGlassTouchEvent(smartGlassEvent)
-        else (currentFragment as? com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEventListener)?.onSmartGlassTouchEvent(
+        else (currentFragment as? BandyerSmartGlassTouchEventListener)?.onSmartGlassTouchEvent(
             smartGlassEvent
         ) ?: false
 
-    override fun onSmartGlassTouchEvent(event: com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent): Boolean =
+    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean =
         when (event.type) {
-            com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.TAP        -> {
+            BandyerSmartGlassTouchEvent.Type.TAP        -> {
                 notificationManager.expand()
                 true
             }
-            com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+            BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
                 notificationManager.dismiss()
                 true
             }

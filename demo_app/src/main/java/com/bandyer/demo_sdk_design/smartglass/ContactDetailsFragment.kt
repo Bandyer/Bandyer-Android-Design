@@ -6,15 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
-import com.bandyer.video_android_glass_ui.contact.BandyerContactData
-import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
-import com.bandyer.video_android_glass_ui.contact.details.BandyerContactDetailsItem
-import com.bandyer.video_android_glass_ui.contact.details.SmartGlassContactDetailsFragment
+import com.bandyer.sdk_design.extensions.parseToColor
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
+import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
+import com.bandyer.video_android_glass_ui.contact.BandyerContactData
 
 class ContactDetailsFragment : com.bandyer.video_android_glass_ui.contact.details.SmartGlassContactDetailsFragment(), TiltController.TiltListener {
 
@@ -50,24 +50,24 @@ class ContactDetailsFragment : com.bandyer.video_android_glass_ui.contact.detail
         name!!.text = data.name
         with(contactStateText!!) {
             when (data.userState) {
-                com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.INVITED -> setContactState(
+                BandyerContactData.UserState.INVITED -> setContactState(
                     com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView.State.INVITED
                 )
-                com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.OFFLINE -> setContactState(
+                BandyerContactData.UserState.OFFLINE -> setContactState(
                     com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView.State.LAST_SEEN,
                     data.lastSeenTime
                 )
-                else                                                                            -> setContactState(
+                else                                 -> setContactState(
                     com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView.State.ONLINE
                 )
             }
         }
         when {
-            data.avatarImageId != null -> avatar!!.setImage(data.avatarImageId)
+            data.avatarImageId != null  -> avatar!!.setImage(data.avatarImageId)
             data.avatarImageUrl != null -> avatar!!.setImage(data.avatarImageUrl!!)
-            else -> avatar!!.setImage(null)
+            else                        -> avatar!!.setImage(null)
         }
-        contactStateDot!!.isActivated = data.userState == com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.ONLINE
+        contactStateDot!!.isActivated = data.userState == BandyerContactData.UserState.ONLINE
 
         itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.details.BandyerContactDetailsItem(resources.getString(R.string.bandyer_smartglass_videocall)))
         itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.details.BandyerContactDetailsItem(resources.getString(R.string.bandyer_smartglass_call)))
@@ -108,20 +108,20 @@ class ContactDetailsFragment : com.bandyer.video_android_glass_ui.contact.detail
             tiltController!!.releaseAllSensors()
     }
 
-    override fun onSmartGlassTouchEvent(event: com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent): Boolean = when(event.type) {
-        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD  -> {
-            if(event.source == com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Source.KEY) {
+    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD  -> {
+            if (event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
                 rvActions!!.smoothScrollToNext(actionIndex)
                 true
             } else false
         }
-        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if(event.source == com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Source.KEY) {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if (event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
                 rvActions!!.smoothScrollToPrevious(actionIndex)
                 true
             } else false
         }
-        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN     -> {
+        BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN     -> {
             findNavController().popBackStack()
             true
         }
