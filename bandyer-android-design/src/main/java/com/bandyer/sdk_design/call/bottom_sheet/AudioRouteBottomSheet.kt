@@ -130,7 +130,7 @@ class AudioRouteBottomSheet<T : ActionItem>(
 
     override fun setItems(items: List<ActionItem>) {
         super.setItems(items)
-        if (items.contains(mCurrentAudioRoute)) mCurrentAudioRoute?.let { selectItem(it) }
+        mCurrentAudioRoute?.let { if (items.contains(it)) selectItem(it) }
         if (state == BottomSheetBehavior.STATE_EXPANDED || state == BottomSheetBehavior.STATE_COLLAPSED) moveBottomSheet()
     }
 

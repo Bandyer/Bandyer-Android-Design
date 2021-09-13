@@ -17,3 +17,4 @@ include ':demo_app',
         ':bandyer-android-design'
 
 
+include ':video-android-glass-ui'

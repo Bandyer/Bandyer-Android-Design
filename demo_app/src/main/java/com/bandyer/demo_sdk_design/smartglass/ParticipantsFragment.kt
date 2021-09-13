@@ -6,21 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.sdk_design.extensions.parseToColor
-import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
-import com.bandyer.sdk_design.new_smartglass.contact.BandyerContactData
-import com.bandyer.sdk_design.new_smartglass.contact.BandyerContactStateTextView
-import com.bandyer.sdk_design.new_smartglass.contact.call_participant.BandyerCallParticipantItem
-import com.bandyer.sdk_design.new_smartglass.contact.call_participant.SmartGlassCallParticipantsFragment
+import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
+import com.bandyer.video_android_glass_ui.contact.BandyerContactData
+import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
+import com.bandyer.video_android_glass_ui.contact.call_participant.BandyerCallParticipantItem
+import com.bandyer.video_android_glass_ui.contact.call_participant.SmartGlassCallParticipantsFragment
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-class ParticipantsFragment : SmartGlassCallParticipantsFragment(), TiltController.TiltListener {
+class ParticipantsFragment : com.bandyer.video_android_glass_ui.contact.call_participant.SmartGlassCallParticipantsFragment(), TiltController.TiltListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -28,7 +26,7 @@ class ParticipantsFragment : SmartGlassCallParticipantsFragment(), TiltControlle
 
     private var currentParticipantIndex = -1
 
-    private var participantsData: List<BandyerContactData> = listOf()
+    private var participantsData: List<com.bandyer.video_android_glass_ui.contact.BandyerContactData> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,26 +48,26 @@ class ParticipantsFragment : SmartGlassCallParticipantsFragment(), TiltControlle
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         participantsData = listOf(
-            BandyerContactData(
+            com.bandyer.video_android_glass_ui.contact.BandyerContactData(
                 "Mario Rossi",
                 "Mario Rossi",
-                BandyerContactData.UserState.ONLINE,
+                com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.ONLINE,
                 R.drawable.sample_image,
                 null,
                 Instant.now().toEpochMilli()
             ),
-            BandyerContactData(
+            com.bandyer.video_android_glass_ui.contact.BandyerContactData(
                 "Felice Trapasso",
                 "Felice Trapasso",
-                BandyerContactData.UserState.OFFLINE,
+                com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.OFFLINE,
                 null,
                 "https://i.imgur.com/9I2qAlW.jpeg",
                 Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
             ),
-            BandyerContactData(
+            com.bandyer.video_android_glass_ui.contact.BandyerContactData(
                 "Francesco Sala",
                 "Francesco Sala",
-                BandyerContactData.UserState.INVITED,
+                com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.INVITED,
                 null,
                 null,
                 Instant.now().toEpochMilli()
@@ -77,7 +75,7 @@ class ParticipantsFragment : SmartGlassCallParticipantsFragment(), TiltControlle
         )
 
         participantsData.forEach {
-            itemAdapter!!.add(BandyerCallParticipantItem(it.userAlias))
+            itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.call_participant.BandyerCallParticipantItem(it.userAlias))
         }
 
         rvParticipants!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -96,18 +94,18 @@ class ParticipantsFragment : SmartGlassCallParticipantsFragment(), TiltControlle
                 if (data.avatarImageId != null) avatar!!.setImage(data.avatarImageId)
                 else if (data.avatarImageUrl != null) avatar!!.setImage(data.avatarImageUrl!!)
                 contactStateDot!!.isActivated =
-                    data.userState == BandyerContactData.UserState.ONLINE
+                    data.userState == com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.ONLINE
                 with(contactStateText!!) {
                     when (data.userState) {
-                        BandyerContactData.UserState.INVITED -> setContactState(
-                            BandyerContactStateTextView.State.INVITED
+                        com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.INVITED -> setContactState(
+                            com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView.State.INVITED
                         )
-                        BandyerContactData.UserState.OFFLINE -> setContactState(
-                            BandyerContactStateTextView.State.LAST_SEEN,
+                        com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.OFFLINE -> setContactState(
+                            com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView.State.LAST_SEEN,
                             data.lastSeenTime
                         )
-                        BandyerContactData.UserState.ONLINE -> setContactState(
-                            BandyerContactStateTextView.State.ONLINE
+                        com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.ONLINE  -> setContactState(
+                            com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView.State.ONLINE
                         )
                     }
                 }
@@ -149,23 +147,23 @@ class ParticipantsFragment : SmartGlassCallParticipantsFragment(), TiltControlle
             tiltController!!.releaseAllSensors()
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
-        BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-            if(event.source == BandyerSmartGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
+    override fun onSmartGlassTouchEvent(event: com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
+        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD  -> {
+            if(event.source == com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
                 rvParticipants!!.smoothScrollToNext(currentParticipantIndex)
                 true
             } else false
         }
-        BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if(event.source == BandyerSmartGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
+        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if(event.source == com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
                 rvParticipants!!.smoothScrollToPrevious(currentParticipantIndex)
                 true
             } else false
         }
-        BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN     -> {
             findNavController().popBackStack()
             true
         }
-        else -> super.onSmartGlassTouchEvent(event)
+        else                                                                               -> super.onSmartGlassTouchEvent(event)
     }
 }

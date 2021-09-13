@@ -5,11 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
-import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
-import com.bandyer.sdk_design.new_smartglass.settings.SmartGlassZoomFragment
+import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
+import com.bandyer.video_android_glass_ui.settings.SmartGlassZoomFragment
 
-class ZoomFragment : SmartGlassZoomFragment(), TiltController.TiltListener {
+class ZoomFragment : com.bandyer.video_android_glass_ui.settings.SmartGlassZoomFragment(), TiltController.TiltListener {
 
     private var tiltController: TiltController? = null
 
@@ -45,20 +44,20 @@ class ZoomFragment : SmartGlassZoomFragment(), TiltController.TiltListener {
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
-        BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
+    override fun onSmartGlassTouchEvent(event: com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
+        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD                                                                       -> {
             slider!!.increaseProgress(0.1f)
             true
         }
-        BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD                                                                      -> {
             slider!!.decreaseProgress(0.1f)
             true
         }
-        BandyerSmartGlassTouchEvent.Type.TAP, BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.TAP, com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true
         }
-        else -> super.onSmartGlassTouchEvent(event)
+        else                                                                                                                                                    -> super.onSmartGlassTouchEvent(event)
     }
 
     override fun onTilt(x: Float, y: Float) {

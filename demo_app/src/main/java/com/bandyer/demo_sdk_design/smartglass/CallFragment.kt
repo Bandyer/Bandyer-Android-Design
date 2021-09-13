@@ -4,12 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.sdk_design.new_smartglass.call.SmartGlassCallFragment
-import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
+import com.bandyer.video_android_glass_ui.call.SmartGlassCallFragment
+import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
 
-class CallFragment : SmartGlassCallFragment() {
+class CallFragment : com.bandyer.video_android_glass_ui.call.SmartGlassCallFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,15 +30,15 @@ class CallFragment : SmartGlassCallFragment() {
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
-        BandyerSmartGlassTouchEvent.Type.TAP -> {
+    override fun onSmartGlassTouchEvent(event: com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
+        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.TAP        -> {
             findNavController().navigate(R.id.action_callFragment_to_menuFragment)
             true
         }
-        BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+        com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().navigate(R.id.action_callFragment_to_endCallFragment)
             true
         }
-        else -> super.onSmartGlassTouchEvent(event)
+        else                                                                           -> super.onSmartGlassTouchEvent(event)
     }
 }

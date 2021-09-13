@@ -24,8 +24,6 @@ import android.os.CountDownTimer
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.FrameLayout
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.call.layout.BandyerCallWatermarkLayout

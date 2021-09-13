@@ -19,8 +19,6 @@ package com.bandyer.sdk_design.call.layout
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.FrameLayout
-import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.sdk_design.databinding.BandyerSnapshotDialogLayoutBinding
 import com.google.android.material.button.MaterialButton

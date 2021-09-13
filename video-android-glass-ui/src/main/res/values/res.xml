@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="ic_bandyer_sg_charging" type="drawable">@drawable/bandyer_sg_charging_icon</item>
+    <item name="ic_bandyer_sg_cell_missing" type="drawable">@drawable/bandyer_sg_cell_missing_icon</item>
+    <item name="ic_bandyer_sg_cell_low" type="drawable">@drawable/bandyer_sg_cell_low_icon</item>
+    <item name="ic_bandyer_sg_cell_moderate" type="drawable">@drawable/bandyer_sg_cell_moderate_icon</item>
+    <item name="ic_bandyer_sg_cell_good" type="drawable">@drawable/bandyer_sg_cell_good_icon</item>
+    <item name="ic_bandyer_sg_cell_full" type="drawable">@drawable/bandyer_sg_cell_full_icon</item>
+    <item name="ic_bandyer_sg_badge_new_mess" type="drawable">@drawable/bandyer_sg_badge_new_mess_icon</item>
+    <item name="ic_bandyer_sg_close_arrow" type="drawable">@drawable/bandyer_sg_close_arrow_icon</item>
+    <item name="ic_bandyer_sg_mic_off_sg" type="drawable">@drawable/bandyer_sg_mic_off_icon</item>
+    <item name="ic_bandyer_sg_select" type="drawable">@drawable/bandyer_sg_select_icon</item>
+    <item name="ic_bandyer_sg_swipe_arrow" type="drawable">@drawable/bandyer_sg_swipe_arrow_icon</item>
+    <item name="ic_bandyer_sg_wifi_disabled" type="drawable">@drawable/bandyer_sg_wifi_disabled_icon</item>
+    <item name="ic_bandyer_sg_wifi_low" type="drawable">@drawable/bandyer_sg_wifi_low_icon</item>
+    <item name="ic_bandyer_sg_wifi_moderate" type="drawable">@drawable/bandyer_sg_wifi_moderate_icon</item>
+    <item name="ic_bandyer_sg_wifi_full" type="drawable">@drawable/bandyer_sg_wifi_full_icon</item>
+</resources>

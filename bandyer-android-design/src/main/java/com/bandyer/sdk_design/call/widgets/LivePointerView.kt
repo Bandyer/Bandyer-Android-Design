@@ -23,9 +23,9 @@ import android.view.View
 import androidx.annotation.FloatRange
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
-import com.bandyer.sdk_design.utils.KotlinConstraintSet.Companion.changeConstraints
 import com.bandyer.sdk_design.databinding.BandyerWidgetLivePointerBinding
 import com.bandyer.sdk_design.textviews.BandyerAutoHideTextView
+import com.bandyer.sdk_design.utils.KotlinConstraintSet.Companion.changeConstraints
 import com.google.android.material.button.MaterialButton
 
 /**

@@ -2,29 +2,26 @@ package com.bandyer.demo_sdk_design.smartglass
 
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.sdk_design.databinding.BandyerChatMessageLayoutBinding
-import com.bandyer.sdk_design.new_smartglass.BandyerSmartGlassTouchEvent
-import com.bandyer.sdk_design.new_smartglass.chat.BandyerChatItem
-import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassChatFragment
-import com.bandyer.sdk_design.new_smartglass.chat.SmartGlassMessageData
-import com.bandyer.sdk_design.new_smartglass.contact.BandyerContactData
+import com.bandyer.video_android_glass_ui.databinding.BandyerChatMessageLayoutBinding
+import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
+import com.bandyer.video_android_glass_ui.chat.BandyerChatItem
+import com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragment
+import com.bandyer.video_android_glass_ui.chat.SmartGlassMessageData
+import com.bandyer.video_android_glass_ui.contact.BandyerContactData
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
-import com.bandyer.sdk_design.new_smartglass.utils.Iso8601
+import com.bandyer.video_android_glass_ui.utils.Iso8601
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
 
-class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
+class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragment(), TiltController.TiltListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -45,26 +42,26 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
     private var pagesIds = arrayListOf<String>()
 
     private val contactData = listOf(
-        BandyerContactData(
+        com.bandyer.video_android_glass_ui.contact.BandyerContactData(
             "Mario Rossi",
             "Mario Rossi",
-            BandyerContactData.UserState.ONLINE,
+            com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.ONLINE,
             R.drawable.sample_image,
             null,
             Instant.now().toEpochMilli()
         ),
-        BandyerContactData(
+        com.bandyer.video_android_glass_ui.contact.BandyerContactData(
             "Ugo Trapasso",
             "Ugo Trapasso",
-            BandyerContactData.UserState.OFFLINE,
+            com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.OFFLINE,
             null,
             "https://2.bp.blogspot.com/-jLEDf_NyZ1g/WmmyFZKOd-I/AAAAAAAAHd8/FZvIj2o_jqwl0S_yz4zBU16N1yGj-UCrACLcBGAs/s1600/heisenberg-breaking-bad.jpg",
             Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
         ),
-        BandyerContactData(
+        com.bandyer.video_android_glass_ui.contact.BandyerContactData(
             "Gianfranco Sala",
             "Gianfranco Sala",
-            BandyerContactData.UserState.INVITED,
+            com.bandyer.video_android_glass_ui.contact.BandyerContactData.UserState.INVITED,
             null,
             null,
             Instant.now().toEpochMilli()
@@ -109,7 +106,7 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
         })
 
         addChatItem(
-            SmartGlassMessageData(
+            com.bandyer.video_android_glass_ui.chat.SmartGlassMessageData(
                 UUID.randomUUID().toString(),
                 "Mario",
                 "Mario",
@@ -119,7 +116,7 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
             )
         )
         addChatItem(
-            SmartGlassMessageData(
+            com.bandyer.video_android_glass_ui.chat.SmartGlassMessageData(
                 UUID.randomUUID().toString(),
                 "Ugo",
                 "Ugo",
@@ -129,7 +126,7 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
             )
         )
         addChatItem(
-            SmartGlassMessageData(
+            com.bandyer.video_android_glass_ui.chat.SmartGlassMessageData(
                 UUID.randomUUID().toString(),
                 "Gianfranco",
                 "Gianfranco",
@@ -193,21 +190,21 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
         activity.setStatusBarColor(null)
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean =
+    override fun onSmartGlassTouchEvent(event: com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent): Boolean =
         when (event.type) {
-            BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-                if (event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
+            com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD  -> {
+                if (event.source == com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Source.KEY) {
                     rvMessages!!.smoothScrollToNext(currentMsgItemIndex)
                     true
                 } else false
             }
-            BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-                if (event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
+            com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+                if (event.source == com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Source.KEY) {
                     rvMessages!!.smoothScrollToPrevious(currentMsgItemIndex)
                     true
                 } else false
             }
-            BandyerSmartGlassTouchEvent.Type.TAP -> {
+            com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.TAP            -> {
                 val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userAlias
                 val action =
                     ChatFragmentDirections.actionChatFragmentToContactDetailsFragment(
@@ -216,11 +213,11 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
                 findNavController().navigate(action)
                 true
             }
-            BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+            com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN     -> {
                 findNavController().popBackStack()
                 true
             }
-            else -> super.onSmartGlassTouchEvent(event)
+            else                                                                               -> super.onSmartGlassTouchEvent(event)
         }
 
     /**
@@ -228,17 +225,17 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
      *
      * @param data The [SmartGlassMessageData]
      */
-    private fun addChatItem(data: SmartGlassMessageData) {
+    private fun addChatItem(data: com.bandyer.video_android_glass_ui.chat.SmartGlassMessageData) {
         newMessagesCounter++
         chatMessageView?.post {
             val binding = BandyerChatMessageLayoutBinding.bind(chatMessageView!!)
             with(binding) {
                 bandyerName.text = data.sender
-                bandyerTime.text = Iso8601.parseTimestamp(requireContext(), data.time!!)
+                bandyerTime.text = com.bandyer.video_android_glass_ui.utils.Iso8601.parseTimestamp(requireContext(), data.time!!)
                 bandyerMessage.text = data.message
                 val pageList = bandyerMessage.paginate()
                 for (i in pageList.indices) {
-                    val pageData = SmartGlassMessageData(
+                    val pageData = com.bandyer.video_android_glass_ui.chat.SmartGlassMessageData(
                         data.id,
                         data.sender,
                         data.userAlias,
@@ -248,7 +245,7 @@ class ChatFragment : SmartGlassChatFragment(), TiltController.TiltListener {
                         data.userAvatarUrl,
                         i == 0
                     )
-                    itemAdapter!!.add(BandyerChatItem(pageData))
+                    itemAdapter!!.add(com.bandyer.video_android_glass_ui.chat.BandyerChatItem(pageData))
                     pagesIds.add(data.id)
                 }
             }

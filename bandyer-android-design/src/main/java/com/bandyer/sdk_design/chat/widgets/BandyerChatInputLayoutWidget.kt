@@ -20,10 +20,8 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.inputmethod.EditorInfo
-import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerWidgetChatInputLayoutBinding

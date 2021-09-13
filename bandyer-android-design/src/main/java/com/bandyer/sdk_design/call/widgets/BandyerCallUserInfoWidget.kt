@@ -19,7 +19,6 @@ package com.bandyer.sdk_design.call.widgets
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerWidgetCallUserInfoBinding
 import com.bandyer.sdk_design.extensions.scanForFragmentActivity

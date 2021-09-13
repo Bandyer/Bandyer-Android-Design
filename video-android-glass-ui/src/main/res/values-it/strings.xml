@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bandyer_smartglass_new_messages_pattern">%1$d nuovi messaggi</string>
+    <string name="bandyer_smartglass_swipe">Scorri</string>
+    <string name="bandyer_smartglass_tap">Tocca</string>
+    <string name="bandyer_smartglass_close">chiudi</string>
+    <string name="bandyer_smartglass_browse">naviga</string>
+    <string name="bandyer_smartglass_select">seleziona</string>
+    <string name="bandyer_smartglass_cancel">annulla</string>
+    <string name="bandyer_smartglass_change">modifica</string>
+    <string name="bandyer_smartglass_confirm">conferma</string>
+    <string name="bandyer_smartglass_accept">accetta</string>
+    <string name="bandyer_smartglass_decline">rifiuta</string>
+    <string name="bandyer_smartglass_end_call">aggangia</string>
+    <string name="bandyer_smartglass_volume">Volume</string>
+    <string name="bandyer_smartglass_zoom">Zoom</string>
+    <string name="bandyer_smartglass_is_calling">ti sta chiamando…</string>
+    <string name="bandyer_smartglass_want_end_call">Terminare la chiamata?</string>
+    <string name="bandyer_smartglass_confirm_end_call">Confermi di voler chiudere la conversazione?</string>
+    <string name="bandyer_smartglass_call_ended">Chiamata terminata</string>
+    <string name="bandyer_smartglass_thank_you">Grazie!</string>
+    <string name="bandyer_smartglass_participants_camera">partecipanti</string>
+    <string name="bandyer_smartglass_open_menu">menu</string>
+    <string name="bandyer_smartglass_contact_info">contatto</string>
+    <string name="bandyer_smartglass_now">Adesso</string>
+    <string name="bandyer_smartglass_read">leggi</string>
+    <string name="bandyer_smartglass_hide_notification">nascondi</string>
+    <string name="bandyer_smartglass_online">Online</string>
+    <string name="bandyer_smartglass_invited">Invitato</string>
+    <string name="bandyer_smartglass_last_seen_pattern">Ultimo accesso: %1$s</string>
+    <string name="bandyer_smartglass_call">Chiama</string>
+    <string name="bandyer_smartglass_videocall">Videochiama</string>
+    <string name="bandyer_smartglass_users_in_call_pattern">%1$d utenti in chiamata</string>
+    <string name="bandyer_smartglass_browse_right">naviga a destra</string>
+    <string name="bandyer_smartglass_browse_left">naviga a sinistra</string>
+    <string name="bandyer_smartglass_right_left">scorri</string>
+    <string name="bandyer_today">oggi</string>
+    <string name="bandyer_yesterday">ieri</string>
+</resources>
