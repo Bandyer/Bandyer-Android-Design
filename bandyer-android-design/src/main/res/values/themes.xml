@@ -18,8 +18,8 @@
 
     <style name="BandyerSDKDesign.Theme.Base.V16" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
-<!--        <item name="fontFamily">@font/bandyer_font</item>-->
-<!--        <item name="android:fontFamily">@font/bandyer_font</item>-->
+        <item name="fontFamily">@font/bandyer_font</item>
+        <item name="android:fontFamily">@font/bandyer_font</item>
 
         <item name="colorPrimary">@color/bandyer_colorPrimary</item>
         <item name="colorPrimaryVariant">@color/bandyer_colorPrimaryVariant</item>

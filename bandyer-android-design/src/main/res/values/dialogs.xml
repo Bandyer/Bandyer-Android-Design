@@ -77,7 +77,8 @@
         <item name="drawableTint">@color/bandyer_whiteboard_toolbar_menu_color_day</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.Day" parent="BandyerSDKDesign.BottomSheetDialog.V16.Day"/>
-    <style name="BandyerSDKDesign.BottomSheetDialog" parent="BandyerSDKDesign.BottomSheetDialog.V16"/>
+    <style name="BandyerSDKDesign.BottomSheetDialog.Day" parent="BandyerSDKDesign.BottomSheetDialog.V16.Day" />
+
+    <style name="BandyerSDKDesign.BottomSheetDialog" parent="BandyerSDKDesign.BottomSheetDialog.V16" />
 
 </resources>

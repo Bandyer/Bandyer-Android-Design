@@ -180,7 +180,7 @@ class BandyerWhiteboardTextEditorDialog : BandyerDialog<BandyerWhiteboardTextEdi
         override fun onResume() {
             super.onResume()
 
-            activity!!.scanForFragmentActivity()?.let {
+            requireActivity().scanForFragmentActivity()?.let {
                 SystemViewLayoutOffsetListener.addObserver(it, this)
             }
 
@@ -197,7 +197,7 @@ class BandyerWhiteboardTextEditorDialog : BandyerDialog<BandyerWhiteboardTextEdi
 
         override fun onPause() {
             super.onPause()
-            activity!!.scanForFragmentActivity()?.let {
+            requireActivity().scanForFragmentActivity()?.let {
                 SystemViewLayoutOffsetListener.removeObserver(it as AppCompatActivity, this)
             }
         }
