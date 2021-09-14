@@ -30,8 +30,8 @@ class RealWearItemDecorator(val recyclerView: RecyclerView) : RecyclerView.ItemD
 
     private val tiltController by lazy {
         TiltController(recyclerView.context!!, object : TiltController.TiltListener {
-            val tiltMultiplier = recyclerView!!.context!!.scanForFragmentActivity()!!.resources!!.displayMetrics!!.densityDpi / 5f
-            override fun onTilt(x: Float, y: Float) = recyclerView!!.scrollBy((x * tiltMultiplier).toInt(), 0)
+            val tiltMultiplier = recyclerView.context!!.scanForFragmentActivity()!!.resources!!.displayMetrics!!.densityDpi / 5f
+            override fun onTilt(x: Float, y: Float) = recyclerView.scrollBy((x * tiltMultiplier).toInt(), 0)
         })
     }
 
