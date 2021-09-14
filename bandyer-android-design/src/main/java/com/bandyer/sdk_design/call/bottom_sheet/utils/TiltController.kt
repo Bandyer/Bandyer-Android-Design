@@ -35,6 +35,8 @@ class TiltController constructor(
          */
         fun onTilt(x: Float, y: Float)
     }
+    
+    private var areSensorsRegistered = false
 
     private val windowManager = ctx.getSystemService(WindowManager::class.java)
     private val sensorManager = ctx.getSystemService(SensorManager::class.java)
@@ -162,6 +164,8 @@ class TiltController constructor(
      * Request access to sensors
      */
     fun requestAllSensors() {
+        if (areSensorsRegistered) return
+
         sensorManager.registerListener(
             this,
             sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR),
@@ -174,13 +178,17 @@ class TiltController constructor(
             sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
             SensorManager.SENSOR_DELAY_GAME
         )
+
+        areSensorsRegistered = true
     }
 
     /**
      * Release the sensors when they are no longer used
      */
     fun releaseAllSensors() {
+        if (!areSensorsRegistered) return
         sensorManager.unregisterListener(this)
+        areSensorsRegistered = false
     }
 
     private companion object {
