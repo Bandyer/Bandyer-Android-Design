@@ -66,7 +66,11 @@ class RealWearItemDecorator(val recyclerView: RecyclerView) : RecyclerView.ItemD
     }
 
     private fun customizeAdapterItemView(adapterItemView: View) {
-        adapterItemView.layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+        recyclerView.adapter ?: return
+
+        adapterItemView.layoutParams.width =
+            if (recyclerView.adapter!!.itemCount > MAX_ITEM_ON_SCREEN) ViewGroup.LayoutParams.WRAP_CONTENT
+            else recyclerView.context.getScreenSize().x / recyclerView.adapter!!.itemCount
 
         (adapterItemView as? BandyerActionButton)?.let {
             it.orientation = LinearLayout.HORIZONTAL
@@ -77,13 +81,18 @@ class RealWearItemDecorator(val recyclerView: RecyclerView) : RecyclerView.ItemD
         }
     }
 
-    private fun addItemViewDividers(outRect: Rect, itemPosition: Int) = when (itemPosition) {
-        in 1..recyclerView.adapter!!.itemCount - 2 -> outRect.right = itemDivider
-        0 -> {
-            outRect.left = if (recyclerView.adapter!!.itemCount >= 4) halfScreenDivider else itemDivider
+    private fun addItemViewDividers(outRect: Rect, itemPosition: Int) = when {
+        recyclerView.adapter!!.itemCount < MAX_ITEM_ON_SCREEN + 1 -> Unit
+        itemPosition in 1..recyclerView.adapter!!.itemCount - 2 -> outRect.right = itemDivider
+        itemPosition == 0 -> {
+            outRect.left = if (recyclerView.adapter!!.itemCount >= MAX_ITEM_ON_SCREEN) halfScreenDivider else itemDivider
             outRect.right = itemDivider
         }
         // last position
-        else -> outRect.right = if (recyclerView.adapter!!.itemCount >= 4) halfScreenDivider else itemDivider
+        else -> outRect.right = if (recyclerView.adapter!!.itemCount >= MAX_ITEM_ON_SCREEN) halfScreenDivider else itemDivider
+    }
+
+    companion object {
+        const val MAX_ITEM_ON_SCREEN = 4
     }
 }
