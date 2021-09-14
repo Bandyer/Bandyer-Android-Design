@@ -34,7 +34,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
@@ -46,8 +45,6 @@ import com.bandyer.sdk_design.call.bottom_sheet.utils.BandyerBottomSheetLayoutMa
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton.State
 import com.bandyer.sdk_design.extensions.*
-import com.bandyer.sdk_design.call.bottom_sheet.utils.RealWearItemDecorator
-import com.bandyer.sdk_design.utils.isRealWearHTM1
 import com.bandyer.sdk_design.utils.item_adapter_animators.AlphaCrossFadeAnimator
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutObserver
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutOffsetListener
