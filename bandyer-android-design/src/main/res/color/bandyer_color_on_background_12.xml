@@ -16,7 +16,5 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="?attr/colorOnSecondary" android:state_activated="true" android:state_enabled="true"/>
-    <item android:color="@color/bandyer_color_on_surface_30" android:state_enabled="false"/>
-    <item android:color="?attr/colorOnSurface"/>
+    <item android:alpha="0.12" android:color="?attr/colorOnBackground"/>
 </selector>

@@ -16,5 +16,5 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:alpha="0.20" android:color="@color/bandyer_colorOnBackground"/>
+    <item android:alpha="0.30" android:color="?attr/colorOnSurface"/>
 </selector>

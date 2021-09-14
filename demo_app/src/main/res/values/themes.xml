@@ -43,6 +43,8 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
+    <style name="BandyerSDKDesign.Theme.Call" parent="BandyerSDKDesign.Theme.Call.DayNight"/>
+
     <!-- CALL WATERMARK CUSTOMIZATION -->
 
     <style name="BandyerSDKDesign.CallWatermark" parent="">

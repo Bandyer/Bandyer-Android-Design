@@ -20,7 +20,9 @@
     <color name="bandyer_colorPrimary">#ffffff</color>
     <color name="bandyer_colorPrimaryVariant">#EFEFEF</color>
     <color name="bandyer_colorOnPrimary">#000000</color>
-    <color name="bandyer_colorSecondary">#F4982B</color>
+    <color name="bandyer_colorSecondary">#D80D30</color>
+    <color name="bandyer_colorSecondaryVariant">#6C6C6C</color>
+    <color name="bandyer_colorOnSecondary">#FFFFFF</color>
     <color name="bandyer_colorBackground">#FFFFFF</color>
     <color name="bandyer_colorOnBackground">#0E0E0E</color>
     <color name="bandyer_colorSurface">#ffffff</color>
@@ -30,14 +32,15 @@
     <color name="bandyer_colorPrimary_night">#303030</color>
     <color name="bandyer_colorPrimaryVariant_night">#1E1E1E</color>
     <color name="bandyer_colorOnPrimary_night">#FFFFFF</color>
-    <color name="bandyer_colorSecondary_night">#F4982B</color>
+    <color name="bandyer_colorSecondary_night">#9E000A</color>
+    <color name="bandyer_colorSecondaryVariant_night">#FFFFFF</color>
+    <color name="bandyer_colorOnSecondary_night">#000000</color>
     <color name="bandyer_colorBackground_night">#0E0E0E</color>
     <color name="bandyer_colorOnBackground_night">#FFFFFF</color>
     <color name="bandyer_colorSurface_night">#242424</color>
     <color name="bandyer_colorOnSurface_night">#FFFFFF</color>
 
     <!-- Light/dark theme common colors -->
-    <color name="bandyer_colorOnSecondary">#ffffff</color>
     <color name="bandyer_colorError">#c70000</color>
     <color name="bandyer_colorOnError">#FFFFFF</color>
 
