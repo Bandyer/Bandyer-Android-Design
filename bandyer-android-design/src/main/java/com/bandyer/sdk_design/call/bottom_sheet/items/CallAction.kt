@@ -17,10 +17,8 @@
 package com.bandyer.sdk_design.call.bottom_sheet.items
 
 import android.annotation.SuppressLint
-import android.app.ActionBar
 import android.content.Context
 import android.view.View
-import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StyleRes
@@ -29,12 +27,9 @@ import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.buttons.AudioRouteButton
 import com.bandyer.sdk_design.buttons.BandyerActionButton
 import com.bandyer.sdk_design.call.buttons.BandyerAudioRouteActionButton
-import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.extensions.getCallActionItemStyle
 import com.bandyer.sdk_design.extensions.getRingingActionItemStyle
-import com.bandyer.sdk_design.extensions.getScreenSize
 import com.bandyer.sdk_design.extensions.setAllEnabled
-import com.bandyer.sdk_design.utils.isRealWearHTM1
 
 /**
  * Class representing a Call Action
@@ -116,8 +111,6 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
 
         override fun onReady() {
             toggle(toggled)
-            if (!isRealWearHTM1() || itemView == null) return
-            itemView!!.layoutParams?.width = (itemView!!.context.getScreenSize().x / 4.5).toInt()
         }
     }
 
@@ -217,8 +210,6 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
 
         override fun onReady() {
             setCurrent(mCurrent)
-            if (!isRealWearHTM1() || itemView == null) return
-            itemView!!.layoutParams?.width = (itemView!!.context.getScreenSize().x / 4.5).toInt()
         }
 
     }
@@ -269,8 +260,6 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
             if (oldLabelText == null) oldLabelText = action.label?.text?.toString()
             action.label?.text = oldLabelText
             action.setAllEnabled(enabled)
-            if (!isRealWearHTM1() || itemView == null) return
-            itemView!!.layoutParams?.width = (itemView!!.context.getScreenSize().x / 4.5).toInt()
         }
 
         /**
@@ -328,8 +317,5 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
     /**
      * Called when the layout has been inflated
      */
-    override fun onReady() {
-        if (!isRealWearHTM1() || itemView == null) return
-        itemView!!.layoutParams?.width = (itemView!!.context.getScreenSize().x / 4.5).toInt()
-    }
+    override fun onReady() = Unit
 }
