@@ -1,15 +1,15 @@
-# Bandyer-Android-Design
-This repository is the design library used by Bandyer's Android SDK
+# Bandyer-Android-Design - (now Kaleyra Video Android Design)
+This repository is the design library used by Bandyer's Android SDK - (now [Kaleyra Video Android SDK](https://github.com/Bandyer/Bandyer-Android-SDK))
 
 <p align="center">
-<img src="img/bandyer.png" alt="Bandyer" title="Bandyer" />
+<img src="img/kaleyra.png" alt="Kaleyra" title="Kaleyra" />
 </p>
 
 [![Download](https://badgen.net/maven/v/metadata-url/https/maven.bandyer.com/releases/com/bandyer/bandyer-android-design/maven-metadata.xml?label=maven.bandyer.com/releases) ](https://maven.bandyer.com/index.html#releases/com/bandyer/bandyer-android-design/)[![Android CI](https://github.com/Bandyer/Bandyer-Android-Design/actions/workflows/android.yml/badge.svg?branch=develop)](https://github.com/Bandyer/Bandyer-Android-Design/actions/workflows/android.yml)
 [![Twitter](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/follow?screen_name=bandyersrl)
 
 
-**Bandyer** is a young innovative startup that enables audio/video communication and collaboration from any platform and browser! Through its WebRTC architecture, it makes video communication simple and punctual.
+**Kaleyra video** enables audio/video communication and collaboration from any platform and browser! Through its WebRTC architecture, it makes video communication simple and punctual.
 
 ## Overview
 
