@@ -22,12 +22,13 @@ package com.bandyer.sdk_design.bottom_sheet.view
 sealed class BottomSheetLayoutType {
 
     /**
-     * Grid layout
+     * Grid bottom sheet layout type
+     * @property spanSize grid span size
      */
     class GRID(val spanSize: Int): BottomSheetLayoutType()
 
     /**
-     * List layout
+     * List bottom sheet layout type
      */
     class LIST: BottomSheetLayoutType()
 }

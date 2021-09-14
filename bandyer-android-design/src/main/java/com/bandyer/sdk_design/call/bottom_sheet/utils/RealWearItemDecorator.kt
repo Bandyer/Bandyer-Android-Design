@@ -21,6 +21,8 @@ import com.bandyer.sdk_design.utils.isRealWearHTM1
 
 /**
  * RealWearItemDecorator performs optimization for RealWear HMT-1 recyclerview navigation.
+ * @property recyclerView RecyclerView to be customized
+ * @constructor
  */
 @SuppressLint("NewApi")
 class RealWearItemDecorator(val recyclerView: RecyclerView) : RecyclerView.ItemDecoration() {
@@ -92,7 +94,14 @@ class RealWearItemDecorator(val recyclerView: RecyclerView) : RecyclerView.ItemD
         else -> outRect.right = if (recyclerView.adapter!!.itemCount >= MAX_ITEM_ON_SCREEN) halfScreenDivider else itemDivider
     }
 
+    /**
+     * RealWearItemDecoration object configuration
+     */
     companion object {
+        /**
+         * Max number of items that should be considered when dividing the available space for adapter items.
+         * When adapter items count is more than this constant, the adapter items' width will be set as wrap content.
+         */
         const val MAX_ITEM_ON_SCREEN = 4
     }
 }
