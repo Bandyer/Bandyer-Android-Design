@@ -25,7 +25,6 @@ buildscript {
     ext.serialization_version = '0.5.1'
     ext.lifecycle_version = "1.1.1"
     ext.bandyer_common = "1.0.10"
-    ext.bandyer_core_av = "2.3.5"
     ext.nav_version = "2.3.5"
 
     repositories {
@@ -40,12 +39,10 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.2'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.21.0'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.21.0' // checks updates for plugins
 
         //classpath dependencies to import library project
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.20"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
 
@@ -66,9 +63,6 @@ allprojects {
     }
 
     configurations.all {
-        resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-        resolutionStrategy.force "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
         resolutionStrategy.force "com.bandyer:bandyer-android-common:$bandyer_common"
     }
 }

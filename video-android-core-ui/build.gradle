@@ -2,41 +2,64 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
 }
+apply from: '../publish.gradle'
+
+def compiler = javaToolchains.compilerFor {
+    languageVersion = JavaLanguageVersion.of(11)
+}
 
 android {
-    compileSdkVersion 30
-
+    compileSdkVersion sdkVersion
+    buildToolsVersion buildToolsVersion
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion sdkVersion
         versionCode 1
-        versionName "1.0"
-
+        versionName moduleVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
+    lintOptions {
+        warning 'InvalidPackage'
+        abortOnError false
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+
+    // For Kotlin projects
     kotlinOptions {
         jvmTarget = '11'
+        jdkHome = compiler.get().metadata.installationPath.asFile.absolutePath
     }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    aaptOptions.cruncherEnabled = false
 }
 
 dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.1'
-    implementation 'com.google.android.material:material:1.4.0'
+    api "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    api 'androidx.core:core-ktx:1.6.0'
+    api 'androidx.appcompat:appcompat:1.3.1'
+    api 'com.google.android.material:material:1.4.0'
+
+
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }

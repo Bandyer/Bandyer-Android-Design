@@ -1,0 +1,95 @@
+buildscript {
+    ext.dokka_version = "0.10.1"
+    ext.moduleGroupId = "com.bandyer"
+    ext.moduleVersion = "2.0.2"
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
+    }
+}
+
+apply plugin: org.jetbrains.dokka.gradle.DokkaPlugin
+apply plugin: 'maven-publish'
+
+Properties properties = new Properties()
+if (project.rootProject.file("local.properties").exists()) {
+    properties.load(project.rootProject.file('local.properties').newDataInputStream())
+}
+
+def mavenAccessKey = properties.getProperty("maven.accessKey") ?: ""
+def mavenSecretKey = properties.getProperty("maven.secretKey") ?: ""
+def mavenDistributionId = properties.getProperty("maven.distributionId") ?: ""
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                url = "s3://maven-bandyer/releases/"
+                credentials(AwsCredentials) {
+                    accessKey = mavenAccessKey
+                    secretKey = mavenSecretKey
+                }
+            }
+        }
+
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = moduleGroupId
+                artifactId = project.getName()
+                version = moduleVersion
+                artifact kdocJar
+                artifact sourcesJar
+            }
+        }
+    }
+}
+
+task invalidateCache(type: Exec) {
+    workingDir '../scripts'
+    def publishPath = "releases"
+    def packageName = moduleGroupId + "." + project.getName()
+    commandLine 'python', './invalidate_s3_cache.py', mavenAccessKey, mavenSecretKey, mavenDistributionId, publishPath, packageName, version
+}
+
+task publishUpload {
+    def dryRun = true
+    def publishTask = 'publishToMavenLocal'
+    if (!dryRun) publishTask = 'publish'
+    dependsOn publishTask
+    dependsOn 'invalidateCache'
+    tasks.findByName('invalidateCache').mustRunAfter publishTask
+}
+
+task dokkaDoc() {
+    dependsOn createApiDoc("genKDoc", "html", "kDoc")
+}
+
+def createApiDoc(def name, def format, def dir) {
+    return tasks.create(name, org.jetbrains.dokka.gradle.DokkaTask) {
+        outputFormat = format
+        outputDirectory = "$buildDir/$dir"
+        configuration {
+            reportUndocumented = true
+            skipEmptyPackages = true // Do not create index pages for empty packages
+        }
+    }
+}
+
+task kdocJar(type: Jar, dependsOn: dokkaDoc) {
+    archiveClassifier.set("javadoc")
+    from "$buildDir/kDoc"
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set("sources")
+    from android.sourceSets.main.java.srcDirs
+}
+
+artifacts {
+    archives kdocJar
+    archives sourcesJar
+}
