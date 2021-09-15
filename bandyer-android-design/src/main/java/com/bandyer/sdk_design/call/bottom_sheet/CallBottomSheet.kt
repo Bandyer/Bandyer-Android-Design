@@ -40,6 +40,8 @@ import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton.State
 import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.extensions.getHeightWithVerticalMargin
+import com.bandyer.sdk_design.utils.AndroidDevice
+import com.bandyer.sdk_design.utils.SupportedSmartGlasses
 
 /**
  * Call BottomSheet to display actions and interact with the call
@@ -90,7 +92,7 @@ open class CallBottomSheet<T>(
         /**
          * Max visible items per row
          */
-        const val MAX_ITEMS_PER_ROW = 4
+        val MAX_ITEMS_PER_ROW = if (AndroidDevice.CURRENT !in SupportedSmartGlasses.list) 4 else Int.MAX_VALUE
     }
 
     init {

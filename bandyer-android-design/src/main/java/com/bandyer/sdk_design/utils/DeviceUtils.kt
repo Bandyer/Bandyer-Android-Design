@@ -19,7 +19,30 @@ package com.bandyer.sdk_design.utils
 import android.os.Build
 
 /**
- * Checks if the current device is Realware HMT-1 device
- * @return true if device is Realware HMT-1, false otherwise
+ * Device representation
+ * @property manufacturer string representation of device manufacturer
+ * @property deviceName device name
+ * @constructor
  */
-internal fun isRealWearHTM1(): Boolean = Build.DEVICE == "HMT-1" && Build.MANUFACTURER == "RealWear inc."
+internal open class AndroidDevice(val manufacturer: String, val deviceName: String) {
+    /**
+     * Current running Android Device
+     */
+    object CURRENT: AndroidDevice(Build.MANUFACTURER, Build.DEVICE)
+}
+
+/**
+ * Checks if the current device is RealWear HMT-1 device
+ * @return true if device is RealWear HMT-1, false otherwise
+ */
+internal fun AndroidDevice.CURRENT.isRealWearHTM1() = manufacturer == "RealWear inc." && deviceName == "HMT-1"
+
+/**
+ * Supported smart glasses listing
+ */
+internal object SupportedSmartGlasses {
+    val list: List<AndroidDevice> = listOf(
+        AndroidDevice("Google", "glass_v3"),
+        AndroidDevice("RealWear inc.", "HMT-1"),
+        AndroidDevice("vuzix", "m400"))
+}

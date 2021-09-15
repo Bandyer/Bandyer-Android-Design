@@ -20,7 +20,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
-import com.bandyer.sdk_design.utils.isRealWearHTM1
+import com.bandyer.sdk_design.utils.AndroidDevice
+import com.bandyer.sdk_design.utils.SupportedSmartGlasses
 
 /**
  * Utils class that applies layout manager on input recyclerview based on input BottomSheetLayoutType
@@ -29,7 +30,7 @@ import com.bandyer.sdk_design.utils.isRealWearHTM1
 class BandyerBottomSheetLayoutManagerApplier(recyclerView: RecyclerView, bottomSheetLayoutType: BottomSheetLayoutType) {
 
     init {
-        if (!isRealWearHTM1()) {
+        if (AndroidDevice.CURRENT !in SupportedSmartGlasses.list) {
             when (bottomSheetLayoutType) {
                 is BottomSheetLayoutType.GRID -> {
                     recyclerView.layoutManager = GridLayoutManager(recyclerView.context, bottomSheetLayoutType.spanSize)
@@ -38,6 +39,6 @@ class BandyerBottomSheetLayoutManagerApplier(recyclerView: RecyclerView, bottomS
                     recyclerView.layoutManager = LinearLayoutManager(recyclerView.context)
                 }
             }
-        } else recyclerView.addItemDecoration(RealWearItemDecorator(recyclerView))
+        } else recyclerView.addItemDecoration(SmartGlassItemDecorator(recyclerView))
     }
 }

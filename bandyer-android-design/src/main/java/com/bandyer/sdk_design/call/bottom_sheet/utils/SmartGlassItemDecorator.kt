@@ -17,7 +17,6 @@
 package com.bandyer.sdk_design.call.bottom_sheet.utils
 
 import android.annotation.SuppressLint
-import android.graphics.Canvas
 import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
@@ -33,15 +32,17 @@ import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.extensions.getScreenSize
 import com.bandyer.sdk_design.extensions.isRtl
 import com.bandyer.sdk_design.extensions.scanForFragmentActivity
+import com.bandyer.sdk_design.utils.AndroidDevice
+import com.bandyer.sdk_design.utils.SupportedSmartGlasses
 import com.bandyer.sdk_design.utils.isRealWearHTM1
 
 /**
- * RealWearItemDecorator performs optimization for RealWear HMT-1 recyclerview navigation.
+ * SmartGlassItemDecorator performs optimization for RealWear HMT-1 recyclerview navigation.
  * @property recyclerView RecyclerView to be customized
  * @constructor
  */
 @SuppressLint("NewApi")
-class RealWearItemDecorator(val recyclerView: RecyclerView) : RecyclerView.ItemDecoration() {
+class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.ItemDecoration() {
 
     private val halfScreenDivider: Int by lazy { recyclerView.context.getScreenSize().x / 2 }
     private val itemDivider: Int by lazy { recyclerView.context.dp2px(32f) }
@@ -54,12 +55,13 @@ class RealWearItemDecorator(val recyclerView: RecyclerView) : RecyclerView.ItemD
     }
 
     init {
-        if (isRealWearHTM1()) customizeRecyclerView(recyclerView)
+        if (AndroidDevice.CURRENT in SupportedSmartGlasses.list) customizeRecyclerView(recyclerView)
     }
 
     private fun customizeRecyclerView(recyclerView: RecyclerView) {
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, recyclerView.context.isRtl())
 
+        if (!AndroidDevice.CURRENT.isRealWearHTM1()) return
         val fragmentActivity = recyclerView.context!!.scanForFragmentActivity()!!
         fragmentActivity.lifecycle.addObserver(object : LifecycleObserver {
 
@@ -78,7 +80,7 @@ class RealWearItemDecorator(val recyclerView: RecyclerView) : RecyclerView.ItemD
      * @suppress
      */
     override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
-        if (!isRealWearHTM1()) return
+        if (AndroidDevice.CURRENT !in SupportedSmartGlasses.list) return
         customizeAdapterItemView((parent.layoutManager as LinearLayoutManager).findViewByPosition(itemPosition)!!)
         addItemViewDividers(outRect, itemPosition)
     }
