@@ -75,25 +75,7 @@ internal var View.isUnHooked: Boolean by FieldProperty { false }
 
 ////////////////////////////////////////////////// EXTENSION FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////////
 
-/**
- * Smoothly animates view's height from size to desired size
- * @receiver View
- * @param from starting size
- * @param to desired final size
- * @param interpolator animator interpolator
- */
-fun View.animateViewHeight(from: Int, to: Int, duration: Long, interpolator: Interpolator = LinearInterpolator(), doOnEnd: ((Animator) -> Unit)? = null) {
-    val valueAnimator = ValueAnimator.ofFloat(from.toFloat(), to.toFloat())
-    valueAnimator.interpolator = interpolator
-    valueAnimator.duration = duration
-    valueAnimator.addUpdateListener {
-        val value = it.animatedValue as Float
-        this.layoutParams.height = value.toInt()
-        this.requestLayout()
-    }
-    doOnEnd?.also { valueAnimator.doOnEnd(it) }
-    valueAnimator.start()
-}
+
 
 /**
  * This utils function make a view change its bounds as a square, its dimensions to a desired size and moves the view to a desired top
