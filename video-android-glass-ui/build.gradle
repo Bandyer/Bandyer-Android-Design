@@ -8,6 +8,10 @@ plugins {
 def picassoVersion = "2.8"
 def fastAdapterVersion = "5.4.1"
 
+def compiler = javaToolchains.compilerFor {
+    languageVersion = JavaLanguageVersion.of(11)
+}
+
 android {
     compileSdkVersion 30
 
@@ -40,6 +44,7 @@ android {
 
     kotlinOptions {
         jvmTarget = '11'
+        jdkHome = compiler.get().metadata.installationPath.asFile.absolutePath
     }
 
     buildFeatures {
