@@ -17,7 +17,7 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.V27" parent="BandyerSDKDesign.BottomSheetDialog.TextEditor.V23">
+    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.V27" parent="BandyerSDKDesign.BottomSheetDialog.TextEditor.V16">
         <item name="android:navigationBarColor">?attr/colorSurface</item>
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:windowLightNavigationBar">false</item>

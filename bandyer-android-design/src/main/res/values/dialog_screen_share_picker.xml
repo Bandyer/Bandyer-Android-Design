@@ -15,14 +15,6 @@
         <item name="bandyer_screenShareDeviceButtonStyle">@style/BandyerSDKDesign.ImageButton.ScreenShare.Device</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.LightStatusBar" parent="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker" >
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-    </style>
-
-    <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.DarkStatusBar" parent="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker" >
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-    </style>
-
     <style name="BandyerSDKDesign.TextView.Title.ScreenSharePicker" parent="BandyerSDKDesign.TextView.Title">
         <item name="android:text">@string/bandyer_screenshare_picker_title</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
