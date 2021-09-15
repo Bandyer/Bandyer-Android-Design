@@ -1,6 +1,7 @@
 buildscript {
     ext.dokka_version = "0.10.1"
     ext.moduleGroupId = "com.bandyer"
+    ext.moduleProductId = "video-android"
     ext.moduleVersion = "2.0.2"
 
     repositories {
@@ -39,7 +40,7 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = moduleGroupId
-                artifactId = project.getName()
+                artifactId = moduleProductId + "-" + project.getName()
                 version = moduleVersion
                 artifact kdocJar
                 artifact sourcesJar

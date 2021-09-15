@@ -107,7 +107,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:$androidX")
     api 'com.google.android.flexbox:flexbox:3.0.0'
 
-    implementation project(":video-android-core-ui")
+    implementation project(':core-ui')
 
     /*** BANDYER ***/
     implementation "com.bandyer:bandyer-android-common:$bandyer_common"
