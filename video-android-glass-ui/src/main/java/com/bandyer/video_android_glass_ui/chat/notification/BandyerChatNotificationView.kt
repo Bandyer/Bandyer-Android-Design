@@ -11,10 +11,10 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.transition.Slide
 import androidx.transition.TransitionManager
+import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.animateViewHeight
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerChatNotificationLayoutBinding
-import com.bandyer.video_android_phone_ui.extensions.animateViewHeight
-import com.bandyer.video_android_phone_ui.extensions.parseToColor
 
 /**
  * A chat notification view

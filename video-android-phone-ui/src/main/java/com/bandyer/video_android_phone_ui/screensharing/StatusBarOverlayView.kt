@@ -24,8 +24,8 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
 import com.bandyer.video_android_phone_ui.R
-import com.bandyer.video_android_phone_ui.extensions.dp2px
 import com.bandyer.video_android_phone_ui.extensions.getScreenSize
 import com.bandyer.video_android_phone_ui.extensions.scanForFragmentActivity
 import com.bandyer.video_android_phone_ui.utils.systemviews.SystemViewLayoutObserver

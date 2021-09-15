@@ -6,8 +6,8 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
 import com.bandyer.video_android_glass_ui.common.BandyerContactAvatarView
-import com.bandyer.video_android_phone_ui.extensions.dp2px
 
 /**
  * A view aggregator of [BandyerContactAvatarView]

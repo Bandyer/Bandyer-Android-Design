@@ -35,6 +35,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_core_ui.extensions.ColorIntExtensions.requiresLightColor
 import com.bandyer.video_android_phone_ui.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.AdapterActionItem

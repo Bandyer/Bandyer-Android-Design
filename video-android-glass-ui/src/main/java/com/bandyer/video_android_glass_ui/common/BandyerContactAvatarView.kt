@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
+import com.bandyer.video_android_core_ui.extensions.ColorIntExtensions.requiresLightColor
 import com.bandyer.video_android_glass_ui.databinding.BandyerContactAvatarLayoutBinding
-import com.bandyer.video_android_phone_ui.extensions.requiresLightColor
 import com.squareup.picasso.Picasso
 import java.util.*
 

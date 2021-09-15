@@ -1,4 +1,4 @@
-/*
+/*d
  * Copyright 2021-2022 Bandyer @ https://www.bandyer.com
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -92,6 +92,7 @@ dependencies {
 
     implementation project(':video-android-phone-ui')
     implementation project(":video-android-glass-ui")
+    implementation project(":video-android-core-ui")
     implementation "com.bandyer:bandyer-android-audiosession:$bandyer_audio_session_version"
     implementation "com.bandyer:bandyer-android-common:$bandyer_common"
 }

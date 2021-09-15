@@ -24,6 +24,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
 import com.bandyer.video_android_phone_ui.bottom_sheet.BandyerBottomSheet
 import com.bandyer.video_android_phone_ui.bottom_sheet.BandyerClickableBottomSheet
 import com.bandyer.video_android_phone_ui.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_ANCHOR_POINT
@@ -37,7 +38,6 @@ import com.bandyer.video_android_phone_ui.bottom_sheet.view.BottomSheetLayoutTyp
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.AudioRoute
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.CallAction
 import com.bandyer.video_android_phone_ui.call.buttons.BandyerLineButton.State
-import com.bandyer.video_android_phone_ui.extensions.dp2px
 import com.bandyer.video_android_phone_ui.extensions.getHeightWithVerticalMargin
 
 /**

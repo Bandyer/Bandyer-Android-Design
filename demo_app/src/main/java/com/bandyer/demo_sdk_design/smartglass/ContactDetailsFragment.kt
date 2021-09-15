@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
-import com.bandyer.video_android_phone_ui.extensions.parseToColor
+import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
 import com.bandyer.video_android_glass_ui.contact.BandyerContactData
 

@@ -1,9 +1,9 @@
 package com.bandyer.video_android_glass_ui.chat
 
 import android.view.View
+import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerChatItemLayoutBinding
-import com.bandyer.video_android_phone_ui.extensions.parseToColor
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 

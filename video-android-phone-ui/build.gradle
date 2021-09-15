@@ -27,7 +27,6 @@ buildscript{
 
 apply plugin: 'com.android.library'
 
-apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'maven-publish'
 
 apply plugin: 'kotlin-android'
@@ -56,6 +55,7 @@ group = projectGroup
 version = "2.0.2"
 
 // Library versions
+def picassoVersion = "2.8"
 def fastAdapterVersion = "5.4.1"
 def lifecycleVersion = '2.2.0'
 def androidX = "1.2.1"
@@ -85,13 +85,13 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     // For Kotlin projects
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = '11'
     }
 
     buildFeatures {
@@ -130,7 +130,7 @@ dependencies {
     compileOnly 'com.github.imablanco:Zoomy:1ee82834df'
 
     /*** UI ***/
-    api 'com.squareup.picasso:picasso:2.71828'
+    api "com.squareup.picasso:picasso:$picassoVersion"
     api 'androidx.constraintlayout:constraintlayout:2.0.4'
     api "com.mikepenz:fastadapter:$fastAdapterVersion"
     api "com.mikepenz:fastadapter-extensions-diff:$fastAdapterVersion"
@@ -150,37 +150,6 @@ if (project.rootProject.file("local.properties").exists()) {
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
 }
 
-install {
-    repositories.mavenInstaller {
-        pom.project {
-            name projectName
-            description projectDesc
-            packaging 'aar'
-            groupId projectGroup
-            version version
-            url siteUrl
-            licenses {
-                license {
-                    name projectLicenses[0]
-                    url projectLicenseUrl
-                }
-            }
-            developers {
-                developer {
-                    id properties.getProperty("bintray.user")
-                    name developerFullName
-                }
-            }
-            scm {
-                connection gitUrl
-                developerConnection gitUrl
-                url siteUrl
-
-            }
-        }
-    }
-}
-
 afterEvaluate {
     publishing {
         repositories {
@@ -193,33 +162,33 @@ afterEvaluate {
             }
         }
 
-        publications {
-            release(MavenPublication) {
-                from components.release
-                groupId = projectGroup
-                artifactId = project.getName()
-                version = version
-                artifact kdocJar
-                artifact sourcesJar
-            }
-        }
+//        publications {
+//            release(MavenPublication) {
+//                from components.release
+//                groupId = projectGroup
+//                artifactId = project.getName()
+//                version = '1.0'
+//                artifact kdocJar
+//                artifact sourcesJar
+//            }
+//        }
     }
 }
 
-task invalidateCache(type: Exec) {
-    workingDir '../scripts'
-    def publishPath = "releases"
-    def packageName = projectGroup + "." + project.getName()
-    commandLine 'python', './invalidate_s3_cache.py', properties.getProperty("maven.accessKey"), properties.getProperty("maven.secretKey"), properties.getProperty("maven.distributionId"), publishPath, packageName ,version
-}
+//task invalidateCache(type: Exec) {
+//    workingDir '../scripts'
+//    def publishPath = "releases"
+//    def packageName = projectGroup + "." + project.getName()
+//    commandLine 'python', './invalidate_s3_cache.py', properties.getProperty("maven.accessKey"), properties.getProperty("maven.secretKey"), properties.getProperty("maven.distributionId"), publishPath, packageName ,version
+//}
 
 task publishUpload {
     def dryRun = true
     def publishTask = 'publishToMavenLocal'
     if(!dryRun) publishTask = 'publish'
     dependsOn publishTask
-    dependsOn 'invalidateCache'
-    tasks.findByName('invalidateCache').mustRunAfter publishTask
+//    dependsOn 'invalidateCache'
+//    tasks.findByName('invalidateCache').mustRunAfter publishTask
 }
 
 task dokkaDoc() {

@@ -34,12 +34,12 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.Px
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.animation.doOnEnd
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.InputDeviceCompat
 import com.bandyer.android_common.FieldProperty
 import com.bandyer.android_common.LifecycleEvents
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
 import com.bandyer.video_android_phone_ui.buttons.BandyerActionButton
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
