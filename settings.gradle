@@ -14,7 +14,8 @@
  *  limitations under the License.
  */
 include ':demo_app',
-        ':bandyer-android-design'
+        ':video-android-phone-ui'
 
 
 include ':video-android-glass-ui'
+include ':video-android-core-ui'

@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.video_android_glass_ui.utils.extensions.darkenColor
+import com.bandyer.video_android_phone_ui.extensions.dp2px
 import com.google.android.material.color.MaterialColors
 import java.lang.ref.WeakReference
 

@@ -19,7 +19,7 @@ package com.bandyer.demo_sdk_design
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.bandyer.sdk_design.call.widgets.LivePointerView
+import com.bandyer.video_android_phone_ui.call.widgets.LivePointerView
 import com.google.android.material.appbar.MaterialToolbar
 import java.util.*
 

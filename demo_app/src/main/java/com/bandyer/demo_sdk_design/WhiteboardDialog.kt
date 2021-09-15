@@ -3,8 +3,8 @@ package com.bandyer.demo_sdk_design
 import android.os.Bundle
 import android.view.View
 import android.webkit.*
-import com.bandyer.sdk_design.extensions.replaceWith
-import com.bandyer.sdk_design.whiteboard.dialog.BaseBandyerWhiteboardDialog
+import com.bandyer.video_android_phone_ui.extensions.replaceWith
+import com.bandyer.video_android_phone_ui.whiteboard.dialog.BaseBandyerWhiteboardDialog
 
 class WhiteBoardDialog : BaseBandyerWhiteboardDialog<WhiteBoardDialog.WhiteboardBottomSheetDialog>() {
 

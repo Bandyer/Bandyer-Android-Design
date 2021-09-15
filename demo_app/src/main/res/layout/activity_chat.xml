@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
 
-            <com.bandyer.sdk_design.chat.widgets.BandyerChatInfoWidget
+            <com.bandyer.video_android_phone_ui.chat.widgets.BandyerChatInfoWidget
                 android:id="@+id/chat_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
             app:layout_constraintTop_toBottomOf="@id/timestamp_message"
             app:layout_constraintBottom_toTopOf="@id/chat_input_layout" />
 
-        <com.bandyer.sdk_design.chat.widgets.BandyerChatInputLayoutWidget
+        <com.bandyer.video_android_phone_ui.chat.widgets.BandyerChatInputLayoutWidget
             android:id="@+id/chat_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <com.bandyer.sdk_design.chat.widgets.BandyerChatUnreadMessagesWidget
+        <com.bandyer.video_android_phone_ui.chat.widgets.BandyerChatUnreadMessagesWidget
             android:id="@+id/unread_messages_widget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

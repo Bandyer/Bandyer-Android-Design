@@ -2,7 +2,7 @@ package com.bandyer.video_android_glass_ui.status_bar_views
 
 import android.content.Context
 import android.util.AttributeSet
-import com.bandyer.sdk_design.R
+import com.bandyer.video_android_glass_ui.R
 import com.google.android.material.imageview.ShapeableImageView
 
 /**

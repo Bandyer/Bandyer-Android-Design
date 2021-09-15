@@ -19,7 +19,7 @@ package com.bandyer.demo_sdk_design
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.sdk_design.extensions.dp2px
+import com.bandyer.video_android_phone_ui.extensions.dp2px
 
 internal class ChatRecyclerViewItemDecorator : RecyclerView.ItemDecoration() {
 

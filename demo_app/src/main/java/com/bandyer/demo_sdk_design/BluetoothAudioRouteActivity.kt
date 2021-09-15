@@ -21,9 +21,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.android_audiosession.model.AudioOutputDevice
-import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
-import com.bandyer.sdk_design.bottom_sheet.view.AudioRouteState
-import com.bandyer.sdk_design.call.bottom_sheet.items.AudioRoute
+import com.bandyer.video_android_phone_ui.bottom_sheet.items.AdapterActionItem
+import com.bandyer.video_android_phone_ui.bottom_sheet.view.AudioRouteState
+import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.AudioRoute
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 

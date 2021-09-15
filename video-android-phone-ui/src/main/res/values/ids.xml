@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
+<resources>
+    <item name="bandyer_id_bottom_sheet_call" type="id" />
+    <item name="bandyer_id_bottom_sheet_audio_route" type="id" />
+    <item name="bandyer_id_bottom_sheet_ringing" type="id" />
+    <item name="bandyer_id_bottom_sheet_layout_content" type="id" />
+
+    <item name="bandyer_id_home_button" type="id" />
+    <item name="bandyer_id_fading_view" type="id" />
+    <item name="bandyer_id_screen_share_overlay" type="id" />
+    <item name="bandyer_id_call_user_status" type="id" />
+
+    <item name="bandyer_id_decline" type="id" />
+    <item name="bandyer_id_answer" type="id" />
+
+    <item name="bandyer_id_camera" type="id" />
+    <item name="bandyer_id_microphone" type="id" />
+    <item name="bandyer_id_options" type="id" />
+    <item name="bandyer_id_participants" type="id" />
+    <item name="bandyer_id_chat" type="id" />
+    <item name="bandyer_id_audioroute" type="id" />
+    <item name="bandyer_id_hangup" type="id" />
+    <item name="bandyer_id_screenshare" type="id" />
+    <item name="bandyer_id_fileshare" type="id" />
+    <item name="bandyer_id_whiteboard" type="id" />
+    <item name="bandyer_id_switchcamera" type="id" />
+
+    <item name="bandyer_id_bluetooth" type="id" />
+    <item name="bandyer_id_loudspeaker" type="id" />
+    <item name="bandyer_id_earpiece" type="id" />
+    <item name="bandyer_id_wiredheadset" type="id" />
+    <item name="bandyer_id_muted" type="id" />
+
+    <item name="bandyer_id_base_chat_message_layout" type="id" />
+    <item name="bandyer_id_file_share_item" type="id" />
+    <item name="bandyer_id_upload_item" type="id" />
+    <item name="bandyer_id_download_item" type="id" />
+    <item name="bandyer_id_download_available_item" type="id" />
+
+</resources>

@@ -8,11 +8,10 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
-import com.bandyer.video_android_glass_ui.menu.BandyerMenuItem
-import com.bandyer.video_android_glass_ui.menu.SmartGlassMenuFragment
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
+import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
+import com.bandyer.video_android_glass_ui.menu.BandyerMenuItem
 
 class MenuFragment : com.bandyer.video_android_glass_ui.menu.SmartGlassMenuFragment(), TiltController.TiltListener {
 

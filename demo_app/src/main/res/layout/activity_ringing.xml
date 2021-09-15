@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".RingingActivity">
 
-    <com.bandyer.sdk_design.bottom_sheet.view.BandyerBottomSheetLayout
+    <com.bandyer.video_android_phone_ui.bottom_sheet.view.BandyerBottomSheetLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

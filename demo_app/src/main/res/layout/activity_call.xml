@@ -26,14 +26,14 @@
     android:background="@android:color/black"
     tools:context=".CallActivity">
 
-    <com.bandyer.sdk_design.call.widgets.BandyerCallInfoWidget
+    <com.bandyer.video_android_phone_ui.call.widgets.BandyerCallInfoWidget
         android:id="@+id/call_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="?attr/bandyer_callInfoStyle"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.bandyer.sdk_design.call.widgets.BandyerCallUserInfoWidget
+    <com.bandyer.video_android_phone_ui.call.widgets.BandyerCallUserInfoWidget
         android:id="@+id/call_user_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
         android:theme="?attr/bandyer_userInfoStyle"
         app:layout_constraintTop_toBottomOf="@id/call_info"/>
 
-    <com.bandyer.sdk_design.bottom_sheet.view.BandyerBottomSheetLayout
+    <com.bandyer.video_android_phone_ui.bottom_sheet.view.BandyerBottomSheetLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

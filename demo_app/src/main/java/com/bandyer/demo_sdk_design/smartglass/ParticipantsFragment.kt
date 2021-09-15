@@ -9,14 +9,13 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.sdk_design.extensions.parseToColor
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
+import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
+import com.bandyer.video_android_phone_ui.extensions.parseToColor
 import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
 import com.bandyer.video_android_glass_ui.contact.BandyerContactData
 import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
 import com.bandyer.video_android_glass_ui.contact.call_participant.BandyerCallParticipantItem
-import com.bandyer.video_android_glass_ui.contact.call_participant.SmartGlassCallParticipantsFragment
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 

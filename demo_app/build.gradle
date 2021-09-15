@@ -90,7 +90,7 @@ dependencies {
 
     /***  BandyerSDKDesign ***/
 
-    implementation project(":bandyer-android-design")
+    implementation project(':video-android-phone-ui')
     implementation project(":video-android-glass-ui")
     implementation "com.bandyer:bandyer-android-audiosession:$bandyer_audio_session_version"
     implementation "com.bandyer:bandyer-android-common:$bandyer_common"

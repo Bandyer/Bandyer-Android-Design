@@ -24,15 +24,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.sdk_design.chat.adapter_items.message.text.BandyerChatTextMessage
-import com.bandyer.sdk_design.chat.adapter_items.message.text.BandyerChatTextMessageItem
-import com.bandyer.sdk_design.chat.widgets.BandyerChatInfoWidget
-import com.bandyer.sdk_design.chat.widgets.BandyerChatInfoWidget.BandyerChatInfoWidgetState.*
-import com.bandyer.sdk_design.chat.widgets.BandyerChatUnreadMessagesWidget
+import com.bandyer.video_android_phone_ui.chat.adapter_items.message.text.BandyerChatTextMessage
+import com.bandyer.video_android_phone_ui.chat.adapter_items.message.text.BandyerChatTextMessageItem
+import com.bandyer.video_android_phone_ui.chat.widgets.BandyerChatInfoWidget
+import com.bandyer.video_android_phone_ui.chat.widgets.BandyerChatInfoWidget.BandyerChatInfoWidgetState.*
+import com.bandyer.video_android_phone_ui.chat.widgets.BandyerChatUnreadMessagesWidget
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.IItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.util.*
 

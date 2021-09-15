@@ -36,7 +36,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.bandyer.sdk_design.call.widgets.LivePointerView
+    <com.bandyer.video_android_phone_ui.call.widgets.LivePointerView
         android:id="@+id/pointerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

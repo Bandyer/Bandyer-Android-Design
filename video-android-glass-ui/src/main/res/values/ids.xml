@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="id_chat_item" type="id" />
+    <item name="id_menu_item" type="id" />
+    <item name="id_participants_item" type="id" />
+    <item name="id_participant_details_item" type="id" />
+</resources>

@@ -8,7 +8,7 @@ import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.appcompat.content.res.AppCompatResources
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.sdk_design.extensions.dp2px
+import com.bandyer.video_android_phone_ui.extensions.dp2px
 
 /**
  * A custom battery view created using a canvas.

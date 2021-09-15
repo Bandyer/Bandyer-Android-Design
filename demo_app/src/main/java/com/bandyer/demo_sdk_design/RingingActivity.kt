@@ -2,10 +2,10 @@ package com.bandyer.demo_sdk_design
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
-import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
-import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
-import com.bandyer.sdk_design.call.widgets.BandyerCallActionWidget
+import com.bandyer.video_android_phone_ui.bottom_sheet.BandyerBottomSheet
+import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
+import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.CallAction
+import com.bandyer.video_android_phone_ui.call.widgets.BandyerCallActionWidget
 
 class RingingActivity : AppCompatActivity() {
 
