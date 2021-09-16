@@ -95,10 +95,10 @@ class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.Ite
 
         (adapterItemView as? BandyerActionButton)?.let {
             it.orientation = LinearLayout.HORIZONTAL
-            it.label!!.isEnabled = !currentDevice.isRealWearHTM1()
+            it.label!!.isClickable = false
         } ?: (adapterItemView as? BandyerAudioRouteActionButton)?.let {
             it.orientation = LinearLayout.HORIZONTAL
-            it.label!!.isEnabled = !currentDevice.isRealWearHTM1()
+            it.label!!.isClickable = false
         }
     }
 
