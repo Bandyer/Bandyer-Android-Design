@@ -2,20 +2,20 @@
 <resources>
 
     <!-- BOTTOM ACTION ITEM -->
-    <declare-styleable name="BandyerSDKDesign.GlassBottomActionItem">
+    <declare-styleable name="BandyerSDKDesign.Glass.BottomActionItem">
         <attr name="bandyer_iconStyle" />
         <attr name="bandyer_iconTipStyle" format="reference" />
         <attr name="bandyer_labelStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.GlassBottomActionItem" parent="">
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.GlassBottomActionItemIcon</item>
+    <style name="BandyerSDKDesign.Glass.BottomActionItem" parent="BandyerSDKDesign.Glass">
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Icon</item>
         <item name="bandyer_iconTipStyle">@style/BandyerSDKDesign.TextView.IconTip</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label</item>
     </style>
 
     <!-- GESTURE ICON -->
-    <style name="BandyerSDKDesign.GlassBottomActionItemIcon" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="tint">?attr/colorSecondary</item>
         <item name="android:layout_gravity">center</item>
     </style>

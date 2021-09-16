@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerBottomActionBarLayoutBinding
 
 /*
@@ -20,15 +19,6 @@ class BandyerBottomActionBarView @JvmOverloads constructor(
 
     private var binding: BandyerBottomActionBarLayoutBinding =
         BandyerBottomActionBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
-
-    init {
-        context.obtainStyledAttributes(attrs, R.styleable.BottomActionBarView).apply {
-            setSwipeText(getString(R.styleable.BottomActionBarView_bandyer_swipeText))
-            setTapText(getString(R.styleable.BottomActionBarView_bandyer_tapText))
-            setSwipeDownText(getString(R.styleable.BottomActionBarView_bandyer_swipeDownText))
-            recycle()
-        }
-    }
 
     /**
      * Set the swipe action text. If it is set to null,

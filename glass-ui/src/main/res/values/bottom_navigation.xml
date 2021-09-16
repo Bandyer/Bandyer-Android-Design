@@ -10,9 +10,9 @@
 
     <style name="BandyerSDKDesign.GlassBottomNavigation" parent="">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.GlassBottomNavigation.RootLayout</item>
-        <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.GlassBottomActionItem.Swipe</item>
-        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.GlassBottomActionItem.SwipeDown</item>
-        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.GlassBottomActionItem.Tap</item>
+        <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe</item>
+        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown</item>
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap</item>
     </style>
 
     <style name="BandyerSDKDesign.GlassBottomNavigation.RootLayout" parent="">
@@ -25,17 +25,17 @@
     </style>
 
     <!-- SWIPE HORIZONTAL ITEM -->
-    <style name="BandyerSDKDesign.GlassBottomActionItem.Swipe" parent="BandyerSDKDesign.GlassBottomActionItem">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.GlassBottomActionItem.Swipe.RootLayout</item>
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.GlassBottomActionItemIcon.Swipe</item>
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Swipe" parent="BandyerSDKDesign.Glass.BottomActionItem">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.RootLayout</item>
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Icon.Swipe</item>
         <item name="bandyer_iconTipStyle">@style/BandyerSDKDesign.TextView.IconTip.Swipe</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassBottomActionItem.Swipe.RootLayout" parent="">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Swipe.RootLayout" parent="">
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space4</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassBottomActionItemIcon.Swipe" parent="BandyerSDKDesign.GlassBottomActionItemIcon">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Icon.Swipe" parent="BandyerSDKDesign.Glass.BottomActionItem.Icon">
         <item name="bandyer_iconStyle">@drawable/ic_bandyer_sg_swipe_arrow</item>
     </style>
 
@@ -44,17 +44,17 @@
     </style>
 
     <!-- SWIPE DOWN ITEM -->
-    <style name="BandyerSDKDesign.GlassBottomActionItem.SwipeDown" parent="BandyerSDKDesign.GlassBottomActionItem">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.GlassBottomActionItem.SwipeDown.RootLayout</item>
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.GlassBottomActionItemIcon.SwipeDown</item>
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown" parent="BandyerSDKDesign.Glass.BottomActionItem">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout</item>
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Icon.SwipeDown</item>
         <item name="bandyer_iconTipStyle">@style/BandyerSDKDesign.TextView.IconTip.SwipeDown</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassBottomActionItem.SwipeDown.RootLayout" parent="">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout" parent="">
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space8</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassBottomActionItemIcon.SwipeDown" parent="BandyerSDKDesign.GlassBottomActionItemIcon">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Icon.SwipeDown" parent="BandyerSDKDesign.Glass.BottomActionItem.Icon">
         <item name="bandyer_iconStyle">@drawable/ic_bandyer_sg_close_arrow</item>
     </style>
 
@@ -63,17 +63,17 @@
     </style>
 
     <!-- TAP ITEM -->
-    <style name="BandyerSDKDesign.GlassBottomActionItem.Tap" parent="BandyerSDKDesign.GlassBottomActionItem">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.GlassBottomActionItem.Tap.RootLayout</item>
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.GlassBottomActionItemIcon.Tap</item>
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap" parent="BandyerSDKDesign.Glass.BottomActionItem">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout</item>
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Icon.Tap</item>
         <item name="bandyer_iconTipStyle">@style/BandyerSDKDesign.TextView.IconTip.Tap</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassBottomActionItem.Tap.RootLayout" parent="">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout" parent="">
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space8</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassBottomActionItemIcon.Tap" parent="BandyerSDKDesign.GlassBottomActionItemIcon">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Icon.Tap" parent="BandyerSDKDesign.Glass.BottomActionItem.Icon">
         <item name="bandyer_iconStyle">@drawable/ic_bandyer_sg_select</item>
     </style>
 
