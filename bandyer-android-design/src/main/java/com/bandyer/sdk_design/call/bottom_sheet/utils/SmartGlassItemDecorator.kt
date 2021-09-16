@@ -44,7 +44,6 @@ import com.bandyer.sdk_design.utils.isRealWearHTM1
 @SuppressLint("NewApi")
 class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.ItemDecoration() {
 
-    private val currentDevice by lazy { AndroidDevice.CURRENT }
     private val halfScreenDivider: Int by lazy { recyclerView.context.getScreenSize().x / 2 }
     private val itemDivider: Int by lazy { recyclerView.context.dp2px(32f) }
 
