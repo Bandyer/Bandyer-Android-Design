@@ -29,6 +29,28 @@ internal open class AndroidDevice(val manufacturer: String, val deviceName: Stri
      * Current running Android Device
      */
     object CURRENT: AndroidDevice(Build.MANUFACTURER, Build.DEVICE)
+
+    /**
+     * @suppress
+     */
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is AndroidDevice) return false
+
+        if (manufacturer != other.manufacturer) return false
+        if (deviceName != other.deviceName) return false
+
+        return true
+    }
+
+    /**
+     * @suppress
+     */
+    override fun hashCode(): Int {
+        var result = manufacturer.hashCode()
+        result = 31 * result + deviceName.hashCode()
+        return result
+    }
 }
 
 /**
