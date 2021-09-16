@@ -4,7 +4,7 @@
     <style name="BandyerSDKDesign.SmartGlass.MenuFragment" parent="">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.SmartGlass.MenuRecyclerView</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.SmartGlass.MenuRecyclerViewItem</item>
-        <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment.BottomActionBar</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->

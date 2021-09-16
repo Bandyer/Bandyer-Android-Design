@@ -2,7 +2,7 @@
 <resources>
     <!-- CALL FRAGMENT -->
     <style name="BandyerSDKDesign.SmartGlass.CallFragment" parent="">
-        <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.CallFragment.BottomActionBar</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.SmartGlass.CallFragment.BottomActionBar</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->

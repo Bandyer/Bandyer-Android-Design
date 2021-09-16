@@ -15,7 +15,7 @@
         <attr name="bandyer_smartGlassParticipantDetailsFragmentStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Theme.Call.Glass.DayNight.V16" parent="BandyerSDKDesign.Theme.Call.DayNight.V16">
+    <style name="BandyerSDKDesign.Theme.Call.Glass.DayNight.V16" parent="BandyerSDKDesign.Theme.Day">
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="bandyer_smartGlassStatusBarStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar</item>
@@ -31,7 +31,7 @@
         <item name="bandyer_smartGlassParticipantDetailsFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ParticipantDetailsFragment</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Call.Glass.Day.V16" parent="BandyerSDKDesign.Theme.Call.Day.V16">
+    <style name="BandyerSDKDesign.Theme.Call.Glass.Day.V16" parent="BandyerSDKDesign.Theme.Day">
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="bandyer_smartGlassStatusBarStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar</item>
@@ -47,7 +47,7 @@
         <item name="bandyer_smartGlassParticipantDetailsFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ParticipantDetailsFragment</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Call.Glass.Night.V16" parent="BandyerSDKDesign.Theme.Call.Night.V16">
+    <style name="BandyerSDKDesign.Theme.Call.Glass.Night.V16" parent="BandyerSDKDesign.Theme.Night">
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="bandyer_smartGlassStatusBarStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar</item>
@@ -69,10 +69,6 @@
 
     <style name="BandyerSDKDesign.Theme.Call.Glass.Night" parent="BandyerSDKDesign.Theme.Call.Glass.Night.V16" />
 
-    <style name="BandyerSDKDesign.Theme.Call.Glass" parent="BandyerSDKDesign.Theme.Call.Glass.Day">
-        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.Day</item>
-        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.DarkStatusBar</item>
-        <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Day</item>
-    </style>
+    <style name="BandyerSDKDesign.Theme.Call.Glass" parent="BandyerSDKDesign.Theme.Call.Glass.Day"/>
 
 </resources>

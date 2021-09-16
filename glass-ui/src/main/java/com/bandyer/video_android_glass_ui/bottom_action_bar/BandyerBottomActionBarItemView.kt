@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.bandyer.video_android_glass_ui.databinding.BandyerBottomActionBarItemLayoutBinding
-import com.bandyer.video_android_glass_ui.R
 
 /*
  * Bottom action bar item view, it describes an action the user performs on a given gesture
@@ -24,13 +23,6 @@ class BandyerBottomActionBarItemView @JvmOverloads constructor(
         BandyerBottomActionBarItemLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     init {
-        context.obtainStyledAttributes(attrs, R.styleable.BottomActionBarItemView).apply {
-            binding.bandyerGestureIcon.setImageDrawable(getDrawable(R.styleable.BottomActionBarItemView_bandyer_gestureIcon))
-            binding.bandyerGestureText.text =
-                getString(R.styleable.BottomActionBarItemView_bandyer_gestureText)
-            setActionText(getString(R.styleable.BottomActionBarItemView_bandyer_actionText))
-            recycle()
-        }
         isClickable = true
     }
 

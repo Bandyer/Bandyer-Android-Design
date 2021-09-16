@@ -16,18 +16,6 @@
 
 <resources>
 
-    <declare-styleable name="BandyerSDKDesign.ChatMessage">
-        <attr name="materialCardViewStyle"/>
-        <attr name="bandyer_messageStyle" format="reference" />
-        <attr name="bandyer_timestampStyle" format="reference" />
-        <attr name="bandyer_iconStyle"/>
-    </declare-styleable>
-
-    <style name="BandyerSDKDesign.ChatMessage" parent="" >
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">true</item>
-    </style>
-
     <style name="BandyerSDKDesign.ChatMessage.LoggedUser" parent="BandyerSDKDesign.ChatMessage">
         <item name="materialCardViewStyle">@style/BandyerSDKDesign.ChatMessageBackground.LoggedUser</item>
         <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.Subtitle.ChatMessageTimestamp.LoggedUser</item>

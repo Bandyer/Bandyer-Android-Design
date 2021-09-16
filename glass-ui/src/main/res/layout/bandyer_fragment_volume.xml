@@ -11,13 +11,13 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/bandyer_bottom_action_bar"
         app:layout_constraintStart_toStartOf="parent"
-        android:theme="?attr/bandyer_sliderStyle"/>
+        android:theme="?attr/sliderStyle"/>
 
     <com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
         android:id="@+id/bandyer_bottom_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="?attr/bandyer_bottomActionBarStyle"
+        android:theme="?attr/bottomNavigationStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

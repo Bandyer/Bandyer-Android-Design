@@ -5,11 +5,11 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.EndCallFragment.Root</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.EndCallFragment.SmartGlass.Title</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.EndCallFragment.SmartGlass.Subtitle</item>
-        <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.EndCallFragment.BottomActionBar</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.SmartGlass.EndCallFragment.BottomActionBar</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.EndCallFragment.Root" parent="">
-        <item name="android:background">@color/bandyer_smartglass_background_color</item>
+        <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
     <!-- TITLE -->
@@ -29,7 +29,7 @@
     </style>
 
     <!-- BOTTOM ACTION BAR -->
-    <style name="BandyerSDKDesign.SmartGlass.EndCallFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
+    <style name="BandyerSDKDesign.SmartGlass.EndCallFragment.BottomActionBar" parent="BandyerSDKDesign.GlassBottomNavigation">
         <item name="bandyer_swipeDownText">@string/bandyer_smartglass_cancel</item>
         <item name="bandyer_tapText">@string/bandyer_smartglass_confirm</item>
     </style>

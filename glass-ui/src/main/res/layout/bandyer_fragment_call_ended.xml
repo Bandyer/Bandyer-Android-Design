@@ -36,5 +36,5 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:theme="?attr/bandyer_bottomActionBarStyle" />
+        android:theme="?attr/bottomNavigationStyle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

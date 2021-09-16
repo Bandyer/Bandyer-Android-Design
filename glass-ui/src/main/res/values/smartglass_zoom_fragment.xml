@@ -2,19 +2,19 @@
 <resources>
     <!-- MENU FRAGMENT -->
     <style name="BandyerSDKDesign.SmartGlass.ZoomFragment" parent="">
-        <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.ZoomFragment.BottomActionBar</item>
-        <item name="bandyer_sliderStyle">@style/BandyerSDKDesign.SmartGlass.Slider.ZoomFragment</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.GlassBottomNavigation.ZoomFragment</item>
+        <item name="sliderStyle">@style/BandyerSDKDesign.GlassSlider.ZoomFragment</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->
-    <style name="BandyerSDKDesign.SmartGlass.ZoomFragment.BottomActionBar" parent="BandyerSDKDesign.SmartGlass.BottomActionBar">
+    <style name="BandyerSDKDesign.GlassBottomNavigation.ZoomFragment" parent="BandyerSDKDesign.GlassBottomNavigation">
         <item name="bandyer_swipeDownText">@string/bandyer_smartglass_cancel</item>
         <item name="bandyer_swipeText">@string/bandyer_smartglass_change</item>
         <item name="bandyer_tapText">@string/bandyer_smartglass_confirm</item>
     </style>
 
     <!-- SLIDER -->
-    <style name="BandyerSDKDesign.SmartGlass.Slider.ZoomFragment" parent="BandyerSDKDesign.SmartGlass.Slider">
+    <style name="BandyerSDKDesign.GlassSlider.ZoomFragment" parent="BandyerSDKDesign.GlassSlider">
         <item name="bandyer_percentageText">@string/bandyer_smartglass_zoom</item>
     </style>
 </resources>

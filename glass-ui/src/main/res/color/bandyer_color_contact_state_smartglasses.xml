@@ -16,6 +16,6 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/bandyer_smartglass_online_state_color" android:state_activated="true"/>
-    <item android:color="@color/bandyer_smartglass_offline_state_color"/>
+    <item android:color="@color/bandyer_glass_online_state_color" android:state_activated="true"/>
+    <item android:color="@color/bandyer_glass_offline_state_color"/>
 </selector>

@@ -36,6 +36,7 @@ import com.bandyer.android_audiosession.session.audioCallSessionOptions
 import com.bandyer.video_android_phone_ui.bottom_sheet.BandyerBottomSheet
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
 import com.bandyer.video_android_phone_ui.bottom_sheet.view.AudioRouteState
+import com.bandyer.video_android_phone_ui.buttons.BandyerActionButton
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.OnAudioRouteBottomSheetListener
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.AudioRoute
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.CallAction
@@ -232,6 +233,10 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
                 // if permissions toggle
                 item.toggle()
                 true
+            }
+            is CallAction.SWITCH_CAMERA -> {
+                (item.itemView as? BandyerActionButton)?.isEnabled = false
+                false
             }
             else -> false
         }

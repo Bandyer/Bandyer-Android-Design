@@ -96,7 +96,7 @@ class ContactDetailsFragment : com.bandyer.video_android_glass_ui.contact.detail
 
     override fun onResume() {
         super.onResume()
-        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_smartglass_background_color, null))
+        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_glass_background_color, null))
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             tiltController!!.requestAllSensors()
     }

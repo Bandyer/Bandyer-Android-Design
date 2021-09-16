@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
   ~
   ~  Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,21 +15,6 @@
   ~  limitations under the License.
   -->
 
-<font-family xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <!-- regular -->
-    <font app:font="@font/bandyer_font_regular"
-        app:fontStyle="normal"
-        app:fontWeight="400" />
-
-    <!-- italic -->
-    <font app:font="@font/bandyer_font_italic"
-        app:fontStyle="italic"
-        app:fontWeight="400" />
-
-    <!-- bold -->
-    <font app:font="@font/bandyer_font_bold"
-        app:fontStyle="normal"
-        app:fontWeight="450" />
-
-</font-family>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="0.30" android:color="?attr/colorOnSurface"/>
+</selector>

@@ -173,7 +173,7 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragm
         activity.setStatusBarColor(
             ResourcesCompat.getColor(
                 resources,
-                R.color.bandyer_smartglass_background_color,
+                R.color.bandyer_glass_background_color,
                 null
             )
         )

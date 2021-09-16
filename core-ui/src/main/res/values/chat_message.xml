@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BandyerSDKDesign.ChatMessage">
+        <attr name="bandyer_avatarStyle"/>
+        <attr name="bandyer_titleStyle"/>
+        <attr name="bandyer_messageStyle" format="reference" />
+        <attr name="bandyer_timestampStyle" format="reference" />
+        <attr name="bandyer_iconStyle"/>
+        <attr name="bottomNavigationStyle"/>
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.ChatMessage" parent="" >
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+    </style>
+</resources>

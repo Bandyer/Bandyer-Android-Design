@@ -15,14 +15,14 @@
         <item name="bandyer_counterStyle">
             @style/BandyerSDKDesign.TextView.Counter.ChatFragment.SmartGlass
         </item>
-        <item name="bandyer_bottomActionBarStyle">
+        <item name="bottomNavigationStyle">
             @style/BandyerSDKDesign.SmartGlass.ChatFragment.BottomActionBar
         </item>
     </style>
 
     <!-- RECYCLER VIEW -->
     <style name="BandyerSDKDesign.SmartGlass.ChatFragment.RecyclerView" parent="">
-        <item name="android:background">@color/bandyer_smartglass_background_color</item>
+        <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
     <!-- RECYCLER VIEW ITEM -->
@@ -91,6 +91,6 @@
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.BottomActionBar.Root.ChatFragment" parent="BandyerSDKDesign.SmartGlass.BottomActionBar.Root">
-        <item name="android:background">@color/bandyer_smartglass_background_color</item>
+        <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 </resources>

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <gradient
-        android:startColor="@color/bandyer_smartglass_background_color"
+        android:startColor="@color/bandyer_glass_background_color"
         android:endColor="@android:color/transparent"
         android:angle="270" />
 </shape>

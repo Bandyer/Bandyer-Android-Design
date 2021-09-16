@@ -5,11 +5,11 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.RingingFragment.Root</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.RingingFragment.SmartGlass.Title</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.RingingFragment.SmartGlass.Subtitle</item>
-        <item name="bandyer_bottomActionBarStyle">@style/BandyerSDKDesign.SmartGlass.RingingFragment.BottomActionBar</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.SmartGlass.RingingFragment.BottomActionBar</item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.RingingFragment.Root" parent="">
-        <item name="android:background">@color/bandyer_smartglass_background_color</item>
+        <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
     <!-- TITLE -->

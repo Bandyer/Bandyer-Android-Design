@@ -24,6 +24,8 @@
 
     <attr name="bandyer_iconStyle" format="reference" />
 
+    <attr name="bandyer_avatarStyle" format="reference" />
+
     <!-- Style for error views -->
     <attr name="bandyer_errorIconStyle" format="reference" />
 

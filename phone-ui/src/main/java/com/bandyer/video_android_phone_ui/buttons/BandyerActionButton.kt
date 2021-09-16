@@ -72,6 +72,12 @@ open class BandyerActionButton @JvmOverloads constructor(context: Context, attrs
         if (!button!!.hasOnClickListeners()) button!!.setOnClickListener(l)
     }
 
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        button?.isEnabled = enabled
+        label?.isEnabled = enabled
+    }
+
     /**
      * By default only the children will listen for click events
      */

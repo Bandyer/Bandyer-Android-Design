@@ -10,13 +10,13 @@
         <item name="bandyer_recyclerViewItemStyle">
             @style/BandyerSDKDesign.SmartGlass.MenuRecyclerViewItem
         </item>
-        <item name="bandyer_bottomActionBarStyle">
+        <item name="bottomNavigationStyle">
             @style/BandyerSDKDesign.SmartGlass.ParticipantsFragment.BottomActionBar
         </item>
     </style>
 
     <style name="BandyerSDKDesign.SmartGlass.ParticipantsFragment.Root" parent="">
-        <item name="android:background">@color/bandyer_smartglass_background_color</item>
+        <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
     <!-- AVATAR -->

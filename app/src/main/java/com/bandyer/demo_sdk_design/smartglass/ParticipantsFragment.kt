@@ -132,7 +132,7 @@ class ParticipantsFragment : com.bandyer.video_android_glass_ui.contact.call_par
         activity.setStatusBarColor(
             ResourcesCompat.getColor(
                 resources,
-                R.color.bandyer_smartglass_background_color,
+                R.color.bandyer_glass_background_color,
                 null
             )
         )

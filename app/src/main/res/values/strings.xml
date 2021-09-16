@@ -16,6 +16,7 @@
 
 <resources>
     <string name="app_name">Demo SDK Design</string>
+    <string name="kaleyra" translatable="false">Kaleyra</string>
     <string name="chat">Chat</string>
     <string name="call">Call</string>
     <string name="whiteboard_editor">Whiteboard text editor</string>

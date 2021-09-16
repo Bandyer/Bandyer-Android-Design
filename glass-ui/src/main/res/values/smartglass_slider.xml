@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- SLIDER -->
-    <style name="BandyerSDKDesign.SmartGlass.Slider" parent="">
+    <style name="BandyerSDKDesign.GlassSlider" parent="">
         <item name="bandyer_percentageText">@string/bandyer_smartglass_volume</item>
-        <item name="seekBarStyle">@style/BandyerSDKDesign.SmartGlass.SeekBar</item>
+        <item name="seekBarStyle">@style/BandyerSDKDesign.GlassSeekBar</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Slider</item>
     </style>
 
     <!-- SLIDER SEEKBAR -->
-    <style name="BandyerSDKDesign.SmartGlass.SeekBar" parent="Widget.AppCompat.SeekBar.Discrete">
+    <style name="BandyerSDKDesign.GlassSeekBar" parent="Widget.AppCompat.SeekBar.Discrete">
         <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
         <item name="android:thumb">@null</item>
