@@ -32,6 +32,8 @@ import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.extensions.getScreenSize
 import com.bandyer.sdk_design.extensions.isRtl
 import com.bandyer.sdk_design.extensions.scanForFragmentActivity
+import com.bandyer.sdk_design.extensions.setPaddingEnd
+import com.bandyer.sdk_design.extensions.setPaddingStart
 import com.bandyer.sdk_design.utils.AndroidDevice
 import com.bandyer.sdk_design.utils.SupportedSmartGlasses
 import com.bandyer.sdk_design.utils.isRealWearHTM1
@@ -45,7 +47,7 @@ import com.bandyer.sdk_design.utils.isRealWearHTM1
 class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.ItemDecoration() {
 
     private val halfScreenDivider: Int by lazy { recyclerView.context.getScreenSize().x / 2 }
-    private val itemDivider: Int by lazy { recyclerView.context.dp2px(32f) }
+    private val itemDivider: Int by lazy { recyclerView.context.dp2px(16f) }
 
     private val tiltController by lazy {
         TiltController(recyclerView.context!!, object : TiltController.TiltListener {
@@ -72,7 +74,7 @@ class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.Ite
             fun onPause() = tiltController.releaseAllSensors()
 
             @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-            fun onDispose() = fragmentActivity.lifecycle.removeObserver(this)
+            fun onDestroy() = fragmentActivity.lifecycle.removeObserver(this)
         })
     }
 
@@ -89,8 +91,11 @@ class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.Ite
         recyclerView.adapter ?: return
 
         adapterItemView.layoutParams.width =
-            if (recyclerView.adapter!!.itemCount > MAX_ITEM_ON_SCREEN) ViewGroup.LayoutParams.WRAP_CONTENT
+            if (shouldScrollItems()) ViewGroup.LayoutParams.WRAP_CONTENT
             else recyclerView.context.getScreenSize().x / recyclerView.adapter!!.itemCount
+
+        adapterItemView.setPaddingStart(itemDivider)
+        adapterItemView.setPaddingEnd(itemDivider)
 
         (adapterItemView as? BandyerActionButton)?.let {
             it.orientation = LinearLayout.HORIZONTAL
@@ -102,15 +107,15 @@ class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.Ite
     }
 
     private fun addItemViewDividers(outRect: Rect, itemPosition: Int) = when {
-        recyclerView.adapter!!.itemCount < MAX_ITEM_ON_SCREEN + 1 -> Unit
-        itemPosition in 1..recyclerView.adapter!!.itemCount - 2 -> outRect.right = itemDivider
-        itemPosition == 0 -> {
-            outRect.left = if (recyclerView.adapter!!.itemCount >= MAX_ITEM_ON_SCREEN) halfScreenDivider else itemDivider
-            outRect.right = itemDivider
-        }
-        // last position
-        else -> outRect.right = if (recyclerView.adapter!!.itemCount >= MAX_ITEM_ON_SCREEN) halfScreenDivider else itemDivider
+        !shouldScrollItems() -> Unit
+        itemPosition == 0 ->
+            outRect.left = if (shouldScrollItems()) halfScreenDivider else 0
+        itemPosition == recyclerView.adapter!!.itemCount - 1 ->
+            outRect.right = if (shouldScrollItems()) halfScreenDivider else 0
+        else -> Unit
     }
+
+    private fun shouldScrollItems() = recyclerView.adapter!!.itemCount > MAX_ITEM_ON_SCREEN + 1
 
     /**
      * RealWearItemDecoration object configuration
