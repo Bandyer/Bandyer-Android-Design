@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ZOOM FRAGMENT -->
+    <style name="BandyerSDKDesign.Glass.Zoom" parent="BandyerSDKDesign.Glass">
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.GlassBottomNavigation.Zoom</item>
+        <item name="sliderStyle">@style/BandyerSDKDesign.Glass.Slider.Zoom</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.GlassBottomNavigation.Zoom" parent="BandyerSDKDesign.GlassBottomNavigation">
+        <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.Zoom</item>
+        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Zoom</item>
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Zoom</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Swipe.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.Swipe">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeZoom</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.SwipeZoom" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_change</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeDownZoom</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.SwipeDownZoom" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_cancel</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapZoom</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.TapZoom" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_confirm</item>
+    </style>
+
+    <!-- SLIDER -->
+    <style name="BandyerSDKDesign.Glass.Slider.Zoom" parent="BandyerSDKDesign.Glass.Slider">
+        <item name="bandyer_percentageText">@string/bandyer_smartglass_zoom</item>
+    </style>
+</resources>

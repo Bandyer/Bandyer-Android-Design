@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- VOLUME FRAGMENT -->
+    <style name="BandyerSDKDesign.Glass.Volume" parent="BandyerSDKDesign.Glass">
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.GlassBottomNavigation.Volume</item>
+        <item name="sliderStyle">@style/BandyerSDKDesign.Glass.Slider.Volume</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.GlassBottomNavigation.Volume" parent="BandyerSDKDesign.GlassBottomNavigation">
+        <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.Volume</item>
+        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Volume</item>
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Volume</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Swipe.Volume" parent="BandyerSDKDesign.Glass.BottomActionItem.Swipe">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeVolume</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.SwipeVolume" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_change</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Volume" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeDownVolume</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.SwipeDownVolume" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_cancel</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Volume" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapVolume</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.TapVolume" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_confirm</item>
+    </style>
+
+    <!-- SLIDER -->
+    <style name="BandyerSDKDesign.Glass.Slider.Volume" parent="BandyerSDKDesign.Glass.Slider">
+        <item name="bandyer_percentageText">@string/bandyer_smartglass_volume</item>
+    </style>
+</resources>

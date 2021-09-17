@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- SLIDER -->
-    <style name="BandyerSDKDesign.GlassSlider" parent="">
+    <style name="BandyerSDKDesign.Glass.Slider" parent="BandyerSDKDesign.Glass">
         <item name="bandyer_percentageText">@string/bandyer_smartglass_volume</item>
-        <item name="seekBarStyle">@style/BandyerSDKDesign.GlassSeekBar</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Slider</item>
+        <item name="seekBarStyle">@style/BandyerSDKDesign.Glass.Slider.SeekBar</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassSlider</item>
     </style>
 
     <!-- SLIDER SEEKBAR -->
-    <style name="BandyerSDKDesign.GlassSeekBar" parent="Widget.AppCompat.SeekBar.Discrete">
+    <style name="BandyerSDKDesign.Glass.Slider.SeekBar" parent="Widget.AppCompat.SeekBar.Discrete">
         <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
         <item name="android:thumb">@null</item>
@@ -18,7 +18,7 @@
     </style>
 
     <!-- SLIDER TEXT -->
-    <style name="BandyerSDKDesign.TextView.Slider" parent="BandyerSDKDesign.TextView">
+    <style name="BandyerSDKDesign.TextView.GlassSlider" parent="BandyerSDKDesign.TextView">
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_40sp</item>
