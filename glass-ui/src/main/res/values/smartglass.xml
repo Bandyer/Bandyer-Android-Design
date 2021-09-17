@@ -11,7 +11,7 @@
         <attr name="bandyer_charge" format="integer" />
     </declare-styleable>
 
-    <declare-styleable name="BandyerSDKDesign.SmartGlass">
+    <declare-styleable name="BandyerSDKDesign.Glass">
         <attr name="bottomNavigationStyle" />
         <attr name="bandyer_recyclerViewItemStyle" format="reference" />
         <attr name="bandyer_contactStateDotStyle" format="reference" />
