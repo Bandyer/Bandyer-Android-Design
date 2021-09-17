@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- MENU FRAGMENT -->
+    <style name="BandyerSDKDesign.Glass.Menu" parent="BandyerSDKDesign.Glass">
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.Menu.RecyclerView</item>
+        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Menu.RecyclerViewItem</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Menu</item>
+    </style>
+
+    <!-- RECYCLER VIEW -->
+    <style name="BandyerSDKDesign.Glass.Menu.RecyclerView" parent="">
+        <item name="android:background">@color/bandyer_glass_background_color</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space4</item>
+    </style>
+
+    <!-- RECYCLER VIEW ITEM -->
+    <style name="BandyerSDKDesign.Glass.Menu.RecyclerViewItem" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.Menu.RecyclerViewItem.RootLayout</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.MenuRecyclerViewItem</item>
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.Menu.RecyclerViewItem.RootLayout" parent="">
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space64</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space64</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.MenuRecyclerViewItem" parent="BandyerSDKDesign.TextView">
+        <item name="android:minHeight">@dimen/bandyer_dimen_sg_menu_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/bandyer_smartglass_menu_item_color</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_40sp</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.Menu" parent="BandyerSDKDesign.Glass.BottomNavigation">
+        <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.Menu</item>
+        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Menu</item>
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Menu</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Swipe.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.Swipe">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeMenu</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.SwipeMenu" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_browse</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeDownMenu</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.SwipeDownMenu" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_close</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapMenu</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.TapMenu" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_select</item>
+    </style>
+</resources>
