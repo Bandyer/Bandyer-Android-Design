@@ -6,7 +6,7 @@
         <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.ContactDetails</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.ContactDetails</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.SubTitle.ContactDetails</item>
-        <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.GlassRoundedImage.StateContactDetails</item>
+        <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.GlassRoundedImage.ContactDetailsState</item>
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.ContactDetails</item>
@@ -30,11 +30,11 @@
 
     <!-- AVATAR -->
     <style name="BandyerSDKDesign.Glass.Avatar.ContactDetails" parent="BandyerSDKDesign.Glass.Avatar">
-        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.GlassRoundedImage.AvatarContactDetails</item>
+        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.GlassRoundedImage.ContactDetailsAvatar</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatar.ContactDetails</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassRoundedImage.AvatarContactDetails" parent="BandyerSDKDesign.GlassRoundedImage">
+    <style name="BandyerSDKDesign.GlassRoundedImage.ContactDetailsAvatar" parent="BandyerSDKDesign.GlassRoundedImage">
         <item name="android:layout_width">@dimen/bandyer_dimen_space72</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space72</item>
         <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
@@ -45,7 +45,7 @@
     </style>
 
     <!-- CONTACT STATE DOT -->
-    <style name="BandyerSDKDesign.GlassRoundedImage.StateContactDetails" parent="BandyerSDKDesign.GlassRoundedImage">
+    <style name="BandyerSDKDesign.GlassRoundedImage.ContactDetailsState" parent="BandyerSDKDesign.GlassRoundedImage">
         <item name="android:layout_width">@dimen/bandyer_dimen_space20</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space20</item>
         <item name="android:background">@android:color/white</item>

@@ -80,5 +80,4 @@
     <style name="BandyerSDKDesign.TextView.IconTip.Tap" parent="BandyerSDKDesign.TextView.IconTip">
         <item name="bandyer_iconTipStyle">@string/bandyer_smartglass_tap</item>
     </style>
-
 </resources>
