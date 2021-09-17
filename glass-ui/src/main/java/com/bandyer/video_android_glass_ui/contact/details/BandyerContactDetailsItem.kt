@@ -15,7 +15,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 class BandyerContactDetailsItem(val text: String): AbstractItem<BandyerContactDetailsItem.ViewHolder>() {
 
     override val layoutRes: Int
-        get() = R.layout.bandyer_participant_details_item_layout
+        get() = R.layout.bandyer_contact_details_item_layout
 
     override val type: Int
         get() = R.id.id_participant_details_item

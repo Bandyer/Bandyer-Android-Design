@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- RECYCLER VIEW -->
+    <style name="BandyerSDKDesign.Glass.RecyclerView" parent="BandyerSDKDesign.Glass">
+        <item name="android:background">@color/bandyer_glass_background_color</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space4</item>
+    </style>
+
+    <!-- RECYCLER VIEW ITEM -->
+    <style name="BandyerSDKDesign.Glass.RecyclerViewItem" parent="BandyerSDKDesign.Glass">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.Menu.RecyclerViewItem.RootLayout</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.MenuRecyclerViewItem</item>
+        <item name="android:focusable">false</item>
+        <item name="android:clickable">false</item>
+    </style>
+</resources>
