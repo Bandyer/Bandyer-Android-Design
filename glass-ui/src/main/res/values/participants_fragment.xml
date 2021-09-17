@@ -36,7 +36,7 @@
         <item name="android:layout_width">@dimen/bandyer_dimen_space28</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space28</item>
         <item name="android:background">@android:color/white</item>
-        <item name="android:backgroundTint">@color/bandyer_color_contact_state_smartglasses</item>
+        <item name="android:backgroundTint">@color/bandyer_glass_color_contact_state</item>
         <item name="strokeColor">@android:color/white</item>
     </style>
 

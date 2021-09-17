@@ -44,7 +44,7 @@ class BandyerStatusBarView @JvmOverloads constructor(
      * @param color The color. If it's null, the default background color is restored.
      */
     fun setBackgroundColor(@ColorInt color: Int?) = with(binding.root) {
-        if(color == null) setBackgroundResource(R.drawable.bandyer_status_bar_gradient)
+        if(color == null) setBackgroundResource(R.drawable.bandyer_glass_status_bar_gradient)
         else setBackgroundColor(color)
     }
 

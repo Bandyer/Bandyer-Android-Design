@@ -16,9 +16,9 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:drawable="@drawable/ic_bandyer_cell_missing" app:bandyer_state_cell_missing="true"/>
-    <item android:drawable="@drawable/ic_bandyer_cell_low" app:bandyer_state_cell_low="true"/>
-    <item android:drawable="@drawable/ic_bandyer_cell_moderate" app:bandyer_state_cell_moderate="true"/>
-    <item android:drawable="@drawable/ic_bandyer_cell_good" app:bandyer_state_cell_good="true"/>
-    <item android:drawable="@drawable/ic_bandyer_cell_full" app:bandyer_state_cell_full="true"/>
+    <item android:drawable="@drawable/ic_bandyer_glass_cell_missing" app:bandyer_state_cell_missing="true"/>
+    <item android:drawable="@drawable/ic_bandyer_glass_cell_low" app:bandyer_state_cell_low="true"/>
+    <item android:drawable="@drawable/ic_bandyer_glass_cell_moderate" app:bandyer_state_cell_moderate="true"/>
+    <item android:drawable="@drawable/ic_bandyer_glass_cell_good" app:bandyer_state_cell_good="true"/>
+    <item android:drawable="@drawable/ic_bandyer_glass_cell_full" app:bandyer_state_cell_full="true"/>
 </selector>

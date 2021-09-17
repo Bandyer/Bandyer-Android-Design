@@ -58,7 +58,7 @@ class BandyerBatteryView @JvmOverloads constructor(
 
     // Charging
     private var chargingRect = RectF()
-    private var chargingBitmap = getBitmap(R.drawable.ic_bandyer_charging)
+    private var chargingBitmap = getBitmap(R.drawable.ic_bandyer_glass_charging)
 
     init {
         context.obtainStyledAttributes(attrs, R.styleable.BatteryView).apply {

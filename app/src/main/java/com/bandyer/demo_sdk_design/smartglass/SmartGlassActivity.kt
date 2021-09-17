@@ -96,31 +96,31 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
                     )
             )
         }, 4000)
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            notificationManager.show(
-                listOf(
-                    BandyerNotificationData(
-                        "Mario",
-                        "Mario",
-                        "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
-                        R.drawable.sample_image
-                    ),
-                    BandyerNotificationData(
-                        "Gianfranco",
-                        "Gianfranco",
-                        "Mi piacciono i treni",
-                        null
-                    ),
-                    BandyerNotificationData(
-                        "Mario",
-                        "Mario",
-                        "Ciao",
-                        R.drawable.sample_image
-                    )
-                )
-            )
-        }, 5000)
+//
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            notificationManager.show(
+//                listOf(
+//                    BandyerNotificationData(
+//                        "Mario",
+//                        "Mario",
+//                        "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
+//                        R.drawable.sample_image
+//                    ),
+//                    BandyerNotificationData(
+//                        "Gianfranco",
+//                        "Gianfranco",
+//                        "Mi piacciono i treni",
+//                        null
+//                    ),
+//                    BandyerNotificationData(
+//                        "Mario",
+//                        "Mario",
+//                        "Ciao",
+//                        R.drawable.sample_image
+//                    )
+//                )
+//            )
+//        }, 5000)
     }
 
     override fun onResume() {

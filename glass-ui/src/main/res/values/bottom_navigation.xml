@@ -21,7 +21,7 @@
         <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:background">@drawable/bandyer_bottom_bar_gradient</item>
+        <item name="android:background">@drawable/bandyer_glass_bottom_bar_gradient</item>
     </style>
 
     <!-- SWIPE HORIZONTAL ITEM -->
@@ -36,7 +36,7 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Icon.SwipeHorizontal" parent="BandyerSDKDesign.Glass.BottomActionItem.Icon">
-        <item name="srcCompat">@drawable/ic_bandyer_swipe_arrow</item>
+        <item name="srcCompat">@drawable/ic_bandyer_glas_swipe_arrow</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.IconTip.SwipeHorizontal" parent="BandyerSDKDesign.TextView.IconTip">
@@ -55,7 +55,7 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Icon.SwipeDown" parent="BandyerSDKDesign.Glass.BottomActionItem.Icon">
-        <item name="srcCompat">@drawable/ic_bandyer_close_arrow</item>
+        <item name="srcCompat">@drawable/ic_bandyer_glass_close_arrow</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.IconTip.SwipeDown" parent="BandyerSDKDesign.TextView.IconTip">
@@ -74,7 +74,7 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Icon.Tap" parent="BandyerSDKDesign.Glass.BottomActionItem.Icon">
-        <item name="srcCompat">@drawable/ic_bandyer_select</item>
+        <item name="srcCompat">@drawable/ic_bandyer_glass_select</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.IconTip.Tap" parent="BandyerSDKDesign.TextView.IconTip">

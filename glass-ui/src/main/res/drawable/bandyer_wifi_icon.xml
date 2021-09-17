@@ -16,8 +16,8 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:drawable="@drawable/ic_bandyer_wifi_disabled" app:bandyer_state_wifi_disabled="true"/>
-    <item android:drawable="@drawable/ic_bandyer_wifi_low" app:bandyer_state_wifi_low="true"/>
-    <item android:drawable="@drawable/ic_bandyer_wifi_moderate" app:bandyer_state_wifi_moderate="true"/>
-    <item android:drawable="@drawable/ic_bandyer_wifi_full" app:bandyer_state_wifi_full="true"/>
+    <item android:drawable="@drawable/ic_bandyer_glass_wifi_disabled" app:bandyer_state_wifi_disabled="true"/>
+    <item android:drawable="@drawable/ic_bandyer_glass_wifi_low" app:bandyer_state_wifi_low="true"/>
+    <item android:drawable="@drawable/ic_bandyer_glass_wifi_moderate" app:bandyer_state_wifi_moderate="true"/>
+    <item android:drawable="@drawable/ic_bandyer_glass_wifi_full" app:bandyer_state_wifi_full="true"/>
 </selector>

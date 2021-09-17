@@ -129,7 +129,7 @@
     </style>
 
     <style name="BandyerSDKDesign.ImageButton.Call.SmartGlass.Participants" parent="BandyerSDKDesign.ImageButton.Call.SmartGlass">
-        <item name="icon">@drawable/ic_bandyer_glass_participants</item>
+        <item name="icon">@drawable/ic_bandyer_glass_legacy_participants</item>
         <item name="android:contentDescription">@string/bandyer_call_action_participants</item>
     </style>
 

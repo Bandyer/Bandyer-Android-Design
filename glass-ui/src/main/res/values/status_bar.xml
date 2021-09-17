@@ -25,7 +25,7 @@
         <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
-        <item name="android:background">@drawable/bandyer_status_bar_gradient</item>
+        <item name="android:background">@drawable/bandyer_glass_status_bar_gradient</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.StatusBar" parent="BandyerSDKDesign.TextView">
@@ -36,7 +36,7 @@
 
     <style name="BandyerSDKDesign.StatusBarIcon" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:tint">@android:color/white</item>
-        <item name="srcCompat">@drawable/bandyer_mic_off_icon</item>
+        <item name="srcCompat">@drawable/bandyer_glass_mic_off_icon</item>
         <item name="android:layout_width">@dimen/bandyer_dimen_space32</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
     </style>
@@ -46,11 +46,11 @@
     </style>
 
     <style name="BandyerSDKDesign.StatusBarIcon.Mic" parent="BandyerSDKDesign.StatusBarIcon">
-        <item name="srcCompat">@drawable/bandyer_mic_off_icon</item>
+        <item name="srcCompat">@drawable/bandyer_glass_mic_off_icon</item>
     </style>
 
     <style name="BandyerSDKDesign.StatusBarIcon.Chat" parent="BandyerSDKDesign.StatusBarIcon">
-    <item name="srcCompat">@drawable/ic_bandyer_badge_new_mess</item>
+    <item name="srcCompat">@drawable/ic_bandyer_glass_badge_new_mess</item>
     </style>
 
     <style name="BandyerSDKDesign.StatusBarIcon.Wifi" parent="BandyerSDKDesign.StatusBarIcon">
@@ -58,7 +58,7 @@
     </style>
 
     <style name="BandyerSDKDesign.StatusBarIcon.Cell" parent="BandyerSDKDesign.StatusBarIcon">
-        <item name="srcCompat">@drawable/bandyer_cell_icon</item>
+        <item name="srcCompat">@drawable/bandyer_glass_cell_icon</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.StatusBar.Battery" parent="">

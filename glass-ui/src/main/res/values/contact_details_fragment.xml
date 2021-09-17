@@ -24,7 +24,7 @@
     <style name="BandyerSDKDesign.TextView.ContactDetailsRecyclerViewItem" parent="BandyerSDKDesign.TextView">
         <item name="android:minHeight">@dimen/bandyer_dimen_sg_menu_size</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/bandyer_smartglass_menu_item_color</item>
+        <item name="android:textColor">@color/bandyer_glass_menu_item_color</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_40sp</item>
     </style>
 
@@ -49,7 +49,7 @@
         <item name="android:layout_width">@dimen/bandyer_dimen_space20</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space20</item>
         <item name="android:background">@android:color/white</item>
-        <item name="android:backgroundTint">@color/bandyer_color_contact_state_smartglasses</item>
+        <item name="android:backgroundTint">@color/bandyer_glass_color_contact_state</item>
         <item name="strokeColor">@android:color/white</item>
     </style>
 
