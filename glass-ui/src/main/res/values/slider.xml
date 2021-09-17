@@ -2,7 +2,6 @@
 <resources>
     <!-- SLIDER -->
     <style name="BandyerSDKDesign.Glass.Slider" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_percentageText">@string/bandyer_smartglass_volume</item>
         <item name="seekBarStyle">@style/BandyerSDKDesign.Glass.Slider.SeekBar</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassSlider</item>
     </style>

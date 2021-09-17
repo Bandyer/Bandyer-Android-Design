@@ -3,7 +3,7 @@
     <!-- VOLUME FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.Volume" parent="BandyerSDKDesign.Glass">
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Volume</item>
-        <item name="sliderStyle">@style/BandyerSDKDesign.Glass.Slider.Volume</item>
+        <item name="sliderStyle">@style/BandyerSDKDesign.Glass.Slider</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->
@@ -35,10 +35,5 @@
 
     <style name="BandyerSDKDesign.TextView.Label.TapVolume" parent="BandyerSDKDesign.TextView.Label">
         <item name="android:text">@string/bandyer_smartglass_confirm</item>
-    </style>
-
-    <!-- SLIDER -->
-    <style name="BandyerSDKDesign.Glass.Slider.Volume" parent="BandyerSDKDesign.Glass.Slider">
-        <item name="bandyer_percentageText">@string/bandyer_smartglass_volume</item>
     </style>
 </resources>

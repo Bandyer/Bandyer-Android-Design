@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Smart glass declare styleable-->
-    <declare-styleable name="BandyerSlider">
-        <attr name="bandyer_percentageText" format="string" />
-    </declare-styleable>
-
     <declare-styleable name="ActivableTextView">
         <attr name="bandyer_inactivatedText" format="string" />
         <attr name="bandyer_activatedText" format="boolean" />

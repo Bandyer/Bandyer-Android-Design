@@ -31,16 +31,11 @@ class BandyerSlider @JvmOverloads constructor(
         BandyerSliderLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     private val pattern = resources.getString(R.string.bandyer_smartglass_slider_pattern)
-    private var percentageText: String
+    private var percentageText = ""
 
     var onSliderChangeListener: OnSliderChangeListener? = null
 
     init {
-        val attributes = context.obtainStyledAttributes(attrs, R.styleable.BandyerSlider)
-        percentageText =
-            attributes.getString(R.styleable.BandyerSlider_bandyer_percentageText) ?: ""
-        attributes.recycle()
-
         setPercentageText(0)
 
         with(binding.bandyerSeekbar) {
