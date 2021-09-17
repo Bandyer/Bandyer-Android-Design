@@ -17,7 +17,9 @@
 package com.bandyer.sdk_design.call.bottom_sheet
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.BandyerSelectableBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
@@ -70,6 +72,13 @@ class AudioRouteBottomSheet<T : ActionItem>(
         bottomSheetBehaviour!!.isHideable = true
         bottomSheetBehaviour!!.skipAnchor = true
         bottomSheetLayoutContent.backgroundView?.alpha = 1f
+
+        if ((recyclerView!!.layoutManager as? LinearLayoutManager)?.orientation == LinearLayoutManager.HORIZONTAL) {
+            lineView?.visibility = View.INVISIBLE
+            lineView?.isClickable = false
+            lineView?.requestLayout()
+        }
+
         expand()
     }
 
