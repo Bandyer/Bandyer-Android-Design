@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- CALL FRAGMENT -->
+    <style name="BandyerSDKDesign.Glass.CallFragment" parent="BandyerSDKDesign.Glass">
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.GlassBottomNavigation.CallFragment</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.GlassBottomNavigation.CallFragment" parent="BandyerSDKDesign.GlassBottomNavigation">
+        <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.CallFragment</item>
+        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.CallFragment</item>
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.CallFragment</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Swipe.CallFragment" parent="BandyerSDKDesign.Glass.BottomActionItem.Swipe">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeCallFragment</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.SwipeCallFragment" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_end_call</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.CallFragment" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeDownCallFragment</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.SwipeDownCallFragment" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_participants_camera</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.CallFragment" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapCallFragment</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.TapCallFragment" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_open_menu</item>
+    </style>
+</resources>

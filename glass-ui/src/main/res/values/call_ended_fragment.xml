@@ -39,6 +39,6 @@
     </style>
 
     <style name="BandyerSDKDesign.TextView.Label.TapCallEndedFragment" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_close</item>v
+        <item name="android:text">@string/bandyer_smartglass_close</item>
     </style>
 </resources>
