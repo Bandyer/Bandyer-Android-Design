@@ -22,8 +22,8 @@
     </style>
 
     <style name="BandyerSDKDesign.GlassRoundedImage.ParticipantsAvatar" parent="BandyerSDKDesign.GlassRoundedImage">
-        <item name="android:layout_width">@dimen/bandyer_dimen_sg_participants_avatar_size</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_sg_participants_avatar_size</item>
+        <item name="android:layout_width">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
         <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
     </style>
 

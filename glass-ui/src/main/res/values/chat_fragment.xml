@@ -39,7 +39,7 @@
 
     <style name="BandyerSDKDesign.TextView.MessageGlassChat.RecyclerViewItem" parent="BandyerSDKDesign.TextView.MessageGlassChat">
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space56</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space48</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_glass_chat_right_margin</item>
     </style>
 
     <!-- COUNTER -->

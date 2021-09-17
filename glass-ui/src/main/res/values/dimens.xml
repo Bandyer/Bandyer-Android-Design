@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="bandyer_dimen_sg_menu_size">68dp</dimen>
-    <dimen name="bandyer_dimen_sg_participants_avatar_size">96dp</dimen>
+    <dimen name="bandyer_dimen_glass_menu_size">68dp</dimen>
+    <dimen name="bandyer_dimen_glass_participants_avatar_size">96dp</dimen>
+    <dimen name="bandyer_dimen_glass_chat_right_margin">96dp</dimen>
 </resources>

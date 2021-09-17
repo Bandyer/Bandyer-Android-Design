@@ -22,7 +22,7 @@
     </style>
 
     <style name="BandyerSDKDesign.TextView.ContactDetailsRecyclerViewItem" parent="BandyerSDKDesign.TextView">
-        <item name="android:minHeight">@dimen/bandyer_dimen_sg_menu_size</item>
+        <item name="android:minHeight">@dimen/bandyer_dimen_glass_menu_size</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/bandyer_glass_menu_item_color</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_40sp</item>

@@ -2,7 +2,7 @@
 <resources>
     <style name="BandyerSDKDesign.ChatMessage.GlassNotification" parent="BandyerSDKDesign.ChatMessage">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ChatMessage.GlassNotification.RootLayout</item>
-        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.ChatNotification</item>
+        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.GlassChat</item>
         <item name="bandyer_messageStyle">@style/BandyerSDKDesign.TextView.MessageGlassChat.Notification</item>
         <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.TimestampGlassChat.Notification</item>
@@ -13,12 +13,9 @@
     <style name="BandyerSDKDesign.ChatMessage.GlassNotification.RootLayout" parent="">
         <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:background">@color/bandyer_glass_background_color</item>
-    </style>
-
-    <!-- AVATARS -->
-    <style name="BandyerSDKDesign.Glass.Avatar.ChatNotification" parent="BandyerSDKDesign.Glass.Avatar">
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
     </style>
 
     <!-- MESSAGE -->
@@ -31,7 +28,6 @@
 
     <!-- TIMESTAMP -->
     <style name="BandyerSDKDesign.TextView.TimestampGlassChat.Notification" parent="BandyerSDKDesign.TextView.TimestampGlassChat">
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:text">@string/bandyer_smartglass_now</item>
     </style>
 
@@ -43,9 +39,9 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomNavigation.RootLayout.ChatNotification" parent="BandyerSDKDesign.Glass.BottomNavigation.RootLayout">
-        <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
-        <item name="android:maxHeight">@dimen/bandyer_dimen_space0</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
