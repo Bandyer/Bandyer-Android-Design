@@ -8,7 +8,7 @@
         android:id="@+id/bandyer_swipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:theme="?attr/bandyer_swipeItemStyle" />
+        android:theme="?attr/bandyer_swipeHorizontalItemStyle" />
 
     <com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarItemView
         android:id="@+id/bandyer_tap"

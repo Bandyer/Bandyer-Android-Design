@@ -8,12 +8,12 @@
 
     <!-- BOTTOM ACTION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.Zoom" parent="BandyerSDKDesign.Glass.BottomNavigation">
-        <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.Zoom</item>
+        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Zoom</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Zoom</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Zoom</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Swipe.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.Swipe">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeZoom</item>
     </style>
 

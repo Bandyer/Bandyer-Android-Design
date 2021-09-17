@@ -21,12 +21,12 @@
 
     <!-- BOTTOM ACTION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.Menu" parent="BandyerSDKDesign.Glass.BottomNavigation">
-        <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.Menu</item>
+        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Menu</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Menu</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Menu</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Swipe.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.Swipe">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeMenu</item>
     </style>
 
