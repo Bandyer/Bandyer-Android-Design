@@ -106,13 +106,15 @@ class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.Ite
         }
     }
 
-    private fun addItemViewDividers(outRect: Rect, itemPosition: Int) = when {
-        !shouldScrollItems() -> Unit
-        itemPosition == 0 ->
-            outRect.left = if (shouldScrollItems()) halfScreenDivider else 0
-        itemPosition == recyclerView.adapter!!.itemCount - 1 ->
-            outRect.right = if (shouldScrollItems()) halfScreenDivider else 0
-        else -> Unit
+    private fun addItemViewDividers(outRect: Rect, itemPosition: Int) {
+        when {
+            !shouldScrollItems() -> Unit
+            itemPosition == 0 ->
+                outRect.left = if (shouldScrollItems()) halfScreenDivider - (recyclerView.layoutManager!!.findViewByPosition(0)!!.width / 2) else 0
+            itemPosition == recyclerView.adapter!!.itemCount - 1 ->
+                outRect.right = if (shouldScrollItems()) halfScreenDivider - (recyclerView.layoutManager!!.findViewByPosition(recyclerView.adapter!!.itemCount - 1)!!.width / 2) else 0
+            else -> Unit
+        }
     }
 
     private fun shouldScrollItems() = recyclerView.adapter!!.itemCount > MAX_ITEM_ON_SCREEN + 1
