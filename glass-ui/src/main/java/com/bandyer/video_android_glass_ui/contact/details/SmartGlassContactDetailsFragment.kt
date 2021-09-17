@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentParticipantDetailsBinding
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
 import com.bandyer.video_android_glass_ui.common.BandyerContactAvatarView
 import com.bandyer.video_android_glass_ui.common.item_decoration.LineItemIndicatorDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerOffsetItemDecoration
 import com.bandyer.video_android_glass_ui.SmartGlassBaseFragment
 import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
+import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentContactDetailsBinding
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
@@ -25,7 +25,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
  */
 abstract class SmartGlassContactDetailsFragment : SmartGlassBaseFragment() {
 
-    private var binding: BandyerFragmentParticipantDetailsBinding? = null
+    private var binding: BandyerFragmentContactDetailsBinding? = null
 
     protected var itemAdapter: ItemAdapter<BandyerContactDetailsItem>? = null
     protected var fastAdapter: FastAdapter<BandyerContactDetailsItem>? = null
@@ -45,7 +45,7 @@ abstract class SmartGlassContactDetailsFragment : SmartGlassBaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BandyerFragmentParticipantDetailsBinding.inflate(inflater, container, false)
+        binding = BandyerFragmentContactDetailsBinding.inflate(inflater, container, false)
 
         // set the views
         root = binding!!.root

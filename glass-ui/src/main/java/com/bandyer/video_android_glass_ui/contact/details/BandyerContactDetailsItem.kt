@@ -2,7 +2,7 @@ package com.bandyer.video_android_glass_ui.contact.details
 
 import android.view.View
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.databinding.BandyerParticipantDetailsItemLayoutBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerContactDetailsItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -24,7 +24,7 @@ class BandyerContactDetailsItem(val text: String): AbstractItem<BandyerContactDe
 
     class ViewHolder(view: View): FastAdapter.ViewHolder<BandyerContactDetailsItem>(view) {
 
-        private val binding: BandyerParticipantDetailsItemLayoutBinding = BandyerParticipantDetailsItemLayoutBinding.bind(view)
+        private val binding = BandyerContactDetailsItemLayoutBinding.bind(view)
 
         override fun bindView(item: BandyerContactDetailsItem, payloads: List<Any>) {
             binding.bandyerText.text = item.text
