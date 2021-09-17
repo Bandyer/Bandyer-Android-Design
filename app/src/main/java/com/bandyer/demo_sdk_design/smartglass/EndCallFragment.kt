@@ -6,8 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.video_android_glass_ui.call.SmartGlassEndCallFragment
-import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
+import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
 
 class EndCallFragment : com.bandyer.video_android_glass_ui.call.SmartGlassEndCallFragment() {
 
@@ -33,12 +32,12 @@ class EndCallFragment : com.bandyer.video_android_glass_ui.call.SmartGlassEndCal
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
-        BandyerSmartGlassTouchEvent.Type.TAP        -> {
+    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
+        BandyerGlassTouchEvent.Type.TAP        -> {
             findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment)
             true
         }
-        BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+        BandyerGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true
         }

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
-import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
+import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
 import com.bandyer.video_android_glass_ui.menu.BandyerMenuItem
 
 class MenuFragment : com.bandyer.video_android_glass_ui.menu.SmartGlassMenuFragment(), TiltController.TiltListener {
@@ -73,23 +73,23 @@ class MenuFragment : com.bandyer.video_android_glass_ui.menu.SmartGlassMenuFragm
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
-        BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD  -> {
-            if (event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
+    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
+        BandyerGlassTouchEvent.Type.SWIPE_FORWARD  -> {
+            if (event.source == BandyerGlassTouchEvent.Source.KEY) {
                 rvMenu!!.smoothScrollToNext(currentMenuItemIndex)
                 true
             } else false
         }
-        BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if (event.source == BandyerSmartGlassTouchEvent.Source.KEY) {
+        BandyerGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if (event.source == BandyerGlassTouchEvent.Source.KEY) {
                 rvMenu!!.smoothScrollToPrevious(currentMenuItemIndex)
                 true
             } else false
         }
-        BandyerSmartGlassTouchEvent.Type.TAP            -> {
+        BandyerGlassTouchEvent.Type.TAP            -> {
             tapBehaviour(currentMenuItemIndex)
         }
-        BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN     -> {
+        BandyerGlassTouchEvent.Type.SWIPE_DOWN     -> {
             findNavController().popBackStack()
             true
         }

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
+import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
 
 class CallEndedFragment : com.bandyer.video_android_glass_ui.call.SmartGlassCallEndedFragment() {
 
@@ -45,8 +45,8 @@ class CallEndedFragment : com.bandyer.video_android_glass_ui.call.SmartGlassCall
         activity.setStatusBarColor(null)
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
-        BandyerSmartGlassTouchEvent.Type.TAP, BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
+        BandyerGlassTouchEvent.Type.TAP, BandyerGlassTouchEvent.Type.SWIPE_DOWN -> {
             requireActivity().finish()
             true
         }

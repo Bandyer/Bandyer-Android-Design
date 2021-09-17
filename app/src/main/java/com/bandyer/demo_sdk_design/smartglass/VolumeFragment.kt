@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
+import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
 import com.bandyer.video_android_glass_ui.settings.volume.SmartGlassVolumeFragment
 
 class VolumeFragment : SmartGlassVolumeFragment(), TiltController.TiltListener {
@@ -45,16 +45,16 @@ class VolumeFragment : SmartGlassVolumeFragment(), TiltController.TiltListener {
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
-        BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD                                                                       -> {
+    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
+        BandyerGlassTouchEvent.Type.SWIPE_FORWARD                                                                       -> {
             slider!!.increaseProgress(0.1f)
             true
         }
-        BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD                                                                      -> {
+        BandyerGlassTouchEvent.Type.SWIPE_BACKWARD                                                                      -> {
             slider!!.decreaseProgress(0.1f)
             true
         }
-        BandyerSmartGlassTouchEvent.Type.TAP, BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+        BandyerGlassTouchEvent.Type.TAP, BandyerGlassTouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true
         }

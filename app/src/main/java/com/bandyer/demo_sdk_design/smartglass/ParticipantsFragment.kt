@@ -12,7 +12,7 @@ import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
-import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
+import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
 import com.bandyer.video_android_glass_ui.contact.BandyerContactData
 import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
 import com.bandyer.video_android_glass_ui.contact.call_participant.BandyerCallParticipantItem
@@ -148,20 +148,20 @@ class ParticipantsFragment : com.bandyer.video_android_glass_ui.contact.call_par
             tiltController!!.releaseAllSensors()
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerSmartGlassTouchEvent): Boolean = when (event.type) {
-        BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD  -> {
-            if(event.source == BandyerSmartGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
+    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
+        BandyerGlassTouchEvent.Type.SWIPE_FORWARD  -> {
+            if(event.source == BandyerGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
                 rvParticipants!!.smoothScrollToNext(currentParticipantIndex)
                 true
             } else false
         }
-        BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if(event.source == BandyerSmartGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
+        BandyerGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+            if(event.source == BandyerGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
                 rvParticipants!!.smoothScrollToPrevious(currentParticipantIndex)
                 true
             } else false
         }
-        BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN     -> {
+        BandyerGlassTouchEvent.Type.SWIPE_DOWN     -> {
             findNavController().popBackStack()
             true
         }

@@ -186,21 +186,21 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragm
         activity.setStatusBarColor(null)
     }
 
-    override fun onSmartGlassTouchEvent(event: com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent): Boolean =
+    override fun onSmartGlassTouchEvent(event: com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent): Boolean =
         when (event.type) {
-            com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_FORWARD -> {
-                if (event.source == com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Source.KEY) {
+            com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent.Type.SWIPE_FORWARD -> {
+                if (event.source == com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent.Source.KEY) {
                     rvMessages!!.smoothScrollToNext(currentMsgItemIndex)
                     true
                 } else false
             }
-            com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-                if (event.source == com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Source.KEY) {
+            com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+                if (event.source == com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent.Source.KEY) {
                     rvMessages!!.smoothScrollToPrevious(currentMsgItemIndex)
                     true
                 } else false
             }
-            com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.TAP -> {
+            com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent.Type.TAP -> {
                 val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userAlias
                 val action =
                     ChatFragmentDirections.actionChatFragmentToContactDetailsFragment(
@@ -209,7 +209,7 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragm
                 findNavController().navigate(action)
                 true
             }
-            com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent.Type.SWIPE_DOWN -> {
+            com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent.Type.SWIPE_DOWN -> {
                 findNavController().popBackStack()
                 true
             }
