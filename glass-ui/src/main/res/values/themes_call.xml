@@ -1,74 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
-
-    <declare-styleable name="BandyerSDKDesign.Theme.Call.Glass">
-        <attr name="bandyer_smartGlassStatusBarStyle" format="reference" />
-        <attr name="bandyer_smartGlassMenuFragmentStyle" format="reference" />
-        <attr name="bandyer_smartGlassChatFragmentStyle" format="reference" />
-        <attr name="bandyer_smartGlassVolumeFragmentStyle" format="reference" />
-        <attr name="bandyer_smartGlassZoomFragmentStyle" format="reference" />
-        <attr name="bandyer_smartGlassRingingFragmentStyle" format="reference" />
-        <attr name="bandyer_smartGlassEndCallFragmentStyle" format="reference" />
-        <attr name="bandyer_smartGlassCallEndedFragmentStyle" format="reference" />
-        <attr name="bandyer_smartGlassCallFragmentStyle" format="reference" />
-        <attr name="bandyer_smartGlassParticipantsFragmentStyle" format="reference" />
-        <attr name="bandyer_smartGlassParticipantDetailsFragmentStyle" format="reference" />
+<resources>
+    <declare-styleable name="BandyerSDKDesign.Theme.Glass">
+        <attr name="bandyer_statusBarStyle" format="reference" />
+        <attr name="bandyer_menuFragmentStyle" format="reference" />
+        <attr name="bandyer_chatFragmentStyle" format="reference" />
+        <attr name="bandyer_volumeFragmentStyle" format="reference" />
+        <attr name="bandyer_zoomFragmentStyle" format="reference" />
+        <attr name="bandyer_ringingFragmentStyle" format="reference" />
+        <attr name="bandyer_endCallFragmentStyle" format="reference" />
+        <attr name="bandyer_callEndedFragmentStyle" format="reference" />
+        <attr name="bandyer_callFragmentStyle" format="reference" />
+        <attr name="bandyer_participantsFragmentStyle" format="reference" />
+        <attr name="bandyer_contactDetailsFragmentStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Theme.Call.Glass.DayNight.V16" parent="BandyerSDKDesign.Theme.Day">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="bandyer_smartGlassStatusBarStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar</item>
-        <item name="bandyer_smartGlassMenuFragmentStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment</item>
-        <item name="bandyer_smartGlassChatFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment</item>
-        <item name="bandyer_smartGlassVolumeFragmentStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment</item>
-        <item name="bandyer_smartGlassZoomFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ZoomFragment</item>
-        <item name="bandyer_smartGlassRingingFragmentStyle">@style/BandyerSDKDesign.SmartGlass.RingingFragment</item>
-        <item name="bandyer_smartGlassEndCallFragmentStyle">@style/BandyerSDKDesign.SmartGlass.EndCallFragment</item>
-        <item name="bandyer_smartGlassCallEndedFragmentStyle">@style/BandyerSDKDesign.SmartGlass.CallEndedFragment</item>
-        <item name="bandyer_smartGlassCallFragmentStyle">@style/BandyerSDKDesign.SmartGlass.CallFragment</item>
-        <item name="bandyer_smartGlassParticipantsFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ParticipantsFragment</item>
-        <item name="bandyer_smartGlassParticipantDetailsFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ParticipantDetailsFragment</item>
+    <style name="BandyerSDKDesign.Theme.DayNight.Glass" parent="BandyerSDKDesign.Theme.DayNight">
+        <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
+        <item name="bandyer_menuFragmentStyle">@style/BandyerSDKDesign.Glass.Menu</item>
+        <item name="bandyer_chatFragmentStyle">@style/BandyerSDKDesign.Glass.Chat</item>
+        <item name="bandyer_volumeFragmentStyle">@style/BandyerSDKDesign.Glass.Volume</item>
+        <item name="bandyer_zoomFragmentStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
+        <item name="bandyer_ringingFragmentStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
+        <item name="bandyer_endCallFragmentStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
+        <item name="bandyer_callEndedFragmentStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
+        <item name="bandyer_callFragmentStyle">@style/BandyerSDKDesign.Glass.Call</item>
+        <item name="bandyer_participantsFragmentStyle">@style/BandyerSDKDesign.Glass.Participants</item>
+        <item name="bandyer_contactDetailsFragmentStyle">@style/BandyerSDKDesign.Glass.ContactDetails</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Call.Glass.Day.V16" parent="BandyerSDKDesign.Theme.Day">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="bandyer_smartGlassStatusBarStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar</item>
-        <item name="bandyer_smartGlassMenuFragmentStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment</item>
-        <item name="bandyer_smartGlassChatFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment</item>
-        <item name="bandyer_smartGlassVolumeFragmentStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment</item>
-        <item name="bandyer_smartGlassZoomFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ZoomFragment</item>
-        <item name="bandyer_smartGlassRingingFragmentStyle">@style/BandyerSDKDesign.SmartGlass.RingingFragment</item>
-        <item name="bandyer_smartGlassEndCallFragmentStyle">@style/BandyerSDKDesign.SmartGlass.EndCallFragment</item>
-        <item name="bandyer_smartGlassCallEndedFragmentStyle">@style/BandyerSDKDesign.SmartGlass.CallEndedFragment</item>
-        <item name="bandyer_smartGlassCallFragmentStyle">@style/BandyerSDKDesign.SmartGlass.CallFragment</item>
-        <item name="bandyer_smartGlassParticipantsFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ParticipantsFragment</item>
-        <item name="bandyer_smartGlassParticipantDetailsFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ParticipantDetailsFragment</item>
+    <style name="BandyerSDKDesign.Theme.Day.Glass" parent="BandyerSDKDesign.Theme.Day">
+        <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
+        <item name="bandyer_menuFragmentStyle">@style/BandyerSDKDesign.Glass.Menu</item>
+        <item name="bandyer_chatFragmentStyle">@style/BandyerSDKDesign.Glass.Chat</item>
+        <item name="bandyer_volumeFragmentStyle">@style/BandyerSDKDesign.Glass.Volume</item>
+        <item name="bandyer_zoomFragmentStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
+        <item name="bandyer_ringingFragmentStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
+        <item name="bandyer_endCallFragmentStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
+        <item name="bandyer_callEndedFragmentStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
+        <item name="bandyer_callFragmentStyle">@style/BandyerSDKDesign.Glass.Call</item>
+        <item name="bandyer_participantsFragmentStyle">@style/BandyerSDKDesign.Glass.Participants</item>
+        <item name="bandyer_contactDetailsFragmentStyle">@style/BandyerSDKDesign.Glass.ContactDetails</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Call.Glass.Night.V16" parent="BandyerSDKDesign.Theme.Night">
-        <item name="android:fitsSystemWindows">false</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="bandyer_smartGlassStatusBarStyle">@style/BandyerSDKDesign.SmartGlass.StatusBar</item>
-        <item name="bandyer_smartGlassMenuFragmentStyle">@style/BandyerSDKDesign.SmartGlass.MenuFragment</item>
-        <item name="bandyer_smartGlassChatFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ChatFragment</item>
-        <item name="bandyer_smartGlassVolumeFragmentStyle">@style/BandyerSDKDesign.SmartGlass.VolumeFragment</item>
-        <item name="bandyer_smartGlassZoomFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ZoomFragment</item>
-        <item name="bandyer_smartGlassRingingFragmentStyle">@style/BandyerSDKDesign.SmartGlass.RingingFragment</item>
-        <item name="bandyer_smartGlassEndCallFragmentStyle">@style/BandyerSDKDesign.SmartGlass.EndCallFragment</item>
-        <item name="bandyer_smartGlassCallEndedFragmentStyle">@style/BandyerSDKDesign.SmartGlass.CallEndedFragment</item>
-        <item name="bandyer_smartGlassCallFragmentStyle">@style/BandyerSDKDesign.SmartGlass.CallFragment</item>
-        <item name="bandyer_smartGlassParticipantsFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ParticipantsFragment</item>
-        <item name="bandyer_smartGlassParticipantDetailsFragmentStyle">@style/BandyerSDKDesign.SmartGlass.ParticipantDetailsFragment</item>
+    <style name="BandyerSDKDesign.Theme.Night.Glass" parent="BandyerSDKDesign.Theme.Night">
+        <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
+        <item name="bandyer_menuFragmentStyle">@style/BandyerSDKDesign.Glass.Menu</item>
+        <item name="bandyer_chatFragmentStyle">@style/BandyerSDKDesign.Glass.Chat</item>
+        <item name="bandyer_volumeFragmentStyle">@style/BandyerSDKDesign.Glass.Volume</item>
+        <item name="bandyer_zoomFragmentStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
+        <item name="bandyer_ringingFragmentStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
+        <item name="bandyer_endCallFragmentStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
+        <item name="bandyer_callEndedFragmentStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
+        <item name="bandyer_callFragmentStyle">@style/BandyerSDKDesign.Glass.Call</item>
+        <item name="bandyer_participantsFragmentStyle">@style/BandyerSDKDesign.Glass.Participants</item>
+        <item name="bandyer_contactDetailsFragmentStyle">@style/BandyerSDKDesign.Glass.ContactDetails</item>
     </style>
-
-    <style name="BandyerSDKDesign.Theme.Call.Glass.DayNight" parent="BandyerSDKDesign.Theme.Call.Glass.DayNight.V16" />
-
-    <style name="BandyerSDKDesign.Theme.Call.Glass.Day" parent="BandyerSDKDesign.Theme.Call.Glass.Day.V16" />
-
-    <style name="BandyerSDKDesign.Theme.Call.Glass.Night" parent="BandyerSDKDesign.Theme.Call.Glass.Night.V16" />
-
-    <style name="BandyerSDKDesign.Theme.Call.Glass" parent="BandyerSDKDesign.Theme.Call.Glass.Day"/>
-
 </resources>

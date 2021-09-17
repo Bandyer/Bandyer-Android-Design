@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="?attr/bandyer_rootLayoutStyle"
-    android:theme="?attr/bandyer_smartGlassParticipantsFragmentStyle">
+    android:theme="?attr/bandyer_participantsFragmentStyle">
 
     <com.bandyer.video_android_glass_ui.common.BandyerContactAvatarView
         android:id="@+id/bandyer_avatar"

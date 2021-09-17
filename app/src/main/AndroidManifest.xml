@@ -56,7 +56,7 @@
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
         <activity
             android:name=".smartglass.SmartGlassActivity"
-            android:theme="@style/BandyerSDKDesign.Theme.Call.Glass" >
+            android:theme="@style/BandyerSDKDesign.Theme.DayNight.Glass" >
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 
