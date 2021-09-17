@@ -31,7 +31,17 @@
 
     <!-- BOTTOM ACTION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.CallEnded" parent="BandyerSDKDesign.Glass.BottomNavigation">
+        <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.CallEnded</item>
+        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.CallEnded</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.CallEnded</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Swipe.CallEnded" parent="BandyerSDKDesign.Glass.BottomActionItem.Swipe">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.CallEnded" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.CallEnded" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">

@@ -29,8 +29,13 @@
 
     <!-- BOTTOM ACTION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.Ringing" parent="BandyerSDKDesign.Glass.BottomNavigation">
+        <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.Ringing</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Ringing</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Ringing</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Swipe.Ringing" parent="BandyerSDKDesign.Glass.BottomActionItem.Swipe">
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Ringing" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">

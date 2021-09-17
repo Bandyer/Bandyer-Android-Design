@@ -51,6 +51,7 @@
     <style name="BandyerSDKDesign.Glass.BottomNavigation.Participants" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.Participants</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Participants</item>
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Participants</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Swipe.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.Swipe">
@@ -67,5 +68,9 @@
 
     <style name="BandyerSDKDesign.TextView.Label.SwipeDownParticipants" parent="BandyerSDKDesign.TextView.Label">
         <item name="android:text">@string/bandyer_smartglass_close</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="android:visibility">gone</item>
     </style>
 </resources>
