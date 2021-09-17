@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="BandyerSDKDesign.ChatMessage.GlassNotification" parent="BandyerSDKDesign.ChatMessage">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ChatMessage.GlassNotification.RootLayout</item>
+        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.ChatNotification</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.GlassChat</item>
+        <item name="bandyer_messageStyle">@style/BandyerSDKDesign.TextView.MessageGlassChat.Notification</item>
+        <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.TimestampGlassChat.Notification</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.ChatNotification</item>
+    </style>
+
+    <!-- ROOT -->
+    <style name="BandyerSDKDesign.ChatMessage.GlassNotification.RootLayout" parent="">
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
+        <item name="android:background">@color/bandyer_glass_background_color</item>
+    </style>
+
+    <!-- AVATARS -->
+    <style name="BandyerSDKDesign.Glass.Avatar.ChatNotification" parent="BandyerSDKDesign.Glass.Avatar">
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
+    </style>
+
+    <!-- MESSAGE -->
+    <style name="BandyerSDKDesign.TextView.MessageGlassChat.Notification" parent="BandyerSDKDesign.TextView.MessageGlassChat">
+        <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
+    </style>
+
+    <!-- TIMESTAMP -->
+    <style name="BandyerSDKDesign.TextView.TimestampGlassChat.Notification" parent="BandyerSDKDesign.TextView.TimestampGlassChat">
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:text">@string/bandyer_smartglass_now</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.ChatNotification" parent="BandyerSDKDesign.Glass.BottomNavigation">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.RootLayout.ChatNotification</item>
+        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatNotification</item>
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.ChatNotification</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.RootLayout.ChatNotification" parent="BandyerSDKDesign.Glass.BottomNavigation.RootLayout">
+        <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:maxHeight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space16</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeDownChatNotification</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.SwipeDownChatNotification" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_hide_notification</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapChatNotification</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.TapChatNotification" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_read</item>
+    </style>
+</resources>

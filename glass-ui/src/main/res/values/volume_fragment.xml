@@ -2,12 +2,12 @@
 <resources>
     <!-- VOLUME FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.Volume" parent="BandyerSDKDesign.Glass">
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.GlassBottomNavigation.Volume</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Volume</item>
         <item name="sliderStyle">@style/BandyerSDKDesign.Glass.Slider.Volume</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->
-    <style name="BandyerSDKDesign.GlassBottomNavigation.Volume" parent="BandyerSDKDesign.GlassBottomNavigation">
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.Volume" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.Volume</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Volume</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Volume</item>

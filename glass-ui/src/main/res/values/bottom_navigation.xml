@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- BOTTOM ACTION BAR -->
-    <declare-styleable name="BandyerSDKDesign.GlassBottomNavigation">
+    <declare-styleable name="BandyerSDKDesign.Glass.BottomNavigation">
         <attr name="bandyer_rootLayoutStyle"/>
         <attr name="bandyer_swipeItemStyle" format="reference"/>
         <attr name="bandyer_swipeDownItemStyle" format="reference"/>
         <attr name="bandyer_tapItemStyle" format="reference"/>
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.GlassBottomNavigation" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.GlassBottomNavigation.RootLayout</item>
+    <style name="BandyerSDKDesign.Glass.BottomNavigation" parent="BandyerSDKDesign.Glass">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.RootLayout</item>
         <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassBottomNavigation.RootLayout" parent="">
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.RootLayout" parent="">
         <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
         <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>

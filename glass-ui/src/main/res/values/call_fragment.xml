@@ -2,11 +2,11 @@
 <resources>
     <!-- CALL FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.Call" parent="BandyerSDKDesign.Glass">
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.GlassBottomNavigation.Call</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Call</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->
-    <style name="BandyerSDKDesign.GlassBottomNavigation.Call" parent="BandyerSDKDesign.GlassBottomNavigation">
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.Call" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.Call</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Call</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Call</item>

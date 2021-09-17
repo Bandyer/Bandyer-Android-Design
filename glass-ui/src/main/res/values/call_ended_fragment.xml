@@ -5,7 +5,7 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.CallEnded.RootLayout</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.CallEnded</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.CallEnded</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.GlassBottomNavigation.CallEnded</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.CallEnded</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.CallEnded.RootLayout" parent="">
@@ -30,7 +30,7 @@
     </style>
 
     <!-- BOTTOM ACTION BAR -->
-    <style name="BandyerSDKDesign.GlassBottomNavigation.CallEnded" parent="BandyerSDKDesign.GlassBottomNavigation">
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.CallEnded" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.CallEnded</item>
     </style>
 
