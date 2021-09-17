@@ -4,32 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentRingingBinding
-import com.bandyer.video_android_glass_ui.SmartGlassBaseFragment
+import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentCallBinding
+import com.bandyer.video_android_glass_ui.BandyerGlassTouchEventListener
+import com.bandyer.video_android_glass_ui.BandyerGlassBaseFragment
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
-import com.google.android.material.textview.MaterialTextView
 
 /**
- * SmartGlassRingingFragment. A base class for the ringing
- *fragment.
+ * BandyerGlassCallFragment. A base class for the call fragment.
  */
-abstract class SmartGlassRingingFragment: SmartGlassBaseFragment() {
+abstract class BandyerGlassCallFragment: BandyerGlassBaseFragment(),
+                                       BandyerGlassTouchEventListener {
 
-    private var binding: BandyerFragmentRingingBinding? = null
+    private var binding: BandyerFragmentCallBinding? = null
 
     protected var root: View? = null
-    protected var title: MaterialTextView? = null
-    protected var subtitle: MaterialTextView? = null
     protected var bottomActionBar: BandyerBottomActionBarView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BandyerFragmentRingingBinding.inflate(inflater, container, false)
+        binding = BandyerFragmentCallBinding.inflate(inflater, container, false)
         root = binding!!.root
-        title = binding!!.bandyerTitle
-        subtitle = binding!!.bandyerSubtitle
         bottomActionBar = binding!!.bandyerBottomActionBar
         return root!!
     }
@@ -38,8 +34,6 @@ abstract class SmartGlassRingingFragment: SmartGlassBaseFragment() {
         super.onDestroyView()
         binding = null
         root = null
-        title = null
-        subtitle = null
         bottomActionBar = null
     }
 }

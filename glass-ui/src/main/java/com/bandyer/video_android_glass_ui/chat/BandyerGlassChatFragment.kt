@@ -7,16 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentChatBinding
-import com.bandyer.video_android_glass_ui.SmartGlassBaseFragment
+import com.bandyer.video_android_glass_ui.BandyerGlassBaseFragment
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
 /**
- * SmartGlassChatFragment. A base class for the chat fragment.
+ * BandyerGlassChatFragment. A base class for the chat fragment.
  */
-abstract class SmartGlassChatFragment : SmartGlassBaseFragment() {
+abstract class BandyerGlassChatFragment : BandyerGlassBaseFragment() {
 
     private var binding: BandyerFragmentChatBinding? = null
 

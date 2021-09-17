@@ -1,21 +1,21 @@
-package com.bandyer.video_android_glass_ui.settings.zoom
+package com.bandyer.video_android_glass_ui.settings.volume
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentZoomBinding
-import com.bandyer.video_android_glass_ui.SmartGlassBaseFragment
+import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentVolumeBinding
+import com.bandyer.video_android_glass_ui.BandyerGlassBaseFragment
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
 import com.bandyer.video_android_glass_ui.settings.BandyerSlider
 
 /**
- * SmartGlassZoomFragment. A base class for the zoom fragment.
+ * BandyerGlassVolumeFragment. A base class for the volume fragment.
  */
-abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
+abstract class BandyerGlassVolumeFragment : BandyerGlassBaseFragment() {
 
-    private var binding: BandyerFragmentZoomBinding? = null
+    private var binding: BandyerFragmentVolumeBinding? = null
 
     protected var root: View? = null
     protected var slider: BandyerSlider? = null
@@ -26,7 +26,7 @@ abstract class SmartGlassZoomFragment : SmartGlassBaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BandyerFragmentZoomBinding.inflate(inflater, container, false)
+        binding = BandyerFragmentVolumeBinding.inflate(inflater, container, false)
         root = binding!!.root
         slider = binding!!.bandyerSlider
         bottomActionBar = binding!!.bandyerBottomActionBar

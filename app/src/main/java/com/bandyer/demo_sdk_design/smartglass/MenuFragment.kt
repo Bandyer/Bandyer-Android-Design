@@ -8,12 +8,12 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
+import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
 import com.bandyer.video_android_glass_ui.menu.BandyerMenuItem
+import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 
-class MenuFragment : com.bandyer.video_android_glass_ui.menu.SmartGlassMenuFragment(), TiltController.TiltListener {
+class MenuFragment : com.bandyer.video_android_glass_ui.menu.BandyerGlassMenuFragment(), TiltController.TiltListener {
 
     private var tiltController: TiltController? = null
 
@@ -63,7 +63,7 @@ class MenuFragment : com.bandyer.video_android_glass_ui.menu.SmartGlassMenuFragm
         }
 
         bottomActionBar!!.setSwipeOnClickListener {
-            rvMenu!!.smoothScrollToNext(currentMenuItemIndex)
+            rvMenu!!.horizontalSmoothScrollToNext(currentMenuItemIndex)
         }
 
         bottomActionBar!!.setSwipeDownOnClickListener {
@@ -76,13 +76,13 @@ class MenuFragment : com.bandyer.video_android_glass_ui.menu.SmartGlassMenuFragm
     override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
         BandyerGlassTouchEvent.Type.SWIPE_FORWARD  -> {
             if (event.source == BandyerGlassTouchEvent.Source.KEY) {
-                rvMenu!!.smoothScrollToNext(currentMenuItemIndex)
+                rvMenu!!.horizontalSmoothScrollToNext(currentMenuItemIndex)
                 true
             } else false
         }
         BandyerGlassTouchEvent.Type.SWIPE_BACKWARD -> {
             if (event.source == BandyerGlassTouchEvent.Source.KEY) {
-                rvMenu!!.smoothScrollToPrevious(currentMenuItemIndex)
+                rvMenu!!.horizontalSmoothScrollToPrevious(currentMenuItemIndex)
                 true
             } else false
         }

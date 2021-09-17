@@ -9,16 +9,16 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
 import com.bandyer.video_android_core_ui.utils.Iso8601
-import com.bandyer.video_android_glass_ui.chat.SmartGlassMessageData
+import com.bandyer.video_android_glass_ui.chat.BandyerGlassMessageData
 import com.bandyer.video_android_glass_ui.databinding.BandyerChatMessageLayoutBinding
+import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
+import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
 
-class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragment(), TiltController.TiltListener {
+class ChatFragment : com.bandyer.video_android_glass_ui.chat.BandyerGlassChatFragment(), TiltController.TiltListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -103,7 +103,7 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragm
         })
 
         addChatItem(
-            SmartGlassMessageData(
+            BandyerGlassMessageData(
                 UUID.randomUUID().toString(),
                 "Mario",
                 "Mario",
@@ -113,7 +113,7 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragm
             )
         )
         addChatItem(
-            SmartGlassMessageData(
+            BandyerGlassMessageData(
                 UUID.randomUUID().toString(),
                 "Ugo",
                 "Ugo",
@@ -123,7 +123,7 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragm
             )
         )
         addChatItem(
-            SmartGlassMessageData(
+            BandyerGlassMessageData(
                 UUID.randomUUID().toString(),
                 "Gianfranco",
                 "Gianfranco",
@@ -134,7 +134,7 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragm
 //
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            addChatItem(
-//                SmartGlassMessageData(
+//                BandyerGlassMessageData(
 //                    UUID.randomUUID().toString(),
 //                    "Gianfranco",
 //                    "Gianfranco",
@@ -146,7 +146,7 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragm
 //        }, 1000)
 
         bottomActionBar!!.setSwipeOnClickListener {
-            rvMessages!!.smoothScrollToNext(currentMsgItemIndex)
+            rvMessages!!.horizontalSmoothScrollToNext(currentMsgItemIndex)
         }
 
         bottomActionBar!!.setSwipeDownOnClickListener {
@@ -191,13 +191,13 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragm
         when (event.type) {
             com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent.Type.SWIPE_FORWARD -> {
                 if (event.source == com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent.Source.KEY) {
-                    rvMessages!!.smoothScrollToNext(currentMsgItemIndex)
+                    rvMessages!!.horizontalSmoothScrollToNext(currentMsgItemIndex)
                     true
                 } else false
             }
             com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent.Type.SWIPE_BACKWARD -> {
                 if (event.source == com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent.Source.KEY) {
-                    rvMessages!!.smoothScrollToPrevious(currentMsgItemIndex)
+                    rvMessages!!.horizontalSmoothScrollToPrevious(currentMsgItemIndex)
                     true
                 } else false
             }
@@ -220,9 +220,9 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragm
     /**
      * Add a chat item to the recycler view. If the text is too long to fit in one screen, more than a chat item will be added
      *
-     * @param data The [SmartGlassMessageData]
+     * @param data The [BandyerGlassMessageData]
      */
-    private fun addChatItem(data: SmartGlassMessageData) {
+    private fun addChatItem(data: BandyerGlassMessageData) {
         newMessagesCounter++
         chatMessageView?.post {
             val binding = BandyerChatMessageLayoutBinding.bind(chatMessageView!!)
@@ -232,7 +232,7 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragm
                 bandyerMessage.text = data.message
                 val pageList = bandyerMessage.paginate()
                 for (i in pageList.indices) {
-                    val pageData = SmartGlassMessageData(
+                    val pageData = BandyerGlassMessageData(
                         data.id,
                         data.sender,
                         data.userAlias,

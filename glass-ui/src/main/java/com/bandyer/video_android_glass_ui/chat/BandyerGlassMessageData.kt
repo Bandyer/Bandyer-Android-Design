@@ -15,7 +15,7 @@ import androidx.annotation.DrawableRes
  * @property isFirstPage True if it is the first page of the message, false otherwise
  * @constructor
  */
-data class SmartGlassMessageData(
+data class BandyerGlassMessageData(
     val id: String,
     val sender: String? = null,
     val userAlias: String? = null,

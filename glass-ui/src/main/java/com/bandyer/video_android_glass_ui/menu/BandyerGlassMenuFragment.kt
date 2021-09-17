@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentMenuBinding
-import com.bandyer.video_android_glass_ui.SmartGlassBaseFragment
+import com.bandyer.video_android_glass_ui.BandyerGlassBaseFragment
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
 import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerOffsetItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.LineItemIndicatorDecoration
@@ -17,9 +17,9 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
 /**
- * SmartGlassMenuFragment. A base class for the menu fragment.
+ * BandyerGlassMenuFragment. A base class for the menu fragment.
  */
-abstract class SmartGlassMenuFragment : SmartGlassBaseFragment() {
+abstract class BandyerGlassMenuFragment : BandyerGlassBaseFragment() {
 
     private var binding: BandyerFragmentMenuBinding? = null
 

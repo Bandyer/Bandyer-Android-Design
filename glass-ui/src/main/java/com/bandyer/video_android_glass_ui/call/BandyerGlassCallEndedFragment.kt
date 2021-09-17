@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentCallEndedBinding
-import com.bandyer.video_android_glass_ui.SmartGlassBaseFragment
+import com.bandyer.video_android_glass_ui.BandyerGlassBaseFragment
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
 import com.google.android.material.textview.MaterialTextView
 
 /**
- * SmartGlassCallEndedFragment. A base class for the call ended fragment.
+ * BandyerGlassCallEndedFragment. A base class for the call ended fragment.
  */
-abstract class SmartGlassCallEndedFragment: SmartGlassBaseFragment() {
+abstract class BandyerGlassCallEndedFragment: BandyerGlassBaseFragment() {
 
     private var binding: BandyerFragmentCallEndedBinding? = null
 

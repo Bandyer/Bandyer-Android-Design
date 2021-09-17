@@ -9,17 +9,17 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
-import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
+import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
 import com.bandyer.video_android_glass_ui.contact.BandyerContactData
 import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
 import com.bandyer.video_android_glass_ui.contact.call_participant.BandyerCallParticipantItem
+import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-class ParticipantsFragment : com.bandyer.video_android_glass_ui.contact.call_participant.SmartGlassCallParticipantsFragment(), TiltController.TiltListener {
+class ParticipantsFragment : com.bandyer.video_android_glass_ui.contact.call_participant.BandyerGlassCallParticipantsFragment(), TiltController.TiltListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -114,7 +114,7 @@ class ParticipantsFragment : com.bandyer.video_android_glass_ui.contact.call_par
         })
 
         bottomActionBar!!.setSwipeOnClickListener {
-            rvParticipants!!.smoothScrollToNext(currentParticipantIndex)
+            rvParticipants!!.horizontalSmoothScrollToNext(currentParticipantIndex)
         }
 
         bottomActionBar!!.setSwipeDownOnClickListener {
@@ -151,13 +151,13 @@ class ParticipantsFragment : com.bandyer.video_android_glass_ui.contact.call_par
     override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
         BandyerGlassTouchEvent.Type.SWIPE_FORWARD  -> {
             if(event.source == BandyerGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
-                rvParticipants!!.smoothScrollToNext(currentParticipantIndex)
+                rvParticipants!!.horizontalSmoothScrollToNext(currentParticipantIndex)
                 true
             } else false
         }
         BandyerGlassTouchEvent.Type.SWIPE_BACKWARD -> {
             if(event.source == BandyerGlassTouchEvent.Source.KEY && currentParticipantIndex != -1) {
-                rvParticipants!!.smoothScrollToPrevious(currentParticipantIndex)
+                rvParticipants!!.horizontalSmoothScrollToPrevious(currentParticipantIndex)
                 true
             } else false
         }

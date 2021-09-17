@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
 
-class RingingFragment: com.bandyer.video_android_glass_ui.call.SmartGlassRingingFragment() {
+class RingingFragment: com.bandyer.video_android_glass_ui.call.BandyerGlassRingingFragment() {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 

@@ -8,7 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
 
-class CallFragment : com.bandyer.video_android_glass_ui.call.SmartGlassCallFragment() {
+class CallFragment : com.bandyer.video_android_glass_ui.call.BandyerGlassCallFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,

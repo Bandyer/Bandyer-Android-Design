@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:theme="?attr/bandyer_volumeFragmentStyle">
 
-    <com.bandyer.video_android_glass_ui.settings.volume.VolumeSlider
+    <com.bandyer.video_android_glass_ui.settings.volume.BandyerVolumeSlider
         android:id="@+id/bandyer_slider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -13,7 +13,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property data The data related to a chat message
  * @constructor
  */
-class BandyerChatItem(val data: SmartGlassMessageData) : AbstractItem<BandyerChatItem.ViewHolder>() {
+class BandyerChatItem(val data: BandyerGlassMessageData) : AbstractItem<BandyerChatItem.ViewHolder>() {
 
     override val layoutRes: Int
         get() = R.layout.bandyer_chat_item_layout
