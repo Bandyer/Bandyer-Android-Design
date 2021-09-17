@@ -3,10 +3,10 @@
  * See LICENSE.txt for licensing information
  */
 
-package com.bandyer.video_android_glass_ui.utils
+package com.bandyer.video_android_core_ui.utils
 
 import android.content.Context
-import com.bandyer.video_android_glass_ui.R
+import com.bandyer.video_android_core_ui.R
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle

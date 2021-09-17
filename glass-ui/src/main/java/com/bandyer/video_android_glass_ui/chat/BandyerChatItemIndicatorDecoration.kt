@@ -8,9 +8,9 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
+import com.bandyer.video_android_core_ui.extensions.ColorIntExtensions.darkenColor
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.utils.extensions.darkenColor
 import com.google.android.material.color.MaterialColors
 import java.util.*
 import kotlin.math.abs

@@ -3,7 +3,7 @@ package com.bandyer.video_android_glass_ui.contact
 import android.content.Context
 import android.util.AttributeSet
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.utils.Iso8601
+import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.google.android.material.textview.MaterialTextView
 
 /**

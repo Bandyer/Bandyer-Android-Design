@@ -62,4 +62,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
+    /*** BANDYER ***/
+    implementation "com.bandyer:bandyer-android-common:$bandyer_common"
 }

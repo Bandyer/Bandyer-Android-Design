@@ -1,10 +1,10 @@
-package com.bandyer.video_android_glass_ui
+package com.bandyer.video_android_core_ui
 
 import com.bandyer.android_common.assertIsTrue
-import com.bandyer.video_android_glass_ui.utils.Iso8601
-import com.bandyer.video_android_glass_ui.utils.Iso8601.isLastWeek
-import com.bandyer.video_android_glass_ui.utils.Iso8601.isToday
-import com.bandyer.video_android_glass_ui.utils.Iso8601.isYesterday
+import com.bandyer.video_android_core_ui.utils.Iso8601
+import com.bandyer.video_android_core_ui.utils.Iso8601.isLastWeek
+import com.bandyer.video_android_core_ui.utils.Iso8601.isToday
+import com.bandyer.video_android_core_ui.utils.Iso8601.isYesterday
 import org.junit.Test
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -23,7 +23,7 @@ class Iso8601Test {
         var expected = calendar.timeInMillis
         // set milliseconds to 0
         expected -= expected % 1000
-        val result = com.bandyer.video_android_glass_ui.utils.Iso8601.getISO8601TstampInMillis(timestamp)
+        val result = Iso8601.getISO8601TstampInMillis(timestamp)
         assertIsTrue(result == expected)
     }
 
@@ -32,14 +32,14 @@ class Iso8601Test {
         val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm")
         df.timeZone = TimeZone.getTimeZone("UTC")
         val expected = df.format(Calendar.getInstance().time)
-        val result = com.bandyer.video_android_glass_ui.utils.Iso8601.nowISO8601()
+        val result = Iso8601.nowISO8601()
         assertIsTrue(result.contains(expected))
     }
 
     @Test
     fun testNowUTCMillis() {
         var expected = Instant.now().toEpochMilli()
-        var result = com.bandyer.video_android_glass_ui.utils.Iso8601.nowUTCMillis()
+        var result = Iso8601.nowUTCMillis()
 
         expected -= expected % 1000
         result -= result % 1000
@@ -89,7 +89,7 @@ class Iso8601Test {
             .minus(3, ChronoUnit.DAYS)
             .toEpochMilli()
         val expected = Instant.ofEpochMilli(millis).toString()
-        val result = com.bandyer.video_android_glass_ui.utils.Iso8601.parseMillisToIso8601(millis)
+        val result = Iso8601.parseMillisToIso8601(millis)
         assertIsTrue(expected == result)
     }
 }

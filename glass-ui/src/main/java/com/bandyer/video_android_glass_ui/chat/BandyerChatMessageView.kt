@@ -7,7 +7,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.video_android_glass_ui.databinding.BandyerChatMessageLayoutBinding
-import com.bandyer.video_android_glass_ui.utils.Iso8601
+import com.bandyer.video_android_core_ui.utils.Iso8601
 
 /**
  * ChatMessageView

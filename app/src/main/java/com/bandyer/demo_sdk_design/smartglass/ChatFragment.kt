@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToNext
 import com.bandyer.sdk_design.new_smartglass.smoothScrollToPrevious
+import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.bandyer.video_android_glass_ui.chat.SmartGlassMessageData
 import com.bandyer.video_android_glass_ui.databinding.BandyerChatMessageLayoutBinding
 import java.time.Instant
@@ -227,7 +228,7 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.SmartGlassChatFragm
             val binding = BandyerChatMessageLayoutBinding.bind(chatMessageView!!)
             with(binding) {
                 bandyerName.text = data.sender
-                bandyerTime.text = com.bandyer.video_android_glass_ui.utils.Iso8601.parseTimestamp(requireContext(), data.time!!)
+                bandyerTime.text = Iso8601.parseTimestamp(requireContext(), data.time!!)
                 bandyerMessage.text = data.message
                 val pageList = bandyerMessage.paginate()
                 for (i in pageList.indices) {
