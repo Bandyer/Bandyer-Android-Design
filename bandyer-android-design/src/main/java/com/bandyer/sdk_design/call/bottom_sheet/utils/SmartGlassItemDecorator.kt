@@ -53,7 +53,21 @@ class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.Ite
         TiltController(recyclerView.context!!, object : TiltController.TiltListener {
             val tiltMultiplier = recyclerView.context!!.scanForFragmentActivity()!!.resources!!.displayMetrics!!.densityDpi / 5f
             override fun onTilt(x: Float, y: Float) = recyclerView.scrollBy((x * tiltMultiplier).toInt(), 0)
-        })
+        }).apply {
+            with(recyclerView.context!!.scanForFragmentActivity()!!) {
+                lifecycle.addObserver(object : LifecycleObserver {
+
+                    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+                    fun onResume() = requestAllSensors()
+
+                    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+                    fun onPause() = releaseAllSensors()
+
+                    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+                    fun onDestroy() = lifecycle.removeObserver(this)
+                })
+            }
+        }
     }
 
     init {
@@ -62,20 +76,7 @@ class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.Ite
 
     private fun customizeRecyclerView(recyclerView: RecyclerView) {
         recyclerView.layoutManager = LinearLayoutManager(recyclerView.context, LinearLayoutManager.HORIZONTAL, recyclerView.context.isRtl())
-
-        if (!AndroidDevice.CURRENT.isRealWearHTM1()) return
-        val fragmentActivity = recyclerView.context!!.scanForFragmentActivity()!!
-        fragmentActivity.lifecycle.addObserver(object : LifecycleObserver {
-
-            @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-            fun onResume() = tiltController.requestAllSensors()
-
-            @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
-            fun onPause() = tiltController.releaseAllSensors()
-
-            @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-            fun onDestroy() = fragmentActivity.lifecycle.removeObserver(this)
-        })
+        if (AndroidDevice.CURRENT.isRealWearHTM1()) tiltController
     }
 
     /**
@@ -106,15 +107,13 @@ class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.Ite
         }
     }
 
-    private fun addItemViewDividers(outRect: Rect, itemPosition: Int) {
-        when {
-            !shouldScrollItems() -> Unit
-            itemPosition == 0 ->
-                outRect.left = if (shouldScrollItems()) halfScreenDivider - (recyclerView.layoutManager!!.findViewByPosition(0)!!.width / 2) else 0
-            itemPosition == recyclerView.adapter!!.itemCount - 1 ->
-                outRect.right = if (shouldScrollItems()) halfScreenDivider - (recyclerView.layoutManager!!.findViewByPosition(recyclerView.adapter!!.itemCount - 1)!!.width / 2) else 0
-            else -> Unit
-        }
+    private fun addItemViewDividers(outRect: Rect, itemPosition: Int) = when {
+        !shouldScrollItems() -> Unit
+        itemPosition == 0 ->
+            outRect.left = if (shouldScrollItems()) halfScreenDivider - (recyclerView.layoutManager!!.findViewByPosition(0)!!.width / 2) else 0
+        itemPosition == recyclerView.adapter!!.itemCount - 1 ->
+            outRect.right = if (shouldScrollItems()) halfScreenDivider - (recyclerView.layoutManager!!.findViewByPosition(recyclerView.adapter!!.itemCount - 1)!!.width / 2) else 0
+        else -> Unit
     }
 
     private fun shouldScrollItems() = recyclerView.adapter!!.itemCount > MAX_ITEM_ON_SCREEN + 1
