@@ -21,6 +21,7 @@ import android.view.*
 import android.widget.ProgressBar
 import androidx.appcompat.widget.Toolbar
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.iterator
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.sdk_design.R
@@ -72,6 +73,8 @@ abstract class BaseBandyerWhiteboardDialog<T : BaseBandyerWhiteboardDialog.BaseW
         var uploadProgressCard: BandyerWhiteboardUploadProgressLayout? = null
 
         var uploadButton: MenuItem? = null
+        var uploadButtonView: View? = null
+        var backButtonView: View? = null
 
         var webViewStub: ViewStub? = null
 
@@ -105,6 +108,8 @@ abstract class BaseBandyerWhiteboardDialog<T : BaseBandyerWhiteboardDialog.BaseW
             toolbar!!.apply {
                 inflateMenu(R.menu.bandyer_whiteboard_menu)
                 uploadButton = menu.findItem(R.id.bandyer_upload_file)
+                uploadButtonView = ((toolbar as ViewGroup).getChildAt(1) as ViewGroup).getChildAt(0)
+                backButtonView = toolbar!!.iterator().next()
                 setNavigationOnClickListener { dismiss() }
             }
         }
