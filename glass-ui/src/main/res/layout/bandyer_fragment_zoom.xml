@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:theme="?attr/bandyer_zoomFragmentStyle">
 
-    <com.bandyer.video_android_glass_ui.settings.BandyerSlider
+    <com.bandyer.video_android_glass_ui.settings.zoom.ZoomSlider
         android:id="@+id/bandyer_slider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -7,9 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.BandyerSmartGlassTouchEvent
-import com.bandyer.video_android_glass_ui.settings.SmartGlassZoomFragment
+import com.bandyer.video_android_glass_ui.settings.zoom.SmartGlassZoomFragment
 
-class ZoomFragment : com.bandyer.video_android_glass_ui.settings.SmartGlassZoomFragment(), TiltController.TiltListener {
+class ZoomFragment : SmartGlassZoomFragment(), TiltController.TiltListener {
 
     private var tiltController: TiltController? = null
 

@@ -1,4 +1,4 @@
-package com.bandyer.video_android_glass_ui.settings
+package com.bandyer.video_android_glass_ui.settings.zoom
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentZoomBinding
 import com.bandyer.video_android_glass_ui.SmartGlassBaseFragment
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
+import com.bandyer.video_android_glass_ui.settings.BandyerSlider
 
 /**
  * SmartGlassZoomFragment. A base class for the zoom fragment.

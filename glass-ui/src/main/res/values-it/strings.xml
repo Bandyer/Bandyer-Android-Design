@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="bandyer_smartglass_new_messages_pattern">%1$d nuovi messaggi</string>
+    <string name="bandyer_smartglass_slider_volume_pattern">Volume: %1$d%%</string>
+    <string name="bandyer_smartglass_slider_zoom_pattern">Zoom: %1$d%%</string>
     <string name="bandyer_smartglass_swipe">Scorri</string>
     <string name="bandyer_smartglass_tap">Tocca</string>
     <string name="bandyer_smartglass_close">chiudi</string>

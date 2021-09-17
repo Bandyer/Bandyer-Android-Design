@@ -1,4 +1,4 @@
-package com.bandyer.video_android_glass_ui.settings
+package com.bandyer.video_android_glass_ui.settings.volume
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentVolumeBinding
 import com.bandyer.video_android_glass_ui.SmartGlassBaseFragment
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
+import com.bandyer.video_android_glass_ui.settings.BandyerSlider
 
 /**
  * SmartGlassVolumeFragment. A base class for the volume fragment.
