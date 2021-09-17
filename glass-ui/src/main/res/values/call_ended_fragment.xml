@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- RINGING FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.CallEndedFragment" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.CallEndedFragment.RootLayout</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.CallEndedFragment</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.CallEndedFragment</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.GlassBottomNavigation.CallEndedFragment</item>
+    <!-- CALL ENDED FRAGMENT -->
+    <style name="BandyerSDKDesign.Glass.CallEnded" parent="BandyerSDKDesign.Glass">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.CallEnded.RootLayout</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.CallEnded</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.CallEnded</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.GlassBottomNavigation.CallEnded</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.CallEndedFragment.RootLayout" parent="">
+    <style name="BandyerSDKDesign.Glass.CallEnded.RootLayout" parent="">
         <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
     <!-- TITLE -->
-    <style name="BandyerSDKDesign.TextView.Title.CallEndedFragment" parent="BandyerSDKDesign.TextView.Title">
+    <style name="BandyerSDKDesign.TextView.Title.CallEnded" parent="BandyerSDKDesign.TextView.Title">
         <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
         <item name="android:text">@string/bandyer_smartglass_call_ended</item>
         <item name="android:textColor">@android:color/white</item>
@@ -22,7 +22,7 @@
     </style>
 
     <!-- SUBTITLE -->
-    <style name="BandyerSDKDesign.TextView.Subtitle.CallEndedFragment" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="BandyerSDKDesign.TextView.Subtitle.CallEnded" parent="BandyerSDKDesign.TextView.Subtitle">
         <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
         <item name="android:text">@string/bandyer_smartglass_thank_you</item>
         <item name="android:textColor">?attr/colorSecondary</item>
@@ -30,15 +30,15 @@
     </style>
 
     <!-- BOTTOM ACTION BAR -->
-    <style name="BandyerSDKDesign.GlassBottomNavigation.CallEndedFragment" parent="BandyerSDKDesign.GlassBottomNavigation">
-        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.CallEndedFragment</item>
+    <style name="BandyerSDKDesign.GlassBottomNavigation.CallEnded" parent="BandyerSDKDesign.GlassBottomNavigation">
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.CallEnded</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.CallEndedFragment" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapCallEndedFragment</item>
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.CallEnded" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapCallEnded</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.TapCallEndedFragment" parent="BandyerSDKDesign.TextView.Label">
+    <style name="BandyerSDKDesign.TextView.Label.TapCallEnded" parent="BandyerSDKDesign.TextView.Label">
         <item name="android:text">@string/bandyer_smartglass_close</item>
     </style>
 </resources>

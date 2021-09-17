@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BandyerSDKDesign.Glass.Chat">
+        <attr name="bandyer_counterStyle" format="reference" />
+    </declare-styleable>
+
+    <!-- MENU FRAGMENT -->
+    <style name="BandyerSDKDesign.Glass.Chat" parent="BandyerSDKDesign.Glass">
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerView</item>
+        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem</item>
+        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.CounterChat</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.GlassBottomNavigation.Chat</item>
+    </style>
+
+    <!-- RECYCLER VIEW -->
+    <style name="BandyerSDKDesign.Glass.Chat.RecyclerView" parent="">
+        <item name="android:background">@color/bandyer_glass_background_color</item>
+    </style>
+
+    <!-- RECYCLER VIEW ITEM -->
+    <style name="BandyerSDKDesign.Glass.Chat.RecyclerViewItem" parent="">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem.RootLayout</item>
+        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.RecyclerViewItemChat</item>
+        <item name="bandyer_messageStyle">@style/BandyerSDKDesign.TextView.MessageRecyclerViewItemChat</item>
+        <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.TimestampRecyclerViewItemChat</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.Chat.RecyclerViewItem.RootLayout" parent="">
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Title.RecyclerViewItemChat" parent="BandyerSDKDesign.TextView.Title">
+        <item name="android:layout_height">@dimen/bandyer_dimen_space40</item>
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeStepGranularity">@dimen/bandyer_dimen_space2</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.MessageRecyclerViewItemChat" parent="BandyerSDKDesign.TextView">
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space56</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space48</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.TimestampRecyclerViewItemChat" parent="BandyerSDKDesign.TextView">
+        <item name="android:textColor">@color/bandyer_color_white_80</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+    </style>
+
+    <!-- COUNTER -->
+    <style name="BandyerSDKDesign.TextView.CounterChat" parent="BandyerSDKDesign.TextView">
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space8</item>
+        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.GlassBottomNavigation.Chat" parent="BandyerSDKDesign.GlassBottomNavigation">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.GlassBottomNavigation.RootLayout.Chat</item>
+        <item name="bandyer_swipeItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Swipe.Chat</item>
+        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Chat</item>
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Chat</item>
+    </style>
+
+    <style name="BandyerSDKDesign.GlassBottomNavigation.RootLayout.Chat" parent="BandyerSDKDesign.GlassBottomNavigation.RootLayout">
+        <item name="android:background">@color/bandyer_glass_background_color</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Swipe.Chat" parent="BandyerSDKDesign.Glass.BottomActionItem.Swipe">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeChat</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.SwipeChat" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_browse</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Chat" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeDownChat</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.SwipeDownChat" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_close</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Chat" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapChat</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Label.TapChat" parent="BandyerSDKDesign.TextView.Label">
+        <item name="android:text">@string/bandyer_smartglass_contact_info</item>
+    </style>
+</resources>
