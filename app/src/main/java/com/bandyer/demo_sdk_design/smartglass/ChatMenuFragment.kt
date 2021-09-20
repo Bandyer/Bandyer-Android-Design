@@ -10,16 +10,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
-import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
+import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
 import com.bandyer.video_android_glass_ui.contact.BandyerContactData
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 
-class ContactDetailsFragment : com.bandyer.video_android_glass_ui.contact.details.BandyerGlassContactDetailsFragment(), TiltController.TiltListener {
+class ChatMenuFragment : com.bandyer.video_android_glass_ui.contact.details.BandyerGlassChatMenuFragment(), TiltController.TiltListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
-    private val args: ContactDetailsFragmentArgs by navArgs()
+    private val args: ChatMenuFragmentArgs by navArgs()
 
     private var tiltController: TiltController? = null
     private var actionIndex = 0
@@ -69,8 +69,8 @@ class ContactDetailsFragment : com.bandyer.video_android_glass_ui.contact.detail
         }
         contactStateDot!!.isActivated = data.userState == BandyerContactData.UserState.ONLINE
 
-        itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.details.BandyerContactDetailsItem(resources.getString(R.string.bandyer_glass_videocall)))
-        itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.details.BandyerContactDetailsItem(resources.getString(R.string.bandyer_glass_call)))
+        itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.details.BandyerChatMenuItem(resources.getString(R.string.bandyer_glass_videocall)))
+        itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.details.BandyerChatMenuItem(resources.getString(R.string.bandyer_glass_call)))
 
         bottomActionBar!!.setSwipeOnClickListener {
             rvActions!!.horizontalSmoothScrollToNext(actionIndex)

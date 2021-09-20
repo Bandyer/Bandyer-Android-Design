@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- CONTACT DETAILS FRAGMENT -->
+    <style name="BandyerSDKDesign.Glass.ChatMenu" parent="BandyerSDKDesign.Glass">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.ChatMenu.RootLayout</item>
+        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.ChatMenu</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.GlassChatMenu</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.SubTitle.GlassChatMenu</item>
+        <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.RoundedImageGlass.ChatMenuUserState</item>
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
+        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.ChatMenu</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.ChatMenu.RootLayout" parent="">
+        <item name="android:background">@color/bandyer_glass_background_color</item>
+    </style>
+
+    <!-- AVATAR -->
+    <style name="BandyerSDKDesign.Glass.Avatar.ChatMenu" parent="BandyerSDKDesign.Glass.Avatar">
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.RoundedImageGlass.ChatMenuAvatar</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatar.ChatMenu</item>
+    </style>
+
+    <style name="BandyerSDKDesign.RoundedImageGlass.ChatMenuAvatar" parent="BandyerSDKDesign.RoundedImageGlass">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space72</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space72</item>
+        <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Title.GlassAvatar.ChatMenu" parent="BandyerSDKDesign.TextView.Title.GlassAvatar">
+        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_32sp</item>
+    </style>
+
+    <!-- CONTACT STATE DOT -->
+    <style name="BandyerSDKDesign.RoundedImageGlass.ChatMenuUserState" parent="BandyerSDKDesign.RoundedImageGlass">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space20</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space20</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:backgroundTint">@color/bandyer_glass_color_contact_state</item>
+        <item name="strokeColor">@android:color/white</item>
+    </style>
+
+    <!-- NAME -->
+    <style name="BandyerSDKDesign.TextView.Title.GlassChatMenu" parent="BandyerSDKDesign.TextView.Title">
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+    </style>
+
+    <!-- CONTACT STATE TEXT -->
+    <style name="BandyerSDKDesign.TextView.SubTitle.GlassChatMenu" parent="BandyerSDKDesign.TextView.Subtitle">
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space4</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.ChatMenu" parent="BandyerSDKDesign.Glass.BottomNavigation">
+        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.ChatMenu</item>
+        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatMenu</item>
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.ChatMenu</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.ChatMenu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeChatMenu</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeChatMenu" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_browse</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatMenu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownChatMenu</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownChatMenu" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_close</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.ChatMenu" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapChatMenu</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.GlassLabel.TapChatMenu" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_select</item>
+    </style>
+</resources>

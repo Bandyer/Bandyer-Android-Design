@@ -204,7 +204,7 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.BandyerGlassChatFra
             com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent.Type.TAP -> {
                 val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userAlias
                 val action =
-                    ChatFragmentDirections.actionChatFragmentToContactDetailsFragment(
+                    ChatFragmentDirections.actionChatFragmentToChatMenuFragment(
                         contactData.first { it.userAlias.contains(username!!) }
                     )
                 findNavController().navigate(action)

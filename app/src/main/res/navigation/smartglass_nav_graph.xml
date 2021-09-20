@@ -9,8 +9,8 @@
         android:name="com.bandyer.demo_sdk_design.smartglass.ChatFragment"
         android:label="ChatFragment">
         <action
-            android:id="@+id/action_chatFragment_to_contactDetailsFragment"
-            app:destination="@id/contactDetailsFragment" />
+            android:id="@+id/action_chatFragment_to_chatMenuFragment"
+            app:destination="@id/chatMenuFragment" />
     </fragment>
     <fragment
         android:id="@+id/menuFragment"
@@ -77,9 +77,9 @@
         android:name="com.bandyer.demo_sdk_design.smartglass.ParticipantsFragment"
         android:label="ParticipantsFragment"/>
     <fragment
-        android:id="@+id/contactDetailsFragment"
-        android:name="com.bandyer.demo_sdk_design.smartglass.ContactDetailsFragment"
-        android:label="ParticipantDetailsFragment" >
+        android:id="@+id/chatMenuFragment"
+        android:name="com.bandyer.demo_sdk_design.smartglass.ChatMenuFragment"
+        android:label="ChatMenuFragment" >
         <argument
             android:name="contactData"
             android:defaultValue="@null"

@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_glass_ui.BandyerGlassBaseFragment
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
 import com.bandyer.video_android_glass_ui.common.BandyerContactAvatarView
-import com.bandyer.video_android_glass_ui.common.item_decoration.LineItemIndicatorDecoration
-import com.bandyer.video_android_glass_ui.BandyerGlassBaseFragment
 import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerCenterItemDecoration
+import com.bandyer.video_android_glass_ui.common.item_decoration.LineItemIndicatorDecoration
 import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
-import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentContactDetailsBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentChatMenuBinding
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
@@ -23,12 +23,12 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 /**
  * SmartGlassParticipantDetailsFragment. A base class for the participant details fragment.
  */
-abstract class BandyerGlassContactDetailsFragment : BandyerGlassBaseFragment() {
+abstract class BandyerGlassChatMenuFragment : BandyerGlassBaseFragment() {
 
-    private var binding: BandyerFragmentContactDetailsBinding? = null
+    private var binding: BandyerFragmentChatMenuBinding? = null
 
-    protected var itemAdapter: ItemAdapter<BandyerContactDetailsItem>? = null
-    protected var fastAdapter: FastAdapter<BandyerContactDetailsItem>? = null
+    protected var itemAdapter: ItemAdapter<BandyerChatMenuItem>? = null
+    protected var fastAdapter: FastAdapter<BandyerChatMenuItem>? = null
 
     protected var root: View? = null
     protected var avatar: BandyerContactAvatarView? = null
@@ -45,7 +45,7 @@ abstract class BandyerGlassContactDetailsFragment : BandyerGlassBaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BandyerFragmentContactDetailsBinding.inflate(inflater, container, false)
+        binding = BandyerFragmentChatMenuBinding.inflate(inflater, container, false)
 
         // set the views
         root = binding!!.root

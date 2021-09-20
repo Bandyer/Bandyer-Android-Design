@@ -52,7 +52,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_action_bar"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/bandyer_contact_details_item_layout" />
+        tools:listitem="@layout/bandyer_chat_menu_item_layout" />
 
     <com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
         android:id="@+id/bandyer_bottom_action_bar"
