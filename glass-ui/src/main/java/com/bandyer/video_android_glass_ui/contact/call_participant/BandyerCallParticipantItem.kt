@@ -18,7 +18,7 @@ class BandyerCallParticipantItem(val text: String): AbstractItem<BandyerCallPart
         get() = R.layout.bandyer_participant_item_layout
 
     override val type: Int
-        get() = R.id.id_participants_item
+        get() = R.id.id_glass_participants_item
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 

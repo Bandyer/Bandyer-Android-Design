@@ -4,9 +4,9 @@
     <style name="BandyerSDKDesign.Glass.ContactDetails" parent="BandyerSDKDesign.Glass">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.ContactDetails.RootLayout</item>
         <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.ContactDetails</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.ContactDetails</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.SubTitle.ContactDetails</item>
-        <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.GlassRoundedImage.ContactDetailsState</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.GlassContactDetails</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.SubTitle.GlassContactDetails</item>
+        <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.RoundedImageGlass.ContactDetailsState</item>
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.ContactDetails</item>
@@ -16,25 +16,13 @@
         <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.ContactDetails.RecyclerViewItem.RootLayout" parent="">
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space64</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space64</item>
-    </style>
-
-    <style name="BandyerSDKDesign.TextView.ContactDetailsRecyclerViewItem" parent="BandyerSDKDesign.TextView">
-        <item name="android:minHeight">@dimen/bandyer_dimen_glass_menu_size</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/bandyer_glass_menu_item_color</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_40sp</item>
-    </style>
-
     <!-- AVATAR -->
     <style name="BandyerSDKDesign.Glass.Avatar.ContactDetails" parent="BandyerSDKDesign.Glass.Avatar">
-        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.GlassRoundedImage.ContactDetailsAvatar</item>
+        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.RoundedImageGlass.ContactDetailsAvatar</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatar.ContactDetails</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassRoundedImage.ContactDetailsAvatar" parent="BandyerSDKDesign.GlassRoundedImage">
+    <style name="BandyerSDKDesign.RoundedImageGlass.ContactDetailsAvatar" parent="BandyerSDKDesign.RoundedImageGlass">
         <item name="android:layout_width">@dimen/bandyer_dimen_space72</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space72</item>
         <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
@@ -45,7 +33,7 @@
     </style>
 
     <!-- CONTACT STATE DOT -->
-    <style name="BandyerSDKDesign.GlassRoundedImage.ContactDetailsState" parent="BandyerSDKDesign.GlassRoundedImage">
+    <style name="BandyerSDKDesign.RoundedImageGlass.ContactDetailsState" parent="BandyerSDKDesign.RoundedImageGlass">
         <item name="android:layout_width">@dimen/bandyer_dimen_space20</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space20</item>
         <item name="android:background">@android:color/white</item>
@@ -54,7 +42,7 @@
     </style>
 
     <!-- NAME -->
-    <style name="BandyerSDKDesign.TextView.Title.ContactDetails" parent="BandyerSDKDesign.TextView.Title">
+    <style name="BandyerSDKDesign.TextView.Title.GlassContactDetails" parent="BandyerSDKDesign.TextView.Title">
         <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
@@ -63,7 +51,7 @@
     </style>
 
     <!-- CONTACT STATE TEXT -->
-    <style name="BandyerSDKDesign.TextView.SubTitle.ContactDetails" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="BandyerSDKDesign.TextView.SubTitle.GlassContactDetails" parent="BandyerSDKDesign.TextView.Subtitle">
         <item name="android:layout_marginTop">@dimen/bandyer_dimen_space4</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:includeFontPadding">false</item>
@@ -79,26 +67,26 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.ContactDetails" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeContactDetails</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeContactDetails</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.SwipeContactDetails" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_browse</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeContactDetails" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_browse</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ContactDetails" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeDownContactDetails</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownContactDetails</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.SwipeDownContactDetails" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_close</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownContactDetails" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_close</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.ContactDetails" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapContactDetails</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapContactDetails</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.TapContactDetails" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_select</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.TapContactDetails" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_select</item>
     </style>
 </resources>

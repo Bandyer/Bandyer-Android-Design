@@ -19,7 +19,7 @@ class BandyerChatItem(val data: BandyerGlassMessageData) : AbstractItem<BandyerC
         get() = R.layout.bandyer_chat_item_layout
 
     override val type: Int
-        get() = R.id.id_chat_item
+        get() = R.id.id_glass_chat_item
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 

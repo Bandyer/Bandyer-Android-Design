@@ -3,8 +3,8 @@
     <!-- RINGING FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.Ringing" parent="BandyerSDKDesign.Glass">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.Ringing.RootLayout</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.Ringing</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.Ringing</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.GlassRinging</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.GlassRinging</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Ringing</item>
     </style>
 
@@ -13,16 +13,16 @@
     </style>
 
     <!-- TITLE -->
-    <style name="BandyerSDKDesign.TextView.Title.Ringing" parent="BandyerSDKDesign.TextView.Title">
+    <style name="BandyerSDKDesign.TextView.Title.GlassRinging" parent="BandyerSDKDesign.TextView.Title">
         <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:includeFontPadding">false</item>
     </style>
 
     <!-- SUBTITLE -->
-    <style name="BandyerSDKDesign.TextView.Subtitle.Ringing" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="BandyerSDKDesign.TextView.Subtitle.GlassRinging" parent="BandyerSDKDesign.TextView.Subtitle">
         <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
-        <item name="android:text">@string/bandyer_smartglass_is_calling</item>
+        <item name="android:text">@string/bandyer_glass_is_calling</item>
         <item name="android:textColor">@color/bandyer_color_white_80</item>
         <item name="android:includeFontPadding">false</item>
     </style>
@@ -39,18 +39,18 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Ringing" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeDownRinging</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownRinging</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.SwipeDownRinging" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_decline</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownRinging" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_decline</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Ringing" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapRinging</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapRinging</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.TapRinging" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_accept</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.TapRinging" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_accept</item>
     </style>
 </resources>

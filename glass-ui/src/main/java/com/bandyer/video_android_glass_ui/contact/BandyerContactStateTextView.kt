@@ -28,10 +28,10 @@ class BandyerContactStateTextView @JvmOverloads constructor(
     fun setContactState(state: State, lastSeenTime: Long = 0) {
         this.state = state
         text = when (state) {
-            State.ONLINE    -> resources.getString(R.string.bandyer_smartglass_online)
-            State.INVITED   -> resources.getString(R.string.bandyer_smartglass_invited)
+            State.ONLINE    -> resources.getString(R.string.bandyer_glass_online)
+            State.INVITED   -> resources.getString(R.string.bandyer_glass_invited)
             State.LAST_SEEN -> resources.getString(
-                R.string.bandyer_smartglass_last_seen_pattern,
+                R.string.bandyer_glass_last_seen_pattern,
                 Iso8601.parseTimestamp(context, lastSeenTime)
             )
         }

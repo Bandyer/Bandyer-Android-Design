@@ -28,7 +28,7 @@ class BandyerMenuItem(val defaultText: String, val activeText: String? = null): 
         get() = R.layout.bandyer_menu_item_layout
 
     override val type: Int
-        get() = R.id.id_menu_item
+        get() = R.id.id_glass_menu_item
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 

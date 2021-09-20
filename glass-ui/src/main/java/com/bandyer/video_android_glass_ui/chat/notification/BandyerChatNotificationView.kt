@@ -42,7 +42,7 @@ class BandyerChatNotificationView @JvmOverloads constructor(
             bandyerMessage.maxLines = 2
             bandyerTime.visibility = View.VISIBLE
         } else {
-            bandyerTitle.text = resources.getString(R.string.bandyer_smartglass_new_messages_pattern, data.size)
+            bandyerTitle.text = resources.getString(R.string.bandyer_glass_new_messages_pattern, data.size)
             bandyerMessage.text = null
             bandyerMessage.maxLines = 0
             bandyerTime.visibility = View.GONE
@@ -66,7 +66,7 @@ class BandyerChatNotificationView @JvmOverloads constructor(
         if (distinctUsers > 2)
             bandyerAvatars.addAvatar(
                 resources.getString(
-                    R.string.bandyer_smartglass_group_contacts_pattern,
+                    R.string.bandyer_glass_group_contacts_pattern,
                     distinctUsers
                 ),
                 null

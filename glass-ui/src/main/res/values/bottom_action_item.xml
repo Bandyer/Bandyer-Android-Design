@@ -10,8 +10,8 @@
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem" parent="BandyerSDKDesign.Glass">
         <item name="bandyer_iconStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Icon</item>
-        <item name="bandyer_iconTipStyle">@style/BandyerSDKDesign.TextView.IconTip</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label</item>
+        <item name="bandyer_iconTipStyle">@style/BandyerSDKDesign.TextView.GlassIconTip</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel</item>
     </style>
 
     <!-- GESTURE ICON -->
@@ -21,9 +21,9 @@
     </style>
 
     <!-- ICON TIP TEXT -->
-    <style name="BandyerSDKDesign.TextView.IconTip" parent="BandyerSDKDesign.TextView">
+    <style name="BandyerSDKDesign.TextView.GlassIconTip" parent="BandyerSDKDesign.TextView">
         <item name="android:maxLines">1</item>
-        <item name="android:text">@string/bandyer_smartglass_tap</item>
+        <item name="android:text">@string/bandyer_glass_tap</item>
         <item name="android:textColor">?attr/colorSecondary</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
         <item name="android:layout_gravity">center</item>
@@ -32,7 +32,7 @@
     </style>
 
     <!-- LABEL TEXT -->
-    <style name="BandyerSDKDesign.TextView.Label" parent="BandyerSDKDesign.TextView">
+    <style name="BandyerSDKDesign.TextView.GlassLabel" parent="BandyerSDKDesign.TextView">
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space4</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColor">@android:color/white</item>

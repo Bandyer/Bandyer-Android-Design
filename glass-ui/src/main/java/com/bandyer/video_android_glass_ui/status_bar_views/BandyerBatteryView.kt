@@ -20,7 +20,7 @@ class BandyerBatteryView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    val spacing = context.dp2px(3f).toFloat()
+    private val spacing = context.dp2px(3f).toFloat()
 
     // Cap
     private var capPaint = Paint().apply {
@@ -59,14 +59,6 @@ class BandyerBatteryView @JvmOverloads constructor(
     // Charging
     private var chargingRect = RectF()
     private var chargingBitmap = getBitmap(R.drawable.ic_bandyer_glass_charging)
-
-    init {
-        context.obtainStyledAttributes(attrs, R.styleable.BatteryView).apply {
-            charge = getInt(R.styleable.BatteryView_bandyer_charge, 0)
-            isCharging = getBoolean(R.styleable.BatteryView_bandyer_isCharging, false)
-            recycle()
-        }
-    }
 
     @SuppressLint("DrawAllocation")
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

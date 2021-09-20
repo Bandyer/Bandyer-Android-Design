@@ -5,7 +5,7 @@
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Glass.Avatar" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.GlassRoundedImage</item>
+        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.RoundedImageGlass</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatar</item>
     </style>
 

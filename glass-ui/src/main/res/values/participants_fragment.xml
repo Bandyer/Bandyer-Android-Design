@@ -2,26 +2,26 @@
 <resources>
     <!-- PARTICIPANTS FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.Participants" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlass.Participants.RootLayout</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.Participants.RootLayout</item>
         <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.Participants</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Participants</item>
-        <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.GlassRoundedImage.ParticipantsState</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.StateGlassParticipants</item>
+        <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.RoundedImageGlass.ParticipantsState</item>
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Participants</item>
     </style>
 
-    <style name="BandyerSDKDesign.SmartGlass.Participants.RootLayout" parent="">
+    <style name="BandyerSDKDesign.Glass.Participants.RootLayout" parent="">
         <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
     <!-- AVATAR -->
     <style name="BandyerSDKDesign.Glass.Avatar.Participants" parent="BandyerSDKDesign.Glass.Avatar">
-        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.GlassRoundedImage.ParticipantsAvatar</item>
+        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.RoundedImageGlass.ParticipantsAvatar</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatars.Participants</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassRoundedImage.ParticipantsAvatar" parent="BandyerSDKDesign.GlassRoundedImage">
+    <style name="BandyerSDKDesign.RoundedImageGlass.ParticipantsAvatar" parent="BandyerSDKDesign.RoundedImageGlass">
         <item name="android:layout_width">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
         <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
@@ -32,7 +32,7 @@
     </style>
 
     <!-- CONTACT STATE DOT -->
-    <style name="BandyerSDKDesign.GlassRoundedImage.ParticipantsState" parent="BandyerSDKDesign.GlassRoundedImage">
+    <style name="BandyerSDKDesign.RoundedImageGlass.ParticipantsState" parent="BandyerSDKDesign.RoundedImageGlass">
         <item name="android:layout_width">@dimen/bandyer_dimen_space28</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space28</item>
         <item name="android:background">@android:color/white</item>
@@ -41,7 +41,7 @@
     </style>
 
     <!-- CONTACT STATE TEXT -->
-    <style name="BandyerSDKDesign.TextView.Participants" parent="BandyerSDKDesign.TextView">
+    <style name="BandyerSDKDesign.TextView.StateGlassParticipants" parent="BandyerSDKDesign.TextView">
         <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
@@ -55,19 +55,19 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeParticipants</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeParticipants</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.SwipeParticipants" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_browse</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeParticipants" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_browse</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeDownParticipants</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownParticipants</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.SwipeDownParticipants" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_close</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownParticipants" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_close</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">

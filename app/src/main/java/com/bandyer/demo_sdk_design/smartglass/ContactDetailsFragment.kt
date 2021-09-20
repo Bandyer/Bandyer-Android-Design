@@ -69,8 +69,8 @@ class ContactDetailsFragment : com.bandyer.video_android_glass_ui.contact.detail
         }
         contactStateDot!!.isActivated = data.userState == BandyerContactData.UserState.ONLINE
 
-        itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.details.BandyerContactDetailsItem(resources.getString(R.string.bandyer_smartglass_videocall)))
-        itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.details.BandyerContactDetailsItem(resources.getString(R.string.bandyer_smartglass_call)))
+        itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.details.BandyerContactDetailsItem(resources.getString(R.string.bandyer_glass_videocall)))
+        itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.details.BandyerContactDetailsItem(resources.getString(R.string.bandyer_glass_call)))
 
         bottomActionBar!!.setSwipeOnClickListener {
             rvActions!!.horizontalSmoothScrollToNext(actionIndex)

@@ -8,9 +8,21 @@
 
     <!-- RECYCLER VIEW ITEM -->
     <style name="BandyerSDKDesign.Glass.RecyclerViewItem" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.Menu.RecyclerViewItem.RootLayout</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.MenuRecyclerViewItem</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.RootLayout</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassRecyclerViewItem</item>
         <item name="android:focusable">false</item>
         <item name="android:clickable">false</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.RootLayout" parent="">
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space64</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space64</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.GlassRecyclerViewItem" parent="BandyerSDKDesign.TextView">
+        <item name="android:minHeight">@dimen/bandyer_dimen_glass_menu_size</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/bandyer_glass_menu_item_color</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_40sp</item>
     </style>
 </resources>

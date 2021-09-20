@@ -18,7 +18,7 @@ class BandyerContactDetailsItem(val text: String): AbstractItem<BandyerContactDe
         get() = R.layout.bandyer_contact_details_item_layout
 
     override val type: Int
-        get() = R.id.id_participant_details_item
+        get() = R.id.id_glass_contact_details_item
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 

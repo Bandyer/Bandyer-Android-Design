@@ -28,12 +28,13 @@
 
     <!-- TIMESTAMP -->
     <style name="BandyerSDKDesign.TextView.TimestampGlassChat.Notification" parent="BandyerSDKDesign.TextView.TimestampGlassChat">
-        <item name="android:text">@string/bandyer_smartglass_now</item>
+        <item name="android:text">@string/bandyer_glass_now</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.ChatNotification" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.RootLayout.ChatNotification</item>
+        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.ChatNotification</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatNotification</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.ChatNotification</item>
     </style>
@@ -44,19 +45,23 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeDownChatNotification</item>
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
+        <item name="android:visibility">gone</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.SwipeDownChatNotification" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_hide_notification</item>
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownChatNotification</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownChatNotification" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_hide_notification</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapChatNotification</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapChatNotification</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.TapChatNotification" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_read</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.TapChatNotification" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_read</item>
     </style>
 </resources>

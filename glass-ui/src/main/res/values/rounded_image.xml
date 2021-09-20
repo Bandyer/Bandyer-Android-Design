@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="BandyerSDKDesign.GlassRoundedImage" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="BandyerSDKDesign.RoundedImageGlass" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:layout_width">@dimen/bandyer_dimen_space40</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space40</item>
         <item name="android:adjustViewBounds">true</item>
@@ -9,11 +9,11 @@
         <item name="android:padding">@dimen/bandyer_dimen_space1</item>
         <item name="strokeColor">@android:color/black</item>
         <item name="shapeAppearanceOverlay">
-            @style/BandyerSDKDesign.GlassRoundedImage.ShapeAppearanceOverlay
+            @style/BandyerSDKDesign.RoundedImageGlass.ShapeAppearanceOverlay
         </item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassRoundedImage.ShapeAppearanceOverlay" parent="">
+    <style name="BandyerSDKDesign.RoundedImageGlass.ShapeAppearanceOverlay" parent="">
         <item name="cornerSize">50%</item>
     </style>
 </resources>

@@ -17,6 +17,6 @@ class BandyerVolumeSlider @JvmOverloads constructor(
 
     override fun setSliderText(progress: Int) {
         binding.bandyerPercentage.text =
-            resources.getString(R.string.bandyer_smartglass_slider_volume_pattern, progress)
+            resources.getString(R.string.bandyer_glass_slider_volume_pattern, progress)
     }
 }

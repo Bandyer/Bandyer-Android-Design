@@ -13,26 +13,26 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Call" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeCall</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeCall</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.SwipeCall" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_participants_camera</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeCall" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_participants_camera</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Call" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeDownCall</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownCall</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.SwipeDownCall" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_end_call</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownCall" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_end_call</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Call" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapCall</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapCall</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.TapCall" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_open_menu</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.TapCall" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_open_menu</item>
     </style>
 </resources>

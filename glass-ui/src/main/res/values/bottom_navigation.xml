@@ -39,8 +39,8 @@
         <item name="srcCompat">@drawable/ic_bandyer_glas_swipe_arrow</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.IconTip.SwipeHorizontal" parent="BandyerSDKDesign.TextView.IconTip">
-        <item name="android:text">@string/bandyer_smartglass_swipe</item>
+    <style name="BandyerSDKDesign.TextView.IconTip.SwipeHorizontal" parent="BandyerSDKDesign.TextView.GlassIconTip">
+        <item name="android:text">@string/bandyer_glass_swipe</item>
     </style>
 
     <!-- SWIPE DOWN ITEM -->
@@ -58,8 +58,8 @@
         <item name="srcCompat">@drawable/ic_bandyer_glass_close_arrow</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.IconTip.SwipeDown" parent="BandyerSDKDesign.TextView.IconTip">
-        <item name="android:text">@string/bandyer_smartglass_swipe</item>
+    <style name="BandyerSDKDesign.TextView.IconTip.SwipeDown" parent="BandyerSDKDesign.TextView.GlassIconTip">
+        <item name="android:text">@string/bandyer_glass_swipe</item>
     </style>
 
     <!-- TAP ITEM -->
@@ -77,7 +77,7 @@
         <item name="srcCompat">@drawable/ic_bandyer_glass_select</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.IconTip.Tap" parent="BandyerSDKDesign.TextView.IconTip">
-        <item name="android:text">@string/bandyer_smartglass_tap</item>
+    <style name="BandyerSDKDesign.TextView.IconTip.Tap" parent="BandyerSDKDesign.TextView.GlassIconTip">
+        <item name="android:text">@string/bandyer_glass_tap</item>
     </style>
 </resources>

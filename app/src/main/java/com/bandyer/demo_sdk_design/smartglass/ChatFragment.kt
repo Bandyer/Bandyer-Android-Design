@@ -30,7 +30,7 @@ class ChatFragment : com.bandyer.video_android_glass_ui.chat.BandyerGlassChatFra
             field = value
             val counterValue = value - 1
             counter?.text = resources.getString(
-                R.string.bandyer_smartglass_message_counter_pattern,
+                R.string.bandyer_glass_message_counter_pattern,
                 counterValue
             )
             counter?.visibility = if (counterValue > 0) View.VISIBLE else View.GONE

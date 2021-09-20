@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="@string/bandyer_smartglass_call_ended"/>
+        tools:text="@string/bandyer_glass_call_ended"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_subtitle"
@@ -28,7 +28,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bandyer_title"
-        tools:text="@string/bandyer_smartglass_thank_you"/>
+        tools:text="@string/bandyer_glass_thank_you"/>
 
     <com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
         android:id="@+id/bandyer_bottom_action_bar"

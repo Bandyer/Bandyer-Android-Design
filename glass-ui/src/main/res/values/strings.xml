@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="bandyer_smartglass_group_contacts_pattern" translatable="false">+%1$d</string>
-    <string name="bandyer_smartglass_message_counter_pattern" translatable="false">+%1$d</string>
-    <string name="bandyer_smartglass_slider_volume_pattern">Volume: %1$d%%</string>
-    <string name="bandyer_smartglass_slider_zoom_pattern">Zoom: %1$d%%</string>
-    <string name="bandyer_smartglass_new_messages_pattern">%1$d new messages</string>
-    <string name="bandyer_smartglass_swipe">Swipe</string>
-    <string name="bandyer_smartglass_tap">Tap</string>
-    <string name="bandyer_smartglass_close">close</string>
-    <string name="bandyer_smartglass_browse">browse</string>
-    <string name="bandyer_smartglass_select">select</string>
-    <string name="bandyer_smartglass_cancel">cancel</string>
-    <string name="bandyer_smartglass_change">change</string>
-    <string name="bandyer_smartglass_confirm">confirm</string>
-    <string name="bandyer_smartglass_accept">answer</string>
-    <string name="bandyer_smartglass_decline">decline</string>
-    <string name="bandyer_smartglass_end_call">end call</string>
-    <string name="bandyer_smartglass_volume">Volume</string>
-    <string name="bandyer_smartglass_zoom">Zoom</string>
-    <string name="bandyer_smartglass_is_calling">is calling…</string>
-    <string name="bandyer_smartglass_want_end_call">End the call?</string>
-    <string name="bandyer_smartglass_confirm_end_call">Do you confirm to end the conversation?</string>
-    <string name="bandyer_smartglass_call_ended">Call ended</string>
-    <string name="bandyer_smartglass_thank_you">Thank you!</string>
-    <string name="bandyer_smartglass_participants_camera">participants</string>
-    <string name="bandyer_smartglass_open_menu">menu</string>
-    <string name="bandyer_smartglass_contact_info">contact</string>
-    <string name="bandyer_smartglass_now">Now</string>
-    <string name="bandyer_smartglass_read">read</string>
-    <string name="bandyer_smartglass_hide_notification">dismiss</string>
-    <string name="bandyer_smartglass_online">Online</string>
-    <string name="bandyer_smartglass_invited">Invited</string>
-    <string name="bandyer_smartglass_last_seen_pattern">Last seen: %1$s</string>
-    <string name="bandyer_smartglass_call">Call</string>
-    <string name="bandyer_smartglass_videocall">Video call</string>
-    <string name="bandyer_smartglass_users_in_call_pattern">%1$d users on call</string>
-    <string name="bandyer_smartglass_browse_right">browse right</string>
-    <string name="bandyer_smartglass_browse_left">browse left</string>
-    <string name="bandyer_smartglass_right_left">scroll</string>
+    <string name="bandyer_glass_group_contacts_pattern" translatable="false">+%1$d</string>
+    <string name="bandyer_glass_message_counter_pattern" translatable="false">+%1$d</string>
+    <string name="bandyer_glass_slider_volume_pattern">Volume: %1$d%%</string>
+    <string name="bandyer_glass_slider_zoom_pattern">Zoom: %1$d%%</string>
+    <string name="bandyer_glass_new_messages_pattern">%1$d new messages</string>
+    <string name="bandyer_glass_swipe">Swipe</string>
+    <string name="bandyer_glass_tap">Tap</string>
+    <string name="bandyer_glass_close">close</string>
+    <string name="bandyer_glass_browse">browse</string>
+    <string name="bandyer_glass_select">select</string>
+    <string name="bandyer_glass_cancel">cancel</string>
+    <string name="bandyer_glass_change">change</string>
+    <string name="bandyer_glass_confirm">confirm</string>
+    <string name="bandyer_glass_accept">answer</string>
+    <string name="bandyer_glass_decline">decline</string>
+    <string name="bandyer_glass_end_call">end call</string>
+    <string name="bandyer_glass_volume">Volume</string>
+    <string name="bandyer_glass_zoom">Zoom</string>
+    <string name="bandyer_glass_is_calling">is calling…</string>
+    <string name="bandyer_glass_want_end_call">End the call?</string>
+    <string name="bandyer_glass_confirm_end_call">Do you confirm to end the conversation?</string>
+    <string name="bandyer_glass_call_ended">Call ended</string>
+    <string name="bandyer_glass_thank_you">Thank you!</string>
+    <string name="bandyer_glass_participants_camera">participants</string>
+    <string name="bandyer_glass_open_menu">menu</string>
+    <string name="bandyer_glass_contact_info">contact</string>
+    <string name="bandyer_glass_now">Now</string>
+    <string name="bandyer_glass_read">read</string>
+    <string name="bandyer_glass_hide_notification">dismiss</string>
+    <string name="bandyer_glass_online">Online</string>
+    <string name="bandyer_glass_invited">Invited</string>
+    <string name="bandyer_glass_last_seen_pattern">Last seen: %1$s</string>
+    <string name="bandyer_glass_call">Call</string>
+    <string name="bandyer_glass_videocall">Video call</string>
+    <string name="bandyer_glass_users_in_call_pattern">%1$d users on call</string>
+    <string name="bandyer_glass_browse_right">browse right</string>
+    <string name="bandyer_glass_browse_left">browse left</string>
+    <string name="bandyer_glass_right_left">scroll</string>
 </resources>

@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Smart glass declare styleable-->
-    <declare-styleable name="ActivableTextView">
-        <attr name="bandyer_inactivatedText" format="string" />
-        <attr name="bandyer_activatedText" format="boolean" />
-    </declare-styleable>
-
-    <declare-styleable name="BatteryView">
-        <attr name="bandyer_isCharging" format="boolean" />
-        <attr name="bandyer_charge" format="integer" />
-    </declare-styleable>
-
     <declare-styleable name="BandyerSDKDesign.Glass">
         <attr name="bottomNavigationStyle" />
         <attr name="bandyer_recyclerViewItemStyle" format="reference" />

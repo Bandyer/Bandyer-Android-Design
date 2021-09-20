@@ -16,6 +16,6 @@ class BandyerZoomSlider @JvmOverloads constructor(
     }
 
     override fun setSliderText(progress: Int) {
-        binding.bandyerPercentage.text = resources.getString(R.string.bandyer_smartglass_slider_zoom_pattern, progress)
+        binding.bandyerPercentage.text = resources.getString(R.string.bandyer_glass_slider_zoom_pattern, progress)
     }
 }

@@ -3,8 +3,8 @@
     <!-- END CALL FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.EndCall" parent="BandyerSDKDesign.Glass">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.EndCall.RootLayout</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.EndCall</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.EndCall</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.GlassEndCall</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.GlassEndCall</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.EndCall</item>
     </style>
 
@@ -13,18 +13,18 @@
     </style>
 
     <!-- TITLE -->
-    <style name="BandyerSDKDesign.TextView.Title.EndCall" parent="BandyerSDKDesign.TextView.Title">
+    <style name="BandyerSDKDesign.TextView.Title.GlassEndCall" parent="BandyerSDKDesign.TextView.Title">
         <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
-        <item name="android:text">@string/bandyer_smartglass_want_end_call</item>
+        <item name="android:text">@string/bandyer_glass_want_end_call</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <!-- SUBTITLE -->
-    <style name="BandyerSDKDesign.TextView.Subtitle.EndCall" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="BandyerSDKDesign.TextView.Subtitle.GlassEndCall" parent="BandyerSDKDesign.TextView.Subtitle">
         <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
-        <item name="android:text">@string/bandyer_smartglass_confirm_end_call</item>
+        <item name="android:text">@string/bandyer_glass_confirm_end_call</item>
         <item name="android:textColor">@color/bandyer_color_white_80</item>
         <item name="android:includeFontPadding">false</item>
     </style>
@@ -41,18 +41,18 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.EndCall" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.SwipeDownEndCall</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownEndCall</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.SwipeDownEndCall" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_cancel</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownEndCall" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_cancel</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.EndCall" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.Label.TapEndCall</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapEndCall</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Label.TapEndCall" parent="BandyerSDKDesign.TextView.Label">
-        <item name="android:text">@string/bandyer_smartglass_confirm</item>
+    <style name="BandyerSDKDesign.TextView.GlassLabel.TapEndCall" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_confirm</item>
     </style>
 </resources>
