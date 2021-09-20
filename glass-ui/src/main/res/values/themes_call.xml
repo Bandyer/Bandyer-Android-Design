@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Theme.Glass">
-        <attr name="bandyer_statusBarStyle" format="reference" />
+    <declare-styleable name="BandyerSDKDesign.Theme.Glass.Call">
         <attr name="bandyer_menuStyle" format="reference" />
         <attr name="bandyer_chatStyle" format="reference" />
         <attr name="bandyer_volumeStyle" format="reference" />
@@ -11,16 +10,11 @@
         <attr name="bandyer_callEndedStyle" format="reference" />
         <attr name="bandyer_callStyle" format="reference" />
         <attr name="bandyer_participantsStyle" format="reference" />
-
-        <attr name="bandyer_chatMenuStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Theme.DayNight.Glass" parent="BandyerSDKDesign.Theme.DayNight">
+    <style name="BandyerSDKDesign.Theme.DayNight.GlassCall" parent="BandyerSDKDesign.Theme.DayNight">
         <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
-        <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
-
-        <item name="bandyer_chatStyle">@style/BandyerSDKDesign.Glass.Chat</item>
-
+        <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>themn
         <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
         <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
         <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
@@ -28,14 +22,11 @@
         <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
         <item name="bandyer_callStyle">@style/BandyerSDKDesign.Glass.Call</item>
         <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.Participants</item>
-
-        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ContactDetails</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Day.Glass" parent="BandyerSDKDesign.Theme.Day">
+    <style name="BandyerSDKDesign.Theme.Day.GlassCall" parent="BandyerSDKDesign.Theme.Day">
         <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
         <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
-        <item name="bandyer_chatStyle">@style/BandyerSDKDesign.Glass.Chat</item>
         <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
         <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
         <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
@@ -43,13 +34,11 @@
         <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
         <item name="bandyer_callStyle">@style/BandyerSDKDesign.Glass.Call</item>
         <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.Participants</item>
-        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ContactDetails</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Night.Glass" parent="BandyerSDKDesign.Theme.Night">
+    <style name="BandyerSDKDesign.Theme.Night.GlassCall" parent="BandyerSDKDesign.Theme.Night">
         <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
         <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
-        <item name="bandyer_chatStyle">@style/BandyerSDKDesign.Glass.Chat</item>
         <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
         <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
         <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
@@ -57,6 +46,5 @@
         <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
         <item name="bandyer_callStyle">@style/BandyerSDKDesign.Glass.Call</item>
         <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.Participants</item>
-        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ContactDetails</item>
     </style>
 </resources>

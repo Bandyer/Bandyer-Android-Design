@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.video_android_core_ui.utils.Iso8601
+import com.bandyer.video_android_glass_ui.chat.BandyerGlassChatFragment
 import com.bandyer.video_android_glass_ui.chat.BandyerGlassMessageData
 import com.bandyer.video_android_glass_ui.databinding.BandyerChatMessageLayoutBinding
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
@@ -18,7 +19,7 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
 
-class ChatFragment : com.bandyer.video_android_glass_ui.chat.BandyerGlassChatFragment(), TiltController.TiltListener {
+class ChatFragment : BandyerGlassChatFragment(), TiltController.TiltListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 

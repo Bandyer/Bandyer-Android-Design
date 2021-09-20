@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BandyerSDKDesign.Theme.Glass.Chat">
+        <attr name="bandyer_chatMenuStyle" format="reference" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.Theme.DayNight.GlassChat" parent="BandyerSDKDesign.Theme.DayNight">
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
+        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem</item>
+        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.CounterGlassChat</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Chat</item>
+        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ChatMenu</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.Day.GlassChat" parent="BandyerSDKDesign.Theme.Day">
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
+        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem</item>
+        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.CounterGlassChat</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Chat</item>
+        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ChatMenu</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.Night.GlassChat" parent="BandyerSDKDesign.Theme.Night">
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
+        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem</item>
+        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.CounterGlassChat</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Chat</item>
+        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ChatMenu</item>
+    </style>
+
+</resources>
