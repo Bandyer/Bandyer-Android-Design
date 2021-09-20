@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BandyerSDKDesign.Glass.Avatar">
-        <attr name="bandyer_imageViewStyle" format="reference" />
+        <attr name="bandyer_iconStyle" />
+        <item name="android:textViewStyle" />
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Glass.Avatar" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.RoundedImageGlass</item>
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.RoundedImageGlass</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatar</item>
     </style>
 
