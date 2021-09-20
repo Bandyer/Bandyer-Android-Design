@@ -17,7 +17,7 @@
 
     <!-- AVATAR -->
     <style name="BandyerSDKDesign.Glass.Avatar.Participants" parent="BandyerSDKDesign.Glass.Avatar">
-        <item name="bandyer_imageViewStyle">@style/BandyerSDKDesign.RoundedImageGlass.ParticipantsAvatar</item>
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.RoundedImageGlass.ParticipantsAvatar</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatars.Participants</item>
     </style>
 
