@@ -2,7 +2,7 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Glass.Avatar">
         <attr name="bandyer_iconStyle" />
-        <item name="android:textViewStyle" />
+        <attr name="android:textViewStyle" />
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Glass.Avatar" parent="BandyerSDKDesign.Glass">
