@@ -8,10 +8,10 @@ import android.text.format.Formatter
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.bandyer.video_android_phone_ui.R
 import com.bandyer.video_android_phone_ui.databinding.BandyerFileShareItemBinding
 import com.bandyer.video_android_phone_ui.extensions.getFileTypeFromMimeType
-import com.bandyer.video_android_phone_ui.extensions.parseToHHmm
 import com.bandyer.video_android_phone_ui.extensions.setPaddingBottom
 import com.bandyer.video_android_phone_ui.extensions.setPaddingTop
 import com.bandyer.video_android_phone_ui.filesharing.FileShareViewModel
@@ -91,14 +91,14 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
             when (item.data.state) {
                 is TransferData.State.Available                                 -> {
                     bandyerAction.type = BandyerFileTransferActionButton.Type.DOWNLOAD
-                    bandyerProgressText.text = item.data.creationTime.parseToHHmm()
+                    bandyerProgressText.text = Iso8601.parseTime(item.data.creationTime)
                 }
                 is TransferData.State.Pending, is TransferData.State.OnProgress -> bandyerAction.type = BandyerFileTransferActionButton.Type.CANCEL
                 is TransferData.State.Success                                   -> {
                     bandyerAction.type = BandyerFileTransferActionButton.Type.SUCCESS
                     bandyerActionClickArea.background = null
                     bandyerActionClickArea.isClickable = false
-                    bandyerProgressText.text = item.data.creationTime.parseToHHmm()
+                    bandyerProgressText.text = Iso8601.parseTime(item.data.creationTime)
                 }
                 is TransferData.State.Error                                     -> {
                     bandyerAction.type = BandyerFileTransferActionButton.Type.RETRY
