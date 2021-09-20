@@ -1,20 +1,23 @@
-package com.bandyer.video_android_glass_ui.contact.details
+package com.bandyer.video_android_glass_ui.chat.menu
 
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.BandyerGlassBaseFragment
+import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
 import com.bandyer.video_android_glass_ui.common.BandyerContactAvatarView
 import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.LineItemIndicatorDecoration
 import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentChatMenuBinding
+import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getThemeAttribute
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
@@ -45,7 +48,13 @@ abstract class BandyerGlassChatMenuFragment : BandyerGlassBaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = BandyerFragmentChatMenuBinding.inflate(inflater, container, false)
+        val style = requireContext().getThemeAttribute(
+            R.style.BandyerSDKDesign_Theme_DayNight_GlassChat,
+            R.styleable.BandyerSDKDesign_Theme_Glass_Chat,
+            R.styleable.BandyerSDKDesign_Theme_Glass_Chat_bandyer_chatMenuStyle
+        )
+        val contextWrapper = ContextThemeWrapper(requireActivity(), style)
+        binding = BandyerFragmentChatMenuBinding.inflate(inflater.cloneInContext(contextWrapper), container, false)
 
         // set the views
         root = binding!!.root

@@ -2,7 +2,6 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Theme.Glass.Call">
         <attr name="bandyer_menuStyle" format="reference" />
-        <attr name="bandyer_chatStyle" format="reference" />
         <attr name="bandyer_volumeStyle" format="reference" />
         <attr name="bandyer_zoomStyle" format="reference" />
         <attr name="bandyer_ringingStyle" format="reference" />

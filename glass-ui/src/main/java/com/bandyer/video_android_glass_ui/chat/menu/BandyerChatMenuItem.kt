@@ -1,4 +1,4 @@
-package com.bandyer.video_android_glass_ui.contact.details
+package com.bandyer.video_android_glass_ui.chat.menu
 
 import android.view.View
 import com.bandyer.video_android_glass_ui.R

@@ -13,10 +13,12 @@ import com.bandyer.demo_sdk_design.R
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
+import com.bandyer.video_android_glass_ui.chat.menu.BandyerChatMenuItem
+import com.bandyer.video_android_glass_ui.chat.menu.BandyerGlassChatMenuFragment
 import com.bandyer.video_android_glass_ui.contact.BandyerContactData
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 
-class ChatMenuFragment : com.bandyer.video_android_glass_ui.contact.details.BandyerGlassChatMenuFragment(), TiltController.TiltListener {
+class ChatMenuFragment : BandyerGlassChatMenuFragment(), TiltController.TiltListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
     private val args: ChatMenuFragmentArgs by navArgs()
@@ -69,8 +71,8 @@ class ChatMenuFragment : com.bandyer.video_android_glass_ui.contact.details.Band
         }
         contactStateDot!!.isActivated = data.userState == BandyerContactData.UserState.ONLINE
 
-        itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.details.BandyerChatMenuItem(resources.getString(R.string.bandyer_glass_videocall)))
-        itemAdapter!!.add(com.bandyer.video_android_glass_ui.contact.details.BandyerChatMenuItem(resources.getString(R.string.bandyer_glass_call)))
+        itemAdapter!!.add(BandyerChatMenuItem(resources.getString(R.string.bandyer_glass_videocall)))
+        itemAdapter!!.add(BandyerChatMenuItem(resources.getString(R.string.bandyer_glass_call)))
 
         bottomActionBar!!.setSwipeOnClickListener {
             rvActions!!.horizontalSmoothScrollToNext(actionIndex)

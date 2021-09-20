@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="?attr/bandyer_rootLayoutStyle"
-    android:theme="?attr/bandyer_chatMenuStyle">
+    style="?attr/bandyer_rootLayoutStyle">
 
     <com.bandyer.video_android_glass_ui.common.BandyerContactAvatarView
         android:id="@+id/bandyer_avatar"
