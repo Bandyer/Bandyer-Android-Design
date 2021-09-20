@@ -54,7 +54,7 @@ abstract class BandyerGlassChatFragment : BandyerGlassBaseFragment() {
         rvMessages!!.isFocusable = false
         rvMessages!!.setHasFixedSize(true)
 
-        rvMessages!!.addItemDecoration(BandyerChatItemIndicatorDecoration(requireContext()))
+        rvMessages!!.addItemDecoration(BandyerChatProgressDecoration(requireContext()))
 
         snapHelper = PagerSnapHelper()
         snapHelper!!.attachToRecyclerView(rvMessages)

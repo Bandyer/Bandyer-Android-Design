@@ -1,12 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Smart glass declare styleable-->
-    <declare-styleable name="BandyerSDKDesign.Glass">
-        <attr name="bottomNavigationStyle" />
-        <attr name="bandyer_recyclerViewItemStyle" format="reference" />
-        <attr name="bandyer_contactStateDotStyle" format="reference" />
-    </declare-styleable>
-
     <style name="BandyerSDKDesign.Glass"  parent="BandyerSDKDesign"/>
-
 </resources>

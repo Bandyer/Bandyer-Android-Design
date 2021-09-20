@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * An item decoration to center the first and last element a the recycler view
  */
-class BandyerOffsetItemDecoration : RecyclerView.ItemDecoration() {
+internal open class BandyerCenterItemDecoration : RecyclerView.ItemDecoration() {
 
     override fun getItemOffsets(
         outRect: Rect,

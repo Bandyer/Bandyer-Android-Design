@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <declare-styleable name="BandyerSDKDesign.Glass.Menu">
+        <attr name="bottomNavigationStyle" />
+        <attr name="bandyer_recyclerViewItemStyle" format="reference" />
+        <attr name="bandyer_contactStateDotStyle" format="reference" />
+    </declare-styleable>
+
     <!-- MENU FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.Menu" parent="BandyerSDKDesign.Glass">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>

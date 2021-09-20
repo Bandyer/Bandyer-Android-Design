@@ -2,57 +2,61 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Theme.Glass">
         <attr name="bandyer_statusBarStyle" format="reference" />
-        <attr name="bandyer_menuFragmentStyle" format="reference" />
-        <attr name="bandyer_chatFragmentStyle" format="reference" />
-        <attr name="bandyer_volumeFragmentStyle" format="reference" />
-        <attr name="bandyer_zoomFragmentStyle" format="reference" />
-        <attr name="bandyer_ringingFragmentStyle" format="reference" />
-        <attr name="bandyer_endCallFragmentStyle" format="reference" />
-        <attr name="bandyer_callEndedFragmentStyle" format="reference" />
-        <attr name="bandyer_callFragmentStyle" format="reference" />
-        <attr name="bandyer_participantsFragmentStyle" format="reference" />
-        <attr name="bandyer_contactDetailsFragmentStyle" format="reference" />
+        <attr name="bandyer_menuStyle" format="reference" />
+        <attr name="bandyer_chatStyle" format="reference" />
+        <attr name="bandyer_volumeStyle" format="reference" />
+        <attr name="bandyer_zoomStyle" format="reference" />
+        <attr name="bandyer_ringingStyle" format="reference" />
+        <attr name="bandyer_endCallStyle" format="reference" />
+        <attr name="bandyer_callEndedStyle" format="reference" />
+        <attr name="bandyer_callStyle" format="reference" />
+        <attr name="bandyer_participantsStyle" format="reference" />
+
+        <attr name="bandyer_chatMenuStyle" format="reference" />
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Theme.DayNight.Glass" parent="BandyerSDKDesign.Theme.DayNight">
         <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
-        <item name="bandyer_menuFragmentStyle">@style/BandyerSDKDesign.Glass.Menu</item>
-        <item name="bandyer_chatFragmentStyle">@style/BandyerSDKDesign.Glass.Chat</item>
-        <item name="bandyer_volumeFragmentStyle">@style/BandyerSDKDesign.Glass.Volume</item>
-        <item name="bandyer_zoomFragmentStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
-        <item name="bandyer_ringingFragmentStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
-        <item name="bandyer_endCallFragmentStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
-        <item name="bandyer_callEndedFragmentStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
-        <item name="bandyer_callFragmentStyle">@style/BandyerSDKDesign.Glass.Call</item>
-        <item name="bandyer_participantsFragmentStyle">@style/BandyerSDKDesign.Glass.Participants</item>
-        <item name="bandyer_contactDetailsFragmentStyle">@style/BandyerSDKDesign.Glass.ContactDetails</item>
+        <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
+
+        <item name="bandyer_chatStyle">@style/BandyerSDKDesign.Glass.Chat</item>
+
+        <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
+        <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
+        <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
+        <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
+        <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
+        <item name="bandyer_callStyle">@style/BandyerSDKDesign.Glass.Call</item>
+        <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.Participants</item>
+
+        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ContactDetails</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Day.Glass" parent="BandyerSDKDesign.Theme.Day">
         <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
-        <item name="bandyer_menuFragmentStyle">@style/BandyerSDKDesign.Glass.Menu</item>
-        <item name="bandyer_chatFragmentStyle">@style/BandyerSDKDesign.Glass.Chat</item>
-        <item name="bandyer_volumeFragmentStyle">@style/BandyerSDKDesign.Glass.Volume</item>
-        <item name="bandyer_zoomFragmentStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
-        <item name="bandyer_ringingFragmentStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
-        <item name="bandyer_endCallFragmentStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
-        <item name="bandyer_callEndedFragmentStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
-        <item name="bandyer_callFragmentStyle">@style/BandyerSDKDesign.Glass.Call</item>
-        <item name="bandyer_participantsFragmentStyle">@style/BandyerSDKDesign.Glass.Participants</item>
-        <item name="bandyer_contactDetailsFragmentStyle">@style/BandyerSDKDesign.Glass.ContactDetails</item>
+        <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
+        <item name="bandyer_chatStyle">@style/BandyerSDKDesign.Glass.Chat</item>
+        <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
+        <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
+        <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
+        <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
+        <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
+        <item name="bandyer_callStyle">@style/BandyerSDKDesign.Glass.Call</item>
+        <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.Participants</item>
+        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ContactDetails</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Night.Glass" parent="BandyerSDKDesign.Theme.Night">
         <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
-        <item name="bandyer_menuFragmentStyle">@style/BandyerSDKDesign.Glass.Menu</item>
-        <item name="bandyer_chatFragmentStyle">@style/BandyerSDKDesign.Glass.Chat</item>
-        <item name="bandyer_volumeFragmentStyle">@style/BandyerSDKDesign.Glass.Volume</item>
-        <item name="bandyer_zoomFragmentStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
-        <item name="bandyer_ringingFragmentStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
-        <item name="bandyer_endCallFragmentStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
-        <item name="bandyer_callEndedFragmentStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
-        <item name="bandyer_callFragmentStyle">@style/BandyerSDKDesign.Glass.Call</item>
-        <item name="bandyer_participantsFragmentStyle">@style/BandyerSDKDesign.Glass.Participants</item>
-        <item name="bandyer_contactDetailsFragmentStyle">@style/BandyerSDKDesign.Glass.ContactDetails</item>
+        <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
+        <item name="bandyer_chatStyle">@style/BandyerSDKDesign.Glass.Chat</item>
+        <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
+        <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
+        <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
+        <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
+        <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
+        <item name="bandyer_callStyle">@style/BandyerSDKDesign.Glass.Call</item>
+        <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.Participants</item>
+        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ContactDetails</item>
     </style>
 </resources>

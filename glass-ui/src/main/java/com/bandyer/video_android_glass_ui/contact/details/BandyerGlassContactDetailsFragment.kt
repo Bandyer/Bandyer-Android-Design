@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
 import com.bandyer.video_android_glass_ui.common.BandyerContactAvatarView
 import com.bandyer.video_android_glass_ui.common.item_decoration.LineItemIndicatorDecoration
-import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerOffsetItemDecoration
 import com.bandyer.video_android_glass_ui.BandyerGlassBaseFragment
+import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerCenterItemDecoration
 import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentContactDetailsBinding
 import com.google.android.material.imageview.ShapeableImageView
@@ -75,7 +75,7 @@ abstract class BandyerGlassContactDetailsFragment : BandyerGlassBaseFragment() {
                 snapHelper!!
             )
         )
-        rvActions!!.addItemDecoration(BandyerOffsetItemDecoration())
+        rvActions!!.addItemDecoration(BandyerCenterItemDecoration())
 
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event -> rvActions!!.onTouchEvent(event) }

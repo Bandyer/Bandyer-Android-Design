@@ -6,15 +6,10 @@
 
     <!-- MENU FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.Chat" parent="BandyerSDKDesign.Glass">
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerView</item>
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem</item>
         <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.CounterGlassChat</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Chat</item>
-    </style>
-
-    <!-- RECYCLER VIEW -->
-    <style name="BandyerSDKDesign.Glass.Chat.RecyclerView" parent="">
-        <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
     <!-- RECYCLER VIEW ITEM -->

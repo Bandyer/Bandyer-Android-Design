@@ -23,7 +23,7 @@ import kotlin.math.abs
  *
  * @credits David Medenjak
  */
-class BandyerChatItemIndicatorDecoration(context: Context) : ItemDecoration() {
+class BandyerChatProgressDecoration(context: Context) : ItemDecoration() {
 
     /**
      * Indicator active color
@@ -38,7 +38,7 @@ class BandyerChatItemIndicatorDecoration(context: Context) : ItemDecoration() {
     /**
      * Indicator height
      */
-    private val height = context.dp2px(3f).toFloat()
+    private val height = context.dp2px(4f).toFloat()
 
     /**
      * Paint used to draw
@@ -77,7 +77,7 @@ class BandyerChatItemIndicatorDecoration(context: Context) : ItemDecoration() {
 
     private fun Canvas.drawInactiveIndicator(parent: View) {
         paint.color = colorInactive
-        val y = parent.height - this@BandyerChatItemIndicatorDecoration.height / 2f
+        val y = parent.height - this@BandyerChatProgressDecoration.height / 2f
         drawLine(0f, y, parent.width.toFloat(), y, paint)
     }
 
@@ -88,7 +88,7 @@ class BandyerChatItemIndicatorDecoration(context: Context) : ItemDecoration() {
         progress: Float
     ) {
         paint.color = colorActive
-        val y = parent.height - this@BandyerChatItemIndicatorDecoration.height / 2f
+        val y = parent.height - this@BandyerChatProgressDecoration.height / 2f
         val parentStart = if (isRTL) parent.right else parent.left
         val highlightWidth = (highlightPosition + progress) * itemWidth
         drawLine(parentStart.toFloat(), y, highlightWidth, y, paint)

@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -55,6 +56,11 @@ class LineItemIndicatorDecoration(
         isAntiAlias = true
     }
 
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
+        super.getItemOffsets(outRect, view, parent, state)
+        outRect.bottom += height.toInt()
+    }
+
     /**
      * Tell if layout is rtl
      */
@@ -91,10 +97,10 @@ class LineItemIndicatorDecoration(
         val firstTextView = first.findViewById<View>(R.id.bandyer_text)
         val lastTextView = last.findViewById<View>(R.id.bandyer_text)
 
-        var startX = if(!isRTL) parent.left else parent.right
-        var endX = if(!isRTL) parent.right else parent.left
-        if(firstPos == 0) startX = first.left + firstTextView.left + if(!isRTL) 0 else lastTextView.width
-        if(lastPos == itemCount - 1) endX = last.left + lastTextView.left + if(!isRTL) lastTextView.width else 0
+        var startX = if (!isRTL) parent.left else parent.right
+        var endX = if (!isRTL) parent.right else parent.left
+        if (firstPos == 0) startX = first.left + firstTextView.left + if (!isRTL) 0 else lastTextView.width
+        if (lastPos == itemCount - 1) endX = last.left + lastTextView.left + if (!isRTL) lastTextView.width else 0
         drawLine(startX.toFloat(), y, endX.toFloat(), y, paint)
     }
 

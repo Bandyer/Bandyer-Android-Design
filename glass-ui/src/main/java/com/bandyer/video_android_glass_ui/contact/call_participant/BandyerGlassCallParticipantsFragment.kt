@@ -12,8 +12,8 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentParticipant
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
 import com.bandyer.video_android_glass_ui.common.BandyerContactAvatarView
 import com.bandyer.video_android_glass_ui.common.item_decoration.LineItemIndicatorDecoration
-import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerOffsetItemDecoration
 import com.bandyer.video_android_glass_ui.BandyerGlassBaseFragment
+import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerCenterItemDecoration
 import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
 import com.google.android.material.imageview.ShapeableImageView
 import com.mikepenz.fastadapter.FastAdapter
@@ -71,7 +71,7 @@ abstract class BandyerGlassCallParticipantsFragment : BandyerGlassBaseFragment()
                 snapHelper!!
             )
         )
-        rvParticipants!!.addItemDecoration(BandyerOffsetItemDecoration())
+        rvParticipants!!.addItemDecoration(BandyerCenterItemDecoration())
 
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event -> rvParticipants!!.onTouchEvent(event) }

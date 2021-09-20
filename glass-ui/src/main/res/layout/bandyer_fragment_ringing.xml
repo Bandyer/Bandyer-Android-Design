@@ -5,7 +5,7 @@
     style="?attr/bandyer_rootLayoutStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="?attr/bandyer_ringingFragmentStyle">
+    android:theme="?attr/bandyer_ringingStyle">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_title"
