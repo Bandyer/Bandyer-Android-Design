@@ -1,8 +1,6 @@
 package com.bandyer.video_android_glass_ui.chat.menu
 
 import android.annotation.SuppressLint
-
-dimport android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

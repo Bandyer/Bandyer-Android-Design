@@ -115,7 +115,7 @@ class MenuFragment : com.bandyer.video_android_glass_ui.menu.BandyerGlassMenuFra
             true
         }
         5 -> {
-            findNavController().navigate(R.id.action_menuFragment_to_chatFragment)
+            findNavController().navigate(R.id.action_menuFragment_to_smartglass_nav_graph_chat)
             true
         }
         else -> false

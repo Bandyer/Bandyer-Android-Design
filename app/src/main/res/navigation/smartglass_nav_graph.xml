@@ -5,14 +5,6 @@
     app:startDestination="@id/ringingFragment">
 
     <fragment
-        android:id="@+id/chatFragment"
-        android:name="com.bandyer.demo_sdk_design.smartglass.ChatFragment"
-        android:label="ChatFragment">
-        <action
-            android:id="@+id/action_chatFragment_to_chatMenuFragment"
-            app:destination="@id/chatMenuFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/menuFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.MenuFragment"
         android:label="MenuFragment">
@@ -23,11 +15,11 @@
             android:id="@+id/action_menuFragment_to_zoomFragment"
             app:destination="@id/zoomFragment" />
         <action
-            android:id="@+id/action_menuFragment_to_chatFragment"
-            app:destination="@id/chatFragment" />
-        <action
             android:id="@+id/action_menuFragment_to_participantsFragment"
             app:destination="@id/participantsFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_smartglass_nav_graph_chat"
+            app:destination="@id/smartglass_nav_graph_chat" />
     </fragment>
     <fragment
         android:id="@+id/volumeFragment"
@@ -76,14 +68,5 @@
         android:id="@+id/participantsFragment"
         android:name="com.bandyer.demo_sdk_design.smartglass.ParticipantsFragment"
         android:label="ParticipantsFragment"/>
-    <fragment
-        android:id="@+id/chatMenuFragment"
-        android:name="com.bandyer.demo_sdk_design.smartglass.ChatMenuFragment"
-        android:label="ChatMenuFragment" >
-        <argument
-            android:name="contactData"
-            android:defaultValue="@null"
-            app:argType="com.bandyer.video_android_glass_ui.contact.BandyerContactData"
-            app:nullable="true" />
-    </fragment>
+    <include app:graph="@navigation/smartglass_nav_graph_chat" />
 </navigation>
