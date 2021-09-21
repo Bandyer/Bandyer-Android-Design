@@ -108,8 +108,8 @@ abstract class BaseBandyerWhiteboardDialog<T : BaseBandyerWhiteboardDialog.BaseW
             toolbar!!.apply {
                 inflateMenu(R.menu.bandyer_whiteboard_menu)
                 uploadButton = menu.findItem(R.id.bandyer_upload_file)
-                uploadButtonView = ((toolbar as ViewGroup).getChildAt(1) as ViewGroup).getChildAt(0)
-                backButtonView = toolbar!!.iterator().next()
+                uploadButtonView = view.findViewById(R.id.bandyer_upload_file)
+                backButtonView = iterator().next()
                 setNavigationOnClickListener { dismiss() }
             }
         }
