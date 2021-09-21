@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BandyerSDKDesign.Theme.Glass.Call">
+        <attr name="bandyer_statusBarStyle" />
         <attr name="bandyer_menuStyle" format="reference" />
         <attr name="bandyer_volumeStyle" format="reference" />
         <attr name="bandyer_zoomStyle" format="reference" />

@@ -1,6 +1,8 @@
 package com.bandyer.video_android_glass_ui.chat.menu
 
 import android.annotation.SuppressLint
+
+dimport android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +19,7 @@ import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerCenterIt
 import com.bandyer.video_android_glass_ui.common.item_decoration.LineItemIndicatorDecoration
 import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentChatMenuBinding
-import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getThemeAttribute
+import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
@@ -48,13 +50,14 @@ abstract class BandyerGlassChatMenuFragment : BandyerGlassBaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val style = requireContext().getThemeAttribute(
-            R.style.BandyerSDKDesign_Theme_DayNight_GlassChat,
-            R.styleable.BandyerSDKDesign_Theme_Glass_Chat,
-            R.styleable.BandyerSDKDesign_Theme_Glass_Chat_bandyer_chatMenuStyle
+        val style =
+            requireContext().getChatThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Glass_Chat_bandyer_chatMenuStyle)
+        val wrapper = ContextThemeWrapper(requireActivity(), style)
+        binding = BandyerFragmentChatMenuBinding.inflate(
+            inflater.cloneInContext(wrapper),
+            container,
+            false
         )
-        val contextWrapper = ContextThemeWrapper(requireActivity(), style)
-        binding = BandyerFragmentChatMenuBinding.inflate(inflater.cloneInContext(contextWrapper), container, false)
 
         // set the views
         root = binding!!.root

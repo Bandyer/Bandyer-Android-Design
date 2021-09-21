@@ -34,6 +34,7 @@ import androidx.annotation.StyleableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getThemeAttribute
 import com.bandyer.video_android_phone_ui.R
 import com.google.android.material.textview.MaterialTextView
 import java.util.*
@@ -68,10 +69,10 @@ fun Context.isTablet(): Boolean {
  * @return Boolean
  */
 internal fun Context.isRtl() =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-            TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL
-        else
-            false
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+        TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL
+    else
+        false
 
 /**
  * Calculates screen's ratio
@@ -87,7 +88,8 @@ fun Context.getScreenRatio(): Float {
  * @receiver Context
  * @return Boolean true if can draw overlays, false otherwise
  */
-fun Context.canDrawOverlays(): Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) Settings.canDrawOverlays(this.applicationContext) else true
+fun Context.canDrawOverlays(): Boolean =
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) Settings.canDrawOverlays(this.applicationContext) else true
 
 /**
  * Checks if this context can be or is in picture in picture mode
@@ -96,7 +98,10 @@ fun Context.canDrawOverlays(): Boolean = if (Build.VERSION.SDK_INT >= Build.VERS
  */
 fun Activity.isInPictureInPictureModeCompat(): Boolean {
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        val canGoInPip = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+        val canGoInPip =
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && packageManager.hasSystemFeature(
+                PackageManager.FEATURE_PICTURE_IN_PICTURE
+            )
         canGoInPip && (this as? AppCompatActivity)?.isInPictureInPictureMode == true
     } else false
 }
@@ -118,7 +123,7 @@ fun Context.stopAppOpsWatch(callback: ((String, String) -> Unit)) {
  * @param operation String
  * @param callback Function2<String, String, Unit> the callback to be called.
  */
-fun Context.startAppOpsWatch(operation: String, callback: ((String, String) -> Unit)){
+fun Context.startAppOpsWatch(operation: String, callback: ((String, String) -> Unit)) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return
     val pckName = applicationContext.packageName
     val appOpsManager = this.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
@@ -154,7 +159,7 @@ fun Context.getScreenSize(): Point {
 fun Context.scanForFragmentActivity(): androidx.fragment.app.FragmentActivity? {
     return when (this) {
         is AppCompatActivity -> this
-        is androidx.fragment.app.FragmentActivity -> this
+        is FragmentActivity -> this
         is ContextWrapper -> this.baseContext.scanForFragmentActivity()
         else -> null
     }
@@ -166,13 +171,12 @@ fun Context.scanForFragmentActivity(): androidx.fragment.app.FragmentActivity? {
  * @param styleAttribute the attribute which defines the style of chat info element
  * @return The style relative to the styleAttribute
  */
-fun Context.getChatInfoStyle(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(R.style.BandyerSDKDesign_ChatInfo, R.styleable.BandyerSDKDesign_ChatInfo)
-    val value = if(ta.hasValue(styleAttribute))
-        ta.getResourceId(styleAttribute, 0) else 0
-    ta.recycle()
-    return value
-}
+fun Context.getChatInfoStyle(@StyleableRes styleAttribute: Int): Int =
+    this.getThemeAttribute(
+        R.style.BandyerSDKDesign_ChatInfo,
+        R.styleable.BandyerSDKDesign_ChatInfo,
+        styleAttribute
+    )
 
 /**
  * Get the value of an integer attribute relative to smart glass dialog menu
@@ -181,8 +185,11 @@ fun Context.getChatInfoStyle(@StyleableRes styleAttribute: Int): Int {
  * @return The value relative to the attribute
  */
 fun Context.getPagerIndicatorIntAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle),
+        R.styleable.BandyerSDKDesign_PagerIndicator
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getInt(styleAttribute, 0) else 0
     ta.recycle()
     return value
@@ -195,8 +202,11 @@ fun Context.getPagerIndicatorIntAttribute(@StyleableRes styleAttribute: Int): In
  * @return The value relative to the attribute
  */
 fun Context.getPagerIndicatorBooleanAttribute(@StyleableRes styleAttribute: Int): Boolean {
-    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle),
+        R.styleable.BandyerSDKDesign_PagerIndicator
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getBoolean(styleAttribute, false) else false
     ta.recycle()
     return value
@@ -210,8 +220,11 @@ fun Context.getPagerIndicatorBooleanAttribute(@StyleableRes styleAttribute: Int)
  * @return The value relative to the attribute
  */
 fun Context.getPagerIndicatorColorAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle),
+        R.styleable.BandyerSDKDesign_PagerIndicator
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getColor(styleAttribute, 0) else 0
     ta.recycle()
     return value
@@ -224,8 +237,11 @@ fun Context.getPagerIndicatorColorAttribute(@StyleableRes styleAttribute: Int): 
  * @return The value relative to the attribute
  */
 fun Context.getPagerIndicatorDimensionPixelSizeAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle), R.styleable.BandyerSDKDesign_PagerIndicator)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getSmartGlassMenuAttribute(R.styleable.BandyerSDKDesign_SmartGlassMenu_bandyer_pagerIndicatorStyle),
+        R.styleable.BandyerSDKDesign_PagerIndicator
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getDimensionPixelSize(styleAttribute, 0) else 0
     ta.recycle()
     return value
@@ -238,8 +254,11 @@ fun Context.getPagerIndicatorDimensionPixelSizeAttribute(@StyleableRes styleAttr
  * @return The value relative to the attribute
  */
 fun Context.getBouncingDotsIntAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getChatInfoStyle(R.styleable.BandyerSDKDesign_ChatInfo_bandyer_bouncingDotsStyle), R.styleable.BandyerSDKDesign_TextView_Subtitle_BouncingDots)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getChatInfoStyle(R.styleable.BandyerSDKDesign_ChatInfo_bandyer_bouncingDotsStyle),
+        R.styleable.BandyerSDKDesign_TextView_Subtitle_BouncingDots
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getInt(styleAttribute, 0) else 0
     ta.recycle()
     return value
@@ -252,8 +271,11 @@ fun Context.getBouncingDotsIntAttribute(@StyleableRes styleAttribute: Int): Int 
  * @return The value relative to the attribute
  */
 fun Context.getBouncingDotsBooleanAttribute(@StyleableRes styleAttribute: Int): Boolean {
-    val ta = obtainStyledAttributes(getChatInfoStyle(R.styleable.BandyerSDKDesign_ChatInfo_bandyer_bouncingDotsStyle), R.styleable.BandyerSDKDesign_TextView_Subtitle_BouncingDots)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getChatInfoStyle(R.styleable.BandyerSDKDesign_ChatInfo_bandyer_bouncingDotsStyle),
+        R.styleable.BandyerSDKDesign_TextView_Subtitle_BouncingDots
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getBoolean(styleAttribute, false) else false
     ta.recycle()
     return value
@@ -266,8 +288,11 @@ fun Context.getBouncingDotsBooleanAttribute(@StyleableRes styleAttribute: Int): 
  * @return The value relative to the attribute
  */
 fun Context.getBouncingDotsDimensionAttribute(@StyleableRes styleAttribute: Int): Float {
-    val ta = obtainStyledAttributes(getChatInfoStyle(R.styleable.BandyerSDKDesign_ChatInfo_bandyer_bouncingDotsStyle), R.styleable.BandyerSDKDesign_TextView_Subtitle_BouncingDots)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getChatInfoStyle(R.styleable.BandyerSDKDesign_ChatInfo_bandyer_bouncingDotsStyle),
+        R.styleable.BandyerSDKDesign_TextView_Subtitle_BouncingDots
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getDimension(styleAttribute, 0f) else 0f
     ta.recycle()
     return value
@@ -280,8 +305,11 @@ fun Context.getBouncingDotsDimensionAttribute(@StyleableRes styleAttribute: Int)
  * @return The style relative to the styleAttribute
  */
 fun Context.getAudioRouteItemStyle(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_bottomSheetAudioRouteStyle), R.styleable.BandyerSDKDesign_BottomSheet_AudioRoute)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_bottomSheetAudioRouteStyle),
+        R.styleable.BandyerSDKDesign_BottomSheet_AudioRoute
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
     return value
@@ -294,8 +322,11 @@ fun Context.getAudioRouteItemStyle(@StyleableRes styleAttribute: Int): Int {
  * @return The style relative to the styleAttribute
  */
 fun Context.getCallActionItemStyle(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_bottomSheetCallStyle), R.styleable.BandyerSDKDesign_BottomSheet_Call)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_bottomSheetCallStyle),
+        R.styleable.BandyerSDKDesign_BottomSheet_Call
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
     return value
@@ -308,8 +339,11 @@ fun Context.getCallActionItemStyle(@StyleableRes styleAttribute: Int): Int {
  * @return The style relative to the styleAttribute
  */
 fun Context.getSmartGlassMenuAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getSmartGlassMenuDialogAttribute(R.styleable.BandyerSDKDesign_SmartGlassDialogMenu_bandyer_smartGlassMenuStyle), R.styleable.BandyerSDKDesign_SmartGlassMenu)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getSmartGlassMenuDialogAttribute(R.styleable.BandyerSDKDesign_SmartGlassDialogMenu_bandyer_smartGlassMenuStyle),
+        R.styleable.BandyerSDKDesign_SmartGlassMenu
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
     return value
@@ -322,8 +356,11 @@ fun Context.getSmartGlassMenuAttribute(@StyleableRes styleAttribute: Int): Int {
  * @return The style relative to the styleAttribute
  */
 fun Context.getRingingActionItemStyle(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_bottomSheetRingingStyle), R.styleable.BandyerSDKDesign_BottomSheet_Ringing)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_bottomSheetRingingStyle),
+        R.styleable.BandyerSDKDesign_BottomSheet_Ringing
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
     return value
@@ -335,13 +372,12 @@ fun Context.getRingingActionItemStyle(@StyleableRes styleAttribute: Int): Int {
  * @param styleAttribute the attribute for which you want to retrieve the style
  * @return The style relative to the styleAttribute
  */
-fun Context.getCallThemeAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(R.style.BandyerSDKDesign_Theme_Call, R.styleable.BandyerSDKDesign_Theme_Call)
-    val value = if(ta.hasValue(styleAttribute))
-        ta.getResourceId(styleAttribute, 0) else 0
-    ta.recycle()
-    return value
-}
+fun Context.getCallThemeAttribute(@StyleableRes styleAttribute: Int): Int =
+    this.getThemeAttribute(
+        R.style.BandyerSDKDesign_Theme_Call,
+        R.styleable.BandyerSDKDesign_Theme_Call,
+        styleAttribute
+    )
 
 /**
  * Get the style related to a whiteboard dialog attribute
@@ -350,8 +386,11 @@ fun Context.getCallThemeAttribute(@StyleableRes styleAttribute: Int): Int {
  * @return The style relative to the styleAttribute
  */
 fun Context.getWhiteboardDialogAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_whiteboardDialogStyle), R.styleable.BandyerSDKDesign_BottomSheetDialog_Whiteboard)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_whiteboardDialogStyle),
+        R.styleable.BandyerSDKDesign_BottomSheetDialog_Whiteboard
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
     return value
@@ -364,8 +403,11 @@ fun Context.getWhiteboardDialogAttribute(@StyleableRes styleAttribute: Int): Int
  * @return The style relative to the styleAttribute
  */
 fun Context.getTextEditorDialogAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getWhiteboardDialogAttribute(R.styleable.BandyerSDKDesign_BottomSheetDialog_Whiteboard_bandyer_textEditorDialogStyle), R.styleable.BandyerSDKDesign_BottomSheetDialog_TextEditor)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getWhiteboardDialogAttribute(R.styleable.BandyerSDKDesign_BottomSheetDialog_Whiteboard_bandyer_textEditorDialogStyle),
+        R.styleable.BandyerSDKDesign_BottomSheetDialog_TextEditor
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
     return value
@@ -378,8 +420,11 @@ fun Context.getTextEditorDialogAttribute(@StyleableRes styleAttribute: Int): Int
  * @return The style relative to the styleAttribute
  */
 fun Context.getSmartGlassMenuDialogAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_smartGlassDialogMenuStyle), R.styleable.BandyerSDKDesign_SmartGlassDialogMenu)
-    val value = if(ta.hasValue(styleAttribute))
+    val ta = obtainStyledAttributes(
+        getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_smartGlassDialogMenuStyle),
+        R.styleable.BandyerSDKDesign_SmartGlassDialogMenu
+    )
+    val value = if (ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
     return value
@@ -391,7 +436,7 @@ fun Context.getSmartGlassMenuDialogAttribute(@StyleableRes styleAttribute: Int):
  * @return The context's activity, if it can be retrieved, null otherwise
  */
 @Suppress("UNCHECKED_CAST")
-fun <T: Activity> Context.getActivity(): T? {
+fun <T : Activity> Context.getActivity(): T? {
     return when (this) {
         is FragmentActivity -> this as T?
         is Activity -> this as T?

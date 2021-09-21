@@ -1,21 +1,24 @@
 package com.bandyer.video_android_glass_ui.utils.extensions
 
 import android.content.Context
-import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getThemeAttribute
+import com.bandyer.video_android_glass_ui.R
 
 object ContextExtensions {
     /**
-     * Get the style related to a call theme attribute
+     * Retrieve a chat theme attribute's style
+     *
      * @receiver Context
      * @param styleAttribute the attribute for which you want to retrieve the style
-     * @return The style relative to the styleAttribute
+     * @return Int the attribute's style
      */
-    fun Context.getThemeAttribute(@StyleRes theme: Int, @StyleableRes styleable: IntArray, @StyleableRes styleAttribute: Int): Int {
-        val ta = obtainStyledAttributes(theme, styleable)
-        val value = if(ta.hasValue(styleAttribute))
-            ta.getResourceId(styleAttribute, 0) else 0
-        ta.recycle()
-        return value
-    }
+    internal fun Context.getChatThemeAttribute(
+        @StyleableRes styleAttribute: Int
+    ): Int =
+        this.getThemeAttribute(
+            R.style.BandyerSDKDesign_Theme_DayNight_GlassChat,
+            R.styleable.BandyerSDKDesign_Theme_Glass_Chat,
+            styleAttribute
+        )
 }
