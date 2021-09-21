@@ -27,7 +27,7 @@ import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
 import kotlinx.coroutines.flow.collect
 
 class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener,
-                           BandyerNotificationManager.NotificationListener, BandyerGlassTouchEventListener {
+    BandyerNotificationManager.NotificationListener, BandyerGlassTouchEventListener {
 
     private lateinit var binding: ActivitySmartGlassBinding
 
@@ -53,9 +53,11 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         enterImmersiveMode()
 
         glassGestureDetector = GlassGestureDetector(this, this)
-        notificationManager = BandyerNotificationManager(binding.content, this)
+        notificationManager = BandyerNotificationManager(binding.content)
         batteryObserver = BatteryObserver(this)
         wifiObserver = WiFiObserver(this)
+
+        notificationManager.addListener(this)
 
         lifecycleScope.launchWhenStarted {
             batteryObserver.observe().collect {
@@ -82,18 +84,23 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         }
 
         statusBar!!.hideCenteredTitle()
-        statusBar!!.setCenteredText(resources.getString(R.string.bandyer_glass_users_in_call_pattern, 3))
+        statusBar!!.setCenteredText(
+            resources.getString(
+                R.string.bandyer_glass_users_in_call_pattern,
+                3
+            )
+        )
 
         Handler(Looper.getMainLooper()).postDelayed({
             notificationManager.show(
-                    listOf(
-                        BandyerNotificationData(
-                            "Mario",
-                            "Mario",
-                            "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
-                            R.drawable.sample_image
-                        )
+                listOf(
+                    BandyerNotificationData(
+                        "Mario",
+                        "Mario",
+                        "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
+                        R.drawable.sample_image
                     )
+                )
             )
         }, 4000)
 
@@ -159,7 +166,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 
     override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean =
         when (event.type) {
-            BandyerGlassTouchEvent.Type.TAP        -> {
+            BandyerGlassTouchEvent.Type.TAP -> {
                 notificationManager.expand()
                 true
             }
@@ -167,11 +174,10 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
                 notificationManager.dismiss()
                 true
             }
-            else                                                                           -> false
+            else -> false
         }
 
     // NOTIFICATION LISTENER
-
     override fun onShow() {
         handleNotification = true
     }
@@ -185,6 +191,14 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 
     override fun onDismiss() {
         handleNotification = false
+    }
+
+    fun addNotificationListener(listener: BandyerNotificationManager.NotificationListener) {
+        notificationManager.addListener(listener)
+    }
+
+    fun removeNotificationListener(listener: BandyerNotificationManager.NotificationListener) {
+        notificationManager.removeListener(listener)
     }
 
     fun hideNotification() {

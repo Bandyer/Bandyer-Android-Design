@@ -25,42 +25,54 @@ class BandyerNotificationManager {
 
     private var notificationView: BandyerChatNotificationView? = null
     private var attacher: BandyerViewAttacher? = null
-    private var listener: NotificationListener? = null
+    private var listeners = arrayListOf<NotificationListener>()
 
     private var state: State = State.HIDDEN
     var dnd: Boolean = false
 
     /**
      * @param layout The [ConstraintLayout] to which attach the [BandyerChatNotificationView]
-     * @param listener An optional [NotificationListener]
      * @constructor
      */
-    constructor(layout: ConstraintLayout, listener: NotificationListener? = null) {
-        this.listener = listener
+    constructor(layout: ConstraintLayout) {
         notificationView = BandyerChatNotificationView(layout.context)
         attacher = BandyerConstraintLayoutAttacher(layout, notificationView!!)
     }
 
     /**
      * @param layout The [FrameLayout] to which attach the [BandyerChatNotificationView]
-     * @param listener An optional [NotificationListener]
      * @constructor
      */
-    constructor(layout: FrameLayout, listener: NotificationListener? = null) {
-        this.listener = listener
+    constructor(layout: FrameLayout) {
         notificationView = BandyerChatNotificationView(layout.context)
         attacher = BandyerFrameLayoutAttacher(layout, notificationView!!)
     }
 
     /**
      * @param layout The [RelativeLayout] to which attach the [BandyerChatNotificationView]
-     * @param listener An optional [NotificationListener]
      * @constructor
      */
-    constructor(layout: RelativeLayout, listener: NotificationListener? = null) {
-        this.listener = listener
+    constructor(layout: RelativeLayout) {
         notificationView = BandyerChatNotificationView(layout.context)
         attacher = BandyerRelativeLayoutAttacher(layout, notificationView!!)
+    }
+
+    /**
+     * Add a listener on the notification events
+     *
+     * @param listener NotificationListener
+     */
+    fun addListener(listener: NotificationListener) {
+        listeners.add(listener)
+    }
+
+    /**
+     * Remove a listener on the notification events
+     *
+     * @param listener NotificationListener
+     */
+    fun removeListener(listener: NotificationListener) {
+        listeners.remove(listener)
     }
 
     /**
@@ -71,10 +83,10 @@ class BandyerNotificationManager {
     fun show(notificationData: List<BandyerNotificationData>) {
         attacher!!.attach()
 
-        if(dnd) return
+        if (dnd) return
         state = State.COLLAPSED
         notificationView?.show(notificationData)
-        listener?.onShow()
+        listeners.forEach { it.onShow() }
 
         notificationView?.postDelayed({
             if (state != State.COLLAPSED) return@postDelayed
@@ -90,7 +102,7 @@ class BandyerNotificationManager {
     fun dismiss(withAnimation: Boolean = true) {
         state = State.HIDDEN
         notificationView?.hide(withAnimation) {
-            listener?.onDismiss()
+            listeners.forEach { it.onDismiss() }
             attacher!!.detach()
         }
     }
@@ -101,7 +113,7 @@ class BandyerNotificationManager {
     fun expand() {
         state = State.EXPANDED
         notificationView?.expand {
-            listener?.onExpanded()
+            listeners.forEach { it.onExpanded() }
             attacher!!.detach()
         }
     }

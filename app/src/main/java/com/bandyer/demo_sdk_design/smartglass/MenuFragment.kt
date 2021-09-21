@@ -2,6 +2,7 @@ package com.bandyer.demo_sdk_design.smartglass
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +11,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
+import com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationManager
+import com.bandyer.video_android_glass_ui.menu.BandyerGlassMenuFragment
 import com.bandyer.video_android_glass_ui.menu.BandyerMenuItem
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
 
-class MenuFragment : com.bandyer.video_android_glass_ui.menu.BandyerGlassMenuFragment(), TiltController.TiltListener {
+class MenuFragment : BandyerGlassMenuFragment(), TiltController.TiltListener,
+    BandyerNotificationManager.NotificationListener {
+
+    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
     private var tiltController: TiltController? = null
 
@@ -36,6 +45,8 @@ class MenuFragment : com.bandyer.video_android_glass_ui.menu.BandyerGlassMenuFra
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        activity.addNotificationListener(this)
+
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         itemAdapter!!.add(BandyerMenuItem("Attiva microfono", "Muta microfono"))
@@ -73,28 +84,34 @@ class MenuFragment : com.bandyer.video_android_glass_ui.menu.BandyerGlassMenuFra
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
-        BandyerGlassTouchEvent.Type.SWIPE_FORWARD  -> {
-            if (event.source == BandyerGlassTouchEvent.Source.KEY) {
-                rvMenu!!.horizontalSmoothScrollToNext(currentMenuItemIndex)
-                true
-            } else false
-        }
-        BandyerGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if (event.source == BandyerGlassTouchEvent.Source.KEY) {
-                rvMenu!!.horizontalSmoothScrollToPrevious(currentMenuItemIndex)
-                true
-            } else false
-        }
-        BandyerGlassTouchEvent.Type.TAP            -> {
-            tapBehaviour(currentMenuItemIndex)
-        }
-        BandyerGlassTouchEvent.Type.SWIPE_DOWN     -> {
-            findNavController().popBackStack()
-            true
-        }
-        else                                            -> super.onSmartGlassTouchEvent(event)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        activity.removeNotificationListener(this)
     }
+
+    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean =
+        when (event.type) {
+            BandyerGlassTouchEvent.Type.SWIPE_FORWARD -> {
+                if (event.source == BandyerGlassTouchEvent.Source.KEY) {
+                    rvMenu!!.horizontalSmoothScrollToNext(currentMenuItemIndex)
+                    true
+                } else false
+            }
+            BandyerGlassTouchEvent.Type.SWIPE_BACKWARD -> {
+                if (event.source == BandyerGlassTouchEvent.Source.KEY) {
+                    rvMenu!!.horizontalSmoothScrollToPrevious(currentMenuItemIndex)
+                    true
+                } else false
+            }
+            BandyerGlassTouchEvent.Type.TAP -> {
+                tapBehaviour(currentMenuItemIndex)
+            }
+            BandyerGlassTouchEvent.Type.SWIPE_DOWN -> {
+                findNavController().popBackStack()
+                true
+            }
+            else -> super.onSmartGlassTouchEvent(event)
+        }
 
     private fun tapBehaviour(itemIndex: Int) = when (itemIndex) {
         0, 1 -> {
@@ -133,5 +150,15 @@ class MenuFragment : com.bandyer.video_android_glass_ui.menu.BandyerGlassMenuFra
         super.onPause()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             tiltController!!.releaseAllSensors()
+    }
+
+    override fun onShow() {
+        root!!.setAlphaWithAnimation(0f, 100L)
+    }
+
+    override fun onExpanded() = Unit
+
+    override fun onDismiss() {
+        root!!.setAlphaWithAnimation(1f, 100L)
     }
 }

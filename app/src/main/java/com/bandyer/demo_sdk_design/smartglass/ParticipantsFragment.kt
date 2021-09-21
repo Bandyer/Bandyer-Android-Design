@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.demo_sdk_design.R
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
 import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
+import com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationManager
 import com.bandyer.video_android_glass_ui.contact.BandyerContactData
 import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
 import com.bandyer.video_android_glass_ui.contact.call_participant.BandyerCallParticipantItem
@@ -19,7 +21,7 @@ import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrol
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
-class ParticipantsFragment : com.bandyer.video_android_glass_ui.contact.call_participant.BandyerGlassCallParticipantsFragment(), TiltController.TiltListener {
+class ParticipantsFragment : com.bandyer.video_android_glass_ui.contact.call_participant.BandyerGlassCallParticipantsFragment(), TiltController.TiltListener, BandyerNotificationManager.NotificationListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -46,6 +48,8 @@ class ParticipantsFragment : com.bandyer.video_android_glass_ui.contact.call_par
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        activity.addNotificationListener(this)
+
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
         participantsData = listOf(
@@ -122,6 +126,21 @@ class ParticipantsFragment : com.bandyer.video_android_glass_ui.contact.call_par
         }
 
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        activity.removeNotificationListener(this)
+    }
+
+    override fun onShow() {
+        root!!.setAlphaWithAnimation(0f, 100L)
+    }
+
+    override fun onExpanded() = Unit
+
+    override fun onDismiss() {
+        root!!.setAlphaWithAnimation(1f, 100L)
     }
 
     override fun onTilt(x: Float, y: Float) = rvParticipants!!.scrollBy((x * 40).toInt(), 0)

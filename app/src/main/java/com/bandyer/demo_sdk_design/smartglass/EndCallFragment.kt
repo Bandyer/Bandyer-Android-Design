@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.demo_sdk_design.R
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
 import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
+import com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationManager
 
-class EndCallFragment : com.bandyer.video_android_glass_ui.call.BandyerGlassEndCallFragment() {
+class EndCallFragment : com.bandyer.video_android_glass_ui.call.BandyerGlassEndCallFragment(), BandyerNotificationManager.NotificationListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -18,6 +20,7 @@ class EndCallFragment : com.bandyer.video_android_glass_ui.call.BandyerGlassEndC
         savedInstanceState: Bundle?
     ): View {
         activity.hideStatusBar()
+        activity.addNotificationListener(this)
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
@@ -30,6 +33,21 @@ class EndCallFragment : com.bandyer.video_android_glass_ui.call.BandyerGlassEndC
         }
 
         return view
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        activity.removeNotificationListener(this)
+    }
+
+    override fun onShow() {
+        root!!.setAlphaWithAnimation(0f, 100L)
+    }
+
+    override fun onExpanded() = Unit
+
+    override fun onDismiss() {
+        root!!.setAlphaWithAnimation(1f, 100L)
     }
 
     override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {

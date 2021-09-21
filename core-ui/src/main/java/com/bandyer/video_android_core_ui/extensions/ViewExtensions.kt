@@ -16,7 +16,13 @@ object ViewExtensions {
      * @param to desired final size
      * @param interpolator animator interpolator
      */
-    fun View.animateViewHeight(from: Int, to: Int, duration: Long, interpolator: Interpolator = LinearInterpolator(), doOnEnd: ((Animator) -> Unit)? = null) {
+    fun View.animateViewHeight(
+        from: Int,
+        to: Int,
+        duration: Long,
+        interpolator: Interpolator = LinearInterpolator(),
+        doOnEnd: ((Animator) -> Unit)? = null
+    ) {
         val valueAnimator = ValueAnimator.ofFloat(from.toFloat(), to.toFloat())
         valueAnimator.interpolator = interpolator
         valueAnimator.duration = duration
@@ -28,4 +34,18 @@ object ViewExtensions {
         doOnEnd?.also { valueAnimator.doOnEnd(it) }
         valueAnimator.start()
     }
+
+    /**
+     * Set the alpha with a fade animation
+     *
+     * @receiver View to which apply the alpha
+     * @param targetAlpha Float
+     * @param duration The duration in millis
+     */
+    fun View.setAlphaWithAnimation(targetAlpha: Float, duration: Long) =
+        this.animate()
+            .alpha(targetAlpha)
+            .also {
+                it.duration = duration
+            }.start()
 }
