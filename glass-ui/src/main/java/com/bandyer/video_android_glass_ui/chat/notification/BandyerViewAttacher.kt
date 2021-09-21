@@ -9,14 +9,40 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 
 /**
- * Class used to attach a view to a given layout
+ * A ViewAttacher is used to attach a view to a layout
  *
- * @property view The view to be attached
- * @constructor
+ * @property layout ViewGroup
+ * @property view View
  */
-class BandyerViewAttacher(val view: View) {
+internal interface BandyerViewAttacher {
+    /**
+     * The view to which attach the view
+     */
+    val layout: ViewGroup
 
-    private var parentView: ViewGroup? = null
+    /**
+     * The view to attach
+     */
+    val view: View
+
+    /**
+     * Attach the [view] to the [layout]
+     */
+    fun attach()
+
+    /**
+     *  Detach the [view] from the previously passed layout
+     */
+    fun detach() = layout.removeView(view)
+}
+
+/**
+ * BandyerConstraintLayoutAttacher
+ */
+internal class BandyerConstraintLayoutAttacher(
+    override val layout: ConstraintLayout,
+    override val view: View
+) : BandyerViewAttacher {
 
     init {
         view.apply {
@@ -25,13 +51,8 @@ class BandyerViewAttacher(val view: View) {
         }
     }
 
-    /**
-     * Attach the [view] to a [ConstraintLayout]
-     *
-     * @param layout The layout on which attach the [view]
-     */
-    fun attach(layout: ConstraintLayout) {
-        parentView = layout
+    override fun attach() {
+        if(layout.findViewById<View>(view.id) != null) return
 
         val constraintSet = ConstraintSet()
         layout.addView(view)
@@ -57,16 +78,29 @@ class BandyerViewAttacher(val view: View) {
         )
         constraintSet.constrainWidth(view.id, ConstraintSet.MATCH_CONSTRAINT)
         constraintSet.applyTo(layout)
+    }
+}
 
+/**
+ * BandyerFrameLayoutAttacher
+ */
+internal class BandyerFrameLayoutAttacher(
+    override val layout: FrameLayout,
+    override val view: View
+) : BandyerViewAttacher {
+
+    init {
+        view.apply {
+            id = View.generateViewId()
+            visibility = View.GONE
+        }
     }
 
     /**
      * Attach the [view] to a [FrameLayout]
-     *
-     * @param layout The layout on which attach the [view]
      */
-    fun attach(layout: FrameLayout) {
-        parentView = layout
+    override fun attach() {
+        if(layout.findViewById<View>(view.id) != null) return
 
         layout.addView(
             view,
@@ -77,14 +111,25 @@ class BandyerViewAttacher(val view: View) {
             )
         )
     }
+}
 
-    /**
-     * Attach the [view] to a [RelativeLayout]
-     *
-     * @param layout The layout on which attach the [view]
-     */
-    fun attach(layout: RelativeLayout) {
-        parentView = layout
+/**
+ * BandyerRelativeLayoutAttacher
+ */
+internal class BandyerRelativeLayoutAttacher(
+    override val layout: RelativeLayout,
+    override val view: View
+) : BandyerViewAttacher {
+
+    init {
+        view.apply {
+            id = View.generateViewId()
+            visibility = View.GONE
+        }
+    }
+
+    override fun attach() {
+        if(layout.findViewById<View>(view.id) != null) return
 
         val params = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.MATCH_PARENT,
@@ -93,9 +138,4 @@ class BandyerViewAttacher(val view: View) {
         params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE)
         layout.addView(view, params)
     }
-
-    /**
-     *  Detach the [view] from the previously passed layout
-     */
-    fun detach() = parentView?.removeView(view)
 }

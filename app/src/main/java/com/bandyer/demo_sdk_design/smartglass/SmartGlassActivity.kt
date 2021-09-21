@@ -96,7 +96,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
                     )
             )
         }, 4000)
-//
+
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            notificationManager.show(
 //                listOf(
@@ -120,7 +120,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 //                    )
 //                )
 //            )
-//        }, 5000)
+//        }, 7000)
     }
 
     override fun onResume() {
@@ -179,8 +179,8 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
     override fun onExpanded() {
         handleNotification = false
         // TODO Fragment NavHostFragment{199be23} (47d28a1a-fa6e-41d5-81e7-090f54d21e92) has not been attached yet.
-        if (supportFragmentManager.currentNavigationFragment?.id != R.id.chatFragment)
-            binding.navHostFragment.findNavController().navigate(R.id.chatFragment)
+        if (supportFragmentManager.currentNavigationFragment?.id != R.id.smartglass_nav_graph_chat)
+            binding.navHostFragment.findNavController().navigate(R.id.smartglass_nav_graph_chat)
     }
 
     override fun onDismiss() {

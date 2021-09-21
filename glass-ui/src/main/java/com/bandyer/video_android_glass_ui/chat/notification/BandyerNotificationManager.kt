@@ -1,12 +1,13 @@
 package com.bandyer.video_android_glass_ui.chat.notification
 
-import android.content.Context
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 
 /**
- * The notification manager
+ * The notification manager encapsulates all the logic to handle the notifications.
+ * It's responsible for attaching/showing a [BandyerChatNotificationView].
+ * The notification is automatically detached/hidden after a certain amount of time, if not previously dismissed.
  */
 class BandyerNotificationManager {
 
@@ -35,8 +36,9 @@ class BandyerNotificationManager {
      * @constructor
      */
     constructor(layout: ConstraintLayout, listener: NotificationListener? = null) {
-        init(layout.context, listener)
-        attacher!!.attach(layout)
+        this.listener = listener
+        notificationView = BandyerChatNotificationView(layout.context)
+        attacher = BandyerConstraintLayoutAttacher(layout, notificationView!!)
     }
 
     /**
@@ -45,8 +47,9 @@ class BandyerNotificationManager {
      * @constructor
      */
     constructor(layout: FrameLayout, listener: NotificationListener? = null) {
-        init(layout.context, listener)
-        attacher!!.attach(layout)
+        this.listener = listener
+        notificationView = BandyerChatNotificationView(layout.context)
+        attacher = BandyerFrameLayoutAttacher(layout, notificationView!!)
     }
 
     /**
@@ -55,14 +58,9 @@ class BandyerNotificationManager {
      * @constructor
      */
     constructor(layout: RelativeLayout, listener: NotificationListener? = null) {
-        init(layout.context, listener)
-        attacher!!.attach(layout)
-    }
-
-    private fun init(context: Context, listener: NotificationListener? = null) {
         this.listener = listener
-        notificationView = BandyerChatNotificationView(context)
-        attacher = BandyerViewAttacher(notificationView!!)
+        notificationView = BandyerChatNotificationView(layout.context)
+        attacher = BandyerRelativeLayoutAttacher(layout, notificationView!!)
     }
 
     /**
@@ -71,6 +69,8 @@ class BandyerNotificationManager {
      * @param notificationData The data needed for the [notification][BandyerChatNotificationView]
      */
     fun show(notificationData: List<BandyerNotificationData>) {
+        attacher!!.attach()
+
         if(dnd) return
         state = State.COLLAPSED
         notificationView?.show(notificationData)
@@ -89,8 +89,10 @@ class BandyerNotificationManager {
      */
     fun dismiss(withAnimation: Boolean = true) {
         state = State.HIDDEN
-        notificationView?.hide(withAnimation)
-        listener?.onDismiss()
+        notificationView?.hide(withAnimation) {
+            listener?.onDismiss()
+            attacher!!.detach()
+        }
     }
 
     /*
@@ -100,6 +102,7 @@ class BandyerNotificationManager {
         state = State.EXPANDED
         notificationView?.expand {
             listener?.onExpanded()
+            attacher!!.detach()
         }
     }
 

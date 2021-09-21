@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.transition.Slide
+import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_core_ui.extensions.ViewExtensions.animateViewHeight
@@ -80,7 +81,7 @@ class BandyerChatNotificationView @JvmOverloads constructor(
      *
      * @param withAnimation True to perform the hide animation, false otherwise
      */
-    fun hide(withAnimation: Boolean = true) = setVisibility(withAnimation, View.GONE)
+    fun hide(withAnimation: Boolean = true, onHidden: (() -> Unit)? = null) = setVisibility(withAnimation, View.GONE, onHidden)
 
     /**
      * Expand the view from its current height to the parent's height
@@ -97,15 +98,29 @@ class BandyerChatNotificationView @JvmOverloads constructor(
         ) { onExpanded?.invoke(it) }
     }
 
-    private fun setVisibility(withAnimation: Boolean, visibility: Int) {
-        if (withAnimation) setVisibilityWithAnimation(visibility)
+    private fun setVisibility(withAnimation: Boolean, visibility: Int, doOnEnd: (() -> Unit)? = null) {
+        if (withAnimation) setVisibilityWithAnimation(visibility, doOnEnd)
         else this.visibility = visibility
     }
 
-    private fun setVisibilityWithAnimation(visibility: Int) {
+    private fun setVisibilityWithAnimation(visibility: Int, doOnEnd: (() -> Unit)?) {
         TransitionManager.beginDelayedTransition(
             parent as ViewGroup,
-            Slide(Gravity.TOP).apply { duration = ANIMATION_DURATION })
+            Slide(Gravity.TOP).apply { duration = ANIMATION_DURATION }
+                .addListener(object: Transition.TransitionListener {
+                    override fun onTransitionStart(transition: Transition) = Unit
+
+                    override fun onTransitionEnd(transition: Transition) {
+                        doOnEnd?.invoke()
+                    }
+
+                    override fun onTransitionCancel(transition: Transition) = Unit
+
+                    override fun onTransitionPause(transition: Transition) = Unit
+
+                    override fun onTransitionResume(transition: Transition) = Unit
+                })
+        )
         this.visibility = visibility
     }
 
