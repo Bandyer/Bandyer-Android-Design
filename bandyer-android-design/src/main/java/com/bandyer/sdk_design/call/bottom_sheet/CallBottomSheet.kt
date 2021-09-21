@@ -18,7 +18,6 @@ package com.bandyer.sdk_design.call.bottom_sheet
 
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -250,8 +249,7 @@ open class CallBottomSheet<T>(
 
         if (callActionItems.size <= MAX_ITEMS_PER_ROW) {
             lineView?.layoutParams?.height = mContext.get()?.dp2px(24f)
-            lineView?.visibility = View.INVISIBLE
-            lineView?.isClickable = false
+            lineView?.state = State.HIDDEN
             lineView?.requestLayout()
         }
 
@@ -284,9 +282,9 @@ open class CallBottomSheet<T>(
 
             val layoutManager = recyclerView?.layoutManager ?: return@post
 
-            val oneLineHeightPadding  = when {
-                layoutManager is LinearLayoutManager && layoutManager.orientation == LinearLayoutManager.HORIZONTAL ->  firstItem.paddingBottom
-                else -> firstItem.paddingTop.takeIf { callActionItems.size > MAX_ITEMS_PER_ROW } ?: 0
+            val oneLineHeightPadding = when {
+                layoutManager is LinearLayoutManager && layoutManager.orientation == LinearLayoutManager.HORIZONTAL -> firstItem.paddingBottom
+                else                                                                                                -> firstItem.paddingTop.takeIf { callActionItems.size > MAX_ITEMS_PER_ROW } ?: 0
             }
 
             val oneLineHeight = (lineView?.getHeightWithVerticalMargin() ?: 0) +

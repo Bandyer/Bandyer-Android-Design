@@ -20,6 +20,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.FrameLayout
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
+import com.bandyer.sdk_design.call.buttons.BandyerLineButton
 import com.google.android.material.textview.MaterialTextView
 
 /**
@@ -36,7 +37,7 @@ interface BandyerBottomSheet {
     /**
      * The lineView of the bottomSheet
      */
-    var lineView: View?
+    var lineView: BandyerLineButton?
     /**
      * The titleView of the bottomSheet
      */

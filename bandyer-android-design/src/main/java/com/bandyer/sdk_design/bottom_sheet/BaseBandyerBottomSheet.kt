@@ -172,7 +172,7 @@ open class BaseBandyerBottomSheet(
         get() = bottomSheetBehaviour?.state ?: -1
 
     final override var recyclerView = bottomSheetLayoutContent.recyclerView
-    final override var lineView: View? = bottomSheetLayoutContent.lineView
+    final override var lineView: BandyerLineButton? = bottomSheetLayoutContent.lineView
     final override var titleView: MaterialTextView? = bottomSheetLayoutContent.titleView
 
     /**
@@ -253,7 +253,7 @@ open class BaseBandyerBottomSheet(
         bottomSheetBehaviour!!.addBottomSheetCallback(bottomSheetBehaviorCallback)
 
         if (bottomSheetBehaviour!!.skipCollapsed)
-            bottomSheetLayoutContent.lineView?.state = State.ANCHORED_DOT
+            lineView?.state = State.ANCHORED_DOT
 
         peekHeight?.let { bottomSheetBehaviour!!.peekHeight = it }
 
@@ -361,7 +361,7 @@ open class BaseBandyerBottomSheet(
             moveBottomSheet()
             hasMoved = true
         }
-        bottomSheetLayoutContent.lineView?.state = BandyerLineButton.State.COLLAPSED
+        lineView?.state = State.COLLAPSED
 
         updateNavigationBar(false)
 

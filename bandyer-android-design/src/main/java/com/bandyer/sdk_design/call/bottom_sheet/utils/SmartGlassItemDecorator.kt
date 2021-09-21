@@ -26,8 +26,10 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.buttons.BandyerActionButton
 import com.bandyer.sdk_design.call.buttons.BandyerAudioRouteActionButton
+import com.bandyer.sdk_design.call.widgets.BandyerCallActionWidget
 import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.extensions.getScreenSize
 import com.bandyer.sdk_design.extensions.isRtl
@@ -35,7 +37,6 @@ import com.bandyer.sdk_design.extensions.scanForFragmentActivity
 import com.bandyer.sdk_design.extensions.setPaddingEnd
 import com.bandyer.sdk_design.extensions.setPaddingStart
 import com.bandyer.sdk_design.utils.AndroidDevice
-import com.bandyer.sdk_design.utils.SupportedSmartGlasses
 import com.bandyer.sdk_design.utils.isRealWearHTM1
 
 /**
@@ -71,7 +72,7 @@ class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.Ite
     }
 
     init {
-        if (AndroidDevice.CURRENT in SupportedSmartGlasses.list) customizeRecyclerView(recyclerView)
+        customizeRecyclerView(recyclerView)
     }
 
     private fun customizeRecyclerView(recyclerView: RecyclerView) {
@@ -83,7 +84,6 @@ class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.Ite
      * @suppress
      */
     override fun getItemOffsets(outRect: Rect, itemPosition: Int, parent: RecyclerView) {
-        if (AndroidDevice.CURRENT !in SupportedSmartGlasses.list) return
         customizeAdapterItemView((parent.layoutManager as LinearLayoutManager).findViewByPosition(itemPosition)!!)
         addItemViewDividers(outRect, itemPosition)
     }
@@ -108,12 +108,12 @@ class SmartGlassItemDecorator(val recyclerView: RecyclerView) : RecyclerView.Ite
     }
 
     private fun addItemViewDividers(outRect: Rect, itemPosition: Int) = when {
-        !shouldScrollItems() -> Unit
-        itemPosition == 0 ->
+        !shouldScrollItems()                                 -> Unit
+        itemPosition == 0                                    ->
             outRect.left = if (shouldScrollItems()) halfScreenDivider - (recyclerView.layoutManager!!.findViewByPosition(0)!!.width / 2) else 0
         itemPosition == recyclerView.adapter!!.itemCount - 1 ->
             outRect.right = if (shouldScrollItems()) halfScreenDivider - (recyclerView.layoutManager!!.findViewByPosition(recyclerView.adapter!!.itemCount - 1)!!.width / 2) else 0
-        else -> Unit
+        else                                                 -> Unit
     }
 
     private fun shouldScrollItems() = recyclerView.adapter!!.itemCount > MAX_ITEM_ON_SCREEN + 1

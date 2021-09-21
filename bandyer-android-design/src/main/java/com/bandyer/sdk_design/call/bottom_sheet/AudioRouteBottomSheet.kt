@@ -74,9 +74,7 @@ class AudioRouteBottomSheet<T : ActionItem>(
         bottomSheetLayoutContent.backgroundView?.alpha = 1f
 
         if ((recyclerView!!.layoutManager as? LinearLayoutManager)?.orientation == LinearLayoutManager.HORIZONTAL) {
-            lineView?.visibility = View.INVISIBLE
-            lineView?.isClickable = false
-            lineView?.requestLayout()
+            lineView?.state = State.HIDDEN
         }
 
         expand()

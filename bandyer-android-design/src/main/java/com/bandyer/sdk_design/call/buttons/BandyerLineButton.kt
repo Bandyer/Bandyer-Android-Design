@@ -18,6 +18,7 @@ package com.bandyer.sdk_design.call.buttons
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import com.bandyer.sdk_design.R
 import com.google.android.material.button.MaterialButton
 
@@ -40,6 +41,10 @@ class BandyerLineButton @JvmOverloads constructor(context: Context, attrs: Attri
             if (field == value) return
             field = value
             refreshDrawableState()
+            if (value == State.HIDDEN) {
+                visibility = View.INVISIBLE
+                isClickable = false
+            }
         }
 
     /**
@@ -57,6 +62,14 @@ class BandyerLineButton @JvmOverloads constructor(context: Context, attrs: Attri
      * @constructor
      */
     enum class State(val value: IntArray) {
+
+        /**
+         * H i d d e n
+         *
+         * @constructor Create empty H i d d e n
+         */
+        HIDDEN(intArrayOf(R.attr.bandyer_state_hidden)),
+
         /**
          * C o l l a p s e d
          *
