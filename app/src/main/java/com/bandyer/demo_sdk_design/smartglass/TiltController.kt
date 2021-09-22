@@ -6,9 +6,11 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
+import android.util.Log
 import android.view.Surface
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
+import java.util.*
 import kotlin.math.abs
 
 /**
@@ -39,6 +41,8 @@ class TiltController constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ctx.display
         else windowManager.defaultDisplay
 
+    private val movingAverage: Queue<Float> = LinkedList()
+
     private val rotationMatrix = FloatArray(16)
     private val orientation = FloatArray(9)
 
@@ -49,7 +53,7 @@ class TiltController constructor(
     private var oldX = 0f
 
     init {
-       requestAllSensors()
+        requestAllSensors()
     }
 
     override fun onSensorChanged(event: SensorEvent) {
@@ -61,7 +65,7 @@ class TiltController constructor(
     }
 
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
-        if(this.accuracy != accuracy)
+        if (this.accuracy != accuracy)
             this.accuracy = accuracy
     }
 
@@ -108,7 +112,34 @@ class TiltController constructor(
 
         // Convert radians to degrees and flat
         val newX = Math.toDegrees(orientation[1].toDouble()).toFloat()
-        val newZ = Math.toDegrees(orientation[0].toDouble()).toFloat()
+//        val newZ = Math.toDegrees(orientation[0].toDouble()).toFloat()
+
+        //------------------------------------------------
+        val value = orientation[0]
+
+        if(movingAverage.size < WINDOW_SIZE) {
+            movingAverage.add(value)
+            return
+        }
+
+        movingAverage.poll()
+
+        var newAverage = 0.2f * value
+        var windowAverage = 0f
+        movingAverage.forEach {
+            windowAverage += it
+        }
+        windowAverage /= WINDOW_SIZE
+
+        newAverage += 0.8f * windowAverage
+
+        movingAverage.add(newAverage)
+
+        val newZ = Math.toDegrees(newAverage.toDouble()).toFloat()
+
+        Log.e("tilt:smoothed-z", newZ.toString())
+
+        //------------------------------------------------
 
         // How many degrees has the users head rotated since last time.
         var deltaX = applyThreshold(angularRounding(newX - oldX))
@@ -176,5 +207,6 @@ class TiltController constructor(
 
     private companion object {
         const val THRESHOLD_MOTION = 0.1f
+        const val WINDOW_SIZE = 10
     }
 }
