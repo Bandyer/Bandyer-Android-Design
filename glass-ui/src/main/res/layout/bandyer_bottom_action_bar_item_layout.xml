@@ -7,9 +7,7 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bandyer_gesture_icon"
-        style="?attr/bandyer_iconStyle"
-        android:layout_width="@dimen/bandyer_dimen_space24"
-        android:layout_height="@dimen/bandyer_dimen_space24" />
+        style="?attr/bandyer_iconStyle" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_gesture_text"
