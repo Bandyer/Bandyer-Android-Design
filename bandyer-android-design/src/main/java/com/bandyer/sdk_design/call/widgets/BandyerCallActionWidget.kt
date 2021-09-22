@@ -71,6 +71,8 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
     private var anchoredViews: MutableList<Pair<View, Int>> = mutableListOf()
     private var currentBottomSheetLayout: BottomSheetLayoutContent? = null
 
+    private var currentCallBottomSheetLayoutType: BottomSheetLayoutType? = null
+
     private var currentShownBottomSheet: BaseBandyerBottomSheet? = null
 
     private var isDraggingEnabled = true
@@ -186,7 +188,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
             when (bottomSheet) {
                 is CallBottomSheet<*> -> disableAutoHide()
                 is AudioRouteBottomSheet<*> -> {
-                    if (!isHidden) showCallControls(collapsible, fixed)
+                    if (!isHidden) showCallControls(collapsible, fixed, bottomSheetLayoutType = currentCallBottomSheetLayoutType)
                     disposeBottomSheet(bottomSheet)
                 }
                 is RingingBottomSheet<*> -> disposeBottomSheet(bottomSheet)
@@ -624,6 +626,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
     private var audioRouteBottomSheet: AudioRouteBottomSheet<T>? = null
 
     private fun createCallBottomSheet(bottomSheetLayoutType: BottomSheetLayoutType) {
+        currentCallBottomSheetLayoutType = bottomSheetLayoutType
         if (bottomSheetLayoutType != callBottomSheet?.bottomSheetLayoutType)
             disposeBottomSheet(callBottomSheet)
         else return
