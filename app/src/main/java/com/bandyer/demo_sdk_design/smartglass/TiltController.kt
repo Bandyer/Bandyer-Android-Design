@@ -41,16 +41,17 @@ class TiltController constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ctx.display
         else windowManager.defaultDisplay
 
-    private val movingAverage: Queue<Float> = LinkedList()
+    private val buffer: Queue<Float> = LinkedList()
 
     private val rotationMatrix = FloatArray(16)
+    private val remappedMatrix = FloatArray(16)
     private val orientation = FloatArray(9)
 
     private var accuracy = 0
     private var initialized = false
 
-    private var oldZ = 0f
-    private var oldX = 0f
+    private var oldAzimuth = 0f
+    private var oldPitch = 0f
 
     init {
         requestAllSensors()
@@ -102,68 +103,46 @@ class TiltController constructor(
 
         SensorManager.remapCoordinateSystem(
             rotationMatrix,
-            SensorManager.AXIS_X,
-            SensorManager.AXIS_Z,
-            rotationMatrix
+            worldAxisForDeviceAxisX,
+            worldAxisForDeviceAxisY,
+            remappedMatrix
         )
 
         // Transform rotation matrix into azimuth/pitch/roll
-        SensorManager.getOrientation(rotationMatrix, orientation)
+        SensorManager.getOrientation(remappedMatrix, orientation)
 
+        //------------------------------------------------
         // Convert radians to degrees and flat
-        val newX = Math.toDegrees(orientation[1].toDouble()).toFloat()
-//        val newZ = Math.toDegrees(orientation[0].toDouble()).toFloat()
+        val azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
 
+        buffer.add(azimuth)
+        if(buffer.size < WINDOW_SIZE) return
+        buffer.poll()
+
+        val average = buffer.average().toFloat()
+        val smoothedAzimuth = ATTENUATION_FACTOR * azimuth + (1f - ATTENUATION_FACTOR) * average
         //------------------------------------------------
-        val value = Math.toDegrees(orientation[0].toDouble()).toFloat()
+        // Convert radians to degrees and flat
+        val pitch = Math.toDegrees(orientation[1].toDouble()).toFloat()
 
-        if(movingAverage.size < WINDOW_SIZE) {
-            movingAverage.add(value)
-            return
-        }
-
-        movingAverage.poll()
-
-        var newAverage = 0.2f * value
-
-        newAverage += 0.8f * computeAverage()
-
-        movingAverage.add(newAverage)
-
-        Log.e("tilt:smoothed-z", newAverage.toString())
-
-        val newZ = newAverage
-        //------------------------------------------------
+        Log.e("tilt: a", azimuth.toString())
+        Log.e("tilt: p", pitch.toString())
 
         // How many degrees has the users head rotated since last time.
-        var deltaX = applyThreshold(angularRounding(newX - oldX))
-        var deltaZ = applyThreshold(angularRounding(newZ - oldZ))
+        var deltaPitch = applyThreshold(angularRounding(pitch - oldPitch))
+        var deltaAzimuth = applyThreshold(angularRounding(smoothedAzimuth - oldAzimuth))
 
         // Ignore first head position in order to find base line
         if (!initialized) {
             initialized = true
-            deltaX = 0f
-            deltaZ = 0f
+            deltaPitch = 0f
+            deltaAzimuth = 0f
         }
-        oldX = newX
-        oldZ = newZ
+        oldPitch = pitch
+        oldAzimuth = smoothedAzimuth
 
-        listener.onTilt(deltaZ, deltaX)
+        listener.onTilt(deltaAzimuth, deltaPitch)
     }
-
-    fun computeAverage(): Float {
-        var windowAverage = 0f
-        movingAverage.forEach {
-            windowAverage += it
-        }
-        windowAverage /= WINDOW_SIZE
-        return windowAverage
-    }
-
-
-
-
-
 
     /**
      * Apply a minimum value to the input
@@ -216,5 +195,6 @@ class TiltController constructor(
     private companion object {
         const val THRESHOLD_MOTION = 0.1f
         const val WINDOW_SIZE = 10
+        const val ATTENUATION_FACTOR = 0.2f
     }
 }
