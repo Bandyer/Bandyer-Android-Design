@@ -19,20 +19,7 @@ class BandyerBottomActionBarItemView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    private var binding: BandyerBottomActionBarItemLayoutBinding =
-        BandyerBottomActionBarItemLayoutBinding.inflate(LayoutInflater.from(context), this, true)
-
     init {
-        isClickable = true
-    }
-
-    /**
-     * Set the action's text
-     *
-     * @param text The text to set
-     */
-    fun setActionText(text: String?) {
-        binding.bandyerActionText.text = text
-        contentDescription = text
+        BandyerBottomActionBarItemLayoutBinding.inflate(LayoutInflater.from(context), this, true)
     }
 }

@@ -3,7 +3,6 @@ package com.bandyer.video_android_glass_ui.bottom_action_bar
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.View
 import android.widget.LinearLayout
 import com.bandyer.video_android_glass_ui.databinding.BandyerBottomActionBarLayoutBinding
 
@@ -19,30 +18,6 @@ class BandyerBottomActionBarView @JvmOverloads constructor(
 
     private var binding: BandyerBottomActionBarLayoutBinding =
         BandyerBottomActionBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
-
-    /**
-     * Set the swipe action text. If it is set to null,
-     * the parent [BandyerBottomActionBarItemView]'s visibility is set to View.GONE
-     *
-     * @param text String?
-     */
-    fun setSwipeText(text: String?) = binding.bandyerSwipe.setActionTextOrHide(text)
-
-    /**
-     * Set the tap action text. If it is set to null,
-     * the parent [BandyerBottomActionBarItemView]'s visibility is set to View.GONE
-     *
-     * @param text String?
-     */
-    fun setTapText(text: String?) = binding.bandyerTap.setActionTextOrHide(text)
-
-    /**
-     * Set the swipe down action text. If it is set to null,
-     * the parent [BandyerBottomActionBarItemView]'s visibility is set to View.GONE
-     *
-     * @param text String?
-     */
-    fun setSwipeDownText(text: String?) = binding.bandyerSwipeDown.setActionTextOrHide(text)
 
     /**
      * Set an on click listener on the swipe element. Needed for realwear glasses.
@@ -73,7 +48,4 @@ class BandyerBottomActionBarView @JvmOverloads constructor(
         binding.bandyerSwipeDown.setOnClickListener {
             callback.invoke()
         }
-
-    private fun BandyerBottomActionBarItemView.setActionTextOrHide(text: String?) =
-        text?.let { setActionText(it) } ?: kotlin.run { visibility = View.GONE }
 }
