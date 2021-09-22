@@ -102,8 +102,8 @@ class TiltController constructor(
 
         SensorManager.remapCoordinateSystem(
             rotationMatrix,
-            worldAxisForDeviceAxisX,
-            worldAxisForDeviceAxisY,
+            SensorManager.AXIS_X,
+            SensorManager.AXIS_Z,
             rotationMatrix
         )
 
@@ -115,7 +115,7 @@ class TiltController constructor(
 //        val newZ = Math.toDegrees(orientation[0].toDouble()).toFloat()
 
         //------------------------------------------------
-        val value = orientation[0]
+        val value = Math.toDegrees(orientation[0].toDouble()).toFloat()
 
         if(movingAverage.size < WINDOW_SIZE) {
             movingAverage.add(value)
@@ -125,20 +125,14 @@ class TiltController constructor(
         movingAverage.poll()
 
         var newAverage = 0.2f * value
-        var windowAverage = 0f
-        movingAverage.forEach {
-            windowAverage += it
-        }
-        windowAverage /= WINDOW_SIZE
 
-        newAverage += 0.8f * windowAverage
+        newAverage += 0.8f * computeAverage()
 
         movingAverage.add(newAverage)
 
-        val newZ = Math.toDegrees(newAverage.toDouble()).toFloat()
+        Log.e("tilt:smoothed-z", newAverage.toString())
 
-        Log.e("tilt:smoothed-z", newZ.toString())
-
+        val newZ = newAverage
         //------------------------------------------------
 
         // How many degrees has the users head rotated since last time.
@@ -156,6 +150,20 @@ class TiltController constructor(
 
         listener.onTilt(deltaZ, deltaX)
     }
+
+    fun computeAverage(): Float {
+        var windowAverage = 0f
+        movingAverage.forEach {
+            windowAverage += it
+        }
+        windowAverage /= WINDOW_SIZE
+        return windowAverage
+    }
+
+
+
+
+
 
     /**
      * Apply a minimum value to the input
