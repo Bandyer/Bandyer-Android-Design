@@ -34,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
@@ -41,7 +42,6 @@ import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.BandyerBottomSheetLayout
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutContent
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
-import com.bandyer.sdk_design.call.bottom_sheet.utils.BandyerBottomSheetLayoutManagerApplier
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton.State
 import com.bandyer.sdk_design.extensions.*
@@ -71,7 +71,7 @@ open class BaseBandyerBottomSheet(
     context: AppCompatActivity,
     private var views: List<ActionItem>,
     private val peekHeight: Int?,
-    bottomSheetLayoutType: BottomSheetLayoutType,
+    val bottomSheetLayoutType: BottomSheetLayoutType,
     @StyleRes val bottomSheetLayoutStyle: Int
 ) : BandyerBottomSheet, SystemViewLayoutObserver {
 
@@ -460,7 +460,23 @@ open class BaseBandyerBottomSheet(
     override fun isVisible() = bottomSheetLayoutContent.visibility == View.VISIBLE && initialized
 
     init {
-        BandyerBottomSheetLayoutManagerApplier(recyclerView!!, bottomSheetLayoutType)
+        when (bottomSheetLayoutType) {
+            is BottomSheetLayoutType.GRID -> {
+                recyclerView!!.layoutManager =
+                    GridLayoutManager(
+                        recyclerView!!.context,
+                        bottomSheetLayoutType.spanSize,
+                        if (bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL) LinearLayoutManager.HORIZONTAL else LinearLayoutManager.VERTICAL,
+                        false)
+            }
+            is BottomSheetLayoutType.LIST -> {
+                recyclerView!!.layoutManager =
+                    LinearLayoutManager(
+                        recyclerView!!.context,
+                        if (bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL) LinearLayoutManager.HORIZONTAL else LinearLayoutManager.VERTICAL,
+                        false)
+            }
+        }
         recyclerView!!.adapter = fastAdapter
         recyclerView!!.itemAnimator = AlphaCrossFadeAnimator()
     }

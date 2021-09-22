@@ -18,17 +18,81 @@ package com.bandyer.sdk_design.bottom_sheet.view
 
 /**
  * Bandyer bottom sheet layout types supported
+ * @property orientation Orientation
+ * @constructor
  */
-sealed class BottomSheetLayoutType {
+sealed class BottomSheetLayoutType(val orientation: Orientation) {
 
     /**
-     * Grid bottom sheet layout type
-     * @property spanSize grid span size
+     * Bandyer bottom sheet layout orientation
      */
-    class GRID(val spanSize: Int): BottomSheetLayoutType()
+    enum class Orientation {
+        /**
+         * Horizontal
+         */
+        HORIZONTAL,
+
+        /**
+         * Vertical
+         */
+        VERTICAL
+    }
+    /**
+     * Grid bottom sheet layout type
+     * @property spanSize Int grid span size
+     * @constructor
+     */
+    class GRID(val spanSize: Int, orientation: Orientation): BottomSheetLayoutType(orientation) {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is GRID) return false
+
+            if (spanSize != other.spanSize) return false
+            if (orientation != other.orientation) return false
+
+            return true
+        }
+
+        /**
+         * @supperss
+         */
+        override fun hashCode(): Int = super.hashCode()
+    }
 
     /**
      * List bottom sheet layout type
+     * @constructor
      */
-    class LIST: BottomSheetLayoutType()
+    class LIST(orientation: Orientation): BottomSheetLayoutType(orientation){
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is LIST) return false
+
+            if (orientation != other.orientation) return false
+
+            return true
+        }
+
+        /**
+         * @supperss
+         */
+        override fun hashCode(): Int = super.hashCode()
+    }
+
+    /**
+     * @suppress
+     */
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is BottomSheetLayoutType) return false
+
+        if (orientation != other.orientation) return false
+
+        return true
+    }
+
+    /**
+     * @suppress
+     */
+    override fun hashCode(): Int = javaClass.hashCode()
 }

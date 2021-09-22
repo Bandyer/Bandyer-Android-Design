@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import androidx.annotation.Px
 import androidx.appcompat.app.AppCompatActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.recyclerview.widget.RecyclerView
 import com.badoo.mobile.util.WeakHandler
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.BandyerActionBottomSheet
@@ -34,6 +35,7 @@ import com.bandyer.sdk_design.bottom_sheet.OnStateChangedBottomSheetListener
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutContent
+import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
 import com.bandyer.sdk_design.call.bottom_sheet.AudioRouteBottomSheet
 import com.bandyer.sdk_design.call.bottom_sheet.CallBottomSheet
 import com.bandyer.sdk_design.call.bottom_sheet.OnAudioRouteBottomSheetListener
@@ -74,6 +76,11 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
     private var isDraggingEnabled = true
 
     private var mCurrentAudioRoute: AudioRoute? = null
+
+    /**
+     * Optional item decoration to be added on action items' recycler view
+     */
+    var itemDecoration: RecyclerView.ItemDecoration? = null
 
     /**
      * Sliding listener for when the widget has been slided
@@ -497,17 +504,28 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         }
     }
 
+
     /**
      * Show the call controls
      * @param collapsible true if the bottomSheet should be collapsible, false otherwise
      * @param fixed true if it can not be moved, false otherwise
      * @param collapsed optional initial state collapsed
+     * @param bottomSheetLayoutType BottomSheetLayoutType? optional bottom sheet layout type
+     * @return Boolean
      */
     @JvmOverloads
-    fun showCallControls(collapsible: Boolean, fixed: Boolean = false, collapsed: Boolean = false) = coordinatorLayout.post {
-        createCallBottomSheet()
+    fun showCallControls(
+        collapsible: Boolean,
+        fixed: Boolean = false,
+        collapsed: Boolean = false,
+        bottomSheetLayoutType: BottomSheetLayoutType? =
+            BottomSheetLayoutType.GRID(
+                if (callActionItems.size > DEFAULT_ACTION_ITEM_GRID_SPAN_SIZE) DEFAULT_ACTION_ITEM_GRID_SPAN_SIZE
+                else callActionItems.size, BottomSheetLayoutType.Orientation.VERTICAL)) = coordinatorLayout.post {
+        createCallBottomSheet(bottomSheetLayoutType!!)
         isHidden = false
         currentBottomSheetLayout = callBottomSheet?.bottomSheetLayoutContent
+        addItemDecoration()
         disposeBottomSheet(ringingBottomSheet)
         disposeBottomSheet(audioRouteBottomSheet)
         this.collapsible = collapsible
@@ -519,12 +537,14 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
 
     /**
      * Show ringing controls like Hangup and Answer
+     * @param bottomSheetLayoutType BottomSheetLayoutType? optional bottom sheet layout type
+     * @return Boolean
      */
-    fun showRingingControls() = coordinatorLayout.post {
-        createRingingBottomSheet()
+    fun showRingingControls(bottomSheetLayoutType: BottomSheetLayoutType? = BottomSheetLayoutType.GRID(2, BottomSheetLayoutType.Orientation.VERTICAL)) = coordinatorLayout.post {
+        createRingingBottomSheet(bottomSheetLayoutType!!)
         isHidden = false
         currentBottomSheetLayout = ringingBottomSheet?.bottomSheetLayoutContent
-
+        addItemDecoration()
         ringingBottomSheet?.bottomSheetLayoutContent?.id = R.id.bandyer_id_bottom_sheet_ringing
         if (callBottomSheet?.isVisible() == true || audioRouteBottomSheet?.isVisible() == true) {
             disposeBottomSheet(callBottomSheet)
@@ -533,21 +553,29 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         ringingBottomSheet?.show()
     }
 
+    /**
+     * Show the audioRoute bottomSheet
+     * @param bottomSheetLayoutType BottomSheetLayoutType? optional bottom sheet layout type
+     * @return Boolean
+     */
+    fun showAudioRouteBottomSheet(bottomSheetLayoutType: BottomSheetLayoutType? = BottomSheetLayoutType.LIST(BottomSheetLayoutType.Orientation.VERTICAL)) = coordinatorLayout.post {
+        createAudioRouteBottomSheet(bottomSheetLayoutType!!)
+        isHidden = false
+        audioRouteBottomSheet?.bottomSheetLayoutContent?.id = R.id.bandyer_id_bottom_sheet_audio_route
+        callBottomSheet?.hide(true)
+        currentBottomSheetLayout = audioRouteBottomSheet?.bottomSheetLayoutContent
+        addItemDecoration()
+        audioRouteBottomSheet?.show()
+    }
+
     override fun onHidingTimerFinished() {
         if (!collapsible) return
         callBottomSheet?.collapse()
     }
 
-    /**
-     * Show the audioRoute bottomSheet
-     */
-    fun showAudioRouteBottomSheet() = coordinatorLayout.post {
-        createAudioRouteBottomSheet()
-        isHidden = false
-        audioRouteBottomSheet?.bottomSheetLayoutContent?.id = R.id.bandyer_id_bottom_sheet_audio_route
-        callBottomSheet?.hide(true)
-        currentBottomSheetLayout = audioRouteBottomSheet?.bottomSheetLayoutContent
-        audioRouteBottomSheet?.show()
+    private fun addItemDecoration() = itemDecoration?.let {
+        if (currentBottomSheetLayout!!.recyclerView!!.itemDecorationCount == 0)
+            currentBottomSheetLayout!!.recyclerView!!.addItemDecoration(it)
     }
 
     /**
@@ -595,35 +623,44 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
 
     private var audioRouteBottomSheet: AudioRouteBottomSheet<T>? = null
 
-    private fun createCallBottomSheet() {
-        if (callBottomSheet != null) return
+    private fun createCallBottomSheet(bottomSheetLayoutType: BottomSheetLayoutType) {
+        if (bottomSheetLayoutType != callBottomSheet?.bottomSheetLayoutType)
+            disposeBottomSheet(callBottomSheet)
+        else return
         callBottomSheet = CallBottomSheet(
             context,
             callActionItems,
+            bottomSheetLayoutType,
             context.getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_bottomSheetCallStyle)
         )
         callBottomSheet?.onStateChangedBottomSheetListener = onBottomSheetCallBacks
         callBottomSheet?.onActionBottomSheetListener = onBottomSheetAction
     }
 
-    private fun createRingingBottomSheet() {
-        if (ringingBottomSheet != null) return
+    private fun createRingingBottomSheet(bottomSheetLayoutType: BottomSheetLayoutType) {
+        if (bottomSheetLayoutType != ringingBottomSheet?.bottomSheetLayoutType)
+            disposeBottomSheet(callBottomSheet)
+        else return
         ringingBottomSheet = RingingBottomSheet(
             context,
+            bottomSheetLayoutType,
             context.getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_bottomSheetRingingStyle)
         )
         ringingBottomSheet?.onStateChangedBottomSheetListener = onBottomSheetCallBacks
         ringingBottomSheet?.onActionBottomSheetListener = onBottomSheetAction
     }
 
-    private fun createAudioRouteBottomSheet() {
-        if (audioRouteBottomSheet != null) return
+    private fun createAudioRouteBottomSheet(bottomSheetLayoutType: BottomSheetLayoutType) {
+        if (bottomSheetLayoutType != audioRouteBottomSheet?.bottomSheetLayoutType)
+            disposeBottomSheet(audioRouteBottomSheet)
+        else return
         audioRouteBottomSheet = AudioRouteBottomSheet(
             context = context,
-            onAudioRoutesRequest = onAudioRoutesListener,
             audioRouteItems = onAudioRoutesRequest?.onAudioRoutesRequested(),
-            initial_selection = -1,
-            bottomSheetStyle = context.getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_bottomSheetAudioRouteStyle)
+            initialSelection = -1,
+            bottomSheetLayoutType = bottomSheetLayoutType,
+            bottomSheetStyle = context.getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_bottomSheetAudioRouteStyle),
+            onAudioRoutesRequest = onAudioRoutesListener
         )
         audioRouteBottomSheet?.onStateChangedBottomSheetListener = onBottomSheetCallBacks
         audioRouteBottomSheet?.onActionBottomSheetListener = onBottomSheetAction
@@ -711,5 +748,15 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
          * Callback fired when the widget has been programmatically hidden
          */
         fun onHidden()
+    }
+
+    /**
+     * BandyerCallActionWidget singleton
+     */
+    companion object {
+        /**
+         * Default action items grid span size
+         */
+        const val DEFAULT_ACTION_ITEM_GRID_SPAN_SIZE = 4
     }
 }

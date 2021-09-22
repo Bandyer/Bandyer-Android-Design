@@ -30,8 +30,6 @@ import com.bandyer.sdk_design.call.buttons.BandyerAudioRouteActionButton
 import com.bandyer.sdk_design.extensions.getCallActionItemStyle
 import com.bandyer.sdk_design.extensions.getRingingActionItemStyle
 import com.bandyer.sdk_design.extensions.setAllEnabled
-import com.bandyer.sdk_design.utils.AndroidDevice
-import com.bandyer.sdk_design.utils.SupportedSmartGlasses
 
 /**
  * Class representing a Call Action
@@ -63,12 +61,10 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
          */
         fun getActions(ctx: Context, micToggled: Boolean?, cameraToggled: Boolean?, withChat: Boolean, withWhiteboard: Boolean, withFileShare: Boolean, withScreenShare: Boolean): List<CallAction> =
             mutableListOf<CallAction>().apply {
-                val isSupportedSmartGlass = AndroidDevice.CURRENT in SupportedSmartGlasses.list
-
                 if (micToggled != null) add(MICROPHONE(micToggled, ctx))
                 if (cameraToggled != null) {
                     add(CAMERA(cameraToggled, ctx))
-                    if (!isSupportedSmartGlass) add(SWITCH_CAMERA(ctx))
+                    add(SWITCH_CAMERA(ctx))
                 }
                 if (withChat) add(CHAT(ctx))
                 if (withWhiteboard) add(WHITEBOARD(ctx))
@@ -76,7 +72,7 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
                 if (withFileShare) add(FILE_SHARE(ctx))
                 if (withScreenShare) add(SCREEN_SHARE(false, ctx))
                 if (size < 3) add(1, HANGUP(ctx))
-                else add(if (isSupportedSmartGlass) 2 else 3, HANGUP(ctx))
+                else add(3, HANGUP(ctx))
             }
     }
 

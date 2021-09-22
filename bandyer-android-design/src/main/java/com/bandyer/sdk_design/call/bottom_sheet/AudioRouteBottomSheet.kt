@@ -34,6 +34,10 @@ import com.mikepenz.fastadapter.select.SelectExtension
 /**
  * AudioRoute BottomSheet to display the available audioRoutes of the device
  * @param context Context
+ * @param audioRouteItems items to be shown
+ * @param initialSelection initial selected position
+ * @param bottomSheetLayoutType bottom sheet layout type
+ * @param bottomSheetStyle bottom sheet style
  * @param onAudioRoutesRequest used to request available audioRoutes
  * @constructor
  * @author kristiyan
@@ -42,15 +46,16 @@ import com.mikepenz.fastadapter.select.SelectExtension
 class AudioRouteBottomSheet<T : ActionItem>(
     val context: AppCompatActivity,
     audioRouteItems: List<AudioRoute>?,
-    initial_selection: Int = -1,
+    initialSelection: Int = -1,
+    bottomSheetLayoutType: BottomSheetLayoutType,
     bottomSheetStyle: Int,
     var onAudioRoutesRequest: OnAudioRouteBottomSheetListener?
 ) : BandyerSelectableBottomSheet<T>(
     context,
-    initial_selection,
+    initialSelection,
     audioRouteItems as List<T>? ?: listOf<T>(),
     0,
-    BottomSheetLayoutType.LIST(),
+    bottomSheetLayoutType,
     bottomSheetStyle
 ) {
 
@@ -73,9 +78,8 @@ class AudioRouteBottomSheet<T : ActionItem>(
         bottomSheetBehaviour!!.skipAnchor = true
         bottomSheetLayoutContent.backgroundView?.alpha = 1f
 
-        if ((recyclerView!!.layoutManager as? LinearLayoutManager)?.orientation == LinearLayoutManager.HORIZONTAL) {
+        if ((recyclerView!!.layoutManager as? LinearLayoutManager)?.orientation == LinearLayoutManager.HORIZONTAL)
             lineView?.state = State.HIDDEN
-        }
 
         expand()
     }
