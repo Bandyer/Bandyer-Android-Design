@@ -13,7 +13,7 @@
     <string name="bandyer_glass_confirm">conferma</string>
     <string name="bandyer_glass_accept">accetta</string>
     <string name="bandyer_glass_decline">rifiuta</string>
-    <string name="bandyer_glass_end_call">aggangia</string>
+    <string name="bandyer_glass_hangup">chiudi</string>
     <string name="bandyer_glass_volume">Volume</string>
     <string name="bandyer_glass_zoom">Zoom</string>
     <string name="bandyer_glass_is_calling">ti sta chiamando…</string>

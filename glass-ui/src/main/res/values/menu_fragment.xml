@@ -27,12 +27,9 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout.Menu</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeMenu</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout">
         <item name="android:contentDescription">@string/bandyer_glass_browse</item>
+        <item name="android:clickable">true</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeMenu" parent="BandyerSDKDesign.TextView.GlassLabel">
@@ -40,12 +37,9 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.Menu</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownMenu</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout">
         <item name="android:contentDescription">@string/bandyer_glass_close</item>
+        <item name="android:clickable">true</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownMenu" parent="BandyerSDKDesign.TextView.GlassLabel">
@@ -53,12 +47,9 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.Menu</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapMenu</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout">
         <item name="android:contentDescription">@string/bandyer_glass_select</item>
+        <item name="android:clickable">true</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.TapMenu" parent="BandyerSDKDesign.TextView.GlassLabel">

@@ -55,12 +55,9 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout.Participants</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeParticipants</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout">
         <item name="android:contentDescription">@string/bandyer_glass_browse</item>
+        <item name="android:clickable">true</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeParticipants" parent="BandyerSDKDesign.TextView.GlassLabel">
@@ -68,12 +65,9 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.Participants</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownParticipants</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout">
         <item name="android:contentDescription">@string/bandyer_glass_close</item>
+        <item name="android:clickable">true</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownParticipants" parent="BandyerSDKDesign.TextView.GlassLabel">
