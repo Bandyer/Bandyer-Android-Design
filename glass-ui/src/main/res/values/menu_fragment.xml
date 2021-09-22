@@ -27,8 +27,12 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout.Menu</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeMenu</item>
         <item name="android:contentDescription">@string/bandyer_glass_browse</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout">
         <item name="android:clickable">true</item>
     </style>
 
@@ -37,8 +41,12 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.Menu</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownMenu</item>
         <item name="android:contentDescription">@string/bandyer_glass_close</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout">
         <item name="android:clickable">true</item>
     </style>
 
@@ -47,8 +55,12 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.Menu</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapMenu</item>
         <item name="android:contentDescription">@string/bandyer_glass_select</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout">
         <item name="android:clickable">true</item>
     </style>
 

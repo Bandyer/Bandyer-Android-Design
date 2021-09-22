@@ -43,10 +43,11 @@
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.EndCall" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.EndCall</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownEndCall</item>
+        <item name="android:contentDescription">@string/bandyer_glass_cancel</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.EndCall" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout">
-        <item name="android:contentDescription">@string/bandyer_glass_cancel</item>
+        <item name="android:clickable">true</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownEndCall" parent="BandyerSDKDesign.TextView.GlassLabel">
@@ -56,10 +57,11 @@
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.EndCall" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.EndCall</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapEndCall</item>
+        <item name="android:contentDescription">@string/bandyer_glass_confirm</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.EndCall" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout">
-        <item name="android:contentDescription">@string/bandyer_glass_confirm</item>
+        <item name="android:clickable">true</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.TapEndCall" parent="BandyerSDKDesign.TextView.GlassLabel">
