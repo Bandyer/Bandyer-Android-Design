@@ -42,7 +42,7 @@ class BandyerLineButton @JvmOverloads constructor(context: Context, attrs: Attri
             field = value
             refreshDrawableState()
             if (value == State.HIDDEN) {
-                visibility = View.INVISIBLE
+                visibility = View.GONE
                 isClickable = false
             }
         }
