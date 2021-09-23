@@ -50,17 +50,16 @@ open class BandyerSelectableBottomSheet<T : ActionItem>(
         selectExtension.allowDeselection = false
         selectExtension.multiSelect = false
         selectExtension.selectWithItemUpdate = true
+        if (selection != -1) {
+            fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.select(selection)
+            currentItemSelected = fastItemAdapter.getAdapterItem(selection)
+        }
         selectExtension.selectionListener = object : ISelectionListener<AdapterActionItem> {
             override fun onSelectionChanged(item: AdapterActionItem, selected: Boolean) {
                 if (!selected) return
                 currentItemSelected = item
                 notifyItemSelected(item, fastItemAdapter.adapterItems.indexOf(item))
             }
-        }
-
-        if (selection != -1) {
-            fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.select(selection)
-            currentItemSelected = fastItemAdapter.getAdapterItem(selection)
         }
     }
 
