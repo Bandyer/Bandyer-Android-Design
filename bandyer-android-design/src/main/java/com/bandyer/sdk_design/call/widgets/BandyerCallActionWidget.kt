@@ -594,6 +594,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
      */
     fun selectAudioRoute(audioRoute: AudioRoute?) {
         audioRoute ?: return
+        if (mCurrentAudioRoute == audioRoute) return
         mCurrentAudioRoute = audioRoute
         audioRouteBottomSheet?.selectAudioRoute(audioRoute)
         callBottomSheet?.updateAudioRouteIcon(audioRoute)
