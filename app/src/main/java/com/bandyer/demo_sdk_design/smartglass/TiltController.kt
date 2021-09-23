@@ -63,7 +63,7 @@ class TiltController constructor(
     private var oldPitch = 0f
     private var oldRoll = 0f
 
-    // The delta for the euler angles
+    // The delta difference between the new azimuth/pitch/roll value and the old one
     private var deltaAzimuth = 0f
     private var deltaPitch = 0f
     private var deltaRoll = 0f
@@ -94,7 +94,8 @@ class TiltController constructor(
         // Get rotation's based on vector locations
         SensorManager.getRotationMatrixFromVector(rotationMatrix, rotationVector)
 
-        remapMatrix()
+        // Remap the device's coordinate system
+        remapMatrix(display?.rotation, rotationMatrix, remappedMatrix)
 
         // Transform rotation matrix into azimuth/pitch/roll
         SensorManager.getOrientation(remappedMatrix, orientation)
@@ -153,36 +154,42 @@ class TiltController constructor(
     }
 
     /**
-     * Remap the device's coordinate system
+     * Remap the device's coordinate system of [matrix] and store the result in [newMatrix]
+     *
+     * @param displayRotation Int?
+     * @param matrix FloatArray
+     * @param newMatrix FloatArray
      */
-    private fun remapMatrix() {
-        val worldAxes = computeWorldAxisForDeviceAxes()
+    private fun remapMatrix(displayRotation: Int?, matrix: FloatArray, newMatrix: FloatArray) {
+        val worldAxes = computeWorldAxisForDeviceAxes(displayRotation)
 
         SensorManager.remapCoordinateSystem(
-            rotationMatrix,
+            matrix,
             worldAxes.first,
             worldAxes.second,
-            remappedMatrix
+            newMatrix
         )
     }
 
     /**
      * Compute a pair of values. The first value is the world axis for the device x axis and the second one is the world axis for the device y axis
+     * The device rotation is used to compute the updated axes
      *
+     * @param displayRotation Int?
      * @return Pair<Int, Int>
      */
-    private fun computeWorldAxisForDeviceAxes(): Pair<Int, Int> =
+    private fun computeWorldAxisForDeviceAxes(displayRotation: Int?): Pair<Int, Int> =
         when {
             isGoogleGlasses -> Pair(SensorManager.AXIS_X, SensorManager.AXIS_Y)
-            display?.rotation == Surface.ROTATION_90 -> Pair(
+            displayRotation == Surface.ROTATION_90 -> Pair(
                 SensorManager.AXIS_Z,
                 SensorManager.AXIS_MINUS_X
             )
-            display?.rotation == Surface.ROTATION_180 -> Pair(
+            displayRotation == Surface.ROTATION_180 -> Pair(
                 SensorManager.AXIS_MINUS_X,
                 SensorManager.AXIS_MINUS_Z
             )
-            display?.rotation == Surface.ROTATION_270 -> Pair(
+            displayRotation == Surface.ROTATION_270 -> Pair(
                 SensorManager.AXIS_MINUS_Z,
                 SensorManager.AXIS_X
             )
