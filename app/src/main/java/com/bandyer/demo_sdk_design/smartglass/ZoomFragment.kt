@@ -82,7 +82,7 @@ class ZoomFragment : BandyerGlassZoomFragment(), TiltController.TiltListener, Ba
         root!!.setAlphaWithAnimation(1f, 100L)
     }
 
-    override fun onTilt(x: Float, y: Float) {
+    override fun onTilt(x: Float, y: Float, z: Float) {
         deltaX += x
         if (deltaX >= 2) {
             slider!!.increaseProgress(0.1f)

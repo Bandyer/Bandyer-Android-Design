@@ -166,7 +166,7 @@ class ChatFragment : BandyerGlassChatFragment(), TiltController.TiltListener {
         pagesIds = arrayListOf()
     }
 
-    override fun onTilt(x: Float, y: Float) = rvMessages!!.scrollBy((x * 40).toInt(), 0)
+    override fun onTilt(x: Float, y: Float, z: Float) = rvMessages!!.scrollBy((x * resources.displayMetrics.densityDpi / 5).toInt(), 0)
 
     override fun onResume() {
         super.onResume()

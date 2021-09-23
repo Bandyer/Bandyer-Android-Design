@@ -143,7 +143,7 @@ class ParticipantsFragment : com.bandyer.video_android_glass_ui.contact.call_par
         root!!.setAlphaWithAnimation(1f, 100L)
     }
 
-    override fun onTilt(x: Float, y: Float) = rvParticipants!!.scrollBy((x * 40).toInt(), 0)
+    override fun onTilt(x: Float, y: Float, z: Float) = rvParticipants!!.scrollBy((x * resources.displayMetrics.densityDpi / 5).toInt(), 0)
 
     override fun onResume() {
         super.onResume()

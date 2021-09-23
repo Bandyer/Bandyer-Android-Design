@@ -94,7 +94,7 @@ class ChatMenuFragment : BandyerGlassChatMenuFragment(), TiltController.TiltList
         return view
     }
 
-    override fun onTilt(x: Float, y: Float) = rvActions!!.scrollBy((x * 40).toInt(), 0)
+    override fun onTilt(x: Float, y: Float, z: Float) = rvActions!!.scrollBy((x * resources.displayMetrics.densityDpi / 5).toInt(), 0)
 
     override fun onResume() {
         super.onResume()

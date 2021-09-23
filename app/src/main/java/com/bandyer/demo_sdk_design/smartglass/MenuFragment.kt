@@ -138,7 +138,7 @@ class MenuFragment : BandyerGlassMenuFragment(), TiltController.TiltListener,
         else -> false
     }
 
-    override fun onTilt(x: Float, y: Float) = rvMenu!!.scrollBy((x * 40).toInt(), 0)
+    override fun onTilt(x: Float, y: Float, z: Float) = rvMenu!!.scrollBy((x * resources.displayMetrics.densityDpi / 5).toInt(), 0)
 
     override fun onResume() {
         super.onResume()
