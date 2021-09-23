@@ -311,8 +311,8 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
     fun requestFocus(): View? {
         val toBeFocused = when {
             ringingBottomSheet?.isVisible() == true -> ringingBottomSheet?.bottomSheetLayoutContent?.recyclerView?.layoutManager?.findViewByPosition(1)
-            callBottomSheet?.isVisible() == true -> callBottomSheet?.bottomSheetLayoutContent?.recyclerView?.layoutManager?.findViewByPosition(0)
-            audioRouteBottomSheet?.isVisible() == true -> audioRouteBottomSheet?.bottomSheetLayoutContent?.recyclerView?.layoutManager?.findViewByPosition(0)
+            callBottomSheet?.isVisible() == true -> callBottomSheet?.bottomSheetLayoutContent?.recyclerView?.getChildAt(0)
+            audioRouteBottomSheet?.isVisible() == true -> audioRouteBottomSheet?.bottomSheetLayoutContent?.recyclerView?.getChildAt(0)
             else -> null
         }
         toBeFocused?.requestFocus()
