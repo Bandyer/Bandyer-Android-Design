@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.bandyer.video_android_phone_ui.utils
+package com.bandyer.video_android_core_ui.utils
 
 import android.content.Context
 import android.view.View

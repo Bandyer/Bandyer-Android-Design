@@ -26,7 +26,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.video_android_phone_ui.R
-import com.bandyer.video_android_phone_ui.call.layout.BandyerCallWatermarkLayout
+import com.bandyer.video_android_core_ui.layout.BandyerCallWatermarkLayout
 import com.bandyer.video_android_phone_ui.databinding.BandyerWidgetCallInfoBinding
 import com.bandyer.video_android_phone_ui.extensions.*
 import com.bandyer.video_android_phone_ui.utils.systemviews.SystemViewLayoutObserver

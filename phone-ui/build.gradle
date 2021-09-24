@@ -20,7 +20,6 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-parcelize'
 apply from: '../publish.gradle'
 
-def picassoVersion = "2.8"
 def fastAdapterVersion = "5.4.1"
 def lifecycleVersion = '2.2.0'
 def androidX = "1.2.1"
@@ -99,7 +98,6 @@ dependencies {
     compileOnly 'com.github.imablanco:Zoomy:1ee82834df'
 
     /*** UI ***/
-    api "com.squareup.picasso:picasso:$picassoVersion"
     api 'androidx.constraintlayout:constraintlayout:2.0.4'
     api "com.mikepenz:fastadapter:$fastAdapterVersion"
     api "com.mikepenz:fastadapter-extensions-diff:$fastAdapterVersion"

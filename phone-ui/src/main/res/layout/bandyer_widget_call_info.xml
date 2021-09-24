@@ -21,7 +21,7 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
 
-    <com.bandyer.video_android_phone_ui.call.layout.BandyerCallWatermarkLayout
+    <com.bandyer.video_android_core_ui.layout.BandyerCallWatermarkLayout
         android:id="@+id/bandyer_watermark"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

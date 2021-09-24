@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.bandyer.video_android_phone_ui.call.layout
+package com.bandyer.video_android_core_ui.layout
 
 import android.content.Context
 import android.net.Uri
@@ -22,9 +22,9 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.bandyer.video_android_phone_ui.R
-import com.bandyer.video_android_phone_ui.databinding.BandyerCallWatermarkBinding
-import com.bandyer.video_android_phone_ui.utils.bandyerSDKDesignPrefs
+import com.bandyer.video_android_core_ui.databinding.BandyerCallWatermarkBinding
+import com.bandyer.video_android_core_ui.R
+import com.bandyer.video_android_core_ui.utils.bandyerSDKDesignPrefs
 import com.squareup.picasso.Picasso
 import java.io.File
 
