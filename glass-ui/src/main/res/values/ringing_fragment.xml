@@ -41,11 +41,11 @@
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Ringing" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.Ringing</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownRinging</item>
-        <item name="android:contentDescription">@string/bandyer_glass_decline</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.Ringing" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout">
         <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/bandyer_glass_decline</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownRinging" parent="BandyerSDKDesign.TextView.GlassLabel">
@@ -55,11 +55,11 @@
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Ringing" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.Ringing</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapRinging</item>
-        <item name="android:contentDescription">@string/bandyer_glass_accept</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.Ringing" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout">
         <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/bandyer_glass_accept</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.TapRinging" parent="BandyerSDKDesign.TextView.GlassLabel">

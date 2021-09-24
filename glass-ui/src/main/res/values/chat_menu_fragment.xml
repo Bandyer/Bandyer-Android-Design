@@ -69,11 +69,11 @@
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.ChatMenu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout.ChatMenu</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeChatMenu</item>
-        <item name="android:contentDescription">@string/bandyer_glass_browse</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout.ChatMenu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout">
         <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/bandyer_glass_browse</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeChatMenu" parent="BandyerSDKDesign.TextView.GlassLabel">
@@ -83,11 +83,11 @@
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatMenu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.ChatMenu</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownChatMenu</item>
-        <item name="android:contentDescription">@string/bandyer_glass_close</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.ChatMenu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout">
         <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/bandyer_glass_close</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownChatMenu" parent="BandyerSDKDesign.TextView.GlassLabel">
@@ -97,11 +97,11 @@
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.ChatMenu" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.ChatMenu</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapChatMenu</item>
-        <item name="android:contentDescription">@string/bandyer_glass_select</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.ChatMenu" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout">
         <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/bandyer_glass_select</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.TapChatMenu" parent="BandyerSDKDesign.TextView.GlassLabel">
