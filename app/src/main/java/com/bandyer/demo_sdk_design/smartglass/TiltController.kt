@@ -147,7 +147,7 @@ class TiltController constructor(
      */
     private fun smoothValue(newValue: Float, buffer: Queue<Float>): Float {
         buffer.add(newValue)
-        if (buffer.size < WINDOW_SIZE) return 0f
+        if (buffer.size < WINDOW_SIZE) return newValue
         buffer.poll()
         val average = buffer.average().toFloat()
         return ATTENUATION_FACTOR * newValue + (1f - ATTENUATION_FACTOR) * average
