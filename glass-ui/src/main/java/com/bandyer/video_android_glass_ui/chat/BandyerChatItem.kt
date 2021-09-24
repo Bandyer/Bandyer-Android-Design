@@ -15,12 +15,23 @@ import com.mikepenz.fastadapter.items.AbstractItem
  */
 class BandyerChatItem(val data: BandyerGlassMessageData) : AbstractItem<BandyerChatItem.ViewHolder>() {
 
+    /**
+     * The layout for the given item
+     */
     override val layoutRes: Int
         get() = R.layout.bandyer_chat_item_layout
 
+    /**
+     * The type of the Item. Can be a hardcoded INT, but preferred is a defined id
+     */
     override val type: Int
         get() = R.id.id_glass_chat_item
 
+    /**
+     * This method returns the ViewHolder for our item, using the provided View.
+     *
+     * @return the ViewHolder for this Item
+     */
     override fun getViewHolder(v: View) = ViewHolder(v)
 
     /**
@@ -32,6 +43,9 @@ class BandyerChatItem(val data: BandyerGlassMessageData) : AbstractItem<BandyerC
 
         private val binding: BandyerChatItemLayoutBinding = BandyerChatItemLayoutBinding.bind(view)
 
+        /**
+         * Binds the data of this item onto the viewHolder
+         */
         override fun bindView(item: BandyerChatItem, payloads: List<Any>) =
             with(binding.bandyerChatMessage) {
                 itemView.isClickable = false
@@ -45,6 +59,9 @@ class BandyerChatItem(val data: BandyerGlassMessageData) : AbstractItem<BandyerC
                 else setName(data.sender)
             }
 
+        /**
+         * View needs to release resources when its recycled
+         */
         override fun unbindView(item: BandyerChatItem) = with(binding.bandyerChatMessage) {
             itemView.isClickable = true
             setAvatar(null)

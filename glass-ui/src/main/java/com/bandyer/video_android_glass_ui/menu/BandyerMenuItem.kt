@@ -17,6 +17,9 @@ class BandyerMenuItem(val defaultText: String, val activeText: String? = null): 
 
     private var itemText: BandyerActivableTextView? = null
 
+    /**
+     * Activated state of a menu item. The text will be updated accordingly
+     */
     var isActivated = false
         set(value) {
             if(activeText == null) return
@@ -24,12 +27,23 @@ class BandyerMenuItem(val defaultText: String, val activeText: String? = null): 
             itemText?.isActivated = field
         }
 
+    /**
+     * The layout for the given item
+     */
     override val layoutRes: Int
         get() = R.layout.bandyer_menu_item_layout
 
+    /**
+     * The type of the Item. Can be a hardcoded INT, but preferred is a defined id
+     */
     override val type: Int
         get() = R.id.id_glass_menu_item
 
+    /**
+     * This method returns the ViewHolder for our item, using the provided View.
+     *
+     * @return the ViewHolder for this Item
+     */
     override fun getViewHolder(v: View) = ViewHolder(v)
 
     /**
@@ -41,6 +55,9 @@ class BandyerMenuItem(val defaultText: String, val activeText: String? = null): 
 
         private val binding: BandyerMenuItemLayoutBinding = BandyerMenuItemLayoutBinding.bind(view)
 
+        /**
+         * Binds the data of this item onto the viewHolder
+         */
         override fun bindView(item: BandyerMenuItem, payloads: List<Any>) = with(binding.bandyerText) {
             item.itemText = this
             this.activeText = item.activeText
@@ -48,6 +65,9 @@ class BandyerMenuItem(val defaultText: String, val activeText: String? = null): 
             this.isActivated = item.isActivated
         }
 
+        /**
+         * View needs to release resources when its recycled
+         */
         override fun unbindView(item: BandyerMenuItem) = with(binding.bandyerText) {
             item.itemText = null
             this.activeText = null

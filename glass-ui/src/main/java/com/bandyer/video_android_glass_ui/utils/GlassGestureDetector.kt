@@ -62,7 +62,61 @@ class GlassGestureDetector(context: Context, onGestureListener: OnGestureListene
      * Currently handled gestures.
      */
     enum class Gesture {
-        TAP, TAP_AND_HOLD, TWO_FINGER_TAP, SWIPE_FORWARD, TWO_FINGER_SWIPE_FORWARD, SWIPE_BACKWARD, TWO_FINGER_SWIPE_BACKWARD, SWIPE_UP, TWO_FINGER_SWIPE_UP, SWIPE_DOWN, TWO_FINGER_SWIPE_DOWN
+
+        /**
+         * t a p
+         */
+        TAP,
+
+        /**
+         * t a p_a n d_h o l d
+         */
+        TAP_AND_HOLD,
+
+        /**
+         * t w o_f i n g e r_t a p
+         */
+        TWO_FINGER_TAP,
+
+        /**
+         * s w i p e_f o r w a r d
+         */
+        SWIPE_FORWARD,
+
+        /**
+         * t w o_f i n g e r_s w i p e_f o r w a r d
+         */
+        TWO_FINGER_SWIPE_FORWARD,
+
+        /**
+         * s w i p e_b a c k w a r d
+         */
+        SWIPE_BACKWARD,
+
+        /**
+         * t w o_f i n g e r_s w i p e_b a c k w a r d
+         */
+        TWO_FINGER_SWIPE_BACKWARD,
+
+        /**
+         * s w i p e_u p
+         */
+        SWIPE_UP,
+
+        /**
+         * t w o_f i n g e r_s w i p e_u p
+         */
+        TWO_FINGER_SWIPE_UP,
+
+        /**
+         * s w i p e_d o w n
+         */
+        SWIPE_DOWN,
+
+        /**
+         * t w o_f i n g e r_s w i p e_d o w n
+         */
+        TWO_FINGER_SWIPE_DOWN
     }
 
     /**
@@ -325,12 +379,12 @@ class GlassGestureDetector(context: Context, onGestureListener: OnGestureListene
         onGestureListener.onTouchEnded()
     }
 
-    companion object {
-        private const val VELOCITY_UNIT = 1000
-        private const val FIRST_FINGER_POINTER_INDEX = 0
-        private const val SECOND_FINGER_POINTER_INDEX = 1
-        private val TAP_AND_HOLD_THRESHOLD_MS = ViewConfiguration.getLongPressTimeout()
-        private val TAN_ANGLE_DEGREES = tan(Math.toRadians(60.0))
+    private companion object {
+        const val VELOCITY_UNIT = 1000
+        const val FIRST_FINGER_POINTER_INDEX = 0
+        const val SECOND_FINGER_POINTER_INDEX = 1
+        val TAP_AND_HOLD_THRESHOLD_MS = ViewConfiguration.getLongPressTimeout()
+        val TAN_ANGLE_DEGREES = tan(Math.toRadians(60.0))
         const val SWIPE_DISTANCE_THRESHOLD_PX = 100
         const val SWIPE_VELOCITY_THRESHOLD_PX = 100
     }

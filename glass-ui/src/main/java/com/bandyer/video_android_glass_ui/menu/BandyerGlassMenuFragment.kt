@@ -32,6 +32,9 @@ abstract class BandyerGlassMenuFragment : BandyerGlassBaseFragment() {
 
     protected var snapHelper: LinearSnapHelper? = null
 
+    /**
+     * @suppress
+     */
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +77,9 @@ abstract class BandyerGlassMenuFragment : BandyerGlassBaseFragment() {
         return root!!
     }
 
+    /**
+     * @suppress
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         itemAdapter = null

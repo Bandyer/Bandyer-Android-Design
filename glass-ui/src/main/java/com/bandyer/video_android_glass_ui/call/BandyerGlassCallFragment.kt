@@ -20,6 +20,9 @@ abstract class BandyerGlassCallFragment: BandyerGlassBaseFragment(),
     protected var root: View? = null
     protected var bottomActionBar: BandyerBottomActionBarView? = null
 
+    /**
+     * @suppress
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,6 +33,9 @@ abstract class BandyerGlassCallFragment: BandyerGlassBaseFragment(),
         return root!!
     }
 
+    /**
+     * @suppress
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null

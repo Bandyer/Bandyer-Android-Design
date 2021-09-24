@@ -21,6 +21,9 @@ abstract class BandyerGlassZoomFragment : BandyerGlassBaseFragment() {
     protected var slider: BandyerSlider? = null
     protected var bottomActionBar: BandyerBottomActionBarView? = null
 
+    /**
+     * @suppress
+     */
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +36,9 @@ abstract class BandyerGlassZoomFragment : BandyerGlassBaseFragment() {
         return root!!
     }
 
+    /**
+     * @suppress
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null

@@ -22,6 +22,9 @@ abstract class BandyerGlassRingingFragment: BandyerGlassBaseFragment() {
     protected var subtitle: MaterialTextView? = null
     protected var bottomActionBar: BandyerBottomActionBarView? = null
 
+    /**
+     * @suppress
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,6 +37,9 @@ abstract class BandyerGlassRingingFragment: BandyerGlassBaseFragment() {
         return root!!
     }
 
+    /**
+     * @suppress
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         binding = null
