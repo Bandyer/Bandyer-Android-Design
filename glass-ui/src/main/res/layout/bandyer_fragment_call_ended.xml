@@ -30,7 +30,7 @@
         app:layout_constraintTop_toBottomOf="@+id/bandyer_title"
         tools:text="@string/bandyer_glass_thank_you"/>
 
-    <com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
+    <com.bandyer.video_android_glass_ui.bottom_action_bar.BottomActionBarView
         android:id="@+id/bandyer_bottom_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

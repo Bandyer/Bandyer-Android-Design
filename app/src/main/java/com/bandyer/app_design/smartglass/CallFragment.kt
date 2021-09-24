@@ -6,11 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.app_design.R
-import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
-import com.bandyer.video_android_glass_ui.call.BandyerGlassCallFragment
-import com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationManager
+import com.bandyer.video_android_glass_ui.TouchEvent
+import com.bandyer.video_android_glass_ui.call.CallFragment
+import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 
-class CallFragment : BandyerGlassCallFragment(), BandyerNotificationManager.NotificationListener {
+class CallFragment : CallFragment(), ChatNotificationManager.NotificationListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -35,16 +35,16 @@ class CallFragment : BandyerGlassCallFragment(), BandyerNotificationManager.Noti
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
-        BandyerGlassTouchEvent.Type.TAP                                           -> {
+    override fun onTouch(event: TouchEvent): Boolean = when (event.type) {
+        TouchEvent.Type.TAP        -> {
             findNavController().navigate(R.id.action_callFragment_to_menuFragment)
             true
         }
-        BandyerGlassTouchEvent.Type.SWIPE_DOWN -> {
+        TouchEvent.Type.SWIPE_DOWN -> {
             findNavController().navigate(R.id.action_callFragment_to_endCallFragment)
             true
         }
-        else                                                                           -> super.onSmartGlassTouchEvent(event)
+        else                       -> super.onTouch(event)
     }
 
     override fun onDestroyView() {

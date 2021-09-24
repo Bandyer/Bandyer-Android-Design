@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.app_design.R
 import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
-import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
-import com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationManager
+import com.bandyer.video_android_glass_ui.TouchEvent
+import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 
-class EndCallFragment : com.bandyer.video_android_glass_ui.call.BandyerGlassEndCallFragment(), BandyerNotificationManager.NotificationListener {
+class EndCallFragment : com.bandyer.video_android_glass_ui.call.EndCallFragment(), ChatNotificationManager.NotificationListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -50,15 +50,15 @@ class EndCallFragment : com.bandyer.video_android_glass_ui.call.BandyerGlassEndC
         root!!.setAlphaWithAnimation(1f, 100L)
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
-        BandyerGlassTouchEvent.Type.TAP        -> {
+    override fun onTouch(event: TouchEvent): Boolean = when (event.type) {
+        TouchEvent.Type.TAP        -> {
             findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment)
             true
         }
-        BandyerGlassTouchEvent.Type.SWIPE_DOWN -> {
+        TouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true
         }
-        else                                                                           -> super.onSmartGlassTouchEvent(event)
+        else                       -> super.onTouch(event)
     }
 }

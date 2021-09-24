@@ -7,7 +7,7 @@
     android:background="@drawable/factory"
     android:orientation="vertical">
 
-    <com.bandyer.video_android_glass_ui.status_bar_views.BandyerStatusBarView
+    <com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
         android:id="@+id/statusBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

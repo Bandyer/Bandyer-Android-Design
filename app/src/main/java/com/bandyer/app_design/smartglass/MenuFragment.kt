@@ -9,15 +9,15 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.app_design.R
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
-import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
-import com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationManager
-import com.bandyer.video_android_glass_ui.menu.BandyerGlassMenuFragment
+import com.bandyer.video_android_glass_ui.TouchEvent
+import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
+import com.bandyer.video_android_glass_ui.menu.MenuFragment
 import com.bandyer.video_android_glass_ui.menu.BandyerMenuItem
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
 
-class MenuFragment : BandyerGlassMenuFragment(), TiltController.TiltListener,
-    BandyerNotificationManager.NotificationListener {
+class MenuFragment : MenuFragment(), TiltController.TiltListener,
+                     ChatNotificationManager.NotificationListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -86,28 +86,28 @@ class MenuFragment : BandyerGlassMenuFragment(), TiltController.TiltListener,
         activity.removeNotificationListener(this)
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean =
+    override fun onTouch(event: TouchEvent): Boolean =
         when (event.type) {
-            BandyerGlassTouchEvent.Type.SWIPE_FORWARD -> {
-                if (event.source == BandyerGlassTouchEvent.Source.KEY) {
+            TouchEvent.Type.SWIPE_FORWARD  -> {
+                if (event.source == TouchEvent.Source.KEY) {
                     rvMenu!!.horizontalSmoothScrollToNext(currentMenuItemIndex)
                     true
                 } else false
             }
-            BandyerGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-                if (event.source == BandyerGlassTouchEvent.Source.KEY) {
+            TouchEvent.Type.SWIPE_BACKWARD -> {
+                if (event.source == TouchEvent.Source.KEY) {
                     rvMenu!!.horizontalSmoothScrollToPrevious(currentMenuItemIndex)
                     true
                 } else false
             }
-            BandyerGlassTouchEvent.Type.TAP -> {
+            TouchEvent.Type.TAP            -> {
                 tapBehaviour(currentMenuItemIndex)
             }
-            BandyerGlassTouchEvent.Type.SWIPE_DOWN -> {
+            TouchEvent.Type.SWIPE_DOWN     -> {
                 findNavController().popBackStack()
                 true
             }
-            else -> super.onSmartGlassTouchEvent(event)
+            else                           -> super.onTouch(event)
         }
 
     private fun tapBehaviour(itemIndex: Int) = when (itemIndex) {

@@ -8,10 +8,11 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import com.bandyer.app_design.R
 import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
-import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
-import com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationManager
+import com.bandyer.video_android_glass_ui.TouchEvent
+import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
+import com.bandyer.video_android_glass_ui.common.FullScreenDialogFragment
 
-class CallEndedFragment : com.bandyer.video_android_glass_ui.call.BandyerGlassCallEndedFragment(), BandyerNotificationManager.NotificationListener {
+class CallEndedFragment : FullScreenDialogFragment(), ChatNotificationManager.NotificationListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -53,12 +54,12 @@ class CallEndedFragment : com.bandyer.video_android_glass_ui.call.BandyerGlassCa
         activity.setStatusBarColor(null)
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
-        BandyerGlassTouchEvent.Type.TAP, BandyerGlassTouchEvent.Type.SWIPE_DOWN -> {
+    override fun onTouch(event: TouchEvent): Boolean = when (event.type) {
+        TouchEvent.Type.TAP, TouchEvent.Type.SWIPE_DOWN -> {
             requireActivity().finish()
             true
         }
-        else                                                                                                                                                    -> super.onSmartGlassTouchEvent(event)
+        else                                            -> super.onTouch(event)
     }
 
     override fun onShow() {

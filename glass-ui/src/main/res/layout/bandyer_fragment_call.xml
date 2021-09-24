@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:theme="?attr/bandyer_callStyle">
 
-    <com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
+    <com.bandyer.video_android_glass_ui.bottom_action_bar.BottomActionBarView
         android:id="@+id/bandyer_bottom_action_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

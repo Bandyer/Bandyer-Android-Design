@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
-import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
-import com.bandyer.video_android_glass_ui.chat.notification.BandyerNotificationManager
-import com.bandyer.video_android_glass_ui.settings.zoom.BandyerGlassZoomFragment
+import com.bandyer.video_android_glass_ui.TouchEvent
+import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
+import com.bandyer.video_android_glass_ui.settings.zoom.ZoomFragment
 
-class ZoomFragment : BandyerGlassZoomFragment(), TiltController.TiltListener, BandyerNotificationManager.NotificationListener {
+class ZoomFragment : ZoomFragment(), TiltController.TiltListener, ChatNotificationManager.NotificationListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -51,20 +51,20 @@ class ZoomFragment : BandyerGlassZoomFragment(), TiltController.TiltListener, Ba
         return view
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
-        BandyerGlassTouchEvent.Type.SWIPE_FORWARD                                                                       -> {
+    override fun onTouch(event: TouchEvent): Boolean = when (event.type) {
+        TouchEvent.Type.SWIPE_FORWARD                   -> {
             slider!!.increaseProgress(0.1f)
             true
         }
-        BandyerGlassTouchEvent.Type.SWIPE_BACKWARD                                                                      -> {
+        TouchEvent.Type.SWIPE_BACKWARD                  -> {
             slider!!.decreaseProgress(0.1f)
             true
         }
-        BandyerGlassTouchEvent.Type.TAP, BandyerGlassTouchEvent.Type.SWIPE_DOWN -> {
+        TouchEvent.Type.TAP, TouchEvent.Type.SWIPE_DOWN -> {
             findNavController().popBackStack()
             true
         }
-        else                                                                                                                                                    -> super.onSmartGlassTouchEvent(event)
+        else                                            -> super.onTouch(event)
     }
 
     override fun onDestroyView() {

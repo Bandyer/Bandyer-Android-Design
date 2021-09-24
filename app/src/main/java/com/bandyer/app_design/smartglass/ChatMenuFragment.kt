@@ -10,15 +10,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.app_design.R
-import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
-import com.bandyer.video_android_glass_ui.BandyerGlassTouchEvent
-import com.bandyer.video_android_glass_ui.chat.menu.BandyerChatMenuItem
-import com.bandyer.video_android_glass_ui.chat.menu.BandyerGlassChatMenuFragment
-import com.bandyer.video_android_glass_ui.contact.BandyerContactData
+import com.bandyer.video_android_glass_ui.TouchEvent
+import com.bandyer.video_android_glass_ui.chat.menu.ChatMenuItem
+import com.bandyer.video_android_glass_ui.chat.menu.ChatMenuFragment
+import com.bandyer.video_android_glass_ui.participants.ParticipantData
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 
-class ChatMenuFragment : BandyerGlassChatMenuFragment(), TiltController.TiltListener {
+class ChatMenuFragment : ChatMenuFragment(), TiltController.TiltListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
     private val args: ChatMenuFragmentArgs by navArgs()
@@ -52,15 +51,15 @@ class ChatMenuFragment : BandyerGlassChatMenuFragment(), TiltController.TiltList
         name!!.text = data.name
         with(contactStateText!!) {
             when (data.userState) {
-                BandyerContactData.UserState.INVITED -> setContactState(
-                    com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView.State.INVITED
+                ParticipantData.UserState.INVITED -> setContactState(
+                    com.bandyer.video_android_glass_ui.participants.ParticipantStateTextView.State.INVITED
                 )
-                BandyerContactData.UserState.OFFLINE -> setContactState(
-                    com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView.State.LAST_SEEN,
+                ParticipantData.UserState.OFFLINE -> setContactState(
+                    com.bandyer.video_android_glass_ui.participants.ParticipantStateTextView.State.LAST_SEEN,
                     data.lastSeenTime
                 )
-                else                                 -> setContactState(
-                    com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView.State.ONLINE
+                else                              -> setContactState(
+                    com.bandyer.video_android_glass_ui.participants.ParticipantStateTextView.State.ONLINE
                 )
             }
         }
@@ -69,10 +68,10 @@ class ChatMenuFragment : BandyerGlassChatMenuFragment(), TiltController.TiltList
             data.avatarImageUrl != null -> avatar!!.setImage(data.avatarImageUrl!!)
             else                        -> avatar!!.setImage(null)
         }
-        contactStateDot!!.isActivated = data.userState == BandyerContactData.UserState.ONLINE
+        contactStateDot!!.isActivated = data.userState == ParticipantData.UserState.ONLINE
 
-        itemAdapter!!.add(BandyerChatMenuItem(resources.getString(R.string.bandyer_glass_videocall)))
-        itemAdapter!!.add(BandyerChatMenuItem(resources.getString(R.string.bandyer_glass_call)))
+        itemAdapter!!.add(ChatMenuItem(resources.getString(R.string.bandyer_glass_videocall)))
+        itemAdapter!!.add(ChatMenuItem(resources.getString(R.string.bandyer_glass_call)))
 
         bottomActionBar!!.setSwipeOnClickListener {
             rvActions!!.horizontalSmoothScrollToNext(actionIndex)
@@ -110,23 +109,23 @@ class ChatMenuFragment : BandyerGlassChatMenuFragment(), TiltController.TiltList
             tiltController!!.releaseAllSensors()
     }
 
-    override fun onSmartGlassTouchEvent(event: BandyerGlassTouchEvent): Boolean = when (event.type) {
-        BandyerGlassTouchEvent.Type.SWIPE_FORWARD  -> {
-            if (event.source == BandyerGlassTouchEvent.Source.KEY) {
+    override fun onTouch(event: TouchEvent): Boolean = when (event.type) {
+        TouchEvent.Type.SWIPE_FORWARD  -> {
+            if (event.source == TouchEvent.Source.KEY) {
                 rvActions!!.horizontalSmoothScrollToNext(actionIndex)
                 true
             } else false
         }
-        BandyerGlassTouchEvent.Type.SWIPE_BACKWARD -> {
-            if (event.source == BandyerGlassTouchEvent.Source.KEY) {
+        TouchEvent.Type.SWIPE_BACKWARD -> {
+            if (event.source == TouchEvent.Source.KEY) {
                 rvActions!!.horizontalSmoothScrollToPrevious(actionIndex)
                 true
             } else false
         }
-        BandyerGlassTouchEvent.Type.SWIPE_DOWN     -> {
+        TouchEvent.Type.SWIPE_DOWN     -> {
             findNavController().popBackStack()
             true
         }
-        else                                                                               -> super.onSmartGlassTouchEvent(event)
+        else                           -> super.onTouch(event)
     }
 }

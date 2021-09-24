@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.bandyer.video_android_glass_ui.common.BandyerContactAvatarView
+    <com.bandyer.video_android_glass_ui.common.AvatarView
         android:id="@+id/bandyer_avatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         app:layout_constraintTop_toTopOf="@id/bandyer_avatar"
         tools:text="10.36" />
 
-    <com.bandyer.video_android_glass_ui.chat.BandyerPagedTextView
+    <com.bandyer.video_android_glass_ui.utils.PaginatedTextView
         android:id="@+id/bandyer_message"
         style="?attr/bandyer_messageStyle"
         android:layout_width="match_parent"

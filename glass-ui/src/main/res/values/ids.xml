@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="id_glass_chat_item" type="id" />
+    <item name="id_glass_chat_message_item" type="id" />
     <item name="id_glass_menu_item" type="id" />
     <item name="id_glass_participants_item" type="id" />
-    <item name="id_glass_contact_details_item" type="id" />
+    <item name="id_glass_chat_menu_item" type="id" />
 </resources>

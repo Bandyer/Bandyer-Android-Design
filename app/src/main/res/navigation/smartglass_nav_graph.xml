@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/ringingFragment"
-        android:name="com.bandyer.app_design.smartglass.RingingFragment"
+        android:name="com.bandyer.app_design.smartglass.CallRingingFragment"
         android:label="RingingFragment">
         <action
             android:id="@+id/action_ringingFragment_to_callFragment"
