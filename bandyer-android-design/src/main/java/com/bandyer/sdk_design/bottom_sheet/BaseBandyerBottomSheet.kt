@@ -64,6 +64,7 @@ import java.text.DecimalFormat
  * @property views List of actions to add
  * @property peekHeight max height of the bottomSheet
  * @property bottomSheetLayoutStyle style of bottomSheet
+ * @property bottomSheetLayoutType type of bottomSheet horizontal or vertical
  * @constructor
  * @author kristiyan
  */

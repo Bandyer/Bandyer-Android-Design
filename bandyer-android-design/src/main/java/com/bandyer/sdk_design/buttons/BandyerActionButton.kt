@@ -29,8 +29,7 @@ import com.google.android.material.textview.MaterialTextView
  * Bandyer Action Button which is a composite of a button and a textView
  * @author kristiyan
  */
-open class BandyerActionButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle)
-    : LinearLayout(context, attrs, defStyleAttr) {
+open class BandyerActionButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle) : LinearLayout(context, attrs, defStyleAttr) {
 
     /**
      * BandyerAction Button companion object.
@@ -72,6 +71,9 @@ open class BandyerActionButton @JvmOverloads constructor(context: Context, attrs
         if (!button!!.hasOnClickListeners()) button!!.setOnClickListener(l)
     }
 
+    /**
+     * @suppress
+     */
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         button?.isEnabled = enabled
