@@ -323,10 +323,13 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
      * Collapse the widget.
      */
     fun collapse() {
-        if (callBottomSheet?.isVisible() == true) {
-            if (collapsible) callBottomSheet?.collapse()
-            else callBottomSheet?.anchor()
+        if (callBottomSheet?.isVisible() == true) when {
+            collapsible -> callBottomSheet?.collapse()
+            callBottomSheet?.bottomSheetLayoutType?.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL
+                    && callBottomSheet?.bottomSheetBehaviour?.disableDragging == true -> callBottomSheet?.expand()
+            else -> callBottomSheet?.anchor()
         }
+
         if (audioRouteBottomSheet?.isVisible() == true)
             audioRouteBottomSheet?.hide()
     }
@@ -506,7 +509,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         }
     }
 
-
+    
     /**
      * Show the call controls
      * @param collapsible true if the bottomSheet should be collapsible, false otherwise
