@@ -33,11 +33,10 @@ open class BandyerSelectableBottomSheet<T : ActionItem>(
     context: AppCompatActivity,
     selection: Int = -1,
     views: List<T>,
-    spanSize: Int,
     peekHeight: Int?,
     bottomSheetLayoutType: BottomSheetLayoutType,
     bottomSheetStyle: Int
-) : BandyerActionBottomSheet<T>(context, views, spanSize, peekHeight, bottomSheetLayoutType, bottomSheetStyle) {
+) : BandyerActionBottomSheet<T>(context, views, peekHeight, bottomSheetLayoutType, bottomSheetStyle) {
 
     /**
      * Current item selected
@@ -51,17 +50,16 @@ open class BandyerSelectableBottomSheet<T : ActionItem>(
         selectExtension.allowDeselection = false
         selectExtension.multiSelect = false
         selectExtension.selectWithItemUpdate = true
-        selectExtension.selectionListener = object : ISelectionListener<AdapterActionItem> {
-            override fun onSelectionChanged(item: AdapterActionItem, selected: Boolean) {
-                if (!selected || (currentItemSelected != null && currentItemSelected!!.item::class == item.item::class)) return
-                currentItemSelected = item
-                notifyItemSelected(item, fastItemAdapter.adapterItems.indexOf(item))
-            }
-        }
-
         if (selection != -1) {
             fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.select(selection)
             currentItemSelected = fastItemAdapter.getAdapterItem(selection)
+        }
+        selectExtension.selectionListener = object : ISelectionListener<AdapterActionItem> {
+            override fun onSelectionChanged(item: AdapterActionItem, selected: Boolean) {
+                if (!selected) return
+                currentItemSelected = item
+                notifyItemSelected(item, fastItemAdapter.adapterItems.indexOf(item))
+            }
         }
     }
 

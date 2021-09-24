@@ -18,6 +18,7 @@ package com.bandyer.sdk_design.call.bottom_sheet
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.BandyerSelectableBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
@@ -32,6 +33,10 @@ import com.mikepenz.fastadapter.select.SelectExtension
 /**
  * AudioRoute BottomSheet to display the available audioRoutes of the device
  * @param context Context
+ * @param audioRouteItems items to be shown
+ * @param initialSelection initial selected position
+ * @param bottomSheetLayoutType bottom sheet layout type
+ * @param bottomSheetStyle bottom sheet style
  * @param onAudioRoutesRequest used to request available audioRoutes
  * @constructor
  * @author kristiyan
@@ -40,15 +45,16 @@ import com.mikepenz.fastadapter.select.SelectExtension
 class AudioRouteBottomSheet<T : ActionItem>(
     val context: AppCompatActivity,
     audioRouteItems: List<AudioRoute>?,
-    initial_selection: Int = -1,
+    initialSelection: Int = -1,
+    bottomSheetLayoutType: BottomSheetLayoutType,
     bottomSheetStyle: Int,
     var onAudioRoutesRequest: OnAudioRouteBottomSheetListener?
 ) : BandyerSelectableBottomSheet<T>(
     context,
-    initial_selection,
+    initialSelection,
     audioRouteItems as List<T>? ?: listOf<T>(),
-    0, 0,
-    BottomSheetLayoutType.LIST,
+    0,
+    bottomSheetLayoutType,
     bottomSheetStyle
 ) {
 
@@ -70,6 +76,12 @@ class AudioRouteBottomSheet<T : ActionItem>(
         bottomSheetBehaviour!!.isHideable = true
         bottomSheetBehaviour!!.skipAnchor = true
         bottomSheetLayoutContent.backgroundView?.alpha = 1f
+
+        if ((recyclerView!!.layoutManager as? LinearLayoutManager)?.orientation == LinearLayoutManager.HORIZONTAL)
+            lineView?.state = State.HIDDEN
+
+        bottomSheetBehaviour!!.disableDragging = bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL
+
         expand()
     }
 
@@ -157,13 +169,15 @@ class AudioRouteBottomSheet<T : ActionItem>(
         super.slideAnimationUpdate(bottomSheet, slideOffset)
         if (!animationEnabled || bottomSheetBehaviour?.lastStableState == state) return
         bottomSheetLayoutContent.lineView?.state = when {
-            slideOffset <= 0f -> State.COLLAPSED
-            else              -> State.EXPANDED
+            slideOffset <= 0f                                                                 -> State.COLLAPSED
+            bottomSheetLayoutType.orientation != BottomSheetLayoutType.Orientation.HORIZONTAL -> State.EXPANDED
+            else                                                                              -> this.lineView?.state
         }
     }
 
     override fun onExpanded() {
         super.onExpanded()
+        if (bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL) return
         bottomSheetLayoutContent.lineView?.state = State.EXPANDED
     }
 

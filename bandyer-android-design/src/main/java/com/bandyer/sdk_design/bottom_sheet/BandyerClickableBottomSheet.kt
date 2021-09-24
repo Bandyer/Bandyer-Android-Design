@@ -34,10 +34,9 @@ import com.mikepenz.fastadapter.listeners.ClickEventHook
 @Suppress("UNCHECKED_CAST")
 open class BandyerClickableBottomSheet<T> constructor(context: AppCompatActivity,
                                                       views: List<T>,
-                                                      spanSize: Int,
                                                       peekHeight: Int?,
                                                       bottomSheetLayoutType: BottomSheetLayoutType,
-                                                      @StyleRes bottomSheetLayoutStyle: Int) : BandyerActionBottomSheet<T>(context, views, spanSize, peekHeight, bottomSheetLayoutType, bottomSheetLayoutStyle) where T : ActionItem {
+                                                      @StyleRes bottomSheetLayoutStyle: Int) : BandyerActionBottomSheet<T>(context, views, peekHeight, bottomSheetLayoutType, bottomSheetLayoutStyle) where T : ActionItem {
 
     init {
         fastAdapter.addEventHook(object : ClickEventHook<AdapterActionItem>() {

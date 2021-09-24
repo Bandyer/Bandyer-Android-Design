@@ -66,6 +66,7 @@
     <attr name="bandyer_state_anchored_dot" format="boolean" />
     <attr name="bandyer_state_anchored_line" format="boolean" />
     <attr name="bandyer_state_collapsed" format="boolean" />
+    <attr name="bandyer_state_hidden" format="boolean" />
 
     <!-- File share file types -->
     <attr name="bandyer_state_file" format="boolean" />

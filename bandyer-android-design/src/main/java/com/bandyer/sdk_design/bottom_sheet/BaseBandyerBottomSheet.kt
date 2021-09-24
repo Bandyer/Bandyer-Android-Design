@@ -34,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
@@ -69,9 +70,8 @@ import java.text.DecimalFormat
 open class BaseBandyerBottomSheet(
     context: AppCompatActivity,
     private var views: List<ActionItem>,
-    spanSize: Int,
     private val peekHeight: Int?,
-    bottomSheetLayoutType: BottomSheetLayoutType,
+    val bottomSheetLayoutType: BottomSheetLayoutType,
     @StyleRes val bottomSheetLayoutStyle: Int
 ) : BandyerBottomSheet, SystemViewLayoutObserver {
 
@@ -172,7 +172,7 @@ open class BaseBandyerBottomSheet(
         get() = bottomSheetBehaviour?.state ?: -1
 
     final override var recyclerView = bottomSheetLayoutContent.recyclerView
-    final override var lineView: View? = bottomSheetLayoutContent.lineView
+    final override var lineView: BandyerLineButton? = bottomSheetLayoutContent.lineView
     final override var titleView: MaterialTextView? = bottomSheetLayoutContent.titleView
 
     /**
@@ -251,9 +251,6 @@ open class BaseBandyerBottomSheet(
         bottomSheetLayoutContent.layoutParams = params
         bottomSheetBehaviour = BandyerBottomSheetBehaviour.from(bottomSheetLayoutContent)
         bottomSheetBehaviour!!.addBottomSheetCallback(bottomSheetBehaviorCallback)
-
-        if (bottomSheetBehaviour!!.skipCollapsed)
-            bottomSheetLayoutContent.lineView?.state = State.ANCHORED_DOT
 
         peekHeight?.let { bottomSheetBehaviour!!.peekHeight = it }
 
@@ -361,7 +358,7 @@ open class BaseBandyerBottomSheet(
             moveBottomSheet()
             hasMoved = true
         }
-        bottomSheetLayoutContent.lineView?.state = BandyerLineButton.State.COLLAPSED
+        lineView?.state = State.COLLAPSED
 
         updateNavigationBar(false)
 
@@ -461,16 +458,24 @@ open class BaseBandyerBottomSheet(
 
     init {
         when (bottomSheetLayoutType) {
-            BottomSheetLayoutType.GRID -> {
-                recyclerView?.layoutManager = androidx.recyclerview.widget.GridLayoutManager(context, spanSize)
+            is BottomSheetLayoutType.GRID -> {
+                recyclerView!!.layoutManager =
+                    GridLayoutManager(
+                        recyclerView!!.context,
+                        bottomSheetLayoutType.spanSize,
+                        if (bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL) LinearLayoutManager.HORIZONTAL else LinearLayoutManager.VERTICAL,
+                        false)
             }
-            BottomSheetLayoutType.LIST -> {
-                recyclerView?.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+            is BottomSheetLayoutType.LIST -> {
+                recyclerView!!.layoutManager =
+                    LinearLayoutManager(
+                        recyclerView!!.context,
+                        if (bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL) LinearLayoutManager.HORIZONTAL else LinearLayoutManager.VERTICAL,
+                        false)
             }
         }
-
-        recyclerView?.adapter = fastAdapter
-        recyclerView?.itemAnimator = AlphaCrossFadeAnimator()
+        recyclerView!!.adapter = fastAdapter
+        recyclerView!!.itemAnimator = AlphaCrossFadeAnimator()
     }
 
     final override fun onTopInsetChanged(pixels: Int) = Unit
@@ -604,6 +609,7 @@ open class BaseBandyerBottomSheet(
     }
 
     override fun anchor() {
+        lineView!!.visibility = if (bottomSheetBehaviour!!.disableDragging) View.GONE else View.VISIBLE
         bottomSheetLayoutContent.post {
             val behaviour = bottomSheetBehaviour ?: return@post
             behaviour.skipAnchor = false
@@ -613,6 +619,7 @@ open class BaseBandyerBottomSheet(
     }
 
     override fun expand() {
+        lineView!!.visibility = if (bottomSheetBehaviour!!.disableDragging) View.GONE else View.VISIBLE
         bottomSheetLayoutContent.post {
             bottomSheetBehaviour?.state = BandyerBottomSheetBehaviour.STATE_EXPANDED
         }
@@ -649,9 +656,7 @@ open class BaseBandyerBottomSheet(
             return
 
         bottomSheetLayoutContent.visibility = View.INVISIBLE
-
-        bottomSheetBehaviour!!.disableDragging = true
-
+        
         if (bottomSheetBehaviour!!.isHideable) {
             bottomSheetBehaviour!!.state = BandyerBottomSheetBehaviour.STATE_HIDDEN
         } else {

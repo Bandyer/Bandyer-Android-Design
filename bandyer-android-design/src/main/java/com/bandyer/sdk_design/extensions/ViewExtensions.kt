@@ -19,6 +19,7 @@ package com.bandyer.sdk_design.extensions
 import android.animation.*
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Point
 import android.graphics.PointF
 import android.graphics.Rect
@@ -1043,4 +1044,19 @@ fun View.replaceWith(newView: View) {
     thisParent.removeView(this)
     otherParent?.removeView(newView)
     thisParent.addView(newView, index)
+}
+
+/**
+ * Checks whether the view is visibile and drawn inside screen's bounds.
+ * @receiver View
+ * @return Boolean true if visible on screen else otherwise
+ */
+fun View.isVisible(): Boolean {
+    if (!isShown) return false
+    val actualPosition = Rect()
+    val isGlobalVisible = getGlobalVisibleRect(actualPosition)
+    val screenWidth = Resources.getSystem().displayMetrics.widthPixels
+    val screenHeight = Resources.getSystem().displayMetrics.heightPixels
+    val screen = Rect(0, 0, screenWidth, screenHeight)
+    return isGlobalVisible && Rect.intersects(actualPosition, screen)
 }

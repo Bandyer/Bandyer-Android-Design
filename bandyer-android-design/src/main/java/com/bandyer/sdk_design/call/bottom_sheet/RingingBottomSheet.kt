@@ -23,17 +23,21 @@ import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 
 /**
- * @suppress
- * @author kristiyan
+ * Ringing bottom sheet
+ * @param T action item type
+ * @property bottomSheetLayoutType BottomSheetLayoutType
+ * @constructor
  */
-
 @Suppress("UNCHECKED_CAST")
-open class RingingBottomSheet<T>(context: AppCompatActivity, bottomSheetStyle: Int) : BandyerClickableBottomSheet<T>(
+open class RingingBottomSheet<T>(
+    context: AppCompatActivity,
+    bottomSheetLayoutType: BottomSheetLayoutType,
+    bottomSheetStyle: Int
+) : BandyerClickableBottomSheet<T>(
     context,
     CallAction.getIncomingCallActions(context) as List<T>,
-    2,
     0,
-    BottomSheetLayoutType.GRID,
+    bottomSheetLayoutType,
     bottomSheetStyle
 ) where T : ActionItem {
 
