@@ -22,7 +22,7 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerChatNotificationLay
  *
  * @constructor
  */
-class BandyerChatNotificationView @JvmOverloads constructor(
+internal class BandyerChatNotificationView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -139,6 +139,7 @@ class BandyerChatNotificationView @JvmOverloads constructor(
     }
 
     private companion object {
+        // Duration of the show/hide animations
         const val ANIMATION_DURATION = 300L
     }
 }

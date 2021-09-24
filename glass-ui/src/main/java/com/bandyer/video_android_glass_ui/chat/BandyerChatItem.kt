@@ -23,6 +23,11 @@ class BandyerChatItem(val data: BandyerGlassMessageData) : AbstractItem<BandyerC
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
+    /**
+     * The view holder for a chat item
+     *
+     * @constructor
+     */
     class ViewHolder(view: View) : FastAdapter.ViewHolder<BandyerChatItem>(view) {
 
         private val binding: BandyerChatItemLayoutBinding = BandyerChatItemLayoutBinding.bind(view)

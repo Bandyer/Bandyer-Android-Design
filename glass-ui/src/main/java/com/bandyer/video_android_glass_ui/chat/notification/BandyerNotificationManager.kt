@@ -12,18 +12,43 @@ import androidx.constraintlayout.widget.ConstraintLayout
  */
 class BandyerNotificationManager {
 
+    /**
+     * Listener to observe the notification state
+     */
     interface NotificationListener {
+        /**
+         * Called when the notification is shown
+         */
         fun onShow()
+        /**
+         * Called when the notification is fully expanded
+         */
         fun onExpanded()
+        /**
+         * Called when the notification is dimissed
+         */
         fun onDismiss()
     }
 
-    enum class State {
+    /**
+     * State of the notification
+     */
+    private enum class State {
+        /**
+         * c o l l a p s e d
+         */
         COLLAPSED,
+        /**
+         * e x p a n d e d
+         */
         EXPANDED,
+        /**
+         * h i d d e n
+         */
         HIDDEN
     }
 
+    // Do Not Disturb flag. If set to true, the notifications are no longer shown.
     var dnd: Boolean = false
 
     private var notificationView: BandyerChatNotificationView? = null
@@ -117,7 +142,8 @@ class BandyerNotificationManager {
         }
     }
 
-    companion object {
+    private companion object {
+        // Delay after which the notification is automatically hidden
         const val AUTO_HIDE_DELAY = 5000L
     }
 }

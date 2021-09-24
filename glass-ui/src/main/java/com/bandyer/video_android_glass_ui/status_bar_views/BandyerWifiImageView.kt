@@ -8,7 +8,7 @@ import com.google.android.material.imageview.ShapeableImageView
 /**
  * This ImageView defines the state of the wifi signal
  */
-class BandyerWifiImageView @JvmOverloads constructor(
+internal class BandyerWifiImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

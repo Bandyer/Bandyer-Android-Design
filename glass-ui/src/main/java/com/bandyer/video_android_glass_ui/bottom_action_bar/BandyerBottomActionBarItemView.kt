@@ -13,7 +13,7 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerBottomActionBarItem
  * - gesture text
  * - action text
  */
-class BandyerBottomActionBarItemView @JvmOverloads constructor(
+internal class BandyerBottomActionBarItemView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

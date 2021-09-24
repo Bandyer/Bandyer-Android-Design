@@ -20,18 +20,58 @@ class BandyerStatusBarView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
+    /**
+     * Cell signal's states
+     */
     enum class CellSignalState {
+        /**
+         * m i s s i n g
+         */
         MISSING,
+
+        /**
+         * l o w
+         */
         LOW,
+
+        /**
+         * m o d e r a t e
+         */
         MODERATE,
+
+        /**
+         * g o o d
+         */
         GOOD,
+
+        /**
+         * f u l l
+         */
         FULL
     }
 
+    /**
+     * Wifi signal's states
+     */
     enum class WiFiSignalState {
+        /**
+         * d i s a b l e d
+         */
         DISABLED,
+
+        /**
+         * l o w
+         */
         LOW,
+
+        /**
+         * m o d e r a t e
+         */
         MODERATE,
+
+        /**
+         * f u l l
+         */
         FULL
     }
 

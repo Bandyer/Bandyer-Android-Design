@@ -37,9 +37,23 @@ class BandyerContactStateTextView @JvmOverloads constructor(
         }
     }
 
+    /**
+     * The contact user online state
+     */
     enum class State {
+        /**
+         * o n l i n e
+         */
         ONLINE,
+
+        /**
+         * i n v i t e d
+         */
         INVITED,
+
+        /**
+         * l a s t_s e e n
+         */
         LAST_SEEN
     }
 }

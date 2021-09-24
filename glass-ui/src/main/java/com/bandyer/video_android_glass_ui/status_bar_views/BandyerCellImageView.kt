@@ -8,7 +8,7 @@ import com.google.android.material.imageview.ShapeableImageView
 /**
  * This ImageView defines the state of the cell signal
  */
-class BandyerCellImageView @JvmOverloads constructor(
+internal class BandyerCellImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

@@ -48,16 +48,17 @@ abstract class BandyerGlassChatFragment : BandyerGlassBaseFragment() {
         itemAdapter = ItemAdapter()
         fastAdapter = FastAdapter.with(itemAdapter!!)
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvMessages!!.layoutManager = layoutManager
-        rvMessages!!.adapter = fastAdapter
-        rvMessages!!.isFocusable = false
-        rvMessages!!.setHasFixedSize(true)
+        rvMessages!!.apply {
+            this.layoutManager = layoutManager
+            this.adapter = fastAdapter
+            this.isFocusable = false
+            this.setHasFixedSize(true)
+            this.addItemDecoration(BandyerChatProgressDecoration(requireContext()))
+        }
 
-        rvMessages!!.addItemDecoration(BandyerChatProgressDecoration(requireContext()))
-
-        snapHelper = PagerSnapHelper()
-        snapHelper!!.attachToRecyclerView(rvMessages)
-
+        snapHelper = PagerSnapHelper().apply {
+            attachToRecyclerView(rvMessages)
+        }
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event -> rvMessages!!.onTouchEvent(event) }
         return root!!

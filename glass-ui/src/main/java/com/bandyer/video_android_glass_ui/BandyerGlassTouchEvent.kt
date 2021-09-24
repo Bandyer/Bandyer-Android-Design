@@ -15,16 +15,51 @@ import com.bandyer.video_android_glass_ui.utils.extensions.isRightButton
  * @constructor
  */
 data class BandyerGlassTouchEvent(val type: Type, val source: Source) {
+
+    /**
+     * Type of the touch event
+     */
     enum class Type {
+
+        /**
+         * t a p
+         */
         TAP,
+
+        /**
+         * s w i p e_d o w n
+         */
         SWIPE_DOWN,
+
+        /**
+         * s w i p e_f o r w a r d
+         */
         SWIPE_FORWARD,
+
+        /**
+         * s w i p e_b a c k w a r d
+         */
         SWIPE_BACKWARD,
+
+        /**
+         * u n k n o w n
+         */
         UNKNOWN
     }
 
+    /**
+     * Source of the touch event
+     */
     enum class Source {
+
+        /**
+         * g e s t u r e
+         */
         GESTURE,
+
+        /**
+         * k e y
+         */
         KEY
     }
 

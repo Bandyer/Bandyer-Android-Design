@@ -17,7 +17,13 @@ import androidx.constraintlayout.widget.ConstraintSet
 internal interface BandyerViewAttacher {
 
     companion object Factory {
-
+        /**
+         * Create an instance of a [BandyerViewAttacher]
+         *
+         * @param layout The layout to which attach the view
+         * @param view The view to attach
+         * @return BandyerViewAttacher
+         */
         fun create(layout: ViewGroup, view: View): BandyerViewAttacher {
             view.apply {
                 id = View.generateViewId()
@@ -33,7 +39,7 @@ internal interface BandyerViewAttacher {
     }
 
     /**
-     * The view to which attach the view
+     * The view group to which attach the view
      */
     val layout: ViewGroup
 

@@ -22,6 +22,11 @@ class BandyerCallParticipantItem(val text: String): AbstractItem<BandyerCallPart
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
+    /**
+     * View holder for the participant item
+     *
+     * @constructor
+     */
     class ViewHolder(view: View): FastAdapter.ViewHolder<BandyerCallParticipantItem>(view) {
 
         private val binding: BandyerParticipantItemLayoutBinding = BandyerParticipantItemLayoutBinding.bind(view)

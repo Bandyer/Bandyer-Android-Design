@@ -22,6 +22,12 @@ class BandyerChatMenuItem(val text: String): AbstractItem<BandyerChatMenuItem.Vi
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
+    /**
+     *
+     *
+     * @property binding [@androidx.annotation.NonNull] BandyerChatMenuItemLayoutBinding
+     * @constructor
+     */
     class ViewHolder(view: View): FastAdapter.ViewHolder<BandyerChatMenuItem>(view) {
 
         private val binding = BandyerChatMenuItemLayoutBinding.bind(view)

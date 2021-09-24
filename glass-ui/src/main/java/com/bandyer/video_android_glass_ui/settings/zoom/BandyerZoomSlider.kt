@@ -5,6 +5,11 @@ import android.util.AttributeSet
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.settings.BandyerSlider
 
+/**
+ *  Slider for the zoom fragment
+ *
+ * @constructor
+ */
 class BandyerZoomSlider @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

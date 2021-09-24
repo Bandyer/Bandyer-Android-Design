@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentParticipantsBinding
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
 import com.bandyer.video_android_glass_ui.common.BandyerContactAvatarView
-import com.bandyer.video_android_glass_ui.common.item_decoration.LineItemIndicatorDecoration
+import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerMenuLineDecoration
 import com.bandyer.video_android_glass_ui.BandyerGlassBaseFragment
 import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerCenterItemDecoration
 import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
@@ -58,20 +58,23 @@ abstract class BandyerGlassCallParticipantsFragment : BandyerGlassBaseFragment()
         fastAdapter = FastAdapter.with(itemAdapter!!)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvParticipants!!.layoutManager = layoutManager
-        rvParticipants!!.adapter = fastAdapter
-        rvParticipants!!.isFocusable = false
+        rvParticipants!!.apply {
+            this.layoutManager = layoutManager
+            this.adapter = fastAdapter
+            this.isFocusable = false
+            this.addItemDecoration(BandyerCenterItemDecoration())
+        }
 
-        snapHelper = LinearSnapHelper()
-        snapHelper!!.attachToRecyclerView(rvParticipants)
+        snapHelper = LinearSnapHelper().apply {
+            attachToRecyclerView(rvParticipants)
+        }
 
         rvParticipants!!.addItemDecoration(
-            LineItemIndicatorDecoration(
+            BandyerMenuLineDecoration(
                 requireContext(),
                 snapHelper!!
             )
         )
-        rvParticipants!!.addItemDecoration(BandyerCenterItemDecoration())
 
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event -> rvParticipants!!.onTouchEvent(event) }

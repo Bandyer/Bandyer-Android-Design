@@ -12,7 +12,7 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentMenuBinding
 import com.bandyer.video_android_glass_ui.BandyerGlassBaseFragment
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
 import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerCenterItemDecoration
-import com.bandyer.video_android_glass_ui.common.item_decoration.LineItemIndicatorDecoration
+import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerMenuLineDecoration
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
@@ -49,21 +49,24 @@ abstract class BandyerGlassMenuFragment : BandyerGlassBaseFragment() {
         fastAdapter = FastAdapter.with(itemAdapter!!)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvMenu!!.layoutManager = layoutManager
-        rvMenu!!.adapter = fastAdapter
-        rvMenu!!.isFocusable = false
-        rvMenu!!.setHasFixedSize(true)
+        rvMenu!!.apply {
+            this.layoutManager = layoutManager
+            this.adapter = fastAdapter
+            this.isFocusable = false
+            this.setHasFixedSize(true)
+            this.addItemDecoration(BandyerCenterItemDecoration())
+        }
 
-        snapHelper = LinearSnapHelper()
-        snapHelper!!.attachToRecyclerView(rvMenu)
+        snapHelper = LinearSnapHelper().apply {
+            this.attachToRecyclerView(rvMenu)
+        }
 
         rvMenu!!.addItemDecoration(
-            LineItemIndicatorDecoration(
+            BandyerMenuLineDecoration(
                 requireContext(),
                 snapHelper!!
             )
         )
-        rvMenu!!.addItemDecoration(BandyerCenterItemDecoration())
 
         // pass the root view's touch event to the recycler view
         root!!.setOnTouchListener { _, event -> rvMenu!!.onTouchEvent(event) }

@@ -32,6 +32,11 @@ class BandyerMenuItem(val defaultText: String, val activeText: String? = null): 
 
     override fun getViewHolder(v: View) = ViewHolder(v)
 
+    /**
+     * View holder for menu item
+     *
+     * @constructor
+     */
     class ViewHolder(view: View): FastAdapter.ViewHolder<BandyerMenuItem>(view) {
 
         private val binding: BandyerMenuItemLayoutBinding = BandyerMenuItemLayoutBinding.bind(view)

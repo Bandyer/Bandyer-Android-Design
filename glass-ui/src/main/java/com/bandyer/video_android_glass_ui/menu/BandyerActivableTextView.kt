@@ -9,13 +9,16 @@ import com.google.android.material.textview.MaterialTextView
  *
  * @constructor
  */
-class BandyerActivableTextView @JvmOverloads constructor(
+internal class BandyerActivableTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : MaterialTextView(context, attrs, defStyleAttr) {
 
+    // Default text
     var defaultText: String? = null
+
+    // Text shown when the view is in activated state
     var activeText: String? = null
 
     /**

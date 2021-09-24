@@ -14,7 +14,7 @@ import com.bandyer.video_android_glass_ui.common.BandyerContactAvatarView
  *
  * @constructor
  */
-class BandyerContactAvatarGroupView @JvmOverloads constructor(
+internal class BandyerContactAvatarGroupView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -79,6 +79,7 @@ class BandyerContactAvatarGroupView @JvmOverloads constructor(
     fun clean() = removeAllViews()
 
     private companion object {
+        // Gap between the left side of each avatar
         const val CHILD_START_MARGIN = 16
     }
 }

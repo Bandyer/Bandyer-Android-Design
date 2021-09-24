@@ -14,7 +14,7 @@ import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.bottom_action_bar.BandyerBottomActionBarView
 import com.bandyer.video_android_glass_ui.common.BandyerContactAvatarView
 import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerCenterItemDecoration
-import com.bandyer.video_android_glass_ui.common.item_decoration.LineItemIndicatorDecoration
+import com.bandyer.video_android_glass_ui.common.item_decoration.BandyerMenuLineDecoration
 import com.bandyer.video_android_glass_ui.contact.BandyerContactStateTextView
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentChatMenuBinding
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
@@ -69,18 +69,20 @@ abstract class BandyerGlassChatMenuFragment : BandyerGlassBaseFragment() {
         // init the recycler view
         itemAdapter = ItemAdapter()
         fastAdapter = FastAdapter.with(itemAdapter!!)
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvActions!!.layoutManager = layoutManager
-        rvActions!!.adapter = fastAdapter
-        rvActions!!.isFocusable = false
-        rvActions!!.setHasFixedSize(true)
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        rvActions!!.apply {
+            this.layoutManager = layoutManager
+            this.adapter = fastAdapter
+            this.isFocusable = false
+            this.setHasFixedSize(true)
+        }
 
-        snapHelper = LinearSnapHelper()
-        snapHelper!!.attachToRecyclerView(rvActions)
+        snapHelper = LinearSnapHelper().apply {
+            attachToRecyclerView(rvActions)
+        }
 
         rvActions!!.addItemDecoration(
-            LineItemIndicatorDecoration(
+            BandyerMenuLineDecoration(
                 requireContext(),
                 snapHelper!!
             )

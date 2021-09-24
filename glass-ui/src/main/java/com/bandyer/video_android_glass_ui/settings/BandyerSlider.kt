@@ -22,13 +22,22 @@ abstract class BandyerSlider @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
+    /**
+     * Listener used to dispatch updates about slider value
+     */
     interface OnSliderChangeListener {
+        /**
+         * Called when the slider progress value is changed
+         *
+         * @param progress Int
+         */
         fun onProgressChanged(progress: Int)
     }
 
     protected var binding: BandyerSliderLayoutBinding =
         BandyerSliderLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
+    // Listener for the slider value
     var onSliderChangeListener: OnSliderChangeListener? = null
 
     init {

@@ -23,7 +23,7 @@ import kotlin.math.abs
  *
  * @credits David Medenjak
  */
-class BandyerChatProgressDecoration(context: Context) : ItemDecoration() {
+internal class BandyerChatProgressDecoration(context: Context) : ItemDecoration() {
 
     /**
      * Indicator active color
