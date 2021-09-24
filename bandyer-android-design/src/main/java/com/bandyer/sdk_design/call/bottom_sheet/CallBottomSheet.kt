@@ -18,6 +18,7 @@ package com.bandyer.sdk_design.call.bottom_sheet
 
 import android.animation.ValueAnimator
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -278,13 +279,13 @@ open class CallBottomSheet<T>(
                 else -> 0
             }
 
-            val oneLineHeight = (lineView?.getHeightWithVerticalMargin() ?: 0) +
-                    (titleView?.getHeightWithVerticalMargin() ?: 0) +
+            val oneLineHeight = (lineView?.getHeightWithVerticalMargin().takeIf { lineView?.visibility != View.GONE } ?: 0) +
+                    (titleView?.getHeightWithVerticalMargin().takeIf { lineView?.visibility != View.GONE } ?: 0) +
                     firstItem.getHeightWithVerticalMargin() + oneLineHeightPadding
 
             when {
                 collapsible -> {
-                    peekHeight = bottomSheetLayoutContent.rootView.top + (lineView?.getHeightWithVerticalMargin()
+                    peekHeight = bottomSheetLayoutContent.rootView.top + (lineView?.getHeightWithVerticalMargin().takeIf { lineView?.visibility != View.GONE }
                         ?: 0)
                     anchorOffset = oneLineHeight
                     animationEndState = if (collapsed!! && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
