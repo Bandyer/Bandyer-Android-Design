@@ -312,9 +312,9 @@ open class CallBottomSheet<T>(
                 if (this.peekHeight == 0 && this.anchorOffset == -1) {
                     this.peekHeight = peekHeight
                     this.anchorOffset = anchorOffset
-                    skipAnchor = false
-                    bottomSheetBehaviour!!.isHideable = false
                 }
+                skipAnchor = false
+                bottomSheetBehaviour!!.isHideable = false
                 val shouldExpand = bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL ||
                         (bottomSheetLayoutType is BottomSheetLayoutType.GRID && bottomSheetLayoutType.spanSize >= callActionItems.size)
                 val newState = if (shouldExpand) STATE_EXPANDED else if (collapsed!! && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
