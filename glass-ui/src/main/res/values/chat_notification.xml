@@ -50,7 +50,13 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.ChatNotification</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownChatNotification</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/bandyer_glass_hide_notification</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownChatNotification" parent="BandyerSDKDesign.TextView.GlassLabel">
@@ -58,7 +64,13 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.ChatNotification</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapChatNotification</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/bandyer_glass_read</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.TapChatNotification" parent="BandyerSDKDesign.TextView.GlassLabel">
