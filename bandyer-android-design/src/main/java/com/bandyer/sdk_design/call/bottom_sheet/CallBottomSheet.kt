@@ -41,6 +41,7 @@ import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton.State
 import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.extensions.getHeightWithVerticalMargin
+import com.bandyer.sdk_design.extensions.isVisible
 
 /**
  * Call BottomSheet to display actions and interact with the call
@@ -225,12 +226,13 @@ open class CallBottomSheet<T>(
     override fun onConfigurationChanged() {
         bottomSheetBehaviour ?: return
         fixed ?: return
-        calculateBottomSheetDimensions()
     }
 
     private fun setup(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) = bottomSheetLayoutContent.post {
-        val layoutManager = bottomSheetLayoutContent.recyclerView?.layoutManager as? LinearLayoutManager
-        val notVerticallyDraggable = bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL || layoutManager?.findLastCompletelyVisibleItemPosition() ?: callActionItems.size < callActionItems.size
+        val linearLayoutManager: LinearLayoutManager? = bottomSheetLayoutContent.recyclerView?.layoutManager as? LinearLayoutManager
+        val lastVisiblePosition = linearLayoutManager?.findLastCompletelyVisibleItemPosition() ?: callActionItems.size
+        val notVerticallyDraggable = bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL ||
+                (lastVisiblePosition == (callActionItems.size - 1) && linearLayoutManager!!.findViewByPosition(lastVisiblePosition)?.isVisible() == true)
 
         bottomSheetBehaviour ?: return@post
         this.fixed = fixed!!
