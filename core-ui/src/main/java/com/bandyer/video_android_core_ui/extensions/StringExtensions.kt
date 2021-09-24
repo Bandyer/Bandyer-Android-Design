@@ -4,6 +4,9 @@ import android.graphics.Color
 import java.math.BigInteger
 import java.security.MessageDigest
 
+/**
+ * String extensions
+ */
 object StringExtensions {
 
     /**

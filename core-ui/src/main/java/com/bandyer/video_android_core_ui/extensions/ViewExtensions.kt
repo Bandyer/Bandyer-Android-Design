@@ -7,6 +7,9 @@ import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
 import androidx.core.animation.doOnEnd
 
+/**
+ * View extensions
+ */
 object ViewExtensions {
 
     /**

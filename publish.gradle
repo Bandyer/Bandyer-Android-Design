@@ -56,7 +56,6 @@ task publishUpload {
 dokkaHtml {
     outputDirectory = new File("$buildDir/kDoc")
     dokkaSourceSets {
-        println(it)
         configureEach {
             moduleName.set(project.name)
             reportUndocumented.set(true)

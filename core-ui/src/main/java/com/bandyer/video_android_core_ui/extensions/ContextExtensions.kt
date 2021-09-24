@@ -6,6 +6,9 @@ import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
 import java.util.HashMap
 
+/**
+ * Context extensions
+ */
 object ContextExtensions {
 
     private val dipsMap = HashMap<Float, Int>()

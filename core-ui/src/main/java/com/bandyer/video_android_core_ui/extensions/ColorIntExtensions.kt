@@ -3,6 +3,9 @@ package com.bandyer.video_android_core_ui.extensions
 import android.graphics.Color
 import androidx.annotation.ColorInt
 
+/**
+ * Color Int extensions
+ */
 object ColorIntExtensions {
 
     /**

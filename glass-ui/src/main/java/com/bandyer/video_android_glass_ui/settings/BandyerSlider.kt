@@ -110,6 +110,9 @@ abstract class BandyerSlider @JvmOverloads constructor(
      */
     protected abstract fun setSliderText(progress: Int)
 
+    /**
+     * @suppress
+     */
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
         return binding.bandyerSeekbar.onTouchEvent(event)
