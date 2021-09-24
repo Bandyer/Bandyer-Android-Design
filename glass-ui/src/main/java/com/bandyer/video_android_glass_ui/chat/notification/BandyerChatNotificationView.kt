@@ -98,6 +98,20 @@ class BandyerChatNotificationView @JvmOverloads constructor(
         ) { onExpanded?.invoke(it) }
     }
 
+    /**
+     * Set the navigation bar's [View.OnClickListener] for both the swipe down and tap actions. Needed for realwear voice commands.
+     *
+     * @param swipeDownCallback Function0<Unit>
+     * @param tapCallback Function0<Unit>
+     */
+    fun setNavigationBarOnClickListeners(
+        swipeDownCallback: () -> Unit,
+        tapCallback: () -> Unit
+    ) = with(binding.bandyerBottomActionBar) {
+        setSwipeDownOnClickListener(swipeDownCallback)
+        setTapOnClickListener(tapCallback)
+    }
+
     private fun setVisibility(withAnimation: Boolean, visibility: Int, doOnEnd: (() -> Unit)? = null) {
         if (withAnimation) setVisibilityWithAnimation(visibility, doOnEnd)
         else this.visibility = visibility

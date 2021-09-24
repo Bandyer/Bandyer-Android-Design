@@ -3,6 +3,7 @@ package com.bandyer.video_android_glass_ui.chat.notification
 import android.widget.FrameLayout
 import android.widget.RelativeLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import kotlin.math.exp
 
 /**
  * The notification manager encapsulates all the logic to handle the notifications.
@@ -36,6 +37,7 @@ class BandyerNotificationManager {
      */
     constructor(layout: ConstraintLayout) {
         notificationView = BandyerChatNotificationView(layout.context)
+        notificationView?.setNavigationBarOnClickListeners({ dismiss() }, { expand() })
         attacher = BandyerConstraintLayoutAttacher(layout, notificationView!!)
     }
 
@@ -45,6 +47,7 @@ class BandyerNotificationManager {
      */
     constructor(layout: FrameLayout) {
         notificationView = BandyerChatNotificationView(layout.context)
+        notificationView?.setNavigationBarOnClickListeners({ dismiss() }, { expand() })
         attacher = BandyerFrameLayoutAttacher(layout, notificationView!!)
     }
 
@@ -54,6 +57,7 @@ class BandyerNotificationManager {
      */
     constructor(layout: RelativeLayout) {
         notificationView = BandyerChatNotificationView(layout.context)
+        notificationView?.setNavigationBarOnClickListeners({ dismiss() }, { expand() })
         attacher = BandyerRelativeLayoutAttacher(layout, notificationView!!)
     }
 
