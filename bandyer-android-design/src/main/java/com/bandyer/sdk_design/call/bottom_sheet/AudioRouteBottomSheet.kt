@@ -17,7 +17,6 @@
 package com.bandyer.sdk_design.call.bottom_sheet
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
@@ -168,13 +167,15 @@ class AudioRouteBottomSheet<T : ActionItem>(
         super.slideAnimationUpdate(bottomSheet, slideOffset)
         if (!animationEnabled || bottomSheetBehaviour?.lastStableState == state) return
         bottomSheetLayoutContent.lineView?.state = when {
-            slideOffset <= 0f -> State.COLLAPSED
-            else              -> State.EXPANDED
+            slideOffset <= 0f                                                                 -> State.COLLAPSED
+            bottomSheetLayoutType.orientation != BottomSheetLayoutType.Orientation.HORIZONTAL -> State.EXPANDED
+            else                                                                              -> this.lineView?.state
         }
     }
 
     override fun onExpanded() {
         super.onExpanded()
+        if (bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL) return
         bottomSheetLayoutContent.lineView?.state = State.EXPANDED
     }
 

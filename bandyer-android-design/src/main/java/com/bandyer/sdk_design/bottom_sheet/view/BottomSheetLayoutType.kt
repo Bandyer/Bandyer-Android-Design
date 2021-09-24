@@ -18,10 +18,9 @@ package com.bandyer.sdk_design.bottom_sheet.view
 
 /**
  * Bandyer bottom sheet layout types supported
- * @property orientation Orientation
  * @constructor
  */
-sealed class BottomSheetLayoutType(val orientation: Orientation) {
+sealed class BottomSheetLayoutType {
 
     /**
      * Bandyer bottom sheet layout orientation
@@ -37,12 +36,18 @@ sealed class BottomSheetLayoutType(val orientation: Orientation) {
          */
         VERTICAL
     }
+
+    /**
+     * Orientation
+     */
+    abstract val orientation: Orientation
+
     /**
      * Grid bottom sheet layout type
      * @property spanSize Int grid span size
      * @constructor
      */
-    class GRID(val spanSize: Int, orientation: Orientation): BottomSheetLayoutType(orientation) {
+    class GRID(val spanSize: Int, override val orientation: Orientation) : BottomSheetLayoutType() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is GRID) return false
@@ -63,7 +68,7 @@ sealed class BottomSheetLayoutType(val orientation: Orientation) {
      * List bottom sheet layout type
      * @constructor
      */
-    class LIST(orientation: Orientation): BottomSheetLayoutType(orientation){
+    class LIST(override val orientation: Orientation) : BottomSheetLayoutType() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is LIST) return false

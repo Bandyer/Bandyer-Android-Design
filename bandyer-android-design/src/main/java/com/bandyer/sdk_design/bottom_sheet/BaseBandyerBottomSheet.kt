@@ -252,9 +252,6 @@ open class BaseBandyerBottomSheet(
         bottomSheetBehaviour = BandyerBottomSheetBehaviour.from(bottomSheetLayoutContent)
         bottomSheetBehaviour!!.addBottomSheetCallback(bottomSheetBehaviorCallback)
 
-        if (bottomSheetBehaviour!!.skipCollapsed)
-            lineView?.state = State.ANCHORED_DOT
-
         peekHeight?.let { bottomSheetBehaviour!!.peekHeight = it }
 
         bottomSheetLayoutContent.setOnKeyListener { v, keyCode, event ->
