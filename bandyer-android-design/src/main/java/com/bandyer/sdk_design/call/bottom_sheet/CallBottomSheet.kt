@@ -289,13 +289,13 @@ open class CallBottomSheet<T>(
                 else                                                                                                -> 0
             }
 
-            val oneLineHeight = (lineView?.getHeightWithVerticalMargin().takeIf { lineView?.visibility != View.GONE } ?: 0) +
+            val oneLineHeight = (lineView?.getHeightWithVerticalMargin().takeIf { lineView?.visibility != View.GONE && !bottomSheetBehaviour!!.disableDragging } ?: 0) +
                     (titleView?.getHeightWithVerticalMargin().takeIf { lineView?.visibility != View.GONE } ?: 0) +
                     firstItem.getHeightWithVerticalMargin() + oneLineHeightPadding
 
             when {
                 collapsible -> {
-                    peekHeight = bottomSheetLayoutContent.rootView.top + (lineView?.getHeightWithVerticalMargin().takeIf { lineView?.visibility != View.GONE }
+                    peekHeight = bottomSheetLayoutContent.rootView.top + (lineView?.getHeightWithVerticalMargin().takeIf { lineView?.visibility != View.GONE && !bottomSheetBehaviour!!.disableDragging }
                         ?: 0)
                     anchorOffset = oneLineHeight
                     animationEndState = if (collapsed!! && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
