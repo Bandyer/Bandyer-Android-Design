@@ -1,19 +1,6 @@
-buildscript {
-    ext.dokka_version = "0.10.1"
-    ext.moduleGroupId = "com.bandyer"
-    ext.moduleProductId = "video-android"
-    ext.moduleVersion = "2.0.2"
-
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
-    }
-}
-
-apply plugin: org.jetbrains.dokka.gradle.DokkaPlugin
-apply plugin: 'maven-publish'
+ext.moduleGroupId = "com.bandyer"
+ext.moduleProductId = "video-android"
+ext.moduleVersion = "2.0.2"
 
 Properties properties = new Properties()
 if (project.rootProject.file("local.properties").exists()) {
@@ -65,22 +52,30 @@ task publishUpload {
     tasks.findByName('invalidateCache').mustRunAfter publishTask
 }
 
-task dokkaDoc() {
-    dependsOn createApiDoc("genKDoc", "html", "kDoc")
-}
 
-def createApiDoc(def name, def format, def dir) {
-    return tasks.create(name, org.jetbrains.dokka.gradle.DokkaTask) {
-        outputFormat = format
-        outputDirectory = "$buildDir/$dir"
-        configuration {
-            reportUndocumented = true
-            skipEmptyPackages = true // Do not create index pages for empty packages
+dokkaHtml {
+    outputDirectory = new File("$buildDir/kDoc")
+    dokkaSourceSets {
+        println(it)
+        configureEach {
+            moduleName.set(project.name)
+            reportUndocumented.set(true)
+            jdkVersion.set(11)
+            includeNonPublic.set(false)
+            skipEmptyPackages.set(true)
+            externalDocumentationLink {
+                url.set(new URL("https://docs.bandyer.com/Bandyer-Android-Common/kDoc/bandyer-android-common/"))
+            }
         }
     }
 }
 
-task kdocJar(type: Jar, dependsOn: dokkaDoc) {
+
+task dokkaDoc() {
+    dependsOn dokkaHtml
+}
+
+task kdocJar(type: Jar, dependsOn: dokkaHtml) {
     archiveClassifier.set("javadoc")
     from "$buildDir/kDoc"
 }

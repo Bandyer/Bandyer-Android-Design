@@ -28,6 +28,7 @@ buildscript {
     ext.nav_version = "2.3.5"
 
     repositories {
+        gradlePluginPortal()
         mavenLocal()
         google()
         mavenCentral()
