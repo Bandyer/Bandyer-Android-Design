@@ -15,6 +15,23 @@ import androidx.constraintlayout.widget.ConstraintSet
  * @property view View
  */
 internal interface BandyerViewAttacher {
+
+    companion object Factory {
+
+        fun create(layout: ViewGroup, view: View): BandyerViewAttacher {
+            view.apply {
+                id = View.generateViewId()
+                visibility = View.GONE
+            }
+            return when (layout) {
+                is ConstraintLayout -> BandyerConstraintLayoutAttacher(layout, view)
+                is FrameLayout      -> BandyerFrameLayoutAttacher(layout, view)
+                is RelativeLayout   -> BandyerRelativeLayoutAttacher(layout, view)
+                else                -> throw IllegalArgumentException("Unsupported layout type")
+            }
+        }
+    }
+
     /**
      * The view to which attach the view
      */
@@ -44,98 +61,57 @@ internal class BandyerConstraintLayoutAttacher(
     override val view: View
 ) : BandyerViewAttacher {
 
-    init {
-        view.apply {
-            id = View.generateViewId()
-            visibility = View.GONE
-        }
-    }
-
     override fun attach() {
-        if(layout.findViewById<View>(view.id) != null) return
-
-        val constraintSet = ConstraintSet()
+        if (layout.findViewById<View>(view.id) != null) return
         layout.addView(view)
 
-        constraintSet.clone(layout)
-        constraintSet.connect(
-            view.id,
-            ConstraintSet.TOP,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.TOP
-        )
-        constraintSet.connect(
-            view.id,
-            ConstraintSet.START,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.START
-        )
-        constraintSet.connect(
-            view.id,
-            ConstraintSet.END,
-            ConstraintSet.PARENT_ID,
-            ConstraintSet.END
-        )
-        constraintSet.constrainWidth(view.id, ConstraintSet.MATCH_CONSTRAINT)
-        constraintSet.applyTo(layout)
+        ConstraintSet().apply {
+            clone(layout)
+            connect(view.id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP)
+            connect(view.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START)
+            connect(view.id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+            constrainWidth(view.id, ConstraintSet.MATCH_CONSTRAINT)
+            applyTo(layout)
+        }
     }
 }
 
 /**
  * BandyerFrameLayoutAttacher
  */
-internal class BandyerFrameLayoutAttacher(
+private class BandyerFrameLayoutAttacher(
     override val layout: FrameLayout,
     override val view: View
 ) : BandyerViewAttacher {
-
-    init {
-        view.apply {
-            id = View.generateViewId()
-            visibility = View.GONE
-        }
-    }
 
     /**
      * Attach the [view] to a [FrameLayout]
      */
     override fun attach() {
-        if(layout.findViewById<View>(view.id) != null) return
-
-        layout.addView(
-            view,
-            FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT,
-                Gravity.TOP
-            )
+        if (layout.findViewById<View>(view.id) != null) return
+        val params = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            Gravity.TOP
         )
+        layout.addView(view, params)
     }
 }
 
 /**
  * BandyerRelativeLayoutAttacher
  */
-internal class BandyerRelativeLayoutAttacher(
+private class BandyerRelativeLayoutAttacher(
     override val layout: RelativeLayout,
     override val view: View
 ) : BandyerViewAttacher {
 
-    init {
-        view.apply {
-            id = View.generateViewId()
-            visibility = View.GONE
-        }
-    }
-
     override fun attach() {
-        if(layout.findViewById<View>(view.id) != null) return
-
+        if (layout.findViewById<View>(view.id) != null) return
         val params = RelativeLayout.LayoutParams(
             RelativeLayout.LayoutParams.MATCH_PARENT,
             RelativeLayout.LayoutParams.WRAP_CONTENT
-        )
-        params.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE)
+        ).apply { addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE) }
         layout.addView(view, params)
     }
 }

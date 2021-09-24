@@ -19,7 +19,7 @@ class BandyerBottomActionBarItemView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    val binding = BandyerBottomActionBarItemLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    private val binding = BandyerBottomActionBarItemLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     override fun setOnClickListener(l: OnClickListener?) {
         binding.root.setOnClickListener(l)

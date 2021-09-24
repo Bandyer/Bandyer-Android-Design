@@ -47,8 +47,7 @@ abstract class BandyerGlassChatFragment : BandyerGlassBaseFragment() {
         // init the recycler view
         itemAdapter = ItemAdapter()
         fastAdapter = FastAdapter.with(itemAdapter!!)
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         rvMessages!!.layoutManager = layoutManager
         rvMessages!!.adapter = fastAdapter
         rvMessages!!.isFocusable = false

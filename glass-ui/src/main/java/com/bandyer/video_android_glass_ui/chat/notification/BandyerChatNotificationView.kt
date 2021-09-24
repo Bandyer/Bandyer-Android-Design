@@ -138,7 +138,7 @@ class BandyerChatNotificationView @JvmOverloads constructor(
         this.visibility = visibility
     }
 
-    companion object {
-        private const val ANIMATION_DURATION = 300L
+    private companion object {
+        const val ANIMATION_DURATION = 300L
     }
 }
