@@ -80,6 +80,8 @@ class AudioRouteBottomSheet<T : ActionItem>(
         if ((recyclerView!!.layoutManager as? LinearLayoutManager)?.orientation == LinearLayoutManager.HORIZONTAL)
             lineView?.state = State.HIDDEN
 
+        bottomSheetBehaviour!!.disableDragging = bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL
+
         expand()
     }
 
