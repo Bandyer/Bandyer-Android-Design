@@ -72,6 +72,9 @@ open class BandyerActionButton @JvmOverloads constructor(context: Context, attrs
         if (!button!!.hasOnClickListeners()) button!!.setOnClickListener(l)
     }
 
+    /**
+     * @suppress
+     */
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         button?.isEnabled = enabled

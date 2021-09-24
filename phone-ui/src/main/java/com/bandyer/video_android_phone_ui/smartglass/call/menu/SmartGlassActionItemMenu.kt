@@ -26,6 +26,9 @@ import com.bandyer.video_android_phone_ui.smartglass.call.menu.utils.motionEvent
  */
 class SmartGlassActionItemMenu : DialogFragment() {
 
+    /**
+     * @suppress
+     */
     companion object {
         private const val TAG = "SmartglassActionItemMenu"
         private const val ITEMS = "items"

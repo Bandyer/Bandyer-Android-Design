@@ -64,9 +64,9 @@ data class BandyerGlassTouchEvent(val type: Type, val source: Source) {
     }
 
     /**
-     * BandyerGlassTouchEvent's companion object.
+     * EventMapper
      */
-    companion object {
+    companion object EventMapper {
         /**
          * Utility function to map a GlassGestureDetector.Gesture to a SmartGlassTouchEvent
          *
