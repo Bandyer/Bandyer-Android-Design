@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.bandyer.demo_sdk_design.smartglass.ChatFragment"
+        android:name="com.bandyer.app_design.smartglass.ChatFragment"
         android:label="ChatFragment">
         <action
             android:id="@+id/action_chatFragment_to_chatMenuFragment"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatMenuFragment"
-        android:name="com.bandyer.demo_sdk_design.smartglass.ChatMenuFragment"
+        android:name="com.bandyer.app_design.smartglass.ChatMenuFragment"
         android:label="ChatMenuFragment">
         <argument
             android:name="contactData"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.bandyer.demo_sdk_design">
+    package="com.bandyer.app_design">
 
     <uses-feature
         android:name="android.hardware.bluetooth"
@@ -14,7 +14,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
-        android:name=".App"
+        android:name="com.bandyer.app_design.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -25,19 +25,19 @@
             android:name="com.google.android.glass.TouchEnabledApplication"
             android:value="true" />
 
-        <activity android:name=".RingingActivity" />
+        <activity android:name="com.bandyer.app_design.RingingActivity" />
         <activity
-            android:name=".BluetoothAudioRouteActivity"
+            android:name="com.bandyer.app_design.BluetoothAudioRouteActivity"
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
         <activity
-            android:name=".CallActivity"
+            android:name="com.bandyer.app_design.CallActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:supportsPictureInPicture="true"
             android:launchMode="singleInstance"
             android:theme="@style/BandyerSDKDesign.Theme.Call"
             tools:targetApi="n" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.bandyer.app_design.MainActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:theme="@style/BandyerSDKDesign.Theme.Call">
             <intent-filter>
@@ -47,15 +47,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChatActivity"
+            android:name="com.bandyer.app_design.ChatActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
             android:launchMode="singleInstance"
             android:theme="@style/BandyerSDKDesign.Theme.Chat" />
         <activity
-            android:name=".PointerActivity"
+            android:name="com.bandyer.app_design.PointerActivity"
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
         <activity
-            android:name=".smartglass.SmartGlassActivity"
+            android:name="com.bandyer.app_design.smartglass.SmartGlassActivity"
             android:theme="@style/BandyerSDKDesign.Theme.DayNight.GlassCall" >
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
