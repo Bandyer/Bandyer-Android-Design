@@ -10,6 +10,7 @@ import android.view.Surface
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import com.bandyer.demo_sdk_design.R
+import com.bandyer.demo_sdk_design.smartglass.GlassDeviceUtils.isGoogleGlass
 import java.util.*
 import kotlin.math.abs
 
@@ -35,9 +36,6 @@ class TiltController constructor(
          */
         fun onTilt(azimuth: Float, pitch: Float, roll: Float)
     }
-
-    private val isGoogleGlasses =
-        Build.MODEL == ctx.resources.getString(R.string.bandyer_glass_google_model)
 
     private val windowManager = ctx.getSystemService(WindowManager::class.java)
     private val sensorManager = ctx.getSystemService(SensorManager::class.java)
@@ -180,7 +178,7 @@ class TiltController constructor(
      */
     private fun computeWorldAxisForDeviceAxes(displayRotation: Int?): Pair<Int, Int> =
         when {
-            isGoogleGlasses -> Pair(SensorManager.AXIS_X, SensorManager.AXIS_Y)
+            isGoogleGlass -> Pair(SensorManager.AXIS_X, SensorManager.AXIS_Y)
             displayRotation == Surface.ROTATION_90 -> Pair(
                 SensorManager.AXIS_Z,
                 SensorManager.AXIS_MINUS_X

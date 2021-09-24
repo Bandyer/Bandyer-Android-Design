@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="bandyer_glass_google_model" translatable="false">Glass Enterprise Edition 2</string>
     <string name="bandyer_glass_group_contacts_pattern" translatable="false">+%1$d</string>
     <string name="bandyer_glass_message_counter_pattern" translatable="false">+%1$d</string>
     <string name="bandyer_glass_slider_volume_pattern">Volume: %1$d%%</string>
