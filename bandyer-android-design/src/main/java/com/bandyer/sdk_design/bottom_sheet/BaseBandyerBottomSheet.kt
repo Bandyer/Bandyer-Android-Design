@@ -609,6 +609,7 @@ open class BaseBandyerBottomSheet(
     }
 
     override fun anchor() {
+        lineView!!.visibility = if (bottomSheetBehaviour!!.disableDragging) View.GONE else View.VISIBLE
         bottomSheetLayoutContent.post {
             val behaviour = bottomSheetBehaviour ?: return@post
             behaviour.skipAnchor = false
@@ -618,6 +619,7 @@ open class BaseBandyerBottomSheet(
     }
 
     override fun expand() {
+        lineView!!.visibility = if (bottomSheetBehaviour!!.disableDragging) View.GONE else View.VISIBLE
         bottomSheetLayoutContent.post {
             bottomSheetBehaviour?.state = BandyerBottomSheetBehaviour.STATE_EXPANDED
         }
@@ -654,9 +656,7 @@ open class BaseBandyerBottomSheet(
             return
 
         bottomSheetLayoutContent.visibility = View.INVISIBLE
-
-        bottomSheetBehaviour!!.disableDragging = true
-
+        
         if (bottomSheetBehaviour!!.isHideable) {
             bottomSheetBehaviour!!.state = BandyerBottomSheetBehaviour.STATE_HIDDEN
         } else {
