@@ -5,6 +5,9 @@ import androidx.annotation.StyleableRes
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getThemeAttribute
 import com.bandyer.video_android_glass_ui.R
 
+/**
+ * Context utility class
+ */
 object ContextExtensions {
     /**
      * Retrieve a chat theme attribute's style

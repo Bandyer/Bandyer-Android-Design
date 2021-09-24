@@ -47,14 +47,14 @@ class BandyerChatMessageView @JvmOverloads constructor(
         bandyerAvatar.setText(text?.first().toString())
     }
 
-    /*
+    /**
      * Show the sender's name
      */
     fun showName() {
         binding.bandyerName.visibility = VISIBLE
     }
 
-    /*
+    /**
      * Hide the sender's name
      */
     fun hideName() {

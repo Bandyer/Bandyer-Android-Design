@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.bandyer.video_android_glass_ui.databinding.BandyerBottomActionBarItemLayoutBinding
 
-/*
+/**
  * Bottom action bar item view, it describes an action the user performs on a given gesture
  * It's made of:
  * - gesture icon
  * - gesture text
  * - action text
+ *
+ * @constructor
  */
 internal class BandyerBottomActionBarItemView @JvmOverloads constructor(
     context: Context,

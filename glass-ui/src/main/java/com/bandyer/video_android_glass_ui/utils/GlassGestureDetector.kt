@@ -157,7 +157,7 @@ class GlassGestureDetector(context: Context, onGestureListener: OnGestureListene
     }
 
     private val touchSlopSquare: Int
-    val tapAndHoldCountDownTimer: CountDownTimer = object : CountDownTimer(
+    private val tapAndHoldCountDownTimer: CountDownTimer = object : CountDownTimer(
         TAP_AND_HOLD_THRESHOLD_MS.toLong(),
         TAP_AND_HOLD_THRESHOLD_MS.toLong()
     ) {

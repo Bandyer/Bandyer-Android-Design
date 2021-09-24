@@ -6,9 +6,11 @@ import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.bandyer.video_android_glass_ui.databinding.BandyerBottomActionBarLayoutBinding
 
-/*
+/**
  * Bottom action bar view, it describes the actions the user performs
- * It is made of three inline [BottomActionBarItemView]
+ * It is made of three inline [BandyerBottomActionBarItemView]
+ *
+ * @constructor
  */
 class BandyerBottomActionBarView @JvmOverloads constructor(
     context: Context,

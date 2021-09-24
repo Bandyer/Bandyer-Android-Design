@@ -48,7 +48,9 @@ class BandyerNotificationManager {
         HIDDEN
     }
 
-    // Do Not Disturb flag. If set to true, the notifications are no longer shown.
+    /**
+     * Do Not Disturb flag. If set to true, the notifications are no longer shown.
+     */
     var dnd: Boolean = false
 
     private var notificationView: BandyerChatNotificationView? = null
@@ -131,8 +133,8 @@ class BandyerNotificationManager {
         }
     }
 
-    /*
-     * Expand the [ChatNotificationView]
+    /**
+     * Expand the [BandyerChatNotificationView]
      */
     fun expand() {
         state = State.EXPANDED

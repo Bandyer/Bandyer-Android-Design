@@ -37,7 +37,9 @@ abstract class BandyerSlider @JvmOverloads constructor(
     protected var binding: BandyerSliderLayoutBinding =
         BandyerSliderLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
-    // Listener for the slider value
+    /**
+     * Listener for the slider value
+     */
     var onSliderChangeListener: OnSliderChangeListener? = null
 
     init {
