@@ -15,7 +15,7 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.V16" parent="ThemeOverlay.MaterialComponents.Light.BottomSheetDialog">
+    <style name="BandyerSDKDesign.BottomSheetDialog.V16" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
