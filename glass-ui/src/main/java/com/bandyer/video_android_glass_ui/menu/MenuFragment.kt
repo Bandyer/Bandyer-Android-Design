@@ -28,13 +28,13 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
  */
 class MenuFragment : BaseFragment(), TiltController.TiltListener {
 
+    //    private val activity by lazy { requireActivity() as SmartGlassActivity }
+
     private var _binding: BandyerGlassFragmentMenuBinding? = null
     override val binding: BandyerGlassFragmentMenuBinding get() = _binding!!
 
     private var itemAdapter = ItemAdapter<MenuItem>()
     private var currentMenuItemIndex = 0
-
-//    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
     private var tiltController: TiltController? = null
 
