@@ -157,8 +157,8 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         override fun onExpand(bottomSheet: BandyerBottomSheet) {
             disableAutoHide()
             state = BandyerCallActionWidgetState.EXPANDED
-            if (bottomSheet is RingingBottomSheet<*>) {
-                onShowListener?.onShown()
+            onShowListener?.let {
+                it.onShown()
                 onShowListener = null
             }
             slidingListener?.onStateChanged(BandyerCallActionWidgetState.EXPANDED)
@@ -171,8 +171,8 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
                 currentBottomSheetLayout?.top
                     ?: context.getScreenSize().y, false
             )
-            if (bottomSheet is CallBottomSheet<*>) {
-                onShowListener?.onShown()
+            onShowListener?.let {
+                it.onShown()
                 onShowListener = null
             }
             slidingListener?.onStateChanged(BandyerCallActionWidgetState.ANCHORED)
@@ -366,7 +366,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         if (onShowListener != null) this.onShowListener = onShowListener
         when (currentShownBottomSheet) {
             ringingBottomSheet -> showRingingControls()
-            else -> showCallControls(collapsible, fixed, collapsed = true)
+            else -> showCallControls(collapsible, fixed, collapsed = true, currentCallBottomSheetLayoutType)
         }
     }
 

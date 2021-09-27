@@ -84,11 +84,6 @@ open class CallBottomSheet<T>(
     private var cameraToggled = false
     private var micToggled = false
 
-    private val lifecycleObserver = object : LifecycleObserver {
-        @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        fun onResume() = calculateBottomSheetDimensions()
-    }
-
     init {
         firstOrNull(CallAction.OPTIONS::class.java).let {
             camera = firstOrNull(CallAction.CAMERA::class.java)
@@ -97,7 +92,6 @@ open class CallBottomSheet<T>(
                 ?: it?.switchWith as? CallAction.MICROPHONE
         }
         recyclerView?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-        context.lifecycle.addObserver(lifecycleObserver)
     }
 
     override fun saveInstanceState(saveInstanceState: Bundle?): Bundle? {
