@@ -31,13 +31,12 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
     private var _binding: BandyerGlassFragmentMenuBinding? = null
     override val binding: BandyerGlassFragmentMenuBinding get() = _binding!!
 
-    private var snapHelper: LinearSnapHelper? = null
+    private var itemAdapter = ItemAdapter<MenuItem>()
+    private var currentMenuItemIndex = 0
 
 //    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
     private var tiltController: TiltController? = null
-
-    private var currentMenuItemIndex = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +63,7 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
     ): View {
 //        activity.addNotificationListener(this)
 
+        // Apply theme wrapper and add view binding
         val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_menuStyle)
         _binding = BandyerGlassFragmentMenuBinding.inflate(
             inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
@@ -71,61 +71,57 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
             false
         )
 
+        // Set OnClickListeners for realwear voice commands
         with(binding.bandyerBottomNavigation) {
             setTapOnClickListener { onTap(currentMenuItemIndex) }
             setSwipeHorizontalOnClickListener { onSwipeForward(true) }
             setSwipeDownOnClickListener { onSwipeDown() }
         }
 
-        // Init the recycler view
-        val itemAdapter = ItemAdapter<BaandyeMenuItem>()
-        val fastAdapter = FastAdapter.with(itemAdapter!!)
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
+        // Init the RecyclerView
         with(binding.bandyerMenu) {
+            val fastAdapter = FastAdapter.with(itemAdapter).also {
+                it.onClickListener = { _, _, _, position -> onTap(position) }
+            }
+            val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            val snapHelper = LinearSnapHelper().also {
+                it.attachToRecyclerView(this)
+            }
+
             this.layoutManager = layoutManager
             adapter = fastAdapter
             isFocusable = false
             setHasFixedSize(true)
+
             addItemDecoration(HorizontalCenterItemDecoration())
-        }
-
-        fastAdapter!!.onClickListener = { _, _, _, position -> onTap(position) }
-
-
-        snapHelper = LinearSnapHelper().apply {
-            this.attachToRecyclerView(binding)
-        }
-
-        rvMenu!!.addItemDecoration(
-            MenuProgressIndicator(
-                requireContext(),
-                snapHelper!!
+            addItemDecoration(
+                MenuProgressIndicator(
+                    requireContext(),
+                    snapHelper
+                )
             )
-        )
 
-        // add scroll listener
-        binding.bandyerMenu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                val layoutManager = recyclerView.layoutManager
-                val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
-                currentMenuItemIndex = layoutManager!!.getPosition(foundView)
-            }
-        })
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val foundView = snapHelper.findSnapView(layoutManager) ?: return
+                    currentMenuItemIndex = layoutManager.getPosition(foundView)
+                }
+            })
 
-        itemAdapter!!.add(MenuItem("Attiva microfono", "Muta microfono"))
-        itemAdapter!!.add(MenuItem("Attiva camera", "Muta camera"))
-        itemAdapter!!.add(MenuItem("Volume"))
-        itemAdapter!!.add(MenuItem("Zoom"))
-        itemAdapter!!.add(MenuItem("Utenti"))
-        itemAdapter!!.add(MenuItem("Chat"))
-
-
-        return with(binding) {
             // pass the root view's touch event to the recycler view
-            root.setOnTouchListener { _, event -> bandyerMenu.onTouchEvent(event) }
-            root
+            binding.root.setOnTouchListener { _, event -> this.onTouchEvent(event) }
         }
+
+        with(itemAdapter) {
+            add(MenuItem("Attiva microfono", "Muta microfono"))
+            add(MenuItem("Attiva camera", "Muta camera"))
+            add(MenuItem("Volume"))
+            add(MenuItem("Zoom"))
+            add(MenuItem("Utenti"))
+            add(MenuItem("Chat"))
+        }
+
+        return binding.root
     }
 
     /**
@@ -134,9 +130,6 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        itemAdapter = null
-        fastAdapter = null
-        snapHelper = null
 //        activity.removeNotificationListener(this)
     }
 
@@ -151,8 +144,8 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
 
     private fun onTap(itemIndex: Int): Boolean = when (itemIndex) {
         0, 1 -> {
-            val isActivated = itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated
-            itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated = !isActivated
+            val isActivated = itemAdapter.getAdapterItem(currentMenuItemIndex).isActivated
+            itemAdapter.getAdapterItem(currentMenuItemIndex).isActivated = !isActivated
             true
         }
         2 -> {
