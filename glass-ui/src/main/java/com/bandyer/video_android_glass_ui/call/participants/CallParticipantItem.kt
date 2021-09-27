@@ -18,7 +18,7 @@ class CallParticipantItem(val text: String): AbstractItem<CallParticipantItem.Vi
      * The layout for the given item
      */
     override val layoutRes: Int
-        get() = R.layout.bandyer_participant_item_layout
+        get() = R.layout.bandyer_glass_participant_item_layout
 
     /**
      * The type of the Item. Can be a hardcoded INT, but preferred is a defined id

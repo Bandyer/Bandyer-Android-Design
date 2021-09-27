@@ -18,7 +18,7 @@ class ChatMenuItem(val text: String): AbstractItem<ChatMenuItem.ViewHolder>() {
      * The layout for the given item
      */
     override val layoutRes: Int
-        get() = R.layout.bandyer_chat_menu_item_layout
+        get() = R.layout.bandyer_glass_chat_menu_item_layout
 
     /**
      * The type of the Item. Can be a hardcoded INT, but preferred is a defined id

@@ -19,7 +19,7 @@ class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMessageItem.
      * The layout for the given item
      */
     override val layoutRes: Int
-        get() = R.layout.bandyer_chat_message_item_layout
+        get() = R.layout.bandyer_glass_chat_message_item_layout
 
     /**
      * The type of the Item. Can be a hardcoded INT, but preferred is a defined id

@@ -31,7 +31,7 @@ class BandyerMenuItem(val defaultText: String, val activeText: String? = null): 
      * The layout for the given item
      */
     override val layoutRes: Int
-        get() = R.layout.bandyer_menu_item_layout
+        get() = R.layout.bandyer_glass_menu_item_layout
 
     /**
      * The type of the Item. Can be a hardcoded INT, but preferred is a defined id
