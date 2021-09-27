@@ -9,7 +9,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.app_design.R
-import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.bandyer.video_android_glass_ui.chat.ChatFragment
 import com.bandyer.video_android_glass_ui.chat.ChatMessageData
 import com.bandyer.video_android_glass_ui.databinding.BandyerChatMessageLayoutBinding
@@ -146,11 +145,11 @@ class ChatFragment : ChatFragment(), TiltController.TiltListener {
 //
 //        }, 1000)
 
-        bottomActionBar!!.setSwipeOnClickListener {
+        bottomNavigation!!.setSwipeOnClickListener {
             rvMessages!!.horizontalSmoothScrollToNext(currentMsgItemIndex)
         }
 
-        bottomActionBar!!.setSwipeDownOnClickListener {
+        bottomNavigation!!.setSwipeDownOnClickListener {
             findNavController().popBackStack()
         }
 

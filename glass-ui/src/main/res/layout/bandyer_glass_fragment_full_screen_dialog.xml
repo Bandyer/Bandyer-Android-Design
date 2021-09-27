@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="?attr/bandyer_rootLayoutStyle"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="?attr/bandyer_endCallStyle">
+    style="?attr/bandyer_rootLayoutStyle"
+    android:theme="?attr/bandyer_callEndedStyle">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_title"
@@ -15,25 +16,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="@string/bandyer_glass_call_ended"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_subtitle"
         style="?attr/bandyer_subtitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_action_bar"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bandyer_title" />
+        app:layout_constraintTop_toBottomOf="@+id/bandyer_title"
+        tools:text="@string/bandyer_glass_thank_you"/>
 
-    <com.bandyer.video_android_glass_ui.bottom_action_bar.BottomActionBarView
-        android:id="@+id/bandyer_bottom_action_bar"
+    <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
+        android:id="@+id/bandyer_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="?attr/bottomNavigationStyle"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
+        android:theme="?attr/bottomNavigationStyle" />
 </androidx.constraintlayout.widget.ConstraintLayout>

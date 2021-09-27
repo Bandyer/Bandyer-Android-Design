@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.bottom_action_bar.BottomActionBarView
+import com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
 import com.bandyer.video_android_glass_ui.common.AvatarView
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
@@ -39,7 +39,7 @@ abstract class ChatMenuFragment : BaseFragment() {
     protected var contactStateText: ParticipantStateTextView? = null
     protected var name: MaterialTextView? = null
     protected var rvActions: RecyclerView? = null
-    protected var bottomActionBar: BottomActionBarView? = null
+    protected var bottomNavigation: BottomNavigationView? = null
 
     protected var snapHelper: LinearSnapHelper? = null
 
@@ -67,7 +67,7 @@ abstract class ChatMenuFragment : BaseFragment() {
         contactStateText = binding!!.bandyerContactStateText
         name = binding!!.bandyerName
         rvActions = binding!!.bandyerParticipants
-        bottomActionBar = binding!!.bandyerBottomActionBar
+        bottomNavigation = binding!!.bandyerBottomActionBar
 
         // init the recycler view
         itemAdapter = ItemAdapter()
@@ -109,7 +109,7 @@ abstract class ChatMenuFragment : BaseFragment() {
         root = null
         rvActions = null
         name = null
-        bottomActionBar = null
+        bottomNavigation = null
         avatar = null
         contactStateDot = null
         contactStateText = null

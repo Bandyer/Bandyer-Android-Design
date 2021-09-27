@@ -118,11 +118,11 @@ class ParticipantsFragment : ParticipantsFragment(), TiltController.TiltListener
             }
         })
 
-        bottomActionBar!!.setSwipeOnClickListener {
+        bottomNavigation!!.setSwipeOnClickListener {
             rvParticipants!!.horizontalSmoothScrollToNext(currentParticipantIndex)
         }
 
-        bottomActionBar!!.setSwipeDownOnClickListener {
+        bottomNavigation!!.setSwipeDownOnClickListener {
             findNavController().popBackStack()
         }
 

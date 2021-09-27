@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentParticipantsBinding
-import com.bandyer.video_android_glass_ui.bottom_action_bar.BottomActionBarView
+import com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
 import com.bandyer.video_android_glass_ui.common.AvatarView
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.BaseFragment
@@ -34,7 +34,7 @@ abstract class ParticipantsFragment : BaseFragment() {
     protected var contactStateDot: ShapeableImageView? = null
     protected var contactStateText: ParticipantStateTextView? = null
     protected var rvParticipants: RecyclerView? = null
-    protected var bottomActionBar: BottomActionBarView? = null
+    protected var bottomNavigation: BottomNavigationView? = null
 
     protected var snapHelper: LinearSnapHelper? = null
 
@@ -54,7 +54,7 @@ abstract class ParticipantsFragment : BaseFragment() {
         contactStateDot = binding!!.bandyerContactStateDot
         contactStateText = binding!!.bandyerContactStateText
         rvParticipants = binding!!.bandyerParticipants
-        bottomActionBar = binding!!.bandyerBottomActionBar
+        bottomNavigation = binding!!.bandyerBottomActionBar
 
         // init the recycler view
         itemAdapter = ItemAdapter()
@@ -95,7 +95,7 @@ abstract class ParticipantsFragment : BaseFragment() {
         binding = null
         root = null
         rvParticipants = null
-        bottomActionBar = null
+        bottomNavigation = null
         avatar = null
         contactStateDot = null
         contactStateText = null

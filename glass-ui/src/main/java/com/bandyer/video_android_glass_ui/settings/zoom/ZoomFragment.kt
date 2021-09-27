@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentZoomBinding
 import com.bandyer.video_android_glass_ui.BaseFragment
-import com.bandyer.video_android_glass_ui.bottom_action_bar.BottomActionBarView
+import com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
 import com.bandyer.video_android_glass_ui.common.SettingSlider
 
 /**
@@ -19,7 +19,7 @@ abstract class ZoomFragment : BaseFragment() {
 
     protected var root: View? = null
     protected var slider: SettingSlider? = null
-    protected var bottomActionBar: BottomActionBarView? = null
+    protected var bottomNavigation: BottomNavigationView? = null
 
     /**
      * @suppress
@@ -32,7 +32,7 @@ abstract class ZoomFragment : BaseFragment() {
         binding = BandyerFragmentZoomBinding.inflate(inflater, container, false)
         root = binding!!.root
         slider = binding!!.bandyerSlider
-        bottomActionBar = binding!!.bandyerBottomActionBar
+        bottomNavigation = binding!!.bandyerBottomActionBar
         return root!!
     }
 
@@ -44,6 +44,6 @@ abstract class ZoomFragment : BaseFragment() {
         binding = null
         root = null
         slider = null
-        bottomActionBar = null
+        bottomNavigation = null
     }
 }

@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.app_design.R
 import com.bandyer.video_android_glass_ui.TouchEvent
-import com.bandyer.video_android_glass_ui.call.CallFragment
+import com.bandyer.video_android_glass_ui.call.EmptyFragment
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 
-class CallFragment : CallFragment(), ChatNotificationManager.NotificationListener {
+class EmptyFragment : EmptyFragment(), ChatNotificationManager.NotificationListener {
 
     private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -24,11 +24,11 @@ class CallFragment : CallFragment(), ChatNotificationManager.NotificationListene
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        bottomActionBar!!.setTapOnClickListener {
+        bottomNavigation!!.setTapOnClickListener {
             findNavController().navigate(R.id.action_callFragment_to_menuFragment)
         }
 
-        bottomActionBar!!.setSwipeDownOnClickListener {
+        bottomNavigation!!.setSwipeDownOnClickListener {
             findNavController().navigate(R.id.action_callFragment_to_endCallFragment)
         }
 

@@ -39,12 +39,12 @@
         android:id="@+id/bandyer_participants"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_action_bar"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/bandyer_glass_participant_item_layout" />
 
-    <com.bandyer.video_android_glass_ui.bottom_action_bar.BottomActionBarView
-        android:id="@+id/bandyer_bottom_action_bar"
+    <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
+        android:id="@+id/bandyer_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="?attr/bottomNavigationStyle"

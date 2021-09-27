@@ -66,15 +66,15 @@ class MenuFragment : MenuFragment(), TiltController.TiltListener,
             tapBehaviour(position)
         }
 
-        bottomActionBar!!.setTapOnClickListener {
+        bottomNavigation!!.setTapOnClickListener {
             tapBehaviour(currentMenuItemIndex)
         }
 
-        bottomActionBar!!.setSwipeOnClickListener {
+        bottomNavigation!!.setSwipeOnClickListener {
             rvMenu!!.horizontalSmoothScrollToNext(currentMenuItemIndex)
         }
 
-        bottomActionBar!!.setSwipeDownOnClickListener {
+        bottomNavigation!!.setSwipeDownOnClickListener {
             findNavController().popBackStack()
         }
 

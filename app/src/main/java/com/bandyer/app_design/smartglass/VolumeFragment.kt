@@ -40,11 +40,11 @@ class VolumeFragment : VolumeFragment(), TiltController.TiltListener, ChatNotifi
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        bottomActionBar!!.setTapOnClickListener {
+        bottomNavigation!!.setTapOnClickListener {
             findNavController().popBackStack()
         }
 
-        bottomActionBar!!.setSwipeDownOnClickListener {
+        bottomNavigation!!.setSwipeDownOnClickListener {
             findNavController().popBackStack()
         }
 

@@ -73,11 +73,11 @@ class ChatMenuFragment : ChatMenuFragment(), TiltController.TiltListener {
         itemAdapter!!.add(ChatMenuItem(resources.getString(R.string.bandyer_glass_videocall)))
         itemAdapter!!.add(ChatMenuItem(resources.getString(R.string.bandyer_glass_call)))
 
-        bottomActionBar!!.setSwipeOnClickListener {
+        bottomNavigation!!.setSwipeOnClickListener {
             rvActions!!.horizontalSmoothScrollToNext(actionIndex)
         }
 
-        bottomActionBar!!.setSwipeDownOnClickListener {
+        bottomNavigation!!.setSwipeDownOnClickListener {
             findNavController().popBackStack()
         }
 

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.*
 import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentChatBinding
 import com.bandyer.video_android_glass_ui.BaseFragment
-import com.bandyer.video_android_glass_ui.bottom_action_bar.BottomActionBarView
+import com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
 import com.google.android.material.textview.MaterialTextView
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -25,7 +25,7 @@ abstract class ChatFragment : BaseFragment() {
     protected var root: View? = null
     protected var rvMessages: RecyclerView? = null
     protected var counter: MaterialTextView? = null
-    protected var bottomActionBar: BottomActionBarView? = null
+    protected var bottomNavigation: BottomNavigationView? = null
     protected var chatMessageView: ChatMessageView? = null
 
     protected var snapHelper: PagerSnapHelper? = null
@@ -44,7 +44,7 @@ abstract class ChatFragment : BaseFragment() {
         root = binding!!.root
         rvMessages = binding!!.bandyerMessages
         counter = binding!!.bandyerCounter
-        bottomActionBar = binding!!.bandyerBottomActionBar
+        bottomNavigation = binding!!.bandyerBottomActionBar
         chatMessageView = binding!!.bandyerChatMessage
 
         // init the recycler view
@@ -78,7 +78,7 @@ abstract class ChatFragment : BaseFragment() {
         root = null
         rvMessages = null
         counter = null
-        bottomActionBar = null
+        bottomNavigation = null
         chatMessageView = null
         snapHelper = null
     }

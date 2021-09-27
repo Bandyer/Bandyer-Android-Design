@@ -40,11 +40,11 @@ class ZoomFragment : ZoomFragment(), TiltController.TiltListener, ChatNotificati
 
         val view = super.onCreateView(inflater, container, savedInstanceState)
 
-        bottomActionBar!!.setTapOnClickListener {
+        bottomNavigation!!.setTapOnClickListener {
             findNavController().popBackStack()
         }
 
-        bottomActionBar!!.setSwipeDownOnClickListener {
+        bottomNavigation!!.setSwipeDownOnClickListener {
             findNavController().popBackStack()
         }
 

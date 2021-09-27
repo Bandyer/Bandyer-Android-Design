@@ -39,15 +39,15 @@
         style="?attr/bandyer_messageStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_action_bar"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_navigation"
         app:layout_constraintEnd_toStartOf="@id/bandyer_time"
         app:layout_constraintStart_toStartOf="@id/bandyer_title"
         app:layout_constraintTop_toBottomOf="@id/bandyer_title"
         app:layout_constraintVertical_chainStyle="spread_inside"
         tools:text="Hello there" />
 
-    <com.bandyer.video_android_glass_ui.bottom_action_bar.BottomActionBarView
-        android:id="@+id/bandyer_bottom_action_bar"
+    <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
+        android:id="@+id/bandyer_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="?attr/bottomNavigationStyle"
