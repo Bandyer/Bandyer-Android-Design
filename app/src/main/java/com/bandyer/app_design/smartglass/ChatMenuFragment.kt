@@ -15,6 +15,7 @@ import com.bandyer.video_android_glass_ui.TouchEvent
 import com.bandyer.video_android_glass_ui.chat.menu.ChatMenuItem
 import com.bandyer.video_android_glass_ui.chat.menu.ChatMenuFragment
 import com.bandyer.video_android_glass_ui.participants.ParticipantData
+import com.bandyer.video_android_glass_ui.utils.TiltController
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 
 class ChatMenuFragment : ChatMenuFragment(), TiltController.TiltListener {
@@ -73,7 +74,7 @@ class ChatMenuFragment : ChatMenuFragment(), TiltController.TiltListener {
         itemAdapter!!.add(ChatMenuItem(resources.getString(R.string.bandyer_glass_videocall)))
         itemAdapter!!.add(ChatMenuItem(resources.getString(R.string.bandyer_glass_call)))
 
-        bottomNavigation!!.setSwipeOnClickListener {
+        bottomNavigation!!.setSwipeHorizontalOnClickListener {
             rvActions!!.horizontalSmoothScrollToNext(actionIndex)
         }
 

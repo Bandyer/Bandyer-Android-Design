@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="?attr/bandyer_callStyle">
+    android:theme="?attr/bandyer_emptyStyle">
 
     <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
         android:id="@+id/bandyer_bottom_navigation"

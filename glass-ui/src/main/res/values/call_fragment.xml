@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- CALL FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.Call" parent="BandyerSDKDesign.Glass">
+    <!-- EMPTY FRAGMENT -->
+    <style name="BandyerSDKDesign.Glass.Empty" parent="BandyerSDKDesign.Glass">
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Call</item>
     </style>
 

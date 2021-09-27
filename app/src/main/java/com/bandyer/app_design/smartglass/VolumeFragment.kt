@@ -10,6 +10,7 @@ import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithA
 import com.bandyer.video_android_glass_ui.TouchEvent
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.settings.volume.VolumeFragment
+import com.bandyer.video_android_glass_ui.utils.TiltController
 
 class VolumeFragment : VolumeFragment(), TiltController.TiltListener, ChatNotificationManager.NotificationListener {
 

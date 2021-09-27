@@ -6,21 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.navigation.fragment.findNavController
-import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.TouchEvent
-import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentRingingBinding
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
  * CallRingingFragment
  */
-abstract class CallRingingFragment: BaseFragment(), ChatNotificationManager.NotificationListener {
+class CallRingingFragment : BaseFragment() {
 
     private var _binding: BandyerGlassFragmentRingingBinding? = null
-    private val binding get() = _binding!!
+    override val binding: BandyerGlassFragmentRingingBinding get() = _binding!!
 
 //    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -42,15 +40,10 @@ abstract class CallRingingFragment: BaseFragment(), ChatNotificationManager.Noti
             false
         )
 
+        // Set OnClickListeners for realwear voice commands
         with(binding.bandyerBottomNavigation) {
-            // Set OnClickListeners for realwear voice commands
-            setTapOnClickListener {
-                findNavController().navigate(R.id.action_ringingFragment_to_callFragment)
-            }
-
-            setSwipeDownOnClickListener {
-                findNavController().popBackStack()
-            }
+            setTapOnClickListener { onTap() }
+            setSwipeDownOnClickListener { onSwipeDown() }
         }
 
         return binding.root
@@ -64,22 +57,21 @@ abstract class CallRingingFragment: BaseFragment(), ChatNotificationManager.Noti
         _binding = null
 //        activity.removeNotificationListener(this)
     }
-    override fun onShow() = binding.root.setAlphaWithAnimation(0f, 100L)
-
-    override fun onExpanded() = Unit
-
-    override fun onDismiss() = binding.root.setAlphaWithAnimation(1f, 100L)
 
     override fun onTouch(event: TouchEvent): Boolean =
         when (event.type) {
-            TouchEvent.Type.TAP        -> {
-                findNavController().navigate(R.id.action_ringingFragment_to_callFragment)
-                true
-            }
-            TouchEvent.Type.SWIPE_DOWN -> {
-                requireActivity().finish()
-                true
-            }
+            TouchEvent.Type.TAP        -> onTap()
+            TouchEvent.Type.SWIPE_DOWN -> onSwipeDown()
             else                       -> super.onTouch(event)
         }
+
+    private fun onTap(): Boolean {
+        findNavController().navigate(R.id.action_ringingFragment_to_emptyFragment)
+        return true
+    }
+
+    private fun onSwipeDown(): Boolean {
+        requireActivity().finish()
+        return true
+    }
 }

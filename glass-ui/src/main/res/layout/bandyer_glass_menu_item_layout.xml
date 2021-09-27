@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:theme="?attr/bandyer_recyclerViewItemStyle">
 
-    <com.bandyer.video_android_glass_ui.menu.BandyerActivableTextView
+    <com.bandyer.video_android_glass_ui.menu.ActivableTextView
         android:id="@+id/bandyer_text"
         style="?android:attr/textViewStyle"
         android:layout_height="wrap_content"

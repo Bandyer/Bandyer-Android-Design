@@ -13,9 +13,9 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property activeText The item's text when active
  * @constructor
  */
-class BandyerMenuItem(val defaultText: String, val activeText: String? = null): AbstractItem<BandyerMenuItem.ViewHolder>() {
+class MenuItem(val defaultText: String, val activeText: String? = null): AbstractItem<MenuItem.ViewHolder>() {
 
-    private var itemText: BandyerActivableTextView? = null
+    private var itemText: ActivableTextView? = null
 
     /**
      * Activated state of a menu item. The text will be updated accordingly
@@ -51,14 +51,14 @@ class BandyerMenuItem(val defaultText: String, val activeText: String? = null): 
      *
      * @constructor
      */
-    class ViewHolder(view: View): FastAdapter.ViewHolder<BandyerMenuItem>(view) {
+    class ViewHolder(view: View): FastAdapter.ViewHolder<MenuItem>(view) {
 
         private val binding: BandyerMenuItemLayoutBinding = BandyerMenuItemLayoutBinding.bind(view)
 
         /**
          * Binds the data of this item onto the viewHolder
          */
-        override fun bindView(item: BandyerMenuItem, payloads: List<Any>) = with(binding.bandyerText) {
+        override fun bindView(item: MenuItem, payloads: List<Any>) = with(binding.bandyerText) {
             item.itemText = this
             this.activeText = item.activeText
             this.defaultText = item.defaultText
@@ -68,7 +68,7 @@ class BandyerMenuItem(val defaultText: String, val activeText: String? = null): 
         /**
          * View needs to release resources when its recycled
          */
-        override fun unbindView(item: BandyerMenuItem) = with(binding.bandyerText) {
+        override fun unbindView(item: MenuItem) = with(binding.bandyerText) {
             item.itemText = null
             this.activeText = null
             this.defaultText = null

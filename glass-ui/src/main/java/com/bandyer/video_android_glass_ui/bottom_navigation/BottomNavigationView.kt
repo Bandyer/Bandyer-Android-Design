@@ -26,7 +26,7 @@ class BottomNavigationView @JvmOverloads constructor(
      *
      * @param callback function
      */
-    fun setSwipeOnClickListener(callback: () -> Unit) =
+    fun setSwipeHorizontalOnClickListener(callback: () -> Unit) =
         binding.bandyerSwipe.setOnClickListener {
             callback.invoke()
         }

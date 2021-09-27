@@ -1,4 +1,4 @@
-package com.bandyer.app_design.smartglass
+package com.bandyer.video_android_glass_ui.utils
 
 import android.os.Build
 

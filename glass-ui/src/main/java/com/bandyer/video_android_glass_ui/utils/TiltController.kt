@@ -1,4 +1,4 @@
-package com.bandyer.app_design.smartglass
+package com.bandyer.video_android_glass_ui.utils
 
 import android.content.Context
 import android.hardware.Sensor
@@ -8,8 +8,8 @@ import android.hardware.SensorManager
 import android.os.Build
 import android.view.Surface
 import android.view.WindowManager
-import androidx.annotation.RequiresApi
-import com.bandyer.app_design.smartglass.GlassDeviceUtils.isGoogleGlass
+import androidx.core.content.ContextCompat
+import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils.isGoogleGlass
 import java.util.*
 import kotlin.math.abs
 
@@ -19,7 +19,6 @@ import kotlin.math.abs
  * @param ctx The context
  * @param listener The listener for tilt events.
  */
-@RequiresApi(api = Build.VERSION_CODES.M)
 class TiltController constructor(
     ctx: Context,
     private val listener: TiltListener
@@ -27,17 +26,17 @@ class TiltController constructor(
 
     interface TiltListener {
         /**
-         * Return the euler angles (azimuth/pitch/roll)
+         * Return the euler angles' degrees changes (azimuth/pitch/roll) around every [SensorManager.SENSOR_DELAY_GAME] Us
          *
-         * @param azimuth The azimuth value
-         * @param pitch The pitch value
-         * @param roll The roll value
+         * @param deltaAzimuth The azimuth value
+         * @param deltaPitch The pitch value
+         * @param deltaRoll The roll value
          */
-        fun onTilt(azimuth: Float, pitch: Float, roll: Float)
+        fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float)
     }
 
-    private val windowManager = ctx.getSystemService(WindowManager::class.java)
-    private val sensorManager = ctx.getSystemService(SensorManager::class.java)
+    private val windowManager = ContextCompat.getSystemService(ctx, WindowManager::class.java)!!
+    private val sensorManager = ContextCompat.getSystemService(ctx, SensorManager::class.java)!!
     private val display =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) ctx.display
         else windowManager.defaultDisplay
@@ -92,7 +91,7 @@ class TiltController constructor(
         SensorManager.getRotationMatrixFromVector(rotationMatrix, rotationVector)
 
         // Remap the device's coordinate system
-        remapMatrix(display?.rotation, rotationMatrix, remappedMatrix)
+        remapMatrix(display!!.rotation, rotationMatrix, remappedMatrix)
 
         // Transform rotation matrix into azimuth/pitch/roll
         SensorManager.getOrientation(remappedMatrix, orientation)

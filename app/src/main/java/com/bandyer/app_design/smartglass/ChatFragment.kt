@@ -12,6 +12,7 @@ import com.bandyer.app_design.R
 import com.bandyer.video_android_glass_ui.chat.ChatFragment
 import com.bandyer.video_android_glass_ui.chat.ChatMessageData
 import com.bandyer.video_android_glass_ui.databinding.BandyerChatMessageLayoutBinding
+import com.bandyer.video_android_glass_ui.utils.TiltController
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import java.time.Instant
@@ -145,7 +146,7 @@ class ChatFragment : ChatFragment(), TiltController.TiltListener {
 //
 //        }, 1000)
 
-        bottomNavigation!!.setSwipeOnClickListener {
+        bottomNavigation!!.setSwipeHorizontalOnClickListener {
             rvMessages!!.horizontalSmoothScrollToNext(currentMsgItemIndex)
         }
 

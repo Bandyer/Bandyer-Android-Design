@@ -8,7 +8,7 @@
         <attr name="bandyer_ringingStyle" format="reference" />
         <attr name="bandyer_endCallStyle" format="reference" />
         <attr name="bandyer_callEndedStyle" format="reference" />
-        <attr name="bandyer_callStyle" format="reference" />
+        <attr name="bandyer_emptyStyle" format="reference" />
         <attr name="bandyer_participantsStyle" format="reference" />
     </declare-styleable>
 
@@ -20,7 +20,7 @@
         <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
         <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
         <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
-        <item name="bandyer_callStyle">@style/BandyerSDKDesign.Glass.Call</item>
+        <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>
         <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.Participants</item>
     </style>
 
@@ -32,7 +32,7 @@
         <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
         <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
         <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
-        <item name="bandyer_callStyle">@style/BandyerSDKDesign.Glass.Call</item>
+        <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>
         <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.Participants</item>
     </style>
 
@@ -44,7 +44,7 @@
         <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.Ringing</item>
         <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
         <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
-        <item name="bandyer_callStyle">@style/BandyerSDKDesign.Glass.Call</item>
+        <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>
         <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.Participants</item>
     </style>
 </resources>

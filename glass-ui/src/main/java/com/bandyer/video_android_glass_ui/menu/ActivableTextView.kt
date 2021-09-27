@@ -9,7 +9,7 @@ import com.google.android.material.textview.MaterialTextView
  *
  * @constructor
  */
-internal class BandyerActivableTextView @JvmOverloads constructor(
+internal class ActivableTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

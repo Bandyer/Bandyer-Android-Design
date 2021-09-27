@@ -18,6 +18,7 @@ import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationMana
 import com.bandyer.video_android_glass_ui.participants.ParticipantData
 import com.bandyer.video_android_glass_ui.participants.ParticipantStateTextView
 import com.bandyer.video_android_glass_ui.call.participants.CallParticipantItem
+import com.bandyer.video_android_glass_ui.utils.TiltController
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -118,7 +119,7 @@ class ParticipantsFragment : ParticipantsFragment(), TiltController.TiltListener
             }
         })
 
-        bottomNavigation!!.setSwipeOnClickListener {
+        bottomNavigation!!.setSwipeHorizontalOnClickListener {
             rvParticipants!!.horizontalSmoothScrollToNext(currentParticipantIndex)
         }
 
