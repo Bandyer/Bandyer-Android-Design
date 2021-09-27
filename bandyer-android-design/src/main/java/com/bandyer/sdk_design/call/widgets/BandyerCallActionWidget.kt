@@ -366,7 +366,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         if (onShowListener != null) this.onShowListener = onShowListener
         when (currentShownBottomSheet) {
             ringingBottomSheet -> showRingingControls()
-            else -> showCallControls(collapsible, fixed, collapsed = true)
+            else -> showCallControls(collapsible, fixed, collapsed = true, currentCallBottomSheetLayoutType)
         }
     }
 
