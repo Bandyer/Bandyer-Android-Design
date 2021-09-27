@@ -2,7 +2,7 @@ package com.bandyer.video_android_glass_ui.menu
 
 import android.view.View
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.databinding.BandyerMenuItemLayoutBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassMenuItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -53,7 +53,7 @@ class MenuItem(val defaultText: String, val activeText: String? = null): Abstrac
      */
     class ViewHolder(view: View): FastAdapter.ViewHolder<MenuItem>(view) {
 
-        private val binding: BandyerMenuItemLayoutBinding = BandyerMenuItemLayoutBinding.bind(view)
+        private val binding: BandyerGlassMenuItemLayoutBinding = BandyerGlassMenuItemLayoutBinding.bind(view)
 
         /**
          * Binds the data of this item onto the viewHolder
