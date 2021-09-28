@@ -29,4 +29,5 @@
         <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ChatMenu</item>
     </style>
 
+    <style name="BandyerSDKDesign.Theme.GlassChat" parent="BandyerSDKDesign.Theme.DayNight.GlassChat"/>
 </resources>

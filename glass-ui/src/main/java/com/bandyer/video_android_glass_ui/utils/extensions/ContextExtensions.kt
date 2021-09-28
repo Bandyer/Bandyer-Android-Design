@@ -23,7 +23,7 @@ object ContextExtensions {
         @StyleableRes styleAttribute: Int
     ): Int =
         this.getThemeAttribute(
-            R.style.BandyerSDKDesign_Theme_DayNight_GlassChat,
+            R.style.BandyerSDKDesign_Theme_GlassChat,
             R.styleable.BandyerSDKDesign_Theme_Glass_Chat,
             styleAttribute
         )
