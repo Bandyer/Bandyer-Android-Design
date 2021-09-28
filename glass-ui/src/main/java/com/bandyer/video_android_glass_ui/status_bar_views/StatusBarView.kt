@@ -7,7 +7,7 @@ import android.view.View
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.databinding.BandyerStatusBarLayoutBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassStatusBarLayoutBinding
 
 /**
  * A custom status bar view
@@ -75,8 +75,7 @@ class StatusBarView @JvmOverloads constructor(
         FULL
     }
 
-    private var binding: BandyerStatusBarLayoutBinding =
-        BandyerStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    private var binding: BandyerGlassStatusBarLayoutBinding = BandyerGlassStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     /**
      * Set the background color
