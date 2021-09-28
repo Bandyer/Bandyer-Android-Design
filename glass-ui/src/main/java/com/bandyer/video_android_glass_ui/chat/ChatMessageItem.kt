@@ -3,7 +3,7 @@ package com.bandyer.video_android_glass_ui.chat
 import android.view.View
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.databinding.BandyerChatMessageItemLayoutBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassChatMessageItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -41,7 +41,7 @@ class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMessageItem.
      */
     class ViewHolder(view: View) : FastAdapter.ViewHolder<ChatMessageItem>(view) {
 
-        private val binding: BandyerChatMessageItemLayoutBinding = BandyerChatMessageItemLayoutBinding.bind(view)
+        private val binding: BandyerGlassChatMessageItemLayoutBinding = BandyerGlassChatMessageItemLayoutBinding.bind(view)
 
         /**
          * Binds the data of this item onto the viewHolder
