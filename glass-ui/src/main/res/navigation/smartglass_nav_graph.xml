@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/menuFragment"
-        android:name="com.bandyer.app_design.smartglass.MenuFragment"
+        android:name="com.bandyer.video_android_glass_ui.menu.MenuFragment"
         android:label="MenuFragment">
         <action
             android:id="@+id/action_menuFragment_to_volumeFragment"
@@ -23,11 +23,11 @@
     </fragment>
     <fragment
         android:id="@+id/volumeFragment"
-        android:name="com.bandyer.app_design.smartglass.VolumeFragment"
+        android:name="com.bandyer.video_android_glass_ui.settings.volume.VolumeFragment"
         android:label="VolumeFragment" />
     <fragment
         android:id="@+id/zoomFragment"
-        android:name="com.bandyer.app_design.smartglass.ZoomFragment"
+        android:name="com.bandyer.video_android_glass_ui.settings.zoom.ZoomFragment"
         android:label="ZoomFragment" />
     <fragment
         android:id="@+id/callEndedFragment"
@@ -66,7 +66,7 @@
     </fragment>
     <fragment
         android:id="@+id/participantsFragment"
-        android:name="com.bandyer.app_design.smartglass.ParticipantsFragment"
+        android:name="com.bandyer.video_android_glass_ui.call.participants.ParticipantsFragment"
         android:label="ParticipantsFragment"/>
     <include app:graph="@navigation/smartglass_nav_graph_chat" />
 </navigation>
