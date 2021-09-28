@@ -35,13 +35,8 @@ class VolumeFragment : TiltFragment() {
     ): View {
         //        activity.addNotificationListener(this)
 
-        // Apply theme wrapper and add view binding
-        val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_volumeStyle)
-        _binding = BandyerGlassFragmentVolumeBinding.inflate(
-            inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
-            container,
-            false
-        )
+        // Add view binding
+        _binding = BandyerGlassFragmentVolumeBinding.inflate(inflater, container, false)
 
         // Set OnClickListeners for realwear voice commands
         with(binding.bandyerBottomNavigation) {

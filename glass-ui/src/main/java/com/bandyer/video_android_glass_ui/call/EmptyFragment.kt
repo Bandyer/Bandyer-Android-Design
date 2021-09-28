@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentEmptyBinding
-import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
  * EmptyFragment
@@ -31,13 +29,8 @@ class EmptyFragment : BaseFragment() {
 //        activity.showStatusBar()
 //        activity.addNotificationListener(this)
 
-        // Apply theme wrapper and add view binding
-        val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_emptyStyle)
-        _binding = BandyerGlassFragmentEmptyBinding.inflate(
-            inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
-            container,
-            false
-        )
+        // Add view binding
+        _binding = BandyerGlassFragmentEmptyBinding.inflate(inflater, container, false)
 
         // Set OnClickListeners for realwear voice commands
         with(binding.bandyerBottomNavigation) {

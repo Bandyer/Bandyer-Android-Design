@@ -78,17 +78,8 @@ class ChatFragment : TiltFragment() {
 //        activity.hideNotification()
 //        activity.setDnd(true)
 
-        // Apply theme wrapper and add view binding
-        _binding = BandyerGlassFragmentChatBinding.inflate(
-            inflater.cloneInContext(
-                ContextThemeWrapper(
-                    requireContext(),
-                    R.style.BandyerSDKDesign_Theme_GlassChat
-                )
-            ),
-            container,
-            false
-        )
+        // Add view binding
+        _binding = BandyerGlassFragmentChatBinding.inflate(inflater, container, false)
 
         // Set OnClickListeners for realwear voice commands
         with(binding.bandyerBottomNavigation) {

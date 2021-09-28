@@ -36,13 +36,8 @@ class ZoomFragment : TiltFragment() {
     ): View {
         //        activity.addNotificationListener(this)
 
-        // Apply theme wrapper and add view binding
-        val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_zoomStyle)
-        _binding = BandyerGlassFragmentZoomBinding.inflate(
-            inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
-            container,
-            false
-        )
+        // Add view binding
+        _binding = BandyerGlassFragmentZoomBinding.inflate(inflater, container, false)
 
         // Set OnClickListeners for realwear voice commands
         with(binding.bandyerBottomNavigation) {

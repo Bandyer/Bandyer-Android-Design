@@ -1,13 +1,14 @@
 package com.bandyer.video_android_glass_ui.call
 
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentEndCallBinding
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenDialogBinding
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
@@ -52,7 +53,8 @@ class EndCallFragment : BaseFragment() {
         //        activity.removeNotificationListener(this)
     }
 
-    override fun onTap() = true.also { findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment) }
+    override fun onTap() =
+        true.also { findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment) }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
