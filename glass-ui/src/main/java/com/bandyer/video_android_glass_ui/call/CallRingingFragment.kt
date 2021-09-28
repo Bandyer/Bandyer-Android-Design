@@ -8,7 +8,6 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.TouchEvent
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentRingingBinding
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
@@ -58,20 +57,11 @@ class CallRingingFragment : BaseFragment() {
 //        activity.removeNotificationListener(this)
     }
 
-    override fun onTouch(event: TouchEvent): Boolean =
-        when (event.type) {
-            TouchEvent.Type.TAP        -> onTap()
-            TouchEvent.Type.SWIPE_DOWN -> onSwipeDown()
-            else                       -> super.onTouch(event)
-        }
+    override fun onTap() = true.also { findNavController().navigate(R.id.action_ringingFragment_to_emptyFragment) }
 
-    private fun onTap(): Boolean {
-        findNavController().navigate(R.id.action_ringingFragment_to_emptyFragment)
-        return true
-    }
+    override fun onSwipeDown() = true.also { requireActivity().finish() }
 
-    private fun onSwipeDown(): Boolean {
-        requireActivity().finish()
-        return true
-    }
+    override fun onSwipeForward(isKeyEvent: Boolean) = false
+
+    override fun onSwipeBackward(isKeyEvent: Boolean) = false
 }

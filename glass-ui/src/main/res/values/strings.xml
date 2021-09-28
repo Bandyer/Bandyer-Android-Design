@@ -38,4 +38,23 @@
     <string name="bandyer_glass_browse_right">browse right</string>
     <string name="bandyer_glass_browse_left">browse left</string>
     <string name="bandyer_glass_right_left">scroll</string>
+
+    <!-- STRING ARRAY -->
+    <string-array name="menu_items_default">
+        <item>Mute mic</item>
+        <item>Disable camera</item>
+        <item>Volume</item>
+        <item>Zoom</item>
+        <item>Users</item>
+        <item>Chat</item>
+    </string-array>
+
+    <string-array name="menu_items_activated">
+        <item>Unmute mic</item>
+        <item>Enable camera</item>
+        <item />
+        <item />
+        <item />
+        <item />
+    </string-array>
 </resources>

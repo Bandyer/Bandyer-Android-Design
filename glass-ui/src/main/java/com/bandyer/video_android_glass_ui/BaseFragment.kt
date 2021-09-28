@@ -8,20 +8,57 @@ import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationMana
 /**
  * BaseFragment. A base class for all the smart glass fragments
  */
-abstract class BaseFragment: Fragment(), TouchEventListener, ChatNotificationManager.NotificationListener {
+abstract class BaseFragment : Fragment(), TouchEventListener, ChatNotificationManager.NotificationListener {
 
     /**
      * The fragment's view binding
      */
     protected abstract val binding: ViewBinding
 
+    /**
+     * Handle the tap event
+     *
+     * @return Boolean True if the event has been handled, false otherwise
+     */
+    protected abstract fun onTap(): Boolean
+
+    /**
+     * Handle the swipe down event
+     *
+     * @return Boolean True if the event has been handled, false otherwise
+     */
+    protected abstract fun onSwipeDown(): Boolean
+
+    /**
+     * Handle the swipe forward event
+     *
+     * @param isKeyEvent True if the event source was a key
+     * @return Boolean True if the event has been handled, false otherwise
+     */
+    protected abstract fun onSwipeForward(isKeyEvent: Boolean): Boolean
+
+    /**
+     * Handle the swipe backward event
+     *
+     * @param isKeyEvent True if the event source was a key
+     * @return Boolean True if the event has been handled, false otherwise
+     */
+    protected abstract fun onSwipeBackward(isKeyEvent: Boolean): Boolean
+
     override fun onShow() = binding.root.setAlphaWithAnimation(0f, 100L)
 
-    override fun onExpanded() {
-        requireContext()
-    }
+    override fun onExpanded() = Unit
 
     override fun onDismiss() = binding.root.setAlphaWithAnimation(1f, 100L)
 
-    override fun onTouch(event: TouchEvent) = false
+    /**
+     * This method should NOT be overridden. Use onTap, onSwipeDown, onSwipeForward, onSwipeBackward instead.
+     */
+    override fun onTouch(event: TouchEvent) = when (event.type) {
+        TouchEvent.Type.TAP             -> onTap()
+        TouchEvent.Type.SWIPE_DOWN      -> onSwipeDown()
+        TouchEvent.Type.SWIPE_FORWARD   -> onSwipeForward(event.source == TouchEvent.Source.KEY)
+        TouchEvent.Type.SWIPE_BACKWARD  -> onSwipeBackward(event.source == TouchEvent.Source.KEY)
+        else -> false
+    }
 }

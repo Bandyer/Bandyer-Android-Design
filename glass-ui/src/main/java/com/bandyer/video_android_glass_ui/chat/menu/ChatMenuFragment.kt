@@ -12,15 +12,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
-import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.TouchEvent
+import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatMenuBinding
 import com.bandyer.video_android_glass_ui.participants.ParticipantData
 import com.bandyer.video_android_glass_ui.participants.ParticipantStateTextView
-import com.bandyer.video_android_glass_ui.utils.TiltController
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
@@ -30,7 +29,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 /**
  * ChatMenuFragment
  */
-class ChatMenuFragment : BaseFragment(), TiltController.TiltListener {
+class ChatMenuFragment : TiltFragment() {
 
     //    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -41,24 +40,16 @@ class ChatMenuFragment : BaseFragment(), TiltController.TiltListener {
 
     private val args: ChatMenuFragmentArgs by navArgs()
 
-    private var tiltController: TiltController? = null
     private var actionIndex = 0
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        tiltController = TiltController(requireContext(), this)
-    }
 
     override fun onResume() {
         super.onResume()
 //        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_glass_background_color, null))
-        tiltController!!.requestAllSensors()
     }
 
     override fun onStop() {
         super.onStop()
 //        activity.setStatusBarColor(null)
-        tiltController!!.releaseAllSensors()
     }
 
     /**
@@ -156,27 +147,11 @@ class ChatMenuFragment : BaseFragment(), TiltController.TiltListener {
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
         binding.bandyerActions.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
 
-    override fun onTouch(event: TouchEvent): Boolean = when (event.type) {
-        TouchEvent.Type.SWIPE_DOWN      -> onSwipeDown()
-        TouchEvent.Type.SWIPE_FORWARD   -> onSwipeForward(event.source == TouchEvent.Source.KEY)
-        TouchEvent.Type.SWIPE_BACKWARD  -> onSwipeBackward(event.source == TouchEvent.Source.KEY)
-        else -> super.onTouch(event)
-    }
+    override fun onTap() = false
 
-    private fun onSwipeDown(): Boolean {
-        findNavController().popBackStack()
-        return true
-    }
+    override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    private fun onSwipeForward(isKeyEvent: Boolean): Boolean {
-        if (isKeyEvent)
-            binding.bandyerActions.horizontalSmoothScrollToNext(actionIndex)
-        return isKeyEvent
-    }
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerActions.horizontalSmoothScrollToNext(actionIndex) }
 
-    private fun onSwipeBackward(isKeyEvent: Boolean): Boolean {
-        if (isKeyEvent)
-            binding.bandyerActions.horizontalSmoothScrollToPrevious(actionIndex)
-        return isKeyEvent
-    }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerActions.horizontalSmoothScrollToPrevious(actionIndex) }
 }

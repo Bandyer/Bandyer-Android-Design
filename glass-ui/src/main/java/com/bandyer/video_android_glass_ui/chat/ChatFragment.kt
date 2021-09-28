@@ -11,12 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.utils.Iso8601
-import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.TouchEvent
+import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassChatMessageLayoutBinding
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatBinding
-import com.bandyer.video_android_glass_ui.utils.TiltController
+import com.bandyer.video_android_glass_ui.participants.ParticipantData
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
@@ -28,7 +27,7 @@ import java.util.*
 /**
  * ChatFragment
  */
-class ChatFragment : BaseFragment(), TiltController.TiltListener {
+class ChatFragment : TiltFragment() {
 
     //    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -37,14 +36,13 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
 
     private var itemAdapter: ItemAdapter<ChatMessageItem>? = null
 
-    private var tiltController: TiltController? = null
-
     private var currentMsgItemIndex = 0
     private var newMessagesCounter = 0
         set(value) {
             field = value.also {
                 with(binding.bandyerCounter) {
-                    text = resources.getString(R.string.bandyer_glass_message_counter_pattern,it - 1)
+                    text =
+                        resources.getString(R.string.bandyer_glass_message_counter_pattern, it - 1)
                     visibility = if (it - 1 > 0) View.VISIBLE else View.GONE
                 }
             }
@@ -52,14 +50,8 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
     private var lastMsgIndex = 0
     private var pagesIds = arrayListOf<String>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        tiltController = TiltController(requireContext(), this)
-    }
-
     override fun onResume() {
         super.onResume()
-        tiltController!!.requestAllSensors()
 //        activity.setStatusBarColor(
 //            ResourcesCompat.getColor(
 //                resources,
@@ -71,7 +63,6 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
 
     override fun onPause() {
         super.onPause()
-        tiltController!!.releaseAllSensors()
 //        activity.setStatusBarColor(null)
     }
 
@@ -89,7 +80,12 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
 
         // Apply theme wrapper and add view binding
         _binding = BandyerGlassFragmentChatBinding.inflate(
-            inflater.cloneInContext(ContextThemeWrapper(requireContext(), R.style.BandyerSDKDesign_Theme_GlassChat)),
+            inflater.cloneInContext(
+                ContextThemeWrapper(
+                    requireContext(),
+                    R.style.BandyerSDKDesign_Theme_GlassChat
+                )
+            ),
             container,
             false
         )
@@ -104,7 +100,8 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
         binding.bandyerMessages.apply {
             itemAdapter = ItemAdapter()
             val fastAdapter = FastAdapter.with(itemAdapter!!)
-            val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            val layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             val snapHelper = PagerSnapHelper().also { it.attachToRecyclerView(this) }
 
             this.layoutManager = layoutManager
@@ -142,6 +139,7 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
         super.onDestroyView()
         _binding = null
         itemAdapter = null
+//        newMessagesCounter = 0
 //        activity.setDnd(false)
         pagesIds = arrayListOf()
     }
@@ -149,36 +147,20 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
         binding.bandyerMessages.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
 
-    override fun onTouch(event: TouchEvent): Boolean = when (event.type) {
-        TouchEvent.Type.TAP -> onTap()
-        TouchEvent.Type.SWIPE_DOWN -> onSwipeDown()
-        TouchEvent.Type.SWIPE_FORWARD -> onSwipeForward(event.source == TouchEvent.Source.KEY)
-        TouchEvent.Type.SWIPE_BACKWARD -> onSwipeBackward(event.source == TouchEvent.Source.KEY)
-        else -> super.onTouch(event)
-    }
-
-    private fun onTap(): Boolean {
+    override fun onTap() = true.also {
         val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userAlias
         val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(contactData.first { it.userAlias.contains(username!!) })
         findNavController().navigate(action)
-        return true
     }
 
-    private fun onSwipeDown(): Boolean {
-        findNavController().popBackStack()
-        return true
+    override fun onSwipeDown() = true.also { findNavController().popBackStack() }
+
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also {
+        if (it) binding.bandyerMessages.horizontalSmoothScrollToNext(currentMsgItemIndex)
     }
 
-    private fun onSwipeForward(isKeyEvent: Boolean): Boolean {
-        if (isKeyEvent)
-            binding.bandyerMessages.horizontalSmoothScrollToNext(currentMsgItemIndex)
-        return isKeyEvent
-    }
-
-    private fun onSwipeBackward(isKeyEvent: Boolean): Boolean {
-        if (isKeyEvent)
-            binding.bandyerMessages.horizontalSmoothScrollToPrevious(currentMsgItemIndex)
-        return isKeyEvent
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also {
+        if (it) binding.bandyerMessages.horizontalSmoothScrollToPrevious(currentMsgItemIndex)
     }
 
     /**
@@ -197,7 +179,20 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
                     bandyerMessage.text = data.message
                     val pageList = bandyerMessage.paginate()
                     for (i in pageList.indices) {
-                        itemAdapter!!.add(ChatMessageItem(ChatMessageData(data.id, data.sender, data.userAlias, pageList[i].toString(), data.time, data.userAvatarId, data.userAvatarUrl, i == 0)))
+                        itemAdapter!!.add(
+                            ChatMessageItem(
+                                ChatMessageData(
+                                    data.id,
+                                    data.sender,
+                                    data.userAlias,
+                                    pageList[i].toString(),
+                                    data.time,
+                                    data.userAvatarId,
+                                    data.userAvatarUrl,
+                                    i == 0
+                                )
+                            )
+                        )
                         pagesIds.add(data.id)
                     }
                 }
@@ -206,26 +201,26 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
     }
 
     private val contactData = listOf(
-        com.bandyer.video_android_glass_ui.participants.ParticipantData(
+        ParticipantData(
             "Mario Rossi",
             "Mario Rossi",
-            com.bandyer.video_android_glass_ui.participants.ParticipantData.UserState.ONLINE,
+            ParticipantData.UserState.ONLINE,
             null,
             null,
             Instant.now().toEpochMilli()
         ),
-        com.bandyer.video_android_glass_ui.participants.ParticipantData(
+        ParticipantData(
             "Ugo Trapasso",
             "Ugo Trapasso",
-            com.bandyer.video_android_glass_ui.participants.ParticipantData.UserState.OFFLINE,
+            ParticipantData.UserState.OFFLINE,
             null,
             "https://2.bp.blogspot.com/-jLEDf_NyZ1g/WmmyFZKOd-I/AAAAAAAAHd8/FZvIj2o_jqwl0S_yz4zBU16N1yGj-UCrACLcBGAs/s1600/heisenberg-breaking-bad.jpg",
             Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
         ),
-        com.bandyer.video_android_glass_ui.participants.ParticipantData(
+        ParticipantData(
             "Gianfranco Sala",
             "Gianfranco Sala",
-            com.bandyer.video_android_glass_ui.participants.ParticipantData.UserState.INVITED,
+            ParticipantData.UserState.INVITED,
             null,
             null,
             Instant.now().toEpochMilli()

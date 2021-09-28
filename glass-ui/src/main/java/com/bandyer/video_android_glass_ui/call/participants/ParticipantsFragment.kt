@@ -11,15 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
-import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.TouchEvent
+import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentParticipantsBinding
 import com.bandyer.video_android_glass_ui.participants.ParticipantData
 import com.bandyer.video_android_glass_ui.participants.ParticipantStateTextView
-import com.bandyer.video_android_glass_ui.utils.TiltController
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
@@ -31,7 +29,7 @@ import java.time.temporal.ChronoUnit
 /**
  * ParticipantsFragment
  */
-class ParticipantsFragment : BaseFragment(), TiltController.TiltListener {
+class ParticipantsFragment : TiltFragment() {
 
 //    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -40,45 +38,37 @@ class ParticipantsFragment : BaseFragment(), TiltController.TiltListener {
 
     private var itemAdapter: ItemAdapter<CallParticipantItem>? = null
 
-    private var tiltController: TiltController? = null
-
     private var currentParticipantIndex = -1
 
     private var participantsData: List<ParticipantData> = listOf(
-            ParticipantData(
-                "Mario Rossi",
-                "Mario Rossi",
-                ParticipantData.UserState.ONLINE,
-                null,
-                null,
-                Instant.now().toEpochMilli()
-            ),
-            ParticipantData(
-                "Felice Trapasso",
-                "Felice Trapasso",
-                ParticipantData.UserState.OFFLINE,
-                null,
-                "https://i.imgur.com/9I2qAlW.jpeg",
-                Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
-            ),
-            ParticipantData(
-                "Francesco Sala",
-                "Francesco Sala",
-                ParticipantData.UserState.INVITED,
-                null,
-                null,
-                Instant.now().toEpochMilli()
-            )
+        ParticipantData(
+            "Mario Rossi",
+            "Mario Rossi",
+            ParticipantData.UserState.ONLINE,
+            null,
+            null,
+            Instant.now().toEpochMilli()
+        ),
+        ParticipantData(
+            "Felice Trapasso",
+            "Felice Trapasso",
+            ParticipantData.UserState.OFFLINE,
+            null,
+            "https://i.imgur.com/9I2qAlW.jpeg",
+            Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
+        ),
+        ParticipantData(
+            "Francesco Sala",
+            "Francesco Sala",
+            ParticipantData.UserState.INVITED,
+            null,
+            null,
+            Instant.now().toEpochMilli()
         )
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        tiltController = TiltController(requireContext(), this)
-    }
+    )
 
     override fun onResume() {
         super.onResume()
-        tiltController!!.requestAllSensors()
 //        activity.showStatusBarCenteredTitle()
 //        activity.setStatusBarColor(
 //            ResourcesCompat.getColor(
@@ -91,7 +81,6 @@ class ParticipantsFragment : BaseFragment(), TiltController.TiltListener {
 
     override fun onStop() {
         super.onStop()
-        tiltController!!.releaseAllSensors()
 //        activity.hideStatusBarCenteredTitle()
 //        activity.setStatusBarColor(null)
     }
@@ -107,7 +96,8 @@ class ParticipantsFragment : BaseFragment(), TiltController.TiltListener {
 //        activity.addNotificationListener(this)
 
         // Apply theme wrapper and add view binding
-        val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_participantsStyle)
+        val themeResId =
+            requireActivity().theme.getAttributeResourceId(R.attr.bandyer_participantsStyle)
         _binding = BandyerGlassFragmentParticipantsBinding.inflate(
             inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
             container,
@@ -116,7 +106,7 @@ class ParticipantsFragment : BaseFragment(), TiltController.TiltListener {
 
         // Set OnClickListeners for realwear voice commands
         with(binding.bandyerBottomNavigation) {
-            setSwipeDownOnClickListener { onSwipeDown()}
+            setSwipeDownOnClickListener { onSwipeDown() }
             setSwipeHorizontalOnClickListener { onSwipeForward(true) }
         }
 
@@ -124,7 +114,8 @@ class ParticipantsFragment : BaseFragment(), TiltController.TiltListener {
         with(binding.bandyerParticipants) {
             itemAdapter = ItemAdapter()
             val fastAdapter = FastAdapter.with(itemAdapter!!)
-            val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            val layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
             this.layoutManager = layoutManager
@@ -152,13 +143,21 @@ class ParticipantsFragment : BaseFragment(), TiltController.TiltListener {
                         }
                     }
 
-                    binding.bandyerContactStateDot.isActivated = data.userState == ParticipantData.UserState.ONLINE
+                    binding.bandyerContactStateDot.isActivated =
+                        data.userState == ParticipantData.UserState.ONLINE
 
                     with(binding.bandyerContactStateText) {
                         when (data.userState) {
-                            ParticipantData.UserState.INVITED -> setContactState(ParticipantStateTextView.State.INVITED)
-                            ParticipantData.UserState.OFFLINE -> setContactState(ParticipantStateTextView.State.LAST_SEEN, data.lastSeenTime)
-                            ParticipantData.UserState.ONLINE  -> setContactState(ParticipantStateTextView.State.ONLINE)
+                            ParticipantData.UserState.INVITED -> setContactState(
+                                ParticipantStateTextView.State.INVITED
+                            )
+                            ParticipantData.UserState.OFFLINE -> setContactState(
+                                ParticipantStateTextView.State.LAST_SEEN,
+                                data.lastSeenTime
+                            )
+                            ParticipantData.UserState.ONLINE -> setContactState(
+                                ParticipantStateTextView.State.ONLINE
+                            )
                         }
                     }
                 }
@@ -186,33 +185,20 @@ class ParticipantsFragment : BaseFragment(), TiltController.TiltListener {
     }
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.bandyerParticipants.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
+        binding.bandyerParticipants.scrollBy(
+            (deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(),
+            0
+        )
 
-    override fun onTouch(event: TouchEvent): Boolean = when (event.type) {
-        TouchEvent.Type.SWIPE_DOWN      -> onSwipeDown()
-        TouchEvent.Type.SWIPE_FORWARD   -> onSwipeForward(event.source == TouchEvent.Source.KEY)
-        TouchEvent.Type.SWIPE_BACKWARD  -> onSwipeBackward(event.source == TouchEvent.Source.KEY)
-        else -> super.onTouch(event)
-    }
+    override fun onTap() = false
 
-    private fun onSwipeDown(): Boolean {
-        findNavController().popBackStack()
-        return true
-    }
+    override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    private fun onSwipeForward(isKeyEvent: Boolean): Boolean {
-        val condition = isKeyEvent && currentParticipantIndex != -1
-        if (condition)
-            binding.bandyerParticipants.horizontalSmoothScrollToNext(currentParticipantIndex)
-        return condition
-    }
+    override fun onSwipeForward(isKeyEvent: Boolean) =
+        (isKeyEvent && currentParticipantIndex != -1).also { if (it) binding.bandyerParticipants.horizontalSmoothScrollToNext(currentParticipantIndex) }
 
-    private fun onSwipeBackward(isKeyEvent: Boolean): Boolean {
-        val condition = isKeyEvent && currentParticipantIndex != -1
-        if (condition)
-            binding.bandyerParticipants.horizontalSmoothScrollToPrevious(currentParticipantIndex)
-        return condition
-    }
+    override fun onSwipeBackward(isKeyEvent: Boolean) =
+        (isKeyEvent && currentParticipantIndex != -1).also { if (it) binding.bandyerParticipants.horizontalSmoothScrollToPrevious(currentParticipantIndex) }
 }
 
 

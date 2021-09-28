@@ -10,13 +10,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.TouchEvent
+import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentMenuBinding
-import com.bandyer.video_android_glass_ui.utils.TiltController
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
@@ -26,7 +25,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 /**
  * BandyerGlassMenuFragment
  */
-class MenuFragment : BaseFragment(), TiltController.TiltListener {
+class MenuFragment : TiltFragment() {
 
     //    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -36,23 +35,6 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
     private var itemAdapter: ItemAdapter<MenuItem>? = null
 
     private var currentMenuItemIndex = 0
-
-    private var tiltController: TiltController? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        tiltController = TiltController(requireContext(), this)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        tiltController!!.requestAllSensors()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        tiltController!!.releaseAllSensors()
-    }
 
     /**
      * @suppress
@@ -74,7 +56,7 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
 
         // Set OnClickListeners for realwear voice commands
         with(binding.bandyerBottomNavigation) {
-            setTapOnClickListener { onTap(currentMenuItemIndex) }
+            setTapOnClickListener { onTap() }
             setSwipeHorizontalOnClickListener { onSwipeForward(true) }
             setSwipeDownOnClickListener { onSwipeDown() }
         }
@@ -83,7 +65,6 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
         with(binding.bandyerMenu) {
             itemAdapter = ItemAdapter()
             val fastAdapter = FastAdapter.with(itemAdapter!!)
-                .also { it.onClickListener = { _, _, _, position -> onTap(position) } }
             val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
@@ -128,16 +109,7 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
 //        activity.removeNotificationListener(this)
     }
 
-    override fun onTouch(event: TouchEvent): Boolean =
-        when (event.type) {
-            TouchEvent.Type.TAP -> onTap(currentMenuItemIndex)
-            TouchEvent.Type.SWIPE_DOWN -> onSwipeDown()
-            TouchEvent.Type.SWIPE_FORWARD -> onSwipeForward(event.source == TouchEvent.Source.KEY)
-            TouchEvent.Type.SWIPE_BACKWARD -> onSwipeBackward(event.source == TouchEvent.Source.KEY)
-            else -> super.onTouch(event)
-        }
-
-    private fun onTap(itemIndex: Int): Boolean = when (itemIndex) {
+    override fun onTap() = when (currentMenuItemIndex) {
         0, 1 -> {
             val isActivated = itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated
             itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated = !isActivated
@@ -162,22 +134,11 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
         else -> false
     }
 
-    private fun onSwipeDown(): Boolean {
-        findNavController().popBackStack()
-        return true
-    }
+    override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    private fun onSwipeForward(isKeyEvent: Boolean): Boolean {
-        if (isKeyEvent)
-            binding.bandyerMenu.horizontalSmoothScrollToNext(currentMenuItemIndex)
-        return isKeyEvent
-    }
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerMenu.horizontalSmoothScrollToNext(currentMenuItemIndex) }
 
-    private fun onSwipeBackward(isKeyEvent: Boolean): Boolean {
-        if (isKeyEvent)
-            binding.bandyerMenu.horizontalSmoothScrollToPrevious(currentMenuItemIndex)
-        return isKeyEvent
-    }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerMenu.horizontalSmoothScrollToPrevious(currentMenuItemIndex) }
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
         binding.bandyerMenu.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
