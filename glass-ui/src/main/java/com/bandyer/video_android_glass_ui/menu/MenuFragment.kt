@@ -93,12 +93,7 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
             setHasFixedSize(true)
 
             addItemDecoration(HorizontalCenterItemDecoration())
-            addItemDecoration(
-                MenuProgressIndicator(
-                    requireContext(),
-                    snapHelper
-                )
-            )
+            addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper))
 
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

@@ -30,7 +30,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 /**
  * ChatMenuFragment
  */
-abstract class ChatMenuFragment : BaseFragment(), TiltController.TiltListener {
+class ChatMenuFragment : BaseFragment(), TiltController.TiltListener {
 
     //    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
@@ -100,12 +100,7 @@ abstract class ChatMenuFragment : BaseFragment(), TiltController.TiltListener {
             setHasFixedSize(true)
 
             addItemDecoration(HorizontalCenterItemDecoration())
-            addItemDecoration(
-                MenuProgressIndicator(
-                    requireContext(),
-                    snapHelper
-                )
-            )
+            addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper))
 
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
