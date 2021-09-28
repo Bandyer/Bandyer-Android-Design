@@ -15,7 +15,7 @@ import androidx.transition.TransitionManager
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_core_ui.extensions.ViewExtensions.animateViewHeight
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.databinding.BandyerChatNotificationLayoutBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassChatNotificationLayoutBinding
 
 /**
  * A chat notification view
@@ -28,8 +28,8 @@ internal class ChatNotificationView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private var binding: BandyerChatNotificationLayoutBinding =
-        BandyerChatNotificationLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    private var binding: BandyerGlassChatNotificationLayoutBinding =
+        BandyerGlassChatNotificationLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     /**
      * Show the notification
@@ -107,7 +107,7 @@ internal class ChatNotificationView @JvmOverloads constructor(
     fun setNavigationBarOnClickListeners(
         swipeDownCallback: () -> Unit,
         tapCallback: () -> Unit
-    ) = with(binding.bandyerBottomActionBar) {
+    ) = with(binding.bandyerBottomNavigation) {
         setSwipeDownOnClickListener(swipeDownCallback)
         setTapOnClickListener(tapCallback)
     }

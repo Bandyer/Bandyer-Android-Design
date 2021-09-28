@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.widget.FrameLayout
 import android.widget.SeekBar
-import com.bandyer.video_android_glass_ui.databinding.BandyerSliderLayoutBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassSliderLayoutBinding
 
 /**
  *
@@ -34,8 +34,8 @@ abstract class SettingSlider @JvmOverloads constructor(
         fun onProgressChanged(progress: Int)
     }
 
-    protected var binding: BandyerSliderLayoutBinding =
-        BandyerSliderLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    protected var binding: BandyerGlassSliderLayoutBinding =
+        BandyerGlassSliderLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     /**
      * Listener for the slider value

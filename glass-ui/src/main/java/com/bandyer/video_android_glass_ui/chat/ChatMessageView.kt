@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.bandyer.video_android_glass_ui.databinding.BandyerChatMessageLayoutBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassChatMessageLayoutBinding
 import com.bandyer.video_android_core_ui.utils.Iso8601
 
 /**
@@ -20,8 +20,8 @@ class ChatMessageView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private var binding: BandyerChatMessageLayoutBinding =
-        BandyerChatMessageLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    private var binding: BandyerGlassChatMessageLayoutBinding =
+        BandyerGlassChatMessageLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     /**
      * Set the user avatar

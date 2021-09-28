@@ -2,7 +2,7 @@ package com.bandyer.video_android_glass_ui.call.participants
 
 import android.view.View
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.databinding.BandyerParticipantItemLayoutBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassParticipantItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -40,7 +40,7 @@ class CallParticipantItem(val text: String): AbstractItem<CallParticipantItem.Vi
      */
     class ViewHolder(view: View): FastAdapter.ViewHolder<CallParticipantItem>(view) {
 
-        private val binding: BandyerParticipantItemLayoutBinding = BandyerParticipantItemLayoutBinding.bind(view)
+        private val binding: BandyerGlassParticipantItemLayoutBinding = BandyerGlassParticipantItemLayoutBinding.bind(view)
 
         /**
          * Binds the data of this item onto the viewHolder
