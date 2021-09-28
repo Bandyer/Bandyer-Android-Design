@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentEndCallBinding
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenDialogBinding
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
@@ -20,29 +19,24 @@ class EndCallFragment : BaseFragment() {
     private var _binding: BandyerGlassFragmentFullScreenDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenDialogBinding get() = _binding!!
 
-//    private val activity by lazy { requireActivity() as SmartGlassActivity }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        activity.hideStatusBar()
-//        activity.addNotificationListener(this)
+        super.onCreateView(inflater, container, savedInstanceState)
+
+        activity.hideStatusBar()
 
         // Apply theme wrapper and add view binding
         val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_endCallStyle)
-        _binding = BandyerGlassFragmentFullScreenDialogBinding.inflate(
-            inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
-            container,
-            false
-        )
-
-        // Set OnClickListeners for realwear voice commands
-        with(binding.bandyerBottomNavigation) {
-            setTapOnClickListener { onTap() }
-            setSwipeDownOnClickListener { onSwipeDown() }
-        }
+        _binding = BandyerGlassFragmentFullScreenDialogBinding
+            .inflate(
+                inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
+                container,
+                false
+            )
+            .apply { bandyerBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }
@@ -50,7 +44,6 @@ class EndCallFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-        //        activity.removeNotificationListener(this)
     }
 
     override fun onTap() =

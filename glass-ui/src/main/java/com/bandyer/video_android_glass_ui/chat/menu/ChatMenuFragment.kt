@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +14,6 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.TouchEvent
 import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
@@ -31,8 +31,6 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
  */
 class ChatMenuFragment : TiltFragment() {
 
-    //    private val activity by lazy { requireActivity() as SmartGlassActivity }
-
     private var _binding: BandyerGlassFragmentChatMenuBinding? = null
     override val binding: BandyerGlassFragmentChatMenuBinding get() = _binding!!
 
@@ -44,12 +42,12 @@ class ChatMenuFragment : TiltFragment() {
 
     override fun onResume() {
         super.onResume()
-//        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_glass_background_color, null))
+        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_glass_background_color, null))
     }
 
     override fun onStop() {
         super.onStop()
-//        activity.setStatusBarColor(null)
+        activity.setStatusBarColor(null)
     }
 
     /**
@@ -60,6 +58,8 @@ class ChatMenuFragment : TiltFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        super.onCreateView(inflater, container, savedInstanceState)
+
         // Args
         val data = args.participantData!!
 
@@ -69,63 +69,59 @@ class ChatMenuFragment : TiltFragment() {
             inflater.cloneInContext(ContextThemeWrapper(requireActivity(), themeResId)),
             container,
             false
-        )
+        ).apply {
+            bandyerBottomNavigation.setListenersForRealwear()
 
-        // Set OnClickListeners for realwear voice commands
-        with(binding.bandyerBottomNavigation) {
-            setSwipeDownOnClickListener { onSwipeDown() }
-            setSwipeHorizontalOnClickListener { onSwipeForward(true) }
-        }
+            // Init the RecyclerView
+            with(bandyerActions) {
+                itemAdapter = ItemAdapter()
+                val fastAdapter = FastAdapter.with(itemAdapter!!)
+                val layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
-        // Init the RecyclerView
-        with(binding.bandyerActions) {
-            itemAdapter = ItemAdapter()
-            val fastAdapter = FastAdapter.with(itemAdapter!!)
-            val layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
+                this.layoutManager = layoutManager
+                adapter = fastAdapter
+                isFocusable = false
+                setHasFixedSize(true)
 
-            this.layoutManager = layoutManager
-            adapter = fastAdapter
-            isFocusable = false
-            setHasFixedSize(true)
+                addItemDecoration(HorizontalCenterItemDecoration())
+                addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper))
 
-            addItemDecoration(HorizontalCenterItemDecoration())
-            addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper))
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        val foundView = snapHelper.findSnapView(layoutManager) ?: return
+                        actionIndex = layoutManager.getPosition(foundView)
+                    }
+                })
 
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                    actionIndex = layoutManager.getPosition(foundView)
+                // Forward the root view's touch event to the recycler view
+                root.setOnTouchListener { _, event -> onTouchEvent(event) }
+            }
+
+            with(bandyerAvatar) {
+                setText(data.name.first().toString())
+                setBackground(data.name.parseToColor())
+
+                when {
+                    data.avatarImageId != null -> setImage(data.avatarImageId)
+                    data.avatarImageUrl != null -> setImage(data.avatarImageUrl)
+                    else -> setImage(null)
                 }
-            })
-
-            // Forward the root view's touch event to the recycler view
-            binding.root.setOnTouchListener { _, event -> onTouchEvent(event) }
-        }
-
-        with(binding.bandyerAvatar) {
-            setText(data.name.first().toString())
-            setBackground(data.name.parseToColor())
-
-            when {
-                data.avatarImageId != null -> setImage(data.avatarImageId)
-                data.avatarImageUrl != null -> setImage(data.avatarImageUrl)
-                else -> setImage(null)
             }
-        }
 
-        binding.bandyerName.text = data.name
+            bandyerName.text = data.name
 
-        with(binding.bandyerContactStateText) {
-            when (data.userState) {
-                ParticipantData.UserState.INVITED -> setContactState(ParticipantStateTextView.State.INVITED)
-                ParticipantData.UserState.OFFLINE -> setContactState(ParticipantStateTextView.State.LAST_SEEN, data.lastSeenTime)
-                else -> setContactState(ParticipantStateTextView.State.ONLINE)
+            with(bandyerContactStateText) {
+                when (data.userState) {
+                    ParticipantData.UserState.INVITED -> setContactState(ParticipantStateTextView.State.INVITED)
+                    ParticipantData.UserState.OFFLINE -> setContactState(ParticipantStateTextView.State.LAST_SEEN, data.lastSeenTime)
+                    else -> setContactState(ParticipantStateTextView.State.ONLINE)
+                }
             }
-        }
 
-        binding.bandyerContactStateDot.isActivated = data.userState == ParticipantData.UserState.ONLINE
+            bandyerContactStateDot.isActivated = data.userState == ParticipantData.UserState.ONLINE
+        }
 
         with(itemAdapter!!) {
             add(ChatMenuItem(resources.getString(R.string.bandyer_glass_videocall)))

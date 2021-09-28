@@ -1,4 +1,4 @@
-package com.bandyer.app_design.smartglass.battery
+package com.bandyer.video_android_glass_ui.utils.observers.battery
 
 data class BatteryState(val status: Status = Status.UNKNOWN, val plugged: Plugged = Plugged.UNKNOWN, val percentage: Int = -1) {
 

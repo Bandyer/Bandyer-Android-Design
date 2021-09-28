@@ -5,20 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.navigation.fragment.findNavController
-import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.TouchEvent
 import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentVolumeBinding
-import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
  * VolumeFragment
  */
 class VolumeFragment : TiltFragment() {
-
-    //    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
     private var _binding: BandyerGlassFragmentVolumeBinding? = null
     override val binding: BandyerGlassFragmentVolumeBinding get() = _binding!!
@@ -33,16 +27,12 @@ class VolumeFragment : TiltFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        //        activity.addNotificationListener(this)
+        super.onCreateView(inflater, container, savedInstanceState)
 
         // Add view binding
-        _binding = BandyerGlassFragmentVolumeBinding.inflate(inflater, container, false)
-
-        // Set OnClickListeners for realwear voice commands
-        with(binding.bandyerBottomNavigation) {
-            setTapOnClickListener { onTap() }
-            setSwipeDownOnClickListener { onSwipeDown() }
-        }
+        _binding = BandyerGlassFragmentVolumeBinding
+            .inflate(inflater, container, false)
+            .apply { bandyerBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }
@@ -53,7 +43,6 @@ class VolumeFragment : TiltFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-//        activity.removeNotificationListener(this)
     }
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) {

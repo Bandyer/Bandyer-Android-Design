@@ -1,4 +1,4 @@
-package com.bandyer.app_design.smartglass
+package com.bandyer.video_android_glass_ui
 
 import android.os.Bundle
 import android.os.Handler
@@ -11,25 +11,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
-import com.bandyer.app_design.R
-import com.bandyer.app_design.databinding.ActivitySmartGlassBinding
-import com.bandyer.app_design.smartglass.battery.BatteryObserver
-import com.bandyer.app_design.smartglass.battery.BatteryState
-import com.bandyer.app_design.smartglass.network.WiFiObserver
-import com.bandyer.app_design.smartglass.network.WiFiState
-import com.bandyer.video_android_glass_ui.TouchEvent
-import com.bandyer.video_android_glass_ui.TouchEventListener
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationData
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
+import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
+import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryObserver
+import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryState
+import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiObserver
+import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiState
 import kotlinx.coroutines.flow.collect
 
-class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener,
+class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener,
                            ChatNotificationManager.NotificationListener, TouchEventListener {
 
-    private lateinit var binding: ActivitySmartGlassBinding
+    private lateinit var binding: BandyerActivityGlassBinding
 
     private var statusBar: StatusBarView? = null
 
@@ -39,14 +36,13 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
 
     private lateinit var glassGestureDetector: GlassGestureDetector
     private lateinit var notificationManager: ChatNotificationManager
-    private var handleNotification = false
+    private var isNotificationVisible = false
     private lateinit var batteryObserver: BatteryObserver
     private lateinit var wifiObserver: WiFiObserver
-//    private val internetObserver = InternetObserver(5000)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivitySmartGlassBinding.inflate(layoutInflater)
+        binding = BandyerActivityGlassBinding.inflate(layoutInflater)
         statusBar = binding.statusBar
         setContentView(binding.root)
 
@@ -98,36 +94,11 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
                         "Mario",
                         "Mario",
                         "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
-                        R.drawable.sample_image
+                        null
                     )
                 )
             )
         }, 4000)
-
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            notificationManager.show(
-//                listOf(
-//                    BandyerNotificationData(
-//                        "Mario",
-//                        "Mario",
-//                        "Il numero seriale del macchinario dovrebbe essere AR56000TY7-1824\\nConfermi?",
-//                        R.drawable.sample_image
-//                    ),
-//                    BandyerNotificationData(
-//                        "Gianfranco",
-//                        "Gianfranco",
-//                        "Mi piacciono i treni",
-//                        null
-//                    ),
-//                    BandyerNotificationData(
-//                        "Mario",
-//                        "Mario",
-//                        "Ciao",
-//                        R.drawable.sample_image
-//                    )
-//                )
-//            )
-//        }, 7000)
     }
 
     override fun onResume() {
@@ -159,38 +130,30 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
         handleSmartGlassTouchEvent(TouchEvent.getEvent(gesture))
 
     private fun handleSmartGlassTouchEvent(glassEvent: TouchEvent): Boolean =
-        if (handleNotification) onTouch(glassEvent)
-        else (currentFragment as? TouchEventListener)?.onTouch(
-            glassEvent
-        ) ?: false
+        if (isNotificationVisible) onTouch(glassEvent)
+        else (currentFragment as? TouchEventListener)?.onTouch(glassEvent) ?: false
 
     override fun onTouch(event: TouchEvent): Boolean =
         when (event.type) {
-            TouchEvent.Type.TAP        -> {
-                notificationManager.expand()
-                true
-            }
-            TouchEvent.Type.SWIPE_DOWN -> {
-                notificationManager.dismiss()
-                true
-            }
-            else                       -> false
+            TouchEvent.Type.TAP -> true.also { notificationManager.expand() }
+            TouchEvent.Type.SWIPE_DOWN -> true.also { notificationManager.dismiss() }
+            else -> false
         }
 
     // NOTIFICATION LISTENER
     override fun onShow() {
-        handleNotification = true
+        isNotificationVisible = true
     }
 
     override fun onExpanded() {
-        handleNotification = false
+        isNotificationVisible = false
         // TODO Fragment NavHostFragment{199be23} (47d28a1a-fa6e-41d5-81e7-090f54d21e92) has not been attached yet.
         if (supportFragmentManager.currentNavigationFragment?.id != R.id.smartglass_nav_graph_chat)
             binding.navHostFragment.findNavController().navigate(R.id.smartglass_nav_graph_chat)
     }
 
     override fun onDismiss() {
-        handleNotification = false
+        isNotificationVisible = false
     }
 
     fun addNotificationListener(listener: ChatNotificationManager.NotificationListener) {
@@ -202,7 +165,7 @@ class SmartGlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureLi
     }
 
     fun hideNotification() {
-        handleNotification = false
+        isNotificationVisible = false
         notificationManager.dismiss(false)
     }
 

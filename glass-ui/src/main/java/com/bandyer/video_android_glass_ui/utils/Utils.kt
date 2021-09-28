@@ -6,5 +6,5 @@ import androidx.fragment.app.FragmentManager
 /**
  * Get the current navigation fragment
  */
-val FragmentManager.currentNavigationFragment: Fragment?
+internal val FragmentManager.currentNavigationFragment: Fragment?
     get() = primaryNavigationFragment?.childFragmentManager?.fragments?.first()

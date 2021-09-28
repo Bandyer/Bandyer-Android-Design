@@ -1,4 +1,4 @@
-package com.bandyer.app_design.smartglass.network
+package com.bandyer.video_android_glass_ui.utils.observers.network
 
 import android.Manifest
 import androidx.annotation.RequiresPermission

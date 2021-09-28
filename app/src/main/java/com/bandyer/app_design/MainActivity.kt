@@ -30,7 +30,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import com.bandyer.app_design.databinding.ActivityMainBinding
-import com.bandyer.app_design.smartglass.SmartGlassActivity
+import com.bandyer.video_android_glass_ui.GlassActivity
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.CallAction
 import com.bandyer.video_android_phone_ui.call.dialogs.BandyerSnapshotDialog
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
             fileShareDialog.setOnDismissListener { viewModel.itemsData.clear() }
         }
 
-        btnSmartglass.setOnClickListener { startActivity(Intent(this@MainActivity, SmartGlassActivity::class.java)) }
+        btnSmartglass.setOnClickListener { startActivity(Intent(this@MainActivity, GlassActivity::class.java)) }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

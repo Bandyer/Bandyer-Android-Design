@@ -5,11 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
+import com.bandyer.video_android_glass_ui.GlassActivity
+import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
@@ -27,8 +30,6 @@ import java.time.temporal.ChronoUnit
  * ParticipantsFragment
  */
 class ParticipantsFragment : TiltFragment() {
-
-//    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
     private var _binding: BandyerGlassFragmentParticipantsBinding? = null
     override val binding: BandyerGlassFragmentParticipantsBinding get() = _binding!!
@@ -66,20 +67,14 @@ class ParticipantsFragment : TiltFragment() {
 
     override fun onResume() {
         super.onResume()
-//        activity.showStatusBarCenteredTitle()
-//        activity.setStatusBarColor(
-//            ResourcesCompat.getColor(
-//                resources,
-//                R.color.bandyer_glass_background_color,
-//                null
-//            )
-//        )
+        activity.showStatusBarCenteredTitle()
+        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_glass_background_color, null))
     }
 
     override fun onStop() {
         super.onStop()
-//        activity.hideStatusBarCenteredTitle()
-//        activity.setStatusBarColor(null)
+        activity.hideStatusBarCenteredTitle()
+        activity.setStatusBarColor(null)
     }
 
     /**
@@ -90,73 +85,71 @@ class ParticipantsFragment : TiltFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        activity.addNotificationListener(this)
+        super.onCreateView(inflater, container, savedInstanceState)
 
         // Apply theme wrapper and add view binding
-        _binding = BandyerGlassFragmentParticipantsBinding.inflate(inflater, container, false)
+        _binding = BandyerGlassFragmentParticipantsBinding
+            .inflate(inflater, container, false)
+            .apply {
+                bandyerBottomNavigation.setListenersForRealwear()
 
-        // Set OnClickListeners for realwear voice commands
-        with(binding.bandyerBottomNavigation) {
-            setSwipeDownOnClickListener { onSwipeDown() }
-            setSwipeHorizontalOnClickListener { onSwipeForward(true) }
-        }
+                // Init the RecyclerView
+                with(bandyerParticipants) {
+                    itemAdapter = ItemAdapter()
+                    val fastAdapter = FastAdapter.with(itemAdapter!!)
+                    val layoutManager =
+                        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
-        // Init the RecyclerView
-        with(binding.bandyerParticipants) {
-            itemAdapter = ItemAdapter()
-            val fastAdapter = FastAdapter.with(itemAdapter!!)
-            val layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
+                    this.layoutManager = layoutManager
+                    adapter = fastAdapter
+                    isFocusable = false
 
-            this.layoutManager = layoutManager
-            adapter = fastAdapter
-            isFocusable = false
+                    addItemDecoration(HorizontalCenterItemDecoration())
+                    addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper))
 
-            addItemDecoration(HorizontalCenterItemDecoration())
-            addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper))
+                    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                            val foundView = snapHelper.findSnapView(layoutManager) ?: return
+                            currentParticipantIndex = layoutManager.getPosition(foundView)
 
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                    currentParticipantIndex = layoutManager.getPosition(foundView)
+                            val data = participantsData[currentParticipantIndex]
 
-                    val data = participantsData[currentParticipantIndex]
+                            with(bandyerAvatar) {
+                                setText(data.name.first().toString())
+                                setBackground(data.userAlias.parseToColor())
 
-                    with(binding.bandyerAvatar) {
-                        setText(data.name.first().toString())
-                        setBackground(data.userAlias.parseToColor())
+                                when {
+                                    data.avatarImageId != null -> setImage(data.avatarImageId)
+                                    data.avatarImageUrl != null -> setImage(data.avatarImageUrl)
+                                    else -> setImage(null)
+                                }
+                            }
 
-                        when {
-                            data.avatarImageId != null -> setImage(data.avatarImageId)
-                            data.avatarImageUrl != null -> setImage(data.avatarImageUrl)
-                            else -> setImage(null)
+                            bandyerContactStateDot.isActivated =
+                                data.userState == ParticipantData.UserState.ONLINE
+
+                            with(bandyerContactStateText) {
+                                when (data.userState) {
+                                    ParticipantData.UserState.INVITED -> setContactState(
+                                        ParticipantStateTextView.State.INVITED
+                                    )
+                                    ParticipantData.UserState.OFFLINE -> setContactState(
+                                        ParticipantStateTextView.State.LAST_SEEN,
+                                        data.lastSeenTime
+                                    )
+                                    ParticipantData.UserState.ONLINE -> setContactState(
+                                        ParticipantStateTextView.State.ONLINE
+                                    )
+                                }
+                            }
                         }
-                    }
+                    })
 
-                    binding.bandyerContactStateDot.isActivated =
-                        data.userState == ParticipantData.UserState.ONLINE
-
-                    with(binding.bandyerContactStateText) {
-                        when (data.userState) {
-                            ParticipantData.UserState.INVITED -> setContactState(
-                                ParticipantStateTextView.State.INVITED
-                            )
-                            ParticipantData.UserState.OFFLINE -> setContactState(
-                                ParticipantStateTextView.State.LAST_SEEN,
-                                data.lastSeenTime
-                            )
-                            ParticipantData.UserState.ONLINE -> setContactState(
-                                ParticipantStateTextView.State.ONLINE
-                            )
-                        }
-                    }
+                    // Forward the root view's touch event to the recycler view
+                    root.setOnTouchListener { _, event -> onTouchEvent(event) }
                 }
-            })
-
-            // Forward the root view's touch event to the recycler view
-            binding.root.setOnTouchListener { _, event -> onTouchEvent(event) }
-        }
+            }
 
         participantsData.forEach {
             itemAdapter!!.add(CallParticipantItem(it.userAlias))
@@ -172,24 +165,28 @@ class ParticipantsFragment : TiltFragment() {
         super.onDestroyView()
         _binding = null
         itemAdapter = null
-//        activity.removeNotificationListener(this)
     }
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.bandyerParticipants.scrollBy(
-            (deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(),
-            0
-        )
+        binding.bandyerParticipants.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
 
     override fun onTap() = false
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
     override fun onSwipeForward(isKeyEvent: Boolean) =
-        (isKeyEvent && currentParticipantIndex != -1).also { if (it) binding.bandyerParticipants.horizontalSmoothScrollToNext(currentParticipantIndex) }
+        (isKeyEvent && currentParticipantIndex != -1).also {
+            if (it) binding.bandyerParticipants.horizontalSmoothScrollToNext(
+                currentParticipantIndex
+            )
+        }
 
     override fun onSwipeBackward(isKeyEvent: Boolean) =
-        (isKeyEvent && currentParticipantIndex != -1).also { if (it) binding.bandyerParticipants.horizontalSmoothScrollToPrevious(currentParticipantIndex) }
+        (isKeyEvent && currentParticipantIndex != -1).also {
+            if (it) binding.bandyerParticipants.horizontalSmoothScrollToPrevious(
+                currentParticipantIndex
+            )
+        }
 }
 
 

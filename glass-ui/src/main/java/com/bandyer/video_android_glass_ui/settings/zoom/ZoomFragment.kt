@@ -2,24 +2,17 @@ package com.bandyer.video_android_glass_ui.settings.zoom
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
 import androidx.navigation.fragment.findNavController
-import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.TouchEvent
 import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentZoomBinding
-import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
  * ZoomFragment
  */
 class ZoomFragment : TiltFragment() {
-
-    //    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
     private var _binding: BandyerGlassFragmentZoomBinding? = null
     override val binding: BandyerGlassFragmentZoomBinding get() = _binding!!
@@ -34,16 +27,12 @@ class ZoomFragment : TiltFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        //        activity.addNotificationListener(this)
+        super.onCreateView(inflater, container, savedInstanceState)
 
         // Add view binding
-        _binding = BandyerGlassFragmentZoomBinding.inflate(inflater, container, false)
-
-        // Set OnClickListeners for realwear voice commands
-        with(binding.bandyerBottomNavigation) {
-            setTapOnClickListener { onTap() }
-            setSwipeDownOnClickListener { onSwipeDown() }
-        }
+        _binding = BandyerGlassFragmentZoomBinding
+            .inflate(inflater, container, false)
+            .apply { bandyerBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }
@@ -54,7 +43,6 @@ class ZoomFragment : TiltFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-//        activity.removeNotificationListener(this)
     }
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) {

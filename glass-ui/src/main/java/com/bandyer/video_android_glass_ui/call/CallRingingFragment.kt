@@ -17,8 +17,6 @@ class CallRingingFragment : BaseFragment() {
     private var _binding: BandyerGlassFragmentRingingBinding? = null
     override val binding: BandyerGlassFragmentRingingBinding get() = _binding!!
 
-//    private val activity by lazy { requireActivity() as SmartGlassActivity }
-
     /**
      * @suppress
      */
@@ -26,17 +24,13 @@ class CallRingingFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        activity.hideStatusBar()
-//        activity.addNotificationListener(this)
+        super.onCreateView(inflater, container, savedInstanceState)
+        activity.hideStatusBar()
 
         // Add view binding
-        _binding = BandyerGlassFragmentRingingBinding.inflate(inflater, container, false)
-
-        // Set OnClickListeners for realwear voice commands
-        with(binding.bandyerBottomNavigation) {
-            setTapOnClickListener { onTap() }
-            setSwipeDownOnClickListener { onSwipeDown() }
-        }
+        _binding = BandyerGlassFragmentRingingBinding
+            .inflate(inflater, container, false)
+            .apply { bandyerBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }
@@ -47,10 +41,10 @@ class CallRingingFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-//        activity.removeNotificationListener(this)
     }
 
-    override fun onTap() = true.also { findNavController().navigate(R.id.action_ringingFragment_to_emptyFragment) }
+    override fun onTap() =
+        true.also { findNavController().navigate(R.id.action_ringingFragment_to_emptyFragment) }
 
     override fun onSwipeDown() = true.also { requireActivity().finish() }
 

@@ -24,8 +24,6 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
  */
 class MenuFragment : TiltFragment() {
 
-    //    private val activity by lazy { requireActivity() as SmartGlassActivity }
-
     private var _binding: BandyerGlassFragmentMenuBinding? = null
     override val binding: BandyerGlassFragmentMenuBinding get() = _binding!!
 
@@ -41,43 +39,40 @@ class MenuFragment : TiltFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        activity.addNotificationListener(this)
+        super.onCreateView(inflater, container, savedInstanceState)
 
         // Add view binding
-        _binding = BandyerGlassFragmentMenuBinding.inflate(inflater, container, false)
+        _binding = BandyerGlassFragmentMenuBinding
+            .inflate(inflater, container, false)
+            .apply {
+                bandyerBottomNavigation.setListenersForRealwear()
 
-        // Set OnClickListeners for realwear voice commands
-        with(binding.bandyerBottomNavigation) {
-            setTapOnClickListener { onTap() }
-            setSwipeHorizontalOnClickListener { onSwipeForward(true) }
-            setSwipeDownOnClickListener { onSwipeDown() }
-        }
+                // Init the RecyclerView
+                with(bandyerMenu) {
+                    itemAdapter = ItemAdapter()
+                    val fastAdapter = FastAdapter.with(itemAdapter!!)
+                    val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
-        // Init the RecyclerView
-        with(binding.bandyerMenu) {
-            itemAdapter = ItemAdapter()
-            val fastAdapter = FastAdapter.with(itemAdapter!!)
-            val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
+                    this.layoutManager = layoutManager
+                    adapter = fastAdapter
+                    isFocusable = false
+                    setHasFixedSize(true)
 
-            this.layoutManager = layoutManager
-            adapter = fastAdapter
-            isFocusable = false
-            setHasFixedSize(true)
+                    addItemDecoration(HorizontalCenterItemDecoration())
+                    addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper))
 
-            addItemDecoration(HorizontalCenterItemDecoration())
-            addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper))
+                    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                            val foundView = snapHelper.findSnapView(layoutManager) ?: return
+                            currentMenuItemIndex = layoutManager.getPosition(foundView)
+                        }
+                    })
 
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                    currentMenuItemIndex = layoutManager.getPosition(foundView)
+                    // Forward the root view's touch event to the recycler view
+                    root.setOnTouchListener { _, event -> this.onTouchEvent(event) }
                 }
-            })
-
-            // Forward the root view's touch event to the recycler view
-            binding.root.setOnTouchListener { _, event -> this.onTouchEvent(event) }
-        }
+            }
 
         with(itemAdapter!!) {
             add(MenuItem("Attiva microfono", "Muta microfono"))
@@ -98,7 +93,6 @@ class MenuFragment : TiltFragment() {
         super.onDestroyView()
         _binding = null
         itemAdapter = null
-//        activity.removeNotificationListener(this)
     }
 
     override fun onTap() = when (currentMenuItemIndex) {

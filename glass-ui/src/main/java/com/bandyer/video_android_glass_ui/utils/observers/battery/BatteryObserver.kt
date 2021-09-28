@@ -1,4 +1,4 @@
-package com.bandyer.app_design.smartglass.battery
+package com.bandyer.video_android_glass_ui.utils.observers.battery
 
 import android.content.BroadcastReceiver
 import android.content.Context

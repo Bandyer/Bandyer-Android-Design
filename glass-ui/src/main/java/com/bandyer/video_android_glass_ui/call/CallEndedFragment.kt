@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.content.res.ResourcesCompat
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentCallEndedBinding
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenDialogBinding
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
@@ -19,22 +18,14 @@ class CallEndedFragment : BaseFragment() {
     private var _binding: BandyerGlassFragmentFullScreenDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenDialogBinding get() = _binding!!
 
-//    private val activity by lazy { requireActivity() as SmartGlassActivity }
-
     override fun onResume() {
         super.onResume()
-//        activity.setStatusBarColor(
-//            ResourcesCompat.getColor(
-//                resources,
-//                R.color.bandyer_glass_background_color,
-//                null
-//            )
-//        )
+        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_glass_background_color, null))
     }
 
     override fun onStop() {
         super.onStop()
-//        activity.setStatusBarColor(null)
+        activity.setStatusBarColor(null)
     }
 
     override fun onCreateView(
@@ -42,8 +33,8 @@ class CallEndedFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        activity.showStatusBar()
-//        activity.addNotificationListener(this)
+        super.onCreateView(inflater, container, savedInstanceState)
+        activity.showStatusBar()
 
         // Apply theme wrapper and add view binding
         val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_callEndedStyle)
@@ -51,13 +42,7 @@ class CallEndedFragment : BaseFragment() {
             inflater.cloneInContext(android.view.ContextThemeWrapper(requireContext(), themeResId)),
             container,
             false
-        )
-
-        // Set OnClickListeners for realwear voice commands
-        with(binding.bandyerBottomNavigation) {
-            setTapOnClickListener { onTap() }
-            setSwipeDownOnClickListener { onSwipeDown() }
-        }
+        ).apply { bandyerBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }
@@ -65,7 +50,6 @@ class CallEndedFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-//        activity.removeNotificationListener(this)
     }
 
     override fun onTap() = true.also { requireActivity().finish() }

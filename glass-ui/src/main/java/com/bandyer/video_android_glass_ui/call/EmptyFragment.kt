@@ -17,8 +17,6 @@ class EmptyFragment : BaseFragment() {
     private var _binding: BandyerGlassFragmentEmptyBinding? = null
     override val binding: BandyerGlassFragmentEmptyBinding get() = _binding!!
 
-//    private val activity by lazy { requireActivity() as SmartGlassActivity }
-
     /**
      * @suppress
      */
@@ -26,17 +24,13 @@ class EmptyFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        activity.showStatusBar()
-//        activity.addNotificationListener(this)
+        super.onCreateView(inflater, container, savedInstanceState)
+        activity.showStatusBar()
 
         // Add view binding
-        _binding = BandyerGlassFragmentEmptyBinding.inflate(inflater, container, false)
-
-        // Set OnClickListeners for realwear voice commands
-        with(binding.bandyerBottomNavigation) {
-            setTapOnClickListener { onTap() }
-            setSwipeDownOnClickListener { onSwipeDown() }
-        }
+        _binding = BandyerGlassFragmentEmptyBinding
+            .inflate(inflater, container, false)
+            .apply { bandyerBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }
@@ -47,7 +41,6 @@ class EmptyFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-//        activity.removeNotificationListener(this)
     }
 
     override fun onTap() = true.also { findNavController().navigate(R.id.action_emptyFragment_to_menuFragment) }

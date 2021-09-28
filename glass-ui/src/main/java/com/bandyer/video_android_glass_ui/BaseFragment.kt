@@ -1,14 +1,24 @@
 package com.bandyer.video_android_glass_ui
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
+import com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 
 /**
  * BaseFragment. A base class for all the smart glass fragments
  */
 abstract class BaseFragment : Fragment(), TouchEventListener, ChatNotificationManager.NotificationListener {
+
+    /**
+     * The [GlassActivity]
+     */
+    protected val activity by lazy { requireActivity() as GlassActivity }
 
     /**
      * The fragment's view binding
@@ -45,6 +55,20 @@ abstract class BaseFragment : Fragment(), TouchEventListener, ChatNotificationMa
      */
     protected abstract fun onSwipeBackward(isKeyEvent: Boolean): Boolean
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        activity.addNotificationListener(this)
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        activity.removeNotificationListener(this)
+    }
+
     override fun onShow() = binding.root.setAlphaWithAnimation(0f, 100L)
 
     override fun onExpanded() = Unit
@@ -60,5 +84,16 @@ abstract class BaseFragment : Fragment(), TouchEventListener, ChatNotificationMa
         TouchEvent.Type.SWIPE_FORWARD   -> onSwipeForward(event.source == TouchEvent.Source.KEY)
         TouchEvent.Type.SWIPE_BACKWARD  -> onSwipeBackward(event.source == TouchEvent.Source.KEY)
         else -> false
+    }
+
+    /**
+     * Apply onClickListeners for realwear voice commands
+     *
+     * @receiver BottomNavigationView
+     */
+    protected fun BottomNavigationView.setListenersForRealwear() {
+        setTapOnClickListener { onTap() }
+        setSwipeDownOnClickListener { onSwipeDown() }
+        setSwipeHorizontalOnClickListener { onSwipeForward(true) }
     }
 }

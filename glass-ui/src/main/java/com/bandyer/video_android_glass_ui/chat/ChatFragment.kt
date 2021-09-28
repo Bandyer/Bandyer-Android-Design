@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.ContextThemeWrapper
+import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
@@ -29,8 +29,6 @@ import java.util.*
  */
 class ChatFragment : TiltFragment() {
 
-    //    private val activity by lazy { requireActivity() as SmartGlassActivity }
-
     private var _binding: BandyerGlassFragmentChatBinding? = null
     override val binding: BandyerGlassFragmentChatBinding get() = _binding!!
 
@@ -52,18 +50,18 @@ class ChatFragment : TiltFragment() {
 
     override fun onResume() {
         super.onResume()
-//        activity.setStatusBarColor(
-//            ResourcesCompat.getColor(
-//                resources,
-//                R.color.bandyer_glass_background_color,
-//                null
-//            )
-//        )
+        activity.setStatusBarColor(
+            ResourcesCompat.getColor(
+                resources,
+                R.color.bandyer_glass_background_color,
+                null
+            )
+        )
     }
 
     override fun onPause() {
         super.onPause()
-//        activity.setStatusBarColor(null)
+        activity.setStatusBarColor(null)
     }
 
     /**
@@ -74,49 +72,49 @@ class ChatFragment : TiltFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        activity.showStatusBar()
-//        activity.hideNotification()
-//        activity.setDnd(true)
+        super.onCreateView(inflater, container, savedInstanceState)
+
+        activity.showStatusBar()
+        activity.hideNotification()
+        activity.setDnd(true)
 
         // Add view binding
-        _binding = BandyerGlassFragmentChatBinding.inflate(inflater, container, false)
+        _binding = BandyerGlassFragmentChatBinding
+            .inflate(inflater, container, false)
+            .apply {
+                bandyerBottomNavigation.setListenersForRealwear()
 
-        // Set OnClickListeners for realwear voice commands
-        with(binding.bandyerBottomNavigation) {
-            setSwipeDownOnClickListener { onSwipeDown() }
-            setSwipeHorizontalOnClickListener { onSwipeForward(true) }
-        }
+                // Init the RecyclerView
+                bandyerMessages.apply {
+                    itemAdapter = ItemAdapter()
+                    val fastAdapter = FastAdapter.with(itemAdapter!!)
+                    val layoutManager =
+                        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    val snapHelper = PagerSnapHelper().also { it.attachToRecyclerView(this) }
 
-        // Init the RecyclerView
-        binding.bandyerMessages.apply {
-            itemAdapter = ItemAdapter()
-            val fastAdapter = FastAdapter.with(itemAdapter!!)
-            val layoutManager =
-                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            val snapHelper = PagerSnapHelper().also { it.attachToRecyclerView(this) }
+                    this.layoutManager = layoutManager
+                    adapter = fastAdapter
+                    isFocusable = false
+                    setHasFixedSize(true)
+                    addItemDecoration(ChatReadProgressDecoration(requireContext()))
 
-            this.layoutManager = layoutManager
-            adapter = fastAdapter
-            isFocusable = false
-            setHasFixedSize(true)
-            addItemDecoration(ChatReadProgressDecoration(requireContext()))
+                    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                            val foundView = snapHelper.findSnapView(layoutManager) ?: return
+                            val currentMsgIndex = layoutManager.getPosition(foundView)
 
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                    val currentMsgIndex = layoutManager.getPosition(foundView)
+                            if (currentMsgIndex > lastMsgIndex && pagesIds[currentMsgIndex] != pagesIds[lastMsgIndex]) {
+                                newMessagesCounter--
+                                lastMsgIndex = currentMsgIndex
+                            }
+                            currentMsgItemIndex = currentMsgIndex
+                        }
+                    })
 
-                    if (currentMsgIndex > lastMsgIndex && pagesIds[currentMsgIndex] != pagesIds[lastMsgIndex]) {
-                        newMessagesCounter--
-                        lastMsgIndex = currentMsgIndex
-                    }
-                    currentMsgItemIndex = currentMsgIndex
+                    // Forward the root view's touch event to the recycler view
+                    root.setOnTouchListener { _, event -> onTouchEvent(event) }
                 }
-            })
-
-            // Forward the root view's touch event to the recycler view
-            binding.root.setOnTouchListener { _, event -> onTouchEvent(event) }
-        }
+            }
 
         mockMessages()
 
@@ -131,7 +129,7 @@ class ChatFragment : TiltFragment() {
         _binding = null
         itemAdapter = null
 //        newMessagesCounter = 0
-//        activity.setDnd(false)
+        activity.setDnd(false)
         pagesIds = arrayListOf()
     }
 
