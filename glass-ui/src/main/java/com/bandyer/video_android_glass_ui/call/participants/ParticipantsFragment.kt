@@ -201,15 +201,17 @@ class ParticipantsFragment : BaseFragment(), TiltController.TiltListener {
     }
 
     private fun onSwipeForward(isKeyEvent: Boolean): Boolean {
-        if (isKeyEvent && currentParticipantIndex != -1)
+        val condition = isKeyEvent && currentParticipantIndex != -1
+        if (condition)
             binding.bandyerParticipants.horizontalSmoothScrollToNext(currentParticipantIndex)
-        return isKeyEvent
+        return condition
     }
 
     private fun onSwipeBackward(isKeyEvent: Boolean): Boolean {
-        if (isKeyEvent && currentParticipantIndex != -1)
+        val condition = isKeyEvent && currentParticipantIndex != -1
+        if (condition)
             binding.bandyerParticipants.horizontalSmoothScrollToPrevious(currentParticipantIndex)
-        return isKeyEvent
+        return condition
     }
 }
 
