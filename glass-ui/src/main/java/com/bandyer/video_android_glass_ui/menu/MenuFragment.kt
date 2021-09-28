@@ -33,7 +33,8 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
     private var _binding: BandyerGlassFragmentMenuBinding? = null
     override val binding: BandyerGlassFragmentMenuBinding get() = _binding!!
 
-    private var itemAdapter = ItemAdapter<MenuItem>()
+    private var itemAdapter: ItemAdapter<MenuItem>? = null
+
     private var currentMenuItemIndex = 0
 
     private var tiltController: TiltController? = null
@@ -80,13 +81,11 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
 
         // Init the RecyclerView
         with(binding.bandyerMenu) {
-            val fastAdapter = FastAdapter.with(itemAdapter).also {
-                it.onClickListener = { _, _, _, position -> onTap(position) }
-            }
+            itemAdapter = ItemAdapter()
+            val fastAdapter = FastAdapter.with(itemAdapter!!)
+                .also { it.onClickListener = { _, _, _, position -> onTap(position) } }
             val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            val snapHelper = LinearSnapHelper().also {
-                it.attachToRecyclerView(this)
-            }
+            val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
             this.layoutManager = layoutManager
             adapter = fastAdapter
@@ -112,7 +111,7 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
             binding.root.setOnTouchListener { _, event -> this.onTouchEvent(event) }
         }
 
-        with(itemAdapter) {
+        with(itemAdapter!!) {
             add(MenuItem("Attiva microfono", "Muta microfono"))
             add(MenuItem("Attiva camera", "Muta camera"))
             add(MenuItem("Volume"))
@@ -130,22 +129,23 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        itemAdapter = null
 //        activity.removeNotificationListener(this)
     }
 
     override fun onTouch(event: TouchEvent): Boolean =
         when (event.type) {
-            TouchEvent.Type.TAP            -> onTap(currentMenuItemIndex)
-            TouchEvent.Type.SWIPE_DOWN     -> onSwipeDown()
-            TouchEvent.Type.SWIPE_FORWARD  -> onSwipeForward(event.source == TouchEvent.Source.KEY)
+            TouchEvent.Type.TAP -> onTap(currentMenuItemIndex)
+            TouchEvent.Type.SWIPE_DOWN -> onSwipeDown()
+            TouchEvent.Type.SWIPE_FORWARD -> onSwipeForward(event.source == TouchEvent.Source.KEY)
             TouchEvent.Type.SWIPE_BACKWARD -> onSwipeBackward(event.source == TouchEvent.Source.KEY)
-            else                           -> super.onTouch(event)
+            else -> super.onTouch(event)
         }
 
     private fun onTap(itemIndex: Int): Boolean = when (itemIndex) {
         0, 1 -> {
-            val isActivated = itemAdapter.getAdapterItem(currentMenuItemIndex).isActivated
-            itemAdapter.getAdapterItem(currentMenuItemIndex).isActivated = !isActivated
+            val isActivated = itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated
+            itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated = !isActivated
             true
         }
         2 -> {
@@ -186,5 +186,4 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
         binding.bandyerMenu.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
-
 }

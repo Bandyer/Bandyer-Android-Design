@@ -17,6 +17,7 @@ import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.TouchEvent
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassChatMessageLayoutBinding
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatBinding
+import com.bandyer.video_android_glass_ui.menu.MenuItem
 import com.bandyer.video_android_glass_ui.utils.TiltController
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
@@ -36,7 +37,7 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
     private var _binding: BandyerGlassFragmentChatBinding? = null
     override val binding: BandyerGlassFragmentChatBinding get() = _binding!!
 
-    private var itemAdapter = ItemAdapter<ChatMessageItem>()
+    private var itemAdapter: ItemAdapter<ChatMessageItem>? = null
 
     private var tiltController: TiltController? = null
 
@@ -97,7 +98,8 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
 
         // Init the RecyclerView
         binding.bandyerMessages.apply {
-            val fastAdapter = FastAdapter.with(itemAdapter)
+            itemAdapter = ItemAdapter()
+            val fastAdapter = FastAdapter.with(itemAdapter!!)
             val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             val snapHelper = PagerSnapHelper().also { it.attachToRecyclerView(this) }
 
@@ -141,6 +143,7 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        itemAdapter = null
 //        activity.setDnd(false)
         pagesIds = arrayListOf()
     }
@@ -157,7 +160,7 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
     }
 
     private fun onTap(): Boolean {
-        val username = itemAdapter.adapterItems[currentMsgItemIndex].data.userAlias
+        val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userAlias
         val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(contactData.first { it.userAlias.contains(username!!) })
         findNavController().navigate(action)
         return true
@@ -196,7 +199,7 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
                     bandyerMessage.text = data.message
                     val pageList = bandyerMessage.paginate()
                     for (i in pageList.indices) {
-                        itemAdapter.add(ChatMessageItem(ChatMessageData(data.id, data.sender, data.userAlias, pageList[i].toString(), data.time, data.userAvatarId, data.userAvatarUrl, i == 0)))
+                        itemAdapter!!.add(ChatMessageItem(ChatMessageData(data.id, data.sender, data.userAlias, pageList[i].toString(), data.time, data.userAvatarId, data.userAvatarUrl, i == 0)))
                         pagesIds.add(data.id)
                     }
                 }
