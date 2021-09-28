@@ -2,7 +2,7 @@ package com.bandyer.video_android_glass_ui.chat.menu
 
 import android.view.View
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.databinding.BandyerChatMenuItemLayoutBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassChatMenuItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -41,7 +41,7 @@ class ChatMenuItem(val text: String): AbstractItem<ChatMenuItem.ViewHolder>() {
      */
     class ViewHolder(view: View): FastAdapter.ViewHolder<ChatMenuItem>(view) {
 
-        private val binding = BandyerChatMenuItemLayoutBinding.bind(view)
+        private val binding = BandyerGlassChatMenuItemLayoutBinding.bind(view)
 
         /**
          * Binds the data of this item onto the viewHolder

@@ -6,42 +6,60 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
-import com.bandyer.video_android_glass_ui.common.AvatarView
+import com.bandyer.video_android_glass_ui.TouchEvent
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatMenuBinding
+import com.bandyer.video_android_glass_ui.participants.ParticipantData
 import com.bandyer.video_android_glass_ui.participants.ParticipantStateTextView
-import com.bandyer.video_android_glass_ui.databinding.BandyerFragmentChatMenuBinding
+import com.bandyer.video_android_glass_ui.utils.TiltController
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
-import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.textview.MaterialTextView
+import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
+import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
 /**
- * ChatMenuFragment. A base class for the chat menu options.
+ * ChatMenuFragment
  */
-abstract class ChatMenuFragment : BaseFragment() {
+abstract class ChatMenuFragment : BaseFragment(), TiltController.TiltListener {
 
-    private var binding: BandyerFragmentChatMenuBinding? = null
+    //    private val activity by lazy { requireActivity() as SmartGlassActivity }
 
-    protected var itemAdapter: ItemAdapter<ChatMenuItem>? = null
-    protected var fastAdapter: FastAdapter<ChatMenuItem>? = null
+    private var _binding: BandyerGlassFragmentChatMenuBinding? = null
+    override val binding: BandyerGlassFragmentChatMenuBinding get() = _binding!!
 
-    protected var root: View? = null
-    protected var avatar: AvatarView? = null
-    protected var contactStateDot: ShapeableImageView? = null
-    protected var contactStateText: ParticipantStateTextView? = null
-    protected var name: MaterialTextView? = null
-    protected var rvActions: RecyclerView? = null
-    protected var bottomNavigation: BottomNavigationView? = null
+    private var itemAdapter: ItemAdapter<ChatMenuItem>? = null
 
-    protected var snapHelper: LinearSnapHelper? = null
+    private val args: ChatMenuFragmentArgs by navArgs()
+
+    private var tiltController: TiltController? = null
+    private var actionIndex = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        tiltController = TiltController(requireContext(), this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+//        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_glass_background_color, null))
+        tiltController!!.requestAllSensors()
+    }
+
+    override fun onStop() {
+        super.onStop()
+//        activity.setStatusBarColor(null)
+        tiltController!!.releaseAllSensors()
+    }
 
     /**
      * @suppress
@@ -51,51 +69,84 @@ abstract class ChatMenuFragment : BaseFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val style =
-            requireContext().getChatThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Glass_Chat_bandyer_chatMenuStyle)
-        val wrapper = ContextThemeWrapper(requireActivity(), style)
-        binding = BandyerFragmentChatMenuBinding.inflate(
-            inflater.cloneInContext(wrapper),
+        // Args
+        val data = args.participantData!!
+
+        // Apply theme wrapper and add view binding
+        val themeResId = requireContext().getChatThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Glass_Chat_bandyer_chatMenuStyle)
+        _binding = BandyerGlassFragmentChatMenuBinding.inflate(
+            inflater.cloneInContext(ContextThemeWrapper(requireActivity(), themeResId)),
             container,
             false
         )
 
-        // set the views
-        root = binding!!.root
-        avatar = binding!!.bandyerAvatar
-        contactStateDot = binding!!.bandyerContactStateDot
-        contactStateText = binding!!.bandyerContactStateText
-        name = binding!!.bandyerName
-        rvActions = binding!!.bandyerParticipants
-        bottomNavigation = binding!!.bandyerBottomActionBar
+        // Set OnClickListeners for realwear voice commands
+        with(binding.bandyerBottomNavigation) {
+            setSwipeDownOnClickListener { onSwipeDown() }
+            setSwipeHorizontalOnClickListener { onSwipeForward(true) }
+        }
 
-        // init the recycler view
-        itemAdapter = ItemAdapter()
-        fastAdapter = FastAdapter.with(itemAdapter!!)
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        rvActions!!.apply {
+        // Init the RecyclerView
+        with(binding.bandyerActions) {
+            itemAdapter = ItemAdapter()
+            val fastAdapter = FastAdapter.with(itemAdapter!!)
+            val layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
+
             this.layoutManager = layoutManager
-            this.adapter = fastAdapter
-            this.isFocusable = false
-            this.setHasFixedSize(true)
-        }
+            adapter = fastAdapter
+            isFocusable = false
+            setHasFixedSize(true)
 
-        snapHelper = LinearSnapHelper().apply {
-            attachToRecyclerView(rvActions)
-        }
-
-        rvActions!!.addItemDecoration(
-            MenuProgressIndicator(
-                requireContext(),
-                snapHelper!!
+            addItemDecoration(HorizontalCenterItemDecoration())
+            addItemDecoration(
+                MenuProgressIndicator(
+                    requireContext(),
+                    snapHelper
+                )
             )
-        )
-        rvActions!!.addItemDecoration(HorizontalCenterItemDecoration())
 
-        // pass the root view's touch event to the recycler view
-        root!!.setOnTouchListener { _, event -> rvActions!!.onTouchEvent(event) }
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val foundView = snapHelper.findSnapView(layoutManager) ?: return
+                    actionIndex = layoutManager.getPosition(foundView)
+                }
+            })
 
-        return root!!
+            // Forward the root view's touch event to the recycler view
+            binding.root.setOnTouchListener { _, event -> onTouchEvent(event) }
+        }
+
+        with(binding.bandyerAvatar) {
+            setText(data.name.first().toString())
+            setBackground(data.name.parseToColor())
+
+            when {
+                data.avatarImageId != null -> setImage(data.avatarImageId)
+                data.avatarImageUrl != null -> setImage(data.avatarImageUrl)
+                else -> setImage(null)
+            }
+        }
+
+        binding.bandyerName.text = data.name
+
+        with(binding.bandyerContactStateText) {
+            when (data.userState) {
+                ParticipantData.UserState.INVITED -> setContactState(ParticipantStateTextView.State.INVITED)
+                ParticipantData.UserState.OFFLINE -> setContactState(ParticipantStateTextView.State.LAST_SEEN, data.lastSeenTime)
+                else -> setContactState(ParticipantStateTextView.State.ONLINE)
+            }
+        }
+
+        binding.bandyerContactStateDot.isActivated = data.userState == ParticipantData.UserState.ONLINE
+
+        with(itemAdapter!!) {
+            add(ChatMenuItem(resources.getString(R.string.bandyer_glass_videocall)))
+            add(ChatMenuItem(resources.getString(R.string.bandyer_glass_call)))
+        }
+
+        return binding.root
     }
 
     /**
@@ -103,17 +154,34 @@ abstract class ChatMenuFragment : BaseFragment() {
      */
     override fun onDestroyView() {
         super.onDestroyView()
+        _binding = null
         itemAdapter = null
-        fastAdapter = null
-        binding = null
-        root = null
-        rvActions = null
-        name = null
-        bottomNavigation = null
-        avatar = null
-        contactStateDot = null
-        contactStateText = null
-        snapHelper = null
     }
 
+    override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
+        binding.bandyerActions.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
+
+    override fun onTouch(event: TouchEvent): Boolean = when (event.type) {
+        TouchEvent.Type.SWIPE_DOWN      -> onSwipeDown()
+        TouchEvent.Type.SWIPE_FORWARD   -> onSwipeForward(event.source == TouchEvent.Source.KEY)
+        TouchEvent.Type.SWIPE_BACKWARD  -> onSwipeBackward(event.source == TouchEvent.Source.KEY)
+        else -> super.onTouch(event)
+    }
+
+    private fun onSwipeDown(): Boolean {
+        findNavController().popBackStack()
+        return true
+    }
+
+    private fun onSwipeForward(isKeyEvent: Boolean): Boolean {
+        if (isKeyEvent)
+            binding.bandyerActions.horizontalSmoothScrollToNext(actionIndex)
+        return isKeyEvent
+    }
+
+    private fun onSwipeBackward(isKeyEvent: Boolean): Boolean {
+        if (isKeyEvent)
+            binding.bandyerActions.horizontalSmoothScrollToPrevious(actionIndex)
+        return isKeyEvent
+    }
 }

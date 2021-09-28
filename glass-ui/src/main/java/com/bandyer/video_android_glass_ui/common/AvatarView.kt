@@ -8,7 +8,7 @@ import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import com.bandyer.video_android_core_ui.extensions.ColorIntExtensions.requiresLightColor
-import com.bandyer.video_android_glass_ui.databinding.BandyerContactAvatarLayoutBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassContactAvatarLayoutBinding
 import com.squareup.picasso.Picasso
 import java.util.*
 
@@ -23,8 +23,8 @@ class AvatarView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private val binding: BandyerContactAvatarLayoutBinding =
-        BandyerContactAvatarLayoutBinding.inflate(
+    private val binding: BandyerGlassContactAvatarLayoutBinding =
+        BandyerGlassContactAvatarLayoutBinding.inflate(
             LayoutInflater.from(context), this, true
         )
 

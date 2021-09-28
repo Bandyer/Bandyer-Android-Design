@@ -107,7 +107,7 @@ class MenuFragment : BaseFragment(), TiltController.TiltListener {
                 }
             })
 
-            // pass the root view's touch event to the recycler view
+            // Forward the root view's touch event to the recycler view
             binding.root.setOnTouchListener { _, event -> this.onTouchEvent(event) }
         }
 

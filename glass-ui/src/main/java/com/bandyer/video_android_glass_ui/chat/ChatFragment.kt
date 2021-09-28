@@ -10,14 +10,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.app_design.smartglass.ChatFragmentDirections
 import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.TouchEvent
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassChatMessageLayoutBinding
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatBinding
-import com.bandyer.video_android_glass_ui.menu.MenuItem
 import com.bandyer.video_android_glass_ui.utils.TiltController
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
@@ -96,6 +94,12 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
             false
         )
 
+        // Set OnClickListeners for realwear voice commands
+        with(binding.bandyerBottomNavigation) {
+            setSwipeDownOnClickListener { onSwipeDown() }
+            setSwipeHorizontalOnClickListener { onSwipeForward(true) }
+        }
+
         // Init the RecyclerView
         binding.bandyerMessages.apply {
             itemAdapter = ItemAdapter()
@@ -122,14 +126,8 @@ class ChatFragment : BaseFragment(), TiltController.TiltListener {
                 }
             })
 
-            // pass the root view's touch event to the recycler view
+            // Forward the root view's touch event to the recycler view
             binding.root.setOnTouchListener { _, event -> onTouchEvent(event) }
-        }
-
-        // Set OnClickListeners for realwear voice commands
-        with(binding.bandyerBottomNavigation) {
-            setSwipeHorizontalOnClickListener { onSwipeForward(true) }
-            setSwipeDownOnClickListener { onSwipeDown() }
         }
 
         mockMessages()

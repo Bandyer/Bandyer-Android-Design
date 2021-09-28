@@ -39,14 +39,14 @@
         style="?attr/bandyer_subtitleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/bandyer_participants"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_actions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bandyer_name"
         tools:text="Online" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/bandyer_participants"
+        android:id="@+id/bandyer_actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_navigation"
