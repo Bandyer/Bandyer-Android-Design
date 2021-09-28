@@ -43,8 +43,7 @@ class CallRingingFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onTap() =
-        true.also { findNavController().navigate(R.id.action_ringingFragment_to_emptyFragment) }
+    override fun onTap() = true.also { findNavController().navigate(R.id.action_ringingFragment_to_emptyFragment) }
 
     override fun onSwipeDown() = true.also { requireActivity().finish() }
 

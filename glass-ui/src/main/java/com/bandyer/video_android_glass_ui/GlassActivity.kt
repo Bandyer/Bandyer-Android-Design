@@ -10,6 +10,8 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationData
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
@@ -40,11 +42,19 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
     private lateinit var batteryObserver: BatteryObserver
     private lateinit var wifiObserver: WiFiObserver
 
+    private lateinit var navController: NavController
+
+    private val listener = NavController.OnDestinationChangedListener { controller, destination, arguments ->
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = BandyerActivityGlassBinding.inflate(layoutInflater)
         statusBar = binding.statusBar
         setContentView(binding.root)
+
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment)
 
         enterImmersiveMode()
 
@@ -54,30 +64,6 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
         wifiObserver = WiFiObserver(this)
 
         notificationManager.addListener(this)
-
-        lifecycleScope.launchWhenStarted {
-            batteryObserver.observe().collect {
-                statusBar!!.setBatteryChargingState(it.status == BatteryState.Status.CHARGING)
-                statusBar!!.setBatteryCharge(it.percentage)
-            }
-        }
-
-        lifecycleScope.launchWhenStarted {
-            wifiObserver.observe().collect {
-                statusBar!!.setWiFiSignalState(
-                    if (it.state == WiFiState.State.DISABLED)
-                        StatusBarView.WiFiSignalState.DISABLED
-                    else
-                        when (it.level) {
-                            WiFiState.Level.NO_SIGNAL -> StatusBarView.WiFiSignalState.LOW
-                            WiFiState.Level.POOR -> StatusBarView.WiFiSignalState.LOW
-                            WiFiState.Level.FAIR -> StatusBarView.WiFiSignalState.MODERATE
-                            WiFiState.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
-                            WiFiState.Level.EXCELLENT -> StatusBarView.WiFiSignalState.FULL
-                        }
-                )
-            }
-        }
 
         statusBar!!.hideCenteredTitle()
         statusBar!!.setCenteredText(
@@ -104,10 +90,36 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
     override fun onResume() {
         super.onResume()
         hideSystemUI()
+        navController.addOnDestinationChangedListener(listener)
+
+        lifecycleScope.launchWhenStarted {
+            batteryObserver.observe().collect {
+                statusBar!!.setBatteryChargingState(it.status == BatteryState.Status.CHARGING)
+                statusBar!!.setBatteryCharge(it.percentage)
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            wifiObserver.observe().collect {
+                statusBar!!.setWiFiSignalState(
+                    if (it.state == WiFiState.State.DISABLED)
+                        StatusBarView.WiFiSignalState.DISABLED
+                    else
+                        when (it.level) {
+                            WiFiState.Level.NO_SIGNAL -> StatusBarView.WiFiSignalState.LOW
+                            WiFiState.Level.POOR -> StatusBarView.WiFiSignalState.LOW
+                            WiFiState.Level.FAIR -> StatusBarView.WiFiSignalState.MODERATE
+                            WiFiState.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
+                            WiFiState.Level.EXCELLENT -> StatusBarView.WiFiSignalState.FULL
+                        }
+                )
+            }
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
+        navController.removeOnDestinationChangedListener(listener)
         batteryObserver.stop()
         wifiObserver.stop()
     }
