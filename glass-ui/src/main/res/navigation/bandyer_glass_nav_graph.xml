@@ -68,5 +68,5 @@
         android:id="@+id/participantsFragment"
         android:name="com.bandyer.video_android_glass_ui.call.participants.ParticipantsFragment"
         android:label="ParticipantsFragment"/>
-    <include app:graph="@navigation/smartglass_nav_graph_chat" />
+    <include app:graph="@navigation/bandyer_glass_nav_graph_chat" />
 </navigation>
