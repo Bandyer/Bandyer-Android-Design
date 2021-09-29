@@ -8,6 +8,7 @@ import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentRingingBinding
+import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 
 /**
  * CallRingingFragment
@@ -28,7 +29,7 @@ class CallRingingFragment : BaseFragment() {
         // Add view binding
         _binding = BandyerGlassFragmentRingingBinding
             .inflate(inflater, container, false)
-            .apply { bandyerBottomNavigation.setListenersForRealwear() }
+            .apply { if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }

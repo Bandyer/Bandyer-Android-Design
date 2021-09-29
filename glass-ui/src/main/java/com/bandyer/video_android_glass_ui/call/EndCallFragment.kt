@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenDialogBinding
+import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
@@ -34,7 +35,7 @@ class EndCallFragment : BaseFragment() {
                 container,
                 false
             )
-            .apply { bandyerBottomNavigation.setListenersForRealwear() }
+            .apply { if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }

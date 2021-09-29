@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentZoomBinding
+import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 
 /**
  * ZoomFragment
@@ -32,7 +33,7 @@ class ZoomFragment : TiltFragment() {
         // Add view binding
         _binding = BandyerGlassFragmentZoomBinding
             .inflate(inflater, container, false)
-            .apply { bandyerBottomNavigation.setListenersForRealwear() }
+            .apply { if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }

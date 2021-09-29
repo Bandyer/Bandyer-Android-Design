@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentVolumeBinding
+import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 
 /**
  * VolumeFragment
@@ -32,7 +33,7 @@ class VolumeFragment : TiltFragment() {
         // Add view binding
         _binding = BandyerGlassFragmentVolumeBinding
             .inflate(inflater, container, false)
-            .apply { bandyerBottomNavigation.setListenersForRealwear() }
+            .apply { if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }

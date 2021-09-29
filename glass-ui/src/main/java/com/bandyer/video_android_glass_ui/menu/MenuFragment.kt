@@ -14,6 +14,7 @@ import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentMenuBinding
+import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
@@ -45,7 +46,8 @@ class MenuFragment : TiltFragment() {
         _binding = BandyerGlassFragmentMenuBinding
             .inflate(inflater, container, false)
             .apply {
-                bandyerBottomNavigation.setListenersForRealwear()
+                if(GlassDeviceUtils.isRealWear)
+                    bandyerBottomNavigation.setListenersForRealwear()
 
                 // Init the RecyclerView
                 with(bandyerMenu) {

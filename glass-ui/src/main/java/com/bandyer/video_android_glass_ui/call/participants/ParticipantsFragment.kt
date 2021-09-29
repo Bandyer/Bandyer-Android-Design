@@ -16,6 +16,7 @@ import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressInd
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentParticipantsBinding
 import com.bandyer.video_android_glass_ui.participants.ParticipantData
 import com.bandyer.video_android_glass_ui.participants.ParticipantStateTextView
+import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
@@ -76,7 +77,8 @@ class ParticipantsFragment : TiltFragment() {
         _binding = BandyerGlassFragmentParticipantsBinding
             .inflate(inflater, container, false)
             .apply {
-                bandyerBottomNavigation.setListenersForRealwear()
+                if(GlassDeviceUtils.isRealWear)
+                    bandyerBottomNavigation.setListenersForRealwear()
 
                 // Init the RecyclerView
                 with(bandyerParticipants) {

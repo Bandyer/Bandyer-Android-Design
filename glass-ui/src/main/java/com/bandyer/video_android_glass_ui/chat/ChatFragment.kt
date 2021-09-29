@@ -17,6 +17,7 @@ import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassChatMessageLayoutBinding
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatBinding
 import com.bandyer.video_android_glass_ui.participants.ParticipantData
+import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
@@ -63,7 +64,8 @@ class ChatFragment : TiltFragment() {
         _binding = BandyerGlassFragmentChatBinding
             .inflate(inflater, container, false)
             .apply {
-                bandyerBottomNavigation.setListenersForRealwear()
+                if(GlassDeviceUtils.isRealWear)
+                    bandyerBottomNavigation.setListenersForRealwear()
 
                 // Init the RecyclerView
                 bandyerMessages.apply {
