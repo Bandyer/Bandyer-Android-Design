@@ -14,11 +14,11 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout.Zoom</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Zoom</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeZoom</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.RootLayout">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/bandyer_glass_change</item>
     </style>
@@ -28,11 +28,11 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.Zoom</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Zoom</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownZoom</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/bandyer_glass_cancel</item>
     </style>
@@ -42,11 +42,11 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.Zoom</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.Zoom</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapZoom</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.Zoom" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/bandyer_glass_confirm</item>
     </style>

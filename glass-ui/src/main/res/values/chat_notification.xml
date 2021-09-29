@@ -50,11 +50,11 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.ChatNotification</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.ChatNotification</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownChatNotification</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.RootLayout">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/bandyer_glass_hide_notification</item>
     </style>
@@ -64,11 +64,11 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.ChatNotification</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.ChatNotification</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapChatNotification</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/bandyer_glass_read</item>
     </style>

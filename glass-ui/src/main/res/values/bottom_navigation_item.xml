@@ -9,9 +9,15 @@
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem" parent="BandyerSDKDesign.Glass">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout</item>
         <item name="bandyer_iconStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Icon</item>
         <item name="bandyer_iconTipStyle">@style/BandyerSDKDesign.TextView.GlassIconTip</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout" parent="">
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
     </style>
 
     <!-- GESTURE ICON -->

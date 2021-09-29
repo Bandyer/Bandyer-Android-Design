@@ -45,11 +45,11 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.CallEnded" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.CallEnded</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.CallEnded</item>
         <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapCallEnded</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout.CallEnded" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap.RootLayout">
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.CallEnded" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/bandyer_glass_close</item>
     </style>
