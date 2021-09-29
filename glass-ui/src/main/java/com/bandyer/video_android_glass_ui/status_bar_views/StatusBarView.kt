@@ -11,7 +11,7 @@ import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassStatusBarLayoutBinding
 
 /**
- * A custom status bar view
+ * A custom state bar view
  *
  * @constructor
  */
@@ -79,14 +79,14 @@ class StatusBarView @JvmOverloads constructor(
     private var binding: BandyerGlassStatusBarLayoutBinding = BandyerGlassStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     /**
-     * Hide the status bar
+     * Hide the state bar
      */
     fun hide() {
         visibility = View.GONE
     }
 
     /**
-     * Show the status bar
+     * Show the state bar
      */
     fun show() {
         visibility = View.VISIBLE

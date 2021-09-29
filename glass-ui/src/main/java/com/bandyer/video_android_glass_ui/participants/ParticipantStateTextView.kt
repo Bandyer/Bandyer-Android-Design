@@ -7,7 +7,7 @@ import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.google.android.material.textview.MaterialTextView
 
 /**
- * A TextView defining the user online status
+ * A TextView defining the user online state
  *
  * @constructor
  */
@@ -20,9 +20,9 @@ class ParticipantStateTextView @JvmOverloads constructor(
     private var state: State = State.LAST_SEEN
 
     /**
-     * Define the contact online status
+     * Define the contact online state
      *
-     * @param state The user status
+     * @param state The user state
      * @param lastSeenTime The last time the user was online. Needed only if the state value is State.LastSeen.
      */
     fun setContactState(state: State, lastSeenTime: Long = 0) {

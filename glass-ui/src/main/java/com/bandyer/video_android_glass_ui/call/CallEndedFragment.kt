@@ -18,6 +18,9 @@ class CallEndedFragment : BaseFragment() {
     private var _binding: BandyerGlassFragmentFullScreenDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenDialogBinding get() = _binding!!
 
+    /**
+     * @suppress
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,6 +39,9 @@ class CallEndedFragment : BaseFragment() {
         return binding.root
     }
 
+    /**
+     * @suppress
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

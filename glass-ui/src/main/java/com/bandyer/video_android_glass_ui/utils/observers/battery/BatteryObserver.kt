@@ -10,10 +10,13 @@ import kotlinx.coroutines.flow.*
 import java.lang.ref.WeakReference
 import kotlin.math.roundToInt
 
+/**
+ * Utility class which allows to observe the battery info events
+ */
 class BatteryObserver(context: Context) {
 
     private val weakContext: WeakReference<Context> = WeakReference(context)
-    private val batteryState: MutableSharedFlow<BatteryState> =
+    private val batteryInfo: MutableSharedFlow<BatteryInfo> =
         MutableSharedFlow(onBufferOverflow = BufferOverflow.DROP_OLDEST, replay = 1)
     private val broadcastReceiver: BroadcastReceiver = BatteryReceiver()
 
@@ -21,11 +24,25 @@ class BatteryObserver(context: Context) {
         context.registerReceiver(broadcastReceiver, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
     }
 
-    fun observe(): SharedFlow<BatteryState> = batteryState.asSharedFlow()
+    /**
+     * Call to observe the battery info events
+     *
+     * @return SharedFlow<BatteryInfo>
+     */
+    fun observe(): SharedFlow<BatteryInfo> = batteryInfo.asSharedFlow()
 
-    fun stop() = weakContext.get()?.unregisterReceiver(broadcastReceiver)
+    /**
+     * Stop the observer
+     */
+    fun stop() { weakContext.get()?.unregisterReceiver(broadcastReceiver) }
 
+    /**
+     * A broadcast receiver which handle the battery events
+     */
     inner class BatteryReceiver : BroadcastReceiver() {
+        /**
+         * @suppress
+         */
         override fun onReceive(context: Context?, intent: Intent?) {
             intent ?: return
 
@@ -35,22 +52,22 @@ class BatteryObserver(context: Context) {
             val level: Int = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, defaultValue)
             val scale: Int = intent.getIntExtra(BatteryManager.EXTRA_SCALE, defaultValue)
 
-            batteryState.tryEmit(BatteryState(mapStatus(status), mapPlugged(plugged), computePercentage(level, scale)))
+            batteryInfo.tryEmit(BatteryInfo(mapStatus(status), mapPlugged(plugged), computePercentage(level, scale)))
         }
 
-        private fun mapStatus(status: Int): BatteryState.Status = when (status) {
-            BatteryManager.BATTERY_STATUS_CHARGING -> BatteryState.Status.CHARGING
-            BatteryManager.BATTERY_STATUS_DISCHARGING -> BatteryState.Status.DISCHARGING
-            BatteryManager.BATTERY_STATUS_FULL -> BatteryState.Status.FULL
-            BatteryManager.BATTERY_STATUS_NOT_CHARGING -> BatteryState.Status.NOT_CHARGING
-            else -> BatteryState.Status.UNKNOWN
+        private fun mapStatus(status: Int): BatteryInfo.State = when (status) {
+            BatteryManager.BATTERY_STATUS_CHARGING -> BatteryInfo.State.CHARGING
+            BatteryManager.BATTERY_STATUS_DISCHARGING -> BatteryInfo.State.DISCHARGING
+            BatteryManager.BATTERY_STATUS_FULL -> BatteryInfo.State.FULL
+            BatteryManager.BATTERY_STATUS_NOT_CHARGING -> BatteryInfo.State.NOT_CHARGING
+            else -> BatteryInfo.State.UNKNOWN
         }
 
-        private fun mapPlugged(plugged: Int): BatteryState.Plugged = when (plugged) {
-            BatteryManager.BATTERY_PLUGGED_AC -> BatteryState.Plugged.AC
-            BatteryManager.BATTERY_PLUGGED_USB -> BatteryState.Plugged.USB
-            BatteryManager.BATTERY_PLUGGED_WIRELESS -> BatteryState.Plugged.WIRELESS
-            else -> BatteryState.Plugged.UNKNOWN
+        private fun mapPlugged(plugged: Int): BatteryInfo.PLUGGED = when (plugged) {
+            BatteryManager.BATTERY_PLUGGED_AC -> BatteryInfo.PLUGGED.AC
+            BatteryManager.BATTERY_PLUGGED_USB -> BatteryInfo.PLUGGED.USB
+            BatteryManager.BATTERY_PLUGGED_WIRELESS -> BatteryInfo.PLUGGED.WIRELESS
+            else -> BatteryInfo.PLUGGED.UNKNOWN
         }
 
         private fun computePercentage(level: Int, scale: Int): Int =

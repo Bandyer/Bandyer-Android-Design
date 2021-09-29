@@ -24,6 +24,9 @@ class TiltController constructor(
     private val listener: TiltListener
 ) : SensorEventListener {
 
+    /**
+     * A listener for the tilt events
+     */
     interface TiltListener {
         /**
          * Return the euler angles' degrees changes (azimuth/pitch/roll) around every [SensorManager.SENSOR_DELAY_GAME] Us
@@ -68,6 +71,9 @@ class TiltController constructor(
         requestAllSensors()
     }
 
+    /**
+     * @suppress
+     */
     override fun onSensorChanged(event: SensorEvent) {
         if (accuracy < SensorManager.SENSOR_STATUS_ACCURACY_LOW)
             return
@@ -76,6 +82,9 @@ class TiltController constructor(
             updateRotation(event.values.clone())
     }
 
+    /**
+     * @suppress
+     */
     override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {
         if (this.accuracy != accuracy)
             this.accuracy = accuracy

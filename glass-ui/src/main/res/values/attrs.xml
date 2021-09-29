@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Status bar wifi state -->
+    <!-- State bar wifi state -->
     <attr name="bandyer_state_wifi_disabled" format="boolean" />
     <attr name="bandyer_state_wifi_low" format="boolean" />
     <attr name="bandyer_state_wifi_moderate" format="boolean" />
     <attr name="bandyer_state_wifi_full" format="boolean" />
 
-    <!-- Status bar cell state -->
+    <!-- State bar cell state -->
     <attr name="bandyer_state_cell_missing" format="boolean" />
     <attr name="bandyer_state_cell_low" format="boolean" />
     <attr name="bandyer_state_cell_moderate" format="boolean" />

@@ -10,7 +10,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
@@ -18,11 +17,14 @@ import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
 import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryObserver
-import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryState
+import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryInfo
 import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiObserver
-import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiState
+import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiInfo
 import kotlinx.coroutines.flow.collect
 
+/**
+ * GlassActivity
+ */
 class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener, ChatNotificationManager.NotificationListener, TouchEventListener {
 
     private lateinit var binding: BandyerActivityGlassBinding
@@ -39,7 +41,7 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
     private lateinit var notificationManager: ChatNotificationManager
     private var isNotificationVisible = false
 
-    // Observers status bar UI
+    // Observers state bar UI
     private lateinit var batteryObserver: BatteryObserver
     private lateinit var wifiObserver: WiFiObserver
 
@@ -85,7 +87,7 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
     }
 
     /**
-     *  Handle the status bar UI and the notification when the destination fragment
+     *  Handle the state bar UI and the notification when the destination fragment
      *  on the nav graph is changed.
      *
      *  NavController.OnDestinationChangedListener is not used because the code
@@ -99,7 +101,7 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
             notificationManager.dnd = it
         }
 
-        // Update status bar
+        // Update state bar
         with(binding.statusBar) {
             hideCenteredTitle()
             setBackgroundColor(Color.TRANSPARENT)
@@ -114,12 +116,18 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
     }
 
     // GESTURES AND KEYS EVENTS
+    /**
+     * @suppress
+     */
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         // Dispatch the touch event to the gesture detector
         return if (ev != null && glassGestureDetector.onTouchEvent(ev)) true
         else super.dispatchTouchEvent(ev)
     }
 
+    /**
+     * @suppress
+     */
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
         return if (event?.action == MotionEvent.ACTION_DOWN && handleSmartGlassTouchEvent(TouchEvent.getEvent(event))) true
         else super.dispatchKeyEvent(event)
@@ -195,18 +203,18 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
     private fun StatusBarView.updateCenteredText(nCallParticipants: Int) =
         binding.statusBar.setCenteredText(resources.getString(R.string.bandyer_glass_users_in_call_pattern, nCallParticipants))
 
-    private fun StatusBarView.updateBatteryIcon(batteryState: BatteryState) {
-        setBatteryChargingState(batteryState.status == BatteryState.Status.CHARGING)
-        setBatteryCharge(batteryState.percentage)
+    private fun StatusBarView.updateBatteryIcon(batteryInfo: BatteryInfo) {
+        setBatteryChargingState(batteryInfo.state == BatteryInfo.State.CHARGING)
+        setBatteryCharge(batteryInfo.percentage)
     }
 
-    private fun StatusBarView.updateWifiSignalIcon(wifiState: WiFiState) {
+    private fun StatusBarView.updateWifiSignalIcon(wifiInfo: WiFiInfo) {
         setWiFiSignalState(
-            if (wifiState.state == WiFiState.State.DISABLED) StatusBarView.WiFiSignalState.DISABLED
-            else when (wifiState.level) {
-                WiFiState.Level.NO_SIGNAL, WiFiState.Level.POOR -> StatusBarView.WiFiSignalState.LOW
-                WiFiState.Level.FAIR, WiFiState.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
-                WiFiState.Level.EXCELLENT -> StatusBarView.WiFiSignalState.FULL
+            if (wifiInfo.state == WiFiInfo.State.DISABLED) StatusBarView.WiFiSignalState.DISABLED
+            else when (wifiInfo.level) {
+                WiFiInfo.Level.NO_SIGNAL, WiFiInfo.Level.POOR -> StatusBarView.WiFiSignalState.LOW
+                WiFiInfo.Level.FAIR, WiFiInfo.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
+                WiFiInfo.Level.EXCELLENT -> StatusBarView.WiFiSignalState.FULL
             }
         )
     }

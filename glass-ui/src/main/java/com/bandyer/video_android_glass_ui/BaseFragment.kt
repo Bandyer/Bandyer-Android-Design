@@ -58,6 +58,9 @@ abstract class BaseFragment : Fragment(), TouchEventListener, ChatNotificationMa
      */
     protected abstract fun onSwipeBackward(isKeyEvent: Boolean): Boolean
 
+    /**
+     * @suppress
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -68,6 +71,9 @@ abstract class BaseFragment : Fragment(), TouchEventListener, ChatNotificationMa
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
+    /**
+     * @suppress
+     */
     override fun onDestroyView() {
         super.onDestroyView()
         activity.removeNotificationListener(this)

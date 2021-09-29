@@ -13,10 +13,13 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import java.lang.ref.WeakReference
 
+/**
+ * Utility class which allows to observe the WiFi info events
+ */
 class WiFiObserver @RequiresPermission(ACCESS_WIFI_STATE) constructor(context: Context) {
 
     private val weakContext: WeakReference<Context> = WeakReference(context)
-    private val wifiState: MutableSharedFlow<WiFiState> =
+    private val wifiInfo: MutableSharedFlow<WiFiInfo> =
         MutableSharedFlow(onBufferOverflow = BufferOverflow.DROP_OLDEST, replay = 1)
     private val wifiManager = context.applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
     private val intentFilter = IntentFilter().apply {
@@ -29,28 +32,42 @@ class WiFiObserver @RequiresPermission(ACCESS_WIFI_STATE) constructor(context: C
         context.registerReceiver(broadcastReceiver, intentFilter)
     }
 
-    fun observe(): SharedFlow<WiFiState> = wifiState.asSharedFlow()
+    /**
+     * Call to observe the wifi info events
+     *
+     * @return SharedFlow<WiFiInfo>
+     */
+    fun observe(): SharedFlow<WiFiInfo> = wifiInfo.asSharedFlow()
 
+    /**
+     * Stop the observer
+     */
     fun stop() = weakContext.get()?.unregisterReceiver(broadcastReceiver)
 
+    /**
+     * A broadcast receiver which handle the WiFi events
+     */
     inner class WiFiReceiver : BroadcastReceiver() {
-        var state = WifiManager.WIFI_STATE_UNKNOWN
+        private var state = WifiManager.WIFI_STATE_UNKNOWN
 
+        /**
+         * @suppress
+         */
         override fun onReceive(context: Context?, intent: Intent?) {
             intent ?: return
             if(intent.action == WifiManager.WIFI_STATE_CHANGED_ACTION)
                 state = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, WifiManager.WIFI_STATE_UNKNOWN)
 
             val rssi = wifiManager.connectionInfo.rssi
-            wifiState.tryEmit(WiFiState(mapState(state), WiFiState.Level.getValue(rssi)))
+            wifiInfo.tryEmit(WiFiInfo(mapState(state), WiFiInfo.Level.getValue(rssi)))
         }
 
-        private fun mapState(state: Int): WiFiState.State = when (state) {
-            WifiManager.WIFI_STATE_ENABLING -> WiFiState.State.ENABLING
-            WifiManager.WIFI_STATE_ENABLED -> WiFiState.State.ENABLED
-            WifiManager.WIFI_STATE_DISABLING -> WiFiState.State.DISABLING
-            WifiManager.WIFI_STATE_DISABLED -> WiFiState.State.DISABLED
-            else -> WiFiState.State.UNKNOWN
+        private fun mapState(state: Int): WiFiInfo.State = when (state) {
+            WifiManager.WIFI_STATE_ENABLING -> WiFiInfo.State.ENABLING
+            WifiManager.WIFI_STATE_ENABLED -> WiFiInfo.State.ENABLED
+            WifiManager.WIFI_STATE_DISABLING -> WiFiInfo.State.DISABLING
+            WifiManager.WIFI_STATE_DISABLED -> WiFiInfo.State.DISABLED
+            else -> WiFiInfo.State.UNKNOWN
         }
     }
 }

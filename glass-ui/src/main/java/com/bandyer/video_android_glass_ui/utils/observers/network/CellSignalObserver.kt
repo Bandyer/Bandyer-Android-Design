@@ -12,9 +12,10 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
-class CellSignalObserver @RequiresApi(Build.VERSION_CODES.M) constructor(
-    context: Context
-) {
+/**
+ * Utility class which allows to observe the cell signal state
+ */
+class CellSignalObserver @RequiresApi(Build.VERSION_CODES.M) constructor(context: Context) {
 
     private val signalState: MutableSharedFlow<SignalState> =
         MutableSharedFlow(onBufferOverflow = BufferOverflow.DROP_OLDEST, replay = 1)
@@ -41,7 +42,15 @@ class CellSignalObserver @RequiresApi(Build.VERSION_CODES.M) constructor(
         telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS)
     }
 
+    /**
+     * Call to observe the cell signal events
+     *
+     * @return SharedFlow<SignalState>
+     */
     fun observe(): SharedFlow<SignalState> = signalState.asSharedFlow()
 
+    /**
+     * Stop the observer
+     */
     fun stop() = telephonyManager.listen(phoneStateListener, PhoneStateListener.LISTEN_NONE)
 }

@@ -8,6 +8,9 @@ import kotlinx.coroutines.flow.*
 import java.net.HttpURLConnection
 import java.net.URL
 
+/**
+ * Utility class which allows to observe the internet state. It tells if there is actually internet connection.
+ */
 class InternetObserver @RequiresPermission(Manifest.permission.INTERNET) constructor(private val intervalInMs: Long) {
 
     private val isConnectedFlow: MutableSharedFlow<Boolean> =
@@ -19,8 +22,16 @@ class InternetObserver @RequiresPermission(Manifest.permission.INTERNET) constru
         }
     }
 
+    /**
+     * Call to observe the internet state. It returns true if internet is reachable, false otherwise
+     *
+     * @return SharedFlow<Boolean>
+     */
     fun observe(): Flow<Boolean> = isConnectedFlow.distinctUntilChanged()
 
+    /**
+     * Stop the observer
+     */
     fun stop() = job.cancel()
 
     private fun isConnected(): Boolean {
@@ -41,9 +52,9 @@ class InternetObserver @RequiresPermission(Manifest.permission.INTERNET) constru
             useCaches = false
         }
 
-    companion object {
-        private const val HOST = "https://clients3.google.com/generate_204"
-        private const val CONNECT_TIMEOUT = 10000
-        private const val READ_TIMEOUT = 10000
+    private companion object {
+        const val HOST = "https://clients3.google.com/generate_204"
+        const val CONNECT_TIMEOUT = 10000
+        const val READ_TIMEOUT = 10000
     }
 }
