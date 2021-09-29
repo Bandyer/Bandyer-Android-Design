@@ -40,16 +40,6 @@ class ChatMenuFragment : TiltFragment() {
 
     private var actionIndex = 0
 
-    override fun onResume() {
-        super.onResume()
-        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_glass_background_color, null))
-    }
-
-    override fun onStop() {
-        super.onStop()
-        activity.setStatusBarColor(null)
-    }
-
     /**
      * @suppress
      */

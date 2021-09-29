@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenDialogBinding
@@ -18,23 +17,12 @@ class CallEndedFragment : BaseFragment() {
     private var _binding: BandyerGlassFragmentFullScreenDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenDialogBinding get() = _binding!!
 
-    override fun onResume() {
-        super.onResume()
-        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_glass_background_color, null))
-    }
-
-    override fun onStop() {
-        super.onStop()
-        activity.setStatusBarColor(null)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        activity.showStatusBar()
 
         // Apply theme wrapper and add view binding
         val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_callEndedStyle)

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassStatusBarLayoutBinding
 
@@ -78,13 +79,17 @@ class StatusBarView @JvmOverloads constructor(
     private var binding: BandyerGlassStatusBarLayoutBinding = BandyerGlassStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     /**
-     * Set the background color
-     *
-     * @param color The color. If it's null, the default background color is restored.
+     * Hide the status bar
      */
-    fun setBackgroundColor(@ColorInt color: Int?) = with(binding.root) {
-        if(color == null) setBackgroundResource(R.drawable.bandyer_glass_status_bar_gradient)
-        else setBackgroundColor(color)
+    fun hide() {
+        visibility = View.GONE
+    }
+
+    /**
+     * Show the status bar
+     */
+    fun show() {
+        visibility = View.VISIBLE
     }
 
     /**

@@ -26,8 +26,6 @@ class EndCallFragment : BaseFragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        activity.hideStatusBar()
-
         // Apply theme wrapper and add view binding
         val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_endCallStyle)
         _binding = BandyerGlassFragmentFullScreenDialogBinding
@@ -46,8 +44,7 @@ class EndCallFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onTap() =
-        true.also { findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment) }
+    override fun onTap() = true.also { findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment) }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 

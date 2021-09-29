@@ -5,14 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
-import com.bandyer.video_android_glass_ui.GlassActivity
-import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
@@ -64,18 +61,6 @@ class ParticipantsFragment : TiltFragment() {
             Instant.now().toEpochMilli()
         )
     )
-
-    override fun onResume() {
-        super.onResume()
-        activity.showStatusBarCenteredTitle()
-        activity.setStatusBarColor(ResourcesCompat.getColor(resources, R.color.bandyer_glass_background_color, null))
-    }
-
-    override fun onStop() {
-        super.onStop()
-        activity.hideStatusBarCenteredTitle()
-        activity.setStatusBarColor(null)
-    }
 
     /**
      * @suppress

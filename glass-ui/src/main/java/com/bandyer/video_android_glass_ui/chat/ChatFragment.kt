@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
 import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.TiltFragment
@@ -48,22 +49,6 @@ class ChatFragment : TiltFragment() {
     private var lastMsgIndex = 0
     private var pagesIds = arrayListOf<String>()
 
-    override fun onResume() {
-        super.onResume()
-        activity.setStatusBarColor(
-            ResourcesCompat.getColor(
-                resources,
-                R.color.bandyer_glass_background_color,
-                null
-            )
-        )
-    }
-
-    override fun onPause() {
-        super.onPause()
-        activity.setStatusBarColor(null)
-    }
-
     /**
      * @suppress
      */
@@ -73,10 +58,6 @@ class ChatFragment : TiltFragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-
-        activity.showStatusBar()
-        activity.hideNotification()
-        activity.setDnd(true)
 
         // Add view binding
         _binding = BandyerGlassFragmentChatBinding
@@ -129,9 +110,10 @@ class ChatFragment : TiltFragment() {
         _binding = null
         itemAdapter = null
 //        newMessagesCounter = 0
-        activity.setDnd(false)
         pagesIds = arrayListOf()
     }
+
+    override fun onShow() = Unit
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
         binding.bandyerMessages.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)

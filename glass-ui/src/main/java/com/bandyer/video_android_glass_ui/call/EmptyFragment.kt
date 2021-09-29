@@ -25,7 +25,6 @@ class EmptyFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        activity.showStatusBar()
 
         // Add view binding
         _binding = BandyerGlassFragmentEmptyBinding

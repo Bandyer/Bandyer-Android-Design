@@ -25,8 +25,6 @@ class CallRingingFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-        activity.hideStatusBar()
-
         // Add view binding
         _binding = BandyerGlassFragmentRingingBinding
             .inflate(inflater, container, false)

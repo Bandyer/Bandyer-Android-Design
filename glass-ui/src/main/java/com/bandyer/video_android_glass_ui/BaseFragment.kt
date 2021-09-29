@@ -18,7 +18,7 @@ abstract class BaseFragment : Fragment(), TouchEventListener, ChatNotificationMa
     /**
      * The [GlassActivity]
      */
-    protected val activity by lazy { requireActivity() as GlassActivity }
+    private val activity by lazy { requireActivity() as GlassActivity }
 
     /**
      * The fragment's view binding

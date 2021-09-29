@@ -95,6 +95,8 @@ class MenuFragment : TiltFragment() {
         itemAdapter = null
     }
 
+    override fun onDismiss() = Unit
+
     override fun onTap() = when (currentMenuItemIndex) {
         0, 1 -> {
             val isActivated = itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated
