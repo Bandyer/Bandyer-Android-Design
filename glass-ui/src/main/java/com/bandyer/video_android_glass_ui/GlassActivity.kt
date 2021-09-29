@@ -23,7 +23,7 @@ import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiObserver
 import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiState
 import kotlinx.coroutines.flow.collect
 
-class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener, ChatNotificationManager.NotificationListener, TouchEventListener, NavController.OnDestinationChangedListener {
+class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener, ChatNotificationManager.NotificationListener, TouchEventListener {
 
     private lateinit var binding: BandyerActivityGlassBinding
     private lateinit var decorView: View
@@ -76,12 +76,6 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
     override fun onResume() {
         super.onResume()
         hideSystemUI()
-        navController.addOnDestinationChangedListener(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        navController.removeOnDestinationChangedListener(this)
     }
 
     override fun onStop() {
@@ -90,13 +84,17 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
         wifiObserver.stop()
     }
 
-    // NAV GRAPH DESTINATION LISTENER
-    override fun onDestinationChanged(
-        controller: NavController,
-        destination: NavDestination,
-        arguments: Bundle?
-    ) {
-        (destination.id == R.id.chatFragment).also {
+    /**
+     *  Handle the status bar UI and the notification when the destination fragment
+     *  on the nav graph is changed.
+     *
+     *  NavController.OnDestinationChangedListener is not used because the code
+     *  need to be executed when the fragment is actually being created.
+     *
+     *  @param destinationId The destination fragment's id
+     */
+    fun onDestinationChanged(destinationId: Int) {
+        (destinationId == R.id.chatFragment).also {
             if(it) notificationManager.dismiss(false)
             notificationManager.dnd = it
         }
@@ -107,7 +105,7 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
             setBackgroundColor(Color.TRANSPARENT)
             show()
 
-            when (destination.id) {
+            when (destinationId) {
                 R.id.ringingFragment, R.id.endCallFragment, R.id.callEndedFragment -> hide()
                 R.id.callEndedFragment, R.id.chatFragment, R.id.chatMenuFragment -> applyFlatTint()
                 R.id.participantsFragment -> { applyFlatTint(); showCenteredTitle() }
