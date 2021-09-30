@@ -108,7 +108,7 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
             show()
 
             when (destinationId) {
-                R.id.ringingFragment, R.id.endCallFragment, R.id.callEndedFragment -> hide()
+                R.id.ringingFragment, R.id.dialingFragment, R.id.connectingFragment, R.id.endCallFragment, R.id.callEndedFragment -> hide()
                 R.id.callEndedFragment, R.id.chatFragment, R.id.chatMenuFragment -> applyFlatTint()
                 R.id.participantsFragment -> { applyFlatTint(); showCenteredTitle() }
             }

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- FULL SCREEN LOGO DIALOG FRAGMENT -->
+    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialogStyle" parent="BandyerSDKDesign.Glass">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.RootLayout</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenLogoDialog</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.RootLayout" parent="">
+        <item name="android:background">@color/bandyer_glass_background_color</item>
+    </style>
+
+    <!-- TITLE -->
+    <style name="BandyerSDKDesign.TextView.Title.FullScreenLogoDialog" parent="BandyerSDKDesign.TextView.Title">
+        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- SUBTITLE -->
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog" parent="BandyerSDKDesign.TextView.Subtitle">
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
+        <item name="android:textColor">@color/bandyer_color_white_80</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomNavigation">
+        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog</item>
+        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog</item>
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/bandyer_glass_decline</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_decline</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.FullScreenLogoDialog</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapFullScreenLogoDialog</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/bandyer_glass_accept</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.GlassLabel.TapFullScreenLogoDialog" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_accept</item>
+    </style>
+</resources>

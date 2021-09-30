@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- CONNECTING FRAGMENT -->
+    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Connecting" parent="BandyerSDKDesign.Glass.FullScreenLogoDialogStyle">
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialogStyle.Connecting</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Connecting</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialogStyle.Connecting" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog">
+        <item name="android:text">@string/bandyer_glass_connecting</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Connecting" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog">
+        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Connecting</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Connecting" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog">
+        <item name="android:visibility">gone</item>
+    </style>
+</resources>

@@ -1,22 +1,20 @@
 package com.bandyer.video_android_glass_ui.call
 
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentRingingBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
+import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
-/**
- * CallRingingFragment
- */
-class CallRingingFragment : BaseFragment() {
+class DialingFragment : BaseFragment() {
 
-    private var _binding: BandyerGlassFragmentRingingBinding? = null
-    override val binding: BandyerGlassFragmentRingingBinding get() = _binding!!
+    private var _binding: BandyerGlassFragmentFullScreenLogoDialogBinding? = null
+    override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
 
     /**
      * @suppress
@@ -27,9 +25,14 @@ class CallRingingFragment : BaseFragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
         // Add view binding
-        _binding = BandyerGlassFragmentRingingBinding
-            .inflate(inflater, container, false)
-            .apply { if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
+        val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_dialingStyle)
+        _binding = BandyerGlassFragmentFullScreenLogoDialogBinding
+            .inflate(
+                inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
+                container,
+                false
+            )
+            .apply { if (GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }
@@ -42,7 +45,7 @@ class CallRingingFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onTap() = true.also { findNavController().navigate(R.id.action_ringingFragment_to_emptyFragment) }
+    override fun onTap() = false
 
     override fun onSwipeDown() = true.also { requireActivity().finish() }
 

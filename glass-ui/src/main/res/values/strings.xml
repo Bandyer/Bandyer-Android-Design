@@ -18,7 +18,9 @@
     <string name="bandyer_glass_hangup">hang up</string>
     <string name="bandyer_glass_volume">Volume</string>
     <string name="bandyer_glass_zoom">Zoom</string>
-    <string name="bandyer_glass_is_calling">is calling…</string>
+    <string name="bandyer_glass_ringing">is calling…</string>
+    <string name="bandyer_glass_dialing">dialing…</string>
+    <string name="bandyer_glass_connecting">connecting…</string>
     <string name="bandyer_glass_want_end_call">End the call?</string>
     <string name="bandyer_glass_confirm_end_call">Do you confirm to end the conversation?</string>
     <string name="bandyer_glass_call_ended">Call ended</string>
