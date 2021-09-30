@@ -2,7 +2,7 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Glass.Empty">
         <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bottomNavigationStyle" format="reference" />
+        <attr name="bottomNavigationStyle"/>
     </declare-styleable>
 
     <!-- EMPTY FRAGMENT -->

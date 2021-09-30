@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="BandyerSDKDesign.Glass"  parent="BandyerSDKDesign"/>
+
+    <style name="BandyerSDKDesign.Glass.DarkBackground"  parent="BandyerSDKDesign.Glass">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.DarkBackground.RootLayout</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.DarkBackground.RootLayout" parent="">
+        <item name="android:background">@color/bandyer_glass_background_color</item>
+    </style>
 </resources>

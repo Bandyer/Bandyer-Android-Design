@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.FullScreenDialog.CallEnded">
+    <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.CallEnded">
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_subtitleStyle" format="reference" />
-        <attr name="bottomNavigationStyle" format="reference" />
+        <attr name="bandyer_subtitleStyle" />
+        <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- CALL ENDED FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.FullScreenDialog.CallEnded" parent="BandyerSDKDesign.Glass.FullScreenDialog">
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.CallEnded" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog">
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.CallEnded</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.CallEnded</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.CallEnded</item>

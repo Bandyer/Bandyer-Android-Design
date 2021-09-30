@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.Participants">
+    <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.Participants">
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_userInfoStyle" />
         <attr name="recyclerViewStyle" />
@@ -9,16 +9,11 @@
     </declare-styleable>
 
     <!-- PARTICIPANTS FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.Participants" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.Participants.RootLayout</item>
+    <style name="BandyerSDKDesign.Glass.DarkBackground.Participants" parent="BandyerSDKDesign.Glass.DarkBackground">
         <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.Glass.UserInfo</item>
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Participants</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.Participants.RootLayout" parent="">
-        <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.FullScreenLogoDialog.Ringing">
+    <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing">
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_subtitleStyle" />
     </declare-styleable>
 
     <!-- RINGING FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.FullScreenLogoDialog">
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Ringing</item>
     </style>
 

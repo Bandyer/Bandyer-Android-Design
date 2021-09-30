@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.ChatMenu">
+    <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.ChatMenu">
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_userInfoStyle" />
         <attr name="recyclerViewStyle" />
@@ -9,16 +9,11 @@
     </declare-styleable>
 
     <!-- CONTACT DETAILS FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.ChatMenu" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.ChatMenu.RootLayout</item>
+    <style name="BandyerSDKDesign.Glass.DarkBackground.ChatMenu" parent="BandyerSDKDesign.Glass.DarkBackground">
         <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.Glass.UserInfo</item>
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.ChatMenu</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.ChatMenu.RootLayout" parent="">
-        <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->

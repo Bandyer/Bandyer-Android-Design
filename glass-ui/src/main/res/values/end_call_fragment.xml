@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.FullScreenDialog.EndCall">
+    <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.EndCall">
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_titleStyle" />
         <attr name="bandyer_subtitleStyle" />
@@ -8,7 +8,7 @@
     </declare-styleable>
 
     <!-- END CALL FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.FullScreenDialog.EndCall" parent="BandyerSDKDesign.Glass.FullScreenDialog">
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.EndCall" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog">
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.EndCall</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.EndCall</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.EndCall</item>

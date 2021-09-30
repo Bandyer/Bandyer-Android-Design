@@ -10,7 +10,7 @@
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem</item>
         <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.CounterGlassChat</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Chat</item>
-        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ChatMenu</item>
+        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.DarkBackground.ChatMenu</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Day.GlassChat" parent="BandyerSDKDesign.Theme.Day">
@@ -18,7 +18,7 @@
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem</item>
         <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.CounterGlassChat</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Chat</item>
-        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ChatMenu</item>
+        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.DarkBackground.ChatMenu</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Night.GlassChat" parent="BandyerSDKDesign.Theme.Night">
@@ -26,7 +26,7 @@
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem</item>
         <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.CounterGlassChat</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Chat</item>
-        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.ChatMenu</item>
+        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.DarkBackground.ChatMenu</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.GlassChat" parent="BandyerSDKDesign.Theme.DayNight.GlassChat"/>

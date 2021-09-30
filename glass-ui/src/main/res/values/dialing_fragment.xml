@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.FullScreenLogoDialog.Dialing">
+    <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Dialing">
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_subtitleStyle" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- DIALING FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialog.Dialing" parent="BandyerSDKDesign.Glass.FullScreenLogoDialog">
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Dialing" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Dialing</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Dialing</item>
     </style>

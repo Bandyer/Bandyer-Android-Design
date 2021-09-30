@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.FullScreenLogoDialog">
+    <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog">
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_titleStyle" />
         <attr name="bandyer_subtitleStyle" />
@@ -8,15 +8,10 @@
     </declare-styleable>
 
     <!-- FULL SCREEN DIALOG FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.FullScreenDialog" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.FullScreenDialog.RootLayout</item>
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog" parent="BandyerSDKDesign.Glass.DarkBackground">
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.FullScreenDialog.RootLayout" parent="">
-        <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
     <!-- TITLE -->
