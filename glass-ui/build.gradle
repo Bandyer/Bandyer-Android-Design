@@ -59,10 +59,10 @@ android {
         jdkHome = compiler.get().metadata.installationPath.asFile.absolutePath
     }
 
-    dataBinding {
-        enabled true
+    buildFeatures {
+        dataBinding true
     }
-
+    
     aaptOptions.cruncherEnabled = false
 }
 
