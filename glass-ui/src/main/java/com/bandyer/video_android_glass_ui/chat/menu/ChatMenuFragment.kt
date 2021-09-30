@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.TiltFragment
+import com.bandyer.video_android_glass_ui.common.UserState
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatMenuBinding
@@ -91,28 +91,8 @@ class ChatMenuFragment : TiltFragment() {
                 root.setOnTouchListener { _, event -> onTouchEvent(event) }
             }
 
-            with(bandyerAvatar) {
-                setText(data.name.first().toString())
-                setBackground(data.name.parseToColor())
-
-                when {
-                    data.avatarImageId != null -> setImage(data.avatarImageId)
-                    data.avatarImageUrl != null -> setImage(data.avatarImageUrl)
-                    else -> setImage(null)
-                }
-            }
-
-            bandyerName.text = data.name
-
-            with(bandyerContactStateText) {
-                when (data.userState) {
-                    ParticipantData.UserState.INVITED -> setContactState(ParticipantStateTextView.State.INVITED)
-                    ParticipantData.UserState.OFFLINE -> setContactState(ParticipantStateTextView.State.LAST_SEEN, data.lastSeenTime)
-                    else -> setContactState(ParticipantStateTextView.State.ONLINE)
-                }
-            }
-
-            bandyerContactStateDot.isActivated = data.userState == ParticipantData.UserState.ONLINE
+            // TODO ricordarsi di settare nel data binding i dati degli utenti
+            // TODO Mettere modello User con name, avatar, state
         }
 
         with(itemAdapter!!) {

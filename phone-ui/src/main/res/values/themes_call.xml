@@ -25,7 +25,7 @@
         <attr name="bandyer_answerHelperTextStyle" format="reference" />
         <attr name="bandyer_livePointerStyle" format="reference" />
 
-        <attr name="bandyer_userInfoStyle" format="reference" />
+        <attr name="bandyer_userInfoStyle" />
         <attr name="bandyer_callInfoStyle" format="reference" />
         <attr name="bandyer_userStatusStyle" format="reference"/>
 

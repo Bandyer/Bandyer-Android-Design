@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.bandyer.video_android_glass_ui.common.AvatarView
+            android:id="@+id/bandyer_avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="?attr/bandyer_avatarStyle" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/bandyer_user_state_dot"
+            style="?attr/bandyer_contactStateDotStyle" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/bandyer_name"
+            style="?attr/bandyer_titleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Gianmarco" />
+
+        <com.bandyer.video_android_glass_ui.participants.ParticipantStateTextView
+            android:id="@+id/bandyer_user_state_text"
+            style="?attr/bandyer_subtitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Online" />
+
+    </LinearLayout>
+</layout>

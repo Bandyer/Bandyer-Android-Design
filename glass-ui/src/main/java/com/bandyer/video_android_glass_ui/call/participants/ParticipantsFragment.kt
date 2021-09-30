@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.TiltFragment
+import com.bandyer.video_android_glass_ui.common.UserState
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentParticipantsBinding
@@ -35,33 +36,6 @@ class ParticipantsFragment : TiltFragment() {
     private var itemAdapter: ItemAdapter<CallParticipantItem>? = null
 
     private var currentParticipantIndex = -1
-
-    private var participantsData: List<ParticipantData> = listOf(
-        ParticipantData(
-            "Mario Rossi",
-            "Mario Rossi",
-            ParticipantData.UserState.ONLINE,
-            null,
-            null,
-            Instant.now().toEpochMilli()
-        ),
-        ParticipantData(
-            "Felice Trapasso",
-            "Felice Trapasso",
-            ParticipantData.UserState.OFFLINE,
-            null,
-            "https://i.imgur.com/9I2qAlW.jpeg",
-            Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
-        ),
-        ParticipantData(
-            "Francesco Sala",
-            "Francesco Sala",
-            ParticipantData.UserState.INVITED,
-            null,
-            null,
-            Instant.now().toEpochMilli()
-        )
-    )
 
     /**
      * @suppress
@@ -100,36 +74,8 @@ class ParticipantsFragment : TiltFragment() {
                             val foundView = snapHelper.findSnapView(layoutManager) ?: return
                             currentParticipantIndex = layoutManager.getPosition(foundView)
 
-                            val data = participantsData[currentParticipantIndex]
-
-                            with(bandyerAvatar) {
-                                setText(data.name.first().toString())
-                                setBackground(data.userAlias.parseToColor())
-
-                                when {
-                                    data.avatarImageId != null -> setImage(data.avatarImageId)
-                                    data.avatarImageUrl != null -> setImage(data.avatarImageUrl)
-                                    else -> setImage(null)
-                                }
-                            }
-
-                            bandyerContactStateDot.isActivated =
-                                data.userState == ParticipantData.UserState.ONLINE
-
-                            with(bandyerContactStateText) {
-                                when (data.userState) {
-                                    ParticipantData.UserState.INVITED -> setContactState(
-                                        ParticipantStateTextView.State.INVITED
-                                    )
-                                    ParticipantData.UserState.OFFLINE -> setContactState(
-                                        ParticipantStateTextView.State.LAST_SEEN,
-                                        data.lastSeenTime
-                                    )
-                                    ParticipantData.UserState.ONLINE -> setContactState(
-                                        ParticipantStateTextView.State.ONLINE
-                                    )
-                                }
-                            }
+                            // TODO ricordarsi di settare nel data binding i dati degli utenti
+                            // TODO Mettere modello User con name, avatar, state
                         }
                     })
 
@@ -137,10 +83,6 @@ class ParticipantsFragment : TiltFragment() {
                     root.setOnTouchListener { _, event -> onTouchEvent(event) }
                 }
             }
-
-        participantsData.forEach {
-            itemAdapter!!.add(CallParticipantItem(it.userAlias))
-        }
 
         return binding.root
     }

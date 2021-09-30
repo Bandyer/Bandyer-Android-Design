@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BandyerSDKDesign.Glass.UserInfo">
+        <attr name="bandyer_avatarStyle" />
+        <attr name="bandyer_titleStyle" />
+        <attr name="bandyer_subtitleStyle" />
+        <attr name="bandyer_contactStateDotStyle" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.Glass.UserInfo" parent="BandyerSDKDesign.Glass">
+        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.UserInfo</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.GlassUserInfo</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.SubTitle.GlassUserInfo</item>
+        <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.RoundedImageGlass.StateUserInfo</item>
+    </style>
+
+    <!-- AVATAR -->
+    <style name="BandyerSDKDesign.Glass.Avatar.UserInfo" parent="BandyerSDKDesign.Glass.Avatar">
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.RoundedImageGlass.UserInfoAvatar</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatar.UserInfo</item>
+    </style>
+
+    <style name="BandyerSDKDesign.RoundedImageGlass.UserInfoAvatar" parent="BandyerSDKDesign.RoundedImageGlass">
+        <item name="android:layout_width">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
+        <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Title.GlassAvatar.UserInfo" parent="BandyerSDKDesign.TextView.Title.GlassAvatar">
+        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_40sp</item>
+    </style>
+
+    <!-- CONTACT STATE DOT -->
+    <style name="BandyerSDKDesign.RoundedImageGlass.StateUserInfo" parent="BandyerSDKDesign.RoundedImageGlass">
+        <item name="android:layout_width">@dimen/bandyer_dimen_space28</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space28</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="android:backgroundTint">@color/bandyer_glass_color_contact_state</item>
+        <item name="strokeColor">@android:color/white</item>
+    </style>
+
+    <!-- NAME -->
+    <style name="BandyerSDKDesign.TextView.Title.GlassUserInfo" parent="BandyerSDKDesign.TextView.Title">
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+    </style>
+
+    <!-- CONTACT STATE TEXT -->
+    <style name="BandyerSDKDesign.TextView.SubTitle.GlassUserInfo" parent="BandyerSDKDesign.TextView.Subtitle">
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
+    </style>
+</resources>

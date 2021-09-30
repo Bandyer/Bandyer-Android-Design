@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BandyerSDKDesign.Glass.Participants">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_userInfoStyle" />
+        <attr name="recyclerViewStyle" />
+        <attr name="bandyer_recyclerViewItemStyle" />
+        <attr name="bottomNavigationStyle" />
+    </declare-styleable>
+
     <!-- PARTICIPANTS FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.Participants" parent="BandyerSDKDesign.Glass">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.Participants.RootLayout</item>
-        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.Participants</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.StateGlassParticipants</item>
-        <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.RoundedImageGlass.ParticipantsState</item>
+        <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.Glass.UserInfo</item>
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Participants</item>
@@ -13,38 +19,6 @@
 
     <style name="BandyerSDKDesign.Glass.Participants.RootLayout" parent="">
         <item name="android:background">@color/bandyer_glass_background_color</item>
-    </style>
-
-    <!-- AVATAR -->
-    <style name="BandyerSDKDesign.Glass.Avatar.Participants" parent="BandyerSDKDesign.Glass.Avatar">
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.RoundedImageGlass.ParticipantsAvatar</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatars.Participants</item>
-    </style>
-
-    <style name="BandyerSDKDesign.RoundedImageGlass.ParticipantsAvatar" parent="BandyerSDKDesign.RoundedImageGlass">
-        <item name="android:layout_width">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
-        <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
-    </style>
-
-    <style name="BandyerSDKDesign.TextView.Title.GlassAvatars.Participants" parent="BandyerSDKDesign.TextView.Title.GlassAvatar">
-        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_40sp</item>
-    </style>
-
-    <!-- CONTACT STATE DOT -->
-    <style name="BandyerSDKDesign.RoundedImageGlass.ParticipantsState" parent="BandyerSDKDesign.RoundedImageGlass">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space28</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space28</item>
-        <item name="android:background">@android:color/white</item>
-        <item name="android:backgroundTint">@color/bandyer_glass_color_contact_state</item>
-        <item name="strokeColor">@android:color/white</item>
-    </style>
-
-    <!-- CONTACT STATE TEXT -->
-    <style name="BandyerSDKDesign.TextView.StateGlassParticipants" parent="BandyerSDKDesign.TextView">
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->

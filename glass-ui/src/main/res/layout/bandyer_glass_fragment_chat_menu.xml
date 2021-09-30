@@ -8,44 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.bandyer.video_android_glass_ui.common.AvatarView
-            android:id="@+id/bandyer_avatar"
+        <com.bandyer.video_android_glass_ui.common.UserInfoView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="?attr/bandyer_avatarStyle"
-            app:layout_constraintBottom_toTopOf="@id/bandyer_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:theme="?attr/bandyer_userInfoStyle"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/bandyer_contact_state_dot"
-            style="?attr/bandyer_contactStateDotStyle"
-            app:layout_constraintEnd_toEndOf="@id/bandyer_avatar"
-            app:layout_constraintTop_toTopOf="@id/bandyer_avatar" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/bandyer_name"
-            style="?attr/bandyer_titleStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/bandyer_contact_state_text"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bandyer_avatar"
-            app:layout_constraintVertical_chainStyle="packed" />
-
-        <com.bandyer.video_android_glass_ui.participants.ParticipantStateTextView
-            android:id="@+id/bandyer_contact_state_text"
-            style="?attr/bandyer_subtitleStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/bandyer_actions"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bandyer_name"
-            tools:text="Online" />
+            app:layout_constraintBottom_toTopOf="@id/bandyer_actions"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/bandyer_actions"
@@ -53,6 +23,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_navigation"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:listitem="@layout/bandyer_glass_chat_menu_item_layout" />
 
         <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
@@ -61,7 +32,8 @@
             android:layout_height="wrap_content"
             android:theme="?attr/bottomNavigationStyle"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

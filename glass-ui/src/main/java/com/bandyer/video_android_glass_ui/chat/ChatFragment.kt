@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.bandyer.video_android_glass_ui.TiltFragment
+import com.bandyer.video_android_glass_ui.common.UserState
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatBinding
 import com.bandyer.video_android_glass_ui.participants.ParticipantData
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
@@ -165,7 +166,7 @@ class ChatFragment : TiltFragment() {
         ParticipantData(
             "Mario Rossi",
             "Mario Rossi",
-            ParticipantData.UserState.ONLINE,
+            UserState.ONLINE,
             null,
             null,
             Instant.now().toEpochMilli()
@@ -173,7 +174,7 @@ class ChatFragment : TiltFragment() {
         ParticipantData(
             "Ugo Trapasso",
             "Ugo Trapasso",
-            ParticipantData.UserState.OFFLINE,
+             UserState.OFFLINE,
             null,
             "https://2.bp.blogspot.com/-jLEDf_NyZ1g/WmmyFZKOd-I/AAAAAAAAHd8/FZvIj2o_jqwl0S_yz4zBU16N1yGj-UCrACLcBGAs/s1600/heisenberg-breaking-bad.jpg",
             Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
@@ -181,7 +182,7 @@ class ChatFragment : TiltFragment() {
         ParticipantData(
             "Gianfranco Sala",
             "Gianfranco Sala",
-            ParticipantData.UserState.INVITED,
+             UserState.INVITED,
             null,
             null,
             Instant.now().toEpochMilli()

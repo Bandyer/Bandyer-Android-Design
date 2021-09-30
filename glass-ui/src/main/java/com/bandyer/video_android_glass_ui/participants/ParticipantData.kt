@@ -3,6 +3,7 @@ package com.bandyer.video_android_glass_ui.participants
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import androidx.annotation.Keep
+import com.bandyer.video_android_glass_ui.common.UserState
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -25,24 +26,4 @@ data class ParticipantData(
     @DrawableRes val avatarImageId: Int? = null,
     val avatarImageUrl: String? = null,
     val lastSeenTime: Long = 0
-) : Parcelable {
-    /**
-     * The user online state
-     */
-    enum class UserState {
-        /**
-         * o n l i n e
-         */
-        ONLINE,
-
-        /**
-         * i n v i t e d
-         */
-        INVITED,
-
-        /**
-         * o f f l i n e
-         */
-        OFFLINE
-    }
-}
+) : Parcelable
