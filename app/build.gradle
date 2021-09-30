@@ -60,6 +60,10 @@ android {
         viewBinding true
     }
 
+    dataBinding {
+        enabled true
+    }
+
     kotlinOptions {
         jvmTarget = '11'
         jdkHome = compiler.get().metadata.installationPath.asFile.absolutePath

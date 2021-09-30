@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="?attr/bandyer_rootLayoutStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationItemView
-        android:id="@+id/bandyer_swipe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:theme="?attr/bandyer_swipeHorizontalItemStyle" />
+    <LinearLayout
+        style="?attr/bandyer_rootLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationItemView
-        android:id="@+id/bandyer_tap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:theme="?attr/bandyer_tapItemStyle" />
+        <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationItemView
+            android:id="@+id/bandyer_swipe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="?attr/bandyer_swipeHorizontalItemStyle" />
 
-    <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationItemView
-        android:id="@+id/bandyer_swipe_down"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:theme="?attr/bandyer_swipeDownItemStyle" />
+        <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationItemView
+            android:id="@+id/bandyer_tap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="?attr/bandyer_tapItemStyle" />
 
-</LinearLayout>
+        <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationItemView
+            android:id="@+id/bandyer_swipe_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="?attr/bandyer_swipeDownItemStyle" />
+
+    </LinearLayout>
+</layout>

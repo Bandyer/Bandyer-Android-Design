@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:theme="?attr/bandyer_emptyStyle">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
-        android:id="@+id/bandyer_bottom_navigation"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:theme="?attr/bottomNavigationStyle" />
+        android:layout_height="match_parent"
+        android:theme="?attr/bandyer_emptyStyle">
 
-</FrameLayout>
+        <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
+            android:id="@+id/bandyer_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:theme="?attr/bottomNavigationStyle" />
+
+    </FrameLayout>
+</layout>

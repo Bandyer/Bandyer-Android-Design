@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="?attr/bandyer_rootLayoutStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:theme="?attr/bandyer_recyclerViewItemStyle">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.bandyer.video_android_glass_ui.menu.ActivableTextView
-        android:id="@+id/bandyer_text"
-        style="?android:attr/textViewStyle"
-        android:layout_height="wrap_content"
+    <FrameLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        style="?attr/bandyer_rootLayoutStyle"
         android:layout_width="wrap_content"
-        android:layout_gravity="bottom"
-        tools:text="Snapshot" />
+        android:layout_height="wrap_content"
+        android:theme="?attr/bandyer_recyclerViewItemStyle">
 
-</FrameLayout>
+        <com.bandyer.video_android_glass_ui.menu.ActivableTextView
+            android:id="@+id/bandyer_text"
+            style="?android:attr/textViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            tools:text="Snapshot" />
+
+    </FrameLayout>
+</layout>
 

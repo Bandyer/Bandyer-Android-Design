@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="?attr/bandyer_rootLayoutStyle"
-    android:id="@+id/bandyer_root"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:theme="?attr/bandyer_recyclerViewItemStyle">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/bandyer_text"
-        style="?android:attr/textViewStyle"
+    <FrameLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/bandyer_root"
+        style="?attr/bandyer_rootLayoutStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        tools:text="Mario Rossi" />
+        android:theme="?attr/bandyer_recyclerViewItemStyle">
 
-</FrameLayout>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/bandyer_text"
+            style="?android:attr/textViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            tools:text="Mario Rossi" />
 
+    </FrameLayout>
+</layout>

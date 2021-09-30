@@ -10,13 +10,18 @@ plugins {
 
 apply from: '../publish.gradle'
 
-def core_ktx_version = "1.6.0"
-def frag_ktx_version = "1.3.6"
-def act_ktx_version = "1.3.1"
-def nav_version = "2.3.5"
-def material_version = "1.4.0"
-
+def coreKtxVersion = "1.6.0"
+def fragKtxVersion = "1.3.6"
+def actKtxVersion = "1.3.1"
+def navVersion = "2.3.5"
+def materialVersion = "1.4.0"
+def junitVersion = "4.13.2"
 def fastAdapterVersion = "5.4.1"
+def runnerExtVersion = "1.1.3"
+def espressoVersion = "3.4.0"
+def dataBindingVersion = "7.0.2"
+def desugarVersion = "1.1.5"
+
 
 def compiler = javaToolchains.compilerFor {
     languageVersion = JavaLanguageVersion.of(11)
@@ -54,35 +59,36 @@ android {
         jdkHome = compiler.get().metadata.installationPath.asFile.absolutePath
     }
 
-    buildFeatures {
-        viewBinding true
+    dataBinding {
+        enabled true
     }
 
     aaptOptions.cruncherEnabled = false
 }
 
 dependencies {
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:$runnerExtVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 
     // Platform
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation "androidx.appcompat:appcompat:1.3.1"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
-    implementation "androidx.core:core-ktx:$core_ktx_version"
-    implementation "androidx.fragment:fragment-ktx:$frag_ktx_version"
-    implementation "androidx.activity:activity-ktx:$act_ktx_version"
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-    implementation "com.google.android.material:material:$material_version"
+    implementation "androidx.core:core-ktx:$coreKtxVersion"
+    implementation "androidx.fragment:fragment-ktx:$fragKtxVersion"
+    implementation "androidx.activity:activity-ktx:$actKtxVersion"
+    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
+    implementation "com.google.android.material:material:$materialVersion"
+    implementation "androidx.databinding:databinding-common:$dataBindingVersion"
 
     // UI
     api "com.mikepenz:fastadapter:$fastAdapterVersion"
     api "com.mikepenz:fastadapter-extensions-diff:$fastAdapterVersion"
 
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugarVersion"
 
     implementation project(':core-ui')
 }

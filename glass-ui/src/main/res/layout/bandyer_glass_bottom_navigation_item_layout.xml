@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    style="?attr/bandyer_rootLayoutStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/bandyer_gesture_icon"
-        style="?attr/bandyer_iconStyle" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/bandyer_gesture_text"
-        style="?attr/bandyer_iconTipStyle"
+    <LinearLayout
+        xmlns:tools="http://schemas.android.com/tools"
+        style="?attr/bandyer_rootLayoutStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="Swipe" />
+        android:layout_height="wrap_content">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/bandyer_action_text"
-        style="?attr/bandyer_labelStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="cancel" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/bandyer_gesture_icon"
+            style="?attr/bandyer_iconStyle" />
 
-</LinearLayout>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/bandyer_gesture_text"
+            style="?attr/bandyer_iconTipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Swipe" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/bandyer_action_text"
+            style="?attr/bandyer_labelStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="cancel" />
+
+    </LinearLayout>
+</layout>

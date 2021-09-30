@@ -20,7 +20,7 @@ class ChatMessageView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private var binding: BandyerGlassChatMessageLayoutBinding =
+    var binding: BandyerGlassChatMessageLayoutBinding =
         BandyerGlassChatMessageLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     /**

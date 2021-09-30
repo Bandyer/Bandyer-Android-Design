@@ -5,16 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
+import androidx.databinding.ObservableInt
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
 import com.bandyer.video_android_core_ui.utils.Iso8601
-import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.TiltFragment
-import com.bandyer.video_android_glass_ui.databinding.BandyerGlassChatMessageLayoutBinding
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatBinding
 import com.bandyer.video_android_glass_ui.participants.ParticipantData
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
@@ -37,16 +34,8 @@ class ChatFragment : TiltFragment() {
     private var itemAdapter: ItemAdapter<ChatMessageItem>? = null
 
     private var currentMsgItemIndex = 0
-    private var newMessagesCounter = 0
-        set(value) {
-            field = value.also {
-                with(binding.bandyerCounter) {
-                    text =
-                        resources.getString(R.string.bandyer_glass_message_counter_pattern, it - 1)
-                    visibility = if (it - 1 > 0) View.VISIBLE else View.GONE
-                }
-            }
-        }
+    private var newMessagesCounter = ObservableInt(-1)
+
     private var lastMsgIndex = 0
     private var pagesIds = arrayListOf<String>()
 
@@ -87,7 +76,7 @@ class ChatFragment : TiltFragment() {
                             val currentMsgIndex = layoutManager.getPosition(foundView)
 
                             if (currentMsgIndex > lastMsgIndex && pagesIds[currentMsgIndex] != pagesIds[lastMsgIndex]) {
-                                newMessagesCounter--
+                                newMessagesCounter?.apply { set(get() - 1) }
                                 lastMsgIndex = currentMsgIndex
                             }
                             currentMsgItemIndex = currentMsgIndex
@@ -142,10 +131,9 @@ class ChatFragment : TiltFragment() {
      * @param data The [ChatMessageData]
      */
     private fun addChatItem(data: ChatMessageData) {
-        newMessagesCounter++
+        newMessagesCounter.apply { set(get() + 1) }
         with(binding.bandyerChatMessage) {
             post {
-                val binding = BandyerGlassChatMessageLayoutBinding.bind(this)
                 with(binding) {
                     bandyerName.text = data.sender
                     bandyerTime.text = Iso8601.parseTimestamp(requireContext(), data.time!!)
