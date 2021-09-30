@@ -1,43 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- CALL ENDED FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.CallEnded" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.CallEnded.RootLayout</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.GlassCallEnded</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.GlassCallEnded</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.CallEnded</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.CallEnded.RootLayout" parent="">
-        <item name="android:background">@color/bandyer_glass_background_color</item>
+    <style name="BandyerSDKDesign.Glass.FullScreenDialog.CallEnded" parent="BandyerSDKDesign.Glass.FullScreenDialog">
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.CallEnded</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.CallEnded</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.CallEnded</item>
     </style>
 
     <!-- TITLE -->
-    <style name="BandyerSDKDesign.TextView.Title.GlassCallEnded" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
+    <style name="BandyerSDKDesign.TextView.Title.FullScreenDialog.CallEnded" parent="BandyerSDKDesign.TextView.Title.FullScreenDialog">
         <item name="android:text">@string/bandyer_glass_call_ended</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:includeFontPadding">false</item>
-        <item name="android:textStyle">normal</item>
     </style>
 
     <!-- SUBTITLE -->
-    <style name="BandyerSDKDesign.TextView.Subtitle.GlassCallEnded" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.CallEnded" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog">
         <item name="android:text">@string/bandyer_glass_thank_you</item>
         <item name="android:textColor">?attr/colorSecondary</item>
-        <item name="android:includeFontPadding">false</item>
     </style>
 
     <!-- BOTTOM ACTION BAR -->
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.CallEnded" parent="BandyerSDKDesign.Glass.BottomNavigation">
-        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.CallEnded</item>
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.CallEnded" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog">
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.CallEnded</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.CallEnded</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.CallEnded" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="android:visibility">gone</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.CallEnded" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">

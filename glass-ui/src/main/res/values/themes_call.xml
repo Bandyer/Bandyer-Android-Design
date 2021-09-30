@@ -22,8 +22,8 @@
         <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Ringing</item>
         <item name="bandyer_dialingStyle">@style/BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Dialing</item>
         <item name="bandyer_connectingStyle">@style/BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Connecting</item>
-        <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
-        <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
+        <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.FullScreenDialog.EndCall</item>
+        <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.FullScreenDialog.CallEnded</item>
         <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>
         <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.Participants</item>
     </style>
@@ -36,8 +36,8 @@
         <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Ringing</item>
         <item name="bandyer_dialingStyle">@style/BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Dialing</item>
         <item name="bandyer_connectingStyle">@style/BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Connecting</item>
-        <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
-        <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
+        <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.FullScreenDialog.EndCall</item>
+        <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.FullScreenDialog.CallEnded</item>
         <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>
         <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.Participants</item>
     </style>
@@ -50,8 +50,8 @@
         <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Ringing</item>
         <item name="bandyer_dialingStyle">@style/BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Dialing</item>
         <item name="bandyer_connectingStyle">@style/BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Connecting</item>
-        <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.EndCall</item>
-        <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.CallEnded</item>
+        <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.FullScreenDialog.EndCall</item>
+        <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.FullScreenDialog.CallEnded</item>
         <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>
         <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.Participants</item>
     </style>

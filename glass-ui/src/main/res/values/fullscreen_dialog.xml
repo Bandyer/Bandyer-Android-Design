@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- END CALL FRAGMENT -->
+    <style name="BandyerSDKDesign.Glass.FullScreenDialog" parent="BandyerSDKDesign.Glass">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.FullScreenDialog.RootLayout</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.FullScreenDialog.RootLayout" parent="">
+        <item name="android:background">@color/bandyer_glass_background_color</item>
+    </style>
+
+    <!-- TITLE -->
+    <style name="BandyerSDKDesign.TextView.Title.FullScreenDialog" parent="BandyerSDKDesign.TextView.Title">
+        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <!-- SUBTITLE -->
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog" parent="BandyerSDKDesign.TextView.Subtitle">
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
+        <item name="android:textColor">@color/bandyer_color_white_80</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- BOTTOM ACTION BAR -->
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog" parent="BandyerSDKDesign.Glass.BottomNavigation">
+        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenDialog</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenDialog" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
+        <item name="android:visibility">gone</item>
+    </style>
+
+</resources>
