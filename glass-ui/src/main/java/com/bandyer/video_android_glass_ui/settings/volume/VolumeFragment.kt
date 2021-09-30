@@ -48,8 +48,8 @@ class VolumeFragment : TiltFragment() {
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) {
         this.deltaAzimuth += deltaAzimuth
-        if (deltaAzimuth >= 2) onSwipeForward(true).also { this.deltaAzimuth = 0f }
-        else if (deltaAzimuth <= -2) onSwipeBackward(true).also { this.deltaAzimuth = 0f }
+        if (this.deltaAzimuth >= 2) onSwipeForward(true).also { this.deltaAzimuth = 0f }
+        else if (this.deltaAzimuth <= -2) onSwipeBackward(true).also { this.deltaAzimuth = 0f }
     }
 
     override fun onTap() = true.also { findNavController().popBackStack() }

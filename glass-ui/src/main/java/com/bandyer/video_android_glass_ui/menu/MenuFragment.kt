@@ -19,6 +19,8 @@ import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrol
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.dsl.genericFastAdapter
+import com.mikepenz.fastadapter.listeners.addClickListener
 
 /**
  * BandyerGlassMenuFragment
@@ -52,7 +54,9 @@ class MenuFragment : TiltFragment() {
                 // Init the RecyclerView
                 with(bandyerMenu) {
                     itemAdapter = ItemAdapter()
-                    val fastAdapter = FastAdapter.with(itemAdapter!!)
+                    val fastAdapter = FastAdapter.with(itemAdapter!!).apply {
+                        onClickListener = { _, _, _, position -> onTap(position); false }
+                    }
                     val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                     val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
@@ -99,7 +103,9 @@ class MenuFragment : TiltFragment() {
 
     override fun onDismiss() = Unit
 
-    override fun onTap() = when (currentMenuItemIndex) {
+    override fun onTap() = onTap(currentMenuItemIndex)
+
+    private fun onTap(position: Int) = when (position) {
         0, 1 -> {
             val isActivated = itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated
             itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated = !isActivated
