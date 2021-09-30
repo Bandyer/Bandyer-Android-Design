@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BandyerSDKDesign.Glass.Empty">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bottomNavigationStyle" format="reference" />
+    </declare-styleable>
+
     <!-- EMPTY FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.Empty" parent="BandyerSDKDesign.Glass">
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Call</item>
     </style>
 
-    <!-- BOTTOM ACTION BAR -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.Call" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Call</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Call</item>

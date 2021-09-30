@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- END CALL FRAGMENT -->
+    <declare-styleable name="BandyerSDKDesign.Glass.FullScreenLogoDialog">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_titleStyle" />
+        <attr name="bandyer_subtitleStyle" />
+        <attr name="bottomNavigationStyle" />
+    </declare-styleable>
+
+    <!-- FULL SCREEN DIALOG FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.FullScreenDialog" parent="BandyerSDKDesign.Glass">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.FullScreenDialog.RootLayout</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog</item>
@@ -27,7 +34,7 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
-    <!-- BOTTOM ACTION BAR -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenDialog</item>
     </style>

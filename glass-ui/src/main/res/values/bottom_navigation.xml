@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- BOTTOM ACTION BAR -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <declare-styleable name="BandyerSDKDesign.Glass.BottomNavigation">
         <attr name="bandyer_rootLayoutStyle"/>
         <attr name="bandyer_swipeHorizontalItemStyle" format="reference"/>

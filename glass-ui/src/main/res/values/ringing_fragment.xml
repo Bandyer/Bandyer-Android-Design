@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BandyerSDKDesign.Glass.FullScreenLogoDialog.Ringing">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_subtitleStyle" />
+    </declare-styleable>
+
     <!-- RINGING FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Ringing" parent="BandyerSDKDesign.Glass.FullScreenLogoDialogStyle">
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialogStyle.Ringing</item>
+    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.FullScreenLogoDialog">
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Ringing</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialogStyle.Ringing" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.TextView.Subtitle">
         <item name="android:text">@string/bandyer_glass_ringing</item>
     </style>
 </resources>

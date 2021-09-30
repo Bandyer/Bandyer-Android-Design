@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- RECYCLER VIEW -->
     <style name="BandyerSDKDesign.Glass.RecyclerView" parent="BandyerSDKDesign.Glass">
         <item name="android:background">@color/bandyer_glass_background_color</item>

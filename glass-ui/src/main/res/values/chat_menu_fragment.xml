@@ -21,7 +21,7 @@
         <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
-    <!-- BOTTOM ACTION BAR -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.ChatMenu" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.ChatMenu</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatMenu</item>

@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BandyerSDKDesign.Glass.FullScreenLogoDialog">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_titleStyle" />
+        <attr name="bandyer_subtitleStyle" />
+        <attr name="bottomNavigationStyle" />
+    </declare-styleable>
+
     <!-- FULL SCREEN LOGO DIALOG FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialogStyle" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.RootLayout</item>
+    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.FullScreenLogoDialog.RootLayout</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenLogoDialog</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.RootLayout" parent="">
+    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialog.RootLayout" parent="">
         <item name="android:background">@color/bandyer_glass_background_color</item>
     </style>
 
@@ -26,7 +33,7 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
-    <!-- BOTTOM ACTION BAR -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog</item>

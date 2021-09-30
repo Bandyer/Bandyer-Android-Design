@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BandyerSDKDesign.Glass.Zoom">
+        <attr name="bottomNavigationStyle" />
+        <attr name="sliderStyle" />
+    </declare-styleable>
+
     <!-- ZOOM FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.Zoom" parent="BandyerSDKDesign.Glass">
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Zoom</item>
         <item name="sliderStyle">@style/BandyerSDKDesign.Glass.Slider</item>
     </style>
 
-    <!-- BOTTOM ACTION BAR -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.Zoom" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Zoom</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Zoom</item>

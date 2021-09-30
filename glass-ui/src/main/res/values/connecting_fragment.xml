@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BandyerSDKDesign.Glass.FullScreenLogoDialog.Connecting">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_subtitleStyle" />
+        <attr name="bottomNavigationStyle" />
+    </declare-styleable>
+
     <!-- CONNECTING FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Connecting" parent="BandyerSDKDesign.Glass.FullScreenLogoDialogStyle">
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialogStyle.Connecting</item>
+    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialog.Connecting" parent="BandyerSDKDesign.Glass.FullScreenLogoDialog">
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Connecting</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Connecting</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialogStyle.Connecting" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog">
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Connecting" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog">
         <item name="android:text">@string/bandyer_glass_connecting</item>
     </style>
 

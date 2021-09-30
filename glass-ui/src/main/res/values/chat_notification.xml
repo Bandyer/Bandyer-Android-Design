@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BandyerSDKDesign.ChatMessage.GlassNotification">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_avatarStyle" />
+        <attr name="bandyer_titleStyle" />
+        <attr name="bandyer_messageStyle" />
+        <attr name="bandyer_timestampStyle" />
+        <attr name="bottomNavigationStyle" />
+    </declare-styleable>
+
     <style name="BandyerSDKDesign.ChatMessage.GlassNotification" parent="BandyerSDKDesign.ChatMessage">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ChatMessage.GlassNotification.RootLayout</item>
         <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar</item>
@@ -31,7 +40,7 @@
         <item name="android:text">@string/bandyer_glass_now</item>
     </style>
 
-    <!-- BOTTOM ACTION BAR -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.ChatNotification" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.RootLayout.ChatNotification</item>
         <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.ChatNotification</item>

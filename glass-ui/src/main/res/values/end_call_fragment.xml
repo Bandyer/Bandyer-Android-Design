@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BandyerSDKDesign.Glass.FullScreenDialog.EndCall">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_titleStyle" />
+        <attr name="bandyer_subtitleStyle" />
+        <attr name="bottomNavigationStyle" />
+    </declare-styleable>
+
     <!-- END CALL FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.FullScreenDialog.EndCall" parent="BandyerSDKDesign.Glass.FullScreenDialog">
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.EndCall</item>
@@ -17,7 +24,7 @@
         <item name="android:text">@string/bandyer_glass_confirm_end_call</item>
     </style>
 
-    <!-- BOTTOM ACTION BAR -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.EndCall" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog">
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.EndCall</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.EndCall</item>

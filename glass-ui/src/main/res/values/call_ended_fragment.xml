@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BandyerSDKDesign.Glass.FullScreenDialog.CallEnded">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_titleStyle" />
+        <attr name="bandyer_subtitleStyle" format="reference" />
+        <attr name="bottomNavigationStyle" format="reference" />
+    </declare-styleable>
+
     <!-- CALL ENDED FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.FullScreenDialog.CallEnded" parent="BandyerSDKDesign.Glass.FullScreenDialog">
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.CallEnded</item>
@@ -18,7 +25,7 @@
         <item name="android:textColor">?attr/colorSecondary</item>
     </style>
 
-    <!-- BOTTOM ACTION BAR -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.CallEnded" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog">
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.CallEnded</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.CallEnded</item>

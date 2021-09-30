@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BandyerSDKDesign.Glass.Volume">
+        <attr name="bottomNavigationStyle" />
+        <attr name="sliderStyle" />
+    </declare-styleable>
+
     <!-- VOLUME FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.Volume" parent="BandyerSDKDesign.Glass">
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Volume</item>
         <item name="sliderStyle">@style/BandyerSDKDesign.Glass.Slider</item>
     </style>
 
-    <!-- BOTTOM ACTION BAR -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.Volume" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Volume</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Volume</item>

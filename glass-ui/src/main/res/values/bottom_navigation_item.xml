@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- BOTTOM ACTION ITEM -->
+    <!-- BOTTOM NAVIGATION ITEM -->
     <declare-styleable name="BandyerSDKDesign.Glass.BottomActionItem">
+        <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_iconStyle" />
         <attr name="bandyer_iconTipStyle" format="reference" />
         <attr name="bandyer_labelStyle" format="reference" />

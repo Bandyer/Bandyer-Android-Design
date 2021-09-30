@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="BandyerSDKDesign.Glass.Chat">
+        <attr name="recyclerViewStyle" />
+        <attr name="bandyer_recyclerViewItemStyle" />
         <attr name="bandyer_counterStyle" format="reference" />
+        <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- MENU FRAGMENT -->
@@ -45,7 +48,7 @@
         <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
     </style>
 
-    <!-- BOTTOM ACTION BAR -->
+    <!-- BOTTOM NAVIGATION BAR -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.Chat" parent="BandyerSDKDesign.Glass.BottomNavigation">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.RootLayout.Chat</item>
         <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Chat</item>

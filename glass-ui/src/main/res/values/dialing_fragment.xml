@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="BandyerSDKDesign.Glass.FullScreenLogoDialog.Dialing">
+        <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_subtitleStyle" />
+        <attr name="bottomNavigationStyle" />
+    </declare-styleable>
+
     <!-- DIALING FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialogStyle.Dialing" parent="BandyerSDKDesign.Glass.FullScreenLogoDialogStyle">
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialogStyle.Dialing</item>
+    <style name="BandyerSDKDesign.Glass.FullScreenLogoDialog.Dialing" parent="BandyerSDKDesign.Glass.FullScreenLogoDialog">
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Dialing</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Dialing</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialogStyle.Dialing" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog">
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Dialing" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog">
         <item name="android:text">@string/bandyer_glass_dialing</item>
     </style>
 
