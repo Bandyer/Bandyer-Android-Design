@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
@@ -22,6 +24,7 @@ import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryInfo
 import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiObserver
 import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiInfo
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 /**
  * GlassActivity
@@ -64,14 +67,21 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
 
         // Battery observer
         batteryObserver = BatteryObserver(this)
-        lifecycleScope.launchWhenStarted {
-            batteryObserver.observe().collect { binding.statusBar.updateBatteryIcon(it) }
-        }
 
         // WiFi observer
         wifiObserver = WiFiObserver(this)
-        lifecycleScope.launchWhenStarted {
-            wifiObserver.observe().collect { binding.statusBar.updateWifiSignalIcon(it) }
+
+        // Observer events
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    batteryObserver.observe().collect { binding.statusBar.updateBatteryIcon(it) }
+                }
+
+                launch {
+                    wifiObserver.observe().collect { binding.statusBar.updateWifiSignalIcon(it) }
+                }
+            }
         }
     }
 

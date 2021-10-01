@@ -10,6 +10,7 @@ plugins {
 
 apply from: '../publish.gradle'
 
+def lifecycleKtxVersion = "2.4.0-alpha01"
 def coreKtxVersion = "1.6.0"
 def fragKtxVersion = "1.3.6"
 def actKtxVersion = "1.3.1"
@@ -72,10 +73,7 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
 
     // Platform
-    implementation 'androidx.multidex:multidex:2.0.1'
-    implementation "androidx.appcompat:appcompat:1.3.1"
-    implementation "androidx.recyclerview:recyclerview:1.2.1"
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleKtxVersion"
     implementation "androidx.core:core-ktx:$coreKtxVersion"
     implementation "androidx.fragment:fragment-ktx:$fragKtxVersion"
     implementation "androidx.activity:activity-ktx:$actKtxVersion"
