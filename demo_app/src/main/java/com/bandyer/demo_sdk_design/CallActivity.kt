@@ -151,7 +151,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
             onClickListener = this@CallActivity
             savedInstanceState?.let { restoreInstanceState(it) }
         }
-        callActionWidget!!.showCallControls(false,true,false, bottomSheetLayoutType = BottomSheetLayoutType.LIST(BottomSheetLayoutType.Orientation.HORIZONTAL))
+        callActionWidget!!.showCallControls(true,false,true, bottomSheetLayoutType = BottomSheetLayoutType.GRID(4, BottomSheetLayoutType.Orientation.VERTICAL))
         AudioCallSession.getInstance().currentAudioOutputDevice?.let {
             callActionWidget?.selectAudioRoute(getAudioRoute(it))
         }
