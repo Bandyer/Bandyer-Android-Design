@@ -72,6 +72,7 @@
     <item name="ic_bandyer_retry" type="drawable">@drawable/bandyer_retry_icon</item>
     <item name="ic_bandyer_check" type="drawable">@drawable/bandyer_check_icon</item>
     <item name="ic_bandyer_upload" type="drawable">@drawable/bandyer_upload_icon</item>
+
     <item name="ic_bandyer_glass_mic_off" type="drawable">@drawable/bandyer_glass_mic_off_icon</item>
     <item name="ic_bandyer_glass_mic_on" type="drawable">@drawable/bandyer_glass_mic_on_icon</item>
     <item name="ic_bandyer_glass_cam_off" type="drawable">@drawable/bandyer_glass_camera_off_icon</item>
