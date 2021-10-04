@@ -2,7 +2,9 @@ package com.bandyer.video_android_glass_ui.utils
 
 import android.view.View
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
+import com.bandyer.video_android_glass_ui.call.FullScreenDialogItem
 import com.bandyer.video_android_glass_ui.common.AvatarView
 import com.bandyer.video_android_glass_ui.common.UserInfoView
 import com.bandyer.video_android_glass_ui.common.UserState

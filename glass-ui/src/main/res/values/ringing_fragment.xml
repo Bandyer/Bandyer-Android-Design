@@ -2,14 +2,34 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing">
         <attr name="bandyer_rootLayoutStyle" />
+        <attr name="recyclerViewStyle" />
+        <attr name="bandyer_recyclerViewItemStyle" />
         <attr name="bandyer_subtitleStyle" />
     </declare-styleable>
 
     <!-- RINGING FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Ringing</item>
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView.Ringing</item>
+        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Ringing</item>
     </style>
 
+    <!-- RECYCLERVIEW -->
+    <style name="BandyerSDKDesign.Glass.RecyclerView.Ringing" parent="BandyerSDKDesign.Glass.RecyclerView">
+<!--        <item name="android:paddingStart">@dimen/bandyer_dimen_space64</item>-->
+<!--        <item name="android:paddingEnd">@dimen/bandyer_dimen_space64</item>-->
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Ringing" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Ringing.RootLayout</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Ringing.RootLayout" parent="">
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
+    </style>
+
+    <!-- SUBTITLE -->
     <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.TextView.Subtitle">
         <item name="android:text">@string/bandyer_glass_ringing</item>
     </style>

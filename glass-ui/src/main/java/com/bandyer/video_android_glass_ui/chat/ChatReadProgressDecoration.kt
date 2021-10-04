@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
+import android.util.Log
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -50,6 +52,8 @@ internal class ChatReadProgressDecoration(context: Context) : ItemDecoration() {
         isAntiAlias = true
     }
 
+    private val screenWidth = context.resources.displayMetrics.widthPixels.toFloat()
+
     /**
      * Tell if layout is rtl
      */
@@ -59,20 +63,24 @@ internal class ChatReadProgressDecoration(context: Context) : ItemDecoration() {
         super.onDrawOver(c, parent, state)
         val itemCount = parent.adapter?.itemCount ?: return
         if(itemCount < 2) return
-        val parentWidth = parent.width.toFloat()
-        val itemWidth = parentWidth / itemCount
+        val itemWidth = screenWidth / itemCount
 
         c.drawInactiveIndicator(parent)
 
         val layoutManager = parent.layoutManager as LinearLayoutManager
-        val activePosition = layoutManager.findFirstVisibleItemPosition()
+        val activePosition = layoutManager.findLastVisibleItemPosition()
         if (activePosition == RecyclerView.NO_POSITION) return
 
         val activeChild = layoutManager.findViewByPosition(activePosition) ?: return
-        val start = activeChild.left
-        val width = activeChild.width
+        val progress = (screenWidth - activeChild.left) / activeChild.width
 
-        c.drawHighlights(parent, itemWidth, activePosition + 1, abs(start / width.toFloat()))
+//        val start = if(isRTL) activeChild.right - parent.paddingEnd else activeChild.left - parent.paddingStart
+//        val factor = screenWidth / activeChild.width
+//
+//        var ratio = start / screenWidth
+//        if(isRTL) ratio -= 1
+//        val progress = abs(ratio) * factor
+        c.drawHighlights(parent, itemWidth, activePosition, progress)
     }
 
     private fun Canvas.drawInactiveIndicator(parent: View) {
@@ -91,6 +99,7 @@ internal class ChatReadProgressDecoration(context: Context) : ItemDecoration() {
         val y = parent.height - this@ChatReadProgressDecoration.height / 2f
         val parentStart = if (isRTL) parent.right else parent.left
         val highlightWidth = (highlightPosition + progress) * itemWidth
-        drawLine(parentStart.toFloat(), y, highlightWidth, y, paint)
+        val stopX = if(isRTL) screenWidth - highlightWidth else highlightWidth
+        drawLine(parentStart.toFloat(), y, stopX, y, paint)
     }
 }

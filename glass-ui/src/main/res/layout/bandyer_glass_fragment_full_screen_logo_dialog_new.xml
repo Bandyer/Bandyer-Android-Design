@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        style="?attr/bandyer_rootLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.bandyer.video_android_core_ui.layout.BandyerCallWatermarkLayout
+            android:id="@+id/bandyer_watermark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="@style/BandyerSDKDesign.CallWatermark"
+            android:layout_marginTop="@dimen/bandyer_dimen_space72"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/bandyer_participants"
+            style="?attr/bandyer_titleStyle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_navigation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bandyer_watermark"
+            tools:text="Mario Rossi" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/bandyer_subtitle"
+            style="?attr/bandyer_subtitleStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="76dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/bandyer_watermark" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/bandyer_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/bandyer_dimen_space16"
+            android:layout_marginBottom="@dimen/bandyer_dimen_space16"
+            app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_navigation"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="6 participants"
+            tools:text="6 participants" />
+
+        <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
+            android:id="@+id/bandyer_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="?attr/bottomNavigationStyle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

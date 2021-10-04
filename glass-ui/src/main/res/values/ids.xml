@@ -3,5 +3,6 @@
     <item name="id_glass_chat_message_item" type="id" />
     <item name="id_glass_menu_item" type="id" />
     <item name="id_glass_participants_item" type="id" />
+    <item name="id_glass_full_screen_dialog_item" type="id" />
     <item name="id_glass_chat_menu_item" type="id" />
 </resources>
