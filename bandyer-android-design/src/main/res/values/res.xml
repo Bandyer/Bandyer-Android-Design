@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <item name="ic_bandyer_answer" type="drawable">@drawable/bandyer_answer_icon</item>
+    <item name="ic_bandyer_answer" type="drawable">@drawable/bandyer_audio_call_icon</item>
     <item name="ic_bandyer_audio_call" type="drawable">@drawable/bandyer_audio_call_icon</item>
     <item name="ic_bandyer_audio_upgradable_call" type="drawable">@drawable/bandyer_audio_upgradable_call_icon</item>
     <item name="ic_bandyer_video_call" type="drawable">@drawable/bandyer_video_call_icon</item>
