@@ -49,10 +49,13 @@ internal class ReadProgressDecoration(context: Context) : ItemDecoration() {
         isAntiAlias = true
     }
 
+    /**
+     * The screen width in pixel
+     */
     private val screenWidth = context.getScreenSize().x.toFloat()
 
     /**
-     * Tell if layout is rtl
+     * True if layout is rtl
      */
     private val isRTL = context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 

@@ -46,7 +46,8 @@ class RingingFragment : BaseFragment() {
                 bandyerParticipants.apply {
                     itemAdapter = ItemAdapter()
                     val fastAdapter = FastAdapter.with(itemAdapter!!)
-                    val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    val layoutManager =
+                        AutoScrollLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
                     this.layoutManager = layoutManager
                     adapter = fastAdapter
