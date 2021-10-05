@@ -1,10 +1,16 @@
 package com.bandyer.video_android_core_ui.extensions
 
+import android.app.Activity
 import android.content.Context
+import android.content.ContextWrapper
+import android.graphics.Point
+import android.os.Build
 import android.util.DisplayMetrics
+import android.view.WindowManager
 import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
-import java.util.HashMap
+import androidx.fragment.app.FragmentActivity
+import java.util.*
 
 /**
  * Context extensions
@@ -13,6 +19,38 @@ object ContextExtensions {
 
     private val dipsMap = HashMap<Float, Int>()
     private val pixelsMap = HashMap<Float, Int>()
+
+    /**
+     * Get the activity related to the context
+     * @receiver Context
+     * @return The context's activity, if it can be retrieved, null otherwise
+     */
+    @Suppress("UNCHECKED_CAST")
+    fun <T : Activity> Context.getActivity(): T? {
+        return when (this) {
+            is FragmentActivity -> this as T?
+            is Activity -> this as T?
+            is ContextWrapper -> this.baseContext.getActivity() as T?
+            else -> null
+        }
+    }
+
+    /**
+     * Calculates screen's size
+     * @receiver Context
+     * @return Point
+     */
+    fun Context.getScreenSize(): Point {
+        val display = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            getActivity<Activity>()?.display
+        } else {
+            @Suppress("DEPRECATION")
+            (getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
+        }
+        val size = Point()
+        display?.getRealSize(size)
+        return size
+    }
 
     /**
      * Convert dp value in pixels

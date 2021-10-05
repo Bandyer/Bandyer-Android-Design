@@ -27,13 +27,13 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.StyleableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getActivity
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getThemeAttribute
 import com.bandyer.video_android_phone_ui.R
 import com.google.android.material.textview.MaterialTextView
@@ -143,11 +143,7 @@ fun Context.getScreenSize(): Point {
         (getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
     }
     val size = Point()
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-        display?.getRealSize(size)
-    } else {
-        display?.getSize(size)
-    }
+    display?.getRealSize(size)
     return size
 }
 
@@ -428,21 +424,6 @@ fun Context.getSmartGlassMenuDialogAttribute(@StyleableRes styleAttribute: Int):
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
     return value
-}
-
-/**
- * Get the activity related to the context
- * @receiver Context
- * @return The context's activity, if it can be retrieved, null otherwise
- */
-@Suppress("UNCHECKED_CAST")
-fun <T : Activity> Context.getActivity(): T? {
-    return when (this) {
-        is FragmentActivity -> this as T?
-        is Activity -> this as T?
-        is ContextWrapper -> this.baseContext.getActivity() as T?
-        else -> null
-    }
 }
 
 /**

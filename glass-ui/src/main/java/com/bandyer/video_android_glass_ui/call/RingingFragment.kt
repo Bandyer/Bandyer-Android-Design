@@ -9,8 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.chat.ChatReadProgressDecoration
-import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
+import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogNewBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
@@ -54,7 +53,7 @@ class RingingFragment : BaseFragment() {
                     isFocusable = false
                     setHasFixedSize(true)
 //                    addItemDecoration(HorizontalCenterItemDecoration())
-                    addItemDecoration(ChatReadProgressDecoration(requireContext()))
+                    addItemDecoration(ReadProgressDecoration(requireContext()))
 
                     /**
                      * TODO

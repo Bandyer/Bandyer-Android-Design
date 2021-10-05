@@ -24,10 +24,10 @@ import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getActivity
 import com.bandyer.video_android_phone_ui.R
 import com.bandyer.video_android_phone_ui.call.buttons.BandyerLineButton
 import com.bandyer.video_android_phone_ui.databinding.BandyerBottomSheetWidgetLayoutBinding
-import com.bandyer.video_android_phone_ui.extensions.getActivity
 import com.bandyer.video_android_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textview.MaterialTextView

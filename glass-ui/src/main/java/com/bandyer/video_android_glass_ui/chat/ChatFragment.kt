@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.bandyer.video_android_glass_ui.TiltFragment
+import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.common.UserState
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatBinding
 import com.bandyer.video_android_glass_ui.participants.ParticipantData
@@ -69,7 +70,7 @@ class ChatFragment : TiltFragment() {
                     adapter = fastAdapter
                     isFocusable = false
                     setHasFixedSize(true)
-                    addItemDecoration(ChatReadProgressDecoration(requireContext()))
+                    addItemDecoration(ReadProgressDecoration(requireContext()))
 
                     addOnScrollListener(object : RecyclerView.OnScrollListener() {
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
