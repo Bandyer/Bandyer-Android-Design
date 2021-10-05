@@ -20,10 +20,8 @@ internal open class HorizontalCenterItemDecoration : RecyclerView.ItemDecoration
         if (itemPosition == RecyclerView.NO_POSITION) return
 
         when (itemPosition) {
-            0 ->
-                outRect.set(getOffsetPixelSize(parent, view), 0, 0, 0)
-            parent.adapter!!.itemCount - 1 ->
-                outRect.set(0, 0, getOffsetPixelSize(parent, view), 0)
+            0 -> outRect.set(getOffsetPixelSize(parent, view), 0, 0, 0)
+            parent.adapter!!.itemCount - 1 -> outRect.set(0, 0, getOffsetPixelSize(parent, view), 0)
         }
     }
 
