@@ -10,15 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.bandyer.video_android_core_ui.extensions.ColorIntExtensions.darkenColor
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
-import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getScreenSize
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.isRTL
 import com.bandyer.video_android_glass_ui.R
 import com.google.android.material.color.MaterialColors
 import java.util.*
 
-
 /**
- * A full screen incremental line indicator while scrolling in the recycler view
+ * A full screen incremental line indicator while scrolling in the recycler view.
+ * Use android:clipChildren="false" if the recycler view is not full screen.
  *
  * @property height Float
  * @constructor
@@ -51,52 +50,46 @@ internal class ReadProgressDecoration(context: Context) : ItemDecoration() {
     }
 
     /**
-     * The screen width in pixel
-     */
-    private val screenWidth = context.getScreenSize().x.toFloat()
-
-    /**
      * True if layout is rtl
      */
     private val isRTL = context.isRTL()
 
-    override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-        super.onDrawOver(c, parent, state)
+    override fun onDrawOver(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+        super.onDrawOver(canvas, parent, state)
         val itemCount = parent.adapter?.itemCount ?: return
-        if(itemCount < 2) return
-        val itemWidth = screenWidth / itemCount
+        if (itemCount < 2) return
 
-        c.drawInactiveIndicator(parent)
+        // Set the decoration at the bottom of the recyclerView's parent
+        val y = (parent.parent as View).height - parent.top - this@ReadProgressDecoration.height / 2f
+        val containerWidth = (parent.parent as View).width
 
+        canvas.drawInactive(parent, y, containerWidth)
+        canvas.drawHighlights(parent, y, containerWidth)
+    }
+
+    private fun Canvas.drawInactive(parent: RecyclerView, y: Float, containerWidth: Int) {
+        val startX = -if (isRTL) parent.right else parent.left
+        drawLine(startX.toFloat(), y, containerWidth.toFloat(), y, paint.apply { color = colorInactive })
+    }
+
+    private fun Canvas.drawHighlights(parent: RecyclerView, y: Float, containerWidth: Int) {
         val layoutManager = parent.layoutManager as LinearLayoutManager
         val activePosition = layoutManager.findLastVisibleItemPosition()
         if (activePosition == RecyclerView.NO_POSITION) return
+        val activeChild = layoutManager.findViewByPosition(activePosition)!!
 
-        val activeChild = layoutManager.findViewByPosition(activePosition) ?: return
-        val visiblePortion = if(isRTL) activeChild.right.toFloat() else (screenWidth - activeChild.left)
-        val progress = visiblePortion / activeChild.width
+        // Compute the visible portion of the recyclerView's last visible item in pixel
+        val visiblePortion = if (isRTL) activeChild.right else containerWidth - activeChild.left
+        // Then compute the percentage of the visible part
+        val progress = visiblePortion.toFloat() / activeChild.width
 
-        c.drawHighlights(parent, itemWidth, activePosition, progress)
-    }
+        // Compute the highlight width
+        val itemWidth = containerWidth / layoutManager.itemCount
+        val highlightWidth = (activePosition + progress) * itemWidth
 
-    private fun Canvas.drawInactiveIndicator(parent: View) {
-        paint.color = colorInactive
-        val y = parent.height - this@ReadProgressDecoration.height / 2f
-        val parentStart = if (isRTL) parent.right else parent.left
-        drawLine(-parentStart.toFloat(), y, screenWidth, y, paint)
-    }
+        val startX = if(isRTL) containerWidth.toFloat() else -parent.left.toFloat()
+        val stopX = if (isRTL) containerWidth - highlightWidth else highlightWidth
 
-    private fun Canvas.drawHighlights(
-        parent: View,
-        itemWidth: Float,
-        highlightPosition: Int,
-        progress: Float
-    ) {
-        paint.color = colorActive
-        val y = parent.height - this@ReadProgressDecoration.height / 2f
-        val highlightWidth = (highlightPosition + progress) * itemWidth
-        val startX = if (isRTL) screenWidth else -parent.left
-        val stopX = if(isRTL) screenWidth - highlightWidth else highlightWidth
-        drawLine(startX.toFloat(), y, stopX, y, paint)
+        drawLine(startX, y, stopX , y, paint.apply { color = colorActive })
     }
 }
