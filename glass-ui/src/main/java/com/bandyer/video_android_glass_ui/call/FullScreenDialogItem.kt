@@ -58,16 +58,8 @@ class FullScreenDialogItem(val text: String) : AbstractItem<FullScreenDialogItem
                 }
 
             root.apply {
-                // Two separate whens because an item can be both first and last
-                when {
-                    isRTL && isFirstItem -> setPaddingEnd(context.dp2px(32f))
-                    isFirstItem -> setPaddingStart(context.dp2px(32f))
-                }
-
-                when {
-                    isRTL && isLastItem -> setPaddingStart(context.dp2px(32f))
-                    isLastItem -> setPaddingEnd(context.dp2px(32f))
-                }
+                if(isFirstItem) setPaddingStart(context.dp2px(32f))
+                if(isLastItem) setPaddingEnd(context.dp2px(32f))
             }
         }
 
