@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
-import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
-import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogNewBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 import com.mikepenz.fastadapter.FastAdapter
@@ -19,8 +18,8 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 
 class RingingFragment : BaseFragment() {
 
-    private var _binding: BandyerGlassFragmentFullScreenLogoDialogNewBinding? = null
-    override val binding: BandyerGlassFragmentFullScreenLogoDialogNewBinding get() = _binding!!
+    private var _binding: BandyerGlassFragmentFullScreenLogoDialogBinding? = null
+    override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
 
     private var itemAdapter: ItemAdapter<FullScreenDialogItem>? = null
 
@@ -34,7 +33,7 @@ class RingingFragment : BaseFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         // Add view binding
         val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_ringingStyle)
-        _binding = BandyerGlassFragmentFullScreenLogoDialogNewBinding
+        _binding = BandyerGlassFragmentFullScreenLogoDialogBinding
             .inflate(
                 inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
                 container,
