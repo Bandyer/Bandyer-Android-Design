@@ -3,6 +3,7 @@ package com.bandyer.video_android_glass_ui.bottom_navigation
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassBottomNavigationLayoutBinding
 
@@ -50,4 +51,18 @@ class BottomNavigationView @JvmOverloads constructor(
         binding.bandyerSwipeDown.setOnClickListener {
             callback.invoke()
         }
+
+    /**
+     * Hide the swipe horizontal element
+     */
+    fun hideSwipeHorizontalItem() {
+        binding.bandyerSwipe.visibility = View.GONE
+    }
+
+    /**
+     * Hide the tap element
+     */
+    fun hideTapItem() {
+        binding.bandyerTap.visibility = View.GONE
+    }
 }

@@ -21,6 +21,7 @@
     <string name="bandyer_glass_volume">Volume</string>
     <string name="bandyer_glass_zoom">Zoom</string>
     <string name="bandyer_glass_ringing">is calling…</string>
+    <string name="bandyer_glass_ringing_group">incoming group call…</string>
     <string name="bandyer_glass_dialing">dialing…</string>
     <string name="bandyer_glass_connecting">connecting…</string>
     <string name="bandyer_glass_want_end_call">End the call?</string>
