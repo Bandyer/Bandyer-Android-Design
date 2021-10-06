@@ -51,9 +51,9 @@ class AutoScrollLinearLayoutManager constructor(
 
                 when {
                     // If the scroll toward the last item is finished, update the target
-                    lastVisibleItemPosition == itemCount - 1 && isFirstOnEdge -> target = 0
+                    lastVisibleItemPosition == itemCount - 1 && isLastOnEdge -> target = 0
                     // If the scroll toward the first item is finished, update the target
-                    firstVisibleItemPosition == 0 && isLastOnEdge -> target = itemCount - 1
+                    firstVisibleItemPosition == 0 && isFirstOnEdge -> target = itemCount - 1
                 }
             }
 
