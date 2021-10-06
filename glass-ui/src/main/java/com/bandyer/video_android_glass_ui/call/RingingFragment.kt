@@ -47,8 +47,7 @@ class RingingFragment : BaseFragment() {
                 bandyerParticipants.apply {
                     itemAdapter = ItemAdapter()
                     val fastAdapter = FastAdapter.with(itemAdapter!!)
-                    val layoutManager =
-                        AutoScrollLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    val layoutManager = AutoScrollLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
                     this.layoutManager = layoutManager
                     adapter = fastAdapter
@@ -88,7 +87,7 @@ class RingingFragment : BaseFragment() {
 
     override fun onSwipeDown() = true.also { requireActivity().finish() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = false
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(resources.displayMetrics.densityDpi / 2, 0) }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = false
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(-resources.displayMetrics.densityDpi / 2, 0) }
 }
