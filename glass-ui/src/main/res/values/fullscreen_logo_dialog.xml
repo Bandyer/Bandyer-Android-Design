@@ -4,6 +4,7 @@
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_titleStyle" />
         <attr name="bandyer_subtitleStyle" />
+        <attr name="bandyer_counterStyle" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
@@ -11,6 +12,7 @@
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.DarkBackground">
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenLogoDialog</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog</item>
+        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Counter</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog</item>
     </style>
 
@@ -23,9 +25,16 @@
 
     <!-- SUBTITLE -->
     <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
         <item name="android:textColor">@color/bandyer_color_white_80</item>
         <item name="android:includeFontPadding">false</item>
+    </style>
+
+    <!-- COUNTER -->
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Counter" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog">
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space16</item>
+        <item name="android:textColor">?attr/colorSecondary</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->
@@ -36,7 +45,17 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="android:visibility">gone</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.FullScreenLogoDialog</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeHorizontalFullScreenLogoDialog</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/bandyer_glass_browse</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeHorizontalFullScreenLogoDialog" parent="BandyerSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/bandyer_glass_browse</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
