@@ -2,6 +2,9 @@ package com.bandyer.video_android_glass_ui.call
 
 import android.view.View
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.isRTL
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingEnd
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingStart
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFullScreenDialogItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
@@ -33,7 +36,7 @@ class FullScreenDialogItem(val text: String) : AbstractItem<FullScreenDialogItem
      *
      * @constructor
      */
-    class ViewHolder(val view: View) : FastAdapter.ViewHolder<FullScreenDialogItem>(view) {
+    class ViewHolder(view: View) : FastAdapter.ViewHolder<FullScreenDialogItem>(view) {
 
         private val binding: BandyerGlassFullScreenDialogItemLayoutBinding =
             BandyerGlassFullScreenDialogItemLayoutBinding.bind(view)
@@ -41,16 +44,29 @@ class FullScreenDialogItem(val text: String) : AbstractItem<FullScreenDialogItem
         /**
          * Binds the data of this item onto the viewHolder
          */
-        override fun bindView(item: FullScreenDialogItem, payloads: List<Any>) = with(binding) {
-            val context = view.context
-            when(absoluteAdapterPosition) {
-                0 -> {
-                    root.setPadding(context.dp2px(32f), 0, 0, 0)
-                    bandyerText.text = item.text
+        override fun bindView(item: FullScreenDialogItem, payloads: List<Any>): Unit = with(binding) {
+            val context = itemView.context
+            val isRTL = context.isRTL()
+            val isFirstItem = absoluteAdapterPosition == 0
+            val isLastItem = absoluteAdapterPosition == bindingAdapter!!.itemCount - 1
+
+            bandyerText.text =
+                when {
+                    isFirstItem -> item.text
+                    isRTL -> context.resources.getString(R.string.bandyer_glass_ringing_rtl_pattern, item.text)
+                    else -> context.resources.getString(R.string.bandyer_glass_ringing_pattern, item.text)
                 }
-                bindingAdapter!!.itemCount - 1 -> {
-                    root.setPadding(0, 0, context.dp2px(32f), 0)
-                    bandyerText.text = context.resources.getString(R.string.bandyer_glass_ringing_pattern, item.text)
+
+            root.apply {
+                // Two separate whens because an item can be both first and last
+                when {
+                    isRTL && isFirstItem -> setPaddingEnd(context.dp2px(32f))
+                    isFirstItem -> setPaddingStart(context.dp2px(32f))
+                }
+
+                when {
+                    isRTL && isLastItem -> setPaddingStart(context.dp2px(32f))
+                    isLastItem -> setPaddingEnd(context.dp2px(32f))
                 }
             }
         }
@@ -60,7 +76,7 @@ class FullScreenDialogItem(val text: String) : AbstractItem<FullScreenDialogItem
          */
         override fun unbindView(item: FullScreenDialogItem) = with(binding) {
             bandyerText.text = null
-            root.setPadding(0,0,0,0)
+            root.setPadding(0, 0, 0, 0)
         }
     }
 }

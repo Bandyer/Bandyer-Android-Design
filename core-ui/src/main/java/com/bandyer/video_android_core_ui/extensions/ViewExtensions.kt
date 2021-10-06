@@ -2,15 +2,93 @@ package com.bandyer.video_android_core_ui.extensions
 
 import android.animation.Animator
 import android.animation.ValueAnimator
+import android.os.Build
 import android.view.View
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
+import androidx.annotation.Px
+import androidx.annotation.RequiresApi
 import androidx.core.animation.doOnEnd
 
 /**
  * View extensions
  */
 object ViewExtensions {
+
+
+    /**
+     * Set the bottom padding for a view
+     * @receiver View
+     * @param px The padding to be set expressed in pixel
+     */
+    fun View.setPaddingBottom(@Px px: Int) {
+        this.setPadding(this.paddingLeft, this.paddingTop, this.paddingRight, px)
+    }
+
+    /**
+     * Set the end padding for a view
+     * @receiver View
+     * @param px The padding to be set expressed in pixel
+     */
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    fun View.setPaddingEnd(@Px px: Int) {
+        this.setPaddingRelative(this.paddingStart, this.paddingTop, px, this.paddingBottom)
+    }
+
+    /**
+     * Set the horizontal padding for a view
+     * @receiver View
+     * @param px The padding to be set expressed in pixel
+     */
+    fun View.setPaddingHorizontal(@Px px: Int) {
+        this.setPadding(px, this.paddingTop, px, this.paddingBottom)
+    }
+
+    /**
+     * Set the left padding for a view
+     * @receiver View
+     * @param px The padding to be set expressed in pixel
+     */
+    fun View.setPaddingLeft(@Px px: Int) {
+        this.setPadding(px, this.paddingTop, this.paddingRight, this.paddingBottom)
+    }
+
+    /**
+     * Set the right padding for a view
+     * @receiver View
+     * @param px The padding to be set expressed in pixel
+     */
+    fun View.setPaddingRight(@Px px: Int) {
+        this.setPadding(this.paddingLeft, this.paddingTop, px, this.paddingBottom)
+    }
+
+    /**
+     * Set the start padding for a view
+     * @receiver View
+     * @param px The padding to be set expressed in pixel
+     */
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    fun View.setPaddingStart(@Px px: Int) {
+        this.setPaddingRelative(px, this.paddingTop, this.paddingEnd, this.paddingBottom)
+    }
+
+    /**
+     * Set the top padding for a view
+     * @receiver View
+     * @param px The padding to be set expressed in pixel
+     */
+    fun View.setPaddingTop(@Px px: Int) {
+        this.setPadding(this.paddingLeft, px, this.paddingRight, this.paddingBottom)
+    }
+
+    /**
+     * Set the vertical padding for a view
+     * @receiver View
+     * @param px The padding to be set expressed in pixel
+     */
+    fun View.setPaddingVertical(@Px px: Int) {
+        this.setPadding(this.paddingLeft, px, this.paddingRight, px)
+    }
 
     /**
      * Smoothly animates view's height from size to desired size

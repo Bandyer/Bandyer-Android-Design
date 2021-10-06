@@ -21,6 +21,10 @@ import android.os.Build
 import android.util.AttributeSet
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingEnd
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingLeft
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingRight
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingStart
 import com.bandyer.video_android_phone_ui.extensions.*
 import com.bandyer.video_android_phone_ui.utils.systemviews.SystemViewLayoutObserver
 import com.bandyer.video_android_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener

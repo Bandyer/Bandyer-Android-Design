@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.extensions.ColorIntExtensions.darkenColor
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.isRTL
 import com.bandyer.video_android_glass_ui.R
 import com.google.android.material.color.MaterialColors
 import java.lang.ref.WeakReference
@@ -64,7 +65,7 @@ internal class MenuProgressIndicator(
     /**
      * Tell if layout is rtl
      */
-    private val isRTL = context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+    private val isRTL = context.isRTL()
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)

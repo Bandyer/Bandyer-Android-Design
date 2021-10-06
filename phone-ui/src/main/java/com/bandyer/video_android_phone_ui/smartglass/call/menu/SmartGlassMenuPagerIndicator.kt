@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.isRTL
 import com.bandyer.video_android_phone_ui.R
 import com.bandyer.video_android_phone_ui.extensions.getPagerIndicatorBooleanAttribute
 import com.bandyer.video_android_phone_ui.extensions.getPagerIndicatorColorAttribute
 import com.bandyer.video_android_phone_ui.extensions.getPagerIndicatorDimensionPixelSizeAttribute
 import com.bandyer.video_android_phone_ui.extensions.getPagerIndicatorIntAttribute
-import com.bandyer.video_android_phone_ui.extensions.isRtl
 import kotlin.math.abs
 
 /**
@@ -287,7 +287,7 @@ class SmartGlassMenuPagerIndicator @JvmOverloads constructor(context: Context, a
      * @suppress
      */
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        if (context.isRtl()) {
+        if (context.isRTL()) {
             val currentPosition = getRTLPosition(position = position)
             selectedItemPosition = currentPosition
             intermediateSelectedItemPosition = currentPosition
@@ -308,7 +308,7 @@ class SmartGlassMenuPagerIndicator @JvmOverloads constructor(context: Context, a
      */
     override fun onPageSelected(position: Int) {
         intermediateSelectedItemPosition = selectedItemPosition
-        selectedItemPosition = if (context.isRtl()) getRTLPosition(position = position) else position
+        selectedItemPosition = if (context.isRTL()) getRTLPosition(position = position) else position
         invalidate()
     }
 
@@ -391,7 +391,7 @@ class SmartGlassMenuPagerIndicator @JvmOverloads constructor(context: Context, a
 
         private fun setIntermediateSelectedItemPosition(mostVisibleChild: View) {
             recyclerView?.findContainingViewHolder(mostVisibleChild)?.adapterPosition?.let { position ->
-                intermediateSelectedItemPosition = if (context.isRtl() && !verticalSupport && (recyclerView?.layoutManager as? LinearLayoutManager)?.stackFromEnd == false) {
+                intermediateSelectedItemPosition = if (context.isRTL() && !verticalSupport && (recyclerView?.layoutManager as? LinearLayoutManager)?.stackFromEnd == false) {
                     getRTLPosition(position = position)
                 } else position
             }

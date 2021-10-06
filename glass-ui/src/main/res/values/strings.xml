@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="bandyer_glass_ringing_pattern" translatable="false">, %1$s</string>
+    <string name="bandyer_glass_ringing_rtl_pattern" translatable="false">%1$s ،</string>
     <string name="bandyer_glass_group_contacts_pattern" translatable="false">+%1$d</string>
     <string name="bandyer_glass_message_counter_pattern" translatable="false">+%1$d</string>
     <string name="bandyer_glass_slider_volume_pattern">Volume: %1$d%%</string>

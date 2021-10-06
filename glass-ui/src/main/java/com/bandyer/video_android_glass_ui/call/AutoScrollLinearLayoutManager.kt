@@ -2,11 +2,11 @@ package com.bandyer.video_android_glass_ui.call
 
 import android.content.Context
 import android.util.DisplayMetrics
-import android.view.View
 import android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.isRTL
 
 /**
  * A [LinearLayoutManager] which enables an ellipsis marquee like behavior.
@@ -20,7 +20,7 @@ class AutoScrollLinearLayoutManager constructor(
     reverseLayout: Boolean
 ) : LinearLayoutManager(context, orientation, reverseLayout) {
 
-    private val isRTL = context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+    private val isRTL = context.isRTL()
 
     /**
      * Smooth scroller which override speed per pixel

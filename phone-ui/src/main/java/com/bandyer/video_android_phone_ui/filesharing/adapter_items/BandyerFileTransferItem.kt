@@ -8,12 +8,12 @@ import android.text.format.Formatter
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingBottom
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingTop
 import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.bandyer.video_android_phone_ui.R
 import com.bandyer.video_android_phone_ui.databinding.BandyerFileShareItemBinding
 import com.bandyer.video_android_phone_ui.extensions.getFileTypeFromMimeType
-import com.bandyer.video_android_phone_ui.extensions.setPaddingBottom
-import com.bandyer.video_android_phone_ui.extensions.setPaddingTop
 import com.bandyer.video_android_phone_ui.filesharing.FileShareViewModel
 import com.bandyer.video_android_phone_ui.filesharing.buttons.BandyerFileTransferActionButton
 import com.bandyer.video_android_phone_ui.filesharing.imageviews.BandyerFileTypeImageView

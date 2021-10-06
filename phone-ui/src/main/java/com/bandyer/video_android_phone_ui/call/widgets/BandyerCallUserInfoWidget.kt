@@ -19,10 +19,10 @@ package com.bandyer.video_android_phone_ui.call.widgets
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingTop
 import com.bandyer.video_android_phone_ui.R
 import com.bandyer.video_android_phone_ui.databinding.BandyerWidgetCallUserInfoBinding
 import com.bandyer.video_android_phone_ui.extensions.scanForFragmentActivity
-import com.bandyer.video_android_phone_ui.extensions.setPaddingTop
 import com.bandyer.video_android_phone_ui.layout.SystemControlsAwareHorizontalConstraintLayout
 import com.bandyer.video_android_phone_ui.utils.ToggleableVisibilityInterface
 import com.bandyer.video_android_phone_ui.utils.VisibilityToggle

@@ -11,13 +11,14 @@ import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 import com.bandyer.video_android_core_ui.extensions.ColorIntExtensions.darkenColor
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getScreenSize
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.isRTL
 import com.bandyer.video_android_glass_ui.R
 import com.google.android.material.color.MaterialColors
 import java.util.*
 
 
 /**
- * An incremental line indicator while scrolling in the recycler view
+ * A full screen incremental line indicator while scrolling in the recycler view
  *
  * @property height Float
  * @constructor
@@ -57,7 +58,7 @@ internal class ReadProgressDecoration(context: Context) : ItemDecoration() {
     /**
      * True if layout is rtl
      */
-    private val isRTL = context.resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
+    private val isRTL = context.isRTL()
 
     override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDrawOver(c, parent, state)
@@ -81,7 +82,8 @@ internal class ReadProgressDecoration(context: Context) : ItemDecoration() {
     private fun Canvas.drawInactiveIndicator(parent: View) {
         paint.color = colorInactive
         val y = parent.height - this@ReadProgressDecoration.height / 2f
-        drawLine(0f, y, parent.width.toFloat(), y, paint)
+        val parentStart = if (isRTL) parent.right else parent.left
+        drawLine(-parentStart.toFloat(), y, screenWidth, y, paint)
     }
 
     private fun Canvas.drawHighlights(
@@ -92,9 +94,9 @@ internal class ReadProgressDecoration(context: Context) : ItemDecoration() {
     ) {
         paint.color = colorActive
         val y = parent.height - this@ReadProgressDecoration.height / 2f
-        val parentStart = if (isRTL) parent.right else parent.left
         val highlightWidth = (highlightPosition + progress) * itemWidth
+        val startX = if (isRTL) screenWidth else -parent.left
         val stopX = if(isRTL) screenWidth - highlightWidth else highlightWidth
-        drawLine(parentStart.toFloat(), y, stopX, y, paint)
+        drawLine(startX.toFloat(), y, stopX, y, paint)
     }
 }

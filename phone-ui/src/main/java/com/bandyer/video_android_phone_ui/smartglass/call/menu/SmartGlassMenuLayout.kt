@@ -15,12 +15,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.SnapHelper
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.isRTL
 import com.bandyer.video_android_phone_ui.R
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.AdapterActionItem
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.CallAction
 import com.bandyer.video_android_phone_ui.databinding.BandyerWidgetSmartglassesMenuLayoutBinding
-import com.bandyer.video_android_phone_ui.extensions.isRtl
 import com.bandyer.video_android_phone_ui.extensions.performTap
 import com.bandyer.video_android_phone_ui.smartglass.call.menu.utils.MotionEventInterceptableView
 import com.bandyer.video_android_phone_ui.smartglass.call.menu.utils.dispatchMotionEventToInterceptor
@@ -58,7 +58,7 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
     var items: List<CallAction> = listOf()
         set(value) {
             field = value
-            fastItemAdapter.set((if (context.isRtl()) items.reversed() else items).map { AdapterActionItem(it) })
+            fastItemAdapter.set((if (context.isRTL()) items.reversed() else items).map { AdapterActionItem(it) })
         }
 
     /**
@@ -71,8 +71,8 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
 
     private val binding: BandyerWidgetSmartglassesMenuLayoutBinding by lazy { BandyerWidgetSmartglassesMenuLayoutBinding.inflate(LayoutInflater.from(context), this) }
 
-    private val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, context.isRtl()).apply {
-        stackFromEnd = context.isRtl()
+    private val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, context.isRTL()).apply {
+        stackFromEnd = context.isRTL()
     }
 
     private val gestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {

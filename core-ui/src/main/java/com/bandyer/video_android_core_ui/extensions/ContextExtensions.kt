@@ -6,6 +6,7 @@ import android.content.ContextWrapper
 import android.graphics.Point
 import android.os.Build
 import android.util.DisplayMetrics
+import android.view.View
 import android.view.WindowManager
 import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
@@ -19,6 +20,14 @@ object ContextExtensions {
 
     private val dipsMap = HashMap<Float, Int>()
     private val pixelsMap = HashMap<Float, Int>()
+
+    /**
+     * Check if the current layout configuration is RTL
+     *
+     * @receiver Context
+     * @return Boolean True if the layout is rtl, false otherwise
+     */
+    fun Context.isRTL(): Boolean = resources.configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL
 
     /**
      * Get the activity related to the context

@@ -27,6 +27,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.DialogFragment
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingLeft
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingRight
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingTop
 import com.bandyer.video_android_phone_ui.R
 import com.bandyer.video_android_phone_ui.bottom_sheet.BandyerBottomSheetDialog
 import com.bandyer.video_android_phone_ui.dialogs.BandyerDialog
@@ -60,7 +63,7 @@ class BandyerWhiteboardTextEditorDialog : BandyerDialog<BandyerWhiteboardTextEdi
         if (dialog == null) dialog = CustomTextEditorDialog()
         dialog!!.setListener(listener)
         dialog!!.arguments = Bundle()
-        dialog!!.arguments!!.putString(TEXT_PLACEHOLDER, oldText)
+        dialog!!.requireArguments().putString(TEXT_PLACEHOLDER, oldText)
         show(activity)
         return this
     }

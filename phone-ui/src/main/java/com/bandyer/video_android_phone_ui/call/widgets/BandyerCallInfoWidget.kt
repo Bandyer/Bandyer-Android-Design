@@ -26,6 +26,9 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getActivity
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingLeft
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingRight
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingTop
 import com.bandyer.video_android_core_ui.layout.BandyerCallWatermarkLayout
 import com.bandyer.video_android_phone_ui.R
 import com.bandyer.video_android_phone_ui.databinding.BandyerWidgetCallInfoBinding

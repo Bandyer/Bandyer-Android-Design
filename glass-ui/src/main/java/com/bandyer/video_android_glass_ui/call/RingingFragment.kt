@@ -64,7 +64,8 @@ class RingingFragment : BaseFragment() {
                     itemAdapter!!.add(
                         FullScreenDialogItem("Mario Rossi"),
                         FullScreenDialogItem("Gianfranco Mazzoni"),
-                        FullScreenDialogItem("Andrea Tocchetti")
+                        FullScreenDialogItem("Andrea Tocchetti"),
+                        FullScreenDialogItem("Stefano Brusadelli")
                     )
                 }
 
