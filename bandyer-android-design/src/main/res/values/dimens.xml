@@ -45,6 +45,7 @@
     <dimen name="bandyer_dimen_normal_image_button">56dp</dimen>
     <dimen name="bandyer_dimen_reload_image_button">72dp</dimen>
     <dimen name="bandyer_dimen_chat_avatar_size">40dp</dimen>
+    <dimen name="bandyer_dimen_smart_glass_image_button_size">128dp</dimen>
 
     <!-- texts -->
 
