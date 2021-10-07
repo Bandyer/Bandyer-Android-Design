@@ -61,7 +61,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@id/bandyer_timestamp_view"
-                tools:src="@drawable/ic_bandyer_time" />
+                tools:src="@drawable/ic_bandyer_clock" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

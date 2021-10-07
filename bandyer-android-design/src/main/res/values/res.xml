@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <item name="ic_bandyer_answer" type="drawable">@drawable/bandyer_audio_call_icon</item>
+    <item name="ic_bandyer_answer" type="drawable">@drawable/bandyer_answer_icon</item>
     <item name="ic_bandyer_audio_call" type="drawable">@drawable/bandyer_audio_call_icon</item>
     <item name="ic_bandyer_audio_upgradable_call" type="drawable">@drawable/bandyer_audio_upgradable_call_icon</item>
     <item name="ic_bandyer_video_call" type="drawable">@drawable/bandyer_video_call_icon</item>
@@ -46,7 +46,7 @@
     <item name="ic_bandyer_nav_close" type="drawable">@drawable/bandyer_nav_close_icon</item>
     <item name="ic_bandyer_nav_save" type="drawable">@drawable/bandyer_nav_save_icon</item>
     <item name="ic_bandyer_nav_share_whiteboard" type="drawable">@drawable/bandyer_nav_share_whiteboard_icon</item>
-    <item name="ic_bandyer_nav_upload" type="drawable">@drawable/bandyer_nav_upload_icon</item>
+    <item name="ic_bandyer_image_upload" type="drawable">@drawable/bandyer_image_upload_icon</item>
     <item name="ic_bandyer_notification" type="drawable">@drawable/bandyer_notification_icon</item>
     <item name="ic_bandyer_options" type="drawable">@drawable/bandyer_options_icon</item>
     <item name="ic_bandyer_participants" type="drawable">@drawable/bandyer_participants_icon</item>
@@ -59,7 +59,7 @@
     <item name="ic_bandyer_single_tick" type="drawable">@drawable/bandyer_single_tick_icon</item>
     <item name="ic_bandyer_snapshot" type="drawable">@drawable/bandyer_snapshot_icon</item>
     <item name="ic_bandyer_switch_camera" type="drawable">@drawable/bandyer_switch_camera_icon</item>
-    <item name="ic_bandyer_time" type="drawable">@drawable/bandyer_time_icon</item>
+    <item name="ic_bandyer_clock" type="drawable">@drawable/bandyer_clock_icon</item>
     <item name="ic_bandyer_whiteboard" type="drawable">@drawable/bandyer_whiteboard_icon</item>
     <item name="ic_bandyer_wired_headset" type="drawable">@drawable/bandyer_wired_headset_icon</item>
     <item name="ic_bandyer_add" type="drawable">@drawable/bandyer_add_icon</item>
