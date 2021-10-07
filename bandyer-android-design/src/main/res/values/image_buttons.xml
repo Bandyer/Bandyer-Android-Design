@@ -46,10 +46,9 @@
     </style>
 
     <style name="BandyerSDKDesign.ImageButton.AudioRoute" parent="BandyerSDKDesign.ImageButton">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space48</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space48</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingRight">@dimen/bandyer_dimen_space8</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space8</item>
+        <item name="iconSize">@dimen/bandyer_dimen_space48</item>
         <item name="iconTint">@color/bandyer_audio_route_icon_color</item>
         <item name="android:clickable">false</item>
         <item name="android:focusable">false</item>
@@ -136,7 +135,7 @@
         <item name="android:visibility">visible</item>
         <item name="rippleColor">@android:color/white</item>
         <item name="icon">@drawable/bandyer_call_user_info_fullscreen_icon</item>
-        <item name="iconSize">@dimen/bandyer_dimen_space56</item>
+        <item name="iconSize">@dimen/bandyer_dimen_space48</item>
         <item name="android:contentDescription">@string/bandyer_fullscreen_button</item>
     </style>
 

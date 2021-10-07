@@ -26,6 +26,8 @@
 
     <com.bandyer.sdk_design.bottom_sheet.view.AudioRouteIconView
         android:id="@+id/bandyer_audio_item_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="?attr/bandyer_iconStyle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
