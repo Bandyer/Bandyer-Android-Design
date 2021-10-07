@@ -48,6 +48,14 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:focusable="false"
-        android:focusableInTouchMode="false"/>
+        android:focusableInTouchMode="false">
+
+        <com.bandyer.sdk_design.buttons.BandyerHideableButton
+            android:id="@+id/fullscreen_info"
+            style="@style/BandyerSDKDesign.FullscreenToastButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </com.bandyer.sdk_design.bottom_sheet.view.BandyerBottomSheetLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

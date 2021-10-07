@@ -23,6 +23,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.util.Rational
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
@@ -151,7 +152,8 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
             onClickListener = this@CallActivity
             savedInstanceState?.let { restoreInstanceState(it) }
         }
-        callActionWidget!!.showCallControls(false,true,false, bottomSheetLayoutType = BottomSheetLayoutType.LIST(BottomSheetLayoutType.Orientation.HORIZONTAL))
+        callActionWidget!!.setAnchoredView(findViewById(R.id.fullscreen_info), Gravity.TOP or Gravity.CENTER_HORIZONTAL)
+        callActionWidget!!.showCallControls(true, false, false, bottomSheetLayoutType = BottomSheetLayoutType.GRID(4, BottomSheetLayoutType.Orientation.VERTICAL))
         AudioCallSession.getInstance().currentAudioOutputDevice?.let {
             callActionWidget?.selectAudioRoute(getAudioRoute(it))
         }
