@@ -53,6 +53,7 @@
         <com.bandyer.sdk_design.buttons.BandyerHideableButton
             android:id="@+id/fullscreen_info"
             style="@style/BandyerSDKDesign.FullscreenToastButton"
+            android:layout_gravity="center_horizontal|bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
