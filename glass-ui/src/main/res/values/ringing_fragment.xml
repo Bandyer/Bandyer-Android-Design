@@ -11,6 +11,7 @@
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Ringing</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Ringing</item>
     </style>
 
     <!-- RECYCLERVIEW ITEM -->
@@ -22,4 +23,25 @@
         <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
     </style>
+
+    <!-- BOTTOM NAVIGATION -->
+
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog">
+        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog.Ringing</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog.Ringing</item>
+        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog.Ringing</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/bandyer_glass_decline</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog">
+        <item name="android:text">@string/bandyer_glass_decline</item>
+    </style>
 </resources>
+

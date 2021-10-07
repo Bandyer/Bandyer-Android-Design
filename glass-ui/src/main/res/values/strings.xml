@@ -3,7 +3,8 @@
     <string name="bandyer_glass_ringing_pattern" translatable="false">, %1$s</string>
     <string name="bandyer_glass_ringing_rtl_pattern" translatable="false">%1$s ،</string>
     <string name="bandyer_glass_group_contacts_pattern" translatable="false">+%1$d</string>
-    <string name="bandyer_glass_message_counter_pattern" translatable="false">+%1$d</string>
+    <string name="bandyer_glass_message_counter_pattern" translatable="false">%1$d</string>
+    <string name="bandyer_glass_n_of_participants_pattern">+%1$d participants</string>
     <string name="bandyer_glass_slider_volume_pattern">Volume: %1$d%%</string>
     <string name="bandyer_glass_slider_zoom_pattern">Zoom: %1$d%%</string>
     <string name="bandyer_glass_new_messages_pattern">%1$d new messages</string>
@@ -23,6 +24,7 @@
     <string name="bandyer_glass_ringing">is calling…</string>
     <string name="bandyer_glass_ringing_group">incoming group call…</string>
     <string name="bandyer_glass_dialing">dialing…</string>
+    <string name="bandyer_glass_dialing_group">group call ringing…</string>
     <string name="bandyer_glass_connecting">connecting…</string>
     <string name="bandyer_glass_want_end_call">End the call?</string>
     <string name="bandyer_glass_confirm_end_call">Do you confirm to end the conversation?</string>

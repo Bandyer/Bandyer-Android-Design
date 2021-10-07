@@ -8,14 +8,28 @@
 
     <!-- DIALING FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Dialing" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
+        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Dialing</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Dialing</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Dialing</item>
     </style>
 
+    <!-- RECYCLERVIEW ITEM -->
+    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Dialing" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Dialing.RootLayout</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Dialing.RootLayout" parent="">
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
+    </style>
+
+    <!-- SUBTITLE -->
     <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Dialing" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog">
         <item name="android:text">@string/bandyer_glass_dialing</item>
     </style>
 
+    <!-- BOTTOM NAVIGATION -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Dialing" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog">
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Dialing</item>
     </style>

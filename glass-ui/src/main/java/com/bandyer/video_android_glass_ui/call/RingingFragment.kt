@@ -70,6 +70,8 @@ class RingingFragment : BaseFragment() {
                 val isGroupCall = itemAdapter!!.adapterItemCount > 1
                 if(!isGroupCall)
                     bandyerBottomNavigation.hideSwipeHorizontalItem()
+                else
+                    bandyerCounter.text = resources.getString(R.string.bandyer_glass_n_of_participants_pattern, itemAdapter!!.adapterItemCount)
 
                 bandyerSubtitle.text = resources.getString(if(isGroupCall) R.string.bandyer_glass_ringing_group else R.string.bandyer_glass_ringing)
             }

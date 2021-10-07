@@ -65,11 +65,11 @@
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
         <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/bandyer_glass_decline</item>
+        <item name="android:contentDescription">@string/bandyer_glass_close</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog" parent="BandyerSDKDesign.TextView.GlassLabel">
-        <item name="android:text">@string/bandyer_glass_decline</item>
+        <item name="android:text">@string/bandyer_glass_close</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
