@@ -75,8 +75,5 @@
     <item name="ic_bandyer_upload" type="drawable">@drawable/bandyer_arrowup</item>
 
     <!-- Unused -->
-    <item name="ic_bandyer_nav_save" type="drawable">@drawable/bandyer_nav_save_icon</item>
-    <item name="ic_bandyer_big_notification" type="drawable">@drawable/bandyer_big_notification_icon</item>
-    <item name="ic_bandyer_notification" type="drawable">@drawable/bandyer_notification_icon</item>
     <item name="ic_bandyer_options" type="drawable">@drawable/bandyer_options_icon</item>
 </resources>
