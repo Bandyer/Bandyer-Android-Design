@@ -24,7 +24,6 @@
     <item name="ic_bandyer_avatar_small" type="drawable">@drawable/bandyer_user2</item>
     <item name="ic_bandyer_avatars" type="drawable">@drawable/bandyer_users2</item>
     <item name="ic_bandyer_back_arrow" type="drawable">@drawable/bandyer_arrowback</item>
-    <item name="ic_bandyer_back_close" type="drawable">@drawable/bandyer_x</item>
     <item name="ic_bandyer_back_down" type="drawable">@drawable/bandyer_arrowdown2</item>
     <item name="ic_bandyer_bluetooth_headset" type="drawable">@drawable/bandyer_bluetooth</item>
     <item name="ic_bandyer_camera_off" type="drawable">@drawable/bandyer_camoff</item>

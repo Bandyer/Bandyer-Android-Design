@@ -41,11 +41,12 @@
 
     <!-- image button -->
 
-    <dimen name="bandyer_dimen_big_image_button">72dp</dimen>
-    <dimen name="bandyer_dimen_normal_image_button">56dp</dimen>
-    <dimen name="bandyer_dimen_reload_image_button">72dp</dimen>
+    <dimen name="bandyer_dimen_big_image_button">48dp</dimen>
+    <dimen name="bandyer_dimen_send_image_button">40dp</dimen>
+    <dimen name="bandyer_dimen_normal_image_button">32dp</dimen>
     <dimen name="bandyer_dimen_chat_avatar_size">40dp</dimen>
-    <dimen name="bandyer_dimen_smart_glass_image_button_size">128dp</dimen>
+    <dimen name="bandyer_dimen_big_image_size">96dp</dimen>
+    <dimen name="bandyer_dimen_smart_glass_image_button_size">96dp</dimen>
 
     <!-- texts -->
 

@@ -77,4 +77,6 @@
     <color name="bandyer_screen_share_color">#D50000</color>
     <color name="bandyer_screen_share_color_night">#FF5131</color>
 
+    <!-- recording color -->
+    <color name="bandyer_recording_color">#D50000</color>
 </resources>

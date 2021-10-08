@@ -53,8 +53,8 @@ class BandyerChatUnreadMessagesWidget @JvmOverloads constructor(context: Context
     private fun updateText(counter: Int) {
         text = when {
             counter <= 0 -> ""
-            counter < 99 -> "  $counter"
-            else -> "  99+"
+            counter < 99 -> "$counter"
+            else -> "99+"
         }
     }
 
