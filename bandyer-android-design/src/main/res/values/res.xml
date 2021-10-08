@@ -71,8 +71,8 @@
     <item name="ic_bandyer_glass_cam_on" type="drawable">@drawable/bandyer_camon</item>
     <item name="ic_bandyer_glass_participants" type="drawable">@drawable/bandyer_users2</item>
 
-    <item name="ic_bandyer_add" type="drawable">@drawable/bandyer_add_icon</item>
-    <item name="ic_bandyer_upload" type="drawable">@drawable/bandyer_upload_icon</item>
+    <item name="ic_bandyer_add" type="drawable">@drawable/bandyer_plus</item>
+    <item name="ic_bandyer_upload" type="drawable">@drawable/bandyer_arrowup</item>
 
     <!-- Unused -->
     <item name="ic_bandyer_nav_save" type="drawable">@drawable/bandyer_nav_save_icon</item>
