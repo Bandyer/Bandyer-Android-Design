@@ -36,7 +36,7 @@
 
     <!-- Fullscreen info -->
     <style name="BandyerSDKDesign.FullscreenToastButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="backgroundTint">@color/bandyer_color_surface_55</item>
+        <item name="backgroundTint">@color/bandyer_color_surface_40</item>
         <item name="android:text">@string/bandyer_fullscreen_info</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:padding">@dimen/bandyer_dimen_space8</item>
