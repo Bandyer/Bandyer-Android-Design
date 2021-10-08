@@ -25,6 +25,7 @@ import android.util.Log
 import android.util.Rational
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import com.bandyer.android_audiosession.model.AudioOutputDevice
@@ -39,6 +40,7 @@ import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.AudioRouteState
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
 import com.bandyer.sdk_design.buttons.BandyerActionButton
+import com.bandyer.sdk_design.buttons.BandyerHideableButton
 import com.bandyer.sdk_design.call.bottom_sheet.OnAudioRouteBottomSheetListener
 import com.bandyer.sdk_design.call.bottom_sheet.items.AudioRoute
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
@@ -46,6 +48,7 @@ import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction.CAMERA
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction.Items.getActions
 import com.bandyer.sdk_design.call.widgets.BandyerCallActionWidget
 import com.bandyer.sdk_design.call.widgets.BandyerCallInfoWidget
+import com.bandyer.sdk_design.call.widgets.BandyerCallUserInfoWidget
 import com.bandyer.sdk_design.extensions.getScreenSize
 import com.bandyer.sdk_design.screensharing.dialog.BandyerScreenSharePickerDialog
 import com.google.android.material.snackbar.Snackbar
@@ -129,7 +132,6 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
                 callActionWidget?.selectAudioRoute(getAudioRoute(currentAudioOutputDevice))
             }
         })
-
     }
 
     override fun onResume() {
@@ -142,8 +144,9 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
     }
 
     private fun initializeUI(savedInstanceState: Bundle?) {
-        initializeCallInfoWidget()
         initializeBottomSheetLayout(savedInstanceState)
+        initializeCallInfoWidget()
+        initializeUserInfoWidget()
     }
 
     private fun initializeBottomSheetLayout(savedInstanceState: Bundle?) {
@@ -159,35 +162,43 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
         }
     }
 
-    private fun initializeCallInfoWidget() {
-        val callInfoWidget = findViewById<BandyerCallInfoWidget>(R.id.call_info)
-        callInfoWidget.setTitle("Bob Martin, John Doe, Mark Smith, Julie Randall")
-        callInfoWidget.setSubtitle("Dialing...")
-        callInfoWidget.setRecordingText("Recording in progress...")
-        callInfoWidget.setRecording(true)
+    private fun initializeCallInfoWidget() = with(findViewById<BandyerCallInfoWidget>(R.id.call_info)) {
+        setTitle("Bob Martin, John Doe, Mark Smith, Julie Randall")
+        setSubtitle("Dialing...")
+        setRecordingText("Recording in progress...")
+        setRecording(true)
 
-        callInfoWidget.setOnClickListener {
+        setOnClickListener {
             when {
                 callActionWidget!!.isCollapsed() -> callActionWidget!!.anchor()
-                callActionWidget!!.isAnchored()  -> callActionWidget!!.expand()
-                callActionWidget!!.isExpanded()  -> callActionWidget!!.collapse()
+                callActionWidget!!.isAnchored() -> callActionWidget!!.expand()
+                callActionWidget!!.isExpanded() -> callActionWidget!!.collapse()
             }
+        }
+    }
+
+    private fun initializeUserInfoWidget() = with(findViewById<BandyerCallUserInfoWidget>(R.id.call_user_info)) {
+        this.text = "Juan Carlos"
+        val fullScreenInfo = this@CallActivity.findViewById<BandyerHideableButton>(R.id.fullscreen_info)
+        fullscreenActionButton!!.setOnClickListener {
+            setFullscreenStyle(!fullscreenActionButton!!.isActivated)
+            fullScreenInfo.visibility = if (fullscreenActionButton!!.isActivated) View.VISIBLE else View.GONE
         }
     }
 
     private fun getAudioRoute(audioOutputDevice: AudioOutputDevice): AudioRoute {
         val isActive = AudioCallSession.getInstance().currentAudioOutputDevice == audioOutputDevice
         return when (audioOutputDevice) {
-            is AudioOutputDevice.BLUETOOTH     -> AudioRoute.BLUETOOTH(
+            is AudioOutputDevice.BLUETOOTH -> AudioRoute.BLUETOOTH(
                 this,
                 identifier = audioOutputDevice.identifier,
                 name = audioOutputDevice.name ?: "",
                 batteryLevel = audioOutputDevice.batteryLevel,
                 bluetoothConnectionStatus = AudioRouteState.BLUETOOTH.valueOf(audioOutputDevice.bluetoothConnectionStatus.name)
             )
-            is AudioOutputDevice.NONE          -> AudioRoute.MUTED(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
-            is EARPIECE                        -> AudioRoute.EARPIECE(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
-            is AudioOutputDevice.LOUDSPEAKER   -> AudioRoute.LOUDSPEAKER(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
+            is AudioOutputDevice.NONE -> AudioRoute.MUTED(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
+            is EARPIECE -> AudioRoute.EARPIECE(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
+            is AudioOutputDevice.LOUDSPEAKER -> AudioRoute.LOUDSPEAKER(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
             is AudioOutputDevice.WIRED_HEADSET -> AudioRoute.WIRED_HEADSET(this, audioOutputDevice.identifier, audioOutputDevice.name, isActive)
         }
     }
@@ -197,7 +208,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
         for (device in AudioCallSession.getInstance().getAvailableAudioOutputDevices) {
             val isActive = AudioCallSession.getInstance().currentAudioOutputDevice == device
             when (device) {
-                is AudioOutputDevice.BLUETOOTH     -> routes.add(
+                is AudioOutputDevice.BLUETOOTH -> routes.add(
                     AudioRoute.BLUETOOTH(
                         this,
                         device.identifier,
@@ -207,9 +218,9 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
                     )
                 )
                 is AudioOutputDevice.WIRED_HEADSET -> routes.add(AudioRoute.WIRED_HEADSET(this, device.identifier, device.name, isActive))
-                is AudioOutputDevice.LOUDSPEAKER   -> routes.add(AudioRoute.LOUDSPEAKER(this, device.identifier, device.name, isActive))
-                is EARPIECE                        -> routes.add(AudioRoute.EARPIECE(this, device.identifier, device.name, isActive))
-                is AudioOutputDevice.NONE          -> {
+                is AudioOutputDevice.LOUDSPEAKER -> routes.add(AudioRoute.LOUDSPEAKER(this, device.identifier, device.name, isActive))
+                is EARPIECE -> routes.add(AudioRoute.EARPIECE(this, device.identifier, device.name, isActive))
+                is AudioOutputDevice.NONE -> {
                     // nothing to add
                 }
             }
@@ -224,10 +235,10 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
         }
 
         val device = when (item) {
-            is AudioRoute.BLUETOOTH     -> item.toAudioOutputDevice()
-            is AudioRoute.MUTED         -> AudioOutputDevice.NONE() // mute stream audio
-            is AudioRoute.EARPIECE      -> EARPIECE()
-            is AudioRoute.LOUDSPEAKER   -> AudioOutputDevice.LOUDSPEAKER()
+            is AudioRoute.BLUETOOTH -> item.toAudioOutputDevice()
+            is AudioRoute.MUTED -> AudioOutputDevice.NONE() // mute stream audio
+            is AudioRoute.EARPIECE -> EARPIECE()
+            is AudioRoute.LOUDSPEAKER -> AudioOutputDevice.LOUDSPEAKER()
             is AudioRoute.WIRED_HEADSET -> AudioOutputDevice.WIRED_HEADSET()
         }.apply { this.name = item.name }
 
@@ -244,13 +255,13 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
 
     override fun onCallActionClicked(item: CallAction, position: Int): Boolean {
         return when (item) {
-            is CallAction.SCREEN_SHARE  -> {
+            is CallAction.SCREEN_SHARE -> {
                 BandyerScreenSharePickerDialog().show(this@CallActivity) {
                     Snackbar.make(callActionWidget!!.coordinatorLayout, it.name, Snackbar.LENGTH_SHORT).show()
                 }
                 true
             }
-            is CAMERA                   -> {
+            is CAMERA -> {
                 // if permissions toggle
                 item.toggle()
                 true
@@ -259,7 +270,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
                 (item.itemView as? BandyerActionButton)?.isEnabled = false
                 false
             }
-            else                        -> false
+            else -> false
         }
     }
 
