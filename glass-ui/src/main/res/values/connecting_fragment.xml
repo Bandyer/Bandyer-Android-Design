@@ -2,6 +2,8 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Connecting">
         <attr name="bandyer_rootLayoutStyle" />
+        <attr name="recyclerViewStyle" />
+        <attr name="bandyer_recyclerViewItemStyle" />
         <attr name="bandyer_subtitleStyle" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>

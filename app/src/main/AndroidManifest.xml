@@ -36,6 +36,7 @@
             android:theme="@style/BandyerSDKDesign.Theme.Call"
             tools:targetApi="n" />
         <activity
+            android:exported="true"
             android:name="com.bandyer.app_design.MainActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:theme="@style/BandyerSDKDesign.Theme.Call">

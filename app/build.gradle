@@ -20,7 +20,6 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
-def kotlin_coroutines = "1.4.3"
 def bandyer_audio_session_version = '2.0.5'
 def nav_version = "2.3.5"
 
@@ -29,13 +28,13 @@ def compiler = javaToolchains.compilerFor {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "com.bandyer.app_design"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -83,7 +82,6 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines"
     implementation 'androidx.fragment:fragment-ktx:1.3.4'
     implementation 'androidx.activity:activity-ktx:1.2.3'
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"

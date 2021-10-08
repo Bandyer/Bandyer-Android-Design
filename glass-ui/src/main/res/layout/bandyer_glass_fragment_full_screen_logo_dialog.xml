@@ -28,7 +28,6 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/bandyer_participants"
-                style="?attr/bandyer_titleStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/bandyer_subtitle"

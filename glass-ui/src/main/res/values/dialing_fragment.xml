@@ -2,26 +2,16 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Dialing">
         <attr name="bandyer_rootLayoutStyle" />
+        <attr name="recyclerViewStyle" />
+        <attr name="bandyer_recyclerViewItemStyle" />
         <attr name="bandyer_subtitleStyle" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- DIALING FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Dialing" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
-        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Dialing</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Dialing</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Dialing</item>
-    </style>
-
-    <!-- RECYCLERVIEW ITEM -->
-    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Dialing" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Dialing.RootLayout</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Dialing.RootLayout" parent="">
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
     </style>
 
     <!-- SUBTITLE -->

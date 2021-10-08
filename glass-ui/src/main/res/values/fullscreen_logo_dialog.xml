@@ -2,7 +2,8 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
         <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_titleStyle" />
+        <attr name="recyclerViewStyle" />
+        <attr name="bandyer_recyclerViewItemStyle" />
         <attr name="bandyer_subtitleStyle" />
         <attr name="bandyer_counterStyle" />
         <attr name="bottomNavigationStyle" />
@@ -10,17 +11,26 @@
 
     <!-- FULL SCREEN LOGO DIALOG FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.DarkBackground">
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenLogoDialog</item>
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog</item>
+        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog</item>
         <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Counter</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog</item>
     </style>
 
-    <!-- TITLE -->
-    <style name="BandyerSDKDesign.TextView.Title.FullScreenLogoDialog" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:includeFontPadding">false</item>
+    <!-- RECYCLERVIEW -->
+    <style name="BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.RecyclerView">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <!-- RECYCLERVIEW ITEM -->
+    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog.RootLayout</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog.RootLayout" parent="">
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
     </style>
 
     <!-- SUBTITLE -->

@@ -5,27 +5,15 @@
         <attr name="recyclerViewStyle" />
         <attr name="bandyer_recyclerViewItemStyle" />
         <attr name="bandyer_subtitleStyle" />
+        <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- RINGING FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
-        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Ringing</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Ringing</item>
     </style>
 
-    <!-- RECYCLERVIEW ITEM -->
-    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Ringing" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Ringing.RootLayout</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Ringing.RootLayout" parent="">
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
-    </style>
-
     <!-- BOTTOM NAVIGATION -->
-
     <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog">
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog.Ringing</item>
     </style>
