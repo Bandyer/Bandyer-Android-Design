@@ -1,0 +1,19 @@
+<svg id="board" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #1b1c1e;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g id="Raggruppa_2523" data-name="Raggruppa 2523" transform="translate(3299.8 -211.237)">
+    <path id="Tracciato_1199" data-name="Tracciato 1199" class="cls-1" d="M12,21a9,9,0,1,0-9-9A9,9,0,0,0,12,21Z" transform="translate(-3299.8 211.238)"/>
+    <path id="Tracciato_1200" data-name="Tracciato 1200" class="cls-1" d="M9.955,13.3V10.945L11.919,8l1.964,2.945V13.3M7.55,19.605l1.424-5.714h5.891l1.424,5.714" transform="translate(-3299.719 211.474)"/>
+  </g>
+  <rect id="Rettangolo_1302" data-name="Rettangolo 1302" class="cls-2" width="24" height="24"/>
+</svg>

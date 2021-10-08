@@ -1,0 +1,16 @@
+<svg id="cuffie" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #000;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <path id="headphones" class="cls-1" d="M3,11.889V11a8,8,0,0,1,16,0v.889m-16,0V19H6.556V11.889Zm16,0V19H15.444V11.889Z" transform="translate(1 1)"/>
+  <rect id="Rettangolo_1310" data-name="Rettangolo 1310" class="cls-2" width="24" height="24"/>
+</svg>

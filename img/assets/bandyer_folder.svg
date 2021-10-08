@@ -1,0 +1,17 @@
+<svg id="folder" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1334" data-name="Rettangolo 1334" class="cls-1" width="24" height="24"/>
+  <path id="folder-open-alt" class="cls-2" d="M3.8,10.3V4H9.971l2.057,2.7H18.2v3.6M2,10.3l2,8.1H18l2-8.1Z" transform="translate(1 0.8)"/>
+</svg>

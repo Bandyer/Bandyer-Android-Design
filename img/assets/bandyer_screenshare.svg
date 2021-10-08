@@ -1,0 +1,20 @@
+<svg id="screenshare" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #1b1c1e;
+        stroke-miterlimit: 10;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g id="airplay" transform="translate(0 0.818)">
+    <path id="Tracciato_1013" data-name="Tracciato 1013" class="cls-1" d="M5,15H3V4H21V15H19" transform="translate(0)"/>
+    <path id="Tracciato_1014" data-name="Tracciato 1014" class="cls-1" d="M18,20H6l6-8Z" transform="translate(0 -1.636)"/>
+  </g>
+  <rect id="Rettangolo_1304" data-name="Rettangolo 1304" class="cls-2" width="24" height="24"/>
+</svg>

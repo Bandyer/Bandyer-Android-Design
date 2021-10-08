@@ -1,0 +1,20 @@
+<svg id="doc" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1330" data-name="Rettangolo 1330" class="cls-1" width="24" height="24"/>
+  <g id="file">
+    <path id="Tracciato_1250" data-name="Tracciato 1250" class="cls-2" d="M19,21H5V3h8l6,6Z"/>
+    <path id="Tracciato_1251" data-name="Tracciato 1251" class="cls-2" d="M13,3V9h6"/>
+  </g>
+</svg>

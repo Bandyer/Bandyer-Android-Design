@@ -1,0 +1,23 @@
+<svg id="camon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #1b1c1e;
+        stroke-width: 1.5px;
+      }
+
+      .cls-2 {
+        stroke-linecap: round;
+      }
+    </style>
+  </defs>
+  <g id="video" transform="translate(3 5)">
+    <path id="Tracciato_1029" data-name="Tracciato 1029" class="cls-1" d="M3,5H16V19H3Z" transform="translate(-3 -5)"/>
+    <path id="Tracciato_1030" data-name="Tracciato 1030" class="cls-2" d="M16,11l5-3v8l-5-3" transform="translate(-3 -5)"/>
+  </g>
+  <rect id="Rettangolo_1319" data-name="Rettangolo 1319" class="cls-3" width="24" height="24"/>
+</svg>
