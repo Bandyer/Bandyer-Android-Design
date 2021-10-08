@@ -163,7 +163,7 @@
         <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:layout_marginRight">@dimen/bandyer_dimen_space16</item>
         <item name="android:layout_marginTop">@dimen/bandyer_dimen_space16</item>
-        <item name="icon">@drawable/ic_bandyer_nav_save</item>
+        <item name="icon">@drawable/ic_bandyer_save</item>
         <item name="iconSize">@dimen/bandyer_dimen_space32</item>
         <item name="iconTint">@android:color/white</item>
         <item name="android:contentDescription">@string/bandyer_snapshot_save</item>

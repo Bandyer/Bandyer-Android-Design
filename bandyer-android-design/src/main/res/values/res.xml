@@ -60,6 +60,7 @@
     <item name="ic_bandyer_empty_folder" type="drawable">@drawable/bandyer_folder</item>
     <item name="ic_bandyer_folder" type="drawable">@drawable/bandyer_zip</item>
     <item name="ic_bandyer_download" type="drawable">@drawable/bandyer_arrowdown</item>
+    <item name="ic_bandyer_save" type="drawable">@drawable/bandyer_arrowdown</item>
     <item name="ic_bandyer_file" type="drawable">@drawable/bandyer_doc</item>
     <item name="ic_bandyer_fileshare_cancel" type="drawable">@drawable/bandyer_x</item>
     <item name="ic_bandyer_image" type="drawable">@drawable/bandyer_gallery</item>
@@ -70,10 +71,8 @@
     <item name="ic_bandyer_glass_cam_off" type="drawable">@drawable/bandyer_camoff</item>
     <item name="ic_bandyer_glass_cam_on" type="drawable">@drawable/bandyer_camon</item>
     <item name="ic_bandyer_glass_participants" type="drawable">@drawable/bandyer_users2</item>
-
     <item name="ic_bandyer_add" type="drawable">@drawable/bandyer_plus</item>
     <item name="ic_bandyer_upload" type="drawable">@drawable/bandyer_arrowup</item>
-
     <!-- Unused -->
     <item name="ic_bandyer_options" type="drawable">@drawable/bandyer_options_icon</item>
 </resources>
