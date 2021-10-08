@@ -23,8 +23,13 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:background="@android:color/black"
     tools:context=".CallActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/sample_image"
+        android:scaleType="centerCrop" />
 
     <com.bandyer.sdk_design.call.widgets.BandyerCallInfoWidget
         android:id="@+id/call_info"
@@ -48,6 +53,16 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:focusable="false"
-        android:focusableInTouchMode="false"/>
+        android:focusableInTouchMode="false">
+
+        <com.bandyer.sdk_design.buttons.BandyerHideableButton
+            android:id="@+id/fullscreen_info"
+            style="@style/BandyerSDKDesign.FullscreenToastButton"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+    </com.bandyer.sdk_design.bottom_sheet.view.BandyerBottomSheetLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
