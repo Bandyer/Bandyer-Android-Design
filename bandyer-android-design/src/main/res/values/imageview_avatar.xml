@@ -18,7 +18,7 @@
 <resources>
 
     <style name="BandyerSDKDesign.ImageViewAvatar" parent="Widget.MaterialComponents.ShapeableImageView">
-        <item name="android:background">@color/bandyer_color_background</item>
+        <item name="android:background">@color/bandyer_color_background_dark</item>
         <item name="android:src">@drawable/bandyer_chat_avatar_icon</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="android:tint">@android:color/white</item>
