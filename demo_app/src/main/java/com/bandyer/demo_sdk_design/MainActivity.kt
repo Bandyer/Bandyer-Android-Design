@@ -95,10 +95,6 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        btnSnapshotPreview.setOnClickListener {
-            BandyerSnapshotDialog().show(this@MainActivity)
-        }
-
         btnLivePointer.setOnClickListener { startActivity(Intent(this@MainActivity, PointerActivity::class.java)) }
 
         btnBluetoothAudioroute.setOnClickListener { startActivity(Intent(this@MainActivity, BluetoothAudioRouteActivity::class.java)) }

@@ -116,18 +116,6 @@
                 app:layout_constraintTop_toBottomOf="@id/btn_smartglasses_menu" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_snapshot_preview"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/bandyer_dimen_space16"
-                android:layout_marginLeft="@dimen/bandyer_dimen_space16"
-                android:layout_marginTop="@dimen/bandyer_dimen_space16"
-                android:layout_marginEnd="@dimen/bandyer_dimen_space16"
-                android:layout_marginRight="@dimen/bandyer_dimen_space16"
-                android:text="@string/snapshot_preview"
-                app:layout_constraintTop_toBottomOf="@id/btn_whiteboard_editor" />
-
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_live_pointer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -137,7 +125,7 @@
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
                 android:text="@string/live_pointer"
-                app:layout_constraintTop_toBottomOf="@id/btn_snapshot_preview" />
+                app:layout_constraintTop_toBottomOf="@id/btn_whiteboard_editor" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_bluetooth_audioroute"
