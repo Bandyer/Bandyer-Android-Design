@@ -44,7 +44,7 @@
     <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:layout_width">@dimen/bandyer_dimen_big_image_size</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_big_image_size</item>
-        <item name="srcCompat">@drawable/ic_bandyer_empty_folder</item>
+        <item name="srcCompat">@drawable/ic_bandyer_folder</item>
         <item name="tint">@color/bandyer_color_on_background_30</item>
     </style>
 

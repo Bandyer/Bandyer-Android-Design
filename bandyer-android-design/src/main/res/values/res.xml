@@ -16,63 +16,81 @@
   -->
 
 <resources>
-    <item name="ic_bandyer_answer" type="drawable">@drawable/bandyer_answer2</item>
-    <item name="ic_bandyer_audio_call" type="drawable">@drawable/bandyer_answer2</item>
-    <item name="ic_bandyer_audio_upgradable_call" type="drawable">@drawable/bandyer_udiovideo</item>
-    <item name="ic_bandyer_video_call" type="drawable">@drawable/bandyer_camon</item>
-    <item name="ic_bandyer_avatar" type="drawable">@drawable/bandyer_user2</item>
-    <item name="ic_bandyer_avatar_small" type="drawable">@drawable/bandyer_user2</item>
-    <item name="ic_bandyer_avatars" type="drawable">@drawable/bandyer_users2</item>
-    <item name="ic_bandyer_back_arrow" type="drawable">@drawable/bandyer_arrowback</item>
-    <item name="ic_bandyer_back_down" type="drawable">@drawable/bandyer_arrowdown2</item>
-    <item name="ic_bandyer_bluetooth_headset" type="drawable">@drawable/bandyer_bluetooth</item>
-    <item name="ic_bandyer_camera_off" type="drawable">@drawable/bandyer_camoff</item>
-    <item name="ic_bandyer_cancel" type="drawable">@drawable/bandyer_arrowback</item>
-    <item name="ic_bandyer_chat" type="drawable">@drawable/bandyer_chat</item>
-    <item name="ic_bandyer_close" type="drawable">@drawable/bandyer_x</item>
-    <item name="ic_bandyer_confirm" type="drawable">@drawable/bandyer_check</item>
-    <item name="ic_bandyer_double_arrow_down" type="drawable">@drawable/bandyer_chevron</item>
-    <item name="ic_bandyer_double_tick" type="drawable">@drawable/bandyer_doublecheck</item>
-    <item name="ic_bandyer_earpiece" type="drawable">@drawable/bandyer_telefono</item>
+    <!-- CHAT ACTION BAR -->
+    <item name="ic_bandyer_audio_call" type="drawable">@drawable/bandyer_audio</item>
+    <item name="ic_bandyer_audio_upgradable_call" type="drawable">@drawable/bandyer_audio_upgradable</item>
+    <item name="ic_bandyer_video_call" type="drawable">@drawable/bandyer_camera</item>
+
+    <!-- CHAT -->
+    <item name="ic_bandyer_avatar" type="drawable">@drawable/bandyer_user</item>
+    <item name="ic_bandyer_send" type="drawable">@drawable/bandyer_send</item>
+    <item name="ic_bandyer_double_arrow_down" type="drawable">@drawable/bandyer_double_chevron</item>
+    <item name="ic_bandyer_single_tick" type="drawable">@drawable/bandyer_check</item>
+    <item name="ic_bandyer_double_tick" type="drawable">@drawable/bandyer_double_check</item>
+    <item name="ic_bandyer_clock" type="drawable">@drawable/bandyer_clock</item>
+
+    <!-- CALL -->
+    <item name="ic_bandyer_answer" type="drawable">@drawable/bandyer_audio</item>
+    <item name="ic_bandyer_hangup" type="drawable">@drawable/bandyer_hangup</item>
+    <item name="ic_bandyer_camera_off" type="drawable">@drawable/bandyer_camera_off</item>
+    <item name="ic_bandyer_avatars" type="drawable">@drawable/bandyer_users</item>
+    <item name="ic_bandyer_switch_camera" type="drawable">@drawable/bandyer_switch_camera</item>
+    <item name="ic_bandyer_whiteboard" type="drawable">@drawable/bandyer_whiteboard</item>
     <item name="ic_bandyer_enter_fullscreen" type="drawable">@drawable/bandyer_maximize</item>
     <item name="ic_bandyer_exit_fullscreen" type="drawable">@drawable/bandyer_minimize</item>
-    <item name="ic_bandyer_file_share" type="drawable">@drawable/bandyer_fileshare</item>
-    <item name="ic_bandyer_hangup" type="drawable">@drawable/bandyer_end2</item>
-    <item name="ic_bandyer_loud_speaker" type="drawable">@drawable/bandyer_speaker</item>
-    <item name="ic_bandyer_mic_off" type="drawable">@drawable/bandyer_micoff</item>
-    <item name="ic_bandyer_muted" type="drawable">@drawable/bandyer_mute</item>
-    <item name="ic_bandyer_nav_close" type="drawable">@drawable/bandyer_x</item>
-    <item name="ic_bandyer_nav_share_whiteboard" type="drawable">@drawable/bandyer_board</item>
-    <item name="ic_bandyer_image_upload" type="drawable">@drawable/bandyer_gallery</item>
-    <item name="ic_bandyer_participants" type="drawable">@drawable/bandyer_users2</item>
     <item name="ic_bandyer_record" type="drawable">@drawable/bandyer_rec</item>
-    <item name="ic_bandyer_reload" type="drawable">@drawable/bandyer_reload2</item>
     <item name="ic_bandyer_screen_share" type="drawable">@drawable/bandyer_screenshare</item>
-    <item name="ic_bandyer_screen_share_device" type="drawable">@drawable/bandyer_schermointero</item>
-    <item name="ic_bandyer_screen_share_app" type="drawable">@drawable/bandyer_schermoapp</item>
-    <item name="ic_bandyer_send" type="drawable">@drawable/bandyer_send</item>
-    <item name="ic_bandyer_single_tick" type="drawable">@drawable/bandyer_check</item>
-    <item name="ic_bandyer_snapshot" type="drawable">@drawable/bandyer_snap</item>
-    <item name="ic_bandyer_switch_camera" type="drawable">@drawable/bandyer_flipcam</item>
-    <item name="ic_bandyer_clock" type="drawable">@drawable/bandyer_clock</item>
-    <item name="ic_bandyer_whiteboard" type="drawable">@drawable/bandyer_board</item>
+    <item name="ic_bandyer_snapshot" type="drawable">@drawable/bandyer_snapshot</item>
+    <item name="ic_bandyer_chat" type="drawable">@drawable/bandyer_chat</item>
+    <item name="ic_bandyer_file_share" type="drawable">@drawable/bandyer_fileshare</item>
+    <item name="ic_bandyer_mic_off" type="drawable">@drawable/bandyer_micoff</item>
+    <item name="ic_bandyer_participants" type="drawable">@drawable/bandyer_users</item>
+
+    <!-- WHITEBOARD -->
+    <item name="ic_bandyer_cancel" type="drawable">@drawable/bandyer_arrow_back</item>
+    <item name="ic_bandyer_close" type="drawable">@drawable/bandyer_cancel</item>
+    <item name="ic_bandyer_confirm" type="drawable">@drawable/bandyer_check</item>
+    <item name="ic_bandyer_image_upload" type="drawable">@drawable/bandyer_gallery</item>
+    <item name="ic_bandyer_reload" type="drawable">@drawable/bandyer_retry</item>
+
+    <!-- AUDIO -->
     <item name="ic_bandyer_wired_headset" type="drawable">@drawable/bandyer_cuffie</item>
-    <item name="ic_bandyer_empty_folder" type="drawable">@drawable/bandyer_folder</item>
-    <item name="ic_bandyer_folder" type="drawable">@drawable/bandyer_zip</item>
-    <item name="ic_bandyer_download" type="drawable">@drawable/bandyer_arrowdown</item>
-    <item name="ic_bandyer_save" type="drawable">@drawable/bandyer_arrowdown</item>
-    <item name="ic_bandyer_file" type="drawable">@drawable/bandyer_doc</item>
-    <item name="ic_bandyer_fileshare_cancel" type="drawable">@drawable/bandyer_x</item>
+    <item name="ic_bandyer_muted" type="drawable">@drawable/bandyer_muted</item>
+    <item name="ic_bandyer_loud_speaker" type="drawable">@drawable/bandyer_speaker</item>
+    <item name="ic_bandyer_earpiece" type="drawable">@drawable/bandyer_earpiece</item>
+    <item name="ic_bandyer_bluetooth_headset" type="drawable">@drawable/bandyer_bluetooth</item>
+
+    <!-- SCREEN SHARE -->
+    <item name="ic_bandyer_screen_share_device" type="drawable">@drawable/bandyer_share_full</item>
+    <item name="ic_bandyer_screen_share_app" type="drawable">@drawable/bandyer_share_app</item>
+
+    <!-- FILE SHARE -->
+    <item name="ic_bandyer_folder" type="drawable">@drawable/bandyer_folder</item>
+    <item name="ic_bandyer_zip" type="drawable">@drawable/bandyer_zip</item>
+    <item name="ic_bandyer_download" type="drawable">@drawable/bandyer_arrow_down_bold</item>
+    <item name="ic_bandyer_save" type="drawable">@drawable/bandyer_arrow_down_bold</item>
+    <item name="ic_bandyer_file" type="drawable">@drawable/bandyer_file</item>
+    <item name="ic_bandyer_fileshare_cancel" type="drawable">@drawable/bandyer_cancel_bold</item>
     <item name="ic_bandyer_image" type="drawable">@drawable/bandyer_gallery</item>
-    <item name="ic_bandyer_retry" type="drawable">@drawable/bandyer_reload2</item>
-    <item name="ic_bandyer_check" type="drawable">@drawable/bandyer_check</item>
+    <item name="ic_bandyer_retry" type="drawable">@drawable/bandyer_retry_bold</item>
+    <item name="ic_bandyer_check" type="drawable">@drawable/bandyer_check_bold</item>
+    <item name="ic_bandyer_add" type="drawable">@drawable/bandyer_plus</item>
+    <item name="ic_bandyer_upload" type="drawable">@drawable/bandyer_arrow_up_bold</item>
+
+    <!-- SNAPSHOT -->
+    <item name="ic_bandyer_nav_close" type="drawable">@drawable/bandyer_cancel</item>
+    <item name="ic_bandyer_nav_share_whiteboard" type="drawable">@drawable/bandyer_whiteboard</item>
+
+    <!-- COMMON -->
+    <item name="ic_bandyer_back_down" type="drawable">@drawable/bandyer_chevron_down</item>
+
+    <!-- GLASS -->
     <item name="ic_bandyer_glass_mic_off" type="drawable">@drawable/bandyer_micoff</item>
     <item name="ic_bandyer_glass_mic_on" type="drawable">@drawable/bandyer_micon</item>
-    <item name="ic_bandyer_glass_cam_off" type="drawable">@drawable/bandyer_camoff</item>
-    <item name="ic_bandyer_glass_cam_on" type="drawable">@drawable/bandyer_camon</item>
-    <item name="ic_bandyer_glass_participants" type="drawable">@drawable/bandyer_users2</item>
-    <item name="ic_bandyer_add" type="drawable">@drawable/bandyer_plus</item>
-    <item name="ic_bandyer_upload" type="drawable">@drawable/bandyer_arrowup</item>
-    <!-- Unused -->
+    <item name="ic_bandyer_glass_cam_off" type="drawable">@drawable/bandyer_camera_off</item>
+    <item name="ic_bandyer_glass_cam_on" type="drawable">@drawable/bandyer_camera</item>
+    <item name="ic_bandyer_glass_participants" type="drawable">@drawable/bandyer_users</item>
+
+    <!-- STILL IN PNG, NOT USED -->
     <item name="ic_bandyer_options" type="drawable">@drawable/bandyer_options_icon</item>
 </resources>
