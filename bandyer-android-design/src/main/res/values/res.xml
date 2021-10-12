@@ -44,7 +44,7 @@
     <item name="ic_bandyer_snapshot" type="drawable">@drawable/bandyer_snapshot</item>
     <item name="ic_bandyer_chat" type="drawable">@drawable/bandyer_chat</item>
     <item name="ic_bandyer_file_share" type="drawable">@drawable/bandyer_fileshare</item>
-    <item name="ic_bandyer_mic_off" type="drawable">@drawable/bandyer_micoff</item>
+    <item name="ic_bandyer_mic_off" type="drawable">@drawable/bandyer_mic_off</item>
     <item name="ic_bandyer_participants" type="drawable">@drawable/bandyer_users</item>
 
     <!-- WHITEBOARD -->
@@ -55,7 +55,7 @@
     <item name="ic_bandyer_reload" type="drawable">@drawable/bandyer_retry</item>
 
     <!-- AUDIO -->
-    <item name="ic_bandyer_wired_headset" type="drawable">@drawable/bandyer_cuffie</item>
+    <item name="ic_bandyer_wired_headset" type="drawable">@drawable/bandyer_wired_headset</item>
     <item name="ic_bandyer_muted" type="drawable">@drawable/bandyer_muted</item>
     <item name="ic_bandyer_loud_speaker" type="drawable">@drawable/bandyer_speaker</item>
     <item name="ic_bandyer_earpiece" type="drawable">@drawable/bandyer_earpiece</item>
@@ -86,8 +86,8 @@
     <item name="ic_bandyer_back_down" type="drawable">@drawable/bandyer_chevron_down</item>
 
     <!-- GLASS -->
-    <item name="ic_bandyer_glass_mic_off" type="drawable">@drawable/bandyer_micoff</item>
-    <item name="ic_bandyer_glass_mic_on" type="drawable">@drawable/bandyer_micon</item>
+    <item name="ic_bandyer_glass_mic_off" type="drawable">@drawable/bandyer_mic_off</item>
+    <item name="ic_bandyer_glass_mic_on" type="drawable">@drawable/bandyer_mic</item>
     <item name="ic_bandyer_glass_cam_off" type="drawable">@drawable/bandyer_camera_off</item>
     <item name="ic_bandyer_glass_cam_on" type="drawable">@drawable/bandyer_camera</item>
     <item name="ic_bandyer_glass_participants" type="drawable">@drawable/bandyer_users</item>
