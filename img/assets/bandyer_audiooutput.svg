@@ -1,0 +1,21 @@
+<svg id="audiooutput" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-1, .cls-3 {
+        stroke: #000;
+        stroke-width: 1.5px;
+      }
+
+      .cls-3 {
+        stroke-linecap: square;
+      }
+    </style>
+  </defs>
+  <path id="Tracciato_1259" data-name="Tracciato 1259" class="cls-1" d="M3,6.963A15.891,15.891,0,0,1,11.692,4a15.891,15.891,0,0,1,8.692,2.963V11.9l-4.829-.988V7.951a9.811,9.811,0,0,0-3.863-.988,9.811,9.811,0,0,0-3.863.988v2.963L3,11.9Z" transform="matrix(-0.629, -0.777, 0.777, -0.629, 11.911, 26.849)"/>
+  <rect id="Rettangolo_1373" data-name="Rettangolo 1373" class="cls-2" width="24" height="24"/>
+  <path id="phone-ringing" class="cls-3" d="M16.441,6.255a5.045,5.045,0,0,1,0,8.281M15,8.488A2.882,2.882,0,0,1,15,12.3" transform="translate(-1.595 9.507) rotate(-40)"/>
+</svg>
