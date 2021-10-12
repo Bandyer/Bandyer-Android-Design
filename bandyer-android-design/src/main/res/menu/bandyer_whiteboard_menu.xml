@@ -20,7 +20,7 @@
 
     <item
         android:id="@+id/bandyer_upload_file"
-        android:icon="@drawable/ic_bandyer_nav_upload"
+        android:icon="@drawable/ic_bandyer_image_upload"
         android:title="@string/bandyer_upload_file"
         app:contentDescription="@string/bandyer_upload_file"
         app:showAsAction="always" />

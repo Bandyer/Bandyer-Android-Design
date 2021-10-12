@@ -53,6 +53,7 @@
         <item name="android:textAllCaps">false</item>
         <item name="iconGravity">start</item>
         <item name="iconTint">?attr/colorOnSurface</item>
+        <item name="iconSize">@dimen/bandyer_dimen_normal_image_button</item>
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="android:letterSpacing" tools:targetApi="lollipop">0</item>
     </style>

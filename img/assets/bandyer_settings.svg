@@ -1,0 +1,23 @@
+<svg id="settings" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #1b1c1e;
+        stroke-width: 1.5px;
+      }
+
+      .cls-1 {
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <g id="Raggruppa_2524" data-name="Raggruppa 2524" transform="translate(2549.997 -657.005)">
+    <path id="Tracciato_1025" data-name="Tracciato 1025" class="cls-1" d="M12.17,3l.165.889A1.779,1.779,0,0,0,15.1,5.037l.749-.516L17.49,6.168l-.516.749a1.779,1.779,0,0,0,1.147,2.758l.889.165V12.17l-.889.17A1.779,1.779,0,0,0,16.979,15.1l.516.749L15.843,17.49l-.749-.516a1.779,1.779,0,0,0-2.754,1.147l-.165.889H9.841l-.165-.889a1.779,1.779,0,0,0-2.762-1.147l-.749.516L4.522,15.842l.516-.749a1.779,1.779,0,0,0-1.143-2.757L3,12.17V9.841l.889-.165A1.779,1.779,0,0,0,5.037,6.914l-.516-.749L6.169,4.521l.749.516A1.779,1.779,0,0,0,9.675,3.894L9.841,3Z" transform="translate(-2549.005 658)"/>
+    <path id="Tracciato_1156" data-name="Tracciato 1156" class="cls-2" d="M3.205,0A3.385,3.385,0,0,1,5.973,1.588a2.831,2.831,0,0,1,.438,1.618A3.205,3.205,0,1,1,3.205,0Z" transform="translate(-2541.205 665.8)"/>
+  </g>
+  <rect id="Rettangolo_1313" data-name="Rettangolo 1313" class="cls-3" width="24" height="24"/>
+</svg>

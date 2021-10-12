@@ -19,6 +19,12 @@
     <!-- CALL BUTTONS -->
 
     <style name="BandyerSDKDesign.ImageButton.Call" parent="BandyerSDKDesign.ImageButton">
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingRight">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingLeft">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:clipChildren">false</item>
@@ -112,7 +118,7 @@
     <style name="BandyerSDKDesign.ImageButton.Call.SmartGlass" parent="BandyerSDKDesign.ImageButton.Call">
         <item name="iconTint">?attr/colorOnSurface</item>
         <item name="backgroundTint">@android:color/transparent</item>
-        <item name="iconSize">@dimen/bandyer_dimen_space64</item>
+        <item name="iconSize">@dimen/bandyer_dimen_smart_glass_image_button_size</item>
         <item name="android:clickable">false</item>
         <item name="rippleColor">@null</item>
     </style>

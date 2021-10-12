@@ -1,0 +1,16 @@
+<svg id="bluetooth" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #000;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <path id="bluetooth-2" data-name="bluetooth" class="cls-1" d="M6.336,15.9,17.328,8.634,12.042,4V20.477l5.286-4.634L6,8.577" transform="translate(-0.328 -0.238)"/>
+  <rect id="Rettangolo_1311" data-name="Rettangolo 1311" class="cls-2" width="24" height="24"/>
+</svg>

@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-buildscript{
+buildscript {
     ext.dokka_version = "0.10.1"
 
     repositories {
@@ -194,17 +194,22 @@ afterEvaluate {
     }
 }
 
+task downloadIcons(type: Exec) {
+    workingDir '../scripts'
+    commandLine 'python', './download_zeplin_icons.py', properties.getProperty("zeplin.token"), properties.getProperty("zeplin.styleguide"), project.getName()
+}
+
 task invalidateCache(type: Exec) {
     workingDir '../scripts'
     def publishPath = "releases"
     def packageName = projectGroup + "." + project.getName()
-    commandLine 'python', './invalidate_s3_cache.py', properties.getProperty("maven.accessKey"), properties.getProperty("maven.secretKey"), properties.getProperty("maven.distributionId"), publishPath, packageName ,version
+    commandLine 'python', './invalidate_s3_cache.py', properties.getProperty("maven.accessKey"), properties.getProperty("maven.secretKey"), properties.getProperty("maven.distributionId"), publishPath, packageName, version
 }
 
 task publishUpload {
     def dryRun = true
     def publishTask = 'publishToMavenLocal'
-    if(!dryRun) publishTask = 'publish'
+    if (!dryRun) publishTask = 'publish'
     dependsOn publishTask
     dependsOn 'invalidateCache'
     tasks.findByName('invalidateCache').mustRunAfter publishTask
