@@ -16,6 +16,6 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:drawable="@drawable/ic_bandyer_avatar" app:bandyer_state_user="true"/>
-    <item android:drawable="@drawable/ic_bandyer_avatars" app:bandyer_state_multiple_users="true"/>
+    <item android:drawable="@drawable/ic_bandyer_avatar_bold" app:bandyer_state_user="true"/>
+    <item android:drawable="@drawable/ic_bandyer_avatars_bold" app:bandyer_state_multiple_users="true"/>
 </selector>
