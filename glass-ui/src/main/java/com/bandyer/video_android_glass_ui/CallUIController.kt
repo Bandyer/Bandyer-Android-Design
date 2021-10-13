@@ -19,13 +19,13 @@ interface CallUIController {
             )
     }
 
-    var state: StateFlow<CallState>
+    val state: StateFlow<CallState>
 
-    var recording: StateFlow<Boolean>
+    val recording: StateFlow<Boolean>
 
-    var duration: StateFlow<Long>
+    val duration: StateFlow<Long>
 
-    var participants: StateFlow<List<CallParticipant>>
+    val participants: StateFlow<List<CallParticipant>>
 
     fun hangup()
 
