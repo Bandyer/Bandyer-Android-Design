@@ -11,12 +11,10 @@ interface CallUIController {
         fun launchGlassUI(context: Context, controllerCall: CallUIController) =
             context.launchUI(GlassActivity::class.java, controllerCall)
 
-        private fun <T: Activity> Context.launchUI(cls: Class<T>, controllerCall: CallUIController) =
-            startActivity(
-                Intent(this, cls).apply {
-                    putExtra("provider", CallLogicProvider.create(controllerCall))
-                }
-            )
+        private fun <T: Activity> Context.launchUI(cls: Class<T>, controllerCall: CallUIController) {
+            ProvidersHolder.callProvider = CallLogicProvider.create(controllerCall)
+            startActivity(Intent(this, cls))
+        }
     }
 
     val state: StateFlow<CallState>
@@ -38,6 +36,10 @@ interface CallUIController {
     fun setVolume(value: Int)
 
     fun setZoom(value: Int)
+}
+
+internal object ProvidersHolder {
+    var callProvider: CallLogicProvider? = null
 }
 
 

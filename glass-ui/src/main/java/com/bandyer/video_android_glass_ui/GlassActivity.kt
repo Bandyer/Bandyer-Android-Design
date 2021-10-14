@@ -2,68 +2,105 @@ package com.bandyer.video_android_glass_ui
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bandyer.video_android_glass_ui.call.DialingFragmentDirections
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
-import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryObserver
 import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryInfo
-import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiObserver
+import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryObserver
 import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiInfo
+import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiObserver
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
  * GlassActivity
  */
-class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListener, ChatNotificationManager.NotificationListener, TouchEventListener {
+class GlassActivity :
+    AppCompatActivity(),
+    GlassGestureDetector.OnGestureListener,
+    ChatNotificationManager.NotificationListener,
+    TouchEventListener {
 
-    private lateinit var binding: BandyerActivityGlassBinding
-    private lateinit var decorView: View
+    // BINDING AND VIEWS
+    private var _binding: BandyerActivityGlassBinding? = null
+    private val binding: BandyerActivityGlassBinding get() = _binding!!
+    private var decorView: View? = null
 
+    // VIEW MODEL
+    @Suppress("UNCHECKED_CAST")
+    private val viewModel: GlassViewModel by viewModels() {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+                GlassViewModel(ProvidersHolder.callProvider!!) as T
+        }
+    }
+
+    // ADAPTER
+    private var itemAdapter: ItemAdapter<CallParticipantItem>? = null
+
+    // NAVIGATION
     private val currentFragment: Fragment?
         get() = supportFragmentManager.currentNavigationFragment
     private lateinit var navController: NavController
 
-    // Google Glass gesture detector
+    // GOOGLE GLASS GESTURE DETECTOR
     private lateinit var glassGestureDetector: GlassGestureDetector
 
-    // Notification
+    // NOTIFICATION
     private lateinit var notificationManager: ChatNotificationManager
     private var isNotificationVisible = false
 
-    // Observers state bar UI
+    // OBSERVER STATUS BAR UI
     private lateinit var batteryObserver: BatteryObserver
     private lateinit var wifiObserver: WiFiObserver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
+        _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
         enterImmersiveMode()
 
+        with(binding.bandyerStreams) {
+            itemAdapter = ItemAdapter()
+            val fastAdapter = FastAdapter.with(itemAdapter!!)
+            val layoutManager =
+                LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
+
+            this.layoutManager = layoutManager
+            adapter = fastAdapter
+            isFocusable = false
+            setHasFixedSize(true)
+        }
+
         // NavController
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         // Gesture Detector
         glassGestureDetector = GlassGestureDetector(this, this)
 
         // Notification Manager
-        notificationManager = ChatNotificationManager(binding.content).also { it.addListener(this) }
+        notificationManager =
+            ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
 
         // Battery observer
         batteryObserver = BatteryObserver(this)
@@ -75,11 +112,34 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    batteryObserver.observe().collect { binding.statusBar.updateBatteryIcon(it) }
+                    batteryObserver.observe()
+                        .collect { binding.bandyerStatusBar.updateBatteryIcon(it) }
                 }
 
                 launch {
-                    wifiObserver.observe().collect { binding.statusBar.updateWifiSignalIcon(it) }
+                    wifiObserver.observe()
+                        .collect { binding.bandyerStatusBar.updateWifiSignalIcon(it) }
+                }
+
+                launch {
+                    viewModel.getCallState().collect {
+                        when (it) {
+                            is CallState.Dialing -> navController.navigate(R.id.dialingFragment)
+                            is CallState.Reconnecting -> Unit
+                            is CallState.Ringing -> Unit
+                            is CallState.Started -> navController.navigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment())
+                            is CallState.Ended -> Unit
+                            is CallState.Error -> Unit
+                        }
+                    }
+                }
+
+                launch {
+                    viewModel.getParticipants().collect {
+                        it.forEach { part ->
+                            itemAdapter!!.add(CallParticipantItem(part.renderView))
+                        }
+                    }
                 }
             }
         }
@@ -96,6 +156,12 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
         wifiObserver.stop()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+        decorView = null
+    }
+
     /**
      *  Handle the state bar UI and the notification when the destination fragment
      *  on the nav graph is changed.
@@ -107,12 +173,12 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
      */
     fun onDestinationChanged(destinationId: Int) {
         (destinationId == R.id.chatFragment).also {
-            if(it) notificationManager.dismiss(false)
+            if (it) notificationManager.dismiss(false)
             notificationManager.dnd = it
         }
 
         // Update state bar
-        with(binding.statusBar) {
+        with(binding.bandyerStatusBar) {
             hideCenteredTitle()
             setBackgroundColor(Color.TRANSPARENT)
             show()
@@ -120,7 +186,9 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
             when (destinationId) {
                 R.id.ringingFragment, R.id.dialingFragment, R.id.connectingFragment, R.id.endCallFragment, R.id.callEndedFragment -> hide()
                 R.id.callEndedFragment, R.id.chatFragment, R.id.chatMenuFragment -> applyFlatTint()
-                R.id.participantsFragment -> { applyFlatTint(); showCenteredTitle() }
+                R.id.participantsFragment -> {
+                    applyFlatTint(); showCenteredTitle()
+                }
             }
         }
     }
@@ -139,7 +207,12 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
      * @suppress
      */
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
-        return if (event?.action == MotionEvent.ACTION_DOWN && handleSmartGlassTouchEvent(TouchEvent.getEvent(event))) true
+        return if (event?.action == MotionEvent.ACTION_DOWN && handleSmartGlassTouchEvent(
+                TouchEvent.getEvent(
+                    event
+                )
+            )
+        ) true
         else super.dispatchKeyEvent(event)
     }
 
@@ -158,7 +231,9 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
         }
 
     // NOTIFICATION LISTENER
-    override fun onShow() { isNotificationVisible = true }
+    override fun onShow() {
+        isNotificationVisible = true
+    }
 
     override fun onExpanded() {
         isNotificationVisible = false
@@ -166,7 +241,9 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
             navController.navigate(R.id.smartglass_nav_graph_chat)
     }
 
-    override fun onDismiss() { isNotificationVisible = false }
+    override fun onDismiss() {
+        isNotificationVisible = false
+    }
 
     /**
      * Add a notification listener
@@ -190,7 +267,7 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
     private fun enterImmersiveMode() {
         supportActionBar?.hide()
         decorView = window.decorView
-        decorView.apply {
+        decorView!!.apply {
             setOnSystemUiVisibilityChangeListener { visibility ->
                 if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0)
                     hideSystemUI()
@@ -199,7 +276,7 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
     }
 
     private fun hideSystemUI() {
-        decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
+        decorView!!.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -208,10 +285,21 @@ class GlassActivity : AppCompatActivity(), GlassGestureDetector.OnGestureListene
     }
 
     // UPDATE STATUS BAR UI
-    private fun StatusBarView.applyFlatTint() = setBackgroundColor(ResourcesCompat.getColor(resources, R.color.bandyer_glass_background_color, null))
+    private fun StatusBarView.applyFlatTint() = setBackgroundColor(
+        ResourcesCompat.getColor(
+            resources,
+            R.color.bandyer_glass_background_color,
+            null
+        )
+    )
 
     private fun StatusBarView.updateCenteredText(nCallParticipants: Int) =
-        binding.statusBar.setCenteredText(resources.getString(R.string.bandyer_glass_users_in_call_pattern, nCallParticipants))
+        setCenteredText(
+            resources.getString(
+                R.string.bandyer_glass_users_in_call_pattern,
+                nCallParticipants
+            )
+        )
 
     private fun StatusBarView.updateBatteryIcon(batteryInfo: BatteryInfo) {
         setBatteryChargingState(batteryInfo.state == BatteryInfo.State.CHARGING)

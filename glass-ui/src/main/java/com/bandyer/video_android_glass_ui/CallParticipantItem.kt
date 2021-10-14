@@ -1,10 +1,12 @@
 package com.bandyer.video_android_glass_ui
 
 import android.view.View
+import android.view.ViewGroup
+import com.bandyer.video_android_glass_ui.databinding.BandyerCallParticipantItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
-class CallParticipantItem: AbstractItem<CallParticipantItem.ViewHolder>() {
+class CallParticipantItem(val view: View): AbstractItem<CallParticipantItem.ViewHolder>() {
 
     /**
      * The layout for the given item
@@ -29,14 +31,20 @@ class CallParticipantItem: AbstractItem<CallParticipantItem.ViewHolder>() {
      * @suppress
      */
     class ViewHolder(view: View): FastAdapter.ViewHolder<CallParticipantItem>(view) {
+
+        private val binding = BandyerCallParticipantItemLayoutBinding.bind(view)
         /**
          * Binds the data of this item onto the viewHolder
          */
-        override fun bindView(item: CallParticipantItem, payloads: List<Any>) = Unit
+        override fun bindView(item: CallParticipantItem, payloads: List<Any>) {
+            (binding.root as ViewGroup).addView(item.view)
+        }
 
         /**
          * View needs to release resources when its recycled
          */
-        override fun unbindView(item: CallParticipantItem) = Unit
+        override fun unbindView(item: CallParticipantItem) {
+            (binding.root as ViewGroup).removeView(item.view)
+        }
     }
 }

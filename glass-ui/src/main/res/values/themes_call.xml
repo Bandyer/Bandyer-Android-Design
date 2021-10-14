@@ -15,6 +15,7 @@
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Theme.DayNight.GlassCall" parent="BandyerSDKDesign.Theme.DayNight">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Theme.DayNight.GlassCall.RootLayout</item>
         <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
         <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
         <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
@@ -29,6 +30,7 @@
     </style>
 
     <style name="BandyerSDKDesign.Theme.Day.GlassCall" parent="BandyerSDKDesign.Theme.Day">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Theme.DayNight.GlassCall.RootLayout</item>
         <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
         <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
         <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
@@ -43,6 +45,7 @@
     </style>
 
     <style name="BandyerSDKDesign.Theme.Night.GlassCall" parent="BandyerSDKDesign.Theme.Night">
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Theme.DayNight.GlassCall.RootLayout</item>
         <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
         <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
         <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
@@ -54,6 +57,10 @@
         <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.CallEnded</item>
         <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>
         <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.DarkBackground.Participants</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.DayNight.GlassCall.RootLayout" parent="">
+        <item name="android:background">@android:color/black</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.GlassCall" parent="BandyerSDKDesign.Theme.DayNight.GlassCall"/>

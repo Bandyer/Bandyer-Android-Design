@@ -1,9 +1,8 @@
 package com.bandyer.video_android_glass_ui
 
 import kotlinx.coroutines.flow.StateFlow
-import java.io.Serializable
 
-internal interface CallLogicProvider: Serializable {
+internal interface CallLogicProvider {
 
     /**
      * CallLogicProvider Factory

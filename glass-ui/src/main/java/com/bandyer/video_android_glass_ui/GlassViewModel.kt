@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.StateFlow
 internal class GlassViewModel(private val callLogicProvider: CallLogicProvider): ViewModel() {
 
     fun getParticipants(): StateFlow<List<CallParticipant>> = callLogicProvider.getParticipants()
+
+    fun getCallState(): StateFlow<CallState> = callLogicProvider.getCallState()
 }
