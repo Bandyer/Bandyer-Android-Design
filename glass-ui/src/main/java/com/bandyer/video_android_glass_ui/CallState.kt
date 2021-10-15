@@ -1,7 +1,7 @@
 package com.bandyer.video_android_glass_ui
 
-
 sealed class CallState {
+    object Disconnected : CallState()
     object Dialing : CallState()
     object Reconnecting : CallState()
     object Ringing : CallState()

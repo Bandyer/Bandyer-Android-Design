@@ -8,4 +8,6 @@ internal class GlassViewModel(private val callLogicProvider: CallLogicProvider):
     fun getParticipants(): StateFlow<List<CallParticipant>> = callLogicProvider.getParticipants()
 
     fun getCallState(): StateFlow<CallState> = callLogicProvider.getCallState()
+
+    fun hangUp() = callLogicProvider.hangup()
 }

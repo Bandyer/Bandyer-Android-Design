@@ -5,8 +5,13 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import com.bandyer.video_android_glass_ui.BaseFragment
+import com.bandyer.video_android_glass_ui.GlassViewModel
+import com.bandyer.video_android_glass_ui.ProvidersHolder
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
@@ -19,6 +24,14 @@ class EndCallFragment : BaseFragment() {
 
     private var _binding: BandyerGlassFragmentFullScreenDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenDialogBinding get() = _binding!!
+
+    @Suppress("UNCHECKED_CAST")
+    private val viewModel: GlassViewModel by navGraphViewModels(R.id.smartglass_nav_graph) {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+                GlassViewModel(ProvidersHolder.callProvider!!) as T
+        }
+    }
 
     /**
      * @suppress
@@ -51,7 +64,10 @@ class EndCallFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onTap() = true.also { findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment) }
+    override fun onTap() = true.also {
+        viewModel.hangUp()
+        findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment)
+    }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 

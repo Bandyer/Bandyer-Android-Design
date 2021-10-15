@@ -1,19 +1,24 @@
 package com.bandyer.video_android_glass_ui.call
 
 import android.os.Bundle
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.*
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bandyer.video_android_glass_ui.BaseFragment
-import com.bandyer.video_android_glass_ui.R
+import com.bandyer.video_android_glass_ui.*
+import com.bandyer.video_android_glass_ui.GlassViewModel
+import com.bandyer.video_android_glass_ui.ProvidersHolder
 import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import kotlinx.coroutines.flow.collect
 
 class DialingFragment : BaseFragment() {
 
@@ -21,6 +26,14 @@ class DialingFragment : BaseFragment() {
     override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
 
     private var itemAdapter: ItemAdapter<FullScreenDialogItem>? = null
+
+    @Suppress("UNCHECKED_CAST")
+    private val viewModel: GlassViewModel by navGraphViewModels(R.id.smartglass_nav_graph) {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+                GlassViewModel(ProvidersHolder.callProvider!!) as T
+        }
+    }
 
     /**
      * @suppress
@@ -73,6 +86,18 @@ class DialingFragment : BaseFragment() {
                     bandyerCounter.text = resources.getString(R.string.bandyer_glass_n_of_participants_pattern, itemAdapter!!.adapterItemCount)
 
                 bandyerSubtitle.text = resources.getString(if(isGroupCall) R.string.bandyer_glass_dialing_group else R.string.bandyer_glass_dialing)
+
+                lifecycleScope.launchWhenCreated {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        viewModel.getCallState().collect {
+                            when(it) {
+                                is CallState.Ended -> requireActivity().finish()
+                                is CallState.Error -> Unit
+                                else -> Unit
+                            }
+                        }
+                    }
+                }
             }
 
         return binding.root
@@ -88,7 +113,7 @@ class DialingFragment : BaseFragment() {
 
     override fun onTap() = false
 
-    override fun onSwipeDown() = true.also { requireActivity().finish() }
+    override fun onSwipeDown() = true.also { viewModel.hangUp() }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = false
 

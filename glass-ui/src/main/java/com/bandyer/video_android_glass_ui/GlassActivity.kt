@@ -12,9 +12,12 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import androidx.navigation.navGraphViewModels
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import com.bandyer.video_android_glass_ui.call.DialingFragmentDirections
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
@@ -26,7 +29,10 @@ import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryObserve
 import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiInfo
 import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiObserver
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
+import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -46,7 +52,7 @@ class GlassActivity :
 
     // VIEW MODEL
     @Suppress("UNCHECKED_CAST")
-    private val viewModel: GlassViewModel by viewModels() {
+    private val viewModel: GlassViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T =
                 GlassViewModel(ProvidersHolder.callProvider!!) as T
@@ -83,6 +89,7 @@ class GlassActivity :
             val fastAdapter = FastAdapter.with(itemAdapter!!)
             val layoutManager =
                 LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
+            val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
             this.layoutManager = layoutManager
             adapter = fastAdapter
@@ -126,8 +133,8 @@ class GlassActivity :
                         when (it) {
                             is CallState.Dialing -> navController.navigate(R.id.dialingFragment)
                             is CallState.Reconnecting -> Unit
-                            is CallState.Ringing -> Unit
-                            is CallState.Started -> navController.navigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment())
+                            is CallState.Ringing -> navController.navigate(R.id.ringingFragment)
+                            is CallState.Started -> navController.safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment())
                             is CallState.Ended -> Unit
                             is CallState.Error -> Unit
                         }
@@ -135,10 +142,8 @@ class GlassActivity :
                 }
 
                 launch {
-                    viewModel.getParticipants().collect {
-                        it.forEach { part ->
-                            itemAdapter!!.add(CallParticipantItem(part.renderView))
-                        }
+                    viewModel.getParticipants().collect { participants ->
+                        itemAdapter!!.addOrUpdate(participants.map { CallParticipantItem(it.renderView, lifecycle) })
                     }
                 }
             }
@@ -160,6 +165,8 @@ class GlassActivity :
         super.onDestroy()
         _binding = null
         decorView = null
+        itemAdapter!!.clear()
+        itemAdapter = null
     }
 
     /**
@@ -207,12 +214,7 @@ class GlassActivity :
      * @suppress
      */
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
-        return if (event?.action == MotionEvent.ACTION_DOWN && handleSmartGlassTouchEvent(
-                TouchEvent.getEvent(
-                    event
-                )
-            )
-        ) true
+        return if (event?.action == MotionEvent.ACTION_DOWN && handleSmartGlassTouchEvent(TouchEvent.getEvent(event))) true
         else super.dispatchKeyEvent(event)
     }
 
@@ -317,3 +319,10 @@ class GlassActivity :
         )
     }
 }
+
+internal fun NavController.safeNavigate(direction: NavDirections) {
+    currentDestination?.getAction(direction.actionId)?.run { navigate(direction) }
+}
+
+fun <T: GenericItem> ItemAdapter<T>.addOrUpdate(items: List<T>) =
+    FastAdapterDiffUtil.calculateDiff(this, items, true).also { FastAdapterDiffUtil[this] = it }
