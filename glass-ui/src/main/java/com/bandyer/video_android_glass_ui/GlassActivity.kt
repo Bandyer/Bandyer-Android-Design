@@ -135,8 +135,8 @@ class GlassActivity :
                             is CallState.Reconnecting -> Unit
                             is CallState.Ringing -> navController.navigate(R.id.ringingFragment)
                             is CallState.Started -> navController.safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment())
-                            is CallState.Ended -> Unit
-                            is CallState.Error -> Unit
+                            is CallState.Disconnected.Ended -> Unit
+                            is CallState.Disconnected.Error -> Unit
                         }
                     }
                 }

@@ -58,7 +58,11 @@ class DialingFragment : BaseFragment() {
                 bandyerParticipants.apply {
                     itemAdapter = ItemAdapter()
                     val fastAdapter = FastAdapter.with(itemAdapter!!)
-                    val layoutManager = AutoScrollLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    val layoutManager = AutoScrollLinearLayoutManager(
+                        requireContext(),
+                        LinearLayoutManager.HORIZONTAL,
+                        false
+                    )
 
                     this.layoutManager = layoutManager
                     adapter = fastAdapter
@@ -80,19 +84,23 @@ class DialingFragment : BaseFragment() {
                 }
 
                 val isGroupCall = itemAdapter!!.adapterItemCount > 1
-                if(!isGroupCall)
+                if (!isGroupCall)
                     bandyerBottomNavigation.hideSwipeHorizontalItem()
                 else
-                    bandyerCounter.text = resources.getString(R.string.bandyer_glass_n_of_participants_pattern, itemAdapter!!.adapterItemCount)
+                    bandyerCounter.text = resources.getString(
+                        R.string.bandyer_glass_n_of_participants_pattern,
+                        itemAdapter!!.adapterItemCount
+                    )
 
-                bandyerSubtitle.text = resources.getString(if(isGroupCall) R.string.bandyer_glass_dialing_group else R.string.bandyer_glass_dialing)
+                bandyerSubtitle.text =
+                    resources.getString(if (isGroupCall) R.string.bandyer_glass_dialing_group else R.string.bandyer_glass_dialing)
 
                 lifecycleScope.launchWhenCreated {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                         viewModel.getCallState().collect {
-                            when(it) {
-                                is CallState.Ended -> requireActivity().finish()
-                                is CallState.Error -> Unit
+                            when (it) {
+                                is CallState.Disconnected.Ended -> requireActivity().finish()
+                                is CallState.Disconnected.Error -> requireActivity().finish()
                                 else -> Unit
                             }
                         }

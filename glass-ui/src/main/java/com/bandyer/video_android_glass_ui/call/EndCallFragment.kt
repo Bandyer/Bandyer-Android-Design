@@ -5,17 +5,16 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
-import com.bandyer.video_android_glass_ui.BaseFragment
+import com.bandyer.video_android_glass_ui.*
 import com.bandyer.video_android_glass_ui.GlassViewModel
 import com.bandyer.video_android_glass_ui.ProvidersHolder
-import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
+import kotlinx.coroutines.flow.collect
 
 /**
  * EndCallFragment
@@ -51,7 +50,21 @@ class EndCallFragment : BaseFragment() {
                 container,
                 false
             )
-            .apply { if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
+            .apply {
+                if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
+
+                lifecycleScope.launchWhenCreated {
+                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                        viewModel.getCallState().collect {
+                            when (it) {
+                                is CallState.Disconnected.Ended -> findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment)
+                                is CallState.Disconnected.Error -> requireActivity().finish()
+                                else -> Unit
+                            }
+                        }
+                    }
+                }
+            }
 
         return binding.root
     }
@@ -64,10 +77,7 @@ class EndCallFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onTap() = true.also {
-        viewModel.hangUp()
-        findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment)
-    }
+    override fun onTap() = true.also { viewModel.hangUp() }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
