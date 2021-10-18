@@ -2,44 +2,38 @@ package com.bandyer.video_android_glass_ui
 
 import kotlinx.coroutines.flow.StateFlow
 
-interface Participant: User {
+interface Participant : User {
     val state: StateFlow<State>
 
-    sealed class State {
+    interface State
+}
 
-        object InCall: State()
+sealed class CallParticipant(
+    val isLocalUser: Boolean,
+    override val userAlias: String,
+    override val avatarUrl: String,
+    override val state: StateFlow<State>,
+    val streams: StateFlow<Stream>
+) : Participant {
 
-        sealed class Online: State() {
+    sealed class State : Participant.State {
 
+        sealed class Online : State() {
             companion object : Online() {
                 override fun hashCode(): Int = "Online".hashCode()
-                override fun equals(other: Any?) = other !is Invited && other is Online
+                override fun equals(other: Any?) = other is Online && other !is InCall && other !is Invited
                 override fun toString() = "Online"
             }
 
-            object Invited: Online()
+            object InCall : Online()
+            object Invited : Online()
         }
 
-        sealed class Offline: State() {
-
-            companion object : Offline() {
-                override fun hashCode(): Int = "Offline".hashCode()
-                override fun equals(other: Any?) = other !is Invited && other is Offline
-                override fun toString() = "Offline"
-            }
-
-            object Invited: Offline()
+        open class Offline(open val lastSeen: Long) : State() {
+            data class Invited(override val lastSeen: Long) : Offline(lastSeen)
         }
     }
 }
-
-sealed class CallParticipant(override val userAlias: String, override val avatarUrl: String, override val state: StateFlow<Participant.State>, open val streams: StateFlow<Stream>): Participant {
-
-    data class Me(override val userAlias: String, override val avatarUrl: String, override val state: StateFlow<Participant.State>, override val streams: StateFlow<Stream>) : CallParticipant(userAlias, avatarUrl, state, streams)
-
-    data class Other(override val userAlias: String, override val avatarUrl: String, override val state: StateFlow<Participant.State>, override val streams: StateFlow<Stream>) : CallParticipant(userAlias, avatarUrl, state, streams)
-}
-
 
 
 
