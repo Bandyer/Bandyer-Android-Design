@@ -1,9 +1,9 @@
 package com.bandyer.video_android_glass_ui
 
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
 interface Participant : User {
-    val state: StateFlow<State>
+    val state: Flow<State>
 
     interface State
 }
@@ -11,9 +11,9 @@ interface Participant : User {
 sealed class CallParticipant(
     val isLocalUser: Boolean,
     override val userAlias: String,
-    override val avatarUrl: String,
-    override val state: StateFlow<State>,
-    val streams: StateFlow<Stream>
+    override val avatarUrl: String?,
+    override val state: Flow<State>,
+    val streams: Flow<Stream>
 ) : Participant {
 
     sealed class State : Participant.State {

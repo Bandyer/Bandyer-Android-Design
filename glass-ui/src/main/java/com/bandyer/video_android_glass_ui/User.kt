@@ -4,5 +4,5 @@ interface User {
 
     val userAlias: String
 
-    val avatarUrl: String
+    val avatarUrl: String?
 }

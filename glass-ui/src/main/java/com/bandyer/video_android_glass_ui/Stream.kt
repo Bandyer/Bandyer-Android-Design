@@ -1,12 +1,12 @@
 package com.bandyer.video_android_glass_ui
 
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
 data class Stream(
     val id: String,
-    val video: StateFlow<Input.Video?>,
-    val audio: StateFlow<Input.Audio?>,
-    val state: StateFlow<State>
+    val video: Flow<Video?>,
+    val audio: Flow<Audio?>,
+    val state: Flow<State>
 ) {
 
     sealed class State {

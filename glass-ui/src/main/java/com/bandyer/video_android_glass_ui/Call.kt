@@ -1,12 +1,12 @@
 package com.bandyer.video_android_glass_ui
 
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
 data class Call(
     val id: String,
-    val participants: List<CallParticipant>,
-    val state: StateFlow<State>,
-    val duration: StateFlow<Long?>,
+    val participants: Flow<List<CallParticipant>>,
+    val state: Flow<State>,
+    val duration: Flow<Long?>,
     val recording: Boolean
 ) {
     sealed class State {
