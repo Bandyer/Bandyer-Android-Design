@@ -17,7 +17,9 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
+import com.bandyer.video_android_glass_ui.call.DialingFragment
 import com.bandyer.video_android_glass_ui.call.DialingFragmentDirections
+import com.bandyer.video_android_glass_ui.call.RingingFragmentDirections
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
@@ -128,14 +130,21 @@ class GlassActivity :
 
                 launch {
                     viewModel.getCall().collect { call ->
-                        call.state.collect {
-                            Log.e("state", it.toString())
-                            when (it) {
-                                is Call.State.Dialing -> navController.navigate(R.id.dialingFragment)
+                        call.state.collect { state ->
+
+                            call.participants.onEach {
+                                if(state is Call.State.Connecting && it.me == it.creator) navController.navigate(R.id.dialingFragment)
+                                else if(state is Call.State.Connecting) navController.navigate(R.id.ringingFragment)
+                            }.launchIn(this)
+
+                            when (state) {
                                 is Call.State.Reconnecting -> Unit
-                                is Call.State.Connecting -> Unit
-                                is Call.State.Ringing -> navController.navigate(R.id.ringingFragment)
-                                is Call.State.Connected -> navController.safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment())
+                                is Call.State.Connected -> {
+                                    navController.safeNavigate(
+                                        if(currentFragment is DialingFragment) DialingFragmentDirections.actionDialingFragmentToEmptyFragment()
+                                        else RingingFragmentDirections.actionRingingFragmentToEmptyFragment()
+                                    )
+                                }
                                 is Call.State.Disconnected.Ended -> Unit
                                 is Call.State.Disconnected.Error -> Unit
                             }
@@ -147,7 +156,7 @@ class GlassActivity :
                 launch {
                     viewModel.getCall().collect { call ->
                         call.participants.onEach { participants ->
-                            participants.onEach { part ->
+                            participants.others.plus(participants.me).onEach { part ->
                                 part.streams.onEach { streams ->
                                     streams.onEach { stream ->
                                         stream.video.onEach { video ->
@@ -171,14 +180,10 @@ class GlassActivity :
         hideSystemUI()
     }
 
-    override fun onStop() {
-        super.onStop()
-        batteryObserver.stop()
-        wifiObserver.stop()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
+        batteryObserver.stop()
+        wifiObserver.stop()
         _binding = null
         decorView = null
         itemAdapter!!.clear()

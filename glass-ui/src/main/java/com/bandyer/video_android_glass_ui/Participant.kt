@@ -29,8 +29,8 @@ interface CallParticipant : Participant {
         }
     }
 
-    interface Me : Participant {
-        val streams: Flow<List<Stream.My>>
+    interface Me : CallParticipant {
+        override val streams: Flow<List<Stream.My>>
     }
 }
 
