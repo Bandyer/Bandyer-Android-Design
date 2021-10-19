@@ -9,7 +9,7 @@ interface Participant : User {
 }
 
 interface CallParticipant : Participant {
-    val streams: Flow<Stream>
+    val streams: Flow<List<Stream>>
 
     sealed class State : Participant.State {
 
@@ -31,17 +31,17 @@ interface CallParticipant : Participant {
 }
 
 data class Other(
-    override val userAlias: String,
+    override val username: String,
     override val avatarUrl: String?,
     override val state: Flow<CallParticipant.State>,
-    override val streams: Flow<Stream>
+    override val streams: Flow<List<Stream>>
 ) : CallParticipant
 
 data class Me(
-    override val userAlias: String,
+    override val username: String,
     override val avatarUrl: String?,
     override val state: Flow<CallParticipant.State>,
-    override val streams: Flow<Stream.My>
+    override val streams: Flow<List<Stream.My>>
 ) : CallParticipant
 
 
