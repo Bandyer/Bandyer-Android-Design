@@ -8,13 +8,8 @@ interface Participant : User {
     interface State
 }
 
-sealed class CallParticipant(
-    val isLocalUser: Boolean,
-    override val userAlias: String,
-    override val avatarUrl: String?,
-    override val state: Flow<State>,
+interface CallParticipant : Participant {
     val streams: Flow<Stream>
-) : Participant {
 
     sealed class State : Participant.State {
 
@@ -34,6 +29,20 @@ sealed class CallParticipant(
         }
     }
 }
+
+data class Other(
+    override val userAlias: String,
+    override val avatarUrl: String?,
+    override val state: Flow<CallParticipant.State>,
+    override val streams: Flow<Stream>
+) : CallParticipant
+
+data class Me(
+    override val userAlias: String,
+    override val avatarUrl: String?,
+    override val state: Flow<CallParticipant.State>,
+    override val streams: Flow<Stream.My>
+) : CallParticipant
 
 
 
