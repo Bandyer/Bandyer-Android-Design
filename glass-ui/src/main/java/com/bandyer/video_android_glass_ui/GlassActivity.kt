@@ -129,48 +129,40 @@ class GlassActivity :
                 }
 
                 launch {
-                    viewModel.getCall().collect { call ->
-                        call.state.collect { state ->
-
-                            call.participants.onEach {
-                                if(state is Call.State.Connecting && it.me == it.creator) navController.navigate(R.id.dialingFragment)
-                                else if(state is Call.State.Connecting) navController.navigate(R.id.ringingFragment)
-                            }.launchIn(this)
-
-                            when (state) {
-                                is Call.State.Reconnecting -> Unit
-                                is Call.State.Connected -> {
+                    viewModel.call.collect { call ->
+                        call.state.combine(call.participants) { state, participants ->
+                            when {
+                                state is Call.State.Connecting && participants.me == participants.creator -> navController.navigate(R.id.dialingFragment)
+                                state is Call.State.Connecting -> navController.navigate(R.id.ringingFragment)
+                                state is Call.State.Reconnecting -> Unit
+                                state is Call.State.Connected -> {
                                     navController.safeNavigate(
                                         if(currentFragment is DialingFragment) DialingFragmentDirections.actionDialingFragmentToEmptyFragment()
                                         else RingingFragmentDirections.actionRingingFragmentToEmptyFragment()
                                     )
                                 }
-                                is Call.State.Disconnected.Ended -> Unit
-                                is Call.State.Disconnected.Error -> Unit
+                                state is Call.State.Disconnected.Ended -> Unit
+                                state is Call.State.Disconnected.Error -> Unit
                             }
-                        }
-
+                        }.collect()
                     }
                 }
 
                 launch {
-                    viewModel.getCall().collect { call ->
-                        call.participants.onEach { participants ->
-                            participants.others.plus(participants.me).onEach { part ->
-                                part.streams.onEach { streams ->
-                                    streams.onEach { stream ->
-                                        stream.video.onEach { video ->
-                                            video?.view?.onEach { view ->
-                                                itemAdapter!!.add(CallParticipantItem(stream.id, view, lifecycle))
-                                            }?.launchIn(this)
-                                        }.launchIn(this)
-                                    }
-                                }.launchIn(this)
-                            }
-                        }.launchIn(this)
+                    viewModel.participants.collect {  participants ->
+                        participants.others.plus(participants.me).onEach { part ->
+                            part.streams.onEach { streams ->
+                                streams.onEach { stream ->
+                                    stream.video.onEach { video ->
+                                        video?.view?.onEach { view ->
+                                            itemAdapter!!.add(CallParticipantItem(stream.id, view, lifecycle))
+                                        }?.launchIn(this)
+                                    }.launchIn(this)
+                                }
+                            }.launchIn(this)
+                        }
                     }
                 }
-
             }
         }
     }

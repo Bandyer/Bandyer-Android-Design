@@ -97,13 +97,11 @@ class DialingFragment : BaseFragment() {
 
                 lifecycleScope.launchWhenCreated {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        viewModel.getCall().collect {
-                            it.state.collect { state ->
-                                when (state) {
-                                    is Call.State.Disconnected.Ended -> requireActivity().finish()
-                                    is Call.State.Disconnected.Error -> requireActivity().finish()
-                                    else -> Unit
-                                }
+                        viewModel.callState.collect { state ->
+                            when (state) {
+                                is Call.State.Disconnected.Ended -> requireActivity().finish()
+                                is Call.State.Disconnected.Error -> requireActivity().finish()
+                                else -> Unit
                             }
                         }
                     }
