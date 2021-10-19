@@ -7,12 +7,12 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerCallParticipantItem
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
-class CallParticipantItem(val streamView: View, val lifecycle: Lifecycle) : AbstractItem<CallParticipantItem.ViewHolder>() {
+class CallParticipantItem(participantId: String, val streamView: View, val lifecycle: Lifecycle) : AbstractItem<CallParticipantItem.ViewHolder>() {
 
     /**
      * Set an unique identifier for the identifiable which do not have one set already
      */
-    override var identifier: Long = streamView.hashCode().toLong()
+    override var identifier: Long = participantId.hashCode().toLong()
 
     /**
      * The layout for the given item

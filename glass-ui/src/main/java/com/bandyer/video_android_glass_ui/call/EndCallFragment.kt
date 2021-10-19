@@ -55,11 +55,13 @@ class EndCallFragment : BaseFragment() {
 
                 lifecycleScope.launchWhenCreated {
                     viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        viewModel.getCallState().collect {
-                            when (it) {
-                                is CallState.Disconnected.Ended -> findNavController().navigate(R.id.action_endCallFragment_to_callEndedFragment)
-                                is CallState.Disconnected.Error -> requireActivity().finish()
-                                else -> Unit
+                        viewModel.getCall().collect {
+                            it.state.collect { state ->
+                                when (state) {
+                                    is Call.State.Disconnected.Ended -> requireActivity().finish()
+                                    is Call.State.Disconnected.Error -> requireActivity().finish()
+                                    else -> Unit
+                                }
                             }
                         }
                     }

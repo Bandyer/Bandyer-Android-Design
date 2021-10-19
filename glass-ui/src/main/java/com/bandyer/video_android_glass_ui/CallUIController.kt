@@ -3,7 +3,7 @@ package com.bandyer.video_android_glass_ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
 interface CallUIController {
 
@@ -17,13 +17,7 @@ interface CallUIController {
         }
     }
 
-    val state: StateFlow<CallState>
-
-    val recording: StateFlow<Boolean>
-
-    val duration: StateFlow<Long>
-
-    val participants: StateFlow<List<CallParticipant>>
+    val call: Flow<Call>
 
     fun hangup()
 

@@ -1,6 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
 internal interface CallLogicProvider {
 
@@ -11,13 +11,7 @@ internal interface CallLogicProvider {
         fun create(controllerCall: CallUIController): CallLogicProvider = CallLogicProviderImpl(controllerCall)
     }
 
-    fun getCallState(): StateFlow<CallState>
-
-    fun getRecordingState(): StateFlow<Boolean>
-
-    fun getDuration(): StateFlow<Long>
-
-    fun getParticipants(): StateFlow<List<CallParticipant>>
+    fun getCall(): Flow<Call>
 
     fun hangup()
 
@@ -34,13 +28,7 @@ internal interface CallLogicProvider {
 
 private class CallLogicProviderImpl(private val controllerCall: CallUIController) : CallLogicProvider {
 
-    override fun getCallState(): StateFlow<CallState> = controllerCall.state
-
-    override fun getRecordingState(): StateFlow<Boolean> = controllerCall.recording
-
-    override fun getDuration(): StateFlow<Long> = controllerCall.duration
-
-    override fun getParticipants(): StateFlow<List<CallParticipant>> = controllerCall.participants
+    override fun getCall(): Flow<Call> = controllerCall.call
 
     override fun hangup() = controllerCall.hangup()
 

@@ -12,7 +12,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
-import androidx.navigation.navGraphViewModels
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
@@ -32,8 +31,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
-import com.mikepenz.fastadapter.items.AbstractItem
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 /**
@@ -129,23 +127,41 @@ class GlassActivity :
                 }
 
                 launch {
-                    viewModel.getCallState().collect {
-                        when (it) {
-                            is CallState.Dialing -> navController.navigate(R.id.dialingFragment)
-                            is CallState.Reconnecting -> Unit
-                            is CallState.Ringing -> navController.navigate(R.id.ringingFragment)
-                            is CallState.Started -> navController.safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment())
-                            is CallState.Disconnected.Ended -> Unit
-                            is CallState.Disconnected.Error -> Unit
+                    viewModel.getCall().collect { call ->
+                        call.state.collect {
+                            Log.e("state", it.toString())
+                            when (it) {
+                                is Call.State.Dialing -> navController.navigate(R.id.dialingFragment)
+                                is Call.State.Reconnecting -> Unit
+                                is Call.State.Connecting -> Unit
+                                is Call.State.Ringing -> navController.navigate(R.id.ringingFragment)
+                                is Call.State.Connected -> navController.safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment())
+                                is Call.State.Disconnected.Ended -> Unit
+                                is Call.State.Disconnected.Error -> Unit
+                            }
                         }
+
                     }
                 }
 
                 launch {
-                    viewModel.getParticipants().collect { participants ->
-                        itemAdapter!!.addOrUpdate(participants.map { CallParticipantItem(it.renderView, lifecycle) })
+                    viewModel.getCall().collect { call ->
+                        call.participants.onEach { participants ->
+                            participants.onEach { part ->
+                                part.streams.onEach { streams ->
+                                    streams.onEach { stream ->
+                                        stream.video.onEach { video ->
+                                            video?.view?.onEach { view ->
+                                                itemAdapter!!.add(CallParticipantItem(stream.id, view, lifecycle))
+                                            }?.launchIn(this)
+                                        }.launchIn(this)
+                                    }
+                                }.launchIn(this)
+                            }
+                        }.launchIn(this)
                     }
                 }
+
             }
         }
     }
