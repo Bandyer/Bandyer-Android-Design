@@ -1,5 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
+import android.print.PrintAttributes
 import android.view.View
 import kotlinx.coroutines.flow.Flow
 
@@ -60,7 +61,7 @@ interface Input {
                 object Custom : Source()
 
                 sealed class Camera : Source() {
-                    data class Internal(val lenses: List<Lens>, val currentLend: Flow<Lens>) : Camera() {
+                    data class Internal(val lenses: List<Lens>, val currentLens: Flow<Lens>) : Camera() {
                         data class Lens(val name: String, val availableQualities: List<Quality>, val isRear: Boolean)
                     }
 
@@ -88,4 +89,8 @@ data class MyVideo(
     override val source: Input.Video.My.Source
 ) : Input.Video.My
 
-data class Audio(override val id: String, override val enabled: Flow<Boolean>, override val state: Flow<Input.State>) : Input.Audio
+data class Audio(
+    override val id: String,
+    override val enabled: Flow<Boolean>,
+    override val state: Flow<Input.State>
+) : Input.Audio
