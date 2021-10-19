@@ -28,6 +28,10 @@ interface CallParticipant : Participant {
             data class Invited(override val lastSeen: Long) : Offline(lastSeen)
         }
     }
+
+    interface Me : Participant {
+        val streams: Flow<List<Stream.My>>
+    }
 }
 
 data class Other(
@@ -42,7 +46,7 @@ data class Me(
     override val avatarUrl: String?,
     override val state: Flow<CallParticipant.State>,
     override val streams: Flow<List<Stream.My>>
-) : CallParticipant
+) : CallParticipant.Me
 
 
 

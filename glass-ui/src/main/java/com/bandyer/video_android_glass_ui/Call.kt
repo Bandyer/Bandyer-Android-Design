@@ -4,17 +4,15 @@ import kotlinx.coroutines.flow.Flow
 
 data class Call(
     val id: String,
-    val participants: Flow<List<CallParticipant>>,
+    val participants: Flow<CallParticipants>,
     val state: Flow<State>,
-    val duration: Flow<Long?>,
-    val recording: Boolean
+    val duration: Flow<Long>,
+    val isRecording: Boolean
 ) {
     sealed class State {
-        object Dialing : State()
-        object Ringing : State()
+        object Connected : State()
         object Connecting : State()
         object Reconnecting : State()
-        object Connected : State()
         sealed class Disconnected : State() {
 
             companion object : Disconnected() {

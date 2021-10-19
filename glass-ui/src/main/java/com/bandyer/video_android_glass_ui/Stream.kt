@@ -31,7 +31,9 @@ interface Stream {
         }
     }
 
-    interface My : Stream
+    interface My : Stream {
+        override val video: Flow<Input.Video.My?>
+    }
 }
 
 data class OtherStream(
