@@ -6,9 +6,10 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
+@OptIn(FlowPreview::class)
 internal class GlassViewModel(private val callLogicProvider: CallLogicProvider): ViewModel() {
 
-    val call: Flow<Call> = callLogicProvider.getCall()
+    val call: Flow<Call> = callLogicProvider.call
 
     val callState: Flow<Call.State> = call.flatMapConcat { call -> call.state }
 

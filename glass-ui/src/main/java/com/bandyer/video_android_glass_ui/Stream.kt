@@ -30,26 +30,14 @@ interface Stream {
             data class Error(val reason: String) : Closed()
         }
     }
-
-    interface My : Stream {
-        override val video: Flow<Input.Video.My?>
-    }
 }
 
-data class OtherStream(
+data class CallStream(
     override val id: String,
     override val video: Flow<Input.Video?>,
     override val audio: Flow<Input.Audio?>,
     override val state: Flow<Stream.State>
 ) : Stream
-
-data class MyStream(
-    override val id: String,
-    override val video: Flow<Input.Video.My?>,
-    override val audio: Flow<Input.Audio?>,
-    override val state: Flow<Stream.State>
-) : Stream.My
-
 
 
 

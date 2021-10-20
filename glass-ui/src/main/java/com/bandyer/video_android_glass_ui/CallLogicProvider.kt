@@ -11,7 +11,7 @@ internal interface CallLogicProvider {
         fun create(controllerCall: CallUIController): CallLogicProvider = CallLogicProviderImpl(controllerCall)
     }
 
-    fun getCall(): Flow<Call>
+    val call: Flow<Call>
 
     fun hangup()
 
@@ -28,7 +28,7 @@ internal interface CallLogicProvider {
 
 private class CallLogicProviderImpl(private val controllerCall: CallUIController) : CallLogicProvider {
 
-    override fun getCall(): Flow<Call> = controllerCall.call
+    override val call: Flow<Call> = controllerCall.call
 
     override fun hangup() = controllerCall.hangup()
 

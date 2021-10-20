@@ -7,7 +7,7 @@ data class Call(
     val participants: Flow<CallParticipants>,
     val state: Flow<State>,
     val duration: Flow<Long>,
-    val isRecording: Boolean
+    val isRecording: Flow<Boolean>
 ) {
     sealed class State {
         object Connected : State()

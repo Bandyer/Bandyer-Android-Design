@@ -7,13 +7,13 @@ interface Participants {
 }
 
 interface CallParticipants: Participants {
-    override val me: CallParticipant.Me
+    override val me: CallParticipant
     override val others: List<CallParticipant>
     override val creator: CallParticipant?
 }
 
 data class PhoneCallParticipants(
-    override val me: CallParticipant.Me,
+    override val me: CallParticipant,
     override val others: List<CallParticipant>,
     override val creator: CallParticipant?
 ) : CallParticipants
