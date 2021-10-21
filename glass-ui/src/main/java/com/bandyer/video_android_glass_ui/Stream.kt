@@ -2,7 +2,6 @@ package com.bandyer.video_android_glass_ui
 
 import kotlinx.coroutines.flow.Flow
 
-
 interface Stream {
 
     val id: String
@@ -32,7 +31,7 @@ interface Stream {
     }
 }
 
-data class CallStream(
+data class ParticipantStream(
     override val id: String,
     override val video: Flow<Input.Video?>,
     override val audio: Flow<Input.Audio?>,
