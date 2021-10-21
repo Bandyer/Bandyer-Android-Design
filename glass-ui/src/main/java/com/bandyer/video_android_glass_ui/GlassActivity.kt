@@ -2,7 +2,6 @@ package com.bandyer.video_android_glass_ui
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -78,8 +77,11 @@ class GlassActivity :
     private lateinit var batteryObserver: BatteryObserver
     private lateinit var wifiObserver: WiFiObserver
 
+    private var tiltEnabled = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        tiltEnabled = intent.extras?.getBoolean("tiltEnabled") ?: false
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
         enterImmersiveMode()
@@ -134,34 +136,34 @@ class GlassActivity :
                             when {
                                 state is Call.State.Connecting && participants.me == participants.creator -> navController.navigate(R.id.dialingFragment)
                                 state is Call.State.Connecting -> navController.navigate(R.id.ringingFragment)
-                                state is Call.State.Reconnecting -> Unit
                                 state is Call.State.Connected -> {
                                     navController.safeNavigate(
-                                        if(currentFragment is DialingFragment) DialingFragmentDirections.actionDialingFragmentToEmptyFragment()
+                                        if (currentFragment is DialingFragment) DialingFragmentDirections.actionDialingFragmentToEmptyFragment()
                                         else RingingFragmentDirections.actionRingingFragmentToEmptyFragment()
                                     )
                                 }
-                                state is Call.State.Disconnected.Ended -> Unit
-                                state is Call.State.Disconnected.Error -> Unit
+                                else -> Unit
                             }
                         }.collect()
                     }
                 }
 
                 launch {
-                    viewModel.participants.collect {  participants ->
-                        participants.others.plus(participants.me).onEach { part ->
-                            part.streams.onEach { streams ->
-                                streams.onEach { stream ->
+                    viewModel.call.flatMapConcat { call -> call.participants }.onEach { participants ->
+                        participants.others.plus(participants.me).forEach { participant ->
+                            participant.streams.onEach { streams ->
+                                streams.forEach { stream ->
                                     stream.video.onEach { video ->
                                         video?.view?.onEach { view ->
-                                            itemAdapter!!.add(CallParticipantItem(stream.id, view, lifecycle))
+                                            val result = itemAdapter!!.adapterItems.firstOrNull { it.streamId == stream.id }
+                                            if(result != null) itemAdapter!!.remove(itemAdapter!!.getAdapterPosition(result))
+                                            if(view != null) itemAdapter!!.add(CallParticipantItem(stream.id, view, lifecycle))
                                         }?.launchIn(this)
                                     }.launchIn(this)
                                 }
                             }.launchIn(this)
                         }
-                    }
+                    }.launchIn(this)
                 }
             }
         }
@@ -227,7 +229,12 @@ class GlassActivity :
      * @suppress
      */
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
-        return if (event?.action == MotionEvent.ACTION_DOWN && handleSmartGlassTouchEvent(TouchEvent.getEvent(event))) true
+        return if (event?.action == MotionEvent.ACTION_DOWN && handleSmartGlassTouchEvent(
+                TouchEvent.getEvent(
+                    event
+                )
+            )
+        ) true
         else super.dispatchKeyEvent(event)
     }
 
