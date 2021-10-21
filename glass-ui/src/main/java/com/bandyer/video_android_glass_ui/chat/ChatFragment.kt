@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.utils.Iso8601
-import com.bandyer.video_android_glass_ui.TiltFragment
+import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.common.UserState
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatBinding
 import com.bandyer.video_android_glass_ui.participants.ParticipantData
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
+import com.bandyer.video_android_glass_ui.utils.TiltListener
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
@@ -28,7 +29,7 @@ import java.util.*
 /**
  * ChatFragment
  */
-class ChatFragment : TiltFragment() {
+class ChatFragment : BaseFragment(), TiltListener {
 
     private var _binding: BandyerGlassFragmentChatBinding? = null
     override val binding: BandyerGlassFragmentChatBinding get() = _binding!!
@@ -40,6 +41,11 @@ class ChatFragment : TiltFragment() {
 
     private var lastMsgIndex = 0
     private var pagesIds = arrayListOf<String>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        tiltListener = this
+    }
 
     /**
      * @suppress

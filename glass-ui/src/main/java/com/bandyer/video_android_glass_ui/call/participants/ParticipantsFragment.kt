@@ -9,26 +9,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
-import com.bandyer.video_android_glass_ui.TiltFragment
-import com.bandyer.video_android_glass_ui.common.UserState
+import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentParticipantsBinding
-import com.bandyer.video_android_glass_ui.participants.ParticipantData
-import com.bandyer.video_android_glass_ui.participants.ParticipantStateTextView
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
+import com.bandyer.video_android_glass_ui.utils.TiltListener
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import java.time.Instant
-import java.time.temporal.ChronoUnit
 
 /**
  * ParticipantsFragment
  */
-class ParticipantsFragment : TiltFragment() {
+class ParticipantsFragment : BaseFragment(), TiltListener {
 
     private var _binding: BandyerGlassFragmentParticipantsBinding? = null
     override val binding: BandyerGlassFragmentParticipantsBinding get() = _binding!!
@@ -36,6 +31,11 @@ class ParticipantsFragment : TiltFragment() {
     private var itemAdapter: ItemAdapter<CallParticipantItem>? = null
 
     private var currentParticipantIndex = -1
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        tiltListener = this
+    }
 
     /**
      * @suppress

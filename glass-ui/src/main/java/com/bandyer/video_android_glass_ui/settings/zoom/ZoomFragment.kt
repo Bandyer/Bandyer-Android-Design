@@ -2,24 +2,29 @@ package com.bandyer.video_android_glass_ui.settings.zoom
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.bandyer.video_android_glass_ui.TiltFragment
+import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentZoomBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
+import com.bandyer.video_android_glass_ui.utils.TiltListener
 
 /**
  * ZoomFragment
  */
-class ZoomFragment : TiltFragment() {
+class ZoomFragment : BaseFragment(), TiltListener {
 
     private var _binding: BandyerGlassFragmentZoomBinding? = null
     override val binding: BandyerGlassFragmentZoomBinding get() = _binding!!
 
     private var deltaAzimuth = 0f
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        tiltListener = this
+    }
 
     /**
      * @suppress

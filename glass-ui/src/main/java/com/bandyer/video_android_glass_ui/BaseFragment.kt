@@ -4,19 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.navigation.NavHost
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
 import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
 import com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
-import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
+import com.bandyer.video_android_glass_ui.utils.TiltFragment
 
 /**
  * BaseFragment. A base class for all the smart glass fragments
  */
-abstract class BaseFragment : Fragment(), TouchEventListener, ChatNotificationManager.NotificationListener {
+abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatNotificationManager.NotificationListener {
 
     /**
      * The [GlassActivity]

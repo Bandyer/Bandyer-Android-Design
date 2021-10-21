@@ -11,16 +11,13 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
+import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.TiltFragment
-import com.bandyer.video_android_glass_ui.common.UserState
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatMenuBinding
-import com.bandyer.video_android_glass_ui.participants.ParticipantData
-import com.bandyer.video_android_glass_ui.participants.ParticipantStateTextView
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
+import com.bandyer.video_android_glass_ui.utils.TiltListener
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
@@ -30,7 +27,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 /**
  * ChatMenuFragment
  */
-class ChatMenuFragment : TiltFragment() {
+class ChatMenuFragment : BaseFragment(), TiltListener {
 
     private var _binding: BandyerGlassFragmentChatMenuBinding? = null
     override val binding: BandyerGlassFragmentChatMenuBinding get() = _binding!!
@@ -40,6 +37,11 @@ class ChatMenuFragment : TiltFragment() {
     private val args: ChatMenuFragmentArgs by navArgs()
 
     private var actionIndex = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        tiltListener = this
+    }
 
     /**
      * @suppress

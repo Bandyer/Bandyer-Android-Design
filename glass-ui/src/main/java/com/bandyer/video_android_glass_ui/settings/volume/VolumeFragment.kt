@@ -6,19 +6,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.bandyer.video_android_glass_ui.TiltFragment
+import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentVolumeBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
+import com.bandyer.video_android_glass_ui.utils.TiltListener
 
 /**
  * VolumeFragment
  */
-class VolumeFragment : TiltFragment() {
+class VolumeFragment : BaseFragment(), TiltListener {
 
     private var _binding: BandyerGlassFragmentVolumeBinding? = null
     override val binding: BandyerGlassFragmentVolumeBinding get() = _binding!!
 
     private var deltaAzimuth = 0f
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        tiltListener = this
+    }
 
     /**
      * @suppress

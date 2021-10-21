@@ -9,23 +9,22 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.TiltFragment
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentMenuBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
+import com.bandyer.video_android_glass_ui.utils.TiltListener
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import com.mikepenz.fastadapter.dsl.genericFastAdapter
-import com.mikepenz.fastadapter.listeners.addClickListener
 
 /**
  * BandyerGlassMenuFragment
  */
-class MenuFragment : TiltFragment() {
+class MenuFragment : BaseFragment(), TiltListener {
 
     private var _binding: BandyerGlassFragmentMenuBinding? = null
     override val binding: BandyerGlassFragmentMenuBinding get() = _binding!!
@@ -33,6 +32,11 @@ class MenuFragment : TiltFragment() {
     private var itemAdapter: ItemAdapter<MenuItem>? = null
 
     private var currentMenuItemIndex = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        tiltListener = this
+    }
 
     /**
      * @suppress

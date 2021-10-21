@@ -24,20 +24,6 @@ class TiltController constructor(
     private val listener: TiltListener
 ) : SensorEventListener {
 
-    /**
-     * A listener for the tilt events
-     */
-    interface TiltListener {
-        /**
-         * Return the euler angles' degrees changes (azimuth/pitch/roll) around every [SensorManager.SENSOR_DELAY_GAME] Us
-         *
-         * @param deltaAzimuth The azimuth value
-         * @param deltaPitch The pitch value
-         * @param deltaRoll The roll value
-         */
-        fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float)
-    }
-
     private val windowManager = ContextCompat.getSystemService(ctx, WindowManager::class.java)!!
     private val sensorManager = ContextCompat.getSystemService(ctx, SensorManager::class.java)!!
     private val display =
