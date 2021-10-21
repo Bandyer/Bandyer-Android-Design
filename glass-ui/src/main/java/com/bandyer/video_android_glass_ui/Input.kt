@@ -39,7 +39,7 @@ interface Input {
 
         override val state: Flow<State>
 
-        var view: Flow<View>
+        var view: Flow<View?>
 
         val currentQuality: Flow<Quality>
 
@@ -72,7 +72,7 @@ data class Video(
     override val id: String,
     override val enabled: Flow<Boolean>,
     override val state: Flow<Input.State>,
-    override var view: Flow<View>,
+    override var view: Flow<View?>,
     override val currentQuality: Flow<Input.Video.Quality>,
     override val source: Input.Video.Source
 ) : Input.Video
