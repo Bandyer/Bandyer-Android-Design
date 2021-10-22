@@ -8,12 +8,12 @@ import kotlinx.coroutines.flow.Flow
 interface CallUIController {
 
     companion object Launcher {
-        fun launchGlassUI(context: Context, controllerCall: CallUIController) =
-            context.launchUI(GlassActivity::class.java, controllerCall)
+        fun launchCallGlass(context: Context, controllerCall: CallUIController, tiltEnabled: Boolean = false) =
+            context.launchCall(GlassActivity::class.java, controllerCall, tiltEnabled)
 
-        private fun <T: Activity> Context.launchUI(cls: Class<T>, controllerCall: CallUIController) {
+        private fun <T: Activity> Context.launchCall(cls: Class<T>, controllerCall: CallUIController, tiltEnabled: Boolean) {
             ProvidersHolder.callProvider = CallLogicProvider.create(controllerCall)
-            startActivity(Intent(this, cls))
+            startActivity(Intent(this, cls).apply { putExtra("tiltEnabled", tiltEnabled) })
         }
     }
 

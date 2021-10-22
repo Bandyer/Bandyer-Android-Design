@@ -38,19 +38,13 @@ class MenuFragment : BaseFragment(), TiltListener {
 
     private var currentMenuItemIndex = 0
 
-    @Suppress("UNCHECKED_CAST")
-    private val navGraphViewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) {
-        object : ViewModelProvider.Factory { override fun <T : ViewModel?> create(modelClass: Class<T>): T = NavGraphViewModel(ProvidersHolder.callProvider!!) as T }
-    }
+    private val navGraphViewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) { NavGraphViewModelFactory }
 
-    @Suppress("UNCHECKED_CAST")
-    private val activityViewModel: GlassViewModel by activityViewModels {
-        object : ViewModelProvider.Factory { override fun <T : ViewModel?> create(modelClass: Class<T>): T = GlassViewModel(ProvidersHolder.callProvider!!) as T }
-    }
+    private val activityViewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tiltListener = this
+        if(activityViewModel.tiltEnabled) tiltListener = this
     }
 
     /**

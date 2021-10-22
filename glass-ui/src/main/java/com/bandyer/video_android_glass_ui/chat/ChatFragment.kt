@@ -6,12 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ObservableInt
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.bandyer.video_android_glass_ui.BaseFragment
+import com.bandyer.video_android_glass_ui.GlassViewModel
+import com.bandyer.video_android_glass_ui.GlassViewModelFactory
+import com.bandyer.video_android_glass_ui.ProvidersHolder
 import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.common.UserState
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatBinding
@@ -42,9 +48,11 @@ class ChatFragment : BaseFragment(), TiltListener {
     private var lastMsgIndex = 0
     private var pagesIds = arrayListOf<String>()
 
+    private val activityViewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tiltListener = this
+        if(activityViewModel.tiltEnabled) tiltListener = this
     }
 
     /**

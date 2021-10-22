@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
@@ -50,12 +51,7 @@ class GlassActivity :
     private var decorView: View? = null
 
     // VIEW MODEL
-    @Suppress("UNCHECKED_CAST")
-    private val viewModel: GlassViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T = GlassViewModel(ProvidersHolder.callProvider!!) as T
-        }
-    }
+    private val viewModel: GlassViewModel by viewModels { GlassViewModelFactory }
 
     // ADAPTER
     private var itemAdapter: ItemAdapter<CallParticipantItem>? = null
@@ -76,11 +72,10 @@ class GlassActivity :
     private lateinit var batteryObserver: BatteryObserver
     private lateinit var wifiObserver: WiFiObserver
 
-    private var tiltEnabled = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        tiltEnabled = intent.extras?.getBoolean("tiltEnabled") ?: false
+        viewModel.tiltEnabled = intent.extras?.getBoolean("tiltEnabled") ?: false
+
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
         enterImmersiveMode()
@@ -88,8 +83,7 @@ class GlassActivity :
         with(binding.bandyerStreams) {
             itemAdapter = ItemAdapter()
             val fastAdapter = FastAdapter.with(itemAdapter!!)
-            val layoutManager =
-                LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
+            val layoutManager = LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
             val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
             this.layoutManager = layoutManager

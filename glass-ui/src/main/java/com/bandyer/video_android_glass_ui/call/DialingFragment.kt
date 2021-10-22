@@ -25,13 +25,7 @@ class DialingFragment : BaseFragment() {
 
     private var itemAdapter: ItemAdapter<FullScreenDialogItem>? = null
 
-    @Suppress("UNCHECKED_CAST")
-    private val viewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                NavGraphViewModel(ProvidersHolder.callProvider!!) as T
-        }
-    }
+    private val viewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) { NavGraphViewModelFactory }
 
     /**
      * @suppress
