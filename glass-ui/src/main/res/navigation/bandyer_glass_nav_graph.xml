@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/smartglass_nav_graph"
-    app:startDestination="@id/ringingFragment">
+    app:startDestination="@id/startFragment">
 
     <fragment
         android:id="@+id/menuFragment"
@@ -83,4 +84,16 @@
         android:id="@+id/connectingFragment"
         android:name="com.bandyer.video_android_glass_ui.call.ConnectingFragment"
         android:label="ConnectingFragment" />
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.bandyer.video_android_glass_ui.StartFragment"
+        android:label="fragment_start"
+        tools:layout="@layout/bandyer_glass_fragment_start" >
+        <action
+            android:id="@+id/action_startFragment_to_dialingFragment"
+            app:destination="@id/dialingFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_ringingFragment"
+            app:destination="@id/ringingFragment" />
+    </fragment>
 </navigation>
