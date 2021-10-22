@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.*
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
@@ -54,7 +53,7 @@ class GlassActivity :
     private val viewModel: GlassViewModel by viewModels { GlassViewModelFactory }
 
     // ADAPTER
-    private var itemAdapter: ItemAdapter<CallParticipantItem>? = null
+    private var itemAdapter: ItemAdapter<StreamItem>? = null
 
     // NAVIGATION
     private val currentFragment: Fragment?
@@ -93,16 +92,14 @@ class GlassActivity :
         }
 
         // NavController
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         // Gesture Detector
         glassGestureDetector = GlassGestureDetector(this, this)
 
         // Notification Manager
-        notificationManager =
-            ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
+        notificationManager = ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
 
         // Battery observer
         batteryObserver = BatteryObserver(this)
@@ -114,13 +111,11 @@ class GlassActivity :
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    batteryObserver.observe()
-                        .collect { binding.bandyerStatusBar.updateBatteryIcon(it) }
+                    batteryObserver.observe().collect { binding.bandyerStatusBar.updateBatteryIcon(it) }
                 }
 
                 launch {
-                    wifiObserver.observe()
-                        .collect { binding.bandyerStatusBar.updateWifiSignalIcon(it) }
+                    wifiObserver.observe().collect { binding.bandyerStatusBar.updateWifiSignalIcon(it) }
                 }
 
                 launch {
@@ -144,13 +139,9 @@ class GlassActivity :
                         participants.others.plus(participants.me).forEach { participant ->
                             participant.streams.onEach { streams ->
                                 streams.forEach { stream ->
-                                    stream.video.onEach { video ->
-                                        video?.view?.onEach { view ->
-                                            val result = itemAdapter!!.adapterItems.firstOrNull { it.streamId == stream.id }
-                                            if(result != null) itemAdapter!!.remove(itemAdapter!!.getAdapterPosition(result))
-                                            if(view != null) itemAdapter!!.add(CallParticipantItem(stream.id, view, lifecycle))
-                                        }?.launchIn(this)
-                                    }.launchIn(this)
+                                    val index = itemAdapter!!.adapterItems.indexOfFirst { item -> item.stream.id == stream.id }
+                                    if(index == -1) itemAdapter!!.add(StreamItem(stream,this))
+                                    else itemAdapter!![index] = StreamItem(stream,this)
                                 }
                             }.launchIn(this)
                         }
