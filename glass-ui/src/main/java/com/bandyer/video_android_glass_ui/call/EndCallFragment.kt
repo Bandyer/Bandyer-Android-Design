@@ -9,7 +9,6 @@ import androidx.lifecycle.*
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.bandyer.video_android_glass_ui.*
-import com.bandyer.video_android_glass_ui.GlassViewModel
 import com.bandyer.video_android_glass_ui.ProvidersHolder
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
@@ -25,10 +24,10 @@ class EndCallFragment : BaseFragment() {
     override val binding: BandyerGlassFragmentFullScreenDialogBinding get() = _binding!!
 
     @Suppress("UNCHECKED_CAST")
-    private val viewModel: GlassViewModel by navGraphViewModels(R.id.smartglass_nav_graph) {
+    private val viewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                GlassViewModel(ProvidersHolder.callProvider!!) as T
+                NavGraphViewModel(ProvidersHolder.callProvider!!) as T
         }
     }
 

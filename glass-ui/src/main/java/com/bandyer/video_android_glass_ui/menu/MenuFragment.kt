@@ -5,12 +5,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.video_android_glass_ui.BaseFragment
-import com.bandyer.video_android_glass_ui.R
+import com.bandyer.video_android_glass_ui.*
+import com.bandyer.video_android_glass_ui.NavGraphViewModel
+import com.bandyer.video_android_glass_ui.ProvidersHolder
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentMenuBinding
@@ -32,6 +37,16 @@ class MenuFragment : BaseFragment(), TiltListener {
     private var itemAdapter: ItemAdapter<MenuItem>? = null
 
     private var currentMenuItemIndex = 0
+
+    @Suppress("UNCHECKED_CAST")
+    private val navGraphViewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) {
+        object : ViewModelProvider.Factory { override fun <T : ViewModel?> create(modelClass: Class<T>): T = NavGraphViewModel(ProvidersHolder.callProvider!!) as T }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    private val activityViewModel: GlassViewModel by activityViewModels {
+        object : ViewModelProvider.Factory { override fun <T : ViewModel?> create(modelClass: Class<T>): T = GlassViewModel(ProvidersHolder.callProvider!!) as T }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

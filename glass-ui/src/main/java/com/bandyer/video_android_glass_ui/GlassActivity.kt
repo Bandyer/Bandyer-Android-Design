@@ -53,8 +53,7 @@ class GlassActivity :
     @Suppress("UNCHECKED_CAST")
     private val viewModel: GlassViewModel by viewModels {
         object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                GlassViewModel(ProvidersHolder.callProvider!!) as T
+            override fun <T : ViewModel?> create(modelClass: Class<T>): T = GlassViewModel(ProvidersHolder.callProvider!!) as T
         }
     }
 
@@ -134,13 +133,11 @@ class GlassActivity :
                     viewModel.call.collect { call ->
                         call.state.combine(call.participants) { state, participants ->
                             when {
-                                state is Call.State.Connecting && participants.me == participants.creator -> navController.navigate(R.id.dialingFragment)
-                                state is Call.State.Connecting -> navController.navigate(R.id.ringingFragment)
+                                state is Call.State.Connecting && participants.me == participants.creator -> navController.safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment())
+                                state is Call.State.Connecting -> navController.safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
                                 state is Call.State.Connected -> {
-                                    navController.safeNavigate(
-                                        if (currentFragment is DialingFragment) DialingFragmentDirections.actionDialingFragmentToEmptyFragment()
-                                        else RingingFragmentDirections.actionRingingFragmentToEmptyFragment()
-                                    )
+                                    val destination = if (currentFragment is DialingFragment) DialingFragmentDirections.actionDialingFragmentToEmptyFragment() else RingingFragmentDirections.actionRingingFragmentToEmptyFragment()
+                                    navController.safeNavigate(destination)
                                 }
                                 else -> Unit
                             }
@@ -149,7 +146,7 @@ class GlassActivity :
                 }
 
                 launch {
-                    viewModel.call.flatMapConcat { call -> call.participants }.onEach { participants ->
+                    viewModel.participants.onEach { participants ->
                         participants.others.plus(participants.me).forEach { participant ->
                             participant.streams.onEach { streams ->
                                 streams.forEach { stream ->
@@ -340,9 +337,8 @@ class GlassActivity :
     }
 }
 
-internal fun NavController.safeNavigate(direction: NavDirections) {
-    currentDestination?.getAction(direction.actionId)?.run { navigate(direction) }
-}
+internal fun NavController.safeNavigate(direction: NavDirections): Boolean =
+    currentDestination?.getAction(direction.actionId)?.run { navigate(direction); true } ?: false
 
 fun <T: GenericItem> ItemAdapter<T>.addOrUpdate(items: List<T>) =
     FastAdapterDiffUtil.calculateDiff(this, items, true).also { FastAdapterDiffUtil[this] = it }

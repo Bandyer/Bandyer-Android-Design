@@ -1,7 +1,6 @@
 package com.bandyer.video_android_glass_ui.call
 
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,6 @@ import androidx.lifecycle.*
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bandyer.video_android_glass_ui.*
-import com.bandyer.video_android_glass_ui.GlassViewModel
 import com.bandyer.video_android_glass_ui.ProvidersHolder
 import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
@@ -28,10 +26,10 @@ class DialingFragment : BaseFragment() {
     private var itemAdapter: ItemAdapter<FullScreenDialogItem>? = null
 
     @Suppress("UNCHECKED_CAST")
-    private val viewModel: GlassViewModel by navGraphViewModels(R.id.smartglass_nav_graph) {
+    private val viewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                GlassViewModel(ProvidersHolder.callProvider!!) as T
+                NavGraphViewModel(ProvidersHolder.callProvider!!) as T
         }
     }
 
