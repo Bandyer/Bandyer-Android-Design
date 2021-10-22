@@ -1,5 +1,6 @@
 package com.bandyer.video_android_glass_ui.call
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
@@ -14,9 +15,11 @@ import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class DialingFragment : BaseFragment() {
 
@@ -30,6 +33,7 @@ class DialingFragment : BaseFragment() {
     /**
      * @suppress
      */
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -62,39 +66,28 @@ class DialingFragment : BaseFragment() {
                     setHasFixedSize(true)
                     addItemDecoration(ReadProgressDecoration(requireContext()))
 
-                    /**
-                     * TODO
-                     * for... itemAdapter.add..
-                     */
-
-                    itemAdapter!!.add(
-                        FullScreenDialogItem("Mario Rossi"),
-                        FullScreenDialogItem("Gianfranco Mazzoni"),
-                        FullScreenDialogItem("Andrea Tocchetti"),
-                        FullScreenDialogItem("Stefano Brusadelli")
-                    )
+                    root.setOnTouchListener { _, event -> onTouchEvent(event) }
                 }
 
-                val isGroupCall = itemAdapter!!.adapterItemCount > 1
-                if (!isGroupCall)
-                    bandyerBottomNavigation.hideSwipeHorizontalItem()
-                else
-                    bandyerCounter.text = resources.getString(
-                        R.string.bandyer_glass_n_of_participants_pattern,
-                        itemAdapter!!.adapterItemCount
-                    )
-
-                bandyerSubtitle.text =
-                    resources.getString(if (isGroupCall) R.string.bandyer_glass_dialing_group else R.string.bandyer_glass_dialing)
-
-                lifecycleScope.launchWhenCreated {
-                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                repeatOnStarted {
+                    launch {
                         viewModel.callState.collect { state ->
                             when (state) {
-                                is Call.State.Disconnected.Ended -> requireActivity().finish()
-                                is Call.State.Disconnected.Error -> requireActivity().finish()
+                                is Call.State.Disconnected.Ended, is Call.State.Disconnected.Error -> requireActivity().finish()
                                 else -> Unit
                             }
+                        }
+                    }
+
+                    launch {
+                        viewModel.participants.collect { participants ->
+                            itemAdapter!!.set(participants.others.plus(participants.me).map { FullScreenDialogItem(it.username) })
+
+                            val isGroupCall = itemAdapter!!.adapterItemCount > 1
+                            if (!isGroupCall) bandyerBottomNavigation.hideSwipeHorizontalItem()
+                            else bandyerCounter.text = resources.getString(R.string.bandyer_glass_n_of_participants_pattern, participants.others.size + 1)
+
+                            bandyerSubtitle.text = resources.getString(if (isGroupCall) R.string.bandyer_glass_dialing_group else R.string.bandyer_glass_dialing)
                         }
                     }
                 }
@@ -113,7 +106,7 @@ class DialingFragment : BaseFragment() {
 
     override fun onTap() = false
 
-    override fun onSwipeDown() = true.also { viewModel.hangUp() }
+    override fun onSwipeDown() = true.also { viewModel.hangUp(); requireActivity().finish() }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = false
 

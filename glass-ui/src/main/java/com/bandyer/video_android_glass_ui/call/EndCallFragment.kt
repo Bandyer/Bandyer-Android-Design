@@ -13,6 +13,7 @@ import com.bandyer.video_android_glass_ui.ProvidersHolder
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import kotlinx.coroutines.flow.collect
 
 /**
@@ -44,16 +45,13 @@ class EndCallFragment : BaseFragment() {
                 false
             )
             .apply {
-                if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
+                if (GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
 
-                lifecycleScope.launchWhenCreated {
-                    viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                        viewModel.callState.collect { state ->
-                            when (state) {
-                                is Call.State.Disconnected.Ended -> requireActivity().finish()
-                                is Call.State.Disconnected.Error -> requireActivity().finish()
-                                else -> Unit
-                            }
+                repeatOnStarted {
+                    viewModel.callState.collect { state ->
+                        when (state) {
+                            is Call.State.Disconnected.Ended, is Call.State.Disconnected.Error -> requireActivity().finish()
+                            else -> Unit
                         }
                     }
                 }
@@ -70,7 +68,7 @@ class EndCallFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onTap() = true.also { viewModel.hangUp() }
+    override fun onTap() = true.also { viewModel.hangUp(); requireActivity().finish() }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
