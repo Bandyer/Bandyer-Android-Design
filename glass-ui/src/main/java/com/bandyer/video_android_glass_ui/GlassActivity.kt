@@ -16,6 +16,8 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.bandyer.video_android_glass_ui.call.DialingFragment
 import com.bandyer.video_android_glass_ui.call.DialingFragmentDirections
 import com.bandyer.video_android_glass_ui.call.RingingFragmentDirections
@@ -82,12 +84,11 @@ class GlassActivity :
         with(binding.bandyerStreams) {
             itemAdapter = ItemAdapter()
             val fastAdapter = FastAdapter.with(itemAdapter!!)
-            val layoutManager =
-                LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
+            val layoutManager = LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
             val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
             this.layoutManager = layoutManager
-            adapter = fastAdapter
+            adapter = fastAdapter.apply { stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY }
             isFocusable = false
             setHasFixedSize(true)
         }
