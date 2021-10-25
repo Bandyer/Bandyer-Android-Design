@@ -21,10 +21,12 @@ import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressInd
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentMenuBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import kotlinx.coroutines.flow.collect
 
 /**
  * BandyerGlassMenuFragment
@@ -90,6 +92,15 @@ class MenuFragment : BaseFragment(), TiltListener {
 
                     // Forward the root view's touch event to the recycler view
                     root.setOnTouchListener { _, event -> this.onTouchEvent(event) }
+
+                    repeatOnStarted {
+                        navGraphViewModel.callState.collect { state ->
+                            when (state) {
+                                is Call.State.Disconnected -> requireActivity().finish()
+                                else -> Unit
+                            }
+                        }
+                    }
                 }
             }
 

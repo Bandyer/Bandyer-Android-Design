@@ -50,7 +50,7 @@ class EndCallFragment : BaseFragment() {
                 repeatOnStarted {
                     viewModel.callState.collect { state ->
                         when (state) {
-                            is Call.State.Disconnected.Ended, is Call.State.Disconnected.Error -> requireActivity().finish()
+                            is Call.State.Disconnected -> requireActivity().finish()
                             else -> Unit
                         }
                     }

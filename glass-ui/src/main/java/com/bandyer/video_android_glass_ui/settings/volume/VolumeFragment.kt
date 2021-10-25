@@ -9,13 +9,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.bandyer.video_android_glass_ui.BaseFragment
+import androidx.navigation.navGraphViewModels
+import com.bandyer.video_android_glass_ui.*
 import com.bandyer.video_android_glass_ui.GlassViewModel
 import com.bandyer.video_android_glass_ui.GlassViewModelFactory
-import com.bandyer.video_android_glass_ui.ProvidersHolder
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentVolumeBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import kotlinx.coroutines.flow.collect
 
 /**
  * VolumeFragment
@@ -26,6 +28,8 @@ class VolumeFragment : BaseFragment(), TiltListener {
     override val binding: BandyerGlassFragmentVolumeBinding get() = _binding!!
 
     private var deltaAzimuth = 0f
+
+    private val navGraphViewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) { NavGraphViewModelFactory }
 
     private val activityViewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 
@@ -47,7 +51,18 @@ class VolumeFragment : BaseFragment(), TiltListener {
         // Add view binding
         _binding = BandyerGlassFragmentVolumeBinding
             .inflate(inflater, container, false)
-            .apply { if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
+            .apply {
+                if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
+
+                repeatOnStarted {
+                    navGraphViewModel.callState.collect { state ->
+                        when (state) {
+                            is Call.State.Disconnected -> requireActivity().finish()
+                            else -> Unit
+                        }
+                    }
+                }
+            }
 
         return binding.root
     }
