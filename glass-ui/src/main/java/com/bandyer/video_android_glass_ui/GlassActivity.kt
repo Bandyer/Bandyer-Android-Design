@@ -24,6 +24,7 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBindin
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryInfo
 import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryObserver
 import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiInfo
@@ -82,7 +83,8 @@ class GlassActivity :
         with(binding.bandyerStreams) {
             itemAdapter = ItemAdapter()
             val fastAdapter = FastAdapter.with(itemAdapter!!)
-            val layoutManager = LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
+            val layoutManager =
+                LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
             val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
             this.layoutManager = layoutManager
@@ -92,14 +94,16 @@ class GlassActivity :
         }
 
         // NavController
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         // Gesture Detector
         glassGestureDetector = GlassGestureDetector(this, this)
 
         // Notification Manager
-        notificationManager = ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
+        notificationManager =
+            ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
 
         // Battery observer
         batteryObserver = BatteryObserver(this)
@@ -108,42 +112,34 @@ class GlassActivity :
         wifiObserver = WiFiObserver(this)
 
         // Observer events
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    batteryObserver.observe().collect { binding.bandyerStatusBar.updateBatteryIcon(it) }
-                }
+        repeatOnStarted {
+            batteryObserver.observe().onEach { binding.bandyerStatusBar.updateBatteryIcon(it) }.launchIn(this)
 
-                launch {
-                    wifiObserver.observe().collect { binding.bandyerStatusBar.updateWifiSignalIcon(it) }
-                }
+            wifiObserver.observe().onEach { binding.bandyerStatusBar.updateWifiSignalIcon(it) }.launchIn(this)
 
-                launch {
-                    viewModel.call.collect { call ->
-                        call.state.combine(call.participants) { state, participants ->
-                            when {
-                                state is Call.State.Connecting && participants.me == participants.creator -> navController.safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment())
-                                state is Call.State.Connecting -> navController.safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
-                                state is Call.State.Connected -> {
-                                    val destination = if (currentFragment is DialingFragment) DialingFragmentDirections.actionDialingFragmentToEmptyFragment() else RingingFragmentDirections.actionRingingFragmentToEmptyFragment()
-                                    navController.safeNavigate(destination)
-                                }
-                                else -> Unit
-                            }
-                        }.collect()
+            viewModel.call
+                .flatMapConcat { call -> call.state.combine(call.participants) { state, participants -> Pair(state, participants) } }
+                .onEach {
+                    val state = it.first
+                    val participants = it.second
+                    when {
+                        state is Call.State.Connecting && participants.me == participants.creator -> navController.safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment())
+                        state is Call.State.Connecting -> navController.safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
+                        state is Call.State.Connected -> {
+                            val destination = if (currentFragment is DialingFragment) DialingFragmentDirections.actionDialingFragmentToEmptyFragment() else RingingFragmentDirections.actionRingingFragmentToEmptyFragment()
+                            navController.safeNavigate(destination)
+                        }
+                        else -> Unit
                     }
-                }
+                }.launchIn(this)
 
-                launch {
-                    viewModel.participants.onEach { participants ->
-                        participants.others.plus(participants.me).forEach { participant ->
-                            participant.streams.onEach { streams ->
-                                streams.forEach { stream ->
-                                    val index = itemAdapter!!.adapterItems.indexOfFirst { item -> item.stream.id == stream.id }
-                                    if(index == -1) itemAdapter!!.add(StreamItem(stream,this))
-                                    else itemAdapter!![index] = StreamItem(stream,this)
-                                }
-                            }.launchIn(this)
+            viewModel.participants.collect { participants ->
+                participants.others.plus(participants. me).forEach { participant ->
+                    participant.streams.onEach { streams ->
+                        streams.forEach { stream ->
+                            val index = itemAdapter!!.adapterItems.indexOfFirst { item -> item.stream.id == stream.id }
+                            if (index == -1) itemAdapter!!.add(StreamItem(stream, this))
+                            else itemAdapter!![index] = StreamItem(stream, this)
                         }
                     }.launchIn(this)
                 }
@@ -325,5 +321,5 @@ class GlassActivity :
 internal fun NavController.safeNavigate(direction: NavDirections): Boolean =
     currentDestination?.getAction(direction.actionId)?.run { navigate(direction); true } ?: false
 
-fun <T: GenericItem> ItemAdapter<T>.addOrUpdate(items: List<T>) =
+fun <T : GenericItem> ItemAdapter<T>.addOrUpdate(items: List<T>) =
     FastAdapterDiffUtil.calculateDiff(this, items, true).also { FastAdapterDiffUtil[this] = it }
