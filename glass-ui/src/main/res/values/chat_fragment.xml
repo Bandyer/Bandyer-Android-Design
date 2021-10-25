@@ -7,7 +7,7 @@
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
-    <!-- MENU FRAGMENT -->
+    <!-- CHAT FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.Chat" parent="BandyerSDKDesign.Glass">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem</item>
