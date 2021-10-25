@@ -4,30 +4,14 @@
         <attr name="bandyer_avatarStyle" />
         <attr name="bandyer_titleStyle" />
         <attr name="bandyer_subtitleStyle" />
-        <attr name="bandyer_contactStateDotStyle" />
+        <attr name="bandyer_contactStateDotStyle" format="reference"/>
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Glass.UserInfo" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.UserInfo</item>
+        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.Big</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.GlassUserInfo</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.SubTitle.GlassUserInfo</item>
         <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.RoundedImageGlass.StateUserInfo</item>
-    </style>
-
-    <!-- AVATAR -->
-    <style name="BandyerSDKDesign.Glass.Avatar.UserInfo" parent="BandyerSDKDesign.Glass.Avatar">
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.RoundedImageGlass.UserInfoAvatar</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatar.UserInfo</item>
-    </style>
-
-    <style name="BandyerSDKDesign.RoundedImageGlass.UserInfoAvatar" parent="BandyerSDKDesign.RoundedImageGlass">
-        <item name="android:layout_width">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
-        <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
-    </style>
-
-    <style name="BandyerSDKDesign.TextView.Title.GlassAvatar.UserInfo" parent="BandyerSDKDesign.TextView.Title.GlassAvatar">
-        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_40sp</item>
     </style>
 
     <!-- CONTACT STATE DOT -->

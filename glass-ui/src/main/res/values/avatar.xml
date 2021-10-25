@@ -22,4 +22,19 @@
         <item name="autoSizeMinTextSize">@dimen/bandyer_dimen_text_2sp</item>
         <item name="autoSizeTextType">uniform</item>
     </style>
+
+    <style name="BandyerSDKDesign.Glass.Avatar.Big" parent="BandyerSDKDesign.Glass.Avatar">
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.RoundedImageGlass.Big</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatar.Big</item>
+    </style>
+
+    <style name="BandyerSDKDesign.RoundedImageGlass.Big" parent="BandyerSDKDesign.RoundedImageGlass">
+        <item name="android:layout_width">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
+        <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Title.GlassAvatar.Big" parent="BandyerSDKDesign.TextView.Title.GlassAvatar">
+        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_40sp</item>
+    </style>
 </resources>
