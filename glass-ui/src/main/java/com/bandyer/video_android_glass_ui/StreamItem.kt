@@ -1,23 +1,25 @@
 package com.bandyer.video_android_glass_ui
 
-import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.*
+import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.databinding.BandyerCallParticipantItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-class StreamItem(val stream: Stream, parentScope: CoroutineScope) : AbstractItem<StreamItem.ViewHolder>() {
+internal data class StreamItemData(val isMyStream: Boolean, val username: String, val avatarUrl: String?, val stream: Stream)
 
-    private val scope = parentScope + CoroutineName(this.toString() + stream.id)
+internal class StreamItem(val data: StreamItemData, parentScope: CoroutineScope) : AbstractItem<StreamItem.ViewHolder>() {
+
+    private val scope = parentScope + CoroutineName(this.toString() + data.stream.id)
 
     /**
      * Set an unique identifier for the identifiable which do not have one set already
      */
-    override var identifier: Long = stream.id.hashCode().toLong()
+    override var identifier: Long = data.stream.id.hashCode().toLong()
 
     /**
      * The layout for the given item
@@ -50,10 +52,37 @@ class StreamItem(val stream: Stream, parentScope: CoroutineScope) : AbstractItem
         /**
          * Binds the data of this item onto the viewHolder
          */
-        override fun bindView(item: StreamItem, payloads: List<Any>) {
-            job = observeStream(item.stream, item.scope)
-            binding.bandyerAvatar.setBackground(Color.CYAN)
-            binding.bandyerAvatar.setText("M")
+        override fun bindView(item: StreamItem, payloads: List<Any>): Unit = with(item) {
+            with(binding) {
+                bandyerTitle.visibility = View.GONE
+                bandyerAvatar.visibility = View.GONE
+            }
+
+            job = data.stream.video
+                .filter { it != null }
+                .flatMapConcat { video ->
+                    video!!.enabled.combine(video.view) { enabled, view -> Pair(enabled, view) }
+                }.onEach { pair ->
+                    val enabled = pair.first
+                    val view = pair.second
+                    with(binding) {
+                        (if (data.isMyStream) bandyerTitle else bandyerAvatar).visibility = if (enabled) View.GONE else View.VISIBLE
+                        bandyerWrapper.visibility = if (enabled) View.VISIBLE else View.GONE
+                        view?.also {
+                            (it.parent as? ViewGroup)?.removeView(it)
+                            bandyerWrapper.addView(it.apply { id = View.generateViewId() })
+                        }
+                    }
+                }.launchIn(scope)
+
+            if(item.data.isMyStream) return@with
+
+            data.avatarUrl?.apply { binding.bandyerAvatar.setImage(this) } ?: kotlin.run {
+                with(binding.bandyerAvatar) {
+                    setBackground(item.data.username.parseToColor())
+                    setText(item.data.username[0].toString())
+                }
+            }
         }
 
         /**
@@ -64,35 +93,10 @@ class StreamItem(val stream: Stream, parentScope: CoroutineScope) : AbstractItem
             bandyerWrapper.removeAllViews()
             job?.cancel()
         }
-
-        private fun observeStream(stream: Stream, scope: CoroutineScope): Job =
-            scope.launch {
-                stream.video.collect { video ->
-                    video ?: return@collect
-                    with(video) {
-                        observeEnabled(enabled, this@launch)
-                        observeView(view, this@launch)
-                    }
-                }
-            }
-
-        private fun observeEnabled(enabled: Flow<Boolean>, scope: CoroutineScope) =
-            enabled.onEach {
-                with(binding) {
-                    bandyerWrapper.visibility = if (it) View.VISIBLE else View.GONE
-                    bandyerCameraEnabled.apply {
-                        visibility = if (it) View.GONE else View.VISIBLE
-                        text = if (it) null else "Camera disabled"
-                    }
-                }
-            }.launchIn(scope)
-
-        private fun observeView(view: Flow<View?>, scope: CoroutineScope) =
-            view.onEach {
-                it?.apply {
-                    (parent as? ViewGroup)?.removeView(this)
-                    binding.bandyerWrapper.addView(this.apply { id = View.generateViewId() })
-                }
-            }.launchIn(scope)
     }
 }
+
+
+
+
+

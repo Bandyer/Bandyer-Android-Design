@@ -45,6 +45,7 @@
     <string name="bandyer_glass_browse_right">browse right</string>
     <string name="bandyer_glass_browse_left">browse left</string>
     <string name="bandyer_glass_right_left">scroll</string>
+    <string name="bandyer_glass_camera_off">Your camera is off</string>
 
     <!-- STRING ARRAY -->
     <string-array name="menu_items_default">

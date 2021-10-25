@@ -134,12 +134,12 @@ class GlassActivity :
                 }.launchIn(this)
 
             viewModel.participants.collect { participants ->
-                participants.others.plus(participants. me).forEach { participant ->
+                participants.others.plus(participants.me).forEach { participant ->
                     participant.streams.onEach { streams ->
                         streams.forEach { stream ->
-                            val index = itemAdapter!!.adapterItems.indexOfFirst { item -> item.stream.id == stream.id }
-                            if (index == -1) itemAdapter!!.add(StreamItem(stream, this))
-                            else itemAdapter!![index] = StreamItem(stream, this)
+                            val index = itemAdapter!!.adapterItems.indexOfFirst { item -> item.data.stream.id == stream.id }
+                            if (index == -1) itemAdapter!!.add(StreamItem(StreamItemData(participant == participants.me, participant.username, participant.avatarUrl, stream), this))
+                            else itemAdapter!![index] = StreamItem(StreamItemData(participant == participants.me, participant.username, participant.avatarUrl, stream), this)
                         }
                     }.launchIn(this)
                 }

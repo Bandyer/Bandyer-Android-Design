@@ -21,7 +21,7 @@ def junitVersion = "4.13.2"
 def fastAdapterVersion = '5.5.1'
 def runnerExtVersion = "1.1.3"
 def espressoVersion = "3.4.0"
-def dataBindingVersion = "7.0.2"
+def dataBindingVersion = "7.0.3"
 def desugarVersion = "1.1.5"
 
 

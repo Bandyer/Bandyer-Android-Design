@@ -41,4 +41,5 @@
     <string name="bandyer_glass_browse_right">naviga a destra</string>
     <string name="bandyer_glass_browse_left">naviga a sinistra</string>
     <string name="bandyer_glass_right_left">scorri</string>
+    <string name="bandyer_glass_camera_off">La tua camera è spenta</string>
 </resources>
