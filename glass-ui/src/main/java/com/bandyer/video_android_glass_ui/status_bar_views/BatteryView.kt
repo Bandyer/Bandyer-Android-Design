@@ -20,7 +20,7 @@ internal class BatteryView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    private val spacing = context.dp2px(3f).toFloat()
+    private val spacing = context.dp2px(2f).toFloat()
 
     // Cap
     private var capPaint = Paint().apply {
@@ -29,9 +29,9 @@ internal class BatteryView @JvmOverloads constructor(
         isAntiAlias = true
     }
     private var capRect = RectF()
-    private var capWidthRatio = 0.10f
+    private var capWidthRatio = 0.08f
     private var capHeightRatio = 0.50f
-    private var capStroke = context.dp2px(1.5f).toFloat()
+    private var capStroke = context.dp2px(1f).toFloat()
 
     // Body
     private var bodyPaint = Paint().apply {
@@ -41,7 +41,7 @@ internal class BatteryView @JvmOverloads constructor(
     }
     private var bodyRect = RectF()
 
-    private var bodyStroke = context.dp2px(3f).toFloat()
+    private var bodyStroke = context.dp2px(2f).toFloat()
 
     // Charge
     private var chargePaint = Paint().apply {
@@ -69,8 +69,7 @@ internal class BatteryView @JvmOverloads constructor(
         val halfBodyStroke = bodyStroke / 2
 
         // Cap
-        val capHorizontalPadding =
-            (measureHeight - paddingTop - paddingBottom) * ((1 - capHeightRatio) / 2)
+        val capHorizontalPadding = (measureHeight - paddingTop - paddingBottom) * ((1 - capHeightRatio) / 2)
         val capTop = capHorizontalPadding + paddingTop
         val capBottom = measureHeight - capHorizontalPadding - paddingBottom
         val capRight = measureWidth - halfBodyStroke - paddingEnd
