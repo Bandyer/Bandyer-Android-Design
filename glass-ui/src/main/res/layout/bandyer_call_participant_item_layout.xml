@@ -3,7 +3,8 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:theme="?attr/bandyer_recyclerViewItemStyle">
 
         <FrameLayout
             android:id="@+id/bandyer_wrapper"
@@ -12,11 +13,15 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/bandyer_camera_enabled"
-            android:textColor="@android:color/white"
-            android:textSize="30sp"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="?attr/bandyer_titleStyle" />
+
+        <com.bandyer.video_android_glass_ui.common.AvatarView
+            android:id="@+id/bandyer_avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:theme="?attr/bandyer_avatarStyle" />
 
     </FrameLayout>
 

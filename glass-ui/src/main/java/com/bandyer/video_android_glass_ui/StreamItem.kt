@@ -1,5 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
+import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.*
@@ -9,8 +10,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-class StreamItem(val stream: Stream, parentScope: CoroutineScope) :
-    AbstractItem<StreamItem.ViewHolder>() {
+class StreamItem(val stream: Stream, parentScope: CoroutineScope) : AbstractItem<StreamItem.ViewHolder>() {
 
     private val scope = parentScope + CoroutineName(this.toString() + stream.id)
 
@@ -52,6 +52,8 @@ class StreamItem(val stream: Stream, parentScope: CoroutineScope) :
          */
         override fun bindView(item: StreamItem, payloads: List<Any>) {
             job = observeStream(item.stream, item.scope)
+            binding.bandyerAvatar.setBackground(Color.CYAN)
+            binding.bandyerAvatar.setText("M")
         }
 
         /**
