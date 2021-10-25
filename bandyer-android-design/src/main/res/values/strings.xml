@@ -59,7 +59,7 @@
     <string name="bandyer_chat_state_waiting_for_network">waiting for network&#8230;</string>
     <string name="bandyer_chat_state_connecting">connecting&#8230;</string>
     <string name="bandyer_chat_send">Send message</string>
-    <string name="bandyer_chat_unread_messages">Scroll to the last message</string>
+    <string name="bandyer_chat_scroll_to_last_message">Scroll to the last message</string>
     <string name="bandyer_chat_msg_status_pending">Message pending</string>
     <string name="bandyer_chat_msg_status_sent">Message sent</string>
     <string name="bandyer_chat_msg_status_seen">Message seen</string>
