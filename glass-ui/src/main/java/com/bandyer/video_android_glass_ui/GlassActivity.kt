@@ -34,7 +34,6 @@ import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 /**
  * GlassActivity
@@ -288,7 +287,7 @@ class GlassActivity :
     private fun StatusBarView.applyFlatTint() = setBackgroundColor(
         ResourcesCompat.getColor(
             resources,
-            R.color.bandyer_glass_background_color,
+            R.color.bandyer_glass_dimmed_background_color,
             null
         )
     )

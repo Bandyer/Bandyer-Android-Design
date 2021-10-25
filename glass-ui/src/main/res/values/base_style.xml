@@ -7,6 +7,6 @@
     </style>
 
     <style name="BandyerSDKDesign.Glass.DarkBackground.RootLayout" parent="">
-        <item name="android:background">@color/bandyer_glass_background_color</item>
+        <item name="android:background">@color/bandyer_glass_dimmed_background_color</item>
     </style>
 </resources>
