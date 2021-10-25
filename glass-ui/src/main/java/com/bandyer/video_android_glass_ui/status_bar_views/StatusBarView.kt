@@ -153,20 +153,6 @@ class StatusBarView @JvmOverloads constructor(
     }
 
     /**
-     * Show the mic muted icon
-     */
-    fun showMicMutedIcon() {
-        binding.bandyerMicMutedIcon.visibility = View.VISIBLE
-    }
-
-    /**
-     * Hide the mic muted icon
-     */
-    fun hideMicMutedIcon() {
-        binding.bandyerMicMutedIcon.visibility = View.GONE
-    }
-
-    /**
      * Set the battery charge level
      *
      * @param charge The level of the charge

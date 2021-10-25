@@ -46,13 +46,6 @@
             tools:text="3 utenti in chiamata" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/bandyer_mic_muted_icon"
-            style="?attr/bandyer_micIconStyleStyle"
-            app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
-            app:layout_constraintEnd_toStartOf="@id/bandyer_chat_icon"
-            app:layout_constraintTop_toTopOf="@id/bandyer_battery" />
-
-        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/bandyer_chat_icon"
             style="?attr/bandyer_chatIconStyle"
             app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
