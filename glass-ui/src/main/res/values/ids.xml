@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="id_glass_chat_message_item" type="id" />
-    <item name="id_glass_menu_item" type="id" />
+    <item name="id_glass_menu_mic_item" type="id" />
+    <item name="id_glass_menu_camera_item" type="id" />
+    <item name="id_glass_menu_volume_item" type="id" />
+    <item name="id_glass_menu_zoom_item" type="id" />
+    <item name="id_glass_menu_participants_item" type="id" />
+    <item name="id_glass_menu_chat_item" type="id" />
     <item name="id_glass_participants_item" type="id" />
     <item name="id_glass_full_screen_dialog_item" type="id" />
     <item name="id_glass_chat_menu_item" type="id" />
