@@ -6,20 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.*
-import com.bandyer.video_android_glass_ui.NavGraphViewModel
-import com.bandyer.video_android_glass_ui.ProvidersHolder
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentMenuBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
+import com.bandyer.video_android_glass_ui.utils.CallAction
 import com.bandyer.video_android_glass_ui.utils.TiltListener
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
@@ -46,7 +43,7 @@ class MenuFragment : BaseFragment(), TiltListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(activityViewModel.tiltEnabled) tiltListener = this
+        if (activityViewModel.tiltEnabled) tiltListener = this
     }
 
     /**
@@ -63,16 +60,17 @@ class MenuFragment : BaseFragment(), TiltListener {
         _binding = BandyerGlassFragmentMenuBinding
             .inflate(inflater, container, false)
             .apply {
-                if(GlassDeviceUtils.isRealWear)
+                if (GlassDeviceUtils.isRealWear)
                     bandyerBottomNavigation.setListenersForRealwear()
 
                 // Init the RecyclerView
                 with(bandyerMenu) {
                     itemAdapter = ItemAdapter()
                     val fastAdapter = FastAdapter.with(itemAdapter!!).apply {
-                        onClickListener = { _, _, _, position -> onTap(position); false }
+                        onClickListener = { _, _, item, _ -> onTap(item.action); false }
                     }
-                    val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    val layoutManager =
+                        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                     val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
                     this.layoutManager = layoutManager
@@ -104,14 +102,9 @@ class MenuFragment : BaseFragment(), TiltListener {
                 }
             }
 
-        with(itemAdapter!!) {
-            add(MenuItem("Attiva microfono", "Muta microfono"))
-            add(MenuItem("Attiva camera", "Muta camera"))
-            add(MenuItem("Volume"))
-            add(MenuItem("Zoom"))
-            add(MenuItem("Utenti"))
-            add(MenuItem("Chat"))
-        }
+        CallAction
+            .getActions(requireContext(), false, false, true, true, true)
+            .forEach { itemAdapter!!.add(MenuItem(it)) }
 
         return binding.root
     }
@@ -127,27 +120,32 @@ class MenuFragment : BaseFragment(), TiltListener {
 
     override fun onDismiss() = Unit
 
-    override fun onTap() = onTap(currentMenuItemIndex)
+    override fun onTap() = onTap(itemAdapter!!.getAdapterItem(currentMenuItemIndex).action)
 
-    private fun onTap(position: Int) = when (position) {
-        0, 1 -> {
-            val isActivated = itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated
-            itemAdapter!!.getAdapterItem(currentMenuItemIndex).isActivated = !isActivated
+    private fun onTap(action: CallAction) = when (action) {
+        is CallAction.MICROPHONE -> {
+            action.toggle(true)
+            navGraphViewModel.disableMic(true)
             true
         }
-        2 -> {
+        is CallAction.CAMERA -> {
+            action.toggle(true)
+            navGraphViewModel.disableCamera(true)
+            true
+        }
+        is CallAction.VOLUME -> {
             findNavController().navigate(R.id.action_menuFragment_to_volumeFragment)
             true
         }
-        3 -> {
+        is CallAction.ZOOM -> {
             findNavController().navigate(R.id.action_menuFragment_to_zoomFragment)
             true
         }
-        4 -> {
+        is CallAction.PARTICIPANTS -> {
             findNavController().navigate(R.id.action_menuFragment_to_participantsFragment)
             true
         }
-        5 -> {
+        is CallAction.CHAT -> {
             findNavController().navigate(R.id.action_menuFragment_to_smartglass_nav_graph_chat)
             true
         }
@@ -156,10 +154,17 @@ class MenuFragment : BaseFragment(), TiltListener {
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerMenu.horizontalSmoothScrollToNext(currentMenuItemIndex) }
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also {
+        if (it) binding.bandyerMenu.horizontalSmoothScrollToNext(currentMenuItemIndex)
+    }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerMenu.horizontalSmoothScrollToPrevious(currentMenuItemIndex) }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also {
+        if (it) binding.bandyerMenu.horizontalSmoothScrollToPrevious(currentMenuItemIndex)
+    }
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.bandyerMenu.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
+        binding.bandyerMenu.scrollBy(
+            (deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(),
+            0
+        )
 }

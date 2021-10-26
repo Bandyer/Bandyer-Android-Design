@@ -16,5 +16,9 @@ internal class NavGraphViewModel(private val callLogicProvider: CallLogicProvide
 
     val participants: Flow<CallParticipants> = call.flatMapConcat { call -> call.participants }
 
+    fun disableCamera(disable: Boolean) = callLogicProvider.disableCamera(disable)
+
+    fun disableMic(disable: Boolean) = callLogicProvider.disableMic(disable)
+
     fun hangUp() = callLogicProvider.hangup()
 }
