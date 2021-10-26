@@ -46,10 +46,10 @@
     <string name="bandyer_glass_browse_left">browse left</string>
     <string name="bandyer_glass_right_left">scroll</string>
     <string name="bandyer_glass_camera_off">Your camera is off</string>
-    <string name="bandyer_glass_menu_camera_active">Active microphone</string>
-    <string name="bandyer_glass_menu_camera">Mute microphone</string>
-    <string name="bandyer_glass_menu_microphone_active">Active camera</string>
-    <string name="bandyer_glass_menu_microphone">Mute camera</string>
+    <string name="bandyer_glass_menu_microphone_active">Active microphone</string>
+    <string name="bandyer_glass_menu_microphone">Mute microphone</string>
+    <string name="bandyer_glass_menu_camera_active">Active camera</string>
+    <string name="bandyer_glass_menu_camera">Mute camera</string>
     <string name="bandyer_glass_menu_participants">Participants</string>
     <string name="bandyer_glass_menu_volume">Volume</string>
     <string name="bandyer_glass_menu_zoom">Zoom</string>
