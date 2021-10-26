@@ -1,43 +1,33 @@
 package com.bandyer.video_android_glass_ui.menu
 
 import android.view.View
-import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassMenuItemLayoutBinding
+import com.bandyer.video_android_glass_ui.utils.CallAction
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
 /**
  * A menu item. If the active text is null, isActivated will always be false.
- *
- * @property defaultText The item's text
- * @property activeText The item's text when active
  * @constructor
  */
-class MenuItem(val defaultText: String, val activeText: String? = null): AbstractItem<MenuItem.ViewHolder>() {
-
-    private var itemText: ActivableTextView? = null
+class MenuItem(val action: CallAction): AbstractItem<MenuItem.ViewHolder>() {
 
     /**
-     * Activated state of a menu item. The text will be updated accordingly
+     * Set an unique identifier for the identifiable which do not have one set already
      */
-    var isActivated = false
-        set(value) {
-            if(activeText == null) return
-            field = value
-            itemText?.isActivated = field
-        }
-
-    /**
-     * The layout for the given item
-     */
-    override val layoutRes: Int
-        get() = R.layout.bandyer_glass_menu_item_layout
+    override var identifier: Long = action.hashCode().toLong()
 
     /**
      * The type of the Item. Can be a hardcoded INT, but preferred is a defined id
      */
     override val type: Int
-        get() = R.id.id_glass_menu_item
+        get() = action.hashCode()
+
+    /**
+     * The layout for the given item
+     */
+    override val layoutRes: Int
+        get() = action.layoutRes
 
     /**
      * This method returns the ViewHolder for our item, using the provided View.
@@ -59,20 +49,15 @@ class MenuItem(val defaultText: String, val activeText: String? = null): Abstrac
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: MenuItem, payloads: List<Any>) = with(binding.bandyerText) {
-            item.itemText = this
-            this.activeText = item.activeText
-            this.defaultText = item.defaultText
-            this.isActivated = item.isActivated
+            item.action.itemView = itemView
+            item.action.onReady()
         }
 
         /**
          * View needs to release resources when its recycled
          */
         override fun unbindView(item: MenuItem) = with(binding.bandyerText) {
-            item.itemText = null
-            this.activeText = null
-            this.defaultText = null
-            this.isActivated = false
+            item.action.itemView = null
         }
     }
 }
