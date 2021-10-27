@@ -6,11 +6,12 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.*
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bandyer.video_android_glass_ui.*
-import com.bandyer.video_android_glass_ui.ProvidersHolder
+import com.bandyer.video_android_glass_ui.BaseFragment
+import com.bandyer.video_android_glass_ui.NavGraphViewModel
+import com.bandyer.video_android_glass_ui.NavGraphViewModelFactory
+import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
@@ -70,15 +71,6 @@ class DialingFragment : BaseFragment() {
                 }
 
                 repeatOnStarted {
-                    launch {
-                        viewModel.callState.collect { state ->
-                            when (state) {
-                                is Call.State.Disconnected -> requireActivity().finish()
-                                else -> Unit
-                            }
-                        }
-                    }
-
                     launch {
                         viewModel.participants.collect { participants ->
                             itemAdapter!!.set(participants.others.plus(participants.me).map { FullScreenDialogItem(it.username) })

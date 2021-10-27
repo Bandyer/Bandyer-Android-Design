@@ -9,15 +9,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import com.bandyer.video_android_glass_ui.*
-import com.bandyer.video_android_glass_ui.GlassViewModel
-import com.bandyer.video_android_glass_ui.GlassViewModelFactory
-import com.bandyer.video_android_glass_ui.NavGraphViewModel
-import com.bandyer.video_android_glass_ui.NavGraphViewModelFactory
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentZoomBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener
-import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
-import kotlinx.coroutines.flow.collect
 
 /**
  * ZoomFragment
@@ -51,18 +45,7 @@ class ZoomFragment : BaseFragment(), TiltListener {
         // Add view binding
         _binding = BandyerGlassFragmentZoomBinding
             .inflate(inflater, container, false)
-            .apply {
-                if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
-
-                repeatOnStarted {
-                    navGraphViewModel.callState.collect { state ->
-                        when (state) {
-                            is Call.State.Disconnected -> requireActivity().finish()
-                            else -> Unit
-                        }
-                    }
-                }
-            }
+            .apply { if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }
