@@ -58,9 +58,9 @@
     <style name="BandyerSDKDesign.Glass.StatusBar.Battery" parent="">
         <item name="android:layout_width">@dimen/bandyer_dimen_space48</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space6</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space7</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space5</item>
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space5</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space5</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space6</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space6</item>
     </style>
 </resources>

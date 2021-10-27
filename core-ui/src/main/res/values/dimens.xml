@@ -9,6 +9,7 @@
     <dimen name="bandyer_dimen_space4">4dp</dimen>
     <dimen name="bandyer_dimen_space5">5dp</dimen>
     <dimen name="bandyer_dimen_space6">6dp</dimen>
+    <dimen name="bandyer_dimen_space7">7dp</dimen>
     <dimen name="bandyer_dimen_space8">8dp</dimen>
     <dimen name="bandyer_dimen_space10">10dp</dimen>
     <dimen name="bandyer_dimen_space12">12dp</dimen>
