@@ -92,15 +92,6 @@ class MenuFragment : BaseFragment(), TiltListener {
 
                     // Forward the root view's touch event to the recycler view
                     root.setOnTouchListener { _, event -> this.onTouchEvent(event) }
-
-                    repeatOnStarted {
-                        navGraphViewModel.callState.collect { state ->
-                            when (state) {
-                                is Call.State.Disconnected -> requireActivity().finish()
-                                else -> Unit
-                            }
-                        }
-                    }
                 }
             }
 
@@ -145,17 +136,10 @@ class MenuFragment : BaseFragment(), TiltListener {
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also {
-        if (it) binding.bandyerMenu.horizontalSmoothScrollToNext(currentMenuItemIndex)
-    }
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if (it) binding.bandyerMenu.horizontalSmoothScrollToNext(currentMenuItemIndex) }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also {
-        if (it) binding.bandyerMenu.horizontalSmoothScrollToPrevious(currentMenuItemIndex)
-    }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if (it) binding.bandyerMenu.horizontalSmoothScrollToPrevious(currentMenuItemIndex) }
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.bandyerMenu.scrollBy(
-            (deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(),
-            0
-        )
+        binding.bandyerMenu.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
 }
