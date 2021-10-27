@@ -13,7 +13,9 @@ interface CallUIController {
 
         private fun <T: Activity> Context.launchCall(cls: Class<T>, controllerCall: CallUIController, tiltEnabled: Boolean) {
             ProvidersHolder.callProvider = CallLogicProvider.create(controllerCall)
-            startActivity(Intent(this, cls).apply { putExtra("tiltEnabled", tiltEnabled) })
+            startActivity(Intent(this, cls).apply {
+                putExtra("tiltEnabled", tiltEnabled)
+            })
         }
     }
 
@@ -21,9 +23,9 @@ interface CallUIController {
 
     fun hangup()
 
-    fun disableCamera(disable: Boolean)
+    fun enableCamera(enable: Boolean)
 
-    fun disableMic(disable: Boolean)
+    fun enableMic(enable: Boolean)
 
     fun switchCamera()
 

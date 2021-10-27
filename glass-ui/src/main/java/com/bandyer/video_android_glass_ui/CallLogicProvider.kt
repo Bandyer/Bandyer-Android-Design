@@ -15,9 +15,9 @@ internal interface CallLogicProvider {
 
     fun hangup()
 
-    fun disableCamera(disable: Boolean)
+    fun enableCamera(enable: Boolean)
 
-    fun disableMic(disable: Boolean)
+    fun enableMic(enable: Boolean)
 
     fun switchCamera()
 
@@ -32,9 +32,9 @@ private class CallLogicProviderImpl(private val controllerCall: CallUIController
 
     override fun hangup() = controllerCall.hangup()
 
-    override fun disableCamera(disable: Boolean) = controllerCall.disableCamera(disable)
+    override fun enableCamera(enable: Boolean) = controllerCall.enableCamera(enable)
 
-    override fun disableMic(disable: Boolean) = controllerCall.disableMic(disable)
+    override fun enableMic(enable: Boolean) = controllerCall.enableMic(enable)
 
     override fun switchCamera() = controllerCall.switchCamera()
 
