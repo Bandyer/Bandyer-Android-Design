@@ -133,6 +133,11 @@ class GlassActivity :
                     }
                 }.launchIn(this)
 
+            viewModel.callState.onEach {
+                if(it is Call.State.Disconnected) finish()
+                // TODO aggiungere messaggio in caso di errore?
+            }.launchIn(this)
+
             viewModel.participants.collect { participants ->
                 participants.others.plus(participants.me).forEach { participant ->
                     participant.streams.onEach { streams ->
