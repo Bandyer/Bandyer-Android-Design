@@ -5,8 +5,6 @@ import android.view.View
 import androidx.annotation.AttrRes
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
-import androidx.annotation.StyleRes
-import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getThemeAttribute
 import com.bandyer.video_android_glass_ui.R
 import com.google.android.material.textview.MaterialTextView
 
@@ -73,22 +71,22 @@ abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layoutRes: Int,
         /**
          * The text when the item is inactive
          */
-        abstract val inactiveText: String
+        protected abstract val defaultText: String
 
         /**
          * The text when the item is active
          */
-        abstract val activeText: String
+        protected abstract val toggledText: String
 
         /**
          * Toggle the menu action
-         * @param active true to activate, false otherwise
          */
-        open fun toggle(active: Boolean) {
+        fun toggle(toggled: Boolean) {
             itemView?.findViewById<MaterialTextView>(R.id.bandyer_text)?.apply {
-                isActivated = active
-                text = if(active) activeText else inactiveText
+                isActivated = toggled
+                text = if(toggled) toggledText else defaultText
             }
+            this.toggled = toggled
         }
 
         /**
@@ -106,8 +104,8 @@ abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layoutRes: Int,
      * @constructor
      */
     class MICROPHONE(toggled: Boolean, ctx: Context): ToggleableCallAction(toggled, R.id.id_glass_menu_mic_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewMicItemStyle) {
-        override val inactiveText = ctx.getString(R.string.bandyer_glass_menu_microphone)
-        override val activeText = ctx.getString(R.string.bandyer_glass_menu_microphone_active)
+        override val defaultText = ctx.getString(R.string.bandyer_glass_menu_microphone)
+        override val toggledText = ctx.getString(R.string.bandyer_glass_menu_microphone_toggled)
     }
 
     /**
@@ -116,8 +114,8 @@ abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layoutRes: Int,
      * @constructor
      */
     class CAMERA(toggled: Boolean, ctx: Context): ToggleableCallAction(toggled, R.id.id_glass_menu_camera_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewCameraItemStyle) {
-        override val inactiveText = ctx.getString(R.string.bandyer_glass_menu_camera)
-        override val activeText = ctx.getString(R.string.bandyer_glass_menu_camera_active)
+        override val defaultText = ctx.getString(R.string.bandyer_glass_menu_camera)
+        override val toggledText = ctx.getString(R.string.bandyer_glass_menu_camera_toggled)
     }
 
     /**

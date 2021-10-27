@@ -42,10 +42,10 @@
     <string name="bandyer_glass_browse_left">naviga a sinistra</string>
     <string name="bandyer_glass_right_left">scorri</string>
     <string name="bandyer_glass_camera_off">La tua camera è spenta</string>
-    <string name="bandyer_glass_menu_microphone_active">Attiva microfono</string>
-    <string name="bandyer_glass_menu_microphone">Muta microfono</string>
-    <string name="bandyer_glass_menu_camera_active">Attiva camera</string>
-    <string name="bandyer_glass_menu_camera">Muta camera</string>
+    <string name="bandyer_glass_menu_microphone">Attiva microfono</string>
+    <string name="bandyer_glass_menu_microphone_toggled">Muta microfono</string>
+    <string name="bandyer_glass_menu_camera">Attiva camera</string>
+    <string name="bandyer_glass_menu_camera_toggled">Muta camera</string>
     <string name="bandyer_glass_menu_participants">Partecipanti</string>
     <string name="bandyer_glass_menu_volume">Volume</string>
     <string name="bandyer_glass_menu_zoom">Zoom</string>
