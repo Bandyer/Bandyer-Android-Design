@@ -24,6 +24,8 @@ import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrol
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 /**
  * BandyerGlassMenuFragment
@@ -102,9 +104,25 @@ class MenuFragment : BaseFragment(), TiltListener {
                 }
             }
 
+
         CallAction
-            .getActions(requireContext(), false, false, true, true, true)
+            .getActions(requireContext(), navGraphViewModel.isMicEnabled, navGraphViewModel.isCameraEnabled, true, true, true)
             .forEach { itemAdapter!!.add(MenuItem(it)) }
+
+        val cameraAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.CAMERA }.action as CallAction.ToggleableCallAction)
+        val micAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.MICROPHONE }.action as CallAction.ToggleableCallAction)
+
+        repeatOnStarted {
+            navGraphViewModel.cameraEnabled.onEach {
+                navGraphViewModel.isCameraEnabled = it == true
+                cameraAction.toggle(it == true)
+            }.launchIn(this)
+
+            navGraphViewModel.micEnabled.onEach {
+                navGraphViewModel.isMicEnabled = it == true
+                micAction.toggle(it == true)
+            }.launchIn(this)
+        }
 
         return binding.root
     }
@@ -123,16 +141,8 @@ class MenuFragment : BaseFragment(), TiltListener {
     override fun onTap() = onTap(itemAdapter!!.getAdapterItem(currentMenuItemIndex).action)
 
     private fun onTap(action: CallAction) = when (action) {
-        is CallAction.MICROPHONE -> {
-            action.toggle(true)
-            navGraphViewModel.disableMic(true)
-            true
-        }
-        is CallAction.CAMERA -> {
-            action.toggle(true)
-            navGraphViewModel.disableCamera(true)
-            true
-        }
+        is CallAction.MICROPHONE -> true.also { navGraphViewModel.enableMic(!navGraphViewModel.isMicEnabled) }
+        is CallAction.CAMERA -> true.also { navGraphViewModel.enableCamera(!navGraphViewModel.isCameraEnabled) }
         is CallAction.VOLUME -> {
             findNavController().navigate(R.id.action_menuFragment_to_volumeFragment)
             true
