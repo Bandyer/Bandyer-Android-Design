@@ -1,9 +1,12 @@
-package com.bandyer.video_android_glass_ui.utils
+package com.bandyer.video_android_glass_ui.call
 
 import android.content.Context
 import android.view.View
+import androidx.annotation.AttrRes
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
+import androidx.annotation.StyleRes
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getThemeAttribute
 import com.bandyer.video_android_glass_ui.R
 import com.google.android.material.textview.MaterialTextView
 
@@ -12,7 +15,7 @@ import com.google.android.material.textview.MaterialTextView
  * @property layoutRes layout to inflate
  * @constructor
  */
-abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layoutRes: Int) {
+abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layoutRes: Int, @AttrRes val styleAttr: Int) {
 
     /**
      * Menu action item view
@@ -66,7 +69,7 @@ abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layoutRes: Int)
      * @property toggled true to activate, false otherwise
      * @constructor
      */
-    abstract class ToggleableCallAction(private var toggled: Boolean, @IdRes viewId: Int, @LayoutRes layout: Int): CallAction(viewId, layout) {
+    abstract class ToggleableCallAction(private var toggled: Boolean, @IdRes viewId: Int, @LayoutRes layout: Int, @AttrRes styleAttr: Int): CallAction(viewId, layout, styleAttr) {
         /**
          * The text when the item is inactive
          */
@@ -102,7 +105,7 @@ abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layoutRes: Int)
      * @property toggled true to activate, false otherwise
      * @constructor
      */
-    class MICROPHONE(toggled: Boolean, ctx: Context): ToggleableCallAction(toggled, R.id.id_glass_menu_mic_item, R.layout.bandyer_glass_menu_item_layout) {
+    class MICROPHONE(toggled: Boolean, ctx: Context): ToggleableCallAction(toggled, R.id.id_glass_menu_mic_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewMicItemStyle) {
         override val inactiveText = ctx.getString(R.string.bandyer_glass_menu_microphone)
         override val activeText = ctx.getString(R.string.bandyer_glass_menu_microphone_active)
     }
@@ -112,7 +115,7 @@ abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layoutRes: Int)
      * @property toggled true to activate, false otherwise
      * @constructor
      */
-    class CAMERA(toggled: Boolean, ctx: Context): ToggleableCallAction(toggled, R.id.id_glass_menu_camera_item, R.layout.bandyer_glass_menu_item_layout) {
+    class CAMERA(toggled: Boolean, ctx: Context): ToggleableCallAction(toggled, R.id.id_glass_menu_camera_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewCameraItemStyle) {
         override val inactiveText = ctx.getString(R.string.bandyer_glass_menu_camera)
         override val activeText = ctx.getString(R.string.bandyer_glass_menu_camera_active)
     }
@@ -121,23 +124,23 @@ abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layoutRes: Int)
      * Volume menu action item
      * @constructor
      */
-    class VOLUME: CallAction(R.id.id_glass_menu_volume_item, R.layout.bandyer_glass_menu_item_layout)
+    class VOLUME: CallAction(R.id.id_glass_menu_volume_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewVolumeItemStyle)
 
     /**
      * Zoom menu action item
      * @constructor
      */
-    class ZOOM: CallAction(R.id.id_glass_menu_zoom_item, R.layout.bandyer_glass_menu_item_layout)
+    class ZOOM: CallAction(R.id.id_glass_menu_zoom_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewZoomItemStyle)
 
     /**
      * Participants menu action item
      * @constructor
      */
-    class PARTICIPANTS: CallAction(R.id.id_glass_menu_participants_item, R.layout.bandyer_glass_menu_item_layout)
+    class PARTICIPANTS: CallAction(R.id.id_glass_menu_participants_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewParticipantsItemStyle)
 
     /**
      * Chat menu action item
      * @constructor
      */
-    class CHAT: CallAction(R.id.id_glass_menu_chat_item, R.layout.bandyer_glass_menu_item_layout)
+    class CHAT: CallAction(R.id.id_glass_menu_chat_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewChatItemStyle)
 }

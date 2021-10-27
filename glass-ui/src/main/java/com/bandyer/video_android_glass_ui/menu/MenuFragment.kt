@@ -16,7 +16,7 @@ import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCente
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentMenuBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
-import com.bandyer.video_android_glass_ui.utils.CallAction
+import com.bandyer.video_android_glass_ui.call.CallAction
 import com.bandyer.video_android_glass_ui.utils.TiltListener
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
