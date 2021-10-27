@@ -2,13 +2,16 @@ package com.bandyer.video_android_glass_ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flatMapConcat
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.*
 
 @Suppress("UNCHECKED_CAST")
-internal object NavGraphViewModelFactory: ViewModelProvider.Factory { override fun <T : ViewModel?> create(modelClass: Class<T>): T = NavGraphViewModel(ProvidersHolder.callProvider!!) as T }
+internal object NavGraphViewModelFactory : ViewModelProvider.Factory {
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+        NavGraphViewModel(ProvidersHolder.callProvider!!) as T
+}
 
-internal class NavGraphViewModel(private val callLogicProvider: CallLogicProvider): ViewModel() {
+internal class NavGraphViewModel(private val callLogicProvider: CallLogicProvider) : ViewModel() {
 
     val call: Flow<Call> = callLogicProvider.call
 
@@ -16,9 +19,29 @@ internal class NavGraphViewModel(private val callLogicProvider: CallLogicProvide
 
     val participants: Flow<CallParticipants> = call.flatMapConcat { call -> call.participants }
 
-    fun disableCamera(disable: Boolean) = callLogicProvider.disableCamera(disable)
+    private val cameraStream: Flow<Stream?> =
+        participants
+            .map { it.me }
+            .flatMapConcat { it.streams }
+            .map { streams ->
+                streams.firstOrNull { it.video.firstOrNull { video -> video?.source is Input.Video.Source.Camera.Internal } != null }
+            }
 
-    fun disableMic(disable: Boolean) = callLogicProvider.disableMic(disable)
+    var isCameraEnabled = false
+    val cameraEnabled: Flow<Boolean?> = cameraStream.filter { it != null }
+        .flatMapConcat { it!!.video }
+        .flatMapConcat { it!!.enabled }
+        .onEach { isCameraEnabled = it == true }
+
+    var isMicEnabled = false
+    val micEnabled: Flow<Boolean?> = cameraStream.filter { it != null }
+        .flatMapConcat { it!!.audio }
+        .flatMapConcat { it!!.enabled }
+        .onEach { isMicEnabled = it == true }
+
+    fun enableCamera(enable: Boolean) = callLogicProvider.enableCamera(enable)
+
+    fun enableMic(enable: Boolean) = callLogicProvider.enableMic(enable)
 
     fun hangUp() = callLogicProvider.hangup()
 }

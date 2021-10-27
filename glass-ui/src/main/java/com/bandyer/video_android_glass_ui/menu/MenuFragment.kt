@@ -113,15 +113,8 @@ class MenuFragment : BaseFragment(), TiltListener {
         val micAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.MICROPHONE }.action as CallAction.ToggleableCallAction)
 
         repeatOnStarted {
-            navGraphViewModel.cameraEnabled.onEach {
-                navGraphViewModel.isCameraEnabled = it == true
-                cameraAction.toggle(it == true)
-            }.launchIn(this)
-
-            navGraphViewModel.micEnabled.onEach {
-                navGraphViewModel.isMicEnabled = it == true
-                micAction.toggle(it == true)
-            }.launchIn(this)
+            navGraphViewModel.cameraEnabled.onEach { cameraAction.toggle(it == true) }.launchIn(this)
+            navGraphViewModel.micEnabled.onEach { micAction.toggle(it == true) }.launchIn(this)
         }
 
         return binding.root
@@ -143,22 +136,10 @@ class MenuFragment : BaseFragment(), TiltListener {
     private fun onTap(action: CallAction) = when (action) {
         is CallAction.MICROPHONE -> true.also { navGraphViewModel.enableMic(!navGraphViewModel.isMicEnabled) }
         is CallAction.CAMERA -> true.also { navGraphViewModel.enableCamera(!navGraphViewModel.isCameraEnabled) }
-        is CallAction.VOLUME -> {
-            findNavController().navigate(R.id.action_menuFragment_to_volumeFragment)
-            true
-        }
-        is CallAction.ZOOM -> {
-            findNavController().navigate(R.id.action_menuFragment_to_zoomFragment)
-            true
-        }
-        is CallAction.PARTICIPANTS -> {
-            findNavController().navigate(R.id.action_menuFragment_to_participantsFragment)
-            true
-        }
-        is CallAction.CHAT -> {
-            findNavController().navigate(R.id.action_menuFragment_to_smartglass_nav_graph_chat)
-            true
-        }
+        is CallAction.VOLUME -> true.also { findNavController().navigate(R.id.action_menuFragment_to_volumeFragment) }
+        is CallAction.ZOOM -> true.also { findNavController().navigate(R.id.action_menuFragment_to_zoomFragment) }
+        is CallAction.PARTICIPANTS -> true.also { findNavController().navigate(R.id.action_menuFragment_to_participantsFragment) }
+        is CallAction.CHAT -> true.also { findNavController().navigate(R.id.action_menuFragment_to_smartglass_nav_graph_chat) }
         else -> false
     }
 
