@@ -13,7 +13,11 @@ internal object NavGraphViewModelFactory : ViewModelProvider.Factory {
 
 internal class NavGraphViewModel(private val callLogicProvider: CallLogicProvider) : ViewModel() {
 
-    val participants: Flow<CallParticipants> = callLogicProvider.call.flatMapConcat { call -> call.participants }
+    val call: Flow<Call> = callLogicProvider.call
+
+    val callState: Flow<Call.State> = call.flatMapConcat { call -> call.state }
+
+    val participants: Flow<CallParticipants> = call.flatMapConcat { call -> call.participants }
 
     private val cameraStream: Flow<Stream?> =
         participants

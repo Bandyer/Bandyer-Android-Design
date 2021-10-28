@@ -6,19 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ObservableInt
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.bandyer.video_android_glass_ui.BaseFragment
-import com.bandyer.video_android_glass_ui.GlassViewModel
-import com.bandyer.video_android_glass_ui.GlassViewModelFactory
 import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.common.UserState
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatBinding
-import com.bandyer.video_android_glass_ui.menu.MenuFragmentArgs
 import com.bandyer.video_android_glass_ui.participants.ParticipantData
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener
@@ -46,7 +43,7 @@ class ChatFragment : BaseFragment(), TiltListener {
     private var lastMsgIndex = 0
     private var pagesIds = arrayListOf<String>()
 
-    private val args: ChatFragmentArgs by lazy { ChatFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
+    private val args: ChatFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

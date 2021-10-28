@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentZoomBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
@@ -21,7 +22,7 @@ class ZoomFragment : BaseFragment(), TiltListener {
 
     private var deltaAzimuth = 0f
 
-    private val args: ZoomFragmentArgs by lazy { ZoomFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
+    private val args: ZoomFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

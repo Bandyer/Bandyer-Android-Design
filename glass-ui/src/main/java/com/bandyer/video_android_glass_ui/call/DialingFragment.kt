@@ -6,12 +6,11 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bandyer.video_android_glass_ui.BaseFragment
-import com.bandyer.video_android_glass_ui.NavGraphViewModel
-import com.bandyer.video_android_glass_ui.NavGraphViewModelFactory
-import com.bandyer.video_android_glass_ui.R
+import com.bandyer.video_android_glass_ui.*
 import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
@@ -19,8 +18,7 @@ import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.get
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.*
 
 class DialingFragment : BaseFragment() {
 
@@ -28,6 +26,8 @@ class DialingFragment : BaseFragment() {
     override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
 
     private var itemAdapter: ItemAdapter<FullScreenDialogItem>? = null
+
+    private val args: DialingFragmentArgs by navArgs()
 
     private val viewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) { NavGraphViewModelFactory }
 
@@ -71,16 +71,23 @@ class DialingFragment : BaseFragment() {
                 }
 
                 repeatOnStarted {
-                    launch {
-                        viewModel.participants.collect { participants ->
-                            itemAdapter!!.set(participants.others.plus(participants.me).map { FullScreenDialogItem(it.username) })
+                    with(viewModel) {
+                        callState
+                            .takeWhile { it !is Call.State.Connected }
+                            .onCompletion { findNavController().safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment(args.enableTilt, args.options)) }
+                            .combine(participants) { _, participants ->
+                                itemAdapter!!.set(participants.others.plus(participants.me).map { FullScreenDialogItem(it.username) })
 
-                            val isGroupCall = itemAdapter!!.adapterItemCount > 1
-                            if (!isGroupCall) bandyerBottomNavigation.hideSwipeHorizontalItem()
-                            else bandyerCounter.text = resources.getString(R.string.bandyer_glass_n_of_participants_pattern, participants.others.size + 1)
+                                val isGroupCall = itemAdapter!!.adapterItemCount > 1
+                                if (!isGroupCall) bandyerBottomNavigation.hideSwipeHorizontalItem()
+                                else bandyerCounter.text = resources.getString(
+                                    R.string.bandyer_glass_n_of_participants_pattern,
+                                    participants.others.size + 1
+                                )
 
-                            bandyerSubtitle.text = resources.getString(if (isGroupCall) R.string.bandyer_glass_dialing_group else R.string.bandyer_glass_dialing)
-                        }
+                                bandyerSubtitle.text = resources.getString(if (isGroupCall) R.string.bandyer_glass_dialing_group else R.string.bandyer_glass_dialing)
+                            }
+                            .launchIn(this@repeatOnStarted)
                     }
                 }
             }
@@ -94,13 +101,17 @@ class DialingFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        itemAdapter = null
     }
 
     override fun onTap() = false
 
-    override fun onSwipeDown() = true.also { viewModel.hangUp(); requireActivity().finish() }
+    override fun onSwipeDown() = true.also {
+        viewModel.hangUp()
+        requireActivity().finish()
+    }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = false
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(resources.displayMetrics.densityDpi / 2, 0) }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = false
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(-resources.displayMetrics.densityDpi / 2, 0) }
 }

@@ -10,9 +10,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-internal data class StreamItemData(val isMyStream: Boolean, val username: String, val avatarUrl: String?, val stream: Stream)
-
-internal class StreamItem(val data: StreamItemData, parentScope: CoroutineScope) : AbstractItem<StreamItem.ViewHolder>() {
+internal class StreamItem(val data: ParticipantStreamInfo, parentScope: CoroutineScope) : AbstractItem<StreamItem.ViewHolder>() {
 
     private val scope = parentScope + CoroutineName(this.toString() + data.stream.id)
 

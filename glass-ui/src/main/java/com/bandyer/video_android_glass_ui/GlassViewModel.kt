@@ -12,30 +12,7 @@ internal object GlassViewModelFactory : ViewModelProvider.Factory {
 }
 
 internal class GlassViewModel(callLogicProvider: CallLogicProvider) : ViewModel() {
-
     val call: Flow<Call> = callLogicProvider.call
-
-    val callState: Flow<Call.State> = call.flatMapConcat { call -> call.state }
-
-    val participants: Flow<CallParticipants> = call.flatMapConcat { call -> call.participants }
-
-//    fun observeStreamsAudio(): StateFlow<Map<String, Boolean>> {
-//        val streamsAudio: MutableStateFlow<Map<String, Boolean>> = MutableStateFlow(emptyMap())
-//        participants.onEach { participants ->
-//            participants.others
-//                .plus(participants.me)
-//                .map { participant -> participant.streams }
-//                .merge()
-//                .map { streams ->
-//                    streams.map { stream ->
-//                        stream.id to stream.audio.flatMapConcat { audio ->
-//                            audio?.enabled ?: flow { emit(false) }
-//                        }
-//                    }.toMap()
-//                }
-//        }.launchIn(viewModelScope)
-//        return streamsAudio
-//    }
 }
 
 internal data class ParticipantStreamInfo(
