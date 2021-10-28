@@ -39,5 +39,7 @@ internal class NavGraphViewModel(private val callLogicProvider: CallLogicProvide
 
     fun enableMic(enable: Boolean) = callLogicProvider.enableMic(enable)
 
+    fun answer() = callLogicProvider.answer()
+
     fun hangUp() = callLogicProvider.hangup()
 }

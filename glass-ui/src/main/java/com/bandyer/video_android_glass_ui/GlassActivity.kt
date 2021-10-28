@@ -85,7 +85,7 @@ class GlassActivity :
             itemAdapter = ItemAdapter()
             val fastAdapter = FastAdapter.with(itemAdapter!!)
             val layoutManager = LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
-            val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
+            LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
             this.layoutManager = layoutManager
             adapter = fastAdapter.apply { stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY }
@@ -122,9 +122,10 @@ class GlassActivity :
                 .onEach {
                     val state = it.first
                     val participants = it.second
+                    // TODO in caso di stato non previsto cosa mostrare
                     when {
                         state is Call.State.Connecting && participants.me == participants.creator -> navController.safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment())
-                        state is Call.State.Connecting -> navController.safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
+                        state == Call.State.Disconnected && participants.me != participants.creator -> navController.safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
                         state is Call.State.Connected -> {
                             val destination = if (currentFragment is DialingFragment) DialingFragmentDirections.actionDialingFragmentToEmptyFragment() else RingingFragmentDirections.actionRingingFragmentToEmptyFragment()
                             navController.safeNavigate(destination)
@@ -133,10 +134,12 @@ class GlassActivity :
                     }
                 }.launchIn(this)
 
-            viewModel.callState.onEach {
-                if(it is Call.State.Disconnected) finish()
-                // TODO aggiungere messaggio in caso di errore?
-            }.launchIn(this)
+            viewModel.callState
+                .dropWhile { it == Call.State.Disconnected }
+                .onEach {
+                    if(it is Call.State.Disconnected.Ended || it is Call.State.Disconnected.Error) finish()
+                    // TODO aggiungere messaggio in caso di errore?
+                }.launchIn(this)
 
             viewModel.participants.collect { participants ->
                 participants.others.plus(participants.me).forEach { participant ->

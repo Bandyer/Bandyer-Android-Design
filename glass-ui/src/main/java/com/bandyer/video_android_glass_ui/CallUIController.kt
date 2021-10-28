@@ -21,6 +21,8 @@ interface CallUIController {
 
     val call: Flow<Call>
 
+    fun answer()
+
     fun hangup()
 
     fun enableCamera(enable: Boolean)

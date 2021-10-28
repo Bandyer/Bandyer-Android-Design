@@ -13,6 +13,8 @@ internal interface CallLogicProvider {
 
     val call: Flow<Call>
 
+    fun answer()
+
     fun hangup()
 
     fun enableCamera(enable: Boolean)
@@ -29,6 +31,8 @@ internal interface CallLogicProvider {
 private class CallLogicProviderImpl(private val controllerCall: CallUIController) : CallLogicProvider {
 
     override val call: Flow<Call> = controllerCall.call
+
+    override fun answer() = controllerCall.answer()
 
     override fun hangup() = controllerCall.hangup()
 

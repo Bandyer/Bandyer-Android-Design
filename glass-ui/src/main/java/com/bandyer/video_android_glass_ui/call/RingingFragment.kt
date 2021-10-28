@@ -92,9 +92,15 @@ class RingingFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onTap() = true.also { findNavController().navigate(R.id.action_ringingFragment_to_emptyFragment) }
+    override fun onTap() = true.also {
+        viewModel.answer()
+        findNavController().navigate(R.id.action_ringingFragment_to_emptyFragment)
+    }
 
-    override fun onSwipeDown() = true.also { viewModel.hangUp(); requireActivity().finish() }
+    override fun onSwipeDown() = true.also {
+        viewModel.hangUp()
+        requireActivity().finish()
+    }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(resources.displayMetrics.densityDpi / 2, 0) }
 
