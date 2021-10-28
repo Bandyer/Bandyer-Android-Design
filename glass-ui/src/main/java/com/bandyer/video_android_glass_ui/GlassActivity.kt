@@ -17,7 +17,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.NO_POSITION
 import com.bandyer.video_android_glass_ui.call.DialingFragment
 import com.bandyer.video_android_glass_ui.call.DialingFragmentDirections
 import com.bandyer.video_android_glass_ui.call.RingingFragmentDirections
@@ -34,7 +33,6 @@ import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiObserver
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.*
 
 /**
@@ -93,16 +91,14 @@ class GlassActivity :
         }
 
         // NavController
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         // Gesture Detector
         glassGestureDetector = GlassGestureDetector(this, this)
 
         // Notification Manager
-        notificationManager =
-            ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
+        notificationManager = ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
 
         // Battery observer
         batteryObserver = BatteryObserver(this)
@@ -117,36 +113,30 @@ class GlassActivity :
             wifiObserver.observe().onEach { binding.bandyerStatusBar.updateWifiSignalIcon(it) }.launchIn(this)
 
             viewModel.call
-                .flatMapConcat { call -> call.state.combine(call.participants) { state, participants -> Pair(state, participants) } }
-                .onEach {
-                    val state = it.first
-                    val participants = it.second
-                    // TODO in caso di stato non previsto cosa mostrare
-                    when {
-                        state is Call.State.Connecting && participants.me == participants.creator -> navController.safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment())
-                        state == Call.State.Disconnected && participants.me != participants.creator -> navController.safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
-                        state is Call.State.Connected -> {
-                            val destination = if (currentFragment is DialingFragment) DialingFragmentDirections.actionDialingFragmentToEmptyFragment() else RingingFragmentDirections.actionRingingFragmentToEmptyFragment()
-                            navController.safeNavigate(destination)
-                        }
-                        else -> Unit
-                    }
-                }.launchIn(this)
-
-            viewModel.callState
+                .flatMapConcat { it.state }
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
                     if(it is Call.State.Disconnected.Ended || it is Call.State.Disconnected.Error) finish()
                     // TODO aggiungere messaggio in caso di errore?
                 }.launchIn(this)
 
-            viewModel.participants.collect { participants ->
+            viewModel.call
+                .flatMapConcat { it.participants }
+                .collect { participants ->
                 participants.others.plus(participants.me).forEach { participant ->
                     participant.streams.onEach { streams ->
                         streams.forEach { stream ->
-                            val index = itemAdapter!!.adapterItems.indexOfFirst { item -> item.data.stream.id == stream.id }
-                            if (index == -1) itemAdapter!!.add(StreamItem(StreamItemData(participant == participants.me, participant.username, participant.avatarUrl, stream), this))
-                            else itemAdapter!![index] = StreamItem(StreamItemData(participant == participants.me, participant.username, participant.avatarUrl, stream), this)
+                            stream.state.collect {  state ->
+                                if(state is Stream.State.Closed) {
+                                    val index = itemAdapter!!.adapterItems.indexOfFirst { item -> item.data.stream.id == stream.id }.takeIf { it >= 0 } ?: return@collect
+                                    itemAdapter!!.remove(index)
+                                }
+                                // TODO rilevare rimozione stream, non solo osservare stato per rimuoverlo
+
+                                val index = itemAdapter!!.adapterItems.indexOfFirst { item -> item.data.stream.id == stream.id }
+                                if (index == -1) itemAdapter!!.add(StreamItem(ParticipantStreamInfo(participant == participants.me, participant.username, participant.avatarUrl, stream), this))
+                                else itemAdapter!![index] = StreamItem(ParticipantStreamInfo(participant == participants.me, participant.username, participant.avatarUrl, stream), this)
+                            }
                         }
                     }.launchIn(this)
                 }
@@ -327,6 +317,3 @@ class GlassActivity :
 
 internal fun NavController.safeNavigate(direction: NavDirections): Boolean =
     currentDestination?.getAction(direction.actionId)?.run { navigate(direction); true } ?: false
-
-fun <T : GenericItem> ItemAdapter<T>.addOrUpdate(items: List<T>) =
-    FastAdapterDiffUtil.calculateDiff(this, items, true).also { FastAdapterDiffUtil[this] = it }
