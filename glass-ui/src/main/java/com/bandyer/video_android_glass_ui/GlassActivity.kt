@@ -75,7 +75,6 @@ class GlassActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.tiltEnabled = intent.extras?.getBoolean("tiltEnabled") ?: false
 
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 

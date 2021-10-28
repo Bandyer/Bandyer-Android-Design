@@ -18,6 +18,7 @@ import com.bandyer.video_android_glass_ui.GlassViewModelFactory
 import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.common.UserState
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatBinding
+import com.bandyer.video_android_glass_ui.menu.MenuFragmentArgs
 import com.bandyer.video_android_glass_ui.participants.ParticipantData
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener
@@ -45,11 +46,11 @@ class ChatFragment : BaseFragment(), TiltListener {
     private var lastMsgIndex = 0
     private var pagesIds = arrayListOf<String>()
 
-    private val activityViewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
+    private val args: ChatFragmentArgs by lazy { ChatFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(activityViewModel.tiltEnabled) tiltListener = this
+        if(args.enableTilt) tiltListener = this
     }
 
     /**
@@ -124,7 +125,7 @@ class ChatFragment : BaseFragment(), TiltListener {
 
     override fun onTap() = true.also {
         val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userAlias
-        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(contactData.first { it.userAlias.contains(username!!) })
+        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt, contactData.first { it.userAlias.contains(username!!) })
         findNavController().navigate(action)
     }
 

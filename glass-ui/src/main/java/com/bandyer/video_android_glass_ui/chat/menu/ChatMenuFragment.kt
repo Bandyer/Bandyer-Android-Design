@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.*
 import com.bandyer.video_android_glass_ui.GlassViewModel
 import com.bandyer.video_android_glass_ui.GlassViewModelFactory
+import com.bandyer.video_android_glass_ui.chat.ChatFragmentArgs
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentChatMenuBinding
@@ -42,11 +43,9 @@ class ChatMenuFragment : BaseFragment(), TiltListener {
 
     private var actionIndex = 0
 
-    private val activityViewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(activityViewModel.tiltEnabled) tiltListener = this
+        if(args.enableTilt) tiltListener = this
     }
 
     /**

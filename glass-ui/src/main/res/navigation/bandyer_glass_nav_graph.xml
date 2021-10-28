@@ -20,16 +20,40 @@
             app:destination="@id/participantsFragment" />
         <action
             android:id="@+id/action_menuFragment_to_smartglass_nav_graph_chat"
-            app:destination="@id/smartglass_nav_graph_chat" />
+            app:destination="@id/smartglass_nav_graph_chat" >
+            <argument
+                android:name="enableTilt"
+                app:argType="boolean"
+                android:defaultValue="false" />
+        </action>
+        <argument
+            android:name="enableTilt"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="options"
+            app:argType="com.bandyer.video_android_glass_ui.Option[]"
+            android:defaultValue="@null"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/volumeFragment"
         android:name="com.bandyer.video_android_glass_ui.settings.volume.VolumeFragment"
-        android:label="VolumeFragment" />
+        android:label="VolumeFragment" >
+        <argument
+            android:name="enableTilt"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
     <fragment
         android:id="@+id/zoomFragment"
         android:name="com.bandyer.video_android_glass_ui.settings.zoom.ZoomFragment"
-        android:label="ZoomFragment" />
+        android:label="ZoomFragment">
+        <argument
+            android:name="enableTilt"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
     <fragment
         android:id="@+id/callEndedFragment"
         android:name="com.bandyer.video_android_glass_ui.call.CallEndedFragment"
@@ -78,7 +102,12 @@
     <fragment
         android:id="@+id/participantsFragment"
         android:name="com.bandyer.video_android_glass_ui.call.participants.ParticipantsFragment"
-        android:label="ParticipantsFragment"/>
+        android:label="ParticipantsFragment">
+        <argument
+            android:name="enableTilt"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
     <include app:graph="@navigation/bandyer_glass_nav_graph_chat" />
     <fragment
         android:id="@+id/connectingFragment"

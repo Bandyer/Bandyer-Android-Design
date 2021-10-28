@@ -5,25 +5,23 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.*
+import com.bandyer.video_android_glass_ui.call.CallAction
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentMenuBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
-import com.bandyer.video_android_glass_ui.call.CallAction
 import com.bandyer.video_android_glass_ui.utils.TiltListener
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -37,15 +35,15 @@ class MenuFragment : BaseFragment(), TiltListener {
 
     private var itemAdapter: ItemAdapter<MenuItem>? = null
 
+    private val args: MenuFragmentArgs by lazy { MenuFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
+
     private var currentMenuItemIndex = 0
 
     private val navGraphViewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) { NavGraphViewModelFactory }
 
-    private val activityViewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (activityViewModel.tiltEnabled) tiltListener = this
+        if (args.enableTilt) tiltListener = this
     }
 
     /**
@@ -95,10 +93,7 @@ class MenuFragment : BaseFragment(), TiltListener {
                 }
             }
 
-
-        CallAction
-            .getActions(requireContext(), navGraphViewModel.isMicEnabled, navGraphViewModel.isCameraEnabled, true, true, true)
-            .forEach { itemAdapter!!.add(MenuItem(it)) }
+        args.options?.let { getActions(it).forEach { itemAdapter!!.add(MenuItem(it)) } }
 
         val cameraAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.CAMERA }.action as CallAction.ToggleableCallAction)
         val micAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.MICROPHONE }.action as CallAction.ToggleableCallAction)
@@ -118,6 +113,26 @@ class MenuFragment : BaseFragment(), TiltListener {
         super.onDestroyView()
         _binding = null
         itemAdapter = null
+    }
+
+    private fun getActions(options: Array<Option>): List<CallAction> {
+        var micToggled: Boolean? = null
+        var cameraToggled: Boolean? = null
+        var withZoom = false
+        var withParticipants = false
+        var withChat = false
+
+        options.forEach {
+            when(it) {
+                is Option.MICROPHONE -> micToggled = it.toggled
+                is Option.CAMERA -> cameraToggled = it.toggled
+                is Option.ZOOM -> withZoom = true
+                is Option.PARTICIPANTS -> withParticipants = true
+                is Option.CHAT -> withChat = true
+            }
+        }
+
+        return CallAction.getActions(requireContext(), micToggled, cameraToggled, withZoom, withParticipants, withChat)
     }
 
     override fun onDismiss() = Unit
