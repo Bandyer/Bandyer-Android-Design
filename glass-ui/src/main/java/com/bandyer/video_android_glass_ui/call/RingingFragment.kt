@@ -74,8 +74,10 @@ class RingingFragment : BaseFragment() {
                 repeatOnStarted {
                     with(viewModel) {
                         callState
+                            .onEach {
+                                if(it is Call.State.Connected) findNavController().safeNavigate(RingingFragmentDirections.actionRingingFragmentToEmptyFragment(args.enableTilt, args.options))
+                            }
                             .takeWhile { it !is Call.State.Connected }
-                            .onCompletion { findNavController().safeNavigate(RingingFragmentDirections.actionRingingFragmentToEmptyFragment(args.enableTilt, args.options)) }
                             .combine(participants) { _, participants ->
                                 itemAdapter!!.set(participants.others.plus(participants.me).map { FullScreenDialogItem(it.username) })
 

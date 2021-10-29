@@ -74,8 +74,10 @@ class DialingFragment : BaseFragment() {
                 repeatOnStarted {
                     with(viewModel) {
                         callState
+                            .onEach {
+                                if(it is Call.State.Connected) findNavController().safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment(args.enableTilt, args.options))
+                            }
                             .takeWhile { it !is Call.State.Connected }
-                            .onCompletion { findNavController().safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment(args.enableTilt, args.options)) }
                             .combine(participants) { _, participants ->
                                 itemAdapter!!.set(participants.others.plus(participants.me).map { FullScreenDialogItem(it.username) })
 
