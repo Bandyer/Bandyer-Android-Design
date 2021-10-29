@@ -66,7 +66,6 @@ class RingingFragment : BaseFragment() {
                     this.layoutManager = layoutManager
                     adapter = fastAdapter
                     isFocusable = false
-                    setHasFixedSize(true)
                     addItemDecoration(ReadProgressDecoration(requireContext()))
 
                     root.setOnTouchListener { _, event -> onTouchEvent(event) }

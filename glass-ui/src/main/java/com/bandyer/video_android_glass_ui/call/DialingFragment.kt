@@ -61,16 +61,11 @@ class DialingFragment : BaseFragment() {
                 bandyerParticipants.apply {
                     itemAdapter = ItemAdapter()
                     val fastAdapter = FastAdapter.with(itemAdapter!!)
-                    val layoutManager = AutoScrollLinearLayoutManager(
-                        requireContext(),
-                        LinearLayoutManager.HORIZONTAL,
-                        false
-                    )
+                    val layoutManager = AutoScrollLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
                     this.layoutManager = layoutManager
                     adapter = fastAdapter
                     isFocusable = false
-                    setHasFixedSize(true)
                     addItemDecoration(ReadProgressDecoration(requireContext()))
 
                     root.setOnTouchListener { _, event -> onTouchEvent(event) }
