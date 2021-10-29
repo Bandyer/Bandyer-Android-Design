@@ -37,6 +37,8 @@ class AutoScrollLinearLayoutManager constructor(
         private var target = 0
 
         override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+            if(itemCount < 1) return
+
             // The recyclerView can enter the idle state also if scrollBy is used
             if (newState == SCROLL_STATE_IDLE) {
                 val firstVisibleItemPosition = findFirstVisibleItemPosition()
@@ -68,7 +70,7 @@ class AutoScrollLinearLayoutManager constructor(
         super.onAttachedToWindow(view)
         view?.apply {
             addOnScrollListener(scrollListener)
-            smoothScrollToPosition(itemCount - 1)
+            if(itemCount > 0) smoothScrollToPosition(itemCount - 1)
         }
     }
 
