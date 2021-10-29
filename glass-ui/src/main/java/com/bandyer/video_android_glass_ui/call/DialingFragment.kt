@@ -6,6 +6,7 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
@@ -40,6 +41,11 @@ class DialingFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            viewModel.hangUp()
+        }
+
         // Add view binding
         val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_dialingStyle)
         _binding = BandyerGlassFragmentFullScreenLogoDialogBinding

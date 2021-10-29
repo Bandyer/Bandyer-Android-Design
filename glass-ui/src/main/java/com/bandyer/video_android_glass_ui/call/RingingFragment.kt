@@ -6,6 +6,7 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.navGraphViewModels
@@ -40,6 +41,11 @@ class RingingFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            viewModel.hangUp()
+        }
+
         // Add view binding
         val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_ringingStyle)
         _binding = BandyerGlassFragmentFullScreenLogoDialogBinding
@@ -98,7 +104,6 @@ class RingingFragment : BaseFragment() {
 
     override fun onTap() = true.also {
         viewModel.answer()
-        findNavController().navigate(R.id.action_ringingFragment_to_emptyFragment)
     }
 
     override fun onSwipeDown() = true.also {

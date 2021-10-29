@@ -88,7 +88,7 @@
         <action
             android:id="@+id/action_dialingFragment_to_emptyFragment"
             app:destination="@id/emptyFragment"
-            app:popUpTo="@id/ringingFragment"
+            app:popUpTo="@id/dialingFragment"
             app:popUpToInclusive="true" />
         <argument
             android:name="enableTilt"
@@ -139,10 +139,14 @@
         tools:layout="@layout/bandyer_glass_fragment_start" >
         <action
             android:id="@+id/action_startFragment_to_dialingFragment"
-            app:destination="@id/dialingFragment" />
+            app:destination="@id/dialingFragment"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_startFragment_to_ringingFragment"
-            app:destination="@id/ringingFragment" />
+            app:destination="@id/ringingFragment"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true" />
         <argument
             android:name="enableTilt"
             app:argType="boolean"

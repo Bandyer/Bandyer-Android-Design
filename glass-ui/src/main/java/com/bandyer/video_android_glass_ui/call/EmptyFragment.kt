@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.bandyer.video_android_glass_ui.BaseFragment
+import androidx.navigation.navGraphViewModels
+import com.bandyer.video_android_glass_ui.*
+import com.bandyer.video_android_glass_ui.NavGraphViewModel
+import com.bandyer.video_android_glass_ui.NavGraphViewModelFactory
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentEmptyBinding
 import com.bandyer.video_android_glass_ui.safeNavigate
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
@@ -21,6 +25,8 @@ class EmptyFragment : BaseFragment() {
 
     private val args: EmptyFragmentArgs by navArgs()
 
+    private val viewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) { NavGraphViewModelFactory }
+
     /**
      * @suppress
      */
@@ -29,6 +35,10 @@ class EmptyFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            viewModel.hangUp()
+        }
 
         // Add view binding
         _binding = BandyerGlassFragmentEmptyBinding
