@@ -2,5 +2,6 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Theme.Glass">
         <attr name="bandyer_statusBarStyle" format="reference" />
+        <attr name="bandyer_recyclerViewItemStyle" format="reference"/>
     </declare-styleable>
 </resources>
