@@ -1,5 +1,7 @@
 package com.bandyer.video_android_glass_ui
 
+import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.*
@@ -10,7 +12,8 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-internal class StreamItem(val data: ParticipantStreamInfo, parentScope: CoroutineScope) : AbstractItem<StreamItem.ViewHolder>() {
+internal class StreamItem(val data: ParticipantStreamInfo, parentScope: CoroutineScope) :
+    AbstractItem<StreamItem.ViewHolder>() {
 
     private val scope = parentScope + CoroutineName(this.toString() + data.stream.id)
 
@@ -45,40 +48,53 @@ internal class StreamItem(val data: ParticipantStreamInfo, parentScope: Coroutin
 
         private var binding = BandyerCallParticipantItemLayoutBinding.bind(itemView)
 
-        private var job: Job? = null
+        private val jobs: MutableList<Job> = mutableListOf()
 
         /**
          * Binds the data of this item onto the viewHolder
          */
-        override fun bindView(item: StreamItem, payloads: List<Any>): Unit = with(item) {
-            with(binding) {
-                bandyerTitle.visibility = View.GONE
-                bandyerAvatar.visibility = View.GONE
-            }
+        override fun bindView(item: StreamItem, payloads: List<Any>) = with(binding) {
+            bandyerTitle.visibility = View.GONE
+            bandyerAvatar.visibility = View.GONE
+            bandyerSubtitle.text = item.data.username
 
-            job = data.stream.video
-                .filter { it != null }
-                .flatMapConcat { video ->
-                    video!!.enabled.combine(video.view) { enabled, view -> Pair(enabled, view) }
-                }.onEach { pair ->
-                    val enabled = pair.first
-                    val view = pair.second
-                    with(binding) {
-                        (if (data.isMyStream) bandyerTitle else bandyerAvatar).visibility = if (enabled) View.GONE else View.VISIBLE
-                        bandyerWrapper.visibility = if (enabled) View.VISIBLE else View.GONE
+            val data = item.data
+            val stream = data.stream
+            val scope = item.scope
+
+            jobs.add(
+                stream.audio
+                    .filter { it != null }
+                    .flatMapConcat { it!!.enabled }
+                    .onEach {
+                        bandyerMicIcon.visibility = if (it) View.GONE else View.VISIBLE
+                    }.launchIn(scope)
+            )
+
+            jobs.add(
+                stream.video
+                    .filter { it != null }
+                    .flatMapConcat { video -> video!!.enabled.combine(video.view) { enabled, view -> Pair(enabled, view) } }
+                    .onEach { pair ->
+                        val enabled = pair.first
+                        val view = pair.second
+                        (if (data.isMyStream) bandyerTitle else bandyerAvatar).visibility =
+                            if (enabled) View.GONE else View.VISIBLE
+                        bandyerVideoWrapper.visibility = if (enabled) View.VISIBLE else View.INVISIBLE
+                        bandyerUserWrapper.gravity = if (enabled) Gravity.START else Gravity.CENTER
                         view?.also {
                             (it.parent as? ViewGroup)?.removeView(it)
-                            bandyerWrapper.addView(it.apply { id = View.generateViewId() })
+                            bandyerVideoWrapper.addView(it.apply { id = View.generateViewId() })
                         }
-                    }
-                }.launchIn(scope)
+                    }.launchIn(scope)
+            )
 
-            if(item.data.isMyStream) return@with
+            if (data.isMyStream) return@with
 
-            data.avatarUrl?.apply { binding.bandyerAvatar.setImage(this) } ?: kotlin.run {
-                with(binding.bandyerAvatar) {
-                    setBackground(item.data.username.parseToColor())
-                    setText(item.data.username[0].toString())
+            data.avatarUrl?.also { bandyerAvatar.setImage(it) } ?: kotlin.run {
+                bandyerAvatar.apply {
+                    setBackground(data.username.parseToColor())
+                    setText(data.username[0].toString())
                 }
             }
         }
@@ -88,8 +104,8 @@ internal class StreamItem(val data: ParticipantStreamInfo, parentScope: Coroutin
          */
         override fun unbindView(item: StreamItem): Unit = with(binding) {
             unbind()
-            bandyerWrapper.removeAllViews()
-            job?.cancel()
+            bandyerVideoWrapper.removeAllViews()
+            jobs.forEach { it.cancel() }
         }
     }
 }

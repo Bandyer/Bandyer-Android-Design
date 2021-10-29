@@ -23,6 +23,8 @@
         <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
+        <item name="android:maxHeight">@dimen/bandyer_dimen_space48</item>
+        <item name="android:minHeight">@dimen/bandyer_dimen_space48</item>
         <item name="android:background">@drawable/bandyer_glass_status_bar_gradient</item>
     </style>
 

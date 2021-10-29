@@ -70,15 +70,43 @@
     </style>
 
     <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem" parent="">
-        <item name="android:layout_gravity">center</item>
-        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.Big</item>
+        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.RootLayout</item>
+        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.Big.GlassCallRecyclerViewItem</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.GlassCallRecyclerViewItem</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.GlassCallRecyclerViewItem</item>
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.MicIcon</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.RootLayout" parent="">
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space48</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space48</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.Avatar.Big.GlassCallRecyclerViewItem" parent="BandyerSDKDesign.Glass.Avatar.Big">
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_gravity">bottom|center_horizontal</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.MicIcon" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:tint">@android:color/white</item>
+        <item name="srcCompat">@drawable/bandyer_glass_mic_off_icon</item>
+        <item name="android:layout_width">@dimen/bandyer_dimen_space32</item>
+        <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.Title.GlassCallRecyclerViewItem" parent="BandyerSDKDesign.TextView.Title">
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_gravity">bottom|center_horizontal</item>
         <item name="android:text">@string/bandyer_glass_camera_off</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
-        <item name="android:layout_gravity">center</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Subtitle.GlassCallRecyclerViewItem" parent="BandyerSDKDesign.TextView.Subtitle">
+        <item name="paddingStart">@dimen/bandyer_dimen_space6</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
