@@ -19,6 +19,7 @@ import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.get
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.*
 
 class DialingFragment : BaseFragment() {
@@ -79,7 +80,8 @@ class DialingFragment : BaseFragment() {
                             }
                             .takeWhile { it !is Call.State.Connected }
                             .combine(participants) { _, participants ->
-                                itemAdapter!!.set(participants.others.plus(participants.me).map { FullScreenDialogItem(it.username) })
+                                val items = participants.others.plus(participants.me).map { FullScreenDialogItem(it.username) }
+                                FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
 
                                 val isGroupCall = itemAdapter!!.adapterItemCount > 1
                                 if (!isGroupCall) bandyerBottomNavigation.hideSwipeHorizontalItem()

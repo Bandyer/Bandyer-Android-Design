@@ -12,6 +12,8 @@ import com.mikepenz.fastadapter.items.AbstractItem
 
 class FullScreenDialogItem(val text: String) : AbstractItem<FullScreenDialogItem.ViewHolder>() {
 
+    override var identifier: Long = text.hashCode().toLong()
+
     /**
      * The layout for the given item
      */
