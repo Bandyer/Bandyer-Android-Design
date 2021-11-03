@@ -12,7 +12,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-internal class StreamItem(val data: ParticipantStreamInfo, parentScope: CoroutineScope) :
+internal class StreamItem(val data: StreamParticipant, parentScope: CoroutineScope) :
     AbstractItem<StreamItem.ViewHolder>() {
 
     private val scope = parentScope + CoroutineName(this.toString() + data.stream.id)
@@ -56,7 +56,7 @@ internal class StreamItem(val data: ParticipantStreamInfo, parentScope: Coroutin
         override fun bindView(item: StreamItem, payloads: List<Any>) = with(binding) {
             bandyerTitle.visibility = View.GONE
             bandyerAvatar.visibility = View.GONE
-            bandyerSubtitle.text = item.data.username
+            bandyerSubtitle.text = item.data.participant.username
 
             val data = item.data
             val stream = data.stream
@@ -91,10 +91,11 @@ internal class StreamItem(val data: ParticipantStreamInfo, parentScope: Coroutin
 
             if (data.isMyStream) return@with
 
-            data.avatarUrl?.also { bandyerAvatar.setImage(it) } ?: kotlin.run {
+            data.participant.avatarUrl?.also { bandyerAvatar.setImage(it) } ?: kotlin.run {
                 bandyerAvatar.apply {
-                    setBackground(data.username.parseToColor())
-                    setText(data.username[0].toString())
+                    val username = data.participant.username
+                    setBackground(username.parseToColor())
+                    setText(username[0].toString())
                 }
             }
         }

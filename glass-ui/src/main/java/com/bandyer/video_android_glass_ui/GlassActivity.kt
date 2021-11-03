@@ -18,6 +18,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_glass_ui.call.FullScreenDialogItem
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
@@ -30,6 +31,7 @@ import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiInfo
 import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiObserver
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -125,35 +127,12 @@ class GlassActivity :
                     if (it is Call.State.Disconnected.Ended || it is Call.State.Disconnected.Error) finish()
                     // TODO aggiungere messaggio in caso di errore?
                 }.launchIn(this)
-            //                .takeWhile {
-//                    when(it.state) {
-//
-//                    }
-//                    it.state !is Call.State.Disconnected.Ended(it.reas) || it.state !is Call.State.Disconnected.Error
-//                }
 
-            viewModel.participants
-                .flatMapConcat { flow { emit(it.others.toMutableList().apply { add(0, it.me) }) } }
-                .transform { participants -> participants.forEach { emit(it) } }
-                .flatMapConcat { participant ->
-                    val streams: Flow<Stream> = participant.streams.transform { streams -> streams.forEach { emit(it) } }
-                    flow { emit(participant) }.zip(streams) { f, s -> f to s }
-                }
-                .withIndex()
-                .onEach {
-                    val amI = false
-                    val participant = it.value.first
-                    val stream = it.value.second
-
-                    if (stream.state is Stream.State.Closed) {
-                        val index = itemAdapter!!.adapterItems.indexOfFirst { item -> item.data.stream.id == stream.id }.takeIf { it >= 0 } ?: return@onEach
-                        itemAdapter!!.remove(index)
-                    }
-                    // TODO rilevare rimozione stream, non solo osservare stato per rimuoverlo
-
-                    val index = itemAdapter!!.adapterItems.indexOfFirst { item -> item.data.stream.id == stream.id }
-                    if (index == -1) itemAdapter!!.add(StreamItem(ParticipantStreamInfo(amI, participant.username, participant.avatarUrl, stream), this))
-                    else itemAdapter!![index] = StreamItem(ParticipantStreamInfo(amI, participant.username, participant.avatarUrl, stream), this)
+            viewModel
+                .streams()
+                .onEach { streams ->
+                    val items = streams.filter { it.stream.state !is Stream.State.Closed }.map { StreamItem(it, this) }
+                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                 }.launchIn(this)
         }
     }
