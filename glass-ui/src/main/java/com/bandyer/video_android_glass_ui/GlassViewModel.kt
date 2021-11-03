@@ -17,8 +17,7 @@ internal class GlassViewModel(callLogicProvider: CallLogicProvider) : ViewModel(
 
     val participants: Flow<CallParticipants> = call.flatMapConcat { it.participants }
 
-    fun streams(): Flow<List<StreamParticipant>> =
-        MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1)
+    val streams: Flow<List<StreamParticipant>> = MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1)
             .apply {
                 val jobs = mutableMapOf<String, Job>()
                 participants
@@ -28,18 +27,19 @@ internal class GlassViewModel(callLogicProvider: CallLogicProvider) : ViewModel(
                             jobs[participant.id]?.cancel()
                             jobs[participant.id] = participant.streams.onEach {
                                 streams.removeIf { stream -> stream.participant == participant }
-                                streams += it.map { stream -> StreamParticipant(participant, participant == participants.me, stream) }
+                                streams +=
+                                    if(it.none { stream -> stream.state !is Stream.State.Closed }) listOf(StreamParticipant(participant, participant == participants.me, null))
+                                    else it.map { stream -> StreamParticipant(participant, participant == participants.me, stream) }
                                 emit(streams)
                             }.launchIn(viewModelScope)
                         }
                     }.launchIn(viewModelScope)
             }
-
 }
 
 internal data class StreamParticipant(
     val participant: CallParticipant,
     val isMyStream: Boolean,
-    val stream: Stream
+    val stream: Stream?
 )
 
