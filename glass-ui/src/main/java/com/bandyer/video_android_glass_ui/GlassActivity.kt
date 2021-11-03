@@ -2,7 +2,6 @@ package com.bandyer.video_android_glass_ui
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -18,7 +17,6 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.video_android_glass_ui.call.FullScreenDialogItem
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
@@ -129,11 +127,9 @@ class GlassActivity :
                 }.launchIn(this)
 
             viewModel
-                .streams()
-                .onEach { streams ->
-                    val items = streams.filter { it.stream.state !is Stream.State.Closed }.map { StreamItem(it, this) }
-                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
-                }.launchIn(this)
+                .streams
+                .onEach { streams -> FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, streams.map { StreamItem(it, this) }, true) }
+                .launchIn(this)
         }
     }
 
