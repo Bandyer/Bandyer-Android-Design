@@ -12,8 +12,10 @@ internal object GlassViewModelFactory : ViewModelProvider.Factory {
         GlassViewModel(ProvidersHolder.callProvider!!) as T
 }
 
-internal class GlassViewModel(callLogicProvider: CallLogicProvider) : ViewModel() {
+internal class GlassViewModel(private val callLogicProvider: CallLogicProvider) : ViewModel() {
     val call: Flow<Call> = callLogicProvider.call
+
+    val callState: Flow<Call.State> = call.flatMapConcat { call -> call.state }
 
     val participants: Flow<CallParticipants> = call.flatMapConcat { it.participants }
 
@@ -35,6 +37,34 @@ internal class GlassViewModel(callLogicProvider: CallLogicProvider) : ViewModel(
                         }
                     }.launchIn(viewModelScope)
             }
+
+    private val cameraStream: Flow<Stream?> =
+        participants
+            .map { it.me }
+            .flatMapConcat { it.streams }
+            .map { streams ->
+                streams.firstOrNull { it.video.firstOrNull { video -> video?.source is Input.Video.Source.Camera.Internal } != null }
+            }
+
+    var isCameraEnabled = false
+    val cameraEnabled: Flow<Boolean?> = cameraStream.filter { it != null }
+        .flatMapConcat { it!!.video }
+        .flatMapConcat { it!!.enabled }
+        .onEach { isCameraEnabled = it == true }
+
+    var isMicEnabled = false
+    val micEnabled: Flow<Boolean?> = cameraStream.filter { it != null }
+        .flatMapConcat { it!!.audio }
+        .flatMapConcat { it!!.enabled }
+        .onEach { isMicEnabled = it == true }
+
+    fun enableCamera(enable: Boolean) = callLogicProvider.enableCamera(enable)
+
+    fun enableMic(enable: Boolean) = callLogicProvider.enableMic(enable)
+
+    fun answer() = callLogicProvider.answer()
+
+    fun hangUp() = callLogicProvider.hangup()
 }
 
 

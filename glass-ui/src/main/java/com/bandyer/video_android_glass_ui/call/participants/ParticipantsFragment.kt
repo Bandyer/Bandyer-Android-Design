@@ -5,15 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.*
-import com.bandyer.video_android_glass_ui.NavGraphViewModel
-import com.bandyer.video_android_glass_ui.NavGraphViewModelFactory
 import com.bandyer.video_android_glass_ui.common.UserState
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
@@ -47,7 +45,7 @@ class ParticipantsFragment : BaseFragment(), TiltListener {
 
     private val args: VolumeFragmentArgs by navArgs()
 
-    private val viewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) { NavGraphViewModelFactory }
+    private val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

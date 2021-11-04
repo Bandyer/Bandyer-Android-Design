@@ -5,9 +5,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -40,7 +40,7 @@ class MenuFragment : BaseFragment(), TiltListener {
 
     private var currentMenuItemIndex = 0
 
-    private val navGraphViewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) { NavGraphViewModelFactory }
+    private val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -100,8 +100,8 @@ class MenuFragment : BaseFragment(), TiltListener {
         val micAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.MICROPHONE }.action as CallAction.ToggleableCallAction)
 
         repeatOnStarted {
-            navGraphViewModel.cameraEnabled.onEach { cameraAction?.toggle(it == true) }.launchIn(this)
-            navGraphViewModel.micEnabled.onEach { micAction?.toggle(it == true) }.launchIn(this)
+            viewModel.cameraEnabled.onEach { cameraAction?.toggle(it == true) }.launchIn(this)
+            viewModel.micEnabled.onEach { micAction?.toggle(it == true) }.launchIn(this)
         }
 
         return binding.root
@@ -141,8 +141,8 @@ class MenuFragment : BaseFragment(), TiltListener {
     override fun onTap() = onTap(itemAdapter!!.getAdapterItem(currentMenuItemIndex).action)
 
     private fun onTap(action: CallAction) = when (action) {
-        is CallAction.MICROPHONE -> true.also { navGraphViewModel.enableMic(!navGraphViewModel.isMicEnabled) }
-        is CallAction.CAMERA -> true.also { navGraphViewModel.enableCamera(!navGraphViewModel.isCameraEnabled) }
+        is CallAction.MICROPHONE -> true.also { viewModel.enableMic(!viewModel.isMicEnabled) }
+        is CallAction.CAMERA -> true.also { viewModel.enableCamera(!viewModel.isCameraEnabled) }
         is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment(args.enableTilt)) }
         is CallAction.ZOOM -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment(args.enableTilt)) }
         is CallAction.PARTICIPANTS -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToParticipantsFragment(args.enableTilt)) }

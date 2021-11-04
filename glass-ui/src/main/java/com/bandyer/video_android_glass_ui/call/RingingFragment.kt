@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bandyer.video_android_glass_ui.*
 import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
@@ -31,7 +31,7 @@ class RingingFragment : BaseFragment() {
 
     private val args: RingingFragmentArgs by navArgs()
 
-    private val viewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) { NavGraphViewModelFactory }
+    private val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 
     /**
      * @suppress

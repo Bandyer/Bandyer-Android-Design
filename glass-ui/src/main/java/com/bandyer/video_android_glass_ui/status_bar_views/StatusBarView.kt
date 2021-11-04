@@ -125,14 +125,14 @@ class StatusBarView @JvmOverloads constructor(
      * Show the cam muted icon
      */
     fun showCamMutedIcon() {
-        binding.bandyerMicMutedIcon.visibility = View.VISIBLE
+        binding.bandyerCamMutedIcon.visibility = View.VISIBLE
     }
 
     /**
      * Hide the cam muted icon
      */
     fun hideCamMutedIcon() {
-        binding.bandyerMicMutedIcon.visibility = View.GONE
+        binding.bandyerCamMutedIcon.visibility = View.GONE
     }
 
     /**

@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import kotlinx.coroutines.flow.*
 
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.*
  */
 class StartFragment : Fragment() {
 
-    private val viewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) { NavGraphViewModelFactory }
+    private val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 
     private val args: StartFragmentArgs by lazy { StartFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
 

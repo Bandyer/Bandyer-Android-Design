@@ -118,8 +118,8 @@ class GlassActivity :
             wifiObserver.observe().onEach { binding.bandyerStatusBar.updateWifiSignalIcon(it) }
                 .launchIn(this)
 
-            viewModel.call
-                .flatMapConcat { it.state }
+            viewModel
+                .callState
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
                     if (it is Call.State.Disconnected.Ended || it is Call.State.Disconnected.Error) finish()
@@ -136,8 +136,21 @@ class GlassActivity :
                         nullStreams.forEach { itemAdapter!!.removeByIdentifier(it.identifier) }
                     }
                     FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, streams.map { StreamItem(it, this) }, true)
-                }
-                .launchIn(this)
+                }.launchIn(this)
+
+            viewModel
+                .cameraEnabled
+                .onEach {
+                    if(it == true) binding.bandyerStatusBar.hideCamMutedIcon()
+                    else binding.bandyerStatusBar.showCamMutedIcon()
+                }.launchIn(this)
+
+            viewModel
+                .micEnabled
+                .onEach {
+                    if(it == true) binding.bandyerStatusBar.hideMicMutedIcon()
+                    else binding.bandyerStatusBar.showMicMutedIcon()
+                }.launchIn(this)
         }
     }
 
