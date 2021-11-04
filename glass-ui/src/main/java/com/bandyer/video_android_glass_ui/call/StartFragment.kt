@@ -5,21 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.bandyer.video_android_glass_ui.GlassViewModel
-import com.bandyer.video_android_glass_ui.GlassViewModelFactory
-import com.bandyer.video_android_glass_ui.R
+import com.bandyer.video_android_glass_ui.*
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentStartBinding
 import com.bandyer.video_android_glass_ui.model.Call
-import com.bandyer.video_android_glass_ui.safeNavigate
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import kotlinx.coroutines.flow.*
 
 /**
- * An empty fragment used as start destination in the nav graph
+ * StartFragment, used as start destination in the nav graph
  */
-class StartFragment : Fragment() {
+class StartFragment : BaseFragment() {
+
+    private var _binding: BandyerGlassFragmentStartBinding? = null
+    override val binding: BandyerGlassFragmentStartBinding get() = _binding!!
 
     private val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 
@@ -28,11 +28,14 @@ class StartFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        super.onCreateView(inflater, container, savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.hangUp()
         }
+
+        _binding = BandyerGlassFragmentStartBinding.inflate(inflater, container, false)
 
         repeatOnStarted {
             with(viewModel) {
@@ -51,6 +54,17 @@ class StartFragment : Fragment() {
             }
         }
 
-        return inflater.inflate(R.layout.bandyer_glass_fragment_start, container, false)
+        return binding.root
     }
+
+    override fun onTap(): Boolean = false
+
+    override fun onSwipeDown(): Boolean = true.also {
+        viewModel.hangUp()
+        requireActivity().finish()
+    }
+
+    override fun onSwipeForward(isKeyEvent: Boolean): Boolean = false
+
+    override fun onSwipeBackward(isKeyEvent: Boolean): Boolean = false
 }

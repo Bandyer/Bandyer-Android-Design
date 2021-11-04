@@ -11,6 +11,9 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullSc
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
+/**
+ * ConnectingFragment
+ */
 class ConnectingFragment : BaseFragment() {
 
     private var _binding: BandyerGlassFragmentFullScreenLogoDialogBinding? = null
