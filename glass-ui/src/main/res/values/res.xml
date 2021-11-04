@@ -9,6 +9,7 @@
     <item name="ic_bandyer_glass_badge_new_mess" type="drawable">@drawable/bandyer_glass_badge_new_mess_icon</item>
     <item name="ic_bandyer_glass_close_arrow" type="drawable">@drawable/bandyer_glass_close_arrow_icon</item>
     <item name="ic_bandyer_glass_mic_off" type="drawable">@drawable/bandyer_glass_mic_off_icon</item>
+    <item name="ic_bandyer_glass_cam_off" type="drawable">@drawable/bandyer_glass_cam_off_icon</item>
     <item name="ic_bandyer_glass_select" type="drawable">@drawable/bandyer_glass_select_icon</item>
     <item name="ic_bandyer_glas_swipe_arrow" type="drawable">@drawable/bandyer_glass_swipe_arrow_icon</item>
     <item name="ic_bandyer_glass_wifi_disabled" type="drawable">@drawable/bandyer_glass_wifi_disabled_icon</item>

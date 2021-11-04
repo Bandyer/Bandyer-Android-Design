@@ -4,10 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
-import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.res.ResourcesCompat
-import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassStatusBarLayoutBinding
 
 /**
@@ -93,43 +90,6 @@ class StatusBarView @JvmOverloads constructor(
     }
 
     /**
-     * Show the title icon
-     */
-    fun showTitleIcon() {
-        binding.bandyerTitleIcon.visibility = View.VISIBLE
-    }
-
-    /**
-     * Hide the title icon
-     */
-    fun hideTitleIcon() {
-        binding.bandyerTitleIcon.visibility = View.GONE
-    }
-
-    /**
-     * Set the title
-     *
-     * @param text The text title
-     */
-    fun setTitleText(text: String?) {
-        binding.bandyerTitle.text = text
-    }
-
-    /**
-     * Show the title
-     */
-    fun showTitle() {
-        binding.bandyerTitle.visibility = View.VISIBLE
-    }
-
-    /**
-     * Hide the title
-     */
-    fun hideTitle() {
-        binding.bandyerTitle.visibility = View.GONE
-    }
-
-    /**
      * Set the centered title
      *
      * @param text The centered title text
@@ -150,6 +110,34 @@ class StatusBarView @JvmOverloads constructor(
      */
     fun hideCenteredTitle() {
         binding.bandyerCenteredTitle.visibility = View.GONE
+    }
+
+    /**
+     * Show the cam muted icon
+     */
+    fun showCamMutedIcon() {
+        binding.bandyerMicMutedIcon.visibility = View.VISIBLE
+    }
+
+    /**
+     * Hide the cam muted icon
+     */
+    fun hideCamMutedIcon() {
+        binding.bandyerMicMutedIcon.visibility = View.GONE
+    }
+
+    /**
+     * Show the mic muted icon
+     */
+    fun showMicMutedIcon() {
+        binding.bandyerMicMutedIcon.visibility = View.VISIBLE
+    }
+
+    /**
+     * Hide the mic muted icon
+     */
+    fun hideMicMutedIcon() {
+        binding.bandyerMicMutedIcon.visibility = View.GONE
     }
 
     /**

@@ -19,22 +19,6 @@
             app:layout_constraintTop_toTopOf="@id/bandyer_battery"
             tools:text="13:48" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/bandyer_title_icon"
-            style="?attr/bandyer_titleIconStyle"
-            app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
-            app:layout_constraintStart_toEndOf="@id/bandyer_time"
-            app:layout_constraintTop_toTopOf="@id/bandyer_battery" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/bandyer_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
-            app:layout_constraintStart_toEndOf="@id/bandyer_title_icon"
-            app:layout_constraintTop_toTopOf="@id/bandyer_battery"
-            tools:text="Mario" />
-
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/bandyer_centered_title"
             android:layout_width="wrap_content"
@@ -44,6 +28,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/bandyer_battery"
             tools:text="3 utenti in chiamata" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/bandyer_cam_muted_icon"
+            style="?attr/bandyer_camIconStyle"
+            app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
+            app:layout_constraintEnd_toStartOf="@id/bandyer_mic_muted_icon"
+            app:layout_constraintTop_toTopOf="@id/bandyer_battery" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/bandyer_mic_muted_icon"
+            style="?attr/bandyer_micIconStyle"
+            app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
+            app:layout_constraintEnd_toStartOf="@id/bandyer_chat_icon"
+            app:layout_constraintTop_toTopOf="@id/bandyer_battery" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/bandyer_chat_icon"
