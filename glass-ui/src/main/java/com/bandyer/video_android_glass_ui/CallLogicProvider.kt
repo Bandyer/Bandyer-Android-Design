@@ -1,5 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
+import com.bandyer.video_android_glass_ui.model.Call
 import kotlinx.coroutines.flow.Flow
 
 internal interface CallLogicProvider {

@@ -3,6 +3,11 @@ package com.bandyer.video_android_glass_ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.bandyer.video_android_glass_ui.model.Call
+import com.bandyer.video_android_glass_ui.model.CallParticipants
+import com.bandyer.video_android_glass_ui.model.Input
+import com.bandyer.video_android_glass_ui.model.Stream
+import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -30,7 +35,9 @@ internal class GlassViewModel(private val callLogicProvider: CallLogicProvider) 
                             jobs[participant.id] = participant.streams.onEach {
                                 streams.removeIf { stream -> stream.participant == participant }
                                 streams +=
-                                    if(it.none { stream -> stream.state !is Stream.State.Closed }) listOf(StreamParticipant(participant, participant == participants.me, null))
+                                    if(it.none { stream -> stream.state !is Stream.State.Closed }) listOf(
+                                        StreamParticipant(participant, participant == participants.me, null)
+                                    )
                                     else it.map { stream -> StreamParticipant(participant, participant == participants.me, stream) }
                                 emit(streams)
                             }.launchIn(viewModelScope)

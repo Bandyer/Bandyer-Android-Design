@@ -134,7 +134,7 @@
         android:label="ConnectingFragment" />
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.bandyer.video_android_glass_ui.StartFragment"
+        android:name="com.bandyer.video_android_glass_ui.call.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/bandyer_glass_fragment_start" >
         <action

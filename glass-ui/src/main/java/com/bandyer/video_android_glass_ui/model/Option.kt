@@ -1,4 +1,4 @@
-package com.bandyer.video_android_glass_ui
+package com.bandyer.video_android_glass_ui.model
 
 import android.os.Parcelable
 import androidx.annotation.Keep

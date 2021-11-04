@@ -3,9 +3,9 @@ package com.bandyer.video_android_glass_ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Parcelable
+import com.bandyer.video_android_glass_ui.model.Call
+import com.bandyer.video_android_glass_ui.model.Option
 import kotlinx.coroutines.flow.Flow
-import kotlinx.parcelize.Parcelize
 
 interface CallUIController {
 

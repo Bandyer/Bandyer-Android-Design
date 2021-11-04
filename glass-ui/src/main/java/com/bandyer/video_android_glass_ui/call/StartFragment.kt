@@ -1,4 +1,4 @@
-package com.bandyer.video_android_glass_ui
+package com.bandyer.video_android_glass_ui.call
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,11 @@ import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bandyer.video_android_glass_ui.GlassViewModel
+import com.bandyer.video_android_glass_ui.GlassViewModelFactory
+import com.bandyer.video_android_glass_ui.R
+import com.bandyer.video_android_glass_ui.model.Call
+import com.bandyer.video_android_glass_ui.safeNavigate
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import kotlinx.coroutines.flow.*
 

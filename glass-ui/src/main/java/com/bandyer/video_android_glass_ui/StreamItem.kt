@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.*
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.databinding.BandyerCallParticipantItemLayoutBinding
+import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.*

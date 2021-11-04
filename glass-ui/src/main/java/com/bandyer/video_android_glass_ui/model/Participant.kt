@@ -1,4 +1,4 @@
-package com.bandyer.video_android_glass_ui
+package com.bandyer.video_android_glass_ui.model
 
 import kotlinx.coroutines.flow.Flow
 
