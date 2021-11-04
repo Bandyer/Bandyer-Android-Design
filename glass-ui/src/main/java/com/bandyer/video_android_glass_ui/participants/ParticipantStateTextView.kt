@@ -18,23 +18,23 @@ class ParticipantStateTextView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : MaterialTextView(context, attrs, defStyleAttr) {
 
-    private var state: UserState = UserState.OFFLINE
+    private var state: UserState = UserState.Offline
 
     /**
      * Define the user online state
      *
      * @param state The user state
-     * @param lastSeenTime The last time the user was online. Needed only if the state value is UserState.OFFLINE.
+     * @param lastSeenTime The last time the user was online. Needed only if the state value is UserState.Offline.
      */
     fun setUserState(state: UserState, lastSeenTime: Long = 0) {
         this.state = state
         text = when (state) {
-            UserState.ONLINE    -> resources.getString(R.string.bandyer_glass_online)
-            UserState.INVITED   -> resources.getString(R.string.bandyer_glass_invited)
-            UserState.OFFLINE -> resources.getString(
+            UserState.Online    -> resources.getString(R.string.bandyer_glass_online)
+            UserState.Offline -> resources.getString(
                 R.string.bandyer_glass_last_seen_pattern,
                 Iso8601.parseTimestamp(context, lastSeenTime)
             )
+            else   -> resources.getString(R.string.bandyer_glass_invited)
         }
     }
 }

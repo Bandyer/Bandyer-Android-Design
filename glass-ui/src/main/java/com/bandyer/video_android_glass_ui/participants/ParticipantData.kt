@@ -5,6 +5,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.Keep
 import com.bandyer.video_android_glass_ui.common.UserState
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 /**
  * ParticipantData
@@ -22,7 +23,7 @@ import kotlinx.parcelize.Parcelize
 data class ParticipantData(
     val name: String,
     val userAlias: String,
-    val userState: UserState,
+    val userState: @RawValue UserState,
     @DrawableRes val avatarImageId: Int? = null,
     val avatarImageUrl: String? = null,
     val lastSeenTime: Long = 0

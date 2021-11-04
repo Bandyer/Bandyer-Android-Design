@@ -1,6 +1,7 @@
 package com.bandyer.video_android_glass_ui.call.participants
 
 import android.view.View
+import com.bandyer.video_android_glass_ui.CallParticipant
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassParticipantItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
@@ -12,7 +13,12 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property text The participant's name
  * @constructor
  */
-class CallParticipantItem(val text: String): AbstractItem<CallParticipantItem.ViewHolder>() {
+class CallParticipantItem(val participant: CallParticipant): AbstractItem<CallParticipantItem.ViewHolder>() {
+
+    /**
+     * Set an unique identifier for the identifiable which do not have one set already
+     */
+    override var identifier: Long = participant.id.hashCode().toLong()
 
     /**
      * The layout for the given item
@@ -46,13 +52,14 @@ class CallParticipantItem(val text: String): AbstractItem<CallParticipantItem.Vi
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: CallParticipantItem, payloads: List<Any>) {
-            binding.bandyerText.text = item.text
+            binding.bandyerText.text = item.participant.username
         }
 
         /**
          * View needs to release resources when its recycled
          */
         override fun unbindView(item: CallParticipantItem) {
+            binding.unbind()
             binding.bandyerText.text = null
         }
     }

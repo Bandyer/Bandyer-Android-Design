@@ -3,7 +3,9 @@ package com.bandyer.video_android_glass_ui.common
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
+import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.databinding.BandyerUserInfoLayoutBinding
 
 class UserInfoView @JvmOverloads constructor(
@@ -13,4 +15,20 @@ class UserInfoView @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     val binding = BandyerUserInfoLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+
+    fun setName(name: String) { binding.bandyerName.text = name }
+
+    fun setAvatarBackgroundAndLetter(name: String) = with(binding) {
+        bandyerAvatar.setText(name.first().toString())
+        bandyerAvatar.setBackground(name.parseToColor())
+    }
+
+    fun setAvatar(url: String) = binding.bandyerAvatar.setImage(url)
+
+    fun setState(state: UserState) = with(binding) {
+        bandyerUserStateText.setUserState(state)
+        bandyerUserStateDot.isActivated = state == UserState.Online
+    }
+
+    fun hideName(value: Boolean) { binding.bandyerName.visibility = if (value) View.GONE else View.VISIBLE }
 }

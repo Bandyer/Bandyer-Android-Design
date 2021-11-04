@@ -7,20 +7,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.video_android_glass_ui.BaseFragment
+import com.bandyer.video_android_glass_ui.*
+import com.bandyer.video_android_glass_ui.NavGraphViewModel
+import com.bandyer.video_android_glass_ui.NavGraphViewModelFactory
+import com.bandyer.video_android_glass_ui.common.UserState
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentParticipantsBinding
 import com.bandyer.video_android_glass_ui.settings.volume.VolumeFragmentArgs
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
 
 /**
  * ParticipantsFragment
@@ -35,6 +46,8 @@ class ParticipantsFragment : BaseFragment(), TiltListener {
     private var currentParticipantIndex = -1
 
     private val args: VolumeFragmentArgs by navArgs()
+
+    private val viewModel: NavGraphViewModel by navGraphViewModels(R.id.smartglass_nav_graph) { NavGraphViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +75,7 @@ class ParticipantsFragment : BaseFragment(), TiltListener {
                 with(bandyerParticipants) {
                     itemAdapter = ItemAdapter()
                     val fastAdapter = FastAdapter.with(itemAdapter!!)
-                    val layoutManager =
-                        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                     val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
                     this.layoutManager = layoutManager
@@ -74,17 +86,47 @@ class ParticipantsFragment : BaseFragment(), TiltListener {
                     addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper))
 
                     addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                        private var stateJob: Job? = null
+
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                             val foundView = snapHelper.findSnapView(layoutManager) ?: return
                             currentParticipantIndex = layoutManager.getPosition(foundView)
 
-                            // TODO ricordarsi di settare nel data binding i dati degli utenti
-                            // TODO Mettere modello User con name, avatar, state
+                            stateJob?.cancel()
+
+                            val participant = itemAdapter!!.getAdapterItem(currentParticipantIndex).participant
+                            with(binding.bandyerUserInfo) {
+                                hideName(true)
+                                participant.avatarUrl?.apply { setAvatar(this) }
+                                setAvatarBackgroundAndLetter(participant.username)
+
+                                repeatOnStarted {
+                                    stateJob = participant.state.onEach {
+                                        setState(
+                                            when(it) {
+                                                is CallParticipant.State.Online.Invited -> UserState.Invited(true)
+                                                is CallParticipant.State.Online -> UserState.Online
+                                                is CallParticipant.State.Offline.Invited -> UserState.Invited(false)
+                                                is CallParticipant.State.Offline-> UserState.Offline
+                                            }
+                                        )
+                                    }.launchIn(this)
+                                }
+                            }
                         }
                     })
 
                     // Forward the root view's touch event to the recycler view
                     root.setOnTouchListener { _, event -> onTouchEvent(event) }
+                }
+
+                repeatOnStarted {
+                    viewModel.participants
+                        .takeWhile { it.others.plus(it.me).isNotEmpty()  }
+                        .collect { participants ->
+                            val items = participants.others.plus(participants.me).map { CallParticipantItem(it) }
+                            FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
+                        }
                 }
             }
 
@@ -108,18 +150,10 @@ class ParticipantsFragment : BaseFragment(), TiltListener {
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
     override fun onSwipeForward(isKeyEvent: Boolean) =
-        (isKeyEvent && currentParticipantIndex != -1).also {
-            if (it) binding.bandyerParticipants.horizontalSmoothScrollToNext(
-                currentParticipantIndex
-            )
-        }
+        (isKeyEvent && currentParticipantIndex != -1).also { if (it) binding.bandyerParticipants.horizontalSmoothScrollToNext(currentParticipantIndex) }
 
     override fun onSwipeBackward(isKeyEvent: Boolean) =
-        (isKeyEvent && currentParticipantIndex != -1).also {
-            if (it) binding.bandyerParticipants.horizontalSmoothScrollToPrevious(
-                currentParticipantIndex
-            )
-        }
+        (isKeyEvent && currentParticipantIndex != -1).also { if (it) binding.bandyerParticipants.horizontalSmoothScrollToPrevious(currentParticipantIndex) }
 }
 
 

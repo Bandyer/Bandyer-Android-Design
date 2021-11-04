@@ -9,10 +9,10 @@
         android:theme="?attr/bandyer_participantsStyle">
 
         <com.bandyer.video_android_glass_ui.common.UserInfoView
+            android:id="@+id/bandyer_user_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:theme="?attr/bandyer_userInfoStyle"
-            app:hideName="@{true}"
             app:layout_constraintBottom_toTopOf="@id/bandyer_participants"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

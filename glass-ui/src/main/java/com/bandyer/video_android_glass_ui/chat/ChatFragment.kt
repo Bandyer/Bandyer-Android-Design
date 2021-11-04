@@ -176,7 +176,7 @@ class ChatFragment : BaseFragment(), TiltListener {
         ParticipantData(
             "Mario Rossi",
             "Mario Rossi",
-            UserState.ONLINE,
+            UserState.Online,
             null,
             null,
             Instant.now().toEpochMilli()
@@ -184,7 +184,7 @@ class ChatFragment : BaseFragment(), TiltListener {
         ParticipantData(
             "Ugo Trapasso",
             "Ugo Trapasso",
-             UserState.OFFLINE,
+             UserState.Offline,
             null,
             "https://2.bp.blogspot.com/-jLEDf_NyZ1g/WmmyFZKOd-I/AAAAAAAAHd8/FZvIj2o_jqwl0S_yz4zBU16N1yGj-UCrACLcBGAs/s1600/heisenberg-breaking-bad.jpg",
             Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
@@ -192,7 +192,7 @@ class ChatFragment : BaseFragment(), TiltListener {
         ParticipantData(
             "Gianfranco Sala",
             "Gianfranco Sala",
-             UserState.INVITED,
+             UserState.Invited(false),
             null,
             null,
             Instant.now().toEpochMilli()

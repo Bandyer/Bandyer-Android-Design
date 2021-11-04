@@ -3,19 +3,17 @@ package com.bandyer.video_android_glass_ui.common
 /**
  * The user online state
  */
-enum class UserState {
-    /**
-     * o n l i n e
-     */
-    ONLINE,
+sealed class UserState {
 
-    /**
-     * i n v i t e d
-     */
-    INVITED,
+    object Online : UserState()
 
-    /**
-     * o f f l i n e
-     */
-    OFFLINE
+    object Offline : UserState()
+
+    data class Invited(val isOnline: Boolean) : UserState() {
+        companion object : UserState() {
+            override fun hashCode(): Int = "Invited".hashCode()
+            override fun equals(other: Any?) = other is Invited
+            override fun toString() = "Invited"
+        }
+    }
 }
