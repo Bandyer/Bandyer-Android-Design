@@ -25,8 +25,9 @@ internal class UserInfoView @JvmOverloads constructor(
 
     fun setAvatar(url: String) = binding.bandyerAvatar.setImage(url)
 
-    fun setState(state: UserState) = with(binding) {
-        bandyerUserStateText.setUserState(state)
+    fun setState(state: UserState, lastSeenTime: Long = 0) = with(binding) {
+        if(state is UserState.Offline) bandyerUserStateText.setUserState(state, lastSeenTime)
+        else bandyerUserStateText.setUserState(state)
         bandyerUserStateDot.isActivated = state == UserState.Online
     }
 

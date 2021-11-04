@@ -101,14 +101,12 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
                                 repeatOnStarted {
                                     stateJob = participant.state.onEach {
-                                        setState(
-                                            when(it) {
-                                                is CallParticipant.State.Online.Invited -> UserState.Invited(true)
-                                                is CallParticipant.State.Online -> UserState.Online
-                                                is CallParticipant.State.Offline.Invited -> UserState.Invited(false)
-                                                is CallParticipant.State.Offline-> UserState.Offline
-                                            }
-                                        )
+                                        when(it) {
+                                            is CallParticipant.State.Online.Invited -> setState(UserState.Invited(true))
+                                            is CallParticipant.State.Online -> setState(UserState.Online)
+                                            is CallParticipant.State.Offline.Invited -> setState(UserState.Invited(false))
+                                            is CallParticipant.State.Offline-> setState(UserState.Offline, it.lastSeen)
+                                        }
                                     }.launchIn(this)
                                 }
                             }
