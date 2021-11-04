@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.*
 /**
  * StartFragment, used as start destination in the nav graph
  */
-class StartFragment : BaseFragment() {
+internal class StartFragment : BaseFragment() {
 
     private var _binding: BandyerGlassFragmentStartBinding? = null
     override val binding: BandyerGlassFragmentStartBinding get() = _binding!!

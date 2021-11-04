@@ -30,7 +30,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import com.bandyer.app_design.databinding.ActivityMainBinding
-import com.bandyer.video_android_glass_ui.GlassActivity
+import com.bandyer.video_android_glass_ui.CallUIController
+import com.bandyer.video_android_glass_ui.CallUIController.Launcher.launchCallGlass
+import com.bandyer.video_android_glass_ui.model.Call
+import com.bandyer.video_android_glass_ui.model.Option
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.CallAction
 import com.bandyer.video_android_phone_ui.call.dialogs.BandyerSnapshotDialog
@@ -44,6 +47,8 @@ import com.bandyer.video_android_phone_ui.smartglass.call.menu.utils.MotionEvent
 import com.bandyer.video_android_phone_ui.whiteboard.dialog.BandyerWhiteboardTextEditorDialog
 import com.bandyer.video_android_phone_ui.whiteboard.dialog.BandyerWhiteboardTextEditorDialog.BandyerWhiteboardTextEditorWidgetListener
 import com.google.android.material.appbar.MaterialToolbar
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import java.util.concurrent.ConcurrentHashMap
 
 class MainActivity : AppCompatActivity() {
@@ -118,7 +123,22 @@ class MainActivity : AppCompatActivity() {
             fileShareDialog.setOnDismissListener { viewModel.itemsData.clear() }
         }
 
-        btnSmartglass.setOnClickListener { startActivity(Intent(this@MainActivity, GlassActivity::class.java)) }
+        btnSmartglass.setOnClickListener {
+            launchCallGlass(
+                object : CallUIController {
+                    override val call: Flow<Call> = flowOf()
+                    override fun answer() = Unit
+                    override fun hangup() = Unit
+                    override fun enableCamera(enable: Boolean) = Unit
+                    override fun enableMic(enable: Boolean) = Unit
+                    override fun switchCamera() = Unit
+                    override fun setVolume(value: Int) = Unit
+                    override fun setZoom(value: Int) = Unit
+                },
+                Option.all,
+                false
+            )
+        }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

@@ -3,7 +3,7 @@ package com.bandyer.video_android_glass_ui
 /**
  * Listener used to dispatch touch events
  */
-interface TouchEventListener {
+internal interface TouchEventListener {
     /**
      * Called when a touch event has occurred
      *

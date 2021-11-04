@@ -14,7 +14,7 @@ import com.bandyer.video_android_core_ui.utils.Iso8601
  *
  * @constructor
  */
-class ChatMessageView @JvmOverloads constructor(
+internal class ChatMessageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

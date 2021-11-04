@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
  * @receiver RecyclerView
  * @param currentIndex The index of the current item
  */
-fun RecyclerView.horizontalSmoothScrollToNext(currentIndex: Int) {
+internal fun RecyclerView.horizontalSmoothScrollToNext(currentIndex: Int) {
     if (currentIndex >= adapter!!.itemCount - 1) return
     val target = findViewHolderForAdapterPosition(currentIndex + 1)?.itemView
     if (target == null) smoothScrollBy(context.resources.displayMetrics.widthPixels, 0)
@@ -22,7 +22,7 @@ fun RecyclerView.horizontalSmoothScrollToNext(currentIndex: Int) {
  * @receiver RecyclerView
  * @param currentIndex The index of the current item
  */
-fun RecyclerView.horizontalSmoothScrollToPrevious(currentIndex: Int) {
+internal fun RecyclerView.horizontalSmoothScrollToPrevious(currentIndex: Int) {
     if (currentIndex <= 0) return
     val target = findViewHolderForAdapterPosition(currentIndex - 1)?.itemView
     if (target == null) smoothScrollBy(-context.resources.displayMetrics.widthPixels, 0)

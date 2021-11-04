@@ -24,10 +24,10 @@
             android:name="enableTilt"
             app:argType="boolean"
             android:defaultValue="false" />
-        <argument
-            android:name="participantData"
-            android:defaultValue="@null"
-            app:argType="com.bandyer.video_android_glass_ui.participants.ParticipantData"
-            app:nullable="true" />
+<!--        <argument-->
+<!--            android:name="participantData"-->
+<!--            android:defaultValue="@null"-->
+<!--            app:argType="com.bandyer.video_android_glass_ui.participants.ParticipantData"-->
+<!--            app:nullable="true" />-->
     </fragment>
 </navigation>

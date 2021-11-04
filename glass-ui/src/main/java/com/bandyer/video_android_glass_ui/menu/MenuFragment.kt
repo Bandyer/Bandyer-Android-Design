@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.onEach
 /**
  * BandyerGlassMenuFragment
  */
-class MenuFragment : BaseFragment(), TiltListener {
+internal class MenuFragment : BaseFragment(), TiltListener {
 
     private var _binding: BandyerGlassFragmentMenuBinding? = null
     override val binding: BandyerGlassFragmentMenuBinding get() = _binding!!

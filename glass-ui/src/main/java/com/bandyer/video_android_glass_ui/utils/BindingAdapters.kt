@@ -4,7 +4,7 @@ import android.view.View
 import androidx.databinding.BindingAdapter
 import com.bandyer.video_android_glass_ui.common.AvatarView
 
-object BindingAdapters {
+internal object BindingAdapters {
     @BindingAdapter("app:hideIfZero")
     @JvmStatic
     fun hideIfZero(view: View, number: Int) {

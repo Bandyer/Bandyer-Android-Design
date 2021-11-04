@@ -15,7 +15,7 @@ import com.bandyer.video_android_glass_ui.utils.TiltListener
 /**
  * ZoomFragment
  */
-class ZoomFragment : BaseFragment(), TiltListener {
+internal class ZoomFragment : BaseFragment(), TiltListener {
 
     private var _binding: BandyerGlassFragmentZoomBinding? = null
     override val binding: BandyerGlassFragmentZoomBinding get() = _binding!!

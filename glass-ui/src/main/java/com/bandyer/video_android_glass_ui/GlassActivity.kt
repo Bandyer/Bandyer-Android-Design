@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.*
 /**
  * GlassActivity
  */
-class GlassActivity :
+internal class GlassActivity :
     AppCompatActivity(),
     GlassGestureDetector.OnGestureListener,
     ChatNotificationManager.NotificationListener,

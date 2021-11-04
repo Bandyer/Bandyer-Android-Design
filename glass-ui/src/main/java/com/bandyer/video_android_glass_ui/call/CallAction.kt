@@ -13,7 +13,7 @@ import com.google.android.material.textview.MaterialTextView
  * @property layoutRes layout to inflate
  * @constructor
  */
-abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layoutRes: Int, @AttrRes val styleAttr: Int) {
+internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layoutRes: Int, @AttrRes val styleAttr: Int) {
 
     /**
      * Menu action item view

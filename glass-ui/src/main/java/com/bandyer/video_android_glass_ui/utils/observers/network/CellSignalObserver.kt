@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 /**
  * Utility class which allows to observe the cell signal state
  */
-class CellSignalObserver @RequiresApi(Build.VERSION_CODES.M) constructor(context: Context) {
+internal class CellSignalObserver @RequiresApi(Build.VERSION_CODES.M) constructor(context: Context) {
 
     private val signalState: MutableSharedFlow<SignalState> =
         MutableSharedFlow(onBufferOverflow = BufferOverflow.DROP_OLDEST, replay = 1)

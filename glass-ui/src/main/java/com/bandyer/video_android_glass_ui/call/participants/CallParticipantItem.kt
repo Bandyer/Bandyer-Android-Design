@@ -13,7 +13,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property text The participant's name
  * @constructor
  */
-class CallParticipantItem(val participant: CallParticipant): AbstractItem<CallParticipantItem.ViewHolder>() {
+internal class CallParticipantItem(val participant: CallParticipant): AbstractItem<CallParticipantItem.ViewHolder>() {
 
     /**
      * Set an unique identifier for the identifiable which do not have one set already

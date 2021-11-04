@@ -6,7 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.CoroutineScope
 
-object LifecycleOwnerExtensions {
+internal object LifecycleOwnerExtensions {
     /**
      * Runs the block of code in a coroutine when the lifecycle is at least STARTED.
      * The coroutine will be cancelled when the ON_STOP event happens and will

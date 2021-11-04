@@ -10,7 +10,7 @@ import com.bandyer.video_android_glass_ui.common.SettingSlider
  *
  * @constructor
  */
-class ZoomSlider @JvmOverloads constructor(
+internal class ZoomSlider @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

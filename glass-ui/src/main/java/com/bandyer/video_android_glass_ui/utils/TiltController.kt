@@ -19,7 +19,7 @@ import kotlin.math.abs
  * @param ctx The context
  * @param listener The listener for tilt events.
  */
-class TiltController constructor(
+internal class TiltController constructor(
     ctx: Context,
     private val listener: TiltListener
 ) : SensorEventListener {

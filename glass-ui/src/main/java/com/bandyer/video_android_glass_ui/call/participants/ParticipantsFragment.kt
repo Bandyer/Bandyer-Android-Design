@@ -35,7 +35,7 @@ import kotlinx.coroutines.flow.takeWhile
 /**
  * ParticipantsFragment
  */
-class ParticipantsFragment : BaseFragment(), TiltListener {
+internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
     private var _binding: BandyerGlassFragmentParticipantsBinding? = null
     override val binding: BandyerGlassFragmentParticipantsBinding get() = _binding!!

@@ -13,7 +13,7 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerGlassBottomNavigati
  *
  * @constructor
  */
-class BottomNavigationView @JvmOverloads constructor(
+internal class BottomNavigationView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

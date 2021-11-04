@@ -16,7 +16,7 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerGlassSliderLayoutBi
  * @constructor
  */
 @SuppressLint("ClickableViewAccessibility")
-abstract class SettingSlider @JvmOverloads constructor(
+internal abstract class SettingSlider @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

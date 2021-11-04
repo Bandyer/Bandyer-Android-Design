@@ -3,7 +3,7 @@ package com.bandyer.video_android_glass_ui.utils.observers.network
 /**
  * Cell signal state
  */
-enum class SignalState {
+internal enum class SignalState {
     /**
      * n o n e
      */

@@ -13,7 +13,7 @@ import kotlin.math.roundToInt
 /**
  * Utility class which allows to observe the battery info events
  */
-class BatteryObserver(context: Context) {
+internal class BatteryObserver(context: Context) {
 
     private val weakContext: WeakReference<Context> = WeakReference(context)
     private val batteryInfo: MutableSharedFlow<BatteryInfo> =

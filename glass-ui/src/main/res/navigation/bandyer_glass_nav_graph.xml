@@ -32,7 +32,7 @@
             android:defaultValue="false" />
         <argument
             android:name="options"
-            app:argType="com.bandyer.video_android_glass_ui.Option[]" />
+            app:argType="com.bandyer.video_android_glass_ui.model.Option[]" />
     </fragment>
     <fragment
         android:id="@+id/volumeFragment"
@@ -79,7 +79,7 @@
             android:defaultValue="false" />
         <argument
             android:name="options"
-            app:argType="com.bandyer.video_android_glass_ui.Option[]" />
+            app:argType="com.bandyer.video_android_glass_ui.model.Option[]" />
     </fragment>
     <fragment
         android:id="@+id/dialingFragment"
@@ -96,7 +96,7 @@
             android:defaultValue="false" />
         <argument
             android:name="options"
-            app:argType="com.bandyer.video_android_glass_ui.Option[]" />
+            app:argType="com.bandyer.video_android_glass_ui.model.Option[]" />
     </fragment>
     <fragment
         android:id="@+id/emptyFragment"
@@ -116,7 +116,7 @@
             android:defaultValue="false" />
         <argument
             android:name="options"
-            app:argType="com.bandyer.video_android_glass_ui.Option[]" />
+            app:argType="com.bandyer.video_android_glass_ui.model.Option[]" />
     </fragment>
     <fragment
         android:id="@+id/participantsFragment"
@@ -153,6 +153,6 @@
             android:defaultValue="false" />
         <argument
             android:name="options"
-            app:argType="com.bandyer.video_android_glass_ui.Option[]" />
+            app:argType="com.bandyer.video_android_glass_ui.model.Option[]" />
     </fragment>
 </navigation>

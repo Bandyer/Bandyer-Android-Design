@@ -8,7 +8,7 @@ package com.bandyer.video_android_glass_ui.utils.observers.battery
  * @property percentage The battery percentage
  * @constructor
  */
-data class BatteryInfo(
+internal data class BatteryInfo(
     val state: State = State.UNKNOWN,
     val plugged: PLUGGED = PLUGGED.UNKNOWN,
     val percentage: Int = -1

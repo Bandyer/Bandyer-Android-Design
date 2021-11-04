@@ -11,7 +11,7 @@ import com.bandyer.video_android_glass_ui.R
 /**
  * Context utility class
  */
-object ContextExtensions {
+internal object ContextExtensions {
     /**
      * Retrieve a chat theme attribute's style
      *

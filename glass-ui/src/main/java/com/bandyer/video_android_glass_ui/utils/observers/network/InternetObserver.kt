@@ -11,7 +11,7 @@ import java.net.URL
 /**
  * Utility class which allows to observe the internet state. It tells if there is actually internet connection.
  */
-class InternetObserver @RequiresPermission(Manifest.permission.INTERNET) constructor(private val intervalInMs: Long) {
+internal class InternetObserver @RequiresPermission(Manifest.permission.INTERNET) constructor(private val intervalInMs: Long) {
 
     private val isConnectedFlow: MutableSharedFlow<Boolean> =
         MutableSharedFlow(onBufferOverflow = BufferOverflow.DROP_OLDEST, replay = 1)

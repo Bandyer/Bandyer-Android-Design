@@ -20,7 +20,7 @@ import kotlinx.parcelize.RawValue
  */
 @Keep
 @Parcelize
-data class ParticipantData(
+internal data class ParticipantData(
     val name: String,
     val userAlias: String,
     val userState: @RawValue UserState,

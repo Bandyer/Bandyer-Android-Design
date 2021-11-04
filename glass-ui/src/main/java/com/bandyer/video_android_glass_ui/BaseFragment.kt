@@ -14,7 +14,7 @@ import com.bandyer.video_android_glass_ui.utils.TiltFragment
 /**
  * BaseFragment. A base class for all the smart glass fragments
  */
-abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatNotificationManager.NotificationListener {
+internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatNotificationManager.NotificationListener {
 
     /**
      * The [GlassActivity]

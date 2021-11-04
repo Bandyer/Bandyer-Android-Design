@@ -6,6 +6,11 @@ import kotlinx.parcelize.Parcelize
 
 @Keep
 sealed class Option : Parcelable {
+
+    companion object {
+        val all = listOf(MICROPHONE(false), CAMERA(false), ZOOM, PARTICIPANTS, CHAT)
+    }
+    
     @Parcelize data class MICROPHONE(val toggled: Boolean): Option()
     @Parcelize data class CAMERA(val toggled: Boolean): Option()
     @Parcelize object ZOOM: Option()

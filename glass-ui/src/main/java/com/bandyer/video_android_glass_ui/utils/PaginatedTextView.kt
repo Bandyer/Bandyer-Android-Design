@@ -10,7 +10,7 @@ import com.google.android.material.textview.MaterialTextView
 /**
  * An utility TextView to compute how much pages a text need to be divided in
  */
-class PaginatedTextView @JvmOverloads constructor(
+internal class PaginatedTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

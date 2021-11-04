@@ -30,7 +30,7 @@ import java.util.*
 /**
  * ChatFragment
  */
-class ChatFragment : BaseFragment(), TiltListener {
+internal class ChatFragment : BaseFragment(), TiltListener {
 
     private var _binding: BandyerGlassFragmentChatBinding? = null
     override val binding: BandyerGlassFragmentChatBinding get() = _binding!!
@@ -122,8 +122,8 @@ class ChatFragment : BaseFragment(), TiltListener {
 
     override fun onTap() = true.also {
         val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userAlias
-        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt, contactData.first { it.userAlias.contains(username!!) })
-        findNavController().navigate(action)
+//        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt, contactData.first { it.userAlias.contains(username!!) })
+//        findNavController().navigate(action)
     }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }

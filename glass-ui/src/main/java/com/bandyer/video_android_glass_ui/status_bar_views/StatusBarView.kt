@@ -12,7 +12,7 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerGlassStatusBarLayou
  *
  * @constructor
  */
-class StatusBarView @JvmOverloads constructor(
+internal class StatusBarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

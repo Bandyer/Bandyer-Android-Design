@@ -13,7 +13,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property data The data related to a chat message
  * @constructor
  */
-class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMessageItem.ViewHolder>() {
+internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMessageItem.ViewHolder>() {
 
     /**
      * The layout for the given item

@@ -12,7 +12,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property text The action text
  * @constructor
  */
-class ChatMenuItem(val text: String): AbstractItem<ChatMenuItem.ViewHolder>() {
+internal class ChatMenuItem(val text: String): AbstractItem<ChatMenuItem.ViewHolder>() {
 
     /**
      * The layout for the given item

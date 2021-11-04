@@ -16,7 +16,7 @@ import java.lang.ref.WeakReference
 /**
  * Utility class which allows to observe the WiFi info events
  */
-class WiFiObserver @RequiresPermission(ACCESS_WIFI_STATE) constructor(context: Context) {
+internal class WiFiObserver @RequiresPermission(ACCESS_WIFI_STATE) constructor(context: Context) {
 
     private val weakContext: WeakReference<Context> = WeakReference(context)
     private val wifiInfo: MutableSharedFlow<WiFiInfo> =

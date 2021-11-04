@@ -18,7 +18,7 @@ import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.get
 /**
  * EndCallFragment
  */
-class EndCallFragment : BaseFragment() {
+internal class EndCallFragment : BaseFragment() {
 
     private var _binding: BandyerGlassFragmentFullScreenDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenDialogBinding get() = _binding!!

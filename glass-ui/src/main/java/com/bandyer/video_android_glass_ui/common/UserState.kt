@@ -3,7 +3,7 @@ package com.bandyer.video_android_glass_ui.common
 /**
  * The user online state
  */
-sealed class UserState {
+internal sealed class UserState {
 
     object Online : UserState()
 

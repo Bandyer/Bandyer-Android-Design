@@ -14,7 +14,7 @@ import com.bandyer.video_android_core_ui.extensions.ContextExtensions.isRTL
  *
  * @constructor
  */
-class AutoScrollLinearLayoutManager constructor(
+internal class AutoScrollLinearLayoutManager constructor(
     context: Context,
     @RecyclerView.Orientation orientation: Int,
     reverseLayout: Boolean

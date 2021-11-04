@@ -15,7 +15,7 @@ import com.bandyer.video_android_glass_ui.utils.TiltListener
 /**
  * VolumeFragment
  */
-class VolumeFragment : BaseFragment(), TiltListener {
+internal class VolumeFragment : BaseFragment(), TiltListener {
 
     private var _binding: BandyerGlassFragmentVolumeBinding? = null
     override val binding: BandyerGlassFragmentVolumeBinding get() = _binding!!

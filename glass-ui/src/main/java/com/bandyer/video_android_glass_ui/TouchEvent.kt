@@ -14,7 +14,7 @@ import com.bandyer.video_android_glass_ui.utils.extensions.isRightButton
  * @property source The event source
  * @constructor
  */
-data class TouchEvent(val type: Type, val source: Source) {
+internal data class TouchEvent(val type: Type, val source: Source) {
 
     /**
      * Type of the touch event

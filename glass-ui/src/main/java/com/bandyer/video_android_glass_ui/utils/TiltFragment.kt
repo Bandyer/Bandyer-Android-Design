@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 /**
  * A fragment which observes the tilt events. Set the [tiltListener] to start listening to those events.
  */
-abstract class TiltFragment : Fragment() {
+internal abstract class TiltFragment : Fragment() {
 
     /**
      * The tilt controller

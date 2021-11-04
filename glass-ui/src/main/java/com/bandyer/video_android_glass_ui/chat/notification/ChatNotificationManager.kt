@@ -10,7 +10,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
  * It's responsible for attaching/showing a [ChatNotificationView].
  * The notification is automatically detached/hidden after a certain amount of time, if not previously dismissed.
  */
-class ChatNotificationManager {
+internal class ChatNotificationManager {
 
     /**
      * Listener to observe the notification state

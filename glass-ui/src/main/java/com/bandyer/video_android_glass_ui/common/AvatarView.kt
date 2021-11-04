@@ -17,7 +17,7 @@ import java.util.*
  *
  * @constructor
  */
-class AvatarView @JvmOverloads constructor(
+internal class AvatarView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.*
 /**
  * RingingFragment
  */
-class RingingFragment : BaseFragment() {
+internal class RingingFragment : BaseFragment() {
 
     private var _binding: BandyerGlassFragmentFullScreenLogoDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!

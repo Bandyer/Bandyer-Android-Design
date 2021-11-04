@@ -10,7 +10,7 @@ import com.bandyer.video_android_glass_ui.common.SettingSlider
  *
  * @constructor
  */
-class VolumeSlider @JvmOverloads constructor(
+internal class VolumeSlider @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

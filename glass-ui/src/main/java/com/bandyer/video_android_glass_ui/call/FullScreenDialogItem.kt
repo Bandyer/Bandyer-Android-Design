@@ -10,7 +10,7 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFullScreenDial
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
-class FullScreenDialogItem(val text: String) : AbstractItem<FullScreenDialogItem.ViewHolder>() {
+internal class FullScreenDialogItem(val text: String) : AbstractItem<FullScreenDialogItem.ViewHolder>() {
 
     override var identifier: Long = text.hashCode().toLong()
 

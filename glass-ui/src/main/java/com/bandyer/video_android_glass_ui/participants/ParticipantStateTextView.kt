@@ -12,7 +12,7 @@ import com.google.android.material.textview.MaterialTextView
  *
  * @constructor
  */
-class ParticipantStateTextView @JvmOverloads constructor(
+internal class ParticipantStateTextView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

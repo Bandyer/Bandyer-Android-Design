@@ -18,7 +18,7 @@ import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 /**
  * EmptyFragment
  */
-class EmptyFragment : BaseFragment() {
+internal class EmptyFragment : BaseFragment() {
 
     private var _binding: BandyerGlassFragmentEmptyBinding? = null
     override val binding: BandyerGlassFragmentEmptyBinding get() = _binding!!

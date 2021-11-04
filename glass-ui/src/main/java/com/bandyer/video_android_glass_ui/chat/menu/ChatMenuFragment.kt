@@ -32,7 +32,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 /**
  * ChatMenuFragment
  */
-class ChatMenuFragment : BaseFragment(), TiltListener {
+internal class ChatMenuFragment : BaseFragment(), TiltListener {
 
     private var _binding: BandyerGlassFragmentChatMenuBinding? = null
     override val binding: BandyerGlassFragmentChatMenuBinding get() = _binding!!
@@ -59,7 +59,7 @@ class ChatMenuFragment : BaseFragment(), TiltListener {
         super.onCreateView(inflater, container, savedInstanceState)
 
         // Args
-        val data = args.participantData!!
+//        val data = args.participantData!!
 
         // Apply theme wrapper and add view binding
         val themeResId = requireContext().getChatThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Glass_Chat_bandyer_chatMenuStyle)
