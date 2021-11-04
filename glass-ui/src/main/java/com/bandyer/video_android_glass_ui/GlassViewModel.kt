@@ -37,9 +37,4 @@ internal class GlassViewModel(callLogicProvider: CallLogicProvider) : ViewModel(
             }
 }
 
-internal data class StreamParticipant(
-    val participant: CallParticipant,
-    val isMyStream: Boolean,
-    val stream: Stream?
-)
 

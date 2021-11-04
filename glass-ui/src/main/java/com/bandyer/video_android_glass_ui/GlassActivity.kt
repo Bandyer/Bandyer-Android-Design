@@ -122,13 +122,22 @@ class GlassActivity :
                 .flatMapConcat { it.state }
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
+                    Log.e("callState", it.toString())
                     if (it is Call.State.Disconnected.Ended || it is Call.State.Disconnected.Error) finish()
                     // TODO aggiungere messaggio in caso di errore?
                 }.launchIn(this)
 
             viewModel
                 .streams
-                .onEach { streams -> FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, streams.map { StreamItem(it, this) }, true) }
+                .onEach { streams ->
+                    // Remove the participant null stream if a new non null stream with the same participant is available
+                    streams.forEach { participantStream ->
+                        participantStream.stream ?: return@forEach
+                        val nullStreams = itemAdapter!!.adapterItems.filter { it.data.participant == participantStream.participant && it.data.stream == null }
+                        nullStreams.forEach { itemAdapter!!.removeByIdentifier(it.identifier) }
+                    }
+                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, streams.map { StreamItem(it, this) }, true)
+                }
                 .launchIn(this)
         }
     }
