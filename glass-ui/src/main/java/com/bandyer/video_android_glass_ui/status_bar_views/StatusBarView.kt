@@ -75,6 +75,15 @@ class StatusBarView @JvmOverloads constructor(
 
     private var binding: BandyerGlassStatusBarLayoutBinding = BandyerGlassStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
+    init {
+        with(binding) {
+            bandyerCenteredTitle.visibility = View.GONE
+            bandyerCamMutedIcon.visibility = View.GONE
+            bandyerMicMutedIcon.visibility = View.GONE
+            bandyerChatIcon.visibility = View.GONE
+        }
+    }
+
     /**
      * Hide the state bar
      */

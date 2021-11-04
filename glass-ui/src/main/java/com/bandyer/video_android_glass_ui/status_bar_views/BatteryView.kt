@@ -91,7 +91,7 @@ internal class BatteryView @JvmOverloads constructor(
         chargeRect = RectF(chargeLeft, chargeTop, chargeRectRightMax, chargeBottom)
 
         // Charging Image
-        chargingRect = RectF(chargeLeft, chargeTop, chargeRectRightMax, chargeBottom)
+        chargingRect = RectF(chargeLeft, paddingTop + spacing, chargeRectRightMax, measureHeight - spacing - paddingBottom)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -134,9 +134,8 @@ internal class BatteryView @JvmOverloads constructor(
     }
 
     private fun drawCharge(canvas: Canvas, charge: Int) {
-        chargePaint.color = if (charge > 25) normalChargeColor else lowChargeColor
-        chargeRect.right =
-            chargeRect.left + (chargeRectRightMax - chargeRect.left) * charge / 100
+        chargePaint.color = if (charge > 20) normalChargeColor else lowChargeColor
+        chargeRect.right = chargeRect.left + (chargeRectRightMax - chargeRect.left) * charge / 100
         canvas.drawRect(chargeRect, chargePaint)
     }
 
@@ -147,9 +146,7 @@ internal class BatteryView @JvmOverloads constructor(
         canvas.drawBitmap(resizedBitmap, left, chargingRect.top, null)
     }
 
-    private fun getBitmap(
-        @DrawableRes drawableId: Int,
-    ): Bitmap? {
+    private fun getBitmap(@DrawableRes drawableId: Int): Bitmap? {
         val drawable = AppCompatResources.getDrawable(context, drawableId) ?: return null
         val bitmap = Bitmap.createBitmap(
             drawable.intrinsicWidth,

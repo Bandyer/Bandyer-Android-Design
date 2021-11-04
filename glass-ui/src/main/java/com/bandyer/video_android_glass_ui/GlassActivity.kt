@@ -122,7 +122,6 @@ class GlassActivity :
                 .flatMapConcat { it.state }
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
-                    Log.e("callState", it.toString())
                     if (it is Call.State.Disconnected.Ended || it is Call.State.Disconnected.Error) finish()
                     // TODO aggiungere messaggio in caso di errore?
                 }.launchIn(this)
