@@ -5,7 +5,7 @@
     <string name="bandyer_glass_group_contacts_pattern" translatable="false">+%1$d</string>
     <string name="bandyer_glass_message_counter_pattern" translatable="false">%1$d</string>
     <string name="bandyer_glass_n_of_participants_pattern">%1$d participants</string>
-    <string name="bandyer_glass_slider_volume_pattern">Volume: %1$d%%</string>
+    <string name="bandyer_glass_slider_volume_pattern">Volume: %1$d</string>
     <string name="bandyer_glass_slider_zoom_pattern">Zoom: %1$d%%</string>
     <string name="bandyer_glass_new_messages_pattern">%1$d new messages</string>
     <string name="bandyer_glass_swipe">Swipe</string>

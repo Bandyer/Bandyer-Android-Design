@@ -2,8 +2,11 @@ package com.bandyer.video_android_glass_ui.settings.volume
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
+import android.widget.SeekBar
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.common.SettingSlider
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassSliderLayoutBinding
 
 /**
  *  Slider for the volume fragment
@@ -16,12 +19,30 @@ internal class VolumeSlider @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : SettingSlider(context, attrs, defStyleAttr) {
 
+    override var minProgress = MIN_VALUE
+
+    override var maxProgress = MAX_VALUE
+
+    override var binding: BandyerGlassSliderLayoutBinding = BandyerGlassSliderLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+
     init {
-        setSliderText(0)
+        initSeekbar()
+        setSliderText(minProgress)
     }
 
-    override fun setSliderText(progress: Int) {
-        binding.bandyerPercentage.text =
-            resources.getString(R.string.bandyer_glass_slider_volume_pattern, progress)
+    override fun setSliderText(progress: Int) { binding.bandyerPercentage.text = resources.getString(R.string.bandyer_glass_slider_volume_pattern, progress) }
+
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        if(progress < minProgress) {
+            seekBar?.progress = minProgress
+            return
+        }
+
+        super.onProgressChanged(seekBar, progress, fromUser)
+    }
+
+    private companion object {
+        const val MAX_VALUE = 6
+        const val MIN_VALUE = 1
     }
 }

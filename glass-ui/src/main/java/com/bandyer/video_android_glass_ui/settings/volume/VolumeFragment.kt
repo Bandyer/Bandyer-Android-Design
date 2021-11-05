@@ -2,11 +2,13 @@ package com.bandyer.video_android_glass_ui.settings.volume
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.bandyer.video_android_glass_ui.utils.CallAudioManager
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentVolumeBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
@@ -24,9 +26,12 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
 
     private val args: VolumeFragmentArgs by navArgs()
 
+    private var callAudioManager: CallAudioManager? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(args.enableTilt) tiltListener = this
+        callAudioManager = CallAudioManager(requireContext())
     }
 
     /**
@@ -42,7 +47,12 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
         // Add view binding
         _binding = BandyerGlassFragmentVolumeBinding
             .inflate(inflater, container, false)
-            .apply { if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
+            .apply {
+                if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
+
+                callAudioManager?.currentVolume?.apply { bandyerSlider.progress = this + 1 }
+                root.setOnTouchListener { _, _ -> true }
+            }
 
         return binding.root
     }
@@ -61,11 +71,14 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
         else if (this.deltaAzimuth <= -2) onSwipeBackward(true).also { this.deltaAzimuth = 0f }
     }
 
-    override fun onTap() = true.also { findNavController().popBackStack() }
+    override fun onTap() = true.also {
+        callAudioManager?.setVolume(binding.bandyerSlider.progress - 1)
+        findNavController().popBackStack()
+    }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = true.also { binding.bandyerSlider.increaseProgress(0.1f) }
+    override fun onSwipeForward(isKeyEvent: Boolean) = true.also { binding.bandyerSlider.increaseProgress() }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = true.also { binding.bandyerSlider.decreaseProgress(0.1f) }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = true.also { binding.bandyerSlider.decreaseProgress() }
 }

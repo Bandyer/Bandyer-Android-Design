@@ -2,7 +2,7 @@
 <resources>
     <string name="bandyer_glass_n_of_participants_pattern">%1$d partecipanti</string>
     <string name="bandyer_glass_new_messages_pattern">%1$d nuovi messaggi</string>
-    <string name="bandyer_glass_slider_volume_pattern">Volume: %1$d%%</string>
+    <string name="bandyer_glass_slider_volume_pattern">Volume: %1$d</string>
     <string name="bandyer_glass_slider_zoom_pattern">Zoom: %1$d%%</string>
     <string name="bandyer_glass_swipe">Scorri</string>
     <string name="bandyer_glass_tap">Tocca</string>

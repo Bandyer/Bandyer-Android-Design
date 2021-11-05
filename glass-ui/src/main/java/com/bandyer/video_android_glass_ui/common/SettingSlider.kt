@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.widget.FrameLayout
 import android.widget.SeekBar
@@ -20,7 +19,7 @@ internal abstract class SettingSlider @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr) {
+) : FrameLayout(context, attrs, defStyleAttr), SeekBar.OnSeekBarChangeListener {
 
     /**
      * Listener used to dispatch updates about slider value
@@ -34,73 +33,66 @@ internal abstract class SettingSlider @JvmOverloads constructor(
         fun onProgressChanged(progress: Int)
     }
 
-    protected var binding: BandyerGlassSliderLayoutBinding =
-        BandyerGlassSliderLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    protected abstract var binding: BandyerGlassSliderLayoutBinding
+
+    /**
+     * The minimum progress value
+     */
+    open var minProgress = DEFAULT_MIN_VALUE
+        protected set
+
+    /**
+     * The maximum progress value
+     */
+    open var maxProgress = DEFAULT_MAX_VALUE
+        protected set
+
+    /**
+     * The progress value
+     */
+    var progress = 0
+        set(value) {
+            field = when {
+                value <= minProgress -> minProgress
+                value >= maxProgress -> maxProgress
+                else -> value
+            }
+            binding.bandyerSeekbar.progress = field
+        }
 
     /**
      * Listener for the slider value
      */
     var onSliderChangeListener: OnSliderChangeListener? = null
 
-    init {
-        with(binding.bandyerSeekbar) {
-            setOnTouchListener { _, _ -> true }
-            max = MAX_VALUE
-            // Apparently there is a bug is updating the visual representation of the progress if it is initialized to zero.
-            // Neither the use of invalidate() and refreshDrawableState() solves the problem. The attribute android:saveEnabled="false"
-            // has also been set in the xml but the result is the same. The only workaround to solve the problem is setting the progress to a value
-            // different than zero, and then setting it to zero. In this way the visual representation is updated to the right value.
-            progress = 1
-            progress = 0
-            binding.bandyerSeekbar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-                override fun onProgressChanged(
-                    seekBar: SeekBar?,
-                    progress: Int,
-                    fromUser: Boolean
-                ) {
-                    setSliderText(progress * 10)
-                    onSliderChangeListener?.onProgressChanged(progress)
-                }
-
-                override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
-                override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
-            })
-        }
+    protected fun initSeekbar() = with(binding.bandyerSeekbar) {
+        setOnTouchListener { _, _ -> true }
+        max = maxProgress
+        // Apparently there is a bug in updating the visual representation of the progress if it is initialized to zero.
+        // Neither the use of invalidate() and refreshDrawableState() solves the problem. The attribute android:saveEnabled="false"
+        // has also been set in the xml but the result is the same. The only workaround to solve the problem is setting the progress to a value
+        // different than zero, and then setting it to zero. In this way the visual representation is updated to the right value.
+        progress = 1
+        progress = minProgress
+        setOnSeekBarChangeListener(this@SettingSlider)
     }
 
     /**
-     * Set the slider progress value
-     *
-     * @param value Int
+     * Increase the progress
      */
-    fun setProgress(value: Int) {
-        binding.bandyerSeekbar.progress = value
+    fun increaseProgress() = with(binding.bandyerSeekbar) {
+        if(progress >= maxProgress) return@with
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) setProgress(++progress, true)
+        else progress = ++progress
     }
 
     /**
-     * Increase the progress by the specified percentage
-     *
-     * @param percentage Float
+     * Decrease the progress
      */
-    fun increaseProgress(percentage: Float) = with(binding.bandyerSeekbar) {
-        val deltaValue = (percentage * MAX_VALUE).coerceAtLeast(0f).toInt()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            setProgress(progress + deltaValue, true)
-        else
-            progress += deltaValue
-    }
-
-    /**
-     * Decrease the progress by the specified percentage
-     *
-     * @param percentage Float
-     */
-    fun decreaseProgress(percentage: Float) = with(binding.bandyerSeekbar) {
-        val deltaValue = (percentage * MAX_VALUE).coerceAtLeast(0f).toInt()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            setProgress(progress - deltaValue, true)
-        else
-            progress -= deltaValue
+    fun decreaseProgress() = with(binding.bandyerSeekbar) {
+        if(progress <= minProgress) return@with
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) setProgress(--progress, true)
+        else progress = --progress
     }
 
     /**
@@ -118,7 +110,27 @@ internal abstract class SettingSlider @JvmOverloads constructor(
         return binding.bandyerSeekbar.onTouchEvent(event)
     }
 
+    /**
+     * @suppress
+     */
+    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        this@SettingSlider.progress = progress
+        setSliderText(progress)
+        onSliderChangeListener?.onProgressChanged(progress)
+    }
+
+    /**
+     * @suppress
+     */
+    override fun onStartTrackingTouch(seekBar: SeekBar?) = Unit
+
+    /**
+     * @suppress
+     */
+    override fun onStopTrackingTouch(seekBar: SeekBar?) = Unit
+
     private companion object {
-        const val MAX_VALUE = 10
+        const val DEFAULT_MAX_VALUE = 10
+        const val DEFAULT_MIN_VALUE = 0
     }
 }

@@ -42,7 +42,10 @@ internal class ZoomFragment : BaseFragment(), TiltListener {
         // Add view binding
         _binding = BandyerGlassFragmentZoomBinding
             .inflate(inflater, container, false)
-            .apply { if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
+            .apply {
+                if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
+                root.setOnTouchListener { _, _ -> true }
+            }
 
         return binding.root
     }
@@ -65,7 +68,7 @@ internal class ZoomFragment : BaseFragment(), TiltListener {
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = true.also { binding.bandyerSlider.increaseProgress(0.1f) }
+    override fun onSwipeForward(isKeyEvent: Boolean) = true.also { binding.bandyerSlider.increaseProgress() }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = true.also { binding.bandyerSlider.decreaseProgress(0.1f) }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = true.also { binding.bandyerSlider.decreaseProgress() }
 }
