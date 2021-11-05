@@ -127,6 +127,12 @@ internal class GlassActivity :
                     // TODO aggiungere messaggio in caso di errore?
                 }.launchIn(this)
 
+            viewModel.
+                recording
+                .onEach {
+                    binding.bandyerStatusBar.apply { if(it) showRec() else hideRec() }
+                }.launchIn(this)
+
             viewModel
                 .streams
                 .onEach { streams ->

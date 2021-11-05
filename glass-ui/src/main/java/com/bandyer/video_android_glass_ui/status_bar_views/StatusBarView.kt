@@ -108,6 +108,20 @@ internal class StatusBarView @JvmOverloads constructor(
     }
 
     /**
+     * Show the recording icon and text
+     */
+    fun showRec() {
+        binding.bandyerRec.visibility = View.VISIBLE
+    }
+
+    /**
+     * Hide the recording icon and text
+     */
+    fun hideRec() {
+        binding.bandyerRec.visibility = View.GONE
+    }
+
+    /**
      * Show the centered title
      */
     fun showCenteredTitle() {

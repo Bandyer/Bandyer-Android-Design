@@ -16,4 +16,5 @@
     <item name="ic_bandyer_glass_wifi_low" type="drawable">@drawable/bandyer_glass_wifi_low_icon</item>
     <item name="ic_bandyer_glass_wifi_moderate" type="drawable">@drawable/bandyer_glass_wifi_moderate_icon</item>
     <item name="ic_bandyer_glass_wifi_full" type="drawable">@drawable/bandyer_glass_wifi_full_icon</item>
+    <item name="ic_bandyer_glass_rec" type="drawable">@drawable/bandyer_rec_icon</item>
 </resources>

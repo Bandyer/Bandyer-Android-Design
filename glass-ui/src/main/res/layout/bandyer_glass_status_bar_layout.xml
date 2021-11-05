@@ -20,6 +20,15 @@
             tools:text="13:48" />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/bandyer_rec"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?attr/bandyer_recordingStyle"
+            app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
+            app:layout_constraintStart_toEndOf="@id/bandyer_time"
+            app:layout_constraintTop_toTopOf="@id/bandyer_battery" />
+
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/bandyer_centered_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -20,9 +20,11 @@ internal object GlassViewModelFactory : ViewModelProvider.Factory {
 internal class GlassViewModel(private val callLogicProvider: CallLogicProvider) : ViewModel() {
     val call: Flow<Call> = callLogicProvider.call
 
-    val callState: Flow<Call.State> = call.flatMapConcat { call -> call.state }
+    val callState: Flow<Call.State> = call.flatMapConcat { it.state }
 
     val participants: Flow<CallParticipants> = call.flatMapConcat { it.participants }
+
+    val recording = call.flatMapConcat { it.isRecording }
 
     val streams: Flow<List<StreamParticipant>> = MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1)
             .apply {

@@ -50,4 +50,5 @@
     <string name="bandyer_glass_menu_volume">Volume</string>
     <string name="bandyer_glass_menu_zoom">Zoom</string>
     <string name="bandyer_glass_menu_chat">Chat</string>
+    <string name="bandyer_glass_rec">Rec</string>
 </resources>

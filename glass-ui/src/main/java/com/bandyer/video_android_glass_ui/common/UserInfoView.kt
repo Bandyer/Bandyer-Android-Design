@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
-import com.bandyer.video_android_glass_ui.databinding.BandyerUserInfoLayoutBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassUserInfoLayoutBinding
 
 internal class UserInfoView @JvmOverloads constructor(
     context: Context,
@@ -14,7 +14,7 @@ internal class UserInfoView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    val binding = BandyerUserInfoLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    val binding = BandyerGlassUserInfoLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     fun setName(name: String) { binding.bandyerName.text = name }
 

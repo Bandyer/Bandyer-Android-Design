@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <declare-styleable name="BandyerSDKDesign.Glass.StatusBar">
         <attr name="bandyer_camIconStyle" format="reference"/>
         <attr name="bandyer_micIconStyle" format="reference"/>
@@ -7,6 +7,7 @@
         <attr name="bandyer_cellIconStyle" format="reference"/>
         <attr name="bandyer_wifiIconStyle" format="reference"/>
         <attr name="bandyer_batteryStyle" format="reference"/>
+        <attr name="bandyer_recordingStyle" format="reference"/>
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Glass.StatusBar" parent="BandyerSDKDesign.Glass">
@@ -18,6 +19,7 @@
         <item name="bandyer_cellIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Cell</item>
         <item name="bandyer_wifiIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Wifi</item>
         <item name="bandyer_batteryStyle">@style/BandyerSDKDesign.Glass.StatusBar.Battery</item>
+        <item name="bandyer_recordingStyle">@style/BandyerSDKDesign.TextView.Title.GlassRec</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.StatusBar.RootLayout" parent="">
@@ -69,5 +71,16 @@
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space5</item>
         <item name="android:paddingStart">@dimen/bandyer_dimen_space7</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space7</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextView.Title.GlassRec" parent="BandyerSDKDesign.TextView.Title">
+        <item name="android:drawableStart">@drawable/ic_bandyer_glass_rec</item>
+        <item name="android:drawableTint" tools:targetApi="m">@color/bandyer_recording_color</item>
+        <item name="android:textColor">@color/bandyer_recording_color</item>
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space24</item>
+        <item name="android:drawablePadding">@dimen/bandyer_dimen_space8</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:text">@string/bandyer_glass_rec</item>
     </style>
 </resources>
