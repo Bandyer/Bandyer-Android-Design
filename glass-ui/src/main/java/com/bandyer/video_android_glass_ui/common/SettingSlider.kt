@@ -39,13 +39,15 @@ internal abstract class SettingSlider @JvmOverloads constructor(
      * The minimum progress value
      */
     open var minProgress = DEFAULT_MIN_VALUE
-        protected set
 
     /**
      * The maximum progress value
      */
     open var maxProgress = DEFAULT_MAX_VALUE
-        protected set
+        set(value) {
+            binding.bandyerSeekbar.max = value
+            field = value
+        }
 
     /**
      * The progress value

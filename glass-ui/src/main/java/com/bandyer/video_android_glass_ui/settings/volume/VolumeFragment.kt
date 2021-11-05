@@ -50,7 +50,8 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
             .apply {
                 if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
 
-                callAudioManager?.currentVolume?.apply { bandyerSlider.progress = this + 1 }
+                callAudioManager?.currentVolume?.apply { bandyerSlider.progress = this }
+                callAudioManager?.maxVolume?.apply { bandyerSlider.maxProgress = this }
                 root.setOnTouchListener { _, _ -> true }
             }
 
@@ -72,7 +73,7 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
     }
 
     override fun onTap() = true.also {
-        callAudioManager?.setVolume(binding.bandyerSlider.progress - 1)
+        callAudioManager?.setVolume(binding.bandyerSlider.progress)
         findNavController().popBackStack()
     }
 

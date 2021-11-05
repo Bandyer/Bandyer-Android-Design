@@ -19,11 +19,9 @@ internal class VolumeSlider @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : SettingSlider(context, attrs, defStyleAttr) {
 
-    override var minProgress = MIN_VALUE
-
-    override var maxProgress = MAX_VALUE
-
     override var binding: BandyerGlassSliderLayoutBinding = BandyerGlassSliderLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+
+    override var minProgress: Int = MIN_VALUE
 
     init {
         initSeekbar()
@@ -41,8 +39,7 @@ internal class VolumeSlider @JvmOverloads constructor(
         super.onProgressChanged(seekBar, progress, fromUser)
     }
 
-    private companion object {
-        const val MAX_VALUE = 6
+    companion object {
         const val MIN_VALUE = 1
     }
 }
