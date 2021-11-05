@@ -30,15 +30,6 @@ internal class VolumeSlider @JvmOverloads constructor(
 
     override fun setSliderText(progress: Int) { binding.bandyerPercentage.text = resources.getString(R.string.bandyer_glass_slider_volume_pattern, progress) }
 
-    override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-        if(progress < minProgress) {
-            seekBar?.progress = minProgress
-            return
-        }
-
-        super.onProgressChanged(seekBar, progress, fromUser)
-    }
-
     companion object {
         const val MIN_VALUE = 1
     }

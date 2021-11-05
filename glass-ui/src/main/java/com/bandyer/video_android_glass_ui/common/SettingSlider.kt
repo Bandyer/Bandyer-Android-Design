@@ -116,6 +116,11 @@ internal abstract class SettingSlider @JvmOverloads constructor(
      * @suppress
      */
     override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+        if(progress < minProgress) {
+            seekBar?.progress = minProgress
+            return
+        }
+        
         this@SettingSlider.progress = progress
         setSliderText(progress)
         onSliderChangeListener?.onProgressChanged(progress)
