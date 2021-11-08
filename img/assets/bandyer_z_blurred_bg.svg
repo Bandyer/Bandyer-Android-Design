@@ -1,0 +1,43 @@
+<svg id="blurred_bg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #000;
+        stroke-width: 1.5px;
+      }
+
+      .cls-3 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="Rettangolo_1469" data-name="Rettangolo 1469" class="cls-1" transform="translate(3 10)">
+    <rect class="cls-3" width="11" height="11"/>
+    <rect class="cls-2" x="0.75" y="0.75" width="9.5" height="9.5"/>
+  </g>
+  <g id="Raggruppa_2579" data-name="Raggruppa 2579" transform="translate(-0.252)">
+    <rect id="Rettangolo_994" data-name="Rettangolo 994" width="1.5" height="1.5" transform="translate(9.75 3)"/>
+    <rect id="Rettangolo_1365" data-name="Rettangolo 1365" width="1.5" height="1.5" transform="translate(19.752 3)"/>
+    <rect id="Rettangolo_1366" data-name="Rettangolo 1366" width="1.5" height="1.5" transform="translate(16.418 3)"/>
+    <rect id="Rettangolo_1367" data-name="Rettangolo 1367" width="1.5" height="1.5" transform="translate(13.084 3)"/>
+  </g>
+  <g id="Raggruppa_2575" data-name="Raggruppa 2575" transform="translate(-0.252 3.25)">
+    <rect id="Rettangolo_994-2" data-name="Rettangolo 994" width="1.5" height="1.5" transform="translate(9.75 3)"/>
+    <rect id="Rettangolo_1365-2" data-name="Rettangolo 1365" width="1.5" height="1.5" transform="translate(19.752 3)"/>
+    <rect id="Rettangolo_1366-2" data-name="Rettangolo 1366" width="1.5" height="1.5" transform="translate(16.418 3)"/>
+    <rect id="Rettangolo_1367-2" data-name="Rettangolo 1367" width="1.5" height="1.5" transform="translate(13.084 3)"/>
+  </g>
+  <g id="Raggruppa_2576" data-name="Raggruppa 2576" transform="translate(-0.252 6.5)">
+    <rect id="Rettangolo_1365-3" data-name="Rettangolo 1365" width="1.5" height="1.5" transform="translate(19.752 3)"/>
+    <rect id="Rettangolo_1366-3" data-name="Rettangolo 1366" width="1.5" height="1.5" transform="translate(16.418 3)"/>
+  </g>
+  <g id="Raggruppa_2577" data-name="Raggruppa 2577" transform="translate(-0.252 9.75)">
+    <rect id="Rettangolo_1365-4" data-name="Rettangolo 1365" width="1.5" height="1.5" transform="translate(19.752 3)"/>
+    <rect id="Rettangolo_1366-4" data-name="Rettangolo 1366" width="1.5" height="1.5" transform="translate(16.418 3)"/>
+  </g>
+  <rect id="Rettangolo_1468" data-name="Rettangolo 1468" class="cls-2" width="24" height="24" transform="translate(24) rotate(90)"/>
+</svg>

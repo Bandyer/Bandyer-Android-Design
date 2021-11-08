@@ -1,0 +1,20 @@
+<svg id="users_1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #1b1c1e;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1396" data-name="Rettangolo 1396" class="cls-1" width="24" height="24"/>
+  <g id="Raggruppa_2562" data-name="Raggruppa 2562" transform="translate(2.003 4.475)">
+    <path id="Tracciato_1023" data-name="Tracciato 1023" class="cls-2" d="M10.624,15.949a4.356,4.356,0,1,0-4.356-4.356,4.356,4.356,0,0,0,4.356,4.356ZM3,21.6a7.9,7.9,0,0,1,4.381-7.1m6.492,0a7.9,7.9,0,0,1,4.376,7.1M16.691,10.347h0A8.312,8.312,0,0,1,23,18.308" transform="translate(-3 -2.875)"/>
+    <path id="Tracciato_1024" data-name="Tracciato 1024" class="cls-2" d="M14.742,11.178A4.115,4.115,0,1,0,10,7.115a2.329,2.329,0,0,0,.01.267" transform="translate(-2.799 -2.997)"/>
+  </g>
+</svg>

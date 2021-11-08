@@ -1,0 +1,26 @@
+<svg id="refresh" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+
+      .cls-2 {
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <g id="refresh-2" data-name="refresh">
+    <path id="Tracciato_1195" data-name="Tracciato 1195" class="cls-1" d="M15,9h6V3" transform="translate(0)"/>
+    <path id="Tracciato_1196" data-name="Tracciato 1196" class="cls-2" d="M3,10c1.458-4.1,5-7,9-7a10.119,10.119,0,0,1,9,6" transform="translate(0)"/>
+    <path id="Tracciato_1197" data-name="Tracciato 1197" class="cls-1" d="M9,15H3v6" transform="translate(0 0)"/>
+    <path id="Tracciato_1198" data-name="Tracciato 1198" class="cls-2" d="M21,14c-1.458,4.1-4.8,7-9,7a10.368,10.368,0,0,1-9-6" transform="translate(0 0)"/>
+  </g>
+  <rect id="Rettangolo_1412" data-name="Rettangolo 1412" class="cls-3" width="24" height="24"/>
+</svg>

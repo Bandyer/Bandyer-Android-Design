@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="19.588" height="21.5" viewBox="0 0 19.588 21.5">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+
+      .cls-2 {
+        stroke-linejoin: round;
+      }
+
+      .cls-3 {
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <g id="arrow-download" transform="translate(20.528 0.75) rotate(90)">
+    <path id="Tracciato_1067" data-name="Tracciato 1067" class="cls-1" d="M0,0,5.556,5.556,11.111,0" transform="translate(15.556 7.556) rotate(180)"/>
+    <path id="Tracciato_1068" data-name="Tracciato 1068" class="cls-2" d="M0,0V13.333" transform="translate(10 15.333) rotate(180)"/>
+    <path id="Tracciato_1069" data-name="Tracciato 1069" class="cls-3" d="M23,21H3" transform="translate(-3 -1.222)"/>
+  </g>
+</svg>

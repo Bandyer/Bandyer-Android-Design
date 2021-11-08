@@ -1,0 +1,24 @@
+<svg id="arrow_down_3" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-2, .cls-3 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 3px;
+      }
+
+      .cls-3 {
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1435" data-name="Rettangolo 1435" class="cls-1" width="24" height="24"/>
+  <g id="arrow-down" transform="translate(-2.273 -7)">
+    <path id="Tracciato_1248" data-name="Tracciato 1248" class="cls-2" d="M7,16l7.273,7.273L21.545,16" transform="translate(0 2.727)"/>
+    <path id="Tracciato_1249" data-name="Tracciato 1249" class="cls-3" d="M12,3V19" transform="translate(2.273 7)"/>
+  </g>
+</svg>

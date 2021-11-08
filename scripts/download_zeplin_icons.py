@@ -26,7 +26,7 @@ jsonResponse = response.json()
 
 for images in jsonResponse:
     id = images['id']
-    name = 'bandyer_' + camel_to_snake(images['name'])
+    name = 'bandyer_z_' + camel_to_snake(images['name'])
     urls = images['image']['original_url']
 
     svg_url = requests.request("GET", base_url + "/" + id + "/versions/latest", headers=headers, data=payload).json()['assets'][0]['contents'][5]['url']

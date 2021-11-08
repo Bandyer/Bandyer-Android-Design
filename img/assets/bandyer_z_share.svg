@@ -1,0 +1,29 @@
+<svg id="share" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        fill: none;
+      }
+
+      .cls-2, .cls-3, .cls-4 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+
+      .cls-3 {
+        stroke-linejoin: round;
+      }
+
+      .cls-4 {
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1397" data-name="Rettangolo 1397" class="cls-1" width="24" height="24"/>
+  <g id="arrow-upload-alt" transform="translate(-1 -1.889)">
+    <path id="Tracciato_1222" data-name="Tracciato 1222" class="cls-2" d="M18.111,8.556,12.556,3,7,8.556" transform="translate(0.444 2)"/>
+    <path id="Tracciato_1223" data-name="Tracciato 1223" class="cls-3" d="M12,15.222V3" transform="translate(1 2)"/>
+    <path id="Tracciato_1224" data-name="Tracciato 1224" class="cls-4" d="M23,14v7.778H3V14" transform="translate(0 1)"/>
+  </g>
+</svg>
