@@ -19,7 +19,7 @@
     <!-- CHAT ACTION BAR -->
     <item name="ic_bandyer_audio_call" type="drawable">@drawable/bandyer_z_audio_only</item>
     <item name="ic_bandyer_audio_upgradable_call" type="drawable">@drawable/bandyer_z_audio_upgradable</item>
-    <item name="ic_bandyer_video_call" type="drawable">@drawable/bandyer_z_camera_on</item>
+    <item name="ic_bandyer_video_call" type="drawable">@drawable/bandyer_z_cam_22</item>
 
     <!-- CHAT -->
     <item name="ic_bandyer_avatar" type="drawable">@drawable/bandyer_z_user_075</item>
@@ -33,9 +33,10 @@
     <item name="ic_bandyer_avatar_bold" type="drawable">@drawable/bandyer_z_user_1</item>
     <item name="ic_bandyer_avatars_bold" type="drawable">@drawable/bandyer_z_users_1</item>
     <item name="ic_bandyer_answer" type="drawable">@drawable/bandyer_z_audio_only</item>
-    <item name="ic_bandyer_hangup" type="drawable">@drawable/bandyer_z_end_call</item>
+    <item name="ic_bandyer_decline" type="drawable">@drawable/bandyer_z_end_call</item>
+    <item name="ic_bandyer_hangup" type="drawable">@drawable/bandyer_z_end_call_24</item>
     <item name="ic_bandyer_camera_off" type="drawable">@drawable/bandyer_z_camera_off</item>
-    <item name="ic_bandyer_switch_camera" type="drawable">@drawable/bandyer_z_refresh</item>
+    <item name="ic_bandyer_switch_camera" type="drawable">@drawable/bandyer_z_flipcam</item>
     <item name="ic_bandyer_whiteboard" type="drawable">@drawable/bandyer_z_whiteboard</item>
     <item name="ic_bandyer_enter_fullscreen" type="drawable">@drawable/bandyer_z_maximize</item>
     <item name="ic_bandyer_exit_fullscreen" type="drawable">@drawable/bandyer_z_minimize</item>

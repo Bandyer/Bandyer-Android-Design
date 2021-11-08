@@ -8,7 +8,7 @@
       .cls-2 {
         stroke: #000;
         stroke-linecap: round;
-        stroke-width: 1.5px;
+        stroke-width: 2px;
       }
     </style>
   </defs>
