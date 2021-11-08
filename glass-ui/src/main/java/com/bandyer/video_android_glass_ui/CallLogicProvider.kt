@@ -1,5 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
+import androidx.fragment.app.FragmentActivity
 import com.bandyer.video_android_glass_ui.model.Call
 import kotlinx.coroutines.flow.Flow
 
@@ -13,6 +14,8 @@ internal interface CallLogicProvider {
     }
 
     val call: Flow<Call>
+
+    fun requestPermissions(context: FragmentActivity)
 
     fun answer()
 
@@ -32,6 +35,8 @@ internal interface CallLogicProvider {
 private class CallLogicProviderImpl(private val controllerCall: CallUIController) : CallLogicProvider {
 
     override val call: Flow<Call> = controllerCall.call
+
+    override fun requestPermissions(context: FragmentActivity) = controllerCall.requestPermissions(context)
 
     override fun answer() = controllerCall.answer()
 

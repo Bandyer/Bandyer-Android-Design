@@ -1,5 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -66,6 +67,8 @@ internal class GlassViewModel(private val callLogicProvider: CallLogicProvider) 
         .flatMapConcat { it!!.audio }
         .flatMapConcat { it!!.enabled }
         .onEach { isMicEnabled = it == true }
+
+    fun requestPermissions(context: FragmentActivity) = callLogicProvider.requestPermissions(context)
 
     fun enableCamera(enable: Boolean) = callLogicProvider.enableCamera(enable)
 

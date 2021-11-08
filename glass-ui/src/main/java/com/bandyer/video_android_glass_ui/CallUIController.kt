@@ -3,6 +3,7 @@ package com.bandyer.video_android_glass_ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import androidx.fragment.app.FragmentActivity
 import com.bandyer.video_android_glass_ui.model.Call
 import com.bandyer.video_android_glass_ui.model.Option
 import kotlinx.coroutines.flow.Flow
@@ -23,6 +24,8 @@ interface CallUIController {
     }
 
     val call: Flow<Call>
+
+    fun requestPermissions(context: FragmentActivity)
 
     fun answer()
 

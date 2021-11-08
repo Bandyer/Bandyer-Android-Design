@@ -76,6 +76,7 @@ internal class GlassActivity :
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
         enterImmersiveMode()
+        viewModel.requestPermissions(this)
 
         with(binding.bandyerStreams) {
             itemAdapter = ItemAdapter()
