@@ -3,7 +3,6 @@ package com.bandyer.video_android_glass_ui.settings.volume
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.SeekBar
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.common.SettingSlider
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassSliderLayoutBinding

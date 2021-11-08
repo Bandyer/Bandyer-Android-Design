@@ -50,8 +50,8 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
             .apply {
                 if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
 
-                callAudioManager?.currentVolume?.apply { bandyerSlider.progress = this }
                 callAudioManager?.maxVolume?.apply { bandyerSlider.maxProgress = this }
+                callAudioManager?.currentVolume?.apply { bandyerSlider.progress = this }
                 root.setOnTouchListener { _, _ -> true }
             }
 
