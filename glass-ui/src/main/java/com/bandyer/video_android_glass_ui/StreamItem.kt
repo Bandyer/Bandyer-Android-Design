@@ -53,13 +53,11 @@ internal class StreamItem(val data: StreamParticipant, parentScope: CoroutineSco
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: StreamItem, payloads: List<Any>) = with(binding) {
-            bandyerTitle.visibility = View.GONE
-            bandyerAvatar.visibility = View.GONE
-            bandyerMicIcon.visibility = View.GONE
-            bandyerSubtitle.text = item.data.participant.username
-
             val data = item.data
             val stream = data.stream
+
+            (if (!data.isMyStream) bandyerTitle else bandyerAvatar).visibility = View.GONE
+            bandyerSubtitle.text = item.data.participant.username
 
             if (!data.isMyStream) {
                 data.participant.avatarUrl?.also { bandyerAvatar.setImage(it) } ?: kotlin.run {
