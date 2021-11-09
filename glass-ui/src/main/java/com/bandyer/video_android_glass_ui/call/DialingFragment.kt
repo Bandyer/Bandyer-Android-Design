@@ -15,6 +15,7 @@ import com.bandyer.video_android_glass_ui.*
 import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.model.Call
+import com.bandyer.video_android_glass_ui.model.CallParticipant
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -26,16 +27,36 @@ import kotlinx.coroutines.flow.*
 /**
  * DialingFragment
  */
-internal class DialingFragment : BaseFragment() {
+internal class DialingFragment : ConnectingFragment() {
+
+    private val args: DialingFragmentArgs by navArgs()
+
+    override fun onTap() = false
+
+    override fun onSwipeDown() = true.also {
+        viewModel.hangUp()
+        requireActivity().finish()
+    }
+
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(resources.displayMetrics.densityDpi / 2, 0) }
+
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(-resources.displayMetrics.densityDpi / 2, 0) }
+
+    override fun onConnected() { findNavController().safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment(args.enableTilt, args.options)) }
+
+    override fun setSubtitle(isGroupCall: Boolean) {
+        binding.bandyerSubtitle.text = resources.getString(if (isGroupCall) R.string.bandyer_glass_dialing_group else R.string.bandyer_glass_dialing)
+    }
+}
+
+internal abstract class ConnectingFragment: BaseFragment() {
 
     private var _binding: BandyerGlassFragmentFullScreenLogoDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
 
     private var itemAdapter: ItemAdapter<FullScreenDialogItem>? = null
 
-    private val args: DialingFragmentArgs by navArgs()
-
-    private val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
+    protected val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 
     /**
      * @suppress
@@ -78,24 +99,27 @@ internal class DialingFragment : BaseFragment() {
 
                 repeatOnStarted {
                     with(viewModel) {
+                        var nOfParticipants = 0
                         callState
-                            .onEach {
-                                if(it is Call.State.Connected) findNavController().safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment(args.enableTilt, args.options))
-                            }
-                            .takeWhile { it !is Call.State.Connected }
-                            .combine(participants) { _, participants ->
+                            .combine(participants) { state, participants ->
+                                if(state is Call.State.Connected) onConnected()
+
                                 val items = participants.others.plus(participants.me).map { FullScreenDialogItem(it.username) }
                                 FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
 
-                                val isGroupCall = itemAdapter!!.adapterItemCount > 1
-                                if (!isGroupCall) bandyerBottomNavigation.hideSwipeHorizontalItem()
-                                else bandyerCounter.text = resources.getString(
-                                    R.string.bandyer_glass_n_of_participants_pattern,
-                                    participants.others.size + 1
-                                )
+                                if(nOfParticipants == itemAdapter!!.adapterItemCount) return@combine
+                                nOfParticipants = itemAdapter!!.adapterItemCount
+                                if (nOfParticipants < 2) bandyerBottomNavigation.hideSwipeHorizontalItem()
+                                else bandyerCounter.text = resources.getString(R.string.bandyer_glass_n_of_participants_pattern, participants.others.size + 1)
 
-                                bandyerSubtitle.text = resources.getString(if (isGroupCall) R.string.bandyer_glass_dialing_group else R.string.bandyer_glass_dialing)
-                            }
+                                setSubtitle(nOfParticipants > 1)
+                            }.launchIn(this@repeatOnStarted)
+
+                        participants
+                            .map { it.others + it.me }
+                            .flatMapConcat { participants -> participants.map { it.state }.merge() }
+                            .takeWhile { it !is CallParticipant.State.Online.InCall }
+                            .onCompletion { bandyerSubtitle.text = resources.getString(R.string.bandyer_glass_connecting) }
                             .launchIn(this@repeatOnStarted)
                     }
                 }
@@ -113,14 +137,7 @@ internal class DialingFragment : BaseFragment() {
         itemAdapter = null
     }
 
-    override fun onTap() = false
+    abstract fun onConnected()
 
-    override fun onSwipeDown() = true.also {
-        viewModel.hangUp()
-        requireActivity().finish()
-    }
-
-    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(resources.displayMetrics.densityDpi / 2, 0) }
-
-    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(-resources.displayMetrics.densityDpi / 2, 0) }
+    abstract fun setSubtitle(isGroupCall: Boolean)
 }
