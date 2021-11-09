@@ -51,20 +51,28 @@ internal class GlassViewModel(private val callLogicProvider: CallLogicProvider) 
             .map { it.me }
             .flatMapConcat { it.streams }
             .map { streams ->
-                streams.firstOrNull { it.video.firstOrNull { video -> video?.source is Input.Video.Source.Camera.Internal } != null }
+                streams.firstOrNull { it.video.firstOrNull { video -> video?.source is Input.Video.Source.Camera } != null }
             }
 
-    var isCameraEnabled = false
-    val cameraEnabled: Flow<Boolean?> = cameraStream.filter { it != null }
-        .flatMapConcat { it!!.video }
-        .flatMapConcat { it!!.enabled }
-        .onEach { isCameraEnabled = it == true }
+    val cameraEnabled: StateFlow<Boolean> = MutableStateFlow(false).apply {
+        cameraStream
+            .filter { it != null }
+            .flatMapConcat { it!!.video }
+            .filter { it != null }
+            .flatMapConcat { it!!.enabled }
+            .onEach { value = it }
+            .launchIn(viewModelScope)
+    }
 
-    var isMicEnabled = false
-    val micEnabled: Flow<Boolean?> = cameraStream.filter { it != null }
-        .flatMapConcat { it!!.audio }
-        .flatMapConcat { it!!.enabled }
-        .onEach { isMicEnabled = it == true }
+    val micEnabled: StateFlow<Boolean> = MutableStateFlow(false).apply {
+        cameraStream
+            .filter { it != null }
+            .flatMapConcat { it!!.audio }
+            .filter { it != null }
+            .flatMapConcat { it!!.enabled }
+            .onEach { value = it }
+            .launchIn(viewModelScope)
+    }
 
     fun requestPermissions(context: FragmentActivity) = callLogicProvider.requestPermissions(context)
 
