@@ -101,8 +101,8 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         val micAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.MICROPHONE }.action as CallAction.ToggleableCallAction)
 
         repeatOnStarted {
-            viewModel.cameraEnabled.onEach { cameraAction?.toggle(it == true) }.launchIn(this)
-            viewModel.micEnabled.onEach { micAction?.toggle(it == true) }.launchIn(this)
+            viewModel.cameraEnabled.onEach { cameraAction.toggle(it) }.launchIn(this)
+            viewModel.micEnabled.onEach { micAction.toggle(it) }.launchIn(this)
         }
 
         return binding.root
@@ -142,8 +142,8 @@ internal class MenuFragment : BaseFragment(), TiltListener {
     override fun onTap() = onTap(itemAdapter!!.getAdapterItem(currentMenuItemIndex).action)
 
     private fun onTap(action: CallAction) = when (action) {
-        is CallAction.MICROPHONE -> true.also { viewModel.enableMic(!viewModel.isMicEnabled) }
-        is CallAction.CAMERA -> true.also { viewModel.enableCamera(!viewModel.isCameraEnabled) }
+        is CallAction.MICROPHONE -> true.also { viewModel.enableMic(!viewModel.micEnabled.value) }
+        is CallAction.CAMERA -> true.also { viewModel.enableCamera(!viewModel.cameraEnabled.value) }
         is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment(args.enableTilt)) }
         is CallAction.ZOOM -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment(args.enableTilt)) }
         is CallAction.PARTICIPANTS -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToParticipantsFragment(args.enableTilt)) }
