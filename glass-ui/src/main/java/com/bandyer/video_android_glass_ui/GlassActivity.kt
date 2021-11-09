@@ -137,13 +137,7 @@ internal class GlassActivity :
             viewModel
                 .streams
                 .onEach { streams ->
-                    // Remove the participant null stream if a new non null stream with the same participant is available
-                    streams.forEach { participantStream ->
-                        participantStream.stream ?: return@forEach
-                        val nullStreams = itemAdapter!!.adapterItems.filter { it.data.participant == participantStream.participant && it.data.stream == null }
-                        nullStreams.forEach { itemAdapter!!.removeByIdentifier(it.identifier) }
-                    }
-                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, streams.map { StreamItem(it, this) }, true)
+                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, streams.map { StreamItem(it, this) })
                 }.launchIn(this)
 
             viewModel

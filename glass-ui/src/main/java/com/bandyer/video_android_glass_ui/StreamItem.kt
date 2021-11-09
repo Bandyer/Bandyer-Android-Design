@@ -47,6 +47,8 @@ internal class StreamItem(val data: StreamParticipant, parentScope: CoroutineSco
 
         private var binding = BandyerGlassCallParticipantItemLayoutBinding.bind(itemView)
 
+        private val jobs = mutableListOf<Job>()
+
         /**
          * Binds the data of this item onto the viewHolder
          */
@@ -77,15 +79,15 @@ internal class StreamItem(val data: StreamParticipant, parentScope: CoroutineSco
                 return@with
             }
 
-            stream.audio
+            jobs.add(stream.audio
                 .filter { it != null }
                 .flatMapConcat { it!!.enabled }
                 .onEach { bandyerMicIcon.visibility = if (it) View.GONE else View.VISIBLE }
-                .launchIn(item.scope)
+                .launchIn(item.scope))
 
-            stream.video
+            jobs.add(stream.video
                 .filter { it != null }
-                .flatMapConcat { video -> video!!.enabled.combine(video.view) { enabled, view -> Pair(enabled, view) } }
+                .flatMapConcat { video -> combine(video!!.enabled, video.view) { e, v -> Pair(e, v) } }
                 .onEach {
                     (if (data.isMyStream) bandyerTitle else bandyerAvatar).visibility = if (it.first) View.GONE else View.VISIBLE
                     bandyerVideoWrapper.visibility = if (it.first) View.VISIBLE else View.GONE
@@ -94,7 +96,7 @@ internal class StreamItem(val data: StreamParticipant, parentScope: CoroutineSco
                         (view.parent as? ViewGroup)?.removeView(view)
                         bandyerVideoWrapper.addView(view.apply { id = View.generateViewId() })
                     }
-                }.launchIn(item.scope)
+                }.launchIn(item.scope))
         }
 
         /**
@@ -103,7 +105,7 @@ internal class StreamItem(val data: StreamParticipant, parentScope: CoroutineSco
         override fun unbindView(item: StreamItem): Unit = with(binding) {
             unbind()
             bandyerVideoWrapper.removeAllViews()
-            item.scope.coroutineContext.cancelChildren()
+            jobs.forEach { it.cancel() }
         }
     }
 }

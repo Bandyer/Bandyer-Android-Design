@@ -38,9 +38,7 @@ internal class GlassViewModel(private val callLogicProvider: CallLogicProvider) 
                             jobs[participant.id] = participant.streams.onEach {
                                 streams.removeIf { stream -> stream.participant == participant }
                                 streams +=
-                                    if(it.none { stream -> stream.state !is Stream.State.Closed }) listOf(
-                                        StreamParticipant(participant, participant == participants.me, null)
-                                    )
+                                    if(it.none { stream -> stream.state !is Stream.State.Closed }) listOf(StreamParticipant(participant, participant == participants.me, null))
                                     else it.map { stream -> StreamParticipant(participant, participant == participants.me, stream) }
                                 emit(streams)
                             }.launchIn(viewModelScope)
