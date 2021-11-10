@@ -6,13 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.common.ConnectingFragment
-import com.bandyer.video_android_glass_ui.model.Call
 import com.bandyer.video_android_glass_ui.safeNavigate
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
-import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.takeWhile
 
 /**
  * ConnectingFragment

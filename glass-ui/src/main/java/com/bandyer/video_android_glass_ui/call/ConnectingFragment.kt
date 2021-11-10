@@ -1,4 +1,4 @@
-package com.bandyer.video_android_glass_ui.common
+package com.bandyer.video_android_glass_ui.call
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -13,8 +13,7 @@ import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.GlassViewModel
 import com.bandyer.video_android_glass_ui.GlassViewModelFactory
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.call.AutoScrollLinearLayoutManager
-import com.bandyer.video_android_glass_ui.call.FullScreenDialogItem
+import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.model.Call
 import com.bandyer.video_android_glass_ui.model.CallParticipant
