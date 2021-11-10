@@ -39,7 +39,7 @@
                 android:orientation="horizontal">
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/bandyer_mic_icon"
+                    android:id="@+id/bandyer_mic_muted_icon"
                     style="?attr/bandyer_iconStyle"
                     android:theme="?attr/bandyer_iconStyle" />
 

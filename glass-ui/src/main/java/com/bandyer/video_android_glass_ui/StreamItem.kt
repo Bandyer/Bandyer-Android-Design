@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.*
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassCallParticipantItemLayoutBinding
+import com.bandyer.video_android_glass_ui.model.Input
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
@@ -70,27 +71,26 @@ internal class StreamItem(val data: StreamParticipant, parentScope: CoroutineSco
             }
 
             if(stream == null) {
-                (if (data.isMyStream) bandyerTitle else bandyerAvatar).visibility = View.VISIBLE
-                bandyerVideoWrapper.visibility = View.GONE
-                bandyerUserWrapper.gravity = Gravity.CENTER
-                bandyerMicIcon.visibility = View.VISIBLE
+                showMicMuted(true)
+                showTitleAvatar(true, data.isMyStream)
                 return@with
             }
 
             jobs.add(stream.audio
+                .onEach { if(it == null) showMicMuted(true) }
                 .filter { it != null }
-                .flatMapConcat { it!!.enabled }
-                .onEach { bandyerMicIcon.visibility = if (it) View.GONE else View.VISIBLE }
-                .launchIn(item.scope))
+                .flatMapConcat { combine(it!!.state, it.enabled) { s, e -> Pair(s, e) } }
+                .onEach {
+                    if(it.first is Input.State.Closed) showMicMuted(true) else showMicMuted(!it.second)
+                }.launchIn(item.scope))
 
             jobs.add(stream.video
+                .onEach { if(it == null) showTitleAvatar(true, data.isMyStream) }
                 .filter { it != null }
-                .flatMapConcat { video -> combine(video!!.enabled, video.view) { e, v -> Pair(e, v) } }
+                .flatMapConcat { combine(it!!.state, it.enabled, it.view) { s, e, v -> Triple(s, e, v) } }
                 .onEach {
-                    (if (data.isMyStream) bandyerTitle else bandyerAvatar).visibility = if (it.first) View.GONE else View.VISIBLE
-                    bandyerVideoWrapper.visibility = if (it.first) View.VISIBLE else View.GONE
-                    bandyerUserWrapper.gravity = if (it.first) Gravity.START else Gravity.CENTER
-                    it.second?.also { view ->
+                    if(it.first is Input.State.Closed) showTitleAvatar(true, data.isMyStream) else showTitleAvatar(!it.second, data.isMyStream)
+                    it.third?.also { view ->
                         (view.parent as? ViewGroup)?.removeView(view)
                         bandyerVideoWrapper.addView(view.apply { id = View.generateViewId() })
                     }
@@ -104,6 +104,16 @@ internal class StreamItem(val data: StreamParticipant, parentScope: CoroutineSco
             unbind()
             bandyerVideoWrapper.removeAllViews()
             jobs.forEach { it.cancel() }
+        }
+
+        private fun showMicMuted(value: Boolean) {
+            binding.bandyerMicMutedIcon.visibility = if(value) View.VISIBLE else View.GONE
+        }
+
+        private fun showTitleAvatar(value: Boolean, isMyStream: Boolean) = with(binding) {
+            (if (isMyStream) bandyerTitle else bandyerAvatar).visibility = if (value) View.VISIBLE else View.GONE
+            bandyerVideoWrapper.visibility = if (value) View.GONE else View.VISIBLE
+            bandyerUserWrapper.gravity = if (value) Gravity.CENTER else Gravity.START
         }
     }
 }
