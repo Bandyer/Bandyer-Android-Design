@@ -75,7 +75,7 @@ internal class GlassActivity :
 
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
-//        enterImmersiveMode()
+        enterImmersiveMode()
         viewModel.requestPermissions(this)
 
         with(binding.bandyerStreams) {
@@ -161,7 +161,7 @@ internal class GlassActivity :
 
     override fun onResume() {
         super.onResume()
-//        hideSystemUI()
+        hideSystemUI()
     }
 
     override fun onDestroy() {

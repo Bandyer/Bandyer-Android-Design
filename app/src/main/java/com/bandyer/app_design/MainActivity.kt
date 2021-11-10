@@ -29,6 +29,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
+import androidx.fragment.app.FragmentActivity
 import com.bandyer.app_design.databinding.ActivityMainBinding
 import com.bandyer.video_android_glass_ui.CallUIController
 import com.bandyer.video_android_glass_ui.CallUIController.Launcher.launchCallGlass
@@ -127,6 +128,7 @@ class MainActivity : AppCompatActivity() {
             launchCallGlass(
                 object : CallUIController {
                     override val call: Flow<Call> = flowOf()
+                    override fun requestPermissions(context: FragmentActivity) = Unit
                     override fun answer() = Unit
                     override fun hangup() = Unit
                     override fun enableCamera(enable: Boolean) = Unit
