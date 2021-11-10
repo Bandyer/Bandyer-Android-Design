@@ -4,12 +4,9 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.bandyer.video_android_glass_ui.model.Call
-import com.bandyer.video_android_glass_ui.model.CallParticipants
-import com.bandyer.video_android_glass_ui.model.Input
-import com.bandyer.video_android_glass_ui.model.Stream
+import com.bandyer.video_android_glass_ui.model.*
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 
 @Suppress("UNCHECKED_CAST")
@@ -32,17 +29,21 @@ internal class GlassViewModel(private val callLogicProvider: CallLogicProvider) 
                 val jobs = mutableMapOf<String, Job>()
                 participants
                     .onEach { participants ->
-                        val streams = mutableListOf<StreamParticipant>()
-                        participants.others.plus(participants.me).forEach { participant ->
-                            jobs[participant.id]?.cancel()
-                            jobs[participant.id] = participant.streams.onEach {
-                                streams.removeIf { stream -> stream.participant == participant }
-                                streams +=
-                                    if(it.none { stream -> stream.state !is Stream.State.Closed }) listOf(StreamParticipant(participant, participant == participants.me, null))
-                                    else it.map { stream -> StreamParticipant(participant, participant == participants.me, stream) }
-                                emit(streams)
-                            }.launchIn(viewModelScope)
-                        }
+                        val allStreams = mutableListOf<StreamParticipant>()
+                        participants.others.plus(participants.me)
+                            .forEach { participant ->
+                                jobs[participant.id]?.cancel()
+                                jobs[participant.id] = combine(participant.state, participant.streams) { state, streams ->
+                                    allStreams.removeIf { stream -> stream.participant == participant }
+
+                                    if (state is CallParticipant.State.Online.InCall)
+                                        allStreams +=
+                                            if (streams.none { stream -> stream.state !is Stream.State.Closed }) listOf(StreamParticipant(participant, participant == participants.me, null))
+                                            else streams.map { stream -> StreamParticipant(participant, participant == participants.me, stream) }
+
+                                    emit(allStreams)
+                                }.launchIn(viewModelScope)
+                            }
                     }.launchIn(viewModelScope)
             }
 
