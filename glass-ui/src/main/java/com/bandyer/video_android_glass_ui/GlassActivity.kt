@@ -125,7 +125,7 @@ internal class GlassActivity :
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
                     when(it) {
-                        is Call.State.Disconnected.Ended, is Call.State.Disconnected.Error -> finish()
+                        is Call.State.Disconnected.Ended, is Call.State.Disconnected.Ended.Error -> finish()
                         is Call.State.Reconnecting -> navController.navigate(R.id.reconnectingFragment)
                     }
                     // TODO aggiungere messaggio in caso di errore?

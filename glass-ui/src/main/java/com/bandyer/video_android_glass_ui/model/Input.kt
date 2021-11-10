@@ -25,7 +25,16 @@ interface Input {
                 override fun toString() = "Closed: $reason"
             }
 
-            sealed class Error(reason: String) : Closed(reason)
+            sealed class Error(reason: String) : Closed(reason) {
+                companion object : Error("An error has occurred") {
+                    override fun hashCode(): Int = "Error".hashCode()
+                    override fun equals(other: Any?) = other is Error
+                    override fun toString() = "Error: $reason"
+                }
+
+                data class Permission(override val reason: String) : Error(reason)
+                data class Failed(override val reason: String) : Error(reason)
+            }
         }
     }
 
