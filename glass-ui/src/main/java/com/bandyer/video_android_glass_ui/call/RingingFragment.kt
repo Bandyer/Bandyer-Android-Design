@@ -26,7 +26,7 @@ internal class RingingFragment : ConnectingFragment() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onConnected() { findNavController().safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment()) }
+    override fun onConnected() { findNavController().safeNavigate(RingingFragmentDirections.actionRingingFragmentToEmptyFragment()) }
 
     override fun setSubtitle(isGroupCall: Boolean) { binding.bandyerSubtitle.text =  resources.getString(if(isGroupCall) R.string.bandyer_glass_ringing_group else R.string.bandyer_glass_ringing) }
 
