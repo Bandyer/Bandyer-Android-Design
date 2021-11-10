@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bandyer.video_android_glass_ui.utils.CallAudioManager
 import com.bandyer.video_android_glass_ui.BaseFragment
+import com.bandyer.video_android_glass_ui.call.EmptyFragmentArgs
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentVolumeBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener
@@ -24,7 +25,7 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
 
     private var deltaAzimuth = 0f
 
-    private val args: VolumeFragmentArgs by navArgs()
+    private val args: VolumeFragmentArgs by lazy { VolumeFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
 
     private var callAudioManager: CallAudioManager? = null
 

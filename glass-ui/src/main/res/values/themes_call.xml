@@ -10,7 +10,7 @@
         <attr name="bandyer_zoomStyle" format="reference" />
         <attr name="bandyer_ringingStyle" format="reference" />
         <attr name="bandyer_dialingStyle" format="reference" />
-        <attr name="bandyer_connectingStyle" format="reference" />
+        <attr name="bandyer_reconnectingStyle" format="reference" />
         <attr name="bandyer_endCallStyle" format="reference" />
         <attr name="bandyer_callEndedStyle" format="reference" />
         <attr name="bandyer_emptyStyle" format="reference" />
@@ -26,7 +26,7 @@
         <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
         <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing</item>
         <item name="bandyer_dialingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Dialing</item>
-        <item name="bandyer_connectingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Connecting</item>
+        <item name="bandyer_reconnectingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Reconnecting</item>
         <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.EndCall</item>
         <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.CallEnded</item>
         <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>
@@ -42,7 +42,7 @@
         <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
         <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing</item>
         <item name="bandyer_dialingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Dialing</item>
-        <item name="bandyer_connectingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Connecting</item>
+        <item name="bandyer_reconnectingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Reconnecting</item>
         <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.EndCall</item>
         <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.CallEnded</item>
         <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>
@@ -58,7 +58,7 @@
         <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
         <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing</item>
         <item name="bandyer_dialingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Dialing</item>
-        <item name="bandyer_connectingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Connecting</item>
+        <item name="bandyer_reconnectingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Reconnecting</item>
         <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.EndCall</item>
         <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.CallEnded</item>
         <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>

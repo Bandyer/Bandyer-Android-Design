@@ -23,8 +23,6 @@ internal class StartFragment : BaseFragment() {
 
     private val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 
-    private val args: StartFragmentArgs by lazy { StartFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,9 +43,9 @@ internal class StartFragment : BaseFragment() {
                         // TODO in caso di stato non previsto cosa mostrare
                         when {
                             state is Call.State.Connecting && participants.me == participants.creator ->
-                                findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment(args.enableTilt, args.options))
+                                findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment())
                             state == Call.State.Disconnected && participants.me != participants.creator ->
-                                findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment(args.enableTilt, args.options))
+                                findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
                             else -> Unit
                         }
                     }.launchIn(this@repeatOnStarted)

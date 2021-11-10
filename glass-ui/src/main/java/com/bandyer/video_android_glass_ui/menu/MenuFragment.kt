@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.*
 import com.bandyer.video_android_glass_ui.call.CallAction
+import com.bandyer.video_android_glass_ui.call.EmptyFragmentArgs
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentMenuBinding
@@ -37,7 +38,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
 
     private var itemAdapter: ItemAdapter<MenuItem>? = null
 
-    private val args: MenuFragmentArgs by navArgs()
+    private val args: MenuFragmentArgs by lazy { MenuFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
 
     private var currentMenuItemIndex = 0
 
@@ -95,7 +96,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                 }
             }
 
-        getActions(args.options).forEach { itemAdapter!!.add(MenuItem(it)) }
+        getActions(args.options!!).forEach { itemAdapter!!.add(MenuItem(it)) }
 
         val cameraAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.CAMERA }.action as CallAction.ToggleableCallAction)
         val micAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.MICROPHONE }.action as CallAction.ToggleableCallAction)

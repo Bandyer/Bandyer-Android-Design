@@ -20,28 +20,30 @@
             app:destination="@id/participantsFragment" />
         <action
             android:id="@+id/action_menuFragment_to_smartglass_nav_graph_chat"
-            app:destination="@id/smartglass_nav_graph_chat" >
+            app:destination="@id/smartglass_nav_graph_chat">
             <argument
                 android:name="enableTilt"
-                app:argType="boolean"
-                android:defaultValue="false" />
+                android:defaultValue="false"
+                app:argType="boolean" />
         </action>
         <argument
             android:name="enableTilt"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
         <argument
             android:name="options"
-            app:argType="com.bandyer.video_android_glass_ui.model.Option[]" />
+            android:defaultValue="@null"
+            app:argType="com.bandyer.video_android_glass_ui.model.Option[]"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/volumeFragment"
         android:name="com.bandyer.video_android_glass_ui.settings.volume.VolumeFragment"
-        android:label="VolumeFragment" >
+        android:label="VolumeFragment">
         <argument
             android:name="enableTilt"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/zoomFragment"
@@ -49,8 +51,8 @@
         android:label="ZoomFragment">
         <argument
             android:name="enableTilt"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/callEndedFragment"
@@ -73,13 +75,6 @@
             app:destination="@id/emptyFragment"
             app:popUpTo="@id/ringingFragment"
             app:popUpToInclusive="true" />
-        <argument
-            android:name="enableTilt"
-            app:argType="boolean"
-            android:defaultValue="false" />
-        <argument
-            android:name="options"
-            app:argType="com.bandyer.video_android_glass_ui.model.Option[]" />
     </fragment>
     <fragment
         android:id="@+id/dialingFragment"
@@ -90,13 +85,6 @@
             app:destination="@id/emptyFragment"
             app:popUpTo="@id/dialingFragment"
             app:popUpToInclusive="true" />
-        <argument
-            android:name="enableTilt"
-            app:argType="boolean"
-            android:defaultValue="false" />
-        <argument
-            android:name="options"
-            app:argType="com.bandyer.video_android_glass_ui.model.Option[]" />
     </fragment>
     <fragment
         android:id="@+id/emptyFragment"
@@ -112,11 +100,8 @@
             app:exitAnim="@android:anim/fade_out" />
         <argument
             android:name="enableTilt"
-            app:argType="boolean"
-            android:defaultValue="false" />
-        <argument
-            android:name="options"
-            app:argType="com.bandyer.video_android_glass_ui.model.Option[]" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <fragment
         android:id="@+id/participantsFragment"
@@ -124,19 +109,15 @@
         android:label="ParticipantsFragment">
         <argument
             android:name="enableTilt"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
     <include app:graph="@navigation/bandyer_glass_nav_graph_chat" />
-    <fragment
-        android:id="@+id/connectingFragment"
-        android:name="com.bandyer.video_android_glass_ui.call.ConnectingFragment"
-        android:label="ConnectingFragment" />
     <fragment
         android:id="@+id/startFragment"
         android:name="com.bandyer.video_android_glass_ui.call.StartFragment"
         android:label="fragment_start"
-        tools:layout="@layout/bandyer_glass_fragment_start" >
+        tools:layout="@layout/bandyer_glass_fragment_start">
         <action
             android:id="@+id/action_startFragment_to_dialingFragment"
             app:destination="@id/dialingFragment"
@@ -147,12 +128,13 @@
             app:destination="@id/ringingFragment"
             app:popUpTo="@id/startFragment"
             app:popUpToInclusive="true" />
-        <argument
-            android:name="enableTilt"
-            app:argType="boolean"
-            android:defaultValue="false" />
-        <argument
-            android:name="options"
-            app:argType="com.bandyer.video_android_glass_ui.model.Option[]" />
+    </fragment>
+    <fragment
+        android:id="@+id/reconnectingFragment"
+        android:name="com.bandyer.video_android_glass_ui.call.ReconnectingFragment"
+        android:label="ReconnectingFragment">
+        <action
+            android:id="@+id/action_reconnectingFragment_to_emptyFragment"
+            app:destination="@id/emptyFragment" />
     </fragment>
 </navigation>

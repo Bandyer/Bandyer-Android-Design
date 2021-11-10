@@ -75,7 +75,7 @@ internal class GlassActivity :
 
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
-        enterImmersiveMode()
+//        enterImmersiveMode()
         viewModel.requestPermissions(this)
 
         with(binding.bandyerStreams) {
@@ -124,7 +124,10 @@ internal class GlassActivity :
                 .callState
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
-                    if (it is Call.State.Disconnected.Ended || it is Call.State.Disconnected.Error) finish()
+                    when(it) {
+                        is Call.State.Disconnected.Ended, is Call.State.Disconnected.Error -> finish()
+                        is Call.State.Reconnecting -> navController.navigate(R.id.reconnectingFragment)
+                    }
                     // TODO aggiungere messaggio in caso di errore?
                 }.launchIn(this)
 
@@ -143,14 +146,14 @@ internal class GlassActivity :
             viewModel
                 .cameraEnabled
                 .onEach {
-                    if(it == true) binding.bandyerStatusBar.hideCamMutedIcon()
+                    if(it) binding.bandyerStatusBar.hideCamMutedIcon()
                     else binding.bandyerStatusBar.showCamMutedIcon()
                 }.launchIn(this)
 
             viewModel
                 .micEnabled
                 .onEach {
-                    if(it == true) binding.bandyerStatusBar.hideMicMutedIcon()
+                    if(it) binding.bandyerStatusBar.hideMicMutedIcon()
                     else binding.bandyerStatusBar.showMicMutedIcon()
                 }.launchIn(this)
         }
@@ -158,7 +161,7 @@ internal class GlassActivity :
 
     override fun onResume() {
         super.onResume()
-        hideSystemUI()
+//        hideSystemUI()
     }
 
     override fun onDestroy() {
@@ -193,7 +196,7 @@ internal class GlassActivity :
             show()
 
             when (destinationId) {
-                R.id.ringingFragment, R.id.dialingFragment, R.id.connectingFragment, R.id.endCallFragment, R.id.callEndedFragment -> hide()
+                R.id.ringingFragment, R.id.dialingFragment, R.id.reconnectingFragment, R.id.endCallFragment, R.id.callEndedFragment -> hide()
                 R.id.callEndedFragment, R.id.chatFragment, R.id.chatMenuFragment -> applyFlatTint()
                 R.id.participantsFragment -> {
                     applyFlatTint(); showCenteredTitle()

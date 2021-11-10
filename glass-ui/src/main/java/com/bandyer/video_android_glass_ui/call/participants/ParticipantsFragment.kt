@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.*
+import com.bandyer.video_android_glass_ui.call.EmptyFragmentArgs
 import com.bandyer.video_android_glass_ui.common.UserState
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
@@ -44,7 +45,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
     private var currentParticipantIndex = -1
 
-    private val args: VolumeFragmentArgs by navArgs()
+    private val args: VolumeFragmentArgs by lazy { VolumeFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
 
     private val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 

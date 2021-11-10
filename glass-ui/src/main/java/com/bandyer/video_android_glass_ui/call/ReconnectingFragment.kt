@@ -7,13 +7,17 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.common.ConnectingFragment
+import com.bandyer.video_android_glass_ui.model.Call
 import com.bandyer.video_android_glass_ui.safeNavigate
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.takeWhile
 
 /**
- * DialingFragment
+ * ConnectingFragment
  */
-internal class DialingFragment : ConnectingFragment() {
+internal class ReconnectingFragment : ConnectingFragment() {
 
     override var themeResId = 0
 
@@ -26,20 +30,15 @@ internal class DialingFragment : ConnectingFragment() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onConnected() { findNavController().safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment()) }
+    override fun onConnected() { findNavController().safeNavigate(ReconnectingFragmentDirections.actionReconnectingFragmentToEmptyFragment()) }
 
-    override fun setSubtitle(isGroupCall: Boolean) {
-        binding.bandyerSubtitle.text = resources.getString(if (isGroupCall) R.string.bandyer_glass_dialing_group else R.string.bandyer_glass_dialing)
-    }
+    override fun setSubtitle(isGroupCall: Boolean) { binding.bandyerSubtitle.text = resources.getString(R.string.bandyer_glass_connecting) }
 
     override fun onTap() = false
 
-    override fun onSwipeDown() = true.also {
-        viewModel.hangUp()
-        requireActivity().finish()
-    }
+    override fun onSwipeDown() = true.also { requireActivity().finish() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(resources.displayMetrics.densityDpi / 2, 0) }
+    override fun onSwipeForward(isKeyEvent: Boolean) = false
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(-resources.displayMetrics.densityDpi / 2, 0) }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = false
 }
