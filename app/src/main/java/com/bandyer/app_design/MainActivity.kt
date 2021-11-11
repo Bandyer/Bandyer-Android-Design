@@ -31,8 +31,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.app_design.databinding.ActivityMainBinding
-import com.bandyer.video_android_glass_ui.CallUIController
-import com.bandyer.video_android_glass_ui.CallUIController.Launcher.launchCallGlass
+import com.bandyer.video_android_glass_ui.CallManager
+import com.bandyer.video_android_glass_ui.UiLauncher.launchCallGlass
 import com.bandyer.video_android_glass_ui.model.Call
 import com.bandyer.video_android_glass_ui.model.Option
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
 
         btnSmartglass.setOnClickListener {
             launchCallGlass(
-                object : CallUIController {
+                object : CallManager  {
                     override val call: Flow<Call> = flowOf()
                     override fun requestPermissions(context: FragmentActivity) = Unit
                     override fun answer() = Unit

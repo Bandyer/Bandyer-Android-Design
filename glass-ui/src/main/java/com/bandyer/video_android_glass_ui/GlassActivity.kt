@@ -73,6 +73,8 @@ internal class GlassActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if(savedInstanceState == null) UiEventNotifier.notify(UiEvent.LAUNCH)
+
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
         enterImmersiveMode()
@@ -172,6 +174,7 @@ internal class GlassActivity :
         decorView = null
         itemAdapter!!.clear()
         itemAdapter = null
+        if(isFinishing) UiEventNotifier.notify(UiEvent.DESTROY)
     }
 
     /**

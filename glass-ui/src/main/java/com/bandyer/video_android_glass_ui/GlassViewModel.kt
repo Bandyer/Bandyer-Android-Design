@@ -11,12 +11,11 @@ import kotlinx.coroutines.flow.*
 
 @Suppress("UNCHECKED_CAST")
 internal object GlassViewModelFactory : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-        GlassViewModel(ProvidersHolder.callProvider!!) as T
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = GlassViewModel(ManagersHolder.callManagerInstance!!) as T
 }
 
-internal class GlassViewModel(private val callLogicProvider: CallLogicProvider) : ViewModel() {
-    val call: Flow<Call> = callLogicProvider.call
+internal class GlassViewModel(private val callManager: CallManager) : ViewModel() {
+    val call: Flow<Call> = callManager.call
 
     val callState: Flow<Call.State> = call.flatMapConcat { it.state }
 
@@ -75,15 +74,15 @@ internal class GlassViewModel(private val callLogicProvider: CallLogicProvider) 
             .launchIn(viewModelScope)
     }
 
-    fun requestPermissions(context: FragmentActivity) = callLogicProvider.requestPermissions(context)
+    fun requestPermissions(context: FragmentActivity) = callManager.requestPermissions(context)
 
-    fun enableCamera(enable: Boolean) = callLogicProvider.enableCamera(enable)
+    fun enableCamera(enable: Boolean) = callManager.enableCamera(enable)
 
-    fun enableMic(enable: Boolean) = callLogicProvider.enableMic(enable)
+    fun enableMic(enable: Boolean) = callManager.enableMic(enable)
 
-    fun answer() = callLogicProvider.answer()
+    fun answer() = callManager.answer()
 
-    fun hangUp() = callLogicProvider.hangup()
+    fun hangUp() = callManager.hangup()
 }
 
 
