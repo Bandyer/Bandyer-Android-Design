@@ -32,8 +32,8 @@ internal class GlassViewModel(private val callLogicProvider: CallLogicProvider) 
                         val allStreams = mutableListOf<StreamParticipant>()
                         participants.others.plus(participants.me)
                             .forEach { participant ->
-                                jobs[participant.id]?.cancel()
-                                jobs[participant.id] = combine(participant.state, participant.streams) { state, streams ->
+                                jobs[participant.userAlias]?.cancel()
+                                jobs[participant.userAlias] = combine(participant.state, participant.streams) { state, streams ->
                                     allStreams.removeIf { stream -> stream.participant == participant }
 
                                     if (state is CallParticipant.State.Online.InCall)

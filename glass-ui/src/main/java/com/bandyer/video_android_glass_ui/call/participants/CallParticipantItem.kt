@@ -18,7 +18,7 @@ internal class CallParticipantItem(val participant: CallParticipant): AbstractIt
     /**
      * Set an unique identifier for the identifiable which do not have one set already
      */
-    override var identifier: Long = participant.id.hashCode().toLong()
+    override var identifier: Long = participant.userAlias.hashCode().toLong()
 
     /**
      * The layout for the given item

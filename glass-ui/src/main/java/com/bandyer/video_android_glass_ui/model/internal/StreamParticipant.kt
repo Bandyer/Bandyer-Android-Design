@@ -12,14 +12,14 @@ internal data class StreamParticipant(
         if (this === other) return true
         if (other !is StreamParticipant) return false
 
-        if (participant.id != other.participant.id) return false
+        if (participant.userAlias != other.participant.userAlias) return false
         if (stream?.id != other.stream?.id) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = participant.id.hashCode()
+        var result = participant.userAlias.hashCode()
         result = 31 * result + stream?.id.hashCode()
         return result
     }
