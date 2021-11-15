@@ -21,6 +21,7 @@ import android.net.Uri
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.bandyer.video_android_core_ui.databinding.BandyerCallWatermarkBinding
 import com.bandyer.video_android_core_ui.R
@@ -33,9 +34,9 @@ import java.io.File
  * @author kristiyan
  * @constructor
  */
-class BandyerCallWatermarkLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.bandyer_rootLayoutStyle) : ConstraintLayout(context, attrs, defStyleAttr) {
+class BandyerCallWatermarkLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private val binding: BandyerCallWatermarkBinding by lazy { BandyerCallWatermarkBinding.inflate(LayoutInflater.from(context), this) }
+    private val binding: BandyerCallWatermarkBinding = BandyerCallWatermarkBinding.inflate(LayoutInflater.from(context), this, true)
 
     private val watermarkUri = bandyerSDKDesignPrefs().getString("call_watermark_image_uri", null)
     private val watermarkText = bandyerSDKDesignPrefs().getString("call_watermark_text", binding.bandyerLabelView.text.toString())

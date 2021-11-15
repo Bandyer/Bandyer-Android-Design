@@ -3,6 +3,7 @@
     <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="recyclerViewStyle" />
+        <attr name="bandyer_callWatermarkStyle" format="reference" />
         <attr name="bandyer_recyclerViewItemStyle" />
         <attr name="bandyer_subtitleStyle" />
         <attr name="bandyer_counterStyle" />
@@ -11,6 +12,7 @@
 
     <!-- FULL SCREEN LOGO DIALOG FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.DarkBackground">
+        <item name="bandyer_callWatermarkStyle">@style/BandyerSDKDesign.CallWatermark</item>
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog</item>
@@ -26,6 +28,7 @@
     <!-- RECYCLERVIEW ITEM -->
     <style name="BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog.RootLayout</item>
+        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassRecyclerViewItem.FullScreenLogoDialog</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog.RootLayout" parent="">
@@ -33,8 +36,15 @@
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
     </style>
 
+    <style name="BandyerSDKDesign.TextView.GlassRecyclerViewItem.FullScreenLogoDialog" parent="BandyerSDKDesign.TextView.GlassRecyclerViewItem">
+        <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+
     <!-- SUBTITLE -->
     <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog" parent="BandyerSDKDesign.TextView.Subtitle">
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
         <item name="android:textColor">@color/bandyer_color_white_80</item>
         <item name="android:includeFontPadding">false</item>

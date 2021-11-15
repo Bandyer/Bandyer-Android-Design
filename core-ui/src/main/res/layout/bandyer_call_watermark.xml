@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
   ~
   ~  Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +14,34 @@
   ~  limitations under the License.
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="?attr/bandyer_rootLayoutStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bandyer_logo_view"
-        style="?attr/bandyer_iconStyle" />
+        style="?attr/bandyer_iconStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/bandyer_label_view"
+        app:layout_constraintHeight_default="wrap"
+        app:layout_constraintHeight_max="@dimen/bandyer_watermark_max_height"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_default="wrap" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_label_view"
-        style="?attr/bandyer_titleStyle" />
+        style="?attr/bandyer_titleStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toEndOf="@id/bandyer_logo_view"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_default="spread" />
 
-</merge>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,62 +22,37 @@
         <attr name="bandyer_titleStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.CallWatermark" parent="">
+    <style name="BandyerSDKDesign.CallWatermark" parent="BandyerSDKDesign.DefaultCallWatermark" />
+
+    <style name="BandyerSDKDesign.DefaultCallWatermark" parent="">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.CallWatermark.RootLayout</item>
         <item name="bandyer_iconStyle">@style/BandyerSDKDesign.CallWatermarkImageView</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.CallWatermark</item>
     </style>
 
     <style name="BandyerSDKDesign.CallWatermark.RootLayout" parent="">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
         <item name="android:minHeight">@dimen/bandyer_watermark_max_height</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
     </style>
 
     <style name="BandyerSDKDesign.CallWatermarkImageView" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:adjustViewBounds">true</item>
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
-        <item name="layout_constraintHeight_max">@dimen/bandyer_watermark_max_height</item>
-        <item name="android:layout_gravity">start|left</item>
         <item name="android:scaleType">fitCenter</item>
-        <item name="layout_constraintStart_toStartOf">parent</item>
-        <item name="layout_constraintTop_toTopOf">parent</item>
-        <item name="layout_constraintBottom_toBottomOf">parent</item>
-        <item name="layout_constraintLeft_toLeftOf">parent</item>
-        <item name="layout_constraintRight_toLeftOf">@id/bandyer_label_view</item>
-        <item name="layout_constraintEnd_toStartOf">@id/bandyer_label_view</item>
-        <item name="layout_constraintHorizontal_bias">0.0</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space16</item>
-        <item name="layout_constraintHeight_default">wrap</item>
-        <item name="layout_constraintWidth_default">wrap</item>
-        <item name="layout_constraintHorizontal_chainStyle">packed</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.CallWatermark" parent="BandyerSDKDesign.TextView.Title">
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="autoSizeTextType">uniform</item>
         <item name="autoSizeMinTextSize">0.5sp</item>
         <item name="android:maxLines">1</item>
         <item name="autoSizeMaxTextSize">100sp</item>
         <item name="autoSizeStepGranularity">2sp</item>
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">0dp</item>
-        <item name="layout_constraintLeft_toRightOf">@id/bandyer_logo_view</item>
-        <item name="layout_constraintStart_toEndOf">@id/bandyer_logo_view</item>
-        <item name="layout_constraintTop_toTopOf">parent</item>
-        <item name="layout_constraintBottom_toBottomOf">parent</item>
-        <item name="layout_constraintEnd_toEndOf">parent</item>
-        <item name="layout_constraintRight_toRightOf">parent</item>
-        <item name="layout_constraintHorizontal_chainStyle">spread</item>
-        <item name="layout_constraintWidth_default">spread</item>
-        <item name="layout_constraintHorizontal_bias">0.0</item>
     </style>
 
 </resources>
