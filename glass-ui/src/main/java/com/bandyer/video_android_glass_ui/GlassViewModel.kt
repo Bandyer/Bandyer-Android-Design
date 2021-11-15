@@ -4,6 +4,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.bandyer.video_android_glass_ui.common.Volume
 import com.bandyer.video_android_glass_ui.model.*
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
 import kotlinx.coroutines.Job
@@ -20,6 +21,9 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
     val battery: Flow<Battery> = callManager.battery
 
     val wifi: Flow<WiFi> = callManager.wifi
+
+    val volume: Volume
+        get() = callManager.getVolume()
 
     val callState: Flow<Call.State> = call.flatMapConcat { it.state }
 
@@ -87,6 +91,8 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
     fun answer() = callManager.answer()
 
     fun hangUp() = callManager.hangup()
+
+    fun setVolume(value: Int) = callManager.setVolume(value)
 }
 
 

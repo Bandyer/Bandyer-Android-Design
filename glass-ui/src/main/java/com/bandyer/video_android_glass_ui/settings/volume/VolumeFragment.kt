@@ -2,15 +2,14 @@ package com.bandyer.video_android_glass_ui.settings.volume
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.bandyer.video_android_glass_ui.utils.CallAudioManager
 import com.bandyer.video_android_glass_ui.BaseFragment
-import com.bandyer.video_android_glass_ui.call.EmptyFragmentArgs
+import com.bandyer.video_android_glass_ui.GlassViewModel
+import com.bandyer.video_android_glass_ui.GlassViewModelFactory
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentVolumeBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener
@@ -27,12 +26,11 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
 
     private val args: VolumeFragmentArgs by lazy { VolumeFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
 
-    private var callAudioManager: CallAudioManager? = null
+    private val viewModel: GlassViewModel by viewModels { GlassViewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(args.enableTilt) tiltListener = this
-        callAudioManager = CallAudioManager(requireContext())
+        if (args.enableTilt) tiltListener = this
     }
 
     /**
@@ -49,10 +47,14 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
         _binding = BandyerGlassFragmentVolumeBinding
             .inflate(inflater, container, false)
             .apply {
-                if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
+                if (GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
 
-                callAudioManager?.maxVolume?.apply { bandyerSlider.maxProgress = this }
-                callAudioManager?.currentVolume?.apply { bandyerSlider.progress = this }
+                with(bandyerSlider) {
+                    val volume = viewModel.volume
+                    maxProgress = volume.max
+                    progress = volume.current
+                }
+
                 root.setOnTouchListener { _, _ -> true }
             }
 
@@ -74,7 +76,7 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
     }
 
     override fun onTap() = true.also {
-        callAudioManager?.setVolume(binding.bandyerSlider.progress)
+        viewModel.setVolume(binding.bandyerSlider.progress)
         findNavController().popBackStack()
     }
 

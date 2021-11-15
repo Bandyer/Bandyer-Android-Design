@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
+import com.bandyer.video_android_glass_ui.common.Volume
 import com.bandyer.video_android_glass_ui.model.Battery
 import com.bandyer.video_android_glass_ui.model.Call
 import com.bandyer.video_android_glass_ui.model.Option
@@ -55,8 +56,6 @@ interface CallManager {
 
     val wifi: Flow<WiFi>
 
-//    val volume: Flow<Volume>
-
     fun requestPermissions(context: FragmentActivity)
 
     fun answer()
@@ -68,6 +67,8 @@ interface CallManager {
     fun enableMic(enable: Boolean)
 
     fun switchCamera()
+
+    fun getVolume(): Volume
 
     fun setVolume(value: Int)
 
