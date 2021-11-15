@@ -1,16 +1,16 @@
-package com.bandyer.video_android_glass_ui.utils.observers.battery
+package com.bandyer.video_android_glass_ui.model
 
 /**
- * BatteryInfo
+ * Battery
  *
  * @property state The battery state
  * @property plugged To what the device is plugged
  * @property percentage The battery percentage
  * @constructor
  */
-internal data class BatteryInfo(
+data class Battery(
     val state: State = State.UNKNOWN,
-    val plugged: PLUGGED = PLUGGED.UNKNOWN,
+    val plugged: Plugged = Plugged.UNKNOWN,
     val percentage: Int = -1
 ) {
 
@@ -47,7 +47,7 @@ internal data class BatteryInfo(
     /**
      * Battery charger types
      */
-    enum class PLUGGED {
+    enum class Plugged {
         /**
          * a c
          */

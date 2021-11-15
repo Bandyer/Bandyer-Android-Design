@@ -1,13 +1,13 @@
-package com.bandyer.video_android_glass_ui.utils.observers.network
+package com.bandyer.video_android_glass_ui.model
 
 /**
- * WiFiInfo
+ * WiFi
  *
  * @property state WiFi state
  * @property level WiFi signal level
  * @constructor
  */
-internal data class WiFiInfo(
+data class WiFi(
     val state: State = State.UNKNOWN,
     val level: Level = Level.NO_SIGNAL
 ) {

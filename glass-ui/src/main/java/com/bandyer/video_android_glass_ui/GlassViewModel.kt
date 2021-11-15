@@ -17,6 +17,10 @@ internal object GlassViewModelFactory : ViewModelProvider.Factory {
 internal class GlassViewModel(private val callManager: CallManager) : ViewModel() {
     val call: Flow<Call> = callManager.call
 
+    val battery: Flow<Battery> = callManager.battery
+
+    val wifi: Flow<WiFi> = callManager.wifi
+
     val callState: Flow<Call.State> = call.flatMapConcat { it.state }
 
     val participants: Flow<CallParticipants> = call.flatMapConcat { it.participants }

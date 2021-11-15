@@ -24,10 +24,8 @@ import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
-import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryInfo
-import com.bandyer.video_android_glass_ui.utils.observers.battery.BatteryObserver
-import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiInfo
-import com.bandyer.video_android_glass_ui.utils.observers.network.WiFiObserver
+import com.bandyer.video_android_glass_ui.model.Battery
+import com.bandyer.video_android_glass_ui.model.WiFi
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
@@ -65,10 +63,6 @@ internal class GlassActivity :
     // NOTIFICATION
     private lateinit var notificationManager: ChatNotificationManager
     private var isNotificationVisible = false
-
-    // OBSERVER STATUS BAR UI
-    private lateinit var batteryObserver: BatteryObserver
-    private lateinit var wifiObserver: WiFiObserver
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,18 +102,16 @@ internal class GlassActivity :
         notificationManager =
             ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
 
-        // Battery observer
-        batteryObserver = BatteryObserver(this)
-
-        // WiFi observer
-        wifiObserver = WiFiObserver(this)
-
         // Observer events
         repeatOnStarted {
-            batteryObserver.observe().onEach { binding.bandyerStatusBar.updateBatteryIcon(it) }
+            viewModel
+                .battery
+                .onEach { binding.bandyerStatusBar.updateBatteryIcon(it) }
                 .launchIn(this)
 
-            wifiObserver.observe().onEach { binding.bandyerStatusBar.updateWifiSignalIcon(it) }
+            viewModel
+                .wifi
+                .onEach { binding.bandyerStatusBar.updateWifiSignalIcon(it) }
                 .launchIn(this)
 
             viewModel
@@ -168,8 +160,6 @@ internal class GlassActivity :
 
     override fun onDestroy() {
         super.onDestroy()
-        batteryObserver.stop()
-        wifiObserver.stop()
         _binding = null
         decorView = null
         itemAdapter!!.clear()
@@ -316,18 +306,18 @@ internal class GlassActivity :
             )
         )
 
-    private fun StatusBarView.updateBatteryIcon(batteryInfo: BatteryInfo) {
-        setBatteryChargingState(batteryInfo.state == BatteryInfo.State.CHARGING)
-        setBatteryCharge(batteryInfo.percentage)
+    private fun StatusBarView.updateBatteryIcon(battery: Battery) {
+        setBatteryChargingState(battery.state == Battery.State.CHARGING)
+        setBatteryCharge(battery.percentage)
     }
 
-    private fun StatusBarView.updateWifiSignalIcon(wifiInfo: WiFiInfo) {
+    private fun StatusBarView.updateWifiSignalIcon(wifi: WiFi) {
         setWiFiSignalState(
-            if (wifiInfo.state == WiFiInfo.State.DISABLED) StatusBarView.WiFiSignalState.DISABLED
-            else when (wifiInfo.level) {
-                WiFiInfo.Level.NO_SIGNAL, WiFiInfo.Level.POOR -> StatusBarView.WiFiSignalState.LOW
-                WiFiInfo.Level.FAIR, WiFiInfo.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
-                WiFiInfo.Level.EXCELLENT -> StatusBarView.WiFiSignalState.FULL
+            if (wifi.state == WiFi.State.DISABLED) StatusBarView.WiFiSignalState.DISABLED
+            else when (wifi.level) {
+                WiFi.Level.NO_SIGNAL, WiFi.Level.POOR -> StatusBarView.WiFiSignalState.LOW
+                WiFi.Level.FAIR, WiFi.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
+                WiFi.Level.EXCELLENT -> StatusBarView.WiFiSignalState.FULL
             }
         )
     }
