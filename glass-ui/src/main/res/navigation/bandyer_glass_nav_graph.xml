@@ -57,15 +57,17 @@
     <fragment
         android:id="@+id/callEndedFragment"
         android:name="com.bandyer.video_android_glass_ui.call.CallEndedFragment"
-        android:label="CallEndedFragment" />
+        android:label="CallEndedFragment">
+        <argument
+            android:name="reason"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
     <fragment
         android:id="@+id/endCallFragment"
         android:name="com.bandyer.video_android_glass_ui.call.EndCallFragment"
-        android:label="EndCallFragment">
-        <action
-            android:id="@+id/action_endCallFragment_to_callEndedFragment"
-            app:destination="@id/callEndedFragment" />
-    </fragment>
+        android:label="EndCallFragment" />
     <fragment
         android:id="@+id/ringingFragment"
         android:name="com.bandyer.video_android_glass_ui.call.RingingFragment"

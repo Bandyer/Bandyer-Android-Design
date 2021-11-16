@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
+import androidx.navigation.fragment.navArgs
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenDialogBinding
@@ -18,6 +20,8 @@ internal class CallEndedFragment : BaseFragment() {
     private var _binding: BandyerGlassFragmentFullScreenDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenDialogBinding get() = _binding!!
 
+    private val args: CallEndedFragmentArgs by navArgs()
+
     /**
      * @suppress
      */
@@ -28,13 +32,20 @@ internal class CallEndedFragment : BaseFragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            requireActivity().finish()
+        }
+
         // Apply theme wrapper and add view binding
         val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_callEndedStyle)
         _binding = BandyerGlassFragmentFullScreenDialogBinding.inflate(
             inflater.cloneInContext(android.view.ContextThemeWrapper(requireContext(), themeResId)),
             container,
             false
-        ).apply { if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
+        ).apply {
+            if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
+            args.reason?.also { binding.bandyerSubtitle.text = it }
+        }
 
         return binding.root
     }
