@@ -31,10 +31,7 @@ internal class RingingFragment : ConnectingFragment() {
 
     override fun onTap() = true.also { viewModel.answer() }
 
-    override fun onSwipeDown() = true.also {
-        viewModel.hangUp()
-        requireActivity().finish()
-    }
+    override fun onSwipeDown() = true.also { viewModel.hangUp() }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(resources.displayMetrics.densityDpi / 2, 0) }
 

@@ -31,7 +31,7 @@ internal class ReconnectingFragment : ConnectingFragment() {
 
     override fun onTap() = false
 
-    override fun onSwipeDown() = true.also { requireActivity().finish() }
+    override fun onSwipeDown() = true.also { viewModel.hangUp() }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = false
 
