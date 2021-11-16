@@ -83,7 +83,7 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
          */
         fun toggle(toggled: Boolean) {
             itemView?.findViewById<MaterialTextView>(R.id.bandyer_text)?.apply {
-                isActivated = toggled
+                isActivated = !toggled
                 text = if(toggled) toggledText else defaultText
             }
             this.toggled = toggled
