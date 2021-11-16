@@ -134,7 +134,8 @@ internal class GlassActivity :
             viewModel
                 .streams
                 .onEach { streams ->
-                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, streams.map { StreamItem(it, this) })
+                    val orderedList = streams.sortedBy { !it.isMyStream }.map { StreamItem(it, this) }
+                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList)
                 }.launchIn(this)
 
             viewModel
