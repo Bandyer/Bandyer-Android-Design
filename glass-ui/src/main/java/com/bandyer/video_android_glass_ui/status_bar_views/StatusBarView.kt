@@ -76,12 +76,9 @@ internal class StatusBarView @JvmOverloads constructor(
     private var binding: BandyerGlassStatusBarLayoutBinding = BandyerGlassStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     init {
-        with(binding) {
-            bandyerCenteredTitle.visibility = View.GONE
-            bandyerCamMutedIcon.visibility = View.GONE
-            bandyerMicMutedIcon.visibility = View.GONE
-            bandyerChatIcon.visibility = View.GONE
-        }
+        hideCamMutedIcon()
+        hideMicMutedIcon()
+        hideChatIcon()
     }
 
     /**
@@ -162,6 +159,21 @@ internal class StatusBarView @JvmOverloads constructor(
     fun hideMicMutedIcon() {
         binding.bandyerMicMutedIcon.visibility = View.GONE
     }
+
+    /**
+     * Show the chat icon
+     */
+    fun showChatIcon() {
+        binding.bandyerChatIcon.visibility = View.VISIBLE
+    }
+
+    /**
+     * Hide the chat icon
+     */
+    fun hideChatIcon() {
+        binding.bandyerChatIcon.visibility = View.GONE
+    }
+
 
     /**
      * Set the battery charge level
