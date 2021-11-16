@@ -53,7 +53,7 @@
 
     <!-- PLURALS -->
     <plurals name="bandyer_glass_users_in_call_pattern">
-        <item quantity="one">%d utente in chiamata</item>
-        <item quantity="other">%d utenti in chiamata</item>
+        <item quantity="one">%d partecipante</item>
+        <item quantity="other">%d partecipanti</item>
     </plurals>
 </resources>
