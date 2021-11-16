@@ -21,7 +21,7 @@ internal class RingingFragment : ConnectingFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_dialingStyle)
+        themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_ringingStyle)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
