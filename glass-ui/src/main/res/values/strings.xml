@@ -41,7 +41,6 @@
     <string name="bandyer_glass_last_seen_pattern">Last seen: %1$s</string>
     <string name="bandyer_glass_call">Call</string>
     <string name="bandyer_glass_videocall">Video call</string>
-    <string name="bandyer_glass_users_in_call_pattern">%1$d users on call</string>
     <string name="bandyer_glass_browse_right">browse right</string>
     <string name="bandyer_glass_browse_left">browse left</string>
     <string name="bandyer_glass_right_left">scroll</string>
@@ -56,22 +55,9 @@
     <string name="bandyer_glass_menu_chat">Chat</string>
     <string name="bandyer_glass_rec">Rec</string>
 
-    <!-- STRING ARRAY -->
-    <string-array name="menu_items_default">
-        <item>Mute mic</item>
-        <item>Disable camera</item>
-        <item>Volume</item>
-        <item>Zoom</item>
-        <item>Users</item>
-        <item>Chat</item>
-    </string-array>
-
-    <string-array name="menu_items_activated">
-        <item>Unmute mic</item>
-        <item>Enable camera</item>
-        <item />
-        <item />
-        <item />
-        <item />
-    </string-array>
+    <!-- PLURALS -->
+    <plurals name="bandyer_glass_users_in_call_pattern">
+        <item quantity="one">%d user in call</item>
+        <item quantity="other">%d users in call</item>
+    </plurals>
 </resources>

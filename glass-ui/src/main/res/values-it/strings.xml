@@ -37,7 +37,6 @@
     <string name="bandyer_glass_last_seen_pattern">Ultimo accesso: %1$s</string>
     <string name="bandyer_glass_call">Chiama</string>
     <string name="bandyer_glass_videocall">Videochiama</string>
-    <string name="bandyer_glass_users_in_call_pattern">%1$d utenti in chiamata</string>
     <string name="bandyer_glass_browse_right">naviga a destra</string>
     <string name="bandyer_glass_browse_left">naviga a sinistra</string>
     <string name="bandyer_glass_right_left">scorri</string>
@@ -51,4 +50,10 @@
     <string name="bandyer_glass_menu_zoom">Zoom</string>
     <string name="bandyer_glass_menu_chat">Chat</string>
     <string name="bandyer_glass_rec">Rec</string>
+
+    <!-- PLURALS -->
+    <plurals name="bandyer_glass_users_in_call_pattern">
+        <item quantity="one">%d utente in chiamata</item>
+        <item quantity="other">%d utenti in chiamata</item>
+    </plurals>
 </resources>

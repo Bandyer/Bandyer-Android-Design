@@ -25,6 +25,7 @@ import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.bandyer.video_android_glass_ui.model.Battery
+import com.bandyer.video_android_glass_ui.model.CallParticipant
 import com.bandyer.video_android_glass_ui.model.WiFi
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -125,6 +126,12 @@ internal class GlassActivity :
                     // TODO aggiungere messaggio in caso di errore?
                 }.launchIn(this)
 
+            viewModel
+                .inCallParticipants
+                .onEach {
+                    binding.bandyerStatusBar.updateCenteredText(it.count())
+                }.launchIn(this)
+
             viewModel.
                 recording
                 .onEach {
@@ -185,16 +192,12 @@ internal class GlassActivity :
 
         // Update state bar
         with(binding.bandyerStatusBar) {
-            hideCenteredTitle()
             setBackgroundColor(Color.TRANSPARENT)
             show()
 
             when (destinationId) {
                 R.id.ringingFragment, R.id.dialingFragment, R.id.reconnectingFragment, R.id.endCallFragment, R.id.callEndedFragment -> hide()
-                R.id.callEndedFragment, R.id.chatFragment, R.id.chatMenuFragment -> applyFlatTint()
-                R.id.participantsFragment -> {
-                    applyFlatTint(); showCenteredTitle()
-                }
+                R.id.callEndedFragment, R.id.chatFragment, R.id.chatMenuFragment, R.id.participantsFragment -> applyFlatTint()
             }
         }
     }
@@ -213,12 +216,7 @@ internal class GlassActivity :
      * @suppress
      */
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
-        return if (event?.action == MotionEvent.ACTION_DOWN && handleSmartGlassTouchEvent(
-                TouchEvent.getEvent(
-                    event
-                )
-            )
-        ) true
+        return if (event?.action == MotionEvent.ACTION_DOWN && handleSmartGlassTouchEvent(TouchEvent.getEvent(event))) true
         else super.dispatchKeyEvent(event)
     }
 
@@ -291,21 +289,10 @@ internal class GlassActivity :
     }
 
     // UPDATE STATUS BAR UI
-    private fun StatusBarView.applyFlatTint() = setBackgroundColor(
-        ResourcesCompat.getColor(
-            resources,
-            R.color.bandyer_glass_dimmed_background_color,
-            null
-        )
-    )
+    private fun StatusBarView.applyFlatTint() = setBackgroundColor(ResourcesCompat.getColor(resources, R.color.bandyer_glass_dimmed_background_color, null))
 
     private fun StatusBarView.updateCenteredText(nCallParticipants: Int) =
-        setCenteredText(
-            resources.getString(
-                R.string.bandyer_glass_users_in_call_pattern,
-                nCallParticipants
-            )
-        )
+        setCenteredText(resources.getQuantityString(R.plurals.bandyer_glass_users_in_call_pattern, nCallParticipants, nCallParticipants))
 
     private fun StatusBarView.updateBatteryIcon(battery: Battery) {
         setBatteryChargingState(battery.state == Battery.State.CHARGING)

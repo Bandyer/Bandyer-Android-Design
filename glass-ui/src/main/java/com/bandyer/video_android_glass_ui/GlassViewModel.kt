@@ -29,9 +29,26 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
 
     val participants: Flow<CallParticipants> = call.flatMapConcat { it.participants }
 
+    val inCallParticipants: Flow<List<CallParticipant>> =
+        MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
+            val jobs = mutableMapOf<String, Job>()
+            participants.onEach { participants ->
+                val inCallParticipants = mutableMapOf<String, CallParticipant>()
+                participants.others.plus(participants.me).forEach { participant ->
+                    jobs[participant.userAlias]?.cancel()
+                    jobs[participant.userAlias] = participant.state.onEach { state ->
+                        if (state is CallParticipant.State.Online.InCall) inCallParticipants[participant.userAlias] = participant
+                        else inCallParticipants.remove(participant.userAlias)
+                        emit(inCallParticipants.values.toList())
+                    }.launchIn(viewModelScope)
+                }
+            }.launchIn(viewModelScope)
+        }
+
     val recording = call.flatMapConcat { it.isRecording }
 
-    val streams: Flow<List<StreamParticipant>> = MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1)
+    val streams: Flow<List<StreamParticipant>> =
+        MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1)
             .apply {
                 val jobs = mutableMapOf<String, Job>()
                 participants
