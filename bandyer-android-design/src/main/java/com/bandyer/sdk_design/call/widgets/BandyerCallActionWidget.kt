@@ -29,7 +29,6 @@ import com.badoo.mobile.util.WeakHandler
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.BandyerActionBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
-import com.bandyer.sdk_design.bottom_sheet.BandyerClickableBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.BaseBandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.OnStateChangedBottomSheetListener
 import com.bandyer.sdk_design.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
@@ -625,7 +624,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
 
     private var callBottomSheet: CallBottomSheet<T>? = null
 
-    private var ringingBottomSheet: BandyerClickableBottomSheet<T>? = null
+    private var ringingBottomSheet: RingingBottomSheet<T>? = null
 
     private var audioRouteBottomSheet: AudioRouteBottomSheet<T>? = null
 
@@ -664,7 +663,6 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         audioRouteBottomSheet = AudioRouteBottomSheet(
             context = context,
             audioRouteItems = onAudioRoutesRequest?.onAudioRoutesRequested(),
-            initialSelection = -1,
             bottomSheetLayoutType = bottomSheetLayoutType,
             bottomSheetStyle = context.getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_bottomSheetAudioRouteStyle),
             onAudioRoutesRequest = onAudioRoutesListener
