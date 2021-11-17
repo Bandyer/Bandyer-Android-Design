@@ -25,7 +25,6 @@ import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.bandyer.video_android_glass_ui.model.Battery
-import com.bandyer.video_android_glass_ui.model.CallParticipant
 import com.bandyer.video_android_glass_ui.model.WiFi
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -56,13 +55,13 @@ internal class GlassActivity :
     // NAVIGATION
     private val currentFragment: Fragment?
         get() = supportFragmentManager.currentNavigationFragment
-    private lateinit var navController: NavController
+    private var navController: NavController? = null
 
     // GOOGLE GLASS GESTURE DETECTOR
-    private lateinit var glassGestureDetector: GlassGestureDetector
+    private var glassGestureDetector: GlassGestureDetector? = null
 
     // NOTIFICATION
-    private lateinit var notificationManager: ChatNotificationManager
+    private var notificationManager: ChatNotificationManager? = null
     private var isNotificationVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -120,8 +119,8 @@ internal class GlassActivity :
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
                     when(it) {
-                        is Call.State.Disconnected.Ended, is Call.State.Disconnected.Ended.Error -> navController.navigate(R.id.callEndedFragment)
-                        is Call.State.Reconnecting -> navController.navigate(R.id.reconnectingFragment)
+                        is Call.State.Disconnected.Ended, is Call.State.Disconnected.Ended.Error -> navController!!.navigate(R.id.callEndedFragment)
+                        is Call.State.Reconnecting -> navController!!.navigate(R.id.reconnectingFragment)
                     }
                     // TODO aggiungere messaggio in caso di errore?
                 }.launchIn(this)
@@ -172,6 +171,9 @@ internal class GlassActivity :
         decorView = null
         itemAdapter!!.clear()
         itemAdapter = null
+        navController = null
+        glassGestureDetector = null
+        notificationManager = null
         if(isFinishing) UiEventNotifier.notify(UiEvent.DESTROY)
     }
 
@@ -186,8 +188,8 @@ internal class GlassActivity :
      */
     fun onDestinationChanged(destinationId: Int) {
         (destinationId == R.id.chatFragment).also {
-            if (it) notificationManager.dismiss(false)
-            notificationManager.dnd = it
+            if (it) notificationManager!!.dismiss(false)
+            notificationManager!!.dnd = it
         }
 
         // Update state bar
@@ -208,7 +210,7 @@ internal class GlassActivity :
      */
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         // Dispatch the touch event to the gesture detector
-        return if (ev != null && glassGestureDetector.onTouchEvent(ev)) true
+        return if (ev != null && glassGestureDetector!!.onTouchEvent(ev)) true
         else super.dispatchTouchEvent(ev)
     }
 
@@ -229,8 +231,8 @@ internal class GlassActivity :
 
     override fun onTouch(event: TouchEvent): Boolean =
         when (event.type) {
-            TouchEvent.Type.TAP -> true.also { notificationManager.expand() }
-            TouchEvent.Type.SWIPE_DOWN -> true.also { notificationManager.dismiss() }
+            TouchEvent.Type.TAP -> true.also { notificationManager!!.expand() }
+            TouchEvent.Type.SWIPE_DOWN -> true.also { notificationManager!!.dismiss() }
             else -> false
         }
 
@@ -242,7 +244,7 @@ internal class GlassActivity :
     override fun onExpanded() {
         isNotificationVisible = false
         if (supportFragmentManager.currentNavigationFragment?.id != R.id.smartglass_nav_graph_chat)
-            navController.navigate(R.id.smartglass_nav_graph_chat)
+            navController!!.navigate(R.id.smartglass_nav_graph_chat)
     }
 
     override fun onDismiss() {
@@ -255,7 +257,7 @@ internal class GlassActivity :
      * @param listener NotificationListener
      */
     fun addNotificationListener(listener: ChatNotificationManager.NotificationListener) {
-        notificationManager.addListener(listener)
+        notificationManager!!.addListener(listener)
     }
 
     /**
@@ -264,7 +266,7 @@ internal class GlassActivity :
      * @param listener NotificationListener
      */
     fun removeNotificationListener(listener: ChatNotificationManager.NotificationListener) {
-        notificationManager.removeListener(listener)
+        notificationManager!!.removeListener(listener)
     }
 
     // IMMERSIVE MODE
