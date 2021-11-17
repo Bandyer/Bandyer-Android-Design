@@ -52,5 +52,10 @@ abstract class BandyerClickableBottomSheet<T> constructor(
         })
     }
 
+    /**
+     * Returns a list of views that triggers the click selection on the input view holder
+     * @param viewHolder ViewHolder input view holder
+     * @return MutableList<View> the list of clickable views
+     */
     abstract fun getClickableViews(viewHolder: RecyclerView.ViewHolder): MutableList<View>
 }

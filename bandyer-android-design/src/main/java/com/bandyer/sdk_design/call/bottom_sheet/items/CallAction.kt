@@ -44,6 +44,7 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
 
         /**
          * Gives a list of all actions used for incoming calls
+         * @param ctx Context input context
          * @return List<CallAction> composed of BIG_HANGUP and BIG_ANSWER
          */
         fun getIncomingCallActions(ctx: Context) = listOf(DECLINE(ctx), ANSWER(ctx))
