@@ -105,9 +105,9 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
                 callActionWidget?.selectAudioRoute(getAudioRoute(connectedAudioOutputDevice))
                 Log.e(TAG, "${Thread.currentThread()} onOutputDeviceConnected: $connectedAudioOutputDevice ${connectedAudioOutputDevice.name} oldDevice: $oldAudioOutputDevice ${oldAudioOutputDevice?.name}")
                 if (!userSelected) return
-//                window.decorView.postDelayed({
-//                    callActionWidget!!.collapse()
-//                }, resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
+                window.decorView.postDelayed({
+                    callActionWidget!!.collapse()
+                }, resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
             }
 
             override fun onOutputDeviceAttached(currentAudioOutputDevice: AudioOutputDevice?, attachedAudioOutputDevice: AudioOutputDevice, availableOutputs: List<AudioOutputDevice>) {
