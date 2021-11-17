@@ -23,6 +23,9 @@ internal class StartFragment : BaseFragment() {
 
     private val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 
+    /**
+     * @suppress
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,6 +56,14 @@ internal class StartFragment : BaseFragment() {
         }
 
         return binding.root
+    }
+
+    /**
+     * @suppress
+     */
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onTap(): Boolean = false

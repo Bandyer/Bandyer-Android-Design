@@ -19,7 +19,8 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
     /**
      * The [GlassActivity]
      */
-    private val activity by lazy { requireActivity() as GlassActivity }
+    private val activity
+        get() = requireActivity() as GlassActivity
 
     /**
      * The fragment's view binding
