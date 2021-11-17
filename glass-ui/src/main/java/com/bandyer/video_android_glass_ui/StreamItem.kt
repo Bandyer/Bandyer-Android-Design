@@ -79,20 +79,23 @@ internal class StreamItem(val data: StreamParticipant, parentScope: CoroutineSco
             jobs.add(stream.audio
                 .onEach { if(it == null) showMicMuted(true) }
                 .filter { it != null }
-                .flatMapConcat { combine(it!!.state, it.enabled) { s, e -> Pair(s, e) } }
+                .flatMapLatest { combine(it!!.state, it.enabled) { s, e -> Pair(s, e) } }
                 .onEach {
                     if(it.first is Input.State.Closed) showMicMuted(true) else showMicMuted(!it.second)
                 }.launchIn(item.scope))
 
+            var currentView: View? = null
             jobs.add(stream.video
                 .onEach { if(it == null) showTitleAvatar(true, data.isMyStream) }
                 .filter { it != null }
-                .flatMapConcat { combine(it!!.state, it.enabled, it.view) { s, e, v -> Triple(s, e, v) } }
+                .flatMapLatest { combine(it!!.state, it.enabled, it.view) { s, e, v -> Triple(s, e, v) } }
                 .onEach {
                     if(it.first is Input.State.Closed) showTitleAvatar(true, data.isMyStream) else showTitleAvatar(!it.second, data.isMyStream)
                     it.third?.also { view ->
+                        (currentView?.parent as? ViewGroup)?.removeView(currentView)
                         (view.parent as? ViewGroup)?.removeView(view)
                         bandyerVideoWrapper.addView(view.apply { id = View.generateViewId() })
+                        currentView = view
                     }
                 }.launchIn(item.scope))
         }
