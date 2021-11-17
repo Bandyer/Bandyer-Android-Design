@@ -1,0 +1,17 @@
+<svg id="edit" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1450" data-name="Rettangolo 1450" class="cls-1" width="24" height="24" transform="translate(24) rotate(90)"/>
+  <path id="pencil-write" class="cls-2" d="M3,21H21M12.889,5.556l3.556,3.556M7.556,18,20,5.556,16.444,2,4,14.444V18Z"/>
+</svg>

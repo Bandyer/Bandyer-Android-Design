@@ -1,0 +1,21 @@
+<svg id="sign" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1451" data-name="Rettangolo 1451" class="cls-1" width="24" height="24" transform="translate(24) rotate(90)"/>
+  <g id="pen-tool" transform="translate(4 1.714)">
+    <path id="Tracciato_1159" data-name="Tracciato 1159" class="cls-2" d="M5,14.429,13,3l8,11.429a7.382,7.382,0,0,0-3.429,5.714H8.429A7.382,7.382,0,0,0,5,14.429Zm3.429,5.714h9.143v3.429H8.429Z" transform="translate(-5 -3)"/>
+    <path id="Tracciato_1160" data-name="Tracciato 1160" class="cls-2" d="M12,3v9.143" transform="translate(-4 -3)"/>
+    <circle id="Ellisse_108" data-name="Ellisse 108" class="cls-2" cx="2" cy="2" r="2" transform="translate(6 9.286)"/>
+  </g>
+</svg>

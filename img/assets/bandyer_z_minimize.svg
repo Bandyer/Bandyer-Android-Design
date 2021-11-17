@@ -1,0 +1,23 @@
+<svg id="minimize" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+
+      .cls-2 {
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <path id="Tracciato_1273" data-name="Tracciato 1273" class="cls-1" d="M972,15v5.354h5.354" transform="translate(-958.354 -10)"/>
+  <path id="Tracciato_1269" data-name="Tracciato 1269" class="cls-2" d="M3,21l7-7M21,3l-7,7" transform="translate(0 0)"/>
+  <path id="Tracciato_1271" data-name="Tracciato 1271" class="cls-1" d="M977.355,20.355V15H972" transform="translate(-967 -1.354)"/>
+  <rect id="Rettangolo_1463" data-name="Rettangolo 1463" class="cls-3" width="24" height="24"/>
+</svg>

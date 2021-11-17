@@ -1,0 +1,17 @@
+<svg id="camera_off" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #1b1c1e;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <path id="video-off" class="cls-1" d="M6.333,3,19.667,23m-2.222-2.222H3V5.222H7.444m5.278,0h4.722v8.705m.316-2.291L23,8.556v8.889l-5.239-3.081" transform="translate(-1 -1)"/>
+  <rect id="Rettangolo_1418" data-name="Rettangolo 1418" class="cls-2" width="24" height="24"/>
+</svg>

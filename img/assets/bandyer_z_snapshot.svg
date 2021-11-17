@@ -1,0 +1,21 @@
+<svg id="snapshot" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #1b1c1e;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g id="Raggruppa_2565" data-name="Raggruppa 2565" transform="translate(2550 -545)">
+    <path id="Tracciato_1017" data-name="Tracciato 1017" class="cls-1" d="M21,5H3V22H21Z" transform="translate(-2550 544)"/>
+    <path id="Tracciato_1018" data-name="Tracciato 1018" class="cls-1" d="M12,17a3.5,3.5,0,1,0-3.5-3.5A3.5,3.5,0,0,0,12,17Z" transform="translate(-2550 544.334)"/>
+    <path id="Tracciato_1020" data-name="Tracciato 1020" class="cls-1" d="M6,4H8" transform="translate(-2550 544)"/>
+  </g>
+  <rect id="Rettangolo_1415" data-name="Rettangolo 1415" class="cls-2" width="24" height="24"/>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="29.81" height="28.487" viewBox="0 0 29.81 28.487">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g id="send" transform="translate(3.354 2.243)">
+    <path id="send-2" data-name="send" class="cls-1" d="M4,9.528,20.586,4,15.058,20.586l-2.765-8.293ZM20.586,4l-8.293,8.293" transform="translate(11.728 -5.385) rotate(45)"/>
+    <rect id="Rettangolo_1398" data-name="Rettangolo 1398" class="cls-2" width="24" height="24" transform="translate(2.456)"/>
+  </g>
+</svg>

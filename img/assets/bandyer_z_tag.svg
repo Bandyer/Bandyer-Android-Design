@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="13.947" height="19.785" viewBox="0 0 13.947 19.785">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <path id="bookmark" class="cls-1" d="M18.447,20.633l-6.223-4.149L6,20.633V3H18.447Z" transform="translate(-5.25 -2.25)"/>
+</svg>

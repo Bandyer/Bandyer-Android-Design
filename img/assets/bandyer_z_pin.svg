@@ -1,0 +1,34 @@
+<svg id="pin" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #000;
+        stroke-width: 1.5px;
+      }
+
+      .cls-2, .cls-3 {
+        stroke-linecap: round;
+      }
+
+      .cls-4, .cls-5 {
+        stroke: none;
+      }
+
+      .cls-5 {
+        fill: #000;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1449" data-name="Rettangolo 1449" class="cls-1" width="24" height="24" transform="translate(24) rotate(90)"/>
+  <g id="Raggruppa_2574" data-name="Raggruppa 2574" transform="translate(0 -0.001)">
+    <path id="Tracciato_1255" data-name="Tracciato 1255" class="cls-2" d="M5116,13v7" transform="translate(-5104 2.001)"/>
+    <g id="Tracciato_1256" data-name="Tracciato 1256" class="cls-3" transform="translate(-5107 0.083)">
+      <path class="cls-4" d="M5114,1.917h10l-1,7,4,6h-16l4-6Z"/>
+      <path class="cls-5" d="M 5115.7294921875 3.416664123535156 L 5116.56591796875 9.272233963012695 L 5113.802734375 13.4174633026123 L 5124.1982421875 13.4174633026123 L 5121.4345703125 9.272373199462891 L 5122.27099609375 3.416664123535156 L 5115.7294921875 3.416664123535156 M 5114 1.916664123535156 L 5124.00048828125 1.916664123535156 L 5123.00048828125 8.917093276977539 L 5127.00146484375 14.9174633026123 L 5111.00048828125 14.9174633026123 L 5115 8.917093276977539 L 5114 1.916664123535156 Z"/>
+    </g>
+  </g>
+</svg>

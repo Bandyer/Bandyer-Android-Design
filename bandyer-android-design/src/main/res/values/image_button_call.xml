@@ -49,7 +49,7 @@
 
     <style name="BandyerSDKDesign.ImageButton.Call.Large.Decline" parent="BandyerSDKDesign.ImageButton.Call.Large">
         <item name="backgroundTint">@color/bandyer_color_hang_up_button</item>
-        <item name="icon">@drawable/ic_bandyer_hangup</item>
+        <item name="icon">@drawable/ic_bandyer_decline</item>
         <item name="android:contentDescription">@string/bandyer_ringing_decline</item>
     </style>
 
