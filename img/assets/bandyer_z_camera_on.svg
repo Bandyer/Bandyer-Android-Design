@@ -1,0 +1,20 @@
+<svg id="camera_on" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #1b1c1e;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g id="video" transform="translate(2 4.222)">
+    <path id="Tracciato_1029" data-name="Tracciato 1029" class="cls-1" d="M3,5H17.444V20.556H3Z" transform="translate(-3 -5)"/>
+    <path id="Tracciato_1030" data-name="Tracciato 1030" class="cls-1" d="M16,11.333,21.556,8v8.889L16,13.556" transform="translate(-1.556 -4.667)"/>
+  </g>
+  <rect id="Rettangolo_1419" data-name="Rettangolo 1419" class="cls-2" width="24" height="24"/>
+</svg>

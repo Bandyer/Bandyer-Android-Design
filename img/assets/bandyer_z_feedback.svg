@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="21.5" height="20.521" viewBox="0 0 21.5 20.521">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #1b1c1e;
+        stroke-linejoin: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <path id="star" class="cls-1" d="M12.537,3l2.642,7.4h7.358l-5.773,4.227,2.113,7.4-6.34-4.49L6.2,22.021l2.113-7.4L2.537,10.4H9.9Z" transform="translate(-1.787 -2.25)"/>
+</svg>

@@ -1,0 +1,19 @@
+<svg id="end_call_24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #1b1c1e;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g id="phone-hangup" transform="translate(1 7)">
+    <path id="Tracciato_1035" data-name="Tracciato 1035" class="cls-1" d="M3,7.75A20.11,20.11,0,0,1,14,4,20.11,20.11,0,0,1,25,7.75V14l-6.111-1.25V9A12.416,12.416,0,0,0,14,7.75,12.416,12.416,0,0,0,9.111,9v3.75L3,14Z" transform="translate(-3 -4)"/>
+  </g>
+  <rect id="Rettangolo_1480" data-name="Rettangolo 1480" class="cls-2" width="24" height="24"/>
+</svg>

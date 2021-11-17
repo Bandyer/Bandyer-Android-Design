@@ -1,0 +1,17 @@
+<svg id="file_share" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #1b1c1e;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <path id="paperclip" class="cls-1" d="M10.333,6.333V18a1.667,1.667,0,1,0,3.333,0V6.333A3.333,3.333,0,1,0,7,6.333V18a5,5,0,0,0,10,0V7.444" transform="translate(0 -1)"/>
+  <rect id="Rettangolo_1401" data-name="Rettangolo 1401" class="cls-2" width="24" height="24"/>
+</svg>
