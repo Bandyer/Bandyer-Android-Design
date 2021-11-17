@@ -84,7 +84,6 @@ internal class StreamItem(val data: StreamParticipant, parentScope: CoroutineSco
                     if(it.first is Input.State.Closed) showMicMuted(true) else showMicMuted(!it.second)
                 }.launchIn(item.scope))
 
-            var currentView: View? = null
             jobs.add(stream.video
                 .onEach { if(it == null) showTitleAvatar(true, data.isMyStream) }
                 .filter { it != null }
@@ -92,10 +91,9 @@ internal class StreamItem(val data: StreamParticipant, parentScope: CoroutineSco
                 .onEach {
                     if(it.first is Input.State.Closed) showTitleAvatar(true, data.isMyStream) else showTitleAvatar(!it.second, data.isMyStream)
                     it.third?.also { view ->
-                        (currentView?.parent as? ViewGroup)?.removeView(currentView)
                         (view.parent as? ViewGroup)?.removeView(view)
+                        bandyerVideoWrapper.removeAllViews()
                         bandyerVideoWrapper.addView(view.apply { id = View.generateViewId() })
-                        currentView = view
                     }
                 }.launchIn(item.scope))
         }
