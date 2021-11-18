@@ -67,17 +67,15 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
     private val cameraStream: Flow<Stream?> =
         call.participants
             .map { it.me }
-            .flatMapConcat { it.streams }
-            .map { streams ->
-                streams.firstOrNull { it.video.firstOrNull { video -> video?.source is Input.Video.Source.Camera } != null }
-            }
+            .flatMapLatest { it.streams }
+            .map { streams -> streams.firstOrNull { it.video.firstOrNull { video -> video?.source is Input.Video.Source.Camera } != null } }
 
     val cameraEnabled: StateFlow<Boolean> = MutableStateFlow(false).apply {
         cameraStream
             .filter { it != null }
-            .flatMapConcat { it!!.video }
+            .flatMapLatest { it!!.video }
             .filter { it != null }
-            .flatMapConcat { it!!.enabled }
+            .flatMapLatest { it!!.enabled }
             .onEach { value = it }
             .launchIn(viewModelScope)
     }
@@ -85,9 +83,9 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
     val micEnabled: StateFlow<Boolean> = MutableStateFlow(false).apply {
         cameraStream
             .filter { it != null }
-            .flatMapConcat { it!!.audio }
+            .flatMapLatest { it!!.audio }
             .filter { it != null }
-            .flatMapConcat { it!!.enabled }
+            .flatMapLatest { it!!.enabled }
             .onEach { value = it }
             .launchIn(viewModelScope)
     }

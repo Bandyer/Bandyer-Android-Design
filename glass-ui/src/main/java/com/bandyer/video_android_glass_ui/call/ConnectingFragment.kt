@@ -94,7 +94,7 @@ internal abstract class ConnectingFragment: BaseFragment() {
 
                         call.participants
                             .map { it.others + it.me }
-                            .flatMapConcat { participants -> participants.map { it.state }.merge() }
+                            .flatMapLatest { participants -> participants.map { it.state }.merge() }
                             .takeWhile { it !is CallParticipant.State.Online.InCall }
                             .onCompletion { bandyerSubtitle.text = resources.getString(R.string.bandyer_glass_connecting) }
                             .launchIn(this@repeatOnStarted)
