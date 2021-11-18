@@ -26,15 +26,16 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
 
     val inCallParticipants: Flow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
-            val jobs = mutableMapOf<String, Job>()
-            call.participants.onEach { participants ->
-                val inCallParticipants = mutableMapOf<String, CallParticipant>()
-                participants.others.plus(participants.me).forEach { participant ->
-                    jobs[participant.userAlias]?.cancel()
-                    jobs[participant.userAlias] = participant.state.onEach { state ->
-                        if (state is CallParticipant.State.Online.InCall) inCallParticipants[participant.userAlias] = participant
-                        else inCallParticipants.remove(participant.userAlias)
-                        emit(inCallParticipants.values.toList())
+            val pJobs = mutableListOf<Job>()
+            call.participants.onEach { parts ->
+                pJobs.forEach { it.cancel() }
+                pJobs.clear()
+                val participants = mutableMapOf<String, CallParticipant>()
+                parts.others.plus(parts.me).forEach { part ->
+                    pJobs += part.state.onEach { state ->
+                        if (state is CallParticipant.State.Online.InCall) participants[part.userAlias] = part
+                        else participants.remove(part.userAlias)
+                        emit(participants.values.toList())
                     }.launchIn(viewModelScope)
                 }
             }.launchIn(viewModelScope)
@@ -43,20 +44,19 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
     val streams: Flow<List<StreamParticipant>> =
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1)
             .apply {
-                val jobs = mutableMapOf<String, Job>()
-                call.participants
-                    .onEach { participants ->
-                        val allStreams = mutableListOf<StreamParticipant>()
-                        participants.others.plus(participants.me)
-                            .forEach { participant ->
-                                jobs[participant.userAlias]?.cancel()
-                                jobs[participant.userAlias] = combine(participant.state, participant.streams) { state, streams ->
-                                    allStreams.removeIf { stream -> stream.participant == participant }
+                val pJobs = mutableListOf<Job>()
+                call.participants.onEach { parts ->
+                    pJobs.forEach { it.cancel() }
+                    pJobs.clear()
+                    val allStreams = mutableListOf<StreamParticipant>()
+                    parts.others.plus(parts.me).forEach { part ->
+                        pJobs += combine(part.state, part.streams) { state, streams ->
+                                    allStreams.removeIf { stream -> stream.participant == part }
 
                                     if (state is CallParticipant.State.Online.InCall)
                                         allStreams +=
-                                            if (streams.none { stream -> stream.state !is Stream.State.Closed }) listOf(StreamParticipant(participant, participant == participants.me, null))
-                                            else streams.map { stream -> StreamParticipant(participant, participant == participants.me, stream) }
+                                            if (streams.none { stream -> stream.state !is Stream.State.Closed }) listOf(StreamParticipant(part, part == parts.me, null))
+                                            else streams.map { stream -> StreamParticipant(part, part == parts.me, stream) }
 
                                     emit(allStreams)
                                 }.launchIn(viewModelScope)
