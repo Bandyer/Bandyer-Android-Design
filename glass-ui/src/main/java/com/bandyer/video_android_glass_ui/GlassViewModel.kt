@@ -16,23 +16,18 @@ internal object GlassViewModelFactory : ViewModelProvider.Factory {
 }
 
 internal class GlassViewModel(private val callManager: CallManager) : ViewModel() {
-    val call: Flow<Call> = callManager.call
+    val call: Call = callManager.call
 
     val battery: Flow<Battery> = callManager.battery
 
     val wifi: Flow<WiFi> = callManager.wifi
 
-    val volume: Volume
-        get() = callManager.getVolume()
-
-    val callState: Flow<Call.State> = call.flatMapConcat { it.state }
-
-    val participants: Flow<CallParticipants> = call.flatMapConcat { it.participants }
+    val volume: Volume get() = callManager.getVolume()
 
     val inCallParticipants: Flow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val jobs = mutableMapOf<String, Job>()
-            participants.onEach { participants ->
+            call.participants.onEach { participants ->
                 val inCallParticipants = mutableMapOf<String, CallParticipant>()
                 participants.others.plus(participants.me).forEach { participant ->
                     jobs[participant.userAlias]?.cancel()
@@ -45,13 +40,11 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
             }.launchIn(viewModelScope)
         }
 
-    val recording = call.flatMapConcat { it.isRecording }
-
     val streams: Flow<List<StreamParticipant>> =
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1)
             .apply {
                 val jobs = mutableMapOf<String, Job>()
-                participants
+                call.participants
                     .onEach { participants ->
                         val allStreams = mutableListOf<StreamParticipant>()
                         participants.others.plus(participants.me)
@@ -72,7 +65,7 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
             }
 
     private val cameraStream: Flow<Stream?> =
-        participants
+        call.participants
             .map { it.me }
             .flatMapConcat { it.streams }
             .map { streams ->

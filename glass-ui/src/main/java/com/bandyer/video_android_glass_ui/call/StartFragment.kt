@@ -40,9 +40,9 @@ internal class StartFragment : BaseFragment() {
 
         repeatOnStarted {
             with(viewModel) {
-                callState
+                call.state
                     .takeWhile { it is Call.State.Connecting || it == Call.State.Disconnected }
-                    .combine(participants) { state, participants ->
+                    .combine(call.participants) { state, participants ->
                         // TODO in caso di stato non previsto cosa mostrare
                         when {
                             state is Call.State.Connecting && participants.me == participants.creator ->

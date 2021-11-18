@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.bandyer.video_android_glass_ui.BaseFragment
-import com.bandyer.video_android_glass_ui.call.EmptyFragmentArgs
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentZoomBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener

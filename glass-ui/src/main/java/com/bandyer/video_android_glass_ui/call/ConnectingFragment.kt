@@ -76,8 +76,8 @@ internal abstract class ConnectingFragment: BaseFragment() {
                 repeatOnStarted {
                     with(viewModel) {
                         var nOfParticipants = 0
-                        callState
-                            .combine(participants) { state, participants ->
+                        call.state
+                            .combine(call.participants) { state, participants ->
                                 if(state is Call.State.Connected) onConnected()
                                 
                                 val items = participants.others.plus(participants.me).map { FullScreenDialogItem(it.username) }
@@ -92,7 +92,7 @@ internal abstract class ConnectingFragment: BaseFragment() {
                             }
                             .launchIn(this@repeatOnStarted)
 
-                        participants
+                        call.participants
                             .map { it.others + it.me }
                             .flatMapConcat { participants -> participants.map { it.state }.merge() }
                             .takeWhile { it !is CallParticipant.State.Online.InCall }

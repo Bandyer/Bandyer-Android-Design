@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity() {
         btnSmartglass.setOnClickListener {
             launchCallGlass(
                 object : CallManager  {
-                    override val call: Flow<Call> = flowOf()
+                    override val call: Call = Call("", flowOf(), flowOf(), flowOf(), flowOf())
                     override val battery: Flow<Battery> = flowOf()
                     override val wifi: Flow<WiFi> = flowOf()
                     override fun getVolume() = Volume(0,0,0)

@@ -114,8 +114,7 @@ internal class GlassActivity :
                 .onEach { binding.bandyerStatusBar.updateWifiSignalIcon(it) }
                 .launchIn(this)
 
-            viewModel
-                .callState
+            viewModel.call.state
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
                     when(it) {
@@ -125,34 +124,29 @@ internal class GlassActivity :
                     // TODO aggiungere messaggio in caso di errore?
                 }.launchIn(this)
 
-            viewModel
-                .inCallParticipants
+            viewModel.inCallParticipants
                 .onEach {
                     binding.bandyerStatusBar.updateCenteredText(it.count())
                 }.launchIn(this)
 
-            viewModel.
-                recording
+            viewModel.call.isRecording
                 .onEach {
                     binding.bandyerStatusBar.apply { if(it) showRec() else hideRec() }
                 }.launchIn(this)
 
-            viewModel
-                .streams
+            viewModel.streams
                 .onEach { streams ->
                     val orderedList = streams.sortedBy { !it.isMyStream }.map { StreamItem(it, this) }
                     FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList)
                 }.launchIn(this)
 
-            viewModel
-                .cameraEnabled
+            viewModel.cameraEnabled
                 .onEach {
                     if(it) binding.bandyerStatusBar.hideCamMutedIcon()
                     else binding.bandyerStatusBar.showCamMutedIcon()
                 }.launchIn(this)
 
-            viewModel
-                .micEnabled
+            viewModel.micEnabled
                 .onEach {
                     if(it) binding.bandyerStatusBar.hideMicMutedIcon()
                     else binding.bandyerStatusBar.showMicMutedIcon()

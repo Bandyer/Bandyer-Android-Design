@@ -50,7 +50,7 @@ internal object ManagersHolder {
 
 interface CallManager {
 
-    val call: Flow<Call>
+    val call: Call
 
     val battery: Flow<Battery>
 
