@@ -91,7 +91,7 @@
 
     <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.MicIcon" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:tint">@android:color/white</item>
-        <item name="srcCompat">@drawable/bandyer_glass_mic_off_icon</item>
+        <item name="srcCompat">@drawable/ic_bandyer_glass_mic_off</item>
         <item name="android:layout_width">@dimen/bandyer_dimen_space32</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
     </style>

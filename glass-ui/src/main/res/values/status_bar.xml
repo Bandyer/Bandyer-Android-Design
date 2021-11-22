@@ -57,11 +57,11 @@
     </style>
 
     <style name="BandyerSDKDesign.GlassStatusBarIcon.Activable.Camera" parent="BandyerSDKDesign.GlassStatusBarIcon.Activable">
-        <item name="srcCompat">@drawable/bandyer_glass_cam_off_icon</item>
+        <item name="srcCompat">@drawable/ic_bandyer_glass_cam_off</item>
     </style>
 
     <style name="BandyerSDKDesign.GlassStatusBarIcon.Activable.Mic" parent="BandyerSDKDesign.GlassStatusBarIcon.Activable">
-        <item name="srcCompat">@drawable/bandyer_glass_mic_off_icon</item>
+        <item name="srcCompat">@drawable/ic_bandyer_glass_mic_off</item>
     </style>
 
     <style name="BandyerSDKDesign.GlassStatusBarIcon.Activable" parent="BandyerSDKDesign.GlassStatusBarIcon">
