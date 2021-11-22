@@ -39,15 +39,15 @@
             tools:text="3 utenti in chiamata" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/bandyer_cam_muted_icon"
-            style="?attr/bandyer_camIconStyle"
+            android:id="@+id/bandyer_mic_muted_icon"
+            style="?attr/bandyer_micIconStyle"
             app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
-            app:layout_constraintEnd_toStartOf="@id/bandyer_mic_muted_icon"
+            app:layout_constraintEnd_toStartOf="@id/bandyer_cam_muted_icon"
             app:layout_constraintTop_toTopOf="@id/bandyer_battery" />
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/bandyer_mic_muted_icon"
-            style="?attr/bandyer_micIconStyle"
+            android:id="@+id/bandyer_cam_muted_icon"
+            style="?attr/bandyer_camIconStyle"
             app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
             app:layout_constraintEnd_toStartOf="@id/bandyer_chat_icon"
             app:layout_constraintTop_toTopOf="@id/bandyer_battery" />

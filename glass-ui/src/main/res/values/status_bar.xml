@@ -13,8 +13,8 @@
     <style name="BandyerSDKDesign.Glass.StatusBar" parent="BandyerSDKDesign.Glass">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.StatusBar.RootLayout</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassStatusBar</item>
-        <item name="bandyer_camIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Camera</item>
-        <item name="bandyer_micIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Mic</item>
+        <item name="bandyer_camIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Activable.Camera</item>
+        <item name="bandyer_micIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Activable.Mic</item>
         <item name="bandyer_chatIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Chat</item>
         <item name="bandyer_cellIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Cell</item>
         <item name="bandyer_wifiIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Wifi</item>
@@ -44,16 +44,8 @@
         <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassStatusBarIcon.Camera" parent="BandyerSDKDesign.GlassStatusBarIcon">
-        <item name="srcCompat">@drawable/bandyer_glass_cam_off_icon</item>
-    </style>
-
-    <style name="BandyerSDKDesign.GlassStatusBarIcon.Mic" parent="BandyerSDKDesign.GlassStatusBarIcon">
-        <item name="srcCompat">@drawable/bandyer_glass_mic_off_icon</item>
-    </style>
-
     <style name="BandyerSDKDesign.GlassStatusBarIcon.Chat" parent="BandyerSDKDesign.GlassStatusBarIcon">
-    <item name="srcCompat">@drawable/ic_bandyer_glass_badge_new_mess</item>
+        <item name="srcCompat">@drawable/ic_bandyer_glass_badge_new_mess</item>
     </style>
 
     <style name="BandyerSDKDesign.GlassStatusBarIcon.Wifi" parent="BandyerSDKDesign.GlassStatusBarIcon">
@@ -62,6 +54,24 @@
 
     <style name="BandyerSDKDesign.GlassStatusBarIcon.Cell" parent="BandyerSDKDesign.GlassStatusBarIcon">
         <item name="srcCompat">@drawable/bandyer_glass_cell_icon</item>
+    </style>
+
+    <style name="BandyerSDKDesign.GlassStatusBarIcon.Activable.Camera" parent="BandyerSDKDesign.GlassStatusBarIcon.Activable">
+        <item name="srcCompat">@drawable/bandyer_glass_cam_off_icon</item>
+    </style>
+
+    <style name="BandyerSDKDesign.GlassStatusBarIcon.Activable.Mic" parent="BandyerSDKDesign.GlassStatusBarIcon.Activable">
+        <item name="srcCompat">@drawable/bandyer_glass_mic_off_icon</item>
+    </style>
+
+    <style name="BandyerSDKDesign.GlassStatusBarIcon.Activable" parent="BandyerSDKDesign.GlassStatusBarIcon">
+        <item name="shapeAppearanceOverlay">@style/BandyerSDKDesign.GlassStatusBarIcon.Activable.ShapeOverlay</item>
+        <item name="android:background">@color/bandyer_glass_input_background</item>
+    </style>
+
+    <style name="BandyerSDKDesign.GlassStatusBarIcon.Activable.ShapeOverlay" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.StatusBar.Battery" parent="">

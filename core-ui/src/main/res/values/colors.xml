@@ -80,4 +80,7 @@
     <!-- recording color -->
     <color name="bandyer_recording_color">#99000D</color>
 
+    <!-- blocked input color -->
+    <color name="bandyer_blocked_input_color">#FF0000</color>
+
 </resources>

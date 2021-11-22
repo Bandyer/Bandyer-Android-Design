@@ -143,13 +143,13 @@ internal class GlassActivity :
             viewModel.cameraEnabled
                 .onEach {
                     if(it) binding.bandyerStatusBar.hideCamMutedIcon()
-                    else binding.bandyerStatusBar.showCamMutedIcon()
+                    else binding.bandyerStatusBar.showCamMutedIcon(true)
                 }.launchIn(this)
 
             viewModel.micEnabled
                 .onEach {
                     if(it) binding.bandyerStatusBar.hideMicMutedIcon()
-                    else binding.bandyerStatusBar.showMicMutedIcon()
+                    else binding.bandyerStatusBar.showMicMutedIcon(true)
                 }.launchIn(this)
         }
     }

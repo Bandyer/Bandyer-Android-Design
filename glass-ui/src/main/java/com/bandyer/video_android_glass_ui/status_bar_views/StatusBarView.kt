@@ -135,8 +135,9 @@ internal class StatusBarView @JvmOverloads constructor(
     /**
      * Show the cam muted icon
      */
-    fun showCamMutedIcon() {
-        binding.bandyerCamMutedIcon.visibility = View.VISIBLE
+    fun showCamMutedIcon(isBlocked: Boolean = false) = with(binding.bandyerCamMutedIcon) {
+        visibility = View.VISIBLE
+        isActivated = isBlocked
     }
 
     /**
@@ -149,8 +150,9 @@ internal class StatusBarView @JvmOverloads constructor(
     /**
      * Show the mic muted icon
      */
-    fun showMicMutedIcon() {
-        binding.bandyerMicMutedIcon.visibility = View.VISIBLE
+    fun showMicMutedIcon(isBlocked: Boolean = false) = with(binding.bandyerMicMutedIcon) {
+        visibility = View.VISIBLE
+        isActivated = isBlocked
     }
 
     /**
