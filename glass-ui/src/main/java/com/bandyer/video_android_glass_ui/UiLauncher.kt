@@ -5,12 +5,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.video_android_glass_ui.common.Volume
-import com.bandyer.video_android_glass_ui.model.Battery
-import com.bandyer.video_android_glass_ui.model.Call
-import com.bandyer.video_android_glass_ui.model.Option
-import com.bandyer.video_android_glass_ui.model.WiFi
+import com.bandyer.video_android_glass_ui.model.*
 import kotlinx.coroutines.flow.Flow
-import java.lang.ref.WeakReference
 
 object UiLauncher {
 
@@ -55,6 +51,8 @@ interface CallManager {
     val battery: Flow<Battery>
 
     val wifi: Flow<WiFi>
+
+    val permissions: Flow<Permissions>
 
     fun requestPermissions(context: FragmentActivity)
 

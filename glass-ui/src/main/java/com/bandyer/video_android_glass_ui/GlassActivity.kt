@@ -91,16 +91,14 @@ internal class GlassActivity :
         }
 
         // NavController
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         // Gesture Detector
         glassGestureDetector = GlassGestureDetector(this, this)
 
         // Notification Manager
-        notificationManager =
-            ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
+        notificationManager = ChatNotificationManager(binding.bandyerContent).also { it.addListener(this)
 
         // Observer events
         repeatOnStarted {
@@ -142,14 +140,22 @@ internal class GlassActivity :
 
             viewModel.cameraEnabled
                 .onEach {
-                    if(it) binding.bandyerStatusBar.hideCamMutedIcon()
-                    else binding.bandyerStatusBar.showCamMutedIcon(true)
+                    with(binding.bandyerStatusBar) {
+                        if(it) hideCamMutedIcon() else showCamMutedIcon()
+                    }
                 }.launchIn(this)
 
             viewModel.micEnabled
                 .onEach {
-                    if(it) binding.bandyerStatusBar.hideMicMutedIcon()
-                    else binding.bandyerStatusBar.showMicMutedIcon(true)
+                    with(binding.bandyerStatusBar) {
+                        if(it) hideMicMutedIcon() else showMicMutedIcon()
+                    }
+                }.launchIn(this)
+
+            viewModel.permissions
+                .onEach {
+                    if(!it.microphoneAllowed && it.nOfRetries < 1) binding.bandyerStatusBar.showMicMutedIcon(true)
+                    if(!it.deviceCameraAllowed && it.nOfRetries < 1) binding.bandyerStatusBar.showCamMutedIcon(true)
                 }.launchIn(this)
         }
     }
