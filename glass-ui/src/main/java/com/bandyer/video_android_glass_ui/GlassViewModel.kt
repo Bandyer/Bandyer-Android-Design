@@ -24,6 +24,8 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
 
     val volume: Volume get() = callManager.getVolume()
 
+    val permissions: Flow<Permissions> = callManager.permissions
+
     val inCallParticipants: Flow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val pJobs = mutableListOf<Job>()
@@ -64,11 +66,11 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
                     }.launchIn(viewModelScope)
             }
 
-    private val cameraStream: Flow<Stream?> =
-        call.participants
-            .map { it.me }
-            .flatMapLatest { it.streams }
-            .map { streams -> streams.firstOrNull { it.video.firstOrNull { video -> video?.source is Input.Video.Source.Camera } != null } }
+    private val myStreams: Flow<List<Stream>> = call.participants.map { it.me }.flatMapLatest { it.streams }
+
+    private val cameraStream: Flow<Stream?> = myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it?.source is Input.Video.Source.Camera } != null } }
+
+    private val audioStream: Flow<Stream?> = myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }
 
     val cameraEnabled: StateFlow<Boolean> = MutableStateFlow(false).apply {
         cameraStream
@@ -81,7 +83,7 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
     }
 
     val micEnabled: StateFlow<Boolean> = MutableStateFlow(false).apply {
-        cameraStream
+        audioStream
             .filter { it != null }
             .flatMapLatest { it!!.audio }
             .filter { it != null }
