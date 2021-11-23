@@ -65,7 +65,7 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity.onDestinationChanged(NavHostFragment.findNavController(this).currentDestination!!.id)
+        NavHostFragment.findNavController(this).currentDestination?.also { activity.onDestinationChanged(it.id) }
         activity.addNotificationListener(this)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
