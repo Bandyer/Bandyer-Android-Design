@@ -26,8 +26,6 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
     companion object Items {
         /**
          * Get all actions for an audio&Video call
-         * @param micToggled True if by default the microphone should be toggled, false otherwise, null if not desired as action
-         * @param cameraToggled True if by default the camera should be toggled, false otherwise, null if not desired as action
          * @param withZoom True if by default the zoom should be shown, false otherwise
          * @param withParticipants True if by default the participants should be shown, false otherwise
          * @param withChat True if by default the chat should be shown, false otherwise
