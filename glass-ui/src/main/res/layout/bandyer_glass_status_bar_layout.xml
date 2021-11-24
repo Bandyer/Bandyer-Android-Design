@@ -7,7 +7,8 @@
         style="?attr/bandyer_rootLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="?attr/bandyer_statusBarStyle">
+        android:theme="?attr/bandyer_statusBarStyle"
+        android:animateLayoutChanges="true">
 
         <TextClock
             android:id="@+id/bandyer_time"

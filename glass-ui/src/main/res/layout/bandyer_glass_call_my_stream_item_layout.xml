@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/bandyer_video_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true"/>
+
+        <LinearLayout
+            android:id="@+id/bandyer_info_wrapper"
+            style="?attr/bandyer_rootLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:theme="?attr/bandyer_recyclerViewItemStyle">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/bandyer_centered_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/bandyer_mic_muted_icon"
+                    style="?attr/bandyer_bigMicIconStyle"
+                    app:layout_constraintBottom_toTopOf="@id/bandyer_centered_subtitle"
+                    app:layout_constraintEnd_toStartOf="@id/bandyer_cam_muted_icon"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/bandyer_cam_muted_icon"
+                    style="?attr/bandyer_bigCamIconStyle"
+                    app:layout_constraintBottom_toTopOf="@id/bandyer_centered_subtitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/bandyer_mic_muted_icon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/bandyer_centered_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="Mario Lario" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/bandyer_subtitle_layout"
+                layout="@layout/bandyer_glass_call_stream_subtitle_layout" />
+        </LinearLayout>
+    </FrameLayout>
+</layout>

@@ -132,7 +132,8 @@ class MainActivity : AppCompatActivity() {
                     override val wifi: Flow<WiFi> = flowOf()
                     override val permissions: Flow<Permissions> = flowOf()
                     override fun getVolume() = Volume(0,0,0)
-                    override fun requestPermissions(context: FragmentActivity) = Unit
+                    override fun requestMicPermission(context: FragmentActivity) = Unit
+                    override fun requestCameraPermission(context: FragmentActivity) = Unit
                     override fun answer() = Unit
                     override fun hangup() = Unit
                     override fun enableCamera(enable: Boolean) = Unit

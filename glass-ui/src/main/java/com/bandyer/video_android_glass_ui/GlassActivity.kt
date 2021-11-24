@@ -67,7 +67,6 @@ internal class GlassActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        
         // Check it is the first time the onCreate is called
         if(savedInstanceState == null) {
             viewModel.requestMicPermission(this)
@@ -138,7 +137,7 @@ internal class GlassActivity :
 
             viewModel.streams
                 .onEach { streams ->
-                    val orderedList = streams.sortedBy { !it.isMyStream }.map { StreamItem(it, this) }
+                    val orderedList = streams.sortedBy { !it.isMyStream }.map { if(it.isMyStream) MyStreamItem(it, this) else OtherStreamItem(it, this) }
                     FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList)
                 }.launchIn(this)
 

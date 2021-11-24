@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/bandyer_video_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/bandyer_info_wrapper"
+            style="?attr/bandyer_rootLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:theme="?attr/bandyer_recyclerViewItemStyle">
+
+            <com.bandyer.video_android_glass_ui.common.AvatarView
+                android:id="@+id/bandyer_avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="?attr/bandyer_avatarStyle" />
+
+             <include
+                 android:id="@+id/bandyer_subtitle_layout"
+                 layout="@layout/bandyer_glass_call_stream_subtitle_layout"/>
+        </LinearLayout>
+    </FrameLayout>
+</layout>
