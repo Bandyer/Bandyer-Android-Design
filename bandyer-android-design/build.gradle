@@ -52,7 +52,7 @@ def projectLicenseUrl = "https://github.com/Bandyer/Bandyer-Android-Design/LICEN
 def projectKeywords = ['bandyer-android-design', 'sdk-design', 'android-design', 'android', 'video', 'conference', 'helpdesk', 'bandyer', 'webrtc', 'call', 'audio']
 def developerFullName = "Bandyer Srl"
 group = projectGroup
-version = "2.0.8"
+version = "2.0.9"
 
 // Library versions
 def fastAdapterVersion = "5.5.1"
@@ -121,7 +121,7 @@ dependencies {
 
     /*** UI ***/
     api 'com.squareup.picasso:picasso:2.71828'
-    api 'androidx.constraintlayout:constraintlayout:2.0.4'
+    api 'androidx.constraintlayout:constraintlayout:2.1.2'
     api "com.mikepenz:fastadapter:$fastAdapterVersion"
     api "com.mikepenz:fastadapter-extensions-diff:$fastAdapterVersion"
 
