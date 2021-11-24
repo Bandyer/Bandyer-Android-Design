@@ -2,6 +2,7 @@ package com.bandyer.video_android_glass_ui.menu
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -104,6 +105,10 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         repeatOnStarted {
             viewModel.cameraEnabled.onEach { cameraAction.toggle(it) }.launchIn(this)
             viewModel.micEnabled.onEach { micAction.toggle(it) }.launchIn(this)
+            viewModel.permissions.onEach {
+                    micAction.disable(!it.microphoneAllowed && it.nOfRetries < 1)
+                    cameraAction.disable(!it.deviceCameraAllowed && it.nOfRetries < 1)
+                }.launchIn(this)
         }
 
         return binding.root
@@ -143,8 +148,14 @@ internal class MenuFragment : BaseFragment(), TiltListener {
     override fun onTap() = onTap(itemAdapter!!.getAdapterItem(currentMenuItemIndex).action)
 
     private fun onTap(action: CallAction) = when (action) {
-        is CallAction.MICROPHONE -> true.also { viewModel.enableMic(!viewModel.micEnabled.value) }
-        is CallAction.CAMERA -> true.also { viewModel.enableCamera(!viewModel.cameraEnabled.value) }
+        is CallAction.MICROPHONE -> true.also {
+            viewModel.requestPermissions(requireActivity())
+            viewModel.enableMic(!viewModel.micEnabled.value)
+        }
+        is CallAction.CAMERA -> true.also {
+            viewModel.requestPermissions(requireActivity())
+            viewModel.enableCamera(!viewModel.cameraEnabled.value)
+        }
         is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment(args.enableTilt)) }
         is CallAction.ZOOM -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment(args.enableTilt)) }
         is CallAction.PARTICIPANTS -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToParticipantsFragment(args.enableTilt)) }

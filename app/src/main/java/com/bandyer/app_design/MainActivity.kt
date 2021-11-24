@@ -34,10 +34,7 @@ import com.bandyer.app_design.databinding.ActivityMainBinding
 import com.bandyer.video_android_glass_ui.CallManager
 import com.bandyer.video_android_glass_ui.UiLauncher.launchCallGlass
 import com.bandyer.video_android_glass_ui.common.Volume
-import com.bandyer.video_android_glass_ui.model.Battery
-import com.bandyer.video_android_glass_ui.model.Call
-import com.bandyer.video_android_glass_ui.model.Option
-import com.bandyer.video_android_glass_ui.model.WiFi
+import com.bandyer.video_android_glass_ui.model.*
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.CallAction
 import com.bandyer.video_android_phone_ui.call.dialogs.BandyerSnapshotDialog
@@ -133,6 +130,7 @@ class MainActivity : AppCompatActivity() {
                     override val call: Call = Call("", flowOf(), flowOf(), flowOf(), flowOf())
                     override val battery: Flow<Battery> = flowOf()
                     override val wifi: Flow<WiFi> = flowOf()
+                    override val permissions: Flow<Permissions> = flowOf()
                     override fun getVolume() = Volume(0,0,0)
                     override fun requestPermissions(context: FragmentActivity) = Unit
                     override fun answer() = Unit

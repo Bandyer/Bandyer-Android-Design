@@ -6,6 +6,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import com.bandyer.video_android_glass_ui.R
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassMenuItemLayoutBinding
 import com.google.android.material.textview.MaterialTextView
 
 /**
@@ -68,6 +69,7 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
      * @constructor
      */
     abstract class ToggleableCallAction(private var toggled: Boolean, @IdRes viewId: Int, @LayoutRes layout: Int, @AttrRes styleAttr: Int): CallAction(viewId, layout, styleAttr) {
+
         /**
          * The text when the item is inactive
          */
@@ -79,10 +81,20 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
         protected abstract val toggledText: String
 
         /**
+         * Tells if the item is disabled
+         */
+        private var disabled: Boolean = false
+
+        /**
+         * The layout binding
+         */
+        private var binding: BandyerGlassMenuItemLayoutBinding? = null
+
+        /**
          * Toggle the menu action
          */
         fun toggle(toggled: Boolean) {
-            itemView?.findViewById<MaterialTextView>(R.id.bandyer_text)?.apply {
+            binding?.bandyerText?.apply {
                 isActivated = !toggled
                 text = if(toggled) toggledText else defaultText
             }
@@ -90,11 +102,21 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
         }
 
         /**
+         * Disable the menu action
+         */
+        fun disable(disabled: Boolean) {
+            binding?.bandyerText?.isEnabled = !disabled
+            this.disabled = disabled
+        }
+
+        /**
          * @suppress
          */
         override fun onReady() {
             super.onReady()
+            binding = BandyerGlassMenuItemLayoutBinding.bind(itemView!!)
             toggle(toggled)
+            disable(disabled)
         }
     }
 
