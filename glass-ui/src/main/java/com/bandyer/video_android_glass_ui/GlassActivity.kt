@@ -68,11 +68,15 @@ internal class GlassActivity :
         super.onCreate(savedInstanceState)
 
         
+        // Check it is the first time the onCreate is called
+        if(savedInstanceState == null) {
+            viewModel.requestMicPermission(this)
+            viewModel.requestCameraPermission(this)
+        }
 
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
         enterImmersiveMode()
-        viewModel.requestPermissions(this)
 
         with(binding.bandyerStreams) {
             itemAdapter = ItemAdapter()
@@ -154,8 +158,10 @@ internal class GlassActivity :
 
             viewModel.permissions
                 .onEach {
-                    if(!it.microphoneAllowed && it.nOfRetries < 1) binding.bandyerStatusBar.showMicMutedIcon(true)
-                    if(!it.deviceCameraAllowed && it.nOfRetries < 1) binding.bandyerStatusBar.showCamMutedIcon(true)
+                    with(binding.bandyerStatusBar) {
+                        if(!it.micPermission.isAllowed && it.micPermission.neverAskAgain) showMicMutedIcon(true)
+                        if(!it.cameraPermission.isAllowed && it.cameraPermission.neverAskAgain) showCamMutedIcon(true)
+                    }
                 }.launchIn(this)
         }
     }

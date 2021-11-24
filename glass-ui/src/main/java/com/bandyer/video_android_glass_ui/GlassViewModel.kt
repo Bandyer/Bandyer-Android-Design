@@ -92,7 +92,9 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
             .launchIn(viewModelScope)
     }
 
-    fun requestPermissions(context: FragmentActivity) = callManager.requestPermissions(context)
+    fun requestMicPermission(context: FragmentActivity) = callManager.requestMicPermission(context)
+
+    fun requestCameraPermission(context: FragmentActivity) = callManager.requestCameraPermission(context)
 
     fun enableCamera(enable: Boolean) = callManager.enableCamera(enable)
 

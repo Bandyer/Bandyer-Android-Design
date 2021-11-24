@@ -45,7 +45,9 @@ interface CallManager {
 
     val permissions: Flow<Permissions>
 
-    fun requestPermissions(context: FragmentActivity)
+    fun requestMicPermission(context: FragmentActivity)
+
+    fun requestCameraPermission(context: FragmentActivity)
 
     fun answer()
 

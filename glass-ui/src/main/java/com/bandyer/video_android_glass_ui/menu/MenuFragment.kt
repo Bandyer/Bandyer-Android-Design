@@ -106,8 +106,8 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             viewModel.cameraEnabled.onEach { cameraAction.toggle(it) }.launchIn(this)
             viewModel.micEnabled.onEach { micAction.toggle(it) }.launchIn(this)
             viewModel.permissions.onEach {
-                    micAction.disable(!it.microphoneAllowed && it.nOfRetries < 1)
-                    cameraAction.disable(!it.deviceCameraAllowed && it.nOfRetries < 1)
+                    it.micPermission.apply { micAction.disable(!isAllowed && neverAskAgain) }
+                    it.cameraPermission.apply { cameraAction.disable(!isAllowed && neverAskAgain) }
                 }.launchIn(this)
         }
 
@@ -145,11 +145,11 @@ internal class MenuFragment : BaseFragment(), TiltListener {
 
     private fun onTap(action: CallAction) = when (action) {
         is CallAction.MICROPHONE -> true.also {
-            viewModel.requestPermissions(requireActivity())
+            viewModel.requestMicPermission(requireActivity())
             viewModel.enableMic(!viewModel.micEnabled.value)
         }
         is CallAction.CAMERA -> true.also {
-            viewModel.requestPermissions(requireActivity())
+            viewModel.requestCameraPermission(requireActivity())
             viewModel.enableCamera(!viewModel.cameraEnabled.value)
         }
         is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment(args.enableTilt)) }
