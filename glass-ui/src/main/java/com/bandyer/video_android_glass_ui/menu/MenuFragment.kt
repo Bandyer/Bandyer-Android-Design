@@ -2,23 +2,23 @@ package com.bandyer.video_android_glass_ui.menu
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.video_android_glass_ui.*
+import com.bandyer.video_android_glass_ui.BaseFragment
+import com.bandyer.video_android_glass_ui.GlassViewModel
+import com.bandyer.video_android_glass_ui.GlassViewModelFactory
 import com.bandyer.video_android_glass_ui.call.CallAction
-import com.bandyer.video_android_glass_ui.call.EmptyFragmentArgs
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentMenuBinding
 import com.bandyer.video_android_glass_ui.model.Option
+import com.bandyer.video_android_glass_ui.safeNavigate
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -124,23 +124,19 @@ internal class MenuFragment : BaseFragment(), TiltListener {
     }
 
     private fun getActions(options: Array<Option>): List<CallAction> {
-        var micToggled: Boolean? = null
-        var cameraToggled: Boolean? = null
         var withZoom = false
         var withParticipants = false
         var withChat = false
 
         options.forEach {
             when(it) {
-                is Option.MICROPHONE -> micToggled = it.toggled
-                is Option.CAMERA -> cameraToggled = it.toggled
                 is Option.ZOOM -> withZoom = true
                 is Option.PARTICIPANTS -> withParticipants = true
                 is Option.CHAT -> withChat = true
             }
         }
 
-        return CallAction.getActions(requireContext(), micToggled, cameraToggled, withZoom, withParticipants, withChat)
+        return CallAction.getActions(requireContext(), withZoom, withParticipants, withChat)
     }
 
     override fun onDismiss() = Unit
