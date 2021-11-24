@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.*
 
 @Suppress("UNCHECKED_CAST")
 internal object GlassViewModelFactory : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T = GlassViewModel(ManagersHolder.callManagerInstance!!) as T
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T = GlassViewModel(ManagersHolder.callManagerInstance!!.get()!!) as T
 }
 
 internal class GlassViewModel(private val callManager: CallManager) : ViewModel() {

@@ -67,7 +67,7 @@ internal class GlassActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if(savedInstanceState == null) UiEventNotifier.notify(UiEvent.LAUNCH)
+        
 
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
@@ -98,7 +98,7 @@ internal class GlassActivity :
         glassGestureDetector = GlassGestureDetector(this, this)
 
         // Notification Manager
-        notificationManager = ChatNotificationManager(binding.bandyerContent).also { it.addListener(this)
+        notificationManager = ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
 
         // Observer events
         repeatOnStarted {
@@ -174,7 +174,6 @@ internal class GlassActivity :
         navController = null
         glassGestureDetector = null
         notificationManager = null
-        if(isFinishing) UiEventNotifier.notify(UiEvent.DESTROY)
     }
 
     /**

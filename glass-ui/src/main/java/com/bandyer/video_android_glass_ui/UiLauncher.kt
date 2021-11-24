@@ -7,17 +7,9 @@ import androidx.fragment.app.FragmentActivity
 import com.bandyer.video_android_glass_ui.common.Volume
 import com.bandyer.video_android_glass_ui.model.*
 import kotlinx.coroutines.flow.Flow
+import java.lang.ref.WeakReference
 
 object UiLauncher {
-
-    private val uiListener = object : UiEventObserver {
-        override fun onEvent(event: UiEvent) {
-            if(event == UiEvent.DESTROY) {
-                ManagersHolder.callManagerInstance = null
-                UiEventNotifier.removeObserver(this)
-            }
-        }
-    }
 
     fun Context.launchCallGlass(
         callManager: CallManager,
@@ -31,8 +23,7 @@ object UiLauncher {
         options: List<Option>,
         enableTilt: Boolean
     ) {
-        UiEventNotifier.addObserver(this@UiLauncher.uiListener)
-        ManagersHolder.callManagerInstance = callManager
+        ManagersHolder.callManagerInstance = WeakReference(callManager)
         startActivity(Intent(this, cls).apply {
             putExtra("enableTilt", enableTilt)
             putExtra("options", options.toTypedArray())
@@ -41,7 +32,7 @@ object UiLauncher {
 }
 
 internal object ManagersHolder {
-    var callManagerInstance: CallManager? = null
+    var callManagerInstance: WeakReference<CallManager>? = null
 }
 
 interface CallManager {
