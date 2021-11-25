@@ -27,6 +27,7 @@ import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensi
 import com.bandyer.video_android_glass_ui.model.Battery
 import com.bandyer.video_android_glass_ui.model.WiFi
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.IItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.*
@@ -50,7 +51,7 @@ internal class GlassActivity :
     private val viewModel: GlassViewModel by viewModels { GlassViewModelFactory }
 
     // ADAPTER
-    private var itemAdapter: ItemAdapter<StreamItem>? = null
+    private var itemAdapter: ItemAdapter<IItem<*>>? = null
 
     // NAVIGATION
     private val currentFragment: Fragment?
@@ -137,7 +138,7 @@ internal class GlassActivity :
 
             viewModel.streams
                 .onEach { streams ->
-                    val orderedList = streams.sortedBy { !it.isMyStream }.map { if(it.isMyStream) MyStreamItem(it, this) else OtherStreamItem(it, this) }
+                    val orderedList = streams.sortedBy { !it.isMyStream }.map { if(it.isMyStream) MyStreamItem(it, this, viewModel.permissions) else OtherStreamItem(it, this) }
                     FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList)
                 }.launchIn(this)
 
