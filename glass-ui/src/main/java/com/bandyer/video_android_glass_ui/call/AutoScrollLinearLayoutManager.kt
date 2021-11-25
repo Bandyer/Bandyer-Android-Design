@@ -45,11 +45,11 @@ internal class AutoScrollLinearLayoutManager constructor(
                 val lastVisibleItemPosition = findLastVisibleItemPosition()
                 // Check if the last visible item is fully visible
                 val isFirstOnEdge =
-                    if (isRTL) findViewByPosition(firstVisibleItemPosition)!!.right == recyclerView.right
-                    else findViewByPosition(firstVisibleItemPosition)!!.left == recyclerView.left
+                    if (isRTL) findViewByPosition(firstVisibleItemPosition)?.right == recyclerView.right
+                    else findViewByPosition(firstVisibleItemPosition)?.left == recyclerView.left
                 val isLastOnEdge =
-                    if (isRTL) findViewByPosition(lastVisibleItemPosition)!!.left == recyclerView.left
-                    else findViewByPosition(lastVisibleItemPosition)!!.right == recyclerView.right
+                    if (isRTL) findViewByPosition(lastVisibleItemPosition)?.left == recyclerView.left
+                    else findViewByPosition(lastVisibleItemPosition)?.right == recyclerView.right
 
                 when {
                     // If the scroll toward the last item is finished, update the target

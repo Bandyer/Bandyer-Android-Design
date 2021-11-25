@@ -44,7 +44,8 @@ internal class CallEndedFragment : BaseFragment() {
             false
         ).apply {
             if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
-            args.reason?.also { binding.bandyerSubtitle.text = it }
+            bandyerTitle.text = args.title
+            bandyerSubtitle.text = args.subtitle
         }
 
         return binding.root

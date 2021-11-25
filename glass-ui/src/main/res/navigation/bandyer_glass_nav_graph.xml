@@ -59,7 +59,12 @@
         android:name="com.bandyer.video_android_glass_ui.call.CallEndedFragment"
         android:label="CallEndedFragment">
         <argument
-            android:name="reason"
+            android:name="title"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="subtitle"
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />

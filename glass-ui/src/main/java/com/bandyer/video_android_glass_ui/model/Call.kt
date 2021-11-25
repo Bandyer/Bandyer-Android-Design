@@ -17,7 +17,7 @@ data class Call(
 
             companion object : Disconnected() {
                 override fun hashCode(): Int = "Disconnected".hashCode()
-                override fun equals(other: Any?) = other is Disconnected && other !is Ended && other !is Error
+                override fun equals(other: Any?) = other is Disconnected && other !is Ended
                 override fun toString() = "Disconnected"
             }
 

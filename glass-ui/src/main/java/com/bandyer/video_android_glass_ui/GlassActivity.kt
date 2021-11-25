@@ -8,6 +8,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
@@ -17,6 +18,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_glass_ui.call.CallEndedFragmentArgs
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
 import com.bandyer.video_android_glass_ui.model.Call
@@ -117,10 +119,12 @@ internal class GlassActivity :
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
                     when(it) {
-                        is Call.State.Disconnected.Ended, is Call.State.Disconnected.Ended.Error -> navController!!.navigate(R.id.callEndedFragment)
+                        is Call.State.Disconnected.Ended.Declined -> navController!!.navigate(R.id.callEndedFragment, CallEndedFragmentArgs(resources.getString(R.string.bandyer_glass_call_declined)).toBundle())
+                        is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> navController!!.navigate(R.id.callEndedFragment, CallEndedFragmentArgs(resources.getString(R.string.bandyer_glass_answered_on_another_device)).toBundle())
+                        is Call.State.Disconnected.Ended -> navController!!.navigate(R.id.callEndedFragment, CallEndedFragmentArgs(resources.getString(R.string.bandyer_glass_call_ended)).toBundle())
                         is Call.State.Reconnecting -> navController!!.navigate(R.id.reconnectingFragment)
+                        else -> Unit
                     }
-                    // TODO aggiungere messaggio in caso di errore?
                 }.launchIn(this)
 
             viewModel.inCallParticipants

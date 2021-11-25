@@ -50,10 +50,13 @@
     <string name="bandyer_glass_menu_zoom">Zoom</string>
     <string name="bandyer_glass_menu_chat">Chat</string>
     <string name="bandyer_glass_rec">Rec</string>
+    <string name="bandyer_glass_call_declined">Chiamata rifiutata</string>
+    <string name="bandyer_glass_answered_on_another_device">Risposto su un altro dispositivo</string>
 
     <!-- PLURALS -->
     <plurals name="bandyer_glass_users_in_call_pattern">
         <item quantity="one">%d partecipante</item>
         <item quantity="other">%d partecipanti</item>
     </plurals>
+
 </resources>
