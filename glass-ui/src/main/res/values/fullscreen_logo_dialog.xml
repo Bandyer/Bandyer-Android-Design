@@ -2,8 +2,8 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
         <attr name="bandyer_rootLayoutStyle" />
-        <attr name="recyclerViewStyle" />
         <attr name="bandyer_callWatermarkStyle" format="reference" />
+        <attr name="recyclerViewStyle" />
         <attr name="bandyer_recyclerViewItemStyle" />
         <attr name="bandyer_subtitleStyle" />
         <attr name="bandyer_counterStyle" />
@@ -11,13 +11,14 @@
     </declare-styleable>
 
     <!-- FULL SCREEN LOGO DIALOG FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.DarkBackground">
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog">
         <item name="bandyer_callWatermarkStyle">@style/BandyerSDKDesign.CallWatermark</item>
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog</item>
-        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Counter</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog</item>
+        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Counter</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo</item>
     </style>
 
     <!-- RECYCLERVIEW -->
@@ -42,23 +43,15 @@
         <item name="android:includeFontPadding">false</item>
     </style>
 
-    <!-- SUBTITLE -->
-    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
-        <item name="android:textColor">@color/bandyer_color_white_80</item>
-        <item name="android:includeFontPadding">false</item>
-    </style>
-
     <!-- COUNTER -->
-    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Counter" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog">
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Counter" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog">
         <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space16</item>
         <item name="android:textColor">?attr/colorSecondary</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.BottomNavigation">
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog">
         <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog</item>
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog</item>

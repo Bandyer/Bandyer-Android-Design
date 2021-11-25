@@ -30,11 +30,23 @@
                 android:id="@+id/bandyer_participants"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@id/bandyer_subtitle"
+                app:layout_constraintBottom_toTopOf="@id/bandyer_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/bandyer_watermark"
                 tools:text="Mario Rossi" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/bandyer_title"
+                style="?attr/bandyer_titleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/bandyer_subtitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bandyer_participants"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="@string/bandyer_glass_call_ended" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/bandyer_subtitle"
@@ -44,7 +56,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bandyer_participants" />
+                app:layout_constraintTop_toBottomOf="@+id/bandyer_title" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/bandyer_counter"

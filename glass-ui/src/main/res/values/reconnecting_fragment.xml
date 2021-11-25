@@ -2,23 +2,33 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Reconnecting">
         <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_callWatermarkStyle" />
         <attr name="recyclerViewStyle" />
         <attr name="bandyer_recyclerViewItemStyle" />
+        <attr name="bandyer_titleStyle" />
         <attr name="bandyer_subtitleStyle" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- RECONNECTING FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Reconnecting" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Reconnecting</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Reconnecting</item>
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Reconnecting" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog.Reconnecting</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Reconnecting</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Reconnecting</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Reconnecting" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog">
+    <!-- SUBTITLE -->
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Reconnecting" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog">
         <item name="android:text">@string/bandyer_glass_connecting</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Reconnecting" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog">
+    <!-- RECYCLERVIEW -->
+    <style name="BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog.Reconnecting" parent="BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- BOTTOM NAVIGATION -->
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Reconnecting" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo">
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Reconnecting</item>
     </style>
 

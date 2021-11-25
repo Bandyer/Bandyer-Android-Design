@@ -2,25 +2,33 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Dialing">
         <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_callWatermarkStyle" />
         <attr name="recyclerViewStyle" />
         <attr name="bandyer_recyclerViewItemStyle" />
+        <attr name="bandyer_titleStyle" />
         <attr name="bandyer_subtitleStyle" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- DIALING FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Dialing" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Dialing</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Dialing</item>
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Dialing" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.Dialing</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Dialing</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Dialing</item>
+    </style>
+
+    <!-- TITLE -->
+    <style name="BandyerSDKDesign.TextView.Title.FullScreenDialog.Dialing" parent="BandyerSDKDesign.TextView.Title.FullScreenDialog">
+        <item name="android:visibility">gone</item>
     </style>
 
     <!-- SUBTITLE -->
-    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog.Dialing" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenLogoDialog">
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Dialing" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog">
         <item name="android:text">@string/bandyer_glass_dialing</item>
     </style>
 
     <!-- BOTTOM NAVIGATION -->
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Dialing" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog">
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Dialing" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo">
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Dialing</item>
     </style>
 

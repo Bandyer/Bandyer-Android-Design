@@ -8,7 +8,7 @@ import androidx.activity.addCallback
 import androidx.navigation.fragment.navArgs
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenDialogBinding
+import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
@@ -17,8 +17,8 @@ import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.get
  */
 internal class CallEndedFragment : BaseFragment() {
 
-    private var _binding: BandyerGlassFragmentFullScreenDialogBinding? = null
-    override val binding: BandyerGlassFragmentFullScreenDialogBinding get() = _binding!!
+    private var _binding: BandyerGlassFragmentFullScreenLogoDialogBinding? = null
+    override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
 
     private val args: CallEndedFragmentArgs by navArgs()
 
@@ -38,7 +38,7 @@ internal class CallEndedFragment : BaseFragment() {
 
         // Apply theme wrapper and add view binding
         val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_callEndedStyle)
-        _binding = BandyerGlassFragmentFullScreenDialogBinding.inflate(
+        _binding = BandyerGlassFragmentFullScreenLogoDialogBinding.inflate(
             inflater.cloneInContext(android.view.ContextThemeWrapper(requireContext(), themeResId)),
             container,
             false

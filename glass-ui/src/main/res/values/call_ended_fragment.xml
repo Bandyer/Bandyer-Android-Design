@@ -8,10 +8,11 @@
     </declare-styleable>
 
     <!-- CALL ENDED FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.CallEnded" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog">
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.CallEnded" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
+        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog.CallEnded</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.CallEnded</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.CallEnded</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.CallEnded</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.CallEnded</item>
     </style>
 
     <!-- TITLE -->
@@ -22,11 +23,16 @@
     <!-- SUBTITLE -->
     <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.CallEnded" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog">
         <item name="android:text">@string/bandyer_glass_thank_you</item>
-        <item name="android:textColor">?attr/colorSecondary</item>
+        <item name="android:textColor">@color/bandyer_color_white_80</item>
+    </style>
+
+    <!-- RECYCLERVIEW -->
+    <style name="BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog.CallEnded" parent="BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog">
+        <item name="android:visibility">gone</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.CallEnded" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog">
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.CallEnded" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo">
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.CallEnded</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.CallEnded</item>
     </style>

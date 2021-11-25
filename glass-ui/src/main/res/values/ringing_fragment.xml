@@ -2,19 +2,33 @@
 <resources>
     <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing">
         <attr name="bandyer_rootLayoutStyle" />
+        <attr name="bandyer_callWatermarkStyle" />
         <attr name="recyclerViewStyle" />
         <attr name="bandyer_recyclerViewItemStyle" />
+        <attr name="bandyer_titleStyle" />
         <attr name="bandyer_subtitleStyle" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- RINGING FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Ringing</item>
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Ringing" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.Ringing</item>
+        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Ringing</item>
+        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Ringing</item>
+    </style>
+
+    <!-- TITLE -->
+    <style name="BandyerSDKDesign.TextView.Title.FullScreenDialog.Ringing" parent="BandyerSDKDesign.TextView.Title.FullScreenDialog">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- SUBTITLE -->
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Ringing" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog">
+        <item name="android:text">@string/bandyer_glass_ringing</item>
     </style>
 
     <!-- BOTTOM NAVIGATION -->
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenLogoDialog">
+    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Ringing" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo">
         <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog.Ringing</item>
     </style>
 
