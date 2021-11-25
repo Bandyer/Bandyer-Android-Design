@@ -26,10 +26,10 @@
     <string name="bandyer_glass_dialing">dialing…</string>
     <string name="bandyer_glass_dialing_group">group call ringing…</string>
     <string name="bandyer_glass_connecting">connecting…</string>
+    <string name="bandyer_glass_offline">You\'re offline</string>
     <string name="bandyer_glass_want_end_call">End the call?</string>
     <string name="bandyer_glass_confirm_end_call">Do you confirm to end the conversation?</string>
     <string name="bandyer_glass_call_ended">Call ended</string>
-    <string name="bandyer_glass_thank_you">Thank you!</string>
     <string name="bandyer_glass_participants_camera">participants</string>
     <string name="bandyer_glass_open_menu">menu</string>
     <string name="bandyer_glass_contact_info">contact</string>

@@ -13,13 +13,25 @@
     <!-- RECONNECTING FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Reconnecting" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog.Reconnecting</item>
+        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.Reconnecting</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Reconnecting</item>
+        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Counter.Reconnecting</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Reconnecting</item>
+    </style>
+
+    <!-- TITLE -->
+    <style name="BandyerSDKDesign.TextView.Title.FullScreenDialog.Reconnecting" parent="BandyerSDKDesign.TextView.Title.FullScreenDialog">
+        <item name="android:text">@string/bandyer_glass_offline</item>
     </style>
 
     <!-- SUBTITLE -->
     <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Reconnecting" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog">
         <item name="android:text">@string/bandyer_glass_connecting</item>
+    </style>
+
+    <!-- COUNTER -->
+    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Counter.Reconnecting" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Counter">
+        <item name="android:visibility">gone</item>
     </style>
 
     <!-- RECYCLERVIEW -->
@@ -29,7 +41,12 @@
 
     <!-- BOTTOM NAVIGATION -->
     <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Reconnecting" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo">
+        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog.Reconnecting</item>
         <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Reconnecting</item>
+    </style>
+
+    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog.Reconnecting" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog">
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Reconnecting" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog">

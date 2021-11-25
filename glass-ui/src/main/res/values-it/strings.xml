@@ -22,10 +22,10 @@
     <string name="bandyer_glass_dialing">sta squillando…</string>
     <string name="bandyer_glass_dialing_group">chiamata di gruppo in uscita…</string>
     <string name="bandyer_glass_connecting">connessione in corso…</string>
+    <string name="bandyer_glass_offline">Sei offline</string>
     <string name="bandyer_glass_want_end_call">Terminare la chiamata?</string>
     <string name="bandyer_glass_confirm_end_call">Confermi di voler chiudere la conversazione?</string>
     <string name="bandyer_glass_call_ended">Chiamata terminata</string>
-    <string name="bandyer_glass_thank_you">Grazie!</string>
     <string name="bandyer_glass_participants_camera">partecipanti</string>
     <string name="bandyer_glass_open_menu">menu</string>
     <string name="bandyer_glass_contact_info">contatto</string>

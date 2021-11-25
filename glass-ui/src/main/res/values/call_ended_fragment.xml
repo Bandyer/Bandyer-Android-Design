@@ -22,7 +22,6 @@
 
     <!-- SUBTITLE -->
     <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.CallEnded" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog">
-        <item name="android:text">@string/bandyer_glass_thank_you</item>
         <item name="android:textColor">@color/bandyer_color_white_80</item>
     </style>
 
