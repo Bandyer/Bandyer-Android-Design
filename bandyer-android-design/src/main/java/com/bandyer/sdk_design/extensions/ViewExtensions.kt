@@ -28,12 +28,10 @@ import android.graphics.drawable.*
 import android.hardware.input.InputManager
 import android.os.Build
 import android.os.SystemClock
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.animation.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.RelativeLayout
 import androidx.annotation.Px
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -107,50 +105,36 @@ fun View.animateViewHeight(from: Int, to: Int, duration: Long, interpolator: Int
  * @param toRight desired right position
  * @param onResizedAndMoved () -> Unit? callback after animator has ended
  */
-fun View.resizeAndMove(toSize: Float, toTop: Float, toLeft: Float, toRight: Float, duration: Long, onResizedAndMoved: () -> Unit): AnimatorSet? {
-    val leftMargin = if (!context.isRtl()) toLeft else toRight
-    val rightMargin = if (!context.isRtl()) toRight else toLeft
+fun View.resizeAndMove(toSize: Int, toTop: Int, toLeft: Int, toRight: Int, duration: Long, onResizedAndMoved: () -> Unit): AnimatorSet? {
+    val isRtl = context.isRtl()
+    val leftMargin = if (!isRtl) toLeft else toRight
+    val rightMargin = if (!isRtl) toRight else toLeft
 
-    val valueAnimator = ValueAnimator.ofFloat(layoutParams.height.toFloat().takeIf { it != -1f } ?: height.toFloat(), toSize)
-    val valueAnimator3 = ValueAnimator.ofFloat((layoutParams as ViewGroup.MarginLayoutParams).topMargin.toFloat(), toTop)
-    val valueAnimator4 = ValueAnimator.ofFloat(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-        (layoutParams as ViewGroup.MarginLayoutParams).marginStart.toFloat()
-    } else {
-        (layoutParams as ViewGroup.MarginLayoutParams).leftMargin.toFloat()
-    }, leftMargin)
-    val valueAnimator5 = ValueAnimator.ofFloat(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-        (layoutParams as ViewGroup.MarginLayoutParams).marginEnd.toFloat()
-    } else {
-        (layoutParams as ViewGroup.MarginLayoutParams).rightMargin.toFloat()
-    }, rightMargin)
+    val lp = layoutParams as ViewGroup.MarginLayoutParams
+
+    val valueAnimator = ValueAnimator.ofInt(lp.height.takeIf { it != -1 } ?: this@resizeAndMove.height, toSize)
+    val valueAnimator3 = ValueAnimator.ofInt(lp.topMargin, toTop)
+    val valueAnimator4 = ValueAnimator.ofInt(lp.marginStart, leftMargin)
+    val valueAnimator5 = ValueAnimator.ofInt(lp.marginEnd, rightMargin)
 
     valueAnimator.addUpdateListener {
-        val value = it.animatedValue as Float
-        layoutParams.height = value.toInt()
-        requestLayout()
+        lp.height = it.animatedValue as Int
+        layoutParams = lp
     }
 
     valueAnimator3.addUpdateListener {
-        val value = it.animatedValue as Float
-        val lp = layoutParams as ViewGroup.MarginLayoutParams
-        lp.topMargin = value.toInt()
-        requestLayout()
+        lp.topMargin = it.animatedValue as Int
+        layoutParams = lp
     }
 
     valueAnimator4.addUpdateListener {
-        val value = it.animatedValue as Float
-        val lp = layoutParams as ViewGroup.MarginLayoutParams
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) lp.marginStart = value.toInt()
-        else lp.leftMargin = value.toInt()
-        requestLayout()
+        lp.marginStart = it.animatedValue as Int
+        layoutParams = lp
     }
 
     valueAnimator5.addUpdateListener {
-        val value = it.animatedValue as Float
-        val lp = layoutParams as ViewGroup.MarginLayoutParams
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) lp.marginEnd = value.toInt()
-        else lp.rightMargin = value.toInt()
-        requestLayout()
+        lp.marginEnd = it.animatedValue as Int
+        layoutParams = lp
     }
 
     val set = AnimatorSet()
