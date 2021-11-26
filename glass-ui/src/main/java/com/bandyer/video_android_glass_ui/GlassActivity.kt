@@ -95,17 +95,17 @@ internal class GlassActivity :
                             val isMicBlocked = viewModel.currentPermissions?.micPermission?.let { !it.isAllowed && it.neverAskAgain } ?: true
                             val isCamBlocked = viewModel.currentPermissions?.cameraPermission?.let { !it.isAllowed && it.neverAskAgain } ?: true
                             when {
-                                isMicBlocked && isCamBlocked -> show("Cam and mic are blocked")
-                                isMicBlocked -> show("Mic is blocked")
-                                isCamBlocked -> show("Cam is blocked")
+                                isMicBlocked && isCamBlocked -> show(resources.getString(R.string.bandyer_glass_mic_and_cam_blocked))
+                                isMicBlocked -> show(resources.getString(R.string.bandyer_glass_mic_blocked))
+                                isCamBlocked -> show(resources.getString(R.string.bandyer_glass_cam_blocked))
                             }
 
                             val isMicEnabled = viewModel.micEnabled.value
                             val isCameraEnabled = viewModel.cameraEnabled.value
                             when {
-                                !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled -> show("Cam and mic are not active")
-                                !isMicBlocked && !isMicEnabled -> show("Mic is not active")
-                                !isCamBlocked && !isCameraEnabled -> show("Cam is not active")
+                                !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled -> show(resources.getString(R.string.bandyer_glass_mic_not_active))
+                                !isMicBlocked && !isMicEnabled -> show(resources.getString(R.string.bandyer_glass_mic_not_active))
+                                !isCamBlocked && !isCameraEnabled -> show(resources.getString(R.string.bandyer_glass_mic_not_active))
                             }
                         }
                     }
@@ -157,7 +157,7 @@ internal class GlassActivity :
                 .onEach {
                     val count = it.count()
                     with(binding) {
-                        if(count < 2) bandyerToastManager.show("You're alone here. Wait for other to join", R.drawable.ic_bandyer_glass_alert)
+                        if(count < 2) bandyerToastManager.show(resources.getString(R.string.bandyer_glass_alone), R.drawable.ic_bandyer_glass_alert)
                         bandyerStatusBar.updateCenteredText(count)
                     }
                 }.launchIn(this)
