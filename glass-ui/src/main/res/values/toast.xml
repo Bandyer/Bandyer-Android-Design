@@ -7,13 +7,13 @@
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Theme.GlassCall.ToastContainer" parent="">
+        <item name="android:gravity">center</item>
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Theme.GlassCall.ToastContainer.RootLayout</item>
         <item name="bandyer_toastStyle">@style/BandyerSDKDesign.Theme.GlassCall.Toast</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.GlassCall.ToastContainer.RootLayout" parent="">
         <item name="android:orientation">vertical</item>
-        <item name="android:gravity">center</item>
         <item name="android:paddingBottom">@dimen/bandyer_dimen_space56</item>
         <item name="android:animateLayoutChanges">true</item>
     </style>

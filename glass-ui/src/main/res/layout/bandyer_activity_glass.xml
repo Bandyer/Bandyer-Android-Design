@@ -21,7 +21,7 @@
 
         <com.bandyer.video_android_glass_ui.ToastContainer
             android:id="@+id/bandyer_toast_manager"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="?attr/bandyer_toastContainerStyle"
             style="?attr/bandyer_rootLayoutStyle"

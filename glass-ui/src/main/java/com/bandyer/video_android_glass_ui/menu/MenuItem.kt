@@ -5,9 +5,6 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getThemeAttribute
-import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.databinding.BandyerGlassMenuItemLayoutBinding
 import com.bandyer.video_android_glass_ui.call.CallAction
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 import com.mikepenz.fastadapter.FastAdapter
