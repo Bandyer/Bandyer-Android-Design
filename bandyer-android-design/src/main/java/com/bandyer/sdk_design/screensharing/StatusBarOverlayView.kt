@@ -18,21 +18,17 @@ package com.bandyer.sdk_design.screensharing
 
 import android.animation.Animator
 import android.animation.ValueAnimator
-import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
 import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.extensions.dp2px
-import com.bandyer.sdk_design.extensions.getScreenSize
-import com.bandyer.sdk_design.extensions.scanForFragmentActivity
+import com.bandyer.sdk_design.extensions.*
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutObserver
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutOffsetListener
-import com.bandyer.sdk_design.utils.systemviews.implementation.SystemViewControlsAware
 
 /**
  * Status bar overlay view(a pulsing red alert to be placed under the status bar)
@@ -49,14 +45,11 @@ import com.bandyer.sdk_design.utils.systemviews.implementation.SystemViewControl
 class StatusBarOverlayView @JvmOverloads constructor(context: Context,
                                                      attrs: AttributeSet? = null,
                                                      defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr), SystemViewLayoutObserver, View.OnLayoutChangeListener {
-
-
-    private val STATUS_BAR_HEIGHT_LIMIT = context.dp2px(25f)
-
-
-    private var statusBarHeight = STATUS_BAR_HEIGHT_LIMIT
+    private var statusBarHeight = 0
 
     private var alphaAnimation: ValueAnimator? = null
+
+    private val safeViewHeightRange = with(context) { dp2px(18f) until dp2px(55f) }
 
     /**
      * @suppress
@@ -84,13 +77,12 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
     }
 
     override fun onTopInsetChanged(pixels: Int) {
-        if (pixels >= STATUS_BAR_HEIGHT_LIMIT) return
-        statusBarHeight = pixels.takeIf { it > 0 } ?: statusBarHeight
+        statusBarHeight = pixels.takeIf { it > 0  && pixels in safeViewHeightRange } ?: statusBarHeight
         updateHeight()
     }
 
     private fun updateHeight(height: Int = statusBarHeight) {
-        if (height > STATUS_BAR_HEIGHT_LIMIT || height == 0 || layoutParams?.height == height) return
+        if (layoutParams?.height == height) return
         post {
             layoutParams ?: return@post
             if (layoutParams.height == height) return@post
@@ -125,7 +117,6 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
         updateHeight((statusBarHeight * multiplier).toInt())
     }
 
-
     init {
         id = R.id.bandyer_id_screen_share_overlay
 
@@ -150,7 +141,4 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
             }
         }
     }
-
 }
-
-
