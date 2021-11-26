@@ -24,9 +24,10 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
 
     val volume: Volume get() = callManager.getVolume()
 
-    val permissions: Flow<Permissions> = callManager.permissions
+    var currentPermissions: Permissions? = null
+    val permissions: Flow<Permissions> = callManager.permissions.onEach { currentPermissions = it }
 
-    val inCallParticipants: Flow<List<CallParticipant>> =
+    val inCallParticipants: MutableSharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val pJobs = mutableListOf<Job>()
             call.participants.onEach { parts ->
@@ -37,6 +38,7 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
                     pJobs += part.state.onEach { state ->
                         if (state is CallParticipant.State.Online.InCall) participants[part.userAlias] = part
                         else participants.remove(part.userAlias)
+
                         emit(participants.values.toList())
                     }.launchIn(viewModelScope)
                 }

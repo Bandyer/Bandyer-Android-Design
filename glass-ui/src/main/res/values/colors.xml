@@ -2,6 +2,8 @@
 <resources>
     <color name="bandyer_glass_background_color">#1E1E1E</color>
     <color name="bandyer_glass_dimmed_background_color">#CC000000</color>
+    <color name="bandyer_glass_toast_background_color">#BF303030</color>
+    <color name="bandyer_glass_toast_icon_color">#E85B21</color>
     <color name="bandyer_glass_online_state_color">#43A047</color>
     <color name="bandyer_glass_offline_state_color">#9F9F9F</color>
 </resources>

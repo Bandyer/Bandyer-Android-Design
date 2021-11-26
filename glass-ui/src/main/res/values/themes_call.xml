@@ -5,6 +5,7 @@
         <attr name="bandyer_statusBarStyle" />
         <attr name="recyclerViewStyle" />
         <attr name="bandyer_recyclerViewItemStyle" />
+        <attr name="bandyer_toastContainerStyle" format="reference" />
         <attr name="bandyer_menuStyle" format="reference" />
         <attr name="bandyer_volumeStyle" format="reference" />
         <attr name="bandyer_zoomStyle" format="reference" />
@@ -21,6 +22,7 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Theme.GlassCall.RootLayout</item>
         <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem</item>
+        <item name="bandyer_toastContainerStyle">@style/BandyerSDKDesign.Theme.GlassCall.ToastContainer</item>
         <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
         <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
         <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
@@ -37,6 +39,7 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Theme.GlassCall.RootLayout</item>
         <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem</item>
+        <item name="bandyer_toastContainerStyle">@style/BandyerSDKDesign.Theme.GlassCall.ToastContainer</item>
         <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
         <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
         <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
@@ -53,6 +56,7 @@
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Theme.GlassCall.RootLayout</item>
         <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
         <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem</item>
+        <item name="bandyer_toastContainerStyle">@style/BandyerSDKDesign.Theme.GlassCall.ToastContainer</item>
         <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
         <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
         <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>

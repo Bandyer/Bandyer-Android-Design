@@ -79,6 +79,9 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(final override v
      */
     override val scope: CoroutineScope = parentScope + CoroutineName(this.toString() + streamParticipant.hashCode())
 
+    /**
+     * @suppress
+     */
     internal abstract class ViewHolder<T: StreamItem<*>>(view: View): FastAdapter.ViewHolder<T>(view), IStreamItem.IViewHolder {
 
         /**

@@ -1,5 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
+//import com.bandyer.video_android_glass_ui.common.Toast
 import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
@@ -8,7 +9,6 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
@@ -21,15 +21,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.call.CallEndedFragmentArgs
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
+import com.bandyer.video_android_glass_ui.model.Battery
 import com.bandyer.video_android_glass_ui.model.Call
+import com.bandyer.video_android_glass_ui.model.WiFi
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
-import com.bandyer.video_android_glass_ui.model.Battery
-import com.bandyer.video_android_glass_ui.model.WiFi
 import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.IItem
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.*
@@ -53,7 +52,8 @@ internal class GlassActivity :
     private val viewModel: GlassViewModel by viewModels { GlassViewModelFactory }
 
     // ADAPTER
-    private var itemAdapter: ItemAdapter<IItem<*>>? = null
+    private var itemAdapter: ItemAdapter<StreamItem<*>>? = null
+    private var currentStreamItemIndex = 0
 
     // NAVIGATION
     private val currentFragment: Fragment?
@@ -78,14 +78,40 @@ internal class GlassActivity :
 
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
-        enterImmersiveMode()
+//        enterImmersiveMode()
 
         with(binding.bandyerStreams) {
             itemAdapter = ItemAdapter()
             val fastAdapter = FastAdapter.with(itemAdapter!!)
-            val layoutManager =
-                LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
-            LinearSnapHelper().also { it.attachToRecyclerView(this) }
+            val layoutManager = LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
+            val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
+
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val foundView = snapHelper.findSnapView(layoutManager) ?: return
+                    val position = layoutManager.getPosition(foundView)
+                    if(itemAdapter!!.getAdapterItem(position).streamParticipant.isMyStream && currentStreamItemIndex != position) {
+                        with(binding.bandyerToastManager) {
+                            val isMicBlocked = viewModel.currentPermissions?.micPermission?.let { !it.isAllowed && it.neverAskAgain } ?: true
+                            val isCamBlocked = viewModel.currentPermissions?.cameraPermission?.let { !it.isAllowed && it.neverAskAgain } ?: true
+                            when {
+                                isMicBlocked && isCamBlocked -> show("Cam and mic are blocked")
+                                isMicBlocked -> show("Mic is blocked")
+                                isCamBlocked -> show("Cam is blocked")
+                            }
+
+                            val isMicEnabled = viewModel.micEnabled.value
+                            val isCameraEnabled = viewModel.cameraEnabled.value
+                            when {
+                                !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled -> show("Cam and mic are not active")
+                                !isMicBlocked && !isMicEnabled -> show("Mic is not active")
+                                !isCamBlocked && !isCameraEnabled -> show("Cam is not active")
+                            }
+                        }
+                    }
+                    currentStreamItemIndex = position
+                }
+            })
 
             this.layoutManager = layoutManager
             adapter = fastAdapter.apply { stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY }
@@ -129,7 +155,11 @@ internal class GlassActivity :
 
             viewModel.inCallParticipants
                 .onEach {
-                    binding.bandyerStatusBar.updateCenteredText(it.count())
+                    val count = it.count()
+                    with(binding) {
+                        if(count < 2) bandyerToastManager.show("You're alone here. Wait for other to join", R.drawable.ic_bandyer_glass_alert)
+                        bandyerStatusBar.updateCenteredText(count)
+                    }
                 }.launchIn(this)
 
             viewModel.call.isRecording
@@ -169,7 +199,7 @@ internal class GlassActivity :
 
     override fun onResume() {
         super.onResume()
-        hideSystemUI()
+//        hideSystemUI()
     }
 
     override fun onDestroy() {
