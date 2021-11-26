@@ -6,7 +6,7 @@
     </declare-styleable>
 
     <style name="BandyerSDKDesign.Glass.Avatar" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.RoundedImageGlass</item>
+        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.RoundedImageGlass.Bordered</item>
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatar</item>
     </style>
 
@@ -28,7 +28,7 @@
         <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatar.Big</item>
     </style>
 
-    <style name="BandyerSDKDesign.RoundedImageGlass.Big" parent="BandyerSDKDesign.RoundedImageGlass">
+    <style name="BandyerSDKDesign.RoundedImageGlass.Big" parent="BandyerSDKDesign.RoundedImageGlass.Bordered">
         <item name="android:layout_width">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
         <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>

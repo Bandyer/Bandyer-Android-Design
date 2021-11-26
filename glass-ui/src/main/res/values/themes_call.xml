@@ -100,24 +100,18 @@
         <item name="android:layout_gravity">bottom|center_horizontal</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.Camera" parent="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon">
+    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.Camera" parent="BandyerSDKDesign.RoundedImageGlass.ActivableCallRecyclerViewItemIcon">
         <item name="srcCompat">@drawable/ic_bandyer_glass_cam_off</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.Mic" parent="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon">
+    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.Mic" parent="BandyerSDKDesign.RoundedImageGlass.ActivableCallRecyclerViewItemIcon">
         <item name="srcCompat">@drawable/ic_bandyer_glass_mic_off</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon" parent="Widget.MaterialComponents.ShapeableImageView">
-        <item name="shapeAppearanceOverlay">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.ShapeOverlay</item>
+    <style name="BandyerSDKDesign.RoundedImageGlass.ActivableCallRecyclerViewItemIcon" parent="BandyerSDKDesign.RoundedImageGlass">
         <item name="android:background">@color/bandyer_glass_input_background</item>
         <item name="android:layout_width">@dimen/bandyer_dimen_space48</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space48</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.ShapeOverlay" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.MicIcon" parent="Widget.MaterialComponents.ShapeableImageView">

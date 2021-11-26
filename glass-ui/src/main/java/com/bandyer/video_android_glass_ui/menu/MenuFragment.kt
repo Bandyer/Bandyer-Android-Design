@@ -73,8 +73,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                     val fastAdapter = FastAdapter.with(itemAdapter!!).apply {
                         onClickListener = { _, _, item, _ -> onTap(item.action); false }
                     }
-                    val layoutManager =
-                        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
                     val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
                     this.layoutManager = layoutManager

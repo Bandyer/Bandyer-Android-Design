@@ -15,7 +15,7 @@
     </style>
 
     <!-- CONTACT STATE DOT -->
-    <style name="BandyerSDKDesign.RoundedImageGlass.StateUserInfo" parent="BandyerSDKDesign.RoundedImageGlass">
+    <style name="BandyerSDKDesign.RoundedImageGlass.StateUserInfo" parent="BandyerSDKDesign.RoundedImageGlass.Bordered">
         <item name="android:layout_width">@dimen/bandyer_dimen_space28</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space28</item>
         <item name="android:background">@android:color/white</item>
