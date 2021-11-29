@@ -20,6 +20,7 @@ import android.animation.*
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.Point
 import android.graphics.PointF
 import android.graphics.Rect
@@ -265,6 +266,8 @@ fun View.makeFloating(container: androidx.coordinatorlayout.widget.CoordinatorLa
 
         override fun onTouch(v: View, event: MotionEvent): Boolean {
             if (!isFloating) return true
+            
+            val screenSize = v.context.getScreenSize()
 
             container.requestDisallowInterceptTouchEvent(true)
 
@@ -289,7 +292,7 @@ fun View.makeFloating(container: androidx.coordinatorlayout.widget.CoordinatorLa
                         }
                         (currentCorner == CORNER.BOTTOM_LEFT || currentCorner == CORNER.BOTTOM_RIGHT) -> {
                             if (event.rawY > movePointEvent!!.y
-                                    && event.rawY < context.getScreenSize().y - getBottomAnchorOffset(bottomAnchor)
+                                    && event.rawY < screenSize.y - getBottomAnchorOffset(bottomAnchor)
                             )
                                 downPointEvent = Point(event.rawX.toInt(), event.rawY.toInt())
                         }
@@ -330,7 +333,7 @@ fun View.makeFloating(container: androidx.coordinatorlayout.widget.CoordinatorLa
                             cornerPoint.y = topAnchor.bottom
                         }
                         CORNER.TOP_RIGHT -> {
-                            cornerPoint.x = rootView.context.getScreenSize().x
+                            cornerPoint.x = screenSize.x
                             cornerPoint.y = topAnchor.bottom
                         }
                         CORNER.BOTTOM_LEFT -> {
@@ -338,13 +341,14 @@ fun View.makeFloating(container: androidx.coordinatorlayout.widget.CoordinatorLa
                             cornerPoint.y = bottomAnchor.top
                         }
                         CORNER.BOTTOM_RIGHT -> {
-                            cornerPoint.x = rootView.context.getScreenSize().x
+                            cornerPoint.x = screenSize.x
                             cornerPoint.y = bottomAnchor.top
                         }
                     }
+
                     val unHookedDx = cornerPoint.x - nearbyPoint.x
                     val unHookedDy = cornerPoint.y - nearbyPoint.y
-                    val unHookedDistance = sqrt(((unHookedDx.toLong() * unHookedDx.toLong()) + (unHookedDy.toLong() * unHookedDy.toLong())).toDouble())
+                    val unHookedDistance = abs(sqrt(((unHookedDx.toLong() * unHookedDx.toLong()) + (unHookedDy.toLong() * unHookedDy.toLong())).toDouble()))
 
                     if (unHookedDistance > v.height * 1.5 && !isUnHooked) {
                         isUnHooked = true
@@ -402,6 +406,9 @@ fun View.animateToCorner(corner: CORNER, container: androidx.coordinatorlayout.w
     val marginRight = (this.layoutParams as ViewGroup.MarginLayoutParams).rightMargin
     val topAnchorOffset = topAnchor.height + topAnchor.translationY
     val statusBarMargin = context.dp2px(16f)
+    
+    val screenSize = context.getScreenSize()
+    val bottomAnchorOffset = getBottomAnchorOffset(bottomAnchor)
 
     when (currentCorner) {
 
@@ -409,57 +416,57 @@ fun View.animateToCorner(corner: CORNER, container: androidx.coordinatorlayout.w
             CORNER.TOP_LEFT -> {
             }
             CORNER.TOP_RIGHT -> {
-                animatorTranslationX = context.getScreenSize().x - width.toFloat() - marginRight - marginLeft
+                animatorTranslationX = screenSize.x - width.toFloat() - marginRight - marginLeft
             }
             CORNER.BOTTOM_LEFT -> {
-                animatorTranslationY = context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor) - marginBottom - marginTop - statusBarMargin
+                animatorTranslationY = screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset - marginBottom - marginTop - statusBarMargin
             }
             CORNER.BOTTOM_RIGHT -> {
-                animatorTranslationX = context.getScreenSize().x - width.toFloat() - marginLeft - marginRight
-                animatorTranslationY = context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor) - marginBottom - marginTop - statusBarMargin
+                animatorTranslationX = screenSize.x - width.toFloat() - marginLeft - marginRight
+                animatorTranslationY = screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset - marginBottom - marginTop - statusBarMargin
             }
         }
 
         CORNER.TOP_RIGHT -> when (corner) {
             CORNER.TOP_LEFT -> {
-                animatorTranslationX = -(context.getScreenSize().x - width.toFloat()) + marginLeft + marginRight
+                animatorTranslationX = -(screenSize.x - width.toFloat()) + marginLeft + marginRight
             }
             CORNER.TOP_RIGHT -> {
             }
             CORNER.BOTTOM_LEFT -> {
-                animatorTranslationX = -(context.getScreenSize().x - width.toFloat()) + marginLeft + marginRight
-                animatorTranslationY = context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor) - marginBottom - marginTop - statusBarMargin
+                animatorTranslationX = -(screenSize.x - width.toFloat()) + marginLeft + marginRight
+                animatorTranslationY = screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset - marginBottom - marginTop - statusBarMargin
             }
             CORNER.BOTTOM_RIGHT -> {
-                animatorTranslationY = context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor) - marginBottom - marginTop - statusBarMargin
+                animatorTranslationY = screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset - marginBottom - marginTop - statusBarMargin
             }
         }
 
         CORNER.BOTTOM_LEFT -> when (corner) {
             CORNER.TOP_LEFT -> {
-                animatorTranslationY = -(context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor)) + marginTop + marginBottom + statusBarMargin
+                animatorTranslationY = -(screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset) + marginTop + marginBottom + statusBarMargin
             }
             CORNER.TOP_RIGHT -> {
-                animatorTranslationX = context.getScreenSize().x - width.toFloat() - marginRight - marginLeft
-                animatorTranslationY = -(context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor)) + marginTop + marginBottom + statusBarMargin
+                animatorTranslationX = screenSize.x - width.toFloat() - marginRight - marginLeft
+                animatorTranslationY = -(screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset) + marginTop + marginBottom + statusBarMargin
             }
             CORNER.BOTTOM_LEFT -> {
             }
             CORNER.BOTTOM_RIGHT -> {
-                animatorTranslationX = context.getScreenSize().x - width.toFloat() - marginRight - marginLeft
+                animatorTranslationX = screenSize.x - width.toFloat() - marginRight - marginLeft
             }
         }
 
         CORNER.BOTTOM_RIGHT -> when (corner) {
             CORNER.TOP_LEFT -> {
-                animatorTranslationX = -(context.getScreenSize().x - width.toFloat()) + marginLeft + marginRight
-                animatorTranslationY = -(context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor)) + marginTop + marginBottom + statusBarMargin
+                animatorTranslationX = -(screenSize.x - width.toFloat()) + marginLeft + marginRight
+                animatorTranslationY = -(screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset) + marginTop + marginBottom + statusBarMargin
             }
             CORNER.TOP_RIGHT -> {
-                animatorTranslationY = -(context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor)) + marginTop + marginBottom + statusBarMargin
+                animatorTranslationY = -(screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset) + marginTop + marginBottom + statusBarMargin
             }
             CORNER.BOTTOM_LEFT -> {
-                animatorTranslationX = -(context.getScreenSize().x - width.toFloat()) + marginLeft + marginRight
+                animatorTranslationX = -(screenSize.x - width.toFloat()) + marginLeft + marginRight
             }
             CORNER.BOTTOM_RIGHT -> {
             }
