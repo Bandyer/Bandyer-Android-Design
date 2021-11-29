@@ -113,7 +113,8 @@
     </style>
 
     <style name="BandyerSDKDesign.RoundedImageGlass.ActivableCallRecyclerViewItemIcon" parent="BandyerSDKDesign.RoundedImageGlass">
-        <item name="android:background">@color/bandyer_glass_input_background</item>
+        <item name="android:backgroundTint">@color/bandyer_glass_input_background</item>
+        <item name="android:background">@drawable/bandyer_glass_flat_white</item>
         <item name="android:layout_width">@dimen/bandyer_dimen_space48</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_space48</item>
     </style>
