@@ -1,6 +1,5 @@
 package com.bandyer.video_android_glass_ui
 
-//import com.bandyer.video_android_glass_ui.common.Toast
 import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
@@ -91,21 +90,22 @@ internal class GlassActivity :
                     val foundView = snapHelper.findSnapView(layoutManager) ?: return
                     val position = layoutManager.getPosition(foundView)
                     if(itemAdapter!!.getAdapterItem(position).streamParticipant.isMyStream && currentStreamItemIndex != position) {
-                        with(binding.bandyerToastManager) {
+                        with(binding.bandyerToastContainer) {
                             val isMicBlocked = viewModel.currentPermissions?.micPermission?.let { !it.isAllowed && it.neverAskAgain } ?: true
                             val isCamBlocked = viewModel.currentPermissions?.cameraPermission?.let { !it.isAllowed && it.neverAskAgain } ?: true
                             when {
-                                isMicBlocked && isCamBlocked -> show(resources.getString(R.string.bandyer_glass_mic_and_cam_blocked))
-                                isMicBlocked -> show(resources.getString(R.string.bandyer_glass_mic_blocked))
-                                isCamBlocked -> show(resources.getString(R.string.bandyer_glass_cam_blocked))
+                                isMicBlocked && isCamBlocked -> show("input-blocked", resources.getString(R.string.bandyer_glass_mic_and_cam_blocked))
+                                isMicBlocked -> show("input-blocked", resources.getString(R.string.bandyer_glass_mic_blocked))
+                                isCamBlocked -> show("input-blocked", resources.getString(R.string.bandyer_glass_cam_blocked))
                             }
 
                             val isMicEnabled = viewModel.micEnabled.value
                             val isCameraEnabled = viewModel.cameraEnabled.value
                             when {
-                                !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled -> show(resources.getString(R.string.bandyer_glass_mic_not_active))
-                                !isMicBlocked && !isMicEnabled -> show(resources.getString(R.string.bandyer_glass_mic_not_active))
-                                !isCamBlocked && !isCameraEnabled -> show(resources.getString(R.string.bandyer_glass_mic_not_active))
+                                !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled -> show("input-disabled", resources.getString(R.string.bandyer_glass_mic_and_cam_not_active))
+                                !isMicBlocked && !isMicEnabled -> show("input-disabled", resources.getString(R.string.bandyer_glass_mic_not_active))
+                                !isCamBlocked && !isCameraEnabled -> show("input-disabled", resources.getString(R.string.bandyer_glass_cam_not_active))
+                                else -> Unit
                             }
                         }
                     }
@@ -157,7 +157,8 @@ internal class GlassActivity :
                 .onEach {
                     val count = it.count()
                     with(binding) {
-                        if(count < 2) bandyerToastManager.show(resources.getString(R.string.bandyer_glass_alone), R.drawable.ic_bandyer_glass_alert)
+                        if(count < 2) bandyerToastContainer.show("alone-in-call", resources.getString(R.string.bandyer_glass_alone), R.drawable.ic_bandyer_glass_alert, 0L)
+                        else bandyerToastContainer.cancel("alone-in-call")
                         bandyerStatusBar.updateCenteredText(count)
                     }
                 }.launchIn(this)

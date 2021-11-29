@@ -12,6 +12,23 @@ import com.bandyer.video_android_glass_ui.R
  * Context utility class
  */
 internal object ContextExtensions {
+
+    /**
+     * Retrieve a call theme attribute's style
+     *
+     * @receiver Context
+     * @param styleAttribute the attribute for which you want to retrieve the style
+     * @return Int the attribute's style
+     */
+    internal fun Context.getCallThemeAttribute(
+        @StyleableRes styleAttribute: Int
+    ): Int =
+        this.getThemeAttribute(
+            R.style.BandyerSDKDesign_Theme_GlassCall,
+            R.styleable.BandyerSDKDesign_Theme_Glass_Call,
+            styleAttribute
+        )
+
     /**
      * Retrieve a chat theme attribute's style
      *
