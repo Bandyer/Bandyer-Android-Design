@@ -1,6 +1,7 @@
 package com.bandyer.video_android_glass_ui
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -8,6 +9,8 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
@@ -77,7 +80,7 @@ internal class GlassActivity :
 
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
-//        enterImmersiveMode()
+        enterImmersiveMode()
 
         with(binding.bandyerStreams) {
             itemAdapter = ItemAdapter()
@@ -200,7 +203,7 @@ internal class GlassActivity :
 
     override fun onResume() {
         super.onResume()
-//        hideSystemUI()
+        hideSystemUI()
     }
 
     override fun onDestroy() {
@@ -310,6 +313,9 @@ internal class GlassActivity :
     private fun enterImmersiveMode() {
         supportActionBar?.hide()
         decorView = window.decorView
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) return
+        // ATM there is no way of doing this on api > 30
         decorView!!.apply {
             setOnSystemUiVisibilityChangeListener { visibility ->
                 if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0)
@@ -319,12 +325,20 @@ internal class GlassActivity :
     }
 
     private fun hideSystemUI() {
-        decorView!!.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+            window.insetsController?.apply {
+                hide(WindowInsetsCompat.Type.systemBars())
+                systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        } else {
+            decorView!!.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
                 or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                 or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                 or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                 or View.SYSTEM_UI_FLAG_FULLSCREEN)
+        }
     }
 
     // UPDATE STATUS BAR UI
