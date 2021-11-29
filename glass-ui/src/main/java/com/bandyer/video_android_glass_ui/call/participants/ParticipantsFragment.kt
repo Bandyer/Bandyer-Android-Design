@@ -7,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_glass_ui.*
-import com.bandyer.video_android_glass_ui.call.EmptyFragmentArgs
-import com.bandyer.video_android_glass_ui.common.UserState
+import com.bandyer.video_android_glass_ui.model.internal.UserState
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentParticipantsBinding
@@ -103,9 +101,11 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                                 repeatOnStarted {
                                     stateJob = participant.state.onEach {
                                         when(it) {
-                                            is CallParticipant.State.Online.Invited -> setState(UserState.Invited(true))
+                                            is CallParticipant.State.Online.Invited -> setState(
+                                                UserState.Invited(true))
                                             is CallParticipant.State.Online -> setState(UserState.Online)
-                                            is CallParticipant.State.Offline.Invited -> setState(UserState.Invited(false))
+                                            is CallParticipant.State.Offline.Invited -> setState(
+                                                UserState.Invited(false))
                                             is CallParticipant.State.Offline-> setState(UserState.Offline, it.lastSeen)
                                         }
                                     }.launchIn(this)

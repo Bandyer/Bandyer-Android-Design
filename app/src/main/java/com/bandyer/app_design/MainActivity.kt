@@ -33,7 +33,7 @@ import androidx.fragment.app.FragmentActivity
 import com.bandyer.app_design.databinding.ActivityMainBinding
 import com.bandyer.video_android_glass_ui.CallManager
 import com.bandyer.video_android_glass_ui.UiLauncher.launchCallGlass
-import com.bandyer.video_android_glass_ui.common.Volume
+import com.bandyer.video_android_glass_ui.model.Volume
 import com.bandyer.video_android_glass_ui.model.*
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.CallAction

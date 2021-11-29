@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
-import com.bandyer.video_android_glass_ui.common.Volume
+import com.bandyer.video_android_glass_ui.model.Volume
 import com.bandyer.video_android_glass_ui.model.*
 import kotlinx.coroutines.flow.Flow
 import java.lang.ref.WeakReference

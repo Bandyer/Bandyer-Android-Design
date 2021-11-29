@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_core_ui.utils.Iso8601
-import com.bandyer.video_android_glass_ui.common.UserState
+import com.bandyer.video_android_glass_ui.model.internal.UserState
 import com.google.android.material.textview.MaterialTextView
 
 /**

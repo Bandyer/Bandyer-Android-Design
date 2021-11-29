@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.LinearLayout
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassUserInfoLayoutBinding
+import com.bandyer.video_android_glass_ui.model.internal.UserState
 
 internal class UserInfoView @JvmOverloads constructor(
     context: Context,

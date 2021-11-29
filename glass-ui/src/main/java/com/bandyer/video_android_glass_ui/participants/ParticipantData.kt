@@ -3,7 +3,7 @@ package com.bandyer.video_android_glass_ui.participants
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import androidx.annotation.Keep
-import com.bandyer.video_android_glass_ui.common.UserState
+import com.bandyer.video_android_glass_ui.model.internal.UserState
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 

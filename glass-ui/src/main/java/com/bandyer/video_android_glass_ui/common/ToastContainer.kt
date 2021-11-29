@@ -1,4 +1,4 @@
-package com.bandyer.video_android_glass_ui
+package com.bandyer.video_android_glass_ui.common
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getThemeAttribute
+import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassToastLayoutBinding
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getCallThemeAttribute
 import java.util.*

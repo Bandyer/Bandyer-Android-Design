@@ -19,7 +19,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.bandyer.video_android_glass_ui.ToastContainer
+        <com.bandyer.video_android_glass_ui.common.ToastContainer
             android:id="@+id/bandyer_toast_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
