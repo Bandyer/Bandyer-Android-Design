@@ -2,10 +2,13 @@ package com.bandyer.video_android_glass_ui
 
 import android.view.KeyEvent
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
+import com.bandyer.video_android_glass_ui.utils.extensions.*
 import com.bandyer.video_android_glass_ui.utils.extensions.isConfirmButton
 import com.bandyer.video_android_glass_ui.utils.extensions.isDownButton
 import com.bandyer.video_android_glass_ui.utils.extensions.isLeftButton
 import com.bandyer.video_android_glass_ui.utils.extensions.isRightButton
+import android.view.KeyEvent.META_SHIFT_LEFT_ON
+import android.view.KeyEvent.META_SHIFT_ON
 
 /**
  * A smart glass touch event
@@ -76,18 +79,9 @@ internal data class TouchEvent(val type: Type, val source: Source) {
         fun getEvent(gesture: GlassGestureDetector.Gesture?) =
             when (gesture) {
                 GlassGestureDetector.Gesture.TAP            -> TouchEvent(Type.TAP, Source.GESTURE)
-                GlassGestureDetector.Gesture.SWIPE_DOWN     -> TouchEvent(
-                    Type.SWIPE_DOWN,
-                    Source.GESTURE
-                )
-                GlassGestureDetector.Gesture.SWIPE_FORWARD  -> TouchEvent(
-                    Type.SWIPE_FORWARD,
-                    Source.GESTURE
-                )
-                GlassGestureDetector.Gesture.SWIPE_BACKWARD -> TouchEvent(
-                    Type.SWIPE_BACKWARD,
-                    Source.GESTURE
-                )
+                GlassGestureDetector.Gesture.SWIPE_DOWN     -> TouchEvent(Type.SWIPE_DOWN, Source.GESTURE)
+                GlassGestureDetector.Gesture.SWIPE_FORWARD  -> TouchEvent(Type.SWIPE_FORWARD, Source.GESTURE)
+                GlassGestureDetector.Gesture.SWIPE_BACKWARD -> TouchEvent(Type.SWIPE_BACKWARD, Source.GESTURE)
                 else                                        -> TouchEvent(Type.UNKNOWN, Source.GESTURE)
             }
 
@@ -99,20 +93,11 @@ internal data class TouchEvent(val type: Type, val source: Source) {
          */
         fun getEvent(event: KeyEvent?) =
             when {
-                event?.isConfirmButton() == true -> TouchEvent(Type.TAP, Source.KEY)
-                event?.isDownButton() == true -> TouchEvent(
-                    Type.SWIPE_DOWN,
-                    Source.KEY
-                )
-                event?.isRightButton() == true -> TouchEvent(
-                    Type.SWIPE_FORWARD,
-                    Source.KEY
-                )
-                event?.isLeftButton() == true -> TouchEvent(
-                    Type.SWIPE_BACKWARD,
-                    Source.KEY
-                )
-                else -> TouchEvent(Type.UNKNOWN, Source.KEY)
+                event?.isConfirmButton() == true                                                                                        -> TouchEvent(Type.TAP, Source.KEY)
+                event?.isDownButton() == true                                                                                           -> TouchEvent(Type.SWIPE_DOWN, Source.KEY)
+                event?.isRightButton() == true || (event?.isTabKey() == true && event.metaState != META_SHIFT_ON or META_SHIFT_LEFT_ON) -> TouchEvent(Type.SWIPE_FORWARD, Source.KEY)
+                event?.isLeftButton() == true || event?.isShiftLeftKey() == true                                                        -> TouchEvent(Type.SWIPE_BACKWARD, Source.KEY)
+                else                                                                                                                    -> TouchEvent(Type.UNKNOWN, Source.KEY)
             }
     }
 }

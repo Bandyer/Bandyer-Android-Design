@@ -54,6 +54,13 @@ internal fun KeyEvent.isDownButton(): Boolean = keyCode == KeyEvent.KEYCODE_DPAD
 internal fun KeyEvent.isTabKey(): Boolean = keyCode == KeyEvent.KEYCODE_TAB
 
 /**
+ * Checks if keyEvent is a shift left key
+ * @receiver KeyEvent
+ * @return true if is shift left key else otherwise
+ */
+internal fun KeyEvent.isShiftLeftKey(): Boolean = keyCode == KeyEvent.KEYCODE_SHIFT_LEFT
+
+/**
  * Checks if keyEvent is a dpad down button
  * @receiver KeyEvent
  * @return true if is down dpad button else otherwise
