@@ -9,7 +9,7 @@ import com.bandyer.video_android_glass_ui.model.*
 import kotlinx.coroutines.flow.Flow
 import java.lang.ref.WeakReference
 
-object UiLauncher {
+object GlassUi {
 
     fun Context.launchCallGlass(
         callManager: CallManager,
