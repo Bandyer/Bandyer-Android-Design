@@ -80,7 +80,7 @@ internal abstract class ConnectingFragment: BaseFragment() {
                             .combine(call.participants) { state, participants ->
                                 if(state is Call.State.Connected) onConnected()
                                 
-                                val items = participants.others.plus(participants.me).map { FullScreenDialogItem(it.username) }
+                                val items = listOf(participants.me).plus(participants.others).map { FullScreenDialogItem(it.username) }
                                 FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
 
                                 if(nOfParticipants == itemAdapter!!.adapterItemCount) return@combine

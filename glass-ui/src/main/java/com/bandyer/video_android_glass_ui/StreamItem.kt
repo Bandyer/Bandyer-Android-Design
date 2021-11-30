@@ -156,7 +156,7 @@ internal class MyStreamItem(streamParticipant: StreamParticipant, parentScope: C
          */
         override fun bindView(item: MyStreamItem, payloads: List<Any>) {
             super.bindView(item, payloads)
-            binding.bandyerSubtitleLayout.bandyerSubtitle.text = item.streamParticipant.participant.username
+            binding.bandyerSubtitleLayout.bandyerSubtitle.text = itemView.context.getString(R.string.bandyer_glass_you)
             binding.bandyerCenteredSubtitle.text = item.streamParticipant.participant.username
 
             jobs += item.permissions.onEach {

@@ -122,7 +122,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                     viewModel.call.participants
                         .takeWhile { it.others.plus(it.me).isNotEmpty()  }
                         .collect { participants ->
-                            val items = participants.others.plus(participants.me).map { CallParticipantItem(it) }
+                            val items = listOf(participants.me).plus(participants.others).map { CallParticipantItem(it) }
                             FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                         }
                 }

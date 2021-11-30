@@ -59,6 +59,7 @@
     <string name="bandyer_glass_cam_blocked">Camera bloccata</string>
     <string name="bandyer_glass_mic_and_cam_blocked">Microfono e camera bloccati</string>
     <string name="bandyer_glass_alone">Sei solo/a. In attesa di altri</string>
+    <string name="bandyer_glass_you">You</string>
 
     <!-- PLURALS -->
     <plurals name="bandyer_glass_users_in_call_pattern">
