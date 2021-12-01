@@ -16,29 +16,28 @@
 
 package com.bandyer.sdk_design.utils.systemviews.implementation
 
-import android.os.Build
+import android.graphics.Rect
 import android.view.*
+import androidx.core.graphics.Insets
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.doOnAttach
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.android_common.LifecycleEvents
 import com.bandyer.android_common.LifecyleBinder
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutObserver
-import kotlin.math.max
 
-internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewControlsAwareInstance, SystemViewLayoutObserver {
-
-    private data class Inset(val left: Int, val top: Int, val right: Int, val bottom: Int)
-
-    private var currentInset = Inset(0,0,0,0)
-    private var currentCutOut = Inset(0,0,0,0)
+internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewControlsAwareInstance {
 
     /**
      * Mapping of observers and requests to keep listening on global layout changes
      */
     private var systemUiObservers = mutableListOf<Pair<SystemViewLayoutObserver, Boolean>>()
 
-    fun bind(activity: FragmentActivity): SystemViewControlsAware {
+    private var currentInset = Insets.of(Rect())
+
+    fun bind(activity: FragmentActivity): SystemViewControlsAware = apply {
+
         LifecyleBinder.bind(activity, object : LifecycleEvents {
             override fun destroy() = dispose()
             override fun create() = Unit
@@ -49,20 +48,16 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
         })
 
         activity.window!!.decorView.apply {
-            requestApplyInsetsWhenAttached()
+            doOnAttach { requestApplyInsets() }
 
             ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
-                val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-
-                val newInsets = Inset(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-                if (currentInset == newInsets) return@setOnApplyWindowInsetsListener WindowInsetsCompat.CONSUMED
-                currentInset = newInsets
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                    activity.window.decorView.rootWindowInsets.displayCutout?.let {
-                        currentCutOut = Inset(it.safeInsetLeft, it.safeInsetTop, it.safeInsetRight, it.safeInsetBottom)
-                    }
+                val newInsets = with(insets) {
+                    Insets.max(getInsets(WindowInsetsCompat.Type.systemBars()), getInsets(WindowInsetsCompat.Type.displayCutout()))
                 }
+
+                if (currentInset == newInsets) return@setOnApplyWindowInsetsListener WindowInsetsCompat.CONSUMED
+
+                currentInset = newInsets
 
                 resetMargins()
                 stopObserversListeningIfNeeded()
@@ -70,8 +65,6 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
                 return@setOnApplyWindowInsetsListener WindowInsetsCompat.CONSUMED
             }
         }
-
-        return this
     }
 
     override fun addObserver(
@@ -81,53 +74,37 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
         val addedObserver = systemUiObservers.firstOrNull { it.first == observer }?.first
         if (addedObserver != null) return this
         systemUiObservers.add(Pair(observer, removeOnInsetChanged))
-        observer.onBottomInsetChanged(currentInset.bottom)
-        observer.onTopInsetChanged(currentInset.top)
-        observer.onLeftInsetChanged(currentInset.left)
-        observer.onRightInsetChanged(currentInset.right)
+        notifyObserver(observer)
+        stopObserversListeningIfNeeded()
         return this
     }
 
-    override fun removeObserver(observer: SystemViewLayoutObserver): SystemViewControlsAware {
+    override fun removeObserver(observer: SystemViewLayoutObserver): SystemViewControlsAware = apply {
         systemUiObservers = systemUiObservers.filterNot { it.first == observer }.toMutableList()
-        return this
     }
 
     override fun getOffsets() = resetMargins()
 
     private fun resetMargins() {
-        onTopInsetChanged(max(currentCutOut.top, currentInset.top))
-        onBottomInsetChanged(max(currentCutOut.bottom, currentInset.bottom))
-        onLeftInsetChanged(max(currentCutOut.left, currentInset.left))
-        onRightInsetChanged(max(currentCutOut.right, currentInset.right))
+        systemUiObservers.forEach {
+            notifyObserver(it.first)
+        }
+        stopObserversListeningIfNeeded()
     }
 
-    override fun onTopInsetChanged(pixels: Int) = systemUiObservers.forEach { it.first.onTopInsetChanged(pixels) }
+    private fun notifyObserver(observer: SystemViewLayoutObserver) = with(observer) {
+        onTopInsetChanged(currentInset.top)
+        onLeftInsetChanged(currentInset.left)
+        onRightInsetChanged(currentInset.right)
+        onBottomInsetChanged(currentInset.bottom)
+    }
 
-    override fun onBottomInsetChanged(pixels: Int) = systemUiObservers.forEach { it.first.onBottomInsetChanged(pixels) }
-
-    override fun onLeftInsetChanged(pixels: Int) = systemUiObservers.forEach { it.first.onLeftInsetChanged(pixels) }
-
-    override fun onRightInsetChanged(pixels: Int) = systemUiObservers.forEach { it.first.onRightInsetChanged(pixels) }
-
-    private fun stopObserversListeningIfNeeded() { systemUiObservers = systemUiObservers.filter { !it.second }.toMutableList() }
+    private fun stopObserversListeningIfNeeded() {
+        systemUiObservers = systemUiObservers.filter { !it.second }.toMutableList()
+    }
 
     private fun dispose() {
         systemUiObservers.clear()
         this@SystemViewControlsAware.finished()
-    }
-
-    private fun View.requestApplyInsetsWhenAttached() {
-        if (isAttachedToWindow) {
-            requestApplyInsets()
-        } else {
-            addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
-                override fun onViewAttachedToWindow(v: View) {
-                    v.removeOnAttachStateChangeListener(this)
-                    v.requestApplyInsets()
-                }
-                override fun onViewDetachedFromWindow(v: View) = Unit
-            })
-        }
     }
 }
