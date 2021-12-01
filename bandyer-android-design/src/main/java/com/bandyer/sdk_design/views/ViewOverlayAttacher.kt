@@ -25,6 +25,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
+import com.bandyer.sdk_design.R
+import com.bandyer.sdk_design.extensions.getScreenSize
+import kotlin.math.max
 
 /**
  * This class has the responsibility of attaching overlay views based on OverlayType type
@@ -40,15 +43,16 @@ class ViewOverlayAttacher(val view: View) : View.OnLayoutChangeListener {
          * The overlay view is visible upon all apps and launcher.
          */
         GLOBAL,
+
         /**
          * The overlay view is visible only upon current app.
          */
         CURRENT_APPLICATION
     }
 
-    private var type: OverlayType? = null
-    private val windowManager = view.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    private var attachId = 0
+    private var windowManager: WindowManager? = null
+    private val overlays: MutableList<View> = mutableListOf()
+    private var globalOverlay: View? = null
 
     /**
      * Attaches the view to the current application or over all applications with the given context with the OverlayType specified.
@@ -56,34 +60,67 @@ class ViewOverlayAttacher(val view: View) : View.OnLayoutChangeListener {
      * @param type OverlayType
      */
     fun attach(context: Context, type: OverlayType) {
-        view.requestLayout()
-
         val contextIdentifier = getContextIdentifier(context, type)
-        if (attachId == contextIdentifier) return
-        detach()
         if (context !is Activity && type == OverlayType.CURRENT_APPLICATION) return
-        attachId = contextIdentifier
-        this.type = type
         when {
-            this.type == OverlayType.GLOBAL -> {
-                view.addOnLayoutChangeListener(this)
-                runCatching { windowManager.addView(view, getSystemOverlayLayoutParams()) }
+            type == OverlayType.GLOBAL -> {
+                if (globalOverlay?.getTag(R.id.bandyer_id_status_bar_overlay_tag) == contextIdentifier) return
+                globalOverlay = view
+                globalOverlay!!.setTag(R.id.bandyer_id_status_bar_overlay_tag, contextIdentifier)
+                windowManager = globalOverlay!!.context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                globalOverlay!!.addOnLayoutChangeListener(this)
+                runCatching { windowManager!!.addView(globalOverlay, getSystemOverlayLayoutParams()) }
             }
-            context is Activity -> (context.window.decorView as ViewGroup).addView(view, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+            context is Activity -> {
+                overlays.firstOrNull { it.getTag(R.id.bandyer_id_status_bar_overlay_tag) == contextIdentifier }?.let { return }
+                val overlay = cloneOverlay(view)
+                overlay.setTag(R.id.bandyer_id_status_bar_overlay_tag, contextIdentifier)
+                overlays.add(overlay)
+                (context.window.decorView as ViewGroup).addView(overlay, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+                overlays.forEach { it.requestLayout() }
+            }
             else -> Unit
         }
     }
 
+    private fun cloneOverlay(overlay: View): View = with(overlay) { this::class.constructors.first().call(context, null, 0) }
+
     /**
-     * Detaches the view from its parent if has been previously attached.
+     * Detaches all the views from its parent if has been previously attached.
      */
-    fun detach() {
-        if (attachId == 0) return
-        if (type == OverlayType.GLOBAL) kotlin.runCatching { windowManager.removeViewImmediate(view) }
-        else (view.parent as? ViewGroup)?.removeView(view)
-        view.removeOnLayoutChangeListener(this)
-        type = null
-        attachId = 0
+    fun detachAll() {
+        overlays.forEach { overlay ->
+            removeApplicationOverlay(overlay)
+        }
+        overlays.clear()
+        removeGlobalOverlay()
+    }
+
+    /**
+     * Detaches the view associated with input context from its parent if has been previously attached.
+     * @param context Context detaching context
+     */
+    fun detach(context: Context) {
+        removeGlobalOverlay()
+        val contextIdentifier = getContextIdentifier(context, OverlayType.CURRENT_APPLICATION)
+        overlays.firstOrNull { getContextIdentifier(it.context, OverlayType.CURRENT_APPLICATION) == contextIdentifier }?.let { overlay ->
+            removeApplicationOverlay(overlay)
+            overlays.remove(overlay)
+        }
+    }
+
+    private fun removeGlobalOverlay() {
+        globalOverlay ?: return
+        kotlin.runCatching {
+            windowManager!!.removeViewImmediate(globalOverlay!!)
+            windowManager = null
+        }
+        globalOverlay = null
+    }
+
+    private fun removeApplicationOverlay(overlay: View) = with(overlay) {
+        (parent as? ViewGroup)?.removeView(overlay)
+        removeOnLayoutChangeListener(this@ViewOverlayAttacher)
     }
 
     private fun getSystemOverlayLayoutParams(): WindowManager.LayoutParams {
@@ -94,15 +131,16 @@ class ViewOverlayAttacher(val view: View) : View.OnLayoutChangeListener {
             WindowManager.LayoutParams.TYPE_PHONE
 
         val windowManagerLayoutParams = WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.WRAP_CONTENT,
-                type,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
-                        WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
-                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
-                        WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
-                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-                PixelFormat.TRANSLUCENT)
+            with(globalOverlay!!.context.getScreenSize()) { max(x, y) },
+            WindowManager.LayoutParams.WRAP_CONTENT,
+            type,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
+                    WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON or
+                    WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
+                    WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+            PixelFormat.TRANSLUCENT
+        )
         windowManagerLayoutParams.gravity = Gravity.TOP or Gravity.START
         windowManagerLayoutParams.title = "ViewOverlayAttacher"
 
@@ -120,6 +158,6 @@ class ViewOverlayAttacher(val view: View) : View.OnLayoutChangeListener {
      * @suppress
      */
     override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
-        windowManager.updateViewLayout(v, v!!.layoutParams)
+        windowManager?.updateViewLayout(v, v!!.layoutParams)
     }
 }

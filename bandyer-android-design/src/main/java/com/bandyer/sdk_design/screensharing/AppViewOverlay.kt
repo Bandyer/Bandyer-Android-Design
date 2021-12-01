@@ -64,8 +64,8 @@ class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.Overla
      * @param context Context used to detach the overlay view.
      */
     fun hide(context: Context) {
-        viewOverlayAttacher.detach()
         (context.applicationContext as Application).unregisterActivityLifecycleCallbacks(activityCallbacks)
+        viewOverlayAttacher.detachAll()
         appOpsCallback?.let { context.applicationContext.stopAppOpsWatch(it) }
         appOpsCallback = null
         initialized = false
@@ -82,13 +82,14 @@ class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.Overla
     private var activityCallbacks = object : Application.ActivityLifecycleCallbacks {
 
         override fun onActivityResumed(activity: Activity) {
-            if(!initialized) return
+            if (!initialized) return
             viewOverlayAttacher.attach(activity, getOverlayType(activity))
         }
+
         override fun onActivityStopped(activity: Activity) = Unit
         override fun onActivityPaused(activity: Activity) = Unit
         override fun onActivityStarted(activity: Activity) = Unit
-        override fun onActivityDestroyed(activity: Activity) = hide(activity)
+        override fun onActivityDestroyed(activity: Activity) = viewOverlayAttacher.detach(activity)
         override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
     }
