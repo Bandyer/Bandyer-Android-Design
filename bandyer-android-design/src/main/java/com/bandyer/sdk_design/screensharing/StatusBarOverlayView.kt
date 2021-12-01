@@ -18,9 +18,9 @@ package com.bandyer.sdk_design.screensharing
 
 import android.animation.Animator
 import android.animation.ValueAnimator
-import android.app.Activity
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -29,6 +29,7 @@ import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.*
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutObserver
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutOffsetListener
+import kotlin.math.max
 
 /**
  * Status bar overlay view(a pulsing red alert to be placed under the status bar)
@@ -42,14 +43,14 @@ import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutOffsetListener
  *        reference to a style resource that supplies default values for
  *        the view. Can be 0 to not look for defaults.
  */
-class StatusBarOverlayView @JvmOverloads constructor(context: Context,
-                                                     attrs: AttributeSet? = null,
-                                                     defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr), SystemViewLayoutObserver, View.OnLayoutChangeListener {
-    private var statusBarHeight = 0
+class StatusBarOverlayView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr), SystemViewLayoutObserver, View.OnLayoutChangeListener {
 
-    private var alphaAnimation: ValueAnimator? = null
-
-    private val safeViewHeightRange = with(context) { dp2px(18f) until dp2px(55f) }
+    private val backgroundColor = ContextCompat.getColor(context, R.color.bandyer_screen_share_color)
+    private val safeViewHeightRange = with(context) { dp2px(25f) until dp2px(55f) }
 
     /**
      * @suppress
@@ -59,9 +60,9 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
         context.scanForFragmentActivity()?.let {
             SystemViewLayoutOffsetListener.addObserver(it, this)
         }
-        alphaAnimation?.start()
-        updateHeight()
         addOnLayoutChangeListener(this)
+        updateHeight()
+        overlaysCounter++
     }
 
     /**
@@ -72,12 +73,12 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
         context.scanForFragmentActivity()?.let {
             SystemViewLayoutOffsetListener.removeObserver(it as AppCompatActivity, this)
         }
-        alphaAnimation?.cancel()
         removeOnLayoutChangeListener(this)
+        overlaysCounter--
     }
 
     override fun onTopInsetChanged(pixels: Int) {
-        statusBarHeight = pixels.takeIf { it > 0  && pixels in safeViewHeightRange } ?: statusBarHeight
+        statusBarHeight = max(statusBarHeight, pixels.coerceIn(safeViewHeightRange))
         updateHeight()
     }
 
@@ -111,7 +112,13 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
      * @suppress
      */
     override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
-        if (statusBarHeight == 0 || v == null || oldRight == right) return
+        val isInMultiWindow = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            with((v?.context as? AppCompatActivity)) {
+                this ?: false
+                kotlin.runCatching { this!!.isInMultiWindowMode && !this.isInPictureInPictureMode }.getOrNull() ?: false
+            }
+        } else false
+        if (isInMultiWindow || statusBarHeight == 0 || v == null || oldRight == right) return
         val multiplier = (right - left).toFloat() / v.context.getScreenSize().x
         if (multiplier > 1) return
         updateHeight((statusBarHeight * multiplier).toInt())
@@ -120,25 +127,36 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
     init {
         id = R.id.bandyer_id_screen_share_overlay
 
-        alphaAnimation = ValueAnimator.ofFloat(0f, 1f).apply {
-            this.repeatMode = ValueAnimator.REVERSE
-            this.repeatCount = ValueAnimator.INFINITE
-            this.duration = 2000L
-            this.addListener(object : Animator.AnimatorListener {
+        with(alphaAnimation) {
+            addListener(object : Animator.AnimatorListener {
                 override fun onAnimationRepeat(animation: Animator?) = bringToFront()
                 override fun onAnimationStart(animation: Animator?) = bringToFront()
                 override fun onAnimationEnd(animation: Animator?) = Unit
-                override fun onAnimationCancel(animation: Animator?) = Unit
+                override fun onAnimationCancel(animation: Animator?) = setBackgroundColor(backgroundColor)
             })
 
-            this.addUpdateListener { animation ->
+            addUpdateListener { animation ->
                 // Use animation position to blend colors.
                 val position = animation.animatedFraction
-                val color = ContextCompat.getColor(getContext(), R.color.bandyer_screen_share_color)
-                val blended = blendColors(Color.TRANSPARENT, color, position)
+                val blended = blendColors(Color.TRANSPARENT, backgroundColor, position)
                 // Apply blended color to the view.
                 setBackgroundColor(blended)
             }
+        }
+    }
+
+    companion object {
+        private var statusBarHeight = 0
+        private var overlaysCounter = 0
+            set(value) {
+                field = value
+                if (field > 0) alphaAnimation.start()
+                else alphaAnimation.cancel()
+            }
+        private var alphaAnimation: ValueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
+            this.repeatMode = ValueAnimator.REVERSE
+            this.repeatCount = ValueAnimator.INFINITE
+            this.duration = 2000L
         }
     }
 }
