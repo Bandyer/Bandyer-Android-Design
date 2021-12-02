@@ -13,7 +13,10 @@ import androidx.annotation.FloatRange
 import androidx.annotation.Px
 import com.bandyer.sdk_design.databinding.BandyerRatingBarItemBinding
 
-internal class RatingBarItem : FrameLayout {
+/**
+ * A BaseRatingBarItem
+ */
+internal class BaseRatingBarItem : FrameLayout {
 
     private var binding: BandyerRatingBarItemBinding? = null
 
@@ -38,14 +41,14 @@ internal class RatingBarItem : FrameLayout {
 
         with(binding!!.bandyerProgressImage) {
             layoutParams = params
-            scaleType = ImageView.ScaleType.CENTER_CROP
+            scaleType = ImageView.ScaleType.CENTER_INSIDE
             if(progressDrawable.constantState == null) return@with
             setImageDrawable(ClipDrawable(progressDrawable.constantState!!.newDrawable(), Gravity.START, ClipDrawable.HORIZONTAL))
         }
 
         with(binding!!.bandyerBackgroundImage)  {
             layoutParams = params
-            scaleType = ImageView.ScaleType.CENTER_CROP
+            scaleType = ImageView.ScaleType.CENTER_INSIDE
             if(backgroundDrawable.constantState == null) return@with
             setImageDrawable(ClipDrawable(backgroundDrawable.constantState!!.newDrawable(), Gravity.END, ClipDrawable.HORIZONTAL))
         }
@@ -53,6 +56,11 @@ internal class RatingBarItem : FrameLayout {
         setProgress(0f)
     }
 
+    /**
+     * Set the percentage progress for the item
+     *
+     * @param rating Float
+     */
     fun setProgress(@FloatRange(from = 0.0, to = 1.0) rating: Float) = with(binding!!) {
         val level = (MAX_IMAGE_LEVEL * rating).toInt()
         bandyerProgressImage.setImageLevel(level)
