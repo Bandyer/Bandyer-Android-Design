@@ -24,6 +24,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import com.badoo.mobile.util.WeakHandler
 import com.bandyer.sdk_design.extensions.canDrawOverlays
 import com.bandyer.sdk_design.extensions.startAppOpsWatch
@@ -40,6 +41,8 @@ class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.Overla
 
     private val viewOverlayAttacher = ViewOverlayAttacher(view)
 
+    private var application: Application? = null
+
     private var appOpsCallback: ((String, String) -> Unit)? = null
 
     private var initialized = false
@@ -54,21 +57,22 @@ class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.Overla
     fun show(context: Context) {
         if (initialized) return
         initialized = true
-        (context.applicationContext as Application).registerActivityLifecycleCallbacks(activityCallbacks)
+        application = context.applicationContext as Application
+        application!!.registerActivityLifecycleCallbacks(activityCallbacks)
         if (desiredType == ViewOverlayAttacher.OverlayType.GLOBAL) watchOverlayPermission(context)
         viewOverlayAttacher.attach(context, getOverlayType(context))
     }
 
     /**
      * Hides the screen share overlay.
-     * @param context Context used to detach the overlay view.
      */
-    fun hide(context: Context) {
-        (context.applicationContext as Application).unregisterActivityLifecycleCallbacks(activityCallbacks)
+    fun hide() {
+        application?.unregisterActivityLifecycleCallbacks(activityCallbacks)
         viewOverlayAttacher.detachAll()
-        appOpsCallback?.let { context.applicationContext.stopAppOpsWatch(it) }
+        appOpsCallback?.let { application?.stopAppOpsWatch(it) }
         appOpsCallback = null
         initialized = false
+        application = null
         mainThreadHandler.removeCallbacksAndMessages(null)
     }
 
