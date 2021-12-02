@@ -47,10 +47,15 @@ class StatusBarOverlayView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : View(context, attrs, defStyleAttr), SystemViewLayoutObserver, View.OnLayoutChangeListener {
+) : View(context, attrs, defStyleAttr), SystemViewLayoutObserver, View.OnLayoutChangeListener, Animator.AnimatorListener, ValueAnimator.AnimatorUpdateListener {
 
     private val backgroundColor = ContextCompat.getColor(context, R.color.bandyer_screen_share_color)
     private val safeViewHeightRange = with(context) { dp2px(25f) until dp2px(55f) }
+
+
+    init {
+        id = R.id.bandyer_id_screen_share_overlay
+    }
 
     /**
      * @suppress
@@ -60,9 +65,9 @@ class StatusBarOverlayView @JvmOverloads constructor(
         context.scanForFragmentActivity()?.let {
             SystemViewLayoutOffsetListener.addObserver(it, this)
         }
+        addAlphaAnimationListeners(this, this)
         addOnLayoutChangeListener(this)
         updateHeight()
-        overlaysCounter++
     }
 
     /**
@@ -74,9 +79,12 @@ class StatusBarOverlayView @JvmOverloads constructor(
             SystemViewLayoutOffsetListener.removeObserver(it as AppCompatActivity, this)
         }
         removeOnLayoutChangeListener(this)
-        overlaysCounter--
+        removeAlphaAnimationListener(this,this)
     }
 
+    /**
+     * @suppress
+     */
     override fun onTopInsetChanged(pixels: Int) {
         statusBarHeight = max(statusBarHeight, pixels.coerceIn(safeViewHeightRange))
         updateHeight()
@@ -85,8 +93,7 @@ class StatusBarOverlayView @JvmOverloads constructor(
     private fun updateHeight(height: Int = statusBarHeight) {
         if (layoutParams?.height == height) return
         post {
-            layoutParams ?: return@post
-            if (layoutParams.height == height) return@post
+            if (layoutParams == null || layoutParams.height == height) return@post
             layoutParams.height = height
             requestLayout()
             bringToFront()
@@ -124,39 +131,73 @@ class StatusBarOverlayView @JvmOverloads constructor(
         updateHeight((statusBarHeight * multiplier).toInt())
     }
 
-    init {
-        id = R.id.bandyer_id_screen_share_overlay
+    /**
+     * @suppress
+     */
+    override fun onAnimationRepeat(animation: Animator?) = bringToFront()
 
-        with(alphaAnimation) {
-            addListener(object : Animator.AnimatorListener {
-                override fun onAnimationRepeat(animation: Animator?) = bringToFront()
-                override fun onAnimationStart(animation: Animator?) = bringToFront()
-                override fun onAnimationEnd(animation: Animator?) = Unit
-                override fun onAnimationCancel(animation: Animator?) = setBackgroundColor(backgroundColor)
-            })
+    /**
+     * @suppress
+     */
+    override fun onAnimationStart(animation: Animator?) = bringToFront()
 
-            addUpdateListener { animation ->
-                // Use animation position to blend colors.
-                val position = animation.animatedFraction
-                val blended = blendColors(Color.TRANSPARENT, backgroundColor, position)
-                // Apply blended color to the view.
-                setBackgroundColor(blended)
-            }
-        }
+    /**
+     * @suppress
+     */
+    override fun onAnimationEnd(animation: Animator?) = Unit
+
+    /**
+     * @suppress
+     */
+    override fun onAnimationCancel(animation: Animator?) = setBackgroundColor(backgroundColor)
+
+    /**
+     * @suppress
+     */
+    override fun onAnimationUpdate(animation: ValueAnimator?) {
+        animation ?: return
+        // Use animation position to blend colors.
+        val position = animation.animatedFraction
+        val blended = blendColors(Color.TRANSPARENT, backgroundColor, position)
+        // Apply blended color to the view.
+        setBackgroundColor(blended)
     }
 
+    /**
+     * Instance of StatusBarOverlayView
+     */
     companion object {
         private var statusBarHeight = 0
-        private var overlaysCounter = 0
-            set(value) {
-                field = value
-                if (field > 0) alphaAnimation.start()
-                else alphaAnimation.cancel()
+
+        /**
+         * Adds animator listener and update listener to the status bar global animation,
+         * so the animation is synchronized across all status bar overlay view instances
+         * @param animatorListener AnimatorListener animator listener
+         * @param animatorUpdateListener AnimatorUpdateListener animator update listener
+         */
+        fun addAlphaAnimationListeners(animatorListener: Animator.AnimatorListener, animatorUpdateListener: ValueAnimator.AnimatorUpdateListener) {
+            alphaAnimation.addListener(animatorListener)
+            alphaAnimation.addUpdateListener(animatorUpdateListener)
+            if (!alphaAnimation.isRunning) alphaAnimation.start()
+        }
+
+        /**
+         * Removes animator listener and update listener from the status bar global animation
+         * @param animatorListener AnimatorListener animator listener
+         * @param animatorUpdateListener AnimatorUpdateListener animator update listener
+         */
+        fun removeAlphaAnimationListener(animatorListener: Animator.AnimatorListener, animatorUpdateListener: ValueAnimator.AnimatorUpdateListener) {
+            alphaAnimation.removeListener(animatorListener)
+            alphaAnimation.removeUpdateListener(animatorUpdateListener)
+            if (alphaAnimation.listeners.isNullOrEmpty()) alphaAnimation.cancel()
+        }
+
+        private val alphaAnimation: ValueAnimator by lazy {
+            ValueAnimator.ofFloat(0f, 1f).apply {
+                this.repeatMode = ValueAnimator.REVERSE
+                this.repeatCount = ValueAnimator.INFINITE
+                this.duration = 2000L
             }
-        private var alphaAnimation: ValueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
-            this.repeatMode = ValueAnimator.REVERSE
-            this.repeatCount = ValueAnimator.INFINITE
-            this.duration = 2000L
         }
     }
 }
