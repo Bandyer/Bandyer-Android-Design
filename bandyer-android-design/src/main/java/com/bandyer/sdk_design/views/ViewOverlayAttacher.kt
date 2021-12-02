@@ -51,7 +51,7 @@ class ViewOverlayAttacher(val view: View) : View.OnLayoutChangeListener {
     }
 
     private var windowManager: WindowManager? = null
-    private val overlays: MutableList<View> = mutableListOf()
+    private val inAppOverlays: MutableList<View> = mutableListOf()
     private var globalOverlay: View? = null
 
     /**
@@ -72,12 +72,12 @@ class ViewOverlayAttacher(val view: View) : View.OnLayoutChangeListener {
                 runCatching { windowManager!!.addView(globalOverlay, getSystemOverlayLayoutParams()) }
             }
             context is Activity -> {
-                overlays.firstOrNull { it.getTag(R.id.bandyer_id_status_bar_overlay_tag) == contextIdentifier }?.let { return }
+                inAppOverlays.firstOrNull { it.getTag(R.id.bandyer_id_status_bar_overlay_tag) == contextIdentifier }?.let { return }
                 val overlay = cloneOverlay(view)
                 overlay.setTag(R.id.bandyer_id_status_bar_overlay_tag, contextIdentifier)
-                overlays.add(overlay)
+                inAppOverlays.add(overlay)
                 (context.window.decorView as ViewGroup).addView(overlay, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
-                overlays.forEach { it.requestLayout() }
+                inAppOverlays.forEach { it.requestLayout() }
             }
             else -> Unit
         }
@@ -89,10 +89,10 @@ class ViewOverlayAttacher(val view: View) : View.OnLayoutChangeListener {
      * Detaches all the views from its parent if has been previously attached.
      */
     fun detachAll() {
-        overlays.forEach { overlay ->
+        inAppOverlays.forEach { overlay ->
             removeApplicationOverlay(overlay)
         }
-        overlays.clear()
+        inAppOverlays.clear()
         removeGlobalOverlay()
     }
 
@@ -103,9 +103,9 @@ class ViewOverlayAttacher(val view: View) : View.OnLayoutChangeListener {
     fun detach(context: Context) {
         removeGlobalOverlay()
         val contextIdentifier = getContextIdentifier(context, OverlayType.CURRENT_APPLICATION)
-        overlays.firstOrNull { getContextIdentifier(it.context, OverlayType.CURRENT_APPLICATION) == contextIdentifier }?.let { overlay ->
+        inAppOverlays.firstOrNull { getContextIdentifier(it.context, OverlayType.CURRENT_APPLICATION) == contextIdentifier }?.let { overlay ->
             removeApplicationOverlay(overlay)
-            overlays.remove(overlay)
+            inAppOverlays.remove(overlay)
         }
     }
 
