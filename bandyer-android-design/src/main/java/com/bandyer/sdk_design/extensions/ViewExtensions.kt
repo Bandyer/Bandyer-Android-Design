@@ -20,7 +20,6 @@ import android.animation.*
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.Color
 import android.graphics.Point
 import android.graphics.PointF
 import android.graphics.Rect
@@ -47,7 +46,6 @@ import java.lang.reflect.Method
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.sqrt
-
 
 ////////////////////////////////////////////// FIELD PROPERTIES //////////////////////////////////////////////
 
