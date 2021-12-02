@@ -45,7 +45,6 @@ import com.bandyer.android_audiosession.session.AudioCallSession
 import com.bandyer.android_audiosession.session.AudioCallSessionListener
 import com.bandyer.android_audiosession.session.AudioCallSessionState
 import com.bandyer.android_audiosession.session.audioCallSessionOptions
-import com.bandyer.android_common.extensions.hasPermission
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.AudioRouteState
@@ -276,7 +275,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
         return when (item) {
             is CallAction.SCREEN_SHARE -> {
                 if (item.toggled) {
-                    appViewOverlay?.hide(this@CallActivity)
+                    appViewOverlay?.hide()
                 } else {
                     BandyerScreenSharePickerDialog().show(this@CallActivity) {
                         Snackbar.make(callActionWidget!!.coordinatorLayout, it.name, Snackbar.LENGTH_SHORT).show()
