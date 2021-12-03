@@ -1,15 +1,16 @@
 package com.bandyer.sdk_design.rating
 
 import android.content.Context
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.FloatExtensions.floor
@@ -17,7 +18,7 @@ import com.bandyer.sdk_design.extensions.FloatExtensions.round
 import com.bandyer.sdk_design.extensions.MotionEventExtensions.isClickEvent
 import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.extensions.isRtl
-import java.util.ArrayList
+import java.util.*
 import kotlin.math.floor
 import kotlin.math.roundToInt
 
@@ -38,14 +39,14 @@ internal open class BaseRatingBar @JvmOverloads constructor(
     protected var ratingBarElements: ArrayList<BaseRatingBarElement> = arrayListOf()
 
     private var numLevels: Int = LEVELS
-    private var nunMinLevels: Float = 0f
     private var stepSize: Float = STEP_SIZE
     private var rating: Float = 0f
+    private var minRating: Float = 0f
 
-    private var iconSize: Float = context.dp2px(ICON_SIZE).toFloat()
-    private var iconPadding: Float = 0f
-    private var iconProgress: Drawable? = null
-    private var iconBackground: Drawable? = null
+    private var drawableSize: Float = context.dp2px(ICON_SIZE).toFloat()
+    private var drawablePadding: Float = 0f
+    private var drawableProgress: Drawable? = null
+    private var drawableBackground: Drawable? = null
 
     private var actionDownX: Float = 0f
     private var actionDownY: Float = 0f
@@ -55,52 +56,49 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         ViewCompat.saveAttributeDataForStyleable(this, context, R.styleable.BaseRatingBar, attrs, a, defStyleAttr, defStyleRes)
 
         val numLevels = a.getInt(R.styleable.BaseRatingBar_bandyer_numLevels, numLevels)
-        val nunMinLevels = a.getFloat(R.styleable.BaseRatingBar_bandyer_numMinLevels, nunMinLevels)
-        val rating = a.getFloat(R.styleable.BaseRatingBar_android_rating, nunMinLevels)
+        val minRating = a.getFloat(R.styleable.BaseRatingBar_bandyer_minRating, minRating)
+        val rating = a.getFloat(R.styleable.BaseRatingBar_android_rating, minRating)
         val stepSize = a.getFloat(R.styleable.BaseRatingBar_android_stepSize, stepSize)
-        val iconPadding = a.getDimension(R.styleable.BaseRatingBar_bandyer_iconPadding, iconPadding)
-        val iconBackground = if (a.hasValue(R.styleable.BaseRatingBar_bandyer_iconBackground)) ContextCompat.getDrawable(context, a.getResourceId(R.styleable.BaseRatingBar_bandyer_iconBackground, NO_ID)) else null
-        val iconProgress = if (a.hasValue(R.styleable.BaseRatingBar_bandyer_iconProgress)) ContextCompat.getDrawable(context, a.getResourceId(R.styleable.BaseRatingBar_bandyer_iconProgress, NO_ID)) else null
-        val iconSize = a.getDimension(R.styleable.BaseRatingBar_bandyer_iconSize, iconSize)
+        val drawablePadding = a.getDimension(R.styleable.BaseRatingBar_android_drawablePadding, drawablePadding)
+        val drawableTint = if (a.hasValue(R.styleable.BaseRatingBar_drawableTint)) a.getColor(R.styleable.BaseRatingBar_drawableTint, NO_ID) else null
+        val drawableBackground = if (a.hasValue(R.styleable.BaseRatingBar_android_drawable)) ContextCompat.getDrawable(context, a.getResourceId(R.styleable.BaseRatingBar_android_drawable, NO_ID)) else null
+        val drawableProgress = if (a.hasValue(R.styleable.BaseRatingBar_android_progressDrawable)) ContextCompat.getDrawable(context, a.getResourceId(R.styleable.BaseRatingBar_android_progressDrawable, NO_ID)) else null
+        val drawableSize = a.getDimension(R.styleable.BaseRatingBar_drawableSize, drawableSize)
 
         a.recycle()
 
-        verifyParams(numLevels, nunMinLevels, rating, stepSize, iconPadding, iconBackground, iconProgress, iconSize)
+        verifyParams(numLevels, minRating, rating, stepSize, drawablePadding, drawableTint, drawableBackground, drawableProgress, drawableSize)
         populate()
     }
 
-    private fun verifyParams(numLevels: Int, nunMinLevels: Float, rating: Float, stepSize: Float, iconPadding: Float, iconBackground: Drawable?, iconProgress: Drawable?, iconSize: Float) {
+    private fun verifyParams(numLevels: Int, minRating: Float, rating: Float, stepSize: Float, drawablePadding: Float, drawableTint: Int?, drawableBackground: Drawable?, drawableProgress: Drawable?, drawableSize: Float) {
         if (numLevels > 0)
             this.numLevels = numLevels
 
         if (stepSize in 0.1f..1f)
             this.stepSize = stepSize.round(2)
 
-        if (nunMinLevels in 0f..this.numLevels.toFloat())
-            this.nunMinLevels = nunMinLevels
+        if (minRating in 0f..this.numLevels.toFloat())
+            this.minRating = minRating
 
         this.rating =
-            if (rating in this.nunMinLevels..this.numLevels.toFloat()) closestValueToStepSize(rating.round(2))
-            else this.nunMinLevels
+            if (rating in this.minRating..this.numLevels.toFloat()) closestValueToStepSize(rating.round(2))
+            else this.minRating
 
-        if (iconSize > 0)
-            this.iconSize = iconSize
+        if (drawableSize > 0)
+            this.drawableSize = drawableSize
 
-        if (iconPadding > 0)
-            this.iconPadding = iconPadding
+        if (drawablePadding > 0)
+            this.drawablePadding = drawablePadding
 
-        this.iconProgress = iconProgress ?: ContextCompat.getDrawable(context, R.drawable.ic_bandyer_full_star)
+        this.drawableBackground = drawableBackground ?: ContextCompat.getDrawable(context, R.drawable.ic_bandyer_empty_star)
 
-        this.iconBackground = iconBackground ?: ContextCompat.getDrawable(context, R.drawable.ic_bandyer_empty_star)
+        this.drawableProgress = drawableProgress ?: ContextCompat.getDrawable(context, R.drawable.ic_bandyer_full_star)
 
-//        val unwrappedDrawable: Drawable =
-//            AppCompatResources.getDrawable(context, R.drawable.my_drawable)
-//        val wrappedDrawable: Drawable = DrawableCompat.wrap(unwrappedDrawable)
-//        DrawableCompat.setTint(wrappedDrawable, Color.RED)
-//        DrawableCompat.setTint(
-//            DrawableCompat.wrap(myImageView.getDrawable()),
-//            ContextCompat.getColor(context, R.color.another_nice_color)
-//        );
+        if(drawableTint != null) {
+            this.drawableBackground = this.drawableBackground?.applyTint(drawableTint)
+            this.drawableProgress = this.drawableProgress?.applyTint(drawableTint)
+        }
     }
 
     private fun populate() {
@@ -110,10 +108,10 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         for (index in 0 until numLevels) {
             val element = BaseRatingBarElement(
                 context,
-                iconProgress!!,
-                iconBackground!!,
-                iconSize.toInt(),
-                iconPadding.toInt()
+                drawableProgress!!,
+                drawableBackground!!,
+                drawableSize.toInt(),
+                drawablePadding.toInt()
             )
             addView(element)
             ratingBarElements.add(element)
@@ -128,12 +126,11 @@ internal open class BaseRatingBar @JvmOverloads constructor(
     }
 
     override fun setRating(value: Float) {
-        if (value == rating || value !in nunMinLevels..numLevels.toFloat()) return
+        if (value == rating || value !in minRating..numLevels.toFloat()) return
 
         rating = closestValueToStepSize(value.round(2))
 
         setProgress(rating)
-        Log.e("rating", "$rating")
         onRatingChangeListener?.onRatingChange(rating)
     }
 
@@ -204,6 +201,12 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         val steps = (ratio / stepSize).roundToInt() * stepSize
         return (elementIndex + 1 - (1 - steps)).round(2)
     }
+
+    private fun Drawable.applyTint(drawableTint: Int): Drawable =
+        DrawableCompat.wrap(this).apply {
+            setTintMode(PorterDuff.Mode.SRC_IN)
+            setTint(drawableTint)
+        }
 
     private companion object {
         const val LEVELS = 5

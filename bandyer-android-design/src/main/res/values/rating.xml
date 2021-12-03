@@ -2,12 +2,13 @@
 <resources>
     <declare-styleable name="BaseRatingBar">
         <attr name="bandyer_numLevels" format="integer" />
-        <attr name="bandyer_numMinLevels" format="float" />
+        <attr name="bandyer_minRating" format="float" />
         <attr name="android:rating" />
         <attr name="android:stepSize" />
-        <attr name="bandyer_iconPadding" format="dimension" />
-        <attr name="bandyer_iconBackground" format="reference" />
-        <attr name="bandyer_iconProgress" format="reference" />
-        <attr name="bandyer_iconSize" format="dimension" />
+        <attr name="android:drawablePadding" />
+        <attr name="drawableTint" />
+        <attr name="drawableSize" />
+        <attr name="android:drawable" />
+        <attr name="android:progressDrawable" />
     </declare-styleable>
 </resources>

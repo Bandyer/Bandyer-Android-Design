@@ -53,9 +53,7 @@
                 android:layout_height="wrap_content"
                 android:focusable="true"
                 android:clickable="true"
-                app:bandyer_numLevels="5"
-                app:bandyer_numMinLevels="1"
-                android:stepSize="0.1"
+                app:drawableTint="#ef4975"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="@id/btn_switch_night_mode"
                 app:layout_constraintEnd_toEndOf="@id/btn_switch_night_mode" />
