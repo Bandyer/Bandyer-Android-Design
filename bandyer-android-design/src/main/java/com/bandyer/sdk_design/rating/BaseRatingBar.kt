@@ -24,11 +24,11 @@ import kotlin.math.floor
 import kotlin.math.roundToInt
 
 /**
- * A BaseRatingBar. By default it has 5 levels, stars as icons and a stepSize of 0.5.
+ * A BaseRatingBar. By default it has 5 levels, stars as icons and a stepSize of 1.
  *
  * @constructor
  */
-internal open class BaseRatingBar @JvmOverloads constructor(
+internal abstract class BaseRatingBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
@@ -65,10 +65,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         val drawableSize = a.getDimension(R.styleable.BaseRatingBar_drawableSize, drawableSize)
 
         a.recycle()
-
         verifyParams(numLevels, minRating, rating, stepSize, drawablePadding, drawableTint, drawableBackground, drawableProgress, drawableSize)
-        updateChildren(numLevels)
-        setProgress(rating)
     }
 
     private fun verifyParams(numLevels: Int, minRating: Float, rating: Float, stepSize: Float, drawablePadding: Float, drawableTint: Int?, drawableBackground: Drawable?, drawableProgress: Drawable?, drawableSize: Float) {
@@ -152,7 +149,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
             for(i in 0 until -diff) removeViewAt(childCount - 1)
     }
 
-    protected open fun setProgress(rating: Float) =
+    protected open fun setProgress(rating: Float) {
         children.forEachIndexed { index, child ->
             val intFloor = floor(rating.toDouble()).toInt()
             (child as BaseRatingBarElement).setProgress(
@@ -163,6 +160,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
                 }
             )
         }
+    }
 
     private fun closestValueToStepSize(value: Float) = value - (value % stepSize).floor(1)
 
