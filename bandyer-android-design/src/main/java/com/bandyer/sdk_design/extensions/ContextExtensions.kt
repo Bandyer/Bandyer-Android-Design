@@ -104,10 +104,7 @@ fun Context.px2dp(px: Float): Int {
  * @return Boolean
  */
 internal fun Context.isRtl() =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
-            TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL
-        else
-            false
+    TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL
 
 /**
  * Calculates screen's ratio
