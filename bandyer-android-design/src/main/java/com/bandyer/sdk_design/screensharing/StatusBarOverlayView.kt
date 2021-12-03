@@ -23,16 +23,15 @@ import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.extensions.*
+import com.bandyer.sdk_design.extensions.dp2px
+import com.bandyer.sdk_design.extensions.getScreenSize
+import com.bandyer.sdk_design.extensions.scanForFragmentActivity
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutObserver
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutOffsetListener
-import kotlin.math.max
 
 /**
  * Status bar overlay view(a pulsing red alert to be placed under the status bar)
