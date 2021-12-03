@@ -11,14 +11,14 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.FloatRange
 import androidx.annotation.Px
-import com.bandyer.sdk_design.databinding.BandyerRatingBarItemBinding
+import com.bandyer.sdk_design.databinding.BandyerRatingBarElementBinding
 
 /**
- * A BaseRatingBarItem
+ * A BaseRatingBarElement
  */
-internal class BaseRatingBarItem : FrameLayout {
+internal class BaseRatingBarElement : FrameLayout {
 
-    private var binding: BandyerRatingBarItemBinding? = null
+    private var binding: BandyerRatingBarElementBinding? = null
 
     constructor(context: Context) : super(context)
 
@@ -27,33 +27,31 @@ internal class BaseRatingBarItem : FrameLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     constructor(context: Context, progressDrawable: Drawable, backgroundDrawable: Drawable, iconSize: Int, @Px padding: Int) : super(context) {
-        setPadding(padding, padding, padding, padding)
-        init(progressDrawable, backgroundDrawable, iconSize)
-    }
-
-    private fun init(progressDrawable: Drawable, backgroundDrawable: Drawable, iconSize: Int) {
-        binding = BandyerRatingBarItemBinding.inflate(LayoutInflater.from(context), this, true)
+        binding = BandyerRatingBarElementBinding.inflate(LayoutInflater.from(context), this, true)
 
         layoutParams = LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1f)
 
         val size = if (iconSize == 0) LayoutParams.WRAP_CONTENT else iconSize
-        val params = LayoutParams(size, size).apply { gravity = Gravity.CENTER }
+        val params = LayoutParams(size, size).apply { gravity = Gravity.CENTER_HORIZONTAL }
 
         with(binding!!.bandyerProgressImage) {
             layoutParams = params
-            scaleType = ImageView.ScaleType.CENTER_INSIDE
+            adjustViewBounds = true
+            scaleType = ImageView.ScaleType.FIT_CENTER
             if(progressDrawable.constantState == null) return@with
             setImageDrawable(ClipDrawable(progressDrawable.constantState!!.newDrawable(), Gravity.START, ClipDrawable.HORIZONTAL))
         }
 
         with(binding!!.bandyerBackgroundImage)  {
             layoutParams = params
-            scaleType = ImageView.ScaleType.CENTER_INSIDE
+            adjustViewBounds = true
+            scaleType = ImageView.ScaleType.FIT_CENTER
             if(backgroundDrawable.constantState == null) return@with
             setImageDrawable(ClipDrawable(backgroundDrawable.constantState!!.newDrawable(), Gravity.END, ClipDrawable.HORIZONTAL))
         }
 
         setProgress(0f)
+        setPadding(padding, padding, padding, padding)
     }
 
     /**

@@ -11,9 +11,9 @@ interface RatingBar {
     /**
      * Set the number of levels of the rating bar
      *
-     * @param nLevels Int
+     * @param numLevels Int
      */
-    fun setNumOfLevels(@IntRange(from = 0) nLevels: Int)
+    fun setNumLevels(@IntRange(from = 0) numLevels: Int)
 
     /**
      * Set the rating value

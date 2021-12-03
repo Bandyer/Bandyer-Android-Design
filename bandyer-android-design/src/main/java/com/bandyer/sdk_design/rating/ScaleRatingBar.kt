@@ -23,7 +23,7 @@ internal class ScaleRatingBar @JvmOverloads constructor(
     override fun setProgress(rating: Float) {
         super.setProgress(rating)
 
-        elements.forEachIndexed { index, item ->
+        ratingBarElements.forEachIndexed { index, item ->
             val intFloor = floor(rating.toDouble()).toInt()
             when {
                 index > intFloor - 1 -> {
@@ -47,7 +47,7 @@ internal class ScaleRatingBar @JvmOverloads constructor(
 
     private fun initItems() =
         doOnLayout {
-            elements.forEach {
+            ratingBarElements.forEach {
                 it.scaleX = SCALE_DOWN_VALUE
                 it.scaleY = SCALE_DOWN_VALUE
             }

@@ -3,6 +3,7 @@ package com.bandyer.sdk_design.rating
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
@@ -33,7 +34,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
 
     val onRatingChangeListener: RatingBar.OnRatingChangeListener? = null
 
-    protected var elements: ArrayList<BaseRatingBarElement> = arrayListOf()
+    protected var ratingBarElements: ArrayList<BaseRatingBarElement> = arrayListOf()
 
     private var numLevels: Int = 5
     private var nunMinLevels: Float = 2f
@@ -102,7 +103,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
 
     private fun populate() {
         removeAllViews()
-        elements.clear()
+        ratingBarElements.clear()
 
         for (index in 0 until numLevels) {
             val element = BaseRatingBarElement(
@@ -113,7 +114,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
                 iconPadding.toInt()
             )
             addView(element)
-            elements.add(element)
+            ratingBarElements.add(element)
         }
 
         setProgress(rating)
@@ -142,7 +143,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
     override fun getStepSize(): Float = stepSize
 
     protected open fun setProgress(rating: Float) =
-        elements.forEachIndexed { index, element ->
+        ratingBarElements.forEachIndexed { index, element ->
             val intFloor = floor(rating.toDouble()).toInt()
             element.setProgress(
                 when {
@@ -175,7 +176,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
     }
 
     private fun handleTouchEvent(eventX: Float, isClickEvent: Boolean) =
-        elements.forEachIndexed { index, element ->
+        ratingBarElements.forEachIndexed { index, element ->
             if (!isTouchEventInRatingElement(eventX, element)) return@forEachIndexed
 
             val rating =
