@@ -15,7 +15,7 @@ internal class ScaleRatingBar @JvmOverloads constructor(
 ) : BaseRatingBar(context, attrs, defStyleAttr) {
 
     init {
-       initItems()
+//       initItems()
     }
 
     private val itemsTargetScale: MutableMap<BaseRatingBarElement, Float> = mutableMapOf()
@@ -23,6 +23,7 @@ internal class ScaleRatingBar @JvmOverloads constructor(
     override fun setProgress(rating: Float) {
         super.setProgress(rating)
 
+        post {
         ratingBarElements.forEachIndexed { index, item ->
             val intFloor = floor(rating.toDouble()).toInt()
             when {
@@ -42,6 +43,7 @@ internal class ScaleRatingBar @JvmOverloads constructor(
                     item.scale(1f, ANIMATION_DURATION, DecelerateInterpolator())
                 }
             }
+        }
         }
     }
 

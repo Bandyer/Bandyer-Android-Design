@@ -12,6 +12,7 @@ import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import com.bandyer.sdk_design.R
+import com.bandyer.sdk_design.extensions.FloatExtensions.floor
 import com.bandyer.sdk_design.extensions.FloatExtensions.round
 import com.bandyer.sdk_design.extensions.MotionEventExtensions.isClickEvent
 import com.bandyer.sdk_design.extensions.dp2px
@@ -140,6 +141,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
 
     override fun setStepSize(@FloatRange(from = 0.1, to = 1.0) stepSize: Float) {
         this.stepSize = stepSize.round(2)
+        setRating(closestValueToStepSize(rating))
     }
 
     override fun getStepSize(): Float = stepSize
@@ -156,7 +158,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
             )
         }
 
-    private fun closestValueToStepSize(value: Float) = value - value % stepSize
+    private fun closestValueToStepSize(value: Float) = value - (value % stepSize).floor(1)
 
     override fun onInterceptTouchEvent(ev: MotionEvent?) = true
 
