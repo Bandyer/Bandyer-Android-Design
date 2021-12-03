@@ -19,10 +19,13 @@ package com.bandyer.sdk_design.screensharing
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
 import android.os.Build
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bandyer.sdk_design.R
@@ -47,11 +50,11 @@ class StatusBarOverlayView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : View(context, attrs, defStyleAttr), SystemViewLayoutObserver, View.OnLayoutChangeListener, Animator.AnimatorListener, ValueAnimator.AnimatorUpdateListener {
+) : View(context, attrs, defStyleAttr), SystemViewLayoutObserver, Animator.AnimatorListener, ValueAnimator.AnimatorUpdateListener {
 
     private val backgroundColor = ContextCompat.getColor(context, R.color.bandyer_screen_share_color)
     private val safeViewHeightRange = with(context) { dp2px(25f) until dp2px(55f) }
-
+    private val pictureInPictureHeight = context.dp2px(10f)
 
     init {
         id = R.id.bandyer_id_screen_share_overlay
@@ -66,7 +69,6 @@ class StatusBarOverlayView @JvmOverloads constructor(
             SystemViewLayoutOffsetListener.addObserver(it, this)
         }
         addAlphaAnimationListeners(this, this)
-        addOnLayoutChangeListener(this)
         updateHeight()
     }
 
@@ -78,26 +80,24 @@ class StatusBarOverlayView @JvmOverloads constructor(
         context.scanForFragmentActivity()?.let {
             SystemViewLayoutOffsetListener.removeObserver(it as AppCompatActivity, this)
         }
-        removeOnLayoutChangeListener(this)
-        removeAlphaAnimationListener(this,this)
+        removeAlphaAnimationListener(this, this)
     }
 
     /**
      * @suppress
      */
     override fun onTopInsetChanged(pixels: Int) {
-        statusBarHeight = max(statusBarHeight, pixels.coerceIn(safeViewHeightRange))
+        if (isInPictureInPictureMode()) return
+        statusBarHeight = pixels.coerceIn(safeViewHeightRange)
         updateHeight()
     }
 
     private fun updateHeight(height: Int = statusBarHeight) {
-        if (layoutParams?.height == height) return
-        post {
-            if (layoutParams == null || layoutParams.height == height) return@post
-            layoutParams.height = height
-            requestLayout()
-            bringToFront()
-        }
+        if (layoutParams == null || layoutParams.height == height) return
+        val layoutParams = layoutParams
+        layoutParams.height = height
+        this.layoutParams = layoutParams
+        bringToFront()
     }
 
     override fun onBottomInsetChanged(pixels: Int) = Unit
@@ -115,21 +115,20 @@ class StatusBarOverlayView @JvmOverloads constructor(
         return Color.argb(a.toInt(), r.toInt(), g.toInt(), b.toInt())
     }
 
-    /**
-     * @suppress
-     */
-    override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
-        val isInMultiWindow = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            with((v?.context as? AppCompatActivity)) {
-                this ?: false
-                kotlin.runCatching { this!!.isInMultiWindowMode && !this.isInPictureInPictureMode }.getOrNull() ?: false
-            }
-        } else false
-        if (isInMultiWindow || statusBarHeight == 0 || v == null || oldRight == right) return
-        val multiplier = (right - left).toFloat() / v.context.getScreenSize().x
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        if (!isInPictureInPictureMode()) return
+        val multiplier = (width).toFloat() / context.getScreenSize().x
         if (multiplier > 1) return
-        updateHeight((statusBarHeight * multiplier).toInt())
+        updateHeight(pictureInPictureHeight)
     }
+
+    private fun isInPictureInPictureMode(): Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        with(context as? AppCompatActivity) {
+            this ?: false
+            kotlin.runCatching { this?.isInPictureInPictureMode }.getOrNull() ?: false
+        }
+    } else false
 
     /**
      * @suppress
