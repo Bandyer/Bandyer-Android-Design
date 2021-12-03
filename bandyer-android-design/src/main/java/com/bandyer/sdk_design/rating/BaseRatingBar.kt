@@ -36,12 +36,12 @@ internal open class BaseRatingBar @JvmOverloads constructor(
 
     protected var ratingBarElements: ArrayList<BaseRatingBarElement> = arrayListOf()
 
-    private var numLevels: Int = 5
-    private var nunMinLevels: Float = 2f
-    private var stepSize: Float = 1f
-    private var rating: Float = nunMinLevels
+    private var numLevels: Int = LEVELS
+    private var nunMinLevels: Float = 0f
+    private var stepSize: Float = STEP_SIZE
+    private var rating: Float = 0f
 
-    private var iconSize: Float = context.dp2px(36f).toFloat()
+    private var iconSize: Float = context.dp2px(ICON_SIZE).toFloat()
     private var iconPadding: Float = 0f
     private var iconProgress: Drawable? = null
     private var iconBackground: Drawable? = null
@@ -78,8 +78,9 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         if (nunMinLevels in 0f..this.numLevels.toFloat())
             this.nunMinLevels = nunMinLevels
 
-        if (rating in this.nunMinLevels..this.numLevels.toFloat())
-            this.rating = closestValueToStepSize(rating.round(2))
+        this.rating =
+            if (rating in this.nunMinLevels..this.numLevels.toFloat()) closestValueToStepSize(rating.round(2))
+            else this.nunMinLevels
 
         if (iconSize > 0)
             this.iconSize = iconSize
@@ -131,6 +132,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         rating = closestValueToStepSize(value.round(2))
 
         setProgress(rating)
+        Log.e("rating", "$rating")
         onRatingChangeListener?.onRatingChange(rating)
     }
 
@@ -199,5 +201,11 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         val ratio = (diffX / element.width).round(2)
         val steps = (ratio / stepSize).roundToInt() * stepSize
         return (elementIndex + 1 - (1 - steps)).round(2)
+    }
+
+    private companion object {
+        const val LEVELS = 5
+        const val STEP_SIZE = 1f
+        const val ICON_SIZE = 36f
     }
 }
