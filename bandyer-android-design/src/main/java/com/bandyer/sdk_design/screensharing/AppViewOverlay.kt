@@ -24,7 +24,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.view.View
-import androidx.lifecycle.LifecycleOwner
 import com.badoo.mobile.util.WeakHandler
 import com.bandyer.sdk_design.extensions.canDrawOverlays
 import com.bandyer.sdk_design.extensions.startAppOpsWatch
@@ -87,7 +86,7 @@ class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.Overla
 
         override fun onActivityResumed(activity: Activity) {
             if (!initialized) return
-            viewOverlayAttacher.attach(activity, getOverlayType(activity))
+            activity.window.decorView.post { viewOverlayAttacher.attach(activity, getOverlayType(activity)) }
         }
 
         override fun onActivityStopped(activity: Activity) = Unit

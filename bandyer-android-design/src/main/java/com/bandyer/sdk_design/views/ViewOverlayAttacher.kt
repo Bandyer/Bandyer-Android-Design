@@ -24,7 +24,6 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.FrameLayout
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.getScreenSize
 import kotlin.math.max
@@ -73,17 +72,17 @@ class ViewOverlayAttacher(val view: View) : View.OnLayoutChangeListener {
             }
             context is Activity -> {
                 inAppOverlays.firstOrNull { it.getTag(R.id.bandyer_id_status_bar_overlay_tag) == contextIdentifier }?.let { return }
-                val overlay = cloneOverlay(view)
+                val overlay = cloneOverlay(context, view)
                 overlay.setTag(R.id.bandyer_id_status_bar_overlay_tag, contextIdentifier)
                 inAppOverlays.add(overlay)
-                (context.window.decorView as ViewGroup).addView(overlay, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT))
+                (context.window.decorView as ViewGroup).addView(overlay)
                 inAppOverlays.forEach { it.requestLayout() }
             }
             else -> Unit
         }
     }
 
-    private fun cloneOverlay(overlay: View): View = with(overlay) { this::class.constructors.first().call(context, null, 0) }
+    private fun cloneOverlay(context: Context, overlay: View): View = with(overlay) { this::class.constructors.first().call(context, null, 0) }
 
     /**
      * Detaches all the views from its parent if has been previously attached.
