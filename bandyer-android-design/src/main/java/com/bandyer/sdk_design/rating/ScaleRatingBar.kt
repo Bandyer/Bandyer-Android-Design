@@ -18,22 +18,39 @@ internal class ScaleRatingBar @JvmOverloads constructor(
        initItems()
     }
 
+    private val itemsTargetScale: MutableMap<BaseRatingBarElement, Float> = mutableMapOf()
+
     override fun setProgress(rating: Float) {
         super.setProgress(rating)
 
-        items.forEachIndexed { index, item ->
+        elements.forEachIndexed { index, item ->
             val intFloor = floor(rating.toDouble()).toInt()
             when {
-                index > intFloor - 1 -> item.scale(SCALE_DOWN_VALUE, ANIMATION_DURATION, DecelerateInterpolator())
-                index == intFloor - 1 -> item.scale(1f, ANIMATION_DURATION, DecelerateInterpolator())
-                else -> item.scale(1f, ANIMATION_DURATION, DecelerateInterpolator())
+                index > intFloor - 1 -> {
+                    if(itemsTargetScale[item] == 0.75f) return@forEachIndexed
+                    itemsTargetScale[item] = 0.75f
+                    item.scale(SCALE_DOWN_VALUE, ANIMATION_DURATION, DecelerateInterpolator())
+                }
+                index == intFloor - 1 -> {
+                    if(itemsTargetScale[item] == 1f) return@forEachIndexed
+                    itemsTargetScale[item] = 1f
+                    item.scale(1f, ANIMATION_DURATION, DecelerateInterpolator())
+                }
+                else -> {
+                    if(itemsTargetScale[item] == 1f) return@forEachIndexed
+                    itemsTargetScale[item] = 1f
+                    item.scale(1f, ANIMATION_DURATION, DecelerateInterpolator())
+                }
             }
         }
     }
 
     private fun initItems() =
         doOnLayout {
-            items.forEach { it.scale(SCALE_DOWN_VALUE, 0, DecelerateInterpolator()) }
+            elements.forEach {
+                it.scaleX = SCALE_DOWN_VALUE
+                it.scaleY = SCALE_DOWN_VALUE
+            }
         }
 
     private fun View.scale(value: Float, duration: Long, interpolator: Interpolator) =
