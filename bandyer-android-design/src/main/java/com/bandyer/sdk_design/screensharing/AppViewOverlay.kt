@@ -40,6 +40,8 @@ class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.Overla
 
     private val viewOverlayAttacher = ViewOverlayAttacher(view)
 
+    private var application: Application? = null
+
     private var appOpsCallback: ((String, String) -> Unit)? = null
 
     private var initialized = false
@@ -54,21 +56,22 @@ class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.Overla
     fun show(context: Context) {
         if (initialized) return
         initialized = true
-        (context.applicationContext as Application).registerActivityLifecycleCallbacks(activityCallbacks)
+        application = context.applicationContext as Application
+        application!!.registerActivityLifecycleCallbacks(activityCallbacks)
         if (desiredType == ViewOverlayAttacher.OverlayType.GLOBAL) watchOverlayPermission(context)
         viewOverlayAttacher.attach(context, getOverlayType(context))
     }
 
     /**
      * Hides the screen share overlay.
-     * @param context Context used to detach the overlay view.
      */
-    fun hide(context: Context) {
-        viewOverlayAttacher.detach()
-        (context.applicationContext as Application).unregisterActivityLifecycleCallbacks(activityCallbacks)
-        appOpsCallback?.let { context.applicationContext.stopAppOpsWatch(it) }
+    fun hide() {
+        application?.unregisterActivityLifecycleCallbacks(activityCallbacks)
+        viewOverlayAttacher.detachAll()
+        appOpsCallback?.let { application?.stopAppOpsWatch(it) }
         appOpsCallback = null
         initialized = false
+        application = null
         mainThreadHandler.removeCallbacksAndMessages(null)
     }
 
@@ -82,13 +85,14 @@ class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.Overla
     private var activityCallbacks = object : Application.ActivityLifecycleCallbacks {
 
         override fun onActivityResumed(activity: Activity) {
-            if(!initialized) return
-            viewOverlayAttacher.attach(activity, getOverlayType(activity))
+            if (!initialized) return
+            activity.window.decorView.post { viewOverlayAttacher.attach(activity, getOverlayType(activity)) }
         }
+
         override fun onActivityStopped(activity: Activity) = Unit
         override fun onActivityPaused(activity: Activity) = Unit
         override fun onActivityStarted(activity: Activity) = Unit
-        override fun onActivityDestroyed(activity: Activity) = hide(activity)
+        override fun onActivityDestroyed(activity: Activity) = viewOverlayAttacher.detach(activity)
         override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
     }
@@ -102,7 +106,10 @@ class AppViewOverlay(val view: View, val desiredType: ViewOverlayAttacher.Overla
         val pckName = applicationContext.packageName
         appOpsCallback = callback@{ op, packageName ->
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW != op || packageName != pckName || !initialized) return@callback
-            mainThreadHandler.post { show(context) }
+            mainThreadHandler.post {
+                hide()
+                show(context)
+            }
         }
         applicationContext.startAppOpsWatch(AppOpsManager.OPSTR_SYSTEM_ALERT_WINDOW, appOpsCallback!!)
     }
