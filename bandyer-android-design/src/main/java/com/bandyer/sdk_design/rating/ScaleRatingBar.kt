@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.Interpolator
+import androidx.core.view.children
 import androidx.core.view.doOnLayout
 import kotlin.math.floor
 
@@ -18,13 +19,13 @@ internal class ScaleRatingBar @JvmOverloads constructor(
 //       initItems()
     }
 
-    private val itemsTargetScale: MutableMap<BaseRatingBarElement, Float> = mutableMapOf()
+    private val itemsTargetScale: MutableMap<View, Float> = mutableMapOf()
 
     override fun setProgress(rating: Float) {
         super.setProgress(rating)
 
         post {
-        ratingBarElements.forEachIndexed { index, item ->
+            children.forEachIndexed { index, item ->
             val intFloor = floor(rating.toDouble()).toInt()
             when {
                 index > intFloor - 1 -> {
@@ -49,7 +50,7 @@ internal class ScaleRatingBar @JvmOverloads constructor(
 
     private fun initItems() =
         doOnLayout {
-            ratingBarElements.forEach {
+            children.forEach {
                 it.scaleX = SCALE_DOWN_VALUE
                 it.scaleY = SCALE_DOWN_VALUE
             }

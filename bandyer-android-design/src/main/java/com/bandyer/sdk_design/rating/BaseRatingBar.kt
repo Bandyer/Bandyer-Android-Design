@@ -12,6 +12,7 @@ import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.children
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.FloatExtensions.floor
 import com.bandyer.sdk_design.extensions.FloatExtensions.round
@@ -35,8 +36,6 @@ internal open class BaseRatingBar @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr, defStyleRes), RatingBar {
 
     val onRatingChangeListener: RatingBar.OnRatingChangeListener? = null
-
-    protected var ratingBarElements: ArrayList<BaseRatingBarElement> = arrayListOf()
 
     private var numLevels: Int = LEVELS
     private var stepSize: Float = STEP_SIZE
@@ -68,7 +67,8 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         a.recycle()
 
         verifyParams(numLevels, minRating, rating, stepSize, drawablePadding, drawableTint, drawableBackground, drawableProgress, drawableSize)
-        populate()
+        updateChildren(numLevels)
+        setProgress(rating)
     }
 
     private fun verifyParams(numLevels: Int, minRating: Float, rating: Float, stepSize: Float, drawablePadding: Float, drawableTint: Int?, drawableBackground: Drawable?, drawableProgress: Drawable?, drawableSize: Float) {
@@ -101,35 +101,17 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         }
     }
 
-    private fun populate() {
-        removeAllViews()
-        ratingBarElements.clear()
-
-        for (index in 0 until numLevels) {
-            val element = BaseRatingBarElement(
-                context,
-                drawableProgress!!,
-                drawableBackground!!,
-                drawableSize.toInt(),
-                drawablePadding.toInt()
-            )
-            addView(element)
-            ratingBarElements.add(element)
-        }
-
-        setProgress(rating)
-    }
-
     override fun setNumLevels(@IntRange(from = 0) numLevels: Int) {
         this.numLevels = numLevels
-        populate()
+        updateChildren(numLevels)
     }
+
+    override fun getNumLevels(): Int = this.numLevels
 
     override fun setRating(value: Float) {
         if (value == rating || value !in minRating..numLevels.toFloat()) return
 
         rating = closestValueToStepSize(value.round(2))
-
         setProgress(rating)
         onRatingChangeListener?.onRatingChange(rating)
     }
@@ -142,20 +124,6 @@ internal open class BaseRatingBar @JvmOverloads constructor(
     }
 
     override fun getStepSize(): Float = stepSize
-
-    protected open fun setProgress(rating: Float) =
-        ratingBarElements.forEachIndexed { index, element ->
-            val intFloor = floor(rating.toDouble()).toInt()
-            element.setProgress(
-                when {
-                    index > intFloor -> 0f
-                    index == intFloor -> rating - intFloor
-                    else -> 1f
-                }
-            )
-        }
-
-    private fun closestValueToStepSize(value: Float) = value - (value % stepSize).floor(1)
 
     override fun onInterceptTouchEvent(ev: MotionEvent?) = true
 
@@ -176,30 +144,47 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         return true
     }
 
+    protected open fun updateChildren(numLevels: Int) {
+        val diff = numLevels - childCount
+        if(diff > 0)
+            for(i in 0 until diff) addView(BaseRatingBarElement(context, drawableProgress!!, drawableBackground!!, drawableSize.toInt(), drawablePadding.toInt()))
+        else
+            for(i in 0 until -diff) removeViewAt(childCount - 1)
+    }
+
+    protected open fun setProgress(rating: Float) =
+        children.forEachIndexed { index, child ->
+            val intFloor = floor(rating.toDouble()).toInt()
+            (child as BaseRatingBarElement).setProgress(
+                when {
+                    index > intFloor -> 0f
+                    index == intFloor -> rating - intFloor
+                    else -> 1f
+                }
+            )
+        }
+
+    private fun closestValueToStepSize(value: Float) = value - (value % stepSize).floor(1)
+
     private fun handleTouchEvent(eventX: Float, isClickEvent: Boolean) =
-        ratingBarElements.forEachIndexed { index, element ->
-            if (!isTouchEventInRatingElement(eventX, element)) return@forEachIndexed
+        children.forEachIndexed { index, child ->
+            if (!isTouchEventInChild(eventX, child)) return@forEachIndexed
 
             val rating =
                 if (isClickEvent && stepSize == 1f) index + 1f
-                else computeElementProgress(index, element, stepSize, eventX)
+                else computeChildProgress(index, child, stepSize, eventX)
 
             setRating(rating)
         }
 
-    private fun isTouchEventInRatingElement(eventX: Float, ratingView: View): Boolean =
-        eventX > ratingView.left && eventX < ratingView.right
+    private fun isTouchEventInChild(eventX: Float, child: View): Boolean =
+        eventX > child.left && eventX < child.right
 
-    private fun computeElementProgress(
-        elementIndex: Int,
-        element: BaseRatingBarElement,
-        stepSize: Float,
-        eventX: Float
-    ): Float {
-        val diffX = if (context.isRtl()) element.right - eventX else eventX - element.left
-        val ratio = (diffX / element.width).round(2)
+    private fun computeChildProgress(childIndex: Int, child: View, stepSize: Float, eventX: Float): Float {
+        val diffX = if (context.isRtl()) child.right - eventX else eventX - child.left
+        val ratio = (diffX / child.width).round(2)
         val steps = (ratio / stepSize).roundToInt() * stepSize
-        return (elementIndex + 1 - (1 - steps)).round(2)
+        return (childIndex + 1 - (1 - steps)).round(2)
     }
 
     private fun Drawable.applyTint(drawableTint: Int): Drawable =

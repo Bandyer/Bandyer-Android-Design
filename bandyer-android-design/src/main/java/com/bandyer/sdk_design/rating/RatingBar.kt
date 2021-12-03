@@ -16,6 +16,13 @@ interface RatingBar {
     fun setNumLevels(@IntRange(from = 0) numLevels: Int)
 
     /**
+     * Returns the number of levels of the rating bar
+     *
+     * @return Float
+     */
+    fun getNumLevels(): Int
+
+    /**
      * Set the rating value
      *
      * @param value Float
