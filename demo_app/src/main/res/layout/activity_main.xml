@@ -191,6 +191,19 @@
                 android:text="@string/file_share"
                 app:layout_constraintTop_toBottomOf="@id/btn_ringing" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_rating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/bandyer_dimen_space16"
+                android:layout_marginLeft="@dimen/bandyer_dimen_space16"
+                android:layout_marginTop="@dimen/bandyer_dimen_space16"
+                android:layout_marginBottom="@dimen/bandyer_dimen_space16"
+                android:layout_marginEnd="@dimen/bandyer_dimen_space16"
+                android:layout_marginRight="@dimen/bandyer_dimen_space16"
+                android:text="@string/rating"
+                app:layout_constraintTop_toBottomOf="@id/btn_file_share" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

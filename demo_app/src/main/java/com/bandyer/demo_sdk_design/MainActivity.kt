@@ -36,6 +36,7 @@ import com.bandyer.sdk_design.call.dialogs.BandyerSnapshotDialog
 import com.bandyer.sdk_design.filesharing.BandyerFileShareDialog
 import com.bandyer.sdk_design.filesharing.FileShareViewModel
 import com.bandyer.sdk_design.filesharing.model.TransferData
+import com.bandyer.sdk_design.rating.RatingDialog
 import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassActionItemMenu
 import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassMenuLayout
 import com.bandyer.sdk_design.smartglass.call.menu.items.getSmartglassActions
@@ -112,6 +113,8 @@ class MainActivity : AppCompatActivity() {
             }
             fileShareDialog.setOnDismissListener { viewModel.itemsData.clear() }
         }
+
+        btnRating.setOnClickListener { RatingDialog().show(supportFragmentManager, RatingDialog.TAG) }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
