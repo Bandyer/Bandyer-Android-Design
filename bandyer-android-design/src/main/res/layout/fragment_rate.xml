@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/bandyer_dimen_space12"
-    tools:context=".RateFragment">
+    tools:context=".rating.RateFragment">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bandyer_close"
@@ -71,7 +71,7 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/bandyer_edittext"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/bandyer_dimen_space8"
         android:layout_marginTop="@dimen/bandyer_dimen_space32"
@@ -83,7 +83,9 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="50dp"
+            android:inputType="textMultiLine"
+            android:lines="1"
             android:textSize="14sp"
             tools:text="Lascia un commento..." />
 
@@ -91,7 +93,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bandyer_button"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/bandyer_dimen_space8"
         android:layout_marginTop="@dimen/bandyer_dimen_space16"

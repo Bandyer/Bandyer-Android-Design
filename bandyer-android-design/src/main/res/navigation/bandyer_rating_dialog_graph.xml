@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/rateFragment"
-        android:name="com.bandyer.sdk_design.RateFragment"
+        android:name="com.bandyer.sdk_design.rating.RateFragment"
         android:label="fragment_rate"
         tools:layout="@layout/fragment_rate" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/rateAfterFragment"
-        android:name="com.bandyer.sdk_design.RateAfterFragment"
+        android:name="com.bandyer.sdk_design.rating.RateAfterFragment"
         android:label="fragment_rate_after"
         tools:layout="@layout/fragment_rate_after" />
 </navigation>
