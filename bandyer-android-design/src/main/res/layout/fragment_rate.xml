@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/bandyer_dimen_space12"
+    tools:context=".RateFragment">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/bandyer_close"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_bandyer_close" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bandyer_dimen_space20"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="@dimen/bandyer_dimen_space20"
+        android:gravity="center"
+        android:lineSpacingExtra="2dp"
+        android:text="Valuta la qualità della video chiamata"
+        android:textColor="@color/bandyer_color_on_surface_80"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_close"
+        tools:text="Valuta la qualità della video chiamata" />
+
+    <com.bandyer.sdk_design.rating.ScaleRatingBar
+        android:id="@+id/bandyer_rating"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bandyer_dimen_space20"
+        android:layout_marginTop="@dimen/bandyer_dimen_space16"
+        android:layout_marginEnd="@dimen/bandyer_dimen_space20"
+        android:clickable="true"
+        android:focusable="true"
+        android:rating="1"
+        android:drawablePadding="@dimen/bandyer_dimen_space10"
+        app:bandyer_minRating="1"
+        app:bandyer_numLevels="5"
+        app:drawableSize="@dimen/bandyer_dimen_space24"
+        app:drawableTint="?attr/colorSecondary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_title" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bandyer_dimen_space20"
+        android:layout_marginEnd="@dimen/bandyer_dimen_space20"
+        android:gravity="center"
+        android:letterSpacing="0.03"
+        android:text="Molto male"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bandyer_rating"
+        tools:text="Molto male" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/bandyer_edittext"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bandyer_dimen_space8"
+        android:layout_marginTop="@dimen/bandyer_dimen_space32"
+        android:layout_marginEnd="@dimen/bandyer_dimen_space8"
+        android:hint="Lascia un commento..."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bandyer_subtitle">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textSize="14sp"
+            tools:text="Lascia un commento..." />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bandyer_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bandyer_dimen_space8"
+        android:layout_marginTop="@dimen/bandyer_dimen_space16"
+        android:layout_marginEnd="@dimen/bandyer_dimen_space8"
+        android:layout_marginBottom="@dimen/bandyer_dimen_space12"
+        android:backgroundTint="?attr/colorSecondary"
+        android:letterSpacing="0.04"
+        android:text="Vota"
+        android:textAllCaps="false"
+        android:textColor="?attr/colorOnSecondary"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_edittext"
+        tools:text="Vota" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
