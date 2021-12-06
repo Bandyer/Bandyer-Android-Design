@@ -1,8 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/bandyer_dimen_space20"
     tools:context=".rating.RateAfterFragment">
 
-</FrameLayout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/bandyer_dimen_space48"
+        android:gravity="center"
+        android:lineSpacingExtra="2dp"
+        android:textStyle="bold"
+        android:paddingStart="@dimen/bandyer_dimen_space4"
+        android:paddingEnd="@dimen/bandyer_dimen_space4"
+        android:text="Ti ringraziamo per aver contribuito a migliorare il nostro servizio!"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="16sp"
+        tools:text="Ti ringraziamo per aver contribuito a migliorare il nostro servizio!" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/bandyer_subtitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:lineSpacingExtra="2dp"
+        android:paddingStart="@dimen/bandyer_dimen_space4"
+        android:paddingEnd="@dimen/bandyer_dimen_space4"
+        android:layout_marginTop="@dimen/bandyer_dimen_space16"
+        android:text="Speriamo di rivederti presto."
+        android:textColor="@color/bandyer_color_on_surface_50"
+        android:textSize="16sp"
+        tools:text="Speriamo di rivederti presto." />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bandyer_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/bandyer_dimen_space32"
+        android:layout_marginBottom="@dimen/bandyer_dimen_space4"
+        android:backgroundTint="?attr/colorSecondary"
+        android:letterSpacing="0.04"
+        android:text="Chiudi"
+        android:textAllCaps="false"
+        android:textColor="?attr/colorOnSecondary"
+        android:textSize="16sp"
+        tools:text="Vota" />
+
+</LinearLayout>

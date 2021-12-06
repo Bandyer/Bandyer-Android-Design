@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_rate" >
         <action
             android:id="@+id/action_rateFragment_to_rateAfterFragment"
-            app:destination="@id/rateAfterFragment" />
+            app:destination="@id/rateAfterFragment"
+            app:popUpTo="@id/rateAfterFragment"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/rateAfterFragment"
