@@ -9,8 +9,9 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bandyer_close"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:contentPadding="@dimen/bandyer_dimen_space8"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_bandyer_close" />
@@ -19,13 +20,13 @@
         android:id="@+id/bandyer_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/bandyer_dimen_space20"
+        android:layout_marginStart="@dimen/bandyer_dimen_space32"
         android:layout_marginTop="2dp"
-        android:layout_marginEnd="@dimen/bandyer_dimen_space20"
+        android:layout_marginEnd="@dimen/bandyer_dimen_space32"
         android:gravity="center"
         android:lineSpacingExtra="2dp"
         android:text="Valuta la qualità della video chiamata"
-        android:textColor="@color/bandyer_color_on_surface_80"
+        android:textColor="@color/bandyer_color_on_surface_50"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,13 +37,12 @@
         android:id="@+id/bandyer_rating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/bandyer_dimen_space20"
-        android:layout_marginTop="@dimen/bandyer_dimen_space16"
-        android:layout_marginEnd="@dimen/bandyer_dimen_space20"
+        android:layout_marginStart="@dimen/bandyer_dimen_space32"
+        android:layout_marginTop="@dimen/bandyer_dimen_space24"
+        android:layout_marginEnd="@dimen/bandyer_dimen_space32"
         android:clickable="true"
         android:focusable="true"
         android:rating="1"
-        android:drawablePadding="@dimen/bandyer_dimen_space10"
         app:bandyer_minRating="1"
         app:bandyer_numLevels="5"
         app:drawableSize="@dimen/bandyer_dimen_space24"
@@ -55,8 +55,9 @@
         android:id="@+id/bandyer_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/bandyer_dimen_space20"
-        android:layout_marginEnd="@dimen/bandyer_dimen_space20"
+        android:layout_marginStart="@dimen/bandyer_dimen_space32"
+        android:layout_marginTop="@dimen/bandyer_dimen_space8"
+        android:layout_marginEnd="@dimen/bandyer_dimen_space32"
         android:gravity="center"
         android:letterSpacing="0.03"
         android:text="Molto male"
@@ -69,8 +70,7 @@
         tools:text="Molto male" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/bandyer_edittext"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/bandyer_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/bandyer_dimen_space8"
@@ -82,11 +82,13 @@
         app:layout_constraintTop_toBottomOf="@+id/bandyer_subtitle">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/bandyer_edittext"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:inputType="textMultiLine"
-            android:lines="1"
+            android:maxLines="4"
             android:textSize="14sp"
+            android:animateLayoutChanges="true"
             tools:text="Lascia un commento..." />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -108,7 +110,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bandyer_edittext"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_input_layout"
         tools:text="Vota" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
