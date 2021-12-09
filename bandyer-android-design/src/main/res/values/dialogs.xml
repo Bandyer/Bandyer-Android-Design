@@ -15,13 +15,13 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="DialogTheme_transparent" parent="ThemeOverlay.MaterialComponents.Dialog">
+    <style name="BandyerSDKDesign.FragmentDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/bandyer_floating_dialog_background</item>
-        <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>
+        <item name="android:windowAnimationStyle">@style/BandyerSDKDesign.FragmentDialog.Animation</item>
     </style>
 
-    <style name="MyAnimation.Window" parent="@style/Animation.AppCompat.Dialog">
+    <style name="BandyerSDKDesign.FragmentDialog.Animation" parent="@style/Animation.AppCompat.Dialog">
         <item name="android:windowEnterAnimation">@anim/bandyer_slide_up</item>
         <item name="android:windowExitAnimation">@anim/bandyer_slide_down</item>
     </style>

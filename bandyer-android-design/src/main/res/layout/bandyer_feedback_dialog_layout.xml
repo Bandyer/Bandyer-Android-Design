@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true"
+    tools:context="feedback.FeedbackDialog">
+
+    <include
+        android:id="@+id/fragment_feedback_layout"
+        layout="@layout/fragment_feedback_layout"/>
+
+    <include
+        android:id="@+id/fragment_feedback_sent_layout"
+        android:visibility="gone"
+        layout="@layout/fragment_feedback_sent_layout"/>
+
+</FrameLayout>

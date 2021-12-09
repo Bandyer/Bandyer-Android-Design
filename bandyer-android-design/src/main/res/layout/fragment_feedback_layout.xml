@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@id/bandyer_close"
         tools:text="Valuta la qualità della video chiamata" />
 
-    <com.bandyer.sdk_design.rating.ScaleRatingBar
+    <com.bandyer.sdk_design.feedback.ScaleRatingBar
         android:id="@+id/bandyer_rating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bandyer_vote"
+        android:id="@+id/bandyer_send"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/bandyer_dimen_space16"

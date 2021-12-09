@@ -1,4 +1,4 @@
-package com.bandyer.sdk_design.rating
+package com.bandyer.sdk_design.feedback
 
 import android.content.Context
 import android.util.AttributeSet

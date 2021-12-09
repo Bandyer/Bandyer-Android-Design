@@ -32,11 +32,10 @@ import androidx.core.net.toUri
 import com.bandyer.demo_sdk_design.databinding.ActivityMainBinding
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.call.bottom_sheet.items.CallAction
-import com.bandyer.sdk_design.call.dialogs.BandyerSnapshotDialog
 import com.bandyer.sdk_design.filesharing.BandyerFileShareDialog
 import com.bandyer.sdk_design.filesharing.FileShareViewModel
 import com.bandyer.sdk_design.filesharing.model.TransferData
-import com.bandyer.sdk_design.rating.RatingDialog
+import com.bandyer.sdk_design.feedback.FeedbackDialog
 import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassActionItemMenu
 import com.bandyer.sdk_design.smartglass.call.menu.SmartGlassMenuLayout
 import com.bandyer.sdk_design.smartglass.call.menu.items.getSmartglassActions
@@ -114,10 +113,10 @@ class MainActivity : AppCompatActivity() {
             fileShareDialog.setOnDismissListener { viewModel.itemsData.clear() }
         }
 
-        btnRating.setOnClickListener {
-            RatingDialog().apply {
+        btnFeedback.setOnClickListener {
+            FeedbackDialog().apply {
                 onRatingConfirmed { fl, s ->  Log.e("RatingResult","Vote: $fl, Comment: $s") }
-            }.show(supportFragmentManager, RatingDialog.TAG) }
+            }.show(supportFragmentManager, FeedbackDialog.TAG) }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

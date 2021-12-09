@@ -1,25 +1,25 @@
-package com.bandyer.sdk_design.rating
+package com.bandyer.sdk_design.feedback
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.navigation.fragment.findNavController
 import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.databinding.BandyerRatingDialogLayoutBinding
+import com.bandyer.sdk_design.databinding.BandyerFeedbackDialogLayoutBinding
+import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 
-class RatingDialog : DialogFragment() {
+class FeedbackDialog : DialogFragment() {
 
-    private var _binding: BandyerRatingDialogLayoutBinding? = null
-    private val binding: BandyerRatingDialogLayoutBinding
+    private var _binding: BandyerFeedbackDialogLayoutBinding? = null
+    private val binding: BandyerFeedbackDialogLayoutBinding
         get() = _binding!!
 
     private var onRatingConfirmedCallback: ((Float, String) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NO_TITLE, R.style.DialogTheme_transparent)
+        setStyle(STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_feedbackDialogStyle))
     }
 
     override fun onCreateView(
@@ -27,8 +27,8 @@ class RatingDialog : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = BandyerRatingDialogLayoutBinding.inflate(inflater, container, false).apply {
-            with(bandyerRatingLayout) {
+        _binding = BandyerFeedbackDialogLayoutBinding.inflate(inflater, container, false).apply {
+            with(fragmentFeedbackLayout) {
                 bandyerRating.onRatingChangeListener = object : RatingBar.OnRatingChangeListener {
                     override fun onRatingChange(rating: Float) {
                         bandyerSubtitle.text =
@@ -42,14 +42,14 @@ class RatingDialog : DialogFragment() {
                     }
                 }
                 bandyerClose.setOnClickListener { dismiss() }
-                bandyerVote.setOnClickListener {
+                bandyerSend.setOnClickListener {
                     root.visibility = View.GONE
-                    bandyerRatingDoneLayout.root.visibility = View.VISIBLE
+                    fragmentFeedbackSentLayout.root.visibility = View.VISIBLE
                     onRatingConfirmedCallback?.invoke(bandyerRating.getRating(), bandyerEdittext.text?.toString() ?: "")
                 }
                 bandyerRating.setRating(5f)
             }
-            bandyerRatingDoneLayout.bandyerClose.setOnClickListener { dismiss() }
+            fragmentFeedbackSentLayout.bandyerClose.setOnClickListener { dismiss() }
         }
         return binding.root
     }
@@ -57,6 +57,6 @@ class RatingDialog : DialogFragment() {
     fun onRatingConfirmed(function: (Float, String) -> Unit) { onRatingConfirmedCallback = function }
 
     companion object {
-        const val TAG = "RatingDialog"
+        const val TAG = "FeedbackDialog"
     }
 }

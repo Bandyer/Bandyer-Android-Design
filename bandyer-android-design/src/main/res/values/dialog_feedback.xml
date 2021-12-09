@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BandyerSDKDesign.FragmentDialog.Feedback">
+        <attr name="bandyer_feedbackStyle" format="reference" />
+        <attr name="bandyer_feedbackSentStyle" format="reference" />
+    </declare-styleable>
+
+    <style name="BandyerSDKDesign.FragmentDialog.Feedback" parent="BandyerSDKDesign.FragmentDialog">
+<!--        <item name="bandyer_feedbackStyle"></item>-->
+<!--        <item name="bandyer_feedbackSentStyle"></item>-->
+    </style>
+
+    <style name="BandyerSDKDesign.FragmentDialog.Rating.Layout" parent="">
+    </style>
+</resources>

@@ -47,7 +47,7 @@
             android:paddingTop="@dimen/bandyer_dimen_space32"
             android:paddingBottom="@dimen/bandyer_dimen_space32">
 
-            <com.bandyer.sdk_design.rating.ScaleRatingBar
+            <com.bandyer.sdk_design.feedback.ScaleRatingBar
                 android:id="@+id/rating"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
                 app:layout_constraintTop_toBottomOf="@id/btn_ringing" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_rating"
+                android:id="@+id/btn_feedback"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/bandyer_dimen_space16"
@@ -201,7 +201,7 @@
                 android:layout_marginBottom="@dimen/bandyer_dimen_space16"
                 android:layout_marginEnd="@dimen/bandyer_dimen_space16"
                 android:layout_marginRight="@dimen/bandyer_dimen_space16"
-                android:text="@string/rating"
+                android:text="@string/feedback"
                 app:layout_constraintTop_toBottomOf="@id/btn_file_share" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
