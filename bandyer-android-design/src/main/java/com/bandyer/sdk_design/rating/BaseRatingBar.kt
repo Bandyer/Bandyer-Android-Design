@@ -35,7 +35,7 @@ internal abstract class BaseRatingBar @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr, defStyleRes), RatingBar {
 
-    val onRatingChangeListener: RatingBar.OnRatingChangeListener? = null
+    var onRatingChangeListener: RatingBar.OnRatingChangeListener? = null
 
     private var numLevels: Int = LEVELS
     private var stepSize: Float = STEP_SIZE

@@ -24,6 +24,18 @@ class RateFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRateBinding.inflate(inflater, container, false).apply {
+            bandyerRating.onRatingChangeListener = object : RatingBar.OnRatingChangeListener {
+                override fun onRatingChange(rating: Float) {
+                    bandyerSubtitle.text =
+                        when {
+                            rating <= 1f -> "Molto male"
+                            rating > 1f && rating <= 2f -> "Scadente"
+                            rating > 2f && rating <= 3f -> "Neutro"
+                            rating > 3f && rating <= 4f -> "Buono"
+                            else -> "Eccellente"
+                        }
+                }
+            }
             bandyerClose.setOnClickListener { parentDialogFragment.dismiss() }
             bandyerButton.setOnClickListener { findNavController().navigate(R.id.action_rateFragment_to_rateAfterFragment)  }
         }
