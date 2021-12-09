@@ -41,7 +41,7 @@
         tools:text="Speriamo di rivederti presto." />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bandyer_button"
+        android:id="@+id/bandyer_close"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/bandyer_dimen_space32"

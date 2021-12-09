@@ -114,7 +114,10 @@ class MainActivity : AppCompatActivity() {
             fileShareDialog.setOnDismissListener { viewModel.itemsData.clear() }
         }
 
-        btnRating.setOnClickListener { RatingDialog().show(supportFragmentManager, RatingDialog.TAG) }
+        btnRating.setOnClickListener {
+            RatingDialog().apply {
+                onRatingConfirmed { fl, s ->  Log.e("RatingResult","Vote: $fl, Comment: $s") }
+            }.show(supportFragmentManager, RatingDialog.TAG) }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

@@ -50,7 +50,6 @@
         android:layout_marginEnd="@dimen/bandyer_dimen_space28"
         android:clickable="true"
         android:focusable="true"
-        android:rating="5"
         app:bandyer_minRating="1"
         app:bandyer_numLevels="5"
         android:paddingTop="@dimen/bandyer_dimen_space10"
@@ -116,7 +115,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bandyer_button"
+        android:id="@+id/bandyer_vote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/bandyer_dimen_space16"

@@ -15,6 +15,8 @@ class RatingDialog : DialogFragment() {
     private val binding: BandyerRatingDialogLayoutBinding
         get() = _binding!!
 
+    private var onRatingConfirmedCallback: ((Float, String) -> Unit)? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NO_TITLE, R.style.DialogTheme_transparent)
@@ -40,16 +42,19 @@ class RatingDialog : DialogFragment() {
                     }
                 }
                 bandyerClose.setOnClickListener { dismiss() }
-                bandyerButton.setOnClickListener {
+                bandyerVote.setOnClickListener {
                     root.visibility = View.GONE
                     bandyerRatingDoneLayout.root.visibility = View.VISIBLE
+                    onRatingConfirmedCallback?.invoke(bandyerRating.getRating(), bandyerEdittext.text?.toString() ?: "")
                 }
                 bandyerRating.setRating(5f)
             }
-            bandyerRatingDoneLayout.bandyerButton.setOnClickListener { dismiss() }
+            bandyerRatingDoneLayout.bandyerClose.setOnClickListener { dismiss() }
         }
         return binding.root
     }
+
+    fun onRatingConfirmed(function: (Float, String) -> Unit) { onRatingConfirmedCallback = function }
 
     companion object {
         const val TAG = "RatingDialog"
