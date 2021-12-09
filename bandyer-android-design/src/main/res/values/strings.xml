@@ -173,4 +173,16 @@
     <string name="bandyer_max_bytes_dialog_descr">It is allowed to share files up to 150 MB</string>
     <string name="bandyer_max_bytes_dialog_title">File share limit</string>
 
+    <!-- FEEDBACK -->
+    <string name="bandyer_feedback_vote">Vote</string>
+    <string name="bandyer_feedback_close">Close</string>
+    <string name="bandyer_feedback_evaluate_call">Evaluate the call quality</string>
+    <string name="bandyer_feedback_bad">Bad</string>
+    <string name="bandyer_feedback_poor">Poor</string>
+    <string name="bandyer_feedback_neutral">Neutral</string>
+    <string name="bandyer_feedback_good">Good</string>
+    <string name="bandyer_feedback_excellent">Excellent</string>
+    <string name="bandyer_feedback_leave_a_comment">Leave a comment…</string>
+    <string name="bandyer_feedback_rating_bar_descr">Rating bar</string>
+
 </resources>

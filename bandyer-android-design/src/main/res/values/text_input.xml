@@ -45,7 +45,8 @@
         <item name="android:gravity">start</item>
         <item name="android:hint">@string/bandyer_edit_text_input_placeholder</item>
         <item name="android:textColorHint">@color/bandyer_color_on_surface_50</item>
-        <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">viewStart</item>
+        <item name="android:textAlignment">viewStart</item>
+        <item name="android:textDirection">locale</item>
         <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance.TextInputEditText</item>
     </style>
 
@@ -54,7 +55,6 @@
         <item name="android:shadowDy">0</item>
         <item name="android:shadowRadius">0</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
-<!--        <item name="android:textSize">14sp</item>-->
     </style>
 
     <style name="BandyerSDKDesign.TextInputLayout.Chat" parent="BandyerSDKDesign.TextInputLayout">

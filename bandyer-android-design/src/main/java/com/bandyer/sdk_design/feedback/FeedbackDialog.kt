@@ -28,28 +28,32 @@ class FeedbackDialog : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = BandyerFeedbackDialogLayoutBinding.inflate(inflater, container, false).apply {
-            with(fragmentFeedbackLayout) {
+            with(bandyerFragmentFeedbackLayout) {
                 bandyerRating.onRatingChangeListener = object : RatingBar.OnRatingChangeListener {
                     override fun onRatingChange(rating: Float) {
-                        bandyerSubtitle.text =
+                         val ratingText = resources.getString(
                             when {
-                                rating <= 1f -> "Molto male"
-                                rating > 1f && rating <= 2f -> "Scadente"
-                                rating > 2f && rating <= 3f -> "Neutro"
-                                rating > 3f && rating <= 4f -> "Buono"
-                                else -> "Eccellente"
-                            }
+                                rating <= 1f -> R.string.bandyer_feedback_bad
+                                rating > 1f && rating <= 2f -> R.string.bandyer_feedback_poor
+                                rating > 2f && rating <= 3f -> R.string.bandyer_feedback_neutral
+                                rating > 3f && rating <= 4f -> R.string.bandyer_feedback_good
+                                else -> R.string.bandyer_feedback_excellent
+                            })
+                        with(bandyerSubtitle) {
+                            text = ratingText
+                            contentDescription = ratingText
+                        }
                     }
                 }
                 bandyerClose.setOnClickListener { dismiss() }
-                bandyerSend.setOnClickListener {
+                bandyerVote.setOnClickListener {
                     root.visibility = View.GONE
-                    fragmentFeedbackSentLayout.root.visibility = View.VISIBLE
+                    bandyerFragmentFeedbackSentLayout.root.visibility = View.VISIBLE
                     onRatingConfirmedCallback?.invoke(bandyerRating.getRating(), bandyerEdittext.text?.toString() ?: "")
                 }
                 bandyerRating.setRating(5f)
             }
-            fragmentFeedbackSentLayout.bandyerClose.setOnClickListener { dismiss() }
+            bandyerFragmentFeedbackSentLayout.bandyerClose.setOnClickListener { dismiss() }
         }
         return binding.root
     }
