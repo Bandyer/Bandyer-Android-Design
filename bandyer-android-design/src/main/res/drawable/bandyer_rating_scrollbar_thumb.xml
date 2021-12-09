@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" >
-    <solid android:color="@color/bandyer_color_on_surface_30" />
-    <corners android:radius="6dp" />
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:bottom="@dimen/bandyer_dimen_space4"
+        android:left="@dimen/bandyer_dimen_space4"
+        android:right="@dimen/bandyer_dimen_space4"
+        android:top="@dimen/bandyer_dimen_space4">
+        <shape>
+            <solid android:color="@color/bandyer_color_on_surface_30" />
+            <corners android:radius="@dimen/bandyer_dimen_space6" />
+            <size android:width="@dimen/bandyer_dimen_space4" />
+        </shape>
+    </item>
+</layer-list>
