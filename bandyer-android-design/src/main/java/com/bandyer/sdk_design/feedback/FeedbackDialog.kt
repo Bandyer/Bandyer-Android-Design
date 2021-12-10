@@ -15,7 +15,7 @@ class FeedbackDialog : DialogFragment() {
     private val binding: BandyerFeedbackDialogLayoutBinding
         get() = _binding!!
 
-    private var onRatingConfirmedCallback: ((Float, String) -> Unit)? = null
+    private var onFeedbackCallback: ((Float, String) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +49,7 @@ class FeedbackDialog : DialogFragment() {
                 bandyerVote.setOnClickListener {
                     root.visibility = View.GONE
                     bandyerFragmentFeedbackSentLayout.root.visibility = View.VISIBLE
-                    onRatingConfirmedCallback?.invoke(bandyerRating.getRating(), bandyerEdittext.text?.toString() ?: "")
+                    onFeedbackCallback?.invoke(bandyerRating.getRating(), bandyerEdittext.text?.toString() ?: "")
                 }
                 bandyerRating.setRating(5f)
             }
@@ -58,7 +58,7 @@ class FeedbackDialog : DialogFragment() {
         return binding.root
     }
 
-    fun onRatingConfirmed(function: (Float, String) -> Unit): FeedbackDialog { onRatingConfirmedCallback = function; return this }
+    fun onFeedback(function: (Float, String) -> Unit): FeedbackDialog { onFeedbackCallback = function; return this }
 
     companion object {
         const val TAG = "FeedbackDialog"
