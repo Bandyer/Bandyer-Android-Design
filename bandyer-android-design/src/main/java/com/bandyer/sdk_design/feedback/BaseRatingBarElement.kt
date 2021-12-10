@@ -41,14 +41,16 @@ internal class BaseRatingBarElement : FrameLayout {
             layoutParams = params
             adjustViewBounds = true
             scaleType = ImageView.ScaleType.FIT_CENTER
-            setImageDrawable(ClipDrawable(DrawableCompat.wrap(progressDrawable).mutate(), Gravity.START, ClipDrawable.HORIZONTAL))
+            if(progressDrawable.constantState == null) return@with
+            setImageDrawable(ClipDrawable(progressDrawable.constantState!!.newDrawable(), Gravity.START, ClipDrawable.HORIZONTAL))
         }
 
         with(binding.bandyerBackgroundImage)  {
             layoutParams = params
             adjustViewBounds = true
             scaleType = ImageView.ScaleType.FIT_CENTER
-            setImageDrawable(ClipDrawable(DrawableCompat.wrap(backgroundDrawable).mutate(), Gravity.END, ClipDrawable.HORIZONTAL))
+            if(backgroundDrawable.constantState == null) return@with
+            setImageDrawable(ClipDrawable(backgroundDrawable.constantState!!.newDrawable(), Gravity.END, ClipDrawable.HORIZONTAL))
         }
 
         setProgress(0f)
