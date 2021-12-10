@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.annotation.FloatRange
 import androidx.annotation.Px
+import androidx.core.graphics.drawable.DrawableCompat
 import com.bandyer.sdk_design.databinding.BandyerRatingBarElementBinding
 
 /**
@@ -40,14 +41,14 @@ internal class BaseRatingBarElement : FrameLayout {
             layoutParams = params
             adjustViewBounds = true
             scaleType = ImageView.ScaleType.FIT_CENTER
-            setImageDrawable(ClipDrawable(progressDrawable.mutate(), Gravity.START, ClipDrawable.HORIZONTAL))
+            setImageDrawable(ClipDrawable(DrawableCompat.wrap(progressDrawable).mutate(), Gravity.START, ClipDrawable.HORIZONTAL))
         }
 
         with(binding.bandyerBackgroundImage)  {
             layoutParams = params
             adjustViewBounds = true
             scaleType = ImageView.ScaleType.FIT_CENTER
-            setImageDrawable(ClipDrawable(backgroundDrawable.mutate(), Gravity.END, ClipDrawable.HORIZONTAL))
+            setImageDrawable(ClipDrawable(DrawableCompat.wrap(backgroundDrawable).mutate(), Gravity.END, ClipDrawable.HORIZONTAL))
         }
 
         setProgress(0f)
