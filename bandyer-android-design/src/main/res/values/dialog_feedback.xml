@@ -53,6 +53,7 @@
         <item name="android:layout_marginTop">@dimen/bandyer_dimen_space2</item>
         <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space28</item>
         <item name="android:gravity">center</item>
+        <item name="android:ems">100</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textStyle">normal</item>
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space2</item>
@@ -151,6 +152,7 @@
         <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space4</item>
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
+        <item name="android:ems">100</item>
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space2</item>
         <item name="android:text">@string/bandyer_feedback_thank_you</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
