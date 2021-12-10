@@ -33,6 +33,8 @@
 
     <style name="BandyerSDKDesign.FragmentDialog.FeedbackLayout.RootLayout" parent="">
         <item name="android:padding">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="BandyerSDKDesign.ImageButton.FeedbackLayoutCloseButton" parent="BandyerSDKDesign.ImageButton">
@@ -127,14 +129,14 @@
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_titleStyle" />
         <attr name="bandyer_subtitleStyle" />
-        <attr name="materialButtonStyle" />
+        <attr name="bandyer_closeButtonStyle" />
     </declare-styleable>
 
     <style name="BandyerSDKDesign.FragmentDialog.FeedbackSentLayout" parent="">
         <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.FragmentDialog.FeedbackSentLayout.RootLayout</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FeedbackSentLayout</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FeedbackSentLayout</item>
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.FragmentDialog.FeedbackSentLayout.PositiveButton</item>
+        <item name="bandyer_closeButtonStyle">@style/BandyerSDKDesign.FragmentDialog.FeedbackSentLayout.PositiveButton</item>
     </style>
 
     <style name="BandyerSDKDesign.FragmentDialog.FeedbackSentLayout.RootLayout" parent="">

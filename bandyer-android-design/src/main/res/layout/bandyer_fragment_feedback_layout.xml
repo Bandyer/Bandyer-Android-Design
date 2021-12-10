@@ -3,9 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="?attr/bandyer_rootLayoutStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:theme="@style/BandyerSDKDesign.FragmentDialog.FeedbackLayout">
+    android:theme="?attr/bandyer_feedbackLayoutStyle">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bandyer_close"
@@ -46,6 +44,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/bandyer_input_layout"
+        style="?attr/textInputStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,6 +68,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bandyer_input_layout"
-        tools:text="Vota" />
+        tools:text="Vote" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

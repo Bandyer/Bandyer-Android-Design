@@ -2,8 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="?attr/bandyer_rootLayoutStyle"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:theme="?attr/bandyer_feedbackSentLayoutStyle">
 
     <com.google.android.material.textview.MaterialTextView
@@ -22,6 +20,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bandyer_close"
+        style="?attr/bandyer_closeButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Close" />
