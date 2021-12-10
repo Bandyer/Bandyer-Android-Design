@@ -91,11 +91,9 @@
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
         <item name="android:layout_marginTop">@dimen/bandyer_dimen_space32</item>
         <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:minHeight">@dimen/bandyer_dimen_space48</item>
+        <item name="android:gravity">center</item>
         <item name="android:inputType">textAutoCorrect|textCapSentences|textAutoComplete|textMultiLine</item>
-        <item name="boxBackgroundColor">@color/bandyer_rating_input_background_color</item>
-        <item name="boxStrokeColor">@color/bandyer_rating_input_stroke_color</item>
-        <item name="boxStrokeWidth">@dimen/bandyer_dimen_space1</item>
-        <item name="boxStrokeWidthFocused">@dimen/bandyer_dimen_space1</item>
         <item name="hintEnabled">false</item>
     </style>
 
@@ -106,9 +104,17 @@
     <style name="BandyerSDKDesign.TextInputEditText.FeedbackLayout" parent="BandyerSDKDesign.TextInputEditText">
         <item name="android:hint">@string/bandyer_feedback_leave_a_comment</item>
         <item name="android:maxLines">4</item>
+        <item name="android:background">@drawable/bandyer_edittext_background</item>
         <item name="android:scrollbarStyle">outsideInset</item>
-        <item name="android:scrollbarThumbVertical">@drawable/bandyer_rating_scrollbar_thumb</item>
+        <item name="android:scrollbarThumbVertical">@drawable/bandyer_feedback_scrollbar_thumb</item>
         <item name="android:scrollbars">vertical</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space12</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space12</item>
+        <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance.TextInputEditText.FeedbackLayout</item>
+    </style>
+
+    <style name="BandyerSDKDesign.TextAppearance.TextInputEditText.FeedbackLayout" parent="BandyerSDKDesign.TextAppearance.TextInputEditText">
+        <item name="android:textSize">@dimen/bandyer_dimen_text_normal</item>
     </style>
 
     <style name="BandyerSDKDesign.FragmentDialog.FeedbackLayout.PositiveButton" parent="Widget.MaterialComponents.Button">
