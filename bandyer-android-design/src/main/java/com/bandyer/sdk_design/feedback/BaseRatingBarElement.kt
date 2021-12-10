@@ -40,16 +40,14 @@ internal class BaseRatingBarElement : FrameLayout {
             layoutParams = params
             adjustViewBounds = true
             scaleType = ImageView.ScaleType.FIT_CENTER
-            if(progressDrawable.constantState == null) return@with
-            setImageDrawable(ClipDrawable(progressDrawable.constantState!!.newDrawable(), Gravity.START, ClipDrawable.HORIZONTAL))
+            setImageDrawable(ClipDrawable(progressDrawable.mutate(), Gravity.START, ClipDrawable.HORIZONTAL))
         }
 
         with(binding.bandyerBackgroundImage)  {
             layoutParams = params
             adjustViewBounds = true
             scaleType = ImageView.ScaleType.FIT_CENTER
-            if(backgroundDrawable.constantState == null) return@with
-            setImageDrawable(ClipDrawable(backgroundDrawable.constantState!!.newDrawable(), Gravity.END, ClipDrawable.HORIZONTAL))
+            setImageDrawable(ClipDrawable(backgroundDrawable.mutate(), Gravity.END, ClipDrawable.HORIZONTAL))
         }
 
         setProgress(0f)
@@ -61,7 +59,7 @@ internal class BaseRatingBarElement : FrameLayout {
      *
      * @param rating Float
      */
-    fun setProgress(@FloatRange(from = 0.0, to = 1.0) rating: Float) = with(binding!!) {
+    fun setProgress(@FloatRange(from = 0.0, to = 1.0) rating: Float) = with(binding) {
         val level = (MAX_IMAGE_LEVEL * rating).toInt()
         bandyerProgressImage.setImageLevel(level)
         bandyerBackgroundImage.setImageLevel(MAX_IMAGE_LEVEL - level)
