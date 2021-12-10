@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerFeedbackDialogLayoutBinding
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
+import com.google.android.material.textfield.TextInputEditText
 
 class FeedbackDialog : DialogFragment() {
 
@@ -45,8 +46,9 @@ class FeedbackDialog : DialogFragment() {
                         }
                     }
                 }
-                bandyerEdittext.setOnFocusChangeListener { _, hasFocus ->
+                bandyerEdittext.setOnFocusChangeListener { view, hasFocus ->
                     if(hasFocus) bandyerTitle.visibility = View.GONE
+                    (view as TextInputEditText).setLines(4)
                 }
                 bandyerClose.setOnClickListener { dismiss() }
                 bandyerVote.setOnClickListener {
