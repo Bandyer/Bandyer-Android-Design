@@ -95,6 +95,7 @@
         <item name="android:gravity">center</item>
         <item name="android:inputType">textAutoCorrect|textCapSentences|textAutoComplete|textMultiLine</item>
         <item name="hintEnabled">false</item>
+        <item name="android:focusableInTouchMode">true</item>
     </style>
 
     <style name="BandyerSDKDesign.FragmentDialog.FeedbackLayout.TextInputLayout.MaterialThemeOverlay" parent="">
@@ -152,11 +153,12 @@
     </style>
 
     <style name="BandyerSDKDesign.TextView.Title.FeedbackSentLayout" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
         <item name="android:layout_marginTop">@dimen/bandyer_dimen_space32</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
+        <item name="android:ems">1000</item>
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space2</item>
         <item name="android:text">@string/bandyer_feedback_thank_you</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
@@ -164,11 +166,10 @@
     </style>
 
     <style name="BandyerSDKDesign.TextView.Subtitle.FeedbackSentLayout" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space4</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:layout_marginTop">@dimen/bandyer_dimen_space16</item>
         <item name="android:gravity">center</item>
-        <item name="android:ems">1000</item>
         <item name="android:textAlignment">center</item>
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space2</item>
         <item name="android:paddingStart">@dimen/bandyer_dimen_space4</item>
