@@ -5,7 +5,7 @@
     style="?attr/bandyer_rootLayoutStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:theme="?attr/bandyer_feedbackLayoutStyle">
+    android:theme="@style/BandyerSDKDesign.FragmentDialog.FeedbackLayout">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bandyer_close"
@@ -62,7 +62,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bandyer_vote"
-        style="?attr/bandyer_voteButtonStyle"
+        style="?attr/bandyer_positiveButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

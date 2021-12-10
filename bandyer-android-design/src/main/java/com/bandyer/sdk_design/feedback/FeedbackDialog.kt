@@ -58,7 +58,7 @@ class FeedbackDialog : DialogFragment() {
         return binding.root
     }
 
-    fun onRatingConfirmed(function: (Float, String) -> Unit) { onRatingConfirmedCallback = function }
+    fun onRatingConfirmed(function: (Float, String) -> Unit): FeedbackDialog { onRatingConfirmedCallback = function; return this }
 
     companion object {
         const val TAG = "FeedbackDialog"

@@ -114,9 +114,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnFeedback.setOnClickListener {
-            FeedbackDialog().apply {
-                onRatingConfirmed { fl, s ->  Log.e("RatingResult","Vote: $fl, Comment: $s") }
-            }.show(supportFragmentManager, FeedbackDialog.TAG) }
+            FeedbackDialog()
+                .onRatingConfirmed { rating, comment ->  Log.e("RatingResult","Rating: $rating, Comment: $comment") }
+                .show(supportFragmentManager, FeedbackDialog.TAG)
+        }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

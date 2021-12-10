@@ -176,5 +176,7 @@
     <string name="bandyer_feedback_excellent">Eccelente</string>
     <string name="bandyer_feedback_leave_a_comment">Lascia un commento…</string>
     <string name="bandyer_feedback_rating_bar_descr">Barra voto</string>
+    <string name="bandyer_feedback_see_you_soon">Speriamo di rivederti presto</string>
+    <string name="bandyer_feedback_thank_you">Ti ringraziamo per aver contribuito a migliorare il nostro servizio!</string>
 
 </resources>
