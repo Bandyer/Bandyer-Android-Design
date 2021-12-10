@@ -45,6 +45,9 @@ class FeedbackDialog : DialogFragment() {
                         }
                     }
                 }
+                bandyerEdittext.setOnFocusChangeListener { _, hasFocus ->
+                    if(hasFocus) bandyerTitle.visibility = View.GONE
+                }
                 bandyerClose.setOnClickListener { dismiss() }
                 bandyerVote.setOnClickListener {
                     root.visibility = View.GONE

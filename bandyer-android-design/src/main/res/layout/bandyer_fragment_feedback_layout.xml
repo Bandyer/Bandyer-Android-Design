@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="?attr/bandyer_rootLayoutStyle"
+    android:animateLayoutChanges="true"
     android:theme="?attr/bandyer_feedbackLayoutStyle">
 
     <com.google.android.material.button.MaterialButton
@@ -18,6 +19,7 @@
         style="?attr/bandyer_titleStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_rating"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bandyer_close"
@@ -28,6 +30,7 @@
         style="?attr/bandyer_ratingBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_subtitle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/bandyer_title" />
@@ -39,7 +42,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bandyer_rating"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_rating"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_input_layout"
         tools:text="Bad" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -49,7 +53,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bandyer_subtitle">
+        app:layout_constraintTop_toBottomOf="@+id/bandyer_subtitle"
+        app:layout_constraintBottom_toTopOf="@id/bandyer_vote">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/bandyer_edittext"
