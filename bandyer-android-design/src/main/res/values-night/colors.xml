@@ -29,4 +29,7 @@
 
     <!-- screen share color -->
     <color name="bandyer_screen_share_color">@color/bandyer_screen_share_color_night</color>
+
+    <!-- API 21 colors -->
+    <color name="bandyer_api21_color_on_surface_12">#3F3F3F</color>
 </resources>
