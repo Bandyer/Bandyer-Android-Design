@@ -9,8 +9,13 @@ import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerFeedbackDialogLayoutBinding
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
 import com.google.android.material.textfield.TextInputEditText
+import android.text.Editable
+import android.text.TextWatcher
 
-class FeedbackDialog : DialogFragment() {
+/**
+ * FeedbackDialog
+ */
+internal class FeedbackDialog : DialogFragment() {
 
     private var _binding: BandyerFeedbackDialogLayoutBinding? = null
     private val binding: BandyerFeedbackDialogLayoutBinding
@@ -18,6 +23,7 @@ class FeedbackDialog : DialogFragment() {
 
     private var onRateCallback: ((Float) -> Unit)? = null
     private var onCommentCallback: ((String) -> Unit)? = null
+    private var onFeedbackCallback: ((Float, String) -> Unit)? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,11 +58,16 @@ class FeedbackDialog : DialogFragment() {
                     if(hasFocus) bandyerTitle.visibility = View.GONE
                     (view as TextInputEditText).setLines(4)
                 }
+                bandyerEdittext.addTextChangedListener(object : TextWatcher {
+                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) = Unit
+                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
+                    override fun afterTextChanged(s: Editable) { onCommentCallback?.invoke(s.toString()) }
+                })
                 bandyerClose.setOnClickListener { dismiss() }
                 bandyerVote.setOnClickListener {
                     root.visibility = View.GONE
                     bandyerFragmentFeedbackSentLayout.root.visibility = View.VISIBLE
-                    onCommentCallback?.invoke(bandyerEdittext.text?.toString() ?: "")
+                    onFeedbackCallback?.invoke(bandyerRating.getRating(), bandyerEdittext.text?.toString() ?: "")
                 }
                 bandyerRating.setRating(5f)
             }
@@ -65,9 +76,29 @@ class FeedbackDialog : DialogFragment() {
         return binding.root
     }
 
+    /**
+     * Set the callback invoked on rating change
+     *
+     * @param function Function1<Float, Unit>
+     * @return FeedbackDialog
+     */
     fun onRate(function: (Float) -> Unit): FeedbackDialog { onRateCallback = function; return this }
 
+    /**
+     * Set the callback invoked on comment change
+     *
+     * @param function Function1<Float, Unit>
+     * @return FeedbackDialog
+     */
     fun onComment(function: (String) -> Unit): FeedbackDialog { onCommentCallback = function; return this }
+
+    /**
+     * Set the callback invoked on feedback confirmed
+     *
+     * @param function Function1<Float, Unit>
+     * @return FeedbackDialog
+     */
+    fun onFeedback(function: (Float, String) -> Unit): FeedbackDialog { onFeedbackCallback = function; return this }
 
     companion object {
         const val TAG = "FeedbackDialog"
