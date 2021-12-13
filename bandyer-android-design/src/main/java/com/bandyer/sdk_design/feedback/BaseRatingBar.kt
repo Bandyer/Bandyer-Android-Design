@@ -1,5 +1,6 @@
 package com.bandyer.sdk_design.feedback
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
@@ -135,6 +136,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
 
     override fun onInterceptTouchEvent(ev: MotionEvent?) = true
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if(!isEnabled) return false
 
@@ -181,6 +183,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
                 }
             )
         }
+        sendAccessibilityEvent(AccessibilityEvent.CONTENT_CHANGE_TYPE_CONTENT_DESCRIPTION)
     }
 
     private fun closestValueToStepSize(value: Float) = value - (value % stepSize).floor(1)
@@ -225,7 +228,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
     override fun onInitializeAccessibilityNodeInfo(info: AccessibilityNodeInfo?) {
         super.onInitializeAccessibilityNodeInfo(info)
 
-        val rangeInfo = RangeInfo.obtain(RangeInfo.RANGE_TYPE_INT, minRating, numLevels.toFloat(), rating)
+        val rangeInfo = RangeInfo.obtain(RangeInfo.RANGE_TYPE_INT, 0f, numLevels.toFloat(), rating)
         info?.rangeInfo = rangeInfo
 
         if (!isEnabled) return
