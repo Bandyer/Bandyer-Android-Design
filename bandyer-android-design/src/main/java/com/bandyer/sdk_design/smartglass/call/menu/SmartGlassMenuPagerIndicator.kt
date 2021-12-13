@@ -303,7 +303,7 @@ class SmartGlassMenuPagerIndicator @JvmOverloads constructor(context: Context, a
      * @suppress
      */
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        if (context.isRtl()) {
+        if (isRtl()) {
             val currentPosition = getRTLPosition(position = position)
             selectedItemPosition = currentPosition
             intermediateSelectedItemPosition = currentPosition
@@ -324,7 +324,7 @@ class SmartGlassMenuPagerIndicator @JvmOverloads constructor(context: Context, a
      */
     override fun onPageSelected(position: Int) {
         intermediateSelectedItemPosition = selectedItemPosition
-        selectedItemPosition = if (context.isRtl()) getRTLPosition(position = position) else position
+        selectedItemPosition = if (isRtl()) getRTLPosition(position = position) else position
         invalidate()
     }
 
@@ -407,7 +407,7 @@ class SmartGlassMenuPagerIndicator @JvmOverloads constructor(context: Context, a
 
         private fun setIntermediateSelectedItemPosition(mostVisibleChild: View) {
             recyclerView?.findContainingViewHolder(mostVisibleChild)?.adapterPosition?.let { position ->
-                intermediateSelectedItemPosition = if (context.isRtl() && !verticalSupport && (recyclerView?.layoutManager as? LinearLayoutManager)?.stackFromEnd == false) {
+                intermediateSelectedItemPosition = if (isRtl() && !verticalSupport && (recyclerView?.layoutManager as? LinearLayoutManager)?.stackFromEnd == false) {
                     getRTLPosition(position = position)
                 } else position
             }

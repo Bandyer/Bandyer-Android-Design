@@ -28,6 +28,7 @@ import android.graphics.drawable.*
 import android.hardware.input.InputManager
 import android.os.Build
 import android.os.SystemClock
+import android.text.TextUtils
 import android.util.Log
 import android.util.TypedValue
 import android.view.*
@@ -45,6 +46,7 @@ import com.bandyer.android_common.LifecycleEvents
 import com.bandyer.sdk_design.buttons.BandyerActionButton
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.sqrt
@@ -108,8 +110,8 @@ fun View.animateViewHeight(from: Int, to: Int, duration: Long, interpolator: Int
  * @param onResizedAndMoved () -> Unit? callback after animator has ended
  */
 fun View.resizeAndMove(toSize: Float, toTop: Float, toLeft: Float, toRight: Float, duration: Long, onResizedAndMoved: () -> Unit): AnimatorSet? {
-    val leftMargin = if (!context.isRtl()) toLeft else toRight
-    val rightMargin = if (!context.isRtl()) toRight else toLeft
+    val leftMargin = if (!isRtl()) toLeft else toRight
+    val rightMargin = if (!isRtl()) toRight else toLeft
 
     val valueAnimator = ValueAnimator.ofFloat(layoutParams.height.toFloat().takeIf { it != -1f } ?: height.toFloat(), toSize)
     val valueAnimator3 = ValueAnimator.ofFloat((layoutParams as ViewGroup.MarginLayoutParams).topMargin.toFloat(), toTop)
@@ -1060,3 +1062,10 @@ fun View.isVisible(): Boolean {
     val screen = Rect(0, 0, screenWidth, screenHeight)
     return isGlobalVisible && Rect.intersects(actualPosition, screen)
 }
+
+/**
+ * @suppress
+ * @return Boolean
+ */
+internal fun isRtl() =
+    TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL
