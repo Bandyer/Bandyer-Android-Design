@@ -18,38 +18,31 @@ internal class ScaleRatingBar @JvmOverloads constructor(
     private val childrenScales: MutableMap<View, Float> = mutableMapOf()
 
     init {
-        updateChildren(getNumLevels())
-        setProgress(getRating())
+        updateChildrenScale()
     }
 
     override fun setProgress(rating: Float) {
         super.setProgress(rating)
         children.forEachIndexed { index, item ->
-            val intFloor = floor(rating.toDouble()).toInt()
-            when {
-                index > intFloor - 1 -> {
-                    if(childrenScales[item] == 0.75f) return@forEachIndexed
-                    childrenScales[item] = 0.75f
-                    item.scale(SCALE_DOWN_VALUE, ANIMATION_DURATION, DecelerateInterpolator())
-                }
-                index == intFloor - 1 -> {
-                    if(childrenScales[item] == 1f) return@forEachIndexed
-                    childrenScales[item] = 1f
-                    item.scale(1f, ANIMATION_DURATION, DecelerateInterpolator())
-                }
-                else -> {
-                    if(childrenScales[item] == 1f) return@forEachIndexed
-                    childrenScales[item] = 1f
-                    item.scale(1f, ANIMATION_DURATION, DecelerateInterpolator())
-                }
+            val flooredRating = floor(rating.toDouble()).toInt()
+            val targetScale = when {
+                index > flooredRating - 1 -> SCALE_DOWN_VALUE
+                else -> 1f
             }
+            if(childrenScales[item] == targetScale) return@forEachIndexed
+            childrenScales[item] = targetScale
+            item.scale(targetScale, ANIMATION_DURATION, DecelerateInterpolator())
         }
     }
 
     override fun updateChildren(numLevels: Int) {
         super.updateChildren(numLevels)
+        updateChildrenScale()
+    }
+
+    private fun updateChildrenScale() {
         children.forEachIndexed { index, child ->
-            if(index <= getRating().roundToInt()) return@forEachIndexed
+            if(index < getRating().roundToInt()) return@forEachIndexed
             child.scaleX = SCALE_DOWN_VALUE
             child.scaleY = SCALE_DOWN_VALUE
         }

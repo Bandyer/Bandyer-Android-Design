@@ -3,6 +3,7 @@ package com.bandyer.sdk_design.feedback
 import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -11,7 +12,6 @@ import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.view.ViewCompat
 import androidx.core.view.children
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.FloatExtensions.floor
@@ -28,7 +28,7 @@ import kotlin.math.roundToInt
  *
  * @constructor
  */
-internal abstract class BaseRatingBar @JvmOverloads constructor(
+internal open class BaseRatingBar @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,
@@ -52,7 +52,9 @@ internal abstract class BaseRatingBar @JvmOverloads constructor(
 
     init {
         val a = context.obtainStyledAttributes(attrs, R.styleable.BaseRatingBar, defStyleAttr, defStyleRes)
-        ViewCompat.saveAttributeDataForStyleable(this, context, R.styleable.BaseRatingBar, attrs, a, defStyleAttr, defStyleRes)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            saveAttributeDataForStyleable(context, R.styleable.BaseRatingBar, attrs, a, defStyleAttr, defStyleRes)
 
         val numLevels = a.getInt(R.styleable.BaseRatingBar_bandyer_numLevels, numLevels)
         val minRating = a.getFloat(R.styleable.BaseRatingBar_bandyer_minRating, minRating)
@@ -66,6 +68,8 @@ internal abstract class BaseRatingBar @JvmOverloads constructor(
 
         a.recycle()
         verifyParams(numLevels, minRating, rating, stepSize, drawablePadding, drawableTint, drawableBackground, drawableProgress, drawableSize)
+        updateChildrenBase(this.numLevels)
+        setProgressBase(this.rating)
     }
 
     private fun verifyParams(numLevels: Int, minRating: Float, rating: Float, stepSize: Float, drawablePadding: Float, drawableTint: Int?, drawableBackground: Drawable?, drawableProgress: Drawable?, drawableSize: Float) {
@@ -141,6 +145,10 @@ internal abstract class BaseRatingBar @JvmOverloads constructor(
     }
 
     protected open fun updateChildren(numLevels: Int) {
+        updateChildrenBase(numLevels)
+    }
+
+    private fun updateChildrenBase(numLevels: Int) {
         val diff = numLevels - childCount
         if(diff > 0)
             for(i in 0 until diff) addView(BaseRatingBarElement(context, drawableProgress!!, drawableBackground!!, drawableSize.toInt(), drawablePadding.toInt()))
@@ -149,6 +157,10 @@ internal abstract class BaseRatingBar @JvmOverloads constructor(
     }
 
     protected open fun setProgress(rating: Float) {
+        setProgressBase(rating)
+    }
+
+    private fun setProgressBase(rating: Float) {
         children.forEachIndexed { index, child ->
             val intFloor = floor(rating.toDouble()).toInt()
             (child as BaseRatingBarElement).setProgress(
