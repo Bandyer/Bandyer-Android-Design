@@ -61,5 +61,12 @@ interface RatingBar {
          * @param rating Float
          */
         fun onRatingChange(rating: Float)
+
+        /**
+         * Called after the user has interacted with the rating bar
+         *
+         * @param rating Float
+         */
+        fun onRatingConfirmed(rating: Float)
     }
 }

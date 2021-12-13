@@ -127,6 +127,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
 
         rating = closestValueToStepSize(value.round(2))
         setProgress(rating)
+        onRatingChangeListener?.onRatingChange(rating)
     }
 
     override fun getRating(): Float = rating
@@ -200,7 +201,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
                 if (stepSize == 1f) index + 1f
                 else computeChildProgress(index, child, stepSize, eventX)
 
-            if(isActionUp) onRatingChangeListener?.onRatingChange(rating)
+            if(isActionUp) onRatingChangeListener?.onRatingConfirmed(rating)
             setRating(rating)
         }
 
