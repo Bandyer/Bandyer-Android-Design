@@ -110,7 +110,6 @@ internal abstract class BaseRatingBar @JvmOverloads constructor(
 
         rating = closestValueToStepSize(value.round(2))
         setProgress(rating)
-        onRatingChangeListener?.onRatingChange(rating)
     }
 
     override fun getRating(): Float = rating
@@ -132,7 +131,7 @@ internal abstract class BaseRatingBar @JvmOverloads constructor(
             }
             MotionEvent.ACTION_MOVE -> handleTouchEvent(event.x, false)
             MotionEvent.ACTION_UP -> {
-                if (!isClickable || !event.isClickEvent(actionDownX, actionDownY)) return false
+                if(!isClickable && event.isClickEvent(actionDownX, actionDownY)) return false
                 handleTouchEvent(event.x, true)
             }
         }
@@ -164,14 +163,15 @@ internal abstract class BaseRatingBar @JvmOverloads constructor(
 
     private fun closestValueToStepSize(value: Float) = value - (value % stepSize).floor(1)
 
-    private fun handleTouchEvent(eventX: Float, isClickEvent: Boolean) =
+    private fun handleTouchEvent(eventX: Float, isActionUp: Boolean) =
         children.forEachIndexed { index, child ->
             if (!isTouchEventInChild(eventX, child)) return@forEachIndexed
 
             val rating =
-                if (isClickEvent && stepSize == 1f) index + 1f
+                if (stepSize == 1f) index + 1f
                 else computeChildProgress(index, child, stepSize, eventX)
 
+            if(isActionUp) onRatingChangeListener?.onRatingChange(rating)
             setRating(rating)
         }
 
