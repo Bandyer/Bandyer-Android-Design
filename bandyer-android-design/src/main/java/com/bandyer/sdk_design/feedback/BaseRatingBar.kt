@@ -17,6 +17,9 @@ import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.core.view.children
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.FloatExtensions.floor
@@ -76,9 +79,10 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         updateChildrenInternal(this.numLevels)
         setProgressInternal(this.rating)
 
-        // If not explicitly specified this view is important for accessibility.
         if (importantForAccessibility == IMPORTANT_FOR_ACCESSIBILITY_AUTO)
             importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_YES
+
+        setAccessibilityDelegate()
     }
 
     private fun verifyParams(numLevels: Int, minRating: Float, rating: Float, stepSize: Float, drawablePadding: Float, drawableTint: Int?, drawableBackground: Drawable?, drawableProgress: Drawable?, drawableSize: Float) {
@@ -219,61 +223,60 @@ internal open class BaseRatingBar @JvmOverloads constructor(
     override fun getAccessibilityClassName(): CharSequence =
         BaseRatingBar::class.java.name
 
-    override fun onInitializeAccessibilityEvent(event: AccessibilityEvent?) {
-        super.onInitializeAccessibilityEvent(event)
-        event?.itemCount = numLevels
-        event?.currentItemIndex = rating.roundToInt()
-    }
+    private fun setAccessibilityDelegate() {
+        ViewCompat.setAccessibilityDelegate(this, object : AccessibilityDelegateCompat() {
 
-    override fun onInitializeAccessibilityNodeInfo(info: AccessibilityNodeInfo?) {
-        super.onInitializeAccessibilityNodeInfo(info)
+            override fun onInitializeAccessibilityEvent(host: View, event: AccessibilityEvent) {
+                super.onInitializeAccessibilityEvent(host, event)
+                event.itemCount = numLevels
+                event.currentItemIndex = rating.roundToInt()
+            }
 
-        val rangeInfo = RangeInfo.obtain(RangeInfo.RANGE_TYPE_INT, 0f, numLevels.toFloat(), rating)
-        info?.rangeInfo = rangeInfo
+            override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfoCompat) {
+                super.onInitializeAccessibilityNodeInfo(host, info)
+                info.rangeInfo = AccessibilityNodeInfoCompat.RangeInfoCompat.obtain(RangeInfo.RANGE_TYPE_INT, 0f, numLevels.toFloat(), rating)
 
-        if (!isEnabled) return
+                if (!isEnabled) return
 
-        if (rating > minRating)
-            info?.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_BACKWARD)
-        if (rating < numLevels)
-            info?.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_FORWARD)
+                if (rating > minRating)
+                    info.addAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_BACKWARD)
+                if (rating < numLevels)
+                    info.addAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_FORWARD)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            info?.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SET_PROGRESS)
-        }
-    }
+                info.addAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SET_PROGRESS)
+            }
 
-    override fun performAccessibilityAction(action: Int, arguments: Bundle?): Boolean {
-        super.performAccessibilityAction(action, arguments)
+            override fun performAccessibilityAction(host: View?, action: Int, args: Bundle?): Boolean {
+                super.performAccessibilityAction(host, action, args)
 
-        if (!isEnabled) return false
-            when (action) {
-                android.R.id.accessibilityActionSetProgress -> {
-                    if (arguments == null || !arguments.containsKey(
-                            AccessibilityNodeInfo.ACTION_ARGUMENT_PROGRESS_VALUE
-                        )
-                    ) {
-                        return false
+                if (!isEnabled) return false
+
+                when (action) {
+                    android.R.id.accessibilityActionSetProgress -> {
+                        if (args == null || !args.containsKey(AccessibilityNodeInfoCompat.ACTION_ARGUMENT_PROGRESS_VALUE))
+                            return false
+
+                        val value = args.getFloat(AccessibilityNodeInfoCompat.ACTION_ARGUMENT_PROGRESS_VALUE)
+                        setRating(value)
+                        return true
                     }
-                    val value = arguments.getFloat(
-                        AccessibilityNodeInfo.ACTION_ARGUMENT_PROGRESS_VALUE
-                    )
-                    setRating(value)
-                    return true
-                }
-                AccessibilityNodeInfo.ACTION_SCROLL_FORWARD -> {
-                    setRating(rating + stepSize)
-                    return true
-                }
-                AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD -> {
-                    var result = rating - stepSize
-                    if(result < 0) result = 0f
-                    setRating(result)
-                    return true
+                    AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD -> {
+                        return if(rating < numLevels) {
+                            setRating(rating + stepSize)
+                            true
+                        } else false
+                    }
+                    AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD -> {
+                        return if(rating > minRating) {
+                            setRating(rating - stepSize)
+                            true
+                        } else false
 
+                    }
                 }
-        }
-        return false
+                return false
+            }
+        })
     }
 
     private companion object {
