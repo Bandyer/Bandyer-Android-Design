@@ -41,6 +41,8 @@
         <item name="icon">@drawable/ic_bandyer_close_bold</item>
         <item name="iconSize">@dimen/bandyer_dimen_space20</item>
         <item name="iconTint">?attr/colorOnSurface</item>
+        <item name="android:minHeight">@dimen/bandyer_dimen_space48</item>
+        <item name="android:minWidth">@dimen/bandyer_dimen_space48</item>
         <item name="android:contentDescription">@string/bandyer_feedback_close</item>
         <item name="android:paddingTop">@dimen/bandyer_dimen_space12</item>
         <item name="android:paddingStart">@dimen/bandyer_dimen_space12</item>
@@ -109,8 +111,8 @@
         <item name="android:scrollbarStyle">outsideInset</item>
         <item name="android:scrollbarThumbVertical">@drawable/bandyer_feedback_scrollbar_thumb</item>
         <item name="android:scrollbars">vertical</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space12</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space12</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space13</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space13</item>
         <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance.TextInputEditText.FeedbackLayout</item>
     </style>
 
@@ -174,7 +176,7 @@
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space2</item>
         <item name="android:paddingStart">@dimen/bandyer_dimen_space4</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space4</item>
-        <item name="android:textColor">@color/bandyer_color_on_surface_50</item>
+        <item name="android:textColor">@color/bandyer_color_on_surface_80</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_h3</item>
         <item name="android:text">@string/bandyer_feedback_see_you_soon</item>
     </style>
