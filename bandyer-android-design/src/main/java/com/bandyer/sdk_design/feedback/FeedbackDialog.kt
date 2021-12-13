@@ -15,7 +15,7 @@ import android.text.TextWatcher
 /**
  * FeedbackDialog
  */
-internal class FeedbackDialog : DialogFragment() {
+class FeedbackDialog : DialogFragment() {
 
     private var _binding: BandyerFeedbackDialogLayoutBinding? = null
     private val binding: BandyerFeedbackDialogLayoutBinding
@@ -51,8 +51,9 @@ internal class FeedbackDialog : DialogFragment() {
                             text = ratingText
                             contentDescription = ratingText
                         }
-                        onRateCallback?.invoke(rating)
                     }
+
+                    override fun onRatingConfirmed(rating: Float) { onRateCallback?.invoke(rating) }
                 }
                 bandyerEdittext.setOnFocusChangeListener { view, hasFocus ->
                     if(hasFocus) bandyerTitle.visibility = View.GONE
