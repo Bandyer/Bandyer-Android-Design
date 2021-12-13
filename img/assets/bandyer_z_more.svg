@@ -1,0 +1,21 @@
+<svg id="more" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1445" data-name="Rettangolo 1445" class="cls-1" width="24" height="24" transform="translate(24) rotate(90)"/>
+  <g id="Raggruppa_2572" data-name="Raggruppa 2572" transform="translate(16.715 70.016) rotate(90)">
+    <g id="Raggruppa_357" data-name="Raggruppa 357" transform="translate(-67.016 3.215)">
+      <ellipse id="Ellisse_2" data-name="Ellisse 2" cx="1.5" cy="1.5" rx="1.5" ry="1.5" transform="translate(0)"/>
+    </g>
+    <g id="Raggruppa_2531" data-name="Raggruppa 2531" transform="translate(-59.516 3.215)">
+      <ellipse id="Ellisse_2-2" data-name="Ellisse 2" cx="1.5" cy="1.5" rx="1.5" ry="1.5" transform="translate(0)"/>
+    </g>
+    <g id="Raggruppa_2532" data-name="Raggruppa 2532" transform="translate(-52.016 3.215)">
+      <ellipse id="Ellisse_2-3" data-name="Ellisse 2" cx="1.5" cy="1.5" rx="1.5" ry="1.5" transform="translate(0)"/>
+    </g>
+  </g>
+</svg>

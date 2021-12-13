@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="19.5" height="19.5" viewBox="0 0 19.5 19.5">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+
+      .cls-2 {
+        stroke-dasharray: 0.01 3;
+      }
+    </style>
+  </defs>
+  <g id="question" transform="translate(0.75 0.75)">
+    <path id="Tracciato_1054" data-name="Tracciato 1054" class="cls-1" d="M12,21a9,9,0,1,0-9-9A9,9,0,0,0,12,21Z" transform="translate(-3 -3)"/>
+    <path id="Tracciato_1055" data-name="Tracciato 1055" class="cls-2" d="M12,17.139V14" transform="translate(-3 -3.639)"/>
+    <path id="Tracciato_1056" data-name="Tracciato 1056" class="cls-1" d="M9.5,9.4A2.329,2.329,0,0,1,11.75,7,2.329,2.329,0,0,1,14,9.4c0,2.1-2.25,2.1-2.25,4" transform="translate(-2.75 -2.285)"/>
+  </g>
+</svg>

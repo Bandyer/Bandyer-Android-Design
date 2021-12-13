@@ -16,7 +16,10 @@
 
 package com.bandyer.sdk_design.call.bottom_sheet
 
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.bottom_sheet.BandyerClickableBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
@@ -47,5 +50,12 @@ open class RingingBottomSheet<T>(
         bottomSheetBehaviour!!.skipCollapsed = true
         bottomSheetBehaviour!!.disableDragging = true
         expand()
+    }
+
+    override fun getClickableViews(viewHolder: RecyclerView.ViewHolder): MutableList<View> {
+        val listOfViews = mutableListOf<View>()
+        viewHolder.itemView.findViewById<View?>(R.id.bandyer_button_view)?.let { listOfViews.add(it) }
+        viewHolder.itemView.findViewById<View?>(R.id.bandyer_label_view)?.let { listOfViews.add(it) }
+        return listOfViews
     }
 }

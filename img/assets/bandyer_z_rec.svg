@@ -1,0 +1,26 @@
+<svg id="rec" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #000;
+        stroke-width: 1.5px;
+      }
+
+      .cls-3 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <g id="Raggruppa_2590" data-name="Raggruppa 2590" transform="translate(-8 -9.411)">
+    <circle id="Ellisse_92" data-name="Ellisse 92" cx="5" cy="5" r="5" transform="translate(15 16.411)"/>
+    <g id="Ellisse_93" data-name="Ellisse 93" class="cls-1" transform="translate(12 13.411)">
+      <circle class="cls-3" cx="8" cy="8" r="8"/>
+      <circle class="cls-2" cx="8" cy="8" r="7.25"/>
+    </g>
+  </g>
+  <rect id="Rettangolo_1482" data-name="Rettangolo 1482" class="cls-2" width="24" height="24"/>
+</svg>

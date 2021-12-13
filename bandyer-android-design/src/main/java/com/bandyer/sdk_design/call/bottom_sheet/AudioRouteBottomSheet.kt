@@ -17,24 +17,23 @@
 package com.bandyer.sdk_design.call.bottom_sheet
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.sdk_design.bottom_sheet.BandyerBottomSheet
-import com.bandyer.sdk_design.bottom_sheet.BandyerSelectableBottomSheet
+import com.bandyer.sdk_design.bottom_sheet.BandyerClickableBottomSheet
 import com.bandyer.sdk_design.bottom_sheet.items.ActionItem
-import com.bandyer.sdk_design.bottom_sheet.items.AdapterActionItem
 import com.bandyer.sdk_design.bottom_sheet.view.AudioRouteState
 import com.bandyer.sdk_design.bottom_sheet.view.BottomSheetLayoutType
 import com.bandyer.sdk_design.call.bottom_sheet.items.AudioRoute
 import com.bandyer.sdk_design.call.buttons.BandyerLineButton.State
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.mikepenz.fastadapter.select.SelectExtension
 
 /**
  * AudioRoute BottomSheet to display the available audioRoutes of the device
  * @param context Context
  * @param audioRouteItems items to be shown
- * @param initialSelection initial selected position
  * @param bottomSheetLayoutType bottom sheet layout type
  * @param bottomSheetStyle bottom sheet style
  * @param onAudioRoutesRequest used to request available audioRoutes
@@ -45,13 +44,11 @@ import com.mikepenz.fastadapter.select.SelectExtension
 class AudioRouteBottomSheet<T : ActionItem>(
     val context: AppCompatActivity,
     audioRouteItems: List<AudioRoute>?,
-    initialSelection: Int = -1,
     bottomSheetLayoutType: BottomSheetLayoutType,
     bottomSheetStyle: Int,
     var onAudioRoutesRequest: OnAudioRouteBottomSheetListener?
-) : BandyerSelectableBottomSheet<T>(
+) : BandyerClickableBottomSheet<T>(
     context,
-    initialSelection,
     audioRouteItems as List<T>? ?: listOf<T>(),
     0,
     bottomSheetLayoutType,
@@ -68,10 +65,15 @@ class AudioRouteBottomSheet<T : ActionItem>(
         recyclerView?.itemAnimator = null
     }
 
+    override fun getClickableViews(viewHolder: RecyclerView.ViewHolder): MutableList<View> {
+        val listOfViews = mutableListOf<View>()
+        listOfViews.add(viewHolder.itemView)
+        return listOfViews
+    }
+
     override fun show() {
         super.show()
         onAudioRoutesRequest?.onAudioRoutesRequested()?.let { setItems(it) }
-        selectItem(mCurrentAudioRoute)
         bottomSheetBehaviour!!.skipCollapsed = true
         bottomSheetBehaviour!!.isHideable = true
         bottomSheetBehaviour!!.skipAnchor = true
@@ -116,33 +118,10 @@ class AudioRouteBottomSheet<T : ActionItem>(
     fun selectAudioRoute(audioRoute: AudioRoute?) {
         if (audioRoute == null || mCurrentAudioRoute == audioRoute) return
         mCurrentAudioRoute = audioRoute
-        selectItem(audioRoute)
-    }
-
-    /**
-     * Select the audio router item provided
-     * @param actionItem ActionItem to select
-     */
-    override fun selectItem(actionItem: ActionItem?) {
-        if (actionItem == null || (actionItem as? AudioRoute) == null || actionItem == currentItemSelected?.item)
-            return
-
-        currentItemSelected = AdapterActionItem(actionItem)
-
-        fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.deselect()
-
-        val position = fastItemAdapter.adapterItems.indexOfFirst {
-            (it.item as AudioRoute).identifier == actionItem.identifier
-        }.takeIf { it != -1 } ?: fastItemAdapter.adapterItems.indexOfFirst {
-            return
-        }
-
-        kotlin.runCatching { fastAdapter.getExtension<SelectExtension<AdapterActionItem>>(SelectExtension::class.java)?.select(position) }
     }
 
     override fun setItems(items: List<ActionItem>) {
         super.setItems(items)
-        if (items.contains(mCurrentAudioRoute)) mCurrentAudioRoute?.let { selectItem(it) }
         if (state == BottomSheetBehavior.STATE_EXPANDED || state == BottomSheetBehavior.STATE_COLLAPSED) moveBottomSheet()
     }
 

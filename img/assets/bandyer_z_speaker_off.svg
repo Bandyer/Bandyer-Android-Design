@@ -1,0 +1,17 @@
+<svg id="speaker_off" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <path id="mc-volume-off" class="cls-1" d="M18.556,10.556,23,15m0-4.444L18.556,15M14.111,5V20.556L7.444,16.111H3V9.444H7.444Z" transform="translate(-1 -0.778)"/>
+  <rect id="Rettangolo_1408" data-name="Rettangolo 1408" class="cls-2" width="24" height="24"/>
+</svg>

@@ -1,0 +1,24 @@
+<svg id="retry" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+
+      .cls-2 {
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <g id="go-forward">
+    <path id="Tracciato_1233" data-name="Tracciato 1233" class="cls-1" d="M15,9h6V3" transform="translate(0 0)"/>
+    <path id="Tracciato_1234" data-name="Tracciato 1234" class="cls-2" d="M21,14a9.258,9.258,0,0,1-9,7A9,9,0,0,1,12,3a9.692,9.692,0,0,1,9,6" transform="translate(0 0)"/>
+  </g>
+  <rect id="Rettangolo_1432" data-name="Rettangolo 1432" class="cls-3" width="24" height="24"/>
+</svg>

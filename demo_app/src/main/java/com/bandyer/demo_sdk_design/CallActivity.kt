@@ -17,16 +17,26 @@
 package com.bandyer.demo_sdk_design
 
 import android.annotation.SuppressLint
+import android.app.AppOpsManager
 import android.app.PictureInPictureParams
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Process
+import android.provider.Settings
 import android.util.Log
 import android.util.Rational
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.bandyer.android_audiosession.model.AudioOutputDevice
 import com.bandyer.android_audiosession.model.AudioOutputDevice.EARPIECE
@@ -50,8 +60,12 @@ import com.bandyer.sdk_design.call.widgets.BandyerCallActionWidget
 import com.bandyer.sdk_design.call.widgets.BandyerCallInfoWidget
 import com.bandyer.sdk_design.call.widgets.BandyerCallUserInfoWidget
 import com.bandyer.sdk_design.extensions.getScreenSize
+import com.bandyer.sdk_design.screensharing.AppViewOverlay
+import com.bandyer.sdk_design.screensharing.StatusBarOverlayView
 import com.bandyer.sdk_design.screensharing.dialog.BandyerScreenSharePickerDialog
+import com.bandyer.sdk_design.views.ViewOverlayAttacher
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import java.util.*
 
 class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, BandyerCallActionWidget.OnClickListener {
@@ -59,6 +73,9 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
     private val TAG = "CallActivity"
 
     private var callActionWidget: BandyerCallActionWidget<ActionItem, BandyerBottomSheet>? = null
+
+    private var appViewOverlay: AppViewOverlay? = null
+    private val genericActivityResultLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,9 +122,9 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
                 callActionWidget?.selectAudioRoute(getAudioRoute(connectedAudioOutputDevice))
                 Log.e(TAG, "${Thread.currentThread()} onOutputDeviceConnected: $connectedAudioOutputDevice ${connectedAudioOutputDevice.name} oldDevice: $oldAudioOutputDevice ${oldAudioOutputDevice?.name}")
                 if (!userSelected) return
-//                window.decorView.postDelayed({
-//                    callActionWidget!!.collapse()
-//                }, resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
+                window.decorView.postDelayed({
+                    callActionWidget!!.collapse()
+                }, resources.getInteger(android.R.integer.config_shortAnimTime).toLong())
             }
 
             override fun onOutputDeviceAttached(currentAudioOutputDevice: AudioOutputDevice?, attachedAudioOutputDevice: AudioOutputDevice, availableOutputs: List<AudioOutputDevice>) {
@@ -147,6 +164,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
         initializeBottomSheetLayout(savedInstanceState)
         initializeCallInfoWidget()
         initializeUserInfoWidget()
+        Picasso.get().load(R.drawable.sample_image).into(findViewById<ImageView>(R.id.image))
     }
 
     private fun initializeBottomSheetLayout(savedInstanceState: Bundle?) {
@@ -256,9 +274,21 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
     override fun onCallActionClicked(item: CallAction, position: Int): Boolean {
         return when (item) {
             is CallAction.SCREEN_SHARE -> {
-                BandyerScreenSharePickerDialog().show(this@CallActivity) {
-                    Snackbar.make(callActionWidget!!.coordinatorLayout, it.name, Snackbar.LENGTH_SHORT).show()
+                if (item.toggled) {
+                    appViewOverlay?.hide()
+                } else {
+                    BandyerScreenSharePickerDialog().show(this@CallActivity) {
+                        Snackbar.make(callActionWidget!!.coordinatorLayout, it.name, Snackbar.LENGTH_SHORT).show()
+
+                        val desiredType: ViewOverlayAttacher.OverlayType = when (it) {
+                            BandyerScreenSharePickerDialog.SharingOption.WHOLE_DEVICE -> ViewOverlayAttacher.OverlayType.GLOBAL.also { getOverlayPermission() }
+                            else -> ViewOverlayAttacher.OverlayType.CURRENT_APPLICATION
+                        }
+                        appViewOverlay = AppViewOverlay(StatusBarOverlayView(this@CallActivity), desiredType)
+                        appViewOverlay!!.show(this@CallActivity)
+                    }
                 }
+                item.toggle()
                 true
             }
             is CAMERA -> {
@@ -288,15 +318,34 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
         enterPip()
     }
 
-    private fun enterPip() =
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            enterPictureInPictureMode(PictureInPictureParams.Builder().setAspectRatio(Rational(getScreenSize().x, getScreenSize().y)).build())
-        else false
+    @SuppressLint("NewApi")
+    private fun enterPip(): Boolean {
+        val canGoInPiP: Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                && packageManager.hasSystemFeature(PackageManager.FEATURE_PICTURE_IN_PICTURE)
+                && hasPermission(AppOpsManager.OPSTR_PICTURE_IN_PICTURE)
+        if (!canGoInPiP) return false
+        return enterPictureInPictureMode(PictureInPictureParams.Builder().setAspectRatio(Rational(getScreenSize().x, getScreenSize().y)).build())
+    }
 
     override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration?) {
         super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
         if (isInPictureInPictureMode) callActionWidget!!.hide()
         else callActionWidget!!.show()
+    }
+
+    private fun getOverlayPermission() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || Settings.canDrawOverlays(this)) return
+        val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:$packageName"))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT or Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+        genericActivityResultLauncher.launch(intent)
+    }
+
+    @Suppress("DEPRECATION")
+    private fun hasPermission(permission: String) = with(getSystemService(APP_OPS_SERVICE) as AppOpsManager) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            unsafeCheckOpNoThrow(permission, Process.myUid(), packageName) == AppOpsManager.MODE_ALLOWED
+        else
+            checkOpNoThrow(permission, Process.myUid(), packageName) == AppOpsManager.MODE_ALLOWED
     }
 }
 

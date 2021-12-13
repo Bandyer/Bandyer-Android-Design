@@ -1,0 +1,20 @@
+<svg id="mic_off" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #1b1c1e;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g id="mic-off" transform="translate(6 2)">
+    <path id="Tracciato_1092" data-name="Tracciato 1092" class="cls-1" d="M8,22.013h8m-4-4v4M6,3,18,21.012M6,10v2a6,6,0,0,0,9.318,5M18,10v2a6,6,0,0,1-.341,2" transform="translate(-6 -2.013)"/>
+    <path id="Tracciato_1093" data-name="Tracciato 1093" class="cls-1" d="M9,7.5V12a3,3,0,0,0,4.659,2.5M9.764,3A3,3,0,0,1,15,5v6" transform="translate(-6.007 -2)"/>
+  </g>
+  <rect id="Rettangolo_1420" data-name="Rettangolo 1420" class="cls-2" width="24" height="24"/>
+</svg>
