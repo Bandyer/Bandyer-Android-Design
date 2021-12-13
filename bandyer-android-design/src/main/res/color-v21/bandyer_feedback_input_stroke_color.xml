@@ -3,5 +3,5 @@
     <!-- It's needed to define the TextInputLayout stroke color in this way,
         otherwise only the focused state would be overridden -->
     <item android:state_focused="true" android:color="@android:color/transparent"/>
-    <item android:alpha="0.12" android:color="?attr/colorOnSurface"/>
+    <item android:color="@color/bandyer_api21_color_on_surface_12"/>
 </selector>
