@@ -4,9 +4,13 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.os.Bundle
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import android.view.accessibility.AccessibilityEvent
+import android.view.accessibility.AccessibilityNodeInfo
+import android.view.accessibility.AccessibilityNodeInfo.RangeInfo
 import android.widget.LinearLayout
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
@@ -68,8 +72,12 @@ internal open class BaseRatingBar @JvmOverloads constructor(
 
         a.recycle()
         verifyParams(numLevels, minRating, rating, stepSize, drawablePadding, drawableTint, drawableBackground, drawableProgress, drawableSize)
-        updateChildrenBase(this.numLevels)
-        setProgressBase(this.rating)
+        updateChildrenInternal(this.numLevels)
+        setProgressInternal(this.rating)
+
+        // If not explicitly specified this view is important for accessibility.
+        if (importantForAccessibility == IMPORTANT_FOR_ACCESSIBILITY_AUTO)
+            importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_YES
     }
 
     private fun verifyParams(numLevels: Int, minRating: Float, rating: Float, stepSize: Float, drawablePadding: Float, drawableTint: Int?, drawableBackground: Drawable?, drawableProgress: Drawable?, drawableSize: Float) {
@@ -128,6 +136,8 @@ internal open class BaseRatingBar @JvmOverloads constructor(
     override fun onInterceptTouchEvent(ev: MotionEvent?) = true
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        if(!isEnabled) return false
+
         when (event.action) {
             MotionEvent.ACTION_DOWN -> {
                 actionDownX = event.x
@@ -145,10 +155,10 @@ internal open class BaseRatingBar @JvmOverloads constructor(
     }
 
     protected open fun updateChildren(numLevels: Int) {
-        updateChildrenBase(numLevels)
+        updateChildrenInternal(numLevels)
     }
 
-    private fun updateChildrenBase(numLevels: Int) {
+    private fun updateChildrenInternal(numLevels: Int) {
         val diff = numLevels - childCount
         if(diff > 0)
             for(i in 0 until diff) addView(BaseRatingBarElement(context, drawableProgress!!, drawableBackground!!, drawableSize.toInt(), drawablePadding.toInt()))
@@ -157,10 +167,10 @@ internal open class BaseRatingBar @JvmOverloads constructor(
     }
 
     protected open fun setProgress(rating: Float) {
-        setProgressBase(rating)
+        setProgressInternal(rating)
     }
 
-    private fun setProgressBase(rating: Float) {
+    private fun setProgressInternal(rating: Float) {
         children.forEachIndexed { index, child ->
             val intFloor = floor(rating.toDouble()).toInt()
             (child as BaseRatingBarElement).setProgress(
@@ -191,7 +201,7 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         eventX > child.left && eventX < child.right
 
     private fun computeChildProgress(childIndex: Int, child: View, stepSize: Float, eventX: Float): Float {
-        val diffX = if (context.isRtl()) child.right - eventX else eventX - child.left
+        val diffX = if (isRtl()) child.right - eventX else eventX - child.left
         val ratio = (diffX / child.width).round(2)
         val steps = (ratio / stepSize).roundToInt() * stepSize
         return (childIndex + 1 - (1 - steps)).round(2)
@@ -202,6 +212,66 @@ internal open class BaseRatingBar @JvmOverloads constructor(
             setTintMode(PorterDuff.Mode.SRC_IN)
             setTint(drawableTint)
         }
+
+    override fun getAccessibilityClassName(): CharSequence =
+        BaseRatingBar::class.java.name
+
+    override fun onInitializeAccessibilityEvent(event: AccessibilityEvent?) {
+        super.onInitializeAccessibilityEvent(event)
+        event?.itemCount = numLevels
+        event?.currentItemIndex = rating.roundToInt()
+    }
+
+    override fun onInitializeAccessibilityNodeInfo(info: AccessibilityNodeInfo?) {
+        super.onInitializeAccessibilityNodeInfo(info)
+
+        val rangeInfo = RangeInfo.obtain(RangeInfo.RANGE_TYPE_INT, minRating, numLevels.toFloat(), rating)
+        info?.rangeInfo = rangeInfo
+
+        if (!isEnabled) return
+
+        if (rating > minRating)
+            info?.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_BACKWARD)
+        if (rating < numLevels)
+            info?.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_FORWARD)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            info?.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SET_PROGRESS)
+        }
+    }
+
+    override fun performAccessibilityAction(action: Int, arguments: Bundle?): Boolean {
+        super.performAccessibilityAction(action, arguments)
+
+        if (!isEnabled) return false
+            when (action) {
+                android.R.id.accessibilityActionSetProgress -> {
+                    if (arguments == null || !arguments.containsKey(
+                            AccessibilityNodeInfo.ACTION_ARGUMENT_PROGRESS_VALUE
+                        )
+                    ) {
+                        return false
+                    }
+                    val value = arguments.getFloat(
+                        AccessibilityNodeInfo.ACTION_ARGUMENT_PROGRESS_VALUE
+                    )
+                    setRating(value)
+                    return true
+                }
+                AccessibilityNodeInfo.ACTION_SCROLL_FORWARD -> {
+                    setRating(rating + stepSize)
+                    return true
+                }
+                AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD -> {
+                    var result = rating - stepSize
+                    if(result < 0) result = 0f
+                    setRating(result)
+                    return true
+
+                }
+        }
+        return false
+    }
 
     private companion object {
         const val LEVELS = 5

@@ -183,7 +183,7 @@
     <string name="bandyer_feedback_good">Good</string>
     <string name="bandyer_feedback_excellent">Excellent</string>
     <string name="bandyer_feedback_leave_a_comment">Leave a comment…</string>
-    <string name="bandyer_feedback_rating_bar_descr">Rating bar</string>
+    <string name="bandyer_feedback_rating_bar_descr">Rating</string>
     <string name="bandyer_feedback_see_you_soon">See you soon</string>
     <string name="bandyer_feedback_thank_you">Thank you for feedback to improve our service!</string>
 
