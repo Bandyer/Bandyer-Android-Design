@@ -47,19 +47,6 @@
             android:paddingTop="@dimen/bandyer_dimen_space32"
             android:paddingBottom="@dimen/bandyer_dimen_space32">
 
-            <com.bandyer.sdk_design.feedback.ScaleRatingBar
-                android:id="@+id/rating"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:focusable="true"
-                android:clickable="true"
-                app:bandyer_numLevels="5"
-                app:bandyer_minRating="1"
-                app:drawableTint="#ef4975"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="@id/btn_switch_night_mode"
-                app:layout_constraintEnd_toEndOf="@id/btn_switch_night_mode" />
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_switch_night_mode"
                 android:layout_width="match_parent"
@@ -71,7 +58,7 @@
                 android:checked="false"
                 android:text="@string/night_mode"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rating" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_chat"
