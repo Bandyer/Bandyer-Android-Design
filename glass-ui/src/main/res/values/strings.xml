@@ -16,6 +16,7 @@
     <string name="bandyer_glass_cancel">cancel</string>
     <string name="bandyer_glass_change">change</string>
     <string name="bandyer_glass_confirm">confirm</string>
+    <string name="bandyer_glass_end">end</string>
     <string name="bandyer_glass_accept">answer</string>
     <string name="bandyer_glass_decline">decline</string>
     <string name="bandyer_glass_hangup">hang up</string>

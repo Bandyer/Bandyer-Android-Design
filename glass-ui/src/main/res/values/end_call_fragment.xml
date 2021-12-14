@@ -51,10 +51,10 @@
 
     <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.EndCall" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
         <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/bandyer_glass_confirm</item>
+        <item name="android:contentDescription">@string/bandyer_glass_end</item>
     </style>
 
     <style name="BandyerSDKDesign.TextView.GlassLabel.TapEndCall" parent="BandyerSDKDesign.TextView.GlassLabel">
-        <item name="android:text">@string/bandyer_glass_confirm</item>
+        <item name="android:text">@string/bandyer_glass_end</item>
     </style>
 </resources>

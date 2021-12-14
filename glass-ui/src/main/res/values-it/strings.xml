@@ -12,6 +12,7 @@
     <string name="bandyer_glass_cancel">annulla</string>
     <string name="bandyer_glass_change">modifica</string>
     <string name="bandyer_glass_confirm">conferma</string>
+    <string name="bandyer_glass_end">termina</string>
     <string name="bandyer_glass_accept">accetta</string>
     <string name="bandyer_glass_decline">rifiuta</string>
     <string name="bandyer_glass_hangup">chiudi</string>
