@@ -19,9 +19,7 @@ import com.bandyer.sdk_design.databinding.BandyerRatingBarElementBinding
  */
 internal class BaseRatingBarElement : FrameLayout {
 
-    private var _binding: BandyerRatingBarElementBinding? = null
-    private val binding: BandyerRatingBarElementBinding
-        get() = _binding!!
+    private var binding = BandyerRatingBarElementBinding.inflate(LayoutInflater.from(context), this, true)
 
     constructor(context: Context) : super(context)
 
@@ -30,8 +28,6 @@ internal class BaseRatingBarElement : FrameLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     constructor(context: Context, progressDrawable: Drawable, backgroundDrawable: Drawable, iconSize: Int, @Px padding: Int) : super(context) {
-        _binding = BandyerRatingBarElementBinding.inflate(LayoutInflater.from(context), this, true)
-
         layoutParams = LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1f)
 
         val size = if (iconSize == 0) LayoutParams.WRAP_CONTENT else iconSize
