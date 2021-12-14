@@ -100,7 +100,6 @@
         <item name="android:gravity">center</item>
         <item name="android:inputType">textAutoCorrect|textCapSentences|textAutoComplete|textMultiLine</item>
         <item name="hintEnabled">false</item>
-        <item name="android:focusableInTouchMode">true</item>
     </style>
 
     <style name="BandyerSDKDesign.FragmentDialog.FeedbackLayout.TextInputLayout.MaterialThemeOverlay" parent="">

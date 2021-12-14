@@ -55,15 +55,17 @@ class FeedbackDialog : DialogFragment() {
 
                     override fun onRatingConfirmed(rating: Float) { onRateCallback?.invoke(rating) }
                 }
-                bandyerEdittext.setOnFocusChangeListener { view, hasFocus ->
-                    bandyerTitle.visibility = if(hasFocus) View.GONE else View.VISIBLE
-                    (view as TextInputEditText).setLines(if(hasFocus) 4 else 1)
+                bandyerEdittext.apply {
+                    setOnFocusChangeListener { view, hasFocus ->
+                        bandyerTitle.visibility = if(hasFocus) View.GONE else View.VISIBLE
+                        (view as TextInputEditText).setLines(if(hasFocus) 4 else 1)
+                    }
+                    addTextChangedListener(object : TextWatcher {
+                        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) = Unit
+                        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
+                        override fun afterTextChanged(s: Editable) { onCommentCallback?.invoke(s.toString()) }
+                    })
                 }
-                bandyerEdittext.addTextChangedListener(object : TextWatcher {
-                    override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) = Unit
-                    override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
-                    override fun afterTextChanged(s: Editable) { onCommentCallback?.invoke(s.toString()) }
-                })
                 bandyerClose.setOnClickListener { dismiss() }
                 bandyerVote.setOnClickListener {
                     root.visibility = View.GONE
@@ -75,6 +77,13 @@ class FeedbackDialog : DialogFragment() {
             bandyerFragmentFeedbackSentLayout.bandyerClose.setOnClickListener { dismiss() }
         }
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.bandyerFragmentFeedbackLayout.bandyerTitle.apply {
+            parent.requestChildFocus(this, this)
+        }
     }
 
     /**
