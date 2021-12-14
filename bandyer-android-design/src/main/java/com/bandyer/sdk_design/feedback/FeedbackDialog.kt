@@ -56,8 +56,8 @@ class FeedbackDialog : DialogFragment() {
                     override fun onRatingConfirmed(rating: Float) { onRateCallback?.invoke(rating) }
                 }
                 bandyerEdittext.setOnFocusChangeListener { view, hasFocus ->
-                    if(hasFocus) bandyerTitle.visibility = View.GONE
-                    (view as TextInputEditText).setLines(4)
+                    bandyerTitle.visibility = if(hasFocus) View.GONE else View.VISIBLE
+                    (view as TextInputEditText).setLines(if(hasFocus) 4 else 1)
                 }
                 bandyerEdittext.addTextChangedListener(object : TextWatcher {
                     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) = Unit
