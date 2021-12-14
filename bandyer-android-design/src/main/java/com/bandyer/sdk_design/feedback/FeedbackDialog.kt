@@ -73,17 +73,11 @@ class FeedbackDialog : DialogFragment() {
                     onFeedbackCallback?.invoke(bandyerRating.getRating(), bandyerEdittext.text?.toString() ?: "")
                 }
                 bandyerRating.setRating(5f)
+                bandyerTitle.requestFocus()
             }
             bandyerFragmentFeedbackSentLayout.bandyerClose.setOnClickListener { dismiss() }
         }
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.bandyerFragmentFeedbackLayout.bandyerTitle.apply {
-            parent.requestChildFocus(this, this)
-        }
     }
 
     /**

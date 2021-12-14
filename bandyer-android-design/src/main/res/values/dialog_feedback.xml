@@ -57,6 +57,7 @@
         <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space16</item>
         <item name="android:gravity">center</item>
         <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textStyle">normal</item>
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space2</item>
