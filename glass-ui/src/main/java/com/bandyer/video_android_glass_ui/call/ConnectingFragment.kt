@@ -24,7 +24,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.*
 
-internal abstract class ConnectingFragment: BaseFragment() {
+internal abstract class ConnectingFragment : BaseFragment() {
 
     private var _binding: BandyerGlassFragmentFullScreenLogoDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
@@ -78,17 +78,21 @@ internal abstract class ConnectingFragment: BaseFragment() {
                         var nOfParticipants = 0
                         call.state
                             .combine(call.participants) { state, participants ->
-                                if(state is Call.State.Connected) onConnected()
-                                
-                                val items = listOf(participants.me).plus(participants.others).map { FullScreenDialogItem(it.username) }
+                                if (state is Call.State.Connected) onConnected()
+
+                                val isGroupCall = nOfParticipants > 2
+                                val items = ((if (isGroupCall) listOf(participants.me) else listOf()).plus(participants.others)).map { FullScreenDialogItem(it.username) }
                                 FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
 
-                                if(nOfParticipants == itemAdapter!!.adapterItemCount) return@combine
+                                if (nOfParticipants == itemAdapter!!.adapterItemCount) return@combine
                                 nOfParticipants = itemAdapter!!.adapterItemCount
                                 if (nOfParticipants < 2) bandyerBottomNavigation.hideSwipeHorizontalItem()
-                                else bandyerCounter.text = resources.getString(R.string.bandyer_glass_n_of_participants_pattern, participants.others.size + 1)
+                                else bandyerCounter.text = resources.getString(
+                                    R.string.bandyer_glass_n_of_participants_pattern,
+                                    participants.others.size + 1
+                                )
 
-                                setSubtitle(nOfParticipants > 1)
+                                setSubtitle(nOfParticipants > 2)
                             }
                             .launchIn(this@repeatOnStarted)
 
