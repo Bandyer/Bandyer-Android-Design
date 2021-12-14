@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.AttributeSet
+import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
@@ -267,6 +268,25 @@ internal open class BaseRatingBar @JvmOverloads constructor(
             }
         }
         return false
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (isEnabled) {
+            when (keyCode) {
+                KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_MINUS -> {
+                    val stepSize = if (isRtl()) stepSize else -stepSize
+                    setRating(rating + stepSize)
+                    return true
+                }
+                KeyEvent.KEYCODE_DPAD_RIGHT, KeyEvent.KEYCODE_PLUS, KeyEvent.KEYCODE_EQUALS -> {
+                    val stepSize = if (isRtl()) -stepSize else stepSize
+                    setRating(rating + stepSize)
+                    return true
+                }
+            }
+        }
+
+        return super.onKeyDown(keyCode, event)
     }
 
     private companion object {
