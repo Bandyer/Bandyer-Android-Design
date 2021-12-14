@@ -32,4 +32,5 @@
 
     <!-- API 21 colors -->
     <color name="bandyer_api21_color_on_surface_12">#3F3F3F</color>
+    <color name="bandyer_api21_color_on_surface_30">#656565</color>
 </resources>
