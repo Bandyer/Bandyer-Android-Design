@@ -1,5 +1,6 @@
 package com.bandyer.sdk_design.feedback
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +18,7 @@ import android.text.TextWatcher
  */
 class FeedbackDialog : DialogFragment() {
 
-    private var _binding: BandyerFeedbackDialogLayoutBinding? = null
-    private val binding: BandyerFeedbackDialogLayoutBinding
-        get() = _binding!!
+    private lateinit var binding: BandyerFeedbackDialogLayoutBinding
 
     private var onRateCallback: ((Float) -> Unit)? = null
     private var onCommentCallback: ((String) -> Unit)? = null
@@ -35,16 +34,16 @@ class FeedbackDialog : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = BandyerFeedbackDialogLayoutBinding.inflate(inflater, container, false).apply {
+        binding = BandyerFeedbackDialogLayoutBinding.inflate(inflater, container, false).apply {
             with(bandyerFragmentFeedbackLayout) {
                 bandyerRating.onRatingChangeListener = object : RatingBar.OnRatingChangeListener {
                     override fun onRatingChange(rating: Float) {
                          val ratingText = resources.getString(
                             when {
                                 rating <= 1f -> R.string.bandyer_feedback_bad
-                                rating > 1f && rating <= 2f -> R.string.bandyer_feedback_poor
-                                rating > 2f && rating <= 3f -> R.string.bandyer_feedback_neutral
-                                rating > 3f && rating <= 4f -> R.string.bandyer_feedback_good
+                                rating <= 2f -> R.string.bandyer_feedback_poor
+                                rating <= 3f -> R.string.bandyer_feedback_neutral
+                                rating <= 4f -> R.string.bandyer_feedback_good
                                 else -> R.string.bandyer_feedback_excellent
                             })
                         with(bandyerSubtitle) {
@@ -103,6 +102,13 @@ class FeedbackDialog : DialogFragment() {
      * @return FeedbackDialog
      */
     fun onFeedback(function: (Float, String) -> Unit): FeedbackDialog { onFeedbackCallback = function; return this }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+        onRateCallback = null
+        onCommentCallback = null
+        onFeedbackCallback = null
+    }
 
     companion object {
         const val TAG = "FeedbackDialog"
