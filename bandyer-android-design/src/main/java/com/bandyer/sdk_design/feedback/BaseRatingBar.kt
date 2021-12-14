@@ -11,15 +11,11 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.accessibility.AccessibilityEvent
 import android.view.accessibility.AccessibilityNodeInfo
-import android.view.accessibility.AccessibilityNodeInfo.RangeInfo
 import android.widget.LinearLayout
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
-import androidx.core.view.AccessibilityDelegateCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.core.view.children
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.extensions.FloatExtensions.floor
@@ -81,8 +77,6 @@ internal open class BaseRatingBar @JvmOverloads constructor(
 
         if (importantForAccessibility == IMPORTANT_FOR_ACCESSIBILITY_AUTO)
             importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_YES
-
-        setAccessibilityDelegate()
     }
 
     private fun verifyParams(numLevels: Int, minRating: Float, rating: Float, stepSize: Float, drawablePadding: Float, drawableTint: Int?, drawableBackground: Drawable?, drawableProgress: Drawable?, drawableSize: Float) {
@@ -157,7 +151,6 @@ internal open class BaseRatingBar @JvmOverloads constructor(
             }
         }
 
-        parent.requestDisallowInterceptTouchEvent(true)
         return true
     }
 
@@ -224,60 +217,56 @@ internal open class BaseRatingBar @JvmOverloads constructor(
     override fun getAccessibilityClassName(): CharSequence =
         BaseRatingBar::class.java.name
 
-    private fun setAccessibilityDelegate() {
-        ViewCompat.setAccessibilityDelegate(this, object : AccessibilityDelegateCompat() {
+    override fun onInitializeAccessibilityEvent(event: AccessibilityEvent) {
+        super.onInitializeAccessibilityEvent(event)
+        event.itemCount = numLevels
+        event.currentItemIndex = rating.roundToInt()
+    }
 
-            override fun onInitializeAccessibilityEvent(host: View, event: AccessibilityEvent) {
-                super.onInitializeAccessibilityEvent(host, event)
-                event.itemCount = numLevels
-                event.currentItemIndex = rating.roundToInt()
+    override fun onInitializeAccessibilityNodeInfo(info: AccessibilityNodeInfo) {
+        super.onInitializeAccessibilityNodeInfo(info)
+        info.rangeInfo = AccessibilityNodeInfo.RangeInfo.obtain(AccessibilityNodeInfo.RangeInfo.RANGE_TYPE_INT, 0f, numLevels.toFloat(), rating)
+
+        if (!isEnabled) return
+
+        if (rating > minRating)
+            info.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_BACKWARD)
+        if (rating < numLevels)
+            info.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SCROLL_FORWARD)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
+            info.addAction(AccessibilityNodeInfo.AccessibilityAction.ACTION_SET_PROGRESS)
+    }
+
+    override fun performAccessibilityAction(action: Int, args: Bundle?): Boolean {
+        super.performAccessibilityAction(action, args)
+
+        if (!isEnabled) return false
+
+        when (action) {
+            android.R.id.accessibilityActionSetProgress -> {
+                if (args == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.N || !args.containsKey(AccessibilityNodeInfo.ACTION_ARGUMENT_PROGRESS_VALUE))
+                    return false
+
+                val value = args.getFloat(AccessibilityNodeInfo.ACTION_ARGUMENT_PROGRESS_VALUE)
+                setRating(value)
+                return true
             }
-
-            override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfoCompat) {
-                super.onInitializeAccessibilityNodeInfo(host, info)
-                info.rangeInfo = AccessibilityNodeInfoCompat.RangeInfoCompat.obtain(RangeInfo.RANGE_TYPE_INT, 0f, numLevels.toFloat(), rating)
-
-                if (!isEnabled) return
-
-                if (rating > minRating)
-                    info.addAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_BACKWARD)
-                if (rating < numLevels)
-                    info.addAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_FORWARD)
-
-                info.addAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SET_PROGRESS)
+            AccessibilityNodeInfo.ACTION_SCROLL_FORWARD -> {
+                return if(rating < numLevels) {
+                    setRating(rating + stepSize)
+                    true
+                } else false
             }
+            AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD -> {
+                return if(rating > minRating) {
+                    setRating(rating - stepSize)
+                    true
+                } else false
 
-            override fun performAccessibilityAction(host: View?, action: Int, args: Bundle?): Boolean {
-                super.performAccessibilityAction(host, action, args)
-
-                if (!isEnabled) return false
-
-                when (action) {
-                    android.R.id.accessibilityActionSetProgress -> {
-                        if (args == null || !args.containsKey(AccessibilityNodeInfoCompat.ACTION_ARGUMENT_PROGRESS_VALUE))
-                            return false
-
-                        val value = args.getFloat(AccessibilityNodeInfoCompat.ACTION_ARGUMENT_PROGRESS_VALUE)
-                        setRating(value)
-                        return true
-                    }
-                    AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD -> {
-                        return if(rating < numLevels) {
-                            setRating(rating + stepSize)
-                            true
-                        } else false
-                    }
-                    AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD -> {
-                        return if(rating > minRating) {
-                            setRating(rating - stepSize)
-                            true
-                        } else false
-
-                    }
-                }
-                return false
             }
-        })
+        }
+        return false
     }
 
     private companion object {
