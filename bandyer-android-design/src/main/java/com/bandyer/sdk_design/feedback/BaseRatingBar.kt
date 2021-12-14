@@ -2,11 +2,13 @@ package com.bandyer.sdk_design.feedback
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.AttributeSet
+import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -26,6 +28,7 @@ import com.bandyer.sdk_design.extensions.dp2px
 import com.bandyer.sdk_design.extensions.isRtl
 import java.util.*
 import kotlin.math.floor
+import kotlin.math.max
 import kotlin.math.roundToInt
 
 /**
@@ -61,53 +64,25 @@ internal open class BaseRatingBar @JvmOverloads constructor(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
             saveAttributeDataForStyleable(context, R.styleable.BaseRatingBar, attrs, a, defStyleAttr, defStyleRes)
 
-        val numLevels = a.getInt(R.styleable.BaseRatingBar_bandyer_numLevels, numLevels)
-        val minRating = a.getFloat(R.styleable.BaseRatingBar_bandyer_minRating, minRating)
-        val rating = a.getFloat(R.styleable.BaseRatingBar_android_rating, minRating)
-        val stepSize = a.getFloat(R.styleable.BaseRatingBar_android_stepSize, stepSize)
-        val drawablePadding = a.getDimension(R.styleable.BaseRatingBar_android_drawablePadding, drawablePadding)
-        val drawableTint = if (a.hasValue(R.styleable.BaseRatingBar_drawableTint)) a.getColor(R.styleable.BaseRatingBar_drawableTint, NO_ID) else null
-        val drawableBackground = if (a.hasValue(R.styleable.BaseRatingBar_android_drawable)) ContextCompat.getDrawable(context, a.getResourceId(R.styleable.BaseRatingBar_android_drawable, NO_ID)) else null
-        val drawableProgress = if (a.hasValue(R.styleable.BaseRatingBar_android_progressDrawable)) ContextCompat.getDrawable(context, a.getResourceId(R.styleable.BaseRatingBar_android_progressDrawable, NO_ID)) else null
-        val drawableSize = a.getDimension(R.styleable.BaseRatingBar_drawableSize, drawableSize)
+        numLevels = max(a.getInt(R.styleable.BaseRatingBar_bandyer_numLevels, numLevels), 0)
+        minRating = a.getFloat(R.styleable.BaseRatingBar_bandyer_minRating, minRating).coerceIn(0f, numLevels.toFloat())
+        rating = closestValueToStepSize(a.getFloat(R.styleable.BaseRatingBar_android_rating, minRating).coerceIn(minRating, numLevels.toFloat()).round(2))
+        stepSize = a.getFloat(R.styleable.BaseRatingBar_android_stepSize, stepSize).coerceIn(0.1f, 1f)
+        drawableSize = max(a.getDimension(R.styleable.BaseRatingBar_drawableSize, drawableSize), 0f)
+        drawablePadding = max(a.getDimension(R.styleable.BaseRatingBar_android_drawablePadding, drawablePadding), 0f)
+        drawableBackground = if (a.hasValue(R.styleable.BaseRatingBar_android_drawable)) ContextCompat.getDrawable(context, a.getResourceId(R.styleable.BaseRatingBar_android_drawable, NO_ID)) else ContextCompat.getDrawable(context, R.drawable.ic_bandyer_empty_star)
+        drawableProgress = if (a.hasValue(R.styleable.BaseRatingBar_android_progressDrawable)) ContextCompat.getDrawable(context, a.getResourceId(R.styleable.BaseRatingBar_android_progressDrawable, NO_ID)) else ContextCompat.getDrawable(context, R.drawable.ic_bandyer_full_star)
+        if (a.hasValue(R.styleable.BaseRatingBar_drawableTint)) a.getColor(R.styleable.BaseRatingBar_drawableTint, NO_ID).apply {
+            drawableBackground = drawableBackground?.applyTint(this)
+            drawableProgress = drawableProgress?.applyTint(this)
+        }
 
         a.recycle()
-        verifyParams(numLevels, minRating, rating, stepSize, drawablePadding, drawableTint, drawableBackground, drawableProgress, drawableSize)
         updateChildrenInternal(this.numLevels)
         setProgressInternal(this.rating)
 
         if (importantForAccessibility == IMPORTANT_FOR_ACCESSIBILITY_AUTO)
             importantForAccessibility = IMPORTANT_FOR_ACCESSIBILITY_YES
-    }
-
-    private fun verifyParams(numLevels: Int, minRating: Float, rating: Float, stepSize: Float, drawablePadding: Float, drawableTint: Int?, drawableBackground: Drawable?, drawableProgress: Drawable?, drawableSize: Float) {
-        if (numLevels > 0)
-            this.numLevels = numLevels
-
-        if (stepSize in 0.1f..1f)
-            this.stepSize = stepSize.round(2)
-
-        if (minRating in 0f..this.numLevels.toFloat())
-            this.minRating = minRating
-
-        this.rating =
-            if (rating in this.minRating..this.numLevels.toFloat()) closestValueToStepSize(rating.round(2))
-            else this.minRating
-
-        if (drawableSize > 0)
-            this.drawableSize = drawableSize
-
-        if (drawablePadding > 0)
-            this.drawablePadding = drawablePadding
-
-        this.drawableBackground = drawableBackground ?: ContextCompat.getDrawable(context, R.drawable.ic_bandyer_empty_star)
-
-        this.drawableProgress = drawableProgress ?: ContextCompat.getDrawable(context, R.drawable.ic_bandyer_full_star)
-
-        if(drawableTint != null) {
-            this.drawableBackground = this.drawableBackground?.applyTint(drawableTint)
-            this.drawableProgress = this.drawableProgress?.applyTint(drawableTint)
-        }
     }
 
     override fun setNumLevels(@IntRange(from = 0) numLevels: Int) {
@@ -264,7 +239,6 @@ internal open class BaseRatingBar @JvmOverloads constructor(
                     setRating(rating - stepSize)
                     true
                 } else false
-
             }
         }
         return false
