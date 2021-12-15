@@ -17,7 +17,7 @@
 
     <style name="BandyerSDKDesign.FragmentDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="android:windowNoTitle">true</item>
-        <item name="android:windowMinWidthMajor">55%</item>
+        <item name="android:windowMinWidthMajor">45%</item>
         <item name="android:windowMinWidthMinor">80%</item>
         <item name="android:windowBackground">@drawable/bandyer_floating_dialog_background</item>
         <item name="android:windowAnimationStyle">@style/BandyerSDKDesign.FragmentDialog.Animation</item>
