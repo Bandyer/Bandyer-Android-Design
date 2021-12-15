@@ -62,14 +62,14 @@ class FeedbackDialog : DialogFragment() {
                     addTextChangedListener(object : TextWatcher {
                         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) = Unit
                         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
-                        override fun afterTextChanged(s: Editable) { onCommentCallback?.invoke(s.toString()) }
+                        override fun afterTextChanged(s: Editable) { onCommentCallback?.invoke(s.toString().trim()) }
                     })
                 }
                 bandyerClose.setOnClickListener { dismiss() }
                 bandyerVote.setOnClickListener {
                     root.visibility = View.GONE
                     bandyerFragmentFeedbackSentLayout.root.visibility = View.VISIBLE
-                    onFeedbackCallback?.invoke(bandyerRating.getRating(), bandyerEdittext.text?.toString() ?: "")
+                    onFeedbackCallback?.invoke(bandyerRating.getRating(), bandyerEdittext.text?.toString()?.trim() ?: "")
                 }
                 bandyerRating.setRating(5f)
                 bandyerTitle.requestFocus()
