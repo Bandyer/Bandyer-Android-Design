@@ -97,7 +97,7 @@
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
         <item name="android:layout_marginTop">@dimen/bandyer_dimen_space32</item>
         <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
-        <item name="android:minHeight">@dimen/bandyer_dimen_space48</item>
+        <item name="android:minHeight">@dimen/bandyer_dimen_space56</item>
         <item name="android:gravity">center</item>
         <item name="android:inputType">textAutoCorrect|textCapSentences|textAutoComplete|textMultiLine</item>
         <item name="hintEnabled">false</item>
@@ -114,8 +114,8 @@
         <item name="android:scrollbarStyle">outsideInset</item>
         <item name="android:scrollbarThumbVertical">@drawable/bandyer_feedback_scrollbar_thumb</item>
         <item name="android:scrollbars">vertical</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space13</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space13</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space12</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space12</item>
         <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance.TextInputEditText.FeedbackLayout</item>
     </style>
 
