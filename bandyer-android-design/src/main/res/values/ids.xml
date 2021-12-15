@@ -52,4 +52,6 @@
     <item name="bandyer_id_download_item" type="id" />
     <item name="bandyer_id_download_available_item" type="id" />
 
+    <item name="bandyer_id_status_bar_overlay_tag" type="id" />
+
 </resources>
