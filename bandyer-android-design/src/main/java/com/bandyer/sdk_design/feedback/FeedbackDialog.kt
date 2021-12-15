@@ -1,7 +1,10 @@
 package com.bandyer.sdk_design.feedback
 
+import android.animation.LayoutTransition
 import android.content.DialogInterface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +12,6 @@ import androidx.fragment.app.DialogFragment
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerFeedbackDialogLayoutBinding
 import com.bandyer.sdk_design.extensions.getCallThemeAttribute
-import com.google.android.material.textfield.TextInputEditText
-import android.text.Editable
-import android.text.TextWatcher
 
 /**
  * FeedbackDialog
@@ -54,11 +54,21 @@ class FeedbackDialog : DialogFragment() {
 
                     override fun onRatingConfirmed(rating: Float) { onRateCallback?.invoke(rating) }
                 }
-                bandyerEdittext.apply {
-                    setOnFocusChangeListener { view, hasFocus ->
-                        bandyerTitle.visibility = if(hasFocus) View.GONE else View.VISIBLE
-                        (view as TextInputEditText).setLines(if(hasFocus) 4 else 1)
+                root.layoutTransition.addTransitionListener(object : LayoutTransition.TransitionListener {
+                    override fun startTransition(transition: LayoutTransition?, container: ViewGroup?, view: View?, transitionType: Int) = Unit
+                    override fun endTransition(transition: LayoutTransition?, container: ViewGroup?, view: View?, transitionType: Int) {
+                        if(view == bandyerInputLayout)
+                            bandyerEdittext.requestFocus()
                     }
+                })
+                bandyerEdittext.apply {
+                    setOnFocusChangeListener { _, hasFocus ->
+                        if(hasFocus) {
+                            bandyerTitle.visibility = View.GONE
+                            this.setLines(4)
+                        }
+                    }
+
                     addTextChangedListener(object : TextWatcher {
                         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) = Unit
                         override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
