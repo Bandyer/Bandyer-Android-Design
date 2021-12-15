@@ -57,16 +57,15 @@ class FeedbackDialog : DialogFragment() {
                 root.layoutTransition.addTransitionListener(object : LayoutTransition.TransitionListener {
                     override fun startTransition(transition: LayoutTransition?, container: ViewGroup?, view: View?, transitionType: Int) = Unit
                     override fun endTransition(transition: LayoutTransition?, container: ViewGroup?, view: View?, transitionType: Int) {
-                        if(view == bandyerInputLayout)
-                            bandyerEdittext.requestFocus()
+                        if(view != bandyerInputLayout) return
+                        bandyerEdittext.requestFocus()
                     }
                 })
                 bandyerEdittext.apply {
                     setOnFocusChangeListener { _, hasFocus ->
-                        if(hasFocus) {
-                            bandyerTitle.visibility = View.GONE
-                            this.setLines(4)
-                        }
+                        if(!hasFocus) return@setOnFocusChangeListener
+                        bandyerTitle.visibility = View.GONE
+                        this.setLines(4)
                     }
 
                     addTextChangedListener(object : TextWatcher {
