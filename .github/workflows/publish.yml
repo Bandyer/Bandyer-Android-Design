@@ -26,9 +26,12 @@ jobs:
         MAVEN_ACCESSKEY: ${{ secrets.MAVEN_ACCESSKEY }}
         MAVEN_SECRETKEY: ${{ secrets.MAVEN_SECRETKEY }}
         MAVEN_DISTRIBUTIONID: ${{ secrets.MAVEN_DISTRIBUTIONID }}
-        run: 
+      run: 
              echo maven.accessKey="$MAVEN_ACCESSKEY"
              maven.secretKey="$MAVEN_SECRETKEY"
              maven.distributionId="$MAVEN_DISTRIBUTIONID" > ./local.properties
     - name: Build with Gradle
       run: ./gradlew clean assembleRelease publishUpload
+      
+      
+      
