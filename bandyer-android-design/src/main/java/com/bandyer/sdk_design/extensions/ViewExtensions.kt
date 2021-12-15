@@ -29,7 +29,6 @@ import android.hardware.input.InputManager
 import android.os.Build
 import android.os.SystemClock
 import android.text.TextUtils
-import android.util.Log
 import android.util.TypedValue
 import android.view.*
 import android.view.animation.*
@@ -107,9 +106,10 @@ fun View.animateViewHeight(from: Int, to: Int, duration: Long, interpolator: Int
  * @param toRight desired right position
  * @param onResizedAndMoved () -> Unit? callback after animator has ended
  */
-fun View.resizeAndMove(toSize: Float, toTop: Float, toLeft: Float, toRight: Float, duration: Long, onResizedAndMoved: () -> Unit): AnimatorSet? {
-    val leftMargin = if (!isRtl()) toLeft else toRight
-    val rightMargin = if (!isRtl()) toRight else toLeft
+fun View.resizeAndMove(toSize: Int, toTop: Int, toLeft: Int, toRight: Int, duration: Long, onResizedAndMoved: () -> Unit): AnimatorSet? {
+    val isRtl = isRtl()
+    val leftMargin = if (!isRtl) toLeft else toRight
+    val rightMargin = if (!isRtl) toRight else toLeft
 
     val lp = layoutParams as ViewGroup.MarginLayoutParams
 
