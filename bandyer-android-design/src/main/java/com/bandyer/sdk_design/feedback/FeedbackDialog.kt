@@ -112,6 +112,11 @@ class FeedbackDialog : DialogFragment() {
      */
     fun onFeedback(function: (Float, String) -> Unit): FeedbackDialog { onFeedbackCallback = function; return this }
 
+    override fun dismiss() {
+        dialog?.dismiss()
+        super.dismiss()
+    }
+
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         onRateCallback = null
