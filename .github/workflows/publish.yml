@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Exit if not on develop branch
+      if: endsWith(github.ref, 'develop') == false
+      run: exit -1
     - name: set up JDK 11
       uses: actions/setup-java@v2
       with:
