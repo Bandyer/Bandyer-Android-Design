@@ -22,21 +22,13 @@ jobs:
       run: chmod +x gradlew
     - name: Set dryRun to false
       run: sed -i '/def dryRun = true/c\\tdef dryRun = false' ./bandyer-android-design/build.gradle
-    - name: Print test credentials
-      env:
-        TEST: ${{ secrets.TEST }}
-      run: 'echo "$TEST"'
     - name: Update Maven credentials
       env:
         MAVEN_ACCESSKEY: ${{ secrets.MAVEN_ACCESSKEY }}
         MAVEN_SECRETKEY: ${{ secrets.MAVEN_SECRETKEY }}
         MAVEN_DISTRIBUTIONID: ${{ secrets.MAVEN_DISTRIBUTIONID }}
       run: 
-             echo maven.accessKey="$MAVEN_ACCESSKEY"
-             maven.secretKey="$MAVEN_SECRETKEY"
-             maven.distributionId="$MAVEN_DISTRIBUTIONID" > ./local.properties
+          sed -i '$ a maven.accessKey="$MAVEN_ACCESSKEY"\nmaven.secretKey="$MAVEN_SECRETKEY"\nmaven.distributionId="$MAVEN_DISTRIBUTIONID"' ./local.properties
     - name: Build with Gradle
       run: ./gradlew clean assembleRelease publishUpload
-      
-      
       
