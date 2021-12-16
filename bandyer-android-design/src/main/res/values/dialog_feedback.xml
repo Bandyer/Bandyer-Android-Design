@@ -95,7 +95,7 @@
     <style name="BandyerSDKDesign.FragmentDialog.FeedbackLayout.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="materialThemeOverlay">@style/BandyerSDKDesign.FragmentDialog.FeedbackLayout.TextInputLayout.MaterialThemeOverlay</item>
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space32</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space24</item>
         <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:minHeight">@dimen/bandyer_dimen_space56</item>
         <item name="android:gravity">center</item>
@@ -114,8 +114,8 @@
         <item name="android:scrollbarStyle">outsideInset</item>
         <item name="android:scrollbarThumbVertical">@drawable/bandyer_feedback_scrollbar_thumb</item>
         <item name="android:scrollbars">vertical</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space12</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space12</item>
+        <item name="android:paddingTop">@dimen/bandyer_dimen_space10</item>
+        <item name="android:paddingBottom">@dimen/bandyer_dimen_space10</item>
         <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance.TextInputEditText.FeedbackLayout</item>
     </style>
 
@@ -125,7 +125,7 @@
 
     <style name="BandyerSDKDesign.FragmentDialog.FeedbackLayout.PositiveButton" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
         <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
         <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space12</item>
         <item name="android:backgroundTint">?attr/colorSecondary</item>
