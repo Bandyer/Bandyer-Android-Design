@@ -28,7 +28,7 @@ jobs:
         MAVEN_SECRETKEY: ${{ secrets.MAVEN_SECRETKEY }}
         MAVEN_DISTRIBUTIONID: ${{ secrets.MAVEN_DISTRIBUTIONID }}
       run: 
-          sed -i '$ a maven.accessKey="$MAVEN_ACCESSKEY"\nmaven.secretKey="$MAVEN_SECRETKEY"\nmaven.distributionId="$MAVEN_DISTRIBUTIONID"' ./local.properties
+          sed -i '$ a maven.accessKey="$MAVEN_ACCESSKEY"\nmaven.secretKey="$MAVEN_SECRETKEY"\nmaven.distributionId="$MAVEN_DISTRIBUTIONID"' local.properties
     - name: Build with Gradle
       run: ./gradlew clean assembleRelease publishUpload
       
