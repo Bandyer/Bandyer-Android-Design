@@ -57,10 +57,11 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
                         pJobs += combine(part.state, part.streams) { state, streams ->
                                     allStreams.removeIf { stream -> stream.participant == part }
 
-                                    if (state is CallParticipant.State.Online.InCall)
+                                    val isLocalParticipant = part == parts.me
+                                    if (isLocalParticipant || (state is CallParticipant.State.Online.InCall && streams.isNotEmpty()))
                                         allStreams +=
-                                            if (streams.none { stream -> stream.state !is Stream.State.Closed }) listOf(StreamParticipant(part, part == parts.me, null))
-                                            else streams.map { stream -> StreamParticipant(part, part == parts.me, stream) }
+                                            if (streams.none { stream -> stream.state !is Stream.State.Closed }) listOf(StreamParticipant(part, isLocalParticipant, null))
+                                            else streams.map { stream -> StreamParticipant(part, isLocalParticipant, stream) }
 
                                     emit(allStreams)
                                 }.launchIn(viewModelScope)
