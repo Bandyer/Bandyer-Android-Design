@@ -176,7 +176,7 @@
     <!-- FEEDBACK -->
     <string name="bandyer_feedback_vote">Vote</string>
     <string name="bandyer_feedback_close">Close</string>
-    <string name="bandyer_feedback_evaluate_call">Evaluate the call quality</string>
+    <string name="bandyer_feedback_evaluate_call">Please evaluate the quality of your call</string>
     <string name="bandyer_feedback_bad">Bad</string>
     <string name="bandyer_feedback_poor">Poor</string>
     <string name="bandyer_feedback_neutral">Neutral</string>
