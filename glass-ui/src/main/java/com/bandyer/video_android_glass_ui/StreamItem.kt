@@ -107,7 +107,7 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(final override v
                 .launchIn(item.scope)
 
             jobs += video
-                .onEach { if (it == null) onVideoEnabled(true) }
+                .onEach { if (it == null) onVideoEnabled(false) }
                 .filter { it != null }
                 .flatMapLatest { combine(it!!.state, it.enabled, it.view) { s, e, v -> Triple(s, e, v)} }
                 .onEach {
