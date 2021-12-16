@@ -25,8 +25,7 @@ jobs:
     - name: Print test credentials
       env:
         TEST: ${{ secrets.TEST }}
-      run:
-          echo $TEST
+      run: 'echo "$TEST"'
     - name: Update Maven credentials
       env:
         MAVEN_ACCESSKEY: ${{ secrets.MAVEN_ACCESSKEY }}
