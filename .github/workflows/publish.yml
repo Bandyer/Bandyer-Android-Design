@@ -1,11 +1,8 @@
 name: Android CD
 
 on:
-  push:
-    branches: 
-    - develop
-    tags:
-      - 'v*'
+  release:
+    types: [published]
       
 jobs:
   publish:
