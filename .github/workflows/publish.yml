@@ -4,11 +4,12 @@ on:
   push:
     branches: 
     - develop
-
+    tags:
+      - 'v*'
+      
 jobs:
   publish:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
     steps:
     - uses: actions/checkout@v2
     - name: set up JDK 11
