@@ -47,8 +47,8 @@
     <item name="ic_bandyer_file_share" type="drawable">@drawable/bandyer_z_file_share</item>
     <item name="ic_bandyer_mic_off" type="drawable">@drawable/bandyer_z_mic_off</item>
     <item name="ic_bandyer_participants" type="drawable">@drawable/bandyer_z_users</item>
-    <item name="ic_bandyer_full_star" type="drawable">@drawable/bandyer_z_feedback_full</item>
-    <item name="ic_bandyer_empty_star" type="drawable">@drawable/bandyer_z_feedback</item>
+    <item name="ic_bandyer_full_star" type="drawable">@drawable/bandyer_z_star_full</item>
+    <item name="ic_bandyer_empty_star" type="drawable">@drawable/bandyer_z_star_empty</item>
 
     <!-- WHITEBOARD -->
     <item name="ic_bandyer_cancel" type="drawable">@drawable/bandyer_z_arrow_left</item>
