@@ -65,8 +65,8 @@
     <item name="ic_bandyer_bluetooth_headset" type="drawable">@drawable/bandyer_z_bluetooth</item>
 
     <!-- SCREEN SHARE -->
-    <item name="ic_bandyer_screen_share_device" type="drawable">@drawable/bandyer_z_app_only</item>
-    <item name="ic_bandyer_screen_share_app" type="drawable">@drawable/bandyer_z_full_device</item>
+    <item name="ic_bandyer_screen_share_device" type="drawable">@drawable/bandyer_z_full_device</item>
+    <item name="ic_bandyer_screen_share_app" type="drawable">@drawable/bandyer_z_app_only</item>
 
     <!-- FILE SHARE -->
     <item name="ic_bandyer_folder" type="drawable">@drawable/bandyer_z_folder</item>
