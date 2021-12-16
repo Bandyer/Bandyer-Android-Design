@@ -18,6 +18,8 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
         cache: gradle
+    - name: Install boto3
+      run: pip install boto3
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Set dryRun to false
