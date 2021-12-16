@@ -80,4 +80,9 @@
 
     <!-- recording color -->
     <color name="bandyer_recording_color">#D50000</color>
+
+    <!-- API 21 colors -->
+    <color name="bandyer_api21_color_on_surface_12">#FFE0E0E0</color>
+    <color name="bandyer_api21_color_on_surface_30">#B1B1B1</color>
+
 </resources>
