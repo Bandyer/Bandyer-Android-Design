@@ -24,6 +24,7 @@ class FeedbackDialog : DialogFragment() {
     private var onRateCallback: ((Float) -> Unit)? = null
     private var onCommentCallback: ((String) -> Unit)? = null
     private var onFeedbackCallback: ((Float, String) -> Unit)? = null
+    private var onDismissCallback: (() -> Unit)? = null
 
     private var autoDismissTime: Int = -1
 
@@ -102,7 +103,7 @@ class FeedbackDialog : DialogFragment() {
     /**
      * Set the callback invoked on rating change
      *
-     * @param function Function1<Float, Unit>
+     * @param function Function0<Float, Unit>
      * @return FeedbackDialog
      */
     fun onRate(function: (Float) -> Unit): FeedbackDialog { onRateCallback = function; return this }
@@ -110,7 +111,7 @@ class FeedbackDialog : DialogFragment() {
     /**
      * Set the callback invoked on comment change
      *
-     * @param function Function1<Float, Unit>
+     * @param function Function0<Float, Unit>
      * @return FeedbackDialog
      */
     fun onComment(function: (String) -> Unit): FeedbackDialog { onCommentCallback = function; return this }
@@ -118,16 +119,26 @@ class FeedbackDialog : DialogFragment() {
     /**
      * Set the callback invoked on feedback confirmed
      *
-     * @param function Function1<Float, Unit>
+     * @param function Function0<Float, Unit>
      * @return FeedbackDialog
      */
     fun onFeedback(function: (Float, String) -> Unit): FeedbackDialog { onFeedbackCallback = function; return this }
 
+    /**
+     * Set the callback invoked on fragment dialog dismiss
+     *
+     * @param function Function0<Unit>
+     * @return FeedbackDialog
+     */
+    fun onDismiss(function: () -> Unit): FeedbackDialog { onDismissCallback = function; return this }
+
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
+        onDismissCallback?.invoke()
         onRateCallback = null
         onCommentCallback = null
         onFeedbackCallback = null
+        onDismissCallback = null
     }
 
     companion object {
