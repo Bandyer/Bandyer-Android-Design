@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.postDelayed
 import androidx.fragment.app.DialogFragment
 import com.bandyer.sdk_design.R
 import com.bandyer.sdk_design.databinding.BandyerFeedbackDialogLayoutBinding
@@ -24,8 +25,14 @@ class FeedbackDialog : DialogFragment() {
     private var onCommentCallback: ((String) -> Unit)? = null
     private var onFeedbackCallback: ((Float, String) -> Unit)? = null
 
+    private var autoDismissTime: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        requireContext().obtainStyledAttributes(R.style.BandyerSDKDesign_FragmentDialog, R.styleable.BandyerSDKDesign_FragmentDialog).apply {
+            autoDismissTime = getInt(R.styleable.BandyerSDKDesign_FragmentDialog_bandyer_autoDismissTime, -1)
+            recycle()
+        }
         setStyle(STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_feedbackDialogStyle))
     }
 
@@ -77,8 +84,12 @@ class FeedbackDialog : DialogFragment() {
                 bandyerClose.setOnClickListener { dismiss() }
                 bandyerVote.setOnClickListener {
                     root.visibility = View.GONE
-                    bandyerFragmentFeedbackSentLayout.root.visibility = View.VISIBLE
                     onFeedbackCallback?.invoke(bandyerRating.getRating(), bandyerEdittext.text?.toString()?.trim() ?: "")
+                    with(bandyerFragmentFeedbackSentLayout.root) {
+                        visibility = View.VISIBLE
+                        if(autoDismissTime == -1) return@setOnClickListener
+                        postDelayed(autoDismissTime.toLong()) { dismiss() }
+                    }
                 }
                 bandyerRating.setRating(5f)
                 bandyerTitle.requestFocus()
