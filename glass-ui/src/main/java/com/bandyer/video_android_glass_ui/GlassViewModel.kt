@@ -7,12 +7,16 @@ import androidx.lifecycle.viewModelScope
 import com.bandyer.video_android_glass_ui.model.Volume
 import com.bandyer.video_android_glass_ui.model.*
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.plus
 
 @Suppress("UNCHECKED_CAST")
 internal object GlassViewModelFactory : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T = GlassViewModel(ManagersHolder.callManagerInstance!!.get()!!) as T
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+        GlassViewModel(ManagersHolder.callManagerInstance!!.get()!!) as T
 }
 
 internal class GlassViewModel(private val callManager: CallManager) : ViewModel() {
@@ -27,73 +31,79 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
     var currentPermissions: Permissions? = null
     val permissions: Flow<Permissions> = callManager.permissions.onEach { currentPermissions = it }
 
+    private inline fun Flow<CallParticipants>.forEachParticipant(
+        scope: CoroutineScope,
+        crossinline action: suspend (CallParticipant, Boolean, List<Stream>, Participant.State) -> Unit
+    ): Flow<CallParticipants> {
+        val pJobs = mutableListOf<Job>()
+        return onEach { participants ->
+            pJobs.forEach {
+                it.cancel()
+                it.join()
+            }
+            pJobs.clear()
+            participants.others.plus(participants.me).forEach { participant ->
+                pJobs += combine(participant.streams, participant.state) { streams, state ->
+                    action(participant, participant == participants.me, streams, state)
+                }.launchIn(scope)
+            }
+        }
+    }
+
     val inCallParticipants: MutableSharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
-            val pJobs = mutableListOf<Job>()
-            call.participants.onEach { parts ->
-                pJobs.forEach { it.cancel() }
-                pJobs.clear()
-                val participants = mutableMapOf<String, CallParticipant>()
-                parts.others.plus(parts.me).forEach { part ->
-                    pJobs += part.state.onEach { state ->
-                        if (state is CallParticipant.State.Online.InCall) participants[part.userAlias] = part
-                        else participants.remove(part.userAlias)
-
-                        emit(participants.values.toList())
-                    }.launchIn(viewModelScope)
-                }
+            val participants = mutableMapOf<String, CallParticipant>()
+            call.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, _, _, state ->
+                if (state is CallParticipant.State.Online.InCall) participants[participant.userAlias] =
+                    participant
+                else participants.remove(participant.userAlias)
+                emit(participants.values.toList())
             }.launchIn(viewModelScope)
         }
 
     val streams: Flow<List<StreamParticipant>> =
-        MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1)
-            .apply {
-                val pJobs = mutableListOf<Job>()
-                call.participants.onEach { parts ->
-                    pJobs.forEach { it.cancel() }
-                    pJobs.clear()
-                    val allStreams = mutableListOf<StreamParticipant>()
-                    parts.others.plus(parts.me).forEach { part ->
-                        pJobs += combine(part.state, part.streams) { state, streams ->
-                                    allStreams.removeIf { stream -> stream.participant == part }
+        MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
+            val uiStreams = mutableListOf<StreamParticipant>()
+            call.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, isLocalPart, streams, state ->
+                uiStreams.removeIf { stream -> stream.participant == participant }
+                if (isLocalPart || (state is CallParticipant.State.Online.InCall && streams.isNotEmpty()))
+                    uiStreams +=
+                        if (streams.none { stream -> stream.state !is Stream.State.Closed }) listOf(StreamParticipant(participant, isLocalPart, null))
+                        else streams.map { stream -> StreamParticipant(participant, isLocalPart, stream) }
+                emit(uiStreams)
+            }.launchIn(viewModelScope)
+        }
 
-                                    val isLocalParticipant = part == parts.me
-                                    if (isLocalParticipant || (state is CallParticipant.State.Online.InCall && streams.isNotEmpty()))
-                                        allStreams +=
-                                            if (streams.none { stream -> stream.state !is Stream.State.Closed }) listOf(StreamParticipant(part, isLocalParticipant, null))
-                                            else streams.map { stream -> StreamParticipant(part, isLocalParticipant, stream) }
+    private val myStreams: Flow<List<Stream>> =
+        call.participants.map { it.me }.flatMapLatest { it.streams }
 
-                                    emit(allStreams)
-                                }.launchIn(viewModelScope)
-                            }
-                    }.launchIn(viewModelScope)
-            }
+    private val cameraStream: Flow<Stream?> =
+        myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it?.source is Input.Video.Source.Camera } != null } }
 
-    private val myStreams: Flow<List<Stream>> = call.participants.map { it.me }.flatMapLatest { it.streams }
+    private val audioStream: Flow<Stream?> =
+        myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }
 
-    private val cameraStream: Flow<Stream?> = myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it?.source is Input.Video.Source.Camera } != null } }
+    val cameraEnabled: StateFlow<Boolean> =
+        MutableStateFlow(false).apply {
+            cameraStream
+                .filter { it != null }
+                .flatMapLatest { it!!.video }
+                .filter { it != null }
+                .flatMapLatest { it!!.enabled }
+                .onEach { value = it }
+                .launchIn(viewModelScope)
+        }
 
-    private val audioStream: Flow<Stream?> = myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }
-
-    val cameraEnabled: StateFlow<Boolean> = MutableStateFlow(false).apply {
-        cameraStream
-            .filter { it != null }
-            .flatMapLatest { it!!.video }
-            .filter { it != null }
-            .flatMapLatest { it!!.enabled }
-            .onEach { value = it }
-            .launchIn(viewModelScope)
-    }
-
-    val micEnabled: StateFlow<Boolean> = MutableStateFlow(false).apply {
-        audioStream
-            .filter { it != null }
-            .flatMapLatest { it!!.audio }
-            .filter { it != null }
-            .flatMapLatest { it!!.enabled }
-            .onEach { value = it }
-            .launchIn(viewModelScope)
-    }
+    val micEnabled: StateFlow<Boolean> =
+        MutableStateFlow(false).apply {
+            audioStream
+                .filter { it != null }
+                .flatMapLatest { it!!.audio }
+                .filter { it != null }
+                .flatMapLatest { it!!.enabled }
+                .onEach { value = it }
+                .launchIn(viewModelScope)
+        }
 
     fun requestMicPermission(context: FragmentActivity) = callManager.requestMicPermission(context)
 
