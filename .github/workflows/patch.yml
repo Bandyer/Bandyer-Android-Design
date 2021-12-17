@@ -1,10 +1,10 @@
-name: Patch
+name: Release Patch
 
 on:
   workflow_dispatch:
       
 jobs:
-  publish:
+  patch:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -25,7 +25,7 @@ jobs:
     - name: Increase build version
       env:
         LTAG: ${{ steps.tag_version.outputs.new_tag }}
-      run: sed -i "s/version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"$LTAG\"/g" bandyer-android-sdk/build.gradle
+      run: sed -i "s/version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"$LTAG\"/g" ./bandyer-android-design/build.gradle
     - name: Create a GitHub release
       uses: ncipollo/release-action@v1
       with:
