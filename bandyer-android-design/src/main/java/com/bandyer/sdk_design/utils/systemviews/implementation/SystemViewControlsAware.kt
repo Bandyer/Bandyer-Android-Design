@@ -27,7 +27,7 @@ import com.bandyer.android_common.LifecycleEvents
 import com.bandyer.android_common.LifecyleBinder
 import com.bandyer.sdk_design.utils.systemviews.SystemViewLayoutObserver
 
-internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewControlsAwareInstance {
+internal class SystemViewControlsAware(private var finished: (() -> Unit)?) : SystemViewControlsAwareInstance {
 
     /**
      * Mapping of observers and requests to keep listening on global layout changes
@@ -105,6 +105,7 @@ internal class SystemViewControlsAware(val finished: () -> Unit) : SystemViewCon
 
     private fun dispose() {
         systemUiObservers.clear()
-        this@SystemViewControlsAware.finished()
+        finished?.invoke()
+        finished = null
     }
 }
