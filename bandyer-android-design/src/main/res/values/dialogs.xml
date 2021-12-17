@@ -15,10 +15,16 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <declare-styleable name="BandyerSDKDesign.FragmentDialog">
+        <!-- Dialog auto dismiss time in milliseconds. The timer starts after the user has pressed the vote button. Setting a value of -1 will not dismiss the dialog. -->
+        <attr name="bandyer_autoDismissTime" format="integer" />
+    </declare-styleable>
+
     <style name="BandyerSDKDesign.FragmentDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/bandyer_floating_dialog_background</item>
         <item name="android:windowAnimationStyle">@style/BandyerSDKDesign.FragmentDialog.Animation</item>
+        <item name="bandyer_autoDismissTime">3000</item>
     </style>
 
     <style name="BandyerSDKDesign.FragmentDialog.Animation" parent="@style/Animation.AppCompat.Dialog">
