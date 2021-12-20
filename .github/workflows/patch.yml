@@ -23,22 +23,6 @@ jobs:
         release_branches: develop
         dry_run: true
         github_token: ${{ secrets.PAT }}
-    
-    - name: Change build.gradle version
-      run: sed -i "s/^version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"${{ steps.tag_version.outputs.new_version }}\"/g" ./bandyer-android-design/build.gradle
-   
-    - name: Create a GitHub release
-      uses: peter-evans/create-pull-request@v3
-      with:
-          token: ${{ secrets.PAT }}
-          commit-message: Increment version ${{ steps.tag_version.outputs.new_tag }}
-          title: Release ${{ steps.tag_version.outputs.new_tag }}
-          body: |
-           This PR is Auto-generated
-          branch: release-${{ steps.tag_version.outputs.new_tag }}
-    
-    - name: Tag version on PR branch
-      uses: mathieudutour/github-tag-action@v6.0
-      with:
-        release_branches: release-${{ steps.tag_version.outputs.new_tag }}
-        github_token: ${{ secrets.PAT }}
+      env: 
+        LTAG: ${{ steps.tag_version.outputs.new_version }}
+    - run: echo $LTAG
