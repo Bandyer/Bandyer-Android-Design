@@ -16,20 +16,29 @@ jobs:
         cache: gradle
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Bump version and push tag
-      id: tag_version
+    
+    - name: Generate next version
       uses: mathieudutour/github-tag-action@v6.0
       with:
         release_branches: develop
+        dry_run: true
         github_token: ${{ secrets.PAT }}
-    - run: sed -i "s/^version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"${{ steps.tag_version.outputs.new_version }}\"/g" ./bandyer-android-design/build.gradle
+    
+    - name: Change build.gradle version
+      run: sed -i "s/^version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"${{ steps.tag_version.outputs.new_version }}\"/g" ./bandyer-android-design/build.gradle
+   
     - name: Create a GitHub release
       uses: peter-evans/create-pull-request@v3
       with:
           token: ${{ secrets.PAT }}
-          commit-message: Release ${{ steps.tag_version.outputs.new_tag }}
+          commit-message: Increment version ${{ steps.tag_version.outputs.new_tag }}
           title: Release ${{ steps.tag_version.outputs.new_tag }}
           body: |
            This PR is Auto-generated
           branch: release-${{ steps.tag_version.outputs.new_tag }}
-  
+    
+    - name: Tag version on PR branch
+      uses: mathieudutour/github-tag-action@v6.0
+      with:
+        release_branches: release-${{ steps.tag_version.outputs.new_tag }}
+        github_token: ${{ secrets.PAT }}
