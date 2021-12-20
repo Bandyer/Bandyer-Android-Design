@@ -15,7 +15,7 @@
  */
 
 buildscript {
-    ext.dokka_version = "0.10.1"
+    ext.dokka_version = "v2.1.4-develop.1"
 
     repositories {
         mavenCentral()
@@ -52,7 +52,7 @@ def projectLicenseUrl = "https://github.com/Bandyer/Bandyer-Android-Design/LICEN
 def projectKeywords = ['bandyer-android-design', 'sdk-design', 'android-design', 'android', 'video', 'conference', 'helpdesk', 'bandyer', 'webrtc', 'call', 'audio']
 def developerFullName = "Bandyer Srl"
 group = projectGroup
-version = "2.1.3"
+version = "v2.1.4-develop.1"
 
 // Library versions
 def fastAdapterVersion = "5.5.1"
@@ -61,7 +61,7 @@ def androidX = "1.2.1"
 def vectorDrawable = "1.1.0"
 def materialVersion = "1.4.0"
 def navHostFragment = "2.3.5"
-def core_version = "1.5.0"
+def core_version = "v2.1.4-develop.1"
 
 android {
     compileSdkVersion sdkVersion
