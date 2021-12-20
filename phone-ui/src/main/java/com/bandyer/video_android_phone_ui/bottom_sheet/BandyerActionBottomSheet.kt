@@ -27,10 +27,9 @@ import com.bandyer.video_android_phone_ui.bottom_sheet.view.BottomSheetLayoutTyp
  */
 open class BandyerActionBottomSheet<T> constructor(context: AppCompatActivity,
                                                    views: List<T>,
-                                                   spanSize: Int,
                                                    peekHeight: Int?,
                                                    bottomSheetLayoutType: BottomSheetLayoutType,
-                                                   @StyleRes bottomSheetLayoutStyle: Int) : BaseBandyerBottomSheet(context, views, spanSize, peekHeight, bottomSheetLayoutType, bottomSheetLayoutStyle) where T : ActionItem {
+                                                   @StyleRes bottomSheetLayoutStyle: Int) : BaseBandyerBottomSheet(context, views, peekHeight, bottomSheetLayoutType, bottomSheetLayoutStyle) where T : ActionItem {
 
     /**
      * Listener for actions on the items of the bottomSheet

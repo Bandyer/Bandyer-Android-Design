@@ -1,3 +1,19 @@
+/*
+ * Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *           http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package com.bandyer.video_android_phone_ui.filesharing.adapter_items
 
 import android.Manifest
@@ -8,12 +24,12 @@ import android.text.format.Formatter
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingBottom
-import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingTop
-import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.bandyer.video_android_phone_ui.R
 import com.bandyer.video_android_phone_ui.databinding.BandyerFileShareItemBinding
 import com.bandyer.video_android_phone_ui.extensions.getFileTypeFromMimeType
+import com.bandyer.video_android_phone_ui.extensions.parseToHHmm
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingBottom
+import com.bandyer.video_android_core_ui.extensions.ViewExtensions.setPaddingTop
 import com.bandyer.video_android_phone_ui.filesharing.FileShareViewModel
 import com.bandyer.video_android_phone_ui.filesharing.buttons.BandyerFileTransferActionButton
 import com.bandyer.video_android_phone_ui.filesharing.imageviews.BandyerFileTypeImageView
@@ -91,14 +107,14 @@ class BandyerFileTransferItem(val data: TransferData) : AbstractItem<BandyerFile
             when (item.data.state) {
                 is TransferData.State.Available                                 -> {
                     bandyerAction.type = BandyerFileTransferActionButton.Type.DOWNLOAD
-                    bandyerProgressText.text = Iso8601.parseTime(item.data.creationTime)
+                    bandyerProgressText.text = item.data.creationTime.parseToHHmm()
                 }
                 is TransferData.State.Pending, is TransferData.State.OnProgress -> bandyerAction.type = BandyerFileTransferActionButton.Type.CANCEL
                 is TransferData.State.Success                                   -> {
                     bandyerAction.type = BandyerFileTransferActionButton.Type.SUCCESS
                     bandyerActionClickArea.background = null
                     bandyerActionClickArea.isClickable = false
-                    bandyerProgressText.text = Iso8601.parseTime(item.data.creationTime)
+                    bandyerProgressText.text = item.data.creationTime.parseToHHmm()
                 }
                 is TransferData.State.Error                                     -> {
                     bandyerAction.type = BandyerFileTransferActionButton.Type.RETRY

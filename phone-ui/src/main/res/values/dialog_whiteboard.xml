@@ -43,14 +43,6 @@
         <item name="bandyer_uploadStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.UploadImage.Day</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.LightStatusBar" parent="BandyerSDKDesign.BottomSheetDialog.Whiteboard">
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-    </style>
-
-    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.DarkStatusBar" parent="BandyerSDKDesign.BottomSheetDialog.Whiteboard">
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-    </style>
-
     <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.RootLayout" parent="">
         <item name="android:background">@color/bandyer_color_loading_whiteboard_background</item>
     </style>

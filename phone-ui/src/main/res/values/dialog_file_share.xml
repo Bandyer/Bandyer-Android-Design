@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  -->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.FileShare">
@@ -20,14 +36,6 @@
     </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21"/>
-
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.LightStatusBar" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21">
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
-    </style>
-
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.DarkStatusBar" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21">
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-    </style>
 
     <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Day" parent="BandyerSDKDesign.BottomSheetDialog.Day">
         <item name="recyclerViewStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>

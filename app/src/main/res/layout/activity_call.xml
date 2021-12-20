@@ -23,17 +23,22 @@
     android:layout_height="match_parent"
     android:clipChildren="false"
     android:clipToPadding="false"
-    android:background="@android:color/black"
     tools:context=".CallActivity">
 
-    <com.bandyer.video_android_phone_ui.call.widgets.BandyerCallInfoWidget
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+   <com.bandyer.video_android_phone_ui.call.widgets.BandyerCallInfoWidget
         android:id="@+id/call_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="?attr/bandyer_callInfoStyle"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.bandyer.video_android_phone_ui.call.widgets.BandyerCallUserInfoWidget
+   <com.bandyer.video_android_phone_ui.call.widgets.BandyerCallUserInfoWidget
         android:id="@+id/call_user_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,6 +53,16 @@
         android:clipChildren="false"
         android:clipToPadding="false"
         android:focusable="false"
-        android:focusableInTouchMode="false"/>
+        android:focusableInTouchMode="false">
+
+        <com.bandyer.video_android_phone_ui.buttons.BandyerHideableButton
+            android:id="@+id/fullscreen_info"
+            style="@style/BandyerSDKDesign.FullscreenToastButton"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+    </com.bandyer.video_android_phone_ui.bottom_sheet.view.BandyerBottomSheetLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

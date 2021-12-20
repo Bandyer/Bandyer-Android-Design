@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="BaseRatingBar">
+        <attr name="bandyer_numLevels" format="integer" />
+        <attr name="bandyer_minRating" format="float" />
+        <attr name="android:rating" />
+        <attr name="android:stepSize" />
+        <attr name="android:drawablePadding" />
+        <attr name="drawableTint" />
+        <attr name="drawableSize" />
+        <attr name="android:drawable" />
+        <attr name="android:progressDrawable" />
+    </declare-styleable>
+</resources>

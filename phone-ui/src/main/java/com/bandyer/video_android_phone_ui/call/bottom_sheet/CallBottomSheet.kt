@@ -20,11 +20,11 @@ import android.animation.ValueAnimator
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.OnLifecycleEvent
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
+import com.bandyer.video_android_phone_ui.R
 import com.bandyer.video_android_phone_ui.bottom_sheet.BandyerBottomSheet
 import com.bandyer.video_android_phone_ui.bottom_sheet.BandyerClickableBottomSheet
 import com.bandyer.video_android_phone_ui.bottom_sheet.behaviours.BandyerBottomSheetBehaviour.Companion.STATE_ANCHOR_POINT
@@ -39,11 +39,14 @@ import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.AudioRoute
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.CallAction
 import com.bandyer.video_android_phone_ui.call.buttons.BandyerLineButton.State
 import com.bandyer.video_android_phone_ui.extensions.getHeightWithVerticalMargin
+import com.bandyer.video_android_phone_ui.extensions.isVisible
 
 /**
  * Call BottomSheet to display actions and interact with the call
  * @param context Context
  * @param callActionItems list of actions to display
+ * @param bottomSheetLayoutType bottom sheet layout type
+ * @param bottomSheetStyle style bottom sheet style
  * @constructor
  * @author kristiyan
  */
@@ -51,14 +54,15 @@ import com.bandyer.video_android_phone_ui.extensions.getHeightWithVerticalMargin
 open class CallBottomSheet<T>(
     context: AppCompatActivity,
     private val callActionItems: List<CallAction>,
+    bottomSheetLayoutType: BottomSheetLayoutType,
     bottomSheetStyle: Int
 ) : BandyerClickableBottomSheet<T>(
     context,
     callActionItems as List<T>,
-    callActionItems.size.takeIf { it < MAX_ITEMS_PER_ROW } ?: MAX_ITEMS_PER_ROW,
     0,
-    BottomSheetLayoutType.GRID,
-    bottomSheetStyle) where T : ActionItem {
+    bottomSheetLayoutType,
+    bottomSheetStyle
+) where T : ActionItem {
 
     private var camera: CallAction.CAMERA? = null
     private var mic: CallAction.MICROPHONE? = null
@@ -78,21 +82,6 @@ open class CallBottomSheet<T>(
     private var cameraToggled = false
     private var micToggled = false
 
-    private val lifecycleObserver = object : LifecycleObserver {
-        @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-        fun onResume() = calculateBottomSheetDimensions()
-    }
-
-    /**
-     * Singleton of the call bottom sheet
-     */
-    companion object {
-        /**
-         * Max visible items per row
-         */
-        const val MAX_ITEMS_PER_ROW = 4
-    }
-
     init {
         firstOrNull(CallAction.OPTIONS::class.java).let {
             camera = firstOrNull(CallAction.CAMERA::class.java)
@@ -101,8 +90,13 @@ open class CallBottomSheet<T>(
                 ?: it?.switchWith as? CallAction.MICROPHONE
         }
         recyclerView?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-        context.lifecycle.addObserver(lifecycleObserver)
+    }
 
+    override fun getClickableViews(viewHolder: RecyclerView.ViewHolder): MutableList<View> {
+        val listOfViews = mutableListOf<View>()
+        viewHolder.itemView.findViewById<View?>(R.id.bandyer_button_view)?.let { listOfViews.add(it) }
+        viewHolder.itemView.findViewById<View?>(R.id.bandyer_label_view)?.let { listOfViews.add(it) }
+        return listOfViews
     }
 
     override fun saveInstanceState(saveInstanceState: Bundle?): Bundle? {
@@ -168,7 +162,12 @@ open class CallBottomSheet<T>(
 
         bottomSheetLayoutContent.backgroundView?.alpha = if (state == STATE_HIDDEN || isShowingBottomSheetFromBottom) 0f else 1f
 
-        bottomSheetLayoutContent.lineView?.state = when {
+        if (bottomSheetBehaviour?.disableDragging == true) {
+            bottomSheetLayoutContent.lineView?.state = when (state) {
+                STATE_COLLAPSED -> State.COLLAPSED
+                else            -> State.HIDDEN
+            }
+        } else bottomSheetLayoutContent.lineView?.state = when {
             slideOffset > 0f                             -> State.ANCHORED_LINE
             state == STATE_COLLAPSED                     -> State.COLLAPSED
             state == STATE_ANCHOR_POINT || fixed == true -> State.ANCHORED_DOT
@@ -181,6 +180,7 @@ open class CallBottomSheet<T>(
     override fun onExpanded() {
         super.onExpanded()
         bottomSheetLayoutContent.backgroundView?.alpha = 1f
+        if (bottomSheetBehaviour?.disableDragging == true) return
         bottomSheetLayoutContent.lineView?.state = State.EXPANDED
     }
 
@@ -195,6 +195,7 @@ open class CallBottomSheet<T>(
         lineAnimator?.removeAllUpdateListeners()
         cameraToggled = camera?.toggled == true
         micToggled = mic?.toggled == true
+        if (bottomSheetBehaviour?.disableDragging == true) return
         bottomSheetLayoutContent.lineView?.state = if (bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT else State.COLLAPSED
     }
 
@@ -207,6 +208,7 @@ open class CallBottomSheet<T>(
     override fun onAnchor() {
         super.onAnchor()
         bottomSheetLayoutContent.backgroundView?.alpha = 1f
+        if (bottomSheetBehaviour?.disableDragging == true) return
         bottomSheetLayoutContent.lineView?.state = if (bottomSheetBehaviour?.skipCollapsed == true) State.ANCHORED_DOT else State.ANCHORED_LINE
     }
 
@@ -223,10 +225,14 @@ open class CallBottomSheet<T>(
     override fun onConfigurationChanged() {
         bottomSheetBehaviour ?: return
         fixed ?: return
-        calculateBottomSheetDimensions()
     }
 
     private fun setup(collapsible: Boolean, fixed: Boolean? = false, collapsed: Boolean = false) = bottomSheetLayoutContent.post {
+        val linearLayoutManager: LinearLayoutManager? = bottomSheetLayoutContent.recyclerView?.layoutManager as? LinearLayoutManager
+        val lastVisiblePosition = linearLayoutManager?.findLastCompletelyVisibleItemPosition() ?: callActionItems.size
+        val notVerticallyDraggable = bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL ||
+                (lastVisiblePosition == (callActionItems.size - 1) && linearLayoutManager!!.findViewByPosition(lastVisiblePosition)?.isVisible() == true)
+
         bottomSheetBehaviour ?: return@post
         this.fixed = fixed!!
         animationStartOffset = -1f
@@ -234,7 +240,8 @@ open class CallBottomSheet<T>(
         animationEnabled = fixed == false
         this.collapsible = collapsible
         this.collapsed = collapsed
-        bottomSheetBehaviour!!.disableDragging = callActionItems.size <= MAX_ITEMS_PER_ROW
+        bottomSheetBehaviour!!.disableDragging = notVerticallyDraggable
+        if (notVerticallyDraggable) lineView?.state = State.HIDDEN
 
         if (fixed == true) {
             bottomSheetBehaviour!!.isHideable = false
@@ -245,13 +252,6 @@ open class CallBottomSheet<T>(
         }
 
         calculateBottomSheetDimensions()
-
-        if (callActionItems.size <= MAX_ITEMS_PER_ROW) {
-            lineView?.layoutParams?.height = mContext.get()?.dp2px(24f)
-            lineView?.visibility = View.INVISIBLE
-            lineView?.isClickable = false
-            lineView?.requestLayout()
-        }
 
         lineView?.setOnClickListener {
             bottomSheetLayoutContent.backgroundView?.alpha = 1f
@@ -280,13 +280,21 @@ open class CallBottomSheet<T>(
                 return@post
             }
 
-            val oneLineHeight = (lineView?.getHeightWithVerticalMargin() ?: 0) +
-                    (titleView?.getHeightWithVerticalMargin() ?: 0) +
-                    firstItem.getHeightWithVerticalMargin() + (firstItem.paddingTop.takeIf { callActionItems.size > MAX_ITEMS_PER_ROW } ?: 0)
+            val layoutManager = recyclerView?.layoutManager ?: return@post
+
+            val oneLineHeightPadding = when {
+                layoutManager is LinearLayoutManager && layoutManager.orientation == LinearLayoutManager.HORIZONTAL -> firstItem.paddingBottom
+                layoutManager is GridLayoutManager                                                                  -> firstItem.paddingTop.takeIf { callActionItems.size > layoutManager.spanCount } ?: 0
+                else                                                                                                -> 0
+            }
+
+            val oneLineHeight = (lineView?.getHeightWithVerticalMargin().takeIf { lineView?.visibility != View.GONE && !bottomSheetBehaviour!!.disableDragging } ?: 0) +
+                    (titleView?.getHeightWithVerticalMargin().takeIf { lineView?.visibility != View.GONE } ?: 0) +
+                    firstItem.getHeightWithVerticalMargin() + oneLineHeightPadding
 
             when {
                 collapsible -> {
-                    peekHeight = bottomSheetLayoutContent.rootView.top + (lineView?.getHeightWithVerticalMargin()
+                    peekHeight = bottomSheetLayoutContent.rootView.top + (lineView?.getHeightWithVerticalMargin().takeIf { lineView?.visibility != View.GONE && !bottomSheetBehaviour!!.disableDragging }
                         ?: 0)
                     anchorOffset = oneLineHeight
                     animationEndState = if (collapsed!! && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
@@ -300,11 +308,15 @@ open class CallBottomSheet<T>(
             }
 
             with(bottomSheetBehaviour!!) {
-                this.peekHeight = peekHeight
-                this.anchorOffset = anchorOffset
+                if (this.peekHeight == 0 && this.anchorOffset == -1) {
+                    this.peekHeight = peekHeight
+                    this.anchorOffset = anchorOffset
+                }
                 skipAnchor = false
                 bottomSheetBehaviour!!.isHideable = false
-                val newState = if (callActionItems.size <= MAX_ITEMS_PER_ROW) STATE_EXPANDED else if (collapsed!! && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
+                val shouldExpand = bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL ||
+                        (bottomSheetLayoutType is BottomSheetLayoutType.GRID && bottomSheetLayoutType.spanSize >= callActionItems.size)
+                val newState = if (shouldExpand) STATE_EXPANDED else if (collapsed!! && collapsible) STATE_COLLAPSED else STATE_ANCHOR_POINT
                 if (state == newState) {
                     when (newState) {
                         STATE_COLLAPSED    -> onCollapsed()
@@ -314,7 +326,9 @@ open class CallBottomSheet<T>(
                 if (state == STATE_HIDDEN && state != STATE_SETTLING && state != newState) state = newState
             }
 
-            bottomSheetLayoutContent.lineView?.state = when {
+            if (bottomSheetBehaviour?.disableDragging == true) {
+                lineView?.state = State.HIDDEN
+            } else bottomSheetLayoutContent.lineView?.state = when {
                 bottomSheetBehaviour!!.skipCollapsed && state == STATE_ANCHOR_POINT || fixed == true -> State.ANCHORED_DOT
                 state == STATE_ANCHOR_POINT                                                          -> State.ANCHORED_LINE
                 state == STATE_EXPANDED                                                              -> State.EXPANDED

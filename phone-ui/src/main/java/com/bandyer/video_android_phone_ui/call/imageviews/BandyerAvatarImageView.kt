@@ -21,8 +21,11 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.AttributeSet
+import android.util.TypedValue
+import androidx.core.content.ContextCompat
 import com.bandyer.video_android_phone_ui.R
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.internal.ThemeEnforcement.obtainStyledAttributes
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 

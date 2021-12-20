@@ -18,16 +18,86 @@ package com.bandyer.video_android_phone_ui.bottom_sheet.view
 
 /**
  * Bandyer bottom sheet layout types supported
+ * @constructor
  */
-enum class BottomSheetLayoutType {
+sealed class BottomSheetLayoutType {
 
     /**
-     * Grid layout
+     * Bandyer bottom sheet layout orientation
      */
-    GRID,
+    enum class Orientation {
+        /**
+         * Horizontal
+         */
+        HORIZONTAL,
+
+        /**
+         * Vertical
+         */
+        VERTICAL
+    }
 
     /**
-     * List layout
+     * Orientation
      */
-    LIST
+    abstract val orientation: Orientation
+
+    /**
+     * Grid bottom sheet layout type
+     * @property spanSize Int grid span size
+     * @constructor
+     */
+    class GRID(val spanSize: Int, override val orientation: Orientation) : BottomSheetLayoutType() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is GRID) return false
+
+            if (spanSize != other.spanSize) return false
+            if (orientation != other.orientation) return false
+
+            return true
+        }
+
+        /**
+         * @supperss
+         */
+        override fun hashCode(): Int = super.hashCode()
+    }
+
+    /**
+     * List bottom sheet layout type
+     * @constructor
+     */
+    class LIST(override val orientation: Orientation) : BottomSheetLayoutType() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is LIST) return false
+
+            if (orientation != other.orientation) return false
+
+            return true
+        }
+
+        /**
+         * @supperss
+         */
+        override fun hashCode(): Int = super.hashCode()
+    }
+
+    /**
+     * @suppress
+     */
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is BottomSheetLayoutType) return false
+
+        if (orientation != other.orientation) return false
+
+        return true
+    }
+
+    /**
+     * @suppress
+     */
+    override fun hashCode(): Int = javaClass.hashCode()
 }

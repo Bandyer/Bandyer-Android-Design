@@ -25,7 +25,7 @@
         <attr name="bandyer_answerHelperTextStyle" format="reference" />
         <attr name="bandyer_livePointerStyle" format="reference" />
 
-        <attr name="bandyer_userInfoStyle" />
+        <attr name="bandyer_userInfoStyle" format="reference" />
         <attr name="bandyer_callInfoStyle" format="reference" />
         <attr name="bandyer_userStatusStyle" format="reference"/>
 
@@ -33,6 +33,8 @@
 
         <attr name="bandyer_screenShareDialogStyle" format="reference" />
         <attr name="bandyer_fileShareDialogStyle" format="reference" />
+
+        <attr name="bandyer_feedbackDialogStyle" format="reference" />
 
         <attr name="bandyer_smartGlassDialogMenuStyle" format="reference" />
     </declare-styleable>
@@ -52,6 +54,7 @@
         <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
         <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
         <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare</item>
+        <item name="bandyer_feedbackDialogStyle">@style/BandyerSDKDesign.FragmentDialog.Feedback</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.Day.V16" parent="BandyerSDKDesign.Theme.Day">
@@ -66,9 +69,10 @@
         <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>
         <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
         <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
-        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.LightStatusBar</item>
-        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.LightStatusBar</item>
-        <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.LightStatusBar</item>
+        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
+        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare</item>
+        <item name="bandyer_feedbackDialogStyle">@style/BandyerSDKDesign.FragmentDialog.Feedback</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.Night.V16" parent="BandyerSDKDesign.Theme.Night">
@@ -83,9 +87,10 @@
         <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>
         <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
         <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
-        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.DarkStatusBar</item>
-        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.DarkStatusBar</item>
-        <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.DarkStatusBar</item>
+        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
+        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare</item>
+        <item name="bandyer_feedbackDialogStyle">@style/BandyerSDKDesign.FragmentDialog.Feedback</item>
     </style>
 
     <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.DayNight.V16"/>
@@ -96,7 +101,7 @@
 
     <style name="BandyerSDKDesign.Theme.Call" parent="BandyerSDKDesign.Theme.Call.Night">
         <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.Day</item>
-        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.DarkStatusBar</item>
+        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
         <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Day</item>
     </style>
 

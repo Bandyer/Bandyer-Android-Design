@@ -19,6 +19,7 @@ package com.bandyer.video_android_phone_ui.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
+import android.view.View.OnLayoutChangeListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
@@ -33,9 +34,8 @@ import kotlin.math.min
  * @author kristiyan
  */
 open class SystemControlsAwareHorizontalGuideline @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : Guideline(context, attrs, defStyleAttr), SystemViewLayoutObserver {
-
 
     ///////////////////////////////////////// SYSTEM CONTROLS AWARE OBSERVER //////////////////////////////////////////////////////////////////////////////////
 
@@ -45,6 +45,8 @@ open class SystemControlsAwareHorizontalGuideline @JvmOverloads constructor(
     private var currentLeftInset = 0
     private var currentRightInset = 0
 
+    private val parentLayoutChangeListener = OnLayoutChangeListener { _, _, _, _, _, _, _, _, _ -> onLeftRightInsetChanged() }
+
     /**
      * @suppress
      */
@@ -52,13 +54,13 @@ open class SystemControlsAwareHorizontalGuideline @JvmOverloads constructor(
         super.onAttachedToWindow()
         if (initialGuidePercentage == -1f) {
             initialGuidePercentage = (layoutParams as? ConstraintLayout.LayoutParams)?.guidePercent
-                    ?: 0f
+                ?: 0f
         } else setGuidelinePercent(adjustedGuidePercentage)
         context.scanForFragmentActivity()?.let {
             SystemViewLayoutOffsetListener.addObserver(it, this)
         }
+        (parent as? View)?.addOnLayoutChangeListener(parentLayoutChangeListener)
     }
-
 
     /**
      * @suppress
@@ -80,6 +82,7 @@ open class SystemControlsAwareHorizontalGuideline @JvmOverloads constructor(
         context.scanForFragmentActivity()?.let {
             SystemViewLayoutOffsetListener.removeObserver(it as AppCompatActivity, this)
         }
+        (parent as? View)?.removeOnLayoutChangeListener(parentLayoutChangeListener)
     }
 
     /**
@@ -114,13 +117,17 @@ open class SystemControlsAwareHorizontalGuideline @JvmOverloads constructor(
 
 
     private fun adjustGuideline(pixels: Int, signed: Int) {
-        val parentWidth = (parent as View).width
-        if (parentWidth == 0) return
+        val parent = (parent as View)
+        val parentWidth = parent.width
+        if (parent.isInLayout || parentWidth == 0) {
+            parent.post { adjustGuideline(pixels, signed) }
+            return
+        }
         adjustedGuidePercentage =
-                if (pixels == 0) initialGuidePercentage
-                else initialGuidePercentage + signed * (pixels.toFloat() / parentWidth) / 2f
+            if (pixels == 0) initialGuidePercentage
+            else initialGuidePercentage + signed * (pixels.toFloat() / parentWidth) / 2f
 
-        setGuidelinePercent(adjustedGuidePercentage)
+        post { setGuidelinePercent(adjustedGuidePercentage) }
     }
 
     private fun onLeftRightInsetChanged() {

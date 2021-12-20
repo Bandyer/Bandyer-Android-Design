@@ -22,6 +22,7 @@ import android.graphics.PointF
 import android.graphics.Rect
 import android.view.*
 import android.view.inputmethod.InputMethodManager
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getScreenSize
 
 /**
  * Method to check if device is in Landscape or not

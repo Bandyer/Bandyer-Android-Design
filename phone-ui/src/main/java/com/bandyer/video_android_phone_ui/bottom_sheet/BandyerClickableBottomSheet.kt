@@ -20,7 +20,8 @@ import android.view.View
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.video_android_phone_ui.R
+import com.bandyer.video_android_phone_ui.bottom_sheet.BandyerActionBottomSheet
+import com.bandyer.video_android_phone_ui.bottom_sheet.BandyerBottomSheet
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.AdapterActionItem
 import com.bandyer.video_android_phone_ui.bottom_sheet.view.BottomSheetLayoutType
@@ -32,12 +33,13 @@ import com.mikepenz.fastadapter.listeners.ClickEventHook
  * @author kristiyan
  */
 @Suppress("UNCHECKED_CAST")
-open class BandyerClickableBottomSheet<T> constructor(context: AppCompatActivity,
-                                                      views: List<T>,
-                                                      spanSize: Int,
-                                                      peekHeight: Int?,
-                                                      bottomSheetLayoutType: BottomSheetLayoutType,
-                                                      @StyleRes bottomSheetLayoutStyle: Int) : BandyerActionBottomSheet<T>(context, views, spanSize, peekHeight, bottomSheetLayoutType, bottomSheetLayoutStyle) where T : ActionItem {
+abstract class BandyerClickableBottomSheet<T> constructor(
+    context: AppCompatActivity,
+    views: List<T>,
+    peekHeight: Int?,
+    bottomSheetLayoutType: BottomSheetLayoutType,
+    @StyleRes bottomSheetLayoutStyle: Int
+) : BandyerActionBottomSheet<T>(context, views, peekHeight, bottomSheetLayoutType, bottomSheetLayoutStyle) where T : ActionItem {
 
     init {
         fastAdapter.addEventHook(object : ClickEventHook<AdapterActionItem>() {
@@ -47,12 +49,14 @@ open class BandyerClickableBottomSheet<T> constructor(context: AppCompatActivity
                 listener?.onActionClicked(this@BandyerClickableBottomSheet, item.item as T, position)
             }
 
-            override fun onBindMany(viewHolder: RecyclerView.ViewHolder): MutableList<View> {
-                val listOfViews = mutableListOf<View>()
-                viewHolder.itemView.findViewById<View?>(R.id.bandyer_button_view)?.let { listOfViews.add(it) }
-                viewHolder.itemView.findViewById<View?>(R.id.bandyer_label_view)?.let { listOfViews.add(it) }
-                return listOfViews
-            }
+            override fun onBindMany(viewHolder: RecyclerView.ViewHolder): MutableList<View> = getClickableViews(viewHolder)
         })
     }
+
+    /**
+     * Returns a list of views that triggers the click selection on the input view holder
+     * @param viewHolder ViewHolder input view holder
+     * @return MutableList<View> the list of clickable views
+     */
+    abstract fun getClickableViews(viewHolder: RecyclerView.ViewHolder): MutableList<View>
 }

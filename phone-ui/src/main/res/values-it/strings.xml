@@ -165,4 +165,18 @@
     <string name="bandyer_max_bytes_dialog_descr">È consentito condividere file fino a 150 MB</string>
     <string name="bandyer_max_bytes_dialog_title">Limite condivisione file</string>
 
+    <!-- FEEDBACK -->
+    <string name="bandyer_feedback_vote">Vota</string>
+    <string name="bandyer_feedback_close">Chiudi</string>
+    <string name="bandyer_feedback_evaluate_call">Valuta la qualità della chiamata</string>
+    <string name="bandyer_feedback_bad">Molto male</string>
+    <string name="bandyer_feedback_poor">Scadente</string>
+    <string name="bandyer_feedback_neutral">Neutro</string>
+    <string name="bandyer_feedback_good">Buono</string>
+    <string name="bandyer_feedback_excellent">Eccellente</string>
+    <string name="bandyer_feedback_leave_a_comment">Lascia un commento…</string>
+    <string name="bandyer_feedback_rating_bar_descr">Voto</string>
+    <string name="bandyer_feedback_see_you_soon">Speriamo di rivederti presto</string>
+    <string name="bandyer_feedback_thank_you">Ti ringraziamo per aver contribuito a migliorare il nostro servizio!</string>
+
 </resources>

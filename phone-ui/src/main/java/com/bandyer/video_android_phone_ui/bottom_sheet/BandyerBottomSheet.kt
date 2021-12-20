@@ -18,7 +18,9 @@ package com.bandyer.video_android_phone_ui.bottom_sheet
 
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
+import com.bandyer.video_android_phone_ui.call.buttons.BandyerLineButton
 import com.google.android.material.textview.MaterialTextView
 
 /**
@@ -35,7 +37,7 @@ interface BandyerBottomSheet {
     /**
      * The lineView of the bottomSheet
      */
-    var lineView: View?
+    var lineView: BandyerLineButton?
     /**
      * The titleView of the bottomSheet
      */

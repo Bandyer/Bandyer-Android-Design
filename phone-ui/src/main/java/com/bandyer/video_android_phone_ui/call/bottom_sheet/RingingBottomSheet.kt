@@ -16,24 +16,31 @@
 
 package com.bandyer.video_android_phone_ui.call.bottom_sheet
 
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_phone_ui.R
 import com.bandyer.video_android_phone_ui.bottom_sheet.BandyerClickableBottomSheet
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
 import com.bandyer.video_android_phone_ui.bottom_sheet.view.BottomSheetLayoutType
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.CallAction
 
 /**
- * @suppress
- * @author kristiyan
+ * Ringing bottom sheet
+ * @param T action item type
+ * @property bottomSheetLayoutType BottomSheetLayoutType
+ * @constructor
  */
-
 @Suppress("UNCHECKED_CAST")
-open class RingingBottomSheet<T>(context: AppCompatActivity, bottomSheetStyle: Int) : BandyerClickableBottomSheet<T>(
+open class RingingBottomSheet<T>(
+    context: AppCompatActivity,
+    bottomSheetLayoutType: BottomSheetLayoutType,
+    bottomSheetStyle: Int
+) : BandyerClickableBottomSheet<T>(
     context,
     CallAction.getIncomingCallActions(context) as List<T>,
-    2,
     0,
-    BottomSheetLayoutType.GRID,
+    bottomSheetLayoutType,
     bottomSheetStyle
 ) where T : ActionItem {
 
@@ -43,5 +50,12 @@ open class RingingBottomSheet<T>(context: AppCompatActivity, bottomSheetStyle: I
         bottomSheetBehaviour!!.skipCollapsed = true
         bottomSheetBehaviour!!.disableDragging = true
         expand()
+    }
+
+    override fun getClickableViews(viewHolder: RecyclerView.ViewHolder): MutableList<View> {
+        val listOfViews = mutableListOf<View>()
+        viewHolder.itemView.findViewById<View?>(R.id.bandyer_button_view)?.let { listOfViews.add(it) }
+        viewHolder.itemView.findViewById<View?>(R.id.bandyer_label_view)?.let { listOfViews.add(it) }
+        return listOfViews
     }
 }

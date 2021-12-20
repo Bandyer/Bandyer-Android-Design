@@ -19,6 +19,7 @@ package com.bandyer.video_android_phone_ui.extensions
 import android.animation.*
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Point
 import android.graphics.PointF
 import android.graphics.Rect
@@ -27,6 +28,7 @@ import android.graphics.drawable.*
 import android.hardware.input.InputManager
 import android.os.Build
 import android.os.SystemClock
+import android.text.TextUtils
 import android.util.TypedValue
 import android.view.*
 import android.view.animation.*
@@ -39,15 +41,15 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.InputDeviceCompat
 import com.bandyer.android_common.FieldProperty
 import com.bandyer.android_common.LifecycleEvents
-import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
-import com.bandyer.video_android_core_ui.extensions.ContextExtensions.isRTL
 import com.bandyer.video_android_phone_ui.buttons.BandyerActionButton
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getScreenSize
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.sqrt
-
 
 ////////////////////////////////////////////// FIELD PROPERTIES //////////////////////////////////////////////
 
@@ -76,8 +78,6 @@ internal var View.isUnHooked: Boolean by FieldProperty { false }
 
 ////////////////////////////////////////////////// EXTENSION FUNCTIONS ////////////////////////////////////////////////////////////////////////////////////////
 
-
-
 /**
  * This utils function make a view change its bounds as a square, its dimensions to a desired size and moves the view to a desired top
  * and a desired left.
@@ -88,50 +88,36 @@ internal var View.isUnHooked: Boolean by FieldProperty { false }
  * @param toRight desired right position
  * @param onResizedAndMoved () -> Unit? callback after animator has ended
  */
-fun View.resizeAndMove(toSize: Float, toTop: Float, toLeft: Float, toRight: Float, duration: Long, onResizedAndMoved: () -> Unit): AnimatorSet? {
-    val leftMargin = if (!context.isRTL()) toLeft else toRight
-    val rightMargin = if (!context.isRTL()) toRight else toLeft
+fun View.resizeAndMove(toSize: Int, toTop: Int, toLeft: Int, toRight: Int, duration: Long, onResizedAndMoved: () -> Unit): AnimatorSet? {
+    val isRtl = isRtl()
+    val leftMargin = if (!isRtl) toLeft else toRight
+    val rightMargin = if (!isRtl) toRight else toLeft
 
-    val valueAnimator = ValueAnimator.ofFloat(layoutParams.height.toFloat().takeIf { it != -1f } ?: height.toFloat(), toSize)
-    val valueAnimator3 = ValueAnimator.ofFloat((layoutParams as ViewGroup.MarginLayoutParams).topMargin.toFloat(), toTop)
-    val valueAnimator4 = ValueAnimator.ofFloat(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-        (layoutParams as ViewGroup.MarginLayoutParams).marginStart.toFloat()
-    } else {
-        (layoutParams as ViewGroup.MarginLayoutParams).leftMargin.toFloat()
-    }, leftMargin)
-    val valueAnimator5 = ValueAnimator.ofFloat(if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-        (layoutParams as ViewGroup.MarginLayoutParams).marginEnd.toFloat()
-    } else {
-        (layoutParams as ViewGroup.MarginLayoutParams).rightMargin.toFloat()
-    }, rightMargin)
+    val lp = layoutParams as ViewGroup.MarginLayoutParams
+
+    val valueAnimator = ValueAnimator.ofInt(lp.height.takeIf { it != -1 } ?: this@resizeAndMove.height, toSize)
+    val valueAnimator3 = ValueAnimator.ofInt(lp.topMargin, toTop)
+    val valueAnimator4 = ValueAnimator.ofInt(lp.marginStart, leftMargin)
+    val valueAnimator5 = ValueAnimator.ofInt(lp.marginEnd, rightMargin)
 
     valueAnimator.addUpdateListener {
-        val value = it.animatedValue as Float
-        layoutParams.height = value.toInt()
-        requestLayout()
+        lp.height = it.animatedValue as Int
+        layoutParams = lp
     }
 
     valueAnimator3.addUpdateListener {
-        val value = it.animatedValue as Float
-        val lp = layoutParams as ViewGroup.MarginLayoutParams
-        lp.topMargin = value.toInt()
-        requestLayout()
+        lp.topMargin = it.animatedValue as Int
+        layoutParams = lp
     }
 
     valueAnimator4.addUpdateListener {
-        val value = it.animatedValue as Float
-        val lp = layoutParams as ViewGroup.MarginLayoutParams
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) lp.marginStart = value.toInt()
-        else lp.leftMargin = value.toInt()
-        requestLayout()
+        lp.marginStart = it.animatedValue as Int
+        layoutParams = lp
     }
 
     valueAnimator5.addUpdateListener {
-        val value = it.animatedValue as Float
-        val lp = layoutParams as ViewGroup.MarginLayoutParams
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) lp.marginEnd = value.toInt()
-        else lp.rightMargin = value.toInt()
-        requestLayout()
+        lp.marginEnd = it.animatedValue as Int
+        layoutParams = lp
     }
 
     val set = AnimatorSet()
@@ -262,6 +248,8 @@ fun View.makeFloating(container: androidx.coordinatorlayout.widget.CoordinatorLa
 
         override fun onTouch(v: View, event: MotionEvent): Boolean {
             if (!isFloating) return true
+            
+            val screenSize = v.context.getScreenSize()
 
             container.requestDisallowInterceptTouchEvent(true)
 
@@ -286,7 +274,7 @@ fun View.makeFloating(container: androidx.coordinatorlayout.widget.CoordinatorLa
                         }
                         (currentCorner == CORNER.BOTTOM_LEFT || currentCorner == CORNER.BOTTOM_RIGHT) -> {
                             if (event.rawY > movePointEvent!!.y
-                                    && event.rawY < context.getScreenSize().y - getBottomAnchorOffset(bottomAnchor)
+                                    && event.rawY < screenSize.y - getBottomAnchorOffset(bottomAnchor)
                             )
                                 downPointEvent = Point(event.rawX.toInt(), event.rawY.toInt())
                         }
@@ -327,7 +315,7 @@ fun View.makeFloating(container: androidx.coordinatorlayout.widget.CoordinatorLa
                             cornerPoint.y = topAnchor.bottom
                         }
                         CORNER.TOP_RIGHT -> {
-                            cornerPoint.x = rootView.context.getScreenSize().x
+                            cornerPoint.x = screenSize.x
                             cornerPoint.y = topAnchor.bottom
                         }
                         CORNER.BOTTOM_LEFT -> {
@@ -335,13 +323,14 @@ fun View.makeFloating(container: androidx.coordinatorlayout.widget.CoordinatorLa
                             cornerPoint.y = bottomAnchor.top
                         }
                         CORNER.BOTTOM_RIGHT -> {
-                            cornerPoint.x = rootView.context.getScreenSize().x
+                            cornerPoint.x = screenSize.x
                             cornerPoint.y = bottomAnchor.top
                         }
                     }
+
                     val unHookedDx = cornerPoint.x - nearbyPoint.x
                     val unHookedDy = cornerPoint.y - nearbyPoint.y
-                    val unHookedDistance = sqrt(((unHookedDx.toLong() * unHookedDx.toLong()) + (unHookedDy.toLong() * unHookedDy.toLong())).toDouble())
+                    val unHookedDistance = abs(sqrt(((unHookedDx.toLong() * unHookedDx.toLong()) + (unHookedDy.toLong() * unHookedDy.toLong())).toDouble()))
 
                     if (unHookedDistance > v.height * 1.5 && !isUnHooked) {
                         isUnHooked = true
@@ -399,6 +388,9 @@ fun View.animateToCorner(corner: CORNER, container: androidx.coordinatorlayout.w
     val marginRight = (this.layoutParams as ViewGroup.MarginLayoutParams).rightMargin
     val topAnchorOffset = topAnchor.height + topAnchor.translationY
     val statusBarMargin = context.dp2px(16f)
+    
+    val screenSize = context.getScreenSize()
+    val bottomAnchorOffset = getBottomAnchorOffset(bottomAnchor)
 
     when (currentCorner) {
 
@@ -406,57 +398,57 @@ fun View.animateToCorner(corner: CORNER, container: androidx.coordinatorlayout.w
             CORNER.TOP_LEFT -> {
             }
             CORNER.TOP_RIGHT -> {
-                animatorTranslationX = context.getScreenSize().x - width.toFloat() - marginRight - marginLeft
+                animatorTranslationX = screenSize.x - width.toFloat() - marginRight - marginLeft
             }
             CORNER.BOTTOM_LEFT -> {
-                animatorTranslationY = context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor) - marginBottom - marginTop - statusBarMargin
+                animatorTranslationY = screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset - marginBottom - marginTop - statusBarMargin
             }
             CORNER.BOTTOM_RIGHT -> {
-                animatorTranslationX = context.getScreenSize().x - width.toFloat() - marginLeft - marginRight
-                animatorTranslationY = context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor) - marginBottom - marginTop - statusBarMargin
+                animatorTranslationX = screenSize.x - width.toFloat() - marginLeft - marginRight
+                animatorTranslationY = screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset - marginBottom - marginTop - statusBarMargin
             }
         }
 
         CORNER.TOP_RIGHT -> when (corner) {
             CORNER.TOP_LEFT -> {
-                animatorTranslationX = -(context.getScreenSize().x - width.toFloat()) + marginLeft + marginRight
+                animatorTranslationX = -(screenSize.x - width.toFloat()) + marginLeft + marginRight
             }
             CORNER.TOP_RIGHT -> {
             }
             CORNER.BOTTOM_LEFT -> {
-                animatorTranslationX = -(context.getScreenSize().x - width.toFloat()) + marginLeft + marginRight
-                animatorTranslationY = context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor) - marginBottom - marginTop - statusBarMargin
+                animatorTranslationX = -(screenSize.x - width.toFloat()) + marginLeft + marginRight
+                animatorTranslationY = screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset - marginBottom - marginTop - statusBarMargin
             }
             CORNER.BOTTOM_RIGHT -> {
-                animatorTranslationY = context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor) - marginBottom - marginTop - statusBarMargin
+                animatorTranslationY = screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset - marginBottom - marginTop - statusBarMargin
             }
         }
 
         CORNER.BOTTOM_LEFT -> when (corner) {
             CORNER.TOP_LEFT -> {
-                animatorTranslationY = -(context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor)) + marginTop + marginBottom + statusBarMargin
+                animatorTranslationY = -(screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset) + marginTop + marginBottom + statusBarMargin
             }
             CORNER.TOP_RIGHT -> {
-                animatorTranslationX = context.getScreenSize().x - width.toFloat() - marginRight - marginLeft
-                animatorTranslationY = -(context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor)) + marginTop + marginBottom + statusBarMargin
+                animatorTranslationX = screenSize.x - width.toFloat() - marginRight - marginLeft
+                animatorTranslationY = -(screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset) + marginTop + marginBottom + statusBarMargin
             }
             CORNER.BOTTOM_LEFT -> {
             }
             CORNER.BOTTOM_RIGHT -> {
-                animatorTranslationX = context.getScreenSize().x - width.toFloat() - marginRight - marginLeft
+                animatorTranslationX = screenSize.x - width.toFloat() - marginRight - marginLeft
             }
         }
 
         CORNER.BOTTOM_RIGHT -> when (corner) {
             CORNER.TOP_LEFT -> {
-                animatorTranslationX = -(context.getScreenSize().x - width.toFloat()) + marginLeft + marginRight
-                animatorTranslationY = -(context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor)) + marginTop + marginBottom + statusBarMargin
+                animatorTranslationX = -(screenSize.x - width.toFloat()) + marginLeft + marginRight
+                animatorTranslationY = -(screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset) + marginTop + marginBottom + statusBarMargin
             }
             CORNER.TOP_RIGHT -> {
-                animatorTranslationY = -(context.getScreenSize().y - height.toFloat() - topAnchorOffset - getBottomAnchorOffset(bottomAnchor)) + marginTop + marginBottom + statusBarMargin
+                animatorTranslationY = -(screenSize.y - height.toFloat() - topAnchorOffset - bottomAnchorOffset) + marginTop + marginBottom + statusBarMargin
             }
             CORNER.BOTTOM_LEFT -> {
-                animatorTranslationX = -(context.getScreenSize().x - width.toFloat()) + marginLeft + marginRight
+                animatorTranslationX = -(screenSize.x - width.toFloat()) + marginLeft + marginRight
             }
             CORNER.BOTTOM_RIGHT -> {
             }
@@ -952,3 +944,25 @@ fun View.replaceWith(newView: View) {
     otherParent?.removeView(newView)
     thisParent.addView(newView, index)
 }
+
+/**
+ * Checks whether the view is visibile and drawn inside screen's bounds.
+ * @receiver View
+ * @return Boolean true if visible on screen else otherwise
+ */
+fun View.isVisible(): Boolean {
+    if (!isShown) return false
+    val actualPosition = Rect()
+    val isGlobalVisible = getGlobalVisibleRect(actualPosition)
+    val screenWidth = Resources.getSystem().displayMetrics.widthPixels
+    val screenHeight = Resources.getSystem().displayMetrics.heightPixels
+    val screen = Rect(0, 0, screenWidth, screenHeight)
+    return isGlobalVisible && Rect.intersects(actualPosition, screen)
+}
+
+/**
+ * @suppress
+ * @return Boolean
+ */
+internal fun isRtl() =
+    TextUtils.getLayoutDirectionFromLocale(Locale.getDefault()) == View.LAYOUT_DIRECTION_RTL

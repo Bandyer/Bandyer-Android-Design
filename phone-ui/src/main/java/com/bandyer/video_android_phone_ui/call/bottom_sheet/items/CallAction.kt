@@ -44,6 +44,7 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
 
         /**
          * Gives a list of all actions used for incoming calls
+         * @param ctx Context input context
          * @return List<CallAction> composed of BIG_HANGUP and BIG_ANSWER
          */
         fun getIncomingCallActions(ctx: Context) = listOf(DECLINE(ctx), ANSWER(ctx))
@@ -60,20 +61,20 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
          * @return List<CallAction>
          */
         fun getActions(ctx: Context, micToggled: Boolean?, cameraToggled: Boolean?, withChat: Boolean, withWhiteboard: Boolean, withFileShare: Boolean, withScreenShare: Boolean): List<CallAction> =
-                mutableListOf<CallAction>().apply {
-                    if (micToggled != null) add(MICROPHONE(micToggled, ctx))
-                    if (cameraToggled != null) {
-                        add(CAMERA(cameraToggled, ctx))
-                        add(SWITCH_CAMERA(ctx))
-                    }
-                    if (withChat) add(CHAT(ctx))
-                    if (withWhiteboard) add(WHITEBOARD(ctx))
-                    add(AUDIOROUTE(ctx))
-                    if (withFileShare) add(FILE_SHARE(ctx))
-                    if (withScreenShare) add(SCREEN_SHARE(false, ctx))
-                    if (size < 3) add(1, HANGUP(ctx))
-                    else add(3, HANGUP(ctx))
+            mutableListOf<CallAction>().apply {
+                if (micToggled != null) add(MICROPHONE(micToggled, ctx))
+                if (cameraToggled != null) {
+                    add(CAMERA(cameraToggled, ctx))
+                    add(SWITCH_CAMERA(ctx))
                 }
+                if (withChat) add(CHAT(ctx))
+                if (withWhiteboard) add(WHITEBOARD(ctx))
+                add(AUDIOROUTE(ctx))
+                if (withFileShare) add(FILE_SHARE(ctx))
+                if (withScreenShare) add(SCREEN_SHARE(false, ctx))
+                if (size < 3) add(1, HANGUP(ctx))
+                else add(3, HANGUP(ctx))
+            }
     }
 
     /**
@@ -317,5 +318,5 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
     /**
      * Called when the layout has been inflated
      */
-    override fun onReady() {}
+    override fun onReady() = Unit
 }

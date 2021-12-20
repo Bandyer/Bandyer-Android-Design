@@ -18,7 +18,7 @@
 <resources>
 
     <style name="BandyerSDKDesign.ImageViewAvatar" parent="Widget.MaterialComponents.ShapeableImageView">
-        <item name="android:background">@color/bandyer_color_background</item>
+        <item name="android:background">@color/bandyer_color_background_dark</item>
         <item name="android:src">@drawable/bandyer_chat_avatar_icon</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="android:tint">@android:color/white</item>
@@ -31,13 +31,14 @@
     <style name="BandyerSDKDesign.ChatMessageStatusImageView" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:tint">?attr/colorOnSecondary</item>
         <item name="android:src">@drawable/bandyer_chat_status_icon</item>
+        <item name="android:padding">@dimen/bandyer_dimen_space2</item>
         <item name="android:scaleType">centerInside</item>
         <item name="android:adjustViewBounds">true</item>
     </style>
 
     <style name="BandyerSDKDesign.ImageViewAvatar.Chat" parent="BandyerSDKDesign.ImageViewAvatar">
         <item name="android:background">@color/bandyer_color_grey_light</item>
-        <item name="android:src">@drawable/ic_bandyer_avatar_small</item>
+        <item name="android:src">@drawable/ic_bandyer_avatar</item>
         <item name="android:tint">?attr/colorOnPrimary</item>
         <item name="android:layout_width">@dimen/bandyer_dimen_chat_avatar_size</item>
         <item name="android:layout_height">@dimen/bandyer_dimen_chat_avatar_size</item>

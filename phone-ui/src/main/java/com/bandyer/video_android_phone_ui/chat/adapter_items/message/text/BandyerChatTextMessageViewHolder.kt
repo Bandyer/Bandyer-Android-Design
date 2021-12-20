@@ -17,9 +17,9 @@
 package com.bandyer.video_android_phone_ui.chat.adapter_items.message.text
 
 import android.view.View
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getScreenSize
 import com.bandyer.video_android_phone_ui.chat.adapter_items.message.abstract_message.BandyerBaseChatMessageViewHolder
 import com.bandyer.video_android_phone_ui.chat.layout.BandyerChatTextMessageLayout
-import com.bandyer.video_android_phone_ui.extensions.getScreenSize
 
 /**
  * Bandyer Chat TextMessage ViewHolder

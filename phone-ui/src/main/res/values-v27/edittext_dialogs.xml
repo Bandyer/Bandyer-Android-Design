@@ -17,13 +17,13 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.V27" parent="BandyerSDKDesign.BottomSheetDialog.TextEditor.V23">
+    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.V27" parent="BandyerSDKDesign.BottomSheetDialog.TextEditor.V16">
         <item name="android:navigationBarColor">?attr/colorSurface</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.V27.Day" parent="BandyerSDKDesign.BottomSheetDialog.TextEditor.V23.Day">
+    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.V27.Day" parent="BandyerSDKDesign.BottomSheetDialog.TextEditor.V16.Day">
         <item name="android:navigationBarColor">@color/bandyer_colorSurface</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>

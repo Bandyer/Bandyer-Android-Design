@@ -18,6 +18,7 @@ package com.bandyer.video_android_phone_ui.chat.imageviews
 
 import android.content.Context
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatImageView
 import com.bandyer.video_android_phone_ui.R
 import com.google.android.material.imageview.ShapeableImageView
 

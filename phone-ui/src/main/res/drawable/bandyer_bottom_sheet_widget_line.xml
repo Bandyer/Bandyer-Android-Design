@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
   ~
   ~  Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,8 +15,9 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:drawable="@drawable/bandyer_shape_bottom_sheet_widget_line" app:bandyer_state_expanded="true"/>
-    <item android:drawable="@drawable/bandyer_shape_bottom_sheet_widget_line" app:bandyer_state_anchored_line="true"/>
-    <item android:drawable="@drawable/bandyer_shape_bottom_sheet_widget_line_collapsed" app:bandyer_state_anchored_dot="true"/>
-    <item android:drawable="@drawable/bandyer_shape_bottom_sheet_widget_line_collapsed"/>
+    <item android:drawable="@drawable/bandyer_shape_bottom_sheet_widget_line" app:bandyer_state_expanded="true" />
+    <item android:drawable="@drawable/bandyer_shape_bottom_sheet_widget_line" app:bandyer_state_anchored_line="true" />
+    <item android:drawable="@drawable/bandyer_shape_bottom_sheet_widget_line_collapsed" app:bandyer_state_anchored_dot="true" />
+    <item android:drawable="@android:color/transparent" app:bandyer_state_hidden="true" />
+    <item android:drawable="@drawable/bandyer_shape_bottom_sheet_widget_line_collapsed" />
 </selector>

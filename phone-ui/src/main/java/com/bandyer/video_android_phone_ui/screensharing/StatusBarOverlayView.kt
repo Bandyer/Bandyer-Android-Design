@@ -19,14 +19,16 @@ package com.bandyer.video_android_phone_ui.screensharing
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Color
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.bandyer.video_android_core_ui.extensions.ContextExtensions.dp2px
+import com.bandyer.video_android_core_ui.extensions.ContextExtensions.getScreenSize
 import com.bandyer.video_android_phone_ui.R
-import com.bandyer.video_android_phone_ui.extensions.getScreenSize
 import com.bandyer.video_android_phone_ui.extensions.scanForFragmentActivity
 import com.bandyer.video_android_phone_ui.utils.systemviews.SystemViewLayoutObserver
 import com.bandyer.video_android_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
@@ -43,17 +45,19 @@ import com.bandyer.video_android_phone_ui.utils.systemviews.SystemViewLayoutOffs
  *        reference to a style resource that supplies default values for
  *        the view. Can be 0 to not look for defaults.
  */
-class StatusBarOverlayView @JvmOverloads constructor(context: Context,
-                                                     attrs: AttributeSet? = null,
-                                                     defStyleAttr: Int = 0) : View(context, attrs, defStyleAttr), SystemViewLayoutObserver, View.OnLayoutChangeListener {
+class StatusBarOverlayView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : View(context, attrs, defStyleAttr), SystemViewLayoutObserver, Animator.AnimatorListener, ValueAnimator.AnimatorUpdateListener {
 
+    private val backgroundColor = ContextCompat.getColor(context, R.color.bandyer_screen_share_color)
+    private val safeViewHeightRange = with(context) { dp2px(25f) until dp2px(55f) }
+    private val pictureInPictureHeight = context.dp2px(10f)
 
-    private val STATUS_BAR_HEIGHT_LIMIT = context.dp2px(25f)
-
-
-    private var statusBarHeight = STATUS_BAR_HEIGHT_LIMIT
-
-    private var alphaAnimation: ValueAnimator? = null
+    init {
+        id = R.id.bandyer_id_screen_share_overlay
+    }
 
     /**
      * @suppress
@@ -63,9 +67,8 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
         context.scanForFragmentActivity()?.let {
             SystemViewLayoutOffsetListener.addObserver(it, this)
         }
-        alphaAnimation?.start()
+        addAlphaAnimationListeners(this, this)
         updateHeight()
-        addOnLayoutChangeListener(this)
     }
 
     /**
@@ -74,27 +77,26 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         context.scanForFragmentActivity()?.let {
-            SystemViewLayoutOffsetListener.removeObserver(it as AppCompatActivity, this)
+            SystemViewLayoutOffsetListener.removeObserver(it, this)
         }
-        alphaAnimation?.cancel()
-        removeOnLayoutChangeListener(this)
+        removeAlphaAnimationListener(this, this)
     }
 
+    /**
+     * @suppress
+     */
     override fun onTopInsetChanged(pixels: Int) {
-        if (pixels >= STATUS_BAR_HEIGHT_LIMIT) return
-        statusBarHeight = pixels.takeIf { it > 0 } ?: statusBarHeight
+        if (isInPictureInPictureMode()) return
+        statusBarHeight = pixels.coerceIn(safeViewHeightRange)
         updateHeight()
     }
 
     private fun updateHeight(height: Int = statusBarHeight) {
-        if (height > STATUS_BAR_HEIGHT_LIMIT || height == 0 || layoutParams?.height == height) return
-        post {
-            layoutParams ?: return@post
-            if (layoutParams.height == height) return@post
-            layoutParams.height = height
-            requestLayout()
-            bringToFront()
-        }
+        if (layoutParams == null || layoutParams.height == height) return
+        val layoutParams = layoutParams
+        layoutParams.height = height
+        this.layoutParams = layoutParams
+        bringToFront()
     }
 
     override fun onBottomInsetChanged(pixels: Int) = Unit
@@ -112,42 +114,88 @@ class StatusBarOverlayView @JvmOverloads constructor(context: Context,
         return Color.argb(a.toInt(), r.toInt(), g.toInt(), b.toInt())
     }
 
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        if (!isInPictureInPictureMode()) return
+        val multiplier = (width).toFloat() / context.getScreenSize().x
+        if (multiplier > 1) return
+        updateHeight(pictureInPictureHeight)
+    }
+
+    private fun isInPictureInPictureMode(): Boolean = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        with(context as? AppCompatActivity) {
+            this ?: false
+            kotlin.runCatching { this?.isInPictureInPictureMode }.getOrNull() ?: false
+        }
+    } else false
+
     /**
      * @suppress
      */
-    override fun onLayoutChange(v: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int) {
-        if (statusBarHeight == 0 || v == null || oldRight == right) return
-        val multiplier = (right - left).toFloat() / v.context.getScreenSize().x
-        if (multiplier > 1) return
-        updateHeight((statusBarHeight * multiplier).toInt())
+    override fun onAnimationRepeat(animation: Animator?) = bringToFront()
+
+    /**
+     * @suppress
+     */
+    override fun onAnimationStart(animation: Animator?) = bringToFront()
+
+    /**
+     * @suppress
+     */
+    override fun onAnimationEnd(animation: Animator?) = Unit
+
+    /**
+     * @suppress
+     */
+    override fun onAnimationCancel(animation: Animator?) = setBackgroundColor(backgroundColor)
+
+    /**
+     * @suppress
+     */
+    override fun onAnimationUpdate(animation: ValueAnimator?) {
+        animation ?: return
+        // Use animation position to blend colors.
+        val position = animation.animatedFraction
+        val blended = blendColors(Color.TRANSPARENT, backgroundColor, position)
+        // Apply blended color to the view.
+        setBackgroundColor(blended)
     }
 
+    /**
+     * Instance of StatusBarOverlayView
+     */
+    companion object {
+        private var statusBarHeight = 0
 
-    init {
-        id = R.id.bandyer_id_screen_share_overlay
+        /**
+         * Adds animator listener and update listener to the status bar global animation,
+         * so the animation is synchronized across all status bar overlay view instances
+         * @param animatorListener AnimatorListener animator listener
+         * @param animatorUpdateListener AnimatorUpdateListener animator update listener
+         */
+        fun addAlphaAnimationListeners(animatorListener: Animator.AnimatorListener, animatorUpdateListener: ValueAnimator.AnimatorUpdateListener) {
+            alphaAnimation.addListener(animatorListener)
+            alphaAnimation.addUpdateListener(animatorUpdateListener)
+            if (!alphaAnimation.isRunning) alphaAnimation.start()
+        }
 
-        alphaAnimation = ValueAnimator.ofFloat(0f, 1f).apply {
-            this.repeatMode = ValueAnimator.REVERSE
-            this.repeatCount = ValueAnimator.INFINITE
-            this.duration = 2000L
-            this.addListener(object : Animator.AnimatorListener {
-                override fun onAnimationRepeat(animation: Animator?) = bringToFront()
-                override fun onAnimationStart(animation: Animator?) = bringToFront()
-                override fun onAnimationEnd(animation: Animator?) = Unit
-                override fun onAnimationCancel(animation: Animator?) = Unit
-            })
+        /**
+         * Removes animator listener and update listener from the status bar global animation
+         * @param animatorListener AnimatorListener animator listener
+         * @param animatorUpdateListener AnimatorUpdateListener animator update listener
+         */
+        fun removeAlphaAnimationListener(animatorListener: Animator.AnimatorListener, animatorUpdateListener: ValueAnimator.AnimatorUpdateListener) {
+            alphaAnimation.removeListener(animatorListener)
+            alphaAnimation.removeUpdateListener(animatorUpdateListener)
+            if (alphaAnimation.listeners.isNullOrEmpty()) alphaAnimation.cancel()
+        }
 
-            this.addUpdateListener { animation ->
-                // Use animation position to blend colors.
-                val position = animation.animatedFraction
-                val color = ContextCompat.getColor(getContext(), R.color.bandyer_screen_share_color)
-                val blended = blendColors(Color.TRANSPARENT, color, position)
-                // Apply blended color to the view.
-                setBackgroundColor(blended)
+        private val alphaAnimation: ValueAnimator by lazy {
+            ValueAnimator.ofFloat(0f, 1f).apply {
+                this.repeatMode = ValueAnimator.REVERSE
+                this.repeatCount = ValueAnimator.INFINITE
+                this.duration = 2000L
             }
         }
     }
-
 }
-
-

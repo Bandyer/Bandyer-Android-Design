@@ -29,15 +29,10 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
-import androidx.fragment.app.FragmentActivity
 import com.bandyer.app_design.databinding.ActivityMainBinding
-import com.bandyer.video_android_glass_ui.CallManager
-import com.bandyer.video_android_glass_ui.GlassUi.launchCallGlass
-import com.bandyer.video_android_glass_ui.model.Volume
-import com.bandyer.video_android_glass_ui.model.*
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
 import com.bandyer.video_android_phone_ui.call.bottom_sheet.items.CallAction
-import com.bandyer.video_android_phone_ui.call.dialogs.BandyerSnapshotDialog
+import com.bandyer.video_android_phone_ui.feedback.FeedbackDialog
 import com.bandyer.video_android_phone_ui.filesharing.BandyerFileShareDialog
 import com.bandyer.video_android_phone_ui.filesharing.FileShareViewModel
 import com.bandyer.video_android_phone_ui.filesharing.model.TransferData
@@ -46,10 +41,7 @@ import com.bandyer.video_android_phone_ui.smartglass.call.menu.SmartGlassMenuLay
 import com.bandyer.video_android_phone_ui.smartglass.call.menu.items.getSmartglassActions
 import com.bandyer.video_android_phone_ui.smartglass.call.menu.utils.MotionEventInterceptor
 import com.bandyer.video_android_phone_ui.whiteboard.dialog.BandyerWhiteboardTextEditorDialog
-import com.bandyer.video_android_phone_ui.whiteboard.dialog.BandyerWhiteboardTextEditorDialog.BandyerWhiteboardTextEditorWidgetListener
 import com.google.android.material.appbar.MaterialToolbar
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import java.util.concurrent.ConcurrentHashMap
 
 class MainActivity : AppCompatActivity() {
@@ -95,15 +87,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnWhiteboardEditor.setOnClickListener {
-            BandyerWhiteboardTextEditorDialog().show(this@MainActivity, mText, object : BandyerWhiteboardTextEditorWidgetListener {
+            BandyerWhiteboardTextEditorDialog().show(this@MainActivity, mText, object :
+                BandyerWhiteboardTextEditorDialog.BandyerWhiteboardTextEditorWidgetListener {
                 override fun onTextEditConfirmed(newText: String) {
                     mText = newText
                 }
             })
-        }
-
-        btnSnapshotPreview.setOnClickListener {
-            BandyerSnapshotDialog().show(this@MainActivity)
         }
 
         btnLivePointer.setOnClickListener { startActivity(Intent(this@MainActivity, PointerActivity::class.java)) }
@@ -124,28 +113,7 @@ class MainActivity : AppCompatActivity() {
             fileShareDialog.setOnDismissListener { viewModel.itemsData.clear() }
         }
 
-        btnSmartglass.setOnClickListener {
-            launchCallGlass(
-                object : CallManager  {
-                    override val call: Call = Call("", flowOf(), flowOf(), flowOf(), flowOf())
-                    override val battery: Flow<Battery> = flowOf()
-                    override val wifi: Flow<WiFi> = flowOf()
-                    override val permissions: Flow<Permissions> = flowOf()
-                    override fun getVolume() = Volume(0,0,0)
-                    override fun requestMicPermission(context: FragmentActivity) = Unit
-                    override fun requestCameraPermission(context: FragmentActivity) = Unit
-                    override fun answer() = Unit
-                    override fun hangup() = Unit
-                    override fun enableCamera(enable: Boolean) = Unit
-                    override fun enableMic(enable: Boolean) = Unit
-                    override fun switchCamera() = Unit
-                    override fun setVolume(value: Int) = Unit
-                    override fun setZoom(value: Int) = Unit
-                },
-                Option.all,
-                false
-            )
-        }
+        btnFeedback.setOnClickListener { FeedbackDialog().show(supportFragmentManager, FeedbackDialog.TAG) }
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

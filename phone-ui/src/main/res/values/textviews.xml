@@ -16,6 +16,8 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- TEXT VIEW STYLE -->
+
     <style name="BandyerSDKDesign.TextView.Stream.UserDetails" parent="BandyerSDKDesign.TextView">
         <item name="android:layout_marginTop">@dimen/bandyer_dimen_space56</item>
         <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
@@ -144,6 +146,7 @@
         <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
         <item name="android:drawablePadding">@dimen/bandyer_dimen_space8</item>
         <item name="android:drawableStart">@drawable/ic_bandyer_record</item>
+        <item name="drawableTint">@color/bandyer_recording_color</item>
         <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance</item>
     </style>
 
@@ -167,11 +170,10 @@
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
     </style>
 
-
     <style name="BandyerSDKDesign.TextView.Title.Reload" parent="BandyerSDKDesign.TextView.Title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space20</item>
         <item name="android:text">@string/bandyer_error_title</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:gravity">center</item>
@@ -180,7 +182,6 @@
     <style name="BandyerSDKDesign.TextView.Subtitle.Reload" parent="BandyerSDKDesign.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space4</item>
         <item name="android:text">@string/bandyer_error_subtitle</item>
         <item name="android:textColor">@android:color/darker_gray</item>
         <item name="android:gravity">center</item>

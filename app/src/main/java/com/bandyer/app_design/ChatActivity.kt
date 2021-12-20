@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_phone_ui.chat.adapter_items.message.text.BandyerChatTextMessage
 import com.bandyer.video_android_phone_ui.chat.adapter_items.message.text.BandyerChatTextMessageItem
 import com.bandyer.video_android_phone_ui.chat.widgets.BandyerChatInfoWidget
-import com.bandyer.video_android_phone_ui.chat.widgets.BandyerChatInfoWidget.BandyerChatInfoWidgetState.*
 import com.bandyer.video_android_phone_ui.chat.widgets.BandyerChatUnreadMessagesWidget
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.textview.MaterialTextView
@@ -98,7 +97,7 @@ class ChatActivity : AppCompatActivity() {
 
     private fun initializeChatInfoWidget() {
         val chatInfoWidget = findViewById<BandyerChatInfoWidget>(R.id.chat_info)
-        chatInfoWidget.state = ONLINE()
+        chatInfoWidget.state = BandyerChatInfoWidget.BandyerChatInfoWidgetState.ONLINE()
         chatInfoWidget.setName("Keanu Reeves")
         chatInfoWidget.contactNameView?.visibility = View.VISIBLE
     }
@@ -112,11 +111,11 @@ class ChatActivity : AppCompatActivity() {
         val chatInfoWidget = findViewById<BandyerChatInfoWidget>(R.id.chat_info)
         chatInfoWidget.setOnClickListener {
             chatInfoWidget.state = when (chatInfoWidget.state) {
-                is WAITING_FOR_NETWORK -> CONNECTING()
-                is CONNECTING -> ONLINE()
-                is ONLINE -> TYPING()
-                is TYPING -> OFFLINE()
-                else -> WAITING_FOR_NETWORK()
+                is BandyerChatInfoWidget.BandyerChatInfoWidgetState.WAITING_FOR_NETWORK -> BandyerChatInfoWidget.BandyerChatInfoWidgetState.CONNECTING()
+                is BandyerChatInfoWidget.BandyerChatInfoWidgetState.CONNECTING -> BandyerChatInfoWidget.BandyerChatInfoWidgetState.ONLINE()
+                is BandyerChatInfoWidget.BandyerChatInfoWidgetState.ONLINE -> BandyerChatInfoWidget.BandyerChatInfoWidgetState.TYPING()
+                is BandyerChatInfoWidget.BandyerChatInfoWidgetState.TYPING -> BandyerChatInfoWidget.BandyerChatInfoWidgetState.OFFLINE()
+                else -> BandyerChatInfoWidget.BandyerChatInfoWidgetState.WAITING_FOR_NETWORK()
             }
         }
     }

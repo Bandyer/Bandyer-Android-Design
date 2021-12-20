@@ -68,6 +68,7 @@
 
     <!-- background color -->
     <color name="bandyer_color_background">#303030</color>
+    <color name="bandyer_color_background_dark">#202020</color>
 
     <!-- file share -->
     <color name="bandyer_color_progressbar">#E6E6E6</color>
@@ -78,7 +79,11 @@
     <color name="bandyer_screen_share_color_night">#FF5131</color>
 
     <!-- recording color -->
-    <color name="bandyer_recording_color">#99000D</color>
+    <color name="bandyer_recording_color">#D50000</color>
+
+    <!-- API 21 colors -->
+    <color name="bandyer_api21_color_on_surface_12">#FFE0E0E0</color>
+    <color name="bandyer_api21_color_on_surface_30">#B1B1B1</color>
 
     <!-- blocked input color -->
     <color name="bandyer_blocked_input_color">#FF0000</color>

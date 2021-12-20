@@ -16,7 +16,7 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:drawable="@drawable/ic_bandyer_time" app:bandyer_state_pending="true"/>
+    <item android:drawable="@drawable/ic_bandyer_clock" app:bandyer_state_pending="true"/>
     <item android:drawable="@drawable/ic_bandyer_single_tick" app:bandyer_state_sent="true"/>
     <item android:drawable="@drawable/ic_bandyer_double_tick" app:bandyer_state_seen="true"/>
 </selector>

@@ -24,8 +24,8 @@ import android.os.Looper
 import android.view.View
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
-import com.bandyer.video_android_phone_ui.R
 import com.bandyer.video_android_phone_ui.bottom_sheet.behaviours.BandyerBottomSheetBehaviour
+import com.bandyer.video_android_phone_ui.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
