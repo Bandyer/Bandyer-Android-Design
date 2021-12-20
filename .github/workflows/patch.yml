@@ -19,6 +19,7 @@ jobs:
     
     - name: Generate next version
       uses: mathieudutour/github-tag-action@v6.0
+      id: tag_version
       with:
         release_branches: develop
         dry_run: true
