@@ -23,9 +23,12 @@ jobs:
         github_token: ${{ secrets.PAT }}
     - run: sed -i "s/version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"${{ steps.tag_version.outputs.new_tag }}\"/g" ./bandyer-android-design/build.gradle
     - name: Create a GitHub release
-      uses: ncipollo/release-action@v1
+      uses: peter-evans/create-pull-request@v3
       with:
-        tag: ${{ steps.tag_version.outputs.new_tag }}
-        name: Release ${{ steps.tag_version.outputs.new_tag }}
-        body: ${{ steps.tag_version.outputs.changelog }}   
+          token: ${{ secrets.PAT }}
+          commit-message: Release ${{ steps.tag_version.outputs.new_tag }}
+          title: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: |
+           This PR is Auto-generated
+          branch: release-${{ steps.tag_version.outputs.new_tag }}
   
