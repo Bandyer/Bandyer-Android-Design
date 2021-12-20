@@ -77,7 +77,7 @@ class StatusBarOverlayView @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         context.scanForFragmentActivity()?.let {
-            SystemViewLayoutOffsetListener.removeObserver(it as AppCompatActivity, this)
+            SystemViewLayoutOffsetListener.removeObserver(it, this)
         }
         removeAlphaAnimationListener(this, this)
     }

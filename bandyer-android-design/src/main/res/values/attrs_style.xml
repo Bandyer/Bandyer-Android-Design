@@ -42,4 +42,6 @@
     <!-- Style for the "positive" buttons -->
     <attr name="bandyer_positiveButtonStyle" format="reference" />
 
+    <attr name="bandyer_closeButtonStyle" format="reference" />
+
 </resources>

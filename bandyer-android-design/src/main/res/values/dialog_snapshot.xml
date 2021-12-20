@@ -25,7 +25,7 @@
 
     <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.Snapshot.Layout">
         <attr name="bandyer_collaborateButtonStyle" format="reference" />
-        <attr name="bandyer_closeButtonStyle" format="reference" />
+        <attr name="bandyer_closeButtonStyle" />
         <attr name="bandyer_saveButtonStyle" format="reference" />
     </declare-styleable>
 

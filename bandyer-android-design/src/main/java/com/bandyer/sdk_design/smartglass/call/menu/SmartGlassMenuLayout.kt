@@ -69,7 +69,7 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
     var items: List<CallAction> = listOf()
         set(value) {
             field = value
-            fastItemAdapter.set((if (context.isRtl()) items.reversed() else items).map { AdapterActionItem(it) })
+            fastItemAdapter.set((if (isRtl()) items.reversed() else items).map { AdapterActionItem(it) })
         }
 
     /**
@@ -82,8 +82,8 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
 
     private val binding: BandyerWidgetSmartglassesMenuLayoutBinding by lazy { BandyerWidgetSmartglassesMenuLayoutBinding.inflate(LayoutInflater.from(context), this) }
 
-    private val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, context.isRtl()).apply {
-        stackFromEnd = context.isRtl()
+    private val linearLayoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, isRtl()).apply {
+        stackFromEnd = isRtl()
     }
 
     private val gestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {

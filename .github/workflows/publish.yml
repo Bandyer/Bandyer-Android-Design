@@ -1,0 +1,38 @@
+name: Android CD
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+      
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Exit if not on develop branch
+      if: endsWith(github.ref, 'develop') == false
+      run: exit -1
+    - name: set up JDK 11
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+        cache: gradle
+    - name: Install boto3
+      run: pip install boto3
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Set dryRun to false
+      run: sed -i '/def dryRun = true/c\\tdef dryRun = false' ./bandyer-android-design/build.gradle
+    - name: Update Maven credentials
+      env:
+        MAVEN_ACCESSKEY: ${{ secrets.MAVEN_ACCESSKEY }}
+        MAVEN_SECRETKEY: ${{ secrets.MAVEN_SECRETKEY }}
+        MAVEN_DISTRIBUTIONID: ${{ secrets.MAVEN_DISTRIBUTIONID }}
+      run: 
+          echo -e "maven.accessKey=$MAVEN_ACCESSKEY\nmaven.secretKey=$MAVEN_SECRETKEY\nmaven.distributionId=$MAVEN_DISTRIBUTIONID" >> ./local.properties
+    - name: Build with Gradle
+      run: ./gradlew clean assembleRelease publishUpload
+      
