@@ -22,7 +22,7 @@ jobs:
       with:
         release_branches: develop
         github_token: ${{ secrets.PAT }}
-    - run: sed -i "s/version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"${{ steps.tag_version.outputs.new_tag }}\"/g" ./bandyer-android-design/build.gradle
+    - run: sed -i "s/^version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"${{ steps.tag_version.outputs.new_tag }}\"/g" ./bandyer-android-design/build.gradle
     - name: Create a GitHub release
       uses: peter-evans/create-pull-request@v3
       with:
