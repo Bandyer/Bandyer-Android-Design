@@ -463,7 +463,7 @@ open class BaseBandyerBottomSheet(
                 recyclerView!!.layoutManager =
                     GridLayoutManager(
                         recyclerView!!.context,
-                        bottomSheetLayoutType.spanSize,
+                        bottomSheetLayoutType.spanSize.takeIf { views.size >= it} ?: views.size,
                         if (bottomSheetLayoutType.orientation == BottomSheetLayoutType.Orientation.HORIZONTAL) LinearLayoutManager.HORIZONTAL else LinearLayoutManager.VERTICAL,
                         false)
             }
