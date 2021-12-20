@@ -23,12 +23,10 @@ jobs:
         github_token: ${{ secrets.PAT }}
     - uses: zwaldowski/semver-release-action@v1
     - name: Increase build version
-      env:
-        LTAG: ${{ steps.next_version.outputs.version }}
-      run: sed -i "s/version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"$LTAG\"/g" ./bandyer-android-design/build.gradle
+      run: sed -i "s/version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"${{ steps.next_version.outputs.version }}\"/g" ./bandyer-android-design/build.gradle
     - name: Create a GitHub release
       uses: ncipollo/release-action@v1
       with:
-        tag: $LTAG
-        name: Release $LTAG
-        body: $LTAG
+        tag: ${{ steps.next_version.outputs.version }}
+        name: Release ${{ steps.next_version.outputs.version }}
+        body: ${{ steps.next_version.outputs.version }}
