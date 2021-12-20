@@ -43,11 +43,9 @@ interface CallManager {
 
     val wifi: Flow<WiFi>
 
-    val permissions: Flow<Permissions>
+    suspend fun requestMicPermission(context: FragmentActivity): Permission
 
-    fun requestMicPermission(context: FragmentActivity)
-
-    fun requestCameraPermission(context: FragmentActivity)
+    suspend fun requestCameraPermission(context: FragmentActivity): Permission
 
     fun answer()
 

@@ -7,11 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.bandyer.video_android_glass_ui.model.Volume
 import com.bandyer.video_android_glass_ui.model.*
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
-import kotlinx.coroutines.CoroutineName
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.plus
 
 @Suppress("UNCHECKED_CAST")
 internal object GlassViewModelFactory : ViewModelProvider.Factory {
@@ -20,6 +17,7 @@ internal object GlassViewModelFactory : ViewModelProvider.Factory {
 }
 
 internal class GlassViewModel(private val callManager: CallManager) : ViewModel() {
+
     val call: Call = callManager.call
 
     val battery: Flow<Battery> = callManager.battery
@@ -27,28 +25,6 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
     val wifi: Flow<WiFi> = callManager.wifi
 
     val volume: Volume get() = callManager.getVolume()
-
-    var currentPermissions: Permissions? = null
-    val permissions: Flow<Permissions> = callManager.permissions.onEach { currentPermissions = it }
-
-    private inline fun Flow<CallParticipants>.forEachParticipant(
-        scope: CoroutineScope,
-        crossinline action: suspend (CallParticipant, Boolean, List<Stream>, Participant.State) -> Unit
-    ): Flow<CallParticipants> {
-        val pJobs = mutableListOf<Job>()
-        return onEach { participants ->
-            pJobs.forEach {
-                it.cancel()
-                it.join()
-            }
-            pJobs.clear()
-            participants.others.plus(participants.me).forEach { participant ->
-                pJobs += combine(participant.streams, participant.state) { streams, state ->
-                    action(participant, participant == participants.me, streams, state)
-                }.launchIn(scope)
-            }
-        }
-    }
 
     val inCallParticipants: MutableSharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
@@ -105,9 +81,38 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
                 .launchIn(viewModelScope)
         }
 
-    fun requestMicPermission(context: FragmentActivity) = callManager.requestMicPermission(context)
+    private val _micPermission: MutableStateFlow<Permission> = MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
+    val micPermission: StateFlow<Permission> = _micPermission.asStateFlow()
 
-    fun requestCameraPermission(context: FragmentActivity) = callManager.requestCameraPermission(context)
+    private val _camPermission: MutableStateFlow<Permission> = MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
+    val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
+
+    private inline fun Flow<CallParticipants>.forEachParticipant(
+        scope: CoroutineScope,
+        crossinline action: suspend (CallParticipant, Boolean, List<Stream>, Participant.State) -> Unit
+    ): Flow<CallParticipants> {
+        val pJobs = mutableListOf<Job>()
+        return onEach { participants ->
+            pJobs.forEach {
+                it.cancel()
+                it.join()
+            }
+            pJobs.clear()
+            participants.others.plus(participants.me).forEach { participant ->
+                pJobs += combine(participant.streams, participant.state) { streams, state ->
+                    action(participant, participant == participants.me, streams, state)
+                }.launchIn(scope)
+            }
+        }
+    }
+
+    fun requestMicPermission(context: FragmentActivity) {
+        viewModelScope.launch { callManager.requestMicPermission(context).also { _micPermission.value = it } }
+    }
+
+    fun requestCameraPermission(context: FragmentActivity) {
+        viewModelScope.launch { callManager.requestCameraPermission(context).also { _camPermission.value = it } }
+    }
 
     fun enableCamera(enable: Boolean) = callManager.enableCamera(enable)
 

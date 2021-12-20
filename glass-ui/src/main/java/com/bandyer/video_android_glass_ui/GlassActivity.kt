@@ -94,8 +94,8 @@ internal class GlassActivity :
                     val position = layoutManager.getPosition(foundView)
                     if(itemAdapter!!.getAdapterItem(position).streamParticipant.isMyStream && currentStreamItemIndex != position) {
                         with(binding.bandyerToastContainer) {
-                            val isMicBlocked = viewModel.currentPermissions?.micPermission?.let { !it.isAllowed && it.neverAskAgain } ?: true
-                            val isCamBlocked = viewModel.currentPermissions?.cameraPermission?.let { !it.isAllowed && it.neverAskAgain } ?: true
+                            val isMicBlocked = viewModel.micPermission.value.let { !it.isAllowed && it.neverAskAgain }
+                            val isCamBlocked = viewModel.camPermission.value.let { !it.isAllowed && it.neverAskAgain }
                             when {
                                 isMicBlocked && isCamBlocked -> show("input-blocked", resources.getString(R.string.bandyer_glass_mic_and_cam_blocked))
                                 isMicBlocked -> show("input-blocked", resources.getString(R.string.bandyer_glass_mic_blocked))
@@ -173,7 +173,7 @@ internal class GlassActivity :
 
             viewModel.streams
                 .onEach { streams ->
-                    val orderedList = streams.sortedBy { !it.isMyStream }.map { if(it.isMyStream) MyStreamItem(it, this, viewModel.permissions) else OtherStreamItem(it, this) }
+                    val orderedList = streams.sortedBy { !it.isMyStream }.map { if(it.isMyStream) MyStreamItem(it, this, viewModel.micPermission, viewModel.camPermission) else OtherStreamItem(it, this) }
                     FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList)
                 }.launchIn(this)
 
@@ -191,12 +191,14 @@ internal class GlassActivity :
                     }
                 }.launchIn(this)
 
-            viewModel.permissions
+            viewModel.micPermission
                 .onEach {
-                    with(binding.bandyerStatusBar) {
-                        if(!it.micPermission.isAllowed && it.micPermission.neverAskAgain) showMicMutedIcon(true)
-                        if(!it.cameraPermission.isAllowed && it.cameraPermission.neverAskAgain) showCamMutedIcon(true)
-                    }
+                    if(!it.isAllowed && it.neverAskAgain) binding.bandyerStatusBar.showMicMutedIcon(true)
+                }.launchIn(this)
+
+            viewModel.camPermission
+                .onEach {
+                    if(!it.isAllowed && it.neverAskAgain) binding.bandyerStatusBar.showCamMutedIcon(true)
                 }.launchIn(this)
         }
     }

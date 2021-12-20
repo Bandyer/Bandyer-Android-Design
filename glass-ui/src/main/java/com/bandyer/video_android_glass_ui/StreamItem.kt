@@ -9,7 +9,7 @@ import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColo
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassCallMyStreamItemLayoutBinding
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassCallOtherStreamItemLayoutBinding
 import com.bandyer.video_android_glass_ui.model.Input
-import com.bandyer.video_android_glass_ui.model.Permissions
+import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
@@ -123,7 +123,7 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(final override v
     }
 }
 
-internal class MyStreamItem(streamParticipant: StreamParticipant, parentScope: CoroutineScope, val permissions: Flow<Permissions>) : StreamItem<StreamItem.ViewHolder<MyStreamItem>>(streamParticipant, parentScope) {
+internal class MyStreamItem(streamParticipant: StreamParticipant, parentScope: CoroutineScope, val micPermission: StateFlow<Permission>, val camPermission: StateFlow<Permission>) : StreamItem<StreamItem.ViewHolder<MyStreamItem>>(streamParticipant, parentScope) {
 
     /**
      * The layout for the given item
@@ -159,11 +159,12 @@ internal class MyStreamItem(streamParticipant: StreamParticipant, parentScope: C
             binding.bandyerSubtitleLayout.bandyerSubtitle.text = itemView.context.getString(R.string.bandyer_glass_you)
             binding.bandyerCenteredSubtitle.text = item.streamParticipant.participant.username
 
-            jobs += item.permissions.onEach {
-                with(binding) {
-                    bandyerMicMutedIcon.isActivated = !it.micPermission.isAllowed && it.micPermission.neverAskAgain
-                    bandyerCamMutedIcon.isActivated = !it.cameraPermission.isAllowed && it.cameraPermission.neverAskAgain
-                }
+            jobs += item.micPermission.onEach {
+                binding.bandyerMicMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
+            }.launchIn(item.scope)
+
+            jobs += item.camPermission.onEach {
+                binding.bandyerCamMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
             }.launchIn(item.scope)
         }
 

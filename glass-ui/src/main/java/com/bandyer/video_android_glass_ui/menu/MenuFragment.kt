@@ -104,10 +104,8 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         repeatOnStarted {
             viewModel.cameraEnabled.onEach { cameraAction.toggle(it) }.launchIn(this)
             viewModel.micEnabled.onEach { micAction.toggle(it) }.launchIn(this)
-            viewModel.permissions.onEach {
-                    it.micPermission.apply { micAction.disable(!isAllowed && neverAskAgain) }
-                    it.cameraPermission.apply { cameraAction.disable(!isAllowed && neverAskAgain) }
-                }.launchIn(this)
+            viewModel.micPermission.onEach { micAction.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
+            viewModel.camPermission.onEach { cameraAction.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
         }
 
         return binding.root
