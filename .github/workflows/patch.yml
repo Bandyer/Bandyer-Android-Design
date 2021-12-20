@@ -16,16 +16,16 @@ jobs:
         cache: gradle
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - uses: actions-ecosystem/action-get-latest-tag@v1
-      id: get-latest-tag
-    - uses: actions-ecosystem/action-bump-semver@v1
-      id: bump-semver
+    - name: Bump version and push tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v6.0
       with:
-          current_version: ${{ steps.get-latest-tag.outputs.tag }}
-          level: patch    
-    - name: Increment build.gradle version
-      run: sed -i "s/version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"${{ steps.bump-semver.outputs.new_version }}\"/g" ./bandyer-android-design/build.gradle
-    - uses: actions-ecosystem/action-push-tag@v1
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+    - run: sed -i "s/version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"${{ steps.tag_version.outputs.new_tag }}\"/g" ./bandyer-android-design/build.gradle
+    - name: Create a GitHub release
+      uses: ncipollo/release-action@v1
       with:
-          tag: ${{ steps.bump-semver.outputs.new_version }}
-          message: '${{ steps.bump-semver.outputs.new_version }}: PR #${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}'
+        tag: ${{ steps.tag_version.outputs.new_tag }}
+        name: Release ${{ steps.tag_version.outputs.new_tag }}
+        body: ${{ steps.tag_version.outputs.changelog }}   
+  
