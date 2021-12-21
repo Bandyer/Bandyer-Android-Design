@@ -62,10 +62,16 @@ jobs:
           allowed-conclusions: success
     
   automerge:
+    name: Merge into develop
+    needs: [patch,check]
     runs-on: ubuntu-latest
-    needs: check
     steps:
-      - name: automerge
-        uses: "pascalgn/automerge-action@v0.14.3"
-        env:
-          GITHUB_TOKEN: "${{ secrets.PAT }}" 
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: merge
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ secrets.PAT }}
+          source: release-v${{ needs.patch.outputs.lversion }}
+          target: 'develop'
