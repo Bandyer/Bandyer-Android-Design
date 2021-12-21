@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.postDelayed
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
@@ -241,7 +242,7 @@ internal class GlassActivity :
 
             when (destinationId) {
                 R.id.ringingFragment, R.id.dialingFragment, R.id.reconnectingFragment, R.id.endCallFragment, R.id.callEndedFragment -> hide()
-                R.id.callEndedFragment, R.id.chatFragment, R.id.chatMenuFragment, R.id.participantsFragment -> applyFlatTint()
+                R.id.chatFragment, R.id.chatMenuFragment, R.id.participantsFragment -> applyFlatTint()
             }
         }
     }
@@ -365,6 +366,3 @@ internal class GlassActivity :
         )
     }
 }
-
-internal fun NavController.safeNavigate(direction: NavDirections): Boolean =
-    currentDestination?.getAction(direction.actionId)?.run { navigate(direction); true } ?: false

@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
+import androidx.core.view.postDelayed
 import androidx.navigation.fragment.navArgs
 import com.bandyer.video_android_glass_ui.BaseFragment
+import com.bandyer.video_android_glass_ui.GlassActivity
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
@@ -51,6 +53,11 @@ internal class CallEndedFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view.postDelayed(AUTO_FINISH_TIME) { requireActivity().finish() }
+    }
+
     /**
      * @suppress
      */
@@ -66,4 +73,8 @@ internal class CallEndedFragment : BaseFragment() {
     override fun onSwipeBackward(isKeyEvent: Boolean) = false
 
     override fun onSwipeForward(isKeyEvent: Boolean) = false
+
+    private companion object {
+        const val AUTO_FINISH_TIME = 3000L
+    }
 }
