@@ -65,7 +65,7 @@ jobs:
   publish:
     needs: [check]
     name: Publish
-    uses: Bandyer/Bandyer-Android-Design/.github/workflows/publish.yml@1
+    uses: Bandyer/Bandyer-Android-Design/develop/.github/workflows/publish.yml@1
   
   automerge:
     name: Merge into develop
