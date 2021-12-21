@@ -24,6 +24,5 @@ jobs:
         release_branches: develop
         dry_run: true
         github_token: ${{ secrets.PAT }}
-      env: 
-        LTAG: ${{ steps.tag_version.outputs.new_version }}
-    - run: echo "$LTAG"
+    - name: Print tag 
+      run: echo "${{ steps.tag_version.outputs.new_version }}"
