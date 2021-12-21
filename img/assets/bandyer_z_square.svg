@@ -1,0 +1,23 @@
+<svg id="square" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #000;
+        stroke-width: 1.5px;
+      }
+
+      .cls-3 {
+        stroke: none;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1457" data-name="Rettangolo 1457" class="cls-1" width="24" height="24" transform="translate(24) rotate(90)"/>
+  <g id="Rettangolo_1458" data-name="Rettangolo 1458" class="cls-2" transform="translate(3 3)">
+    <rect class="cls-3" width="18" height="18"/>
+    <rect class="cls-1" x="0.75" y="0.75" width="16.5" height="16.5"/>
+  </g>
+</svg>

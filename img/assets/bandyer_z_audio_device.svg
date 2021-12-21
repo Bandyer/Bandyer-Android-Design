@@ -1,0 +1,22 @@
+<svg id="audio_device" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1177" data-name="Rettangolo 1177" class="cls-1" width="24" height="24"/>
+  <g id="ear-outline" transform="translate(-90.571 -29.5)">
+    <path id="Tracciato_1279" data-name="Tracciato 1279" class="cls-2" d="M106.167,44.671a7.17,7.17,0,0,0,3.4-5.885,6.786,6.786,0,1,0-13.571,0v8.761A3.441,3.441,0,0,0,99.393,51h0a3.9,3.9,0,0,0,3.278-1.7C103.3,48.463,104.44,45.845,106.167,44.671Z" transform="translate(0 0)"/>
+    <path id="Tracciato_1280" data-name="Tracciato 1280" class="cls-2" d="M160,104.821V99.732A3.924,3.924,0,0,1,164.071,96h0a3.924,3.924,0,0,1,4.071,3.732" transform="translate(-61.286 -61.286)"/>
+    <path id="Tracciato_1281" data-name="Tracciato 1281" class="cls-2" d="M160,224.457c1.06-.763,3.385-.636,3.385-.636a1.356,1.356,0,0,1,1.1,2.146,11.521,11.521,0,0,0-1.775,2.6" transform="translate(-61.286 -183.678)"/>
+  </g>
+</svg>

@@ -48,8 +48,9 @@ import com.bandyer.video_android_phone_ui.bottom_sheet.view.BandyerBottomSheetLa
 import com.bandyer.video_android_phone_ui.bottom_sheet.view.BottomSheetLayoutContent
 import com.bandyer.video_android_phone_ui.bottom_sheet.view.BottomSheetLayoutType
 import com.bandyer.video_android_phone_ui.call.buttons.BandyerLineButton
-import com.bandyer.video_android_phone_ui.call.buttons.BandyerLineButton.State
-import com.bandyer.video_android_phone_ui.extensions.*
+import com.bandyer.video_android_phone_ui.extensions.checkIsInMultiWindowMode
+import com.bandyer.video_android_phone_ui.extensions.checkIsInPictureInPictureMode
+import com.bandyer.video_android_phone_ui.extensions.getCoordinates
 import com.bandyer.video_android_phone_ui.utils.item_adapter_animators.AlphaCrossFadeAnimator
 import com.bandyer.video_android_phone_ui.utils.systemviews.SystemViewLayoutObserver
 import com.bandyer.video_android_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
@@ -364,7 +365,7 @@ open class BaseBandyerBottomSheet(
             moveBottomSheet()
             hasMoved = true
         }
-        lineView?.state = State.COLLAPSED
+        lineView?.state = BandyerLineButton.State.COLLAPSED
 
         updateNavigationBar(false)
 

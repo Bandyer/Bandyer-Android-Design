@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="17.5" viewBox="0 0 16 17.5">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+
+      .cls-1 {
+        stroke-linejoin: round;
+      }
+
+      .cls-2 {
+        stroke-miterlimit: 10;
+      }
+    </style>
+  </defs>
+  <g id="trash-alt" transform="translate(-3 -2.25)">
+    <path id="Tracciato_1074" data-name="Tracciato 1074" class="cls-1" d="M3,5H19" transform="translate(0 -0.222)"/>
+    <path id="Tracciato_1075" data-name="Tracciato 1075" class="cls-2" d="M9,4.778V3h5.333V4.778" transform="translate(-0.667)"/>
+    <path id="Tracciato_1076" data-name="Tracciato 1076" class="cls-1" d="M10,12v4.444M13.556,12v4.444" transform="translate(-0.778 -1)"/>
+    <path id="Tracciato_1077" data-name="Tracciato 1077" class="cls-3" d="M5,8H17.444l-.889,11.556H5.889Z" transform="translate(-0.222 -0.556)"/>
+  </g>
+</svg>

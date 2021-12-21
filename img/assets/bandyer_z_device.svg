@@ -1,0 +1,24 @@
+<svg id="device" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3 {
+        fill: none;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+
+      .cls-2 {
+        stroke-dasharray: 0.01 3;
+      }
+    </style>
+  </defs>
+  <g id="iphone" transform="translate(-0.667 -1)">
+    <path id="Tracciato_1208" data-name="Tracciato 1208" class="cls-1" d="M19.333,3H6V23H19.333ZM10.444,4.111h4.444" transform="translate(0 0)"/>
+    <path id="Tracciato_1209" data-name="Tracciato 1209" class="cls-2" d="M12,18v2.342" transform="translate(0.667 1.667)"/>
+  </g>
+  <rect id="Rettangolo_1409" data-name="Rettangolo 1409" class="cls-3" width="24" height="24"/>
+</svg>

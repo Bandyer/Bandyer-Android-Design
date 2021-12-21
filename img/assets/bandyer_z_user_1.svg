@@ -1,0 +1,17 @@
+<svg id="user_1" xmlns="http://www.w3.org/2000/svg" width="24" height="25" viewBox="0 0 24 25">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-2 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1475" data-name="Rettangolo 1475" class="cls-1" width="24" height="24"/>
+  <path id="user" class="cls-2" d="M12,13A5,5,0,1,0,7,8,5,5,0,0,0,12,13ZM3,21a9,9,0,0,1,6.53-8.65m4.94,0A9,9,0,0,1,21,21" transform="translate(0 3.5)"/>
+</svg>

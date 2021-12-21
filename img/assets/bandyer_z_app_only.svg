@@ -1,0 +1,17 @@
+<svg id="app_only" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: none;
+      }
+
+      .cls-1 {
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <path id="Tracciato_1264" data-name="Tracciato 1264" class="cls-1" d="M22.283,3H9V21H22.283Z" transform="translate(-3.642)"/>
+  <rect id="Rettangolo_1405" data-name="Rettangolo 1405" class="cls-2" width="24" height="24"/>
+</svg>

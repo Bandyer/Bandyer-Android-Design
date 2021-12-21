@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14.833" height="21.5" viewBox="0 0 14.833 21.5">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <path id="mouse" class="cls-1" d="M12.667,10.778V7.444m6.667,2.222A6.667,6.667,0,1,0,6,9.667v6.667a6.667,6.667,0,1,0,13.333,0Z" transform="translate(-5.25 -2.25)"/>
+</svg>

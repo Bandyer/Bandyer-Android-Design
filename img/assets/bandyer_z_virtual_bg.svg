@@ -1,0 +1,43 @@
+<svg id="virtual_bg" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+  <defs>
+    <style>
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        fill: none;
+      }
+
+      .cls-2, .cls-4 {
+        stroke-linecap: round;
+      }
+
+      .cls-2 {
+        stroke-linejoin: round;
+      }
+
+      .cls-3, .cls-4 {
+        stroke: #000;
+        stroke-width: 1.5px;
+      }
+
+      .cls-5, .cls-6 {
+        stroke: none;
+      }
+
+      .cls-6 {
+        fill: #000;
+      }
+    </style>
+  </defs>
+  <rect id="Rettangolo_1470" data-name="Rettangolo 1470" class="cls-1" width="24" height="24" transform="translate(24) rotate(90)"/>
+  <g id="Raggruppa_2578" data-name="Raggruppa 2578" transform="translate(10 6.341)">
+    <g id="Tracciato_1027" data-name="Tracciato 1027" class="cls-2" transform="translate(-8.126 -7.841)">
+      <path class="cls-5" d="M15.75,8.5A.75.75,0,1,0,15,7.75.75.75,0,0,0,15.75,8.5Z"/>
+      <path class="cls-6" d="M 15.75000190734863 8.499981880187988 C 15.33577156066895 8.499981880187988 15.00000190734863 8.164211273193359 15.00000190734863 7.749991416931152 C 15.00000190734863 7.335771560668945 15.33577156066895 7.000001430511475 15.75000190734863 7.000001430511475 C 16.16422271728516 7.000001430511475 16.50000190734863 7.335771560668945 16.50000190734863 7.749991416931152 C 16.50000190734863 8.164211273193359 16.16422271728516 8.499981880187988 15.75000190734863 8.499981880187988 Z"/>
+    </g>
+    <path id="Tracciato_1028" data-name="Tracciato 1028" class="cls-3" d="M3.257,12.072,5.778,10l3.889,3.306L13,11.322" transform="translate(-3 -8.647)"/>
+  </g>
+  <path id="Tracciato_1278" data-name="Tracciato 1278" class="cls-4" d="M5963.62,14.216h6.634V4H5960v6.632" transform="translate(-5950 -0.216)"/>
+  <g id="Rettangolo_1471" data-name="Rettangolo 1471" class="cls-4" transform="translate(3 10)">
+    <rect class="cls-5" width="11" height="11"/>
+    <rect class="cls-1" x="0.75" y="0.75" width="9.5" height="9.5"/>
+  </g>
+</svg>
