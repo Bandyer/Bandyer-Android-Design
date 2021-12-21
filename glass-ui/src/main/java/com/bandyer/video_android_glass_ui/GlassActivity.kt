@@ -201,6 +201,16 @@ internal class GlassActivity :
                 .onEach {
                     if(!it.isAllowed && it.neverAskAgain) binding.bandyerStatusBar.showCamMutedIcon(true)
                 }.launchIn(this)
+
+            viewModel.onParticipantJoin
+                .onEach {
+                    binding.bandyerToastContainer.show(text = resources.getString(R.string.bandyer_glass_user_joined_pattern, it.username))
+                }.launchIn(this)
+
+            viewModel.onParticipantLeave
+                .onEach {
+                    binding.bandyerToastContainer.show(text = resources.getString(R.string.bandyer_glass_user_left_pattern, it.username))
+                }.launchIn(this)
         }
     }
 

@@ -8,6 +8,8 @@
     <string name="bandyer_glass_slider_volume_pattern">Volume: %1$d</string>
     <string name="bandyer_glass_slider_zoom_pattern">Zoom: %1$d%%</string>
     <string name="bandyer_glass_new_messages_pattern">%1$d new messages</string>
+    <string name="bandyer_glass_user_joined_pattern">%1$s joined</string>
+    <string name="bandyer_glass_user_left_pattern">%1$s left</string>
     <string name="bandyer_glass_swipe">Swipe</string>
     <string name="bandyer_glass_tap">Tap</string>
     <string name="bandyer_glass_close">close</string>

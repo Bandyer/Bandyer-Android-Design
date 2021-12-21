@@ -4,6 +4,8 @@
     <string name="bandyer_glass_new_messages_pattern">%1$d nuovi messaggi</string>
     <string name="bandyer_glass_slider_volume_pattern">Volume: %1$d</string>
     <string name="bandyer_glass_slider_zoom_pattern">Zoom: %1$d%%</string>
+    <string name="bandyer_glass_user_joined_pattern">%1$s si è unito</string>
+    <string name="bandyer_glass_user_left_pattern">%1$s ha lasciato</string>
     <string name="bandyer_glass_swipe">Scorri</string>
     <string name="bandyer_glass_tap">Tocca</string>
     <string name="bandyer_glass_close">chiudi</string>

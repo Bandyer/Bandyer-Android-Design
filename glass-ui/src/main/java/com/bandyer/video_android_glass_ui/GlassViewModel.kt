@@ -26,26 +26,53 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
 
     val volume: Volume get() = callManager.getVolume()
 
-    val inCallParticipants: MutableSharedFlow<List<CallParticipant>> =
+    val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = mutableMapOf<String, CallParticipant>()
             call.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, _, _, state ->
-                if (state is CallParticipant.State.Online.InCall) participants[participant.userAlias] =
-                    participant
+                if (state is CallParticipant.State.Online.InCall) participants[participant.userAlias] = participant
                 else participants.remove(participant.userAlias)
                 emit(participants.values.toList())
             }.launchIn(viewModelScope)
         }
 
-    val streams: Flow<List<StreamParticipant>> =
+    val onParticipantJoin: SharedFlow<CallParticipant> =
+        MutableSharedFlow<CallParticipant>(replay = 1, extraBufferCapacity = 1).apply {
+            var participants = listOf<CallParticipant>()
+            inCallParticipants.onEach {
+                val diff = it.minus(participants.toSet())
+                diff.forEach { p -> emit(p) }
+                participants = it
+            }.launchIn(viewModelScope)
+        }
+
+    val onParticipantLeave: SharedFlow<CallParticipant> =
+        MutableSharedFlow<CallParticipant>(replay = 1, extraBufferCapacity = 1).apply {
+            var participants = listOf<CallParticipant>()
+            inCallParticipants.onEach {
+                val left = participants.minus(it.toSet())
+                left.forEach { p -> emit(p) }
+                participants = it
+            }.launchIn(viewModelScope)
+        }
+
+    val streams: SharedFlow<List<StreamParticipant>> =
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val uiStreams = mutableListOf<StreamParticipant>()
             call.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, isLocalPart, streams, state ->
                 uiStreams.removeIf { stream -> stream.participant == participant }
                 if (isLocalPart || (state is CallParticipant.State.Online.InCall && streams.isNotEmpty()))
                     uiStreams +=
-                        if (streams.none { stream -> stream.state !is Stream.State.Closed }) listOf(StreamParticipant(participant, isLocalPart, null))
-                        else streams.map { stream -> StreamParticipant(participant, isLocalPart, stream) }
+                        if (streams.none { stream -> stream.state !is Stream.State.Closed }) listOf(
+                            StreamParticipant(participant, isLocalPart, null)
+                        )
+                        else streams.map { stream ->
+                            StreamParticipant(
+                                participant,
+                                isLocalPart,
+                                stream
+                            )
+                        }
                 emit(uiStreams)
             }.launchIn(viewModelScope)
         }
@@ -81,10 +108,12 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
                 .launchIn(viewModelScope)
         }
 
-    private val _micPermission: MutableStateFlow<Permission> = MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
+    private val _micPermission: MutableStateFlow<Permission> =
+        MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
     val micPermission: StateFlow<Permission> = _micPermission.asStateFlow()
 
-    private val _camPermission: MutableStateFlow<Permission> = MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
+    private val _camPermission: MutableStateFlow<Permission> =
+        MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
     val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
@@ -107,11 +136,15 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
     }
 
     fun requestMicPermission(context: FragmentActivity) {
-        viewModelScope.launch { callManager.requestMicPermission(context).also { _micPermission.value = it } }
+        viewModelScope.launch {
+            callManager.requestMicPermission(context).also { _micPermission.value = it }
+        }
     }
 
     fun requestCameraPermission(context: FragmentActivity) {
-        viewModelScope.launch { callManager.requestCameraPermission(context).also { _camPermission.value = it } }
+        viewModelScope.launch {
+            callManager.requestCameraPermission(context).also { _camPermission.value = it }
+        }
     }
 
     fun enableCamera(enable: Boolean) = callManager.enableCamera(enable)
