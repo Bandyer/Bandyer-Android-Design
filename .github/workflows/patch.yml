@@ -45,6 +45,8 @@ jobs:
           name: Release ${{ steps.tag_version.outputs.new_tag }}
           body: ${{ steps.tag_version.outputs.changelog }}
           commit: release-v${{ steps.tag_version.outputs.new_version }}
+    outputs:
+        lversion: ${{ steps.tag_version.outputs.new_version  }}
   check:
     needs: patch
     runs-on: ubuntu-latest
@@ -53,7 +55,7 @@ jobs:
     - name: Wait for build to succeed
       uses: lewagon/wait-on-check-action@v1.0.0
       with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: release-v${{ needs.patch.outputs.lversion }}
           check-name: build
           repo-token: ${{ secrets.PAT }}
           wait-interval: 20
