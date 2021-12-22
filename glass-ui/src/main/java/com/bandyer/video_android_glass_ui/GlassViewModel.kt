@@ -59,20 +59,15 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
     val streams: SharedFlow<List<StreamParticipant>> =
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val uiStreams = mutableListOf<StreamParticipant>()
-            call.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, isLocalPart, streams, state ->
-                uiStreams.removeIf { stream -> stream.participant == participant }
-                if (isLocalPart || (state is CallParticipant.State.Online.InCall && streams.isNotEmpty()))
-                    uiStreams +=
-                        if (streams.none { stream -> stream.state !is Stream.State.Closed }) listOf(
-                            StreamParticipant(participant, isLocalPart, null)
-                        )
-                        else streams.map { stream ->
-                            StreamParticipant(
-                                participant,
-                                isLocalPart,
-                                stream
-                            )
-                        }
+            call.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
+                if(itsMe || (state is CallParticipant.State.Online.InCall && streams.isNotEmpty())) {
+                    val newStreams = streams.map { StreamParticipant(participant, itsMe, it) }
+                    val currentStreams = uiStreams.filter { it.participant == participant }
+                    val addedStreams = newStreams - currentStreams.toSet()
+                    val removedStreams = currentStreams - newStreams.toSet()
+                    uiStreams += addedStreams
+                    uiStreams -= removedStreams.toSet()
+                } else uiStreams.removeIf { it.participant == participant }
                 emit(uiStreams)
             }.launchIn(viewModelScope)
         }
