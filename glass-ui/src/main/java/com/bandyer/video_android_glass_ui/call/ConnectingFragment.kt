@@ -17,6 +17,7 @@ import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.model.Call
 import com.bandyer.video_android_glass_ui.model.CallParticipant
+import com.bandyer.video_android_glass_ui.model.Stream
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.mikepenz.fastadapter.FastAdapter
@@ -76,15 +77,12 @@ internal abstract class ConnectingFragment : BaseFragment() {
                 repeatOnStarted {
                     with(viewModel) {
                         var nOfParticipants = 0
-                        call.state
-                            .combine(call.participants) { state, participants ->
-                                if (state is Call.State.Connected) onConnected()
-
+                        call.participants.onEach { participants ->
                                 val isGroupCall = nOfParticipants > 2
                                 val items = ((if (isGroupCall) listOf(participants.me) else listOf()).plus(participants.others)).map { FullScreenDialogItem(it.username) }
                                 FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
 
-                                if (nOfParticipants == itemAdapter!!.adapterItemCount) return@combine
+                                if (nOfParticipants == itemAdapter!!.adapterItemCount) return@onEach
                                 nOfParticipants = itemAdapter!!.adapterItemCount
                                 if (nOfParticipants < 2) bandyerBottomNavigation.hideSwipeHorizontalItem()
                                 else bandyerCounter.text = resources.getString(
@@ -94,6 +92,14 @@ internal abstract class ConnectingFragment : BaseFragment() {
 
                                 setSubtitle(nOfParticipants > 2)
                             }
+                            .launchIn(this@repeatOnStarted)
+
+                        call.participants
+                            .map { it.me }
+                            .flatMapLatest { it.streams }
+                            .flatMapLatest { it.map { it.state }.merge() }
+                            .takeWhile { it !is Stream.State.Live }
+                            .onCompletion { onLiveStream() }
                             .launchIn(this@repeatOnStarted)
 
                         call.participants
@@ -118,7 +124,7 @@ internal abstract class ConnectingFragment : BaseFragment() {
         itemAdapter = null
     }
 
-    abstract fun onConnected()
+    abstract fun onLiveStream()
 
     abstract fun setSubtitle(isGroupCall: Boolean)
 }

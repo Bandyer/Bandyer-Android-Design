@@ -25,7 +25,7 @@ internal class ReconnectingFragment : ConnectingFragment() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onConnected() { findNavController().safeNavigate(ReconnectingFragmentDirections.actionReconnectingFragmentToEmptyFragment()) }
+    override fun onLiveStream() { findNavController().safeNavigate(ReconnectingFragmentDirections.actionReconnectingFragmentToEmptyFragment()) }
 
     override fun setSubtitle(isGroupCall: Boolean) { binding.bandyerSubtitle.text = resources.getString(R.string.bandyer_glass_connecting) }
 

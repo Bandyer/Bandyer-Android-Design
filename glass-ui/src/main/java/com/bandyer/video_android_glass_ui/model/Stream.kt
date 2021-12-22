@@ -18,6 +18,8 @@ interface Stream {
 
         object Open : State()
 
+        object Live : State()
+
         sealed class Closed : State() {
 
             companion object : Closed() {
