@@ -53,7 +53,8 @@
     <string name="bandyer_glass_menu_zoom">Zoom</string>
     <string name="bandyer_glass_menu_chat">Chat</string>
     <string name="bandyer_glass_rec">Rec</string>
-    <string name="bandyer_glass_call_declined">Chiamata rifiutata</string>
+    <string name="bandyer_glass_call_declined">Rifiutata</string>
+    <string name="bandyer_glass_call_error_occurred">Si è verificato un errore</string>
     <string name="bandyer_glass_answered_on_another_device">Risposto su un altro dispositivo</string>
     <string name="bandyer_glass_mic_not_active">Microfono non attivo</string>
     <string name="bandyer_glass_cam_not_active">Camera non attiva</string>
