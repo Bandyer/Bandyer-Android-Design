@@ -29,8 +29,8 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = mutableMapOf<String, CallParticipant>()
-            call.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, _, _, state ->
-                if (state is CallParticipant.State.Online.InCall) participants[participant.userAlias] = participant
+            call.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, itsMe, streams, state ->
+                if (itsMe || (state is CallParticipant.State.Online.InCall && streams.isNotEmpty())) participants[participant.userAlias] = participant
                 else participants.remove(participant.userAlias)
                 emit(participants.values.toList())
             }.launchIn(viewModelScope)
