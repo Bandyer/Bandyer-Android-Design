@@ -16,19 +16,54 @@ jobs:
         cache: gradle
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Bump version and push tag
-      id: tag_version
+    
+    - name: Generate next version
       uses: mathieudutour/github-tag-action@v6.0
+      id: tag_version
       with:
+        release_branches: develop
+        dry_run: true
         github_token: ${{ secrets.PAT }}
-        default_bump: patch
-    - name: Increase build version
-      env:
-        LTAG: ${{ steps.tag_version.outputs.new_tag }}
-      run: sed -i "s/version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"$LTAG\"/g" ./bandyer-android-design/build.gradle
-    - name: Create a GitHub release
+        
+    - name: Change build.gradle version
+      run: sed -i "s/^version = \"[0-9]*\.[0-9]*\.[0-9]*\"/version = \"${{ steps.tag_version.outputs.new_version }}\"/g" ./bandyer-android-design/build.gradle
+   
+    - name: Create Release PR
+      uses: peter-evans/create-pull-request@v3
+      with:
+          token: ${{ secrets.PAT }}
+          commit-message: Release patch version 
+          title: Release v${{ steps.tag_version.outputs.new_version }}
+          body: |
+           This PR is Auto-generated
+          branch: release-v${{ steps.tag_version.outputs.new_version }}
+    
+    - name: Create a GitHub release notes
       uses: ncipollo/release-action@v1
       with:
-        tag: ${{ steps.tag_version.outputs.new_tag }}
-        name: Release ${{ steps.tag_version.outputs.new_tag }}
-        body: ${{ steps.tag_version.outputs.changelog }}
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: Release ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
+          commit: release-v${{ steps.tag_version.outputs.new_version }}
+    outputs:
+        lversion: ${{ steps.tag_version.outputs.new_version  }}
+  
+  publish:
+    needs: patch
+    name: Publish
+    uses: Bandyer/Bandyer-Android-Design/.github/workflows/publish.yml@develop
+  
+  automerge:
+    name: Merge into develop
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: merge
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ secrets.PAT }}
+          source: release-v${{ needs.patch.outputs.lversion }}
+          target: 'develop'
