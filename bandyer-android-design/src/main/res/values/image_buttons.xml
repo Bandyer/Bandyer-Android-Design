@@ -205,7 +205,7 @@
         <item name="rippleColor">@color/mtrl_fab_ripple_color</item>
         <item name="elevation">@dimen/bandyer_dimen_space4</item>
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/bandyer_dimen_space4</item>
-        <item name="android:contentDescription">@string/bandyer_chat_unread_messages</item>
+        <item name="android:contentDescription">@string/bandyer_chat_scroll_to_last_message</item>
     </style>
 
 </resources>

@@ -60,7 +60,7 @@
     <string name="bandyer_chat_state_waiting_for_network">attendo la rete&#8230;</string>
     <string name="bandyer_chat_state_connecting">connessione&#8230;</string>
     <string name="bandyer_chat_send">Invia messaggio</string>
-    <string name="bandyer_chat_unread_messages">Scorri all\'ultimo messaggio</string>
+    <string name="bandyer_chat_scroll_to_last_message">Scorri all\'ultimo messaggio</string>
     <string name="bandyer_chat_msg_status_pending">Message in sospeso</string>
     <string name="bandyer_chat_msg_status_sent">Messaggio inviato</string>
     <string name="bandyer_chat_msg_status_seen">Messaggio letto</string>
