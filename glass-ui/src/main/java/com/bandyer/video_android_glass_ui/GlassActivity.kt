@@ -176,7 +176,7 @@ internal class GlassActivity :
             viewModel.streams
                 .onEach { streams ->
                     val orderedList = streams.sortedBy { !it.isMyStream }.map { if(it.isMyStream) MyStreamItem(it, this, viewModel.micPermission, viewModel.camPermission) else OtherStreamItem(it, this) }
-                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList)
+                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
                 }.launchIn(this)
 
             viewModel.cameraEnabled
