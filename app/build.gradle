@@ -67,7 +67,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
     /*** Test implementation ***/
     testImplementation 'junit:junit:4.13.2'
@@ -97,5 +97,5 @@ dependencies {
     implementation project(':glass-ui')
     implementation project(':core-ui')
     implementation "com.bandyer:bandyer-android-audiosession:$bandyer_audio_session_version"
-    implementation "com.bandyer:bandyer-android-common:$bandyer_common"
+    implementation "com.bandyer:bandyer-android-common:$bandyerCommonVersion"
 }
