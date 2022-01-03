@@ -22,11 +22,13 @@
         <com.bandyer.video_android_glass_ui.common.ToastContainer
             android:id="@+id/bandyer_toast_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:theme="?attr/bandyer_toastContainerStyle"
             style="?attr/bandyer_rootLayoutStyle"
+            android:gravity="bottom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bandyer_status_bar"
             app:layout_constraintStart_toStartOf="parent" />
 
         <FrameLayout

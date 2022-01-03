@@ -11,12 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.core.view.postDelayed
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.navigation.NavController
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -81,7 +79,7 @@ internal class GlassActivity :
 
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
-        enterImmersiveMode()
+//        enterImmersiveMode()
 
         with(binding.bandyerStreams) {
             itemAdapter = ItemAdapter()
@@ -98,17 +96,17 @@ internal class GlassActivity :
                             val isMicBlocked = viewModel.micPermission.value.let { !it.isAllowed && it.neverAskAgain }
                             val isCamBlocked = viewModel.camPermission.value.let { !it.isAllowed && it.neverAskAgain }
                             when {
-                                isMicBlocked && isCamBlocked -> show("input-blocked", resources.getString(R.string.bandyer_glass_mic_and_cam_blocked))
-                                isMicBlocked -> show("input-blocked", resources.getString(R.string.bandyer_glass_mic_blocked))
-                                isCamBlocked -> show("input-blocked", resources.getString(R.string.bandyer_glass_cam_blocked))
+                                isMicBlocked && isCamBlocked -> show(BLOCKED_INPUT_TOAST_ID, resources.getString(R.string.bandyer_glass_mic_and_cam_blocked))
+                                isMicBlocked -> show(BLOCKED_INPUT_TOAST_ID, resources.getString(R.string.bandyer_glass_mic_blocked))
+                                isCamBlocked -> show(BLOCKED_INPUT_TOAST_ID, resources.getString(R.string.bandyer_glass_cam_blocked))
                             }
 
                             val isMicEnabled = viewModel.micEnabled.value
                             val isCameraEnabled = viewModel.cameraEnabled.value
                             when {
-                                !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled -> show("input-disabled", resources.getString(R.string.bandyer_glass_mic_and_cam_not_active))
-                                !isMicBlocked && !isMicEnabled -> show("input-disabled", resources.getString(R.string.bandyer_glass_mic_not_active))
-                                !isCamBlocked && !isCameraEnabled -> show("input-disabled", resources.getString(R.string.bandyer_glass_cam_not_active))
+                                !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled -> show(DISABLED_INPUT_TOAST_ID, resources.getString(R.string.bandyer_glass_mic_and_cam_not_active))
+                                !isMicBlocked && !isMicEnabled -> show(DISABLED_INPUT_TOAST_ID, resources.getString(R.string.bandyer_glass_mic_not_active))
+                                !isCamBlocked && !isCameraEnabled -> show(DISABLED_INPUT_TOAST_ID, resources.getString(R.string.bandyer_glass_cam_not_active))
                                 else -> Unit
                             }
                         }
@@ -162,9 +160,17 @@ internal class GlassActivity :
                 .onEach {
                     val count = it.count()
                     with(binding) {
-                        if(count < 2) bandyerToastContainer.show("alone-in-call", resources.getString(R.string.bandyer_glass_alone), R.drawable.ic_bandyer_glass_alert, 0L)
-                        else bandyerToastContainer.cancel("alone-in-call")
+                        if(count < 2) bandyerToastContainer.show(ALONE_TOAST_ID, resources.getString(R.string.bandyer_glass_alone), R.drawable.ic_bandyer_glass_alert, 0L)
+                        else bandyerToastContainer.cancel(ALONE_TOAST_ID)
                         bandyerStatusBar.updateCenteredText(count)
+                    }
+                }.launchIn(this)
+
+            viewModel.liveStreams
+                .onEach {
+                    with(binding) {
+                        if(it.isEmpty()) bandyerToastContainer.show(ALONE_TOAST_ID, resources.getString(R.string.bandyer_glass_alone), R.drawable.ic_bandyer_glass_alert, 0L)
+                        else bandyerToastContainer.cancel(ALONE_TOAST_ID)
                     }
                 }.launchIn(this)
 
@@ -217,7 +223,7 @@ internal class GlassActivity :
 
     override fun onResume() {
         super.onResume()
-        hideSystemUI()
+//        hideSystemUI()
     }
 
     override fun onDestroy() {
@@ -255,6 +261,8 @@ internal class GlassActivity :
                 R.id.ringingFragment, R.id.dialingFragment, R.id.reconnectingFragment, R.id.endCallFragment, R.id.callEndedFragment -> hide()
                 R.id.chatFragment, R.id.chatMenuFragment, R.id.participantsFragment -> applyFlatTint()
             }
+
+            binding.bandyerToastContainer.visibility = if(destinationId == R.id.emptyFragment) View.VISIBLE else View.GONE
         }
     }
 
@@ -347,11 +355,11 @@ internal class GlassActivity :
             }
         } else {
             decorView!!.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-                or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                or View.SYSTEM_UI_FLAG_FULLSCREEN)
+                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_FULLSCREEN)
         }
     }
 
@@ -375,5 +383,11 @@ internal class GlassActivity :
                 WiFi.Level.EXCELLENT -> StatusBarView.WiFiSignalState.FULL
             }
         )
+    }
+
+    private companion object {
+        const val BLOCKED_INPUT_TOAST_ID = "input-blocked"
+        const val DISABLED_INPUT_TOAST_ID = "input-disabled"
+        const val ALONE_TOAST_ID = "blocked-input"
     }
 }

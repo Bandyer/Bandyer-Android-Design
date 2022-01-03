@@ -82,6 +82,27 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
     private val audioStream: Flow<Stream?> =
         myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }
 
+    val liveStreams: SharedFlow<List<Stream>> = MutableSharedFlow<List<Stream>>(replay = 1, extraBufferCapacity = 1).apply {
+        val liveStreams = ConcurrentLinkedQueue<Stream>()
+        val jobs = mutableListOf<Job>()
+        myStreams.onEach { streams ->
+            jobs.forEach {
+                it.cancel()
+                it.join()
+            }
+            jobs.clear()
+            liveStreams.clear()
+            streams.forEach { stream ->
+                jobs += stream.state.onEach {
+                    if(it is Stream.State.Live) liveStreams.add(stream)
+                    else liveStreams.remove(stream)
+
+                    emit(liveStreams.toList())
+                }.launchIn(viewModelScope)
+            }
+        }.launchIn(viewModelScope)
+    }
+
     val cameraEnabled: StateFlow<Boolean> =
         MutableStateFlow(false).apply {
             cameraStream
