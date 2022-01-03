@@ -118,6 +118,10 @@
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
+    <!-- CHAT TIMESTAMP TEXT MESSAGE -->
+
+    <style name="BandyerSDKDesign.Chat.UnreadMessages" parent="BandyerSDKDesign.Chat.ChatTimestamp" />
+
     <!-- CHAT LOADING MESSAGE TEXT STYLE -->
 
     <style name="BandyerSDKDesign.TextView.Subtitle.ChatEmpty" parent="BandyerSDKDesign.TextView.Subtitle">
