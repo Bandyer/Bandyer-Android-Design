@@ -4,11 +4,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.bandyer.video_android_glass_ui.model.Volume
 import com.bandyer.video_android_glass_ui.model.*
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentLinkedQueue
 
 @Suppress("UNCHECKED_CAST")
 internal object GlassViewModelFactory : ViewModelProvider.Factory {
@@ -28,7 +29,7 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
 
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
-            val participants = mutableMapOf<String, CallParticipant>()
+            val participants = ConcurrentHashMap<String, CallParticipant>()
             call.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, itsMe, streams, state ->
                 if (itsMe || (state is CallParticipant.State.Online.InCall && streams.isNotEmpty())) participants[participant.userAlias] = participant
                 else participants.remove(participant.userAlias)
@@ -58,7 +59,7 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
 
     val streams: SharedFlow<List<StreamParticipant>> =
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
-            val uiStreams = mutableListOf<StreamParticipant>()
+            val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
             call.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
                 if(itsMe || (state is CallParticipant.State.Online.InCall && streams.isNotEmpty())) {
                     val newStreams = streams.map { StreamParticipant(participant, itsMe, it) }
@@ -68,7 +69,7 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
                     uiStreams += addedStreams
                     uiStreams -= removedStreams.toSet()
                 } else uiStreams.removeIf { it.participant == participant }
-                emit(uiStreams)
+                emit(uiStreams.toList())
             }.launchIn(viewModelScope)
         }
 
