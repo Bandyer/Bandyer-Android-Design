@@ -24,25 +24,28 @@ buildscript {
     ext.kotlin_version = '1.5.31'
     ext.serialization_version = '0.5.1'
     ext.lifecycle_version = "1.1.1"
-    ext.bandyer_common = "1.0.10"
+    ext.bandyer_common = "1.0.11"
     ext.nav_version = "2.3.5"
 
     repositories {
-        gradlePluginPortal()
         mavenLocal()
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://oss.sonatype.org/content/repositories/releases' }
+        maven { url 'https://storage.googleapis.com/r8-releases/raw' }
         maven { url 'https://maven.bandyer.com/releases' }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.3'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.21.0' // checks updates for plugins
+        classpath 'com.android.tools:r8:3.0.73'
+        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.21.0'
 
         //classpath dependencies to import library project
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
@@ -57,6 +60,7 @@ allprojects {
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://oss.sonatype.org/content/repositories/releases' }
+        maven { url 'https://storage.googleapis.com/r8-releases/raw' }
         maven { url 'https://maven.bandyer.com/releases' }
     }
 
