@@ -18,9 +18,10 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version '1.5.30'
+    id 'org.jetbrains.dokka' version("1.6.10")
 }
 
+apply from: '../gradle-variables.gradle'
 apply from: '../publish.gradle'
 
 def compiler = javaToolchains.compilerFor {

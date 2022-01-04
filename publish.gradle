@@ -1,15 +1,7 @@
-ext.moduleGroupId = "com.bandyer"
-ext.moduleProductId = "video-android"
-ext.moduleVersion = "2.0.2"
-
 Properties properties = new Properties()
 if (project.rootProject.file("local.properties").exists()) {
     properties.load(project.rootProject.file('local.properties').newDataInputStream())
 }
-
-def mavenAccessKey = properties.getProperty("maven.accessKey") ?: ""
-def mavenSecretKey = properties.getProperty("maven.secretKey") ?: ""
-def mavenDistributionId = properties.getProperty("maven.distributionId") ?: ""
 
 afterEvaluate {
     publishing {
@@ -17,8 +9,8 @@ afterEvaluate {
             maven {
                 url = "s3://maven-bandyer/releases/"
                 credentials(AwsCredentials) {
-                    accessKey = mavenAccessKey
-                    secretKey = mavenSecretKey
+                    accessKey = properties.getProperty("maven.accessKey")
+                    secretKey = properties.getProperty("maven.secretKey")
                 }
             }
         }
@@ -27,7 +19,7 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = moduleGroupId
-                artifactId = moduleProductId + "-" + project.getName()
+                artifactId = project.getName()
                 version = moduleVersion
                 artifact kdocJar
                 artifact sourcesJar
@@ -36,11 +28,16 @@ afterEvaluate {
     }
 }
 
+task downloadIcons(type: Exec) {
+    workingDir '../scripts'
+    commandLine 'python', './download_zeplin_icons.py', properties.getProperty("zeplin.token") ?: "", properties.getProperty("zeplin.styleguide") ?: "", project.getName()
+}
+
 task invalidateCache(type: Exec) {
     workingDir '../scripts'
     def publishPath = "releases"
     def packageName = moduleGroupId + "." + project.getName()
-    commandLine 'python', './invalidate_s3_cache.py', mavenAccessKey, mavenSecretKey, mavenDistributionId, publishPath, packageName, version
+    commandLine 'python', './invalidate_s3_cache.py', properties.getProperty("maven.accessKey") ?: "", properties.getProperty("maven.secretKey") ?: "", properties.getProperty("maven.distributionId") ?: "", publishPath, packageName, moduleVersion
 }
 
 task publishUpload {
@@ -52,29 +49,25 @@ task publishUpload {
     tasks.findByName('invalidateCache').mustRunAfter publishTask
 }
 
-
 dokkaHtml {
-    outputDirectory = new File("$buildDir/kDoc")
+    outputDirectory.set(file("$buildDir/kDoc"))
+    moduleName.set(project.getName())
     dokkaSourceSets {
         configureEach {
-            moduleName.set(project.name)
-            reportUndocumented.set(true)
             jdkVersion.set(11)
+            suppressInheritedMembers.set(true)
+            reportUndocumented.set(true)
             includeNonPublic.set(false)
             skipEmptyPackages.set(true)
-            externalDocumentationLink {
-                url.set(new URL("https://docs.bandyer.com/Bandyer-Android-Common/kDoc/bandyer-android-common/"))
-            }
         }
     }
 }
-
 
 task dokkaDoc() {
     dependsOn dokkaHtml
 }
 
-task kdocJar(type: Jar, dependsOn: dokkaHtml) {
+task kdocJar(type: Jar, dependsOn: dokkaDoc) {
     archiveClassifier.set("javadoc")
     from "$buildDir/kDoc"
 }

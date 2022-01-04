@@ -1,0 +1,52 @@
+// ANDROID
+ext.sdkVersion = 31
+ext.buildToolsVersion = "31.0.0"
+ext.moduleVersion = "2.2.0"
+ext.moduleGroupId = "com.bandyer"
+ext.moduleProductId = "video-android"
+ext.r8Version = "3.0.73"
+ext.desugarVersion = "1.1.5"
+
+// GRADLE
+ext.gradleVersion = "7.0.4"
+ext.benManesGradleVersion = "0.21.0"
+ext.androidAptVersion = "1.8"
+
+// JETBRAINS
+ext.kotlinVersion = '1.6.10'
+//ext.dokkaVersion = '1.6.10'
+ext.kotlinCoroutinesVersion = "1.5.2"
+
+// ANDROIDX
+ext.appCompatVersion = "1.4.0"
+ext.coreKtxVersion = "1.6.0"
+ext.actKtxVersion = "1.4.0"
+ext.fragKtxVersion = "1.4.0"
+ext.lifecycleKtxVersion = '2.4.0'
+ext.dataBindingVersion = "7.0.3"
+ext.navVersion = "2.4.0-rc01"
+ext.vectorDrawable = "1.1.0"
+ext.constraintLayoutVersion = "2.1.2"
+ext.recyclerViewVersion = "1.2.1"
+
+// BANDYER
+ext.bandyerCommonVersion = "1.0.10"
+
+// SQUAREUP
+ext.picassoVersion = "2.71828"
+
+// GOOGLE
+ext.materialVersion = "1.4.0"
+ext.flexBoxVersion = "3.0.0"
+
+// MIKEPENZ
+ext.fastAdapterVersion = '5.5.1'
+
+// TEST
+ext.junitVersion = "4.13.2"
+ext.runnerExtVersion = "1.1.3"
+ext.testRunnerVersion = "1.4.0"
+ext.espressoVersion = "3.4.0"
+ext.mockkVersion = "1.12.0"
+ext.mockitoVersion = "2.28.2"
+

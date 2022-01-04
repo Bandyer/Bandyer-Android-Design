@@ -149,8 +149,9 @@ internal class GlassActivity :
                     when(it) {
                         is Call.State.Disconnected.Ended.Declined -> navController!!.navigate(R.id.callEndedFragment, CallEndedFragmentArgs(resources.getString(R.string.bandyer_glass_call_ended), resources.getString(R.string.bandyer_glass_call_declined)).toBundle())
                         is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> navController!!.navigate(R.id.callEndedFragment, CallEndedFragmentArgs(resources.getString(R.string.bandyer_glass_call_ended), resources.getString(R.string.bandyer_glass_answered_on_another_device)).toBundle())
-                        is Call.State.Disconnected.Ended.HangUp -> navController!!.navigate(R.id.callEndedFragment, CallEndedFragmentArgs(resources.getString(R.string.bandyer_glass_call_ended)).toBundle())
+                        is Call.State.Disconnected.Ended.HangUp -> navController!!.navigate(R.id.callEndedFragment, CallEndedFragmentArgs(resources.getString(R.string.bandyer_glass_call_ended), resources.getString(R.string.bandyer_glass_hangup)).toBundle())
                         is Call.State.Disconnected.Ended.Error -> navController!!.navigate(R.id.callEndedFragment, CallEndedFragmentArgs(resources.getString(R.string.bandyer_glass_call_ended), resources.getString(R.string.bandyer_glass_call_error_occurred)).toBundle())
+                        is Call.State.Disconnected.Ended -> navController!!.navigate(R.id.callEndedFragment, CallEndedFragmentArgs(resources.getString(R.string.bandyer_glass_call_ended)).toBundle())
                         is Call.State.Reconnecting -> navController!!.navigate(R.id.reconnectingFragment)
                         else -> Unit
                     }
