@@ -57,13 +57,13 @@ dokkaHtml {
             jdkVersion.set(11)
             suppressInheritedMembers.set(true)
             reportUndocumented.set(true)
-            includeNonPublic.set(false)
             skipEmptyPackages.set(true)
         }
     }
 }
 
 task dokkaDoc() {
+    file("$buildDir/kDoc").deleteDir()
     dependsOn dokkaHtml
 }
 
