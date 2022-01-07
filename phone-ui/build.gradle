@@ -22,83 +22,46 @@ plugins {
     id 'org.jetbrains.dokka' version("1.6.10")
 }
 
-apply from: '../gradle-variables.gradle'
+apply from: '../versions.gradle'
+apply from: '../android.gradle'
 apply from: '../publish.gradle'
 
-android {
-    compileSdkVersion sdkVersion
-    buildToolsVersion buildToolsVersion
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion sdkVersion
-        versionCode 1
-        versionName moduleVersion
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    lintOptions {
-        warning 'InvalidPackage'
-        abortOnError false
-    }
-
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
-
-    compileOptions {
-        coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
-
-    // For Kotlin projects
-    kotlinOptions {
-        jvmTarget = '11'
-    }
-
-    buildFeatures {
-        viewBinding true
-    }
-
-    aaptOptions.cruncherEnabled = false
-}
-
 dependencies {
+    implementation project(':core-ui')
+
+    coreLibraryDesugaring androidX.desugar
+
     /*** Platform ***/
-    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    implementation jetbrains.reflect
 
-    implementation "androidx.fragment:fragment-ktx:$fragKtxVersion"
-    implementation "androidx.activity:activity-ktx:$actKtxVersion"
-    implementation "androidx.appcompat:appcompat:$appCompatVersion"
-    implementation "androidx.vectordrawable:vectordrawable:$vectorDrawable"
-    implementation "androidx.vectordrawable:vectordrawable-animated:$vectorDrawable"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleKtxVersion"
-    implementation "androidx.core:core-ktx:$coreKtxVersion"
-    implementation "com.google.android.material:material:$materialVersion"
-
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugarVersion"
+    implementation androidX.appCompat
+    implementation ktxExtensions.core
+    implementation ktxExtensions.fragment
+    implementation ktxExtensions.activity
+    implementation ktxExtensions.lifecycleViewModel
+    implementation google.material
+    implementation androidX.vectorDrawable
+    implementation androidX.vectorDrawableAnimated
 
     /*** Testing ***/
-    testImplementation "junit:junit:$junitVersion"
-    testImplementation "io.mockk:mockk:$mockkVersion"
+    testImplementation test.jUnit
+    testImplementation test.mockk
 
-    androidTestImplementation "androidx.test:runner:$testRunnerVersion"
-    androidTestImplementation "org.mockito:mockito-android:$mockitoVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation test.runner
+    androidTestImplementation test.mockito
+    androidTestImplementation test.espresso
 
     compileOnly 'com.github.imablanco:Zoomy:1ee82834df'
 
     /*** UI ***/
-    api "com.squareup.picasso:picasso:$picassoVersion"
-    api "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
-    api "com.mikepenz:fastadapter:$fastAdapterVersion"
-    api "com.mikepenz:fastadapter-extensions-diff:$fastAdapterVersion"
+    api picasso.picasso
+    api androidX.constraintLayout
+    api fastAdapter.fastAdapter
+    api fastAdapter.diff
 
-    implementation "androidx.recyclerview:recyclerview:$recyclerViewVersion"
-    api "com.google.android.flexbox:flexbox:$flexBoxVersion"
+    implementation androidX.recyclerView
+    api google.flexbox
 
     /*** BANDYER ***/
-    implementation "com.bandyer:bandyer-android-common:$bandyerCommonVersion"
-
-    implementation project(':core-ui')
+    implementation bandyer.common
 }

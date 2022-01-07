@@ -23,66 +23,30 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
-apply from: '../gradle-variables.gradle'
+apply from: '../versions.gradle'
+apply from: '../android.gradle'
 apply from: '../publish.gradle'
 
-android {
-    compileSdkVersion sdkVersion
-    buildToolsVersion buildToolsVersion
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion sdkVersion
-        versionCode 1
-        versionName moduleVersion
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    lintOptions {
-        warning 'InvalidPackage'
-        abortOnError false
-    }
-
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
-
-    compileOptions {
-        coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
-    }
-
-    // For Kotlin projects
-    kotlinOptions {
-        jvmTarget = '11'
-    }
-
-    buildFeatures {
-        dataBinding true
-    }
-}
-
 dependencies {
-    testImplementation "junit:junit:$junitVersion"
-    androidTestImplementation "androidx.test.ext:junit:$runnerExtVersion"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    implementation project(':core-ui')
+
+    coreLibraryDesugaring androidX.desugar
 
     // Platform
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleKtxVersion"
-    implementation "androidx.core:core-ktx:$coreKtxVersion"
-    implementation "androidx.fragment:fragment-ktx:$fragKtxVersion"
-    implementation "androidx.activity:activity-ktx:$actKtxVersion"
-    implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
-    implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
-    implementation "com.google.android.material:material:$materialVersion"
-    implementation "androidx.databinding:databinding-common:$dataBindingVersion"
-
-    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$desugarVersion"
+    implementation coroutines.core
+    implementation ktxExtensions.lifecycleRuntime
+    implementation ktxExtensions.core
+    implementation ktxExtensions.fragment
+    implementation ktxExtensions.activity
+    implementation navigation.fragmentKtx
+    implementation navigation.uiKtx
+    implementation google.material
+    implementation androidX.dataBindingCommon
 
     // UI
-    api "com.mikepenz:fastadapter:$fastAdapterVersion"
-    api "com.mikepenz:fastadapter-extensions-diff:$fastAdapterVersion"
+    api fastAdapter.fastAdapter
+    api fastAdapter.diff
 
-    implementation project(':core-ui')
+    testImplementation test.jUnit
+    androidTestImplementation test.espresso
 }

@@ -19,7 +19,7 @@ apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
 
-    apply from: 'gradle-variables.gradle'
+    apply from: 'versions.gradle'
 
     repositories {
         gradlePluginPortal()
@@ -34,15 +34,15 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools:r8:$r8Version"
-        classpath "com.android.tools.build:gradle:$gradleVersion"
-        classpath "com.neenbedankt.gradle.plugins:android-apt:$androidAptVersion"
-        classpath "com.github.ben-manes:gradle-versions-plugin:$benManesGradleVersion"
+        classpath classPaths.r8ClassPath
+        classpath classPaths.gradleClassPath
+        classpath classPaths.neenbedanktGradlePlugin
+        classpath classPaths.benManesGradlePlugin
 
         //classpath dependencies to import library project
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-        classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion"
+        classpath classPaths.kotlinGradlePluginClassPath
+        classpath classPaths.kotlinSerializationClassPath
+        classpath classPaths.sageArgsClassPath
     }
 }
 
@@ -59,7 +59,7 @@ allprojects {
     }
 
     configurations.all {
-        resolutionStrategy.force "com.bandyer:bandyer-android-common:$bandyerCommonVersion"
+        resolutionStrategy.force bandyer.common
     }
 }
 
