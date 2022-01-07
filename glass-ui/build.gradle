@@ -26,10 +26,6 @@ plugins {
 apply from: '../gradle-variables.gradle'
 apply from: '../publish.gradle'
 
-def compiler = javaToolchains.compilerFor {
-    languageVersion = JavaLanguageVersion.of(11)
-}
-
 android {
     compileSdkVersion sdkVersion
     buildToolsVersion buildToolsVersion
@@ -59,7 +55,6 @@ android {
     // For Kotlin projects
     kotlinOptions {
         jvmTarget = '11'
-        jdkHome = compiler.get().metadata.installationPath.asFile.absolutePath
     }
 
     buildFeatures {
