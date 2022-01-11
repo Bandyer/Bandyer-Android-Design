@@ -11,7 +11,7 @@ ext {
     def gradleVersion = "7.0.4"
     def androidAptVersion = "1.8"
     def benManesGradleVersion = "0.21.0"
-    def navVersion = "2.4.0-rc01"
+    def navVersion = "2.3.5"
 
     def appCompatVersion = "1.4.0"
     def dataBindingVersion = "7.0.3"

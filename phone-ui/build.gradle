@@ -63,5 +63,5 @@ dependencies {
     api google.flexbox
 
     /*** BANDYER ***/
-    implementation bandyer.common
+    compileOnly bandyer.common
 }

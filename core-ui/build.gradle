@@ -38,7 +38,4 @@ dependencies {
 
     testImplementation test.jUnit
     androidTestImplementation test.espresso
-
-    /*** BANDYER ***/
-    implementation bandyer.common
 }
