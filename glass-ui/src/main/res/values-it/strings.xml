@@ -56,6 +56,7 @@
     <string name="bandyer_glass_call_declined">Rifiutata</string>
     <string name="bandyer_glass_call_error_occurred">Si è verificato un errore</string>
     <string name="bandyer_glass_answered_on_another_device">Risposto su un altro dispositivo</string>
+    <string name="bandyer_glass_line_busy">Linea occupata</string>
     <string name="bandyer_glass_mic_not_active">Microfono non attivo</string>
     <string name="bandyer_glass_cam_not_active">Camera non attiva</string>
     <string name="bandyer_glass_mic_and_cam_not_active">Microfono e camera non attivi</string>

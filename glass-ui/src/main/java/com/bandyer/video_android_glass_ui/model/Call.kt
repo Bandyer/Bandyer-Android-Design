@@ -31,6 +31,7 @@ data class Call(
                 data class HangUp(override val reason: String) : Ended(reason)
                 data class Declined(override val reason: String) : Ended(reason)
                 data class AnsweredOnAnotherDevice(override val reason: String) : Ended(reason)
+                data class LineBusy(override val reason: String) : Ended(reason)
 
                 sealed class Error(reason: String) : Ended(reason) {
                     companion object : Error("An error occurred") {

@@ -60,6 +60,7 @@
     <string name="bandyer_glass_call_declined">Declined</string>
     <string name="bandyer_glass_call_error_occurred">An error occurred</string>
     <string name="bandyer_glass_answered_on_another_device">Answered on another device</string>
+    <string name="bandyer_glass_line_busy">Line busy</string>
     <string name="bandyer_glass_mic_not_active">The mic is not active</string>
     <string name="bandyer_glass_cam_not_active">The cam is not active</string>
     <string name="bandyer_glass_mic_and_cam_not_active">The mic and the camera are not active</string>
