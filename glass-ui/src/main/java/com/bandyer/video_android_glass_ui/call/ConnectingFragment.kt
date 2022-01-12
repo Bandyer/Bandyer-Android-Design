@@ -94,18 +94,14 @@ internal abstract class ConnectingFragment : BaseFragment() {
                             }
                             .launchIn(this@repeatOnStarted)
 
-                        call.participants
-                            .map { it.me }
-                            .flatMapLatest { it.streams }
-                            .flatMapLatest { it.map { it.state }.merge() }
-                            .takeWhile { it !is Stream.State.Live }
-                            .onCompletion { onLiveStream() }
+                        liveStreams
+                            .dropWhile { it.count() > 0 }
+                            .takeWhile { it.count() < 1 }
+                            .onCompletion {  onLiveStream() }
                             .launchIn(this@repeatOnStarted)
 
-                        call.participants
-                            .map { it.others + it.me }
-                            .flatMapLatest { participants -> participants.map { it.state }.merge() }
-                            .takeWhile { it !is CallParticipant.State.Online.InCall }
+                        inCallParticipants
+                            .takeWhile { it.count() < 2 }
                             .onCompletion { bandyerSubtitle.text = resources.getString(R.string.bandyer_glass_connecting) }
                             .launchIn(this@repeatOnStarted)
                     }
