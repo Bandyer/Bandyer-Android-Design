@@ -14,8 +14,6 @@ interface Stream {
 
     sealed class State {
 
-        object Opening : State()
-
         object Open : State()
 
         object Live : State()
