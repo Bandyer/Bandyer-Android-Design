@@ -3,6 +3,9 @@ package com.bandyer.sdk_design.extensions
 import android.view.MotionEvent
 import kotlin.math.abs
 
+/**
+ * Motion event extension utils
+ */
 object MotionEventExtensions {
 
     private const val MAX_CLICK_DURATION = 200
