@@ -1,5 +1,8 @@
 package com.bandyer.sdk_design.extensions
 
+/**
+ * Float arithmetics extension utils
+ */
 object FloatExtensions {
 
     /**

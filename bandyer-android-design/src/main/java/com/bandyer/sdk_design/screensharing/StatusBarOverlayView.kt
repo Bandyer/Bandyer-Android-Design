@@ -114,6 +114,9 @@ class StatusBarOverlayView @JvmOverloads constructor(
         return Color.argb(a.toInt(), r.toInt(), g.toInt(), b.toInt())
     }
 
+    /**
+     * @suppress
+     */
     override fun onConfigurationChanged(newConfig: Configuration?) {
         super.onConfigurationChanged(newConfig)
         if (!isInPictureInPictureMode()) return
