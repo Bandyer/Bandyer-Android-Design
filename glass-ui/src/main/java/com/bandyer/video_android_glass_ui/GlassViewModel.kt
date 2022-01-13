@@ -38,7 +38,7 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
         }
 
     val onParticipantJoin: SharedFlow<CallParticipant> =
-        MutableSharedFlow<CallParticipant>(replay = 1, extraBufferCapacity = 1).apply {
+        MutableSharedFlow<CallParticipant>().apply {
             var participants = listOf<CallParticipant>()
             inCallParticipants.onEach {
                 val diff = it.minus(participants.toSet())
@@ -48,7 +48,7 @@ internal class GlassViewModel(private val callManager: CallManager) : ViewModel(
         }
 
     val onParticipantLeave: SharedFlow<CallParticipant> =
-        MutableSharedFlow<CallParticipant>(replay = 1, extraBufferCapacity = 1).apply {
+        MutableSharedFlow<CallParticipant>().apply {
             var participants = listOf<CallParticipant>()
             inCallParticipants.onEach {
                 val left = participants.minus(it.toSet())
