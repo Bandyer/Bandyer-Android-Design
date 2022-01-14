@@ -138,7 +138,9 @@ internal class GlassViewModel(private val callManager: GlassCallManager) : ViewM
         MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
     val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
 
-    val amIAlone: Flow<Boolean> = combine(otherStreams, myLiveStreams, camPermission) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.count() > 0 && (myLiveStreams.count() > 0 || !camPermission.isAllowed)) }
+    val amIAlone: Flow<Boolean> = combine(otherStreams, myLiveStreams, camPermission) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }
+
+    val amIVisibleToOthers: Flow<Boolean> = combine(otherStreams, myLiveStreams) { otherStreams, myLiveStreams -> otherStreams.isEmpty() && myLiveStreams.isNotEmpty() }
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,
