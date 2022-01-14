@@ -49,28 +49,20 @@ jobs:
     outputs:
         lversion: ${{ steps.tag_version.outputs.new_version  }}
   
-  check:
-    needs: minor
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Wait for build to succeed
-      uses: lewagon/wait-on-check-action@v1.0.0
-      with:
-          ref: release-v${{ needs.minor.outputs.lversion }}
-          check-name: build
-          repo-token: ${{ secrets.PAT }}
-          wait-interval: 20
-          allowed-conclusions: success
-  
   publish:
-    needs: check
+    needs: minor
     name: Publish
     uses: Bandyer/Bandyer-Android-Design/.github/workflows/publish.yml@develop
+    with: 
+      release_version: ${{ needs.minor.outputs.lversion }}
+    secrets:
+      MAVEN_ACCESSKEY: ${{ secrets.MAVEN_ACCESSKEY }}
+      MAVEN_SECRETKEY: ${{ secrets.MAVEN_SECRETKEY }}
+      MAVEN_DISTRIBUTIONID: ${{ secrets.MAVEN_DISTRIBUTIONID }}
   
   automerge:
     name: Merge into develop
-    needs: publish
+    needs: [minor, publish]
     runs-on: ubuntu-latest
     steps:
       - name: checkout
