@@ -14,10 +14,10 @@ import java.util.concurrent.ConcurrentLinkedQueue
 @Suppress("UNCHECKED_CAST")
 internal object GlassViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        GlassViewModel(ManagersHolder.callManagerInstance!!.get()!!) as T
+        GlassViewModel(GlassManagersHolder.callManagerInstance!!.get()!! as GlassCallManager) as T
 }
 
-internal class GlassViewModel(private val callManager: CallManager) : ViewModel() {
+internal class GlassViewModel(private val callManager: GlassCallManager) : ViewModel() {
 
     val call: Call = callManager.call
 
