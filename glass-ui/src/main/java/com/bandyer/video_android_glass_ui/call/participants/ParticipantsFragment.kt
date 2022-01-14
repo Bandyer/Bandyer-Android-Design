@@ -95,8 +95,9 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                             val participant = itemAdapter!!.getAdapterItem(currentParticipantIndex).participant
                             with(binding.bandyerUserInfo) {
                                 hideName(true)
-                                participant.avatarUrl?.apply { setAvatar(this) }
-                                setAvatarBackgroundAndLetter(participant.username)
+                                // TODO userDetails
+//                                participant.avatarUrl?.apply { setAvatar(this) }
+                                setAvatarBackgroundAndLetter(participant.userAlias)
 
                                 repeatOnStarted {
                                     stateJob = participant.state.onEach {

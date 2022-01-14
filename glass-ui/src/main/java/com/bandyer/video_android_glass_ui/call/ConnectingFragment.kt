@@ -79,7 +79,8 @@ internal abstract class ConnectingFragment : BaseFragment() {
                         var nOfParticipants = 0
                         call.participants.onEach { participants ->
                                 val isGroupCall = nOfParticipants > 2
-                                val items = ((if (isGroupCall) listOf(participants.me) else listOf()).plus(participants.others)).map { FullScreenDialogItem(it.username) }
+                                // TODO userDetails
+                                val items = ((if (isGroupCall) listOf(participants.me) else listOf()).plus(participants.others)).map { FullScreenDialogItem(it.userAlias) }
                                 FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
 
                                 if (nOfParticipants == itemAdapter!!.adapterItemCount) return@onEach

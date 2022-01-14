@@ -213,12 +213,14 @@ internal class GlassActivity :
 
             viewModel.onParticipantJoin
                 .onEach {
-                    binding.bandyerToastContainer.show(text = resources.getString(R.string.bandyer_glass_user_joined_pattern, it.username))
+                    // TODO userDetails
+                    binding.bandyerToastContainer.show(text = resources.getString(R.string.bandyer_glass_user_joined_pattern, it.userAlias))
                 }.launchIn(this)
 
             viewModel.onParticipantLeave
                 .onEach {
-                    binding.bandyerToastContainer.show(text = resources.getString(R.string.bandyer_glass_user_left_pattern, it.username))
+                    // TODO userDetails
+                    binding.bandyerToastContainer.show(text = resources.getString(R.string.bandyer_glass_user_left_pattern, it.userAlias))
                 }.launchIn(this)
         }
     }

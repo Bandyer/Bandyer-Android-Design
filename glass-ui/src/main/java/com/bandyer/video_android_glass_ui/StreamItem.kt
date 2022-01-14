@@ -157,7 +157,8 @@ internal class MyStreamItem(streamParticipant: StreamParticipant, parentScope: C
         override fun bindView(item: MyStreamItem, payloads: List<Any>) {
             super.bindView(item, payloads)
             binding.bandyerSubtitleLayout.bandyerSubtitle.text = itemView.context.getString(R.string.bandyer_glass_you)
-            binding.bandyerCenteredSubtitle.text = item.streamParticipant.participant.username
+            // TODO userDetails
+            binding.bandyerCenteredSubtitle.text = item.streamParticipant.participant.userAlias
 
             jobs += item.micPermission.onEach {
                 binding.bandyerMicMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
@@ -231,14 +232,15 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope
          */
         override fun bindView(item: OtherStreamItem, payloads: List<Any>) = with(binding) {
             super.bindView(item, payloads)
-            val username = item.streamParticipant.participant.username
+            // TODO userDetails
+            val username = item.streamParticipant.participant.userAlias
             bandyerSubtitleLayout.bandyerSubtitle.text = username
-            val avatarUrl = item.streamParticipant.participant.avatarUrl ?: kotlin.run {
-                bandyerAvatar.setBackground(username.parseToColor())
-                bandyerAvatar.setText(username[0].toString())
-                return@with
-            }
-            bandyerAvatar.setImage(avatarUrl)
+//            val avatarUrl = item.streamParticipant.participant.avatarUrl ?: kotlin.run {
+//                bandyerAvatar.setBackground(username.parseToColor())
+//                bandyerAvatar.setText(username[0].toString())
+//                return@with
+//            }
+//            bandyerAvatar.setImage(avatarUrl)
         }
 
         /**

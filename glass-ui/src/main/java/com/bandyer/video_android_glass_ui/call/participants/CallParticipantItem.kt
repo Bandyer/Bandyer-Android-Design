@@ -52,7 +52,8 @@ internal class CallParticipantItem(val participant: CallParticipant): AbstractIt
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: CallParticipantItem, payloads: List<Any>) {
-            binding.bandyerText.text = item.participant.username
+            // TODO userDetails
+            binding.bandyerText.text = item.participant.userAlias
         }
 
         /**

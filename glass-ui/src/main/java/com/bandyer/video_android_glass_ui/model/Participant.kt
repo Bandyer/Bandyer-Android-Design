@@ -35,8 +35,6 @@ interface CallParticipant : Participant {
 
 data class PhoneCallParticipant(
     override val userAlias: String,
-    override val username: String,
-    override val avatarUrl: String?,
     override val state: Flow<CallParticipant.State>,
     override val streams: Flow<List<Stream>>
 ) : CallParticipant
