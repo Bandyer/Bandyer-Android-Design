@@ -8,7 +8,6 @@ import androidx.activity.addCallback
 import androidx.core.view.postDelayed
 import androidx.navigation.fragment.navArgs
 import com.bandyer.video_android_glass_ui.BaseFragment
-import com.bandyer.video_android_glass_ui.GlassActivity
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils

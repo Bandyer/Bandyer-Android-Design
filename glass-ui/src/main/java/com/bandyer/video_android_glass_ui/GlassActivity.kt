@@ -158,20 +158,10 @@ internal class GlassActivity :
                     }
                 }.launchIn(this)
 
-            viewModel.inCallParticipants
-                .onEach {
-                    val count = it.count()
-                    with(binding) {
-                        if(count < 2) bandyerToastContainer.show(ALONE_TOAST_ID, resources.getString(R.string.bandyer_glass_alone), R.drawable.ic_bandyer_glass_alert, 0L)
-                        else bandyerToastContainer.cancel(ALONE_TOAST_ID)
-                        bandyerStatusBar.updateCenteredText(count)
-                    }
-                }.launchIn(this)
-
-            viewModel.myLiveStreams
+            viewModel.amIAlone
                 .onEach {
                     with(binding) {
-                        if(it.isEmpty()) bandyerToastContainer.show(ALONE_TOAST_ID, resources.getString(R.string.bandyer_glass_alone), R.drawable.ic_bandyer_glass_alert, 0L)
+                        if(it) bandyerToastContainer.show(ALONE_TOAST_ID, resources.getString(R.string.bandyer_glass_alone), R.drawable.ic_bandyer_glass_alert, 0L)
                         else bandyerToastContainer.cancel(ALONE_TOAST_ID)
                     }
                 }.launchIn(this)

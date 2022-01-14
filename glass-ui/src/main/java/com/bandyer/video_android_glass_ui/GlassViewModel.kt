@@ -78,7 +78,7 @@ internal class GlassViewModel(private val callManager: GlassCallManager) : ViewM
     private val myStreams: Flow<List<Stream>> =
         call.participants.map { it.me }.flatMapLatest { it.streams }
 
-    val otherStreams: Flow<List<Stream>> =
+    private val otherStreams: Flow<List<Stream>> =
         call.participants.map { it.others }.flatMapLatest { it.map { it.streams }.merge() }
 
     private val cameraStream: Flow<Stream?> =
@@ -87,7 +87,7 @@ internal class GlassViewModel(private val callManager: GlassCallManager) : ViewM
     private val audioStream: Flow<Stream?> =
         myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }
 
-    val myLiveStreams: StateFlow<List<Stream>> = MutableStateFlow<List<Stream>>(listOf()).apply {
+    private val myLiveStreams: StateFlow<List<Stream>> = MutableStateFlow<List<Stream>>(listOf()).apply {
         val liveStreams = ConcurrentLinkedQueue<Stream>()
         val jobs = mutableListOf<Job>()
         myStreams.onEach { streams ->
@@ -137,6 +137,8 @@ internal class GlassViewModel(private val callManager: GlassCallManager) : ViewM
     private val _camPermission: MutableStateFlow<Permission> =
         MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
     val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
+
+    val amIAlone: Flow<Boolean> = combine(otherStreams, myLiveStreams, camPermission) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.count() > 0 && (myLiveStreams.count() > 0 || !camPermission.isAllowed)) }
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,

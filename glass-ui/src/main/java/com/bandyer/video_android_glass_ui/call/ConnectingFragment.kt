@@ -99,12 +99,8 @@ internal abstract class ConnectingFragment : BaseFragment() {
                             setSubtitle(nOfParticipants > 2)
                         }.launchIn(this@repeatOnStarted)
 
-                        combine(
-                            otherStreams,
-                            myLiveStreams,
-                            camPermission
-                        ) { otherStreams, myLiveStreams, camPermission -> otherStreams.count() > 0 && (myLiveStreams.count() > 0 || !camPermission.isAllowed) }
-                            .takeWhile { !it }
+                        amIAlone
+                            .takeWhile { it }
                             .onCompletion { onConnected() }
                             .launchIn(this@repeatOnStarted)
 
