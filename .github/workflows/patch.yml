@@ -52,6 +52,8 @@ jobs:
     needs: patch
     name: Publish
     uses: Bandyer/Bandyer-Android-Design/.github/workflows/publish.yml@develop
+    with: 
+      release_version: ${{ needs.patch.outputs.lversion }}
   
   automerge:
     name: Merge into develop

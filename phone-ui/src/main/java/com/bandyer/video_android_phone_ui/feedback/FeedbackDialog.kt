@@ -28,6 +28,9 @@ class FeedbackDialog : DialogFragment() {
 
     private var autoDismissTime: Int = -1
 
+    /**
+     * @suppress
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireContext().obtainStyledAttributes(R.style.BandyerSDKDesign_FragmentDialog, R.styleable.BandyerSDKDesign_FragmentDialog).apply {
@@ -37,6 +40,9 @@ class FeedbackDialog : DialogFragment() {
         setStyle(STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Call_bandyer_feedbackDialogStyle))
     }
 
+    /**
+     * @suppress
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,7 +52,7 @@ class FeedbackDialog : DialogFragment() {
             with(bandyerFragmentFeedbackLayout) {
                 bandyerRating.onRatingChangeListener = object : RatingBar.OnRatingChangeListener {
                     override fun onRatingChange(rating: Float) {
-                         val ratingText = resources.getString(
+                        val ratingText = resources.getString(
                             when {
                                 rating <= 1f -> R.string.bandyer_feedback_bad
                                 rating <= 2f -> R.string.bandyer_feedback_poor
@@ -132,6 +138,9 @@ class FeedbackDialog : DialogFragment() {
      */
     fun onDismiss(function: () -> Unit): FeedbackDialog { onDismissCallback = function; return this }
 
+    /**
+     * @suppress
+     */
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         onDismissCallback?.invoke()
@@ -141,7 +150,13 @@ class FeedbackDialog : DialogFragment() {
         onDismissCallback = null
     }
 
+    /**
+     * Feedback dialog companion object
+     */
     companion object {
+        /**
+         * Feedback dialog logging tag
+         */
         const val TAG = "FeedbackDialog"
     }
 }

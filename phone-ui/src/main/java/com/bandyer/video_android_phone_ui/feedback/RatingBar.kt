@@ -3,7 +3,7 @@ package com.bandyer.video_android_phone_ui.feedback
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 
-/*
+/**
  * A generic interface for a RatingBar
  */
 interface RatingBar {

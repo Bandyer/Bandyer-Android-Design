@@ -176,15 +176,15 @@
     <!-- FEEDBACK -->
     <string name="bandyer_feedback_vote">Vote</string>
     <string name="bandyer_feedback_close">Close</string>
-    <string name="bandyer_feedback_evaluate_call">Please evaluate the quality of your call</string>
-    <string name="bandyer_feedback_bad">Bad</string>
+    <string name="bandyer_feedback_evaluate_call">Please rate the quality of your call</string>
+    <string name="bandyer_feedback_bad">Awful</string>
     <string name="bandyer_feedback_poor">Poor</string>
     <string name="bandyer_feedback_neutral">Neutral</string>
     <string name="bandyer_feedback_good">Good</string>
     <string name="bandyer_feedback_excellent">Excellent</string>
     <string name="bandyer_feedback_leave_a_comment">Leave a comment…</string>
     <string name="bandyer_feedback_rating_bar_descr">Rating</string>
-    <string name="bandyer_feedback_see_you_soon">See you soon</string>
-    <string name="bandyer_feedback_thank_you">Thank you for feedback to improve our service!</string>
+    <string name="bandyer_feedback_see_you_soon">We hope to see you again soon.</string>
+    <string name="bandyer_feedback_thank_you">Thank you for your feedback!</string>
 
 </resources>

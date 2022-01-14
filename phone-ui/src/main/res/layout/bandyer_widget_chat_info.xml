@@ -43,7 +43,7 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_subtitle_text"
         style="?attr/bandyer_subtitleStyle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/bandyer_subtitle_bouncing_dots"
         app:layout_constraintHorizontal_bias="0.0"
@@ -54,12 +54,12 @@
         app:layout_constraintStart_toEndOf="@id/bandyer_avatar"
         app:layout_constraintStart_toStartOf="@id/bandyer_title"
         app:layout_constraintTop_toBottomOf="@id/bandyer_title"
-        app:layout_constraintWidth_default="wrap" />
+        app:layout_constrainedWidth="true" />
 
     <com.bandyer.video_android_phone_ui.textviews.BandyerTextViewBouncingDots
         android:id="@+id/bandyer_subtitle_bouncing_dots"
         style="?attr/bandyer_bouncingDotsStyle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/bandyer_subtitle_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -67,6 +67,6 @@
         app:layout_constraintLeft_toRightOf="@id/bandyer_subtitle_text"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@id/bandyer_subtitle_text"
-        app:layout_constraintWidth_default="wrap" />
+        app:layout_constrainedWidth="true" />
 
 </merge>

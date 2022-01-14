@@ -3,6 +3,9 @@ package com.bandyer.video_android_phone_ui.extensions
 import android.view.MotionEvent
 import kotlin.math.abs
 
+/**
+ * Motion event extension utils
+ */
 object MotionEventExtensions {
 
     private const val MAX_CLICK_DURATION = 200

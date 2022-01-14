@@ -1,5 +1,8 @@
 package com.bandyer.video_android_phone_ui.extensions
 
+/**
+ * Float arithmetics extension utils
+ */
 object FloatExtensions {
 
     /**
