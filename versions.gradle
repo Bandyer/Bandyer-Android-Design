@@ -32,7 +32,7 @@ ext {
 
     def picassoVersion = "2.71828"
 
-    def kotlinCoroutinesVersion = "1.5.2"
+    def kotlinCoroutinesVersion = "1.6.0"
 
     def bandyerCommonVersion = "1.0.10"
 
