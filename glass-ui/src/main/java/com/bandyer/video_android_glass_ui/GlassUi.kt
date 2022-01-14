@@ -12,18 +12,18 @@ import java.lang.ref.WeakReference
 object GlassUi {
 
     fun Context.launchCallGlass(
-        callManager: CallManager,
+        callManager: GlassCallManager,
         options: List<Option>,
         enableTilt: Boolean = false
     ) = launchCall(GlassActivity::class.java, callManager, options, enableTilt)
 
     private fun <T : Activity> Context.launchCall(
         cls: Class<T>,
-        callManager: CallManager,
+        callManager: GlassCallManager,
         options: List<Option>,
         enableTilt: Boolean
     ) {
-        ManagersHolder.callManagerInstance = WeakReference(callManager)
+        GlassManagersHolder.callManagerInstance = WeakReference(callManager)
         startActivity(Intent(this, cls).apply {
             putExtra("enableTilt", enableTilt)
             putExtra("options", options.toTypedArray())
@@ -31,17 +31,19 @@ object GlassUi {
     }
 }
 
-internal object ManagersHolder {
-    var callManagerInstance: WeakReference<CallManager>? = null
+internal interface ManagersHolder {
+    var callManagerInstance: WeakReference<CallManager>?
+}
+
+internal object GlassManagersHolder: ManagersHolder {
+    override var callManagerInstance: WeakReference<CallManager>? = null
 }
 
 interface CallManager {
 
     val call: Call
 
-    val battery: Flow<Battery>
-
-    val wifi: Flow<WiFi>
+    val userDetails: Flow<List<UserDetails>>
 
     suspend fun requestMicPermission(context: FragmentActivity): Permission
 
@@ -62,5 +64,11 @@ interface CallManager {
     fun setVolume(value: Int)
 
     fun setZoom(value: Int)
+}
+
+interface GlassCallManager : CallManager {
+    val battery: Flow<Battery>
+
+    val wifi: Flow<WiFi>
 }
 
