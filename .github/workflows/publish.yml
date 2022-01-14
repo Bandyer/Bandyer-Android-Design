@@ -1,4 +1,4 @@
-name: Android CD
+name: Publish Maven
 
 on:
   workflow_call:
