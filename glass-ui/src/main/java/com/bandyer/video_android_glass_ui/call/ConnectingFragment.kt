@@ -61,7 +61,11 @@ internal abstract class ConnectingFragment : BaseFragment() {
                 bandyerParticipants.apply {
                     itemAdapter = ItemAdapter()
                     val fastAdapter = FastAdapter.with(itemAdapter!!)
-                    val layoutManager = AutoScrollLinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    val layoutManager = AutoScrollLinearLayoutManager(
+                        requireContext(),
+                        LinearLayoutManager.HORIZONTAL,
+                        false
+                    )
 
                     this.layoutManager = layoutManager
                     adapter = fastAdapter
@@ -75,31 +79,41 @@ internal abstract class ConnectingFragment : BaseFragment() {
                     with(viewModel) {
                         var nOfParticipants = 0
                         call.participants.onEach { participants ->
-                                val isGroupCall = nOfParticipants > 2
-                                // TODO userDetails
-                                val items = ((if (isGroupCall) listOf(participants.me) else listOf()).plus(participants.others)).map { FullScreenDialogItem(it.userAlias) }
-                                FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
+                            val isGroupCall = nOfParticipants > 2
+                            // TODO userDetails
+                            val items =
+                                ((if (isGroupCall) listOf(participants.me) else listOf()).plus(
+                                    participants.others
+                                )).map { FullScreenDialogItem(it.userAlias) }
+                            FastAdapterDiffUtil[itemAdapter!!] =
+                                FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
 
-                                if (nOfParticipants == itemAdapter!!.adapterItemCount) return@onEach
-                                nOfParticipants = itemAdapter!!.adapterItemCount
-                                if (nOfParticipants < 2) bandyerBottomNavigation.hideSwipeHorizontalItem()
-                                else bandyerCounter.text = resources.getString(
-                                    R.string.bandyer_glass_n_of_participants_pattern,
-                                    participants.others.size + 1
-                                )
+                            if (nOfParticipants == itemAdapter!!.adapterItemCount) return@onEach
+                            nOfParticipants = itemAdapter!!.adapterItemCount
+                            if (nOfParticipants < 2) bandyerBottomNavigation.hideSwipeHorizontalItem()
+                            else bandyerCounter.text = resources.getString(
+                                R.string.bandyer_glass_n_of_participants_pattern,
+                                participants.others.size + 1
+                            )
 
-                                setSubtitle(nOfParticipants > 2)
-                            }
-                            .launchIn(this@repeatOnStarted)
+                            setSubtitle(nOfParticipants > 2)
+                        }.launchIn(this@repeatOnStarted)
 
-                        otherStreams
-                            .onEach { if(it.count() > 0) onConnected() }
+                        combine(
+                            otherStreams,
+                            myLiveStreams,
+                            camPermission
+                        ) { otherStreams, myLiveStreams, camPermission -> otherStreams.count() > 0 && (myLiveStreams.count() > 0 || !camPermission.isAllowed) }
+                            .takeWhile { !it }
+                            .onCompletion { onConnected() }
                             .launchIn(this@repeatOnStarted)
 
                         inCallParticipants
                             .takeWhile { it.count() < 2 }
-                            .onCompletion { bandyerSubtitle.text = resources.getString(R.string.bandyer_glass_connecting) }
-                            .launchIn(this@repeatOnStarted)
+                            .onCompletion {
+                                bandyerSubtitle.text =
+                                    resources.getString(R.string.bandyer_glass_connecting)
+                            }.launchIn(this@repeatOnStarted)
                     }
                 }
             }

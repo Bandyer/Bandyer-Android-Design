@@ -87,7 +87,7 @@ internal class GlassViewModel(private val callManager: GlassCallManager) : ViewM
     private val audioStream: Flow<Stream?> =
         myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }
 
-    val liveStreams: SharedFlow<List<Stream>> = MutableSharedFlow<List<Stream>>(replay = 1, extraBufferCapacity = 1).apply {
+    val myLiveStreams: StateFlow<List<Stream>> = MutableStateFlow<List<Stream>>(listOf()).apply {
         val liveStreams = ConcurrentLinkedQueue<Stream>()
         val jobs = mutableListOf<Job>()
         myStreams.onEach { streams ->

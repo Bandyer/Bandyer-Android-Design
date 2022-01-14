@@ -168,7 +168,7 @@ internal class GlassActivity :
                     }
                 }.launchIn(this)
 
-            viewModel.liveStreams
+            viewModel.myLiveStreams
                 .onEach {
                     with(binding) {
                         if(it.isEmpty()) bandyerToastContainer.show(ALONE_TOAST_ID, resources.getString(R.string.bandyer_glass_alone), R.drawable.ic_bandyer_glass_alert, 0L)
