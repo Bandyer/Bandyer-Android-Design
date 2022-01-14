@@ -22,6 +22,8 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bandyer_logo_view"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         style="?attr/bandyer_iconStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/bandyer_label_view"
@@ -31,11 +33,13 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_default="wrap" />
+        app:layout_constrainedWidth="true" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_label_view"
         style="?attr/bandyer_titleStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
