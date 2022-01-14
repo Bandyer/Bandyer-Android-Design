@@ -61,7 +61,7 @@ jobs:
   
   automerge:
     name: Merge into develop
-    needs: publish
+    needs: [patch, publish]
     runs-on: ubuntu-latest
     steps:
       - name: checkout
