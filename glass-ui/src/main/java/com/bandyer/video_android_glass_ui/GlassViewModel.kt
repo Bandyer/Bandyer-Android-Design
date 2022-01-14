@@ -78,6 +78,9 @@ internal class GlassViewModel(private val callManager: GlassCallManager) : ViewM
     private val myStreams: Flow<List<Stream>> =
         call.participants.map { it.me }.flatMapLatest { it.streams }
 
+    val otherStreams: Flow<List<Stream>> =
+        call.participants.map { it.others }.flatMapLatest { it.map { it.streams }.merge() }
+
     private val cameraStream: Flow<Stream?> =
         myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it?.source is Input.Video.Source.Camera } != null } }
 

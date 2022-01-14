@@ -15,9 +15,6 @@ import com.bandyer.video_android_glass_ui.GlassViewModelFactory
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.common.ReadProgressDecoration
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
-import com.bandyer.video_android_glass_ui.model.Call
-import com.bandyer.video_android_glass_ui.model.CallParticipant
-import com.bandyer.video_android_glass_ui.model.Stream
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.mikepenz.fastadapter.FastAdapter
@@ -95,10 +92,8 @@ internal abstract class ConnectingFragment : BaseFragment() {
                             }
                             .launchIn(this@repeatOnStarted)
 
-                        liveStreams
-                            .dropWhile { it.count() > 0 }
-                            .takeWhile { it.count() < 1 }
-                            .onCompletion {  onLiveStream() }
+                        otherStreams
+                            .onEach { if(it.count() > 0) onConnected() }
                             .launchIn(this@repeatOnStarted)
 
                         inCallParticipants
@@ -121,7 +116,7 @@ internal abstract class ConnectingFragment : BaseFragment() {
         itemAdapter = null
     }
 
-    abstract fun onLiveStream()
+    abstract fun onConnected()
 
     abstract fun setSubtitle(isGroupCall: Boolean)
 }
