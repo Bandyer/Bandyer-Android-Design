@@ -54,10 +54,14 @@ jobs:
     uses: Bandyer/Bandyer-Android-Design/.github/workflows/publish.yml@develop
     with: 
       release_version: ${{ needs.patch.outputs.lversion }}
+    secrets:
+      MAVEN_ACCESSKEY: ${{ secrets.MAVEN_ACCESSKEY }}
+      MAVEN_SECRETKEY: ${{ secrets.MAVEN_SECRETKEY }}
+      MAVEN_DISTRIBUTIONID: ${{ secrets.MAVEN_DISTRIBUTIONID }}
   
   automerge:
     name: Merge into develop
-    needs: publish
+    needs: [patch, publish]
     runs-on: ubuntu-latest
     steps:
       - name: checkout
