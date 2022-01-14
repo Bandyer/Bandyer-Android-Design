@@ -6,6 +6,13 @@ on:
       release_version:
           required: true
           type: string
+    secrets:
+      MAVEN_ACCESSKEY:
+        required: true
+      MAVEN_SECRETKEY:
+        required: true
+      MAVEN_DISTRIBUTIONID:
+        required: true
   workflow_dispatch:
       
 jobs:
