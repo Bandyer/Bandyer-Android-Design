@@ -53,8 +53,10 @@ fun api() {
         override val contactsFormat = { it: List<UserDetails> -> "${it.first().nickName} and other ${it.count() - 1}" }
     }
 
-    val formatters = UserDetailsFormatters(notificationFormatter, callFormatter, chatFormatter)
-    val streamFormat = formatters.callFormatter.streamFormat(UserDetails("ste"))
-
-
+    UserDetailsFormatters(notificationFormatter, callFormatter, chatFormatter)
 }
+
+data class CallUserDetails(
+    val data: List<UserDetails>,
+    val formatters: CallFormatter
+)

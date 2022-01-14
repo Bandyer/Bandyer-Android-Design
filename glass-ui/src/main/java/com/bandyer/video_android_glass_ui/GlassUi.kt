@@ -43,7 +43,7 @@ interface CallManager {
 
     val call: Call
 
-    val userDetails: Flow<List<UserDetails>>
+    val userDetails: Flow<CallUserDetails>
 
     suspend fun requestMicPermission(context: FragmentActivity): Permission
 
