@@ -16,7 +16,6 @@ import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCente
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentParticipantsBinding
 import com.bandyer.video_android_glass_ui.model.CallParticipant
-import com.bandyer.video_android_glass_ui.settings.volume.VolumeFragmentArgs
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -26,7 +25,6 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
@@ -95,9 +93,19 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                             val participant = itemAdapter!!.getAdapterItem(currentParticipantIndex).participant
                             with(binding.bandyerUserInfo) {
                                 hideName(true)
-                                // TODO userDetails
-//                                participant.avatarUrl?.apply { setAvatar(this) }
-                                setAvatarBackgroundAndLetter(participant.userAlias)
+
+                                val callUserDetails = viewModel.userDetails.value
+                                val userDetails = callUserDetails.data.firstOrNull { it.userAlias == participant.userAlias }
+
+                                when {
+                                    userDetails?.avatarUrl != null -> setAvatar(userDetails.avatarUrl)
+                                    userDetails?.avatarUri != null -> setAvatar(userDetails.avatarUri)
+                                    userDetails?.avatarResId != null -> setAvatar(userDetails.avatarResId)
+                                    else -> setAvatar(null)
+                                }
+
+                                val formattedText = userDetails?.let { callUserDetails.formatter?.participantFormat?.invoke(it) } ?: ""
+                                setAvatarBackgroundAndLetter(formattedText)
 
                                 repeatOnStarted {
                                     stateJob = participant.state.onEach {
@@ -123,7 +131,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                     viewModel.call.participants
                         .takeWhile { it.others.plus(it.me).isNotEmpty()  }
                         .collect { participants ->
-                            val items = listOf(participants.me).plus(participants.others).map { CallParticipantItem(it) }
+                            val items = listOf(participants.me).plus(participants.others).map { CallParticipantItem(it, viewModel.userDetails) }
                             FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                         }
                 }

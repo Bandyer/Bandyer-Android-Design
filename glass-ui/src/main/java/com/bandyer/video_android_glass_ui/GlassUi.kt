@@ -4,9 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
-import com.bandyer.video_android_glass_ui.model.Volume
 import com.bandyer.video_android_glass_ui.model.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import java.lang.ref.WeakReference
 
 object GlassUi {
@@ -43,7 +43,7 @@ interface CallManager {
 
     val call: Call
 
-    val userDetails: Flow<CallUserDetails>
+    val userDetails: StateFlow<CallUserDetails>
 
     suspend fun requestMicPermission(context: FragmentActivity): Permission
 

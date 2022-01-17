@@ -2,6 +2,7 @@ package com.bandyer.video_android_glass_ui.common
 
 import android.content.Context
 import android.graphics.Color
+import android.net.Uri
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
@@ -48,6 +49,16 @@ internal class AvatarView @JvmOverloads constructor(
      */
     fun setImage(url: String) = with(binding) {
         Picasso.get().load(url).placeholder(defaultAvatar).error(defaultAvatar).into(bandyerAvatarImage)
+        bandyerAvatarText.visibility = GONE
+    }
+
+    /**
+     * Set a remote uri resource as avatar. The background and the text became no longer visible.
+     *
+     * @param uri The avatar's uri
+     */
+    fun setImage(uri: Uri) = with(binding) {
+        Picasso.get().load(uri).placeholder(defaultAvatar).error(defaultAvatar).into(bandyerAvatarImage)
         bandyerAvatarText.visibility = GONE
     }
 

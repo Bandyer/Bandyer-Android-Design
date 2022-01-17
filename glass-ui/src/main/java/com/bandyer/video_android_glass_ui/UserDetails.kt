@@ -8,9 +8,9 @@ data class UserDetails(
     val firstName: String? = null,
     val lastName: String? = null,
     val email: String? = null,
-    val imageUri: Uri? = null,
-    val imageUrl: String? = null,
-    val imageResId: Int? = null
+    val avatarUri: Uri? = null,
+    val avatarUrl: String? = null,
+    val avatarResId: Int? = null
 )
 
 data class UserDetailsFormatters(
@@ -58,5 +58,5 @@ fun api() {
 
 data class CallUserDetails(
     val data: List<UserDetails>,
-    val formatters: CallFormatter
+    val formatter: CallFormatter? = null
 )

@@ -1,19 +1,22 @@
 package com.bandyer.video_android_glass_ui.call.participants
 
 import android.view.View
+import com.bandyer.video_android_glass_ui.CallUserDetails
 import com.bandyer.video_android_glass_ui.model.CallParticipant
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassParticipantItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * A participant item.
  *
- * @property text The participant's name
+ * @property participant The call participant
+ * @property callUserDetails The call's userDetails
  * @constructor
  */
-internal class CallParticipantItem(val participant: CallParticipant): AbstractItem<CallParticipantItem.ViewHolder>() {
+internal class CallParticipantItem(val participant: CallParticipant, val callUserDetails: StateFlow<CallUserDetails>): AbstractItem<CallParticipantItem.ViewHolder>() {
 
     /**
      * Set an unique identifier for the identifiable which do not have one set already
@@ -52,8 +55,9 @@ internal class CallParticipantItem(val participant: CallParticipant): AbstractIt
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: CallParticipantItem, payloads: List<Any>) {
-            // TODO userDetails
-            binding.bandyerText.text = item.participant.userAlias
+            val callUserDetails = item.callUserDetails.value
+            val userDetails = callUserDetails.data.firstOrNull { it.userAlias == item.participant.userAlias } ?: return
+            binding.bandyerText.text = callUserDetails.formatter?.participantFormat?.invoke(userDetails)
         }
 
         /**
