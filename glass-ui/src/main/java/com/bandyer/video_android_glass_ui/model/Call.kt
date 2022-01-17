@@ -32,6 +32,7 @@ data class Call(
                 data class Declined(override val reason: String) : Ended(reason)
                 data class AnsweredOnAnotherDevice(override val reason: String) : Ended(reason)
                 data class LineBusy(override val reason: String) : Ended(reason)
+                data class Timeout(override val reason: String) : Error(reason)
 
                 sealed class Error(reason: String) : Ended(reason) {
                     companion object : Error("An error occurred") {
@@ -40,8 +41,6 @@ data class Call(
                         override fun toString() = "Error: $reason"
                     }
 
-                    data class Connection(override val reason: String) : Error(reason)
-                    data class Timeout(override val reason: String) : Error(reason)
                     data class Server(override val reason: String) : Error(reason)
                     data class Client(override val reason: String) : Error(reason)
                     data class Unknown(override val reason: String) : Error(reason)
