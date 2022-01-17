@@ -1,10 +1,10 @@
 package com.bandyer.video_android_glass_ui.call.participants
 
 import android.view.View
-import com.bandyer.video_android_glass_ui.CallUserDetails
 import com.bandyer.video_android_glass_ui.model.CallParticipant
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.UserDetails
+import com.bandyer.video_android_glass_ui.UserDetailsWrapper
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassParticipantItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
  * @property callUserDetails The call's userDetails
  * @constructor
  */
-internal class CallParticipantItem(val participant: CallParticipant, val callUserDetails: StateFlow<CallUserDetails>): AbstractItem<CallParticipantItem.ViewHolder>() {
+internal class CallParticipantItem(val participant: CallParticipant, val userDetailsWrapper: StateFlow<UserDetailsWrapper>): AbstractItem<CallParticipantItem.ViewHolder>() {
 
     /**
      * Set an unique identifier for the identifiable which do not have one set already
@@ -56,10 +56,10 @@ internal class CallParticipantItem(val participant: CallParticipant, val callUse
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: CallParticipantItem, payloads: List<Any>) {
-            val callUserDetails = item.callUserDetails.value
+            val userDetailsWrapper = item.userDetailsWrapper.value
             val userAlias = item.participant.userAlias
-            val userDetails = callUserDetails.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
-            binding.bandyerText.text = callUserDetails.formatter.participantFormat.invoke(userDetails)
+            val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
+            binding.bandyerText.text = userDetailsWrapper.formatters.callFormatter.singleDetailsFormat.invoke(userDetails)
         }
 
         /**

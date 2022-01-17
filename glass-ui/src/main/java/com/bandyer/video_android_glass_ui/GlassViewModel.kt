@@ -25,7 +25,7 @@ internal class GlassViewModel(private val callManager: GlassCallManager) : ViewM
 
     val wifi: Flow<WiFi> = callManager.wifi
 
-    val callUserDetails: StateFlow<CallUserDetails> = callManager.userDetails
+    val userDetailsWrapper: StateFlow<UserDetailsWrapper> = callManager.userDetailsWrapper
 
     val volume: Volume get() = callManager.getVolume()
 

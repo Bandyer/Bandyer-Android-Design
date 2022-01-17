@@ -94,8 +94,8 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                             with(binding.bandyerUserInfo) {
                                 hideName(true)
 
-                                val callUserDetails = viewModel.callUserDetails.value
-                                val userDetails = callUserDetails.data.firstOrNull { it.userAlias == participant.userAlias } ?: UserDetails(participant.userAlias)
+                                val userDetailsWrapper = viewModel.userDetailsWrapper.value
+                                val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == participant.userAlias } ?: UserDetails(participant.userAlias)
 
                                 when {
                                     userDetails.avatarUrl != null -> setAvatar(userDetails.avatarUrl)
@@ -104,7 +104,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                                     else -> setAvatar(null)
                                 }
 
-                                val formattedText = callUserDetails.formatter.participantFormat.invoke(userDetails)
+                                val formattedText = userDetailsWrapper.formatters.callFormatter.singleDetailsFormat.invoke(userDetails)
                                 setAvatarBackgroundAndLetter(formattedText)
 
                                 repeatOnStarted {
@@ -131,7 +131,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                     viewModel.call.participants
                         .takeWhile { it.others.plus(it.me).isNotEmpty()  }
                         .collect { participants ->
-                            val items = listOf(participants.me).plus(participants.others).map { CallParticipantItem(it, viewModel.callUserDetails) }
+                            val items = listOf(participants.me).plus(participants.others).map { CallParticipantItem(it, viewModel.userDetailsWrapper) }
                             FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                         }
                 }

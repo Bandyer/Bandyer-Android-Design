@@ -28,7 +28,7 @@ internal interface IStreamItem {
     /**
      * The call user details
      */
-    val callUserDetails: StateFlow<CallUserDetails>
+    val userDetailsWrapper: StateFlow<UserDetailsWrapper>
 
     /**
      * The flows' coroutine scope
@@ -72,7 +72,7 @@ internal interface IStreamItem {
  *
  * @constructor
  */
-internal abstract class StreamItem<T : RecyclerView.ViewHolder>(final override val streamParticipant: StreamParticipant, final override val callUserDetails: StateFlow<CallUserDetails>, parentScope: CoroutineScope) : AbstractItem<T>(), IStreamItem {
+internal abstract class StreamItem<T : RecyclerView.ViewHolder>(final override val streamParticipant: StreamParticipant, final override val userDetailsWrapper: StateFlow<UserDetailsWrapper>, parentScope: CoroutineScope) : AbstractItem<T>(), IStreamItem {
 
     /**
      * Set an unique identifier for the identifiable which do not have one set already
@@ -128,7 +128,7 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(final override v
     }
 }
 
-internal class MyStreamItem(streamParticipant: StreamParticipant, callUserDetails: StateFlow<CallUserDetails>, parentScope: CoroutineScope, val micPermission: StateFlow<Permission>, val camPermission: StateFlow<Permission>) : StreamItem<StreamItem.ViewHolder<MyStreamItem>>(streamParticipant,callUserDetails, parentScope) {
+internal class MyStreamItem(streamParticipant: StreamParticipant, userDetailsWrapper: StateFlow<UserDetailsWrapper>, parentScope: CoroutineScope, val micPermission: StateFlow<Permission>, val camPermission: StateFlow<Permission>) : StreamItem<StreamItem.ViewHolder<MyStreamItem>>(streamParticipant, userDetailsWrapper, parentScope) {
 
     /**
      * The layout for the given item
@@ -163,10 +163,10 @@ internal class MyStreamItem(streamParticipant: StreamParticipant, callUserDetail
             super.bindView(item, payloads)
             binding.bandyerSubtitleLayout.bandyerSubtitle.text = itemView.context.getString(R.string.bandyer_glass_you)
             val userAlias = item.streamParticipant.participant.userAlias
-            val callUserDetails = item.callUserDetails.value
-            val userDetails = callUserDetails.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
+            val userDetailWrapper = item.userDetailsWrapper.value
+            val userDetails = userDetailWrapper.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
 
-            binding.bandyerCenteredSubtitle.text = callUserDetails.formatter.streamFormat.invoke(userDetails)
+            binding.bandyerCenteredSubtitle.text = userDetailWrapper.formatters.callFormatter.singleDetailsFormat.invoke(userDetails)
 
             jobs += item.micPermission.onEach {
                 binding.bandyerMicMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
@@ -207,7 +207,7 @@ internal class MyStreamItem(streamParticipant: StreamParticipant, callUserDetail
     }
 }
 
-internal class OtherStreamItem(streamParticipant: StreamParticipant, callUserDetails: StateFlow<CallUserDetails>, parentScope: CoroutineScope) :  StreamItem<StreamItem.ViewHolder<OtherStreamItem>>(streamParticipant, callUserDetails, parentScope) {
+internal class OtherStreamItem(streamParticipant: StreamParticipant, userDetailsWrapper: StateFlow<UserDetailsWrapper>, parentScope: CoroutineScope) :  StreamItem<StreamItem.ViewHolder<OtherStreamItem>>(streamParticipant, userDetailsWrapper, parentScope) {
 
     /**
      * The layout for the given item
@@ -242,9 +242,9 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, callUserDet
             super.bindView(item, payloads)
             // TODO userDetails
             val userAlias = item.streamParticipant.participant.userAlias
-            val callUserDetails = item.callUserDetails.value
-            val userDetails = callUserDetails.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
-            val formattedText = callUserDetails.formatter.streamFormat.invoke(userDetails)
+            val userDetailsWrapper = item.userDetailsWrapper.value
+            val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
+            val formattedText = userDetailsWrapper.formatters.callFormatter.singleDetailsFormat.invoke(userDetails)
 
             bandyerSubtitleLayout.bandyerSubtitle.text = formattedText
             with(bandyerAvatar) {

@@ -14,52 +14,27 @@ data class UserDetails(
 )
 
 data class UserDetailsFormatters(
-    val notificationFormatter: NotificationFormatter,
-    val callFormatter: CallFormatter,
-    val chatFormatter: ChatFormatter
+    val defaultFormatter: UserDetailsFormatter,
+    val callFormatter: UserDetailsFormatter = defaultFormatter,
+    val chatFormatter: UserDetailsFormatter = defaultFormatter,
+    val notificationFormatter: UserDetailsFormatter = defaultFormatter
 )
 
-interface NotificationFormatter {
-    val contactsFormat: (List<UserDetails>) -> String
-}
-
-interface ChatFormatter {
-    val contactsFormat: (List<UserDetails>) -> String
-}
-
-interface CallFormatter {
-    val ringingFormat: (List<UserDetails>) -> String
-
-    val dialingFormat: (List<UserDetails>) -> String
-
-    val streamFormat: (UserDetails) -> String
-
-    val toastFormat: (UserDetails) -> String
-
-    val participantFormat: (UserDetails) -> String
+interface UserDetailsFormatter {
+    val singleDetailsFormat: (UserDetails) -> String
+    val groupDetailsFormat: (List<UserDetails>) -> String
 }
 
 fun api() {
-    val notificationFormatter = object : NotificationFormatter {
-        override val contactsFormat = { it: List<UserDetails> -> "${it.first().nickName} and other ${it.count() - 1}" }
+    val formatter = object : UserDetailsFormatter {
+        override val singleDetailsFormat = { it: UserDetails -> "${it.firstName} ${it.lastName}" }
+        override val groupDetailsFormat = { it: List<UserDetails> -> "${it.first().nickName} and other ${it.count() - 1}" }
     }
 
-    val callFormatter = object : CallFormatter {
-        override val ringingFormat = { it: List<UserDetails> -> "${it.first().nickName} and other ${it.count() - 1}" }
-        override val dialingFormat = { it: List<UserDetails> -> "${it.first().nickName} and other ${it.count() - 1}" }
-        override val streamFormat = { it: UserDetails -> "${it.firstName} ${it.lastName}" }
-        override val toastFormat = { it: UserDetails -> "${it.firstName} ${it.lastName}" }
-        override val participantFormat = { it: UserDetails -> "${it.firstName} ${it.lastName}" }
-    }
-
-    val chatFormatter = object : ChatFormatter {
-        override val contactsFormat = { it: List<UserDetails> -> "${it.first().nickName} and other ${it.count() - 1}" }
-    }
-
-    UserDetailsFormatters(notificationFormatter, callFormatter, chatFormatter)
+    UserDetailsFormatters(formatter)
 }
 
-data class CallUserDetails(
+data class UserDetailsWrapper(
     val data: List<UserDetails>,
-    val formatter: CallFormatter
+    val formatters: UserDetailsFormatters
 )

@@ -173,7 +173,7 @@ internal class GlassActivity :
 
             viewModel.streams
                 .onEach { streams ->
-                    val orderedList = streams.sortedBy { !it.isMyStream }.map { if(it.isMyStream) MyStreamItem(it, viewModel.callUserDetails, this, viewModel.micPermission, viewModel.camPermission) else OtherStreamItem(it, viewModel.callUserDetails, this) }
+                    val orderedList = streams.sortedBy { !it.isMyStream }.map { if(it.isMyStream) MyStreamItem(it, viewModel.userDetailsWrapper, this, viewModel.micPermission, viewModel.camPermission) else OtherStreamItem(it, viewModel.userDetailsWrapper, this) }
                     FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
                 }.launchIn(this)
 
@@ -203,17 +203,17 @@ internal class GlassActivity :
 
             viewModel.onParticipantJoin
                 .onEach { part ->
-                    val callUserDetails = viewModel.callUserDetails.value
-                    val userDetails = callUserDetails.data.firstOrNull { it.userAlias == part.userAlias }
-                    val toastText = resources.getString(R.string.bandyer_glass_user_joined_pattern,userDetails?.let { callUserDetails.formatter.participantFormat.invoke(userDetails) } ?:  part.userAlias)
+                    val userDetailsWrapper = viewModel.userDetailsWrapper.value
+                    val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == part.userAlias }
+                    val toastText = resources.getString(R.string.bandyer_glass_user_joined_pattern,userDetails?.let { userDetailsWrapper.formatters.callFormatter.singleDetailsFormat.invoke(userDetails) } ?:  part.userAlias)
                     binding.bandyerToastContainer.show(text = toastText)
                 }.launchIn(this)
 
             viewModel.onParticipantLeave
                 .onEach { part ->
-                    val callUserDetails = viewModel.callUserDetails.value
-                    val userDetails = callUserDetails.data.firstOrNull { it.userAlias == part.userAlias }
-                    val toastText = resources.getString(R.string.bandyer_glass_user_left_pattern,userDetails?.let { callUserDetails.formatter.participantFormat.invoke(userDetails) } ?:  part.userAlias)
+                    val userDetailsWrapper = viewModel.userDetailsWrapper.value
+                    val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == part.userAlias }
+                    val toastText = resources.getString(R.string.bandyer_glass_user_left_pattern,userDetails?.let { userDetailsWrapper.formatters.callFormatter.singleDetailsFormat.invoke(userDetails) } ?:  part.userAlias)
                     binding.bandyerToastContainer.show(text = toastText)
                 }.launchIn(this)
         }
