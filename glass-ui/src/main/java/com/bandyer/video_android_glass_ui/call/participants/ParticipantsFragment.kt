@@ -43,7 +43,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
     private var currentParticipantIndex = -1
 
-    private val args: VolumeFragmentArgs by lazy { VolumeFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
+    private val args: ParticipantsFragmentArgs by lazy { ParticipantsFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
 
     private val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 
