@@ -34,6 +34,8 @@ interface CallFormatter {
 
     val streamFormat: (UserDetails) -> String
 
+    val toastFormat: (UserDetails) -> String
+
     val participantFormat: (UserDetails) -> String
 }
 
@@ -46,6 +48,7 @@ fun api() {
         override val ringingFormat = { it: List<UserDetails> -> "${it.first().nickName} and other ${it.count() - 1}" }
         override val dialingFormat = { it: List<UserDetails> -> "${it.first().nickName} and other ${it.count() - 1}" }
         override val streamFormat = { it: UserDetails -> "${it.firstName} ${it.lastName}" }
+        override val toastFormat = { it: UserDetails -> "${it.firstName} ${it.lastName}" }
         override val participantFormat = { it: UserDetails -> "${it.firstName} ${it.lastName}" }
     }
 

@@ -94,7 +94,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                             with(binding.bandyerUserInfo) {
                                 hideName(true)
 
-                                val callUserDetails = viewModel.userDetails.value
+                                val callUserDetails = viewModel.callUserDetails.value
                                 val userDetails = callUserDetails.data.firstOrNull { it.userAlias == participant.userAlias }
 
                                 when {
@@ -131,7 +131,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                     viewModel.call.participants
                         .takeWhile { it.others.plus(it.me).isNotEmpty()  }
                         .collect { participants ->
-                            val items = listOf(participants.me).plus(participants.others).map { CallParticipantItem(it, viewModel.userDetails) }
+                            val items = listOf(participants.me).plus(participants.others).map { CallParticipantItem(it, viewModel.callUserDetails) }
                             FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                         }
                 }
