@@ -4,6 +4,7 @@ import android.view.View
 import com.bandyer.video_android_glass_ui.CallUserDetails
 import com.bandyer.video_android_glass_ui.model.CallParticipant
 import com.bandyer.video_android_glass_ui.R
+import com.bandyer.video_android_glass_ui.UserDetails
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassParticipantItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
@@ -56,8 +57,9 @@ internal class CallParticipantItem(val participant: CallParticipant, val callUse
          */
         override fun bindView(item: CallParticipantItem, payloads: List<Any>) {
             val callUserDetails = item.callUserDetails.value
-            val userDetails = callUserDetails.data.firstOrNull { it.userAlias == item.participant.userAlias } ?: return
-            binding.bandyerText.text = callUserDetails.formatter?.participantFormat?.invoke(userDetails)
+            val userAlias = item.participant.userAlias
+            val userDetails = callUserDetails.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
+            binding.bandyerText.text = callUserDetails.formatter.participantFormat.invoke(userDetails)
         }
 
         /**

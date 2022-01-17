@@ -173,7 +173,7 @@ internal class GlassActivity :
 
             viewModel.streams
                 .onEach { streams ->
-                    val orderedList = streams.sortedBy { !it.isMyStream }.map { if(it.isMyStream) MyStreamItem(it, this, viewModel.micPermission, viewModel.camPermission) else OtherStreamItem(it, this) }
+                    val orderedList = streams.sortedBy { !it.isMyStream }.map { if(it.isMyStream) MyStreamItem(it, viewModel.callUserDetails, this, viewModel.micPermission, viewModel.camPermission) else OtherStreamItem(it, viewModel.callUserDetails, this) }
                     FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
                 }.launchIn(this)
 
@@ -205,7 +205,7 @@ internal class GlassActivity :
                 .onEach { part ->
                     val callUserDetails = viewModel.callUserDetails.value
                     val userDetails = callUserDetails.data.firstOrNull { it.userAlias == part.userAlias }
-                    val toastText = resources.getString(R.string.bandyer_glass_user_joined_pattern,userDetails?.let { callUserDetails.formatter?.participantFormat?.invoke(userDetails) } ?:  part.userAlias)
+                    val toastText = resources.getString(R.string.bandyer_glass_user_joined_pattern,userDetails?.let { callUserDetails.formatter.participantFormat.invoke(userDetails) } ?:  part.userAlias)
                     binding.bandyerToastContainer.show(text = toastText)
                 }.launchIn(this)
 
@@ -213,7 +213,7 @@ internal class GlassActivity :
                 .onEach { part ->
                     val callUserDetails = viewModel.callUserDetails.value
                     val userDetails = callUserDetails.data.firstOrNull { it.userAlias == part.userAlias }
-                    val toastText = resources.getString(R.string.bandyer_glass_user_left_pattern,userDetails?.let { callUserDetails.formatter?.participantFormat?.invoke(userDetails) } ?:  part.userAlias)
+                    val toastText = resources.getString(R.string.bandyer_glass_user_left_pattern,userDetails?.let { callUserDetails.formatter.participantFormat.invoke(userDetails) } ?:  part.userAlias)
                     binding.bandyerToastContainer.show(text = toastText)
                 }.launchIn(this)
         }

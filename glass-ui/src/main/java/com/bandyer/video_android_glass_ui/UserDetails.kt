@@ -61,5 +61,5 @@ fun api() {
 
 data class CallUserDetails(
     val data: List<UserDetails>,
-    val formatter: CallFormatter? = null
+    val formatter: CallFormatter
 )

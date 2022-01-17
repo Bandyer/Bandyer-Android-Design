@@ -95,16 +95,16 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                                 hideName(true)
 
                                 val callUserDetails = viewModel.callUserDetails.value
-                                val userDetails = callUserDetails.data.firstOrNull { it.userAlias == participant.userAlias }
+                                val userDetails = callUserDetails.data.firstOrNull { it.userAlias == participant.userAlias } ?: UserDetails(participant.userAlias)
 
                                 when {
-                                    userDetails?.avatarUrl != null -> setAvatar(userDetails.avatarUrl)
-                                    userDetails?.avatarUri != null -> setAvatar(userDetails.avatarUri)
-                                    userDetails?.avatarResId != null -> setAvatar(userDetails.avatarResId)
+                                    userDetails.avatarUrl != null -> setAvatar(userDetails.avatarUrl)
+                                    userDetails.avatarUri != null -> setAvatar(userDetails.avatarUri)
+                                    userDetails.avatarResId != null -> setAvatar(userDetails.avatarResId)
                                     else -> setAvatar(null)
                                 }
 
-                                val formattedText = userDetails?.let { callUserDetails.formatter?.participantFormat?.invoke(it) } ?: ""
+                                val formattedText = callUserDetails.formatter.participantFormat.invoke(userDetails)
                                 setAvatarBackgroundAndLetter(formattedText)
 
                                 repeatOnStarted {
