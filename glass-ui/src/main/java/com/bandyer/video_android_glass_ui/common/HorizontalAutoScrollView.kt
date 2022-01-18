@@ -22,9 +22,8 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
     private var lastSampledEventTime = 0L
     private var samplePeriod = 50
 
-
     private var autoScrollX = 5
-    private var autoScrollRunnable = object : Runnable {
+    private var autoScrollRunnable: Runnable? = object : Runnable {
         override fun run() {
             val max = getChildAt(0).width - width
             target = when(scrollX) {
@@ -35,19 +34,20 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
 
             if((target == 0 && autoScrollX > 0) || (target == 1 && autoScrollX < 0)) autoScrollX = -autoScrollX
 
-            scrollBy(autoScrollX, 0)
-            mainHandler.postDelayed(this, 1)
+            smoothScrollBy(autoScrollX, 0)
+            mainHandler.postDelayed(this, 20)
         }
     }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        mainHandler.post(autoScrollRunnable)
+        mainHandler.post(autoScrollRunnable!!)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mainHandler.removeCallbacks(autoScrollRunnable)
+        mainHandler.removeCallbacksAndMessages(null)
+        autoScrollRunnable = null
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -55,8 +55,8 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
         val result = super.onTouchEvent(ev)
         ev ?: return result
         when(ev.action) {
-            MotionEvent.ACTION_UP -> mainHandler.post(autoScrollRunnable)
-            MotionEvent.ACTION_DOWN -> mainHandler.removeCallbacks(autoScrollRunnable)
+            MotionEvent.ACTION_UP -> mainHandler.post(autoScrollRunnable!!)
+            MotionEvent.ACTION_DOWN -> mainHandler.removeCallbacksAndMessages(null)
         }
 
         val currentEventTime = ev.eventTime
