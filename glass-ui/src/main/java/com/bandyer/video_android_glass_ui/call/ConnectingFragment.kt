@@ -2,11 +2,13 @@ package com.bandyer.video_android_glass_ui.call
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.ContextThemeWrapper
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.os.Handler
+import android.os.Looper
+import android.view.*
+import android.widget.ScrollView
 import androidx.activity.addCallback
+import androidx.core.view.ViewCompat
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bandyer.video_android_glass_ui.BaseFragment
@@ -21,13 +23,13 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.*
+import kotlin.concurrent.fixedRateTimer
 
-internal abstract class ConnectingFragment : BaseFragment() {
+internal abstract class ConnectingFragment : BaseFragment(),
+    ViewTreeObserver.OnScrollChangedListener {
 
     private var _binding: BandyerGlassFragmentFullScreenLogoDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
-
-    private var itemAdapter: ItemAdapter<FullScreenDialogItem>? = null
 
     protected val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
 
@@ -57,39 +59,22 @@ internal abstract class ConnectingFragment : BaseFragment() {
             .apply {
                 if (GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
 
-                // Init the RecyclerView
-                bandyerParticipants.apply {
-                    itemAdapter = ItemAdapter()
-                    val fastAdapter = FastAdapter.with(itemAdapter!!)
-                    val layoutManager = AutoScrollLinearLayoutManager(
-                        requireContext(),
-                        LinearLayoutManager.HORIZONTAL,
-                        false
-                    )
-
-                    this.layoutManager = layoutManager
-                    adapter = fastAdapter
-                    isFocusable = false
-                    addItemDecoration(ReadProgressDecoration(requireContext()))
-
+                with(bandyerParticipants) {
+                    viewTreeObserver.addOnScrollChangedListener(this@ConnectingFragment)
                     root.setOnTouchListener { _, event -> onTouchEvent(event) }
                 }
 
                 repeatOnStarted {
                     with(viewModel) {
-                        var nOfParticipants = 0
+                        val nOfParticipants = 0
                         call.participants.onEach { participants ->
                             val isGroupCall = nOfParticipants > 2
                             // TODO userDetails
                             val items =
                                 ((if (isGroupCall) listOf(participants.me) else listOf()).plus(
                                     participants.others
-                                )).map { FullScreenDialogItem(it.userAlias) }
-                            FastAdapterDiffUtil[itemAdapter!!] =
-                                FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
+                                ))
 
-                            if (nOfParticipants == itemAdapter!!.adapterItemCount) return@onEach
-                            nOfParticipants = itemAdapter!!.adapterItemCount
                             if (nOfParticipants < 2) bandyerBottomNavigation.hideSwipeHorizontalItem()
                             else bandyerCounter.text = resources.getString(
                                 R.string.bandyer_glass_n_of_participants_pattern,
@@ -122,9 +107,22 @@ internal abstract class ConnectingFragment : BaseFragment() {
      */
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.bandyerParticipants.viewTreeObserver.removeOnScrollChangedListener(this)
         _binding = null
-        itemAdapter = null
     }
+
+    override fun onScrollChanged() {
+        _binding ?: return
+        with(binding) {
+            val scrollX = bandyerParticipants.scrollX
+            val max = bandyerParticipants.getChildAt(0).width - bandyerParticipants.width
+            bandyerProgress.apply {
+                this.max = max
+                progress = scrollX
+            }
+        }
+    }
+
 
     abstract fun onConnected()
 

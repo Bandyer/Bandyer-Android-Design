@@ -26,15 +26,26 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
 
-            <androidx.recyclerview.widget.RecyclerView
+            <com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView
                 android:id="@+id/bandyer_participants"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:scrollbars="none"
                 app:layout_constraintBottom_toTopOf="@id/bandyer_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bandyer_watermark"
-                tools:text="Mario Rossi" />
+                app:layout_constraintTop_toBottomOf="@id/bandyer_watermark">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="sdjaslkdfmldsoifldjasdfkdlsjdAMSCKFJCSKFOPDòSKCFDSOFSADPOFCSDAIFMCDSAPISMCFOAISDFOPèSAIMFPOSIFASPOIòFMCcòlfdkmsòalsòffdnapofidmfposvadifpocimposdicfpadosòicfapsdocfisapèdfio"
+                    android:textSize="20sp"
+                    android:textColor="#fff"
+                    android:paddingStart="@dimen/bandyer_dimen_space32"
+                    android:paddingEnd="@dimen/bandyer_dimen_space32"
+                    android:maxLines="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/bandyer_title"
@@ -63,9 +74,16 @@
                 style="?attr/bandyer_counterStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/bandyer_progress"
                 app:layout_constraintEnd_toEndOf="parent"
                 tools:text="6 participants" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/bandyer_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
