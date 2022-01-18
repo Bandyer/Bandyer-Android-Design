@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.*
 import android.widget.ScrollView
 import androidx.activity.addCallback
@@ -24,6 +25,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.*
 import kotlin.concurrent.fixedRateTimer
+import kotlin.math.roundToInt
 
 internal abstract class ConnectingFragment : BaseFragment(),
     ViewTreeObserver.OnScrollChangedListener {
@@ -114,11 +116,9 @@ internal abstract class ConnectingFragment : BaseFragment(),
     override fun onScrollChanged() {
         _binding ?: return
         with(binding) {
-            val scrollX = bandyerParticipants.scrollX
-            val max = bandyerParticipants.getChildAt(0).width - bandyerParticipants.width
             bandyerProgress.apply {
-                this.max = max
-                progress = scrollX
+                max = bandyerParticipants.getChildAt(0).width
+                progress = ((bandyerParticipants.scrollX + bandyerParticipants.width).toFloat()).roundToInt()
             }
         }
     }
