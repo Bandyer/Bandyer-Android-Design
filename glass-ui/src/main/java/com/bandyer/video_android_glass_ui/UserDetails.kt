@@ -13,6 +13,7 @@ data class UserDetails(
     val avatarResId: Int? = null
 )
 
+// guardare i plurals
 data class UserDetailsFormatters(
     val defaultFormatter: UserDetailsFormatter,
     val callFormatter: UserDetailsFormatter = defaultFormatter,
@@ -21,14 +22,14 @@ data class UserDetailsFormatters(
 )
 
 interface UserDetailsFormatter {
-    val singleDetailsFormat: (UserDetails) -> String
-    val groupDetailsFormat: (List<UserDetails>) -> String
+    fun format(vararg userDetails: UserDetails): String
 }
 
 fun api() {
     val formatter = object : UserDetailsFormatter {
-        override val singleDetailsFormat = { it: UserDetails -> "${it.firstName} ${it.lastName}" }
-        override val groupDetailsFormat = { it: List<UserDetails> -> "${it.first().nickName} and other ${it.count() - 1}" }
+        override fun format(vararg userDetails: UserDetails): String =
+            if(userDetails.count() > 1) "${userDetails.first().nickName} and other ${userDetails.count() - 1}"
+            else "${userDetails.first().firstName} ${userDetails.first().lastName}"
     }
 
     UserDetailsFormatters(formatter)
