@@ -28,7 +28,7 @@
 
             <com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView
                 android:id="@+id/bandyer_participants"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:scrollbars="none"
                 app:layout_constraintBottom_toTopOf="@id/bandyer_title"

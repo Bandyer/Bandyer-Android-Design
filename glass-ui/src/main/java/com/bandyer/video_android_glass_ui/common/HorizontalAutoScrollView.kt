@@ -7,6 +7,9 @@ import android.os.Looper
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.HorizontalScrollView
+import android.animation.ObjectAnimator
+import android.view.animation.LinearInterpolator
+
 
 internal class HorizontalAutoScrollView @JvmOverloads constructor(
     context: Context,
@@ -15,6 +18,7 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
 ) : HorizontalScrollView(context, attrs, defStyleAttr) {
 
     private var mainHandler = Handler(Looper.getMainLooper())
+
     // add rtl support
     private var oldEventX = 0f
     private var target = 1
@@ -22,22 +26,31 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
     private var lastSampledEventTime = 0L
     private var samplePeriod = 50
 
-    private var autoScrollX = 5
+    private var animator: ObjectAnimator? = null
+    private var autoScrollPx = 300
+    private var autoScrollMs = 1000L
+
     private var autoScrollRunnable: Runnable? = object : Runnable {
         override fun run() {
             val max = getChildAt(0).width - width
-            target = when(scrollX) {
+            target = when (scrollX) {
                 max -> 0
                 0 -> 1
                 else -> target
             }
 
-            if((target == 0 && autoScrollX > 0) || (target == 1 && autoScrollX < 0)) autoScrollX = -autoScrollX
+            if ((target == 0 && autoScrollPx > 0) || (target == 1 && autoScrollPx < 0)) autoScrollPx = -autoScrollPx
 
-            smoothScrollBy(autoScrollX, 0)
-            mainHandler.postDelayed(this, 20)
+
+            animator = ObjectAnimator.ofInt(this@HorizontalAutoScrollView, "scrollX", scrollX + autoScrollPx).apply {
+                duration = autoScrollMs
+                interpolator = LinearInterpolator()
+                start()
+            }
+            mainHandler.postDelayed(this, autoScrollMs)
         }
     }
+
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -52,20 +65,24 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent?): Boolean {
-        val result = super.onTouchEvent(ev)
-        ev ?: return result
-        when(ev.action) {
-            MotionEvent.ACTION_UP -> mainHandler.post(autoScrollRunnable!!)
-            MotionEvent.ACTION_DOWN -> mainHandler.removeCallbacksAndMessages(null)
+        if(ev != null && autoScrollRunnable != null && animator != null) {
+            when (ev.action) {
+                MotionEvent.ACTION_UP -> mainHandler.post(autoScrollRunnable!!)
+                MotionEvent.ACTION_DOWN -> {
+                    animator!!.cancel()
+                    mainHandler.removeCallbacksAndMessages(null)
+                }
+            }
+
+            val currentEventTime = ev.eventTime
+            if ((currentEventTime - lastSampledEventTime) > samplePeriod) {
+                val diff = ev.x - oldEventX
+                if (diff > 0) target = 0 else if (diff < 0) target = 1
+                oldEventX = ev.x
+                lastSampledEventTime = currentEventTime
+            }
         }
 
-        val currentEventTime = ev.eventTime
-        if((currentEventTime - lastSampledEventTime) > samplePeriod) {
-            val diff = ev.x - oldEventX
-            if (diff > 0) target = 0 else if (diff < 0) target = 1
-            oldEventX = ev.x
-            lastSampledEventTime = currentEventTime
-        }
-        return result
+        return super.onTouchEvent(ev)
     }
 }
