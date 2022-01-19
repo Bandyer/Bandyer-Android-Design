@@ -10,6 +10,8 @@ import android.widget.HorizontalScrollView
 import android.animation.ObjectAnimator
 import android.view.ViewTreeObserver
 import android.view.animation.LinearInterpolator
+import androidx.core.view.ViewCompat
+import kotlin.math.abs
 
 // TODO Add RTL support and onKeyEvent support
 internal class HorizontalAutoScrollView @JvmOverloads constructor(
@@ -18,85 +20,64 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : HorizontalScrollView(context, attrs, defStyleAttr), ViewTreeObserver.OnScrollChangedListener {
 
-    private var mainHandler = Handler(Looper.getMainLooper())
-
-    private var target = 1
-
-    private var isScrollingAfterTouch = false
-
-    private var oldEventX = 0f
-    private var lastSampledEventTime = 0L
-
-    private var samplePeriod = 50
+    private var mainHandler: Handler? = Handler(Looper.getMainLooper())
 
     private var animator: ObjectAnimator? = null
-    private var autoScrollPx = 1000
-    private var autoScrollMs = 3000L
 
-    private var autoScrollRunnable: Runnable? = object : Runnable {
-        override fun run() {
-            if (childCount == 0) return
-            val max = getChildAt(0).width - width
-            target = when (scrollX) {
-                max -> 0
-                0 -> 1
-                else -> target
-            }
-
-            if ((target == 0 && autoScrollPx > 0) || (target == 1 && autoScrollPx < 0)) autoScrollPx = -autoScrollPx
-
-            isScrollingAfterTouch = false
-
-            animator = ObjectAnimator.ofInt(this@HorizontalAutoScrollView, "scrollX", scrollX + autoScrollPx).apply {
-                duration = autoScrollMs
-                interpolator = LinearInterpolator()
-                start()
-            }
-
-            mainHandler.postDelayed(this, autoScrollMs)
-        }
-    }
-
+    private var manual = false
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         viewTreeObserver.addOnScrollChangedListener(this)
-        mainHandler.post(autoScrollRunnable!!)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        mainHandler.removeCallbacksAndMessages(null)
         viewTreeObserver.removeOnScrollChangedListener(this)
-        autoScrollRunnable = null
+        animator?.cancel()
+        mainHandler?.removeCallbacksAndMessages(null)
+        animator = null
+        mainHandler = null
+    }
+
+    override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        super.onLayout(changed, l, t, r, b)
+        if (!ViewCompat.isLaidOut(this)) return
+        performAutoScroll()
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent?): Boolean {
-        if (ev != null && autoScrollRunnable != null && animator != null) {
-            when (ev.action) {
-                MotionEvent.ACTION_UP -> { isScrollingAfterTouch = true }
-                MotionEvent.ACTION_DOWN -> {
-                    animator!!.cancel()
-                    mainHandler.removeCallbacksAndMessages(null)
-                }
+        when (ev?.action) {
+            MotionEvent.ACTION_UP -> {
+                manual = true
             }
-
-            val currentEventTime = ev.eventTime
-            if ((currentEventTime - lastSampledEventTime) > samplePeriod) {
-                val diff = ev.x - oldEventX
-                if (diff > 0) target = 0 else if (diff < 0) target = 1
-                oldEventX = ev.x
-                lastSampledEventTime = currentEventTime
+            MotionEvent.ACTION_DOWN -> {
+                animator?.cancel()
+                mainHandler?.removeCallbacksAndMessages(null)
             }
         }
 
         return super.onTouchEvent(ev)
     }
 
+    private fun performAutoScroll() {
+        animator?.cancel()
+        mainHandler?.removeCallbacksAndMessages(null)
+        manual = false
+
+        val maxScroll = (getChildAt(0).width - width)
+        val duration = maxScroll * 4L
+        val target = if (abs(scrollX - maxScroll) < 5) 0 else maxScroll
+        animator = ObjectAnimator.ofInt(this@HorizontalAutoScrollView, "scrollX", target).apply {
+            this.duration = duration
+            start()
+        }
+        mainHandler?.postDelayed({ performAutoScroll() }, duration)
+    }
+
     override fun onScrollChanged() {
-        if(!isScrollingAfterTouch) return
-        mainHandler.removeCallbacksAndMessages(null)
-        mainHandler.postDelayed(autoScrollRunnable!!, 500)
+        if (!manual) return
+        mainHandler?.postDelayed({ performAutoScroll() }, 500)
     }
 }

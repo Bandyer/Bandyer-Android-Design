@@ -47,6 +47,24 @@
             android:paddingTop="@dimen/bandyer_dimen_space32"
             android:paddingBottom="@dimen/bandyer_dimen_space32">
 
+            <com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView
+                android:id="@+id/bandyer_pippo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:text="Stefano Brusadelli, Andrea Giuliacci, Mario Draghi, Krystian Petrov, Mara Maionchi, Elisa Codara"
+                    android:textSize="20sp"
+                    android:textColor="#fff"
+                    android:paddingStart="@dimen/bandyer_dimen_space32"
+                    android:paddingEnd="@dimen/bandyer_dimen_space32"
+                    android:maxLines="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_switch_night_mode"
                 android:layout_width="match_parent"
@@ -58,7 +76,7 @@
                 android:checked="false"
                 android:text="@string/night_mode"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/bandyer_pippo" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_chat"
