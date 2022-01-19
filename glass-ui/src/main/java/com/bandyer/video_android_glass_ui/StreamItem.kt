@@ -166,7 +166,7 @@ internal class MyStreamItem(streamParticipant: StreamParticipant, userDetailsWra
             val userDetailWrapper = item.userDetailsWrapper.value
             val userDetails = userDetailWrapper.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
 
-            binding.bandyerCenteredSubtitle.text = userDetailWrapper.formatters.callFormatter.singleDetailsFormat.invoke(userDetails)
+            binding.bandyerCenteredSubtitle.text = userDetailWrapper.formatters.callFormatter.format(userDetails)
 
             jobs += item.micPermission.onEach {
                 binding.bandyerMicMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
@@ -244,7 +244,7 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, userDetails
             val userAlias = item.streamParticipant.participant.userAlias
             val userDetailsWrapper = item.userDetailsWrapper.value
             val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
-            val formattedText = userDetailsWrapper.formatters.callFormatter.singleDetailsFormat.invoke(userDetails)
+            val formattedText = userDetailsWrapper.formatters.callFormatter.format(userDetails)
 
             bandyerSubtitleLayout.bandyerSubtitle.text = formattedText
             with(bandyerAvatar) {

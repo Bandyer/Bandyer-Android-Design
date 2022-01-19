@@ -104,7 +104,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                                     else -> setAvatar(null)
                                 }
 
-                                val formattedText = userDetailsWrapper.formatters.callFormatter.singleDetailsFormat.invoke(userDetails)
+                                val formattedText = userDetailsWrapper.formatters.callFormatter.format(userDetails)
                                 setAvatarBackgroundAndLetter(formattedText)
 
                                 repeatOnStarted {

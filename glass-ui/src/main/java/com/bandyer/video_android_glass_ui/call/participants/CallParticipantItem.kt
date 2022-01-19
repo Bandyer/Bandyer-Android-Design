@@ -59,7 +59,7 @@ internal class CallParticipantItem(val participant: CallParticipant, val userDet
             val userDetailsWrapper = item.userDetailsWrapper.value
             val userAlias = item.participant.userAlias
             val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
-            binding.bandyerText.text = userDetailsWrapper.formatters.callFormatter.singleDetailsFormat.invoke(userDetails)
+            binding.bandyerText.text = userDetailsWrapper.formatters.callFormatter.format(userDetails)
         }
 
         /**

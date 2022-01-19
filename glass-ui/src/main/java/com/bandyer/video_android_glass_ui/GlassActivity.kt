@@ -206,7 +206,7 @@ internal class GlassActivity :
                 .onEach { part ->
                     val userDetailsWrapper = viewModel.userDetailsWrapper.value
                     val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == part.userAlias }
-                    val toastText = resources.getString(R.string.bandyer_glass_user_joined_pattern,userDetails?.let { userDetailsWrapper.formatters.callFormatter.singleDetailsFormat.invoke(userDetails) } ?:  part.userAlias)
+                    val toastText = resources.getString(R.string.bandyer_glass_user_joined_pattern,userDetails?.let { userDetailsWrapper.formatters.callFormatter.format(userDetails) } ?:  part.userAlias)
                     binding.bandyerToastContainer.show(text = toastText)
                 }.launchIn(this)
 
@@ -214,7 +214,7 @@ internal class GlassActivity :
                 .onEach { part ->
                     val userDetailsWrapper = viewModel.userDetailsWrapper.value
                     val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == part.userAlias }
-                    val toastText = resources.getString(R.string.bandyer_glass_user_left_pattern,userDetails?.let { userDetailsWrapper.formatters.callFormatter.singleDetailsFormat.invoke(userDetails) } ?:  part.userAlias)
+                    val toastText = resources.getString(R.string.bandyer_glass_user_left_pattern,userDetails?.let { userDetailsWrapper.formatters.callFormatter.format(userDetails) } ?:  part.userAlias)
                     binding.bandyerToastContainer.show(text = toastText)
                 }.launchIn(this)
         }
