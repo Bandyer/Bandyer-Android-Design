@@ -72,17 +72,17 @@ internal abstract class ConnectingFragment : BaseFragment(),
                             )
 
                             setSubtitle(nOfParticipants > 2)
-                        }.launchIn(this@repeatOnStarted)
+                        }.launchIn(this@repeatOnResumed)
 
                         amIAlone
                             .onEach { if(!it) onConnected() }
                             .takeWhile { it }
-                            .launchIn(this@repeatOnStarted)
+                            .launchIn(this@repeatOnResumed)
 
                         inCallParticipants
                             .takeWhile { it.count() < 2 }
                             .onCompletion { bandyerSubtitle.text = resources.getString(R.string.bandyer_glass_connecting) }
-                            .launchIn(this@repeatOnStarted)
+                            .launchIn(this@repeatOnResumed)
                     }
                 }
             }
