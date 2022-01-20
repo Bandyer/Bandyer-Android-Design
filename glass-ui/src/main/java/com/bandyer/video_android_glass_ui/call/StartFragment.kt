@@ -51,7 +51,7 @@ internal class StartFragment : BaseFragment() {
                                 findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
                             else -> Unit
                         }
-                    }.launchIn(this@repeatOnStarted)
+                    }.launchIn(this@repeatOnResumed)
             }
         }
 
