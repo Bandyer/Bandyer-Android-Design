@@ -87,16 +87,14 @@ internal abstract class ConnectingFragment : BaseFragment(),
                         }.launchIn(this@repeatOnStarted)
 
                         amIAlone
+                            .onEach { if(!it) onConnected() }
                             .takeWhile { it }
-                            .onCompletion { onConnected() }
                             .launchIn(this@repeatOnStarted)
 
                         inCallParticipants
                             .takeWhile { it.count() < 2 }
-                            .onCompletion {
-                                bandyerSubtitle.text =
-                                    resources.getString(R.string.bandyer_glass_connecting)
-                            }.launchIn(this@repeatOnStarted)
+                            .onCompletion { bandyerSubtitle.text = resources.getString(R.string.bandyer_glass_connecting) }
+                            .launchIn(this@repeatOnStarted)
                     }
                 }
             }
