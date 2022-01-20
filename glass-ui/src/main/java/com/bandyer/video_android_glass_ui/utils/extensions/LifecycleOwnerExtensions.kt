@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 internal object LifecycleOwnerExtensions {
     /**
@@ -13,6 +14,6 @@ internal object LifecycleOwnerExtensions {
      * restart executing if the lifecycle receives the ON_START event again.
      * @receiver LifecycleCoroutineScope
      */
-    fun LifecycleOwner.repeatOnStarted(code: suspend CoroutineScope.() -> Unit) =
-        lifecycleScope.launchWhenStarted { this@repeatOnStarted.repeatOnLifecycle(Lifecycle.State.STARTED) { code.invoke(this) } }
+    fun LifecycleOwner.repeatOnResumed(code: suspend CoroutineScope.() -> Unit) =
+        lifecycleScope.launch { this@repeatOnResumed.repeatOnLifecycle(Lifecycle.State.RESUMED) { code.invoke(this) } }
 }

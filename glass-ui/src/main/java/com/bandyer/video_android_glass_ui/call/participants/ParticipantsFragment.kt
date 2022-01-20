@@ -18,7 +18,7 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentPartic
 import com.bandyer.video_android_glass_ui.model.CallParticipant
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener
-import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnResumed
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
@@ -107,7 +107,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                                 val formattedText = userDetailsWrapper.formatters.callFormatter.format(userDetails)
                                 setAvatarBackgroundAndLetter(formattedText)
 
-                                repeatOnStarted {
+                                repeatOnResumed {
                                     stateJob = participant.state.onEach {
                                         when(it) {
                                             is CallParticipant.State.Online.Invited -> setState(
@@ -127,7 +127,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                     root.setOnTouchListener { _, event -> onTouchEvent(event) }
                 }
 
-                repeatOnStarted {
+                repeatOnResumed {
                     viewModel.call.participants
                         .takeWhile { it.others.plus(it.me).isNotEmpty()  }
                         .collect { participants ->

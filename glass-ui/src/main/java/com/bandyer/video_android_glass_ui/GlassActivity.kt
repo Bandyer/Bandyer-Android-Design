@@ -28,7 +28,7 @@ import com.bandyer.video_android_glass_ui.model.WiFi
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
-import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnResumed
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
@@ -132,7 +132,7 @@ internal class GlassActivity :
         notificationManager = ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
 
         // Observer events
-        repeatOnStarted {
+        repeatOnResumed {
             viewModel
                 .battery
                 .onEach { binding.bandyerStatusBar.updateBatteryIcon(it) }
