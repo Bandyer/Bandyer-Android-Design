@@ -55,6 +55,7 @@
     <string name="bandyer_glass_rec">Rec</string>
     <string name="bandyer_glass_call_declined">Rifiutata</string>
     <string name="bandyer_glass_call_error_occurred">Si è verificato un errore</string>
+    <string name="bandyer_glass_call_timeout">Timeout di connessione</string>
     <string name="bandyer_glass_answered_on_another_device">Risposto su un altro dispositivo</string>
     <string name="bandyer_glass_line_busy">Linea occupata</string>
     <string name="bandyer_glass_call_hunged_up">Riattaccato</string>
