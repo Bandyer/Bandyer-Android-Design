@@ -36,12 +36,15 @@ class BandyerChatUnreadMessagesWidget @JvmOverloads constructor(context: Context
     var callback: BandyerChatUnreadMessagesScrollDownClickedListener? = null
 
     private var counter = 0
+    private var styleIconPadding = 0
 
     init {
         setOnClickListener {
             hide()
             callback?.onScrollDownClicked()
         }
+        styleIconPadding = iconPadding
+        updateText(counter)
     }
 
     fun incrementUnreadMessages(count: Int = 1) {
@@ -63,7 +66,7 @@ class BandyerChatUnreadMessagesWidget @JvmOverloads constructor(context: Context
     private fun updateIconPadding(counter: Int) {
         iconPadding = when {
             counter <= 0 -> 0
-            else -> context.dp2px(4f)
+            else -> styleIconPadding
         }
     }
 

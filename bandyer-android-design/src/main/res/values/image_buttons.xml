@@ -197,6 +197,7 @@
         <item name="backgroundTint">?attr/colorPrimary</item>m>
         <item name="icon">@drawable/ic_bandyer_double_arrow_down</item>
         <item name="iconGravity">textEnd</item>
+        <item name="iconPadding">@dimen/bandyer_dimen_space4</item>
         <item name="iconSize">@dimen/bandyer_dimen_space16</item>
         <item name="iconTint">?attr/colorOnPrimary</item>
         <item name="android:textSize">@dimen/bandyer_dimen_text_normal</item>
