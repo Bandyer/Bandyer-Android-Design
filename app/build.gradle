@@ -25,10 +25,6 @@ def bandyer_audio_session_version = '2.0.6'
 def kotlinVersion = "1.6.10"
 def bandyerCommonVersion = "1.0.10"
 
-def compiler = javaToolchains.compilerFor {
-    languageVersion = JavaLanguageVersion.of(11)
-}
-
 android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
@@ -63,7 +59,6 @@ android {
 
     kotlinOptions {
         jvmTarget = '11'
-        jdkHome = compiler.get().metadata.installationPath.asFile.absolutePath
     }
 }
 
