@@ -25,9 +25,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.flow.*
 
 /**
  * ParticipantsFragment
@@ -82,13 +80,9 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                     addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper))
 
                     addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                        private var stateJob: Job? = null
-
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                             val foundView = snapHelper.findSnapView(layoutManager) ?: return
                             currentParticipantIndex = layoutManager.getPosition(foundView)
-
-                            stateJob?.cancel()
 
                             val participant = itemAdapter!!.getAdapterItem(currentParticipantIndex).participant
                             with(binding.bandyerUserInfo) {
@@ -106,19 +100,6 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
                                 val formattedText = userDetailsWrapper.formatters.callFormatter.format(userDetails)
                                 setAvatarBackgroundAndLetter(formattedText)
-
-                                repeatOnStarted {
-                                    stateJob = participant.state.onEach {
-                                        when(it) {
-                                            is CallParticipant.State.Online.Invited -> setState(
-                                                UserState.Invited(true))
-                                            is CallParticipant.State.Online -> setState(UserState.Online)
-                                            is CallParticipant.State.Offline.Invited -> setState(
-                                                UserState.Invited(false))
-                                            is CallParticipant.State.Offline-> setState(UserState.Offline, it.lastSeen)
-                                        }
-                                    }.launchIn(this)
-                                }
                             }
                         }
                     })
@@ -128,12 +109,15 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                 }
 
                 repeatOnStarted {
-                    viewModel.call.participants
-                        .takeWhile { it.others.plus(it.me).isNotEmpty()  }
-                        .collect { participants ->
-                            val items = listOf(participants.me).plus(participants.others).map { CallParticipantItem(it, viewModel.userDetailsWrapper) }
-                            FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
-                        }
+                    with(viewModel) {
+                        combine(inCallParticipants, call.participants) { inCallParticipants, participants -> Pair(inCallParticipants, participants) }
+                            .takeWhile { it.first.isNotEmpty()  }
+                            .collect { pair ->
+                                val sortedList = pair.first.sortedBy { pair.second.me.userAlias != it.userAlias }
+                                val items = sortedList.map { CallParticipantItem(it, viewModel.userDetailsWrapper) }
+                                FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
+                            }
+                    }
                 }
             }
 
