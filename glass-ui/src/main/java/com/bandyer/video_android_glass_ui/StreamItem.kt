@@ -160,12 +160,13 @@ internal class MyStreamItem(streamParticipant: StreamParticipant, userDetailsWra
          */
         override fun bindView(item: MyStreamItem, payloads: List<Any>) {
             super.bindView(item, payloads)
-            binding.bandyerSubtitleLayout.bandyerSubtitle.text = itemView.context.getString(R.string.bandyer_glass_you)
             val userAlias = item.streamParticipant.participant.userAlias
             val userDetailWrapper = item.userDetailsWrapper.value
             val userDetails = userDetailWrapper.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
+            val formattedDetails = userDetailWrapper.formatters.callFormatter.format(userDetails)
 
-            binding.bandyerCenteredSubtitle.text = userDetailWrapper.formatters.callFormatter.format(userDetails)
+            binding.bandyerSubtitleLayout.bandyerSubtitle.text = itemView.context.getString(R.string.bandyer_glass_you_pattern, formattedDetails)
+            binding.bandyerCenteredSubtitle.text = formattedDetails
 
             jobs += item.micPermission.onEach {
                 binding.bandyerMicMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain

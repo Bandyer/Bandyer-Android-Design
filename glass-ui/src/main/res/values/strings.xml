@@ -10,6 +10,7 @@
     <string name="bandyer_glass_new_messages_pattern">%1$d new messages</string>
     <string name="bandyer_glass_user_joined_pattern">%1$s joined</string>
     <string name="bandyer_glass_user_left_pattern">%1$s left</string>
+    <string name="bandyer_glass_you_pattern">%1$s (Tu)</string>
     <string name="bandyer_glass_swipe">Swipe</string>
     <string name="bandyer_glass_tap">Tap</string>
     <string name="bandyer_glass_close">close</string>
@@ -70,7 +71,6 @@
     <string name="bandyer_glass_cam_blocked">The camera is blocked</string>
     <string name="bandyer_glass_mic_and_cam_blocked">The mic and the camera are blocked</string>
     <string name="bandyer_glass_alone">You\'re alone here. Wait for other to join</string>
-    <string name="bandyer_glass_you">Tu</string>
 
     <!-- PLURALS -->
     <plurals name="bandyer_glass_users_in_call_pattern">

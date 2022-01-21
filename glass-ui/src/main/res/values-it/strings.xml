@@ -6,6 +6,7 @@
     <string name="bandyer_glass_slider_zoom_pattern">Zoom: %1$d%%</string>
     <string name="bandyer_glass_user_joined_pattern">%1$s si è unito</string>
     <string name="bandyer_glass_user_left_pattern">%1$s ha lasciato</string>
+    <string name="bandyer_glass_you_pattern">%1$s (You)</string>
     <string name="bandyer_glass_swipe">Scorri</string>
     <string name="bandyer_glass_tap">Tocca</string>
     <string name="bandyer_glass_close">chiudi</string>
@@ -66,7 +67,6 @@
     <string name="bandyer_glass_cam_blocked">Camera bloccata</string>
     <string name="bandyer_glass_mic_and_cam_blocked">Microfono e camera bloccati</string>
     <string name="bandyer_glass_alone">Sei solo/a. In attesa di altri</string>
-    <string name="bandyer_glass_you">You</string>
 
     <!-- PLURALS -->
     <plurals name="bandyer_glass_users_in_call_pattern">
