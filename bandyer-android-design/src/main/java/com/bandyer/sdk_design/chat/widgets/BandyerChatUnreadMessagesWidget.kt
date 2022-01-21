@@ -24,6 +24,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewAnimationUtils
 import com.bandyer.sdk_design.R
+import com.bandyer.sdk_design.extensions.dp2px
 import com.google.android.material.button.MaterialButton
 import kotlin.math.hypot
 
@@ -55,6 +56,14 @@ class BandyerChatUnreadMessagesWidget @JvmOverloads constructor(context: Context
             counter <= 0 -> ""
             counter < 99 -> "$counter"
             else -> "99+"
+        }
+        updateIconPadding(counter)
+    }
+
+    private fun updateIconPadding(counter: Int) {
+        iconPadding = when {
+            counter <= 0 -> 0
+            else -> context.dp2px(4f)
         }
     }
 
