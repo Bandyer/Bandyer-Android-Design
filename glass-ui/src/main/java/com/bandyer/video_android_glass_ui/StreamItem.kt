@@ -3,7 +3,6 @@ package com.bandyer.video_android_glass_ui
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassCallMyStreamItemLayoutBinding
@@ -77,7 +76,7 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(final override v
     /**
      * Set an unique identifier for the identifiable which do not have one set already
      */
-    override var identifier: Long = streamParticipant.hashCode().toLong()
+    override var identifier: Long = streamParticipant.hashCode().toLong() + parentScope.hashCode().toLong()
 
     /**
      * The coroutine scope where the flows will be observed
@@ -200,7 +199,7 @@ internal class MyStreamItem(streamParticipant: StreamParticipant, userDetailsWra
         }
 
         override fun onStreamView(view: View) = with(binding) {
-            (view.parent as? ViewGroup)?.removeView(view)
+            (view.parent as? ViewGroup)?.removeAllViews()
             bandyerVideoWrapper.removeAllViews()
             bandyerVideoWrapper.addView(view.apply { id = View.generateViewId() })
         }
@@ -280,7 +279,7 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, userDetails
         }
 
         override fun onStreamView(view: View) = with(binding) {
-            (view.parent as? ViewGroup)?.removeView(view)
+            (view.parent as? ViewGroup)?.removeAllViews()
             bandyerVideoWrapper.removeAllViews()
             bandyerVideoWrapper.addView(view.apply { id = View.generateViewId() })
         }
