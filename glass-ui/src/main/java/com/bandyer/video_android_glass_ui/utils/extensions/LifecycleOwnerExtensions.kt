@@ -9,11 +9,11 @@ import kotlinx.coroutines.launch
 
 internal object LifecycleOwnerExtensions {
     /**
-     * Runs the block of code in a coroutine when the lifecycle is at least RESUMED.
+     * Runs the block of code in a coroutine when the lifecycle is at least STARTED.
      * The coroutine will be cancelled when the ON_STOP event happens and will
      * restart executing if the lifecycle receives the ON_RESUME event again.
      * @receiver LifecycleCoroutineScope
      */
-    fun LifecycleOwner.repeatOnResumed(code: suspend CoroutineScope.() -> Unit) =
-        lifecycleScope.launch { this@repeatOnResumed.repeatOnLifecycle(Lifecycle.State.RESUMED) { code.invoke(this) } }
+    fun LifecycleOwner.repeatOnStarted(code: suspend CoroutineScope.() -> Unit) =
+        lifecycleScope.launch { this@repeatOnStarted.repeatOnLifecycle(Lifecycle.State.STARTED) { code.invoke(this) } }
 }

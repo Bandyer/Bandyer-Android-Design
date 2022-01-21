@@ -20,7 +20,7 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentMenuBi
 import com.bandyer.video_android_glass_ui.model.Option
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.TiltListener
-import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnResumed
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.bandyer.video_android_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.bandyer.video_android_glass_ui.utils.safeNavigate
@@ -101,7 +101,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         val cameraAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.CAMERA }.action as CallAction.ToggleableCallAction)
         val micAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.MICROPHONE }.action as CallAction.ToggleableCallAction)
 
-        repeatOnResumed {
+        repeatOnStarted {
             viewModel.cameraEnabled.onEach { cameraAction.toggle(it) }.launchIn(this)
             viewModel.micEnabled.onEach { micAction.toggle(it) }.launchIn(this)
             viewModel.micPermission.onEach { micAction.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)

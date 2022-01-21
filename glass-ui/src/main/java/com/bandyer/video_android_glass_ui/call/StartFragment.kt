@@ -10,7 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.bandyer.video_android_glass_ui.*
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentStartBinding
 import com.bandyer.video_android_glass_ui.model.Call
-import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnResumed
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.bandyer.video_android_glass_ui.utils.safeNavigate
 import kotlinx.coroutines.flow.*
 
@@ -39,7 +39,7 @@ internal class StartFragment : BaseFragment() {
 
         _binding = BandyerGlassFragmentStartBinding.inflate(inflater, container, false)
 
-        repeatOnResumed {
+        repeatOnStarted {
             with(viewModel) {
                 call.state
                     .takeWhile { it is Call.State.Connecting || it == Call.State.Disconnected }
@@ -51,7 +51,7 @@ internal class StartFragment : BaseFragment() {
                                 findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
                             else -> Unit
                         }
-                    }.launchIn(this@repeatOnResumed)
+                    }.launchIn(this@repeatOnStarted)
             }
         }
 

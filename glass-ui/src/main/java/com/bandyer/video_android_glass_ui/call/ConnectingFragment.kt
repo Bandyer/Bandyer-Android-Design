@@ -11,7 +11,7 @@ import com.bandyer.video_android_glass_ui.GlassViewModelFactory
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
-import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnResumed
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import kotlinx.coroutines.flow.*
 import kotlin.math.roundToInt
 
@@ -54,7 +54,7 @@ internal abstract class ConnectingFragment : BaseFragment(),
                     root.setOnTouchListener { _, event -> onTouchEvent(event) }
                 }
 
-                repeatOnResumed {
+                repeatOnStarted {
                     with(viewModel) {
                         val nOfParticipants = 0
                         call.participants.onEach { participants ->
@@ -72,17 +72,17 @@ internal abstract class ConnectingFragment : BaseFragment(),
                             )
 
                             setSubtitle(nOfParticipants > 2)
-                        }.launchIn(this@repeatOnResumed)
+                        }.launchIn(this@repeatOnStarted)
 
                         amIAlone
                             .onEach { if(!it) onConnected() }
                             .takeWhile { it }
-                            .launchIn(this@repeatOnResumed)
+                            .launchIn(this@repeatOnStarted)
 
                         inCallParticipants
                             .takeWhile { it.count() < 2 }
                             .onCompletion { bandyerSubtitle.text = resources.getString(R.string.bandyer_glass_connecting) }
-                            .launchIn(this@repeatOnResumed)
+                            .launchIn(this@repeatOnStarted)
                     }
                 }
             }
