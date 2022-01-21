@@ -12,18 +12,21 @@ import java.lang.ref.WeakReference
 object GlassUi {
 
     fun Context.launchCallGlass(
-        callManager: GlassCallManager,
+        callManager: CallManager,
+        utilityManager: UtilityManager,
         options: List<Option>,
         enableTilt: Boolean = false
-    ) = launchCall(GlassActivity::class.java, callManager, options, enableTilt)
+    ) = launchCall(GlassActivity::class.java, callManager, utilityManager, options, enableTilt)
 
     private fun <T : Activity> Context.launchCall(
         cls: Class<T>,
-        callManager: GlassCallManager,
+        callManager: CallManager,
+        utilityManager: UtilityManager? = null,
         options: List<Option>,
         enableTilt: Boolean
     ) {
-        GlassManagersHolder.callManagerInstance = WeakReference(callManager)
+        ManagersHolder.callManagerInstance = WeakReference(callManager)
+        ManagersHolder.utilityManagerInstance = WeakReference(utilityManager)
         startActivity(Intent(this, cls).apply {
             putExtra("enableTilt", enableTilt)
             putExtra("options", options.toTypedArray())
@@ -31,12 +34,9 @@ object GlassUi {
     }
 }
 
-internal interface ManagersHolder {
-    var callManagerInstance: WeakReference<CallManager>?
-}
-
-internal object GlassManagersHolder: ManagersHolder {
-    override var callManagerInstance: WeakReference<CallManager>? = null
+internal object ManagersHolder {
+    var callManagerInstance: WeakReference<CallManager>? = null
+    var utilityManagerInstance: WeakReference<UtilityManager>? = null
 }
 
 interface CallManager {
@@ -66,7 +66,7 @@ interface CallManager {
     fun setZoom(value: Int)
 }
 
-interface GlassCallManager : CallManager {
+interface UtilityManager {
     val battery: Flow<Battery>
 
     val wifi: Flow<WiFi>
