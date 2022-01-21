@@ -76,7 +76,7 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(final override v
     /**
      * Set an unique identifier for the identifiable which do not have one set already
      */
-    override var identifier: Long = streamParticipant.hashCode().toLong() + parentScope.hashCode().toLong()
+    override var identifier: Long = streamParticipant.hashCode().toLong()
 
     /**
      * The coroutine scope where the flows will be observed

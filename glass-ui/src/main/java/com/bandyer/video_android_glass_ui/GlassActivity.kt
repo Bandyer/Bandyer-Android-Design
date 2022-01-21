@@ -172,12 +172,6 @@ internal class GlassActivity :
                     binding.bandyerStatusBar.apply { if(it) showRec() else hideRec() }
                 }.launchIn(this)
 
-            viewModel.streams
-                .onEach { streams ->
-                    val orderedList = streams.sortedBy { !it.isMyStream }.map { if(it.isMyStream) MyStreamItem(it, viewModel.userDetailsWrapper, this, viewModel.micPermission, viewModel.camPermission) else OtherStreamItem(it, viewModel.userDetailsWrapper, this) }
-                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
-                }.launchIn(this)
-
             viewModel.cameraEnabled
                 .onEach {
                     with(binding.bandyerStatusBar) {
@@ -216,6 +210,14 @@ internal class GlassActivity :
                     val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == part.userAlias }
                     val toastText = resources.getString(R.string.bandyer_glass_user_left_pattern,userDetails?.let { userDetailsWrapper.formatters.callFormatter.format(userDetails) } ?:  part.userAlias)
                     binding.bandyerToastContainer.show(text = toastText)
+                }.launchIn(this)
+        }
+
+        lifecycleScope.launch {
+            viewModel.streams
+                .onEach { streams ->
+                    val orderedList = streams.sortedBy { !it.isMyStream }.map { if(it.isMyStream) MyStreamItem(it, viewModel.userDetailsWrapper, this, viewModel.micPermission, viewModel.camPermission) else OtherStreamItem(it, viewModel.userDetailsWrapper, this) }
+                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
                 }.launchIn(this)
         }
     }
