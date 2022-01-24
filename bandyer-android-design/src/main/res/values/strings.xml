@@ -45,7 +45,7 @@
 
     <string name="bandyer_call_action_switch_camera_description">Switch camera</string>
     <string name="bandyer_call_action_enable_mic_description">Enable microphone</string>
-    <string name="bandyer_call_action_disable_mic_description">Disable microphone</string>
+    <string name="bandyer_call_action_disable_mic_description">Mute microphone</string>
     <string name="bandyer_call_action_enable_camera_description">Enable camera</string>
     <string name="bandyer_call_action_disable_camera_description">Disable camera</string>
 
