@@ -20,6 +20,7 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
 
     private var mainHandler: Handler? = null
     private var animator: ObjectAnimator? = null
+    private var lastTarget = 0
 
     private var lastScrollPosition = 0
     private val scrollStopMs = 100L
@@ -71,7 +72,12 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
         mainHandler?.removeCallbacksAndMessages(null)
         val maxScroll = (getChildAt(0).width - width)
         val duration = maxScroll * 4L
-        val target = if (abs(scrollX - maxScroll) < 5) 0 else maxScroll
+        val target = when {
+            (abs(scrollX - maxScroll) < 5) -> 0
+            (scrollX < 5) -> maxScroll
+            else -> lastTarget
+        }
+        lastTarget = target
         animator = ObjectAnimator.ofInt(this@HorizontalAutoScrollView, "scrollX", target).apply {
             this.duration = duration
             start()
