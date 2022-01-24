@@ -53,6 +53,13 @@ internal class BottomNavigationView @JvmOverloads constructor(
         }
 
     /**
+     * Show the swipe horizontal element
+     */
+    fun showSwipeHorizontalItem() {
+        binding.bandyerSwipe.visibility = View.VISIBLE
+    }
+
+    /**
      * Hide the swipe horizontal element
      */
     fun hideSwipeHorizontalItem() {

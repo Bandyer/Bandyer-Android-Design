@@ -20,28 +20,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:theme="?attr/bandyer_callWatermarkStyle"
-                app:layout_constraintBottom_toTopOf="@id/bandyer_participants"
+                app:layout_constraintBottom_toTopOf="@id/bandyer_participants_scroll_view"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
 
             <com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView
-                android:id="@+id/bandyer_participants"
+                android:id="@+id/bandyer_participants_scroll_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:fillViewport="true"
                 app:layout_constraintBottom_toTopOf="@id/bandyer_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/bandyer_watermark">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:text="ASdlkjasdklasjdsadlkasdjsalkdajsdòalkjsalskcnaDAJKSLCSKLCNDNSADJNCDKANdsjkacdjakscndcjknqweqwewqqweqweqwewq"
+                    android:id="@+id/bandyer_participants"
                     android:textSize="20sp"
                     android:textColor="#fff"
                     android:paddingStart="@dimen/bandyer_dimen_space32"
                     android:paddingEnd="@dimen/bandyer_dimen_space32"
                     android:maxLines="1"
+                    android:gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
             </com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView>
@@ -54,7 +56,7 @@
                 app:layout_constraintBottom_toTopOf="@id/bandyer_subtitle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/bandyer_participants"
+                app:layout_constraintTop_toBottomOf="@id/bandyer_participants_scroll_view"
                 app:layout_constraintVertical_chainStyle="packed"
                 tools:text="@string/bandyer_glass_call_ended" />
 

@@ -1,6 +1,7 @@
 package com.bandyer.video_android_glass_ui.call
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
 import androidx.activity.addCallback
@@ -13,6 +14,7 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullSc
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import kotlinx.coroutines.flow.*
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 internal abstract class ConnectingFragment : BaseFragment(),
@@ -49,29 +51,26 @@ internal abstract class ConnectingFragment : BaseFragment(),
             .apply {
                 if (GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
 
-                with(bandyerParticipants) {
+                with(bandyerParticipantsScrollView) {
                     viewTreeObserver.addOnScrollChangedListener(this@ConnectingFragment)
                     root.setOnTouchListener { _, event -> onTouchEvent(event) }
                 }
 
                 repeatOnStarted {
                     with(viewModel) {
-                        val nOfParticipants = 0
-                        call.participants.onEach { participants ->
-                            val isGroupCall = nOfParticipants > 2
-                            // TODO userDetails
-                            val items =
-                                ((if (isGroupCall) listOf(participants.me) else listOf()).plus(
-                                    participants.others
-                                ))
+                        userDetailsWrapper
+                            .onEach {
+                                bandyerParticipants.text = it.formatters.callFormatter.format(*it.data.toTypedArray())
+                                updateUIOnParticipantChange()
+                            }.launchIn(this@repeatOnStarted)
 
-                            if (nOfParticipants < 2) bandyerBottomNavigation.hideSwipeHorizontalItem()
-                            else bandyerCounter.text = resources.getString(
+                        call.participants.onEach { participants ->
+                            bandyerCounter.text = resources.getString(
                                 R.string.bandyer_glass_n_of_participants_pattern,
                                 participants.others.size + 1
                             )
 
-                            setSubtitle(nOfParticipants > 2)
+                            setSubtitle(participants.others.count() + 1 > 2)
                         }.launchIn(this@repeatOnStarted)
 
                         amIAlone
@@ -90,12 +89,35 @@ internal abstract class ConnectingFragment : BaseFragment(),
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        updateUIOnParticipantChange()
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        updateUIOnParticipantChange()
+    }
+
+    private fun updateUIOnParticipantChange() = with(binding) {
+        bandyerParticipants.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        if (resources.displayMetrics.widthPixels - bandyerParticipants.measuredWidth > 0) {
+            bandyerBottomNavigation.hideSwipeHorizontalItem()
+            bandyerProgress.visibility = View.GONE
+        }
+        else {
+            bandyerBottomNavigation.showSwipeHorizontalItem()
+            bandyerProgress.visibility = View.VISIBLE
+
+        }
+    }
+
     /**
      * @suppress
      */
     override fun onDestroyView() {
         super.onDestroyView()
-        binding.bandyerParticipants.viewTreeObserver.removeOnScrollChangedListener(this)
+        binding.bandyerParticipantsScrollView.viewTreeObserver.removeOnScrollChangedListener(this)
         _binding = null
     }
 
@@ -103,8 +125,8 @@ internal abstract class ConnectingFragment : BaseFragment(),
         _binding ?: return
         with(binding) {
             bandyerProgress.apply {
-                max = bandyerParticipants.getChildAt(0).width
-                progress = ((bandyerParticipants.scrollX + bandyerParticipants.width).toFloat()).roundToInt()
+                max = bandyerParticipantsScrollView.getChildAt(0).width
+                progress = ((bandyerParticipantsScrollView.scrollX + bandyerParticipantsScrollView.width).toFloat()).roundToInt()
             }
         }
     }
