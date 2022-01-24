@@ -45,6 +45,8 @@ internal class CallEndedFragment : BaseFragment() {
             false
         ).apply {
             if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
+            bandyerProgress.visibility = View.GONE
+            bandyerParticipantsScrollView.visibility = View.GONE
             bandyerTitle.text = args.title
             bandyerSubtitle.text = args.subtitle
         }
