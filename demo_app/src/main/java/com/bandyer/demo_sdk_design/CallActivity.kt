@@ -164,7 +164,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
         initializeBottomSheetLayout(savedInstanceState)
         initializeCallInfoWidget()
         initializeUserInfoWidget()
-        Picasso.get().load(R.drawable.sample_image).into(findViewById<ImageView>(R.id.image))
+//        Picasso.get().load(R.drawable.sample_image).into(findViewById<ImageView>(R.id.image))
     }
 
     private fun initializeBottomSheetLayout(savedInstanceState: Bundle?) {
