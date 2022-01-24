@@ -45,10 +45,10 @@
     <string name="bandyer_call_hangup">Chiudi</string>
 
     <string name="bandyer_call_action_switch_camera_description">Cambia camera</string>
-    <string name="bandyer_call_action_enable_mic_description">Attiva microfono</string>
-    <string name="bandyer_call_action_disable_mic_description">Disattiva microfono</string>
-    <string name="bandyer_call_action_enable_camera_description">Attiva camera</string>
-    <string name="bandyer_call_action_disable_camera_description">Disattiva camera</string>
+    <string name="bandyer_call_action_enable_mic_description">Abilita microfono</string>
+    <string name="bandyer_call_action_disable_mic_description">Disabilita microfono</string>
+    <string name="bandyer_call_action_enable_camera_description">Abilita camera</string>
+    <string name="bandyer_call_action_disable_camera_description">Disabilita camera</string>
 
     <!-- Chat -->
     <string name="bandyer_edit_text_input_placeholder">Scrivi qui &#8230;</string>
