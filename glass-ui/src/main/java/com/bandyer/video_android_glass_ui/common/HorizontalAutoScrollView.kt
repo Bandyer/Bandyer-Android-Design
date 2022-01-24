@@ -3,6 +3,7 @@ package com.bandyer.video_android_glass_ui.common
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
@@ -25,6 +26,11 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
     private var scrollStopRunner: Runnable? = null
 
     init {
+        post { performAutoScroll() }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
         post { performAutoScroll() }
     }
 
