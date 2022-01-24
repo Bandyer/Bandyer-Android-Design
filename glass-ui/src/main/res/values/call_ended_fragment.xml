@@ -9,7 +9,7 @@
 
     <!-- CALL ENDED FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.CallEnded" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog.CallEnded</item>
+        <item name="android:horizontalScrollViewStyle">@style/BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog.CallEnded</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.CallEnded</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.CallEnded</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.CallEnded</item>
@@ -25,8 +25,8 @@
         <item name="android:textColor">@color/bandyer_color_white_80</item>
     </style>
 
-    <!-- RECYCLERVIEW -->
-    <style name="BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog.CallEnded" parent="BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog">
+    <!-- SCROLLVIEW -->
+    <style name="BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog.CallEnded" parent="BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog">
         <item name="android:visibility">gone</item>
     </style>
 

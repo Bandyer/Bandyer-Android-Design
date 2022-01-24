@@ -3,8 +3,9 @@
     <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
         <attr name="bandyer_rootLayoutStyle" />
         <attr name="bandyer_callWatermarkStyle" format="reference" />
-        <attr name="recyclerViewStyle" />
-        <attr name="bandyer_recyclerViewItemStyle" />
+        <attr name="android:horizontalScrollViewStyle" />
+        <attr name="bandyer_participantsStyle" />
+        <attr name="bandyer_titleStyle" />
         <attr name="bandyer_subtitleStyle" />
         <attr name="bandyer_counterStyle" />
         <attr name="bottomNavigationStyle" />
@@ -13,34 +14,29 @@
     <!-- FULL SCREEN LOGO DIALOG FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog">
         <item name="bandyer_callWatermarkStyle">@style/BandyerSDKDesign.CallWatermark</item>
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog</item>
-        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog</item>
+        <item name="android:horizontalScrollViewStyle">@style/BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog</item>
+        <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenLogoDialogParticipants</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog</item>
         <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Counter</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo</item>
     </style>
 
-    <!-- RECYCLERVIEW -->
-    <style name="BandyerSDKDesign.Glass.RecyclerView.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.RecyclerView">
-        <item name="android:background">@android:color/transparent</item>
+    <!-- SCROLLVIEW -->
+    <style name="BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog" parent="">
+        <item name="android:fillViewport">true</item>
     </style>
 
-    <!-- RECYCLERVIEW ITEM -->
-    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog.RootLayout</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassRecyclerViewItem.FullScreenLogoDialog</item>
-    </style>
-
-    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.FullScreenLogoDialog.RootLayout" parent="">
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
-    </style>
-
-    <style name="BandyerSDKDesign.TextView.GlassRecyclerViewItem.FullScreenLogoDialog" parent="BandyerSDKDesign.TextView.GlassRecyclerViewItem">
+    <style name="BandyerSDKDesign.TextView.Title.FullScreenLogoDialogParticipants" parent="BandyerSDKDesign.TextView.Title">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/bandyer_glass_menu_item_color</item>
+        <item name="android:textSize">@dimen/bandyer_dimen_text_40sp</item>
         <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
         <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
         <item name="android:includeFontPadding">false</item>
+        <item name="android:paddingStart">@dimen/bandyer_dimen_space32</item>
+        <item name="android:paddingEnd">@dimen/bandyer_dimen_space32</item>
+        <item name="android:maxLines">1</item>
     </style>
 
     <!-- COUNTER -->

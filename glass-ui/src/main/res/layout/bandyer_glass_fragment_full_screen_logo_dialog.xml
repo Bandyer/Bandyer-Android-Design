@@ -30,7 +30,6 @@
                 android:id="@+id/bandyer_participants_scroll_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fillViewport="true"
                 app:layout_constraintBottom_toTopOf="@id/bandyer_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -38,14 +37,9 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/bandyer_participants"
-                    android:textSize="20sp"
-                    android:textColor="#fff"
-                    android:paddingStart="@dimen/bandyer_dimen_space32"
-                    android:paddingEnd="@dimen/bandyer_dimen_space32"
-                    android:maxLines="1"
-                    android:gravity="center"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    style="?attr/bandyer_participantsStyle"/>
             </com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView>
 
             <com.google.android.material.textview.MaterialTextView

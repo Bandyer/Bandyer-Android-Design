@@ -104,11 +104,9 @@ internal abstract class ConnectingFragment : BaseFragment(),
         if (resources.displayMetrics.widthPixels - bandyerParticipants.measuredWidth > 0) {
             bandyerBottomNavigation.hideSwipeHorizontalItem()
             bandyerProgress.visibility = View.GONE
-        }
-        else {
+        } else {
             bandyerBottomNavigation.showSwipeHorizontalItem()
             bandyerProgress.visibility = View.VISIBLE
-
         }
     }
 
