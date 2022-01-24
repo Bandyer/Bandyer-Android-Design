@@ -38,6 +38,15 @@ import com.bandyer.sdk_design.extensions.setAllEnabled
 open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @StyleRes viewStyle: Int = 0) : ActionItem(viewId, viewLayoutRes, viewStyle) {
 
     /**
+     * If action button is enabled
+     */
+    var isEnabled = true
+        set(value) {
+            field = value
+            itemView?.findViewById<BandyerActionButton>(viewId)?.setAllEnabled(value)
+        }
+
+    /**
      * Instance of Call Actions
      */
     companion object Items {
@@ -111,6 +120,7 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
         open fun updateContentDescription(button: View?) = Unit
 
         override fun onReady() {
+            super.onReady()
             toggle(toggled)
         }
     }
@@ -124,8 +134,8 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
 
         override fun updateContentDescription(button: View?) {
             button?.contentDescription =
-                    if (toggled) ctx.resources.getString(R.string.bandyer_call_action_enable_camera_description)
-                    else ctx.resources.getString(R.string.bandyer_call_action_disable_camera_description)
+                if (toggled) ctx.resources.getString(R.string.bandyer_call_action_enable_camera_description)
+                else ctx.resources.getString(R.string.bandyer_call_action_disable_camera_description)
         }
     }
 
@@ -138,8 +148,8 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
 
         override fun updateContentDescription(button: View?) {
             button?.contentDescription =
-                    if (toggled) ctx.resources.getString(R.string.bandyer_call_action_enable_mic_description)
-                    else ctx.resources.getString(R.string.bandyer_call_action_disable_mic_description)
+                if (toggled) ctx.resources.getString(R.string.bandyer_call_action_enable_mic_description)
+                else ctx.resources.getString(R.string.bandyer_call_action_disable_mic_description)
         }
     }
 
@@ -189,19 +199,19 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
             val button = view?.button as? AudioRouteButton
             view?.post {
                 when (item) {
-                    is AudioRoute.BLUETOOTH -> {
+                    is AudioRoute.BLUETOOTH     -> {
                         button?.state = AudioRouteButton.State.BLUETOOTH
                     }
                     is AudioRoute.WIRED_HEADSET -> {
                         button?.state = AudioRouteButton.State.WIRED_HEADSET
                     }
-                    is AudioRoute.LOUDSPEAKER -> {
+                    is AudioRoute.LOUDSPEAKER   -> {
                         button?.state = AudioRouteButton.State.LOUDSPEAKER
                     }
-                    is AudioRoute.EARPIECE -> {
+                    is AudioRoute.EARPIECE      -> {
                         button?.state = AudioRouteButton.State.EARPIECE
                     }
-                    is AudioRoute.MUTED -> {
+                    is AudioRoute.MUTED         -> {
                         button?.state = AudioRouteButton.State.MUTED
                     }
                 }
@@ -210,6 +220,7 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
         }
 
         override fun onReady() {
+            super.onReady()
             setCurrent(mCurrent)
         }
 
@@ -250,17 +261,11 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
 
         private var oldLabelText: String? = null
 
-        /**
-         * If action button is enabled
-         */
-        var enabled = true
-            private set
-
         override fun onReady() {
+            super.onReady()
             val action = itemView!!.findViewById<BandyerActionButton>(viewId)
             if (oldLabelText == null) oldLabelText = action.label?.text?.toString()
             action.label?.text = oldLabelText
-            action.setAllEnabled(enabled)
         }
 
         /**
@@ -286,26 +291,6 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
             val action = itemView!!.findViewById<BandyerActionButton>(viewId)
             action.label?.text = oldLabelText
         }
-
-        /**
-         * Enable the action
-         */
-        fun enable() {
-            itemView ?: return
-            enabled = true
-            val action = itemView!!.findViewById<BandyerActionButton>(viewId)
-            action.setAllEnabled(true)
-        }
-
-        /**
-         * Disable the action
-         */
-        fun disable() {
-            itemView ?: return
-            enabled = false
-            val action = itemView!!.findViewById<BandyerActionButton>(viewId)
-            action.setAllEnabled(false)
-        }
     }
 
     /**
@@ -318,5 +303,8 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
     /**
      * Called when the layout has been inflated
      */
-    override fun onReady() = Unit
+    override fun onReady() {
+        if (itemView?.isEnabled == isEnabled) return
+        itemView?.setAllEnabled(isEnabled)
+    }
 }
