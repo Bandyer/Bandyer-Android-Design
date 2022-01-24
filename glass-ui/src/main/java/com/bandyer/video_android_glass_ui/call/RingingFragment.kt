@@ -33,7 +33,7 @@ internal class RingingFragment : ConnectingFragment() {
 
     override fun onSwipeDown() = true.also { viewModel.hangUp() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(resources.displayMetrics.densityDpi / 2, 0) }
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerParticipants.smoothScrollByWithAutoScroll(resources.displayMetrics.densityDpi / 2, 0) }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { binding.bandyerParticipants.smoothScrollBy(-resources.displayMetrics.densityDpi / 2, 0) }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerParticipants.smoothScrollByWithAutoScroll(-resources.displayMetrics.densityDpi / 2, 0) }
 }

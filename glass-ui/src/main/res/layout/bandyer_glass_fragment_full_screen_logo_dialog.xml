@@ -30,14 +30,13 @@
                 android:id="@+id/bandyer_participants"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
                 app:layout_constraintBottom_toTopOf="@id/bandyer_title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/bandyer_watermark">
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:text="sdjaslkdfmldsoifldjasdfkdlsjdAMSCKFJCSKFOPDòSKCFDSOFSADPOFCSDAIFMCDSAPISMCFOAISDFOPèSAIMFPOSIFASPOIòFMCcòlfdkmsòalsòffdnapofidmfposvadifpocimposdicfpadosòicfapsdocfisapèdfio"
+                    android:text="ASdlkjasdklasjdsadlkasdjsalkdajsdòalkjsalskcnaDAJKSLCSKLCNDNSADJNCDKANdsjkacdjakscndcjknqweqwewqqweqweqwewq"
                     android:textSize="20sp"
                     android:textColor="#fff"
                     android:paddingStart="@dimen/bandyer_dimen_space32"
@@ -82,6 +81,7 @@
                 android:id="@+id/bandyer_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:indicatorColor="?attr/colorSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

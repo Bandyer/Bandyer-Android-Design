@@ -7,11 +7,9 @@ import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
 import android.view.MotionEvent
-import android.view.View
 import android.widget.HorizontalScrollView
 import kotlin.math.abs
 
-// TODO Add RTL support and onKeyEvent support
 internal class HorizontalAutoScrollView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -25,6 +23,10 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
     private var lastScrollPosition = 0
     private val scrollStopMs = 100L
     private var scrollStopRunner: Runnable? = null
+
+    init {
+        post { performAutoScroll() }
+    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -40,7 +42,6 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
                 }
             }
         }
-        performAutoScroll()
     }
 
     override fun onDetachedFromWindow() {
@@ -54,17 +55,22 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent?): Boolean {
-        if (ev != null && mainHandler != null && scrollStopRunner != null && animator != null) {
-            when (ev.action) {
-                MotionEvent.ACTION_UP -> mainHandler!!.postDelayed(scrollStopRunner!!, scrollStopMs)
-                MotionEvent.ACTION_DOWN -> {
-                    animator!!.cancel()
-                    mainHandler!!.removeCallbacksAndMessages(null)
-                }
+        when (ev?.action) {
+            MotionEvent.ACTION_UP -> scrollStopRunner?.apply { mainHandler?.postDelayed(this, scrollStopMs) }
+            MotionEvent.ACTION_DOWN -> {
+                animator?.cancel()
+                mainHandler?.removeCallbacksAndMessages(null)
             }
         }
 
         return super.onTouchEvent(ev)
+    }
+
+    fun smoothScrollByWithAutoScroll(dx: Int, dy: Int) {
+        animator?.cancel()
+        mainHandler?.removeCallbacksAndMessages(null)
+        smoothScrollBy(dx, dy)
+        scrollStopRunner?.apply { mainHandler?.postDelayed(this, scrollStopMs) }
     }
 
     private fun performAutoScroll() {

@@ -109,7 +109,6 @@ internal abstract class ConnectingFragment : BaseFragment(),
         }
     }
 
-
     abstract fun onConnected()
 
     abstract fun setSubtitle(isGroupCall: Boolean)
