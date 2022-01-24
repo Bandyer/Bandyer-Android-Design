@@ -24,7 +24,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.ViewAnimationUtils
 import com.bandyer.sdk_design.R
-import com.bandyer.sdk_design.extensions.dp2px
 import com.google.android.material.button.MaterialButton
 import kotlin.math.hypot
 
