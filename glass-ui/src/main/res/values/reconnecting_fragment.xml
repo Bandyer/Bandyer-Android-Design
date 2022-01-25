@@ -13,6 +13,7 @@
     <!-- RECONNECTING FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Reconnecting" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
         <item name="android:horizontalScrollViewStyle">@style/BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog.Reconnecting</item>
+        <item name="linearProgressIndicatorStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar.Reconnecting</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.Reconnecting</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Reconnecting</item>
         <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Counter.Reconnecting</item>
@@ -36,6 +37,11 @@
 
     <!-- SCROLLVIEW -->
     <style name="BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog.Reconnecting" parent="BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- PROGRESS BAR -->
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar.Reconnecting" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar">
         <item name="android:visibility">gone</item>
     </style>
 

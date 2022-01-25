@@ -10,6 +10,7 @@
     <!-- CALL ENDED FRAGMENT -->
     <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.CallEnded" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
         <item name="android:horizontalScrollViewStyle">@style/BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog.CallEnded</item>
+        <item name="linearProgressIndicatorStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar.CallEnded</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.CallEnded</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.CallEnded</item>
         <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.CallEnded</item>
@@ -27,6 +28,11 @@
 
     <!-- SCROLLVIEW -->
     <style name="BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog.CallEnded" parent="BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- PROGRESS BAR -->
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar.CallEnded" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar">
         <item name="android:visibility">gone</item>
     </style>
 
