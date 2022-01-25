@@ -40,8 +40,7 @@
                     android:id="@+id/bandyer_participants"
                     style="?attr/bandyer_participantsStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp" />
+                    android:layout_height="wrap_content" />
             </com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView>
 
             <com.google.android.material.textview.MaterialTextView
@@ -79,7 +78,6 @@
                 android:id="@+id/bandyer_progress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:indicatorColor="?attr/colorSecondary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 

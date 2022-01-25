@@ -5,6 +5,7 @@
         <attr name="bandyer_callWatermarkStyle" format="reference" />
         <attr name="android:horizontalScrollViewStyle" />
         <attr name="bandyer_participantsStyle" />
+        <attr name="linearProgressIndicatorStyle" />
         <attr name="bandyer_titleStyle" />
         <attr name="bandyer_subtitleStyle" />
         <attr name="bandyer_counterStyle" />
@@ -16,6 +17,7 @@
         <item name="bandyer_callWatermarkStyle">@style/BandyerSDKDesign.CallWatermark</item>
         <item name="android:horizontalScrollViewStyle">@style/BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog</item>
         <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenLogoDialogParticipants</item>
+        <item name="linearProgressIndicatorStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar</item>
         <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog</item>
         <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog</item>
         <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Counter</item>
@@ -38,6 +40,11 @@
         <item name="android:paddingStart">@dimen/bandyer_dimen_space32</item>
         <item name="android:paddingEnd">@dimen/bandyer_dimen_space32</item>
         <item name="android:maxLines">1</item>
+    </style>
+
+    <!-- PROGRESS BAR -->
+    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar" parent="Widget.MaterialComponents.LinearProgressIndicator">
+        <item name="indicatorColor">?attr/colorSecondary</item>
     </style>
 
     <!-- COUNTER -->
