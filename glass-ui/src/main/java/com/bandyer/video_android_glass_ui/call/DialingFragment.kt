@@ -12,7 +12,7 @@ import com.bandyer.video_android_glass_ui.utils.safeNavigate
 /**
  * DialingFragment
  */
-internal class DialingFragment : ConnectingFragment() {
+internal class DialingFragment : PreCallFragment() {
 
     override var themeResId = 0
 

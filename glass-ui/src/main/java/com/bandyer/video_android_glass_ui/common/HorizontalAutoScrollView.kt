@@ -17,6 +17,10 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : HorizontalScrollView(context, attrs, defStyleAttr) {
 
+    interface OnScrollListener {
+        fun onScrollChanged(x: Int, y: Int)
+    }
+
     private var mainHandler: Handler? = null
     private var animator: ObjectAnimator? = null
     private var lastTarget = 0
@@ -24,6 +28,8 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
     private var lastScrollPosition = 0
     private val scrollStopMs = 100L
     private var scrollStopRunner: Runnable? = null
+
+    var onScrollListener: OnScrollListener? = null
 
     init {
         post { performAutoScroll() }
@@ -57,6 +63,7 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
         animator = null
         scrollStopRunner = null
         mainHandler = null
+        onScrollListener = null
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -70,6 +77,11 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
         }
 
         return super.onTouchEvent(ev)
+    }
+
+    override fun onScrollChanged(l: Int, t: Int, oldl: Int, oldt: Int) {
+        super.onScrollChanged(l, t, oldl, oldt)
+        onScrollListener?.onScrollChanged(l, t)
     }
 
     fun smoothScrollByWithAutoScroll(dx: Int, dy: Int) {

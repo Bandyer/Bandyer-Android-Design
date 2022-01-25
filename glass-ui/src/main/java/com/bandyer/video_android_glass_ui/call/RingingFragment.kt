@@ -12,7 +12,7 @@ import com.bandyer.video_android_glass_ui.utils.safeNavigate
 /**
  * RingingFragment
  */
-internal class RingingFragment : ConnectingFragment() {
+internal class RingingFragment : PreCallFragment() {
 
     override var themeResId = 0
 
