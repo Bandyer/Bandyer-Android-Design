@@ -16,18 +16,31 @@
 
 package com.bandyer.app_design
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.NotificationManager.IMPORTANCE_HIGH
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
 import com.bandyer.app_design.databinding.ActivityMainBinding
 import com.bandyer.video_android_phone_ui.bottom_sheet.items.ActionItem
@@ -114,10 +127,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnFeedback.setOnClickListener { FeedbackDialog().show(supportFragmentManager, FeedbackDialog.TAG) }
-    }
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        return super.dispatchTouchEvent(ev)
+        btnNotification.setOnClickListener {
+            initNotification()
+        }
     }
 
     private fun showSmartGlassAction(): SmartGlassActionItemMenu = SmartGlassActionItemMenu.show(
@@ -144,6 +157,79 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+    private fun initNotification() {
+        val callIntent = Intent(this, CallActivity::class.java)
+        val ringingIntent = Intent(this, RingingActivity::class.java)
+
+        TaskStackBuilder.create(this).apply {
+            addParentStack(CallActivity::class.java)
+            addNextIntent(callIntent)
+        }
+
+        val mainPendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            callIntent,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
+
+        val name = "Mario"
+        val subText = "Sottotitolo"
+        val avatar = BitmapFactory.decodeResource(
+            resources,
+            R.drawable.ic_bandyer_avatar_bold
+        )
+        val customView = RemoteViews(packageName, R.layout.bandyer_notification2)
+        customView.setTextViewText(R.id.name, name)
+//      customView.setViewVisibility(R.id.subtitle, View.GONE)
+        customView.setTextViewText(R.id.title, subText)
+
+        customView.setTextViewText(
+            R.id.answer_text,
+           "Answer"
+        )
+        customView.setTextViewText(
+            R.id.decline_text,
+            "Decline"
+        )
+        customView.setImageViewBitmap(R.id.photo, avatar)
+//        customView.setOnClickPendingIntent(R.id.answer_btn, answerPendingIntent)
+//        customView.setOnClickPendingIntent(R.id.decline_btn, endPendingIntent)
+
+        val builder = NotificationCompat
+            .Builder(applicationContext, "channelId")
+            .setContentTitle("Bandyer Call") // or Bandyer Video Call
+            .setContentText(name)
+            .setSmallIcon(R.drawable.bandyer_z_audio_only) // or video icon
+            .setSubText(subText)
+            .setLargeIcon(avatar)
+            .setContentIntent(mainPendingIntent)
+            .setCustomContentView(customView)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel("channelId", "Incoming call", IMPORTANCE_HIGH).apply {
+                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                enableLights(true)
+                setSound(null, null)
+                enableVibration(false)
+            }
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+
+//        builder.addAction(R.drawable.ic_call_end_white_24dp, endTitle, endPendingIntent)
+//        builder.addAction(R.drawable.ic_call, answerTitle, answerPendingIntent)
+//        builder.addPerson("tel:" + user.phone)
+
+        builder.priority = Notification.PRIORITY_MAX
+        builder.color = -0xff0033
+        builder.setVibrate(LongArray(0))
+        builder.setCategory(Notification.CATEGORY_CALL)
+        builder.setFullScreenIntent(PendingIntent.getActivity(this, 0, ringingIntent, 0), true)
+
+        NotificationManagerCompat.from(applicationContext).notify(888, builder.build())
+    }
 }
 
 class LocalFileShareViewModel : FileShareViewModel() {
