@@ -8,9 +8,13 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.TaskStackBuilder
 import com.bandyer.app_design.databinding.ActivityNotificationBinding
 
 class NotificationActivity : AppCompatActivity() {
@@ -21,45 +25,133 @@ class NotificationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNotificationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setApi21Listeners()
         setApi31Listeners()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        stopService(Intent(this, NotificationServiceApi31::class.java))
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) stopService(Intent(this, NotificationServiceApi31::class.java))
+//        else stopService(Intent(this, NotificationService::class.java))
+    }
+
+    private fun initNotification() {
+        val callIntent = Intent(this, CallActivity::class.java)
+        val ringingIntent = Intent(this, RingingActivity::class.java)
+
+        TaskStackBuilder.create(this).apply {
+            addParentStack(CallActivity::class.java)
+            addNextIntent(callIntent)
+        }
+
+        val callPendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            callIntent,
+            PendingIntent.FLAG_CANCEL_CURRENT
+        )
+
+        val name = "Mario"
+        val subText = "Sottotitolo"
+        val avatar = BitmapFactory.decodeResource(
+            resources,
+            R.drawable.ic_bandyer_avatar_bold
+        )
+//        val customView = RemoteViews(packageName, R.layout.bandyer_notification2)
+//        customView.setTextViewText(R.id.name, name)
+//        customView.setViewVisibility(R.id.subtitle, View.GONE)
+//        customView.setTextViewText(R.id.title, subText)
+
+//        customView.setTextViewText(
+//            R.id.answer_text,
+//           "Answer"
+//        )
+//        customView.setTextViewText(
+//            R.id.decline_text,
+//            "Decline"
+//        )
+//        customView.setImageViewBitmap(R.id.photo, avatar)
+//        customView.setOnClickPendingIntent(R.id.answer_btn, answerPendingIntent)
+//        customView.setOnClickPendingIntent(R.id.decline_btn, endPendingIntent)
+
+        val builder = NotificationCompat.Builder(applicationContext, "channelId").apply {
+            setContentTitle("Bandyer Call") // or Bandyer Video Call
+                .setContentText(name)
+                .setSmallIcon(R.drawable.bandyer_z_audio_only) // or video icon
+                .setSubText(subText)
+                .setLargeIcon(avatar)
+                .setContentIntent(callPendingIntent)
+        }
+
+//        builder.setCustomContentView(customView)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel("channelId", "Incoming call",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                enableLights(true)
+                setSound(null, null)
+                enableVibration(false)
+            }
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+
+//        builder.addAction(R.drawable.ic_call_end_white_24dp, endTitle, endPendingIntent)
+//        builder.addAction(R.drawable.ic_call, answerTitle, answerPendingIntent)
+//        builder.addPerson("tel:" + user.phone)
+
+        builder.priority = Notification.PRIORITY_MAX
+        builder.color = -0xff0033
+        builder.setVibrate(LongArray(0))
+        builder.setCategory(Notification.CATEGORY_CALL)
+        builder.setFullScreenIntent(PendingIntent.getActivity(this, 0, ringingIntent,  0), true)
+
+        NotificationManagerCompat.from(applicationContext).notify(888, builder.build())
+    }
+
+    private fun setApi21Listeners() {
+        binding.bandyerIncomingButton.setOnClickListener {
+            initNotification()
+        }
     }
 
     private fun setApi31Listeners() {
-        val serviceIntentApi31 = Intent(this, NotificationServiceApi31::class.java).apply {
-            putExtra("user", "John Smith")
-            putExtra("icon", R.drawable.bandyer_z_audio_only)
-            putExtra("avatar", R.drawable.avatar)
-        }
+        val serviceIntentApi31 = if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Intent(this, NotificationServiceApi31::class.java).apply {
+                putExtra("user", "John Smith")
+                putExtra("icon", R.drawable.bandyer_z_audio_only)
+                putExtra("avatar", R.drawable.avatar)
+            }
+        } else null
 
         binding.bandyerIncomingApi31Button.setOnClickListener {
-            serviceIntentApi31.also {
+            serviceIntentApi31?.also {
                 it.putExtra("type", NotificationServiceApi31.NotificationType.INCOMING_CALL)
                 it.putExtra("subtext", "Incoming call")
                 startService(it)
-            }
+            } ?: showToast("Available from API 31")
         }
 
         binding.bandyerOngoingApi31Button.setOnClickListener {
-            serviceIntentApi31.also {
+            serviceIntentApi31?.also {
                 it.putExtra("type", NotificationServiceApi31.NotificationType.ONGOING_CALL)
                 it.putExtra("subtext", "Ongoing call")
                 startService(it)
-            }
+            } ?: showToast("Available from API 31")
         }
 
         binding.bandyerScreeningApi31Button.setOnClickListener {
-            serviceIntentApi31.also {
+            serviceIntentApi31?.also {
                 it.putExtra("type", NotificationServiceApi31.NotificationType.SCREENING_CALL)
                 it.putExtra("subtext", "Screening call")
                 startService(it)
-            }
+            } ?: showToast("Available from API 31")
         }
     }
+
+    private fun showToast(text: String) = Toast.makeText(this@NotificationActivity, text, Toast.LENGTH_SHORT).show()
 }
 
 @RequiresApi(Build.VERSION_CODES.S)
@@ -139,6 +231,7 @@ class NotificationServiceApi31 : Service() {
 }
 
 object DrawableHelper {
+
     fun createCircleBitmap(context: Context, @DrawableRes resource: Int): Bitmap {
         val bitmap = BitmapFactory
             .decodeResource(context.resources, resource)

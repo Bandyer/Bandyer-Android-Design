@@ -7,13 +7,24 @@
     tools:context=".NotificationActivity">
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/bandyer_title_api_lower"
+        android:id="@+id/bandyer_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="API lower 31 notification"
+        android:text="API 21 notification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bandyer_incoming_button"
+        android:layout_width="@dimen/bandyer_dimen_space0"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/bandyer_dimen_space16"
+        android:layout_marginEnd="@dimen/bandyer_dimen_space16"
+        android:text="Incoming call"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/bandyer_title" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_title_api_31"
@@ -22,7 +33,7 @@
         android:text="API 31 notification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bandyer_title_api_lower" />
+        app:layout_constraintTop_toBottomOf="@id/bandyer_incoming_button" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/bandyer_incoming_api31_button"
