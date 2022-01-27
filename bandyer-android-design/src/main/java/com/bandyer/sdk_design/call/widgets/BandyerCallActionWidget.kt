@@ -578,8 +578,8 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
     }
 
     private fun addItemDecoration() = itemDecoration?.let {
-        if (currentBottomSheetLayout!!.recyclerView!!.itemDecorationCount == 0)
-            currentBottomSheetLayout!!.recyclerView!!.addItemDecoration(it)
+        currentBottomSheetLayout!!.recyclerView!!.removeItemDecoration(it)
+        currentBottomSheetLayout!!.recyclerView!!.addItemDecoration(it)
     }
 
     /**
