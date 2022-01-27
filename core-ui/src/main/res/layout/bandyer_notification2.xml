@@ -3,135 +3,140 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="128dp"
+    android:padding="@dimen/bandyer_dimen_space16"
     android:background="#282e31">
 
     <ImageView
-        android:id="@+id/photo"
-        android:layout_width="42dp"
-        android:layout_height="42dp"
+        android:id="@+id/bandyer_avatar"
+        android:layout_width="@dimen/bandyer_dimen_space56"
+        android:layout_height="@dimen/bandyer_dimen_space56"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
         android:layerType="hardware"
-        android:src="@drawable/avatar"
         tools:src="#0004FF" />
 
     <ImageView
-        android:id="@+id/icon"
+        android:id="@+id/bandyer_icon"
         android:layout_width="16dp"
         android:layout_height="16dp"
-        android:layout_alignRight="@+id/photo"
-        android:layout_alignBottom="@+id/photo"
+        android:layout_alignRight="@id/bandyer_avatar"
+        android:layout_alignBottom="@id/bandyer_avatar"
         android:layout_marginRight="-2dp"
-        android:layout_marginBottom="-2dp" />
+        android:layout_marginBottom="-2dp"
+        android:padding="@dimen/bandyer_dimen_space2" />
 
     <LinearLayout
-        android:id="@+id/text_wrap"
+        android:id="@+id/bandyer_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/photo"
-        android:layout_alignTop="@+id/photo"
-        android:layout_alignBottom="@+id/photo"
-        android:layout_marginTop="-12dp"
-        android:layout_marginBottom="-12dp"
+        android:layout_alignTop="@id/bandyer_avatar"
+        android:layout_alignBottom="@id/bandyer_avatar"
         android:layout_marginLeft="12dp"
+        android:layout_marginTop="-12dp"
         android:layout_marginRight="20dp"
+        android:layout_marginBottom="-12dp"
+        android:layout_toRightOf="@id/bandyer_avatar"
         android:gravity="center_vertical|left"
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/bandyer_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="17dp"
-            android:singleLine="true"
             android:ellipsize="end"
-            android:textColor="#FFF"
             android:fontFamily="sans-serif-medium"
             android:gravity="left"
-            tools:text="Mario Rossi"/>
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="14dp"
+            android:singleLine="true"
             android:textColor="#FFF"
-            android:singleLine="true"
-            android:ellipsize="end"
-            android:gravity="left"
-            tools:text="title"/>
+            android:textSize="@dimen/bandyer_dimen_text_h3"
+            tools:text="Mario Rossi" />
 
         <TextView
-            android:id="@+id/subtitle"
+            android:id="@+id/bandyer_dot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14dp"
-            android:textColor="#6BFFFFFF"
-            android:singleLine="true"
             android:ellipsize="end"
             android:gravity="left"
-            tools:text="subtitle"/>
+            android:singleLine="true"
+            android:textColor="#FFF"
+            android:textSize="@dimen/bandyer_dimen_text_normal"
+            tools:text="title" />
+
+        <TextView
+            android:id="@+id/bandyer_application_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="left"
+            android:singleLine="true"
+            android:textColor="#6BFFFFFF"
+            android:textSize="@dimen/bandyer_dimen_text_normal"
+            tools:text="subtitle" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/bandyer_subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/bandyer_title"
+        android:layout_alignBottom="@id/bandyer_buttons"
+        android:layout_toRightOf="@id/bandyer_avatar"
+        android:gravity="center_vertical|left"
+        android:orientation="vertical" />
 
     <LinearLayout
-        android:id="@+id/buttons"
+        android:id="@+id/bandyer_buttons"
         android:layout_width="match_parent"
-        android:layout_height="48.3dp"
-        android:paddingTop=".3dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:gravity="center"
         android:orientation="horizontal">
-<!--        android:background="@drawable/call_notification_line"-->
 
+        <Button
+            android:id="@+id/bandyer_decline_btn"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/bandyer_dimen_space4"
+            android:background="@drawable/bandyer_notification_decline_button_background"
+            android:drawableLeft="@drawable/bandyer_z_end_call"
+            android:drawablePadding="@dimen/bandyer_dimen_space4"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:minHeight="@dimen/bandyer_dimen_space0"
+            android:paddingStart="@dimen/bandyer_dimen_space12"
+            android:paddingTop="@dimen/bandyer_dimen_space6"
+            android:paddingEnd="@dimen/bandyer_dimen_space12"
+            android:paddingBottom="@dimen/bandyer_dimen_space6"
+            android:text="Decline"
+            android:textAllCaps="false"
+            android:textColor="#000"
+            android:textSize="@dimen/bandyer_dimen_text_normal" />
 
-        <FrameLayout
-            android:id="@+id/decline_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="2dp"
-            android:layout_weight="1">
-<!--        android:background="@drawable/bar_selector_white"-->
-
-            <TextView
-                android:id="@+id/decline_text"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:textAllCaps="true"
-                android:gravity="center"
-                android:textSize="14dp"
-                android:textColor="#ef5050"
-                android:fontFamily="sans-serif-medium"
-                android:drawableLeft="@drawable/bandyer_z_end_call"
-                android:drawablePadding="12dp" />
-
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/answer_btn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_margin="2dp"
-            android:layout_weight="1">
-<!--            android:background="@drawable/bar_selector_white"-->
-
-            <TextView
-                android:id="@+id/answer_text"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:textAllCaps="true"
-                android:gravity="center"
-                android:textSize="14dp"
-                android:textColor="#5ee067"
-                android:fontFamily="sans-serif-medium"
-                android:drawableLeft="@drawable/bandyer_z_audio_only"
-                android:drawablePadding="12dp" />
-
-        </FrameLayout>
+        <Button
+            android:id="@+id/bandyer_answer_btn"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/bandyer_dimen_space4"
+            android:background="@drawable/bandyer_notification_answer_button_background"
+            android:drawableLeft="@drawable/bandyer_z_audio_only"
+            android:drawablePadding="@dimen/bandyer_dimen_space4"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:minHeight="@dimen/bandyer_dimen_space0"
+            android:padding="@dimen/bandyer_dimen_space8"
+            android:paddingStart="@dimen/bandyer_dimen_space12"
+            android:paddingTop="@dimen/bandyer_dimen_space6"
+            android:paddingEnd="@dimen/bandyer_dimen_space12"
+            android:paddingBottom="@dimen/bandyer_dimen_space6"
+            android:text="Answer"
+            android:textAllCaps="false"
+            android:textColor="#000"
+            android:textSize="@dimen/bandyer_dimen_text_normal" />
 
     </LinearLayout>
-
 </RelativeLayout>

@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.*
 import android.graphics.drawable.Icon
-import android.os.Build
-import android.os.Bundle
-import android.os.IBinder
+import android.os.*
+import android.view.View
+import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
@@ -57,20 +57,21 @@ class NotificationActivity : AppCompatActivity() {
             resources,
             R.drawable.ic_bandyer_avatar_bold
         )
-//        val customView = RemoteViews(packageName, R.layout.bandyer_notification2)
-//        customView.setTextViewText(R.id.name, name)
-//        customView.setViewVisibility(R.id.subtitle, View.GONE)
-//        customView.setTextViewText(R.id.title, subText)
+        val customView = RemoteViews(packageName, R.layout.bandyer_notification2)
 
+        customView.setTextViewText(R.id.bandyer_username, name)
+//        customView.setViewVisibility(R.id.bandyer_subtitle, View.GONE)
+        customView.setTextViewText(R.id.bandyer_subtitle, subText)
+//
 //        customView.setTextViewText(
-//            R.id.answer_text,
+//            R.id.bandyer_accept_btn,
 //           "Answer"
 //        )
 //        customView.setTextViewText(
-//            R.id.decline_text,
+//            R.id.bandyer_decline_btn,
 //            "Decline"
 //        )
-//        customView.setImageViewBitmap(R.id.photo, avatar)
+        customView.setImageViewBitmap(R.id.bandyer_avatar, avatar)
 //        customView.setOnClickPendingIntent(R.id.answer_btn, answerPendingIntent)
 //        customView.setOnClickPendingIntent(R.id.decline_btn, endPendingIntent)
 
@@ -83,7 +84,7 @@ class NotificationActivity : AppCompatActivity() {
                 .setContentIntent(callPendingIntent)
         }
 
-//        builder.setCustomContentView(customView)
+        builder.setCustomContentView(customView)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel("channelId", "Incoming call",
