@@ -181,6 +181,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
             currentShownBottomSheet = bottomSheet as BaseBandyerBottomSheet
             anchorViews()
             (bottomSheet as? CallBottomSheet<*>)?.updateAudioRouteIcon(mCurrentAudioRoute)
+            addItemDecoration()
         }
 
         override fun onHide(bottomSheet: BandyerBottomSheet) {
@@ -530,7 +531,6 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         createCallBottomSheet(bottomSheetLayoutType!!)
         isHidden = false
         currentBottomSheetLayout = callBottomSheet?.bottomSheetLayoutContent
-        addItemDecoration()
         disposeBottomSheet(ringingBottomSheet)
         disposeBottomSheet(audioRouteBottomSheet)
         this.collapsible = collapsible
@@ -549,7 +549,6 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         createRingingBottomSheet(bottomSheetLayoutType!!)
         isHidden = false
         currentBottomSheetLayout = ringingBottomSheet?.bottomSheetLayoutContent
-        addItemDecoration()
         ringingBottomSheet?.bottomSheetLayoutContent?.id = R.id.bandyer_id_bottom_sheet_ringing
         if (callBottomSheet?.isVisible() == true || audioRouteBottomSheet?.isVisible() == true) {
             disposeBottomSheet(callBottomSheet)
@@ -569,7 +568,6 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         audioRouteBottomSheet?.bottomSheetLayoutContent?.id = R.id.bandyer_id_bottom_sheet_audio_route
         callBottomSheet?.hide(true)
         currentBottomSheetLayout = audioRouteBottomSheet?.bottomSheetLayoutContent
-        addItemDecoration()
         audioRouteBottomSheet?.show()
     }
 
@@ -581,14 +579,9 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
     private fun addItemDecoration() {
         if (itemDecoration == null
             || currentBottomSheetLayout == null
-            || currentBottomSheetLayout!!.recyclerView == null) return
-
-        val currentRecyclerView = currentBottomSheetLayout!!.recyclerView!!
-        (0 until currentRecyclerView.itemDecorationCount).map {
-            currentRecyclerView.getItemDecorationAt(it)
-        }.firstOrNull { it == itemDecoration } ?: kotlin.run {
-            currentRecyclerView.addItemDecoration(itemDecoration!!)
-        }
+            || currentBottomSheetLayout!!.recyclerView == null
+            || currentBottomSheetLayout!!.recyclerView!!.itemDecorationCount > 0) return
+        currentBottomSheetLayout!!.recyclerView!!.addItemDecoration(itemDecoration!!)
     }
 
     /**
