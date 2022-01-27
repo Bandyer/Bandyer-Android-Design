@@ -16,26 +16,24 @@
 
 package com.bandyer.app_design
 
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
+import android.app.*
 import android.app.NotificationManager.IMPORTANCE_HIGH
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Icon
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.text.TextUtils
+import android.os.IBinder
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.NotificationCompat
@@ -55,7 +53,9 @@ import com.bandyer.video_android_phone_ui.smartglass.call.menu.items.getSmartgla
 import com.bandyer.video_android_phone_ui.smartglass.call.menu.utils.MotionEventInterceptor
 import com.bandyer.video_android_phone_ui.whiteboard.dialog.BandyerWhiteboardTextEditorDialog
 import com.google.android.material.appbar.MaterialToolbar
+import com.squareup.picasso.Picasso
 import java.util.concurrent.ConcurrentHashMap
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -128,9 +128,7 @@ class MainActivity : AppCompatActivity() {
 
         btnFeedback.setOnClickListener { FeedbackDialog().show(supportFragmentManager, FeedbackDialog.TAG) }
 
-        btnNotification.setOnClickListener {
-            initNotification()
-        }
+        btnNotification.setOnClickListener { startActivity(Intent(this@MainActivity, NotificationActivity::class.java)) }
     }
 
     private fun showSmartGlassAction(): SmartGlassActionItemMenu = SmartGlassActionItemMenu.show(
@@ -167,7 +165,7 @@ class MainActivity : AppCompatActivity() {
             addNextIntent(callIntent)
         }
 
-        val mainPendingIntent = PendingIntent.getActivity(
+        val callPendingIntent = PendingIntent.getActivity(
             this,
             0,
             callIntent,
@@ -182,7 +180,7 @@ class MainActivity : AppCompatActivity() {
         )
         val customView = RemoteViews(packageName, R.layout.bandyer_notification2)
         customView.setTextViewText(R.id.name, name)
-//      customView.setViewVisibility(R.id.subtitle, View.GONE)
+//        customView.setViewVisibility(R.id.subtitle, View.GONE)
         customView.setTextViewText(R.id.title, subText)
 
         customView.setTextViewText(
@@ -197,15 +195,16 @@ class MainActivity : AppCompatActivity() {
 //        customView.setOnClickPendingIntent(R.id.answer_btn, answerPendingIntent)
 //        customView.setOnClickPendingIntent(R.id.decline_btn, endPendingIntent)
 
-        val builder = NotificationCompat
-            .Builder(applicationContext, "channelId")
-            .setContentTitle("Bandyer Call") // or Bandyer Video Call
+        val builder = NotificationCompat.Builder(applicationContext, "channelId").apply {
+             setContentTitle("Bandyer Call") // or Bandyer Video Call
             .setContentText(name)
             .setSmallIcon(R.drawable.bandyer_z_audio_only) // or video icon
             .setSubText(subText)
             .setLargeIcon(avatar)
-            .setContentIntent(mainPendingIntent)
-            .setCustomContentView(customView)
+            .setContentIntent(callPendingIntent)
+        }
+
+        builder.setCustomContentView(customView)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel("channelId", "Incoming call", IMPORTANCE_HIGH).apply {
@@ -226,7 +225,7 @@ class MainActivity : AppCompatActivity() {
         builder.color = -0xff0033
         builder.setVibrate(LongArray(0))
         builder.setCategory(Notification.CATEGORY_CALL)
-        builder.setFullScreenIntent(PendingIntent.getActivity(this, 0, ringingIntent, 0), true)
+        builder.setFullScreenIntent(PendingIntent.getActivity(this, 0, ringingIntent,  0), true)
 
         NotificationManagerCompat.from(applicationContext).notify(888, builder.build())
     }

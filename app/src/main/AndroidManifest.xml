@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
-  ~
-  ~  Licensed under the Apache License, Version 2.0 (the "License");
-  ~  you may not use this file except in compliance with the License.
-  ~  You may obtain a copy of the License at
-  ~
-  ~           http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~  Unless required by applicable law or agreed to in writing, software
-  ~  distributed under the License is distributed on an "AS IS" BASIS,
-  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~  See the License for the specific language governing permissions and
-  ~  limitations under the License.
-  -->
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bandyer.app_design">
@@ -28,33 +12,35 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
 
     <application
-        android:name="com.bandyer.app_design.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/DesignDemoApp">
+
         <meta-data
             android:name="com.google.android.glass.TouchEnabledApplication"
             android:value="true" />
 
-        <activity android:name="com.bandyer.app_design.RingingActivity" />
+        <activity android:name=".RingingActivity" />
         <activity
-            android:name="com.bandyer.app_design.BluetoothAudioRouteActivity"
+            android:name=".BluetoothAudioRouteActivity"
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
         <activity
-            android:name="com.bandyer.app_design.CallActivity"
+            android:name=".CallActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:supportsPictureInPicture="true"
             android:theme="@style/BandyerSDKDesign.Theme.Call"
             tools:targetApi="n" />
         <activity
-            android:exported="true"
-            android:name="com.bandyer.app_design.MainActivity"
+            android:name=".MainActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
+            android:exported="true"
             android:theme="@style/BandyerSDKDesign.Theme.Call">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,22 +49,30 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.bandyer.app_design.ChatActivity"
+            android:name=".ChatActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
             android:theme="@style/BandyerSDKDesign.Theme.Chat" />
         <activity
-            android:name="com.bandyer.app_design.PointerActivity"
+            android:name=".PointerActivity"
+            android:theme="@style/BandyerSDKDesign.Theme.Call" />
+        <activity
+            android:name=".NotificationActivity"
+            android:exported="true"
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
         <activity
             android:name="com.bandyer.video_android_glass_ui.GlassActivity"
-            android:theme="@style/BandyerSDKDesign.Theme.DayNight.GlassCall" >
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            android:theme="@style/BandyerSDKDesign.Theme.DayNight.GlassCall">
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--                <category android:name="com.google.android.glass.category.DIRECTORY"/>-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- <category android:name="com.google.android.glass.category.DIRECTORY"/> -->
+            <!-- </intent-filter> -->
         </activity>
+
+        <service android:name=".NotificationServiceApi31" />
     </application>
 
 </manifest>
