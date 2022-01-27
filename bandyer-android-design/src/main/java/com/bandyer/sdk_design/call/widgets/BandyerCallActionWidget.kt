@@ -192,6 +192,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
                 }
                 is RingingBottomSheet<*> -> disposeBottomSheet(bottomSheet)
             }
+            itemDecoration?.let { bottomSheet.recyclerView?.removeItemDecoration(it) }
             onHiddenListener?.onHidden()
             onHiddenListener = null
         }
@@ -577,9 +578,17 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         callBottomSheet?.collapse()
     }
 
-    private fun addItemDecoration() = itemDecoration?.let {
-        currentBottomSheetLayout!!.recyclerView!!.removeItemDecoration(it)
-        currentBottomSheetLayout!!.recyclerView!!.addItemDecoration(it)
+    private fun addItemDecoration() {
+        if (itemDecoration == null
+            || currentBottomSheetLayout == null
+            || currentBottomSheetLayout!!.recyclerView == null) return
+
+        val currentRecyclerView = currentBottomSheetLayout!!.recyclerView!!
+        (0 until currentRecyclerView.itemDecorationCount).map {
+            currentRecyclerView.getItemDecorationAt(it)
+        }.firstOrNull { it == itemDecoration } ?: kotlin.run {
+            currentRecyclerView.addItemDecoration(itemDecoration!!)
+        }
     }
 
     /**
