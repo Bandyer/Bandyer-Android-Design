@@ -3,10 +3,12 @@ package com.bandyer.app_design
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.graphics.*
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.bandyer.app_design.databinding.ActivityNotificationBinding
@@ -22,9 +24,16 @@ class NotificationActivity : AppCompatActivity() {
         setApi31Listeners()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        stopService(Intent(this, NotificationServiceApi31::class.java))
+    }
+
     private fun setApi31Listeners() {
         val serviceIntentApi31 = Intent(this, NotificationServiceApi31::class.java).apply {
-            putExtra("user", "Mario Draghi")
+            putExtra("user", "John Smith")
+            putExtra("icon", R.drawable.bandyer_z_audio_only)
+            putExtra("avatar", R.drawable.avatar)
         }
 
         binding.bandyerIncomingApi31Button.setOnClickListener {
@@ -70,17 +79,20 @@ class NotificationServiceApi31 : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val user = intent?.getStringExtra("user") ?: "null"
+        val avatar = intent?.getIntExtra("avatar", 0) ?: 0
         val subtext = intent?.getStringExtra("subtext") ?: "null"
-        val type = intent?.getSerializableExtra("type") as? NotificationType ?: NotificationType.INCOMING_CALL
-        startForeground(FOREGROUND_SERVICE_ID, buildNotification(user, subtext, type))
+        val icon = intent?.getIntExtra("icon", 0) ?: 0
+        val type = intent?.getSerializableExtra("type") as? NotificationType
+            ?: NotificationType.INCOMING_CALL
+        startForeground(FOREGROUND_SERVICE_ID, buildNotification(user, avatar, subtext, icon, type))
         return super.onStartCommand(intent, flags, startId)
     }
 
     private fun buildNotification(
         user: String,
-//        avatar: Icon,
+        @DrawableRes avatar: Int,
         subtext: String,
-//        applicationIcon: Icon,
+        @DrawableRes icon: Int,
         type: NotificationType
     ): Notification {
         val channelId = "channelId"
@@ -92,7 +104,7 @@ class NotificationServiceApi31 : Service() {
 
         val builder = Notification.Builder(applicationContext, channelId).apply {
             setContentText(subtext)
-            setSmallIcon(R.drawable.bandyer_z_audio_only)
+            setSmallIcon(Icon.createWithResource(this@NotificationServiceApi31, icon))
             setCategory(Notification.CATEGORY_CALL)
             setContentIntent(callIntent)
             setFullScreenIntent(ringingIntent, true)
@@ -102,7 +114,7 @@ class NotificationServiceApi31 : Service() {
 
         val person = Person.Builder()
             .setName(user)
-//            .setIcon(avatar)
+            .setIcon(Icon.createWithBitmap(DrawableHelper.createCircleBitmap(this, avatar)))
             .build()
 
         builder.style = when (type) {
@@ -123,6 +135,26 @@ class NotificationServiceApi31 : Service() {
         }
 
         return builder.build()
+    }
+}
+
+object DrawableHelper {
+    fun createCircleBitmap(context: Context, @DrawableRes resource: Int): Bitmap {
+        val bitmap = BitmapFactory
+            .decodeResource(context.resources, resource)
+            .copy(Bitmap.Config.ARGB_8888, true)
+        val canvas = Canvas(bitmap)
+        val path = Path().apply {
+            val halfWidth = bitmap.width / 2f
+            val halfHeight = bitmap.width / 2f
+            addCircle(halfWidth, halfHeight, halfWidth, Path.Direction.CW)
+            toggleInverseFillType()
+        }
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        }
+        canvas.drawPath(path, paint)
+        return bitmap
     }
 }
 
