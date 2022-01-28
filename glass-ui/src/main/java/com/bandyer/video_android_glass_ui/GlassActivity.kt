@@ -21,10 +21,10 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
+import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.video_android_glass_ui.call.CallEndedFragmentArgs
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
-import com.bandyer.video_android_glass_ui.model.Call
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
@@ -167,10 +167,9 @@ internal class GlassActivity :
                     }
                 }.launchIn(this)
 
-            viewModel.call.isRecording
-                .onEach {
-                    binding.bandyerStatusBar.apply { if (it) showRec() else hideRec() }
-                }.launchIn(this)
+            binding.bandyerStatusBar.apply {
+                if (viewModel.call.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
+            }
 
             viewModel.cameraEnabled
                 .onEach {

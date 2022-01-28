@@ -1,7 +1,7 @@
 package com.bandyer.video_android_glass_ui.call.participants
 
 import android.view.View
-import com.bandyer.video_android_glass_ui.model.CallParticipant
+import com.bandyer.collaboration_center.phonebox.CallParticipant
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.UserDetails
 import com.bandyer.video_android_glass_ui.UserDetailsWrapper

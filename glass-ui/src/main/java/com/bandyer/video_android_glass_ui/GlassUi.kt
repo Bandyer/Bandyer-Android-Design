@@ -6,7 +6,7 @@ import android.content.Intent
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
-import com.bandyer.video_android_glass_ui.model.Call
+import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.video_android_glass_ui.model.Option
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume

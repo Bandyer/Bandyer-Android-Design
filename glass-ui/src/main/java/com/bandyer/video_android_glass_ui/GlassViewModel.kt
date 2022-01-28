@@ -6,32 +6,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
-import com.bandyer.video_android_glass_ui.model.Call
-import com.bandyer.video_android_glass_ui.model.CallParticipant
-import com.bandyer.video_android_glass_ui.model.CallParticipants
-import com.bandyer.video_android_glass_ui.model.Input
-import com.bandyer.video_android_glass_ui.model.Participant
+import com.bandyer.collaboration_center.Participant
+import com.bandyer.collaboration_center.phonebox.*
 import com.bandyer.video_android_glass_ui.model.Permission
-import com.bandyer.video_android_glass_ui.model.Stream
 import com.bandyer.video_android_glass_ui.model.Volume
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import java.util.concurrent.ConcurrentHashMap
@@ -59,7 +42,7 @@ internal class GlassViewModel(private val callUIDelegate: CallUIDelegate, device
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = ConcurrentHashMap<String, CallParticipant>()
             call.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, itsMe, streams, state ->
-                if (itsMe || (state is CallParticipant.State.Online.InCall && streams.isNotEmpty())) participants[participant.userAlias] = participant
+                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) participants[participant.userAlias] = participant
                 else participants.remove(participant.userAlias)
                 emit(participants.values.toList())
             }.launchIn(viewModelScope)
@@ -89,7 +72,7 @@ internal class GlassViewModel(private val callUIDelegate: CallUIDelegate, device
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
             call.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
-                if(itsMe || (state is CallParticipant.State.Online.InCall && streams.isNotEmpty())) {
+                if(itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
                     val newStreams = streams.map { StreamParticipant(participant, itsMe, it) }
                     val currentStreams = uiStreams.filter { it.participant == participant }
                     val addedStreams = newStreams - currentStreams.toSet()
@@ -108,7 +91,7 @@ internal class GlassViewModel(private val callUIDelegate: CallUIDelegate, device
         call.participants.map { it.others }.flatMapLatest { it.map { it.streams }.merge() }
 
     private val cameraStream: Flow<Stream?> =
-        myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it?.source is Input.Video.Source.Camera } != null } }
+        myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it is Input.Video.Camera } != null } }
 
     private val audioStream: Flow<Stream?> =
         myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }

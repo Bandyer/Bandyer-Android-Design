@@ -7,9 +7,9 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.video_android_glass_ui.*
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentStartBinding
-import com.bandyer.video_android_glass_ui.model.Call
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.bandyer.video_android_glass_ui.utils.safeNavigate
 import kotlinx.coroutines.flow.*
@@ -45,9 +45,9 @@ internal class StartFragment : BaseFragment() {
                     .takeWhile { it is Call.State.Connecting || it == Call.State.Disconnected }
                     .combine(call.participants) { state, participants ->
                         when {
-                            state is Call.State.Connecting && participants.me == participants.creator ->
+                            state is Call.State.Connecting && participants.me == participants.creator() ->
                                 findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment())
-                            state == Call.State.Disconnected && participants.me != participants.creator ->
+                            state == Call.State.Disconnected && participants.me != participants.creator() ->
                                 findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
                             else -> Unit
                         }
