@@ -35,6 +35,7 @@ ext {
     def kotlinCoroutinesVersion = "1.6.0"
 
     def bandyerCommonVersion = "1.0.10"
+//    def bandyerCollaborationVersion = "1.0.10"
 
     def junitVersion = "4.13.2"
     def testRunnerVersion = "1.4.0"
@@ -100,7 +101,8 @@ ext {
     ]
 
     bandyer = [
-           common: "com.bandyer:bandyer-android-common:$bandyerCommonVersion"
+           common: "com.bandyer:bandyer-android-common:$bandyerCommonVersion",
+//           collaboration: "com.bandyer:collaboration_center:$bandyerCollaborationVersion"
     ]
 
     test = [

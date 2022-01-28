@@ -43,6 +43,10 @@ dependencies {
     implementation google.material
     implementation androidX.dataBindingCommon
 
+    // TODO
+    //    api bandyer.collaboration
+    compileOnly project(path: ':collaboration_center')
+
     // UI
     api fastAdapter.fastAdapter
     api fastAdapter.diff
