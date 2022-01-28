@@ -4,12 +4,12 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
-import com.bandyer.video_android_glass_ui.model.Battery
+import com.bandyer.android_common.battery_observer.BatteryInfo
+import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.video_android_glass_ui.model.Call
 import com.bandyer.video_android_glass_ui.model.Option
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
-import com.bandyer.video_android_glass_ui.model.WiFi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import java.lang.ref.WeakReference
@@ -71,7 +71,7 @@ interface CallUIDelegate {
 }
 
 interface DeviceStatusDelegate {
-    val battery: Flow<Battery>
-    val wifi: Flow<WiFi>
+    val battery: Flow<BatteryInfo>
+    val wifi: Flow<WiFiInfo>
 }
 

@@ -19,12 +19,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.android_common.battery_observer.BatteryInfo
+import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.video_android_glass_ui.call.CallEndedFragmentArgs
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
-import com.bandyer.video_android_glass_ui.model.Battery
 import com.bandyer.video_android_glass_ui.model.Call
-import com.bandyer.video_android_glass_ui.model.WiFi
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
@@ -379,18 +379,18 @@ internal class GlassActivity :
     private fun StatusBarView.updateCenteredText(nCallParticipants: Int) =
         setCenteredText(resources.getQuantityString(R.plurals.bandyer_glass_users_in_call_pattern, nCallParticipants, nCallParticipants))
 
-    private fun StatusBarView.updateBatteryIcon(battery: Battery) {
-        setBatteryChargingState(battery.state == Battery.State.CHARGING)
+    private fun StatusBarView.updateBatteryIcon(battery: BatteryInfo) {
+        setBatteryChargingState(battery.state == BatteryInfo.State.CHARGING)
         setBatteryCharge(battery.percentage)
     }
 
-    private fun StatusBarView.updateWifiSignalIcon(wifi: WiFi) {
+    private fun StatusBarView.updateWifiSignalIcon(wifi: WiFiInfo) {
         setWiFiSignalState(
-            if (wifi.state == WiFi.State.DISABLED) StatusBarView.WiFiSignalState.DISABLED
+            if (wifi.state == WiFiInfo.State.DISABLED) StatusBarView.WiFiSignalState.DISABLED
             else when (wifi.level) {
-                WiFi.Level.NO_SIGNAL, WiFi.Level.POOR -> StatusBarView.WiFiSignalState.LOW
-                WiFi.Level.FAIR, WiFi.Level.GOOD      -> StatusBarView.WiFiSignalState.MODERATE
-                WiFi.Level.EXCELLENT                  -> StatusBarView.WiFiSignalState.FULL
+                WiFiInfo.Level.NO_SIGNAL, WiFiInfo.Level.POOR -> StatusBarView.WiFiSignalState.LOW
+                WiFiInfo.Level.FAIR, WiFiInfo.Level.GOOD      -> StatusBarView.WiFiSignalState.MODERATE
+                WiFiInfo.Level.EXCELLENT                  -> StatusBarView.WiFiSignalState.FULL
             }
         )
     }

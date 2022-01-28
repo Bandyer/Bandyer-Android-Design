@@ -4,7 +4,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.bandyer.video_android_glass_ui.model.Battery
+import com.bandyer.android_common.battery_observer.BatteryInfo
+import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.video_android_glass_ui.model.Call
 import com.bandyer.video_android_glass_ui.model.CallParticipant
 import com.bandyer.video_android_glass_ui.model.CallParticipants
@@ -13,7 +14,6 @@ import com.bandyer.video_android_glass_ui.model.Participant
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Stream
 import com.bandyer.video_android_glass_ui.model.Volume
-import com.bandyer.video_android_glass_ui.model.WiFi
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -47,9 +47,9 @@ internal class GlassViewModel(private val callUIDelegate: CallUIDelegate, device
 
     val call: Call = callUIDelegate.call
 
-    val battery: Flow<Battery> = deviceStatusDelegate.battery
+    val battery: Flow<BatteryInfo> = deviceStatusDelegate.battery
 
-    val wifi: Flow<WiFi> = deviceStatusDelegate.wifi
+    val wifi: Flow<WiFiInfo> = deviceStatusDelegate.wifi
 
     val userDetailsWrapper: StateFlow<UserDetailsWrapper> = callUIDelegate.userDetailsWrapper
 
