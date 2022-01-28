@@ -4,30 +4,56 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.bandyer.video_android_glass_ui.model.*
+import com.bandyer.video_android_glass_ui.model.Battery
+import com.bandyer.video_android_glass_ui.model.Call
+import com.bandyer.video_android_glass_ui.model.CallParticipant
+import com.bandyer.video_android_glass_ui.model.CallParticipants
+import com.bandyer.video_android_glass_ui.model.Input
+import com.bandyer.video_android_glass_ui.model.Participant
+import com.bandyer.video_android_glass_ui.model.Permission
+import com.bandyer.video_android_glass_ui.model.Stream
+import com.bandyer.video_android_glass_ui.model.Volume
+import com.bandyer.video_android_glass_ui.model.WiFi
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
 @Suppress("UNCHECKED_CAST")
 internal object GlassViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        GlassViewModel(ManagersHolder.callManagerInstance!!.get()!!, ManagersHolder.utilityManagerInstance!!.get()!!) as T
+        GlassViewModel(ManagersHolder.callUIDelegateInstance!!.get()!!, ManagersHolder.deviceStatusDelegateInstance!!.get()!!) as T
 }
 
-internal class GlassViewModel(private val callManager: CallManager, utilityManager: UtilityManager) : ViewModel() {
+internal class GlassViewModel(private val callUIDelegate: CallUIDelegate, deviceStatusDelegate: DeviceStatusDelegate) : ViewModel() {
 
-    val call: Call = callManager.call
+    val call: Call = callUIDelegate.call
 
-    val battery: Flow<Battery> = utilityManager.battery
+    val battery: Flow<Battery> = deviceStatusDelegate.battery
 
-    val wifi: Flow<WiFi> = utilityManager.wifi
+    val wifi: Flow<WiFi> = deviceStatusDelegate.wifi
 
-    val userDetailsWrapper: StateFlow<UserDetailsWrapper> = callManager.userDetailsWrapper
+    val userDetailsWrapper: StateFlow<UserDetailsWrapper> = callUIDelegate.userDetailsWrapper
 
-    val volume: Volume get() = callManager.getVolume()
+    val volume: Volume get() = callUIDelegate.getVolume()
 
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
@@ -163,25 +189,25 @@ internal class GlassViewModel(private val callManager: CallManager, utilityManag
 
     fun requestMicPermission(context: FragmentActivity) {
         viewModelScope.launch {
-            callManager.requestMicPermission(context).also { _micPermission.value = it }
+            callUIDelegate.requestMicPermission(context).also { _micPermission.value = it }
         }
     }
 
     fun requestCameraPermission(context: FragmentActivity) {
         viewModelScope.launch {
-            callManager.requestCameraPermission(context).also { _camPermission.value = it }
+            callUIDelegate.requestCameraPermission(context).also { _camPermission.value = it }
         }
     }
 
-    fun enableCamera(enable: Boolean) = callManager.enableCamera(enable)
+    fun enableCamera(enable: Boolean) = callUIDelegate.enableCamera(enable)
 
-    fun enableMic(enable: Boolean) = callManager.enableMic(enable)
+    fun enableMic(enable: Boolean) = callUIDelegate.enableMic(enable)
 
-    fun answer() = callManager.answer()
+    fun answer() = callUIDelegate.answer()
 
-    fun hangUp() = callManager.hangup()
+    fun hangUp() = callUIDelegate.hangup()
 
-    fun setVolume(value: Int) = callManager.setVolume(value)
+    fun setVolume(value: Int) = callUIDelegate.setVolume(value)
 }
 
 

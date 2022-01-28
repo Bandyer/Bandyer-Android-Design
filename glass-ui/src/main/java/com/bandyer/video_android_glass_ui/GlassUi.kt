@@ -4,29 +4,35 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.FragmentActivity
-import com.bandyer.video_android_glass_ui.model.*
+import com.bandyer.video_android_glass_ui.model.Battery
+import com.bandyer.video_android_glass_ui.model.Call
+import com.bandyer.video_android_glass_ui.model.Option
+import com.bandyer.video_android_glass_ui.model.Permission
+import com.bandyer.video_android_glass_ui.model.Volume
+import com.bandyer.video_android_glass_ui.model.WiFi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import java.lang.ref.WeakReference
 
-object GlassUi {
+object GlassUI {
 
-    fun Context.launchCallGlass(
-        callManager: CallManager,
-        utilityManager: UtilityManager,
+    fun show(
+        context: FragmentActivity,
+        callUIDelegate: CallUIDelegate,
+        deviceStatusDelegate: DeviceStatusDelegate,
         options: List<Option>,
         enableTilt: Boolean = false
-    ) = launchCall(GlassActivity::class.java, callManager, utilityManager, options, enableTilt)
+    ) = context.launchCall(GlassActivity::class.java, callUIDelegate, deviceStatusDelegate, options, enableTilt)
 
     private fun <T : Activity> Context.launchCall(
         cls: Class<T>,
-        callManager: CallManager,
-        utilityManager: UtilityManager? = null,
+        callUIDelegate: CallUIDelegate,
+        deviceStatusDelegate: DeviceStatusDelegate? = null,
         options: List<Option>,
         enableTilt: Boolean
     ) {
-        ManagersHolder.callManagerInstance = WeakReference(callManager)
-        ManagersHolder.utilityManagerInstance = WeakReference(utilityManager)
+        ManagersHolder.callUIDelegateInstance = WeakReference(callUIDelegate)
+        ManagersHolder.deviceStatusDelegateInstance = WeakReference(deviceStatusDelegate)
         startActivity(Intent(this, cls).apply {
             putExtra("enableTilt", enableTilt)
             putExtra("options", options.toTypedArray())
@@ -35,11 +41,11 @@ object GlassUi {
 }
 
 internal object ManagersHolder {
-    var callManagerInstance: WeakReference<CallManager>? = null
-    var utilityManagerInstance: WeakReference<UtilityManager>? = null
+    var callUIDelegateInstance: WeakReference<CallUIDelegate>? = null
+    var deviceStatusDelegateInstance: WeakReference<DeviceStatusDelegate>? = null
 }
 
-interface CallManager {
+interface CallUIDelegate {
 
     val call: Call
 
@@ -66,9 +72,8 @@ interface CallManager {
     fun setZoom(value: Int)
 }
 
-interface UtilityManager {
+interface DeviceStatusDelegate {
     val battery: Flow<Battery>
-
     val wifi: Flow<WiFi>
 }
 
