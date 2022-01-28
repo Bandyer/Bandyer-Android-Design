@@ -82,6 +82,15 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
      * Optional item decoration to be added on action items' recycler view
      */
     var itemDecoration: RecyclerView.ItemDecoration? = null
+        set(value) {
+            if (value != null) {
+                field = value
+                currentShownBottomSheet?.let { addItemDecoration(it) }
+                return
+            }
+            currentShownBottomSheet?.let { removeItemDecoration(it) }
+            field = null
+        }
 
     /**
      * Sliding listener for when the widget has been slided
@@ -181,7 +190,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
             currentShownBottomSheet = bottomSheet as BaseBandyerBottomSheet
             anchorViews()
             (bottomSheet as? CallBottomSheet<*>)?.updateAudioRouteIcon(mCurrentAudioRoute)
-            addItemDecoration()
+            addItemDecoration(bottomSheet)
         }
 
         override fun onHide(bottomSheet: BandyerBottomSheet) {
@@ -193,7 +202,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
                 }
                 is RingingBottomSheet<*> -> disposeBottomSheet(bottomSheet)
             }
-            itemDecoration?.let { bottomSheet.recyclerView?.removeItemDecoration(it) }
+            removeItemDecoration(bottomSheet)
             onHiddenListener?.onHidden()
             onHiddenListener = null
         }
@@ -576,13 +585,12 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         callBottomSheet?.collapse()
     }
 
-    private fun addItemDecoration() {
-        if (itemDecoration == null
-            || currentBottomSheetLayout == null
-            || currentBottomSheetLayout!!.recyclerView == null
-            || currentBottomSheetLayout!!.recyclerView!!.itemDecorationCount > 0) return
-        currentBottomSheetLayout!!.recyclerView!!.addItemDecoration(itemDecoration!!)
-    }
+    private fun addItemDecoration(bottomSheet: BandyerBottomSheet) = itemDecoration
+            ?.takeIf { bottomSheet.recyclerView?.itemDecorationCount == 0 }
+            ?.let { bottomSheet.recyclerView!!.addItemDecoration(it) }
+
+    private fun removeItemDecoration(bottomSheet: BandyerBottomSheet) =
+        itemDecoration?.let { bottomSheet.recyclerView?.removeItemDecoration(it) }
 
     /**
      * Add an audioRoute item to the list of available routes
