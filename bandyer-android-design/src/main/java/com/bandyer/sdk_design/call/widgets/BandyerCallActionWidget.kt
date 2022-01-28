@@ -655,7 +655,7 @@ class BandyerCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
 
     private fun createRingingBottomSheet(bottomSheetLayoutType: BottomSheetLayoutType) {
         if (bottomSheetLayoutType != ringingBottomSheet?.bottomSheetLayoutType)
-            disposeBottomSheet(callBottomSheet)
+            disposeBottomSheet(ringingBottomSheet)
         else return
         ringingBottomSheet = RingingBottomSheet(
             context,
