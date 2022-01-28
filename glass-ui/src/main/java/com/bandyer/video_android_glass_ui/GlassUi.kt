@@ -20,9 +20,7 @@ object GlassUI {
         context: FragmentActivity,
         callUIDelegate: CallUIDelegate,
         deviceStatusDelegate: DeviceStatusDelegate,
-        options: List<Option>,
-        enableTilt: Boolean = false
-    ) = context.launchCall(GlassActivity::class.java, callUIDelegate, deviceStatusDelegate, options, enableTilt)
+    ) = context.launchCall(GlassActivity::class.java, callUIDelegate, deviceStatusDelegate, listOf(Option.PARTICIPANTS), true)
 
     private fun <T : Activity> Context.launchCall(
         cls: Class<T>,
