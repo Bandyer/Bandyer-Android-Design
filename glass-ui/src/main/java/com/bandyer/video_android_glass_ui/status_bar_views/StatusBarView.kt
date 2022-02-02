@@ -82,20 +82,6 @@ internal class StatusBarView @JvmOverloads constructor(
     }
 
     /**
-     * Hide the state bar
-     */
-    fun hide() {
-        visibility = View.GONE
-    }
-
-    /**
-     * Show the state bar
-     */
-    fun show() {
-        visibility = View.VISIBLE
-    }
-
-    /**
      * Set the centered title
      *
      * @param text The centered title text
