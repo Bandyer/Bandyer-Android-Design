@@ -9,37 +9,32 @@ import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.lang.ref.WeakReference
 
 object GlassUIProvider {
 
-    @set:JvmSynthetic
-    @get:JvmSynthetic
+    @JvmSynthetic
     internal var callUIController: WeakReference<CallUIController>? = null
         private set
 
-    @set:JvmSynthetic
-    @get:JvmSynthetic
+    @JvmSynthetic
     internal var callUIDelegate: WeakReference<CallUIDelegate>? = null
         private set
 
-    @set:JvmSynthetic
-    @get:JvmSynthetic
+    @JvmSynthetic
     internal var deviceStatusDelegate: WeakReference<DeviceStatusDelegate>? = null
         private set
 
-    @set:JvmSynthetic
-    @get:JvmSynthetic
-    internal var callUIControllerExtension: WeakReference<CallUIControllerExtension>? = null
-        private set
+//    @set:JvmSynthetic
+//    @get:JvmSynthetic
+//    internal var callUIControllerExtension: WeakReference<CallUIControllerExtension>? = null
+//        private set
 
-    @set:JvmSynthetic
-    @get:JvmSynthetic
-    internal var callUIDelegateExtension: WeakReference<CallUIDelegateExtension>? = null
-        private set
+//    @JvmSynthetic
+//    internal var callUIDelegateExtension: WeakReference<CallUIDelegateExtension>? = null
+//        private set
 
     fun showCall(
         context: Context,
@@ -63,13 +58,14 @@ object GlassUIProvider {
 
 }
 
-interface CallUIControllerExtension {
-    fun onHangUpAndAnswer()
-
-    fun onDecline()
-
-    fun onHoldAndAnswer()
-}
+// a.k.a avviso di chiamata
+//interface CallUIControllerExtension {
+//    fun onHangUpAndAnswer()
+//
+//    fun onDecline()
+//
+//    fun onHoldAndAnswer()
+//}
 
 interface CallUIController {
     suspend fun onRequestMicPermission(context: FragmentActivity): Permission
@@ -93,9 +89,9 @@ interface CallUIController {
     fun onSetZoom(value: Int)
 }
 
-interface CallUIDelegateExtension {
-    val incomingCall: SharedFlow<Call>
-}
+//interface CallUIDelegateExtension {
+//    val incomingCall: SharedFlow<Call>
+//}
 
 interface CallUIDelegate {
     val call: Call

@@ -7,12 +7,33 @@ import androidx.lifecycle.viewModelScope
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.Participant
-import com.bandyer.collaboration_center.phonebox.*
+import com.bandyer.collaboration_center.phonebox.Call
+import com.bandyer.collaboration_center.phonebox.CallParticipant
+import com.bandyer.collaboration_center.phonebox.CallParticipants
+import com.bandyer.collaboration_center.phonebox.Input
+import com.bandyer.collaboration_center.phonebox.Stream
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -24,7 +45,7 @@ internal object GlassViewModelFactory : ViewModelProvider.Factory {
             GlassUIProvider.deviceStatusDelegate!!.get()!!,
             GlassUIProvider.callUIController!!.get()!!,
             GlassUIProvider.callUIDelegateExtension?.get(),
-            GlassUIProvider.callUIControllerExtension?.get()
+//            GlassUIProvider.callUIControllerExtension?.get()
         ) as T
 }
 
@@ -33,10 +54,10 @@ internal class GlassViewModel(
     deviceStatusDelegate: DeviceStatusDelegate,
     private val callUIController: CallUIController,
     callUIDelegateExtension: CallUIDelegateExtension?,
-    private val callUIControllerExtension: CallUIControllerExtension?
+//    private val callUIControllerExtension: CallUIControllerExtension?
 ) : ViewModel() {
 
-    val doesSupportMultipleCalls = callUIDelegateExtension != null && callUIControllerExtension != null
+//    val doesSupportMultipleCalls = callUIDelegateExtension != null && callUIControllerExtension != null
 
     val call: Call = callUIDelegate.call
 
@@ -215,11 +236,11 @@ internal class GlassViewModel(
 
     fun onSetZoom(value: Int) = callUIController.onSetZoom(value)
 
-    fun onHangUpAndAnswer() = callUIControllerExtension?.onHangUpAndAnswer()
-
-    fun onHoldAndAnswer() = callUIControllerExtension?.onHoldAndAnswer()
-
-    fun onDecline() = callUIControllerExtension?.onDecline()
+//    fun onHangUpAndAnswer() = callUIControllerExtension?.onHangUpAndAnswer()
+//
+//    fun onHoldAndAnswer() = callUIControllerExtension?.onHoldAndAnswer()
+//
+//    fun onDecline() = callUIControllerExtension?.onDecline()
 }
 
 
