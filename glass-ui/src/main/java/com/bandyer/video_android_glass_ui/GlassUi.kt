@@ -17,19 +17,22 @@ import java.lang.ref.WeakReference
 object GlassUI {
 
     fun show(
-        context: FragmentActivity,
+        context: Context,
         callUIDelegate: CallUIDelegate,
         deviceStatusDelegate: DeviceStatusDelegate,
-    ) = context.launchCall(GlassActivity::class.java, callUIDelegate, deviceStatusDelegate, listOf(Option.PARTICIPANTS), true)
+        callUIController: CallUIController
+    ) = context.launchCall(GlassActivity::class.java, callUIDelegate, deviceStatusDelegate, callUIController, listOf(Option.PARTICIPANTS), false)
 
     private fun <T : Activity> Context.launchCall(
         cls: Class<T>,
         callUIDelegate: CallUIDelegate,
         deviceStatusDelegate: DeviceStatusDelegate? = null,
+        callUIController: CallUIController,
         options: List<Option>,
         enableTilt: Boolean
     ) {
         ManagersHolder.callUIDelegateInstance = WeakReference(callUIDelegate)
+        ManagersHolder.callUIControllerInstance = WeakReference(callUIController)
         ManagersHolder.deviceStatusDelegateInstance = WeakReference(deviceStatusDelegate)
         startActivity(Intent(this, cls).apply {
             putExtra("enableTilt", enableTilt)
@@ -40,34 +43,35 @@ object GlassUI {
 
 internal object ManagersHolder {
     var callUIDelegateInstance: WeakReference<CallUIDelegate>? = null
+    var callUIControllerInstance: WeakReference<CallUIController>? = null
     var deviceStatusDelegateInstance: WeakReference<DeviceStatusDelegate>? = null
 }
 
+interface CallUIController {
+    suspend fun onRequestMicPermission(context: FragmentActivity): Permission
+
+    suspend fun onRequestCameraPermission(context: FragmentActivity): Permission
+
+    fun onAnswer()
+
+    fun onHangup()
+
+    fun onEnableCamera(enable: Boolean)
+
+    fun onEnableMic(enable: Boolean)
+
+    fun onSwitchCamera()
+
+    fun onGetVolume(): Volume
+
+    fun onSetVolume(value: Int)
+
+    fun onSetZoom(value: Int)
+}
+
 interface CallUIDelegate {
-
     val call: Call
-
     val userDetailsWrapper: StateFlow<UserDetailsWrapper>
-
-    suspend fun requestMicPermission(context: FragmentActivity): Permission
-
-    suspend fun requestCameraPermission(context: FragmentActivity): Permission
-
-    fun answer()
-
-    fun hangup()
-
-    fun enableCamera(enable: Boolean)
-
-    fun enableMic(enable: Boolean)
-
-    fun switchCamera()
-
-    fun getVolume(): Volume
-
-    fun setVolume(value: Int)
-
-    fun setZoom(value: Int)
 }
 
 interface DeviceStatusDelegate {

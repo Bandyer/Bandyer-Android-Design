@@ -23,10 +23,10 @@ import java.util.concurrent.ConcurrentLinkedQueue
 @Suppress("UNCHECKED_CAST")
 internal object GlassViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        GlassViewModel(ManagersHolder.callUIDelegateInstance!!.get()!!, ManagersHolder.deviceStatusDelegateInstance!!.get()!!) as T
+        GlassViewModel(ManagersHolder.callUIDelegateInstance!!.get()!!, ManagersHolder.deviceStatusDelegateInstance!!.get()!!, ManagersHolder.callUIControllerInstance!!.get()!!) as T
 }
 
-internal class GlassViewModel(private val callUIDelegate: CallUIDelegate, deviceStatusDelegate: DeviceStatusDelegate) : ViewModel() {
+internal class GlassViewModel(callUIDelegate: CallUIDelegate, deviceStatusDelegate: DeviceStatusDelegate, private val callUIController: CallUIController) : ViewModel() {
 
     val call: Call = callUIDelegate.call
 
@@ -36,7 +36,7 @@ internal class GlassViewModel(private val callUIDelegate: CallUIDelegate, device
 
     val userDetailsWrapper: StateFlow<UserDetailsWrapper> = callUIDelegate.userDetailsWrapper
 
-    val volume: Volume get() = callUIDelegate.getVolume()
+    val volume: Volume get() = callUIController.onGetVolume()
 
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
@@ -172,25 +172,25 @@ internal class GlassViewModel(private val callUIDelegate: CallUIDelegate, device
 
     fun requestMicPermission(context: FragmentActivity) {
         viewModelScope.launch {
-            callUIDelegate.requestMicPermission(context).also { _micPermission.value = it }
+            callUIController.onRequestMicPermission(context).also { _micPermission.value = it }
         }
     }
 
     fun requestCameraPermission(context: FragmentActivity) {
         viewModelScope.launch {
-            callUIDelegate.requestCameraPermission(context).also { _camPermission.value = it }
+            callUIController.onRequestCameraPermission(context).also { _camPermission.value = it }
         }
     }
 
-    fun enableCamera(enable: Boolean) = callUIDelegate.enableCamera(enable)
+    fun enableCamera(enable: Boolean) = callUIController.onEnableCamera(enable)
 
-    fun enableMic(enable: Boolean) = callUIDelegate.enableMic(enable)
+    fun enableMic(enable: Boolean) = callUIController.onEnableMic(enable)
 
-    fun answer() = callUIDelegate.answer()
+    fun answer() = callUIController.onAnswer()
 
-    fun hangUp() = callUIDelegate.hangup()
+    fun hangUp() = callUIController.onHangup()
 
-    fun setVolume(value: Int) = callUIDelegate.setVolume(value)
+    fun setVolume(value: Int) = callUIController.onSetVolume(value)
 }
 
 
