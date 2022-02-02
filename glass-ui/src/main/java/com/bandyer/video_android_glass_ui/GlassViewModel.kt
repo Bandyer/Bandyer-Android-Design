@@ -44,7 +44,7 @@ internal object GlassViewModelFactory : ViewModelProvider.Factory {
             GlassUIProvider.callUIDelegate!!.get()!!,
             GlassUIProvider.deviceStatusDelegate!!.get()!!,
             GlassUIProvider.callUIController!!.get()!!,
-            GlassUIProvider.callUIDelegateExtension?.get(),
+//            GlassUIProvider.callUIDelegateExtension?.get(),
 //            GlassUIProvider.callUIControllerExtension?.get()
         ) as T
 }
@@ -53,7 +53,7 @@ internal class GlassViewModel(
     callUIDelegate: CallUIDelegate,
     deviceStatusDelegate: DeviceStatusDelegate,
     private val callUIController: CallUIController,
-    callUIDelegateExtension: CallUIDelegateExtension?,
+//    callUIDelegateExtension: CallUIDelegateExtension?,
 //    private val callUIControllerExtension: CallUIControllerExtension?
 ) : ViewModel() {
 
@@ -61,7 +61,7 @@ internal class GlassViewModel(
 
     val call: Call = callUIDelegate.call
 
-    val incomingCall: SharedFlow<Call>? = callUIDelegateExtension?.incomingCall
+//    val incomingCall: SharedFlow<Call>? = callUIDelegateExtension?.incomingCall
 
     val battery: SharedFlow<BatteryInfo> = deviceStatusDelegate.battery
 
