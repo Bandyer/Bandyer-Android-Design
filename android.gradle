@@ -19,14 +19,12 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion sdkVersion
-        versionCode 1
-        versionName moduleVersion
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    lintOptions {
-        warning 'InvalidPackage'
+    lint {
         abortOnError false
+        warning 'InvalidPackage'
     }
 
     testOptions {
