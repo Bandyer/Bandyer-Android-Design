@@ -1,8 +1,8 @@
 package com.bandyer.video_android_glass_ui
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
@@ -14,37 +14,41 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import java.lang.ref.WeakReference
 
-object GlassUI {
+object GlassUIProvider {
 
-    fun show(
+    @set:JvmSynthetic
+    @get:JvmSynthetic
+    internal var callUIController: WeakReference<CallUIController>? = null
+        private set
+
+    @set:JvmSynthetic
+    @get:JvmSynthetic
+    internal var callUIDelegate: WeakReference<CallUIDelegate>? = null
+        private set
+
+    @set:JvmSynthetic
+    @get:JvmSynthetic
+    internal var deviceStatusDelegate: WeakReference<DeviceStatusDelegate>? = null
+        private set
+
+    fun showCall(
         context: Context,
-        callUIDelegate: CallUIDelegate,
-        deviceStatusDelegate: DeviceStatusDelegate,
-        callUIController: CallUIController
-    ) = context.launchCall(GlassActivity::class.java, callUIDelegate, deviceStatusDelegate, callUIController, listOf(Option.PARTICIPANTS), false)
-
-    private fun <T : Activity> Context.launchCall(
-        cls: Class<T>,
-        callUIDelegate: CallUIDelegate,
-        deviceStatusDelegate: DeviceStatusDelegate? = null,
         callUIController: CallUIController,
-        options: List<Option>,
-        enableTilt: Boolean
+        callUIDelegate: CallUIDelegate,
+        deviceStatusDelegate: DeviceStatusDelegate
     ) {
-        ManagersHolder.callUIDelegateInstance = WeakReference(callUIDelegate)
-        ManagersHolder.callUIControllerInstance = WeakReference(callUIController)
-        ManagersHolder.deviceStatusDelegateInstance = WeakReference(deviceStatusDelegate)
-        startActivity(Intent(this, cls).apply {
-            putExtra("enableTilt", enableTilt)
-            putExtra("options", options.toTypedArray())
-        })
+        this.callUIController = WeakReference(callUIController)
+        this.callUIDelegate = WeakReference(callUIDelegate)
+        this.deviceStatusDelegate = WeakReference(deviceStatusDelegate)
+        val intent = Intent(context, GlassActivity::class.java).apply {
+            addFlags(FLAG_ACTIVITY_NEW_TASK)
+            // TODO
+            putExtra("enableTilt", false)
+//            putExtra("options", listOf().toTypedArray())
+        }
+        context.startActivity(intent)
     }
-}
 
-internal object ManagersHolder {
-    var callUIDelegateInstance: WeakReference<CallUIDelegate>? = null
-    var callUIControllerInstance: WeakReference<CallUIController>? = null
-    var deviceStatusDelegateInstance: WeakReference<DeviceStatusDelegate>? = null
 }
 
 interface CallUIController {
@@ -78,4 +82,3 @@ interface DeviceStatusDelegate {
     val battery: Flow<BatteryInfo>
     val wifi: Flow<WiFiInfo>
 }
-
