@@ -42,9 +42,9 @@ internal class GlassViewModel(
 
     val incomingCall: SharedFlow<Call>? = callUIDelegateExtension?.incomingCall
 
-    val battery: Flow<BatteryInfo> = deviceStatusDelegate.battery
+    val battery: SharedFlow<BatteryInfo> = deviceStatusDelegate.battery
 
-    val wifi: Flow<WiFiInfo> = deviceStatusDelegate.wifi
+    val wifi: SharedFlow<WiFiInfo> = deviceStatusDelegate.wifi
 
     val userDetailsWrapper: StateFlow<UserDetailsWrapper> = callUIDelegate.userDetailsWrapper
 

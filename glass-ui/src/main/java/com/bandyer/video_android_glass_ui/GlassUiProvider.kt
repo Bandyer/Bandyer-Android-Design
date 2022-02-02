@@ -103,6 +103,6 @@ interface CallUIDelegate {
 }
 
 interface DeviceStatusDelegate {
-    val battery: Flow<BatteryInfo>
-    val wifi: Flow<WiFiInfo>
+    val battery: SharedFlow<BatteryInfo>
+    val wifi: SharedFlow<WiFiInfo>
 }
