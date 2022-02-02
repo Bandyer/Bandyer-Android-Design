@@ -7,10 +7,10 @@ import androidx.fragment.app.FragmentActivity
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.phonebox.Call
-import com.bandyer.video_android_glass_ui.model.Option
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.lang.ref.WeakReference
 
@@ -31,15 +31,29 @@ object GlassUIProvider {
     internal var deviceStatusDelegate: WeakReference<DeviceStatusDelegate>? = null
         private set
 
+    @set:JvmSynthetic
+    @get:JvmSynthetic
+    internal var callUIControllerExtension: WeakReference<CallUIControllerExtension>? = null
+        private set
+
+    @set:JvmSynthetic
+    @get:JvmSynthetic
+    internal var callUIDelegateExtension: WeakReference<CallUIDelegateExtension>? = null
+        private set
+
     fun showCall(
         context: Context,
         callUIController: CallUIController,
         callUIDelegate: CallUIDelegate,
-        deviceStatusDelegate: DeviceStatusDelegate
+        deviceStatusDelegate: DeviceStatusDelegate,
+        callUIControllerExtension: CallUIControllerExtension? = null,
+        callUIDelegateExtension: CallUIDelegateExtension? = null
     ) {
         this.callUIController = WeakReference(callUIController)
         this.callUIDelegate = WeakReference(callUIDelegate)
         this.deviceStatusDelegate = WeakReference(deviceStatusDelegate)
+        this.callUIControllerExtension = WeakReference(callUIControllerExtension)
+        this.callUIDelegateExtension = WeakReference(callUIDelegateExtension)
         val intent = Intent(context, GlassActivity::class.java).apply {
             addFlags(FLAG_ACTIVITY_NEW_TASK)
             // TODO
@@ -49,6 +63,14 @@ object GlassUIProvider {
         context.startActivity(intent)
     }
 
+}
+
+interface CallUIControllerExtension {
+    fun onHangUpAndAnswer()
+
+    fun onDecline()
+
+    fun onHoldAndAnswer()
 }
 
 interface CallUIController {
@@ -71,6 +93,10 @@ interface CallUIController {
     fun onSetVolume(value: Int)
 
     fun onSetZoom(value: Int)
+}
+
+interface CallUIDelegateExtension {
+    val incomingCall: SharedFlow<Call>
 }
 
 interface CallUIDelegate {

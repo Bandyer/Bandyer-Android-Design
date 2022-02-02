@@ -56,7 +56,7 @@ internal class EndCallFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onTap() = true.also { viewModel.hangUp() }
+    override fun onTap() = true.also { viewModel.onHangup() }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 

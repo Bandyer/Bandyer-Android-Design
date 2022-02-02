@@ -34,7 +34,7 @@ internal class EmptyFragment : BaseFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            viewModel.hangUp()
+            viewModel.onHangup()
         }
 
         // Add view binding

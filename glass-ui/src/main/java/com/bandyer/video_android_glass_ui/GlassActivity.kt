@@ -23,6 +23,7 @@ import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.video_android_glass_ui.call.CallEndedFragmentArgs
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
+import com.bandyer.video_android_glass_ui.common.ToastContainer
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
@@ -73,8 +74,8 @@ internal class GlassActivity :
 
         // Check it is the first time the onCreate is called
         if (savedInstanceState == null) {
-            viewModel.requestMicPermission(this)
-            viewModel.requestCameraPermission(this)
+            viewModel.onRequestMicPermission(this)
+            viewModel.onRequestCameraPermission(this)
         }
 
         _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
@@ -159,6 +160,14 @@ internal class GlassActivity :
 
         // Observer events
         repeatOnStarted {
+//            if(viewModel.doesSupportMultipleCalls)
+//                viewModel
+//                    .incomingCall!!
+//                    .onEach {
+//                        if (it != viewModel.call)
+//                            binding.bandyerToastContainer.show(text = "Someone is calling you")
+//                    }.launchIn(this)
+
             viewModel
                 .battery
                 .onEach { binding.bandyerStatusBar.updateBatteryIcon(it) }
@@ -322,7 +331,7 @@ internal class GlassActivity :
         super.onTopResumedActivityChanged(isTopResumedActivity)
         if (!isTopResumedActivity) wasPausedForBackground = viewModel.cameraEnabled.value
         else if (wasPausedForBackground) {
-            viewModel.enableCamera(true)
+            viewModel.onEnableCamera(true)
             wasPausedForBackground = false
         }
     }

@@ -34,7 +34,7 @@ internal class StartFragment : BaseFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            viewModel.hangUp()
+            viewModel.onHangup()
         }
 
         _binding = BandyerGlassFragmentStartBinding.inflate(inflater, container, false)
@@ -69,7 +69,7 @@ internal class StartFragment : BaseFragment() {
     override fun onTap(): Boolean = false
 
     override fun onSwipeDown(): Boolean = true.also {
-        viewModel.hangUp()
+        viewModel.onHangup()
         requireActivity().finish()
     }
 

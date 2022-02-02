@@ -76,7 +76,7 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
     }
 
     override fun onTap() = true.also {
-        viewModel.setVolume(binding.bandyerSlider.progress)
+        viewModel.onSetVolume(binding.bandyerSlider.progress)
         findNavController().popBackStack()
     }
 

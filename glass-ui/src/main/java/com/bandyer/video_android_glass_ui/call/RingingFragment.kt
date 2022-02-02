@@ -29,9 +29,9 @@ internal class RingingFragment : PreCallFragment() {
 
     override fun setSubtitle(isGroupCall: Boolean) { binding.bandyerSubtitle.text =  resources.getString(if(isGroupCall) R.string.bandyer_glass_ringing_group else R.string.bandyer_glass_ringing) }
 
-    override fun onTap() = true.also { viewModel.answer() }
+    override fun onTap() = true.also { viewModel.onAnswer() }
 
-    override fun onSwipeDown() = true.also { viewModel.hangUp() }
+    override fun onSwipeDown() = true.also { viewModel.onHangup() }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerParticipantsScrollView.smoothScrollByWithAutoScroll(resources.displayMetrics.densityDpi / 2, 0) }
 

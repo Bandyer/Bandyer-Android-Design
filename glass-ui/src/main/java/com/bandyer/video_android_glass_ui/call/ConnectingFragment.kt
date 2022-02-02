@@ -1,7 +1,6 @@
 package com.bandyer.video_android_glass_ui.call
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.*
 import androidx.activity.addCallback
@@ -10,12 +9,10 @@ import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.GlassViewModel
 import com.bandyer.video_android_glass_ui.GlassViewModelFactory
 import com.bandyer.video_android_glass_ui.R
-import com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import kotlinx.coroutines.flow.*
-import kotlin.math.roundToInt
 
 internal abstract class ConnectingFragment : BaseFragment() {
 
@@ -37,7 +34,7 @@ internal abstract class ConnectingFragment : BaseFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            viewModel.hangUp()
+            viewModel.onHangup()
         }
 
         // Add view binding

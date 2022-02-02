@@ -139,12 +139,12 @@ internal class MenuFragment : BaseFragment(), TiltListener {
 
     private fun onTap(action: CallAction) = when (action) {
         is CallAction.MICROPHONE -> true.also {
-            viewModel.requestMicPermission(requireActivity())
-            viewModel.enableMic(!viewModel.micEnabled.value)
+            viewModel.onRequestMicPermission(requireActivity())
+            viewModel.onEnableMic(!viewModel.micEnabled.value)
         }
         is CallAction.CAMERA -> true.also {
-            viewModel.requestCameraPermission(requireActivity())
-            viewModel.enableCamera(!viewModel.cameraEnabled.value)
+            viewModel.onRequestCameraPermission(requireActivity())
+            viewModel.onEnableCamera(!viewModel.cameraEnabled.value)
         }
         is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment(args.enableTilt)) }
         is CallAction.ZOOM -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment(args.enableTilt)) }

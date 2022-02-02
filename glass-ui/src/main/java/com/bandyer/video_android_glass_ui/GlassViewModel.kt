@@ -11,24 +11,36 @@ import com.bandyer.collaboration_center.phonebox.*
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
-import kotlinx.coroutines.CoroutineName
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
 @Suppress("UNCHECKED_CAST")
 internal object GlassViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        GlassViewModel(GlassUIProvider.callUIDelegate!!.get()!!, GlassUIProvider.deviceStatusDelegate!!.get()!!, GlassUIProvider.callUIController!!.get()!!) as T
+        GlassViewModel(
+            GlassUIProvider.callUIDelegate!!.get()!!,
+            GlassUIProvider.deviceStatusDelegate!!.get()!!,
+            GlassUIProvider.callUIController!!.get()!!,
+            GlassUIProvider.callUIDelegateExtension?.get(),
+            GlassUIProvider.callUIControllerExtension?.get()
+        ) as T
 }
 
-internal class GlassViewModel(callUIDelegate: CallUIDelegate, deviceStatusDelegate: DeviceStatusDelegate, private val callUIController: CallUIController) : ViewModel() {
+internal class GlassViewModel(
+    callUIDelegate: CallUIDelegate,
+    deviceStatusDelegate: DeviceStatusDelegate,
+    private val callUIController: CallUIController,
+    callUIDelegateExtension: CallUIDelegateExtension?,
+    private val callUIControllerExtension: CallUIControllerExtension?
+) : ViewModel() {
+
+    val doesSupportMultipleCalls = callUIDelegateExtension != null && callUIControllerExtension != null
 
     val call: Call = callUIDelegate.call
+
+    val incomingCall: SharedFlow<Call>? = callUIDelegateExtension?.incomingCall
 
     val battery: Flow<BatteryInfo> = deviceStatusDelegate.battery
 
@@ -42,7 +54,8 @@ internal class GlassViewModel(callUIDelegate: CallUIDelegate, deviceStatusDelega
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = ConcurrentHashMap<String, CallParticipant>()
             call.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, itsMe, streams, state ->
-                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) participants[participant.userAlias] = participant
+                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) participants[participant.userAlias] =
+                    participant
                 else participants.remove(participant.userAlias)
                 emit(participants.values.toList())
             }.launchIn(viewModelScope)
@@ -72,7 +85,7 @@ internal class GlassViewModel(callUIDelegate: CallUIDelegate, deviceStatusDelega
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
             call.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
-                if(itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
+                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
                     val newStreams = streams.map { StreamParticipant(participant, itsMe, it) }
                     val currentStreams = uiStreams.filter { it.participant == participant }
                     val addedStreams = newStreams - currentStreams.toSet()
@@ -96,26 +109,27 @@ internal class GlassViewModel(callUIDelegate: CallUIDelegate, deviceStatusDelega
     private val audioStream: Flow<Stream?> =
         myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }
 
-    private val myLiveStreams: StateFlow<List<Stream>> = MutableStateFlow<List<Stream>>(listOf()).apply {
-        val liveStreams = ConcurrentLinkedQueue<Stream>()
-        val jobs = mutableListOf<Job>()
-        myStreams.onEach { streams ->
-            jobs.forEach {
-                it.cancel()
-                it.join()
-            }
-            jobs.clear()
-            liveStreams.clear()
-            streams.forEach { stream ->
-                jobs += stream.state.onEach {
-                    if(it is Stream.State.Live) liveStreams.add(stream)
-                    else liveStreams.remove(stream)
+    private val myLiveStreams: StateFlow<List<Stream>> =
+        MutableStateFlow<List<Stream>>(listOf()).apply {
+            val liveStreams = ConcurrentLinkedQueue<Stream>()
+            val jobs = mutableListOf<Job>()
+            myStreams.onEach { streams ->
+                jobs.forEach {
+                    it.cancel()
+                    it.join()
+                }
+                jobs.clear()
+                liveStreams.clear()
+                streams.forEach { stream ->
+                    jobs += stream.state.onEach {
+                        if (it is Stream.State.Live) liveStreams.add(stream)
+                        else liveStreams.remove(stream)
 
-                    emit(liveStreams.toList())
-                }.launchIn(viewModelScope)
-            }
-        }.launchIn(viewModelScope)
-    }
+                        emit(liveStreams.toList())
+                    }.launchIn(viewModelScope)
+                }
+            }.launchIn(viewModelScope)
+        }
 
     val cameraEnabled: StateFlow<Boolean> =
         MutableStateFlow(false).apply {
@@ -147,9 +161,16 @@ internal class GlassViewModel(callUIDelegate: CallUIDelegate, deviceStatusDelega
         MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
     val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
 
-    val amIAlone: Flow<Boolean> = combine(otherStreams, myLiveStreams, camPermission) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }
+    val amIAlone: Flow<Boolean> = combine(
+        otherStreams,
+        myLiveStreams,
+        camPermission
+    ) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }
 
-    val amIVisibleToOthers: Flow<Boolean> = combine(otherStreams, myLiveStreams) { otherStreams, myLiveStreams -> otherStreams.isEmpty() && myLiveStreams.isNotEmpty() }
+    val amIVisibleToOthers: Flow<Boolean> = combine(
+        otherStreams,
+        myLiveStreams
+    ) { otherStreams, myLiveStreams -> otherStreams.isEmpty() && myLiveStreams.isNotEmpty() }
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,
@@ -170,27 +191,35 @@ internal class GlassViewModel(callUIDelegate: CallUIDelegate, deviceStatusDelega
         }
     }
 
-    fun requestMicPermission(context: FragmentActivity) {
+    fun onRequestMicPermission(context: FragmentActivity) {
         viewModelScope.launch {
             callUIController.onRequestMicPermission(context).also { _micPermission.value = it }
         }
     }
 
-    fun requestCameraPermission(context: FragmentActivity) {
+    fun onRequestCameraPermission(context: FragmentActivity) {
         viewModelScope.launch {
             callUIController.onRequestCameraPermission(context).also { _camPermission.value = it }
         }
     }
 
-    fun enableCamera(enable: Boolean) = callUIController.onEnableCamera(enable)
+    fun onEnableCamera(enable: Boolean) = callUIController.onEnableCamera(enable)
 
-    fun enableMic(enable: Boolean) = callUIController.onEnableMic(enable)
+    fun onEnableMic(enable: Boolean) = callUIController.onEnableMic(enable)
 
-    fun answer() = callUIController.onAnswer()
+    fun onAnswer() = callUIController.onAnswer()
 
-    fun hangUp() = callUIController.onHangup()
+    fun onHangup() = callUIController.onHangup()
 
-    fun setVolume(value: Int) = callUIController.onSetVolume(value)
+    fun onSetVolume(value: Int) = callUIController.onSetVolume(value)
+
+    fun onSetZoom(value: Int) = callUIController.onSetZoom(value)
+
+    fun onHangUpAndAnswer() = callUIControllerExtension?.onHangUpAndAnswer()
+
+    fun onHoldAndAnswer() = callUIControllerExtension?.onHoldAndAnswer()
+
+    fun onDecline() = callUIControllerExtension?.onDecline()
 }
 
 
