@@ -8,10 +8,8 @@ import kotlinx.parcelize.Parcelize
 sealed class Option : Parcelable {
 
     companion object {
-        val all = listOf(ZOOM, PARTICIPANTS, CHAT)
+        val all = listOf(CHAT)
     }
 
-    @Parcelize object ZOOM: Option()
-    @Parcelize object PARTICIPANTS: Option()
     @Parcelize object CHAT: Option()
 }

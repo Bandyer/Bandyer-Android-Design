@@ -121,19 +121,15 @@ internal class MenuFragment : BaseFragment(), TiltListener {
     }
 
     private fun getActions(options: Array<Option>): List<CallAction> {
-        var withZoom = false
-        var withParticipants = false
         var withChat = false
 
         options.forEach {
             when(it) {
-                is Option.ZOOM -> withZoom = true
-                is Option.PARTICIPANTS -> withParticipants = true
                 is Option.CHAT -> withChat = true
             }
         }
 
-        return CallAction.getActions(requireContext(), withZoom, withParticipants, withChat)
+        return CallAction.getActions(requireContext(), withChat)
     }
 
     override fun onDismiss() = Unit
