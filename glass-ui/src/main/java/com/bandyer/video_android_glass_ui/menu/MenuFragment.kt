@@ -96,7 +96,8 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                 }
             }
 
-        getActions(args.options!!).forEach { itemAdapter!!.add(MenuItem(it)) }
+        val options = args.options ?: arrayOf()
+        getActions(options).forEach { itemAdapter!!.add(MenuItem(it)) }
 
         val cameraAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.CAMERA }.action as CallAction.ToggleableCallAction)
         val micAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.MICROPHONE }.action as CallAction.ToggleableCallAction)
