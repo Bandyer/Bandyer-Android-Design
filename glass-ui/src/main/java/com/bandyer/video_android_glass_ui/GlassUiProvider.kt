@@ -45,15 +45,13 @@ object GlassUIProvider {
         context: Context,
         callUIController: CallUIController,
         callUIDelegate: CallUIDelegate,
-        deviceStatusDelegate: DeviceStatusDelegate,
-        callUIControllerExtension: CallUIControllerExtension? = null,
-        callUIDelegateExtension: CallUIDelegateExtension? = null
+        deviceStatusDelegate: DeviceStatusDelegate
     ) {
         this.callUIController = WeakReference(callUIController)
         this.callUIDelegate = WeakReference(callUIDelegate)
         this.deviceStatusDelegate = WeakReference(deviceStatusDelegate)
-        this.callUIControllerExtension = WeakReference(callUIControllerExtension)
-        this.callUIDelegateExtension = WeakReference(callUIDelegateExtension)
+//        this.callUIControllerExtension = WeakReference(callUIControllerExtension)
+//        this.callUIDelegateExtension = WeakReference(callUIDelegateExtension)
         val intent = Intent(context, GlassActivity::class.java).apply {
             addFlags(FLAG_ACTIVITY_NEW_TASK)
             // TODO
