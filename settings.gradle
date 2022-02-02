@@ -21,6 +21,7 @@ include ':app',
         ':bandyer-android-common',
         ':extension_usb_camera',
         ':extension_live_pointer',
+        ':extension_file_share',
         ':core-ui',
         ':phone-ui',
         ':glass-ui'
@@ -31,4 +32,5 @@ project(':extension_live_pointer').projectDir = file('../Bandyer-Android-Communi
 project(':bandyer-android-coreav').projectDir = file('../Bandyer-Android-Core-AV/core_av/')
 project(':extension_usb_camera').projectDir = file('../Bandyer-Android-Core-AV/extension_usb_camera/')
 project(':bandyer-android-common').projectDir = file('../Bandyer-Android-Common/bandyer-android-common/')
+project(':extension_file_share').projectDir = file('../Bandyer-Android-CommunicationCenter/extension_file_share')
 
