@@ -166,9 +166,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
     }
 
     private fun initializeBottomSheetLayout(savedInstanceState: Bundle?) {
-        callActionWidget = callActionWidget ?: BandyerCallActionWidget<ActionItem, BandyerBottomSheet>(this, findViewById(
-            R.id.coordinator_layout
-        ), getActions(this, true, false, true, true, true, true)).apply {
+        callActionWidget = callActionWidget ?: BandyerCallActionWidget<ActionItem, BandyerBottomSheet>(this, findViewById(R.id.coordinator_layout), getActions(this, true, false, true, true, true, true)).apply {
             onAudioRoutesRequest = this@CallActivity
             onClickListener = this@CallActivity
             savedInstanceState?.let { restoreInstanceState(it) }
@@ -269,9 +267,7 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Bandy
         return true
     }
 
-    private fun getMutedAudioRoute() = AudioRoute.MUTED(this, UUID.randomUUID().toString(), resources.getString(
-        R.string.bandyer_call_action_audio_route_muted
-    ), AudioCallSession.getInstance().currentAudioOutputDevice is AudioOutputDevice.NONE)
+    private fun getMutedAudioRoute() = AudioRoute.MUTED(this, UUID.randomUUID().toString(), resources.getString(R.string.bandyer_call_action_audio_route_muted), AudioCallSession.getInstance().currentAudioOutputDevice is AudioOutputDevice.NONE)
 
     override fun onCallActionClicked(item: CallAction, position: Int): Boolean {
         return when (item) {

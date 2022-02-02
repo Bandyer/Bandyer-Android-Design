@@ -35,12 +35,15 @@ class BandyerChatUnreadMessagesWidget @JvmOverloads constructor(context: Context
     var callback: BandyerChatUnreadMessagesScrollDownClickedListener? = null
 
     private var counter = 0
+    private var styleIconPadding = 0
 
     init {
         setOnClickListener {
             hide()
             callback?.onScrollDownClicked()
         }
+        styleIconPadding = iconPadding
+        updateText(counter)
     }
 
     fun incrementUnreadMessages(count: Int = 1) {
@@ -55,6 +58,14 @@ class BandyerChatUnreadMessagesWidget @JvmOverloads constructor(context: Context
             counter <= 0 -> ""
             counter < 99 -> "$counter"
             else -> "99+"
+        }
+        updateIconPadding(counter)
+    }
+
+    private fun updateIconPadding(counter: Int) {
+        iconPadding = when {
+            counter <= 0 -> 0
+            else -> styleIconPadding
         }
     }
 
@@ -80,7 +91,7 @@ class BandyerChatUnreadMessagesWidget @JvmOverloads constructor(context: Context
             val radius = hypot(cx.toDouble(), cy.toDouble()).toFloat()
 
             val anim = if(vis == View.VISIBLE) ViewAnimationUtils.createCircularReveal(this, cx, cy, 0f, radius)
-                        else ViewAnimationUtils.createCircularReveal(this, cx, cy, radius, 0f)
+            else ViewAnimationUtils.createCircularReveal(this, cx, cy, radius, 0f)
 
             anim.duration = duration
 

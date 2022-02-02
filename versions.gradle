@@ -1,7 +1,7 @@
 ext {
     sdkVersion = 31
     buildToolsVersion = "31.0.0"
-    moduleVersion = "2.2.1"
+    moduleVersion = "2.2.4"
     moduleGroupId = "com.bandyer"
     moduleProductId = "video-android"
 
