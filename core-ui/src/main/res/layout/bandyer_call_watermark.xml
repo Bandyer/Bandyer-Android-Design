@@ -22,18 +22,18 @@
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bandyer_logo_view"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
         style="?attr/bandyer_iconStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/bandyer_label_view"
-        app:layout_constraintHeight_default="wrap"
         app:layout_constraintHeight_max="@dimen/bandyer_watermark_max_height"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constrainedWidth="true" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/bandyer_label_view"
