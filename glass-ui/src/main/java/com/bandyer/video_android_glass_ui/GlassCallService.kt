@@ -1,10 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
-import android.app.Activity
-import android.app.Application
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
+import android.app.*
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -21,60 +17,42 @@ import com.bandyer.android_common.network_observer.WiFiObserver
 import com.bandyer.collaboration_center.BuddyUser
 import com.bandyer.collaboration_center.Collaboration
 import com.bandyer.collaboration_center.CollaborationSession
-import com.bandyer.collaboration_center.CollaborationToken
 import com.bandyer.collaboration_center.PhoneBox
-import com.bandyer.collaboration_center.SessionUser
-import com.bandyer.collaboration_center.phonebox.Call
-import com.bandyer.collaboration_center.phonebox.CallParticipant
-import com.bandyer.collaboration_center.phonebox.Input
-import com.bandyer.collaboration_center.phonebox.Inputs
-import com.bandyer.collaboration_center.phonebox.Stream
-import com.bandyer.collaboration_center.phonebox.VideoStreamView
+import com.bandyer.collaboration_center.phonebox.*
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.plus
 
-class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController, DeviceStatusDelegate {
+class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
+    DeviceStatusDelegate {
 
     companion object {
         private var TAG = "${this::class.java}"
+        private var NOTIFICATION_ID = 2022
         var instance: GlassCallService? = null
     }
 
     private var collaboration: Collaboration? = null
 
-    private var context: FragmentActivity? = null
-    private var activityLifecycleCallback = object: Application.ActivityLifecycleCallbacks {
-        override fun onActivityCreated(p0: Activity, p1: Bundle?) {
-            if (p0 is GlassActivity) context = p0
+    private var fragmentActivity: FragmentActivity? = null
+    private var activityLifecycleCallback = object : Application.ActivityLifecycleCallbacks {
+
+        override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
+            if (activity is GlassActivity) fragmentActivity = activity
         }
 
-        override fun onActivityStarted(p0: Activity) = Unit
-
-        override fun onActivityResumed(p0: Activity) = Unit
-
-        override fun onActivityPaused(p0: Activity) = Unit
-
-        override fun onActivityStopped(p0: Activity) = Unit
-
-        override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) = Unit
-
-        override fun onActivityDestroyed(p0: Activity) {
-            if (p0 is GlassActivity) context = null
+        override fun onActivityStarted(activity: Activity) = Unit
+        override fun onActivityResumed(activity: Activity) = Unit
+        override fun onActivityPaused(activity: Activity) = Unit
+        override fun onActivityStopped(activity: Activity) = Unit
+        override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) = Unit
+        override fun onActivityDestroyed(activity: Activity) {
+            if (activity is GlassActivity) fragmentActivity = null
         }
-
     }
 
     private var batteryObserver: BatteryObserver? = null
@@ -142,7 +120,7 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController, D
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         if (instance != null) {
-            Log.e(TAG, "Instance is not null!")
+            Log.e(TAG, "instance is not null!")
             return START_NOT_STICKY
         }
         instance = this
@@ -150,7 +128,7 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController, D
         val session = intent?.getParcelableExtra<CollaborationSession>("session")
 
         if (session == null) {
-            Log.e(TAG, "userAlias or token is null")
+            Log.e(TAG, "session is null")
             stopSelf()
             return START_NOT_STICKY
         }
@@ -182,34 +160,50 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController, D
         callAudioManager = null
     }
 
-    fun dial(otherUsers: List<String>) {
-        if (collaboration!!.phoneBox.state.value !is PhoneBox.State.Connected) {
-            Log.e(TAG, "Phone box is not connected")
+    fun dial(otherUsers: List<String>, withVideoOnStart: Boolean? = null) {
+        if (collaboration!!.phoneBox.state.value is PhoneBox.State.Destroyed || collaboration!!.phoneBox.state.value is PhoneBox.State.Failed) {
+            Log.e(TAG, "cannot perform call dial")
             return
         }
+
         collaboration!!.phoneBox.create(otherUsers.map { BuddyUser(it) }) {
-//            preferredType = Call.PreferredType(audio = Call.Audio.Enabled, video = Call.Video.Disabled)
+            val video =
+                withVideoOnStart?.let { if (it) Call.Video.Enabled else Call.Video.Disabled }
+            preferredType = Call.PreferredType(audio = Call.Audio.Enabled, video = video)
         }.connect()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager = getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
-            val notificationChannel = NotificationChannel("channelId", "Bandyer Call", NotificationManager.IMPORTANCE_HIGH)
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
-
-        val notification = NotificationCompat.Builder(this, "channelId")
-            .setContentTitle("Bandyer call")
-            .build()
-
-        startForeground(999, notification)
-
-//        collaboration!!.phoneBox.state.onEach { state ->
-//            if (state !is PhoneBox.State.Connected) return@onEach
-//        }.launchIn(lifecycleScope)
+        startForeground(NOTIFICATION_ID, createNotification())
     }
 
     fun updateSession(session: CollaborationSession) {
+        if (instance == null) {
+            Log.e(TAG, "cannot update session")
+        }
+        collaboration!!.phoneBox.disconnect()
+        collaboration!!.destroy()
+        collaboration = createCollaboration(session)
+    }
 
+    private fun createCollaboration(session: CollaborationSession): Collaboration =
+        Collaboration.create(session).apply {
+            phoneBox.connect()
+        }
+
+    private fun createNotification(): Notification {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationManager =
+                getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationChannel = NotificationChannel(
+                "channelId",
+                "Bandyer Call",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
+
+        return NotificationCompat.Builder(this, "channelId")
+            .setContentTitle("Bandyer call")
+            .build()
     }
 
     private fun SharedFlow<Call>.observe(): Job =
@@ -217,6 +211,8 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController, D
             if (currentCall != null) return@onEach
 
             currentCall = call
+
+            call.publishMySelf()
 
             call.participants
                 .map { listOf(it.me) }
@@ -240,7 +236,10 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController, D
 
             call.state
                 .takeWhile { it !is Call.State.Disconnected.Ended }
-                .onCompletion { currentCall = null }
+                .onCompletion {
+                    currentCall = null
+                    stopForeground(true)
+                }
                 .launchIn(lifecycleScope)
 
             GlassUIProvider.showCall(
@@ -250,7 +249,6 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController, D
                 this@GlassCallService
             )
 
-            call.publishMySelf()
         }.launchIn(lifecycleScope)
 
     private fun Call.publishMySelf() {
@@ -273,7 +271,7 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController, D
                 return@onEach
             }
 
-            me.addStream(context!!, "main").let {
+            me.addStream(fragmentActivity!!, "main").let {
                 it.audio.value = audioInput
                 if (hasVideo) it.video.value = videoInput
             }
