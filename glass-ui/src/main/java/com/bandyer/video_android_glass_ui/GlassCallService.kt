@@ -242,16 +242,16 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
 
         participants
             .map { it.others + it.me }
-//            .flatMapLatest { participants ->
-//                participants.map { it.streams }.merge()
-//            }
-            .forEachParticipant(
-                coroutineScope + CoroutineName("ForEachParticipant"),
-                forEachStream = { it.open() },
-                forEachVideo = {
-                    it?.view?.value = VideoStreamView.create(this@GlassCallService)
-                }
-            ).launchIn(coroutineScope)
+            .flatMapLatest { participants -> participants.map { it.streams }.merge() }
+            .onEach { streams ->
+                streams.forEach { it.open() }
+            }
+            .flatMapLatest { streams -> streams.map { it.video }.merge() }
+            .onEach { video ->
+                if (video?.view?.value != null) return@onEach
+                video?.view?.value = VideoStreamView.create(this@GlassCallService)
+            }
+            .launchIn(coroutineScope)
     }
 
     private fun Call.publishMySelf(coroutineScope: CoroutineScope) {
@@ -280,35 +280,6 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
             }
 
         }.launchIn(coroutineScope)
-    }
-
-    private inline fun Flow<List<CallParticipant>>.forEachParticipant(
-        scope: CoroutineScope,
-        crossinline forEachStream: (stream: Stream) -> Unit,
-        crossinline forEachVideo: (video: Input.Video?) -> Unit
-    ): Flow<List<CallParticipant>> {
-        val pJobs = mutableListOf<Job>()
-        return onEach { participants ->
-            pJobs.forEach {
-                it.cancel()
-                it.join()
-            }
-            pJobs.clear()
-            participants.forEach { participant ->
-                val sJobs = mutableListOf<Job>()
-                participant.streams.onEach { streams ->
-                    sJobs.forEach {
-                        it.cancel()
-                        it.join()
-                    }
-                    sJobs.clear()
-                    streams.forEach { stream ->
-                        forEachStream(stream)
-                        sJobs += stream.video.onEach { forEachVideo(it) }.launchIn(scope)
-                    }
-                }.launchIn(scope)
-            }
-        }
     }
 
     override suspend fun onRequestMicPermission(context: FragmentActivity): Permission {
