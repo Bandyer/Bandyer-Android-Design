@@ -23,7 +23,10 @@ import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.plus
 
@@ -60,6 +63,7 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
 
     private var callAudioManager: CallAudioManager? = null
 
+    private var ongoingCalls: MutableSet<Call> = mutableSetOf()
     private var currentCall: Call? = null
     override val call: Call
         get() = currentCall!!
@@ -119,27 +123,34 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
+        // Check the service instance
         if (instance != null) {
             Log.e(TAG, "instance is not null!")
             return START_NOT_STICKY
         }
         instance = this
 
+        // Get session information
         val session = intent?.getParcelableExtra<CollaborationSession>("session")
-
         if (session == null) {
             Log.e(TAG, "session is null")
             stopSelf()
             return START_NOT_STICKY
         }
 
-        collaboration = Collaboration.create(session).apply {
-            phoneBox.connect()
-        }
+        collaboration = createCollaboration(session)
+        collaboration!!.phoneBox.observe()
 
+        // Start observing the activities lifecycle to get GlassActivity's context (needed by addStream)
         application.registerActivityLifecycleCallbacks(activityLifecycleCallback)
 
-        collaboration!!.phoneBox.call.observe()
+        // TODO stop foreground service when there are no more calls
+//        currentCall!!.state
+//            .takeWhile { it !is Call.State.Disconnected.Ended }
+//            .onCompletion {
+//                currentCall = null
+//                stopForeground(true)
+//            }.launchIn(lifecycleScope)
 
         return START_NOT_STICKY
     }
@@ -167,8 +178,7 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
         }
 
         collaboration!!.phoneBox.create(otherUsers.map { BuddyUser(it) }) {
-            val video =
-                withVideoOnStart?.let { if (it) Call.Video.Enabled else Call.Video.Disabled }
+            val video = withVideoOnStart?.let { if (it) Call.Video.Enabled else Call.Video.Disabled }
             preferredType = Call.PreferredType(audio = Call.Audio.Enabled, video = video)
         }.connect()
 
@@ -179,6 +189,8 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
         if (instance == null) {
             Log.e(TAG, "cannot update session")
         }
+        // TODO Do we want this behaviour when the session in updated?
+        currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session is expired"))
         collaboration!!.phoneBox.disconnect()
         collaboration!!.destroy()
         collaboration = createCollaboration(session)
@@ -191,8 +203,7 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
 
     private fun createNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager =
-                getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
+            val notificationManager = getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
             val notificationChannel = NotificationChannel(
                 "channelId",
                 "Bandyer Call",
@@ -206,52 +217,44 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
             .build()
     }
 
-    private fun SharedFlow<Call>.observe(): Job =
-        this.onEach { call ->
-            if (currentCall != null) return@onEach
+    private fun PhoneBox.observe() {
+        combine(state, call) { state, call -> Pair(state, call) }
+            .takeWhile { it.first !is PhoneBox.State.Destroyed }
+            .map { it.second }
+            .onEach { call ->
+                if (ongoingCalls.isNotEmpty()) return@onEach
 
-            currentCall = call
+                ongoingCalls += call
+                currentCall = call
+                call.setup(lifecycleScope)
 
-            call.publishMySelf()
+                GlassUIProvider.showCall(
+                    this@GlassCallService.applicationContext,
+                    this@GlassCallService,
+                    this@GlassCallService,
+                    this@GlassCallService
+                )
+            }.launchIn(lifecycleScope)
+    }
 
-            call.participants
-                .map { listOf(it.me) }
-                .forEachParticipant(
-                    lifecycleScope + CoroutineName("ForEachMyStreams"),
-                    forEachStream = { it.open() },
-                    forEachVideo = {
-                        it?.view?.value = VideoStreamView.create(this@GlassCallService)
-                    }
-                ).launchIn(lifecycleScope)
+    private fun Call.setup(coroutineScope: CoroutineScope) {
+        publishMySelf(coroutineScope)
 
-            call.participants
-                .map { it.others }
-                .forEachParticipant(
-                    lifecycleScope + CoroutineName("ForEachOthersStreams"),
-                    forEachStream = { it.open() },
-                    forEachVideo = {
-                        it?.view?.value = VideoStreamView.create(this@GlassCallService)
-                    }
-                ).launchIn(lifecycleScope)
-
-            call.state
-                .takeWhile { it !is Call.State.Disconnected.Ended }
-                .onCompletion {
-                    currentCall = null
-                    stopForeground(true)
+        participants
+            .map { it.others + it.me }
+//            .flatMapLatest { participants ->
+//                participants.map { it.streams }.merge()
+//            }
+            .forEachParticipant(
+                coroutineScope + CoroutineName("ForEachParticipant"),
+                forEachStream = { it.open() },
+                forEachVideo = {
+                    it?.view?.value = VideoStreamView.create(this@GlassCallService)
                 }
-                .launchIn(lifecycleScope)
+            ).launchIn(coroutineScope)
+    }
 
-            GlassUIProvider.showCall(
-                this@GlassCallService.applicationContext,
-                this@GlassCallService,
-                this@GlassCallService,
-                this@GlassCallService
-            )
-
-        }.launchIn(lifecycleScope)
-
-    private fun Call.publishMySelf() {
+    private fun Call.publishMySelf(coroutineScope: CoroutineScope) {
         val hasVideo = this.extras.preferredType.hasVideo()
         val callInputs = this.inputs
 
@@ -276,7 +279,7 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
                 if (hasVideo) it.video.value = videoInput
             }
 
-        }.launchIn(lifecycleScope)
+        }.launchIn(coroutineScope)
     }
 
     private inline fun Flow<List<CallParticipant>>.forEachParticipant(
