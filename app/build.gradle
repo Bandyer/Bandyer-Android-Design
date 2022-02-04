@@ -86,7 +86,7 @@ dependencies {
     implementation "com.github.imablanco:Zoomy:1ee82834df"
 
     /***  Leak Canary ***/
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.7"
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:2.8.1"
 
     /***  BandyerSDKDesign ***/
 
