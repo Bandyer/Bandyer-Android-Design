@@ -161,14 +161,6 @@ internal class GlassActivity :
 
         // Observer events
         repeatOnStarted {
-//            if(viewModel.doesSupportMultipleCalls)
-//                viewModel
-//                    .incomingCall!!
-//                    .onEach {
-//                        if (it != viewModel.call)
-//                            binding.bandyerToastContainer.show(text = "Someone is calling you")
-//                    }.launchIn(this)
-
             viewModel
                 .battery
                 .onEach { binding.bandyerStatusBar.updateBatteryIcon(it) }

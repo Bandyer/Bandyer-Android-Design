@@ -240,7 +240,6 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, userDetails
          */
         override fun bindView(item: OtherStreamItem, payloads: List<Any>) = with(binding) {
             super.bindView(item, payloads)
-            // TODO userDetails
             val userAlias = item.streamParticipant.participant.userAlias
             val userDetailsWrapper = item.userDetailsWrapper.value
             val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
