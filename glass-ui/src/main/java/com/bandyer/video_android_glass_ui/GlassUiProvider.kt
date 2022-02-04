@@ -1,6 +1,5 @@
 package com.bandyer.video_android_glass_ui
 
-import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.fragment.app.FragmentActivity
@@ -16,40 +15,23 @@ import java.lang.ref.WeakReference
 object GlassUIProvider {
 
     @JvmSynthetic
-    internal var callUIController: WeakReference<CallUIController>? = null
+    internal var callService: WeakReference<CallService>? = null
         private set
 
-    @JvmSynthetic
-    internal var callUIDelegate: WeakReference<CallUIDelegate>? = null
-        private set
-
-    @JvmSynthetic
-    internal var deviceStatusDelegate: WeakReference<DeviceStatusDelegate>? = null
-        private set
-
-    fun showCall(
-        context: Context,
-        callUIController: CallUIController,
-        callUIDelegate: CallUIDelegate,
-        deviceStatusDelegate: DeviceStatusDelegate
-    ) {
-        this.callUIController = WeakReference(callUIController)
-        this.callUIDelegate = WeakReference(callUIDelegate)
-        this.deviceStatusDelegate = WeakReference(deviceStatusDelegate)
-//        this.callUIControllerExtension = WeakReference(callUIControllerExtension)
-//        this.callUIDelegateExtension = WeakReference(callUIDelegateExtension)
-        val intent = Intent(context, GlassActivity::class.java).apply {
+    fun showCall(callService: CallService) {
+        this.callService = WeakReference(callService)
+        val applicationContext = callService.applicationContext
+        val intent = Intent(applicationContext, GlassActivity::class.java).apply {
             addFlags(FLAG_ACTIVITY_NEW_TASK)
             // TODO
             putExtra("enableTilt", false)
 //            putExtra("options", listOf().toTypedArray())
         }
-        context.startActivity(intent)
+        applicationContext.startActivity(intent)
     }
 
 }
 
-// a.k.a avviso di chiamata
 //interface CallWaitingUIController {
 //    fun onHangUpAndAnswer(newCall: Call)
 //

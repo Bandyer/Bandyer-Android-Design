@@ -7,20 +7,12 @@ import androidx.lifecycle.viewModelScope
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.Participant
-import com.bandyer.collaboration_center.phonebox.Call
-import com.bandyer.collaboration_center.phonebox.CallParticipant
-import com.bandyer.collaboration_center.phonebox.CallParticipants
-import com.bandyer.collaboration_center.phonebox.Input
-import com.bandyer.collaboration_center.phonebox.Stream
+import com.bandyer.collaboration_center.phonebox.*
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
-import kotlinx.coroutines.CoroutineName
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -28,19 +20,19 @@ import java.util.concurrent.ConcurrentLinkedQueue
 internal object GlassViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
         GlassViewModel(
-            GlassUIProvider.callUIDelegate!!.get()!!,
-            GlassUIProvider.deviceStatusDelegate!!.get()!!,
-            GlassUIProvider.callUIController!!.get()!!
+            GlassUIProvider.callService!!.get() as CallUIDelegate,
+            GlassUIProvider.callService!!.get() as DeviceStatusDelegate,
+            GlassUIProvider.callService!!.get() as CallUIController
         ) as T
 }
 
 internal class GlassViewModel(
-    callUIDelegate: CallUIDelegate,
+    callDelegate: CallUIDelegate,
     deviceStatusDelegate: DeviceStatusDelegate,
-    private val callUIController: CallUIController
+    private val callController: CallUIController
 ) : ViewModel() {
 
-    val call: SharedFlow<Call> = callUIDelegate.call
+    val call: SharedFlow<Call> = callDelegate.call
 
     val currentCall: SharedFlow<Call> =
         MutableSharedFlow<Call>(replay = 1, extraBufferCapacity = 1).apply {
@@ -58,9 +50,9 @@ internal class GlassViewModel(
 
     val wifi: SharedFlow<WiFiInfo> = deviceStatusDelegate.wifi
 
-    val userDetailsWrapper: StateFlow<UserDetailsWrapper> = callUIDelegate.userDetailsWrapper
+    val userDetailsWrapper: StateFlow<UserDetailsWrapper> = callDelegate.userDetailsWrapper
 
-    val volume: Volume get() = callUIController.onGetVolume()
+    val volume: Volume get() = callController.onGetVolume()
 
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
@@ -205,27 +197,27 @@ internal class GlassViewModel(
 
     fun onRequestMicPermission(context: FragmentActivity) {
         viewModelScope.launch {
-            callUIController.onRequestMicPermission(context).also { _micPermission.value = it }
+            callController.onRequestMicPermission(context).also { _micPermission.value = it }
         }
     }
 
     fun onRequestCameraPermission(context: FragmentActivity) {
         viewModelScope.launch {
-            callUIController.onRequestCameraPermission(context).also { _camPermission.value = it }
+            callController.onRequestCameraPermission(context).also { _camPermission.value = it }
         }
     }
 
-    fun onEnableCamera(enable: Boolean) = callUIController.onEnableCamera(enable)
+    fun onEnableCamera(enable: Boolean) = callController.onEnableCamera(enable)
 
-    fun onEnableMic(enable: Boolean) = callUIController.onEnableMic(enable)
+    fun onEnableMic(enable: Boolean) = callController.onEnableMic(enable)
 
-    fun onAnswer() = callUIController.onAnswer()
+    fun onAnswer() = callController.onAnswer()
 
-    fun onHangup() = callUIController.onHangup()
+    fun onHangup() = callController.onHangup()
 
-    fun onSetVolume(value: Int) = callUIController.onSetVolume(value)
+    fun onSetVolume(value: Int) = callController.onSetVolume(value)
 
-    fun onSetZoom(value: Int) = callUIController.onSetZoom(value)
+    fun onSetZoom(value: Int) = callController.onSetZoom(value)
 }
 
 

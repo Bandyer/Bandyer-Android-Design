@@ -2,8 +2,10 @@ package com.bandyer.video_android_glass_ui
 
 import android.app.*
 import android.content.Intent
+import android.os.Binder
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.FragmentActivity
@@ -27,8 +29,9 @@ import com.bandyer.video_android_glass_ui.model.Volume
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 
-class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
-    DeviceStatusDelegate {
+abstract class CallService : LifecycleService(), CallUIDelegate, CallUIController, DeviceStatusDelegate
+
+class GlassCallService : CallService() {
 
     companion object {
         private var TAG = "${this::class.java}"
@@ -220,12 +223,7 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
                 currentCall = call
                 call.setup()
 
-                GlassUIProvider.showCall(
-                    this@GlassCallService.applicationContext,
-                    this@GlassCallService,
-                    this@GlassCallService,
-                    this@GlassCallService
-                )
+                GlassUIProvider.showCall(this@GlassCallService)
             }.launchIn(lifecycleScope)
     }
 
