@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlin.math.roundToInt
@@ -37,7 +38,7 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
                         updateUIOnParticipantChange()
                     }.launchIn(this@repeatOnStarted)
 
-                viewModel.call.participants.onEach { participants ->
+                viewModel.participants.onEach { participants ->
                     bandyerCounter.text = resources.getString(
                         R.string.bandyer_glass_n_of_participants_pattern,
                         participants.others.size + 1

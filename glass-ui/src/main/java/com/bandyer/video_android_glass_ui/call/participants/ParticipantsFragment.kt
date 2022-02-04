@@ -107,7 +107,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
                 repeatOnStarted {
                     with(viewModel) {
-                        combine(inCallParticipants, call.participants) { inCallParticipants, participants -> Pair(inCallParticipants, participants) }
+                        combine(inCallParticipants, participants) { inCallParticipants, participants -> Pair(inCallParticipants, participants) }
                             .takeWhile { it.first.isNotEmpty()  }
                             .collect { pair ->
                                 val sortedList = pair.first.sortedBy { pair.second.me.userAlias != it.userAlias }

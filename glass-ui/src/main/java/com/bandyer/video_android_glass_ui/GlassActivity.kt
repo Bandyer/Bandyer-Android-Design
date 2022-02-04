@@ -34,6 +34,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 
 /**
@@ -178,7 +179,7 @@ internal class GlassActivity :
                 .onEach { binding.bandyerStatusBar.updateWifiSignalIcon(it) }
                 .launchIn(this)
 
-            viewModel.call.state
+            viewModel.callState
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
                     when (it) {
@@ -246,9 +247,12 @@ internal class GlassActivity :
                     }
                 }.launchIn(this)
 
-            binding.bandyerStatusBar.apply {
-                if (viewModel.call.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
-            }
+            viewModel.currentCall
+                .onEach {
+                    binding.bandyerStatusBar.apply {
+                        if (it.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
+                    }
+                }.launchIn(this)
 
             viewModel.cameraEnabled
                 .onEach {

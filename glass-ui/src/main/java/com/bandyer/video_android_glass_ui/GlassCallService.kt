@@ -18,17 +18,14 @@ import com.bandyer.collaboration_center.BuddyUser
 import com.bandyer.collaboration_center.Collaboration
 import com.bandyer.collaboration_center.CollaborationSession
 import com.bandyer.collaboration_center.PhoneBox
-import com.bandyer.collaboration_center.phonebox.*
+import com.bandyer.collaboration_center.phonebox.Call
+import com.bandyer.collaboration_center.phonebox.Input
+import com.bandyer.collaboration_center.phonebox.Inputs
+import com.bandyer.collaboration_center.phonebox.VideoStreamView
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
-import kotlinx.coroutines.CoroutineName
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.plus
 
 class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
     DeviceStatusDelegate {
@@ -65,8 +62,8 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
 
 //    private var ongoingCalls: MutableSet<Call> = mutableSetOf()
     private var currentCall: Call? = null
-    override val call: Call
-        get() = currentCall!!
+    override val call: SharedFlow<Call>
+        get() = collaboration!!.phoneBox.call
 
     private val formatter = object : UserDetailsFormatter {
         override fun format(vararg userDetails: UserDetails): String =
@@ -241,6 +238,7 @@ class GlassCallService : LifecycleService(), CallUIDelegate, CallUIController,
             .onCompletion {
                 publishJob.cancel()
                 streamsJob.cancel()
+                currentCall = null
 //                ongoingCalls.remove(this@setup)
                 stopForeground(true)
             }.launchIn(lifecycleScope)

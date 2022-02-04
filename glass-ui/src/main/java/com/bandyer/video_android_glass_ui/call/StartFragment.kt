@@ -41,9 +41,9 @@ internal class StartFragment : BaseFragment() {
 
         repeatOnStarted {
             with(viewModel) {
-                call.state
+                callState
                     .takeWhile { it is Call.State.Connecting || it == Call.State.Disconnected }
-                    .combine(call.participants) { state, participants ->
+                    .combine(participants) { state, participants ->
                         when {
                             state is Call.State.Connecting && participants.me == participants.creator() ->
                                 findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment())

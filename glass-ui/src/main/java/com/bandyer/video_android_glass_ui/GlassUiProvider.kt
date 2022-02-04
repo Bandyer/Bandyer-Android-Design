@@ -27,15 +27,6 @@ object GlassUIProvider {
     internal var deviceStatusDelegate: WeakReference<DeviceStatusDelegate>? = null
         private set
 
-//    @set:JvmSynthetic
-//    @get:JvmSynthetic
-//    internal var callUIControllerExtension: WeakReference<CallUIControllerExtension>? = null
-//        private set
-
-//    @JvmSynthetic
-//    internal var callUIDelegateExtension: WeakReference<CallUIDelegateExtension>? = null
-//        private set
-
     fun showCall(
         context: Context,
         callUIController: CallUIController,
@@ -89,12 +80,8 @@ interface CallUIController {
     fun onSetZoom(value: Int)
 }
 
-//interface CallUIDelegateExtension {
-//    val incomingCall: SharedFlow<Call>
-//}
-
 interface CallUIDelegate {
-    val call: Call
+    val call: SharedFlow<Call>
     val userDetailsWrapper: StateFlow<UserDetailsWrapper>
 }
 
