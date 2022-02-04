@@ -50,12 +50,12 @@ object GlassUIProvider {
 }
 
 // a.k.a avviso di chiamata
-//interface CallUIControllerExtension {
-//    fun onHangUpAndAnswer()
+//interface CallWaitingUIController {
+//    fun onHangUpAndAnswer(newCall: Call)
 //
-//    fun onDecline()
+//    fun onDecline(newCall: Call)
 //
-//    fun onHoldAndAnswer()
+//    fun onHoldAndAnswer(newCall: Call)
 //}
 
 interface CallUIController {
