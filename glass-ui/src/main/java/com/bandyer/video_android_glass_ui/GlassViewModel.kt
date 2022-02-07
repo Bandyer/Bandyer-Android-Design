@@ -16,28 +16,13 @@ import kotlinx.coroutines.flow.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
-internal class GlassViewModelFactory private constructor(
+internal class GlassViewModelFactory(
     private val callDelegate: CallUIDelegate,
     private val deviceStatusDelegate: DeviceStatusDelegate,
     private val callController: CallUIController
 ) : ViewModelProvider.Factory {
-
-    companion object {
-        private var instance: GlassViewModelFactory? = null
-
-        fun getInstance(
-            callDelegate: CallUIDelegate,
-            deviceStatusDelegate: DeviceStatusDelegate,
-            callController: CallUIController
-        ): GlassViewModelFactory =
-            instance ?: GlassViewModelFactory(
-                callDelegate,
-                deviceStatusDelegate,
-                callController
-            ).also { instance = it }
-    }
-
-    override fun <T : ViewModel> create(modelClass: Class<T>): T = GlassViewModel(callDelegate, deviceStatusDelegate, callController) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>): T =
+        GlassViewModel(callDelegate, deviceStatusDelegate, callController) as T
 }
 
 internal class GlassViewModel(

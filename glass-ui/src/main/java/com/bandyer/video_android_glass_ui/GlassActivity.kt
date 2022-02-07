@@ -53,7 +53,7 @@ internal class GlassActivity :
 
     // VIEW MODEL
     private val viewModel: GlassViewModel by viewModels {
-        GlassViewModelFactory.getInstance(
+        GlassViewModelFactory(
             GlassUIProvider.callService!!.get() as CallUIDelegate,
             GlassUIProvider.callService!!.get() as DeviceStatusDelegate,
             GlassUIProvider.callService!!.get() as CallUIController
