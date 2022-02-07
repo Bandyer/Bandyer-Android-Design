@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_glass_ui.*
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.GlassViewModel
 import com.bandyer.video_android_glass_ui.GlassViewModelFactory
@@ -43,7 +44,13 @@ internal class MenuFragment : BaseFragment(), TiltListener {
 
     private var currentMenuItemIndex = 0
 
-    private val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
+    private val viewModel: GlassViewModel by activityViewModels {
+        GlassViewModelFactory.getInstance(
+            GlassUIProvider.callService!!.get() as CallUIDelegate,
+            GlassUIProvider.callService!!.get() as DeviceStatusDelegate,
+            GlassUIProvider.callService!!.get() as CallUIController
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

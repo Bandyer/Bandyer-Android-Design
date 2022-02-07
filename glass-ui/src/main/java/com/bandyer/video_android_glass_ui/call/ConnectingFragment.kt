@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.*
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import com.bandyer.video_android_glass_ui.*
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.GlassViewModel
 import com.bandyer.video_android_glass_ui.GlassViewModelFactory
-import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
 import com.bandyer.video_android_glass_ui.utils.GlassDeviceUtils
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -19,7 +19,13 @@ internal abstract class ConnectingFragment : BaseFragment() {
     private var _binding: BandyerGlassFragmentFullScreenLogoDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
 
-    protected val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
+    protected val viewModel: GlassViewModel by activityViewModels {
+        GlassViewModelFactory.getInstance(
+            GlassUIProvider.callService!!.get() as CallUIDelegate,
+            GlassUIProvider.callService!!.get() as DeviceStatusDelegate,
+            GlassUIProvider.callService!!.get() as CallUIController
+        )
+    }
 
     abstract val themeResId: Int
 

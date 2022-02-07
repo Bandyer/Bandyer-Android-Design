@@ -52,7 +52,13 @@ internal class GlassActivity :
     private var decorView: View? = null
 
     // VIEW MODEL
-    private val viewModel: GlassViewModel by viewModels { GlassViewModelFactory }
+    private val viewModel: GlassViewModel by viewModels {
+        GlassViewModelFactory.getInstance(
+            GlassUIProvider.callService!!.get() as CallUIDelegate,
+            GlassUIProvider.callService!!.get() as DeviceStatusDelegate,
+            GlassUIProvider.callService!!.get() as CallUIController
+        )
+    }
 
     // ADAPTER
     private var itemAdapter: ItemAdapter<StreamItem<*>>? = null

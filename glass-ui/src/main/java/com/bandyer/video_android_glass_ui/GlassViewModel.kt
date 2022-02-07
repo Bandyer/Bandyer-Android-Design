@@ -16,14 +16,29 @@ import kotlinx.coroutines.flow.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
-@Suppress("UNCHECKED_CAST")
-internal object GlassViewModelFactory : ViewModelProvider.Factory {
+internal class GlassViewModelFactory private constructor(
+    private val callDelegate: CallUIDelegate,
+    private val deviceStatusDelegate: DeviceStatusDelegate,
+    private val callController: CallUIController
+) : ViewModelProvider.Factory {
+
+    companion object {
+        private var instance: GlassViewModelFactory? = null
+
+        fun getInstance(
+            callDelegate: CallUIDelegate,
+            deviceStatusDelegate: DeviceStatusDelegate,
+            callController: CallUIController
+        ): GlassViewModelFactory =
+            instance ?: GlassViewModelFactory(
+                callDelegate,
+                deviceStatusDelegate,
+                callController
+            ).also { instance = it }
+    }
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        GlassViewModel(
-            GlassUIProvider.callService!!.get() as CallUIDelegate,
-            GlassUIProvider.callService!!.get() as DeviceStatusDelegate,
-            GlassUIProvider.callService!!.get() as CallUIController
-        ) as T
+        GlassViewModel(callDelegate, deviceStatusDelegate, callController) as T
 }
 
 internal class GlassViewModel(

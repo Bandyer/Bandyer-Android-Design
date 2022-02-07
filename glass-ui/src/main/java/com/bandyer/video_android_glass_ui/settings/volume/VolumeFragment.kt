@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bandyer.video_android_glass_ui.*
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.GlassViewModel
 import com.bandyer.video_android_glass_ui.GlassViewModelFactory
@@ -26,7 +28,13 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
 
     private val args: VolumeFragmentArgs by lazy { VolumeFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
 
-    private val viewModel: GlassViewModel by viewModels { GlassViewModelFactory }
+    private val viewModel: GlassViewModel by activityViewModels {
+        GlassViewModelFactory.getInstance(
+            GlassUIProvider.callService!!.get() as CallUIDelegate,
+            GlassUIProvider.callService!!.get() as DeviceStatusDelegate,
+            GlassUIProvider.callService!!.get() as CallUIController
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

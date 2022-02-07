@@ -38,7 +38,13 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
     private val args: ParticipantsFragmentArgs by lazy { ParticipantsFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
 
-    private val viewModel: GlassViewModel by activityViewModels { GlassViewModelFactory }
+    private val viewModel: GlassViewModel by activityViewModels {
+        GlassViewModelFactory.getInstance(
+            GlassUIProvider.callService!!.get() as CallUIDelegate,
+            GlassUIProvider.callService!!.get() as DeviceStatusDelegate,
+            GlassUIProvider.callService!!.get() as CallUIController
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
