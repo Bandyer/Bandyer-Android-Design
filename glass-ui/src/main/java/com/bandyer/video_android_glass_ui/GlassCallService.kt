@@ -280,7 +280,7 @@ class GlassCallService : CallService() {
             .flatMapLatest { streams -> streams.map { it.video }.merge() }
             .onEach { video ->
                 if (video?.view?.value != null) return@onEach
-                video?.view?.value = VideoStreamView.create(this@GlassCallService)
+                video?.view?.value = VideoStreamView(this@GlassCallService)
             }
             .launchIn(lifecycleScope)
 
