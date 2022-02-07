@@ -38,36 +38,37 @@ internal abstract class ConnectingFragment : BaseFragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            viewModel.onHangup()
-        }
-
         // Add view binding
         _binding = BandyerGlassFragmentFullScreenLogoDialogBinding
             .inflate(
                 inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
                 container,
                 false
-            )
-            .apply {
+            ).apply {
                 if (GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
-
-                repeatOnStarted {
-                    viewModel.amIAlone
-                        .onEach { if (!it) onConnected() }
-                        .takeWhile { it }
-                        .launchIn(this@repeatOnStarted)
-
-                    viewModel.inCallParticipants
-                        .takeWhile { it.count() < 2 }
-                        .onCompletion {
-                            bandyerSubtitle.text =
-                                resources.getString(R.string.bandyer_glass_connecting)
-                        }.launchIn(this@repeatOnStarted)
-                }
             }
 
         return binding.root
+    }
+
+    override fun onServiceBound() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            viewModel.onHangup()
+        }
+
+        repeatOnStarted {
+            viewModel.amIAlone
+                .onEach { if (!it) onConnected() }
+                .takeWhile { it }
+                .launchIn(this@repeatOnStarted)
+
+            viewModel.inCallParticipants
+                .takeWhile { it.count() < 2 }
+                .onCompletion {
+                    binding.bandyerSubtitle.text =
+                        resources.getString(R.string.bandyer_glass_connecting)
+                }.launchIn(this@repeatOnStarted)
+        }
     }
 
     /**

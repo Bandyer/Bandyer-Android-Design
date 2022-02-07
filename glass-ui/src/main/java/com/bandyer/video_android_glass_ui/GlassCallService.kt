@@ -29,7 +29,20 @@ import com.bandyer.video_android_glass_ui.model.Volume
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 
-abstract class CallService : LifecycleService(), CallUIDelegate, CallUIController, DeviceStatusDelegate
+abstract class CallService : LifecycleService(), CallUIDelegate, CallUIController, DeviceStatusDelegate {
+
+    @Suppress("UNCHECKED_CAST")
+    inner class ServiceBinder : Binder() {
+        fun <T: CallService> getService(): T = this@CallService as T
+    }
+
+    private val binder = ServiceBinder()
+
+    override fun onBind(intent: Intent): IBinder {
+        super.onBind(intent)
+        return binder
+    }
+}
 
 class GlassCallService : CallService() {
 

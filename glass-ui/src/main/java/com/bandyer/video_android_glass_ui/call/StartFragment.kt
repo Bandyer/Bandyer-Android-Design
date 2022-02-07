@@ -41,24 +41,23 @@ internal class StartFragment : BaseFragment() {
         }
 
         _binding = BandyerGlassFragmentStartBinding.inflate(inflater, container, false)
-
-        repeatOnStarted {
-            with(viewModel) {
-                callState
-                    .takeWhile { it is Call.State.Connecting || it == Call.State.Disconnected }
-                    .combine(participants) { state, participants ->
-                        when {
-                            state is Call.State.Connecting && participants.me == participants.creator() ->
-                                findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment())
-                            state == Call.State.Disconnected && participants.me != participants.creator() ->
-                                findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
-                            else -> Unit
-                        }
-                    }.launchIn(this@repeatOnStarted)
-            }
-        }
-
         return binding.root
+    }
+
+    override fun onServiceBound() {
+        repeatOnStarted {
+            viewModel.callState
+                .takeWhile { it is Call.State.Connecting || it == Call.State.Disconnected }
+                .combine(viewModel.participants) { state, participants ->
+                    when {
+                        state is Call.State.Connecting && participants.me == participants.creator() ->
+                            findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment())
+                        state == Call.State.Disconnected && participants.me != participants.creator() ->
+                            findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
+                        else -> Unit
+                    }
+                }.launchIn(this@repeatOnStarted)
+        }
     }
 
     /**

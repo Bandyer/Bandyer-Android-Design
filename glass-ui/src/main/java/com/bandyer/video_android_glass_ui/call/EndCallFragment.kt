@@ -47,6 +47,8 @@ internal class EndCallFragment : BaseFragment() {
         return binding.root
     }
 
+    override fun onServiceBound() = Unit
+
     /**
      * @suppress
      */

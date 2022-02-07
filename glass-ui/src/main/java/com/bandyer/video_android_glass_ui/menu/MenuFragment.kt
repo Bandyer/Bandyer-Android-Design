@@ -95,6 +95,10 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                 }
             }
 
+        return binding.root
+    }
+
+    override fun onServiceBound() {
         val options = args.options ?: arrayOf()
         getActions(options).forEach { itemAdapter!!.add(MenuItem(it)) }
 
@@ -107,8 +111,6 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             viewModel.micPermission.onEach { micAction.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
             viewModel.camPermission.onEach { cameraAction.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
         }
-
-        return binding.root
     }
 
     /**

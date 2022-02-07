@@ -38,6 +38,7 @@ import kotlinx.coroutines.plus
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
+@Suppress("UNCHECKED_CAST")
 internal class GlassViewModelFactory(
     private val callDelegate: CallUIDelegate,
     private val deviceStatusDelegate: DeviceStatusDelegate,

@@ -1,30 +1,19 @@
 package com.bandyer.video_android_glass_ui.call
 
-import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlin.math.roundToInt
 
 internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoScrollView.OnScrollListener {
 
-    /**
-     * @suppress
-     */
-    @SuppressLint("ClickableViewAccessibility")
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        super.onCreateView(inflater, container, savedInstanceState)
+    override fun onServiceBound() {
+        super.onServiceBound()
 
         with(binding) {
             bandyerParticipantsScrollView.onScrollListener = this@PreCallFragment
@@ -48,8 +37,6 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
                 }.launchIn(this@repeatOnStarted)
             }
         }
-
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -14,13 +14,19 @@ import com.bandyer.video_android_glass_ui.utils.TiltFragment
 /**
  * BaseFragment. A base class for all the smart glass fragments
  */
-internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatNotificationManager.NotificationListener {
+internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatNotificationManager.NotificationListener, ServiceBinderActivity.ServiceObserver {
 
     /**
      * The [GlassActivity]
      */
     private val activity
         get() = requireActivity() as GlassActivity
+
+    /**
+     * Flag which point outs if the call service is already bound
+     */
+    private val isServiceBound: Boolean
+        get() = activity.isServiceBound
 
     /**
      * The fragment's view binding
@@ -65,9 +71,20 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        NavHostFragment.findNavController(this).currentDestination?.also { activity.onDestinationChanged(it.id) }
+        activity.onDestinationChanged(NavHostFragment.findNavController(this).currentDestination!!.id)
         activity.addNotificationListener(this)
+        activity.addBindServiceObserver(this)
+
         return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    /**
+     * @suppress
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (isServiceBound)
+            onServiceBound()
     }
 
     /**
@@ -75,6 +92,7 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
      */
     override fun onDestroyView() {
         super.onDestroyView()
+        activity.removeBindServiceObserver(this)
         activity.removeNotificationListener(this)
     }
 

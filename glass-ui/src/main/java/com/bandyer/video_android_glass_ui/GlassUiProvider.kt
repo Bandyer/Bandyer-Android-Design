@@ -1,5 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
+import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.fragment.app.FragmentActivity
@@ -10,17 +11,10 @@ import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import java.lang.ref.WeakReference
 
 object GlassUIProvider {
-
-    @JvmSynthetic
-    internal var callService: WeakReference<CallService>? = null
-        private set
-
-    fun showCall(callService: CallService) {
-        this.callService = WeakReference(callService)
-        val applicationContext = callService.applicationContext
+    fun showCall(context: Context) {
+        val applicationContext = context.applicationContext
         val intent = Intent(applicationContext, GlassActivity::class.java).apply {
             addFlags(FLAG_ACTIVITY_NEW_TASK)
             // TODO
@@ -29,7 +23,6 @@ object GlassUIProvider {
         }
         applicationContext.startActivity(intent)
     }
-
 }
 
 //interface CallWaitingUIController {

@@ -49,6 +49,8 @@ internal class ZoomFragment : BaseFragment(), TiltListener {
         return binding.root
     }
 
+    override fun onServiceBound() = Unit
+
     /**
      * @suppress
      */

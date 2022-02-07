@@ -36,16 +36,21 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
     override val binding: BandyerGlassFragmentParticipantsBinding get() = _binding!!
 
     private var itemAdapter: ItemAdapter<CallParticipantItem>? = null
+    private var snapHelper: LinearSnapHelper? = null
 
     private var currentParticipantIndex = -1
 
-    private val args: ParticipantsFragmentArgs by lazy { ParticipantsFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
+    private val args: ParticipantsFragmentArgs by lazy {
+        ParticipantsFragmentArgs.fromBundle(
+            requireActivity().intent!!.extras!!
+        )
+    }
 
     private val viewModel: GlassViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(args.enableTilt) tiltListener = this
+        if (args.enableTilt) tiltListener = this
     }
 
     /**
@@ -62,66 +67,78 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
         _binding = BandyerGlassFragmentParticipantsBinding
             .inflate(inflater, container, false)
             .apply {
-                if(GlassDeviceUtils.isRealWear)
+                if (GlassDeviceUtils.isRealWear)
                     bandyerBottomNavigation.setListenersForRealwear()
 
                 // Init the RecyclerView
                 with(bandyerParticipants) {
                     itemAdapter = ItemAdapter()
                     val fastAdapter = FastAdapter.with(itemAdapter!!)
-                    val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                    val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
+                    val layoutManager =
+                        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                    snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
                     this.layoutManager = layoutManager
                     adapter = fastAdapter
                     isFocusable = false
 
                     addItemDecoration(HorizontalCenterItemDecoration())
-                    addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper))
+                    addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper!!))
 
-                    addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                            val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                            currentParticipantIndex = layoutManager.getPosition(foundView)
 
-                            val participant = itemAdapter!!.getAdapterItem(currentParticipantIndex).participant
-                            with(binding.bandyerUserInfo) {
-                                hideName(true)
-
-                                val userDetailsWrapper = viewModel.userDetailsWrapper.value
-                                val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == participant.userAlias } ?: UserDetails(participant.userAlias)
-
-                                when {
-                                    userDetails.avatarUrl != null -> setAvatar(userDetails.avatarUrl)
-                                    userDetails.avatarUri != null -> setAvatar(userDetails.avatarUri)
-                                    userDetails.avatarResId != null -> setAvatar(userDetails.avatarResId)
-                                    else -> setAvatar(null)
-                                }
-
-                                val formattedText = userDetailsWrapper.formatters.callFormatter.format(userDetails)
-                                setAvatarBackgroundAndLetter(formattedText)
-                            }
-                        }
-                    })
 
                     // Forward the root view's touch event to the recycler view
                     root.setOnTouchListener { _, event -> onTouchEvent(event) }
                 }
-
-                repeatOnStarted {
-                    with(viewModel) {
-                        combine(inCallParticipants, participants) { inCallParticipants, participants -> Pair(inCallParticipants, participants) }
-                            .takeWhile { it.first.isNotEmpty()  }
-                            .collect { pair ->
-                                val sortedList = pair.first.sortedBy { pair.second.me.userAlias != it.userAlias }
-                                val items = sortedList.map { CallParticipantItem(it, viewModel.userDetailsWrapper) }
-                                FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
-                            }
-                    }
-                }
             }
 
         return binding.root
+    }
+
+    override fun onServiceBound() {
+        with(binding.bandyerParticipants) {
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
+                    currentParticipantIndex = layoutManager!!.getPosition(foundView)
+
+                    val participant =
+                        itemAdapter!!.getAdapterItem(currentParticipantIndex).participant
+                    with(binding.bandyerUserInfo) {
+                        hideName(true)
+
+                        val userDetailsWrapper = viewModel.userDetailsWrapper.value
+                        val userDetails =
+                            userDetailsWrapper.data.firstOrNull { it.userAlias == participant.userAlias }
+                                ?: UserDetails(participant.userAlias)
+
+                        when {
+                            userDetails.avatarUrl != null -> setAvatar(userDetails.avatarUrl)
+                            userDetails.avatarUri != null -> setAvatar(userDetails.avatarUri)
+                            userDetails.avatarResId != null -> setAvatar(userDetails.avatarResId)
+                            else -> setAvatar(null)
+                        }
+
+                        val formattedText =
+                            userDetailsWrapper.formatters.callFormatter.format(userDetails)
+                        setAvatarBackgroundAndLetter(formattedText)
+                    }
+                }
+            })
+        }
+
+        repeatOnStarted {
+            combine(
+                viewModel.inCallParticipants,
+                viewModel.participants
+            ) { inCallParticipants, participants -> Pair(inCallParticipants, participants) }
+                .takeWhile { it.first.isNotEmpty() }
+                .collect { pair ->
+                    val sortedList = pair.first.sortedBy { pair.second.me.userAlias != it.userAlias }
+                    val items = sortedList.map { CallParticipantItem(it, viewModel.userDetailsWrapper) }
+                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
+                }
+        }
     }
 
     /**
@@ -134,17 +151,28 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
     }
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.bandyerParticipants.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
+        binding.bandyerParticipants.scrollBy(
+            (deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(),
+            0
+        )
 
     override fun onTap() = false
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
     override fun onSwipeForward(isKeyEvent: Boolean) =
-        (isKeyEvent && currentParticipantIndex != -1).also { if (it) binding.bandyerParticipants.horizontalSmoothScrollToNext(currentParticipantIndex) }
+        (isKeyEvent && currentParticipantIndex != -1).also {
+            if (it) binding.bandyerParticipants.horizontalSmoothScrollToNext(
+                currentParticipantIndex
+            )
+        }
 
     override fun onSwipeBackward(isKeyEvent: Boolean) =
-        (isKeyEvent && currentParticipantIndex != -1).also { if (it) binding.bandyerParticipants.horizontalSmoothScrollToPrevious(currentParticipantIndex) }
+        (isKeyEvent && currentParticipantIndex != -1).also {
+            if (it) binding.bandyerParticipants.horizontalSmoothScrollToPrevious(
+                currentParticipantIndex
+            )
+        }
 }
 
 

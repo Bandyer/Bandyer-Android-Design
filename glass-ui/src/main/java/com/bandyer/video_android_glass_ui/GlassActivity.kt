@@ -1,8 +1,12 @@
 package com.bandyer.video_android_glass_ui
 
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -42,24 +46,54 @@ internal class GlassActivity :
     AppCompatActivity(),
     GlassGestureDetector.OnGestureListener,
     ChatNotificationManager.NotificationListener,
-    TouchEventListener {
+    TouchEventListener,
+    ServiceBinderActivity {
+
+    private companion object {
+        const val BLOCKED_INPUT_TOAST_ID = "input-blocked"
+        const val DISABLED_INPUT_TOAST_ID = "input-disabled"
+        const val ALONE_TOAST_ID = "blocked-input"
+        var service: GlassCallService? = null
+        var serviceConnection: ServiceConnection? = null
+    }
+
+    init {
+        serviceConnection = object : ServiceConnection {
+            override fun onServiceConnected(className: ComponentName, binder: IBinder) {
+                service = (binder as CallService.ServiceBinder).getService()
+                onServiceBound(false)
+                isServiceBound = true
+                notifyServiceBinding()
+            }
+
+            override fun onServiceDisconnected(componentName: ComponentName) = Unit
+        }
+    }
 
     // BINDING AND VIEWS
-    private var _binding: BandyerActivityGlassBinding? = null
-    private val binding: BandyerActivityGlassBinding get() = _binding!!
+    private lateinit var binding: BandyerActivityGlassBinding
     private var decorView: View? = null
+
+    // SERVICE BINDING
+    override var isServiceBound: Boolean = false
+    override var observers = arrayListOf<ServiceBinderActivity.ServiceObserver>()
+        private set
 
     // VIEW MODEL
     private val viewModel: GlassViewModel by viewModels {
         GlassViewModelFactory(
-            GlassUIProvider.callService!!.get() as CallUIDelegate,
-            GlassUIProvider.callService!!.get() as DeviceStatusDelegate,
-            GlassUIProvider.callService!!.get() as CallUIController
+            service as CallUIDelegate,
+            service as DeviceStatusDelegate,
+            service as CallUIController
         )
     }
 
+    // ACTIVITY RESUME
+    private var wasPausedForBackground = false
+
     // ADAPTER
     private var itemAdapter: ItemAdapter<StreamItem<*>>? = null
+    private var snapHelper: LinearSnapHelper? = null
     private var currentStreamItemIndex = 0
 
     // NAVIGATION
@@ -77,70 +111,21 @@ internal class GlassActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Check it is the first time the onCreate is called
-        if (savedInstanceState == null) {
-            viewModel.onRequestMicPermission(this)
-            viewModel.onRequestCameraPermission(this)
-        }
-
-        _binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
-
         enterImmersiveMode()
 
+        binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
+
+        // Stream's recyclerView
         with(binding.bandyerStreams) {
             itemAdapter = ItemAdapter()
             val fastAdapter = FastAdapter.with(itemAdapter!!)
             val layoutManager =
-                LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
-            val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
-
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                    val position = layoutManager.getPosition(foundView)
-                    if (itemAdapter!!.getAdapterItem(position).streamParticipant.isMyStream && currentStreamItemIndex != position) {
-                        with(binding.bandyerToastContainer) {
-                            val isMicBlocked =
-                                viewModel.micPermission.value.let { !it.isAllowed && it.neverAskAgain }
-                            val isCamBlocked =
-                                viewModel.camPermission.value.let { !it.isAllowed && it.neverAskAgain }
-                            when {
-                                isMicBlocked && isCamBlocked -> show(
-                                    BLOCKED_INPUT_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_mic_and_cam_blocked)
-                                )
-                                isMicBlocked -> show(
-                                    BLOCKED_INPUT_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_mic_blocked)
-                                )
-                                isCamBlocked -> show(
-                                    BLOCKED_INPUT_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_cam_blocked)
-                                )
-                            }
-
-                            val isMicEnabled = viewModel.micEnabled.value
-                            val isCameraEnabled = viewModel.cameraEnabled.value
-                            when {
-                                !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled -> show(
-                                    DISABLED_INPUT_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_mic_and_cam_not_active)
-                                )
-                                !isMicBlocked && !isMicEnabled -> show(
-                                    DISABLED_INPUT_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_mic_not_active)
-                                )
-                                !isCamBlocked && !isCameraEnabled -> show(
-                                    DISABLED_INPUT_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_cam_not_active)
-                                )
-                                else -> Unit
-                            }
-                        }
-                    }
-                    currentStreamItemIndex = position
-                }
-            })
+                LinearLayoutManager(
+                    this@GlassActivity,
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
+            snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
 
             this.layoutManager = layoutManager
             adapter = fastAdapter.apply {
@@ -152,18 +137,68 @@ internal class GlassActivity :
         }
 
         // NavController
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         // Gesture Detector
         glassGestureDetector = GlassGestureDetector(this, this)
 
         // Notification Manager
-        notificationManager =
-            ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
+        notificationManager = ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
 
-        // Observer events
+        // Needed to support rotation
+        isServiceBound = service != null
+
+        // If the saveInstanceState == null, then it's the first call to onCreate
+        if (savedInstanceState != null) onServiceBound(true)
+        else bindCallService()
+    }
+
+    private fun bindCallService() {
+        Intent(this, GlassCallService::class.java).also { intent ->
+            bindService(intent, serviceConnection!!, 0)
+        }
+    }
+
+    private fun onServiceBound(isOnRotation: Boolean) {
+        if(!isOnRotation) {
+            viewModel.onRequestMicPermission(this)
+            viewModel.onRequestCameraPermission(this)
+        }
+
+        with(binding.bandyerStreams) {
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
+                    val position = layoutManager!!.getPosition(foundView)
+                    if (itemAdapter!!.getAdapterItem(position).streamParticipant.isMyStream && currentStreamItemIndex != position) {
+                        with(binding.bandyerToastContainer) {
+                            val isMicBlocked =
+                                viewModel.micPermission.value.let { !it.isAllowed && it.neverAskAgain }
+                            val isCamBlocked =
+                                viewModel.camPermission.value.let { !it.isAllowed && it.neverAskAgain }
+                            when {
+                                isMicBlocked && isCamBlocked -> show(BLOCKED_INPUT_TOAST_ID, resources.getString(R.string.bandyer_glass_mic_and_cam_blocked))
+                                isMicBlocked -> show(BLOCKED_INPUT_TOAST_ID, resources.getString(R.string.bandyer_glass_mic_blocked))
+                                isCamBlocked -> show(BLOCKED_INPUT_TOAST_ID, resources.getString(R.string.bandyer_glass_cam_blocked))
+                            }
+
+                            val isMicEnabled = viewModel.micEnabled.value
+                            val isCameraEnabled = viewModel.cameraEnabled.value
+                            when {
+                                !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled -> show(DISABLED_INPUT_TOAST_ID, resources.getString(R.string.bandyer_glass_mic_and_cam_not_active))
+                                !isMicBlocked && !isMicEnabled -> show(DISABLED_INPUT_TOAST_ID, resources.getString(R.string.bandyer_glass_mic_not_active))
+                                !isCamBlocked && !isCameraEnabled -> show(DISABLED_INPUT_TOAST_ID, resources.getString(R.string.bandyer_glass_cam_not_active))
+                                else -> Unit
+                            }
+                        }
+                    }
+                    currentStreamItemIndex = position
+                }
+            })
+        }
+
+        // ServiceObserver events
         repeatOnStarted {
             viewModel
                 .battery
@@ -325,8 +360,6 @@ internal class GlassActivity :
         }
     }
 
-    private var wasPausedForBackground = false
-
     override fun onTopResumedActivityChanged(isTopResumedActivity: Boolean) {
         super.onTopResumedActivityChanged(isTopResumedActivity)
         if (!isTopResumedActivity) wasPausedForBackground = viewModel.cameraEnabled.value
@@ -343,9 +376,12 @@ internal class GlassActivity :
 
     override fun onDestroy() {
         super.onDestroy()
-        _binding = null
-        decorView = null
+        if (isFinishing) {
+            unbindService(serviceConnection!!)
+            service = null
+        }
         itemAdapter!!.clear()
+        decorView = null
         itemAdapter = null
         navController = null
         glassGestureDetector = null
@@ -523,11 +559,5 @@ internal class GlassActivity :
                 WiFiInfo.Level.EXCELLENT -> StatusBarView.WiFiSignalState.FULL
             }
         )
-    }
-
-    private companion object {
-        const val BLOCKED_INPUT_TOAST_ID = "input-blocked"
-        const val DISABLED_INPUT_TOAST_ID = "input-disabled"
-        const val ALONE_TOAST_ID = "blocked-input"
     }
 }

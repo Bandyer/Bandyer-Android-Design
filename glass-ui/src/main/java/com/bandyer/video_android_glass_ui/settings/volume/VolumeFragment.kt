@@ -47,17 +47,18 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
             .inflate(inflater, container, false)
             .apply {
                 if (GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
-
-                with(bandyerSlider) {
-                    val volume = viewModel.volume
-                    maxProgress = volume.max
-                    progress = volume.current
-                }
-
                 root.setOnTouchListener { _, _ -> true }
             }
 
         return binding.root
+    }
+
+    override fun onServiceBound() {
+        binding.bandyerSlider.apply {
+            val volume = viewModel.volume
+            maxProgress = volume.max
+            progress = volume.current
+        }
     }
 
     /**
