@@ -8,11 +8,14 @@ import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.bandyer.collaboration_center.phonebox.Call
-import com.bandyer.video_android_glass_ui.*
+import com.bandyer.video_android_glass_ui.BaseFragment
+import com.bandyer.video_android_glass_ui.GlassViewModel
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentStartBinding
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.bandyer.video_android_glass_ui.utils.safeNavigate
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.takeWhile
 
 /**
  * StartFragment, used as start destination in the nav graph
