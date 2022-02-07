@@ -23,13 +23,7 @@ internal class EmptyFragment : BaseFragment() {
     private var _binding: BandyerGlassFragmentEmptyBinding? = null
     override val binding: BandyerGlassFragmentEmptyBinding get() = _binding!!
 
-    private val viewModel: GlassViewModel by activityViewModels {
-        GlassViewModelFactory.getInstance(
-            GlassUIProvider.callService!!.get() as CallUIDelegate,
-            GlassUIProvider.callService!!.get() as DeviceStatusDelegate,
-            GlassUIProvider.callService!!.get() as CallUIController
-        )
-    }
+    private val viewModel: GlassViewModel by activityViewModels()
 
     /**
      * @suppress

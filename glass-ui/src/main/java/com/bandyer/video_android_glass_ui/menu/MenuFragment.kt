@@ -44,13 +44,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
 
     private var currentMenuItemIndex = 0
 
-    private val viewModel: GlassViewModel by activityViewModels {
-        GlassViewModelFactory.getInstance(
-            GlassUIProvider.callService!!.get() as CallUIDelegate,
-            GlassUIProvider.callService!!.get() as DeviceStatusDelegate,
-            GlassUIProvider.callService!!.get() as CallUIController
-        )
-    }
+    private val viewModel: GlassViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

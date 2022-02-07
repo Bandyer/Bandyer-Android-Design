@@ -19,13 +19,7 @@ internal abstract class ConnectingFragment : BaseFragment() {
     private var _binding: BandyerGlassFragmentFullScreenLogoDialogBinding? = null
     override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
 
-    protected val viewModel: GlassViewModel by activityViewModels {
-        GlassViewModelFactory.getInstance(
-            GlassUIProvider.callService!!.get() as CallUIDelegate,
-            GlassUIProvider.callService!!.get() as DeviceStatusDelegate,
-            GlassUIProvider.callService!!.get() as CallUIController
-        )
-    }
+    protected val viewModel: GlassViewModel by activityViewModels()
 
     abstract val themeResId: Int
 

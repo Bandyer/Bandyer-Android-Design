@@ -37,8 +37,7 @@ internal class GlassViewModelFactory private constructor(
             ).also { instance = it }
     }
 
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        GlassViewModel(callDelegate, deviceStatusDelegate, callController) as T
+    override fun <T : ViewModel> create(modelClass: Class<T>): T = GlassViewModel(callDelegate, deviceStatusDelegate, callController) as T
 }
 
 internal class GlassViewModel(
