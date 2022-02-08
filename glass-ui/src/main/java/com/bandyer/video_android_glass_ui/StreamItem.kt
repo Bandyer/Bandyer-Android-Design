@@ -177,13 +177,15 @@ internal class MyStreamItem(streamParticipant: StreamParticipant, userDetailsDel
                 binding.bandyerCamMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
             }.launchIn(item.scope)
 
-            val userAlias = item.streamParticipant.participant.userAlias
-            val userDetailsDelegate = item.userDetailsDelegate.value ?: return
-            val userDetails = userDetailsDelegate.data!!.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
-            val formattedDetails = userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
+            jobs += item.userDetailsDelegate.onEach { userDetailsDelegate ->
+                userDetailsDelegate ?: return@onEach
+                val userAlias = item.streamParticipant.participant.userAlias
+                val userDetails = userDetailsDelegate.data!!.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
+                val formattedDetails = userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
 
-            binding.bandyerSubtitleLayout.bandyerSubtitle.text = itemView.context.getString(R.string.bandyer_glass_you_pattern, formattedDetails)
-            binding.bandyerCenteredSubtitle.text = formattedDetails
+                binding.bandyerSubtitleLayout.bandyerSubtitle.text = itemView.context.getString(R.string.bandyer_glass_you_pattern, formattedDetails)
+                binding.bandyerCenteredSubtitle.text = formattedDetails
+            }.launchIn(item.scope)
         }
 
         /**
@@ -249,23 +251,26 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, userDetails
          */
         override fun bindView(item: OtherStreamItem, payloads: List<Any>) = with(binding) {
             super.bindView(item, payloads)
-            val userAlias = item.streamParticipant.participant.userAlias
-            val userDetailsDelegate = item.userDetailsDelegate.value ?: return@with
-            val userDetails = userDetailsDelegate.data!!.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
-            val formattedText = userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
 
-            bandyerSubtitleLayout.bandyerSubtitle.text = formattedText
-            with(bandyerAvatar) {
-                when {
-                    userDetails.avatarUrl != null -> setImage(userDetails.avatarUrl)
-                    userDetails.avatarUri != null -> setImage(userDetails.avatarUri)
-                    userDetails.avatarResId != null -> setImage(userDetails.avatarResId)
-                    else -> {
-                        setBackground(formattedText.parseToColor())
-                        setText(formattedText.first().toString())
+            jobs += item.userDetailsDelegate.onEach { userDetailsDelegate ->
+                userDetailsDelegate ?: return@onEach
+                val userAlias = item.streamParticipant.participant.userAlias
+                val userDetails = userDetailsDelegate.data!!.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
+                val formattedText = userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
+
+                bandyerSubtitleLayout.bandyerSubtitle.text = formattedText
+                with(bandyerAvatar) {
+                    when {
+                        userDetails.avatarUrl != null -> setImage(userDetails.avatarUrl)
+                        userDetails.avatarUri != null -> setImage(userDetails.avatarUri)
+                        userDetails.avatarResId != null -> setImage(userDetails.avatarResId)
+                        else -> {
+                            setBackground(formattedText.parseToColor())
+                            setText(formattedText.first().toString())
+                        }
                     }
                 }
-            }
+            }.launchIn(item.scope)
         }
 
         /**
