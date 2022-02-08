@@ -379,6 +379,7 @@ internal class GlassActivity :
         if (isFinishing) {
             unbindService(serviceConnection!!)
             service = null
+            serviceConnection = null
         }
         itemAdapter!!.clear()
         decorView = null
