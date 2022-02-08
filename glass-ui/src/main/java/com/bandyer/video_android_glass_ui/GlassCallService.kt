@@ -1,5 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Intent
 import android.os.Binder
@@ -130,6 +131,7 @@ class GlassCallService : CallService() {
     override fun onCreate() {
         super.onCreate()
         batteryObserver = BatteryObserver(this)
+        @SuppressLint("MissingPermission")
         wifiObserver = WiFiObserver(this)
         callAudioManager = CallAudioManager(this)
     }

@@ -89,5 +89,6 @@
         <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:text">@string/bandyer_glass_rec</item>
+        <item name="android:visibility">gone</item>
     </style>
 </resources>
