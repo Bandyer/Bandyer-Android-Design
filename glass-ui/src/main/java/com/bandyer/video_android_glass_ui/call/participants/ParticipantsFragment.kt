@@ -107,9 +107,9 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                     with(binding.bandyerUserInfo) {
                         hideName(true)
 
-                        val userDetailsWrapper = viewModel.userDetailsWrapper.value
+                        val userDetailsDelegate = viewModel.userDetailsDelegate.value ?: return
                         val userDetails =
-                            userDetailsWrapper.data.firstOrNull { it.userAlias == participant.userAlias }
+                            userDetailsDelegate.data!!.firstOrNull { it.userAlias == participant.userAlias }
                                 ?: UserDetails(participant.userAlias)
 
                         when {
@@ -120,7 +120,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                         }
 
                         val formattedText =
-                            userDetailsWrapper.formatters.callFormatter.format(userDetails)
+                            userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
                         setAvatarBackgroundAndLetter(formattedText)
                     }
                 }
@@ -135,7 +135,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                 .takeWhile { it.first.isNotEmpty() }
                 .collect { pair ->
                     val sortedList = pair.first.sortedBy { pair.second.me.userAlias != it.userAlias }
-                    val items = sortedList.map { CallParticipantItem(it, viewModel.userDetailsWrapper) }
+                    val items = sortedList.map { CallParticipantItem(it, viewModel.userDetailsDelegate) }
                     FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                 }
         }

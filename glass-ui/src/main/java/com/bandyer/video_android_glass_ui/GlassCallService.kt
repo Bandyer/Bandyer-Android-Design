@@ -30,6 +30,7 @@ import com.bandyer.collaboration_center.phonebox.VideoStreamView
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -78,44 +79,42 @@ class GlassCallService : CallService() {
     override val call: SharedFlow<Call>
         get() = collaboration!!.phoneBox.call
 
-    private val formatter = object : UserDetailsFormatter {
-        override fun format(vararg userDetails: UserDetails): String =
-            if (userDetails.count() > 1) {
-                var text = ""
-                userDetails.forEach { text += "${it.firstName} ${it.lastName}, " }
-                text
-//                "${userDetails.first().nickName} and other ${userDetails.count() - 1}"
-            } else "${userDetails.first().firstName} ${userDetails.first().lastName}"
-    }
-
-    private val userDetailsFormatters = UserDetailsFormatters(formatter)
-    override val userDetailsWrapper: StateFlow<UserDetailsWrapper> =
-        MutableStateFlow(UserDetailsWrapper(listOf(), userDetailsFormatters)).apply {
-            value = UserDetailsWrapper(
-                listOf(
-                    UserDetails(
-                        "ste1",
-                        "Mario",
-                        "Mario",
-                        "Rossi",
-                        "mario@gmail.com",
-                        null,
-                        null,
-                        null
-                    ),
-                    UserDetails(
-                        "ste2",
-                        "Luigi",
-                        "Luigi",
-                        "Gialli",
-                        "luigi@gmail.com",
-                        null,
-                        "https://randomuser.me/api/portraits/men/86.jpg",
-                        null
+    override val userDetailsDelegate: StateFlow<UserDetailsDelegate?> =
+        MutableStateFlow<UserDetailsDelegate?>(null).apply {
+            value =
+                userDetailsDelegate {
+                    data = listOf(
+                        UserDetails(
+                            "ste1",
+                            "Mario",
+                            "Mario",
+                            "Rossi",
+                            "mario@gmail.com",
+                            null,
+                            null,
+                            null
+                        ),
+                        UserDetails(
+                            "ste2",
+                            "Luigi",
+                            "Luigi",
+                            "Gialli",
+                            "luigi@gmail.com",
+                            null,
+                            "https://randomuser.me/api/portraits/men/86.jpg",
+                            null
+                        )
                     )
-                ),
-                userDetailsFormatters
-            )
+                    defaultFormatter = { userDetails ->
+                        if (userDetails.count() > 1) {
+                            var text = ""
+                            userDetails.forEach { text += "${it.firstName} ${it.lastName}, " }
+                            text
+                        } else "${userDetails.first().firstName} ${userDetails.first().lastName}"
+                    }
+                    callFormatter = defaultFormatter
+                }
+
         }
 
     override val battery: SharedFlow<BatteryInfo>

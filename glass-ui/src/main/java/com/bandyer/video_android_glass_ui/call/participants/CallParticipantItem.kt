@@ -4,7 +4,7 @@ import android.view.View
 import com.bandyer.collaboration_center.phonebox.CallParticipant
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.UserDetails
-import com.bandyer.video_android_glass_ui.UserDetailsWrapper
+import com.bandyer.video_android_glass_ui.UserDetailsDelegate
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassParticipantItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
@@ -14,10 +14,10 @@ import kotlinx.coroutines.flow.StateFlow
  * A participant item.
  *
  * @property participant The call participant
- * @property callUserDetails The call's userDetails
+ * @property userDetailsDelegate The call's userDetails
  * @constructor
  */
-internal class CallParticipantItem(val participant: CallParticipant, val userDetailsWrapper: StateFlow<UserDetailsWrapper>): AbstractItem<CallParticipantItem.ViewHolder>() {
+internal class CallParticipantItem(val participant: CallParticipant, val userDetailsDelegate: StateFlow<UserDetailsDelegate?>): AbstractItem<CallParticipantItem.ViewHolder>() {
 
     /**
      * Set an unique identifier for the identifiable which do not have one set already
@@ -56,10 +56,10 @@ internal class CallParticipantItem(val participant: CallParticipant, val userDet
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: CallParticipantItem, payloads: List<Any>) {
-            val userDetailsWrapper = item.userDetailsWrapper.value
+            val userDetailsDelegate = item.userDetailsDelegate.value ?: return
             val userAlias = item.participant.userAlias
-            val userDetails = userDetailsWrapper.data.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
-            binding.bandyerText.text = userDetailsWrapper.formatters.callFormatter.format(userDetails)
+            val userDetails = userDetailsDelegate.data!!.firstOrNull { it.userAlias == userAlias } ?: UserDetails(userAlias)
+            binding.bandyerText.text = userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
         }
 
         /**

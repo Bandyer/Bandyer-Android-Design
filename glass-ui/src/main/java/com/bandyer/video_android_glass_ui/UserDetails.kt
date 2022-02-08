@@ -1,9 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
 import android.net.Uri
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 data class UserDetails(
     val userAlias: String,
@@ -18,6 +15,9 @@ data class UserDetails(
 
 //@Parcelize
 class UserDetailsDelegate {
+    // TODO make builder
+    // TODO add not null check, set the null formatters to the default one
+
     // TODO make this mandatory
     var data: List<UserDetails>? = null
 
@@ -49,5 +49,6 @@ fun test() {
                 text
             } else "${userDetails.first().firstName} ${userDetails.first().lastName}"
         }
+        callFormatter = defaultFormatter
     }
 }

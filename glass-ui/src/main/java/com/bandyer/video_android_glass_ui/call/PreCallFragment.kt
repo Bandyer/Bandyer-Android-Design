@@ -6,6 +6,7 @@ import android.view.View
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlin.math.roundToInt
@@ -20,10 +21,10 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
             root.setOnTouchListener { _, event -> bandyerParticipantsScrollView.onTouchEvent(event) }
 
             repeatOnStarted {
-                viewModel.userDetailsWrapper
+                viewModel.userDetailsDelegate
                     .onEach {
                         bandyerParticipants.text =
-                            it.formatters.callFormatter.format(*it.data.toTypedArray())
+                            it?.callFormatter!!.invoke(it.data!!)
                         updateUIOnParticipantChange()
                     }.launchIn(this@repeatOnStarted)
 

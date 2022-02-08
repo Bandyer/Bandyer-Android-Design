@@ -57,7 +57,7 @@ interface CallUIController {
 
 interface CallUIDelegate {
     val call: SharedFlow<Call>
-    val userDetailsWrapper: StateFlow<UserDetailsWrapper>
+    val userDetailsDelegate: StateFlow<UserDetailsDelegate?>
 }
 
 interface DeviceStatusDelegate {

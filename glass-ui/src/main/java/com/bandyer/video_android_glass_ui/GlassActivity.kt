@@ -38,6 +38,7 @@ import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.replay
 
 /**
  * GlassActivity
@@ -315,30 +316,26 @@ internal class GlassActivity :
 
             viewModel.onParticipantJoin
                 .onEach { part ->
-                    val userDetailsWrapper = viewModel.userDetailsWrapper.value
+                    val userDetailsDelegate = viewModel.userDetailsDelegate.value ?: return@onEach
                     val userDetails =
-                        userDetailsWrapper.data.firstOrNull { it.userAlias == part.userAlias }
+                        userDetailsDelegate.data!!.firstOrNull { it.userAlias == part.userAlias } ?: UserDetails(part.userAlias)
                     val toastText = resources.getString(
                         R.string.bandyer_glass_user_joined_pattern,
-                        userDetails?.let {
-                            userDetailsWrapper.formatters.callFormatter.format(
-                                userDetails
-                            )
+                        userDetails.let {
+                            userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
                         } ?: part.userAlias)
                     binding.bandyerToastContainer.show(text = toastText)
                 }.launchIn(this)
 
             viewModel.onParticipantLeave
                 .onEach { part ->
-                    val userDetailsWrapper = viewModel.userDetailsWrapper.value
+                    val userDetailsDelegate = viewModel.userDetailsDelegate.value ?: return@onEach
                     val userDetails =
-                        userDetailsWrapper.data.firstOrNull { it.userAlias == part.userAlias }
+                        userDetailsDelegate.data!!.firstOrNull { it.userAlias == part.userAlias } ?: UserDetails(part.userAlias)
                     val toastText = resources.getString(
                         R.string.bandyer_glass_user_left_pattern,
-                        userDetails?.let {
-                            userDetailsWrapper.formatters.callFormatter.format(
-                                userDetails
-                            )
+                        userDetails.let {
+                            userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
                         } ?: part.userAlias)
                     binding.bandyerToastContainer.show(text = toastText)
                 }.launchIn(this)
@@ -348,11 +345,11 @@ internal class GlassActivity :
                     val orderedList = streams.sortedBy { !it.isMyStream }.map {
                         if (it.isMyStream) MyStreamItem(
                             it,
-                            viewModel.userDetailsWrapper,
+                            viewModel.userDetailsDelegate,
                             this,
                             viewModel.micPermission,
                             viewModel.camPermission
-                        ) else OtherStreamItem(it, viewModel.userDetailsWrapper, this)
+                        ) else OtherStreamItem(it, viewModel.userDetailsDelegate, this)
                     }
                     FastAdapterDiffUtil[itemAdapter!!] =
                         FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)

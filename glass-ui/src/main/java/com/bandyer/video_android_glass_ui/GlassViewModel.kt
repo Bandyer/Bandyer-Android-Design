@@ -72,7 +72,7 @@ internal class GlassViewModel(
 
     val wifi: SharedFlow<WiFiInfo> = deviceStatusDelegate.wifi
 
-    val userDetailsWrapper: StateFlow<UserDetailsWrapper> = callDelegate.userDetailsWrapper
+    val userDetailsDelegate: StateFlow<UserDetailsDelegate?> = callDelegate.userDetailsDelegate
 
     val volume: Volume get() = callController.onGetVolume()
 
