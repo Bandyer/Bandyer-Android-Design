@@ -1,16 +1,18 @@
 package com.bandyer.video_android_glass_ui
 
 import android.annotation.SuppressLint
-import android.app.*
+import android.app.Activity
+import android.app.Application
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.Service
 import android.content.Intent
-import android.os.Binder
 import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import com.bandyer.android_common.audio.CallAudioManager
 import com.bandyer.android_common.battery_observer.BatteryInfo
@@ -28,29 +30,23 @@ import com.bandyer.collaboration_center.phonebox.VideoStreamView
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.*
-
-abstract class CallService : LifecycleService(), CallUIDelegate, CallUIController, DeviceStatusDelegate {
-
-    @Suppress("UNCHECKED_CAST")
-    inner class ServiceBinder : Binder() {
-        fun <T: CallService> getService(): T = this@CallService as T
-    }
-
-    private val binder = ServiceBinder()
-
-    override fun onBind(intent: Intent): IBinder {
-        super.onBind(intent)
-        return binder
-    }
-}
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
 
 class GlassCallService : CallService() {
 
-    companion object {
-        private var TAG = "${this::class.java}"
-        private var NOTIFICATION_ID = 2022
-        var instance: GlassCallService? = null
+    private companion object {
+        var TAG = "${this::class.java}"
+        var NOTIFICATION_ID = 2022
     }
 
     private var collaboration: Collaboration? = null
@@ -77,7 +73,7 @@ class GlassCallService : CallService() {
 
     private var callAudioManager: CallAudioManager? = null
 
-//    private var ongoingCalls: MutableSet<Call> = mutableSetOf()
+    //    private var ongoingCalls: MutableSet<Call> = mutableSetOf()
     private var currentCall: Call? = null
     override val call: SharedFlow<Call>
         get() = collaboration!!.phoneBox.call
@@ -138,12 +134,6 @@ class GlassCallService : CallService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        // Check the service instance
-        if (instance != null) {
-            Log.e(TAG, "instance is not null!")
-            return START_NOT_STICKY
-        }
-        instance = this
 
         // Get session information
         val session = intent?.getParcelableExtra<CollaborationSession>("session")
@@ -165,7 +155,6 @@ class GlassCallService : CallService() {
     override fun onDestroy() {
         super.onDestroy()
         application.unregisterActivityLifecycleCallbacks(activityLifecycleCallback)
-        instance = null
         currentCall?.disconnect()
         collaboration?.phoneBox?.disconnect()
         collaboration?.destroy()
@@ -178,7 +167,7 @@ class GlassCallService : CallService() {
         callAudioManager = null
     }
 
-    fun dial(otherUsers: List<String>, withVideoOnStart: Boolean? = null) {
+    override fun onDial(otherUsers: List<String>, withVideoOnStart: Boolean?) {
         if (collaboration!!.phoneBox.state.value is PhoneBox.State.Destroyed || collaboration!!.phoneBox.state.value is PhoneBox.State.Failed) {
             Log.e(TAG, "cannot perform call dial")
             return
@@ -193,10 +182,7 @@ class GlassCallService : CallService() {
         startForeground(NOTIFICATION_ID, createNotification())
     }
 
-    fun updateSession(session: CollaborationSession) {
-        if (instance == null) {
-            Log.e(TAG, "cannot update session")
-        }
+    override fun onUpdateSession(session: CollaborationSession) {
         // TODO Do we want this behaviour when the session in updated?
         currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session is expired"))
         collaboration!!.phoneBox.disconnect()
