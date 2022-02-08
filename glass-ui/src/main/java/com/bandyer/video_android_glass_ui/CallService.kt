@@ -50,6 +50,7 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
         super.onCreate()
         registerReceiver(broadcastReceiver, IntentFilter().apply {
             addAction(ServiceManager.ACTION_DIAL)
+            addAction(ServiceManager.ACTION_SEND_USER_DETAILS)
             addAction(ServiceManager.ACTION_UPDATE_SESSION)
         })
     }
@@ -58,6 +59,8 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
         super.onDestroy()
         unregisterReceiver(broadcastReceiver)
     }
+
+    abstract fun onUserDetails()
 
     abstract fun onDial(otherUsers: List<String>, withVideoOnStart: Boolean? = null)
 

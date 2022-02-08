@@ -166,6 +166,8 @@ class GlassCallService : CallService() {
         callAudioManager = null
     }
 
+    override fun onUserDetails() = Unit
+
     override fun onDial(otherUsers: List<String>, withVideoOnStart: Boolean?) {
         if (collaboration!!.phoneBox.state.value is PhoneBox.State.Destroyed || collaboration!!.phoneBox.state.value is PhoneBox.State.Failed) {
             Log.e(TAG, "cannot perform call dial")
