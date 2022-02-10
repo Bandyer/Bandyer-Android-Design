@@ -26,6 +26,10 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
                     val users = intent.getStringArrayExtra(ServiceManager.EXTRA_USERS) ?: return
                     onDial(users.toList(), true)
                 }
+                ServiceManager.ACTION_JOIN_URL -> {
+                    val url = intent.getStringExtra(ServiceManager.EXTRA_URL) ?: return
+                    onJoinUrl(url)
+                }
                 ServiceManager.ACTION_UPDATE_SESSION -> {
                     val session =
                         intent.getParcelableExtra<CollaborationSession>(ServiceManager.EXTRA_SESSION)
@@ -50,6 +54,7 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
         super.onCreate()
         registerReceiver(broadcastReceiver, IntentFilter().apply {
             addAction(ServiceManager.ACTION_DIAL)
+            addAction(ServiceManager.ACTION_JOIN_URL)
             addAction(ServiceManager.ACTION_SEND_USER_DETAILS)
             addAction(ServiceManager.ACTION_UPDATE_SESSION)
         })
@@ -63,6 +68,8 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
     abstract fun onUserDetails()
 
     abstract fun onDial(otherUsers: List<String>, withVideoOnStart: Boolean? = null)
+
+    abstract fun onJoinUrl(joinUrl: String)
 
     abstract fun onUpdateSession(session: CollaborationSession)
 }

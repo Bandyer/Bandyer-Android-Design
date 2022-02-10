@@ -183,6 +183,11 @@ class GlassCallService : CallService() {
         startForeground(NOTIFICATION_ID, createNotification())
     }
 
+    override fun onJoinUrl(joinUrl: String) {
+        collaboration!!.phoneBox.create(joinUrl).connect()
+        startForeground(NOTIFICATION_ID, createNotification())
+    }
+
     override fun onUpdateSession(session: CollaborationSession) {
         // TODO Do we want this behaviour when the session in updated?
         currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session is expired"))
