@@ -38,7 +38,6 @@ import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.replay
 
 /**
  * GlassActivity
@@ -54,20 +53,18 @@ internal class GlassActivity :
         const val BLOCKED_INPUT_TOAST_ID = "input-blocked"
         const val DISABLED_INPUT_TOAST_ID = "input-disabled"
         const val ALONE_TOAST_ID = "blocked-input"
-        var service: GlassCallService? = null
-        var serviceConnection: ServiceConnection? = null
     }
 
-    init {
-        serviceConnection = object : ServiceConnection {
-            override fun onServiceConnected(className: ComponentName, binder: IBinder) {
-                service = (binder as CallService.ServiceBinder).getService()
-                onServiceBound(false)
-                isServiceBound = true
-                notifyServiceBinding()
-            }
+    var service: GlassCallService? = null
+    var serviceConnection: ServiceConnection? = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, binder: IBinder) {
+            service = (binder as CallService.ServiceBinder).getService()
+            onServiceBound()
+            notifyServiceBinding()
+        }
 
-            override fun onServiceDisconnected(componentName: ComponentName) = Unit
+        override fun onServiceDisconnected(componentName: ComponentName) {
+            service = null
         }
     }
 
@@ -76,7 +73,6 @@ internal class GlassActivity :
     private var decorView: View? = null
 
     // SERVICE BINDING
-    override var isServiceBound: Boolean = false
     override var observers = arrayListOf<ServiceBinderActivity.ServiceObserver>()
         private set
 
@@ -89,7 +85,7 @@ internal class GlassActivity :
         )
     }
 
-    // ACTIVITY RESUME
+    // ACTIVITY FLAG
     private var wasPausedForBackground = false
 
     // ADAPTER
@@ -146,13 +142,11 @@ internal class GlassActivity :
 
         // Notification Manager
         notificationManager = ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
+    }
 
-        // Needed to support rotation
-        isServiceBound = service != null
-
-        // If the saveInstanceState == null, then it's the first call to onCreate
-        if (savedInstanceState != null) onServiceBound(true)
-        else bindCallService()
+    override fun onStart() {
+        super.onStart()
+        bindCallService()
     }
 
     private fun bindCallService() {
@@ -161,11 +155,9 @@ internal class GlassActivity :
         }
     }
 
-    private fun onServiceBound(isOnRotation: Boolean) {
-        if(!isOnRotation) {
-            viewModel.onRequestMicPermission(this)
-            viewModel.onRequestCameraPermission(this)
-        }
+    private fun onServiceBound() {
+        viewModel.onRequestMicPermission(this)
+        viewModel.onRequestCameraPermission(this)
 
         with(binding.bandyerStreams) {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -371,13 +363,15 @@ internal class GlassActivity :
         hideSystemUI()
     }
 
+    override fun onStop() {
+        super.onStop()
+        unbindService(serviceConnection!!)
+        service = null
+        serviceConnection = null
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        if (isFinishing) {
-            unbindService(serviceConnection!!)
-            service = null
-            serviceConnection = null
-        }
         itemAdapter!!.clear()
         decorView = null
         itemAdapter = null

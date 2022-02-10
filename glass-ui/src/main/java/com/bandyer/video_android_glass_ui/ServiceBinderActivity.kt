@@ -12,11 +12,6 @@ interface ServiceBinderActivity {
     val observers: ArrayList<ServiceObserver>
 
     /**
-     * True if the service is already bound to the activity, false otherwise
-     */
-    var isServiceBound: Boolean
-
-    /**
      * Add a ServiceObserver
      *
      * @param observer ServiceObserver

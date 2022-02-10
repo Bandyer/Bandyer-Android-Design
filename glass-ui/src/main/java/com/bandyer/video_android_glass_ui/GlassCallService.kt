@@ -10,6 +10,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.FragmentActivity
@@ -30,11 +31,9 @@ import com.bandyer.collaboration_center.phonebox.VideoStreamView
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -43,6 +42,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
+@SuppressLint("MissingPermission")
 class GlassCallService : CallService() {
 
     private companion object {
@@ -56,7 +56,8 @@ class GlassCallService : CallService() {
     private var activityLifecycleCallback = object : Application.ActivityLifecycleCallbacks {
 
         override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
-            if (activity is GlassActivity) fragmentActivity = activity
+            if (activity !is GlassActivity) return
+            fragmentActivity = activity
         }
 
         override fun onActivityStarted(activity: Activity) = Unit
@@ -65,7 +66,8 @@ class GlassCallService : CallService() {
         override fun onActivityStopped(activity: Activity) = Unit
         override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) = Unit
         override fun onActivityDestroyed(activity: Activity) {
-            if (activity is GlassActivity) fragmentActivity = null
+            if (activity !is GlassActivity) return
+            fragmentActivity = null
         }
     }
 
@@ -126,34 +128,22 @@ class GlassCallService : CallService() {
     override fun onCreate() {
         super.onCreate()
         batteryObserver = BatteryObserver(this)
-        @SuppressLint("MissingPermission")
         wifiObserver = WiFiObserver(this)
         callAudioManager = CallAudioManager(this)
     }
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        super.onStartCommand(intent, flags, startId)
-
-        // Get session information
-        val session = intent?.getParcelableExtra<CollaborationSession>("session")
-        if (session == null) {
-            Log.e(TAG, "session is null")
-            stopSelf()
-            return START_NOT_STICKY
-        }
-
-        collaboration = createCollaboration(session)
-        collaboration!!.phoneBox.observe()
-
-        // Start observing the activities lifecycle to get GlassActivity's context (needed by addStream)
+    override fun onBind(intent: Intent): IBinder {
         application.registerActivityLifecycleCallbacks(activityLifecycleCallback)
+        return super.onBind(intent)
+    }
 
-        return START_NOT_STICKY
+    override fun onUnbind(intent: Intent?): Boolean {
+        application.unregisterActivityLifecycleCallbacks(activityLifecycleCallback)
+        return super.onUnbind(intent)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        application.unregisterActivityLifecycleCallbacks(activityLifecycleCallback)
         currentCall?.disconnect()
         collaboration?.phoneBox?.disconnect()
         collaboration?.destroy()
@@ -168,13 +158,17 @@ class GlassCallService : CallService() {
 
     override fun onUserDetails() = Unit
 
+    fun connect(session: CollaborationSession) {
+        collaboration = createCollaboration(session)
+    }
+
     override fun onDial(otherUsers: List<String>, withVideoOnStart: Boolean?) {
         if (collaboration!!.phoneBox.state.value is PhoneBox.State.Destroyed || collaboration!!.phoneBox.state.value is PhoneBox.State.Failed) {
             Log.e(TAG, "cannot perform call dial")
             return
         }
 
-        collaboration!!.phoneBox.create(otherUsers.map { BuddyUser(it) }) {
+        collaboration!!.phoneBox.create(otherUsers.map { BuddyUser(it.trim()) }) {
             val video =
                 withVideoOnStart?.let { if (it) Call.Video.Enabled else Call.Video.Disabled }
             preferredType = Call.PreferredType(audio = Call.Audio.Enabled, video = video)
@@ -196,10 +190,20 @@ class GlassCallService : CallService() {
         collaboration = createCollaboration(session)
     }
 
-    private fun createCollaboration(session: CollaborationSession): Collaboration =
-        Collaboration.create(session).apply {
-            phoneBox.connect()
+    private fun createCollaboration(session: CollaborationSession): Collaboration {
+        val collaboration = Collaboration.create(session)
+
+        with(collaboration.phoneBox) {
+//            state.onEach {
+//
+//            }.launchIn(lifecycleScope)
+
+            observe()
+            connect()
         }
+
+        return collaboration
+    }
 
     private fun createNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

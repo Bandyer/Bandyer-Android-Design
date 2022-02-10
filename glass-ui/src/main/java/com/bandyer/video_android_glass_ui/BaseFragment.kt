@@ -26,7 +26,7 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
      * Flag which point outs if the call service is already bound
      */
     private val isServiceBound: Boolean
-        get() = activity.isServiceBound
+        get() = activity.service != null
 
     /**
      * The fragment's view binding
