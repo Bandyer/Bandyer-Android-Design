@@ -214,19 +214,21 @@ class GlassCallService : CallService() {
     }
 
     private fun PhoneBox.observe() {
-        combine(state, call) { state, call -> Pair(state, call) }
-            .takeWhile { it.first !is PhoneBox.State.Destroyed }
-            .map { it.second }
-            .onEach { call ->
-                if (currentCall != null) return@onEach
+        val callJob = call.onEach { call ->
+            if (currentCall != null) return@onEach
 //                if (ongoingCalls.isNotEmpty()) return@onEach
 
 //                ongoingCalls.add(call)
-                currentCall = call
-                call.setup()
+            currentCall = call
+            call.setup()
 
-                GlassUIProvider.showCall(this@GlassCallService)
-            }.launchIn(lifecycleScope)
+            GlassUIProvider.showCall(this@GlassCallService)
+        }.launchIn(lifecycleScope)
+
+        state
+            .takeWhile { it !is PhoneBox.State.Destroyed }
+            .onCompletion { callJob.cancel() }
+            .launchIn(lifecycleScope)
     }
 
     private fun Call.setup() {
@@ -287,37 +289,36 @@ class GlassCallService : CallService() {
             .launchIn(lifecycleScope)
 
     override suspend fun onRequestMicPermission(context: FragmentActivity): Permission {
-        return if (currentCall!!.inputs.allowList.value.firstOrNull { it is Input.Audio } != null) Permission(
+        return if (currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Audio } != null) Permission(
             isAllowed = true,
             neverAskAgain = false
         )
-        else currentCall!!.inputs.request(context, Inputs.Type.Microphone)
-            .let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
+        else currentCall?.inputs?.request(context, Inputs.Type.Microphone).let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
     }
 
     override suspend fun onRequestCameraPermission(context: FragmentActivity): Permission {
-        return if (currentCall!!.inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } != null) Permission(
+        return if (currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera.Internal } != null) Permission(
             isAllowed = true,
             neverAskAgain = false
         )
-        else currentCall!!.inputs.request(context, Inputs.Type.Camera.Internal)
+        else currentCall?.inputs?.request(context, Inputs.Type.Camera.Internal)
             .let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
     }
 
-    override fun onAnswer() = currentCall!!.connect()
+    override fun onAnswer() { currentCall?.connect() }
 
-    override fun onHangup() = currentCall!!.disconnect()
+    override fun onHangup() { currentCall?.disconnect() }
 
     override fun onEnableCamera(enable: Boolean) {
         val video =
-            currentCall!!.participants.value.me.streams.value.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value
+            currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value
                 ?: return
         if (enable) video.tryEnable() else video.tryDisable()
     }
 
     override fun onEnableMic(enable: Boolean) {
         val audio =
-            currentCall!!.participants.value.me.streams.value.firstOrNull()?.audio?.value ?: return
+            currentCall?.participants?.value?.me?.streams?.value?.firstOrNull()?.audio?.value ?: return
         if (enable) audio.tryEnable() else audio.tryDisable()
     }
 
