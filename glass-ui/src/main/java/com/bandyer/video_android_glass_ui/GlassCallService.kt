@@ -156,13 +156,7 @@ class GlassCallService : CallService() {
         callAudioManager = null
     }
 
-    override fun onUserDetails() = Unit
-
-    fun connect(session: CollaborationSession) {
-        collaboration = createCollaboration(session)
-    }
-
-    override fun onDial(otherUsers: List<String>, withVideoOnStart: Boolean?) {
+    override fun dial(otherUsers: List<String>, withVideoOnStart: Boolean?) {
         if (collaboration!!.phoneBox.state.value is PhoneBox.State.Destroyed || collaboration!!.phoneBox.state.value is PhoneBox.State.Failed) {
             Log.e(TAG, "cannot perform call dial")
             return
@@ -177,16 +171,16 @@ class GlassCallService : CallService() {
         startForeground(NOTIFICATION_ID, createNotification())
     }
 
-    override fun onJoinUrl(joinUrl: String) {
+    override fun joinUrl(joinUrl: String) {
         collaboration!!.phoneBox.create(joinUrl).connect()
         startForeground(NOTIFICATION_ID, createNotification())
     }
 
-    override fun onUpdateSession(session: CollaborationSession) {
+    override fun updateSession(session: CollaborationSession) {
         // TODO Do we want this behaviour when the session in updated?
         currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session is expired"))
-        collaboration!!.phoneBox.disconnect()
-        collaboration!!.destroy()
+        collaboration?.phoneBox?.disconnect()
+        collaboration?.destroy()
         collaboration = createCollaboration(session)
     }
 
