@@ -132,18 +132,15 @@ class GlassCallService : CallService() {
         callAudioManager = CallAudioManager(this)
     }
 
-    override fun onBind(intent: Intent): IBinder {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
         application.registerActivityLifecycleCallbacks(activityLifecycleCallback)
-        return super.onBind(intent)
-    }
-
-    override fun onUnbind(intent: Intent?): Boolean {
-        application.unregisterActivityLifecycleCallbacks(activityLifecycleCallback)
-        return super.onUnbind(intent)
+        return START_NOT_STICKY
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        application.unregisterActivityLifecycleCallbacks(activityLifecycleCallback)
         currentCall?.disconnect()
         collaboration?.phoneBox?.disconnect()
         collaboration?.destroy()
