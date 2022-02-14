@@ -159,6 +159,10 @@ class GlassCallService : CallService() {
     }
 
     override fun dial(otherUsers: List<String>, withVideoOnStart: Boolean?) {
+        if (collaboration == null) {
+            Log.e(TAG, "Collaboration is null")
+            return
+        }
         if (collaboration!!.phoneBox.state.value is PhoneBox.State.Destroyed || collaboration!!.phoneBox.state.value is PhoneBox.State.Failed) {
             Log.e(TAG, "cannot perform call dial")
             return
@@ -192,7 +196,7 @@ class GlassCallService : CallService() {
         collaboration = createCollaboration(session) ?: return
         collaboration!!.phoneBox.state
             .onEach {
-                when(it) {
+                when (it) {
                     is PhoneBox.State.Connected -> onPhoneBoxConnected?.invoke()
                     is PhoneBox.State.Failed -> onPhoneBoxFailure?.invoke()
                     else -> Unit
@@ -302,7 +306,7 @@ class GlassCallService : CallService() {
                 streamsJob.cancel()
                 currentCall = null
 
-                if(disconnectPhoneBox)
+                if (disconnectPhoneBox)
                     collaboration?.phoneBox?.disconnect()
 
 //                ongoingCalls.remove(this@setup)
