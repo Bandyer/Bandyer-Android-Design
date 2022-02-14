@@ -458,7 +458,7 @@ internal class GlassActivity :
 
     override fun onExpanded() {
         isNotificationVisible = false
-        if (supportFragmentManager.currentNavigationFragment?.id != R.id.smartglass_nav_graph_chat)
+        if (currentFragment?.id != R.id.smartglass_nav_graph_chat)
             navController!!.navigate(R.id.smartglass_nav_graph_chat)
     }
 

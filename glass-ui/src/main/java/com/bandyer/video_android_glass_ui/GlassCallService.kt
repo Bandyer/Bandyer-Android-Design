@@ -10,7 +10,6 @@ import android.app.Service
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.FragmentActivity
@@ -143,6 +142,7 @@ class GlassCallService : CallService() {
         application.unregisterActivityLifecycleCallbacks(activityLifecycleCallback)
         currentCall?.disconnect()
         collaboration?.phoneBox?.disconnect()
+        collaboration?.phoneBox?.destroy()
         collaboration?.destroy()
         batteryObserver?.stop()
         wifiObserver?.stop()
@@ -159,13 +159,17 @@ class GlassCallService : CallService() {
             return
         }
 
-        collaboration!!.phoneBox.create(otherUsers.map { BuddyUser(it.trim()) }) {
-            val video =
-                withVideoOnStart?.let { if (it) Call.Video.Enabled else Call.Video.Disabled }
-            preferredType = Call.PreferredType(audio = Call.Audio.Enabled, video = video)
-        }.connect()
+        try {
+            collaboration!!.phoneBox.create(otherUsers.map { BuddyUser(it.trim()) }) {
+                val video =
+                    withVideoOnStart?.let { if (it) Call.Video.Enabled else Call.Video.Disabled }
+                preferredType = Call.PreferredType(audio = Call.Audio.Enabled, video = video)
+            }.connect()
 
-        startForeground(NOTIFICATION_ID, createNotification())
+            startForeground(NOTIFICATION_ID, createNotification())
+        } catch (t: Throwable) {
+            Log.e(TAG, t.message, t)
+        }
     }
 
     override fun joinUrl(joinUrl: String) {
@@ -173,28 +177,75 @@ class GlassCallService : CallService() {
         startForeground(NOTIFICATION_ID, createNotification())
     }
 
-    override fun updateSession(session: CollaborationSession) {
+    override fun establishSession(
+        session: CollaborationSession,
+        onReady: (() -> Unit)?,
+        onFailure: (() -> Unit)?
+    ) {
         // TODO Do we want this behaviour when the session in updated?
-        currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session is expired"))
+        closeSession()
+        collaboration = createCollaboration(session) ?: return
+        collaboration!!.phoneBox.state
+            .onEach {
+                when(it) {
+                    is PhoneBox.State.Connected -> onReady?.invoke()
+                    is PhoneBox.State.Failed -> onFailure?.invoke()
+                    else -> Unit
+                }
+            }
+            .takeWhile { it !is PhoneBox.State.Destroyed && it !is PhoneBox.State.Failed }
+            .launchIn(lifecycleScope)
+    }
+
+    override fun closeSession() {
+        currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session closed"))
         collaboration?.phoneBox?.disconnect()
+        collaboration?.phoneBox?.destroy()
         collaboration?.destroy()
-        collaboration = createCollaboration(session)
+        currentCall = null
+        collaboration = null
     }
 
-    private fun createCollaboration(session: CollaborationSession): Collaboration {
-        val collaboration = Collaboration.create(session)
+//    fun isSessionOpen() =
+//        collaboration != null && collaboration!!.phoneBox.state.value != PhoneBox.State.Destroyed && collaboration!!.phoneBox.state.value != PhoneBox.State.Failed
 
-        with(collaboration.phoneBox) {
-//            state.onEach {
-//
-//            }.launchIn(lifecycleScope)
+//    override fun connectPhoneBox() {
+//        if (collaboration == null) {
+//            Log.e(TAG, "Collaboration is null")
+//            return
+//        }
+//        try {
+//            collaboration!!.phoneBox.connect()
+//        } catch (t: Throwable) {
+//            Log.e(TAG, t.message, t)
+//        }
+//    }
 
-            observe()
-            connect()
+//    override fun disconnectPhoneBox(forceClose: Boolean) {
+//        if (collaboration == null) {
+//            Log.e(TAG, "Collaboration is null")
+//            return
+//        }
+//        if (currentCall == null)
+//            collaboration?.phoneBox?.disconnect()
+//        else if (currentCall != null && forceClose) {
+//            currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session closed"))
+//            collaboration?.phoneBox?.disconnect()
+//        }
+//    }
+
+    private fun createCollaboration(session: CollaborationSession): Collaboration? {
+        return try {
+            Collaboration.create(session).apply {
+                phoneBox.observe()
+                phoneBox.connect()
+            }
+        } catch (t: Throwable) {
+            Log.e(TAG, t.message, t)
+            null
         }
-
-        return collaboration
     }
+
 
     private fun createNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -293,7 +344,8 @@ class GlassCallService : CallService() {
             isAllowed = true,
             neverAskAgain = false
         )
-        else currentCall?.inputs?.request(context, Inputs.Type.Microphone).let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
+        else currentCall?.inputs?.request(context, Inputs.Type.Microphone)
+            .let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
     }
 
     override suspend fun onRequestCameraPermission(context: FragmentActivity): Permission {
@@ -305,9 +357,13 @@ class GlassCallService : CallService() {
             .let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
     }
 
-    override fun onAnswer() { currentCall?.connect() }
+    override fun onAnswer() {
+        currentCall?.connect()
+    }
 
-    override fun onHangup() { currentCall?.disconnect() }
+    override fun onHangup() {
+        currentCall?.disconnect()
+    }
 
     override fun onEnableCamera(enable: Boolean) {
         val video =
@@ -318,7 +374,8 @@ class GlassCallService : CallService() {
 
     override fun onEnableMic(enable: Boolean) {
         val audio =
-            currentCall?.participants?.value?.me?.streams?.value?.firstOrNull()?.audio?.value ?: return
+            currentCall?.participants?.value?.me?.streams?.value?.firstOrNull()?.audio?.value
+                ?: return
         if (enable) audio.tryEnable() else audio.tryDisable()
     }
 

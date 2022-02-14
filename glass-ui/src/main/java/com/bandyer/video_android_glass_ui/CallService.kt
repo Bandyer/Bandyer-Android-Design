@@ -9,11 +9,6 @@ import com.bandyer.collaboration_center.CollaborationSession
 abstract class CallService : LifecycleService(), CallUIDelegate, CallUIController,
     DeviceStatusDelegate {
 
-//    interface CallServiceListener {
-//        fun onConnected()
-//        fun onFailed()
-//    }
-
     @Suppress("UNCHECKED_CAST")
     inner class ServiceBinder : Binder() {
         fun <T : CallService> getService(): T = this@CallService as T
@@ -30,5 +25,15 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
 
     abstract fun joinUrl(joinUrl: String)
 
-    abstract fun updateSession(session: CollaborationSession)
+    abstract fun establishSession(
+        session: CollaborationSession,
+        onReady: (() -> Unit)? = null,
+        onFailure: (() -> Unit)? = null
+    )
+
+    abstract fun closeSession()
+
+//    abstract fun connectPhoneBox()
+//
+//    abstract fun disconnectPhoneBox(forceClose: Boolean = false)
 }
