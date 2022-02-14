@@ -127,6 +127,8 @@ class GlassCallService : CallService() {
     val isSessionEstablished: Boolean
         get() = collaboration != null && collaboration!!.phoneBox.state.value != PhoneBox.State.Destroyed && collaboration!!.phoneBox.state.value != PhoneBox.State.Failed
 
+    private var disconnectPhoneBox = false
+
     override fun onCreate() {
         super.onCreate()
         batteryObserver = BatteryObserver(this)
@@ -217,6 +219,10 @@ class GlassCallService : CallService() {
             return
         }
         try {
+            if (collaboration!!.phoneBox.state.value is PhoneBox.State.Connected) {
+                disconnectPhoneBox = false
+                return
+            }
             collaboration!!.phoneBox.connect()
         } catch (t: Throwable) {
             Log.e(TAG, t.message, t)
@@ -228,11 +234,13 @@ class GlassCallService : CallService() {
             Log.e(TAG, "Collaboration is null")
             return
         }
-        if (currentCall == null)
-            collaboration?.phoneBox?.disconnect()
-        else if (currentCall != null && forceClose) {
-            currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session closed"))
-            collaboration?.phoneBox?.disconnect()
+        when {
+            currentCall == null -> collaboration?.phoneBox?.disconnect()
+            currentCall != null && forceClose -> {
+                currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session closed"))
+                collaboration?.phoneBox?.disconnect()
+            }
+            else -> disconnectPhoneBox = true
         }
     }
 
@@ -293,6 +301,10 @@ class GlassCallService : CallService() {
                 publishJob.cancel()
                 streamsJob.cancel()
                 currentCall = null
+
+                if(disconnectPhoneBox)
+                    collaboration?.phoneBox?.disconnect()
+
 //                ongoingCalls.remove(this@setup)
                 stopForeground(true)
             }.launchIn(lifecycleScope)
