@@ -56,17 +56,7 @@ internal class GlassActivity :
     }
 
     var service: GlassCallService? = null
-    var serviceConnection: ServiceConnection? = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, binder: IBinder) {
-            service = (binder as CallService.ServiceBinder).getService()
-            onServiceBound()
-            notifyServiceBinding()
-        }
-
-        override fun onServiceDisconnected(componentName: ComponentName) {
-            service = null
-        }
-    }
+    var serviceConnection: ServiceConnection? = null
 
     // BINDING AND VIEWS
     private lateinit var binding: BandyerActivityGlassBinding
@@ -150,6 +140,17 @@ internal class GlassActivity :
     }
 
     private fun bindCallService() {
+        serviceConnection = object : ServiceConnection {
+            override fun onServiceConnected(className: ComponentName, binder: IBinder) {
+                service = (binder as CallService.ServiceBinder).getService()
+                onServiceBound()
+                notifyServiceBinding()
+            }
+
+            override fun onServiceDisconnected(componentName: ComponentName) {
+                service = null
+            }
+        }
         Intent(this, GlassCallService::class.java).also { intent ->
             bindService(intent, serviceConnection!!, 0)
         }
