@@ -27,13 +27,13 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
 
     abstract fun establishSession(
         session: CollaborationSession,
-        onReady: (() -> Unit)? = null,
-        onFailure: (() -> Unit)? = null
+        onPhoneBoxConnected: (() -> Unit)? = null,
+        onPhoneBoxFailure: (() -> Unit)? = null
     )
 
     abstract fun closeSession()
 
-//    abstract fun connectPhoneBox()
-//
-//    abstract fun disconnectPhoneBox(forceClose: Boolean = false)
+    abstract fun connectPhoneBox()
+
+    abstract fun disconnectPhoneBox(forceClose: Boolean = false)
 }

@@ -124,6 +124,9 @@ class GlassCallService : CallService() {
     override val wifi: SharedFlow<WiFiInfo>
         get() = wifiObserver!!.observe()
 
+    val isSessionEstablished: Boolean
+        get() = collaboration != null && collaboration!!.phoneBox.state.value != PhoneBox.State.Destroyed && collaboration!!.phoneBox.state.value != PhoneBox.State.Failed
+
     override fun onCreate() {
         super.onCreate()
         batteryObserver = BatteryObserver(this)
@@ -179,8 +182,8 @@ class GlassCallService : CallService() {
 
     override fun establishSession(
         session: CollaborationSession,
-        onReady: (() -> Unit)?,
-        onFailure: (() -> Unit)?
+        onPhoneBoxConnected: (() -> Unit)?,
+        onPhoneBoxFailure: (() -> Unit)?
     ) {
         // TODO Do we want this behaviour when the session in updated?
         closeSession()
@@ -188,12 +191,14 @@ class GlassCallService : CallService() {
         collaboration!!.phoneBox.state
             .onEach {
                 when(it) {
-                    is PhoneBox.State.Connected -> onReady?.invoke()
-                    is PhoneBox.State.Failed -> onFailure?.invoke()
+                    is PhoneBox.State.Connected -> onPhoneBoxConnected?.invoke()
+                    is PhoneBox.State.Failed -> onPhoneBoxFailure?.invoke()
                     else -> Unit
                 }
             }
-            .takeWhile { it !is PhoneBox.State.Destroyed && it !is PhoneBox.State.Failed }
+            .takeWhile {
+                it !is PhoneBox.State.Connected && it !is PhoneBox.State.Destroyed && it !is PhoneBox.State.Failed
+            }
             .launchIn(lifecycleScope)
     }
 
@@ -206,33 +211,30 @@ class GlassCallService : CallService() {
         collaboration = null
     }
 
-//    fun isSessionOpen() =
-//        collaboration != null && collaboration!!.phoneBox.state.value != PhoneBox.State.Destroyed && collaboration!!.phoneBox.state.value != PhoneBox.State.Failed
+    override fun connectPhoneBox() {
+        if (collaboration == null) {
+            Log.e(TAG, "Collaboration is null")
+            return
+        }
+        try {
+            collaboration!!.phoneBox.connect()
+        } catch (t: Throwable) {
+            Log.e(TAG, t.message, t)
+        }
+    }
 
-//    override fun connectPhoneBox() {
-//        if (collaboration == null) {
-//            Log.e(TAG, "Collaboration is null")
-//            return
-//        }
-//        try {
-//            collaboration!!.phoneBox.connect()
-//        } catch (t: Throwable) {
-//            Log.e(TAG, t.message, t)
-//        }
-//    }
-
-//    override fun disconnectPhoneBox(forceClose: Boolean) {
-//        if (collaboration == null) {
-//            Log.e(TAG, "Collaboration is null")
-//            return
-//        }
-//        if (currentCall == null)
-//            collaboration?.phoneBox?.disconnect()
-//        else if (currentCall != null && forceClose) {
-//            currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session closed"))
-//            collaboration?.phoneBox?.disconnect()
-//        }
-//    }
+    override fun disconnectPhoneBox(forceClose: Boolean) {
+        if (collaboration == null) {
+            Log.e(TAG, "Collaboration is null")
+            return
+        }
+        if (currentCall == null)
+            collaboration?.phoneBox?.disconnect()
+        else if (currentCall != null && forceClose) {
+            currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session closed"))
+            collaboration?.phoneBox?.disconnect()
+        }
+    }
 
     private fun createCollaboration(session: CollaborationSession): Collaboration? {
         return try {
@@ -245,7 +247,6 @@ class GlassCallService : CallService() {
             null
         }
     }
-
 
     private fun createNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
