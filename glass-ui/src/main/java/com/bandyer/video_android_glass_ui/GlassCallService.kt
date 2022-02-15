@@ -22,6 +22,7 @@ import com.bandyer.android_common.network_observer.WiFiObserver
 import com.bandyer.collaboration_center.BuddyUser
 import com.bandyer.collaboration_center.Collaboration
 import com.bandyer.collaboration_center.CollaborationSession
+import com.bandyer.collaboration_center.Configuration
 import com.bandyer.collaboration_center.PhoneBox
 import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.collaboration_center.phonebox.Input
@@ -40,13 +41,15 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
+import okhttp3.OkHttpClient
 
 @SuppressLint("MissingPermission")
 class GlassCallService : CallService() {
 
-    private companion object {
+    companion object {
         var TAG = "${this::class.java}"
         var NOTIFICATION_ID = 2022
+        var okHttpClient = OkHttpClient.Builder().build()
     }
 
     private var collaboration: Collaboration? = null
@@ -255,7 +258,7 @@ class GlassCallService : CallService() {
 
     private fun createCollaboration(session: CollaborationSession): Collaboration? {
         return try {
-            Collaboration.create(session).apply {
+            Collaboration.create(session, Configuration(okHttpClient)).apply {
                 phoneBox.observe()
                 phoneBox.connect()
             }
@@ -264,6 +267,7 @@ class GlassCallService : CallService() {
             null
         }
     }
+
 
     private fun createNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
