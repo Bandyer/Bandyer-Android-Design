@@ -194,7 +194,7 @@ class GlassCallService : CallService() {
         startForeground(NOTIFICATION_ID, createNotification())
     }
 
-    override fun establishSession(
+    override fun setupSession(
         session: CollaborationSession,
         onPhoneBoxConnected: (() -> Unit)?,
         onPhoneBoxFailure: (() -> Unit)?
@@ -225,7 +225,7 @@ class GlassCallService : CallService() {
         collaboration = null
     }
 
-    override fun connectPhoneBox() {
+    override fun connect() {
         if (collaboration == null) {
             Log.e(TAG, "Collaboration is null")
             return
@@ -241,14 +241,14 @@ class GlassCallService : CallService() {
         }
     }
 
-    override fun disconnectPhoneBox(forceClose: Boolean) {
+    override fun disconnect(force: Boolean) {
         if (collaboration == null) {
             Log.e(TAG, "Collaboration is null")
             return
         }
         when {
             currentCall == null -> collaboration?.phoneBox?.disconnect()
-            currentCall != null && forceClose -> {
+            currentCall != null && force -> {
                 currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session closed"))
                 collaboration?.phoneBox?.disconnect()
             }
@@ -267,7 +267,6 @@ class GlassCallService : CallService() {
             null
         }
     }
-
 
     private fun createNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

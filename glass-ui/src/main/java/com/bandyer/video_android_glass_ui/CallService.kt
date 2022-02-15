@@ -25,7 +25,7 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
 
     abstract fun joinUrl(joinUrl: String)
 
-    abstract fun establishSession(
+    abstract fun setupSession(
         session: CollaborationSession,
         onPhoneBoxConnected: (() -> Unit)? = null,
         onPhoneBoxFailure: (() -> Unit)? = null
@@ -33,7 +33,7 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
 
     abstract fun closeSession()
 
-    abstract fun connectPhoneBox()
+    abstract fun connect()
 
-    abstract fun disconnectPhoneBox(forceClose: Boolean = false)
+    abstract fun disconnect(force: Boolean = false)
 }
