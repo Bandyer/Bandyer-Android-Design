@@ -127,10 +127,14 @@ class GlassCallService : CallService() {
     val isSessionEstablished: Boolean
         get() = collaboration != null && collaboration!!.phoneBox.state.value != PhoneBox.State.Destroyed && collaboration!!.phoneBox.state.value != PhoneBox.State.Failed
 
+    var isRunning: Boolean = false
+        private set
+
     private var disconnectPhoneBox = false
 
     override fun onCreate() {
         super.onCreate()
+        isRunning = true
         batteryObserver = BatteryObserver(this)
         wifiObserver = WiFiObserver(this)
         callAudioManager = CallAudioManager(this)
@@ -144,6 +148,7 @@ class GlassCallService : CallService() {
 
     override fun onDestroy() {
         super.onDestroy()
+        isRunning = false
         application.unregisterActivityLifecycleCallbacks(activityLifecycleCallback)
         currentCall?.disconnect()
         collaboration?.phoneBox?.disconnect()
