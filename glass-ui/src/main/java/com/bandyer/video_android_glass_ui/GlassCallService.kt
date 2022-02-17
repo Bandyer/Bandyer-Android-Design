@@ -10,13 +10,19 @@ import android.app.Service
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bandyer.android_common.audio.CallAudioManager
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.battery_observer.BatteryObserver
+import com.bandyer.android_common.logging.BaseLogger
+import com.bandyer.android_common.logging.PriorityLogger
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.android_common.network_observer.WiFiObserver
 import com.bandyer.collaboration_center.BuddyUser
@@ -44,7 +50,7 @@ import kotlinx.coroutines.flow.takeWhile
 import okhttp3.OkHttpClient
 
 @SuppressLint("MissingPermission")
-class GlassCallService : CallService() {
+class GlassCallService : CallService(), DefaultLifecycleObserver {
 
     companion object {
         var TAG = "${this::class.java}"
@@ -71,6 +77,20 @@ class GlassCallService : CallService() {
             if (activity !is GlassActivity) return
             fragmentActivity = null
         }
+    }
+
+    private var hasBeenDisconnected = false
+
+    override fun onStart(owner: LifecycleOwner) {
+        if (!hasBeenDisconnected) return
+        hasBeenDisconnected = false
+        collaboration?.phoneBox?.connect()
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        if (currentCall != null) return
+        hasBeenDisconnected = true
+        collaboration?.phoneBox?.disconnect()
     }
 
     private var batteryObserver: BatteryObserver? = null
@@ -128,12 +148,14 @@ class GlassCallService : CallService() {
         get() = wifiObserver!!.observe()
 
     val isSessionEstablished: Boolean
-        get() = collaboration != null && collaboration!!.phoneBox.state.value != PhoneBox.State.Destroyed && collaboration!!.phoneBox.state.value != PhoneBox.State.Failed
+        get() = collaboration != null && collaboration!!.phoneBox.state.value is PhoneBox.State.Connected
 
     private var disconnectPhoneBox = false
 
     override fun onCreate() {
-        super.onCreate()
+        super<CallService>.onCreate()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+
         batteryObserver = BatteryObserver(this)
         wifiObserver = WiFiObserver(this)
         callAudioManager = CallAudioManager(this)
@@ -142,16 +164,19 @@ class GlassCallService : CallService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         application.registerActivityLifecycleCallbacks(activityLifecycleCallback)
-        return START_NOT_STICKY
+        return START_STICKY
+    }
+
+    override fun onBind(intent: Intent): IBinder {
+        return super.onBind(intent)
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        super<CallService>.onDestroy()
+        ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(activityLifecycleCallback)
         currentCall?.disconnect()
         collaboration?.phoneBox?.disconnect()
-        collaboration?.phoneBox?.destroy()
-        collaboration?.destroy()
         batteryObserver?.stop()
         wifiObserver?.stop()
         currentCall = null
@@ -166,10 +191,10 @@ class GlassCallService : CallService() {
             Log.e(TAG, "Collaboration is null")
             return
         }
-        if (collaboration!!.phoneBox.state.value is PhoneBox.State.Destroyed || collaboration!!.phoneBox.state.value is PhoneBox.State.Failed) {
-            Log.e(TAG, "cannot perform call dial")
-            return
-        }
+//        if (collaboration!!.phoneBox.state.value is PhoneBox.State.Destroyed || collaboration!!.phoneBox.state.value is PhoneBox.State.Failed) {
+//            Log.e(TAG, "cannot perform call dial")
+//            return
+//        }
 
         try {
             collaboration!!.phoneBox.create(otherUsers.map { BuddyUser(it.trim()) }) {
@@ -192,7 +217,7 @@ class GlassCallService : CallService() {
     override fun setupSession(
         session: CollaborationSession,
         onPhoneBoxConnected: (() -> Unit)?,
-        onPhoneBoxFailure: (() -> Unit)?
+        onPhoneBoxDisconnected: (() -> Unit)?
     ) {
         // TODO Do we want this behaviour when the session in updated?
         closeSession()
@@ -200,13 +225,13 @@ class GlassCallService : CallService() {
         collaboration!!.phoneBox.state
             .onEach {
                 when (it) {
-                    is PhoneBox.State.Connected -> onPhoneBoxConnected?.invoke()
-                    is PhoneBox.State.Failed -> onPhoneBoxFailure?.invoke()
-                    else -> Unit
+                    is PhoneBox.State.Connected    -> onPhoneBoxConnected?.invoke()
+                    is PhoneBox.State.Disconnected -> onPhoneBoxDisconnected?.invoke()
+                    else                           -> Unit
                 }
             }
             .takeWhile {
-                it !is PhoneBox.State.Connected && it !is PhoneBox.State.Destroyed && it !is PhoneBox.State.Failed
+                it !is PhoneBox.State.Connected
             }
             .launchIn(lifecycleScope)
     }
@@ -214,8 +239,6 @@ class GlassCallService : CallService() {
     override fun closeSession() {
         currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session closed"))
         collaboration?.phoneBox?.disconnect()
-        collaboration?.phoneBox?.destroy()
-        collaboration?.destroy()
         currentCall = null
         collaboration = null
     }
@@ -242,18 +265,46 @@ class GlassCallService : CallService() {
             return
         }
         when {
-            currentCall == null -> collaboration?.phoneBox?.disconnect()
+            currentCall == null          -> collaboration?.phoneBox?.disconnect()
             currentCall != null && force -> {
                 currentCall?.disconnect(Call.State.Disconnected.Ended.Error.Client("Session closed"))
                 collaboration?.phoneBox?.disconnect()
             }
-            else -> disconnectPhoneBox = true
+            else                         -> disconnectPhoneBox = true
         }
     }
 
     private fun createCollaboration(session: CollaborationSession): Collaboration? {
         return try {
-            Collaboration.create(session, Configuration(okHttpClient)).apply {
+            Collaboration.create(session, Configuration(okHttpClient, logger = object : PriorityLogger(BaseLogger.VERBOSE) {
+                override val target: Int
+                    get() = 1.shl(12) or 1.shl(13) or 1.shl(14) or 1.shl(15) or 1.shl(16)
+
+                override fun verbose(tag: String, message: String) {
+                    Log.v(tag, message)
+                }
+
+                override fun debug(tag: String, message: String) {
+                    Log.d(tag, message)
+
+                }
+
+                override fun info(tag: String, message: String) {
+                    Log.i(tag, message)
+
+                }
+
+                override fun warn(tag: String, message: String) {
+                    Log.w(tag, message)
+
+                }
+
+                override fun error(tag: String, message: String) {
+                    Log.e(tag, message)
+
+                }
+
+            })).apply {
                 phoneBox.observe()
                 phoneBox.connect()
             }
@@ -293,7 +344,6 @@ class GlassCallService : CallService() {
         }.launchIn(lifecycleScope)
 
         state
-            .takeWhile { it !is PhoneBox.State.Destroyed }
             .onCompletion { callJob.cancel() }
             .launchIn(lifecycleScope)
     }
