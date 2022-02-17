@@ -6,8 +6,7 @@ import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import com.bandyer.collaboration_center.CollaborationSession
 
-abstract class CallService : LifecycleService(), CallUIDelegate, CallUIController,
-    DeviceStatusDelegate {
+abstract class CallService : LifecycleService(), CallUIDelegate, CallUIController, DeviceStatusDelegate {
 
     @Suppress("UNCHECKED_CAST")
     inner class ServiceBinder : Binder() {
@@ -25,11 +24,7 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
 
     abstract fun joinUrl(joinUrl: String)
 
-    abstract fun setupSession(session: CollaborationSession)
-
-    abstract fun closeSession()
-
-    abstract fun connect()
+    abstract fun connect(session: CollaborationSession)
 
     abstract fun disconnect(force: Boolean = false)
 }
