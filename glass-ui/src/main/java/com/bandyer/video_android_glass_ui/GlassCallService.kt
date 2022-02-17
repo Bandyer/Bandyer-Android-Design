@@ -66,6 +66,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver {
         override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
             if (activity !is GlassActivity) return
             fragmentActivity = activity
+            startForeground(NOTIFICATION_ID, createNotification())
         }
 
         override fun onActivityStarted(activity: Activity) = Unit
@@ -76,6 +77,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver {
         override fun onActivityDestroyed(activity: Activity) {
             if (activity !is GlassActivity) return
             fragmentActivity = null
+            stopForeground(true)
         }
     }
 
@@ -164,7 +166,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         application.registerActivityLifecycleCallbacks(activityLifecycleCallback)
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
     override fun onBind(intent: Intent): IBinder {
@@ -203,7 +205,6 @@ class GlassCallService : CallService(), DefaultLifecycleObserver {
                 preferredType = Call.PreferredType(audio = Call.Audio.Enabled, video = video)
             }.connect()
 
-            startForeground(NOTIFICATION_ID, createNotification())
         } catch (t: Throwable) {
             Log.e(TAG, t.message, t)
         }
@@ -211,7 +212,6 @@ class GlassCallService : CallService(), DefaultLifecycleObserver {
 
     override fun joinUrl(joinUrl: String) {
         collaboration!!.phoneBox.create(joinUrl).connect()
-        startForeground(NOTIFICATION_ID, createNotification())
     }
 
     override fun setupSession(
@@ -363,7 +363,6 @@ class GlassCallService : CallService(), DefaultLifecycleObserver {
                     collaboration?.phoneBox?.disconnect()
 
 //                ongoingCalls.remove(this@setup)
-                stopForeground(true)
             }.launchIn(lifecycleScope)
     }
 
@@ -409,23 +408,13 @@ class GlassCallService : CallService(), DefaultLifecycleObserver {
             }
             .launchIn(lifecycleScope)
 
-    override suspend fun onRequestMicPermission(context: FragmentActivity): Permission {
-        return if (currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Audio } != null) Permission(
-            isAllowed = true,
-            neverAskAgain = false
-        )
-        else currentCall?.inputs?.request(context, Inputs.Type.Microphone)
-            .let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
-    }
+    override suspend fun onRequestMicPermission(context: FragmentActivity): Permission =
+        if (currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Audio } != null) Permission(isAllowed = true, neverAskAgain = false)
+        else currentCall?.inputs?.request(context, Inputs.Type.Microphone).let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
 
-    override suspend fun onRequestCameraPermission(context: FragmentActivity): Permission {
-        return if (currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera.Internal } != null) Permission(
-            isAllowed = true,
-            neverAskAgain = false
-        )
-        else currentCall?.inputs?.request(context, Inputs.Type.Camera.Internal)
-            .let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
-    }
+    override suspend fun onRequestCameraPermission(context: FragmentActivity): Permission =
+        if (currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera.Internal } != null) Permission(isAllowed = true, neverAskAgain = false)
+        else currentCall?.inputs?.request(context, Inputs.Type.Camera.Internal).let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
 
     override fun onAnswer() {
         currentCall?.connect()
@@ -436,16 +425,12 @@ class GlassCallService : CallService(), DefaultLifecycleObserver {
     }
 
     override fun onEnableCamera(enable: Boolean) {
-        val video =
-            currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value
-                ?: return
+        val video = currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value ?: return
         if (enable) video.tryEnable() else video.tryDisable()
     }
 
     override fun onEnableMic(enable: Boolean) {
-        val audio =
-            currentCall?.participants?.value?.me?.streams?.value?.firstOrNull()?.audio?.value
-                ?: return
+        val audio = currentCall?.participants?.value?.me?.streams?.value?.firstOrNull()?.audio?.value ?: return
         if (enable) audio.tryEnable() else audio.tryDisable()
     }
 
