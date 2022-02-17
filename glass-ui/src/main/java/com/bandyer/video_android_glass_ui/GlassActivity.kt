@@ -55,7 +55,6 @@ internal class GlassActivity :
     }
 
     var service: GlassCallService? = null
-    var streamsJob: Job? = null
     var uiJob: Job? = null
 
     // BINDING AND VIEWS
@@ -335,25 +334,21 @@ internal class GlassActivity :
                                 })
                             binding.bandyerToastContainer.show(text = toastText)
                         }.launchIn(this)
-                }
 
-                if (streamsJob == null) {
-                    streamsJob = lifecycleScope.launch {
-                        viewModel.streams
-                            .onEach { streams ->
-                                val orderedList = streams.sortedBy { !it.isMyStream }.map {
-                                    if (it.isMyStream) MyStreamItem(
-                                        it,
-                                        viewModel.userDetailsDelegate,
-                                        this,
-                                        viewModel.micPermission,
-                                        viewModel.camPermission
-                                    ) else OtherStreamItem(it, viewModel.userDetailsDelegate, this)
-                                }
-                                FastAdapterDiffUtil[itemAdapter!!] =
-                                    FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
-                            }.launchIn(this)
-                    }
+                    viewModel.streams
+                        .onEach { streams ->
+                            val orderedList = streams.sortedBy { !it.isMyStream }.map {
+                                if (it.isMyStream) MyStreamItem(
+                                    it,
+                                    viewModel.userDetailsDelegate,
+                                    lifecycleScope,
+                                    viewModel.micPermission,
+                                    viewModel.camPermission
+                                ) else OtherStreamItem(it, viewModel.userDetailsDelegate, lifecycleScope)
+                            }
+                            FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
+                        }.launchIn(this)
+
                 }
 
                 notifyServiceBinding()
@@ -385,7 +380,6 @@ internal class GlassActivity :
 
     override fun onDestroy() {
         super.onDestroy()
-        streamsJob?.cancel()
         itemAdapter!!.clear()
         decorView = null
         itemAdapter = null
