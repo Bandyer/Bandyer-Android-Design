@@ -25,8 +25,8 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
     /**
      * Flag which point outs if the call service is already bound
      */
-    private val isServiceBound: Boolean
-        get() = activity.service != null
+    private val isServiceConnected: Boolean
+        get() = activity.isServiceConnected
 
     /**
      * The fragment's view binding
@@ -83,8 +83,8 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (isServiceBound)
-            onServiceBound()
+        if (isServiceConnected)
+            onServiceConnected()
     }
 
     /**

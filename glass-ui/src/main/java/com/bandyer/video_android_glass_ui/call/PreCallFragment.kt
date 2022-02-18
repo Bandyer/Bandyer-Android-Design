@@ -6,15 +6,14 @@ import android.view.View
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlin.math.roundToInt
 
 internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoScrollView.OnScrollListener {
 
-    override fun onServiceBound() {
-        super.onServiceBound()
+    override fun onServiceConnected() {
+        super.onServiceConnected()
 
         with(binding) {
             bandyerParticipantsScrollView.onScrollListener = this@PreCallFragment

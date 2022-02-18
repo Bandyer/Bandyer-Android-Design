@@ -44,7 +44,7 @@ internal class StartFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onServiceBound() {
+    override fun onServiceConnected() {
         repeatOnStarted {
             viewModel.callState
                 .takeWhile { it is Call.State.Connecting || it == Call.State.Disconnected }

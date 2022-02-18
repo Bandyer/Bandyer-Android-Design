@@ -3,7 +3,7 @@ package com.bandyer.video_android_glass_ui
 interface ServiceBinderActivity {
 
     interface ServiceObserver {
-        fun onServiceBound()
+        fun onServiceConnected()
     }
 
     /**
@@ -33,6 +33,6 @@ interface ServiceBinderActivity {
      * Notify all BindServiceObservers
      */
     fun notifyServiceBinding() {
-        observers.forEach { it.onServiceBound() }
+        observers.forEach { it.onServiceConnected() }
     }
 }

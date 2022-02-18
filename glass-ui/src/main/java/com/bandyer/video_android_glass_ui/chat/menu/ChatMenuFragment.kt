@@ -110,7 +110,7 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
         return binding.root
     }
 
-    override fun onServiceBound() = Unit
+    override fun onServiceConnected() = Unit
 
     /**
      * @suppress
