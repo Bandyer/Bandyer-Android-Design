@@ -26,20 +26,20 @@ internal object Extensions {
         var serviceConnection: ServiceConnection?
 
         onLifecycleEvent(
-            onStart = {
+            onCreate = {
                 serviceConnection = serviceConnection(
                     onServiceConnected = { _, binder -> (binder as CallService.ServiceBinder).getService<T>().also { onConnected(it) } },
                     onServiceDisconnected = { onDisconnected() }
                 )
                 bindService(serviceConnection!!, clazz, 0)
             },
-            onStop = {
+            onDestroy = {
                 serviceConnection = null
             },
         )
     }
 
-    private inline fun LifecycleOwner.onLifecycleEvent(
+    inline fun LifecycleOwner.onLifecycleEvent(
         crossinline onCreate: (() -> Unit) = { },
         crossinline onStart: (() -> Unit) = { },
         crossinline onResume: (() -> Unit) = { },
