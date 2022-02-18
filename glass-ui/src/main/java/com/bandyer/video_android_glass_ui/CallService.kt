@@ -26,5 +26,5 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
 
     abstract fun connect(session: CollaborationSession)
 
-    abstract fun disconnect(force: Boolean = false)
+    abstract fun disconnect()
 }
