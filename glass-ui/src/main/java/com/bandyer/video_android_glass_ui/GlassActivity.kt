@@ -99,15 +99,6 @@ internal class GlassActivity :
 
         enterImmersiveMode()
 
-        onLifecycleEvent(
-            onCreate = { Log.e("MARIONE", "onCreate") },
-            onStart = { Log.e("MARIONE", "onStart") },
-            onResume = { Log.e("MARIONE", "onResume") },
-            onPause = { Log.e("MARIONE", "onPause") },
-            onStop = { Log.e("MARIONE", "onStop") },
-            onDestroy = { Log.e("MARIONE", "onDestroy") },
-        )
-
         binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
         // NavController
