@@ -161,7 +161,6 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
     override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
         if (activity !is GlassActivity) return
         fragmentActivity = activity
-        startForeground(NOTIFICATION_ID, createNotification())
     }
 
     override fun onActivityStarted(activity: Activity) = Unit
@@ -177,7 +176,6 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
     override fun onActivityDestroyed(activity: Activity) {
         if (activity !is GlassActivity) return
         fragmentActivity = null
-        stopForeground(true)
     }
 
     // CallService
@@ -187,6 +185,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
                 withVideoOnStart?.let { if (it) Call.Video.Enabled else Call.Video.Disabled }
             preferredType = Call.PreferredType(audio = Call.Audio.Enabled, video = video)
         }.connect()
+        startForeground(NOTIFICATION_ID, createNotification())
     }
 
     override fun joinUrl(joinUrl: String) = collaboration!!.phoneBox.create(joinUrl).connect()
@@ -244,6 +243,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
                 if (shouldDisconnect)
                     collaboration?.phoneBox?.disconnect()
 
+                stopForeground(true)
 //                ongoingCalls.remove(this@setup)
             }.launchIn(lifecycleScope)
     }
