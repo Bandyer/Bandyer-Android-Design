@@ -169,65 +169,22 @@ class GlassCallService : CallService(), Application.ActivityLifecycleCallbacks {
     // CallService
     override fun dial(otherUsers: List<String>, withVideoOnStart: Boolean?) {
         collaboration!!.phoneBox.create(otherUsers.map { BuddyUser(it.trim()) }) {
-            val video = withVideoOnStart?.let { if (it) Call.Video.Enabled else Call.Video.Disabled }
+            val video =
+                withVideoOnStart?.let { if (it) Call.Video.Enabled else Call.Video.Disabled }
             preferredType = Call.PreferredType(audio = Call.Audio.Enabled, video = video)
         }.connect()
     }
 
-    override fun joinUrl(joinUrl: String) {
-        collaboration!!.phoneBox.create(joinUrl).connect()
-    }
+    override fun joinUrl(joinUrl: String) = collaboration!!.phoneBox.create(joinUrl).connect()
 
-    override fun connect(session: CollaborationSession) {
-        collaboration = collaboration ?: createCollaboration(session)
-        collaboration!!.phoneBox.connect()
-        shouldDisconnect = false
-    }
-
-    override fun disconnect() {
-        collaboration!!.phoneBox.disconnect()
-    }
-
-    private fun createCollaboration(session: CollaborationSession): Collaboration? {
-        return try {
-            Collaboration.create(
-                session,
-                Configuration(okHttpClient, logger = object : PriorityLogger(BaseLogger.VERBOSE) {
-                    override val target: Int
-                        get() = 1.shl(12) or 1.shl(13) or 1.shl(14) or 1.shl(15) or 1.shl(16)
-
-                    override fun verbose(tag: String, message: String) {
-                        Log.v(tag, message)
-                    }
-
-                    override fun debug(tag: String, message: String) {
-                        Log.d(tag, message)
-
-                    }
-
-                    override fun info(tag: String, message: String) {
-                        Log.i(tag, message)
-
-                    }
-
-                    override fun warn(tag: String, message: String) {
-                        Log.w(tag, message)
-
-                    }
-
-                    override fun error(tag: String, message: String) {
-                        Log.e(tag, message)
-
-                    }
-
-                }
-                )
-            ).apply { phoneBox.observe() }
-        } catch (t: Throwable) {
-            Log.e(TAG, t.message, t)
-            null
+    override fun connect(session: CollaborationSession, configuration: Configuration) {
+        collaboration = collaboration ?: Collaboration.create(session, configuration).apply {
+            phoneBox.observe()
         }
+        collaboration!!.phoneBox.connect()
     }
+
+    override fun disconnect() = collaboration!!.phoneBox.disconnect()
 
     private fun createNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
