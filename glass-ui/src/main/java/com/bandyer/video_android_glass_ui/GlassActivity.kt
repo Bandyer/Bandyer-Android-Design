@@ -3,6 +3,7 @@ package com.bandyer.video_android_glass_ui
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -23,20 +24,20 @@ import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.video_android_glass_ui.Extensions.bindCallService
+import com.bandyer.video_android_glass_ui.Extensions.onLifecycleEvent
 import com.bandyer.video_android_glass_ui.call.CallEndedFragmentArgs
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
+import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 /**
  * GlassActivity
@@ -52,10 +53,12 @@ internal class GlassActivity :
         const val BLOCKED_INPUT_TOAST_ID = "input-blocked"
         const val DISABLED_INPUT_TOAST_ID = "input-disabled"
         const val ALONE_TOAST_ID = "blocked-input"
+        var wasPausedForBackground = false
     }
 
-    var service: GlassCallService? = null
-    var uiJob: Job? = null
+    private var service: GlassCallService? = null
+    val isServiceConnected: Boolean
+        get() = service != null
 
     // BINDING AND VIEWS
     private lateinit var binding: BandyerActivityGlassBinding
@@ -73,9 +76,6 @@ internal class GlassActivity :
             service as CallUIController
         )
     }
-
-    // ACTIVITY FLAG
-    private var wasPausedForBackground = false
 
     // ADAPTER
     private var itemAdapter: ItemAdapter<StreamItem<*>>? = null
@@ -98,6 +98,15 @@ internal class GlassActivity :
         super.onCreate(savedInstanceState)
 
         enterImmersiveMode()
+
+        onLifecycleEvent(
+            onCreate = { Log.e("MARIONE", "onCreate") },
+            onStart = { Log.e("MARIONE", "onStart") },
+            onResume = { Log.e("MARIONE", "onResume") },
+            onPause = { Log.e("MARIONE", "onPause") },
+            onStop = { Log.e("MARIONE", "onStop") },
+            onDestroy = { Log.e("MARIONE", "onDestroy") },
+        )
 
         binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
@@ -191,7 +200,7 @@ internal class GlassActivity :
                     })
                 }
 
-                uiJob = lifecycleScope.launch {
+                repeatOnStarted {
                     viewModel
                         .battery
                         .onEach { binding.bandyerStatusBar.updateBatteryIcon(it) }
@@ -352,14 +361,22 @@ internal class GlassActivity :
                 }
 
                 notifyServiceBinding()
+
+                if (wasPausedForBackground) {
+                    viewModel.onEnableCamera(wasPausedForBackground)
+                    wasPausedForBackground = false
+                }
             },
             onDisconnected = {
                 service = null
             })
     }
 
+
     override fun onTopResumedActivityChanged(isTopResumedActivity: Boolean) {
         super.onTopResumedActivityChanged(isTopResumedActivity)
+        if (!isServiceConnected) return
+
         if (!isTopResumedActivity) wasPausedForBackground = viewModel.cameraEnabled.value
         else if (wasPausedForBackground) {
             viewModel.onEnableCamera(true)
@@ -372,15 +389,10 @@ internal class GlassActivity :
         hideSystemUI()
     }
 
-    override fun onStop() {
-        super.onStop()
-        uiJob?.cancel()
-        service = null
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         itemAdapter!!.clear()
+        service = null
         decorView = null
         itemAdapter = null
         navController = null
