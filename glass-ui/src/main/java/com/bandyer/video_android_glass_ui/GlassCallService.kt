@@ -10,15 +10,15 @@ import android.app.Service
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bandyer.android_common.audio.CallAudioManager
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.battery_observer.BatteryObserver
-import com.bandyer.android_common.logging.BaseLogger
-import com.bandyer.android_common.logging.PriorityLogger
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.android_common.network_observer.WiFiObserver
 import com.bandyer.collaboration_center.BuddyUser
@@ -43,15 +43,13 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
-import okhttp3.OkHttpClient
 
 @SuppressLint("MissingPermission")
-class GlassCallService : CallService(), Application.ActivityLifecycleCallbacks {
+class GlassCallService : CallService(), DefaultLifecycleObserver,
+    Application.ActivityLifecycleCallbacks {
 
     companion object {
-        var TAG = "${this::class.java}"
         var NOTIFICATION_ID = 2022
-        var okHttpClient = OkHttpClient.Builder().build()
     }
 
     private var collaboration: Collaboration? = null
@@ -115,7 +113,9 @@ class GlassCallService : CallService(), Application.ActivityLifecycleCallbacks {
 
     // Service
     override fun onCreate() {
-        super.onCreate()
+        super<CallService>.onCreate()
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+
         batteryObserver = BatteryObserver(this)
         wifiObserver = WiFiObserver(this)
         callAudioManager = CallAudioManager(this)
@@ -128,7 +128,8 @@ class GlassCallService : CallService(), Application.ActivityLifecycleCallbacks {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        super<CallService>.onDestroy()
+        ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(this)
 
         currentCall?.disconnect()
@@ -141,6 +142,19 @@ class GlassCallService : CallService(), Application.ActivityLifecycleCallbacks {
         batteryObserver = null
         wifiObserver = null
         callAudioManager = null
+    }
+
+    // DefaultLifecycleObserver
+    override fun onStart(owner: LifecycleOwner) {
+        shouldDisconnect = false
+        if (currentCall != null) return
+        collaboration?.phoneBox?.connect()
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        shouldDisconnect = true
+        if (currentCall != null) return
+        collaboration?.phoneBox?.disconnect()
     }
 
     // ActivityLifecycleCallbacks
