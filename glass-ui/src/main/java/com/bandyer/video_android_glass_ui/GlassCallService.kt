@@ -197,8 +197,6 @@ class GlassCallService : CallService(), Application.ActivityLifecycleCallbacks {
             return
         }
 
-        collaboration!!.phoneBox.disconnect()
-
         when {
             currentCall == null -> collaboration!!.phoneBox.disconnect()
             force -> {
