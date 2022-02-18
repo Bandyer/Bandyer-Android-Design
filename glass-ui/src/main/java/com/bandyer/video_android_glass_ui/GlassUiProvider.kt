@@ -1,8 +1,11 @@
 package com.bandyer.video_android_glass_ui
 
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import android.os.Build
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
@@ -22,6 +25,17 @@ object GlassUIProvider {
 //            putExtra("options", listOf().toTypedArray())
         }
         applicationContext.startActivity(intent)
+    }
+
+    fun createCallPendingIntent(context: Context): PendingIntent {
+        val applicationContext = context.applicationContext
+        val notifyIntent = Intent(applicationContext, GlassActivity::class.java).apply {
+            flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val notifyFlags =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            else PendingIntent.FLAG_UPDATE_CURRENT
+        return PendingIntent.getActivity(applicationContext, 0, notifyIntent, notifyFlags)
     }
 }
 

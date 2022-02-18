@@ -8,6 +8,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
+import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
@@ -49,7 +50,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
     Application.ActivityLifecycleCallbacks {
 
     companion object {
-        var NOTIFICATION_ID = 2022
+        var NOTIFICATION_ID = 22
     }
 
     private var collaboration: Collaboration? = null
@@ -205,14 +206,17 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
                 getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
             val notificationChannel = NotificationChannel(
                 "channelId",
-                "Bandyer Call",
+                "Kaleyra Call",
                 NotificationManager.IMPORTANCE_HIGH
             )
             notificationManager.createNotificationChannel(notificationChannel)
         }
 
-        return NotificationCompat.Builder(this, "channelId")
-            .setContentTitle("Bandyer call")
+        return NotificationCompat.Builder(applicationContext, "channelId")
+            .setContentIntent(GlassUIProvider.createCallPendingIntent(applicationContext))
+            .setSmallIcon(R.drawable.bandyer_z_audio_only)
+            .setContentText("Back to call")
+            .setContentTitle("Kaleyra Call")
             .build()
     }
 
@@ -225,7 +229,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
             currentCall = call
             call.setup()
 
-            GlassUIProvider.showCall(this@GlassCallService)
+            GlassUIProvider.showCall(applicationContext)
         }.launchIn(lifecycleScope)
     }
 
@@ -286,7 +290,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
             .flatMapLatest { streams -> streams.map { it.video }.merge() }
             .onEach { video ->
                 if (video?.view?.value != null) return@onEach
-                video?.view?.value = VideoStreamView(this@GlassCallService)
+                video?.view?.value = VideoStreamView(applicationContext)
             }
             .launchIn(lifecycleScope)
 
