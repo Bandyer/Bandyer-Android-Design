@@ -215,7 +215,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
         return NotificationCompat.Builder(applicationContext, "channelId")
             .setContentIntent(GlassUIProvider.createCallPendingIntent(applicationContext))
             .setSmallIcon(R.drawable.bandyer_z_audio_only)
-            .setContentText("Back to call")
+            .setContentText("Tap to go back to call")
             .setContentTitle("Kaleyra Call")
             .build()
     }
