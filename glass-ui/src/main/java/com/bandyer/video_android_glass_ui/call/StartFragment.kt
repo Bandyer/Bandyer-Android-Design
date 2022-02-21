@@ -47,16 +47,19 @@ internal class StartFragment : BaseFragment() {
     override fun onServiceConnected() {
         repeatOnStarted {
             viewModel.callState
-                .takeWhile { it is Call.State.Connecting || it == Call.State.Disconnected }
                 .combine(viewModel.participants) { state, participants ->
                     when {
-                        state is Call.State.Connecting && participants.me == participants.creator() ->
+                        state is Call.State.Connecting && participants.me == participants.creator()  ->
                             findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment())
                         state == Call.State.Disconnected && participants.me != participants.creator() ->
                             findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToRingingFragment())
+                        state is Call.State.Connected ->
+                            findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToEmptyFragment())
                         else -> Unit
                     }
-                }.launchIn(this@repeatOnStarted)
+                }
+                .takeWhile { it != Call.State.Connected }
+                .launchIn(this@repeatOnStarted)
         }
     }
 
@@ -70,10 +73,7 @@ internal class StartFragment : BaseFragment() {
 
     override fun onTap(): Boolean = false
 
-    override fun onSwipeDown(): Boolean = true.also {
-        viewModel.onHangup()
-        requireActivity().finishAndRemoveTask()
-    }
+    override fun onSwipeDown(): Boolean = false
 
     override fun onSwipeForward(isKeyEvent: Boolean): Boolean = false
 

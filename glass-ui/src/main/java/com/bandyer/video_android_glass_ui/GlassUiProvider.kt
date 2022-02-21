@@ -31,6 +31,7 @@ object GlassUIProvider {
         val applicationContext = context.applicationContext
         val notifyIntent = Intent(applicationContext, GlassActivity::class.java).apply {
             flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("enableTilt", false)
         }
         val notifyFlags =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
