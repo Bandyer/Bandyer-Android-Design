@@ -34,7 +34,7 @@ internal class CallEndedFragment : BaseFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
-            requireActivity().finish()
+            requireActivity().finishAndRemoveTask()
         }
 
         // Apply theme wrapper and add view binding
@@ -56,7 +56,7 @@ internal class CallEndedFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.postDelayed(AUTO_FINISH_TIME) { activity?.finish() }
+        view.postDelayed(AUTO_FINISH_TIME) { activity?.finishAndRemoveTask() }
     }
 
     /**
@@ -67,9 +67,9 @@ internal class CallEndedFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onTap() = true.also { requireActivity().finish() }
+    override fun onTap() = true.also { requireActivity().finishAndRemoveTask() }
 
-    override fun onSwipeDown() = true.also { requireActivity().finish() }
+    override fun onSwipeDown() = true.also { requireActivity().finishAndRemoveTask() }
 
     override fun onSwipeBackward(isKeyEvent: Boolean) = false
 

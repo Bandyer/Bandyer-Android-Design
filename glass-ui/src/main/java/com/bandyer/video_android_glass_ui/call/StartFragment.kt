@@ -72,7 +72,7 @@ internal class StartFragment : BaseFragment() {
 
     override fun onSwipeDown(): Boolean = true.also {
         viewModel.onHangup()
-        requireActivity().finish()
+        requireActivity().finishAndRemoveTask()
     }
 
     override fun onSwipeForward(isKeyEvent: Boolean): Boolean = false
