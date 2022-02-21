@@ -4,8 +4,7 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import androidx.lifecycle.LifecycleService
-import com.bandyer.collaboration_center.CollaborationSession
-import com.bandyer.collaboration_center.Configuration
+import com.bandyer.collaboration_center.Collaboration
 
 abstract class CallService : LifecycleService(), CallUIDelegate, CallUIController, DeviceStatusDelegate {
 
@@ -25,7 +24,7 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
 
     abstract fun joinUrl(joinUrl: String)
 
-    abstract fun connect(session: CollaborationSession, configuration: Configuration)
+    abstract fun connect(collaboration: Collaboration)
 
     abstract fun disconnect()
 }

@@ -8,7 +8,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
-import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
@@ -24,8 +23,6 @@ import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.android_common.network_observer.WiFiObserver
 import com.bandyer.collaboration_center.BuddyUser
 import com.bandyer.collaboration_center.Collaboration
-import com.bandyer.collaboration_center.CollaborationSession
-import com.bandyer.collaboration_center.Configuration
 import com.bandyer.collaboration_center.PhoneBox
 import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.collaboration_center.phonebox.Input
@@ -47,7 +44,7 @@ import kotlinx.coroutines.flow.takeWhile
 
 @SuppressLint("MissingPermission")
 class GlassCallService : CallService(), DefaultLifecycleObserver,
-    Application.ActivityLifecycleCallbacks {
+                         Application.ActivityLifecycleCallbacks {
 
     companion object {
         var NOTIFICATION_ID = 22
@@ -205,11 +202,11 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
 
     override fun joinUrl(joinUrl: String) = collaboration!!.phoneBox.create(joinUrl).connect()
 
-    override fun connect(session: CollaborationSession, configuration: Configuration) {
-        collaboration = collaboration ?: Collaboration.create(session, configuration).apply {
+    override fun connect(collaboration: Collaboration) {
+        this.collaboration = collaboration.apply {
             phoneBox.observe()
+            phoneBox.connect()
         }
-        collaboration!!.phoneBox.connect()
     }
 
     override fun disconnect() = collaboration!!.phoneBox.disconnect()
