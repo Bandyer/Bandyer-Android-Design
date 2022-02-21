@@ -58,6 +58,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
     private var shouldDisconnect = false
 
     private var fragmentActivity: FragmentActivity? = null
+    private var wasVideoEnabledOnDestroy = false
 
     private var batteryObserver: BatteryObserver? = null
     private var wifiObserver: WiFiObserver? = null
@@ -164,18 +165,31 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
         fragmentActivity = activity
     }
 
-    override fun onActivityStarted(activity: Activity) = Unit
+    override fun onActivityStarted(activity: Activity) {
+        if (activity !is GlassActivity) return
+        val video = currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value ?: return
+        if (wasVideoEnabledOnDestroy) video.tryEnable() else video.tryDisable()
+        wasVideoEnabledOnDestroy = false
+    }
 
     override fun onActivityResumed(activity: Activity) = Unit
 
     override fun onActivityPaused(activity: Activity) = Unit
 
-    override fun onActivityStopped(activity: Activity) = Unit
+    override fun onActivityStopped(activity: Activity) {
+        if (activity !is GlassActivity) return
+        val video = currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value ?: return
+        wasVideoEnabledOnDestroy = video.enabled.value
+        video.tryDisable()
+    }
 
     override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) = Unit
 
     override fun onActivityDestroyed(activity: Activity) {
         if (activity !is GlassActivity) return
+        val video = currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value ?: return
+        wasVideoEnabledOnDestroy = video.enabled.value
+        video.tryDisable()
         fragmentActivity = null
     }
 
