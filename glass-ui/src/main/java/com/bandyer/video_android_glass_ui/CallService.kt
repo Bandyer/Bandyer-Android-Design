@@ -5,6 +5,7 @@ import android.os.Binder
 import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import com.bandyer.collaboration_center.Collaboration
+import com.bandyer.collaboration_center.PhoneBox
 
 abstract class CallService : LifecycleService(), CallUIDelegate, CallUIController, DeviceStatusDelegate {
 
@@ -24,7 +25,7 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
 
 //    abstract fun joinUrl(joinUrl: String)
 
-    abstract fun connect(collaboration: Collaboration): CallKit
+    abstract fun connect(phoneBox: PhoneBox)
 
 //    abstract fun disconnect()
 }

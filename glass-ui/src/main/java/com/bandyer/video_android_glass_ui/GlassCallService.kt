@@ -42,24 +42,14 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
-// TODO rename this
-interface CallKit {
-    fun dial(otherUsers: List<String>, withVideoOnStart: Boolean? = null)
-
-    fun joinUrl(joinUrl: String)
-
-    fun disconnect()
-}
-
 @SuppressLint("MissingPermission")
-class GlassCallService : CallService(), DefaultLifecycleObserver,
-                         Application.ActivityLifecycleCallbacks {
+class GlassCallService : CallService(), DefaultLifecycleObserver, Application.ActivityLifecycleCallbacks {
 
     companion object {
         var NOTIFICATION_ID = 22
     }
 
-    private var collaboration: Collaboration? = null
+    private var phoneBox: PhoneBox? = null
     private var currentCall: Call? = null
     private var shouldDisconnect = false
     private var phoneBoxJob: Job? = null
@@ -74,7 +64,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
 
     //    private var ongoingCalls: MutableSet<Call> = mutableSetOf()
     override val call: SharedFlow<Call>
-        get() = collaboration!!.phoneBox.call
+        get() = phoneBox!!.call
 
     override val userDetailsDelegate: StateFlow<UserDetailsDelegate?> =
         MutableStateFlow<UserDetailsDelegate?>(null).apply {
@@ -142,12 +132,12 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
         application.unregisterActivityLifecycleCallbacks(this)
 
         currentCall?.disconnect()
-        collaboration?.phoneBox?.disconnect()
+        phoneBox!!.disconnect()
         batteryObserver?.stop()
         wifiObserver?.stop()
 
         currentCall = null
-        collaboration = null
+        phoneBox = null
         batteryObserver = null
         wifiObserver = null
         callAudioManager = null
@@ -157,13 +147,13 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
     override fun onStart(owner: LifecycleOwner) {
         shouldDisconnect = false
         if (currentCall != null) return
-        collaboration?.phoneBox?.connect()
+        phoneBox?.connect()
     }
 
     override fun onStop(owner: LifecycleOwner) {
         shouldDisconnect = true
         if (currentCall != null) return
-        collaboration?.phoneBox?.disconnect()
+        phoneBox?.disconnect()
     }
 
     // ActivityLifecycleCallbacks
@@ -199,7 +189,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
 
     // CallService
     private fun dial(otherUsers: List<String>, withVideoOnStart: Boolean?) {
-        collaboration!!.phoneBox.create(otherUsers.map { BuddyUser(it.trim()) }) {
+        phoneBox!!.create(otherUsers.map { BuddyUser(it.trim()) }) {
             val video =
                 withVideoOnStart?.let { if (it) Call.Video.Enabled else Call.Video.Disabled }
             preferredType = Call.PreferredType(audio = Call.Audio.Enabled, video = video)
@@ -207,22 +197,17 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
         startForeground(NOTIFICATION_ID, createNotification())
     }
 
-    private fun joinUrl(joinUrl: String) = collaboration!!.phoneBox.create(joinUrl).connect()
+    private fun joinUrl(joinUrl: String) = phoneBox!!.create(joinUrl).connect()
 
-    override fun connect(collaboration: Collaboration): CallKit {
-        this.collaboration = collaboration.apply {
+    override fun connect(phoneBox: PhoneBox) {
+        this.phoneBox = phoneBox.apply {
             phoneBoxJob?.cancel()
-            phoneBoxJob = phoneBox.observe()
-            phoneBox.connect()
-        }
-        return object: CallKit {
-            override fun dial(otherUsers: List<String>, withVideoOnStart: Boolean?) =  this@GlassCallService.dial(otherUsers, withVideoOnStart)
-            override fun joinUrl(joinUrl: String) = this@GlassCallService.joinUrl(joinUrl)
-            override fun disconnect() = this@GlassCallService.disconnect()
+            phoneBoxJob = observe()
+            connect()
         }
     }
 
-    private fun disconnect() = collaboration!!.phoneBox.disconnect()
+    private fun disconnect() = phoneBox!!.disconnect()
 
     private fun createNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -267,8 +252,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
                 streamsJob.cancel()
                 currentCall = null
 
-                if (shouldDisconnect)
-                    collaboration?.phoneBox?.disconnect()
+                if (shouldDisconnect) phoneBox!!.disconnect()
 
                 stopForeground(true)
 //                ongoingCalls.remove(this@setup)
