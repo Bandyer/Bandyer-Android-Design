@@ -1,9 +1,12 @@
 package com.bandyer.video_android_glass_ui
 
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.os.IBinder
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -23,8 +26,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.phonebox.Call
-import com.bandyer.video_android_glass_ui.Extensions.bindCallService
-import com.bandyer.video_android_glass_ui.Extensions.onLifecycleEvent
 import com.bandyer.video_android_glass_ui.call.CallEndedFragmentArgs
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
@@ -56,6 +57,7 @@ internal class GlassActivity :
         var wasPausedForBackground = false
     }
 
+    private var serviceConnection: ServiceConnection? = null
     private var service: GlassCallService? = null
     val isServiceConnected: Boolean
         get() = service != null
@@ -134,235 +136,244 @@ internal class GlassActivity :
             setHasFixedSize(true)
         }
 
-        bindCallService(
-            GlassCallService::class.java,
-            onConnected = { svc ->
-                service = svc
-                viewModel.onRequestMicPermission(this)
-                viewModel.onRequestCameraPermission(this)
-
-                with(binding.bandyerStreams) {
-                    addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                            val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
-                            val position = layoutManager!!.getPosition(foundView)
-                            if (itemAdapter!!.getAdapterItem(position).streamParticipant.isMyStream && currentStreamItemIndex != position) {
-                                with(binding.bandyerToastContainer) {
-                                    val isMicBlocked =
-                                        viewModel.micPermission.value.let { !it.isAllowed && it.neverAskAgain }
-                                    val isCamBlocked =
-                                        viewModel.camPermission.value.let { !it.isAllowed && it.neverAskAgain }
-                                    when {
-                                        isMicBlocked && isCamBlocked -> show(
-                                            BLOCKED_INPUT_TOAST_ID,
-                                            resources.getString(R.string.bandyer_glass_mic_and_cam_blocked)
-                                        )
-                                        isMicBlocked -> show(
-                                            BLOCKED_INPUT_TOAST_ID,
-                                            resources.getString(R.string.bandyer_glass_mic_blocked)
-                                        )
-                                        isCamBlocked -> show(
-                                            BLOCKED_INPUT_TOAST_ID,
-                                            resources.getString(R.string.bandyer_glass_cam_blocked)
-                                        )
-                                    }
-
-                                    val isMicEnabled = viewModel.micEnabled.value
-                                    val isCameraEnabled = viewModel.cameraEnabled.value
-                                    when {
-                                        !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled -> show(
-                                            DISABLED_INPUT_TOAST_ID,
-                                            resources.getString(R.string.bandyer_glass_mic_and_cam_not_active)
-                                        )
-                                        !isMicBlocked && !isMicEnabled -> show(
-                                            DISABLED_INPUT_TOAST_ID,
-                                            resources.getString(R.string.bandyer_glass_mic_not_active)
-                                        )
-                                        !isCamBlocked && !isCameraEnabled -> show(
-                                            DISABLED_INPUT_TOAST_ID,
-                                            resources.getString(R.string.bandyer_glass_cam_not_active)
-                                        )
-                                        else -> Unit
-                                    }
-                                }
-                            }
-                            currentStreamItemIndex = position
-                        }
-                    })
-                }
-
-                repeatOnStarted {
-                    viewModel
-                        .battery
-                        .onEach { binding.bandyerStatusBar.updateBatteryIcon(it) }
-                        .launchIn(this)
-
-                    viewModel
-                        .wifi
-                        .onEach { binding.bandyerStatusBar.updateWifiSignalIcon(it) }
-                        .launchIn(this)
-
-                    viewModel.callState
-                        .dropWhile { it == Call.State.Disconnected }
-                        .onEach {
-                            when (it) {
-                                is Call.State.Disconnected.Ended.Declined -> navController!!.navigate(
-                                    R.id.callEndedFragment,
-                                    CallEndedFragmentArgs(
-                                        resources.getString(R.string.bandyer_glass_call_ended),
-                                        resources.getString(R.string.bandyer_glass_call_declined)
-                                    ).toBundle()
-                                )
-                                is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> navController!!.navigate(
-                                    R.id.callEndedFragment,
-                                    CallEndedFragmentArgs(
-                                        resources.getString(R.string.bandyer_glass_call_ended),
-                                        resources.getString(R.string.bandyer_glass_answered_on_another_device)
-                                    ).toBundle()
-                                )
-                                is Call.State.Disconnected.Ended.LineBusy -> navController!!.navigate(
-                                    R.id.callEndedFragment,
-                                    CallEndedFragmentArgs(
-                                        resources.getString(R.string.bandyer_glass_call_ended),
-                                        resources.getString(R.string.bandyer_glass_line_busy)
-                                    ).toBundle()
-                                )
-                                is Call.State.Disconnected.Ended.HangUp -> navController!!.navigate(
-                                    R.id.callEndedFragment,
-                                    CallEndedFragmentArgs(
-                                        resources.getString(R.string.bandyer_glass_call_ended),
-                                        resources.getString(R.string.bandyer_glass_call_hunged_up)
-                                    ).toBundle()
-                                )
-                                is Call.State.Disconnected.Ended.Error -> navController!!.navigate(
-                                    R.id.callEndedFragment,
-                                    CallEndedFragmentArgs(
-                                        resources.getString(R.string.bandyer_glass_call_ended),
-                                        resources.getString(R.string.bandyer_glass_call_error_occurred)
-                                    ).toBundle()
-                                )
-                                is Call.State.Disconnected.Ended.Timeout -> navController!!.navigate(
-                                    R.id.callEndedFragment,
-                                    CallEndedFragmentArgs(
-                                        resources.getString(R.string.bandyer_glass_call_ended),
-                                        resources.getString(R.string.bandyer_glass_call_timeout)
-                                    ).toBundle()
-                                )
-                                is Call.State.Disconnected.Ended -> navController!!.navigate(
-                                    R.id.callEndedFragment,
-                                    CallEndedFragmentArgs(resources.getString(R.string.bandyer_glass_call_ended)).toBundle()
-                                )
-                                is Call.State.Reconnecting -> navController!!.navigate(R.id.reconnectingFragment)
-                                else -> Unit
-                            }
-                        }.launchIn(this)
-
-                    viewModel.amIAlone
-                        .onEach {
-                            with(binding) {
-                                if (it) bandyerToastContainer.show(
-                                    ALONE_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_alone),
-                                    R.drawable.ic_bandyer_glass_alert,
-                                    0L
-                                )
-                                else bandyerToastContainer.cancel(ALONE_TOAST_ID)
-                            }
-                        }.launchIn(this)
-
-                    viewModel.currentCall
-                        .onEach {
-                            binding.bandyerStatusBar.apply {
-                                if (it.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
-                            }
-                        }.launchIn(this)
-
-                    viewModel.cameraEnabled
-                        .onEach {
-                            with(binding.bandyerStatusBar) {
-                                if (it) hideCamMutedIcon() else showCamMutedIcon()
-                            }
-                        }.launchIn(this)
-
-                    viewModel.micEnabled
-                        .onEach {
-                            with(binding.bandyerStatusBar) {
-                                if (it) hideMicMutedIcon() else showMicMutedIcon()
-                            }
-                        }.launchIn(this)
-
-                    viewModel.micPermission
-                        .onEach {
-                            if (!it.isAllowed && it.neverAskAgain) binding.bandyerStatusBar.showMicMutedIcon(
-                                true
-                            )
-                        }.launchIn(this)
-
-                    viewModel.camPermission
-                        .onEach {
-                            if (!it.isAllowed && it.neverAskAgain) binding.bandyerStatusBar.showCamMutedIcon(
-                                true
-                            )
-                        }.launchIn(this)
-
-                    viewModel.onParticipantJoin
-                        .onEach { part ->
-                            val userDetailsDelegate =
-                                viewModel.userDetailsDelegate.value ?: return@onEach
-                            val userDetails =
-                                userDetailsDelegate.data!!.firstOrNull { it.userAlias == part.userAlias }
-                                    ?: UserDetails(part.userAlias)
-                            val toastText = resources.getString(
-                                R.string.bandyer_glass_user_joined_pattern,
-                                userDetails.let {
-                                    userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
-                                })
-                            binding.bandyerToastContainer.show(text = toastText)
-                        }.launchIn(this)
-
-                    viewModel.onParticipantLeave
-                        .onEach { part ->
-                            val userDetailsDelegate =
-                                viewModel.userDetailsDelegate.value ?: return@onEach
-                            val userDetails =
-                                userDetailsDelegate.data!!.firstOrNull { it.userAlias == part.userAlias }
-                                    ?: UserDetails(part.userAlias)
-                            val toastText = resources.getString(
-                                R.string.bandyer_glass_user_left_pattern,
-                                userDetails.let {
-                                    userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
-                                })
-                            binding.bandyerToastContainer.show(text = toastText)
-                        }.launchIn(this)
-
-                    viewModel.streams
-                        .onEach { streams ->
-                            val orderedList = streams.sortedBy { !it.isMyStream }.map {
-                                if (it.isMyStream) MyStreamItem(
-                                    it,
-                                    viewModel.userDetailsDelegate,
-                                    lifecycleScope,
-                                    viewModel.micPermission,
-                                    viewModel.camPermission
-                                ) else OtherStreamItem(it, viewModel.userDetailsDelegate, lifecycleScope)
-                            }
-                            FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
-                        }.launchIn(this)
-
-                }
-
-                notifyServiceBinding()
-
-                if (wasPausedForBackground) {
-                    viewModel.onEnableCamera(wasPausedForBackground)
-                    wasPausedForBackground = false
-                }
-            },
-            onDisconnected = {
+        serviceConnection = object : ServiceConnection {
+            override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
+                service = (binder as CallService.ServiceBinder).getService()
+                onServiceConnected()
+            }
+            override fun onServiceDisconnected(componentName: ComponentName) {
                 service = null
-            })
+            }
+        }
+
+        with(applicationContext) {
+            val intent = Intent(this, GlassCallService::class.java)
+            startService(intent)
+            bindService(intent, serviceConnection!!, 0)
+        }
     }
 
+    private fun onServiceConnected() {
+        viewModel.onRequestMicPermission(this)
+        viewModel.onRequestCameraPermission(this)
+
+        with(binding.bandyerStreams) {
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
+                    val position = layoutManager!!.getPosition(foundView)
+                    if (itemAdapter!!.getAdapterItem(position).streamParticipant.isMyStream && currentStreamItemIndex != position) {
+                        with(binding.bandyerToastContainer) {
+                            val isMicBlocked =
+                                viewModel.micPermission.value.let { !it.isAllowed && it.neverAskAgain }
+                            val isCamBlocked =
+                                viewModel.camPermission.value.let { !it.isAllowed && it.neverAskAgain }
+                            when {
+                                isMicBlocked && isCamBlocked -> show(
+                                    BLOCKED_INPUT_TOAST_ID,
+                                    resources.getString(R.string.bandyer_glass_mic_and_cam_blocked)
+                                )
+                                isMicBlocked -> show(
+                                    BLOCKED_INPUT_TOAST_ID,
+                                    resources.getString(R.string.bandyer_glass_mic_blocked)
+                                )
+                                isCamBlocked -> show(
+                                    BLOCKED_INPUT_TOAST_ID,
+                                    resources.getString(R.string.bandyer_glass_cam_blocked)
+                                )
+                            }
+
+                            val isMicEnabled = viewModel.micEnabled.value
+                            val isCameraEnabled = viewModel.cameraEnabled.value
+                            when {
+                                !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled -> show(
+                                    DISABLED_INPUT_TOAST_ID,
+                                    resources.getString(R.string.bandyer_glass_mic_and_cam_not_active)
+                                )
+                                !isMicBlocked && !isMicEnabled -> show(
+                                    DISABLED_INPUT_TOAST_ID,
+                                    resources.getString(R.string.bandyer_glass_mic_not_active)
+                                )
+                                !isCamBlocked && !isCameraEnabled -> show(
+                                    DISABLED_INPUT_TOAST_ID,
+                                    resources.getString(R.string.bandyer_glass_cam_not_active)
+                                )
+                                else -> Unit
+                            }
+                        }
+                    }
+                    currentStreamItemIndex = position
+                }
+            })
+        }
+
+        repeatOnStarted {
+            viewModel
+                .battery
+                .onEach { binding.bandyerStatusBar.updateBatteryIcon(it) }
+                .launchIn(this)
+
+            viewModel
+                .wifi
+                .onEach { binding.bandyerStatusBar.updateWifiSignalIcon(it) }
+                .launchIn(this)
+
+            viewModel.callState
+                .dropWhile { it == Call.State.Disconnected }
+                .onEach {
+                    when (it) {
+                        is Call.State.Disconnected.Ended.Declined -> navController!!.navigate(
+                            R.id.callEndedFragment,
+                            CallEndedFragmentArgs(
+                                resources.getString(R.string.bandyer_glass_call_ended),
+                                resources.getString(R.string.bandyer_glass_call_declined)
+                            ).toBundle()
+                        )
+                        is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> navController!!.navigate(
+                            R.id.callEndedFragment,
+                            CallEndedFragmentArgs(
+                                resources.getString(R.string.bandyer_glass_call_ended),
+                                resources.getString(R.string.bandyer_glass_answered_on_another_device)
+                            ).toBundle()
+                        )
+                        is Call.State.Disconnected.Ended.LineBusy -> navController!!.navigate(
+                            R.id.callEndedFragment,
+                            CallEndedFragmentArgs(
+                                resources.getString(R.string.bandyer_glass_call_ended),
+                                resources.getString(R.string.bandyer_glass_line_busy)
+                            ).toBundle()
+                        )
+                        is Call.State.Disconnected.Ended.HangUp -> navController!!.navigate(
+                            R.id.callEndedFragment,
+                            CallEndedFragmentArgs(
+                                resources.getString(R.string.bandyer_glass_call_ended),
+                                resources.getString(R.string.bandyer_glass_call_hunged_up)
+                            ).toBundle()
+                        )
+                        is Call.State.Disconnected.Ended.Error -> navController!!.navigate(
+                            R.id.callEndedFragment,
+                            CallEndedFragmentArgs(
+                                resources.getString(R.string.bandyer_glass_call_ended),
+                                resources.getString(R.string.bandyer_glass_call_error_occurred)
+                            ).toBundle()
+                        )
+                        is Call.State.Disconnected.Ended.Timeout -> navController!!.navigate(
+                            R.id.callEndedFragment,
+                            CallEndedFragmentArgs(
+                                resources.getString(R.string.bandyer_glass_call_ended),
+                                resources.getString(R.string.bandyer_glass_call_timeout)
+                            ).toBundle()
+                        )
+                        is Call.State.Disconnected.Ended -> navController!!.navigate(
+                            R.id.callEndedFragment,
+                            CallEndedFragmentArgs(resources.getString(R.string.bandyer_glass_call_ended)).toBundle()
+                        )
+                        is Call.State.Reconnecting -> navController!!.navigate(R.id.reconnectingFragment)
+                        else -> Unit
+                    }
+                }.launchIn(this)
+
+            viewModel.amIAlone
+                .onEach {
+                    with(binding) {
+                        if (it) bandyerToastContainer.show(
+                            ALONE_TOAST_ID,
+                            resources.getString(R.string.bandyer_glass_alone),
+                            R.drawable.ic_bandyer_glass_alert,
+                            0L
+                        )
+                        else bandyerToastContainer.cancel(ALONE_TOAST_ID)
+                    }
+                }.launchIn(this)
+
+            viewModel.currentCall
+                .onEach {
+                    binding.bandyerStatusBar.apply {
+                        if (it.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
+                    }
+                }.launchIn(this)
+
+            viewModel.cameraEnabled
+                .onEach {
+                    with(binding.bandyerStatusBar) {
+                        if (it) hideCamMutedIcon() else showCamMutedIcon()
+                    }
+                }.launchIn(this)
+
+            viewModel.micEnabled
+                .onEach {
+                    with(binding.bandyerStatusBar) {
+                        if (it) hideMicMutedIcon() else showMicMutedIcon()
+                    }
+                }.launchIn(this)
+
+            viewModel.micPermission
+                .onEach {
+                    if (!it.isAllowed && it.neverAskAgain) binding.bandyerStatusBar.showMicMutedIcon(
+                        true
+                    )
+                }.launchIn(this)
+
+            viewModel.camPermission
+                .onEach {
+                    if (!it.isAllowed && it.neverAskAgain) binding.bandyerStatusBar.showCamMutedIcon(
+                        true
+                    )
+                }.launchIn(this)
+
+            viewModel.onParticipantJoin
+                .onEach { part ->
+                    val userDetailsDelegate =
+                        viewModel.userDetailsDelegate.value ?: return@onEach
+                    val userDetails =
+                        userDetailsDelegate.data!!.firstOrNull { it.userAlias == part.userAlias }
+                            ?: UserDetails(part.userAlias)
+                    val toastText = resources.getString(
+                        R.string.bandyer_glass_user_joined_pattern,
+                        userDetails.let {
+                            userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
+                        })
+                    binding.bandyerToastContainer.show(text = toastText)
+                }.launchIn(this)
+
+            viewModel.onParticipantLeave
+                .onEach { part ->
+                    val userDetailsDelegate =
+                        viewModel.userDetailsDelegate.value ?: return@onEach
+                    val userDetails =
+                        userDetailsDelegate.data!!.firstOrNull { it.userAlias == part.userAlias }
+                            ?: UserDetails(part.userAlias)
+                    val toastText = resources.getString(
+                        R.string.bandyer_glass_user_left_pattern,
+                        userDetails.let {
+                            userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
+                        })
+                    binding.bandyerToastContainer.show(text = toastText)
+                }.launchIn(this)
+
+            viewModel.streams
+                .onEach { streams ->
+                    val orderedList = streams.sortedBy { !it.isMyStream }.map {
+                        if (it.isMyStream) MyStreamItem(
+                            it,
+                            viewModel.userDetailsDelegate,
+                            lifecycleScope,
+                            viewModel.micPermission,
+                            viewModel.camPermission
+                        ) else OtherStreamItem(it, viewModel.userDetailsDelegate, lifecycleScope)
+                    }
+                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
+                }.launchIn(this)
+
+        }
+
+        notifyServiceBinding()
+
+        if (wasPausedForBackground) {
+            viewModel.onEnableCamera(wasPausedForBackground)
+            wasPausedForBackground = false
+        }
+    }
 
     override fun onTopResumedActivityChanged(isTopResumedActivity: Boolean) {
         super.onTopResumedActivityChanged(isTopResumedActivity)
@@ -383,6 +394,8 @@ internal class GlassActivity :
     override fun onDestroy() {
         super.onDestroy()
         itemAdapter!!.clear()
+        applicationContext.unbindService(serviceConnection!!)
+        serviceConnection = null
         service = null
         decorView = null
         itemAdapter = null
