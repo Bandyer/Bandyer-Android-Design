@@ -42,6 +42,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
+// TODO rename this
 interface CallKit {
     fun dial(otherUsers: List<String>, withVideoOnStart: Boolean? = null)
 
@@ -210,8 +211,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
 
     override fun connect(collaboration: Collaboration): CallKit {
         this.collaboration = collaboration.apply {
-            phoneBoxJob?.cancel()
-            phoneBoxJob = phoneBox.observe()
+             phoneBox.observe()
             phoneBox.connect()
         }
         return object: CallKit {
