@@ -21,5 +21,5 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
         return binder
     }
 
-    abstract fun connect(phoneBox: PhoneBox)
+    abstract fun bind(phoneBox: PhoneBox)
 }

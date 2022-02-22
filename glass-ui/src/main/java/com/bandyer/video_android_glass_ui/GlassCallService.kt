@@ -188,11 +188,10 @@ class GlassCallService : CallService(), DefaultLifecycleObserver, Application.Ac
     }
 
     // CallService
-    override fun connect(phoneBox: PhoneBox) {
+    override fun bind(phoneBox: PhoneBox) {
         this.phoneBox = phoneBox.apply {
             phoneBoxJob?.cancel()
             phoneBoxJob = observe()
-            connect()
         }
     }
 

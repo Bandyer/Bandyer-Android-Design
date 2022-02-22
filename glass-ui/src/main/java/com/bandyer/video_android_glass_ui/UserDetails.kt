@@ -2,6 +2,14 @@ package com.bandyer.video_android_glass_ui
 
 import android.net.Uri
 
+
+class UsersDescription(
+    val name: suspend (userIds: List<String>) -> String = { it.joinToString(", ") },
+    val shortName: suspend (userIds: List<String>) -> String = name,
+    val image: (suspend (userIds: List<String>) -> Uri)? = null
+)
+
+
 data class UserDetails(
     val userAlias: String,
     val nickName: String? = null,
