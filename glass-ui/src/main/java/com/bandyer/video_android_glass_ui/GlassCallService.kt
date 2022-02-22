@@ -211,7 +211,8 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
 
     override fun connect(collaboration: Collaboration): CallKit {
         this.collaboration = collaboration.apply {
-             phoneBox.observe()
+            phoneBoxJob?.cancel()
+            phoneBoxJob = phoneBox.observe()
             phoneBox.connect()
         }
         return object: CallKit {
