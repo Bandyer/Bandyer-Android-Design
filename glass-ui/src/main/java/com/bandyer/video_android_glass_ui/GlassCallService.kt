@@ -42,6 +42,14 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
+interface CallKit {
+    fun dial(otherUsers: List<String>, withVideoOnStart: Boolean? = null)
+
+    fun joinUrl(joinUrl: String)
+
+    fun disconnect()
+}
+
 @SuppressLint("MissingPermission")
 class GlassCallService : CallService(), DefaultLifecycleObserver,
                          Application.ActivityLifecycleCallbacks {
@@ -189,7 +197,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
     }
 
     // CallService
-    override fun dial(otherUsers: List<String>, withVideoOnStart: Boolean?) {
+    private fun dial(otherUsers: List<String>, withVideoOnStart: Boolean?) {
         collaboration!!.phoneBox.create(otherUsers.map { BuddyUser(it.trim()) }) {
             val video =
                 withVideoOnStart?.let { if (it) Call.Video.Enabled else Call.Video.Disabled }
@@ -198,17 +206,22 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
         startForeground(NOTIFICATION_ID, createNotification())
     }
 
-    override fun joinUrl(joinUrl: String) = collaboration!!.phoneBox.create(joinUrl).connect()
+    private fun joinUrl(joinUrl: String) = collaboration!!.phoneBox.create(joinUrl).connect()
 
-    override fun connect(collaboration: Collaboration) {
+    override fun connect(collaboration: Collaboration): CallKit {
         this.collaboration = collaboration.apply {
             phoneBoxJob?.cancel()
             phoneBoxJob = phoneBox.observe()
             phoneBox.connect()
         }
+        return object: CallKit {
+            override fun dial(otherUsers: List<String>, withVideoOnStart: Boolean?) =  this@GlassCallService.dial(otherUsers, withVideoOnStart)
+            override fun joinUrl(joinUrl: String) = this@GlassCallService.joinUrl(joinUrl)
+            override fun disconnect() = this@GlassCallService.disconnect()
+        }
     }
 
-    override fun disconnect() = collaboration!!.phoneBox.disconnect()
+    private fun disconnect() = collaboration!!.phoneBox.disconnect()
 
     private fun createNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
