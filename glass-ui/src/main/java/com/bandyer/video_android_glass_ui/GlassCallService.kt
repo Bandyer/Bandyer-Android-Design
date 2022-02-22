@@ -184,9 +184,6 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
 
     override fun onActivityDestroyed(activity: Activity) {
         if (activity !is GlassActivity) return
-        val video = currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value ?: return
-        wasVideoEnabledOnDestroy = video.enabled.value
-        video.tryDisable()
         fragmentActivity = null
     }
 
