@@ -53,6 +53,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
     private var collaboration: Collaboration? = null
     private var currentCall: Call? = null
     private var shouldDisconnect = false
+    private var phoneBoxJob: Job? = null
 
     private var fragmentActivity: FragmentActivity? = null
     private var wasVideoEnabledOnDestroy = false
@@ -201,7 +202,8 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
 
     override fun connect(collaboration: Collaboration) {
         this.collaboration = collaboration.apply {
-            phoneBox.observe()
+            phoneBoxJob?.cancel()
+            phoneBoxJob = phoneBox.observe()
             phoneBox.connect()
         }
     }
@@ -228,9 +230,9 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
             .build()
     }
 
-    private fun PhoneBox.observe() {
+    private fun PhoneBox.observe(): Job =
         call.onEach { call ->
-            if (currentCall != null) return@onEach
+            if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return@onEach
 //                if (ongoingCalls.isNotEmpty()) return@onEach
 
 //                ongoingCalls.add(call)
@@ -239,7 +241,6 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
 
             GlassUIProvider.showCall(applicationContext)
         }.launchIn(lifecycleScope)
-    }
 
     private fun Call.setup() {
         val publishJob = publishMySelf()
