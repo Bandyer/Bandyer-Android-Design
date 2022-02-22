@@ -115,6 +115,7 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
     override fun onCreate() {
         super<CallService>.onCreate()
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
+        application.registerActivityLifecycleCallbacks(this)
 
         batteryObserver = BatteryObserver(this)
         wifiObserver = WiFiObserver(this)
@@ -123,7 +124,6 @@ class GlassCallService : CallService(), DefaultLifecycleObserver,
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        application.registerActivityLifecycleCallbacks(this)
         return START_NOT_STICKY
     }
 
