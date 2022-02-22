@@ -21,11 +21,5 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
         return binder
     }
 
-//    abstract fun dial(otherUsers: List<String>, withVideoOnStart: Boolean? = null)
-
-//    abstract fun joinUrl(joinUrl: String)
-
     abstract fun connect(phoneBox: PhoneBox)
-
-//    abstract fun disconnect()
 }

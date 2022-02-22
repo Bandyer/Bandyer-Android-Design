@@ -133,8 +133,8 @@ class GlassCallService : CallService(), DefaultLifecycleObserver, Application.Ac
 
         currentCall?.disconnect()
         phoneBox!!.disconnect()
-        batteryObserver?.stop()
-        wifiObserver?.stop()
+        batteryObserver!!.stop()
+        wifiObserver!!.stop()
 
         currentCall = null
         phoneBox = null
@@ -188,17 +188,6 @@ class GlassCallService : CallService(), DefaultLifecycleObserver, Application.Ac
     }
 
     // CallService
-    private fun dial(otherUsers: List<String>, withVideoOnStart: Boolean?) {
-        phoneBox!!.create(otherUsers.map { BuddyUser(it.trim()) }) {
-            val video =
-                withVideoOnStart?.let { if (it) Call.Video.Enabled else Call.Video.Disabled }
-            preferredType = Call.PreferredType(audio = Call.Audio.Enabled, video = video)
-        }.connect()
-        startForeground(NOTIFICATION_ID, createNotification())
-    }
-
-    private fun joinUrl(joinUrl: String) = phoneBox!!.create(joinUrl).connect()
-
     override fun connect(phoneBox: PhoneBox) {
         this.phoneBox = phoneBox.apply {
             phoneBoxJob?.cancel()
@@ -207,7 +196,18 @@ class GlassCallService : CallService(), DefaultLifecycleObserver, Application.Ac
         }
     }
 
-    private fun disconnect() = phoneBox!!.disconnect()
+    private fun PhoneBox.observe(): Job =
+        call.onEach { call ->
+            if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return@onEach
+//                if (ongoingCalls.isNotEmpty()) return@onEach
+
+//                ongoingCalls.add(call)
+            currentCall = call
+            call.setup()
+
+            startForeground(NOTIFICATION_ID, createNotification())
+            GlassUIProvider.showCall(applicationContext)
+        }.launchIn(lifecycleScope)
 
     private fun createNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -228,18 +228,6 @@ class GlassCallService : CallService(), DefaultLifecycleObserver, Application.Ac
             .setContentTitle("Kaleyra Call")
             .build()
     }
-
-    private fun PhoneBox.observe(): Job =
-        call.onEach { call ->
-            if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return@onEach
-//                if (ongoingCalls.isNotEmpty()) return@onEach
-
-//                ongoingCalls.add(call)
-            currentCall = call
-            call.setup()
-
-            GlassUIProvider.showCall(applicationContext)
-        }.launchIn(lifecycleScope)
 
     private fun Call.setup() {
         val publishJob = publishMySelf()
