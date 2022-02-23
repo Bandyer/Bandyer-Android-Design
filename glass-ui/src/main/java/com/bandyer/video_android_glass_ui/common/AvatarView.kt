@@ -58,7 +58,6 @@ internal class AvatarView @JvmOverloads constructor(
      * @param uri The avatar's uri
      */
     fun setImage(uri: Uri) = with(binding) {
-        if (uri == Uri.EMPTY) bandyerAvatarImage.setImageResource(defaultAvatar)
         Picasso.get().load(uri).placeholder(defaultAvatar).error(defaultAvatar).into(bandyerAvatarImage)
         bandyerAvatarText.visibility = GONE
     }

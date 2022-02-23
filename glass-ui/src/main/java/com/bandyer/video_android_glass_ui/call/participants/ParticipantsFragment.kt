@@ -112,12 +112,13 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                         lifecycleScope.launch {
                             val image = viewModel.usersDescription.image(listOf(userAlias))
 
-                            if (image == Uri.EMPTY) {
+                            if (image != Uri.EMPTY) {
                                 setAvatar(image)
                                 return@launch
                             }
 
                             val desc = viewModel.usersDescription.name(listOf(userAlias))
+                            setAvatar(null)
                             setAvatarBackgroundAndLetter(desc)
                         }
                     }
