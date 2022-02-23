@@ -84,9 +84,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     override val call: SharedFlow<Call>
         get() = phoneBox!!.call
 
-    private var _usersDescription: UsersDescription? = null
-    override val usersDescription: UsersDescription
-        get() = _usersDescription!!
+    override var usersDescription: UsersDescription = UsersDescription()
 
     override val battery: SharedFlow<BatteryInfo>
         get() = batteryObserver!!.observe()
@@ -172,11 +170,11 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     }
 
     // CallService
-    fun bind(phoneBox: PhoneBox, usersDescription: UsersDescription) {
+    fun bind(phoneBox: PhoneBox, usersDescription: UsersDescription? = null) {
         this.phoneBox = phoneBox.apply {
             phoneBoxJob?.cancel()
             phoneBoxJob = observe()
-            _usersDescription = usersDescription
+            usersDescription?.also { this@CallService.usersDescription = it }
         }
     }
 

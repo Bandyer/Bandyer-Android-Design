@@ -44,12 +44,10 @@ object CollaborationUI {
     }
 
     private fun startPhoneBoxService() {
-        require(usersDescription != null) { "set the users description to use the phoneBox" }
-
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
                 val service = (binder as BoundService.ServiceBinder).getService<CallService>()
-                service.bind(phoneBox, usersDescription!!)
+                service.bind(phoneBox, usersDescription)
             }
 
             override fun onServiceDisconnected(componentName: ComponentName) = Unit
