@@ -50,7 +50,7 @@ internal class GlassViewModelFactory(
         GlassViewModel(callDelegate, deviceStatusDelegate, callController) as T
 }
 
-data class UserDescription(val name: String, val image: Uri)
+//internal data class UserDescription(val name: String, val image: Uri)
 
 internal class GlassViewModel(
     callDelegate: CallUIDelegate,
