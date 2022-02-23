@@ -8,6 +8,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.NotificationCompat
@@ -28,6 +29,7 @@ import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.collaboration_center.phonebox.Input
 import com.bandyer.collaboration_center.phonebox.Inputs
 import com.bandyer.collaboration_center.phonebox.VideoStreamView
+import com.bandyer.video_android_core_ui.UsersDescription
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
 import kotlinx.coroutines.Job
@@ -66,43 +68,27 @@ class GlassCallService : CallService(), DefaultLifecycleObserver, Application.Ac
     override val call: SharedFlow<Call>
         get() = phoneBox!!.call
 
-    override val userDetailsDelegate: StateFlow<UserDetailsDelegate?> =
-        MutableStateFlow<UserDetailsDelegate?>(null).apply {
-            value =
-                userDetailsDelegate {
-                    data = listOf(
-                        UserDetails(
-                            "ste1",
-                            "Mario",
-                            "Mario",
-                            "Rossi",
-                            "mario@gmail.com",
-                            null,
-                            null,
-                            null
-                        ),
-                        UserDetails(
-                            "ste2",
-                            "Luigi",
-                            "Luigi",
-                            "Gialli",
-                            "luigi@gmail.com",
-                            null,
-                            "https://randomuser.me/api/portraits/men/86.jpg",
-                            null
-                        )
-                    )
-                    defaultFormatter = { userDetails ->
-                        if (userDetails.count() > 1) {
-                            var text = ""
-                            userDetails.forEach { text += "${it.firstName} ${it.lastName}, " }
-                            text
-                        } else "${userDetails.first().firstName} ${userDetails.first().lastName}"
+    override val usersDescription: UsersDescription = UsersDescription(
+            name = {
+                it.map { userId ->
+                    when(userId) {
+                        "ste1" -> "Mario Rossi"
+                        "ste2" -> "Luigi Gialli"
+                        else -> "Unknown guy"
                     }
-                    callFormatter = defaultFormatter
-                }
-
-        }
+                }.joinToString()
+            },
+            image = {
+                if (it.count() == 1) {
+                    when(it.first()) {
+                        "ste1" -> Uri.EMPTY
+                        "ste2" -> Uri.EMPTY
+//                        Uri.parse( "https://randomuser.me/api/portraits/men/86.jpg" )
+                        else -> Uri.EMPTY
+                    }
+                } else Uri.EMPTY
+            }
+        )
 
     override val battery: SharedFlow<BatteryInfo>
         get() = batteryObserver!!.observe()

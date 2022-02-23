@@ -1,5 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
+import android.net.Uri
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,7 @@ import com.bandyer.collaboration_center.phonebox.CallParticipant
 import com.bandyer.collaboration_center.phonebox.CallParticipants
 import com.bandyer.collaboration_center.phonebox.Input
 import com.bandyer.collaboration_center.phonebox.Stream
+import com.bandyer.video_android_core_ui.UsersDescription
 import com.bandyer.video_android_glass_ui.model.Permission
 import com.bandyer.video_android_glass_ui.model.Volume
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
@@ -48,6 +50,8 @@ internal class GlassViewModelFactory(
         GlassViewModel(callDelegate, deviceStatusDelegate, callController) as T
 }
 
+data class UserDescription(val name: String, val image: Uri)
+
 internal class GlassViewModel(
     callDelegate: CallUIDelegate,
     deviceStatusDelegate: DeviceStatusDelegate,
@@ -72,7 +76,7 @@ internal class GlassViewModel(
 
     val wifi: SharedFlow<WiFiInfo> = deviceStatusDelegate.wifi
 
-    val userDetailsDelegate: StateFlow<UserDetailsDelegate?> = callDelegate.userDetailsDelegate
+    val usersDescription: UsersDescription = callDelegate.usersDescription
 
     val volume: Volume get() = callController.onGetVolume()
 
@@ -112,7 +116,8 @@ internal class GlassViewModel(
             val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
             this@GlassViewModel.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
                 if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
-                    val newStreams = streams.map { StreamParticipant(participant, itsMe, it) }
+                    val newStreams = streams.map { StreamParticipant(participant, itsMe, it, usersDescription.name(
+                        listOf(participant.userAlias)), usersDescription.image(listOf(participant.userAlias))) }
                     val currentStreams = uiStreams.filter { it.participant == participant }
                     val addedStreams = newStreams - currentStreams.toSet()
                     val removedStreams = currentStreams - newStreams.toSet()

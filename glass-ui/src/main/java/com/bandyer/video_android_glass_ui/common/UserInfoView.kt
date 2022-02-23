@@ -26,11 +26,11 @@ internal class UserInfoView @JvmOverloads constructor(
         bandyerAvatar.setBackground(name.parseToColor())
     }
 
-    fun setAvatar(url: String) = binding.bandyerAvatar.setImage(url)
+//    fun setAvatar(url: String) = binding.bandyerAvatar.setImage(url)
 
     fun setAvatar(uri: Uri) = binding.bandyerAvatar.setImage(uri)
 
-    fun setAvatar(@DrawableRes resId: Int?) = binding.bandyerAvatar.setImage(resId)
+//    fun setAvatar(@DrawableRes resId: Int?) = binding.bandyerAvatar.setImage(resId)
 
     fun setState(state: UserState, lastSeenTime: Long = 0) = with(binding) {
         if(state is UserState.Offline) bandyerUserStateText.setUserState(state, lastSeenTime)

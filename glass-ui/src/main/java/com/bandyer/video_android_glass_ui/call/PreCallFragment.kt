@@ -1,7 +1,6 @@
 package com.bandyer.video_android_glass_ui.call
 
-import android.content.res.Configuration
-import android.os.Bundle
+import android.annotation.SuppressLint
 import android.view.View
 import com.bandyer.video_android_glass_ui.R
 import com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView
@@ -12,6 +11,7 @@ import kotlin.math.roundToInt
 
 internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoScrollView.OnScrollListener {
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onServiceConnected() {
         super.onServiceConnected()
 
@@ -20,18 +20,15 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
             root.setOnTouchListener { _, event -> bandyerParticipantsScrollView.onTouchEvent(event) }
 
             repeatOnStarted {
-                viewModel.userDetailsDelegate
-                    .onEach {
-                        bandyerParticipants.text =
-                            it?.callFormatter!!.invoke(it.data!!)
-                        updateUIOnParticipantChange()
-                    }.launchIn(this@repeatOnStarted)
-
                 viewModel.participants.onEach { participants ->
                     bandyerCounter.text = resources.getString(
                         R.string.bandyer_glass_n_of_participants_pattern,
                         participants.others.size + 1
                     )
+
+                    val userAliases = participants.others.plus(participants.me).map { it.userAlias }
+                    bandyerParticipants.text = viewModel.usersDescription.name(userAliases)
+                    updateUIOnParticipantsViewChange()
 
                     setSubtitle(participants.others.count() + 1 > 2)
                 }.launchIn(this@repeatOnStarted)
@@ -39,17 +36,12 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        updateUIOnParticipantChange()
-    }
+//    override fun onConfigurationChanged(newConfig: Configuration) {
+//        super.onConfigurationChanged(newConfig)
+//        updateUIOnParticipantsViewChange()
+//    }
 
-    override fun onConfigurationChanged(newConfig: Configuration) {
-        super.onConfigurationChanged(newConfig)
-        updateUIOnParticipantChange()
-    }
-
-    private fun updateUIOnParticipantChange() = with(binding) {
+    private fun updateUIOnParticipantsViewChange() = with(binding) {
         bandyerParticipants.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         val hideProgressUI =
             resources.displayMetrics.widthPixels - bandyerParticipants.measuredWidth > 0

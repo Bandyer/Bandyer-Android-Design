@@ -1,18 +1,20 @@
 package com.bandyer.video_android_glass_ui.call.participants
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.BaseFragment
 import com.bandyer.video_android_glass_ui.GlassViewModel
-import com.bandyer.video_android_glass_ui.UserDetails
 import com.bandyer.video_android_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.bandyer.video_android_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassFragmentParticipantsBinding
@@ -26,6 +28,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.launch
 
 /**
  * ParticipantsFragment
@@ -86,7 +89,6 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                     addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper!!))
 
 
-
                     // Forward the root view's touch event to the recycler view
                     root.setOnTouchListener { _, event -> onTouchEvent(event) }
                 }
@@ -102,26 +104,22 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                     val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
                     currentParticipantIndex = layoutManager!!.getPosition(foundView)
 
-                    val participant =
-                        itemAdapter!!.getAdapterItem(currentParticipantIndex).participant
+                    val userAlias =
+                        itemAdapter!!.getAdapterItem(currentParticipantIndex).data.userAlias
                     with(binding.bandyerUserInfo) {
                         hideName(true)
 
-                        val userDetailsDelegate = viewModel.userDetailsDelegate.value ?: return
-                        val userDetails =
-                            userDetailsDelegate.data!!.firstOrNull { it.userAlias == participant.userAlias }
-                                ?: UserDetails(participant.userAlias)
+                        lifecycleScope.launch {
+                            val image = viewModel.usersDescription.image(listOf(userAlias))
 
-                        when {
-                            userDetails.avatarUrl != null -> setAvatar(userDetails.avatarUrl)
-                            userDetails.avatarUri != null -> setAvatar(userDetails.avatarUri)
-                            userDetails.avatarResId != null -> setAvatar(userDetails.avatarResId)
-                            else -> setAvatar(null)
+                            if (image == Uri.EMPTY) {
+                                setAvatar(image)
+                                return@launch
+                            }
+
+                            val desc = viewModel.usersDescription.name(listOf(userAlias))
+                            setAvatarBackgroundAndLetter(desc)
                         }
-
-                        val formattedText =
-                            userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
-                        setAvatarBackgroundAndLetter(formattedText)
                     }
                 }
             })
@@ -134,9 +132,19 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
             ) { inCallParticipants, participants -> Pair(inCallParticipants, participants) }
                 .takeWhile { it.first.isNotEmpty() }
                 .collect { pair ->
-                    val sortedList = pair.first.sortedBy { pair.second.me.userAlias != it.userAlias }
-                    val items = sortedList.map { CallParticipantItem(it, viewModel.userDetailsDelegate) }
-                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
+                    val sortedList =
+                        pair.first.sortedBy { pair.second.me.userAlias != it.userAlias }
+                    val items = sortedList.map { part ->
+                        val data = part.userAlias.let {
+                            ParticipantItemData(
+                                it,
+                                viewModel.usersDescription.name(listOf(it))
+                            )
+                        }
+                        CallParticipantItem(data)
+                    }
+                    FastAdapterDiffUtil[itemAdapter!!] =
+                        FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                 }
         }
     }

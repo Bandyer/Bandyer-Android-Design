@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.phonebox.Call
+import com.bandyer.collaboration_center.phonebox.Input
 import com.bandyer.video_android_glass_ui.call.CallEndedFragmentArgs
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
@@ -36,7 +37,10 @@ import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensi
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -323,31 +327,19 @@ internal class GlassActivity :
 
             viewModel.onParticipantJoin
                 .onEach { part ->
-                    val userDetailsDelegate =
-                        viewModel.userDetailsDelegate.value ?: return@onEach
-                    val userDetails =
-                        userDetailsDelegate.data!!.firstOrNull { it.userAlias == part.userAlias }
-                            ?: UserDetails(part.userAlias)
                     val toastText = resources.getString(
                         R.string.bandyer_glass_user_joined_pattern,
-                        userDetails.let {
-                            userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
-                        })
+                        viewModel.usersDescription.name(listOf(part.userAlias))
+                    )
                     binding.bandyerToastContainer.show(text = toastText)
                 }.launchIn(this)
 
             viewModel.onParticipantLeave
                 .onEach { part ->
-                    val userDetailsDelegate =
-                        viewModel.userDetailsDelegate.value ?: return@onEach
-                    val userDetails =
-                        userDetailsDelegate.data!!.firstOrNull { it.userAlias == part.userAlias }
-                            ?: UserDetails(part.userAlias)
                     val toastText = resources.getString(
                         R.string.bandyer_glass_user_left_pattern,
-                        userDetails.let {
-                            userDetailsDelegate.callFormatter!!.invoke(listOf(userDetails))
-                        })
+                        viewModel.usersDescription.name(listOf(part.userAlias))
+                    )
                     binding.bandyerToastContainer.show(text = toastText)
                 }.launchIn(this)
 
@@ -356,11 +348,10 @@ internal class GlassActivity :
                     val orderedList = streams.sortedBy { !it.isMyStream }.map {
                         if (it.isMyStream) MyStreamItem(
                             it,
-                            viewModel.userDetailsDelegate,
                             lifecycleScope,
                             viewModel.micPermission,
                             viewModel.camPermission
-                        ) else OtherStreamItem(it, viewModel.userDetailsDelegate, lifecycleScope)
+                        ) else OtherStreamItem(it, lifecycleScope)
                     }
                     FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
                 }.launchIn(this)

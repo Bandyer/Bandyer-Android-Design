@@ -28,7 +28,7 @@ apply from: '../android.gradle'
 apply from: '../publish.gradle'
 
 dependencies {
-    implementation project(':core-ui')
+    api project(':core-ui')
 
     coreLibraryDesugaring androidX.desugar
 
