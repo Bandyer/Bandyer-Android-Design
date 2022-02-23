@@ -180,17 +180,31 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private fun PhoneBox.observe(): Job =
         call.onEach { call ->
-//            call.participants.value.me.
             if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return@onEach
 //                if (ongoingCalls.isNotEmpty()) return@onEach
 
 //                ongoingCalls.add(call)
             currentCall = call
             call.setup()
-// quanto in entrata o quando in uscita ma aspetto il connecting
-            startForeground(NOTIFICATION_ID, createNotification())
-            GlassUIProvider.showCall(applicationContext)
+
+            // If it is an ingoing call...
+            val participants = call.participants.value
+            if (participants.me != participants.creator()) {
+                showCallUI()
+                return@onEach
+            }
+
+            // ...otherwise
+            call.state
+                .takeWhile { it !is Call.State.Connecting }
+                .onCompletion { showCallUI() }
+                .launchIn(lifecycleScope)
         }.launchIn(lifecycleScope)
+
+    private fun showCallUI() {
+        startForeground(NOTIFICATION_ID, createNotification())
+        GlassUIProvider.showCall(applicationContext)
+    }
 
     private fun createNotification(): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
