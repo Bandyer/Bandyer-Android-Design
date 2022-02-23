@@ -68,27 +68,9 @@ class GlassCallService : CallService(), DefaultLifecycleObserver, Application.Ac
     override val call: SharedFlow<Call>
         get() = phoneBox!!.call
 
-    override val usersDescription: UsersDescription = UsersDescription(
-            name = {
-                it.map { userId ->
-                    when(userId) {
-                        "ste1" -> "Mario Rossi"
-                        "ste2" -> "Luigi Gialli"
-                        else -> "Unknown guy"
-                    }
-                }.joinToString()
-            },
-            image = {
-                if (it.count() == 1) {
-                    when(it.first()) {
-                        "ste1" -> Uri.EMPTY
-                        "ste2" -> Uri.EMPTY
-//                        Uri.parse( "https://randomuser.me/api/portraits/men/86.jpg" )
-                        else -> Uri.EMPTY
-                    }
-                } else Uri.EMPTY
-            }
-        )
+    private var _usersDescription: UsersDescription? = null
+    override val usersDescription: UsersDescription
+        get() = _usersDescription!!
 
     override val battery: SharedFlow<BatteryInfo>
         get() = batteryObserver!!.observe()
@@ -174,10 +156,11 @@ class GlassCallService : CallService(), DefaultLifecycleObserver, Application.Ac
     }
 
     // CallService
-    override fun bind(phoneBox: PhoneBox) {
+    override fun bind(phoneBox: PhoneBox, usersDescription: UsersDescription) {
         this.phoneBox = phoneBox.apply {
             phoneBoxJob?.cancel()
             phoneBoxJob = observe()
+            _usersDescription = usersDescription
         }
     }
 

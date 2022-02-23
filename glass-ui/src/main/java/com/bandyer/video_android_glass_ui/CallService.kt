@@ -6,6 +6,7 @@ import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 import com.bandyer.collaboration_center.Collaboration
 import com.bandyer.collaboration_center.PhoneBox
+import com.bandyer.video_android_core_ui.UsersDescription
 
 abstract class CallService : LifecycleService(), CallUIDelegate, CallUIController, DeviceStatusDelegate {
 
@@ -21,5 +22,5 @@ abstract class CallService : LifecycleService(), CallUIDelegate, CallUIControlle
         return binder
     }
 
-    abstract fun bind(phoneBox: PhoneBox)
+    abstract fun bind(phoneBox: PhoneBox, usersDescription: UsersDescription)
 }
