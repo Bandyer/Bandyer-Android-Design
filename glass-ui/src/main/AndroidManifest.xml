@@ -9,7 +9,7 @@
             android:theme="@style/BandyerSDKDesign.Theme.DayNight.GlassCall" />
         <!--    TODO remove this after CallService is moved somewhere else -->
         <service
-            android:name="com.bandyer.video_android_glass_ui.GlassCallService"
+            android:name="com.bandyer.video_android_glass_ui.CallService"
             android:foregroundServiceType="phoneCall|mediaProjection|camera|microphone" />
     </application>
 

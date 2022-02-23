@@ -1,5 +1,6 @@
 package com.bandyer.video_android_glass_ui
 
+import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -10,14 +11,14 @@ import androidx.fragment.app.FragmentActivity
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.phonebox.Call
+import com.bandyer.video_android_core_ui.UIProvider
 import com.bandyer.video_android_core_ui.UsersDescription
-import com.bandyer.video_android_glass_ui.model.Permission
-import com.bandyer.video_android_glass_ui.model.Volume
+import com.bandyer.video_android_core_ui.model.Permission
+import com.bandyer.video_android_core_ui.model.Volume
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
 
-object GlassUIProvider {
-    fun showCall(context: Context) {
+object GlassUIProvider: UIProvider {
+    override fun showCall(context: Context) {
         val applicationContext = context.applicationContext
         val intent = Intent(applicationContext, GlassActivity::class.java).apply {
             addFlags(FLAG_ACTIVITY_NEW_TASK)
@@ -28,7 +29,9 @@ object GlassUIProvider {
         applicationContext.startActivity(intent)
     }
 
-    fun createCallPendingIntent(context: Context): PendingIntent {
+    override fun isUIActivity(activity: Activity) = activity is GlassActivity
+
+    override fun createCallPendingIntent(context: Context): PendingIntent {
         val applicationContext = context.applicationContext
         val notifyIntent = Intent(applicationContext, GlassActivity::class.java).apply {
             flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK

@@ -36,6 +36,9 @@ dependencies {
     api google.material
     api picasso.picasso
 
+    compileOnly project(path: ':collaboration_center')
+    compileOnly project(path: ':bandyer-android-common')
+
     testImplementation test.jUnit
     androidTestImplementation test.espresso
 }

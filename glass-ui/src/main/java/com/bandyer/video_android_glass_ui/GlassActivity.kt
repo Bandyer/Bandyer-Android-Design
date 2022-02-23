@@ -26,7 +26,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.phonebox.Call
-import com.bandyer.collaboration_center.phonebox.Input
+import com.bandyer.video_android_core_ui.CallUIController
+import com.bandyer.video_android_core_ui.CallUIDelegate
+import com.bandyer.video_android_core_ui.DeviceStatusDelegate
 import com.bandyer.video_android_glass_ui.call.CallEndedFragmentArgs
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
@@ -37,10 +39,7 @@ import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensi
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.dropWhile
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -62,7 +61,7 @@ internal class GlassActivity :
     }
 
     private var serviceConnection: ServiceConnection? = null
-    private var service: GlassCallService? = null
+    private var service: CallService? = null
     val isServiceConnected: Boolean
         get() = service != null
 
@@ -142,7 +141,7 @@ internal class GlassActivity :
 
         serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
-                service = (binder as CallService.ServiceBinder).getService()
+                service = (binder as BoundService.ServiceBinder).getService()
                 onServiceConnected()
             }
             override fun onServiceDisconnected(componentName: ComponentName) {
@@ -151,7 +150,7 @@ internal class GlassActivity :
         }
 
         with(applicationContext) {
-            val intent = Intent(this, GlassCallService::class.java)
+            val intent = Intent(this, CallService::class.java)
             startService(intent)
             bindService(intent, serviceConnection!!, 0)
         }
