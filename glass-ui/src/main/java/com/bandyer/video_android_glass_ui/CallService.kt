@@ -52,16 +52,22 @@ abstract class BoundService : LifecycleService() {
         fun <T : BoundService> getService(): T = this@BoundService as T
     }
 
-    private val binder = ServiceBinder()
+    private var binder: ServiceBinder? = null
 
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
-        return binder
+        return ServiceBinder().also { binder = it }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binder = null
     }
 }
 
 @SuppressLint("MissingPermission")
-class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStatusDelegate, DefaultLifecycleObserver, Application.ActivityLifecycleCallbacks {
+class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStatusDelegate,
+    DefaultLifecycleObserver, Application.ActivityLifecycleCallbacks {
 
     companion object {
         var NOTIFICATION_ID = 22
@@ -146,7 +152,9 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     override fun onActivityStarted(activity: Activity) {
         if (!GlassUIProvider.isUIActivity(activity)) return
-        val video = currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value ?: return
+        val video =
+            currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value
+                ?: return
         if (wasVideoEnabledOnDestroy) video.tryEnable() else video.tryDisable()
         wasVideoEnabledOnDestroy = false
     }
@@ -157,7 +165,9 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     override fun onActivityStopped(activity: Activity) {
         if (!GlassUIProvider.isUIActivity(activity)) return
-        val video = currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value ?: return
+        val video =
+            currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value
+                ?: return
         wasVideoEnabledOnDestroy = video.enabled.value
         video.tryDisable()
     }
