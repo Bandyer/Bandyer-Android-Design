@@ -52,7 +52,7 @@ internal class CallEndedFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onServiceConnected() = Unit
+    override fun onServiceBound() = Unit
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

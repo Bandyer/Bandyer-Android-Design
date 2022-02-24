@@ -14,7 +14,8 @@ import com.bandyer.video_android_glass_ui.utils.TiltFragment
 /**
  * BaseFragment. A base class for all the smart glass fragments
  */
-internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatNotificationManager.NotificationListener, ServiceBinderActivity.ServiceObserver {
+internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatNotificationManager.NotificationListener,
+    BoundServiceActivity.Observer {
 
     /**
      * The [GlassActivity]
@@ -25,8 +26,8 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
     /**
      * Flag which point outs if the call service is already bound
      */
-    private val isServiceConnected: Boolean
-        get() = activity.isServiceConnected
+    private val isServiceBound: Boolean
+        get() = activity.isServiceBound
 
     /**
      * The fragment's view binding
@@ -73,7 +74,7 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
     ): View? {
         activity.onDestinationChanged(NavHostFragment.findNavController(this).currentDestination!!.id)
         activity.addNotificationListener(this)
-        activity.addBindServiceObserver(this)
+        activity.addServiceBoundObserver(this)
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -83,8 +84,8 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (isServiceConnected)
-            onServiceConnected()
+        if (isServiceBound)
+            onServiceBound()
     }
 
     /**
@@ -92,7 +93,7 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
      */
     override fun onDestroyView() {
         super.onDestroyView()
-        activity.removeBindServiceObserver(this)
+        activity.removeServiceBoundObserver(this)
         activity.removeNotificationListener(this)
     }
 

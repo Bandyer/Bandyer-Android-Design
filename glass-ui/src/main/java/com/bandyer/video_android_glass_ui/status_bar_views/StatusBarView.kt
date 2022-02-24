@@ -82,15 +82,6 @@ internal class StatusBarView @JvmOverloads constructor(
     }
 
     /**
-     * Set the centered title
-     *
-     * @param text The centered title text
-     */
-    fun setCenteredText(text: String) {
-        binding.bandyerCenteredTitle.text = text
-    }
-
-    /**
      * Show the recording icon and text
      */
     fun showRec() {

@@ -44,7 +44,7 @@ internal class EmptyFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onServiceConnected() = Unit
+    override fun onServiceBound() = Unit
 
     /**
      * @suppress

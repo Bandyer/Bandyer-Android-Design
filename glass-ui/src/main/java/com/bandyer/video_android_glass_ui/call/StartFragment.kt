@@ -44,7 +44,7 @@ internal class StartFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onServiceConnected() {
+    override fun onServiceBound() {
         repeatOnStarted {
             viewModel.callState
                 .combine(viewModel.participants) { state, participants ->

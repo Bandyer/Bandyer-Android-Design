@@ -53,7 +53,7 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
         return binding.root
     }
 
-    override fun onServiceConnected() {
+    override fun onServiceBound() {
         binding.bandyerSlider.apply {
             val volume = viewModel.volume
             maxProgress = volume.max

@@ -49,7 +49,7 @@ internal class ZoomFragment : BaseFragment(), TiltListener {
         return binding.root
     }
 
-    override fun onServiceConnected() = Unit
+    override fun onServiceBound() = Unit
 
     /**
      * @suppress

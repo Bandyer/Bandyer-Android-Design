@@ -51,7 +51,7 @@ internal abstract class ConnectingFragment : BaseFragment() {
         return binding.root
     }
 
-    override fun onServiceConnected() {
+    override fun onServiceBound() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.onHangup()
         }

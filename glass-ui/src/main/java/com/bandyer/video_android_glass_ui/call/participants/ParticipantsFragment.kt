@@ -97,7 +97,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
         return binding.root
     }
 
-    override fun onServiceConnected() {
+    override fun onServiceBound() {
         with(binding.bandyerParticipants) {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

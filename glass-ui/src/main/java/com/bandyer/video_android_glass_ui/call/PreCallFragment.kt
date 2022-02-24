@@ -12,8 +12,8 @@ import kotlin.math.roundToInt
 internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoScrollView.OnScrollListener {
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onServiceConnected() {
-        super.onServiceConnected()
+    override fun onServiceBound() {
+        super.onServiceBound()
 
         with(binding) {
             bandyerParticipantsScrollView.onScrollListener = this@PreCallFragment

@@ -98,7 +98,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         return binding.root
     }
 
-    override fun onServiceConnected() {
+    override fun onServiceBound() {
         val options = args.options ?: arrayOf()
         getActions(options).forEach { itemAdapter!!.add(MenuItem(it)) }
 

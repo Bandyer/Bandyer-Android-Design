@@ -1,24 +1,16 @@
 package com.bandyer.video_android_glass_ui
 
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -47,33 +39,17 @@ import kotlinx.coroutines.flow.onEach
  * GlassActivity
  */
 internal class GlassActivity :
-    AppCompatActivity(),
+    ImmersiveActivity<CallService>(CallService::class.java),
     GlassGestureDetector.OnGestureListener,
     ChatNotificationManager.NotificationListener,
-    TouchEventListener,
-    ServiceBinderActivity {
+    TouchEventListener {
 
-    private companion object {
-        const val BLOCKED_INPUT_TOAST_ID = "input-blocked"
-        const val DISABLED_INPUT_TOAST_ID = "input-disabled"
-        const val ALONE_TOAST_ID = "blocked-input"
-        var wasPausedForBackground = false
-    }
+    private lateinit var binding: BandyerActivityGlassBinding
 
-    private var serviceConnection: ServiceConnection? = null
     private var service: CallService? = null
-    val isServiceConnected: Boolean
+    val isServiceBound: Boolean
         get() = service != null
 
-    // BINDING AND VIEWS
-    private lateinit var binding: BandyerActivityGlassBinding
-    private var decorView: View? = null
-
-    // SERVICE BINDING
-    override var observers = arrayListOf<ServiceBinderActivity.ServiceObserver>()
-        private set
-
-    // VIEW MODEL
     private val viewModel: GlassViewModel by viewModels {
         GlassViewModelFactory(
             service as CallUIDelegate,
@@ -82,53 +58,34 @@ internal class GlassActivity :
         )
     }
 
-    // ADAPTER
     private var itemAdapter: ItemAdapter<StreamItem<*>>? = null
-    private var snapHelper: LinearSnapHelper? = null
     private var currentStreamItemIndex = 0
 
-    // NAVIGATION
-    private val currentFragment: Fragment?
-        get() = supportFragmentManager.currentNavigationFragment
     private var navController: NavController? = null
 
-    // GOOGLE GLASS GESTURE DETECTOR
     private var glassGestureDetector: GlassGestureDetector? = null
 
-    // NOTIFICATION
     private var notificationManager: ChatNotificationManager? = null
     private var isNotificationVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        enterImmersiveMode()
-
         binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
-        // NavController
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        // Gesture Detector
         glassGestureDetector = GlassGestureDetector(this, this)
 
-        // Notification Manager
         notificationManager =
             ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
 
-        // Stream's recyclerView
+        // Set up the streams' recycler view
         with(binding.bandyerStreams) {
             itemAdapter = ItemAdapter()
             val fastAdapter = FastAdapter.with(itemAdapter!!)
             val layoutManager =
-                LinearLayoutManager(
-                    this@GlassActivity,
-                    LinearLayoutManager.HORIZONTAL,
-                    false
-                )
-            snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
+                LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
 
             this.layoutManager = layoutManager
             adapter = fastAdapter.apply {
@@ -138,73 +95,50 @@ internal class GlassActivity :
             isFocusable = false
             setHasFixedSize(true)
         }
-
-        serviceConnection = object : ServiceConnection {
-            override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
-                service = (binder as BoundService.ServiceBinder).getService()
-                onServiceConnected()
-            }
-            override fun onServiceDisconnected(componentName: ComponentName) {
-                service = null
-            }
-        }
-
-        with(applicationContext) {
-            val intent = Intent(this, CallService::class.java)
-            startService(intent)
-            bindService(intent, serviceConnection!!, 0)
-        }
     }
 
-    private fun onServiceConnected() {
+    override fun onServiceBound(service: CallService) {
+        this.service = service
+
         viewModel.onRequestMicPermission(this)
         viewModel.onRequestCameraPermission(this)
 
-        with(binding.bandyerStreams) {
+        // Add a scroll listener to the recycler view to show mic/cam blocked/disabled toasts
+        with(binding.bandyerStreams){
+            val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
+                    val foundView = snapHelper.findSnapView(layoutManager) ?: return
                     val position = layoutManager!!.getPosition(foundView)
-                    if (itemAdapter!!.getAdapterItem(position).streamParticipant.isMyStream && currentStreamItemIndex != position) {
-                        with(binding.bandyerToastContainer) {
-                            val isMicBlocked =
-                                viewModel.micPermission.value.let { !it.isAllowed && it.neverAskAgain }
-                            val isCamBlocked =
-                                viewModel.camPermission.value.let { !it.isAllowed && it.neverAskAgain }
-                            when {
-                                isMicBlocked && isCamBlocked -> show(
-                                    BLOCKED_INPUT_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_mic_and_cam_blocked)
-                                )
-                                isMicBlocked -> show(
-                                    BLOCKED_INPUT_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_mic_blocked)
-                                )
-                                isCamBlocked -> show(
-                                    BLOCKED_INPUT_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_cam_blocked)
-                                )
-                            }
 
-                            val isMicEnabled = viewModel.micEnabled.value
-                            val isCameraEnabled = viewModel.cameraEnabled.value
-                            when {
-                                !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled -> show(
-                                    DISABLED_INPUT_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_mic_and_cam_not_active)
-                                )
-                                !isMicBlocked && !isMicEnabled -> show(
-                                    DISABLED_INPUT_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_mic_not_active)
-                                )
-                                !isCamBlocked && !isCameraEnabled -> show(
-                                    DISABLED_INPUT_TOAST_ID,
-                                    resources.getString(R.string.bandyer_glass_cam_not_active)
-                                )
-                                else -> Unit
-                            }
+                    if (itemAdapter!!.getAdapterItem(position).streamParticipant.isMyStream && currentStreamItemIndex != position) {
+                        val isMicBlocked = viewModel.micPermission.value.let {
+                            !it.isAllowed && it.neverAskAgain
                         }
+                        val isCamBlocked = viewModel.camPermission.value.let {
+                            !it.isAllowed && it.neverAskAgain
+                        }
+                        val isMicEnabled = viewModel.micEnabled.value
+                        val isCameraEnabled = viewModel.cameraEnabled.value
+
+                        when {
+                            isMicBlocked && isCamBlocked -> resources.getString(R.string.bandyer_glass_mic_and_cam_blocked)
+                            isMicBlocked -> resources.getString(R.string.bandyer_glass_mic_blocked)
+                            isCamBlocked -> resources.getString(R.string.bandyer_glass_cam_blocked)
+                            else -> null
+                        }?.also { binding.bandyerToastContainer.show(BLOCKED_TOAST_ID, it) }
+
+                        when {
+                            !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled ->
+                                resources.getString(R.string.bandyer_glass_mic_and_cam_not_active)
+                            !isMicBlocked && !isMicEnabled ->
+                                resources.getString(R.string.bandyer_glass_mic_not_active)
+                            !isCamBlocked && !isCameraEnabled ->
+                                resources.getString(R.string.bandyer_glass_cam_not_active)
+                            else -> null
+                        }?.also { binding.bandyerToastContainer.show(DISABLED_TOAST_ID, it) }
                     }
+
                     currentStreamItemIndex = position
                 }
             })
@@ -213,85 +147,68 @@ internal class GlassActivity :
         repeatOnStarted {
             viewModel
                 .battery
-                .onEach { binding.bandyerStatusBar.updateBatteryIcon(it) }
+                .onEach {
+                    with(binding.bandyerStatusBar) {
+                        setBatteryChargingState(it.state == BatteryInfo.State.CHARGING)
+                        setBatteryCharge(it.percentage)
+                    }
+                }
                 .launchIn(this)
 
             viewModel
                 .wifi
-                .onEach { binding.bandyerStatusBar.updateWifiSignalIcon(it) }
+                .onEach {
+                    binding.bandyerStatusBar.setWiFiSignalState(
+                        when {
+                            it.state == WiFiInfo.State.DISABLED -> StatusBarView.WiFiSignalState.DISABLED
+                            it.level == WiFiInfo.Level.NO_SIGNAL || it.level == WiFiInfo.Level.POOR -> StatusBarView.WiFiSignalState.LOW
+                            it.level == WiFiInfo.Level.FAIR || it.level == WiFiInfo.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
+                            else -> StatusBarView.WiFiSignalState.FULL
+                        }
+                    )
+                }
                 .launchIn(this)
 
             viewModel.callState
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
-                    when (it) {
-                        is Call.State.Disconnected.Ended.Declined -> navController!!.navigate(
-                            R.id.callEndedFragment,
-                            CallEndedFragmentArgs(
-                                resources.getString(R.string.bandyer_glass_call_ended),
-                                resources.getString(R.string.bandyer_glass_call_declined)
-                            ).toBundle()
-                        )
-                        is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> navController!!.navigate(
-                            R.id.callEndedFragment,
-                            CallEndedFragmentArgs(
-                                resources.getString(R.string.bandyer_glass_call_ended),
-                                resources.getString(R.string.bandyer_glass_answered_on_another_device)
-                            ).toBundle()
-                        )
-                        is Call.State.Disconnected.Ended.LineBusy -> navController!!.navigate(
-                            R.id.callEndedFragment,
-                            CallEndedFragmentArgs(
-                                resources.getString(R.string.bandyer_glass_call_ended),
-                                resources.getString(R.string.bandyer_glass_line_busy)
-                            ).toBundle()
-                        )
-                        is Call.State.Disconnected.Ended.HangUp -> navController!!.navigate(
-                            R.id.callEndedFragment,
-                            CallEndedFragmentArgs(
-                                resources.getString(R.string.bandyer_glass_call_ended),
-                                resources.getString(R.string.bandyer_glass_call_hunged_up)
-                            ).toBundle()
-                        )
-                        is Call.State.Disconnected.Ended.Error -> navController!!.navigate(
-                            R.id.callEndedFragment,
-                            CallEndedFragmentArgs(
-                                resources.getString(R.string.bandyer_glass_call_ended),
-                                resources.getString(R.string.bandyer_glass_call_error_occurred)
-                            ).toBundle()
-                        )
-                        is Call.State.Disconnected.Ended.Timeout -> navController!!.navigate(
-                            R.id.callEndedFragment,
-                            CallEndedFragmentArgs(
-                                resources.getString(R.string.bandyer_glass_call_ended),
-                                resources.getString(R.string.bandyer_glass_call_timeout)
-                            ).toBundle()
-                        )
-                        is Call.State.Disconnected.Ended -> navController!!.navigate(
-                            R.id.callEndedFragment,
-                            CallEndedFragmentArgs(resources.getString(R.string.bandyer_glass_call_ended)).toBundle()
-                        )
-                        is Call.State.Reconnecting -> navController!!.navigate(R.id.reconnectingFragment)
-                        else -> Unit
+                    if (it is Call.State.Reconnecting) navController!!.navigate(R.id.reconnectingFragment)
+                    if (it is Call.State.Disconnected.Ended) {
+                        val title = resources.getString(R.string.bandyer_glass_call_ended)
+
+                        val subtitle = when (it) {
+                            is Call.State.Disconnected.Ended.Declined -> resources.getString(R.string.bandyer_glass_call_declined)
+                            is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> resources.getString(
+                                R.string.bandyer_glass_answered_on_another_device
+                            )
+                            is Call.State.Disconnected.Ended.LineBusy -> resources.getString(R.string.bandyer_glass_line_busy)
+                            is Call.State.Disconnected.Ended.HangUp -> resources.getString(R.string.bandyer_glass_call_hunged_up)
+                            is Call.State.Disconnected.Ended.Error -> resources.getString(R.string.bandyer_glass_call_error_occurred)
+                            is Call.State.Disconnected.Ended.Timeout -> resources.getString(R.string.bandyer_glass_call_timeout)
+                            else -> null
+                        }
+
+                        val navArgs = CallEndedFragmentArgs(title, subtitle).toBundle()
+                        navController!!.navigate(R.id.callEndedFragment, navArgs)
                     }
                 }.launchIn(this)
 
             viewModel.amIAlone
                 .onEach {
-                    with(binding) {
-                        if (it) bandyerToastContainer.show(
+                    with(binding.bandyerToastContainer) {
+                        if (it) show(
                             ALONE_TOAST_ID,
                             resources.getString(R.string.bandyer_glass_alone),
                             R.drawable.ic_bandyer_glass_alert,
                             0L
                         )
-                        else bandyerToastContainer.cancel(ALONE_TOAST_ID)
+                        else cancel(ALONE_TOAST_ID)
                     }
                 }.launchIn(this)
 
             viewModel.currentCall
                 .onEach {
-                    binding.bandyerStatusBar.apply {
+                    with(binding.bandyerStatusBar) {
                         if (it.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
                     }
                 }.launchIn(this)
@@ -312,34 +229,34 @@ internal class GlassActivity :
 
             viewModel.micPermission
                 .onEach {
-                    if (!it.isAllowed && it.neverAskAgain) binding.bandyerStatusBar.showMicMutedIcon(
-                        true
-                    )
-                }.launchIn(this)
+                    if (!it.isAllowed && it.neverAskAgain)
+                        binding.bandyerStatusBar.showMicMutedIcon(true)
+                }
+                .launchIn(this)
 
             viewModel.camPermission
                 .onEach {
-                    if (!it.isAllowed && it.neverAskAgain) binding.bandyerStatusBar.showCamMutedIcon(
-                        true
-                    )
-                }.launchIn(this)
+                    if (!it.isAllowed && it.neverAskAgain)
+                        binding.bandyerStatusBar.showCamMutedIcon(true)
+                }
+                .launchIn(this)
 
             viewModel.onParticipantJoin
                 .onEach { part ->
-                    val toastText = resources.getString(
+                    val text = resources.getString(
                         R.string.bandyer_glass_user_joined_pattern,
                         viewModel.usersDescription.name(listOf(part.userAlias))
                     )
-                    binding.bandyerToastContainer.show(text = toastText)
+                    binding.bandyerToastContainer.show(text = text)
                 }.launchIn(this)
 
             viewModel.onParticipantLeave
                 .onEach { part ->
-                    val toastText = resources.getString(
+                    val text = resources.getString(
                         R.string.bandyer_glass_user_left_pattern,
                         viewModel.usersDescription.name(listOf(part.userAlias))
                     )
-                    binding.bandyerToastContainer.show(text = toastText)
+                    binding.bandyerToastContainer.show(text = text)
                 }.launchIn(this)
 
             viewModel.streams
@@ -352,12 +269,10 @@ internal class GlassActivity :
                             viewModel.camPermission
                         ) else OtherStreamItem(it, lifecycleScope)
                     }
-                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
+                    FastAdapterDiffUtil[itemAdapter!!] =
+                        FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
                 }.launchIn(this)
-
         }
-
-        notifyServiceBinding()
 
         if (wasPausedForBackground) {
             viewModel.onEnableCamera(wasPausedForBackground)
@@ -367,7 +282,7 @@ internal class GlassActivity :
 
     override fun onTopResumedActivityChanged(isTopResumedActivity: Boolean) {
         super.onTopResumedActivityChanged(isTopResumedActivity)
-        if (!isServiceConnected) return
+        if (!isServiceBound) return
 
         if (!isTopResumedActivity) wasPausedForBackground = viewModel.cameraEnabled.value
         else if (wasPausedForBackground) {
@@ -376,18 +291,10 @@ internal class GlassActivity :
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        hideSystemUI()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         itemAdapter!!.clear()
-        applicationContext.unbindService(serviceConnection!!)
-        serviceConnection = null
         service = null
-        decorView = null
         itemAdapter = null
         navController = null
         glassGestureDetector = null
@@ -409,26 +316,20 @@ internal class GlassActivity :
             notificationManager!!.dnd = it
         }
 
-        binding.bandyerStatusBar.apply {
-            if (setOf(
-                    R.id.dialingFragment,
-                    R.id.ringingFragment,
-                    R.id.reconnectingFragment,
-                    R.id.endCallFragment,
-                    R.id.callEndedFragment,
-                    R.id.chatFragment,
-                    R.id.chatMenuFragment,
-                    R.id.participantsFragment
-                ).contains(destinationId)
-            ) applyFlatTint()
-            else removeTint()
-        }
+        binding.bandyerStatusBar.setBackgroundColor(
+            if (fragmentsWithDimmedStatusBar.contains(destinationId))
+                ResourcesCompat.getColor(
+                    resources,
+                    R.color.bandyer_glass_dimmed_background_color,
+                    null
+                )
+            else Color.TRANSPARENT
+        )
 
         binding.bandyerToastContainer.visibility =
             if (destinationId == R.id.emptyFragment) View.VISIBLE else View.GONE
     }
 
-    // GESTURES AND KEYS EVENTS
     /**
      * @suppress
      */
@@ -441,22 +342,20 @@ internal class GlassActivity :
     /**
      * @suppress
      */
-    override fun dispatchKeyEvent(event: KeyEvent?): Boolean {
-        return if (event?.action == MotionEvent.ACTION_DOWN && handleSmartGlassTouchEvent(
-                TouchEvent.getEvent(
-                    event
-                )
-            )
+    override fun dispatchKeyEvent(event: KeyEvent?): Boolean =
+        if (event?.action == MotionEvent.ACTION_DOWN &&
+            handleSmartGlassTouchEvent(TouchEvent.getEvent(event))
         ) true
         else super.dispatchKeyEvent(event)
-    }
 
     override fun onGesture(gesture: GlassGestureDetector.Gesture): Boolean =
         handleSmartGlassTouchEvent(TouchEvent.getEvent(gesture))
 
     private fun handleSmartGlassTouchEvent(glassEvent: TouchEvent): Boolean =
         if (isNotificationVisible) onTouch(glassEvent)
-        else (currentFragment as? TouchEventListener)?.onTouch(glassEvent) ?: false
+        else (supportFragmentManager.currentNavigationFragment as? TouchEventListener)?.onTouch(
+            glassEvent
+        ) ?: false
 
     override fun onTouch(event: TouchEvent): Boolean =
         when (event.type) {
@@ -465,14 +364,13 @@ internal class GlassActivity :
             else -> false
         }
 
-    // NOTIFICATION LISTENER
     override fun onShow() {
         isNotificationVisible = true
     }
 
     override fun onExpanded() {
         isNotificationVisible = false
-        if (currentFragment?.id != R.id.smartglass_nav_graph_chat)
+        if (supportFragmentManager.currentNavigationFragment?.id != R.id.smartglass_nav_graph_chat)
             navController!!.navigate(R.id.smartglass_nav_graph_chat)
     }
 
@@ -498,72 +396,20 @@ internal class GlassActivity :
         notificationManager!!.removeListener(listener)
     }
 
-    // IMMERSIVE MODE
-    private fun enterImmersiveMode() {
-        supportActionBar?.hide()
-        decorView = window.decorView
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) return
-        // ATM there is no way of doing this on api > 30
-        decorView!!.apply {
-            setOnSystemUiVisibilityChangeListener { visibility ->
-                if (visibility and View.SYSTEM_UI_FLAG_FULLSCREEN == 0)
-                    hideSystemUI()
-            }
-        }
-    }
-
-    private fun hideSystemUI() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.setDecorFitsSystemWindows(false)
-            window.insetsController?.apply {
-                hide(WindowInsetsCompat.Type.systemBars())
-                systemBarsBehavior =
-                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
-            }
-        } else {
-            decorView!!.systemUiVisibility = (View.SYSTEM_UI_FLAG_IMMERSIVE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                    or View.SYSTEM_UI_FLAG_FULLSCREEN)
-        }
-    }
-
-    // UPDATE STATUS BAR UI
-    private fun StatusBarView.applyFlatTint() = setBackgroundColor(
-        ResourcesCompat.getColor(
-            resources,
-            R.color.bandyer_glass_dimmed_background_color,
-            null
+    private companion object {
+        const val BLOCKED_TOAST_ID = "blocked-input"
+        const val DISABLED_TOAST_ID = "disabled-input"
+        const val ALONE_TOAST_ID = "alone-in-call"
+        val fragmentsWithDimmedStatusBar = setOf(
+            R.id.dialingFragment,
+            R.id.ringingFragment,
+            R.id.reconnectingFragment,
+            R.id.endCallFragment,
+            R.id.callEndedFragment,
+            R.id.chatFragment,
+            R.id.chatMenuFragment,
+            R.id.participantsFragment
         )
-    )
-
-    private fun StatusBarView.removeTint() = setBackgroundColor(Color.TRANSPARENT)
-
-    private fun StatusBarView.updateCenteredText(nCallParticipants: Int) =
-        setCenteredText(
-            resources.getQuantityString(
-                R.plurals.bandyer_glass_users_in_call_pattern,
-                nCallParticipants,
-                nCallParticipants
-            )
-        )
-
-    private fun StatusBarView.updateBatteryIcon(battery: BatteryInfo) {
-        setBatteryChargingState(battery.state == BatteryInfo.State.CHARGING)
-        setBatteryCharge(battery.percentage)
-    }
-
-    private fun StatusBarView.updateWifiSignalIcon(wifi: WiFiInfo) {
-        setWiFiSignalState(
-            if (wifi.state == WiFiInfo.State.DISABLED) StatusBarView.WiFiSignalState.DISABLED
-            else when (wifi.level) {
-                WiFiInfo.Level.NO_SIGNAL, WiFiInfo.Level.POOR -> StatusBarView.WiFiSignalState.LOW
-                WiFiInfo.Level.FAIR, WiFiInfo.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
-                WiFiInfo.Level.EXCELLENT -> StatusBarView.WiFiSignalState.FULL
-            }
-        )
+        var wasPausedForBackground = false
     }
 }
