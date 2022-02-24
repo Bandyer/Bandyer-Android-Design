@@ -18,10 +18,10 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
     BoundServiceActivity.Observer {
 
     /**
-     * The [GlassActivity]
+     * The [GlassCallActivity]
      */
     private val activity
-        get() = requireActivity() as GlassActivity
+        get() = requireActivity() as GlassCallActivity
 
     /**
      * Flag which point outs if the call service is already bound

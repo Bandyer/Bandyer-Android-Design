@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.SharedFlow
 object GlassUIProvider: UIProvider {
     override fun showCall(context: Context) {
         val applicationContext = context.applicationContext
-        val intent = Intent(applicationContext, GlassActivity::class.java).apply {
+        val intent = Intent(applicationContext, GlassCallActivity::class.java).apply {
             addFlags(FLAG_ACTIVITY_NEW_TASK)
             // TODO
             putExtra("enableTilt", false)
@@ -29,11 +29,11 @@ object GlassUIProvider: UIProvider {
         applicationContext.startActivity(intent)
     }
 
-    override fun isUIActivity(activity: Activity) = activity is GlassActivity
+    override fun isUIActivity(activity: Activity) = activity is GlassCallActivity
 
     override fun createCallPendingIntent(context: Context): PendingIntent {
         val applicationContext = context.applicationContext
-        val notifyIntent = Intent(applicationContext, GlassActivity::class.java).apply {
+        val notifyIntent = Intent(applicationContext, GlassCallActivity::class.java).apply {
             flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
             putExtra("enableTilt", false)
         }

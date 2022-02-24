@@ -4,7 +4,7 @@
 
     <application>
         <activity
-            android:name="com.bandyer.video_android_glass_ui.GlassActivity"
+            android:name="com.bandyer.video_android_glass_ui.GlassCallActivity"
             android:taskAffinity="com.bandyer.video_android_glass_ui.GlassActivity"
             android:theme="@style/BandyerSDKDesign.Theme.DayNight.GlassCall" />
         <!--    TODO remove this after CallService is moved somewhere else -->

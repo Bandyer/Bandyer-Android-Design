@@ -10,7 +10,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -36,9 +35,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 /**
- * GlassActivity
+ * GlassCallActivity
  */
-internal class GlassActivity :
+internal class GlassCallActivity :
     ImmersiveActivity<CallService>(CallService::class.java),
     GlassGestureDetector.OnGestureListener,
     ChatNotificationManager.NotificationListener,
@@ -85,7 +84,7 @@ internal class GlassActivity :
             itemAdapter = ItemAdapter()
             val fastAdapter = FastAdapter.with(itemAdapter!!)
             val layoutManager =
-                LinearLayoutManager(this@GlassActivity, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(this@GlassCallActivity, LinearLayoutManager.HORIZONTAL, false)
 
             this.layoutManager = layoutManager
             adapter = fastAdapter.apply {

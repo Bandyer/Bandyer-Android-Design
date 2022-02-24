@@ -60,7 +60,7 @@
             android:exported="true"
             android:theme="@style/BandyerSDKDesign.Theme.Call" />
         <activity
-            android:name="com.bandyer.video_android_glass_ui.GlassActivity"
+            android:name="com.bandyer.video_android_glass_ui.GlassCallActivity"
             android:theme="@style/BandyerSDKDesign.Theme.DayNight.GlassCall">
 
             <!-- <intent-filter> -->
