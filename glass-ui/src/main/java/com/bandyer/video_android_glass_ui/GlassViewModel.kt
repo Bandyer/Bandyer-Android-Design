@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -39,6 +40,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -80,6 +82,7 @@ internal class GlassViewModel(
 
     val volume: Volume get() = callController.onGetVolume()
 
+
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = ConcurrentHashMap<String, CallParticipant>()
@@ -111,16 +114,23 @@ internal class GlassViewModel(
             }.launchIn(viewModelScope)
         }
 
+    private val _updatedStreams: MutableSharedFlow<StreamParticipant> =
+        MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
+    val updatedStreams: SharedFlow<StreamParticipant> = _updatedStreams.asSharedFlow()
+
     val streams: SharedFlow<List<StreamParticipant>> =
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
             this@GlassViewModel.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
-                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
+                if (itsMe) {
                     val newStreams = streams.map {
                         StreamParticipant(
-                            participant, itsMe, it, usersDescription.name(
-                                listOf(participant.userAlias)
-                            ), usersDescription.image(listOf(participant.userAlias))
+                            UUID.randomUUID().toString(),
+                            participant,
+                            itsMe,
+                            it,
+                            usersDescription.name(listOf(participant.userAlias)),
+                            usersDescription.image(listOf(participant.userAlias))
                         )
                     }
                     val currentStreams = uiStreams.filter { it.participant == participant }
@@ -128,7 +138,72 @@ internal class GlassViewModel(
                     val removedStreams = currentStreams - newStreams.toSet()
                     uiStreams += addedStreams
                     uiStreams -= removedStreams.toSet()
-                } else uiStreams.removeIf { it.participant == participant }
+                } else {
+                    if (state == CallParticipant.State.IN_CALL && (streams.isNotEmpty() || true)) {
+                        // Se ci sono stream loro oppure almeno un mio stream è live,
+                        // per ogni partecipante in call, aggiungo/aggiorno un item
+                        val newStreams = mutableListOf<StreamParticipant>()
+//                            streams.map {
+//                            StreamParticipant(
+//                                UUID.randomUUID().toString(),
+//                                participant,
+//                                itsMe,
+//                                it,
+//                                usersDescription.name(listOf(participant.userAlias)),
+//                                usersDescription.image(listOf(participant.userAlias))
+//                            )
+//                        }.toMutableList()
+                        if (streams.isEmpty()) {
+                            val streamItem =
+                                uiStreams.firstOrNull { it.participant == participant && it.stream != null }
+                            val id = streamItem?.id ?: UUID.randomUUID().toString()
+                            val newStreamItem = StreamParticipant(
+                                id,
+                                participant,
+                                itsMe,
+                                null,
+                                usersDescription.name(listOf(participant.userAlias)),
+                                usersDescription.image(listOf(participant.userAlias))
+                            )
+                            if (streamItem != null) {
+                                _updatedStreams.emit(newStreamItem)
+                                newStreams += newStreamItem
+                            }
+                        } else {
+                            var placeholderItem: StreamParticipant? =
+                                uiStreams.firstOrNull { it.participant == participant && it.stream == null }
+                            var currentItem: StreamParticipant? =
+                                uiStreams.firstOrNull { it.participant == participant }
+
+                            if (placeholderItem == null)
+                                placeholderItem = currentItem
+
+                            uiStreams.removeIf { it == placeholderItem }
+
+                            streams.forEach { stream ->
+                                val id = placeholderItem?.id ?: UUID.randomUUID().toString()
+                                val newStreamItem = StreamParticipant(
+                                    id,
+                                    participant,
+                                    itsMe,
+                                    stream,
+                                    usersDescription.name(listOf(participant.userAlias)),
+                                    usersDescription.image(listOf(participant.userAlias))
+                                )
+                                if (placeholderItem != null) {
+                                    _updatedStreams.emit(newStreamItem)
+                                }
+                                newStreams += newStreamItem
+                                placeholderItem = null
+                            }
+                            val currentStreams = uiStreams.filter { it.participant == participant }
+                            val addedStreams = newStreams - currentStreams.toSet()
+                            val removedStreams = currentStreams - newStreams.toSet()
+                            uiStreams += addedStreams
+                            uiStreams -= removedStreams.toSet()
+                        }
+                    } else uiStreams.removeIf { it.participant == participant }
+                }
                 emit(uiStreams.toList())
             }.launchIn(viewModelScope)
         }
@@ -145,27 +220,6 @@ internal class GlassViewModel(
     private val audioStream: Flow<Stream?> =
         myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }
 
-    private val myLiveStreams: StateFlow<List<Stream>> =
-        MutableStateFlow<List<Stream>>(listOf()).apply {
-            val liveStreams = ConcurrentLinkedQueue<Stream>()
-            val jobs = mutableListOf<Job>()
-            myStreams.onEach { streams ->
-                jobs.forEach {
-                    it.cancel()
-                    it.join()
-                }
-                jobs.clear()
-                liveStreams.clear()
-                streams.forEach { stream ->
-                    jobs += stream.state.onEach {
-                        if (it is Stream.State.Live) liveStreams.add(stream)
-                        else liveStreams.remove(stream)
-
-                        emit(liveStreams.toList())
-                    }.launchIn(viewModelScope)
-                }
-            }.launchIn(viewModelScope)
-        }
 
     val cameraEnabled: StateFlow<Boolean> =
         MutableStateFlow(false).apply {
@@ -197,6 +251,28 @@ internal class GlassViewModel(
         MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
     val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
 
+    private val myLiveStreams: StateFlow<List<Stream>> =
+        MutableStateFlow<List<Stream>>(listOf()).apply {
+            val liveStreams = ConcurrentLinkedQueue<Stream>()
+            val jobs = mutableListOf<Job>()
+            myStreams.onEach { streams ->
+                jobs.forEach {
+                    it.cancel()
+                    it.join()
+                }
+                jobs.clear()
+                liveStreams.clear()
+                streams.forEach { stream ->
+                    jobs += stream.state.onEach {
+                        if (it is Stream.State.Live) liveStreams.add(stream)
+                        else liveStreams.remove(stream)
+
+                        emit(liveStreams.toList())
+                    }.launchIn(viewModelScope)
+                }
+            }.launchIn(viewModelScope)
+        }
+
     val amIAlone: Flow<Boolean> = combine(
         otherStreams,
         myLiveStreams,
@@ -220,7 +296,10 @@ internal class GlassViewModel(
             }
             pJobs.clear()
             participants.others.plus(participants.me).forEach { participant ->
-                pJobs += combine(participant.streams, participant.state) { streams, state ->
+                pJobs += combine(
+                    participant.streams,
+                    participant.state
+                ) { streams, state ->
                     action(participant, participant == participants.me, streams, state)
                 }.launchIn(scope)
             }

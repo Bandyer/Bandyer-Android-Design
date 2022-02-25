@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.collaboration_center.phonebox.Input
+import com.bandyer.collaboration_center.phonebox.Stream
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassCallMyStreamItemLayoutBinding
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassCallOtherStreamItemLayoutBinding
@@ -83,7 +84,7 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
     /**
      * Set an unique identifier for the identifiable which do not have one set already
      */
-    override var identifier: Long = streamParticipant.hashCode().toLong()
+    override var identifier: Long = streamParticipant.id.hashCode().toLong()
 
     /**
      * The coroutine scope where the flows will be observed
@@ -102,28 +103,36 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
          */
         override val jobs: ArrayList<Job> = arrayListOf()
 
+        private var stream: Stream? = null
+
         /**
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: T, payloads: List<Any>) = with(item.streamParticipant.stream) {
-            jobs += audio
+            if (payloads.isNotEmpty())
+                payloads[0].also { if (it is Stream) stream = it }
+            else
+                stream = this
+
+            if (stream == null)  {
+                jobs.forEach { it.cancel() }
+                onAudioEnabled(false)
+                onVideoEnabled(false)
+                return
+            }
+
+            jobs += stream!!.audio
                 .onEach { if (it == null) onAudioEnabled(false) }
                 .filter { it != null }
                 .flatMapLatest { combine(it!!.state, it.enabled) { s, e -> Pair(s, e) } }
                 .onEach { onAudioEnabled(if (it.first !is Input.State.Active) false else it.second) }
                 .launchIn(item.scope)
 
-            jobs += video
+            jobs += stream!!.video
                 .onEach { if (it == null) onVideoEnabled(false) }
                 .filter { it != null }
                 .flatMapLatest {
-                    combine(it!!.state, it.enabled, it.view) { s, e, v ->
-                        Triple(
-                            s,
-                            e,
-                            v
-                        )
-                    }
+                    combine(it!!.state, it.enabled, it.view) { s, e, v -> Triple(s, e, v) }
                 }
                 .onEach {
                     onVideoEnabled(if (it.first !is Input.State.Active) false else it.second)
@@ -134,7 +143,10 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
         /**
          * View needs to release resources when its recycled
          */
-        override fun unbindView(item: T) = jobs.forEach { it.cancel() }
+        override fun unbindView(item: T) {
+            jobs.forEach { it.cancel() }
+            stream = null
+        }
     }
 }
 
@@ -295,6 +307,7 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope
             (view.parent as? ViewGroup)?.removeAllViews()
             bandyerVideoWrapper.removeAllViews()
             bandyerVideoWrapper.addView(view.apply { id = View.generateViewId() })
+            bandyerVideoWrapper.invalidate()
         }
     }
 }

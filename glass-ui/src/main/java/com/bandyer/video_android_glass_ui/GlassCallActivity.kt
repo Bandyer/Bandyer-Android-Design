@@ -71,7 +71,8 @@ internal class GlassCallActivity :
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         glassGestureDetector = GlassGestureDetector(this, this)
@@ -103,7 +104,7 @@ internal class GlassCallActivity :
         viewModel.onRequestCameraPermission(this)
 
         // Add a scroll listener to the recycler view to show mic/cam blocked/disabled toasts
-        with(binding.bandyerStreams){
+        with(binding.bandyerStreams) {
             val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -260,17 +261,34 @@ internal class GlassCallActivity :
 
             viewModel.streams
                 .onEach { streams ->
-                    val orderedList = streams.sortedBy { !it.isMyStream }.map {
-                        if (it.isMyStream) MyStreamItem(
-                            it,
-                            lifecycleScope,
-                            viewModel.micPermission,
-                            viewModel.camPermission
-                        ) else OtherStreamItem(it, lifecycleScope)
-                    }
+                    val orderedList =
+                        streams
+                            .sortedBy { !it.isMyStream }
+                            .map {
+                                if (it.isMyStream)
+                                    MyStreamItem(
+                                        it,
+                                        lifecycleScope,
+                                        viewModel.micPermission,
+                                        viewModel.camPermission
+                                    )
+                                else
+                                    OtherStreamItem(it, lifecycleScope)
+                            }
                     FastAdapterDiffUtil[itemAdapter!!] =
                         FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
                 }.launchIn(this)
+
+            viewModel.updatedStreams.onEach {
+                val position = itemAdapter!!.getAdapterPosition(
+                    it.id.hashCode().toLong()
+                )
+//                if (position == -1) return@onEach
+                itemAdapter!!.fastAdapter!!.notifyItemChanged(
+                    position,
+                    it.stream
+                )
+            }.launchIn(lifecycleScope)
         }
 
         if (wasPausedForBackground) {

@@ -258,6 +258,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         val hasVideo = extras.preferredType.hasVideo()
         val callInputs = inputs
 
+        // TODO ADD STREAM
+
         return callInputs.allowList.onEach { inputs ->
             if (inputs.isEmpty()) return@onEach
 
