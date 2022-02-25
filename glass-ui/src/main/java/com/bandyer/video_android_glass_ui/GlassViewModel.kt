@@ -1,6 +1,5 @@
 package com.bandyer.video_android_glass_ui
 
-import android.view.View
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -19,8 +18,7 @@ import com.bandyer.video_android_core_ui.DeviceStatusDelegate
 import com.bandyer.video_android_core_ui.UsersDescription
 import com.bandyer.video_android_core_ui.model.Permission
 import com.bandyer.video_android_core_ui.model.Volume
-import com.bandyer.video_android_glass_ui.model.internal.StreamItemData
-import com.bandyer.video_android_glass_ui.model.internal.CallStream
+import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -86,8 +84,8 @@ internal class GlassViewModel(
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = ConcurrentHashMap<String, CallParticipant>()
             this@GlassViewModel.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, itsMe, streams, state ->
-                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty()))
-                    participants[participant.userAlias] = participant
+                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) participants[participant.userAlias] =
+                    participant
                 else participants.remove(participant.userAlias)
                 emit(participants.values.toList())
             }.launchIn(viewModelScope)
@@ -113,66 +111,25 @@ internal class GlassViewModel(
             }.launchIn(viewModelScope)
         }
 
-    private val callStreams: SharedFlow<List<CallStream>> =
-        MutableSharedFlow<List<CallStream>>(replay = 1, extraBufferCapacity = 1).apply {
-            val callStreams = ConcurrentLinkedQueue<CallStream>()
-            this@GlassViewModel.participants.forEachParticipant(viewModelScope + CoroutineName("CallStream")) { participant, itsMe, streams, state ->
+    val streams: SharedFlow<List<StreamParticipant>> =
+        MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
+            val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
+            this@GlassViewModel.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
                 if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
-                    val newStreams = streams.map { CallStream(participant, itsMe, it) }
-                    val currentStreams = callStreams.filter { it.participant == participant }
+                    val newStreams = streams.map {
+                        StreamParticipant(
+                            participant, itsMe, it, usersDescription.name(
+                                listOf(participant.userAlias)
+                            ), usersDescription.image(listOf(participant.userAlias))
+                        )
+                    }
+                    val currentStreams = uiStreams.filter { it.participant == participant }
                     val addedStreams = newStreams - currentStreams.toSet()
                     val removedStreams = currentStreams - newStreams.toSet()
-                    callStreams += addedStreams
-                    callStreams -= removedStreams.toSet()
-                } else callStreams.removeIf { it.participant == participant }
-                emit(callStreams.toList())
-            }.launchIn(viewModelScope)
-        }
-
-    val streams: SharedFlow<List<StreamItemData>> =
-        MutableSharedFlow<List<StreamItemData>>(replay = 1, extraBufferCapacity = 1).apply {
-            val uiStreams = ConcurrentHashMap<String, StreamItemData>()
-            val pJobs = mutableListOf<Job>()
-            callStreams.onEach { streams ->
-                pJobs.forEach {
-                    it.cancel()
-                    it.join()
-                }
-                pJobs.clear()
-                streams.forEach { sp ->
-                    val name = usersDescription.name(listOf(sp.participant.userAlias))
-                    val image = usersDescription.image(listOf(sp.participant.userAlias))
-
-                    var audioJob: Job? = null
-                    var videoJob: Job? = null
-                    pJobs += combine(sp.stream.audio, sp.stream.video) { audio, video ->
-                        audioJob?.cancel()
-                        videoJob?.cancel()
-                        audioJob?.join()
-                        videoJob?.join()
-
-                        var audioEnabled = false
-                        var videoEnabled = false
-                        var view: View? = null
-
-                        audio?.also {
-                            audioJob = combine(it.state, it.enabled) { s, e ->
-                                audioEnabled = if (s !is Input.State.Active) false else e
-                                uiStreams[sp.stream.id] = StreamItemData(sp.isMyStream, name, image, audioEnabled, videoEnabled, view)
-                                emit(uiStreams.values.toList())
-                            }.launchIn(viewModelScope)
-                        }
-
-                        video?.also {
-                            videoJob = combine(it.state, it.enabled, it.view) { s, e, v ->
-                                videoEnabled = if (s !is Input.State.Active) false else e
-                                view = v
-                                uiStreams[sp.stream.id] = StreamItemData(sp.isMyStream, name, image, audioEnabled, videoEnabled, view)
-                                emit(uiStreams.values.toList())
-                            }.launchIn(viewModelScope)
-                        }
-                    }.launchIn(viewModelScope)
-                }
+                    uiStreams += addedStreams
+                    uiStreams -= removedStreams.toSet()
+                } else uiStreams.removeIf { it.participant == participant }
+                emit(uiStreams.toList())
             }.launchIn(viewModelScope)
         }
 

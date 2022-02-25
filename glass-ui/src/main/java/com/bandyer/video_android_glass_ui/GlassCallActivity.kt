@@ -30,7 +30,6 @@ import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensi
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -72,8 +71,7 @@ internal class GlassCallActivity :
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
 
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         glassGestureDetector = GlassGestureDetector(this, this)
@@ -105,14 +103,14 @@ internal class GlassCallActivity :
         viewModel.onRequestCameraPermission(this)
 
         // Add a scroll listener to the recycler view to show mic/cam blocked/disabled toasts
-        with(binding.bandyerStreams) {
+        with(binding.bandyerStreams){
             val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val foundView = snapHelper.findSnapView(layoutManager) ?: return
                     val position = layoutManager!!.getPosition(foundView)
 
-                    if (itemAdapter!!.getAdapterItem(position).data.isMyStream && currentStreamItemIndex != position) {
+                    if (itemAdapter!!.getAdapterItem(position).streamParticipant.isMyStream && currentStreamItemIndex != position) {
                         val isMicBlocked = viewModel.micPermission.value.let {
                             !it.isAllowed && it.neverAskAgain
                         }
@@ -261,36 +259,23 @@ internal class GlassCallActivity :
                 }.launchIn(this)
 
             viewModel.streams
-                .onEach {
-                    FastAdapterDiffUtil[itemAdapter!!] =
-                        FastAdapterDiffUtil.calculateDiff(
-                            itemAdapter!!,
-                            it.sortedBy { !it.isMyStream }.map {
-                                if (it.isMyStream) MyStreamItem(
-                                    it,
-                                    viewModel.micPermission,
-                                    viewModel.camPermission
-                                ) else OtherStreamItem(it)
-                            },
-                            true
-                        )
-
-                    it.forEach { data ->
-                        val position = itemAdapter!!.getAdapterPosition(
-                            data.view.hashCode().toLong()
-                        )
-                        itemAdapter!!.fastAdapter!!.notifyItemChanged(
-                            position,
-                            data
-                        )
+                .onEach { streams ->
+                    val orderedList = streams.sortedBy { !it.isMyStream }.map {
+                        if (it.isMyStream) MyStreamItem(
+                            it,
+                            lifecycleScope,
+                            viewModel.micPermission,
+                            viewModel.camPermission
+                        ) else OtherStreamItem(it, lifecycleScope)
                     }
+                    FastAdapterDiffUtil[itemAdapter!!] =
+                        FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
+                }.launchIn(this)
+        }
 
-                }.launchIn(lifecycleScope)
-
-            if (wasPausedForBackground) {
-                viewModel.onEnableCamera(wasPausedForBackground)
-                wasPausedForBackground = false
-            }
+        if (wasPausedForBackground) {
+            viewModel.onEnableCamera(wasPausedForBackground)
+            wasPausedForBackground = false
         }
     }
 

@@ -5,18 +5,24 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.collaboration_center.phonebox.Input
 import com.bandyer.video_android_core_ui.extensions.StringExtensions.parseToColor
-import com.bandyer.video_android_core_ui.model.Permission
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassCallMyStreamItemLayoutBinding
 import com.bandyer.video_android_glass_ui.databinding.BandyerGlassCallOtherStreamItemLayoutBinding
-import com.bandyer.video_android_glass_ui.model.internal.StreamItemData
+import com.bandyer.video_android_core_ui.model.Permission
+import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.plus
 
 /**
  * IStreamItem
@@ -25,7 +31,12 @@ internal interface IStreamItem {
     /**
      * The streamParticipant data
      */
-    val data: StreamItemData
+    val streamParticipant: StreamParticipant
+
+    /**
+     * The flows' coroutine scope
+     */
+    val scope: CoroutineScope
 
     /**
      * IViewHolder
@@ -65,13 +76,20 @@ internal interface IStreamItem {
  * @constructor
  */
 internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
-    final override val data: StreamItemData
+    final override val streamParticipant: StreamParticipant,
+    parentScope: CoroutineScope
 ) : AbstractItem<T>(), IStreamItem {
 
     /**
      * Set an unique identifier for the identifiable which do not have one set already
      */
-    override var identifier: Long = data.view.hashCode().toLong()
+    override var identifier: Long = streamParticipant.hashCode().toLong()
+
+    /**
+     * The coroutine scope where the flows will be observed
+     */
+    override val scope: CoroutineScope =
+        parentScope + CoroutineName(this.toString() + streamParticipant.hashCode())
 
     /**
      * @suppress
@@ -87,23 +105,30 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
         /**
          * Binds the data of this item onto the viewHolder
          */
-        override fun bindView(item: T, payloads: List<Any>) {
-            if (payloads.isNotEmpty()) {
-                when(val payload = payloads[0]) {
-                    is StreamItemData -> {
-                        onAudioEnabled(payload.isAudioEnabled)
-                        onVideoEnabled(payload.isVideoEnabled)
-                    }
-                    else -> Unit
-                }
-                return
-            }
+        override fun bindView(item: T, payloads: List<Any>) = with(item.streamParticipant.stream) {
+            jobs += audio
+                .onEach { if (it == null) onAudioEnabled(false) }
+                .filter { it != null }
+                .flatMapLatest { combine(it!!.state, it.enabled) { s, e -> Pair(s, e) } }
+                .onEach { onAudioEnabled(if (it.first !is Input.State.Active) false else it.second) }
+                .launchIn(item.scope)
 
-            with(item.data) {
-                onAudioEnabled(isAudioEnabled)
-                onVideoEnabled(isVideoEnabled)
-                view?.also { onStreamView(it) }
-            }
+            jobs += video
+                .onEach { if (it == null) onVideoEnabled(false) }
+                .filter { it != null }
+                .flatMapLatest {
+                    combine(it!!.state, it.enabled, it.view) { s, e, v ->
+                        Triple(
+                            s,
+                            e,
+                            v
+                        )
+                    }
+                }
+                .onEach {
+                    onVideoEnabled(if (it.first !is Input.State.Active) false else it.second)
+                    it.third?.also { onStreamView(it) }
+                }.launchIn(item.scope)
         }
 
         /**
@@ -114,11 +139,13 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
 }
 
 internal class MyStreamItem(
-    streamData: StreamItemData,
+    streamParticipant: StreamParticipant,
+    parentScope: CoroutineScope,
     val micPermission: StateFlow<Permission>,
     val camPermission: StateFlow<Permission>
 ) : StreamItem<StreamItem.ViewHolder<MyStreamItem>>(
-    streamData
+    streamParticipant,
+    parentScope
 ) {
 
     /**
@@ -155,17 +182,17 @@ internal class MyStreamItem(
 
             jobs += item.micPermission.onEach {
                 binding.bandyerMicMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
-            }.launchIn(MainScope())
+            }.launchIn(item.scope)
 
             jobs += item.camPermission.onEach {
                 binding.bandyerCamMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
-            }.launchIn(MainScope())
+            }.launchIn(item.scope)
 
             binding.bandyerSubtitleLayout.bandyerSubtitle.text = itemView.context.getString(
                 R.string.bandyer_glass_you_pattern,
-                item.data.userDescription
+                item.streamParticipant.userDescription
             )
-            binding.bandyerCenteredSubtitle.text = item.data.userDescription
+            binding.bandyerCenteredSubtitle.text = item.streamParticipant.userDescription
         }
 
         /**
@@ -198,8 +225,8 @@ internal class MyStreamItem(
     }
 }
 
-internal class OtherStreamItem(streamItemData: StreamItemData) :
-    StreamItem<StreamItem.ViewHolder<OtherStreamItem>>(streamItemData) {
+internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope: CoroutineScope) :
+    StreamItem<StreamItem.ViewHolder<OtherStreamItem>>(streamParticipant, parentScope) {
 
     /**
      * The layout for the given item
@@ -232,10 +259,10 @@ internal class OtherStreamItem(streamItemData: StreamItemData) :
          */
         override fun bindView(item: OtherStreamItem, payloads: List<Any>) = with(binding) {
             super.bindView(item, payloads)
-            val userDesc = item.data.userDescription
+            val userDesc = item.streamParticipant.userDescription
             bandyerSubtitleLayout.bandyerSubtitle.text = userDesc
 
-            val image = item.data.userImage
+            val image = item.streamParticipant.userImage
             if (image != Uri.EMPTY) {
                 bandyerAvatar.setImage(image)
                 return@with
