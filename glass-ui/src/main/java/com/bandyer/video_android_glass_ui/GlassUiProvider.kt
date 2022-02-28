@@ -15,6 +15,7 @@ import com.bandyer.video_android_core_ui.UIProvider
 import com.bandyer.video_android_core_ui.UsersDescription
 import com.bandyer.video_android_core_ui.model.Permission
 import com.bandyer.video_android_core_ui.model.Volume
+import com.bandyer.video_android_glass_ui.utils.extensions.PendingIntentExtensions
 import kotlinx.coroutines.flow.SharedFlow
 
 object GlassUIProvider: UIProvider {
@@ -37,10 +38,7 @@ object GlassUIProvider: UIProvider {
             flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
             putExtra("enableTilt", false)
         }
-        val notifyFlags =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            else PendingIntent.FLAG_UPDATE_CURRENT
-        return PendingIntent.getActivity(applicationContext, 0, notifyIntent, notifyFlags)
+        return PendingIntent.getActivity(applicationContext, 0, notifyIntent, PendingIntentExtensions.updateFlags)
     }
 }
 

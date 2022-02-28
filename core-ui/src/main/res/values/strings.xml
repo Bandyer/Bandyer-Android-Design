@@ -2,4 +2,9 @@
 <resources>
     <string name="bandyer_today">today</string>
     <string name="bandyer_yesterday">yesterday</string>
+    <string name="bandyer_notification_answer">Answer</string>
+    <string name="bandyer_notification_decline">Decline</string>
+    <string name="bandyer_notification_hangup">Hang Up</string>
+    <string name="bandyer_notification_ongoing_call">Ongoing call</string>
+    <string name="bandyer_notification_incoming_call">Incoming call</string>
 </resources>
