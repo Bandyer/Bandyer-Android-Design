@@ -6,11 +6,11 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import com.bandyer.android_common.ContextRetainer
 import com.bandyer.collaboration_center.Collaboration
-import com.bandyer.collaboration_center.Collaboration.Authenticator
+import com.bandyer.collaboration_center.Collaboration.Credentials
 import com.bandyer.collaboration_center.Collaboration.Configuration
-import com.bandyer.collaboration_center.PhoneBox
-import com.bandyer.collaboration_center.PhoneBox.CreationOptions
-import com.bandyer.collaboration_center.PhoneBox.State.Connecting
+import com.bandyer.collaboration_center.phonebox.PhoneBox
+import com.bandyer.collaboration_center.phonebox.PhoneBox.CreationOptions
+import com.bandyer.collaboration_center.phonebox.PhoneBox.State.Connecting
 import com.bandyer.collaboration_center.User
 import com.bandyer.video_android_core_ui.UsersDescription
 import kotlinx.coroutines.MainScope
@@ -30,9 +30,9 @@ object CollaborationUI {
             return PhoneBoxUI(collaboration!!.phoneBox)
         }
 
-    fun setUp(authenticator: Authenticator, configuration: Configuration): Boolean {
+    fun setUp(credentials: Credentials, configuration: Configuration): Boolean {
         if (collaboration != null) return false
-        Collaboration.create(authenticator, configuration).apply { collaboration = this }
+        Collaboration.create(credentials, configuration).apply { collaboration = this }
         phoneBox.state.filter { it is Connecting }.onEach { startPhoneBoxService() }.launchIn(MainScope())
         return true
     }

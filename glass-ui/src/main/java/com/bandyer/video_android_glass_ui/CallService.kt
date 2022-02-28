@@ -24,7 +24,7 @@ import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.battery_observer.BatteryObserver
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.android_common.network_observer.WiFiObserver
-import com.bandyer.collaboration_center.PhoneBox
+import com.bandyer.collaboration_center.phonebox.PhoneBox
 import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.collaboration_center.phonebox.Input
 import com.bandyer.collaboration_center.phonebox.Inputs
