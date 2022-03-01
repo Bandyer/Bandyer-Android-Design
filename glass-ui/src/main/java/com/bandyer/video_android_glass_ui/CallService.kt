@@ -3,8 +3,6 @@ package com.bandyer.video_android_glass_ui
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
-import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.Bundle
@@ -69,6 +67,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     companion object {
         private const val CALL_NOTIFICATION_ID = 22
+        private const val MY_STREAM_ID = "main"
         private var currentCall: Call? = null
 
         fun onNotificationAnswer() = currentCall?.connect()
@@ -83,7 +82,6 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     private var phoneBox: PhoneBox? = null
     private var phoneBoxJob: Job? = null
 
-    private var fragmentActivity: FragmentActivity? = null
     private var wasVideoEnabledOnDestroy = false
 
     private var batteryObserver: BatteryObserver? = null
@@ -154,7 +152,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     // ActivityLifecycleCallbacks
     override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
         if (!GlassUIProvider.isUIActivity(activity)) return
-        fragmentActivity = activity as FragmentActivity
+        currentCall!!.publishMySelf(activity as FragmentActivity)
     }
 
     override fun onActivityStarted(activity: Activity) {
@@ -181,10 +179,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) = Unit
 
-    override fun onActivityDestroyed(activity: Activity) {
-        if (!GlassUIProvider.isUIActivity(activity)) return
-        fragmentActivity = null
-    }
+    override fun onActivityDestroyed(activity: Activity) = Unit
 
     // CallService
     fun bind(phoneBox: PhoneBox, usersDescription: UsersDescription? = null) {
@@ -236,13 +231,13 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         }.launchIn(lifecycleScope)
 
     private fun Call.setup() {
-        val publishJob = publishMySelf()
+        val permissionsJob = observePermissions()
         val streamsJob = setupStreamsAndVideos()
 
         state
             .takeWhile { it !is Call.State.Disconnected.Ended }
             .onCompletion {
-                publishJob.cancel()
+                permissionsJob.cancel()
                 streamsJob.cancel()
                 currentCall = null
 
@@ -254,11 +249,18 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             }.launchIn(lifecycleScope)
     }
 
-    private fun Call.publishMySelf(): Job {
-        val hasVideo = extras.preferredType.hasVideo()
-        val callInputs = inputs
+    private fun Call.publishMySelf(fragmentActivity: FragmentActivity) {
+        val me = participants.value.me
+        me.addStream(fragmentActivity, MY_STREAM_ID).let {
+            it.audio.value = null
+            it.video.value = null
+        }
+    }
 
-        return callInputs.allowList.onEach { inputs ->
+    private fun Call.observePermissions(): Job {
+        val hasVideo = extras.preferredType.hasVideo()
+
+        return inputs.allowList.onEach { inputs ->
             if (inputs.isEmpty()) return@onEach
 
             val videoInput = inputs.lastOrNull { it is Input.Video.My } as? Input.Video.My
@@ -266,15 +268,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
             videoInput?.setQuality(Input.Video.Quality.Definition.HD)
 
-            val me = this.participants.value.me
-
-            me.streams.value.firstOrNull { it.id == "main" }?.let {
-                it.audio.value = audioInput
-                if (hasVideo) it.video.value = videoInput
-                return@onEach
-            }
-
-            me.addStream(fragmentActivity!!, "main").let {
+            val me = participants.value.me
+            me.streams.value.firstOrNull { it.id == MY_STREAM_ID }?.let {
                 it.audio.value = audioInput
                 if (hasVideo) it.video.value = videoInput
             }
