@@ -26,7 +26,6 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBindin
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
-import com.bandyer.video_android_glass_ui.utils.extensions.ActivityExtensions
 import com.bandyer.video_android_glass_ui.utils.extensions.ActivityExtensions.turnScreenOnAndKeyguardOff
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.mikepenz.fastadapter.FastAdapter
