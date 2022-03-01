@@ -11,7 +11,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.bandyer.video_android_core_ui.R
-import com.bandyer.video_android_glass_ui.GlassUIProvider
+import com.bandyer.video_android_glass_ui.GlassCallActivity
 import com.bandyer.video_android_glass_ui.NotificationReceiver
 import com.bandyer.video_android_glass_ui.utils.extensions.PendingIntentExtensions
 
@@ -22,39 +22,46 @@ object NotificationHelper {
     private const val NOTIFICATION_IMPORTANT_CHANNEL_ID =
         "com.bandyer.video_android_glass_ui.notification_channel_important"
 
-    fun buildIncomingCallNotification(context: Context, usersDescription: String, isFullScreen: Boolean = true): Notification {
+    private const val FULL_SCREEN_REQUEST_CODE = 123
+    private const val CONTENT_REQUEST_CODE = 456
+    private const val ANSWER_REQUEST_CODE = 789
+    private const val DECLINE_REQUEST_CODE = 987
+    private const val HANGUP_REQUEST_CODE = 654
+
+    fun buildIncomingCallNotification(context: Context, usersDescription: String, isHighPriority: Boolean): Notification {
         val contextText = context.getString(R.string.bandyer_notification_incoming_call)
-        val fullScreenIntent = if(isFullScreen) GlassUIProvider.createCallPendingIntent(context.applicationContext) else null
+        val fullScreenIntent = if(isHighPriority) createCallActivityPendingIntent(context.applicationContext, FULL_SCREEN_REQUEST_CODE) else null
+        val contentIntent = createCallActivityPendingIntent(context.applicationContext, CONTENT_REQUEST_CODE)
         val answerAction = NotificationCompat.Action(
             R.drawable.bandyer_z_audio_only,
             context.getString(R.string.bandyer_notification_answer),
-            createBroadcastPendingIntent(context, NotificationReceiver.ACTION_ANSWER)
+            createCallActivityPendingIntent(context.applicationContext, ANSWER_REQUEST_CODE, true)
         )
         val declineAction = NotificationCompat.Action(
             R.drawable.bandyer_z_end_call,
             context.getString(R.string.bandyer_notification_decline),
-            createBroadcastPendingIntent(context, NotificationReceiver.ACTION_HANGUP)
+            createBroadcastPendingIntent(context, DECLINE_REQUEST_CODE, NotificationReceiver.ACTION_HANGUP)
         )
 
         return context.buildNotification(
             usersDescription = usersDescription,
-            channelId = NOTIFICATION_IMPORTANT_CHANNEL_ID,
+            channelId = if(isHighPriority) NOTIFICATION_IMPORTANT_CHANNEL_ID else NOTIFICATION_DEFAULT_CHANNEL_ID,
             channelName = context.getString(R.string.bandyer_notification_incoming_call),
-            isHighPriority = true,
+            isHighPriority = isHighPriority,
             contentText = contextText,
-            contentIntent = fullScreenIntent,
+            contentIntent = contentIntent,
             fullscreenIntent = fullScreenIntent,
             actions = listOf(answerAction, declineAction)
         )
     }
 
     fun buildOngoingCallNotification(context: Context, usersDescription: String): Notification {
-        val contentIntent = GlassUIProvider.createCallPendingIntent(context.applicationContext)
+        val contentIntent = createCallActivityPendingIntent(context.applicationContext, CONTENT_REQUEST_CODE)
         val contextText = context.getString(R.string.bandyer_notification_ongoing_call)
         val hangUpAction = NotificationCompat.Action(
             R.drawable.bandyer_z_end_call,
             context.getString(R.string.bandyer_notification_hangup),
-            createBroadcastPendingIntent(context, NotificationReceiver.ACTION_HANGUP)
+            createBroadcastPendingIntent(context, HANGUP_REQUEST_CODE, NotificationReceiver.ACTION_HANGUP)
         )
 
         return context.buildNotification(
@@ -68,15 +75,30 @@ object NotificationHelper {
         )
     }
 
-    private fun createBroadcastPendingIntent(context: Context, action: String) =
+    fun cancelNotification(context: Context, notifyId: Int) {
+        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.cancel(notifyId)
+    }
+
+    private fun createBroadcastPendingIntent(context: Context, requestCode: Int, action: String) =
         PendingIntent.getBroadcast(
             context,
-            0,
+            requestCode,
             Intent(context, NotificationReceiver::class.java).apply {
                 this.action = action
             },
             PendingIntentExtensions.updateFlags
         )
+
+    private fun createCallActivityPendingIntent(context: Context, requestCode: Int, enableAutoAnswer: Boolean = false): PendingIntent {
+        val applicationContext = context.applicationContext
+        val intent = Intent(applicationContext, GlassCallActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            putExtra("enableTilt", false)
+            putExtra("autoAnswer", enableAutoAnswer)
+        }
+        return PendingIntent.getActivity(applicationContext, requestCode, intent, PendingIntentExtensions.updateFlags)
+    }
 
     private fun Context.buildNotification(
         usersDescription: String,
@@ -92,10 +114,11 @@ object NotificationHelper {
             createNotificationChannel(channelId, channelName, isHighPriority)
 
         val builder = NotificationCompat.Builder(applicationContext, channelId)
+            .setAutoCancel(false)
             .setOngoing(true)
             .setSmallIcon(R.drawable.bandyer_z_audio_only)
             .setCategory(NotificationCompat.CATEGORY_CALL)
-            .setPriority(if (isHighPriority) NotificationCompat.PRIORITY_HIGH else NotificationCompat.PRIORITY_DEFAULT)
+            .setPriority(if (isHighPriority) NotificationCompat.PRIORITY_MAX else NotificationCompat.PRIORITY_DEFAULT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setContentText(contentText)
             .setContentTitle(usersDescription)
@@ -118,7 +141,7 @@ object NotificationHelper {
         val notificationChannel = NotificationChannel(
             channelId,
             channelName,
-            if (isHighImportance) NotificationManager.IMPORTANCE_DEFAULT else NotificationManager.IMPORTANCE_DEFAULT
+            if (isHighImportance) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         }

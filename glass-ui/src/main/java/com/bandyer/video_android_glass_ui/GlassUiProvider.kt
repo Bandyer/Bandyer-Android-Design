@@ -7,6 +7,8 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Build
+import android.view.WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
+import android.view.WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
 import androidx.fragment.app.FragmentActivity
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
@@ -19,6 +21,7 @@ import com.bandyer.video_android_glass_ui.utils.extensions.PendingIntentExtensio
 import kotlinx.coroutines.flow.SharedFlow
 
 object GlassUIProvider: UIProvider {
+
     override fun showCall(context: Context) {
         val applicationContext = context.applicationContext
         val intent = Intent(applicationContext, GlassCallActivity::class.java).apply {
@@ -31,15 +34,6 @@ object GlassUIProvider: UIProvider {
     }
 
     override fun isUIActivity(activity: Activity) = activity is GlassCallActivity
-
-    override fun createCallPendingIntent(context: Context): PendingIntent {
-        val applicationContext = context.applicationContext
-        val notifyIntent = Intent(applicationContext, GlassCallActivity::class.java).apply {
-            flags = FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("enableTilt", false)
-        }
-        return PendingIntent.getActivity(applicationContext, 0, notifyIntent, PendingIntentExtensions.updateFlags)
-    }
 }
 
 //interface CallWaitingUIController {

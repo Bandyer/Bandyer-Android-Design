@@ -3,11 +3,13 @@ package com.bandyer.video_android_glass_ui
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
-import android.app.Notification
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -40,7 +42,7 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
-import kotlinx.coroutines.launch
+
 
 abstract class BoundService : LifecycleService() {
     @Suppress("UNCHECKED_CAST")
@@ -71,11 +73,14 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
         fun onNotificationAnswer() = currentCall?.connect()
 
-        fun onNotificationHangUp() = currentCall?.disconnect()
+        fun onNotificationHangUp() {
+            currentCall?.disconnect()
+        }
     }
 
+    private var isForeground = false
+
     private var phoneBox: PhoneBox? = null
-    private var shouldDisconnect = false
     private var phoneBoxJob: Job? = null
 
     private var fragmentActivity: FragmentActivity? = null
@@ -119,6 +124,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(this)
 
+        NotificationHelper.cancelNotification(this, CALL_NOTIFICATION_ID)
+
         currentCall?.disconnect()
         phoneBox!!.disconnect()
         batteryObserver!!.stop()
@@ -133,13 +140,13 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     // DefaultLifecycleObserver
     override fun onStart(owner: LifecycleOwner) {
-        shouldDisconnect = false
+        isForeground = true
         if (currentCall != null) return
         phoneBox?.connect()
     }
 
     override fun onStop(owner: LifecycleOwner) {
-        shouldDisconnect = true
+        isForeground = false
         if (currentCall != null) return
         phoneBox?.disconnect()
     }
@@ -202,26 +209,28 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             val usersDescription = usersDescription.name(userAliases)
 
             // If it is an incoming call
-            if (participants.me != participants.creator())
-                startForeground(
-                    CALL_NOTIFICATION_ID,
-                    NotificationHelper.buildIncomingCallNotification(
-                        this@CallService,
-                        usersDescription
-                    )
+            if (participants.me != participants.creator()) {
+                val notification = NotificationHelper.buildIncomingCallNotification(
+                    this@CallService,
+                    usersDescription,
+                    !isForeground
                 )
+                if (!isForeground) NotificationManagerCompat.from(applicationContext).notify(CALL_NOTIFICATION_ID,  notification)
+                else startForeground(CALL_NOTIFICATION_ID, notification)
+            }
+
+            if (isForeground)
+                GlassUIProvider.showCall(applicationContext)
 
             call.state
                 .takeWhile { it !is Call.State.Connecting }
                 .onCompletion {
-                    startForeground(
-                        CALL_NOTIFICATION_ID,
-                        NotificationHelper.buildOngoingCallNotification(
-                            this@CallService,
-                            usersDescription
-                        )
+                    val notification = NotificationHelper.buildOngoingCallNotification(
+                        this@CallService,
+                        usersDescription
                     )
-                    GlassUIProvider.showCall(applicationContext)
+
+                    startForeground(CALL_NOTIFICATION_ID, notification)
                 }
                 .launchIn(lifecycleScope)
         }.launchIn(lifecycleScope)
@@ -237,9 +246,10 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 streamsJob.cancel()
                 currentCall = null
 
-                if (shouldDisconnect) phoneBox!!.disconnect()
+                if (!isForeground) phoneBox!!.disconnect()
 
                 stopForeground(true)
+                NotificationHelper.cancelNotification(this@CallService, CALL_NOTIFICATION_ID)
 //                ongoingCalls.remove(this@setup)
             }.launchIn(lifecycleScope)
     }
