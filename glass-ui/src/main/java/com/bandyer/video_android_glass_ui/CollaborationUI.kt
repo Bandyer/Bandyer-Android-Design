@@ -6,12 +6,12 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import com.bandyer.android_common.ContextRetainer
 import com.bandyer.collaboration_center.Collaboration
-import com.bandyer.collaboration_center.Collaboration.Credentials
 import com.bandyer.collaboration_center.Collaboration.Configuration
+import com.bandyer.collaboration_center.Collaboration.Credentials
+import com.bandyer.collaboration_center.User
 import com.bandyer.collaboration_center.phonebox.PhoneBox
 import com.bandyer.collaboration_center.phonebox.PhoneBox.CreationOptions
 import com.bandyer.collaboration_center.phonebox.PhoneBox.State.Connecting
-import com.bandyer.collaboration_center.User
 import com.bandyer.video_android_core_ui.UsersDescription
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.filter
@@ -55,8 +55,8 @@ object CollaborationUI {
 
         with(ContextRetainer.context) {
             val intent = Intent(this, CallService::class.java)
-            bindService(intent, serviceConnection, 0)
             startService(intent)
+            bindService(intent, serviceConnection, 0)
         }
     }
 
@@ -66,7 +66,8 @@ object CollaborationUI {
 }
 
 data class PhoneBoxUI(private val phoneBox: PhoneBox) : PhoneBox by phoneBox {
-    fun dial(users: List<User>, conf: (CreationOptions.() -> Unit)? = null) = create(users, conf).apply { connect() }
+    fun dial(users: List<User>, conf: (CreationOptions.() -> Unit)? = null) =
+        create(users, conf).apply { connect() }
 
     fun join(url: String) = create(url).apply { connect() }
 }

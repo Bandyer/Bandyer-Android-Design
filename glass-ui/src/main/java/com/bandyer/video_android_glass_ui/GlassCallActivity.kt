@@ -26,6 +26,8 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBindin
 import com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
 import com.bandyer.video_android_glass_ui.utils.GlassGestureDetector
 import com.bandyer.video_android_glass_ui.utils.currentNavigationFragment
+import com.bandyer.video_android_glass_ui.utils.extensions.ActivityExtensions
+import com.bandyer.video_android_glass_ui.utils.extensions.ActivityExtensions.turnScreenOnAndKeyguardOff
 import com.bandyer.video_android_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
@@ -94,10 +96,15 @@ internal class GlassCallActivity :
             isFocusable = false
             setHasFixedSize(true)
         }
+
+        turnScreenOnAndKeyguardOff()
     }
 
     override fun onServiceBound(service: CallService) {
         this.service = service
+
+        if (intent.extras?.get("autoAnswer") == true)
+            viewModel.onAnswer()
 
         viewModel.onRequestMicPermission(this)
         viewModel.onRequestCameraPermission(this)

@@ -3,16 +3,13 @@ package com.bandyer.video_android_glass_ui
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
-import android.app.Notification
-import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.Binder
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -24,18 +21,18 @@ import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.battery_observer.BatteryObserver
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.android_common.network_observer.WiFiObserver
-import com.bandyer.collaboration_center.phonebox.PhoneBox
 import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.collaboration_center.phonebox.Input
 import com.bandyer.collaboration_center.phonebox.Inputs
+import com.bandyer.collaboration_center.phonebox.PhoneBox
 import com.bandyer.collaboration_center.phonebox.VideoStreamView
 import com.bandyer.video_android_core_ui.CallUIController
 import com.bandyer.video_android_core_ui.CallUIDelegate
 import com.bandyer.video_android_core_ui.DeviceStatusDelegate
-import com.bandyer.video_android_core_ui.R
 import com.bandyer.video_android_core_ui.UsersDescription
 import com.bandyer.video_android_core_ui.model.Permission
 import com.bandyer.video_android_core_ui.model.Volume
+import com.bandyer.video_android_glass_ui.utils.NotificationHelper
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -45,6 +42,7 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
+
 
 abstract class BoundService : LifecycleService() {
     @Suppress("UNCHECKED_CAST")
@@ -70,12 +68,19 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     DefaultLifecycleObserver, Application.ActivityLifecycleCallbacks {
 
     companion object {
-        var NOTIFICATION_ID = 22
+        private const val CALL_NOTIFICATION_ID = 22
+        private var currentCall: Call? = null
+
+        fun onNotificationAnswer() = currentCall?.connect()
+
+        fun onNotificationHangUp() {
+            currentCall?.disconnect()
+        }
     }
 
+    private var isForeground = false
+
     private var phoneBox: PhoneBox? = null
-    private var currentCall: Call? = null
-    private var shouldDisconnect = false
     private var phoneBoxJob: Job? = null
 
     private var fragmentActivity: FragmentActivity? = null
@@ -119,6 +124,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(this)
 
+        NotificationHelper.cancelNotification(this, CALL_NOTIFICATION_ID)
+
         currentCall?.disconnect()
         phoneBox!!.disconnect()
         batteryObserver!!.stop()
@@ -133,13 +140,13 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     // DefaultLifecycleObserver
     override fun onStart(owner: LifecycleOwner) {
-        shouldDisconnect = false
+        isForeground = true
         if (currentCall != null) return
         phoneBox?.connect()
     }
 
     override fun onStop(owner: LifecycleOwner) {
-        shouldDisconnect = true
+        isForeground = false
         if (currentCall != null) return
         phoneBox?.disconnect()
     }
@@ -197,44 +204,36 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             currentCall = call
             call.setup()
 
-            // If it is an ingoing call...
             val participants = call.participants.value
+            val userAliases = participants.others.map { it.userAlias }
+            val usersDescription = usersDescription.name(userAliases)
+
+            // If it is an incoming call
             if (participants.me != participants.creator()) {
-                showCallUI()
-                return@onEach
+                val notification = NotificationHelper.buildIncomingCallNotification(
+                    this@CallService,
+                    usersDescription,
+                    !isForeground
+                )
+                if (!isForeground) NotificationManagerCompat.from(applicationContext).notify(CALL_NOTIFICATION_ID,  notification)
+                else startForeground(CALL_NOTIFICATION_ID, notification)
             }
 
-            // ...otherwise
+            if (isForeground)
+                GlassUIProvider.showCall(applicationContext)
+
             call.state
                 .takeWhile { it !is Call.State.Connecting }
-                .onCompletion { showCallUI() }
+                .onCompletion {
+                    val notification = NotificationHelper.buildOngoingCallNotification(
+                        this@CallService,
+                        usersDescription
+                    )
+
+                    startForeground(CALL_NOTIFICATION_ID, notification)
+                }
                 .launchIn(lifecycleScope)
         }.launchIn(lifecycleScope)
-
-    private fun showCallUI() {
-        startForeground(NOTIFICATION_ID, createNotification())
-        GlassUIProvider.showCall(applicationContext)
-    }
-
-    private fun createNotification(): Notification {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationManager =
-                getSystemService(Service.NOTIFICATION_SERVICE) as NotificationManager
-            val notificationChannel = NotificationChannel(
-                "channelId",
-                "Kaleyra Call",
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            notificationManager.createNotificationChannel(notificationChannel)
-        }
-
-        return NotificationCompat.Builder(applicationContext, "channelId")
-            .setContentIntent(GlassUIProvider.createCallPendingIntent(applicationContext))
-            .setSmallIcon(R.drawable.bandyer_z_audio_only)
-            .setContentText("Tap to go back to call")
-            .setContentTitle("Kaleyra Call")
-            .build()
-    }
 
     private fun Call.setup() {
         val publishJob = publishMySelf()
@@ -247,9 +246,10 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 streamsJob.cancel()
                 currentCall = null
 
-                if (shouldDisconnect) phoneBox!!.disconnect()
+                if (!isForeground) phoneBox!!.disconnect()
 
                 stopForeground(true)
+                NotificationHelper.cancelNotification(this@CallService, CALL_NOTIFICATION_ID)
 //                ongoingCalls.remove(this@setup)
             }.launchIn(lifecycleScope)
     }

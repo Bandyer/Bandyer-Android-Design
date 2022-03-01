@@ -7,5 +7,4 @@ import android.content.Context
 interface UIProvider {
     fun showCall(context: Context)
     fun isUIActivity(activity: Activity): Boolean
-    fun createCallPendingIntent(context: Context): PendingIntent
 }

@@ -2,4 +2,9 @@
 <resources>
     <string name="bandyer_today">oggi</string>
     <string name="bandyer_yesterday">ieri</string>
+    <string name="bandyer_notification_answer">Rispondi</string>
+    <string name="bandyer_notification_decline">Rifiuta</string>
+    <string name="bandyer_notification_hangup">Termina</string>
+    <string name="bandyer_notification_ongoing_call">Chiamata in corso</string>
+    <string name="bandyer_notification_incoming_call">Chiamata in ingresso</string>
 </resources>
