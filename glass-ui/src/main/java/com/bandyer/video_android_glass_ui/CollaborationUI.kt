@@ -56,8 +56,8 @@ object CollaborationUI {
 
         with(ContextRetainer.context) {
             val intent = Intent(this, CallService::class.java)
-            bindService(intent, serviceConnection, 0)
             startService(intent)
+            bindService(intent, serviceConnection, 0)
         }
     }
 
