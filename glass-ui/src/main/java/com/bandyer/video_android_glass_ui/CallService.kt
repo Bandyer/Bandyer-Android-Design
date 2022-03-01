@@ -197,40 +197,34 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             currentCall = call
             call.setup()
 
-            // If it is an ingoing call...
             val participants = call.participants.value
-            if (participants.me != participants.creator()) {
-                showIncomingNotification()
-                return@onEach
-            }
+            val userAliases = participants.others.map { it.userAlias }
+            val usersDescription = usersDescription.name(userAliases)
 
-            // ...otherwise
+            // If it is an incoming call
+            if (participants.me != participants.creator())
+                startForeground(
+                    CALL_NOTIFICATION_ID,
+                    NotificationHelper.buildIncomingCallNotification(
+                        this@CallService,
+                        usersDescription
+                    )
+                )
+
             call.state
                 .takeWhile { it !is Call.State.Connecting }
-                .onCompletion { showCallUI() }
+                .onCompletion {
+                    startForeground(
+                        CALL_NOTIFICATION_ID,
+                        NotificationHelper.buildOngoingCallNotification(
+                            this@CallService,
+                            usersDescription
+                        )
+                    )
+                    GlassUIProvider.showCall(applicationContext)
+                }
                 .launchIn(lifecycleScope)
         }.launchIn(lifecycleScope)
-
-    private fun showIncomingNotification() =
-        lifecycleScope.launch {
-            val userAliases = currentCall!!.participants.value.others.map { it.userAlias }
-            val usersDescription = usersDescription.name(userAliases)
-            startForeground(
-                CALL_NOTIFICATION_ID,
-                NotificationHelper.buildIncomingCallNotification(this@CallService, usersDescription)
-            )
-        }
-
-    private fun showCallUI() =
-        lifecycleScope.launch {
-            val userAliases = currentCall!!.participants.value.others.map { it.userAlias }
-            val usersDescription = usersDescription.name(userAliases)
-            startForeground(
-                CALL_NOTIFICATION_ID,
-                NotificationHelper.buildOngoingCallNotification(this@CallService, usersDescription)
-            )
-            GlassUIProvider.showCall(applicationContext)
-        }
 
     private fun Call.setup() {
         val publishJob = publishMySelf()
