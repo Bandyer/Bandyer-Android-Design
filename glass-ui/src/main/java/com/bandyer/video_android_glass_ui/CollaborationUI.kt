@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.onEach
 object CollaborationUI {
 
     private var collaboration: Collaboration? = null
-    private var notificationReceiver: NotificationReceiver? = null
 
     var usersDescription: UsersDescription? = null
 
