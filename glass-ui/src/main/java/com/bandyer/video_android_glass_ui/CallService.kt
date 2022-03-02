@@ -125,9 +125,9 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         NotificationHelper.cancelNotification(this, CALL_NOTIFICATION_ID)
 
         currentCall?.disconnect()
-        phoneBox!!.disconnect()
-        batteryObserver!!.stop()
-        wifiObserver!!.stop()
+        phoneBox?.disconnect()
+        batteryObserver?.stop()
+        wifiObserver?.stop()
 
         currentCall = null
         phoneBox = null
