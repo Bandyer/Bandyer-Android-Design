@@ -251,6 +251,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private fun Call.publishMySelf(fragmentActivity: FragmentActivity) {
         val me = participants.value.me
+        if (me.streams.value.firstOrNull { it.id == MY_STREAM_ID } != null) return
         me.addStream(fragmentActivity, MY_STREAM_ID).let {
             it.audio.value = null
             it.video.value = null
