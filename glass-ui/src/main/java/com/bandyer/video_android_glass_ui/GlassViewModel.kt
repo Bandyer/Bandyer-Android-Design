@@ -128,7 +128,7 @@ internal class GlassViewModel(
                     val removedStreams = currentStreams - newStreams.toSet()
                     uiStreams += addedStreams
                     uiStreams -= removedStreams.toSet()
-                } else uiStreams.removeIf { it.participant == participant }
+                } else uiStreams.removeAll { it.participant == participant }
                 emit(uiStreams.toList())
             }.launchIn(viewModelScope)
         }
