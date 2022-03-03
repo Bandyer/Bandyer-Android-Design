@@ -54,7 +54,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     }
 
     private var activityClazz: Class<*>? = null
-    private var isForeground = false
+
+    private var isAppInForeground = false
 
     private var phoneBox: PhoneBox? = null
     private var phoneBoxJob: Job? = null
@@ -123,15 +124,13 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     // DefaultLifecycleObserver
     override fun onStart(owner: LifecycleOwner) {
-        isForeground = true
-        if (currentCall != null) return
-        phoneBox?.connect()
+        isAppInForeground = true
     }
 
     override fun onStop(owner: LifecycleOwner) {
-        isForeground = false
+        isAppInForeground = false
         if (currentCall != null) return
-        phoneBox?.disconnect()
+        stopSelf()
     }
 
     // ActivityLifecycleCallbacks
@@ -193,16 +192,16 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 val notification = NotificationHelper.buildIncomingCallNotification(
                     this@CallService,
                     usersDescription,
-                    !isForeground,
+                    !isAppInForeground,
                     activityClazz!!
                 )
-                if (!isForeground) NotificationManagerCompat.from(applicationContext).notify(
+                if (!isAppInForeground) NotificationManagerCompat.from(applicationContext).notify(
                     CALL_NOTIFICATION_ID, notification
                 )
                 else startForeground(CALL_NOTIFICATION_ID, notification)
             }
 
-            if (isForeground)
+            if (isAppInForeground)
                 UIProvider.showCall(activityClazz!!)
 
             call.state
@@ -230,7 +229,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 streamsJob.cancel()
                 currentCall = null
 
-                if (!isForeground) phoneBox!!.disconnect()
+                if (!isAppInForeground) stopSelf()
 
                 stopForeground(true)
                 NotificationHelper.cancelNotification(this@CallService, CALL_NOTIFICATION_ID)

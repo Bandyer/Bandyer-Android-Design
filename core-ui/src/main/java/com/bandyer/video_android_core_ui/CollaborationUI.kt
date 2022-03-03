@@ -3,7 +3,11 @@ package com.bandyer.video_android_core_ui
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
+import android.database.DefaultDatabaseErrorHandler
 import android.os.IBinder
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ProcessLifecycleOwner
 import com.bandyer.android_common.ContextRetainer
 import com.bandyer.collaboration_center.Collaboration
 import com.bandyer.collaboration_center.Collaboration.Configuration
@@ -25,6 +29,13 @@ object CollaborationUI {
 
     private var collaboration: Collaboration? = null
 
+    private var lifecycleObserver = object : DefaultLifecycleObserver {
+        override fun onStart(owner: LifecycleOwner) {
+            super.onStart(owner)
+            phoneBox.connect()
+        }
+    }
+
     var usersDescription: UsersDescription? = null
 
     val phoneBox: PhoneBoxUI
@@ -40,12 +51,13 @@ object CollaborationUI {
     ): Boolean {
         if (collaboration != null) return false
         Collaboration.create(credentials, configuration).apply { collaboration = this }
-        phoneBox.state.filter { it is Connecting }.onEach { startPhoneBoxService(activityClazz) }
-            .launchIn(MainScope())
+        ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
+        phoneBox.state.filter { it is Connecting }.onEach { startPhoneBoxService(activityClazz) }.launchIn(MainScope())
         return true
     }
 
     fun dispose() {
+        ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         stopPhoneBoxService()
         phoneBox.disconnect()
         collaboration = null
