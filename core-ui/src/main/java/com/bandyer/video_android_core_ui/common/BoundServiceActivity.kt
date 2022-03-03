@@ -1,4 +1,4 @@
-package com.bandyer.video_android_glass_ui
+package com.bandyer.video_android_core_ui.common
 
 import android.content.ComponentName
 import android.content.Intent
@@ -6,6 +6,7 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
+import com.bandyer.video_android_core_ui.call.CallService
 
 abstract class BoundServiceActivity<T : BoundService>(private val clazz: Class<T>) :
     AppCompatActivity() {

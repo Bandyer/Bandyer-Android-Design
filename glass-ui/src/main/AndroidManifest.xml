@@ -3,9 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.bandyer.video_android_glass_ui">
 
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-
     <!-- TODO REMOVE CONFIG CHANGES -->
     <application>
         <activity
@@ -17,16 +14,6 @@
             android:showWhenLocked="true"
             android:showForAllUsers="true"
             tools:targetApi="m" />
-        <service
-            android:name="com.bandyer.video_android_glass_ui.CallService"
-            android:foregroundServiceType="phoneCall|mediaProjection|camera|microphone" />
-
-        <receiver android:name=".NotificationReceiver"  android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.ACTION_HANGUP"/>
-                <action android:name="android.intent.action.ACTION_ANSWER"/>
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

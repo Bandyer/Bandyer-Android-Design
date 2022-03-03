@@ -1,10 +1,19 @@
 package com.bandyer.video_android_core_ui
 
-import android.app.Activity
-import android.app.PendingIntent
-import android.content.Context
+import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
+import com.bandyer.android_common.ContextRetainer
 
-interface UIProvider {
-    fun showCall(context: Context)
-    fun isUIActivity(activity: Activity): Boolean
+internal object UIProvider {
+
+    fun <T> showCall(activityClazz: Class<T>) =
+        with(ContextRetainer.context) {
+            val intent = Intent(this, activityClazz).apply {
+                addFlags(FLAG_ACTIVITY_NEW_TASK)
+                // TODO
+                putExtra("enableTilt", false)
+//            putExtra("options", listOf().toTypedArray())
+            }
+            startActivity(intent)
+        }
 }

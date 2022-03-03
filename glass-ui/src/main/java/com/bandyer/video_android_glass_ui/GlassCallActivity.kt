@@ -17,9 +17,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.phonebox.Call
-import com.bandyer.video_android_core_ui.CallUIController
-import com.bandyer.video_android_core_ui.CallUIDelegate
-import com.bandyer.video_android_core_ui.DeviceStatusDelegate
+import com.bandyer.video_android_core_ui.call.CallActivity
+import com.bandyer.video_android_core_ui.call.CallService
+import com.bandyer.video_android_core_ui.call.CallUIController
+import com.bandyer.video_android_core_ui.call.CallUIDelegate
+import com.bandyer.video_android_core_ui.common.DeviceStatusDelegate
+import com.bandyer.video_android_glass_ui.ActivityExtensions.enableImmersiveMode
 import com.bandyer.video_android_glass_ui.call.CallEndedFragmentArgs
 import com.bandyer.video_android_glass_ui.chat.notification.ChatNotificationManager
 import com.bandyer.video_android_glass_ui.databinding.BandyerActivityGlassBinding
@@ -39,7 +42,7 @@ import kotlinx.coroutines.flow.onEach
  * GlassCallActivity
  */
 internal class GlassCallActivity :
-    ImmersiveActivity<CallService>(CallService::class.java),
+    CallActivity(),
     GlassGestureDetector.OnGestureListener,
     ChatNotificationManager.NotificationListener,
     TouchEventListener {
@@ -96,6 +99,7 @@ internal class GlassCallActivity :
             setHasFixedSize(true)
         }
 
+        enableImmersiveMode()
         turnScreenOnAndKeyguardOff()
     }
 

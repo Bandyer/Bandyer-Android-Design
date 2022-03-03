@@ -12,10 +12,10 @@ import com.bandyer.collaboration_center.phonebox.CallParticipant
 import com.bandyer.collaboration_center.phonebox.CallParticipants
 import com.bandyer.collaboration_center.phonebox.Input
 import com.bandyer.collaboration_center.phonebox.Stream
-import com.bandyer.video_android_core_ui.CallUIController
-import com.bandyer.video_android_core_ui.CallUIDelegate
-import com.bandyer.video_android_core_ui.DeviceStatusDelegate
-import com.bandyer.video_android_core_ui.UsersDescription
+import com.bandyer.video_android_core_ui.call.CallUIController
+import com.bandyer.video_android_core_ui.call.CallUIDelegate
+import com.bandyer.video_android_core_ui.common.DeviceStatusDelegate
+import com.bandyer.video_android_core_ui.model.UsersDescription
 import com.bandyer.video_android_core_ui.model.Permission
 import com.bandyer.video_android_core_ui.model.Volume
 import com.bandyer.video_android_glass_ui.model.internal.StreamParticipant

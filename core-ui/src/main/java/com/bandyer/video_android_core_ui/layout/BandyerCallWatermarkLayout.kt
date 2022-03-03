@@ -34,7 +34,7 @@ import java.io.File
  * @author kristiyan
  * @constructor
  */
-class BandyerCallWatermarkLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
+internal class BandyerCallWatermarkLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private val binding: BandyerCallWatermarkBinding = BandyerCallWatermarkBinding.inflate(LayoutInflater.from(context), this, true)
 

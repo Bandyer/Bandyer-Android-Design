@@ -1,4 +1,4 @@
-package com.bandyer.video_android_core_ui
+package com.bandyer.video_android_core_ui.common
 
 import com.bandyer.android_common.battery_observer.BatteryInfo
 import com.bandyer.android_common.network_observer.WiFiInfo

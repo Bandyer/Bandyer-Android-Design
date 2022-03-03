@@ -1,4 +1,4 @@
-package com.bandyer.video_android_glass_ui.utils
+package com.bandyer.video_android_core_ui.utils
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -11,11 +11,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.bandyer.video_android_core_ui.R
-import com.bandyer.video_android_glass_ui.GlassCallActivity
-import com.bandyer.video_android_glass_ui.NotificationReceiver
-import com.bandyer.video_android_glass_ui.utils.extensions.PendingIntentExtensions
+import com.bandyer.video_android_core_ui.notification.NotificationReceiver
 
-object NotificationHelper {
+internal object NotificationHelper {
 
     private const val NOTIFICATION_DEFAULT_CHANNEL_ID =
         "com.bandyer.video_android_glass_ui.notification_channel_default"
@@ -28,14 +26,14 @@ object NotificationHelper {
     private const val DECLINE_REQUEST_CODE = 987
     private const val HANGUP_REQUEST_CODE = 654
 
-    fun buildIncomingCallNotification(context: Context, usersDescription: String, isHighPriority: Boolean): Notification {
+    fun <T> buildIncomingCallNotification(context: Context, usersDescription: String, isHighPriority: Boolean, activityClazz: Class<T>): Notification {
         val contextText = context.getString(R.string.bandyer_notification_incoming_call)
-        val fullScreenIntent = if(isHighPriority) createCallActivityPendingIntent(context.applicationContext, FULL_SCREEN_REQUEST_CODE) else null
-        val contentIntent = createCallActivityPendingIntent(context.applicationContext, CONTENT_REQUEST_CODE)
+        val fullScreenIntent = if(isHighPriority) createCallActivityPendingIntent(context.applicationContext, FULL_SCREEN_REQUEST_CODE, activityClazz) else null
+        val contentIntent = createCallActivityPendingIntent(context.applicationContext, CONTENT_REQUEST_CODE, activityClazz)
         val answerAction = NotificationCompat.Action(
             R.drawable.bandyer_z_audio_only,
             context.getString(R.string.bandyer_notification_answer),
-            createCallActivityPendingIntent(context.applicationContext, ANSWER_REQUEST_CODE, true)
+            createCallActivityPendingIntent(context.applicationContext, ANSWER_REQUEST_CODE, activityClazz, true)
         )
         val declineAction = NotificationCompat.Action(
             R.drawable.bandyer_z_end_call,
@@ -55,8 +53,8 @@ object NotificationHelper {
         )
     }
 
-    fun buildOngoingCallNotification(context: Context, usersDescription: String): Notification {
-        val contentIntent = createCallActivityPendingIntent(context.applicationContext, CONTENT_REQUEST_CODE)
+    fun <T> buildOngoingCallNotification(context: Context, usersDescription: String, activityClazz: Class<T>): Notification {
+        val contentIntent = createCallActivityPendingIntent(context.applicationContext, CONTENT_REQUEST_CODE, activityClazz)
         val contextText = context.getString(R.string.bandyer_notification_ongoing_call)
         val hangUpAction = NotificationCompat.Action(
             R.drawable.bandyer_z_end_call,
@@ -90,9 +88,9 @@ object NotificationHelper {
             PendingIntentExtensions.updateFlags
         )
 
-    private fun createCallActivityPendingIntent(context: Context, requestCode: Int, enableAutoAnswer: Boolean = false): PendingIntent {
+    private fun <T> createCallActivityPendingIntent(context: Context, requestCode: Int, activityClazz: Class<T>, enableAutoAnswer: Boolean = false): PendingIntent {
         val applicationContext = context.applicationContext
-        val intent = Intent(applicationContext, GlassCallActivity::class.java).apply {
+        val intent = Intent(applicationContext, activityClazz).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra("enableTilt", false)
             putExtra("autoAnswer", enableAutoAnswer)

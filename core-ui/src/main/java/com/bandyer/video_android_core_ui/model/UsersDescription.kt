@@ -1,4 +1,4 @@
-package com.bandyer.video_android_core_ui
+package com.bandyer.video_android_core_ui.model
 
 import android.net.Uri
 

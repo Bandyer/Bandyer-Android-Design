@@ -20,10 +20,12 @@ internal class ChatNotificationManager {
          * Called when the notification is shown
          */
         fun onShow()
+
         /**
          * Called when the notification is fully expanded
          */
         fun onExpanded()
+
         /**
          * Called when the notification is dimissed
          */
@@ -38,10 +40,12 @@ internal class ChatNotificationManager {
          * c o l l a p s e d
          */
         COLLAPSED,
+
         /**
          * e x p a n d e d
          */
         EXPANDED,
+
         /**
          * h i d d e n
          */
@@ -62,7 +66,8 @@ internal class ChatNotificationManager {
     private constructor(viewGroup: ViewGroup) {
         notificationView = ChatNotificationView(viewGroup.context)
         notificationView?.setNavigationBarOnClickListeners({ dismiss() }, { expand() })
-        attacherChatNotification = ChatNotificationViewAttacher.create(viewGroup, notificationView!!)
+        attacherChatNotification =
+            ChatNotificationViewAttacher.create(viewGroup, notificationView!!)
     }
 
     /**
@@ -115,9 +120,9 @@ internal class ChatNotificationManager {
         listeners.forEach { it.onShow() }
 
         notificationView?.postDelayed({
-                                          if (state != State.COLLAPSED) return@postDelayed
-                                          dismiss()
-                                      }, AUTO_HIDE_DELAY)
+            if (state != State.COLLAPSED) return@postDelayed
+            dismiss()
+        }, AUTO_HIDE_DELAY)
     }
 
     /**

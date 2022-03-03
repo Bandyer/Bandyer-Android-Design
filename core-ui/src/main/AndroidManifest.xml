@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.bandyer.video_android_core_ui">
+<manifest package="com.bandyer.video_android_core_ui"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <!-- TODO REMOVE CONFIG CHANGES -->
+    <application>
+        <service
+            android:name="com.bandyer.video_android_core_ui.call.CallService"
+            android:foregroundServiceType="phoneCall|mediaProjection|camera|microphone" />
+
+        <receiver android:name="com.bandyer.video_android_core_ui.notification.NotificationReceiver"  android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_HANGUP"/>
+                <action android:name="android.intent.action.ACTION_ANSWER"/>
+            </intent-filter>
+        </receiver>
+    </application>
 </manifest>

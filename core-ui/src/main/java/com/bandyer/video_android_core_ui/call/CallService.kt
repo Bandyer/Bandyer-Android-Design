@@ -1,17 +1,15 @@
-package com.bandyer.video_android_glass_ui
+package com.bandyer.video_android_core_ui.call
 
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
-import android.os.Binder
 import android.os.Bundle
 import android.os.IBinder
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bandyer.android_common.audio.CallAudioManager
@@ -24,13 +22,13 @@ import com.bandyer.collaboration_center.phonebox.Input
 import com.bandyer.collaboration_center.phonebox.Inputs
 import com.bandyer.collaboration_center.phonebox.PhoneBox
 import com.bandyer.collaboration_center.phonebox.VideoStreamView
-import com.bandyer.video_android_core_ui.CallUIController
-import com.bandyer.video_android_core_ui.CallUIDelegate
-import com.bandyer.video_android_core_ui.DeviceStatusDelegate
-import com.bandyer.video_android_core_ui.UsersDescription
+import com.bandyer.video_android_core_ui.common.BoundService
+import com.bandyer.video_android_core_ui.common.DeviceStatusDelegate
+import com.bandyer.video_android_core_ui.UIProvider
+import com.bandyer.video_android_core_ui.model.UsersDescription
 import com.bandyer.video_android_core_ui.model.Permission
 import com.bandyer.video_android_core_ui.model.Volume
-import com.bandyer.video_android_glass_ui.utils.NotificationHelper
+import com.bandyer.video_android_core_ui.utils.NotificationHelper
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.flatMapLatest
@@ -40,26 +38,6 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
-
-
-abstract class BoundService : LifecycleService() {
-    @Suppress("UNCHECKED_CAST")
-    inner class ServiceBinder : Binder() {
-        fun <T : BoundService> getService(): T = this@BoundService as T
-    }
-
-    private var binder: ServiceBinder? = null
-
-    override fun onBind(intent: Intent): IBinder {
-        super.onBind(intent)
-        return ServiceBinder().also { binder = it }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        binder = null
-    }
-}
 
 @SuppressLint("MissingPermission")
 class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStatusDelegate,
@@ -72,11 +50,10 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
         fun onNotificationAnswer() = currentCall?.connect()
 
-        fun onNotificationHangUp() {
-            currentCall?.disconnect()
-        }
+        fun onNotificationHangUp() = currentCall?.disconnect()
     }
 
+    private var activityClazz: Class<*>? = null
     private var isForeground = false
 
     private var phoneBox: PhoneBox? = null
@@ -117,6 +94,14 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         return START_NOT_STICKY
     }
 
+    override fun onBind(intent: Intent): IBinder {
+        with(intent.getStringExtra("activityClazzName")) {
+            require(this != null) { "ui activity class name not specified" }
+            activityClazz = Class.forName(this)
+        }
+        return super.onBind(intent)
+    }
+
     override fun onDestroy() {
         super<BoundService>.onDestroy()
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
@@ -151,12 +136,12 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     // ActivityLifecycleCallbacks
     override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
-        if (!GlassUIProvider.isUIActivity(activity)) return
+        if (activity.javaClass != activityClazz) return
         currentCall!!.publishMySelf(activity as FragmentActivity)
     }
 
     override fun onActivityStarted(activity: Activity) {
-        if (!GlassUIProvider.isUIActivity(activity)) return
+        if (activity.javaClass != activityClazz) return
         val video =
             currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value
                 ?: return
@@ -169,7 +154,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     override fun onActivityPaused(activity: Activity) = Unit
 
     override fun onActivityStopped(activity: Activity) {
-        if (!GlassUIProvider.isUIActivity(activity)) return
+        if (activity.javaClass != activityClazz) return
         val video =
             currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value
                 ?: return
@@ -208,21 +193,25 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 val notification = NotificationHelper.buildIncomingCallNotification(
                     this@CallService,
                     usersDescription,
-                    !isForeground
+                    !isForeground,
+                    activityClazz!!
                 )
-                if (!isForeground) NotificationManagerCompat.from(applicationContext).notify(CALL_NOTIFICATION_ID,  notification)
+                if (!isForeground) NotificationManagerCompat.from(applicationContext).notify(
+                    CALL_NOTIFICATION_ID, notification
+                )
                 else startForeground(CALL_NOTIFICATION_ID, notification)
             }
 
             if (isForeground)
-                GlassUIProvider.showCall(applicationContext)
+                UIProvider.showCall(activityClazz!!)
 
             call.state
                 .takeWhile { it !is Call.State.Connecting }
                 .onCompletion {
                     val notification = NotificationHelper.buildOngoingCallNotification(
                         this@CallService,
-                        usersDescription
+                        usersDescription,
+                        activityClazz!!
                     )
 
                     startForeground(CALL_NOTIFICATION_ID, notification)

@@ -13,7 +13,7 @@ import com.bandyer.video_android_glass_ui.databinding.BandyerGlassToastLayoutBin
 import com.bandyer.video_android_glass_ui.utils.extensions.ContextExtensions.getCallThemeAttribute
 import java.util.*
 
-class ToastContainer @JvmOverloads constructor(
+internal class ToastContainer @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

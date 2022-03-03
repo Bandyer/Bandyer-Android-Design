@@ -6,7 +6,7 @@ import android.content.Context
 import android.os.Build
 import android.view.WindowManager
 
-object ActivityExtensions {
+internal object ActivityExtensions {
     fun Activity.turnScreenOnAndKeyguardOff() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
