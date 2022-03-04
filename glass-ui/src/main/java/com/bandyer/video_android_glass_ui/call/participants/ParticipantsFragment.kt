@@ -128,7 +128,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
         repeatOnStarted {
             combine(
                 viewModel.inCallParticipants,
-                viewModel.participants
+                viewModel.call.participants
             ) { inCallParticipants, participants -> Pair(inCallParticipants, participants) }
                 .takeWhile { it.first.isNotEmpty() }
                 .collect { pair ->

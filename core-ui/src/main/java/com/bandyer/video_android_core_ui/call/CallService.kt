@@ -22,11 +22,11 @@ import com.bandyer.collaboration_center.phonebox.Input
 import com.bandyer.collaboration_center.phonebox.Inputs
 import com.bandyer.collaboration_center.phonebox.PhoneBox
 import com.bandyer.collaboration_center.phonebox.VideoStreamView
+import com.bandyer.video_android_core_ui.UIProvider
 import com.bandyer.video_android_core_ui.common.BoundService
 import com.bandyer.video_android_core_ui.common.DeviceStatusDelegate
-import com.bandyer.video_android_core_ui.UIProvider
-import com.bandyer.video_android_core_ui.model.UsersDescription
 import com.bandyer.video_android_core_ui.model.Permission
+import com.bandyer.video_android_core_ui.model.UsersDescription
 import com.bandyer.video_android_core_ui.model.Volume
 import com.bandyer.video_android_core_ui.utils.NotificationHelper
 import kotlinx.coroutines.Job
@@ -68,8 +68,9 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     private var callAudioManager: CallAudioManager? = null
 
     //    private var ongoingCalls: MutableSet<Call> = mutableSetOf()
-    override val call: SharedFlow<Call>
-        get() = phoneBox!!.call
+
+    override val call: Call
+        get() = currentCall!!
 
     override var usersDescription: UsersDescription = UsersDescription()
 

@@ -153,6 +153,10 @@ internal class GlassCallActivity :
             })
         }
 
+        with(binding.bandyerStatusBar) {
+            if (viewModel.call.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
+        }
+
         repeatOnStarted {
             viewModel
                 .battery
@@ -178,7 +182,7 @@ internal class GlassCallActivity :
                 }
                 .launchIn(this)
 
-            viewModel.callState
+            viewModel.call.state
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
                     if (it is Call.State.Reconnecting) navController!!.navigate(R.id.reconnectingFragment)
@@ -212,13 +216,6 @@ internal class GlassCallActivity :
                             0L
                         )
                         else cancel(ALONE_TOAST_ID)
-                    }
-                }.launchIn(this)
-
-            viewModel.currentCall
-                .onEach {
-                    with(binding.bandyerStatusBar) {
-                        if (it.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
                     }
                 }.launchIn(this)
 

@@ -20,7 +20,7 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
             root.setOnTouchListener { _, event -> bandyerParticipantsScrollView.onTouchEvent(event) }
 
             repeatOnStarted {
-                viewModel.participants.onEach { participants ->
+                viewModel.call.participants.onEach { participants ->
                     bandyerCounter.text = resources.getString(
                         R.string.bandyer_glass_n_of_participants_pattern,
                         participants.others.size + 1

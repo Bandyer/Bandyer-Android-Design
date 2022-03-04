@@ -58,19 +58,7 @@ internal class GlassViewModel(
     private val callController: CallUIController
 ) : ViewModel() {
 
-    val call: SharedFlow<Call> = callDelegate.call
-
-    val currentCall: SharedFlow<Call> =
-        MutableSharedFlow<Call>(replay = 1, extraBufferCapacity = 1).apply {
-            call
-                .take(1)
-                .onEach { emit(it) }
-                .launchIn(viewModelScope)
-        }
-
-    val callState = currentCall.flatMapLatest { it.state }
-
-    val participants = currentCall.flatMapLatest { it.participants }
+    val call: Call = callDelegate.call
 
     val battery: SharedFlow<BatteryInfo> = deviceStatusDelegate.battery
 
@@ -83,7 +71,7 @@ internal class GlassViewModel(
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = ConcurrentHashMap<String, CallParticipant>()
-            this@GlassViewModel.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, itsMe, streams, state ->
+            call.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, itsMe, streams, state ->
                 if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) participants[participant.userAlias] =
                     participant
                 else participants.remove(participant.userAlias)
@@ -114,7 +102,7 @@ internal class GlassViewModel(
     val streams: SharedFlow<List<StreamParticipant>> =
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
-            this@GlassViewModel.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
+            call.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
                 if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
                     val newStreams = streams.map {
                         StreamParticipant(
@@ -134,10 +122,10 @@ internal class GlassViewModel(
         }
 
     private val myStreams: Flow<List<Stream>> =
-        participants.map { it.me }.flatMapLatest { it.streams }
+        call.participants.map { it.me }.flatMapLatest { it.streams }
 
     private val otherStreams: Flow<List<Stream>> =
-        participants.map { it.others }.flatMapLatest { it.map { it.streams }.merge() }
+        call.participants.map { it.others }.flatMapLatest { it.map { it.streams }.merge() }
 
     private val cameraStream: Flow<Stream?> =
         myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it is Input.Video.Camera } != null } }
