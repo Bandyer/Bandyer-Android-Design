@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.bandyer.video_android_glass_ui.chat.ChatFragment"
+        android:name="collaboration_suite_glass_ui.chat.ChatFragment"
         android:label="ChatFragment">
         <action
             android:id="@+id/action_chatFragment_to_chatMenuFragment"
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatMenuFragment"
-        android:name="com.bandyer.video_android_glass_ui.chat.menu.ChatMenuFragment"
+        android:name="collaboration_suite_glass_ui.chat.menu.ChatMenuFragment"
         android:label="ChatMenuFragment">
         <argument
             android:name="enableTilt"
@@ -43,7 +43,7 @@
 <!--        <argument-->
 <!--            android:name="participantData"-->
 <!--            android:defaultValue="@null"-->
-<!--            app:argType="com.bandyer.video_android_glass_ui.participants.ParticipantData"-->
+<!--            app:argType="collaboration_suite_glass_uiass_ui.participants.ParticipantData"-->
 <!--            app:nullable="true" />-->
     </fragment>
 </navigation>

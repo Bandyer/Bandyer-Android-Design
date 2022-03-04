@@ -28,14 +28,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <com.bandyer.video_android_glass_ui.status_bar_views.StatusBarView
+        <collaboration_suite_glass_ui.status_bar_views.StatusBarView
             android:id="@+id/bandyer_status_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.bandyer.video_android_glass_ui.common.ToastContainer
+        <collaboration_suite_glass_ui.common.ToastContainer
             android:id="@+id/bandyer_toast_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

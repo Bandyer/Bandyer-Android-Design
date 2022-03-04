@@ -22,7 +22,7 @@
         android:layout_height="match_parent"
         android:theme="?attr/bandyer_zoomStyle">
 
-        <com.bandyer.video_android_glass_ui.settings.zoom.ZoomSlider
+        <collaboration_suite_glass_ui.settings.zoom.ZoomSlider
             android:id="@+id/bandyer_slider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             app:layout_constraintBottom_toTopOf="@+id/bandyer_bottom_navigation"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
+        <collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
             android:id="@+id/bandyer_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

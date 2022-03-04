@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:clipChildren="false">
 
-            <com.bandyer.video_android_core_ui.layout.BandyerCallWatermarkLayout
+            <collaboration_suite_core_ui.layout.BandyerCallWatermarkLayout
                 android:id="@+id/bandyer_watermark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_chainStyle="packed" />
 
-            <com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView
+            <collaboration_suite_glass_ui.common.HorizontalAutoScrollView
                 android:id="@+id/bandyer_participants_scroll_view"
                 style="?android:attr/horizontalScrollViewStyle"
                 android:layout_width="0dp"
@@ -57,7 +57,7 @@
                     style="?attr/bandyer_participantsStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-            </com.bandyer.video_android_glass_ui.common.HorizontalAutoScrollView>
+            </collaboration_suite_glass_ui.common.HorizontalAutoScrollView>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/bandyer_title"
@@ -99,7 +99,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
+        <collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
             android:id="@+id/bandyer_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

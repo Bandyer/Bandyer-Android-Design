@@ -76,14 +76,14 @@
             app:layout_constraintEnd_toStartOf="@id/bandyer_wifi_icon"
             app:layout_constraintTop_toTopOf="@id/bandyer_battery" />
 
-        <com.bandyer.video_android_glass_ui.status_bar_views.WifiImageView
+        <collaboration_suite_glass_ui.status_bar_views.WifiImageView
             android:id="@+id/bandyer_wifi_icon"
             style="?attr/bandyer_wifiIconStyle"
             app:layout_constraintBottom_toBottomOf="@id/bandyer_battery"
             app:layout_constraintEnd_toStartOf="@id/bandyer_battery"
             app:layout_constraintTop_toTopOf="@id/bandyer_battery" />
 
-        <com.bandyer.video_android_glass_ui.status_bar_views.BatteryView
+        <collaboration_suite_glass_ui.status_bar_views.BatteryView
             android:id="@+id/bandyer_battery"
             style="?attr/bandyer_batteryStyle"
             app:layout_constraintEnd_toEndOf="parent"

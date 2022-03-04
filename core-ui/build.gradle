@@ -35,7 +35,7 @@ dependencies {
     api androidX.appCompat
     api google.material
     api picasso.picasso
-    compileOnly project(path: ':collaboration_suite')
+    compileOnly project(path: ':collaboration-suite')
 
 
     testImplementation test.jUnit

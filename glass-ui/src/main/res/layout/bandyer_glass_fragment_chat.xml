@@ -18,7 +18,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <import type="com.bandyer.video_android_glass_ui.utils.BindingAdapters" />
+        <import type="collaboration_suite_glass_ui.utils.BindingAdapters" />
         <variable name="newMessagesCounter" type="androidx.databinding.ObservableInt"/>
     </data>
 
@@ -28,7 +28,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:theme="@style/BandyerSDKDesign.Theme.GlassChat">
 
-        <com.bandyer.video_android_glass_ui.chat.ChatMessageView
+        <collaboration_suite_glass_ui.chat.ChatMessageView
             android:id="@+id/bandyer_chat_message"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -57,7 +57,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/bandyer_bottom_navigation"/>
 
-        <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
+        <collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
             android:id="@+id/bandyer_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

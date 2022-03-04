@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:theme="@style/BandyerSDKDesign.ChatMessage.GlassNotification">
 
-        <com.bandyer.video_android_glass_ui.common.AvatarGroupView
+        <collaboration_suite_glass_ui.common.AvatarGroupView
             android:id="@+id/bandyer_avatars"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             app:layout_constraintVertical_chainStyle="spread_inside"
             tools:text="Hello there" />
 
-        <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
+        <collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
             android:id="@+id/bandyer_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

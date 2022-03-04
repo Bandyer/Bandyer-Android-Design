@@ -22,7 +22,7 @@
         android:layout_height="match_parent"
         android:theme="?attr/bandyer_recyclerViewItemStyle">
 
-        <com.bandyer.video_android_glass_ui.chat.ChatMessageView
+        <collaboration_suite_glass_ui.chat.ChatMessageView
             android:id="@+id/bandyer_chat_message"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

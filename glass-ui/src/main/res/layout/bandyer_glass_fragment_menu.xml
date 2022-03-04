@@ -32,7 +32,7 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:listitem="@layout/bandyer_glass_menu_item_layout" />
 
-        <com.bandyer.video_android_glass_ui.bottom_navigation.BottomNavigationView
+        <collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
             android:id="@+id/bandyer_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

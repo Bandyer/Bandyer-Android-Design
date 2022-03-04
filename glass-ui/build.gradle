@@ -42,7 +42,7 @@ dependencies {
     implementation navigation.uiKtx
     implementation google.material
     implementation androidX.dataBindingCommon
-    compileOnly project(path: ':collaboration_suite')
+    compileOnly project(path: ':collaboration-suite')
 
     // TODO
     //    api bandyer.collaboration
