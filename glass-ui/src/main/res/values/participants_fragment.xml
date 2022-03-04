@@ -16,63 +16,63 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.Participants">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_userInfoStyle" />
+    <declare-styleable name="KaleyraSDKDesign.Glass.DarkBackground.Participants">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_userInfoStyle" />
         <attr name="recyclerViewStyle" />
-        <attr name="bandyer_recyclerViewItemStyle" />
+        <attr name="kaleyra_recyclerViewItemStyle" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- PARTICIPANTS FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.DarkBackground.Participants" parent="BandyerSDKDesign.Glass.DarkBackground">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.DarkBackground.RootLayout.Participants</item>
-        <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.Glass.UserInfo</item>
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
-        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Participants</item>
+    <style name="KaleyraSDKDesign.Glass.DarkBackground.Participants" parent="KaleyraSDKDesign.Glass.DarkBackground">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.RootLayout.Participants</item>
+        <item name="kaleyra_userInfoStyle">@style/KaleyraSDKDesign.Glass.UserInfo</item>
+        <item name="recyclerViewStyle">@style/KaleyraSDKDesign.Glass.RecyclerView</item>
+        <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraSDKDesign.Glass.RecyclerViewItem</item>
+        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.Participants</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.DarkBackground.RootLayout.Participants" parent="BandyerSDKDesign.Glass.DarkBackground.RootLayout">
-        <item name="android:background">@color/bandyer_glass_background_color</item>
+    <style name="KaleyraSDKDesign.Glass.DarkBackground.RootLayout.Participants" parent="KaleyraSDKDesign.Glass.DarkBackground.RootLayout">
+        <item name="android:background">@color/kaleyra_glass_background_color</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.Participants" parent="BandyerSDKDesign.Glass.BottomNavigation">
-        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Participants</item>
-        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Participants</item>
-        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Participants</item>
+    <style name="KaleyraSDKDesign.Glass.BottomNavigation.Participants" parent="KaleyraSDKDesign.Glass.BottomNavigation">
+        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Participants</item>
+        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.Participants</item>
+        <item name="kaleyra_tapItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.Tap.Participants</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Participants</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeParticipants</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Participants" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Participants</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.SwipeParticipants</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Participants" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal">
         <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/bandyer_glass_browse</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_browse</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeParticipants" parent="BandyerSDKDesign.TextView.GlassLabel">
-        <item name="android:text">@string/bandyer_glass_browse</item>
+    <style name="KaleyraSDKDesign.TextView.GlassLabel.SwipeParticipants" parent="KaleyraSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_browse</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Participants</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownParticipants</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.Participants" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Participants</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.SwipeDownParticipants</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Participants" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
         <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/bandyer_glass_close</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_close</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownParticipants" parent="BandyerSDKDesign.TextView.GlassLabel">
-        <item name="android:text">@string/bandyer_glass_close</item>
+    <style name="KaleyraSDKDesign.TextView.GlassLabel.SwipeDownParticipants" parent="KaleyraSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_close</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Participants" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.Tap.Participants" parent="KaleyraSDKDesign.Glass.BottomActionItem.Tap">
         <item name="android:visibility">gone</item>
     </style>
 </resources>

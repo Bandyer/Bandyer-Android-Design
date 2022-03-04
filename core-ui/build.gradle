@@ -27,17 +27,18 @@ apply from: '../publish.gradle'
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')
-
     coreLibraryDesugaring androidX.desugar
+
+    testImplementation test.jUnit
+    androidTestImplementation test.espresso
 
     api jetbrains.stdlib
     api ktxExtensions.core
     api androidX.appCompat
     api google.material
     api picasso.picasso
+
+    /** Kaleyra **/
     compileOnly project(path: ':collaboration-suite')
-
-
-    testImplementation test.jUnit
-    androidTestImplementation test.espresso
+    compileOnly kaleyra.utils
 }

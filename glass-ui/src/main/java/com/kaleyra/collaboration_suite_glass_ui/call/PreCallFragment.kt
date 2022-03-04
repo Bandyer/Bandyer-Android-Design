@@ -17,8 +17,13 @@
 package com.kaleyra.collaboration_suite_glass_ui.call
 
 import android.annotation.SuppressLint
+import android.view.View
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlin.math.roundToInt
 
 internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoScrollView.OnScrollListener {
 
@@ -27,18 +32,18 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
         super.onServiceBound()
 
         with(binding) {
-            bandyerParticipantsScrollView.onScrollListener = this@PreCallFragment
-            root.setOnTouchListener { _, event -> bandyerParticipantsScrollView.onTouchEvent(event) }
+            kaleyraParticipantsScrollView.onScrollListener = this@PreCallFragment
+            root.setOnTouchListener { _, event -> kaleyraParticipantsScrollView.onTouchEvent(event) }
 
             repeatOnStarted {
                 viewModel.call.participants.onEach { participants ->
-                    bandyerCounter.text = resources.getString(
-                        R.string.bandyer_glass_n_of_participants_pattern,
+                    kaleyraCounter.text = resources.getString(
+                        R.string.kaleyra_glass_n_of_participants_pattern,
                         participants.others.size + 1
                     )
 
                     val userAliases = participants.others.plus(participants.me).map { it.userAlias }
-                    bandyerParticipants.text = viewModel.usersDescription.name(userAliases)
+                    kaleyraParticipants.text = viewModel.usersDescription.name(userAliases)
                     updateUIOnParticipantsViewChange()
 
                     setSubtitle(participants.others.count() + 1 > 2)
@@ -53,18 +58,18 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
 //    }
 
     private fun updateUIOnParticipantsViewChange() = with(binding) {
-        bandyerParticipants.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+        kaleyraParticipants.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         val hideProgressUI =
-            resources.displayMetrics.widthPixels - bandyerParticipants.measuredWidth > 0
-        bandyerBottomNavigation.apply { if (hideProgressUI) hideSwipeHorizontalItem() else showSwipeHorizontalItem() }
-        bandyerProgress.visibility = if (hideProgressUI) View.GONE else View.VISIBLE
+            resources.displayMetrics.widthPixels - kaleyraParticipants.measuredWidth > 0
+        kaleyraBottomNavigation.apply { if (hideProgressUI) hideSwipeHorizontalItem() else showSwipeHorizontalItem() }
+        kaleyraProgress.visibility = if (hideProgressUI) View.GONE else View.VISIBLE
     }
 
     override fun onScrollChanged(x: Int, y: Int): Unit =
         with(binding) {
-            bandyerProgress.apply {
-                max = bandyerParticipantsScrollView.getChildAt(0).width
-                progress = ((x + bandyerParticipantsScrollView.width).toFloat()).roundToInt()
+            kaleyraProgress.apply {
+                max = kaleyraParticipantsScrollView.getChildAt(0).width
+                progress = ((x + kaleyraParticipantsScrollView.width).toFloat()).roundToInt()
             }
         }
 

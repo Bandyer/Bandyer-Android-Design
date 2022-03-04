@@ -18,14 +18,14 @@
 
     <!-- CHAT INFO STYLE -->
 
-    <style name="BandyerSDKDesign.TextView.Title.ChatInfo" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space0</item>
+    <style name="KaleyraSDKDesign.TextView.Title.ChatInfo" parent="KaleyraSDKDesign.TextView.Title">
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space0</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space12</item>
-        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space12</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space12</item>
+        <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space12</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
         <item name="android:singleLine">true</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">marquee</item>
@@ -33,65 +33,65 @@
         <item name="android:fadingEdge">horizontal</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ChatInfo" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ChatInfo" parent="KaleyraSDKDesign.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
-        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space2</item>
-        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space3</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space3</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space2</item>
+        <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space3</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space3</item>
         <item name="android:singleLine">true</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">marquee</item>
         <item name="android:fadingEdge">horizontal</item>
         <item name="android:marqueeRepeatLimit">marquee_forever</item>
-        <item name="android:textColor">@color/bandyer_color_on_primary_50</item>
+        <item name="android:textColor">@color/kaleyra_color_on_primary_50</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextAppearance.Subtitle.Chat" parent="BandyerSDKDesign.TextAppearance.Subtitle">
-        <item name="android:textSize">@dimen/bandyer_dimen_text_small</item>
+    <style name="KaleyraSDKDesign.TextAppearance.Subtitle.Chat" parent="KaleyraSDKDesign.TextAppearance.Subtitle">
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_small</item>
         <item name="android:textStyle">normal</item>
         <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">0</item>
         <item name="android:shadowRadius">0</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextAppearance.Subtitle.Chat.Online" parent="BandyerSDKDesign.TextAppearance.Subtitle.Chat"/>
+    <style name="KaleyraSDKDesign.TextAppearance.Subtitle.Chat.Online" parent="KaleyraSDKDesign.TextAppearance.Subtitle.Chat"/>
 
-    <style name="BandyerSDKDesign.TextAppearance.Subtitle.Chat.Offline" parent="BandyerSDKDesign.TextAppearance.Subtitle.Chat"/>
+    <style name="KaleyraSDKDesign.TextAppearance.Subtitle.Chat.Offline" parent="KaleyraSDKDesign.TextAppearance.Subtitle.Chat"/>
 
-    <style name="BandyerSDKDesign.TextAppearance.Subtitle.Chat.WaitingForNetwork" parent="BandyerSDKDesign.TextAppearance.Subtitle.Chat"/>
+    <style name="KaleyraSDKDesign.TextAppearance.Subtitle.Chat.WaitingForNetwork" parent="KaleyraSDKDesign.TextAppearance.Subtitle.Chat"/>
 
-    <style name="BandyerSDKDesign.TextAppearance.Subtitle.Chat.Connecting" parent="BandyerSDKDesign.TextAppearance.Subtitle.Chat"/>
+    <style name="KaleyraSDKDesign.TextAppearance.Subtitle.Chat.Connecting" parent="KaleyraSDKDesign.TextAppearance.Subtitle.Chat"/>
 
-    <style name="BandyerSDKDesign.TextAppearance.Subtitle.Chat.Typing" parent="BandyerSDKDesign.TextAppearance.Subtitle.Chat">
+    <style name="KaleyraSDKDesign.TextAppearance.Subtitle.Chat.Typing" parent="KaleyraSDKDesign.TextAppearance.Subtitle.Chat">
         <item name="android:textStyle">italic</item>
     </style>
 
     <!-- CHAT TEXT MESSAGE DATAVIEW -->
 
-    <style name="BandyerSDKDesign.TextView.ChatMessage" parent="BandyerSDKDesign.TextView">
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space8</item>
-        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space8</item>
+    <style name="KaleyraSDKDesign.TextView.ChatMessage" parent="KaleyraSDKDesign.TextView">
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space8</item>
         <item name="android:gravity">start</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_normal</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_normal</item>
         <item name="android:autoLink">all</item>
-        <item name="android:textColorLink">@color/bandyer_color_link</item>
+        <item name="android:textColorLink">@color/kaleyra_color_link</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.ChatMessage.LoggedUser" parent="BandyerSDKDesign.TextView.ChatMessage">
+    <style name="KaleyraSDKDesign.TextView.ChatMessage.LoggedUser" parent="KaleyraSDKDesign.TextView.ChatMessage">
         <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="android:textColorLink">?attr/colorOnSecondary</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.ChatMessage.OtherUser" parent="BandyerSDKDesign.TextView.ChatMessage">
+    <style name="KaleyraSDKDesign.TextView.ChatMessage.OtherUser" parent="KaleyraSDKDesign.TextView.ChatMessage">
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
     <!-- CHAT TIMESTAMP TEXT MESSAGE -->
 
-    <style name="BandyerSDKDesign.Chat.ChatTimestamp" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="KaleyraSDKDesign.Chat.ChatTimestamp" parent="KaleyraSDKDesign.TextView.Subtitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
@@ -101,36 +101,36 @@
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ChatMessageTimestamp" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space2</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp" parent="KaleyraSDKDesign.TextView.Subtitle">
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space2</item>
         <item name="android:gravity">end</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_small</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space3</item>
-        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space3</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_small</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space3</item>
+        <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space3</item>
         <item name="singleLine">false</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ChatMessageTimestamp.LoggedUser" parent="BandyerSDKDesign.TextView.Subtitle.ChatMessageTimestamp">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp.LoggedUser" parent="KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp">
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ChatMessageTimestamp.OtherUser" parent="BandyerSDKDesign.TextView.Subtitle.ChatMessageTimestamp">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp.OtherUser" parent="KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp">
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
     <!-- CHAT TIMESTAMP TEXT MESSAGE -->
 
-    <style name="BandyerSDKDesign.Chat.UnreadMessages" parent="BandyerSDKDesign.Chat.ChatTimestamp" />
+    <style name="KaleyraSDKDesign.Chat.UnreadMessages" parent="KaleyraSDKDesign.Chat.ChatTimestamp" />
 
     <!-- CHAT LOADING MESSAGE TEXT STYLE -->
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ChatEmpty" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ChatEmpty" parent="KaleyraSDKDesign.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:textColor">?attr/colorOnBackground</item>
         <item name="android:gravity">center</item>
-        <item name="android:text">@string/bandyer_chat_channel_loading</item>
+        <item name="android:text">@string/kaleyra_chat_channel_loading</item>
     </style>
 
 </resources>

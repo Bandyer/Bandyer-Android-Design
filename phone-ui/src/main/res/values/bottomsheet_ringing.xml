@@ -16,28 +16,28 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.BottomSheet.Ringing">
-        <attr name="bandyer_lineStyle" />
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_recyclerViewStyle" />
+    <declare-styleable name="KaleyraSDKDesign.BottomSheet.Ringing">
+        <attr name="kaleyra_lineStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_recyclerViewStyle" />
         <attr name="materialCardViewStyle" />
-        <attr name="bandyer_declineStyle" format="reference" />
-        <attr name="bandyer_answerStyle" format="reference" />
+        <attr name="kaleyra_declineStyle" format="reference" />
+        <attr name="kaleyra_answerStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheet.Ringing" parent="BandyerSDKDesign.BottomSheet">
-        <item name="materialCardViewStyle">@style/BandyerSDKDesign.BottomSheetBackground.Ringing</item>
-        <item name="bandyer_lineStyle">@style/BandyerSDKDesign.ImageButton.BottomSheetLine.Ringing</item>
-        <item name="bandyer_declineStyle">@style/BandyerSDKDesign.ActionButton.Decline</item>
-        <item name="bandyer_answerStyle">@style/BandyerSDKDesign.ActionButton.Answer</item>
+    <style name="KaleyraSDKDesign.BottomSheet.Ringing" parent="KaleyraSDKDesign.BottomSheet">
+        <item name="materialCardViewStyle">@style/KaleyraSDKDesign.BottomSheetBackground.Ringing</item>
+        <item name="kaleyra_lineStyle">@style/KaleyraSDKDesign.ImageButton.BottomSheetLine.Ringing</item>
+        <item name="kaleyra_declineStyle">@style/KaleyraSDKDesign.ActionButton.Decline</item>
+        <item name="kaleyra_answerStyle">@style/KaleyraSDKDesign.ActionButton.Answer</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheet.Ringing.Night" parent="BandyerSDKDesign.BottomSheet.Ringing">
-        <item name="bandyer_declineStyle">@style/BandyerSDKDesign.ActionButton.Decline.Night</item>
-        <item name="bandyer_answerStyle">@style/BandyerSDKDesign.ActionButton.Answer.Night</item>
+    <style name="KaleyraSDKDesign.BottomSheet.Ringing.Night" parent="KaleyraSDKDesign.BottomSheet.Ringing">
+        <item name="kaleyra_declineStyle">@style/KaleyraSDKDesign.ActionButton.Decline.Night</item>
+        <item name="kaleyra_answerStyle">@style/KaleyraSDKDesign.ActionButton.Answer.Night</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetBackground.Ringing" parent="BandyerSDKDesign.BottomSheetBackground">
+    <style name="KaleyraSDKDesign.BottomSheetBackground.Ringing" parent="KaleyraSDKDesign.BottomSheetBackground">
         <item name="cardBackgroundColor">@android:color/transparent</item>
     </style>
 </resources>

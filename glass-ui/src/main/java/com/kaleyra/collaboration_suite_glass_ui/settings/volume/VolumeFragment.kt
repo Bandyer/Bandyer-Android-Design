@@ -25,7 +25,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassFragmentVolumeBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentVolumeBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 
@@ -34,8 +34,8 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
  */
 internal class VolumeFragment : BaseFragment(), TiltListener {
 
-    private var _binding: BandyerGlassFragmentVolumeBinding? = null
-    override val binding: BandyerGlassFragmentVolumeBinding get() = _binding!!
+    private var _binding: KaleyraGlassFragmentVolumeBinding? = null
+    override val binding: KaleyraGlassFragmentVolumeBinding get() = _binding!!
 
     private var deltaAzimuth = 0f
 
@@ -59,10 +59,10 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
         super.onCreateView(inflater, container, savedInstanceState)
 
         // Add view binding
-        _binding = BandyerGlassFragmentVolumeBinding
+        _binding = KaleyraGlassFragmentVolumeBinding
             .inflate(inflater, container, false)
             .apply {
-                if (GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
+                if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear()
                 root.setOnTouchListener { _, _ -> true }
             }
 
@@ -70,7 +70,7 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
     }
 
     override fun onServiceBound() {
-        binding.bandyerSlider.apply {
+        binding.kaleyraSlider.apply {
             val volume = viewModel.volume
             maxProgress = volume.max
             progress = volume.current
@@ -92,13 +92,13 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
     }
 
     override fun onTap() = true.also {
-        viewModel.onSetVolume(binding.bandyerSlider.progress)
+        viewModel.onSetVolume(binding.kaleyraSlider.progress)
         findNavController().popBackStack()
     }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = true.also { binding.bandyerSlider.increaseProgress() }
+    override fun onSwipeForward(isKeyEvent: Boolean) = true.also { binding.kaleyraSlider.increaseProgress() }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = true.also { binding.bandyerSlider.decreaseProgress() }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = true.also { binding.kaleyraSlider.decreaseProgress() }
 }

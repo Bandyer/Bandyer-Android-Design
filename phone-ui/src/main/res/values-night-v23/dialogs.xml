@@ -17,7 +17,7 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.BottomSheetDialogStyle.V23" parent="BandyerSDKDesign.BottomSheetDialogStyle.V21">
+    <style name="KaleyraSDKDesign.BottomSheetDialogStyle.V23" parent="KaleyraSDKDesign.BottomSheetDialogStyle.V21">
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>

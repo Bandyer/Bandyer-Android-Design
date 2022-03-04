@@ -16,118 +16,118 @@
   -->
 
 <resources>
-    <style name="BandyerSDKDesign.TextView.Subtitle.FileShareError" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareError" parent="KaleyraSDKDesign.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:visibility">gone</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_small</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space6</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_small</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space6</item>
         <item name="android:textColor">?attr/colorError</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FileShareError.Day" parent="BandyerSDKDesign.TextView.Subtitle.FileShareError">
-        <item name="android:textColor">@color/bandyer_colorError</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareError.Day" parent="KaleyraSDKDesign.TextView.Subtitle.FileShareError">
+        <item name="android:textColor">@color/kaleyra_colorError</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FileShareProgress" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareProgress" parent="KaleyraSDKDesign.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/bandyer_color_on_background_50</item>
+        <item name="android:textColor">@color/kaleyra_color_on_background_50</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FileShareProgress.Day" parent="BandyerSDKDesign.TextView.Subtitle.FileShareProgress">
-        <item name="android:textColor">@color/bandyer_color_on_background_50_day</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareProgress.Day" parent="KaleyraSDKDesign.TextView.Subtitle.FileShareProgress">
+        <item name="android:textColor">@color/kaleyra_color_on_background_50_day</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FileShareUser" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space0</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareUser" parent="KaleyraSDKDesign.TextView.Subtitle">
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space0</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space8</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space6</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space24</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space6</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space24</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/bandyer_color_on_background_50</item>
+        <item name="android:textColor">@color/kaleyra_color_on_background_50</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FileShareUser.Day" parent="BandyerSDKDesign.TextView.Subtitle.FileShareUser">
-        <item name="android:textColor">@color/bandyer_color_on_background_50_day</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareUser.Day" parent="KaleyraSDKDesign.TextView.Subtitle.FileShareUser">
+        <item name="android:textColor">@color/kaleyra_color_on_background_50_day</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.FileName" parent="BandyerSDKDesign.TextView">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space0</item>
+    <style name="KaleyraSDKDesign.TextView.FileName" parent="KaleyraSDKDesign.TextView">
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space0</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space28</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space28</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
         <item name="android:ellipsize">end</item>
         <item name="android:singleLine">true</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">?attr/colorOnBackground</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.FileName.Day" parent="BandyerSDKDesign.TextView.FileName">
-        <item name="android:textColor">@color/bandyer_colorOnBackground</item>
+    <style name="KaleyraSDKDesign.TextView.FileName.Day" parent="KaleyraSDKDesign.TextView.FileName">
+        <item name="android:textColor">@color/kaleyra_colorOnBackground</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FileSize" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FileSize" parent="KaleyraSDKDesign.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
-        <item name="android:textColor">@color/bandyer_color_on_background_50</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:textColor">@color/kaleyra_color_on_background_50</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FileSize.Day" parent="BandyerSDKDesign.TextView.Subtitle.FileSize">
-        <item name="android:textColor">@color/bandyer_color_on_background_50_day</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FileSize.Day" parent="KaleyraSDKDesign.TextView.Subtitle.FileSize">
+        <item name="android:textColor">@color/kaleyra_color_on_background_50_day</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Title.EmptyListLayout" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:text">@string/bandyer_no_file_shared</item>
+    <style name="KaleyraSDKDesign.TextView.Title.EmptyListLayout" parent="KaleyraSDKDesign.TextView.Title">
+        <item name="android:text">@string/kaleyra_no_file_shared</item>
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textColor">@color/bandyer_color_on_background_30</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space20</item>
+        <item name="android:textColor">@color/kaleyra_color_on_background_30</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space20</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Title.EmptyListLayout.Day" parent="BandyerSDKDesign.TextView.Title.EmptyListLayout">
-        <item name="android:textColor">@color/bandyer_color_on_background_30_day</item>
+    <style name="KaleyraSDKDesign.TextView.Title.EmptyListLayout.Day" parent="KaleyraSDKDesign.TextView.Title.EmptyListLayout">
+        <item name="android:textColor">@color/kaleyra_color_on_background_30_day</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.EmptyListLayout" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:text">@string/bandyer_click_to_share_file</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.EmptyListLayout" parent="KaleyraSDKDesign.TextView.Subtitle">
+        <item name="android:text">@string/kaleyra_click_to_share_file</item>
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textColor">@color/bandyer_color_on_background_30</item>
+        <item name="android:textColor">@color/kaleyra_color_on_background_30</item>
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.EmptyListLayout.Day" parent="BandyerSDKDesign.TextView.Subtitle.EmptyListLayout">
-        <item name="android:textColor">@color/bandyer_color_on_background_30_day</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.EmptyListLayout.Day" parent="KaleyraSDKDesign.TextView.Subtitle.EmptyListLayout">
+        <item name="android:textColor">@color/kaleyra_color_on_background_30_day</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FileShareFabText" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space20</item>
-        <item name="android:text">@string/bandyer_fileshare_add</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareFabText" parent="KaleyraSDKDesign.TextView.Subtitle">
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space20</item>
+        <item name="android:text">@string/kaleyra_fileshare_add</item>
         <item name="android:textColor">?android:attr/colorBackground</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:focusable">false</item>
         <item name="android:clickable">false</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_normal</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_normal</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
         <item name="android:letterSpacing">0.0892857143</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.FileShareFabText.Day" parent="BandyerSDKDesign.TextView.Subtitle.FileShareFabText">
-        <item name="android:textColor">@color/bandyer_colorBackground</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareFabText.Day" parent="KaleyraSDKDesign.TextView.Subtitle.FileShareFabText">
+        <item name="android:textColor">@color/kaleyra_colorBackground</item>
     </style>
 </resources>

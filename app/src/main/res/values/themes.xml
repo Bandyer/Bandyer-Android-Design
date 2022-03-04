@@ -1,63 +1,63 @@
 <!--
-  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
   ~
-  ~  Licensed under the Apache License, Version 2.0 (the "License");
-  ~  you may not use this file except in compliance with the License.
-  ~  You may obtain a copy of the License at
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
-  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~      http://www.apache.org/licenses/LICENSE-2.0
   ~
-  ~  Unless required by applicable law or agreed to in writing, software
-  ~  distributed under the License is distributed on an "AS IS" BASIS,
-  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~  See the License for the specific language governing permissions and
-  ~  limitations under the License.
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="BaseDesignDemoApp.V21" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorSecondary">@color/bandyer_colorSecondary</item>
-        <item name="colorOnSecondary">@color/bandyer_colorOnSecondary</item>
-        <item name="colorError">@color/bandyer_colorError</item>
+        <item name="colorSecondary">@color/kaleyra_colorSecondary</item>
+        <item name="colorOnSecondary">@color/kaleyra_colorOnSecondary</item>
+        <item name="colorError">@color/kaleyra_colorError</item>
         <item name="android:statusBarColor">@android:color/black</item>
         <item name="colorControlNormal">?attr/colorOnPrimary</item>
-        <item name="fontFamily">@font/bandyer_font</item>
-        <item name="android:fontFamily">@font/bandyer_font</item>
+        <item name="fontFamily">@font/kaleyra_font</item>
+        <item name="android:fontFamily">@font/kaleyra_font</item>
         <item name="elevationOverlayEnabled">false</item>
-        <item name="toolbarStyle">@style/BandyerSDKDesign.ToolBarStyle</item>
+        <item name="toolbarStyle">@style/KaleyraSDKDesign.ToolBarStyle</item>
     </style>
 
     <style name="BaseDesignDemoApp" parent="BaseDesignDemoApp.V21"/>
 
     <style name="DesignDemoApp" parent="BaseDesignDemoApp">
-        <item name="colorPrimary">@color/bandyer_colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/bandyer_colorPrimaryVariant</item>
-        <item name="colorSecondary">@color/bandyer_colorSecondary</item>
-        <item name="colorSurface">@color/bandyer_colorSurface</item>
-        <item name="colorOnPrimary">@color/bandyer_colorOnPrimary</item>
-        <item name="colorOnSurface">@color/bandyer_colorOnSurface</item>
-        <item name="colorOnBackground">@color/bandyer_colorOnBackground</item>
-        <item name="android:colorBackground">@color/bandyer_colorBackground</item>
-        <item name="android:windowBackground">@color/bandyer_colorBackground</item>
+        <item name="colorPrimary">@color/kaleyra_colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/kaleyra_colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/kaleyra_colorSecondary</item>
+        <item name="colorSurface">@color/kaleyra_colorSurface</item>
+        <item name="colorOnPrimary">@color/kaleyra_colorOnPrimary</item>
+        <item name="colorOnSurface">@color/kaleyra_colorOnSurface</item>
+        <item name="colorOnBackground">@color/kaleyra_colorOnBackground</item>
+        <item name="android:colorBackground">@color/kaleyra_colorBackground</item>
+        <item name="android:windowBackground">@color/kaleyra_colorBackground</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Call" parent="BandyerSDKDesign.Theme.Call.DayNight"/>
+    <style name="KaleyraSDKDesign.Theme.Call" parent="KaleyraSDKDesign.Theme.Call.DayNight"/>
 
     <!-- CALL WATERMARK CUSTOMIZATION -->
 
-    <style name="BandyerSDKDesign.CallWatermark" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.CallWatermark.RootLayout</item>
-        <item name="bandyer_iconStyle">@style/CallWatermark</item>
-        <item name="bandyer_titleStyle">@style/TitleWatermark</item>
+    <style name="KaleyraSDKDesign.CallWatermark" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.CallWatermark.RootLayout</item>
+        <item name="kaleyra_iconStyle">@style/CallWatermark</item>
+        <item name="kaleyra_titleStyle">@style/TitleWatermark</item>
     </style>
 
-    <style name="CallWatermark" parent="BandyerSDKDesign.CallWatermarkImageView">
+    <style name="CallWatermark" parent="KaleyraSDKDesign.CallWatermarkImageView">
         <item name="android:src">@drawable/logo</item>
     </style>
 
-    <style name="TitleWatermark" parent="BandyerSDKDesign.TextView.CallWatermark">
+    <style name="TitleWatermark" parent="KaleyraSDKDesign.TextView.CallWatermark">
         <item name="android:text">@string/kaleyra</item>
     </style>
 

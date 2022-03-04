@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
   ~
-  ~  Licensed under the Apache License, Version 2.0 (the "License");
-  ~  you may not use this file except in compliance with the License.
-  ~  You may obtain a copy of the License at
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
-  ~           http://www.apache.org/licenses/LICENSE-2.0
+  ~      http://www.apache.org/licenses/LICENSE-2.0
   ~
-  ~  Unless required by applicable law or agreed to in writing, software
-  ~  distributed under the License is distributed on an "AS IS" BASIS,
-  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~  See the License for the specific language governing permissions and
-  ~  limitations under the License.
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
   -->
 
 <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,22 +31,22 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
-   <com.bandyer.video_android_phone_ui.call.widgets.BandyerCallInfoWidget
+   <com.kaleyra.collaboration_suite_phone_ui.call.widgets.KaleyraCallInfoWidget
         android:id="@+id/call_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="?attr/bandyer_callInfoStyle"
+        android:theme="?attr/kaleyra_callInfoStyle"
         app:layout_constraintTop_toTopOf="parent"/>
 
-   <com.bandyer.video_android_phone_ui.call.widgets.BandyerCallUserInfoWidget
+   <com.kaleyra.collaboration_suite_phone_ui.call.widgets.KaleyraCallUserInfoWidget
         android:id="@+id/call_user_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/bandyer_dimen_space16"
-        android:theme="?attr/bandyer_userInfoStyle"
+        android:layout_marginTop="@dimen/kaleyra_dimen_space16"
+        android:theme="?attr/kaleyra_userInfoStyle"
         app:layout_constraintTop_toBottomOf="@id/call_info"/>
 
-    <com.bandyer.video_android_phone_ui.bottom_sheet.view.BandyerBottomSheetLayout
+    <com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.view.KaleyraBottomSheetLayout
         android:id="@+id/coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -55,14 +55,14 @@
         android:focusable="false"
         android:focusableInTouchMode="false">
 
-        <com.bandyer.video_android_phone_ui.buttons.BandyerHideableButton
+        <com.kaleyra.collaboration_suite_phone_ui.buttons.KaleyraHideableButton
             android:id="@+id/fullscreen_info"
-            style="@style/BandyerSDKDesign.FullscreenToastButton"
+            style="@style/KaleyraSDKDesign.FullscreenToastButton"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone" />
 
-    </com.bandyer.video_android_phone_ui.bottom_sheet.view.BandyerBottomSheetLayout>
+    </com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.view.KaleyraBottomSheetLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

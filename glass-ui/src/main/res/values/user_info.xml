@@ -16,45 +16,45 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.UserInfo">
-        <attr name="bandyer_avatarStyle" />
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_subtitleStyle" />
-        <attr name="bandyer_contactStateDotStyle" format="reference"/>
+    <declare-styleable name="KaleyraSDKDesign.Glass.UserInfo">
+        <attr name="kaleyra_avatarStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_subtitleStyle" />
+        <attr name="kaleyra_contactStateDotStyle" format="reference"/>
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Glass.UserInfo" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.Big</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.GlassUserInfo</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.SubTitle.GlassUserInfo</item>
-        <item name="bandyer_contactStateDotStyle">@style/BandyerSDKDesign.RoundedImageGlass.StateUserInfo</item>
+    <style name="KaleyraSDKDesign.Glass.UserInfo" parent="KaleyraSDKDesign.Glass">
+        <item name="kaleyra_avatarStyle">@style/KaleyraSDKDesign.Glass.Avatar.Big</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.GlassUserInfo</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.SubTitle.GlassUserInfo</item>
+        <item name="kaleyra_contactStateDotStyle">@style/KaleyraSDKDesign.RoundedImageGlass.StateUserInfo</item>
     </style>
 
     <!-- CONTACT STATE DOT -->
-    <style name="BandyerSDKDesign.RoundedImageGlass.StateUserInfo" parent="BandyerSDKDesign.RoundedImageGlass.Bordered">
+    <style name="KaleyraSDKDesign.RoundedImageGlass.StateUserInfo" parent="KaleyraSDKDesign.RoundedImageGlass.Bordered">
         <item name="android:visibility">gone</item>
-        <item name="android:layout_width">@dimen/bandyer_dimen_space28</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space28</item>
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space28</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_space28</item>
         <item name="android:background">@android:color/white</item>
-        <item name="android:backgroundTint">@color/bandyer_glass_color_contact_state</item>
+        <item name="android:backgroundTint">@color/kaleyra_glass_color_contact_state</item>
         <item name="strokeColor">@android:color/white</item>
     </style>
 
     <!-- NAME -->
-    <style name="BandyerSDKDesign.TextView.Title.GlassUserInfo" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
+    <style name="KaleyraSDKDesign.TextView.Title.GlassUserInfo" parent="KaleyraSDKDesign.TextView.Title">
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_h1</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
     </style>
 
     <!-- CONTACT STATE TEXT -->
-    <style name="BandyerSDKDesign.TextView.SubTitle.GlassUserInfo" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
+    <style name="KaleyraSDKDesign.TextView.SubTitle.GlassUserInfo" parent="KaleyraSDKDesign.TextView.Subtitle">
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_h2</item>
     </style>
 </resources>

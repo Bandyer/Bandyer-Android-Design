@@ -18,27 +18,27 @@
 
     <!-- TEXT VIEW STYLE -->
 
-    <style name="BandyerSDKDesign.TextView.Stream.UserDetails" parent="BandyerSDKDesign.TextView">
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space56</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space16</item>
+    <style name="KaleyraSDKDesign.TextView.Stream.UserDetails" parent="KaleyraSDKDesign.TextView">
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space56</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Title.AudioRoute" parent="BandyerSDKDesign.TextView">
-        <item name="android:textColor">@color/bandyer_audio_route_title_color</item>
-        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space2</item>
+    <style name="KaleyraSDKDesign.TextView.Title.AudioRoute" parent="KaleyraSDKDesign.TextView">
+        <item name="android:textColor">@color/kaleyra_audio_route_title_color</item>
+        <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space2</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:ellipsize">end</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
-        <item name="android:textAppearance">@style/BandyerSDKDesign.TextView.Title.AudioRoute.TextAppearance</item>
+        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextView.Title.AudioRoute.TextAppearance</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.AudioRoute" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:textColor">@color/bandyer_audio_route_subtitle_color</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.AudioRoute" parent="KaleyraSDKDesign.TextView.Subtitle">
+        <item name="android:textColor">@color/kaleyra_audio_route_subtitle_color</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:focusable">true</item>
         <item name="android:ellipsize">marquee</item>
@@ -46,49 +46,49 @@
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Title.AudioRoute.TextAppearance.Active" parent="BandyerSDKDesign.TextView.Title.AudioRoute.TextAppearance">
+    <style name="KaleyraSDKDesign.TextView.Title.AudioRoute.TextAppearance.Active" parent="KaleyraSDKDesign.TextView.Title.AudioRoute.TextAppearance">
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Title.AudioRoute.TextAppearance" parent="">
+    <style name="KaleyraSDKDesign.TextView.Title.AudioRoute.TextAppearance" parent="">
         <item name="android:textStyle">normal</item>
     </style>
 
     <!-- BOUNCING DOTS -->
 
-    <declare-styleable name="BandyerSDKDesign.TextView.Subtitle.BouncingDots">
-        <attr name="bandyer_period" />
-        <attr name="bandyer_animationHeight" />
-        <attr name="bandyer_autoplay" />
+    <declare-styleable name="KaleyraSDKDesign.TextView.Subtitle.BouncingDots">
+        <attr name="kaleyra_period" />
+        <attr name="kaleyra_animationHeight" />
+        <attr name="kaleyra_autoplay" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.BouncingDots" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.BouncingDots" parent="KaleyraSDKDesign.TextView.Subtitle">
         <item name="android:textAllCaps">false</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="bandyer_autoplay">false</item>
-        <item name="bandyer_animationHeight">@dimen/bandyer_dimen_space2</item>
-        <item name="bandyer_period">1000</item>
+        <item name="kaleyra_autoplay">false</item>
+        <item name="kaleyra_animationHeight">@dimen/kaleyra_dimen_space2</item>
+        <item name="kaleyra_period">1000</item>
         <item name="android:textStyle">italic</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_bouncing_dots</item>
-        <item name="android:textColor">@color/bandyer_color_on_primary_50</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space2</item>
-        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space2</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_bouncing_dots</item>
+        <item name="android:textColor">@color/kaleyra_color_on_primary_50</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space2</item>
+        <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space2</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
         <item name="android:visibility">gone</item>
     </style>
 
     <!-- ANSWER CALL HELPER TEXTVIEW -->
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.AnswerCallHelperText" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance.Large</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space16</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.AnswerCallHelperText" parent="KaleyraSDKDesign.TextView.Subtitle">
+        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance.Large</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space16</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@null</item>
         <item name="android:visibility">gone</item>
@@ -103,89 +103,89 @@
 
     <!-- BUTTON LABEL STYLE -->
 
-    <style name="BandyerSDKDesign.TextView.Title.ConfirmDataLoss" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:paddingRight">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingLeft">@dimen/bandyer_dimen_space16</item>
+    <style name="KaleyraSDKDesign.TextView.Title.ConfirmDataLoss" parent="KaleyraSDKDesign.TextView.Title">
+        <item name="android:paddingRight">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingLeft">@dimen/kaleyra_dimen_space16</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:text">@string/bandyer_data_loss_confirm_message</item>
+        <item name="android:text">@string/kaleyra_data_loss_confirm_message</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Title.ConfirmDataLoss.Day" parent="BandyerSDKDesign.TextView.Title.ConfirmDataLoss">
-        <item name="android:textColor">@color/bandyer_colorOnSurface</item>
+    <style name="KaleyraSDKDesign.TextView.Title.ConfirmDataLoss.Day" parent="KaleyraSDKDesign.TextView.Title.ConfirmDataLoss">
+        <item name="android:textColor">@color/kaleyra_colorOnSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.Decline" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:text">@string/bandyer_ringing_decline</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.Decline" parent="KaleyraSDKDesign.TextView.Subtitle">
+        <item name="android:text">@string/kaleyra_ringing_decline</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:padding">@dimen/bandyer_dimen_space16</item>
-        <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance</item>
+        <item name="android:padding">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.Answer" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:text">@string/bandyer_ringing_answer</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.Answer" parent="KaleyraSDKDesign.TextView.Subtitle">
+        <item name="android:text">@string/kaleyra_ringing_answer</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:padding">@dimen/bandyer_dimen_space16</item>
-        <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance</item>
+        <item name="android:padding">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance</item>
     </style>
 
     <!-- Title style -->
-    <style name="BandyerSDKDesign.TextView.Title.BottomSheet" parent="BandyerSDKDesign.TextView.Title">
+    <style name="KaleyraSDKDesign.TextView.Title.BottomSheet" parent="KaleyraSDKDesign.TextView.Title">
         <item name="android:visibility">gone</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.Recording" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.Recording" parent="KaleyraSDKDesign.TextView.Subtitle">
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingRight">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingLeft">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:drawablePadding">@dimen/bandyer_dimen_space8</item>
-        <item name="android:drawableStart">@drawable/ic_bandyer_record</item>
-        <item name="drawableTint">@color/bandyer_recording_color</item>
-        <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance</item>
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingRight">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingLeft">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:drawablePadding">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:drawableStart">@drawable/ic_kaleyra_record</item>
+        <item name="drawableTint">@color/kaleyra_recording_color</item>
+        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance</item>
     </style>
 
     <!-- Call User Info -->
-    <style name="BandyerSDKDesign.TextView.Title.UserInfo" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance</item>
-        <item name="android:text">@string/bandyer_call_hangup</item>
+    <style name="KaleyraSDKDesign.TextView.Title.UserInfo" parent="KaleyraSDKDesign.TextView.Title">
+        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance</item>
+        <item name="android:text">@string/kaleyra_call_hangup</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space16</item>
     </style>
 
     <!-- User Status -->
-    <style name="BandyerSDKDesign.TextView.Title.UserStatus" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:background">@color/bandyer_color_grey</item>
+    <style name="KaleyraSDKDesign.TextView.Title.UserStatus" parent="KaleyraSDKDesign.TextView.Title">
+        <item name="android:background">@color/kaleyra_color_grey</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:layout_margin">@dimen/bandyer_dimen_space8</item>
+        <item name="android:layout_margin">@dimen/kaleyra_dimen_space8</item>
         <item name="android:gravity">center</item>
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Title.Reload" parent="BandyerSDKDesign.TextView.Title">
+    <style name="KaleyraSDKDesign.TextView.Title.Reload" parent="KaleyraSDKDesign.TextView.Title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space20</item>
-        <item name="android:text">@string/bandyer_error_title</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space20</item>
+        <item name="android:text">@string/kaleyra_error_title</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.Reload" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.Reload" parent="KaleyraSDKDesign.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:text">@string/bandyer_error_subtitle</item>
+        <item name="android:text">@string/kaleyra_error_subtitle</item>
         <item name="android:textColor">@android:color/darker_gray</item>
         <item name="android:gravity">center</item>
-        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space56</item>
+        <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space56</item>
     </style>
 
 </resources>

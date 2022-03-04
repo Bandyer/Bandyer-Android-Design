@@ -17,20 +17,20 @@
 
 <resources>
 
-    <declare-styleable name="BandyerSDKDesign.BottomSheet.AudioRoute">
-        <attr name="bandyer_bluetoothItemStyle" format="reference" />
-        <attr name="bandyer_wiredHeadsetItemStyle" format="reference" />
-        <attr name="bandyer_loudspeakerItemStyle" format="reference" />
-        <attr name="bandyer_earpieceItemStyle" format="reference" />
-        <attr name="bandyer_mutedItemStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.BottomSheet.AudioRoute">
+        <attr name="kaleyra_bluetoothItemStyle" format="reference" />
+        <attr name="kaleyra_wiredHeadsetItemStyle" format="reference" />
+        <attr name="kaleyra_loudspeakerItemStyle" format="reference" />
+        <attr name="kaleyra_earpieceItemStyle" format="reference" />
+        <attr name="kaleyra_mutedItemStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheet.AudioRoute" parent="BandyerSDKDesign.BottomSheet">
-        <item name="bandyer_bluetoothItemStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute.Item.Bluetooth</item>
-        <item name="bandyer_wiredHeadsetItemStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute.Item.WiredHeadset</item>
-        <item name="bandyer_loudspeakerItemStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute.Item.Loudspeaker</item>
-        <item name="bandyer_earpieceItemStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute.Item.Earpiece</item>
-        <item name="bandyer_mutedItemStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute.Item.Muted</item>
+    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute" parent="KaleyraSDKDesign.BottomSheet">
+        <item name="kaleyra_bluetoothItemStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Bluetooth</item>
+        <item name="kaleyra_wiredHeadsetItemStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute.Item.WiredHeadset</item>
+        <item name="kaleyra_loudspeakerItemStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Loudspeaker</item>
+        <item name="kaleyra_earpieceItemStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Earpiece</item>
+        <item name="kaleyra_mutedItemStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Muted</item>
     </style>
 
 </resources>

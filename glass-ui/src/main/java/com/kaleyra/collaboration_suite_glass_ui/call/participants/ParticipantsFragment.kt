@@ -17,32 +17,41 @@
 package com.kaleyra.collaboration_suite_glass_ui.call.participants
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassFragmentParticipantsBinding
+import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
+import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentParticipantsBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
+import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.launch
 
 /**
  * ParticipantsFragment
  */
 internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
-    private var _binding: BandyerGlassFragmentParticipantsBinding? = null
-    override val binding: BandyerGlassFragmentParticipantsBinding get() = _binding!!
+    private var _binding: KaleyraGlassFragmentParticipantsBinding? = null
+    override val binding: KaleyraGlassFragmentParticipantsBinding get() = _binding!!
 
     private var itemAdapter: ItemAdapter<CallParticipantItem>? = null
     private var snapHelper: LinearSnapHelper? = null
@@ -73,14 +82,14 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
         super.onCreateView(inflater, container, savedInstanceState)
 
         // Apply theme wrapper and add view binding
-        _binding = BandyerGlassFragmentParticipantsBinding
+        _binding = KaleyraGlassFragmentParticipantsBinding
             .inflate(inflater, container, false)
             .apply {
                 if (GlassDeviceUtils.isRealWear)
-                    bandyerBottomNavigation.setListenersForRealwear()
+                    kaleyraBottomNavigation.setListenersForRealwear()
 
                 // Init the RecyclerView
-                with(bandyerParticipants) {
+                with(kaleyraParticipants) {
                     itemAdapter = ItemAdapter()
                     val fastAdapter = FastAdapter.with(itemAdapter!!)
                     val layoutManager =
@@ -104,7 +113,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
     }
 
     override fun onServiceBound() {
-        with(binding.bandyerParticipants) {
+        with(binding.kaleyraParticipants) {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
@@ -112,7 +121,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
                     val userAlias =
                         itemAdapter!!.getAdapterItem(currentParticipantIndex).data.userAlias
-                    with(binding.bandyerUserInfo) {
+                    with(binding.kaleyraUserInfo) {
                         hideName(true)
 
                         lifecycleScope.launch {
@@ -166,7 +175,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
     }
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.bandyerParticipants.scrollBy(
+        binding.kaleyraParticipants.scrollBy(
             (deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(),
             0
         )
@@ -177,14 +186,14 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
     override fun onSwipeForward(isKeyEvent: Boolean) =
         (isKeyEvent && currentParticipantIndex != -1).also {
-            if (it) binding.bandyerParticipants.horizontalSmoothScrollToNext(
+            if (it) binding.kaleyraParticipants.horizontalSmoothScrollToNext(
                 currentParticipantIndex
             )
         }
 
     override fun onSwipeBackward(isKeyEvent: Boolean) =
         (isKeyEvent && currentParticipantIndex != -1).also {
-            if (it) binding.bandyerParticipants.horizontalSmoothScrollToPrevious(
+            if (it) binding.kaleyraParticipants.horizontalSmoothScrollToPrevious(
                 currentParticipantIndex
             )
         }

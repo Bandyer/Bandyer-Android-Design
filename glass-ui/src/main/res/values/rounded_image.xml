@@ -16,21 +16,21 @@
   -->
 
 <resources>
-    <style name="BandyerSDKDesign.RoundedImageGlass" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="KaleyraSDKDesign.RoundedImageGlass" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:adjustViewBounds">true</item>
         <item name="android:scaleType">centerCrop</item>
-        <item name="android:layout_width">@dimen/bandyer_dimen_space40</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space40</item>
-        <item name="shapeAppearanceOverlay">@style/BandyerSDKDesign.RoundedImageGlass.ShapeAppearanceOverlay</item>
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space40</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_space40</item>
+        <item name="shapeAppearanceOverlay">@style/KaleyraSDKDesign.RoundedImageGlass.ShapeAppearanceOverlay</item>
     </style>
 
-    <style name="BandyerSDKDesign.RoundedImageGlass.Bordered" parent="BandyerSDKDesign.RoundedImageGlass">
-        <item name="strokeWidth">@dimen/bandyer_dimen_space1</item>
-        <item name="android:padding">@dimen/bandyer_dimen_space1</item>
+    <style name="KaleyraSDKDesign.RoundedImageGlass.Bordered" parent="KaleyraSDKDesign.RoundedImageGlass">
+        <item name="strokeWidth">@dimen/kaleyra_dimen_space1</item>
+        <item name="android:padding">@dimen/kaleyra_dimen_space1</item>
         <item name="strokeColor">@android:color/black</item>
     </style>
 
-    <style name="BandyerSDKDesign.RoundedImageGlass.ShapeAppearanceOverlay" parent="">
+    <style name="KaleyraSDKDesign.RoundedImageGlass.ShapeAppearanceOverlay" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>

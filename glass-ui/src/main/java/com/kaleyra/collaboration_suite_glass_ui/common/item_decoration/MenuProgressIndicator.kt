@@ -97,7 +97,7 @@ internal class MenuProgressIndicator(
 
         // find active page (which should be highlighted)
         val activeChild = snapHelperWeakReference.get()?.findSnapView(layoutManager) ?: return
-        val textView = activeChild.findViewById<View>(R.id.bandyer_text)
+        val textView = activeChild.findViewById<View>(R.id.kaleyra_text)
         c.drawHighlights(activeChild, textView, y)
     }
 
@@ -111,8 +111,8 @@ internal class MenuProgressIndicator(
     ) {
         paint.color = colorInactive
         val itemCount = parent.layoutManager!!.itemCount
-        val firstTextView = first.findViewById<View>(R.id.bandyer_text)
-        val lastTextView = last.findViewById<View>(R.id.bandyer_text)
+        val firstTextView = first.findViewById<View>(R.id.kaleyra_text)
+        val lastTextView = last.findViewById<View>(R.id.kaleyra_text)
 
         var startX = if (!isRTL) parent.left else parent.right
         var endX = if (!isRTL) parent.right else parent.left

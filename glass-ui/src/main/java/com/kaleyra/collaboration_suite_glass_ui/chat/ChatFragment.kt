@@ -27,13 +27,17 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.kaleyra.collaboration_suite_glass_ui.chat.ChatFragmentArgs
+import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.UserState
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassFragmentChatBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatBinding
 import com.kaleyra.collaboration_suite_glass_ui.participants.ParticipantData
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import java.time.Instant
@@ -45,8 +49,8 @@ import java.util.*
  */
 internal class ChatFragment : BaseFragment(), TiltListener {
 
-    private var _binding: BandyerGlassFragmentChatBinding? = null
-    override val binding: BandyerGlassFragmentChatBinding get() = _binding!!
+    private var _binding: KaleyraGlassFragmentChatBinding? = null
+    override val binding: KaleyraGlassFragmentChatBinding get() = _binding!!
 
     private var itemAdapter: ItemAdapter<ChatMessageItem>? = null
 
@@ -74,14 +78,14 @@ internal class ChatFragment : BaseFragment(), TiltListener {
         super.onCreateView(inflater, container, savedInstanceState)
 
         // Add view binding
-        _binding = BandyerGlassFragmentChatBinding
+        _binding = KaleyraGlassFragmentChatBinding
             .inflate(inflater, container, false)
             .apply {
                 if(GlassDeviceUtils.isRealWear)
-                    bandyerBottomNavigation.setListenersForRealwear()
+                    kaleyraBottomNavigation.setListenersForRealwear()
 
                 // Init the RecyclerView
-                bandyerMessages.apply {
+                kaleyraMessages.apply {
                     itemAdapter = ItemAdapter()
                     val fastAdapter = FastAdapter.with(itemAdapter!!)
                     val layoutManager =
@@ -133,7 +137,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
     override fun onShow() = Unit
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.bandyerMessages.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
+        binding.kaleyraMessages.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
 
     override fun onTap() = true.also {
         val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userAlias
@@ -144,11 +148,11 @@ internal class ChatFragment : BaseFragment(), TiltListener {
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also {
-        if (it) binding.bandyerMessages.horizontalSmoothScrollToNext(currentMsgItemIndex)
+        if (it) binding.kaleyraMessages.horizontalSmoothScrollToNext(currentMsgItemIndex)
     }
 
     override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also {
-        if (it) binding.bandyerMessages.horizontalSmoothScrollToPrevious(currentMsgItemIndex)
+        if (it) binding.kaleyraMessages.horizontalSmoothScrollToPrevious(currentMsgItemIndex)
     }
 
     /**
@@ -158,13 +162,13 @@ internal class ChatFragment : BaseFragment(), TiltListener {
      */
     private fun addChatItem(data: ChatMessageData) {
         newMessagesCounter.apply { set(get() + 1) }
-        with(binding.bandyerChatMessage) {
+        with(binding.kaleyraChatMessage) {
             post {
                 with(binding) {
-                    bandyerName.text = data.sender
-                    bandyerTime.text = Iso8601.parseTimestamp(requireContext(), data.time!!)
-                    bandyerMessage.text = data.message
-                    val pageList = bandyerMessage.paginate()
+                    kaleyraName.text = data.sender
+                    kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), data.time!!)
+                    kaleyraMessage.text = data.message
+                    val pageList = kaleyraMessage.paginate()
                     for (i in pageList.indices) {
                         itemAdapter!!.add(
                             ChatMessageItem(

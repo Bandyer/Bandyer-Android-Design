@@ -37,19 +37,19 @@ internal class RingingFragment : PreCallFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_ringingStyle)
+        themeResId = requireActivity().theme.getAttributeResourceId(R.attr.kaleyra_ringingStyle)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onConnected() { findNavController().safeNavigate(RingingFragmentDirections.actionRingingFragmentToEmptyFragment()) }
 
-    override fun setSubtitle(isGroupCall: Boolean) { binding.bandyerSubtitle.text =  resources.getString(if(isGroupCall) R.string.bandyer_glass_ringing_group else R.string.bandyer_glass_ringing) }
+    override fun setSubtitle(isGroupCall: Boolean) { binding.kaleyraSubtitle.text =  resources.getString(if(isGroupCall) R.string.kaleyra_glass_ringing_group else R.string.kaleyra_glass_ringing) }
 
     override fun onTap() = true.also { viewModel.onAnswer() }
 
     override fun onSwipeDown() = true.also { viewModel.onHangup() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerParticipantsScrollView.smoothScrollByWithAutoScroll(resources.displayMetrics.densityDpi / 2, 0) }
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.kaleyraParticipantsScrollView.smoothScrollByWithAutoScroll(resources.displayMetrics.densityDpi / 2, 0) }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerParticipantsScrollView.smoothScrollByWithAutoScroll(-resources.displayMetrics.densityDpi / 2, 0) }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.kaleyraParticipantsScrollView.smoothScrollByWithAutoScroll(-resources.displayMetrics.densityDpi / 2, 0) }
 }

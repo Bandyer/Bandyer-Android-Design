@@ -17,45 +17,45 @@
 
 <resources>
 
-    <declare-styleable name="BandyerSDKDesign.BottomSheet.AudioRoute.Item">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_iconStyle" />
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_subtitleStyle" />
+    <declare-styleable name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_iconStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_subtitleStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheet.AudioRoute.Item" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute.Item.RootLayout</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.AudioRoute</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.AudioRoute</item>
+    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute.Item.RootLayout</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.AudioRoute</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.AudioRoute</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheet.AudioRoute.Item.RootLayout" parent="">
-        <item name="android:padding">@dimen/bandyer_dimen_space16</item>
+    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item.RootLayout" parent="">
+        <item name="android:padding">@dimen/kaleyra_dimen_space16</item>
         <item name="android:descendantFocusability">blocksDescendants</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheet.AudioRoute.Item.Bluetooth" parent="BandyerSDKDesign.BottomSheet.AudioRoute.Item">
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.ImageButton.AudioRoute.Bluetooth</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.AudioRoute.Bluetooth</item>
+    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Bluetooth" parent="KaleyraSDKDesign.BottomSheet.AudioRoute.Item">
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageButton.AudioRoute.Bluetooth</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.AudioRoute.Bluetooth</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheet.AudioRoute.Item.WiredHeadset" parent="BandyerSDKDesign.BottomSheet.AudioRoute.Item">
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.ImageButton.AudioRoute.WiredHeadset</item>
+    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item.WiredHeadset" parent="KaleyraSDKDesign.BottomSheet.AudioRoute.Item">
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageButton.AudioRoute.WiredHeadset</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheet.AudioRoute.Item.Loudspeaker" parent="BandyerSDKDesign.BottomSheet.AudioRoute.Item">
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.ImageButton.AudioRoute.Loudspeaker</item>
+    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Loudspeaker" parent="KaleyraSDKDesign.BottomSheet.AudioRoute.Item">
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageButton.AudioRoute.Loudspeaker</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheet.AudioRoute.Item.Earpiece" parent="BandyerSDKDesign.BottomSheet.AudioRoute.Item">
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.ImageButton.AudioRoute.Earpiece</item>
+    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Earpiece" parent="KaleyraSDKDesign.BottomSheet.AudioRoute.Item">
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageButton.AudioRoute.Earpiece</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheet.AudioRoute.Item.Muted" parent="BandyerSDKDesign.BottomSheet.AudioRoute.Item">
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.ImageButton.AudioRoute.Muted</item>
+    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Muted" parent="KaleyraSDKDesign.BottomSheet.AudioRoute.Item">
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageButton.AudioRoute.Muted</item>
     </style>
 
 </resources>

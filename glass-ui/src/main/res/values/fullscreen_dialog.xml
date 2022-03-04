@@ -16,46 +16,46 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_subtitleStyle" />
+    <declare-styleable name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_subtitleStyle" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- FULL SCREEN DIALOG FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog" parent="BandyerSDKDesign.Glass.DarkBackground">
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog</item>
+    <style name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog" parent="KaleyraSDKDesign.Glass.DarkBackground">
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.FullScreenDialog</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog</item>
+        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog</item>
     </style>
 
     <!-- TITLE -->
-    <style name="BandyerSDKDesign.TextView.Title.FullScreenDialog" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:textSize">@dimen/bandyer_dimen_text_32sp</item>
+    <style name="KaleyraSDKDesign.TextView.Title.FullScreenDialog" parent="KaleyraSDKDesign.TextView.Title">
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_32sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
         <item name="android:textStyle">normal</item>
     </style>
 
     <!-- SUBTITLE -->
-    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h2</item>
-        <item name="android:textColor">@color/bandyer_color_white_80</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog" parent="KaleyraSDKDesign.TextView.Subtitle">
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_h2</item>
+        <item name="android:textColor">@color/kaleyra_color_white_80</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog" parent="BandyerSDKDesign.Glass.BottomNavigation">
-        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenDialog</item>
+    <style name="KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog" parent="KaleyraSDKDesign.Glass.BottomNavigation">
+        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenDialog</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenDialog" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenDialog" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
         <item name="android:visibility">gone</item>
     </style>
 

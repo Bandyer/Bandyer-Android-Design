@@ -22,7 +22,8 @@ import android.view.LayoutInflater
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassChatMessageLayoutBinding
+
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatMessageLayoutBinding
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 
 /**
@@ -36,22 +37,22 @@ internal class ChatMessageView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    var binding: BandyerGlassChatMessageLayoutBinding =
-        BandyerGlassChatMessageLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    var binding: KaleyraGlassChatMessageLayoutBinding =
+        KaleyraGlassChatMessageLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     /**
      * Set the user avatar
      *
      * @param resId The local resource id
      */
-    fun setAvatar(@DrawableRes resId: Int?) = binding.bandyerAvatar.setImage(resId)
+    fun setAvatar(@DrawableRes resId: Int?) = binding.kaleyraAvatar.setImage(resId)
 
     /**
      * Set the user avatar
      *
      * @param url String
      */
-    fun setAvatar(url: String) = binding.bandyerAvatar.setImage(url)
+    fun setAvatar(url: String) = binding.kaleyraAvatar.setImage(url)
 
     /**
      * Set the sender's name
@@ -59,22 +60,22 @@ internal class ChatMessageView @JvmOverloads constructor(
      * @param text The name
      */
     fun setName(text: String?) = with(binding) {
-        bandyerName.text = text
-        bandyerAvatar.setText(text?.first().toString())
+        kaleyraName.text = text
+        kaleyraAvatar.setText(text?.first().toString())
     }
 
     /**
      * Show the sender's name
      */
     fun showName() {
-        binding.bandyerName.visibility = VISIBLE
+        binding.kaleyraName.visibility = VISIBLE
     }
 
     /**
      * Hide the sender's name
      */
     fun hideName() {
-        binding.bandyerName.visibility = GONE
+        binding.kaleyraName.visibility = GONE
     }
 
     /**
@@ -82,7 +83,7 @@ internal class ChatMessageView @JvmOverloads constructor(
      *
      * @param color The color resource
      */
-    fun setAvatarBackground(@ColorInt color: Int?) = binding.bandyerAvatar.setBackground(color)
+    fun setAvatarBackground(@ColorInt color: Int?) = binding.kaleyraAvatar.setBackground(color)
 
     /**
      * Set the message text
@@ -90,7 +91,7 @@ internal class ChatMessageView @JvmOverloads constructor(
      * @param text The message
      */
     fun setMessage(text: String?) {
-        binding.bandyerMessage.text = text
+        binding.kaleyraMessage.text = text
     }
 
     /**
@@ -99,6 +100,6 @@ internal class ChatMessageView @JvmOverloads constructor(
      * @param millis Time in millis
      */
     fun setTime(millis: Long?) {
-        binding.bandyerTime.text = if(millis == null) null else Iso8601.parseTimestamp(context, millis)
+        binding.kaleyraTime.text = if(millis == null) null else Iso8601.parseTimestamp(context, millis)
     }
 }

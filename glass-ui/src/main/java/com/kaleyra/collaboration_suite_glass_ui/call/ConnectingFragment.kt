@@ -27,7 +27,7 @@ import androidx.fragment.app.activityViewModels
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenLogoDialogBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import kotlinx.coroutines.flow.launchIn
@@ -37,8 +37,8 @@ import kotlinx.coroutines.flow.takeWhile
 
 internal abstract class ConnectingFragment : BaseFragment() {
 
-    private var _binding: BandyerGlassFragmentFullScreenLogoDialogBinding? = null
-    override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
+    private var _binding: KaleyraGlassFragmentFullScreenLogoDialogBinding? = null
+    override val binding: KaleyraGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
 
     protected val viewModel: GlassViewModel by activityViewModels()
 
@@ -55,13 +55,13 @@ internal abstract class ConnectingFragment : BaseFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
 
         // Add view binding
-        _binding = BandyerGlassFragmentFullScreenLogoDialogBinding
+        _binding = KaleyraGlassFragmentFullScreenLogoDialogBinding
             .inflate(
                 inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
                 container,
                 false
             ).apply {
-                if (GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
+                if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear()
             }
 
         return binding.root
@@ -81,8 +81,8 @@ internal abstract class ConnectingFragment : BaseFragment() {
             viewModel.inCallParticipants
                 .takeWhile { it.count() < 2 }
                 .onCompletion {
-                    binding.bandyerSubtitle.text =
-                        resources.getString(R.string.bandyer_glass_connecting)
+                    binding.kaleyraSubtitle.text =
+                        resources.getString(R.string.kaleyra_glass_connecting)
                 }.launchIn(this@repeatOnStarted)
         }
     }

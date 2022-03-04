@@ -17,35 +17,35 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_titleStyle"/>
-        <attr name="bandyer_screenShareAppOnlyButtonStyle" format="reference" />
-        <attr name="bandyer_screenShareDeviceButtonStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.BottomSheetDialog.ScreenSharePicker">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_titleStyle"/>
+        <attr name="kaleyra_screenShareAppOnlyButtonStyle" format="reference" />
+        <attr name="kaleyra_screenShareDeviceButtonStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker" parent="BandyerSDKDesign.BottomSheetDialog" >
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.ScreenSharePicker</item>
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.Layout</item>
-        <item name="bandyer_screenShareAppOnlyButtonStyle">@style/BandyerSDKDesign.ImageButton.ScreenShare.AppOnly</item>
-        <item name="bandyer_screenShareDeviceButtonStyle">@style/BandyerSDKDesign.ImageButton.ScreenShare.Device</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.ScreenSharePicker" parent="KaleyraSDKDesign.BottomSheetDialog" >
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.ScreenSharePicker</item>
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.BottomSheetDialog.ScreenSharePicker.Layout</item>
+        <item name="kaleyra_screenShareAppOnlyButtonStyle">@style/KaleyraSDKDesign.ImageButton.ScreenShare.AppOnly</item>
+        <item name="kaleyra_screenShareDeviceButtonStyle">@style/KaleyraSDKDesign.ImageButton.ScreenShare.Device</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Title.ScreenSharePicker" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:text">@string/bandyer_screenshare_picker_title</item>
+    <style name="KaleyraSDKDesign.TextView.Title.ScreenSharePicker" parent="KaleyraSDKDesign.TextView.Title">
+        <item name="android:text">@string/kaleyra_screenshare_picker_title</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:padding">@dimen/bandyer_dimen_space8</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space16</item>
+        <item name="android:padding">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space16</item>
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker.Layout" parent="">
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space16</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.ScreenSharePicker.Layout" parent="">
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.ScreenShare" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <style name="KaleyraSDKDesign.ImageButton.ScreenShare" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:gravity">start|center_vertical</item>
         <item name="android:text">Share this app only</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
@@ -53,20 +53,20 @@
         <item name="android:textAllCaps">false</item>
         <item name="iconGravity">start</item>
         <item name="iconTint">?attr/colorOnSurface</item>
-        <item name="iconSize">@dimen/bandyer_dimen_normal_image_button</item>
+        <item name="iconSize">@dimen/kaleyra_dimen_normal_image_button</item>
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="android:letterSpacing" tools:targetApi="lollipop">0</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.ScreenShare.AppOnly" parent="BandyerSDKDesign.ImageButton.ScreenShare">
-        <item name="android:text">@string/bandyer_screenshare_app_only</item>
-        <item name="icon">@drawable/ic_bandyer_screen_share_app</item>
+    <style name="KaleyraSDKDesign.ImageButton.ScreenShare.AppOnly" parent="KaleyraSDKDesign.ImageButton.ScreenShare">
+        <item name="android:text">@string/kaleyra_screenshare_app_only</item>
+        <item name="icon">@drawable/ic_kaleyra_screen_share_app</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.ScreenShare.Device" parent="BandyerSDKDesign.ImageButton.ScreenShare">
-        <item name="icon">@drawable/ic_bandyer_screen_share_device</item>
-        <item name="android:text">@string/bandyer_screenshare_full_device</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
+    <style name="KaleyraSDKDesign.ImageButton.ScreenShare.Device" parent="KaleyraSDKDesign.ImageButton.ScreenShare">
+        <item name="icon">@drawable/ic_kaleyra_screen_share_device</item>
+        <item name="android:text">@string/kaleyra_screenshare_full_device</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
     </style>
 
 </resources>

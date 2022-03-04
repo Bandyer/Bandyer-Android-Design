@@ -16,34 +16,34 @@
 
 <resources>
 
-    <attr name="bandyer_rootLayoutStyle" format="reference" />
+    <attr name="kaleyra_rootLayoutStyle" format="reference" />
 
-    <attr name="bandyer_titleStyle" format="reference" />
+    <attr name="kaleyra_titleStyle" format="reference" />
 
-    <attr name="bandyer_subtitleStyle" format="reference" />
+    <attr name="kaleyra_subtitleStyle" format="reference" />
 
-    <attr name="bandyer_iconStyle" format="reference" />
+    <attr name="kaleyra_iconStyle" format="reference" />
 
-    <attr name="bandyer_avatarStyle" format="reference" />
+    <attr name="kaleyra_avatarStyle" format="reference" />
 
-    <attr name="bandyer_userInfoStyle" format="reference" />
+    <attr name="kaleyra_userInfoStyle" format="reference" />
 
     <!-- Style for error views -->
-    <attr name="bandyer_errorIconStyle" format="reference" />
+    <attr name="kaleyra_errorIconStyle" format="reference" />
 
-    <attr name="bandyer_recyclerViewStyle" format="reference" />
+    <attr name="kaleyra_recyclerViewStyle" format="reference" />
 
-    <attr name="bandyer_lineStyle" format="reference" />
+    <attr name="kaleyra_lineStyle" format="reference" />
 
     <!-- Style for ProgressIndicator -->
-    <attr name="bandyer_progressStyle" format="reference" />
+    <attr name="kaleyra_progressStyle" format="reference" />
 
-    <attr name="bandyer_progressTextStyle" format="reference" />
+    <attr name="kaleyra_progressTextStyle" format="reference" />
 
     <!-- Style for the "negative" buttons -->
-    <attr name="bandyer_negativeButtonStyle" format="reference" />
+    <attr name="kaleyra_negativeButtonStyle" format="reference" />
 
     <!-- Style for the "positive" buttons -->
-    <attr name="bandyer_positiveButtonStyle" format="reference" />
+    <attr name="kaleyra_positiveButtonStyle" format="reference" />
 
 </resources>

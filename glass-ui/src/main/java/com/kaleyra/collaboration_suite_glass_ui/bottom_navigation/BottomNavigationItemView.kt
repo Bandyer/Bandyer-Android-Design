@@ -20,7 +20,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassBottomNavigationItemLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassBottomNavigationItemLayoutBinding
 
 /**
  * Bottom action bar item view, it describes an action the user performs on a given gesture
@@ -37,7 +37,7 @@ internal class BottomNavigationItemView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    private val binding = BandyerGlassBottomNavigationItemLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    private val binding = KaleyraGlassBottomNavigationItemLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     override fun setOnClickListener(l: OnClickListener?) {
         binding.root.setOnClickListener(l)

@@ -28,9 +28,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
+
 import com.kaleyra.collaboration_suite_core_ui.extensions.StringExtensions.parseToColor
+import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.animateViewHeight
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassChatNotificationLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatNotificationLayoutBinding
 
 /**
  * A chat notification view
@@ -43,8 +45,8 @@ internal class ChatNotificationView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private var binding: BandyerGlassChatNotificationLayoutBinding =
-        BandyerGlassChatNotificationLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    private var binding: KaleyraGlassChatNotificationLayoutBinding =
+        KaleyraGlassChatNotificationLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     /**
      * Show the notification
@@ -53,22 +55,22 @@ internal class ChatNotificationView @JvmOverloads constructor(
      */
     fun show(data: List<ChatNotificationData>) = with(binding) {
         if (data.size < 2) {
-            bandyerTitle.text = data[0].name
-            bandyerMessage.text = data[0].message
-            bandyerMessage.maxLines = 2
-            bandyerTime.visibility = View.VISIBLE
+            kaleyraTitle.text = data[0].name
+            kaleyraMessage.text = data[0].message
+            kaleyraMessage.maxLines = 2
+            kaleyraTime.visibility = View.VISIBLE
         } else {
-            bandyerTitle.text = resources.getString(R.string.bandyer_glass_new_messages_pattern, data.size)
-            bandyerMessage.text = null
-            bandyerMessage.maxLines = 0
-            bandyerTime.visibility = View.GONE
+            kaleyraTitle.text = resources.getString(R.string.kaleyra_glass_new_messages_pattern, data.size)
+            kaleyraMessage.text = null
+            kaleyraMessage.maxLines = 0
+            kaleyraTime.visibility = View.GONE
         }
 
-        bandyerAvatars.clean()
+        kaleyraAvatars.clean()
         data.forEachIndexed { index, item ->
             if (index > 1) return@forEachIndexed
 
-            with(bandyerAvatars) {
+            with(kaleyraAvatars) {
                 addAvatar(
                     item.name.first().uppercase(),
                     item.userAlias.parseToColor()
@@ -80,9 +82,9 @@ internal class ChatNotificationView @JvmOverloads constructor(
 
         val distinctUsers = data.distinctBy { it.userAlias }.size
         if (distinctUsers > 2)
-            bandyerAvatars.addAvatar(
+            kaleyraAvatars.addAvatar(
                 resources.getString(
-                    R.string.bandyer_glass_group_contacts_pattern,
+                    R.string.kaleyra_glass_group_contacts_pattern,
                     distinctUsers
                 ),
                 null
@@ -122,7 +124,7 @@ internal class ChatNotificationView @JvmOverloads constructor(
     fun setNavigationBarOnClickListeners(
         swipeDownCallback: () -> Unit,
         tapCallback: () -> Unit
-    ) = with(binding.bandyerBottomNavigation) {
+    ) = with(binding.kaleyraBottomNavigation) {
         setSwipeDownOnClickListener(swipeDownCallback)
         setTapOnClickListener(tapCallback)
     }

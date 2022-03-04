@@ -14,31 +14,31 @@
   ~ limitations under the License.
   -->
 <resources>
-    <declare-styleable name="BandyerSDKDesign.SmartGlassDialogMenu">
-        <attr name="bandyer_smartGlassMenuStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.SmartGlassDialogMenu">
+        <attr name="kaleyra_smartGlassMenuStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.SmartGlassDialogMenu" parent="BandyerSDKDesign.FullScreenDialog">
-        <item name="bandyer_smartGlassMenuStyle">@style/BandyerSDKDesign.SmartGlassMenu</item>
+    <style name="KaleyraSDKDesign.SmartGlassDialogMenu" parent="KaleyraSDKDesign.FullScreenDialog">
+        <item name="kaleyra_smartGlassMenuStyle">@style/KaleyraSDKDesign.SmartGlassMenu</item>
     </style>
 
-    <declare-styleable name="BandyerSDKDesign.SmartGlassMenu">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_pagerIndicatorStyle" format="reference" />
-        <attr name="bandyer_smartGlassMicrophoneStyle" format="reference" />
-        <attr name="bandyer_smartGlassCameraStyle" format="reference" />
-        <attr name="bandyer_smartGlassParticipantsStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.SmartGlassMenu">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_pagerIndicatorStyle" format="reference" />
+        <attr name="kaleyra_smartGlassMicrophoneStyle" format="reference" />
+        <attr name="kaleyra_smartGlassCameraStyle" format="reference" />
+        <attr name="kaleyra_smartGlassParticipantsStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.SmartGlassDialogMenu.RootLayout">
+    <style name="KaleyraSDKDesign.SmartGlassDialogMenu.RootLayout">
         <item name="android:background">?attr/colorSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.SmartGlassMenu" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.SmartGlassDialogMenu.RootLayout</item>
-        <item name="bandyer_smartGlassMicrophoneStyle">@style/BandyerSDKDesign.ActionButton.SmartGlass.Microphone</item>
-        <item name="bandyer_smartGlassCameraStyle">@style/BandyerSDKDesign.ActionButton.SmartGlass.Camera</item>
-        <item name="bandyer_smartGlassParticipantsStyle">@style/BandyerSDKDesign.ActionButton.SmartGlass.Participants</item>
-        <item name="bandyer_pagerIndicatorStyle">@style/BandyerSDKDesign.PagerIndicator</item>
+    <style name="KaleyraSDKDesign.SmartGlassMenu" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.SmartGlassDialogMenu.RootLayout</item>
+        <item name="kaleyra_smartGlassMicrophoneStyle">@style/KaleyraSDKDesign.ActionButton.SmartGlass.Microphone</item>
+        <item name="kaleyra_smartGlassCameraStyle">@style/KaleyraSDKDesign.ActionButton.SmartGlass.Camera</item>
+        <item name="kaleyra_smartGlassParticipantsStyle">@style/KaleyraSDKDesign.ActionButton.SmartGlass.Participants</item>
+        <item name="kaleyra_pagerIndicatorStyle">@style/KaleyraSDKDesign.PagerIndicator</item>
     </style>
 </resources>

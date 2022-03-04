@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        style="?attr/kaleyra_rootLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipChildren="false">
+
+            <com.kaleyra.collaboration_suite_core_ui.layout.KaleyraCallWatermarkLayout
+                android:id="@+id/kaleyra_watermark"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="?attr/kaleyra_callWatermarkStyle"
+                app:layout_constraintBottom_toTopOf="@id/kaleyra_participants_scroll_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView
+                android:id="@+id/kaleyra_participants_scroll_view"
+                style="?android:attr/horizontalScrollViewStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/kaleyra_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/kaleyra_watermark">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/kaleyra_participants"
+                    style="?attr/kaleyra_participantsStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/kaleyra_title"
+                style="?attr/kaleyra_titleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/kaleyra_subtitle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/kaleyra_participants_scroll_view"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="@string/kaleyra_glass_call_ended" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/kaleyra_subtitle"
+                style="?attr/kaleyra_subtitleStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/kaleyra_title" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/kaleyra_counter"
+                style="?attr/kaleyra_counterStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/kaleyra_progress"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="6 participants" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/kaleyra_progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
+            android:id="@+id/kaleyra_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="?attr/bottomNavigationStyle" />
+
+    </LinearLayout>
+</layout>

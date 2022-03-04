@@ -15,28 +15,28 @@
   -->
 <resources>
 
-    <declare-styleable name="BandyerSDKDesign.LivePointer">
-        <attr name="bandyer_rootLayoutStyle" />
+    <declare-styleable name="KaleyraSDKDesign.LivePointer">
+        <attr name="kaleyra_rootLayoutStyle" />
         <attr name="materialButtonStyle" />
         <attr name="android:textViewStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.LivePointer" parent="">
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.LivePointer</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.LivePointer</item>
+    <style name="KaleyraSDKDesign.LivePointer" parent="">
+        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.LivePointer</item>
+        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.LivePointer</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.LivePointer" parent="BandyerSDKDesign.ImageButton">
-        <item name="android:minWidth">@dimen/bandyer_dimen_normal_image_button</item>
-        <item name="android:minHeight">@dimen/bandyer_dimen_normal_image_button</item>
-        <item name="icon">@drawable/bandyer_circular_background</item>
+    <style name="KaleyraSDKDesign.ImageButton.LivePointer" parent="KaleyraSDKDesign.ImageButton">
+        <item name="android:minWidth">@dimen/kaleyra_dimen_normal_image_button</item>
+        <item name="android:minHeight">@dimen/kaleyra_dimen_normal_image_button</item>
+        <item name="icon">@drawable/kaleyra_circular_background</item>
         <item name="iconTint">?attr/colorSecondary</item>
-        <item name="iconSize">@dimen/bandyer_dimen_space16</item>
+        <item name="iconSize">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.LivePointer" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.LivePointer" parent="KaleyraSDKDesign.TextView.Subtitle">
         <item name="android:textColor">?attr/colorSecondary</item>
-        <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance</item>
+        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance</item>
     </style>
 
 </resources>

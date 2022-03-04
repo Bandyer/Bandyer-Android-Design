@@ -19,7 +19,7 @@ package com.kaleyra.collaboration_suite_glass_ui.chat
 import android.view.View
 import com.kaleyra.collaboration_suite_core_ui.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassChatMessageItemLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatMessageItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -35,7 +35,7 @@ internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMes
      * The layout for the given item
      */
     override val layoutRes: Int
-        get() = R.layout.bandyer_glass_chat_message_item_layout
+        get() = R.layout.kaleyra_glass_chat_message_item_layout
 
     /**
      * The type of the Item. Can be a hardcoded INT, but preferred is a defined id
@@ -57,13 +57,13 @@ internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMes
      */
     class ViewHolder(view: View) : FastAdapter.ViewHolder<ChatMessageItem>(view) {
 
-        private val binding: BandyerGlassChatMessageItemLayoutBinding = BandyerGlassChatMessageItemLayoutBinding.bind(view)
+        private val binding: KaleyraGlassChatMessageItemLayoutBinding = KaleyraGlassChatMessageItemLayoutBinding.bind(view)
 
         /**
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: ChatMessageItem, payloads: List<Any>) =
-            with(binding.bandyerChatMessage) {
+            with(binding.kaleyraChatMessage) {
                 itemView.isClickable = false
                 val data = item.data
                 if (data.userAvatarId != null) setAvatar(data.userAvatarId)
@@ -78,7 +78,7 @@ internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMes
         /**
          * View needs to release resources when its recycled
          */
-        override fun unbindView(item: ChatMessageItem) = with(binding.bandyerChatMessage) {
+        override fun unbindView(item: ChatMessageItem) = with(binding.kaleyraChatMessage) {
             itemView.isClickable = true
             setAvatar(null)
             setName(null)

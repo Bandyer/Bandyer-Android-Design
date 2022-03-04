@@ -16,63 +16,63 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.Volume">
+    <declare-styleable name="KaleyraSDKDesign.Glass.Volume">
         <attr name="bottomNavigationStyle" />
         <attr name="sliderStyle" />
     </declare-styleable>
 
     <!-- VOLUME FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.Volume" parent="BandyerSDKDesign.Glass">
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Volume</item>
-        <item name="sliderStyle">@style/BandyerSDKDesign.Glass.Slider</item>
+    <style name="KaleyraSDKDesign.Glass.Volume" parent="KaleyraSDKDesign.Glass">
+        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.Volume</item>
+        <item name="sliderStyle">@style/KaleyraSDKDesign.Glass.Slider</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.Volume" parent="BandyerSDKDesign.Glass.BottomNavigation">
-        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Volume</item>
-        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Volume</item>
-        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Volume</item>
+    <style name="KaleyraSDKDesign.Glass.BottomNavigation.Volume" parent="KaleyraSDKDesign.Glass.BottomNavigation">
+        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Volume</item>
+        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.Volume</item>
+        <item name="kaleyra_tapItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.Tap.Volume</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Volume" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Volume</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeVolume</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Volume" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Volume</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.SwipeVolume</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Volume" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Volume" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal">
         <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/bandyer_glass_change</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_change</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeVolume" parent="BandyerSDKDesign.TextView.GlassLabel">
-        <item name="android:text">@string/bandyer_glass_change</item>
+    <style name="KaleyraSDKDesign.TextView.GlassLabel.SwipeVolume" parent="KaleyraSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_change</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Volume" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Volume</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownVolume</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.Volume" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Volume</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.SwipeDownVolume</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Volume" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Volume" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
         <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/bandyer_glass_cancel</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_cancel</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownVolume" parent="BandyerSDKDesign.TextView.GlassLabel">
-        <item name="android:text">@string/bandyer_glass_cancel</item>
+    <style name="KaleyraSDKDesign.TextView.GlassLabel.SwipeDownVolume" parent="KaleyraSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_cancel</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Volume" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.Volume</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapVolume</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.Tap.Volume" parent="KaleyraSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap.Volume</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.TapVolume</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.Volume" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap.Volume" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
         <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/bandyer_glass_confirm</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_confirm</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassLabel.TapVolume" parent="BandyerSDKDesign.TextView.GlassLabel">
-        <item name="android:text">@string/bandyer_glass_confirm</item>
+    <style name="KaleyraSDKDesign.TextView.GlassLabel.TapVolume" parent="KaleyraSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_confirm</item>
     </style>
 </resources>

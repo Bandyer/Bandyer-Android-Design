@@ -28,9 +28,11 @@ apply from: '../android.gradle'
 apply from: '../publish.gradle'
 
 dependencies {
-    api project(':core-ui')
-
+    api fileTree(include: ['*.jar'], dir: 'libs')
     coreLibraryDesugaring androidX.desugar
+
+    testImplementation test.jUnit
+    androidTestImplementation test.espresso
 
     // Platform
     implementation coroutines.core
@@ -42,16 +44,13 @@ dependencies {
     implementation navigation.uiKtx
     implementation google.material
     implementation androidX.dataBindingCommon
-    compileOnly project(path: ':collaboration-suite')
-
-    // TODO
-    //    api bandyer.collaboration
-
 
     // UI
     api fastAdapter.fastAdapter
     api fastAdapter.diff
 
-    testImplementation test.jUnit
-    androidTestImplementation test.espresso
+    /** Kaleyra **/
+    api project(':core-ui')
+    compileOnly project(path: ':collaboration-suite')
+    compileOnly kaleyra.utils
 }

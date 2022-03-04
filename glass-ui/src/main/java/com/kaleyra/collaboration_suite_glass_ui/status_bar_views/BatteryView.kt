@@ -74,7 +74,7 @@ internal class BatteryView @JvmOverloads constructor(
 
     // Charging
     private var chargingRect = RectF()
-    private var chargingBitmap = getBitmap(R.drawable.ic_bandyer_glass_charging)
+    private var chargingBitmap = getBitmap(R.drawable.ic_kaleyra_glass_charging)
 
     @SuppressLint("DrawAllocation")
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

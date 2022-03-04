@@ -16,40 +16,40 @@
   -->
 
 <resources>
-    <style name="BandyerSDKDesign.FileShare.OperationType" parent="Widget.MaterialComponents.ShapeableImageView">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space12</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space12</item>
-        <item name="tint">@color/bandyer_color_on_background_80</item>
-        <item name="srcCompat">@drawable/bandyer_op_type_icon</item>
+    <style name="KaleyraSDKDesign.FileShare.OperationType" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space12</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_space12</item>
+        <item name="tint">@color/kaleyra_color_on_background_80</item>
+        <item name="srcCompat">@drawable/kaleyra_op_type_icon</item>
     </style>
 
-    <style name="BandyerSDKDesign.FileShare.OperationType.Day" parent="BandyerSDKDesign.FileShare.OperationType">
-        <item name="tint">@color/bandyer_color_on_background_80_day</item>
+    <style name="KaleyraSDKDesign.FileShare.OperationType.Day" parent="KaleyraSDKDesign.FileShare.OperationType">
+        <item name="tint">@color/kaleyra_color_on_background_80_day</item>
     </style>
 
-    <style name="BandyerSDKDesign.FileShare.FileType" parent="Widget.MaterialComponents.ShapeableImageView">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space28</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space28</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space12</item>
+    <style name="KaleyraSDKDesign.FileShare.FileType" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space28</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_space28</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space12</item>
         <item name="tint">?attr/colorOnBackground</item>
-        <item name="srcCompat">@drawable/bandyer_file_type_icon</item>
+        <item name="srcCompat">@drawable/kaleyra_file_type_icon</item>
         <item name="android:scaleType">fitCenter</item>
         <item name="android:adjustViewBounds">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.FileShare.FileType.Day" parent="BandyerSDKDesign.FileShare.FileType">
-        <item name="tint">@color/bandyer_colorOnBackground</item>
+    <style name="KaleyraSDKDesign.FileShare.FileType.Day" parent="KaleyraSDKDesign.FileShare.FileType">
+        <item name="tint">@color/kaleyra_colorOnBackground</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
-        <item name="android:layout_width">@dimen/bandyer_dimen_big_image_size</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_big_image_size</item>
-        <item name="srcCompat">@drawable/ic_bandyer_folder</item>
-        <item name="tint">@color/bandyer_color_on_background_30</item>
+    <style name="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
+        <item name="android:layout_width">@dimen/kaleyra_dimen_big_image_size</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_big_image_size</item>
+        <item name="srcCompat">@drawable/ic_kaleyra_folder</item>
+        <item name="tint">@color/kaleyra_color_on_background_30</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon.Day" parent="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon">
-        <item name="tint">@color/bandyer_color_on_background_30_day</item>
+    <style name="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon.Day" parent="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon">
+        <item name="tint">@color/kaleyra_color_on_background_30_day</item>
     </style>
 
 </resources>

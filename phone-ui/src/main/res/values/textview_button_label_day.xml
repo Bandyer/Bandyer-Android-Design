@@ -17,12 +17,12 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.TextAppearance.ButtonLabel.Cancel.Day" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:textColor">@color/bandyer_colorOnSurface</item>
+    <style name="KaleyraSDKDesign.TextAppearance.ButtonLabel.Cancel.Day" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:textColor">@color/kaleyra_colorOnSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextAppearance.ButtonLabel.Confirm.Day" parent="BandyerSDKDesign.TextAppearance.ButtonLabel.Confirm">
-        <item name="android:textColor">@color/bandyer_colorOnSurface</item>
+    <style name="KaleyraSDKDesign.TextAppearance.ButtonLabel.Confirm.Day" parent="KaleyraSDKDesign.TextAppearance.ButtonLabel.Confirm">
+        <item name="android:textColor">@color/kaleyra_colorOnSurface</item>
     </style>
 
 </resources>

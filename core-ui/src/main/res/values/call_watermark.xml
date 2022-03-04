@@ -16,33 +16,33 @@
 
 <resources>
 
-    <declare-styleable name="BandyerSDKDesign.CallWatermark">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_iconStyle" />
-        <attr name="bandyer_titleStyle" />
+    <declare-styleable name="KaleyraSDKDesign.CallWatermark">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_iconStyle" />
+        <attr name="kaleyra_titleStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.CallWatermark" parent="BandyerSDKDesign.DefaultCallWatermark" />
+    <style name="KaleyraSDKDesign.CallWatermark" parent="KaleyraSDKDesign.DefaultCallWatermark" />
 
-    <style name="BandyerSDKDesign.DefaultCallWatermark" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.CallWatermark.RootLayout</item>
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.CallWatermarkImageView</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.CallWatermark</item>
+    <style name="KaleyraSDKDesign.DefaultCallWatermark" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.CallWatermark.RootLayout</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.CallWatermarkImageView</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.CallWatermark</item>
     </style>
 
-    <style name="BandyerSDKDesign.CallWatermark.RootLayout" parent="">
-        <item name="android:minHeight">@dimen/bandyer_watermark_max_height</item>
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
+    <style name="KaleyraSDKDesign.CallWatermark.RootLayout" parent="">
+        <item name="android:minHeight">@dimen/kaleyra_watermark_max_height</item>
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="BandyerSDKDesign.CallWatermarkImageView" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="KaleyraSDKDesign.CallWatermarkImageView" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:adjustViewBounds">true</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.CallWatermark" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
+    <style name="KaleyraSDKDesign.TextView.CallWatermark" parent="KaleyraSDKDesign.TextView.Title">
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:gravity">center_vertical</item>
         <item name="autoSizeTextType">uniform</item>

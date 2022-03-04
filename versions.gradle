@@ -34,8 +34,8 @@ ext {
 
     def kotlinCoroutinesVersion = "1.6.0"
 
-    def bandyerCommonVersion = "1.0.10"
-//    def bandyerCollaborationVersion = "1.0.10"
+    def collaborationSuiteUtilsVersion = "1.0.0"
+//    def bandyerCollaborationVersion = "1.0.0"
 
     def junitVersion = "4.13.2"
     def testRunnerVersion = "1.4.0"
@@ -99,8 +99,8 @@ ext {
             core: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion"
     ]
 
-    bandyer = [
-           common: "com.bandyer:bandyer-android-common:$bandyerCommonVersion",
+    kaleyra = [
+           utils: "com.kaleyra:collaboration-suite-utils:$collaborationSuiteUtilsVersion",
 //           collaboration: "com.bandyer:collaboration_center:$bandyerCollaborationVersion"
     ]
 

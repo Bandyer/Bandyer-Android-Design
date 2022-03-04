@@ -23,27 +23,34 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.CallAction
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassFragmentMenuBinding
+import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
+import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentMenuBinding
 import com.kaleyra.collaboration_suite_glass_ui.model.Option
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
+import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
 /**
- * BandyerGlassMenuFragment
+ * KaleyraGlassMenuFragment
  */
 internal class MenuFragment : BaseFragment(), TiltListener {
 
-    private var _binding: BandyerGlassFragmentMenuBinding? = null
-    override val binding: BandyerGlassFragmentMenuBinding get() = _binding!!
+    private var _binding: KaleyraGlassFragmentMenuBinding? = null
+    override val binding: KaleyraGlassFragmentMenuBinding get() = _binding!!
 
     private var itemAdapter: ItemAdapter<MenuItem>? = null
 
@@ -69,14 +76,14 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         super.onCreateView(inflater, container, savedInstanceState)
 
         // Add view binding
-        _binding = BandyerGlassFragmentMenuBinding
+        _binding = KaleyraGlassFragmentMenuBinding
             .inflate(inflater, container, false)
             .apply {
                 if (GlassDeviceUtils.isRealWear)
-                    bandyerBottomNavigation.setListenersForRealwear()
+                    kaleyraBottomNavigation.setListenersForRealwear()
 
                 // Init the RecyclerView
-                with(bandyerMenu) {
+                with(kaleyraMenu) {
                     itemAdapter = ItemAdapter()
                     val fastAdapter = FastAdapter.with(itemAdapter!!).apply {
                         onClickListener = { _, _, item, _ -> onTap(item.action); false }
@@ -165,10 +172,10 @@ internal class MenuFragment : BaseFragment(), TiltListener {
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if (it) binding.bandyerMenu.horizontalSmoothScrollToNext(currentMenuItemIndex) }
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if (it) binding.kaleyraMenu.horizontalSmoothScrollToNext(currentMenuItemIndex) }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if (it) binding.bandyerMenu.horizontalSmoothScrollToPrevious(currentMenuItemIndex) }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if (it) binding.kaleyraMenu.horizontalSmoothScrollToPrevious(currentMenuItemIndex) }
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.bandyerMenu.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
+        binding.kaleyraMenu.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
 }

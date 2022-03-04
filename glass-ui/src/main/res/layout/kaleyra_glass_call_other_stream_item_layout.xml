@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/kaleyra_video_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <LinearLayout
+            android:id="@+id/kaleyra_info_wrapper"
+            style="?attr/kaleyra_rootLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:theme="?attr/kaleyra_recyclerViewItemStyle">
+
+            <com.kaleyra.collaboration_suite_glass_ui.common.AvatarView
+                android:id="@+id/kaleyra_avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:theme="?attr/kaleyra_avatarStyle" />
+
+             <include
+                 android:id="@+id/kaleyra_subtitle_layout"
+                 layout="@layout/kaleyra_glass_call_stream_subtitle_layout"/>
+        </LinearLayout>
+    </FrameLayout>
+</layout>

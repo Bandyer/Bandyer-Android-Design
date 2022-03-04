@@ -16,34 +16,34 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Theme.Glass.Chat">
-        <attr name="bandyer_statusBarStyle" />
-        <attr name="bandyer_chatMenuStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.Theme.Glass.Chat">
+        <attr name="kaleyra_statusBarStyle" />
+        <attr name="kaleyra_chatMenuStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Theme.DayNight.GlassChat" parent="BandyerSDKDesign.Theme.DayNight">
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
-        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem</item>
-        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.CounterGlassChat</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Chat</item>
-        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.DarkBackground.ChatMenu</item>
+    <style name="KaleyraSDKDesign.Theme.DayNight.GlassChat" parent="KaleyraSDKDesign.Theme.DayNight">
+        <item name="recyclerViewStyle">@style/KaleyraSDKDesign.Glass.RecyclerView</item>
+        <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraSDKDesign.Glass.Chat.RecyclerViewItem</item>
+        <item name="kaleyra_counterStyle">@style/KaleyraSDKDesign.TextView.CounterGlassChat</item>
+        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.Chat</item>
+        <item name="kaleyra_chatMenuStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.ChatMenu</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Day.GlassChat" parent="BandyerSDKDesign.Theme.Day">
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
-        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem</item>
-        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.CounterGlassChat</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Chat</item>
-        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.DarkBackground.ChatMenu</item>
+    <style name="KaleyraSDKDesign.Theme.Day.GlassChat" parent="KaleyraSDKDesign.Theme.Day">
+        <item name="recyclerViewStyle">@style/KaleyraSDKDesign.Glass.RecyclerView</item>
+        <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraSDKDesign.Glass.Chat.RecyclerViewItem</item>
+        <item name="kaleyra_counterStyle">@style/KaleyraSDKDesign.TextView.CounterGlassChat</item>
+        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.Chat</item>
+        <item name="kaleyra_chatMenuStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.ChatMenu</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Night.GlassChat" parent="BandyerSDKDesign.Theme.Night">
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
-        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Glass.Chat.RecyclerViewItem</item>
-        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.CounterGlassChat</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Chat</item>
-        <item name="bandyer_chatMenuStyle">@style/BandyerSDKDesign.Glass.DarkBackground.ChatMenu</item>
+    <style name="KaleyraSDKDesign.Theme.Night.GlassChat" parent="KaleyraSDKDesign.Theme.Night">
+        <item name="recyclerViewStyle">@style/KaleyraSDKDesign.Glass.RecyclerView</item>
+        <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraSDKDesign.Glass.Chat.RecyclerViewItem</item>
+        <item name="kaleyra_counterStyle">@style/KaleyraSDKDesign.TextView.CounterGlassChat</item>
+        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.Chat</item>
+        <item name="kaleyra_chatMenuStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.ChatMenu</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.GlassChat" parent="BandyerSDKDesign.Theme.DayNight.GlassChat"/>
+    <style name="KaleyraSDKDesign.Theme.GlassChat" parent="KaleyraSDKDesign.Theme.DayNight.GlassChat"/>
 </resources>

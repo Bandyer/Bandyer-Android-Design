@@ -17,38 +17,38 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.Whiteboard">
-        <attr name="bandyer_textEditorDialogStyle" format="reference" />
-        <attr name="bandyer_progressStyle" />
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_reloadStyle" format="reference" />
-        <attr name="bandyer_uploadStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.BottomSheetDialog.Whiteboard">
+        <attr name="kaleyra_textEditorDialogStyle" format="reference" />
+        <attr name="kaleyra_progressStyle" />
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_reloadStyle" format="reference" />
+        <attr name="kaleyra_uploadStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard" parent="BandyerSDKDesign.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.Whiteboard</item>
-        <item name="bandyer_textEditorDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.TextEditor</item>
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.RootLayout</item>
-        <item name="bandyer_progressStyle">@style/BandyerSDKDesign.LoadingProgressIndicator</item>
-        <item name="bandyer_reloadStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.LoadingError</item>
-        <item name="bandyer_uploadStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.UploadImage</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.Whiteboard" parent="KaleyraSDKDesign.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.Whiteboard</item>
+        <item name="kaleyra_textEditorDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.TextEditor</item>
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.BottomSheetDialog.Whiteboard.RootLayout</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraSDKDesign.LoadingProgressIndicator</item>
+        <item name="kaleyra_reloadStyle">@style/KaleyraSDKDesign.BottomSheetDialog.Whiteboard.LoadingError</item>
+        <item name="kaleyra_uploadStyle">@style/KaleyraSDKDesign.BottomSheetDialog.Whiteboard.UploadImage</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.Day" parent="BandyerSDKDesign.BottomSheetDialog.Day">
-        <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.Whiteboard</item>
-        <item name="bandyer_textEditorDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.TextEditor.Day</item>
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.RootLayout</item>
-        <item name="bandyer_progressStyle">@style/BandyerSDKDesign.LoadingProgressIndicator</item>
-        <item name="bandyer_reloadStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.LoadingError</item>
-        <item name="bandyer_uploadStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.UploadImage.Day</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.Whiteboard.Day" parent="KaleyraSDKDesign.BottomSheetDialog.Day">
+        <item name="bottomSheetStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.Whiteboard</item>
+        <item name="kaleyra_textEditorDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.TextEditor.Day</item>
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.BottomSheetDialog.Whiteboard.RootLayout</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraSDKDesign.LoadingProgressIndicator</item>
+        <item name="kaleyra_reloadStyle">@style/KaleyraSDKDesign.BottomSheetDialog.Whiteboard.LoadingError</item>
+        <item name="kaleyra_uploadStyle">@style/KaleyraSDKDesign.BottomSheetDialog.Whiteboard.UploadImage.Day</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.RootLayout" parent="">
-        <item name="android:background">@color/bandyer_color_loading_whiteboard_background</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.Whiteboard.RootLayout" parent="">
+        <item name="android:background">@color/kaleyra_color_loading_whiteboard_background</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.Whiteboard" parent="BandyerSDKDesign.BottomSheetModalStyle">
-        <item name="android:background">@color/bandyer_color_loading_whiteboard_background</item>
+    <style name="KaleyraSDKDesign.BottomSheetModalStyle.Whiteboard" parent="KaleyraSDKDesign.BottomSheetModalStyle">
+        <item name="android:background">@color/kaleyra_color_loading_whiteboard_background</item>
     </style>
 
 </resources>

@@ -16,13 +16,13 @@
   -->
 
 <resources>
-    <style name="BandyerSDKDesign.Glass"  parent="BandyerSDKDesign"/>
+    <style name="KaleyraSDKDesign.Glass"  parent="KaleyraSDKDesign"/>
 
-    <style name="BandyerSDKDesign.Glass.DarkBackground"  parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.DarkBackground.RootLayout</item>
+    <style name="KaleyraSDKDesign.Glass.DarkBackground"  parent="KaleyraSDKDesign.Glass">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.RootLayout</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.DarkBackground.RootLayout" parent="">
-        <item name="android:background">@color/bandyer_glass_dimmed_background_color</item>
+    <style name="KaleyraSDKDesign.Glass.DarkBackground.RootLayout" parent="">
+        <item name="android:background">@color/kaleyra_glass_dimmed_background_color</item>
     </style>
 </resources>

@@ -16,138 +16,138 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Theme.Glass.Call">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_statusBarStyle" />
+    <declare-styleable name="KaleyraSDKDesign.Theme.Glass.Call">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_statusBarStyle" />
         <attr name="recyclerViewStyle" />
-        <attr name="bandyer_recyclerViewItemStyle" />
-        <attr name="bandyer_toastContainerStyle" format="reference" />
-        <attr name="bandyer_menuStyle" format="reference" />
-        <attr name="bandyer_volumeStyle" format="reference" />
-        <attr name="bandyer_zoomStyle" format="reference" />
-        <attr name="bandyer_ringingStyle" format="reference" />
-        <attr name="bandyer_dialingStyle" format="reference" />
-        <attr name="bandyer_reconnectingStyle" format="reference" />
-        <attr name="bandyer_endCallStyle" format="reference" />
-        <attr name="bandyer_callEndedStyle" format="reference" />
-        <attr name="bandyer_emptyStyle" format="reference" />
-        <attr name="bandyer_participantsStyle" format="reference" />
+        <attr name="kaleyra_recyclerViewItemStyle" />
+        <attr name="kaleyra_toastContainerStyle" format="reference" />
+        <attr name="kaleyra_menuStyle" format="reference" />
+        <attr name="kaleyra_volumeStyle" format="reference" />
+        <attr name="kaleyra_zoomStyle" format="reference" />
+        <attr name="kaleyra_ringingStyle" format="reference" />
+        <attr name="kaleyra_dialingStyle" format="reference" />
+        <attr name="kaleyra_reconnectingStyle" format="reference" />
+        <attr name="kaleyra_endCallStyle" format="reference" />
+        <attr name="kaleyra_callEndedStyle" format="reference" />
+        <attr name="kaleyra_emptyStyle" format="reference" />
+        <attr name="kaleyra_participantsStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Theme.DayNight.GlassCall" parent="BandyerSDKDesign.Theme.DayNight">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Theme.GlassCall.RootLayout</item>
-        <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
-        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem</item>
-        <item name="bandyer_toastContainerStyle">@style/BandyerSDKDesign.Theme.GlassCall.ToastContainer</item>
-        <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
-        <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
-        <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
-        <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Ringing</item>
-        <item name="bandyer_dialingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Dialing</item>
-        <item name="bandyer_reconnectingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Reconnecting</item>
-        <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.EndCall</item>
-        <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.CallEnded</item>
-        <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>
-        <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.DarkBackground.Participants</item>
+    <style name="KaleyraSDKDesign.Theme.DayNight.GlassCall" parent="KaleyraSDKDesign.Theme.DayNight">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Theme.GlassCall.RootLayout</item>
+        <item name="kaleyra_statusBarStyle">@style/KaleyraSDKDesign.Glass.StatusBar</item>
+        <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem</item>
+        <item name="kaleyra_toastContainerStyle">@style/KaleyraSDKDesign.Theme.GlassCall.ToastContainer</item>
+        <item name="kaleyra_menuStyle">@style/KaleyraSDKDesign.Glass.Menu</item>
+        <item name="kaleyra_volumeStyle">@style/KaleyraSDKDesign.Glass.Volume</item>
+        <item name="kaleyra_zoomStyle">@style/KaleyraSDKDesign.Glass.Zoom</item>
+        <item name="kaleyra_ringingStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Ringing</item>
+        <item name="kaleyra_dialingStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Dialing</item>
+        <item name="kaleyra_reconnectingStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Reconnecting</item>
+        <item name="kaleyra_endCallStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.EndCall</item>
+        <item name="kaleyra_callEndedStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.CallEnded</item>
+        <item name="kaleyra_emptyStyle">@style/KaleyraSDKDesign.Glass.Empty</item>
+        <item name="kaleyra_participantsStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.Participants</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Day.GlassCall" parent="BandyerSDKDesign.Theme.Day">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Theme.GlassCall.RootLayout</item>
-        <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
-        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem</item>
-        <item name="bandyer_toastContainerStyle">@style/BandyerSDKDesign.Theme.GlassCall.ToastContainer</item>
-        <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
-        <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
-        <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
-        <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Ringing</item>
-        <item name="bandyer_dialingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Dialing</item>
-        <item name="bandyer_reconnectingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Reconnecting</item>
-        <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.EndCall</item>
-        <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.CallEnded</item>
-        <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>
-        <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.DarkBackground.Participants</item>
+    <style name="KaleyraSDKDesign.Theme.Day.GlassCall" parent="KaleyraSDKDesign.Theme.Day">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Theme.GlassCall.RootLayout</item>
+        <item name="kaleyra_statusBarStyle">@style/KaleyraSDKDesign.Glass.StatusBar</item>
+        <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem</item>
+        <item name="kaleyra_toastContainerStyle">@style/KaleyraSDKDesign.Theme.GlassCall.ToastContainer</item>
+        <item name="kaleyra_menuStyle">@style/KaleyraSDKDesign.Glass.Menu</item>
+        <item name="kaleyra_volumeStyle">@style/KaleyraSDKDesign.Glass.Volume</item>
+        <item name="kaleyra_zoomStyle">@style/KaleyraSDKDesign.Glass.Zoom</item>
+        <item name="kaleyra_ringingStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Ringing</item>
+        <item name="kaleyra_dialingStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Dialing</item>
+        <item name="kaleyra_reconnectingStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Reconnecting</item>
+        <item name="kaleyra_endCallStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.EndCall</item>
+        <item name="kaleyra_callEndedStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.CallEnded</item>
+        <item name="kaleyra_emptyStyle">@style/KaleyraSDKDesign.Glass.Empty</item>
+        <item name="kaleyra_participantsStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.Participants</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Night.GlassCall" parent="BandyerSDKDesign.Theme.Night">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Theme.GlassCall.RootLayout</item>
-        <item name="bandyer_statusBarStyle">@style/BandyerSDKDesign.Glass.StatusBar</item>
-        <item name="bandyer_recyclerViewItemStyle">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem</item>
-        <item name="bandyer_toastContainerStyle">@style/BandyerSDKDesign.Theme.GlassCall.ToastContainer</item>
-        <item name="bandyer_menuStyle">@style/BandyerSDKDesign.Glass.Menu</item>
-        <item name="bandyer_volumeStyle">@style/BandyerSDKDesign.Glass.Volume</item>
-        <item name="bandyer_zoomStyle">@style/BandyerSDKDesign.Glass.Zoom</item>
-        <item name="bandyer_ringingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Ringing</item>
-        <item name="bandyer_dialingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Dialing</item>
-        <item name="bandyer_reconnectingStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Reconnecting</item>
-        <item name="bandyer_endCallStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.EndCall</item>
-        <item name="bandyer_callEndedStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.CallEnded</item>
-        <item name="bandyer_emptyStyle">@style/BandyerSDKDesign.Glass.Empty</item>
-        <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.Glass.DarkBackground.Participants</item>
+    <style name="KaleyraSDKDesign.Theme.Night.GlassCall" parent="KaleyraSDKDesign.Theme.Night">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Theme.GlassCall.RootLayout</item>
+        <item name="kaleyra_statusBarStyle">@style/KaleyraSDKDesign.Glass.StatusBar</item>
+        <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem</item>
+        <item name="kaleyra_toastContainerStyle">@style/KaleyraSDKDesign.Theme.GlassCall.ToastContainer</item>
+        <item name="kaleyra_menuStyle">@style/KaleyraSDKDesign.Glass.Menu</item>
+        <item name="kaleyra_volumeStyle">@style/KaleyraSDKDesign.Glass.Volume</item>
+        <item name="kaleyra_zoomStyle">@style/KaleyraSDKDesign.Glass.Zoom</item>
+        <item name="kaleyra_ringingStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Ringing</item>
+        <item name="kaleyra_dialingStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Dialing</item>
+        <item name="kaleyra_reconnectingStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Reconnecting</item>
+        <item name="kaleyra_endCallStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.EndCall</item>
+        <item name="kaleyra_callEndedStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.CallEnded</item>
+        <item name="kaleyra_emptyStyle">@style/KaleyraSDKDesign.Glass.Empty</item>
+        <item name="kaleyra_participantsStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.Participants</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.GlassCall.RootLayout" parent="">
-        <item name="android:background">@color/bandyer_glass_background_color</item>
+    <style name="KaleyraSDKDesign.Theme.GlassCall.RootLayout" parent="">
+        <item name="android:background">@color/kaleyra_glass_background_color</item>
     </style>
 
     <!-- RECYCLER VIEW ITEM -->
-    <declare-styleable name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_avatarStyle" />
+    <declare-styleable name="KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_avatarStyle" />
         <attr name="android:textViewStyle" />
-        <attr name="bandyer_iconStyle" />
-        <attr name="bandyer_bigCamIconStyle" format="reference" />
-        <attr name="bandyer_bigMicIconStyle"  format="reference" />
+        <attr name="kaleyra_iconStyle" />
+        <attr name="kaleyra_bigCamIconStyle" format="reference" />
+        <attr name="kaleyra_bigMicIconStyle"  format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.RootLayout</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Subtitle.GlassCallRecyclerViewItem</item>
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.MicIcon</item>
-        <item name="bandyer_bigCamIconStyle">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.Camera</item>
-        <item name="bandyer_bigMicIconStyle">@style/BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.Mic</item>
-        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar.Big.GlassCallRecyclerViewItem</item>
+    <style name="KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem.RootLayout</item>
+        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.GlassCallRecyclerViewItem</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem.MicIcon</item>
+        <item name="kaleyra_bigCamIconStyle">@style/KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.Camera</item>
+        <item name="kaleyra_bigMicIconStyle">@style/KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.Mic</item>
+        <item name="kaleyra_avatarStyle">@style/KaleyraSDKDesign.Glass.Avatar.Big.GlassCallRecyclerViewItem</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.RootLayout" parent="">
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space48</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space48</item>
+    <style name="KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem.RootLayout" parent="">
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space48</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space48</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.Avatar.Big.GlassCallRecyclerViewItem" parent="BandyerSDKDesign.Glass.Avatar.Big">
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space4</item>
+    <style name="KaleyraSDKDesign.Glass.Avatar.Big.GlassCallRecyclerViewItem" parent="KaleyraSDKDesign.Glass.Avatar.Big">
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space4</item>
         <item name="android:layout_gravity">bottom|center_horizontal</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.Camera" parent="BandyerSDKDesign.RoundedImageGlass.ActivableCallRecyclerViewItemIcon">
-        <item name="srcCompat">@drawable/ic_bandyer_glass_cam_off</item>
+    <style name="KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.Camera" parent="KaleyraSDKDesign.RoundedImageGlass.ActivableCallRecyclerViewItemIcon">
+        <item name="srcCompat">@drawable/ic_kaleyra_glass_cam_off</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.Mic" parent="BandyerSDKDesign.RoundedImageGlass.ActivableCallRecyclerViewItemIcon">
-        <item name="srcCompat">@drawable/ic_bandyer_glass_mic_off</item>
+    <style name="KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem.ActivableIcon.Mic" parent="KaleyraSDKDesign.RoundedImageGlass.ActivableCallRecyclerViewItemIcon">
+        <item name="srcCompat">@drawable/ic_kaleyra_glass_mic_off</item>
     </style>
 
-    <style name="BandyerSDKDesign.RoundedImageGlass.ActivableCallRecyclerViewItemIcon" parent="BandyerSDKDesign.RoundedImageGlass">
-        <item name="android:backgroundTint">@color/bandyer_glass_input_background</item>
-        <item name="android:background">@drawable/bandyer_glass_flat_white</item>
-        <item name="android:layout_width">@dimen/bandyer_dimen_space48</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space48</item>
+    <style name="KaleyraSDKDesign.RoundedImageGlass.ActivableCallRecyclerViewItemIcon" parent="KaleyraSDKDesign.RoundedImageGlass">
+        <item name="android:backgroundTint">@color/kaleyra_glass_input_background</item>
+        <item name="android:background">@drawable/kaleyra_glass_flat_white</item>
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space48</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_space48</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.GlassCall.RecyclerViewItem.MicIcon" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="KaleyraSDKDesign.Theme.GlassCall.RecyclerViewItem.MicIcon" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:tint">@android:color/white</item>
-        <item name="srcCompat">@drawable/ic_bandyer_glass_mic_off</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space4</item>
-        <item name="android:layout_width">@dimen/bandyer_dimen_space32</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
+        <item name="srcCompat">@drawable/ic_kaleyra_glass_mic_off</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space32</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_space32</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.GlassCallRecyclerViewItem" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="paddingStart">@dimen/bandyer_dimen_space6</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.GlassCallRecyclerViewItem" parent="KaleyraSDKDesign.TextView.Subtitle">
+        <item name="paddingStart">@dimen/kaleyra_dimen_space6</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_h1</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.GlassCall" parent="BandyerSDKDesign.Theme.DayNight.GlassCall"/>
+    <style name="KaleyraSDKDesign.Theme.GlassCall" parent="KaleyraSDKDesign.Theme.DayNight.GlassCall"/>
 </resources>

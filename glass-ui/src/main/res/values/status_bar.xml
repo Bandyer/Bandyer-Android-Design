@@ -16,95 +16,95 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <declare-styleable name="BandyerSDKDesign.Glass.StatusBar">
-        <attr name="bandyer_camIconStyle" format="reference"/>
-        <attr name="bandyer_micIconStyle" format="reference"/>
-        <attr name="bandyer_chatIconStyle" format="reference"/>
-        <attr name="bandyer_cellIconStyle" format="reference"/>
-        <attr name="bandyer_wifiIconStyle" format="reference"/>
-        <attr name="bandyer_batteryStyle" format="reference"/>
-        <attr name="bandyer_recordingStyle" format="reference"/>
+    <declare-styleable name="KaleyraSDKDesign.Glass.StatusBar">
+        <attr name="kaleyra_camIconStyle" format="reference"/>
+        <attr name="kaleyra_micIconStyle" format="reference"/>
+        <attr name="kaleyra_chatIconStyle" format="reference"/>
+        <attr name="kaleyra_cellIconStyle" format="reference"/>
+        <attr name="kaleyra_wifiIconStyle" format="reference"/>
+        <attr name="kaleyra_batteryStyle" format="reference"/>
+        <attr name="kaleyra_recordingStyle" format="reference"/>
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Glass.StatusBar" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.StatusBar.RootLayout</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassStatusBar</item>
-        <item name="bandyer_camIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Activable.Camera</item>
-        <item name="bandyer_micIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Activable.Mic</item>
-        <item name="bandyer_chatIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Chat</item>
-        <item name="bandyer_cellIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Cell</item>
-        <item name="bandyer_wifiIconStyle">@style/BandyerSDKDesign.GlassStatusBarIcon.Wifi</item>
-        <item name="bandyer_batteryStyle">@style/BandyerSDKDesign.Glass.StatusBar.Battery</item>
-        <item name="bandyer_recordingStyle">@style/BandyerSDKDesign.TextView.Title.GlassRec</item>
+    <style name="KaleyraSDKDesign.Glass.StatusBar" parent="KaleyraSDKDesign.Glass">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.StatusBar.RootLayout</item>
+        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.GlassStatusBar</item>
+        <item name="kaleyra_camIconStyle">@style/KaleyraSDKDesign.GlassStatusBarIcon.Activable.Camera</item>
+        <item name="kaleyra_micIconStyle">@style/KaleyraSDKDesign.GlassStatusBarIcon.Activable.Mic</item>
+        <item name="kaleyra_chatIconStyle">@style/KaleyraSDKDesign.GlassStatusBarIcon.Chat</item>
+        <item name="kaleyra_cellIconStyle">@style/KaleyraSDKDesign.GlassStatusBarIcon.Cell</item>
+        <item name="kaleyra_wifiIconStyle">@style/KaleyraSDKDesign.GlassStatusBarIcon.Wifi</item>
+        <item name="kaleyra_batteryStyle">@style/KaleyraSDKDesign.Glass.StatusBar.Battery</item>
+        <item name="kaleyra_recordingStyle">@style/KaleyraSDKDesign.TextView.Title.GlassRec</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.StatusBar.RootLayout" parent="">
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
-        <item name="android:maxHeight">@dimen/bandyer_dimen_space48</item>
-        <item name="android:minHeight">@dimen/bandyer_dimen_space48</item>
-        <item name="android:background">@drawable/bandyer_glass_status_bar_gradient</item>
+    <style name="KaleyraSDKDesign.Glass.StatusBar.RootLayout" parent="">
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:maxHeight">@dimen/kaleyra_dimen_space48</item>
+        <item name="android:minHeight">@dimen/kaleyra_dimen_space48</item>
+        <item name="android:background">@drawable/kaleyra_glass_status_bar_gradient</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassStatusBar" parent="BandyerSDKDesign.TextView">
+    <style name="KaleyraSDKDesign.TextView.GlassStatusBar" parent="KaleyraSDKDesign.TextView">
         <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_h1</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassStatusBarIcon" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="KaleyraSDKDesign.GlassStatusBarIcon" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:tint">@android:color/white</item>
-        <item name="android:layout_width">@dimen/bandyer_dimen_space32</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space32</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_space32</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassStatusBarIcon.Chat" parent="BandyerSDKDesign.GlassStatusBarIcon">
-        <item name="srcCompat">@drawable/ic_bandyer_glass_badge_new_mess</item>
+    <style name="KaleyraSDKDesign.GlassStatusBarIcon.Chat" parent="KaleyraSDKDesign.GlassStatusBarIcon">
+        <item name="srcCompat">@drawable/ic_kaleyra_glass_badge_new_mess</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassStatusBarIcon.Wifi" parent="BandyerSDKDesign.GlassStatusBarIcon">
-        <item name="srcCompat">@drawable/bandyer_wifi_icon</item>
+    <style name="KaleyraSDKDesign.GlassStatusBarIcon.Wifi" parent="KaleyraSDKDesign.GlassStatusBarIcon">
+        <item name="srcCompat">@drawable/kaleyra_wifi_icon</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassStatusBarIcon.Cell" parent="BandyerSDKDesign.GlassStatusBarIcon">
-        <item name="srcCompat">@drawable/bandyer_glass_cell_icon</item>
+    <style name="KaleyraSDKDesign.GlassStatusBarIcon.Cell" parent="KaleyraSDKDesign.GlassStatusBarIcon">
+        <item name="srcCompat">@drawable/kaleyra_glass_cell_icon</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassStatusBarIcon.Activable.Camera" parent="BandyerSDKDesign.RoundedImageGlass.ActivableStatusBarIcon">
-        <item name="srcCompat">@drawable/ic_bandyer_glass_cam_off</item>
+    <style name="KaleyraSDKDesign.GlassStatusBarIcon.Activable.Camera" parent="KaleyraSDKDesign.RoundedImageGlass.ActivableStatusBarIcon">
+        <item name="srcCompat">@drawable/ic_kaleyra_glass_cam_off</item>
     </style>
 
-    <style name="BandyerSDKDesign.GlassStatusBarIcon.Activable.Mic" parent="BandyerSDKDesign.RoundedImageGlass.ActivableStatusBarIcon">
-        <item name="srcCompat">@drawable/ic_bandyer_glass_mic_off</item>
+    <style name="KaleyraSDKDesign.GlassStatusBarIcon.Activable.Mic" parent="KaleyraSDKDesign.RoundedImageGlass.ActivableStatusBarIcon">
+        <item name="srcCompat">@drawable/ic_kaleyra_glass_mic_off</item>
     </style>
 
-    <style name="BandyerSDKDesign.RoundedImageGlass.ActivableStatusBarIcon" parent="BandyerSDKDesign.RoundedImageGlass">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space32</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
-        <item name="android:background">@drawable/bandyer_glass_flat_white</item>
-        <item name="android:backgroundTint">@color/bandyer_glass_input_background</item>
+    <style name="KaleyraSDKDesign.RoundedImageGlass.ActivableStatusBarIcon" parent="KaleyraSDKDesign.RoundedImageGlass">
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space32</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_space32</item>
+        <item name="android:background">@drawable/kaleyra_glass_flat_white</item>
+        <item name="android:backgroundTint">@color/kaleyra_glass_input_background</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.StatusBar.Battery" parent="">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space48</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space5</item>
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space7</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space7</item>
+    <style name="KaleyraSDKDesign.Glass.StatusBar.Battery" parent="">
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space48</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_space32</item>
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space5</item>
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space7</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space7</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Title.GlassRec" parent="BandyerSDKDesign.TextView.Title">
-        <item name="android:drawableStart">@drawable/ic_bandyer_glass_rec</item>
-        <item name="android:drawableTint" tools:targetApi="m">@color/bandyer_recording_color</item>
-        <item name="android:textColor">@color/bandyer_recording_color</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space24</item>
-        <item name="android:drawablePadding">@dimen/bandyer_dimen_space8</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+    <style name="KaleyraSDKDesign.TextView.Title.GlassRec" parent="KaleyraSDKDesign.TextView.Title">
+        <item name="android:drawableStart">@drawable/ic_kaleyra_glass_rec</item>
+        <item name="android:drawableTint" tools:targetApi="m">@color/kaleyra_recording_color</item>
+        <item name="android:textColor">@color/kaleyra_recording_color</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space24</item>
+        <item name="android:drawablePadding">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_h1</item>
         <item name="android:textAllCaps">true</item>
-        <item name="android:text">@string/bandyer_glass_rec</item>
+        <item name="android:text">@string/kaleyra_glass_rec</item>
         <item name="android:visibility">gone</item>
     </style>
 </resources>

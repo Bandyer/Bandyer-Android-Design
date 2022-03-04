@@ -17,8 +17,8 @@
 <resources>
 
     <declare-styleable name="RoundableStyle">
-        <attr name="bandyer_round" />
-        <attr name="bandyer_corner_radius" />
+        <attr name="kaleyra_round" />
+        <attr name="kaleyra_corner_radius" />
     </declare-styleable>
 
 </resources>

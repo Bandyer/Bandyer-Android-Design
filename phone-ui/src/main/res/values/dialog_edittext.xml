@@ -16,34 +16,34 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.TextInputEditText.Dialog" parent="BandyerSDKDesign.TextInputEditText">
-        <item name="android:padding">@dimen/bandyer_dimen_space16</item>
+    <style name="KaleyraSDKDesign.TextInputEditText.Dialog" parent="KaleyraSDKDesign.TextInputEditText">
+        <item name="android:padding">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextInputLayoutDialogMaterialThemeOverlay" parent="">
-        <item name="editTextStyle">@style/BandyerSDKDesign.TextInputEditText.Dialog</item>
+    <style name="KaleyraSDKDesign.TextInputLayoutDialogMaterialThemeOverlay" parent="">
+        <item name="editTextStyle">@style/KaleyraSDKDesign.TextInputEditText.Dialog</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextInputLayoutDialogMaterialThemeOverlay.Day" parent="BandyerSDKDesign.TextInputLayoutDialogMaterialThemeOverlay">
-        <item name="editTextStyle">@style/BandyerSDKDesign.TextInputEditText.Dialog.Day</item>
+    <style name="KaleyraSDKDesign.TextInputLayoutDialogMaterialThemeOverlay.Day" parent="KaleyraSDKDesign.TextInputLayoutDialogMaterialThemeOverlay">
+        <item name="editTextStyle">@style/KaleyraSDKDesign.TextInputEditText.Dialog.Day</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextInputEditText.Dialog.Day" parent="BandyerSDKDesign.TextInputEditText.Dialog">
-        <item name="android:background">@color/bandyer_colorSurface</item>
-        <item name="android:textColorHint">@color/bandyer_color_on_surface_50_day</item>
-        <item name="android:textAppearance">@style/BandyerSDKDesign.TextAppearance.TextInputEditText.Dialog.Day</item>
+    <style name="KaleyraSDKDesign.TextInputEditText.Dialog.Day" parent="KaleyraSDKDesign.TextInputEditText.Dialog">
+        <item name="android:background">@color/kaleyra_colorSurface</item>
+        <item name="android:textColorHint">@color/kaleyra_color_on_surface_50_day</item>
+        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance.TextInputEditText.Dialog.Day</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextAppearance.TextInputEditText.Dialog.Day" parent="BandyerSDKDesign.TextAppearance.TextInputEditText">
-        <item name="android:textColor">@color/bandyer_colorOnSurface</item>
+    <style name="KaleyraSDKDesign.TextAppearance.TextInputEditText.Dialog.Day" parent="KaleyraSDKDesign.TextAppearance.TextInputEditText">
+        <item name="android:textColor">@color/kaleyra_colorOnSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextInputLayout.Dialog" parent="BandyerSDKDesign.TextInputLayout">
-        <item name="materialThemeOverlay">@style/BandyerSDKDesign.TextInputLayoutDialogMaterialThemeOverlay</item>
+    <style name="KaleyraSDKDesign.TextInputLayout.Dialog" parent="KaleyraSDKDesign.TextInputLayout">
+        <item name="materialThemeOverlay">@style/KaleyraSDKDesign.TextInputLayoutDialogMaterialThemeOverlay</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextInputLayout.Dialog.Day" parent="BandyerSDKDesign.TextInputLayout">
-        <item name="materialThemeOverlay">@style/BandyerSDKDesign.TextInputLayoutDialogMaterialThemeOverlay.Day</item>
+    <style name="KaleyraSDKDesign.TextInputLayout.Dialog.Day" parent="KaleyraSDKDesign.TextInputLayout">
+        <item name="materialThemeOverlay">@style/KaleyraSDKDesign.TextInputLayoutDialogMaterialThemeOverlay.Day</item>
     </style>
 
 </resources>

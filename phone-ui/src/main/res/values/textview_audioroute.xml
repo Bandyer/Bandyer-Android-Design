@@ -17,7 +17,7 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.AudioRoute.Bluetooth" parent="BandyerSDKDesign.TextView.Subtitle.AudioRoute">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.AudioRoute.Bluetooth" parent="KaleyraSDKDesign.TextView.Subtitle.AudioRoute">
         <item name="android:visibility">visible</item>
     </style>
 

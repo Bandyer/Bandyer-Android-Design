@@ -17,15 +17,15 @@
 
 <resources>
     <!-- State bar wifi state -->
-    <attr name="bandyer_state_wifi_disabled" format="boolean" />
-    <attr name="bandyer_state_wifi_low" format="boolean" />
-    <attr name="bandyer_state_wifi_moderate" format="boolean" />
-    <attr name="bandyer_state_wifi_full" format="boolean" />
+    <attr name="kaleyra_state_wifi_disabled" format="boolean" />
+    <attr name="kaleyra_state_wifi_low" format="boolean" />
+    <attr name="kaleyra_state_wifi_moderate" format="boolean" />
+    <attr name="kaleyra_state_wifi_full" format="boolean" />
 
     <!-- State bar cell state -->
-    <attr name="bandyer_state_cell_missing" format="boolean" />
-    <attr name="bandyer_state_cell_low" format="boolean" />
-    <attr name="bandyer_state_cell_moderate" format="boolean" />
-    <attr name="bandyer_state_cell_good" format="boolean" />
-    <attr name="bandyer_state_cell_full" format="boolean" />
+    <attr name="kaleyra_state_cell_missing" format="boolean" />
+    <attr name="kaleyra_state_cell_low" format="boolean" />
+    <attr name="kaleyra_state_cell_moderate" format="boolean" />
+    <attr name="kaleyra_state_cell_good" format="boolean" />
+    <attr name="kaleyra_state_cell_full" format="boolean" />
 </resources>

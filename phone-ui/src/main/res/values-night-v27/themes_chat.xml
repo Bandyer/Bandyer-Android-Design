@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <style name="BandyerSDKDesign.Theme.Chat.DayNight" parent="BandyerSDKDesign.Theme.Chat.DayNight.V16">
+    <style name="KaleyraSDKDesign.Theme.Chat.DayNight" parent="KaleyraSDKDesign.Theme.Chat.DayNight.V16">
         <item name="android:navigationBarColor">@android:color/black</item>
         <item name="android:windowLightNavigationBar">false</item>
     </style>

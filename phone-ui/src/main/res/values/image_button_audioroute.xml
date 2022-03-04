@@ -17,24 +17,24 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.ImageButton.AudioRoute.Loudspeaker" parent="BandyerSDKDesign.ImageButton.AudioRoute">
-        <item name="icon">@drawable/ic_bandyer_loud_speaker</item>
+    <style name="KaleyraSDKDesign.ImageButton.AudioRoute.Loudspeaker" parent="KaleyraSDKDesign.ImageButton.AudioRoute">
+        <item name="icon">@drawable/ic_kaleyra_loud_speaker</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.AudioRoute.WiredHeadset" parent="BandyerSDKDesign.ImageButton.AudioRoute">
-        <item name="icon">@drawable/ic_bandyer_wired_headset</item>
+    <style name="KaleyraSDKDesign.ImageButton.AudioRoute.WiredHeadset" parent="KaleyraSDKDesign.ImageButton.AudioRoute">
+        <item name="icon">@drawable/ic_kaleyra_wired_headset</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.AudioRoute.Earpiece" parent="BandyerSDKDesign.ImageButton.AudioRoute">
-        <item name="icon">@drawable/ic_bandyer_earpiece</item>
+    <style name="KaleyraSDKDesign.ImageButton.AudioRoute.Earpiece" parent="KaleyraSDKDesign.ImageButton.AudioRoute">
+        <item name="icon">@drawable/ic_kaleyra_earpiece</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.AudioRoute.Bluetooth" parent="BandyerSDKDesign.ImageButton.AudioRoute">
-        <item name="icon">@drawable/ic_bandyer_bluetooth_headset</item>
+    <style name="KaleyraSDKDesign.ImageButton.AudioRoute.Bluetooth" parent="KaleyraSDKDesign.ImageButton.AudioRoute">
+        <item name="icon">@drawable/ic_kaleyra_bluetooth_headset</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.AudioRoute.Muted" parent="BandyerSDKDesign.ImageButton.AudioRoute">
-        <item name="icon">@drawable/ic_bandyer_muted</item>
+    <style name="KaleyraSDKDesign.ImageButton.AudioRoute.Muted" parent="KaleyraSDKDesign.ImageButton.AudioRoute">
+        <item name="icon">@drawable/ic_kaleyra_muted</item>
     </style>
 
 </resources>

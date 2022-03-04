@@ -17,8 +17,8 @@
 
 <resources>
     <declare-styleable name="BaseRatingBar">
-        <attr name="bandyer_numLevels" format="integer" />
-        <attr name="bandyer_minRating" format="float" />
+        <attr name="kaleyra_numLevels" format="integer" />
+        <attr name="kaleyra_minRating" format="float" />
         <attr name="android:rating" />
         <attr name="android:stepSize" />
         <attr name="android:drawablePadding" />

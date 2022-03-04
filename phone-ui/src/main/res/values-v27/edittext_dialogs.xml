@@ -17,19 +17,19 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.V27" parent="BandyerSDKDesign.BottomSheetDialog.TextEditor.V16">
+    <style name="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V27" parent="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V16">
         <item name="android:navigationBarColor">?attr/colorSurface</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.V27.Day" parent="BandyerSDKDesign.BottomSheetDialog.TextEditor.V16.Day">
-        <item name="android:navigationBarColor">@color/bandyer_colorSurface</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V27.Day" parent="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V16.Day">
+        <item name="android:navigationBarColor">@color/kaleyra_colorSurface</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor" parent="BandyerSDKDesign.BottomSheetDialog.TextEditor.V27"/>
-    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.Day" parent="BandyerSDKDesign.BottomSheetDialog.TextEditor.V27.Day"/>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.TextEditor" parent="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V27"/>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.TextEditor.Day" parent="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V27.Day"/>
 
 </resources>

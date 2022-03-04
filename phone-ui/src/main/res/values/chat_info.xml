@@ -16,22 +16,22 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.ChatInfo">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_iconStyle" />
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_subtitleStyle" />
-        <attr name="bandyer_bouncingDotsStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.ChatInfo">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_iconStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_subtitleStyle" />
+        <attr name="kaleyra_bouncingDotsStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.ChatInfo" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ChatInfo.RootLayout</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.ChatInfo</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.ChatInfo</item>
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.ImageViewAvatar.Chat</item>
-        <item name="bandyer_bouncingDotsStyle">@style/BandyerSDKDesign.TextView.Subtitle.BouncingDots</item>
+    <style name="KaleyraSDKDesign.ChatInfo" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.ChatInfo.RootLayout</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.ChatInfo</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ChatInfo</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageViewAvatar.Chat</item>
+        <item name="kaleyra_bouncingDotsStyle">@style/KaleyraSDKDesign.TextView.Subtitle.BouncingDots</item>
     </style>
 
-    <style name="BandyerSDKDesign.ChatInfo.RootLayout" parent="" />
+    <style name="KaleyraSDKDesign.ChatInfo.RootLayout" parent="" />
 
 </resources>

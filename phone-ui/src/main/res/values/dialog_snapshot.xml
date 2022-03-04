@@ -16,26 +16,26 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.Snapshot" parent="BandyerSDKDesign.BottomSheetDialog">
+    <style name="KaleyraSDKDesign.BottomSheetDialog.Snapshot" parent="KaleyraSDKDesign.BottomSheetDialog">
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:statusBarColor" tools:targetApi="o_mr1">@android:color/transparent</item>
-        <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.Snapshot</item>
+        <item name="bottomSheetStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.Snapshot</item>
     </style>
 
-    <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.Snapshot.Layout">
-        <attr name="bandyer_collaborateButtonStyle" format="reference" />
-        <attr name="bandyer_closeButtonStyle" />
-        <attr name="bandyer_saveButtonStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.BottomSheetDialog.Snapshot.Layout">
+        <attr name="kaleyra_collaborateButtonStyle" format="reference" />
+        <attr name="kaleyra_closeButtonStyle" />
+        <attr name="kaleyra_saveButtonStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.Snapshot.Layout" parent="">
-        <item name="bandyer_collaborateButtonStyle">@style/BandyerSDKDesign.CollaborateButton</item>
-        <item name="bandyer_closeButtonStyle">@style/BandyerSDKDesign.ImageButton.Close</item>
-        <item name="bandyer_saveButtonStyle">@style/BandyerSDKDesign.ImageButton.Save</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.Snapshot.Layout" parent="">
+        <item name="kaleyra_collaborateButtonStyle">@style/KaleyraSDKDesign.CollaborateButton</item>
+        <item name="kaleyra_closeButtonStyle">@style/KaleyraSDKDesign.ImageButton.Close</item>
+        <item name="kaleyra_saveButtonStyle">@style/KaleyraSDKDesign.ImageButton.Save</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.Snapshot" parent="BandyerSDKDesign.BottomSheetModalStyle">
+    <style name="KaleyraSDKDesign.BottomSheetModalStyle.Snapshot" parent="KaleyraSDKDesign.BottomSheetModalStyle">
         <item name="backgroundTint">@android:color/transparent</item>
     </style>
 

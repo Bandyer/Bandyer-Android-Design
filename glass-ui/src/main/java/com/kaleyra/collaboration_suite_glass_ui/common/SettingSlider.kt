@@ -18,11 +18,12 @@ package com.kaleyra.collaboration_suite_glass_ui.common
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.FrameLayout
 import android.widget.SeekBar
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassSliderLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassSliderLayoutBinding
 
 /**
  *
@@ -48,7 +49,7 @@ internal abstract class SettingSlider @JvmOverloads constructor(
         fun onProgressChanged(progress: Int)
     }
 
-    protected abstract var binding: BandyerGlassSliderLayoutBinding
+    protected abstract var binding: KaleyraGlassSliderLayoutBinding
 
     /**
      * The minimum progress value
@@ -60,7 +61,7 @@ internal abstract class SettingSlider @JvmOverloads constructor(
      */
     open var maxProgress = DEFAULT_MAX_VALUE
         set(value) {
-            binding.bandyerSeekbar.max = value
+            binding.kaleyraSeekbar.max = value
             field = value
         }
 
@@ -74,7 +75,7 @@ internal abstract class SettingSlider @JvmOverloads constructor(
                 value >= maxProgress -> maxProgress
                 else -> value
             }
-            binding.bandyerSeekbar.progress = field
+            binding.kaleyraSeekbar.progress = field
         }
 
     /**
@@ -82,7 +83,7 @@ internal abstract class SettingSlider @JvmOverloads constructor(
      */
     var onSliderChangeListener: OnSliderChangeListener? = null
 
-    protected fun initSeekbar() = with(binding.bandyerSeekbar) {
+    protected fun initSeekbar() = with(binding.kaleyraSeekbar) {
         setOnTouchListener { _, _ -> true }
         max = maxProgress
         // Apparently there is a bug in updating the visual representation of the progress if it is initialized to zero.
@@ -97,7 +98,7 @@ internal abstract class SettingSlider @JvmOverloads constructor(
     /**
      * Increase the progress
      */
-    fun increaseProgress() = with(binding.bandyerSeekbar) {
+    fun increaseProgress() = with(binding.kaleyraSeekbar) {
         if(progress >= maxProgress) return@with
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) setProgress(++progress, true)
         else progress = ++progress
@@ -106,7 +107,7 @@ internal abstract class SettingSlider @JvmOverloads constructor(
     /**
      * Decrease the progress
      */
-    fun decreaseProgress() = with(binding.bandyerSeekbar) {
+    fun decreaseProgress() = with(binding.kaleyraSeekbar) {
         if(progress <= minProgress) return@with
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) setProgress(--progress, true)
         else progress = --progress
@@ -124,7 +125,7 @@ internal abstract class SettingSlider @JvmOverloads constructor(
      */
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return binding.bandyerSeekbar.onTouchEvent(event)
+        return binding.kaleyraSeekbar.onTouchEvent(event)
     }
 
     /**

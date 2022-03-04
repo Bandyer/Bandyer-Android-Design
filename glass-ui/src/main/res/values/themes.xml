@@ -16,8 +16,8 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Theme.Glass">
-        <attr name="bandyer_statusBarStyle" format="reference" />
-        <attr name="bandyer_recyclerViewItemStyle" format="reference"/>
+    <declare-styleable name="KaleyraSDKDesign.Theme.Glass">
+        <attr name="kaleyra_statusBarStyle" format="reference" />
+        <attr name="kaleyra_recyclerViewItemStyle" format="reference"/>
     </declare-styleable>
 </resources>

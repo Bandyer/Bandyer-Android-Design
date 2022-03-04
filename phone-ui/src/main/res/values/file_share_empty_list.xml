@@ -16,29 +16,29 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.FileShare.EmptyListLayout">
-        <attr name="bandyer_rootLayoutStyle"/>
-        <attr name="bandyer_iconStyle"/>
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_subtitleStyle" />
+    <declare-styleable name="KaleyraSDKDesign.BottomSheetDialog.FileShare.EmptyListLayout">
+        <attr name="kaleyra_rootLayoutStyle"/>
+        <attr name="kaleyra_iconStyle"/>
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_subtitleStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout</item>
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.EmptyListLayout</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.EmptyListLayout</item>
+    <style name="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.EmptyListLayout</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.EmptyListLayout</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Day" parent="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout">
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon.Day</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.EmptyListLayout.Day</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.EmptyListLayout.Day</item>
+    <style name="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Day" parent="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout">
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon.Day</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.EmptyListLayout.Day</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.EmptyListLayout.Day</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout" parent="">
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space48</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space48</item>
+    <style name="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout" parent="">
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space48</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space48</item>
     </style>
 
 </resources>

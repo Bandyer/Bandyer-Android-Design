@@ -15,5 +15,5 @@
   -->
 
 <resources>
-    <style name="BandyerSDKDesign.Theme.DayNight" parent="BandyerSDKDesign.Theme.Night" />
+    <style name="KaleyraSDKDesign.Theme.DayNight" parent="KaleyraSDKDesign.Theme.Night" />
 </resources>

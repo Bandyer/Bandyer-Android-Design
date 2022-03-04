@@ -16,38 +16,38 @@
 
 <resources>
 
-    <declare-styleable name="BandyerSDKDesign.BottomSheet.Call">
-        <attr name="bandyer_lineStyle" />
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_recyclerViewStyle" />
+    <declare-styleable name="KaleyraSDKDesign.BottomSheet.Call">
+        <attr name="kaleyra_lineStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_recyclerViewStyle" />
         <attr name="materialCardViewStyle" />
-        <attr name="bandyer_microphoneStyle" format="reference" />
-        <attr name="bandyer_cameraStyle" format="reference" />
-        <attr name="bandyer_switchCameraStyle" format="reference" />
-        <attr name="bandyer_screenShareStyle" format="reference" />
-        <attr name="bandyer_whiteboardStyle" format="reference" />
-        <attr name="bandyer_participantsStyle" format="reference" />
-        <attr name="bandyer_chatStyle" format="reference" />
-        <attr name="bandyer_optionsStyle" format="reference" />
-        <attr name="bandyer_audioRouteStyle" format="reference" />
-        <attr name="bandyer_hangUpStyle" format="reference" />
-        <attr name="bandyer_fileShareStyle" format="reference" />
+        <attr name="kaleyra_microphoneStyle" format="reference" />
+        <attr name="kaleyra_cameraStyle" format="reference" />
+        <attr name="kaleyra_switchCameraStyle" format="reference" />
+        <attr name="kaleyra_screenShareStyle" format="reference" />
+        <attr name="kaleyra_whiteboardStyle" format="reference" />
+        <attr name="kaleyra_participantsStyle" format="reference" />
+        <attr name="kaleyra_chatStyle" format="reference" />
+        <attr name="kaleyra_optionsStyle" format="reference" />
+        <attr name="kaleyra_audioRouteStyle" format="reference" />
+        <attr name="kaleyra_hangUpStyle" format="reference" />
+        <attr name="kaleyra_fileShareStyle" format="reference" />
     </declare-styleable>
 
     <!-- CALL BOTTOM SHEET -->
 
-    <style name="BandyerSDKDesign.BottomSheet.Call" parent="BandyerSDKDesign.BottomSheet">
-        <item name="bandyer_cameraStyle">@style/BandyerSDKDesign.ActionButton.Camera</item>
-        <item name="bandyer_microphoneStyle">@style/BandyerSDKDesign.ActionButton.Microphone</item>
-        <item name="bandyer_screenShareStyle">@style/BandyerSDKDesign.ActionButton.ScreenShare</item>
-        <item name="bandyer_whiteboardStyle">@style/BandyerSDKDesign.ActionButton.Whiteboard</item>
-        <item name="bandyer_switchCameraStyle">@style/BandyerSDKDesign.ActionButton.SwitchCamera</item>
-        <item name="bandyer_participantsStyle">@style/BandyerSDKDesign.ActionButton.Participants</item>
-        <item name="bandyer_chatStyle">@style/BandyerSDKDesign.ActionButton.Chat</item>
-        <item name="bandyer_optionsStyle">@style/BandyerSDKDesign.ActionButton.Options</item>
-        <item name="bandyer_audioRouteStyle">@style/BandyerSDKDesign.ActionButton.AudioRoute</item>
-        <item name="bandyer_fileShareStyle">@style/BandyerSDKDesign.ActionButton.FileShare</item>
-        <item name="bandyer_hangUpStyle">@style/BandyerSDKDesign.ActionButton.HangUp</item>
+    <style name="KaleyraSDKDesign.BottomSheet.Call" parent="KaleyraSDKDesign.BottomSheet">
+        <item name="kaleyra_cameraStyle">@style/KaleyraSDKDesign.ActionButton.Camera</item>
+        <item name="kaleyra_microphoneStyle">@style/KaleyraSDKDesign.ActionButton.Microphone</item>
+        <item name="kaleyra_screenShareStyle">@style/KaleyraSDKDesign.ActionButton.ScreenShare</item>
+        <item name="kaleyra_whiteboardStyle">@style/KaleyraSDKDesign.ActionButton.Whiteboard</item>
+        <item name="kaleyra_switchCameraStyle">@style/KaleyraSDKDesign.ActionButton.SwitchCamera</item>
+        <item name="kaleyra_participantsStyle">@style/KaleyraSDKDesign.ActionButton.Participants</item>
+        <item name="kaleyra_chatStyle">@style/KaleyraSDKDesign.ActionButton.Chat</item>
+        <item name="kaleyra_optionsStyle">@style/KaleyraSDKDesign.ActionButton.Options</item>
+        <item name="kaleyra_audioRouteStyle">@style/KaleyraSDKDesign.ActionButton.AudioRoute</item>
+        <item name="kaleyra_fileShareStyle">@style/KaleyraSDKDesign.ActionButton.FileShare</item>
+        <item name="kaleyra_hangUpStyle">@style/KaleyraSDKDesign.ActionButton.HangUp</item>
     </style>
 
 </resources>

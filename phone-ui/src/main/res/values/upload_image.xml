@@ -16,45 +16,45 @@
 
 <resources>
 
-    <declare-styleable name="BandyerSDKDesign.UploadImage">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_subtitleStyle" />
-        <attr name="bandyer_progressTextStyle" />
-        <attr name="bandyer_progressStyle" />
-        <attr name="bandyer_errorIconStyle" />
+    <declare-styleable name="KaleyraSDKDesign.UploadImage">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_subtitleStyle" />
+        <attr name="kaleyra_progressTextStyle" />
+        <attr name="kaleyra_progressStyle" />
+        <attr name="kaleyra_errorIconStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.UploadImage" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.UploadImageRootLayout</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.UploadProgress</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.UploadProgress</item>
-        <item name="bandyer_progressTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.UploadProgressPercentage</item>
-        <item name="bandyer_progressStyle">@style/BandyerSDKDesign.UploadProgressIndicator</item>
-        <item name="bandyer_errorIconStyle">@style/BandyerSDKDesign.ImageButton.UploadError</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.Whiteboard.UploadImage" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.UploadImageRootLayout</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.UploadProgress</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.UploadProgress</item>
+        <item name="kaleyra_progressTextStyle">@style/KaleyraSDKDesign.TextView.Subtitle.UploadProgressPercentage</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraSDKDesign.UploadProgressIndicator</item>
+        <item name="kaleyra_errorIconStyle">@style/KaleyraSDKDesign.ImageButton.UploadError</item>
     </style>
 
-    <style name="BandyerSDKDesign.UploadImageRootLayout" parent="Widget.MaterialComponents.CardView">
-        <item name="cardElevation">@dimen/bandyer_dimen_space3</item>
-        <item name="cardCornerRadius">@dimen/bandyer_dimen_space3</item>
-        <item name="contentPaddingLeft">@dimen/bandyer_dimen_space8</item>
-        <item name="contentPaddingTop">@dimen/bandyer_dimen_space6</item>
-        <item name="contentPaddingBottom">@dimen/bandyer_dimen_space6</item>
-        <item name="contentPaddingRight">@dimen/bandyer_dimen_space8</item>
+    <style name="KaleyraSDKDesign.UploadImageRootLayout" parent="Widget.MaterialComponents.CardView">
+        <item name="cardElevation">@dimen/kaleyra_dimen_space3</item>
+        <item name="cardCornerRadius">@dimen/kaleyra_dimen_space3</item>
+        <item name="contentPaddingLeft">@dimen/kaleyra_dimen_space8</item>
+        <item name="contentPaddingTop">@dimen/kaleyra_dimen_space6</item>
+        <item name="contentPaddingBottom">@dimen/kaleyra_dimen_space6</item>
+        <item name="contentPaddingRight">@dimen/kaleyra_dimen_space8</item>
         <item name="cardUseCompatPadding">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.UploadImage.Day" parent="BandyerSDKDesign.BottomSheetDialog.Whiteboard.UploadImage">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.UploadImageRootLayout.Day</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.UploadProgress.Day</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.UploadProgress.Day</item>
-        <item name="bandyer_progressTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.UploadProgressPercentage.Day</item>
-        <item name="bandyer_progressStyle">@style/BandyerSDKDesign.UploadProgressIndicator</item>
-        <item name="bandyer_errorIconStyle">@style/BandyerSDKDesign.ImageButton.UploadError</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.Whiteboard.UploadImage.Day" parent="KaleyraSDKDesign.BottomSheetDialog.Whiteboard.UploadImage">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.UploadImageRootLayout.Day</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.UploadProgress.Day</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.UploadProgress.Day</item>
+        <item name="kaleyra_progressTextStyle">@style/KaleyraSDKDesign.TextView.Subtitle.UploadProgressPercentage.Day</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraSDKDesign.UploadProgressIndicator</item>
+        <item name="kaleyra_errorIconStyle">@style/KaleyraSDKDesign.ImageButton.UploadError</item>
     </style>
 
-    <style name="BandyerSDKDesign.UploadImageRootLayout.Day" parent="BandyerSDKDesign.UploadImageRootLayout">
-        <item name="cardBackgroundColor">@color/bandyer_colorSurface</item>
+    <style name="KaleyraSDKDesign.UploadImageRootLayout.Day" parent="KaleyraSDKDesign.UploadImageRootLayout">
+        <item name="cardBackgroundColor">@color/kaleyra_colorSurface</item>
     </style>
 
 </resources>

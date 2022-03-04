@@ -16,26 +16,26 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.PagerIndicator">
-        <attr name="bandyer_pagerIndicatorDotCount" format="integer" />
-        <attr name="bandyer_pagerIndicatorFadingDotCount" format="integer" />
-        <attr name="bandyer_pagerIndicatorDotRadius" format="dimension" />
-        <attr name="bandyer_pagerIndicatorSelectedDotRadius" format="dimension" />
-        <attr name="bandyer_pagerIndicatorDotColor" format="color" />
-        <attr name="bandyer_pagerIndicatorSelectedDotColor" format="color" />
-        <attr name="bandyer_pagerIndicatorDotSeparation" format="dimension" />
-        <attr name="bandyer_pagerIndicatorVerticalSupport" format="boolean" />
+    <declare-styleable name="KaleyraSDKDesign.PagerIndicator">
+        <attr name="kaleyra_pagerIndicatorDotCount" format="integer" />
+        <attr name="kaleyra_pagerIndicatorFadingDotCount" format="integer" />
+        <attr name="kaleyra_pagerIndicatorDotRadius" format="dimension" />
+        <attr name="kaleyra_pagerIndicatorSelectedDotRadius" format="dimension" />
+        <attr name="kaleyra_pagerIndicatorDotColor" format="color" />
+        <attr name="kaleyra_pagerIndicatorSelectedDotColor" format="color" />
+        <attr name="kaleyra_pagerIndicatorDotSeparation" format="dimension" />
+        <attr name="kaleyra_pagerIndicatorVerticalSupport" format="boolean" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.PagerIndicator">
-        <item name="bandyer_pagerIndicatorDotCount">5</item>
-        <item name="bandyer_pagerIndicatorFadingDotCount">3</item>
-        <item name="bandyer_pagerIndicatorDotRadius">@dimen/bandyer_dimen_space4</item>
-        <item name="bandyer_pagerIndicatorSelectedDotRadius">@dimen/bandyer_dimen_space8</item>
-        <item name="bandyer_pagerIndicatorDotColor">?attr/colorOnSurface</item>
-        <item name="bandyer_pagerIndicatorSelectedDotColor">?attr/colorSecondary</item>
-        <item name="bandyer_pagerIndicatorDotSeparation">@dimen/bandyer_dimen_space24</item>
-        <item name="bandyer_pagerIndicatorVerticalSupport">false</item>
-        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space16</item>
+    <style name="KaleyraSDKDesign.PagerIndicator">
+        <item name="kaleyra_pagerIndicatorDotCount">5</item>
+        <item name="kaleyra_pagerIndicatorFadingDotCount">3</item>
+        <item name="kaleyra_pagerIndicatorDotRadius">@dimen/kaleyra_dimen_space4</item>
+        <item name="kaleyra_pagerIndicatorSelectedDotRadius">@dimen/kaleyra_dimen_space8</item>
+        <item name="kaleyra_pagerIndicatorDotColor">?attr/colorOnSurface</item>
+        <item name="kaleyra_pagerIndicatorSelectedDotColor">?attr/colorSecondary</item>
+        <item name="kaleyra_pagerIndicatorDotSeparation">@dimen/kaleyra_dimen_space24</item>
+        <item name="kaleyra_pagerIndicatorVerticalSupport">false</item>
+        <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space16</item>
     </style>
 </resources>

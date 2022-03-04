@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.bandyer.app_design">
+    package="com.kaleyra.demo_collaboration_suite_ui">
 
     <uses-feature
         android:name="android.hardware.bluetooth"
@@ -30,18 +46,18 @@
         <activity android:name=".RingingActivity" />
         <activity
             android:name=".BluetoothAudioRouteActivity"
-            android:theme="@style/BandyerSDKDesign.Theme.Call" />
+            android:theme="@style/KaleyraSDKDesign.Theme.Call" />
         <activity
             android:name=".CallActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:supportsPictureInPicture="true"
-            android:theme="@style/BandyerSDKDesign.Theme.Call"
+            android:theme="@style/KaleyraSDKDesign.Theme.Call"
             tools:targetApi="n" />
         <activity
             android:name=".MainActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:exported="true"
-            android:theme="@style/BandyerSDKDesign.Theme.Call">
+            android:theme="@style/KaleyraSDKDesign.Theme.Call">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,17 +67,17 @@
         <activity
             android:name=".ChatActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
-            android:theme="@style/BandyerSDKDesign.Theme.Chat" />
+            android:theme="@style/KaleyraSDKDesign.Theme.Chat" />
         <activity
             android:name=".PointerActivity"
-            android:theme="@style/BandyerSDKDesign.Theme.Call" />
+            android:theme="@style/KaleyraSDKDesign.Theme.Call" />
         <activity
             android:name=".NotificationActivity"
             android:exported="true"
-            android:theme="@style/BandyerSDKDesign.Theme.Call" />
+            android:theme="@style/KaleyraSDKDesign.Theme.Call" />
         <activity
-            android:name="com.bandyer.video_android_glass_ui.GlassCallActivity"
-            android:theme="@style/BandyerSDKDesign.Theme.DayNight.GlassCall">
+            android:name="com.kaleyra.collaboration_suite_glass_ui.GlassCallActivity"
+            android:theme="@style/KaleyraSDKDesign.Theme.DayNight.GlassCall">
 
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->

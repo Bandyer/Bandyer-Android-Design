@@ -17,7 +17,7 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.BottomSheetDialogStyle.V27" parent="BandyerSDKDesign.BottomSheetDialogStyle.V23">
+    <style name="KaleyraSDKDesign.BottomSheetDialogStyle.V27" parent="KaleyraSDKDesign.BottomSheetDialogStyle.V23">
         <item name="android:navigationBarColor">?attr/colorSurface</item>
         <item name="android:windowLightNavigationBar">false</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>

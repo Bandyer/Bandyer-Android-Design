@@ -16,9 +16,9 @@
   -->
 
 <resources>
-    <style name="BandyerSDKDesign.FileShare.ProgressBar" parent="BandyerSDKDesign.FileShare.ProgressBar.V21">
-        <item name="trackColor">@color/bandyer_color_progressbar_night</item>
+    <style name="KaleyraSDKDesign.FileShare.ProgressBar" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21">
+        <item name="trackColor">@color/kaleyra_color_progressbar_night</item>
     </style>
 
-    <style name="BandyerSDKDesign.FileShare.ProgressBar.Day" parent="BandyerSDKDesign.FileShare.ProgressBar.V21.Day"/>
+    <style name="KaleyraSDKDesign.FileShare.ProgressBar.Day" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21.Day"/>
 </resources>

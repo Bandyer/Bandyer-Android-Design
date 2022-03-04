@@ -1,17 +1,17 @@
-/*d
- * Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+/*
+ * Copyright 2022 Kaleyra @ https://www.kaleyra.com
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *           http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 plugins {
     id 'com.android.application'
@@ -21,16 +21,15 @@ plugins {
 }
 
 def kotlin_coroutines = "1.4.3"
-def bandyer_audio_session_version = '2.0.6'
+def kaleyra_audio_session_version = '2.0.10'
 def kotlinVersion = "1.6.10"
-def bandyerCommonVersion = "1.0.10"
 
 android {
     compileSdkVersion 31
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.bandyer.app_design"
+        applicationId "com.kaleyra.demo_collaboration_suite_ui"
         minSdkVersion 21
         targetSdkVersion 31
         versionCode 1
@@ -49,8 +48,8 @@ android {
 
     compileOptions {
         coreLibraryDesugaringEnabled true
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildFeatures {
@@ -58,7 +57,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '1.8'
     }
 }
 
@@ -88,11 +87,10 @@ dependencies {
     /***  Leak Canary ***/
     debugImplementation "com.squareup.leakcanary:leakcanary-android:2.8.1"
 
-    /***  BandyerSDKDesign ***/
+    /***  KaleyraSDKDesign ***/
 
     implementation project(':phone-ui')
     implementation project(':glass-ui')
     implementation project(':core-ui')
-    implementation "com.bandyer:bandyer-android-audiosession:$bandyer_audio_session_version"
-    implementation "com.bandyer:bandyer-android-common:$bandyerCommonVersion"
+    implementation "com.bandyer:bandyer-android-audiosession:$kaleyra_audio_session_version"
 }

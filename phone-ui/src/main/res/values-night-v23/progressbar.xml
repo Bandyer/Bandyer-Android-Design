@@ -16,11 +16,11 @@
   -->
 
 <resources>
-    <style name="BandyerSDKDesign.FileShare.ProgressBar" parent="BandyerSDKDesign.FileShare.ProgressBar.V21">
-        <item name="trackColor">@color/bandyer_color_on_background_12</item>
+    <style name="KaleyraSDKDesign.FileShare.ProgressBar" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21">
+        <item name="trackColor">@color/kaleyra_color_on_background_12</item>
     </style>
 
-    <style name="BandyerSDKDesign.FileShare.ProgressBar.Day" parent="BandyerSDKDesign.FileShare.ProgressBar.V21.Day">
-        <item name="trackColor">@color/bandyer_color_on_background_12_day</item>
+    <style name="KaleyraSDKDesign.FileShare.ProgressBar.Day" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21.Day">
+        <item name="trackColor">@color/kaleyra_color_on_background_12_day</item>
     </style>
 </resources>

@@ -17,17 +17,17 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.BottomSheetDialogStyle.V21" parent="BandyerSDKDesign.BottomSheetDialog.V16">
+    <style name="KaleyraSDKDesign.BottomSheetDialogStyle.V21" parent="KaleyraSDKDesign.BottomSheetDialog.V16">
         <item name="android:statusBarColor">@android:color/black</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialogStyle.V21.Day" parent="BandyerSDKDesign.BottomSheetDialog.V16.Day">
+    <style name="KaleyraSDKDesign.BottomSheetDialogStyle.V21.Day" parent="KaleyraSDKDesign.BottomSheetDialog.V16.Day">
         <item name="android:statusBarColor">@android:color/black</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog" parent="BandyerSDKDesign.BottomSheetDialogStyle.V21"/>
-    <style name="BandyerSDKDesign.BottomSheetDialog.Day" parent="BandyerSDKDesign.BottomSheetDialogStyle.V21.Day"/>
+    <style name="KaleyraSDKDesign.BottomSheetDialog" parent="KaleyraSDKDesign.BottomSheetDialogStyle.V21"/>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.Day" parent="KaleyraSDKDesign.BottomSheetDialogStyle.V21.Day"/>
 
 </resources>

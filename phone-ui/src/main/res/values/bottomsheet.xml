@@ -18,9 +18,9 @@
 
     <!-- BOTTOM SHEET BEHAVIOUR -->
 
-    <declare-styleable name="BandyerSDKDesign.BottomSheet.Behavior">
-        <attr name="bandyer_anchorPoint" format="dimension" />
-        <attr name="bandyer_defaultStatus" format="enum">
+    <declare-styleable name="KaleyraSDKDesign.BottomSheet.Behavior">
+        <attr name="kaleyra_anchorPoint" format="dimension" />
+        <attr name="kaleyra_defaultStatus" format="enum">
             <enum name="stateAnchorPoint" value="3" />
             <enum name="stateExpanded" value="4" />
             <enum name="stateCollapsed" value="5" />
@@ -28,28 +28,28 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="BandyerSDKDesign.BottomSheet">
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_recyclerViewStyle"/>
-        <attr name="bandyer_lineStyle" />
+    <declare-styleable name="KaleyraSDKDesign.BottomSheet">
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_recyclerViewStyle"/>
+        <attr name="kaleyra_lineStyle" />
         <attr name="materialCardViewStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheet" parent="">
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.BottomSheet</item>
-        <item name="bandyer_recyclerViewStyle">@style/BandyerSDKDesign.BottomSheet.RecyclerView</item>
-        <item name="materialCardViewStyle">@style/BandyerSDKDesign.BottomSheetBackground</item>
-        <item name="bandyer_lineStyle">@style/BandyerSDKDesign.ImageButton.BottomSheetLine</item>
+    <style name="KaleyraSDKDesign.BottomSheet" parent="">
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.BottomSheet</item>
+        <item name="kaleyra_recyclerViewStyle">@style/KaleyraSDKDesign.BottomSheet.RecyclerView</item>
+        <item name="materialCardViewStyle">@style/KaleyraSDKDesign.BottomSheetBackground</item>
+        <item name="kaleyra_lineStyle">@style/KaleyraSDKDesign.ImageButton.BottomSheetLine</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:orientation">vertical</item>
     </style>
 
     <!-- RecyclerView style -->
-    <style name="BandyerSDKDesign.BottomSheet.RecyclerView" parent="">
+    <style name="KaleyraSDKDesign.BottomSheet.RecyclerView" parent="">
         <item name="android:layout_gravity">center</item>
         <item name="android:clipToPadding">false</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space8</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>

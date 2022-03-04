@@ -1,17 +1,17 @@
 /*
- * Copyright 2021-2022 Bandyer @ https://www.bandyer.com
+ * Copyright 2022 Kaleyra @ https://www.kaleyra.com
  *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *           http://www.apache.org/licenses/LICENSE-2.0
+ *       http://www.apache.org/licenses/LICENSE-2.0
  *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 plugins {
     id 'com.android.library'
@@ -27,9 +27,16 @@ apply from: '../android.gradle'
 apply from: '../publish.gradle'
 
 dependencies {
-    implementation project(':core-ui')
-
+    api fileTree(include: ['*.jar'], dir: 'libs')
     coreLibraryDesugaring androidX.desugar
+
+    /*** Testing ***/
+    testImplementation test.jUnit
+    testImplementation test.mockk
+
+    androidTestImplementation test.runner
+    androidTestImplementation test.mockito
+    androidTestImplementation test.espresso
 
     /*** Platform ***/
     implementation jetbrains.reflect
@@ -43,14 +50,6 @@ dependencies {
     implementation androidX.vectorDrawable
     implementation androidX.vectorDrawableAnimated
 
-    /*** Testing ***/
-    testImplementation test.jUnit
-    testImplementation test.mockk
-
-    androidTestImplementation test.runner
-    androidTestImplementation test.mockito
-    androidTestImplementation test.espresso
-
     compileOnly 'com.github.imablanco:Zoomy:1ee82834df'
 
     /*** UI ***/
@@ -62,6 +61,7 @@ dependencies {
     implementation androidX.recyclerView
     api google.flexbox
 
-    /*** BANDYER ***/
-    compileOnly bandyer.common
+    /** Kaleyra **/
+    implementation project(':core-ui')
+    compileOnly kaleyra.utils
 }

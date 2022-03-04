@@ -21,7 +21,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassBottomNavigationLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassBottomNavigationLayoutBinding
 
 /**
  * Bottom action bar view, it describes the actions the user performs
@@ -35,8 +35,8 @@ internal class BottomNavigationView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    private var binding: BandyerGlassBottomNavigationLayoutBinding =
-        BandyerGlassBottomNavigationLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    private var binding: KaleyraGlassBottomNavigationLayoutBinding =
+        KaleyraGlassBottomNavigationLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     /**
      * Set an on click listener on the swipe element. Needed for realwear glasses.
@@ -44,7 +44,7 @@ internal class BottomNavigationView @JvmOverloads constructor(
      * @param callback function
      */
     fun setSwipeHorizontalOnClickListener(callback: () -> Unit) =
-        binding.bandyerSwipe.setOnClickListener {
+        binding.kaleyraSwipe.setOnClickListener {
             callback.invoke()
         }
 
@@ -54,7 +54,7 @@ internal class BottomNavigationView @JvmOverloads constructor(
      * @param callback function
      */
     fun setTapOnClickListener(callback: () -> Unit) =
-        binding.bandyerTap.setOnClickListener {
+        binding.kaleyraTap.setOnClickListener {
             callback.invoke()
         }
 
@@ -64,7 +64,7 @@ internal class BottomNavigationView @JvmOverloads constructor(
      * @param callback function
      */
     fun setSwipeDownOnClickListener(callback: () -> Unit) =
-        binding.bandyerSwipeDown.setOnClickListener {
+        binding.kaleyraSwipeDown.setOnClickListener {
             callback.invoke()
         }
 
@@ -72,20 +72,20 @@ internal class BottomNavigationView @JvmOverloads constructor(
      * Show the swipe horizontal element
      */
     fun showSwipeHorizontalItem() {
-        binding.bandyerSwipe.visibility = View.VISIBLE
+        binding.kaleyraSwipe.visibility = View.VISIBLE
     }
 
     /**
      * Hide the swipe horizontal element
      */
     fun hideSwipeHorizontalItem() {
-        binding.bandyerSwipe.visibility = View.GONE
+        binding.kaleyraSwipe.visibility = View.GONE
     }
 
     /**
      * Hide the tap element
      */
     fun hideTapItem() {
-        binding.bandyerTap.visibility = View.GONE
+        binding.kaleyraTap.visibility = View.GONE
     }
 }

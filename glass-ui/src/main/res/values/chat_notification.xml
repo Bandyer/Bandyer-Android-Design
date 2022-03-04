@@ -16,89 +16,89 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.ChatMessage.GlassNotification">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_avatarStyle" />
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_messageStyle" />
-        <attr name="bandyer_timestampStyle" />
+    <declare-styleable name="KaleyraSDKDesign.ChatMessage.GlassNotification">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_avatarStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_messageStyle" />
+        <attr name="kaleyra_timestampStyle" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.ChatMessage.GlassNotification" parent="BandyerSDKDesign.ChatMessage">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ChatMessage.GlassNotification.RootLayout</item>
-        <item name="bandyer_avatarStyle">@style/BandyerSDKDesign.Glass.Avatar</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.GlassChat</item>
-        <item name="bandyer_messageStyle">@style/BandyerSDKDesign.TextView.MessageGlassChat.Notification</item>
-        <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.TimestampGlassChat.Notification</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.ChatNotification</item>
+    <style name="KaleyraSDKDesign.ChatMessage.GlassNotification" parent="KaleyraSDKDesign.ChatMessage">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.ChatMessage.GlassNotification.RootLayout</item>
+        <item name="kaleyra_avatarStyle">@style/KaleyraSDKDesign.Glass.Avatar</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.GlassChat</item>
+        <item name="kaleyra_messageStyle">@style/KaleyraSDKDesign.TextView.MessageGlassChat.Notification</item>
+        <item name="kaleyra_timestampStyle">@style/KaleyraSDKDesign.TextView.TimestampGlassChat.Notification</item>
+        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.ChatNotification</item>
     </style>
 
     <!-- ROOT -->
-    <style name="BandyerSDKDesign.ChatMessage.GlassNotification.RootLayout" parent="">
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
-        <item name="android:background">@color/bandyer_glass_dimmed_background_color</item>
+    <style name="KaleyraSDKDesign.ChatMessage.GlassNotification.RootLayout" parent="">
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:background">@color/kaleyra_glass_dimmed_background_color</item>
     </style>
 
     <!-- MESSAGE -->
-    <style name="BandyerSDKDesign.TextView.MessageGlassChat.Notification" parent="BandyerSDKDesign.TextView.MessageGlassChat">
-        <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space8</item>
+    <style name="KaleyraSDKDesign.TextView.MessageGlassChat.Notification" parent="KaleyraSDKDesign.TextView.MessageGlassChat">
+        <item name="android:minHeight">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">2</item>
     </style>
 
     <!-- TIMESTAMP -->
-    <style name="BandyerSDKDesign.TextView.TimestampGlassChat.Notification" parent="BandyerSDKDesign.TextView.TimestampGlassChat">
-        <item name="android:text">@string/bandyer_glass_now</item>
+    <style name="KaleyraSDKDesign.TextView.TimestampGlassChat.Notification" parent="KaleyraSDKDesign.TextView.TimestampGlassChat">
+        <item name="android:text">@string/kaleyra_glass_now</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.ChatNotification" parent="BandyerSDKDesign.Glass.BottomNavigation">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.RootLayout.ChatNotification</item>
-        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.ChatNotification</item>
-        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatNotification</item>
-        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.ChatNotification</item>
+    <style name="KaleyraSDKDesign.Glass.BottomNavigation.ChatNotification" parent="KaleyraSDKDesign.Glass.BottomNavigation">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.RootLayout.ChatNotification</item>
+        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.ChatNotification</item>
+        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.ChatNotification</item>
+        <item name="kaleyra_tapItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.Tap.ChatNotification</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.RootLayout.ChatNotification" parent="BandyerSDKDesign.Glass.BottomNavigation.RootLayout">
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space0</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space0</item>
+    <style name="KaleyraSDKDesign.Glass.BottomNavigation.RootLayout.ChatNotification" parent="KaleyraSDKDesign.Glass.BottomNavigation.RootLayout">
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space0</item>
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.ChatNotification" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.ChatNotification</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownChatNotification</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.ChatNotification" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.ChatNotification</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.SwipeDownChatNotification</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.ChatNotification" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
         <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/bandyer_glass_hide_notification</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_hide_notification</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownChatNotification" parent="BandyerSDKDesign.TextView.GlassLabel">
-        <item name="android:text">@string/bandyer_glass_hide_notification</item>
+    <style name="KaleyraSDKDesign.TextView.GlassLabel.SwipeDownChatNotification" parent="KaleyraSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_hide_notification</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.ChatNotification</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapChatNotification</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.Tap.ChatNotification" parent="KaleyraSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap.ChatNotification</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.TapChatNotification</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.ChatNotification" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap.ChatNotification" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
         <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/bandyer_glass_read</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_read</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassLabel.TapChatNotification" parent="BandyerSDKDesign.TextView.GlassLabel">
-        <item name="android:text">@string/bandyer_glass_read</item>
+    <style name="KaleyraSDKDesign.TextView.GlassLabel.TapChatNotification" parent="KaleyraSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_read</item>
     </style>
 </resources>

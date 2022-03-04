@@ -24,12 +24,19 @@ import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_glass_ui.*
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassFragmentChatMenuBinding
+import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
+import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatMenuBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
+import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 
 /**
@@ -37,8 +44,8 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
  */
 internal class ChatMenuFragment : BaseFragment(), TiltListener {
 
-    private var _binding: BandyerGlassFragmentChatMenuBinding? = null
-    override val binding: BandyerGlassFragmentChatMenuBinding get() = _binding!!
+    private var _binding: KaleyraGlassFragmentChatMenuBinding? = null
+    override val binding: KaleyraGlassFragmentChatMenuBinding get() = _binding!!
 
     private var itemAdapter: ItemAdapter<ChatMenuItem>? = null
 
@@ -65,17 +72,17 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
 //        val data = args.participantData!!
 
         // Apply theme wrapper and add view binding
-        val themeResId = requireContext().getChatThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Glass_Chat_bandyer_chatMenuStyle)
-        _binding = BandyerGlassFragmentChatMenuBinding.inflate(
+        val themeResId = requireContext().getChatThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Glass_Chat_kaleyra_chatMenuStyle)
+        _binding = KaleyraGlassFragmentChatMenuBinding.inflate(
             inflater.cloneInContext(ContextThemeWrapper(requireActivity(), themeResId)),
             container,
             false
         ).apply {
             if(GlassDeviceUtils.isRealWear)
-                bandyerBottomNavigation.setListenersForRealwear()
+                kaleyraBottomNavigation.setListenersForRealwear()
 
             // Init the RecyclerView
-            with(bandyerActions) {
+            with(kaleyraActions) {
                 itemAdapter = ItemAdapter()
                 val fastAdapter = FastAdapter.with(itemAdapter!!)
                 val layoutManager =
@@ -106,8 +113,8 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
         }
 
         with(itemAdapter!!) {
-            add(ChatMenuItem(resources.getString(R.string.bandyer_glass_videocall)))
-            add(ChatMenuItem(resources.getString(R.string.bandyer_glass_call)))
+            add(ChatMenuItem(resources.getString(R.string.kaleyra_glass_videocall)))
+            add(ChatMenuItem(resources.getString(R.string.kaleyra_glass_call)))
         }
 
         return binding.root
@@ -125,13 +132,13 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
     }
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.bandyerActions.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
+        binding.kaleyraActions.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
 
     override fun onTap() = false
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerActions.horizontalSmoothScrollToNext(actionIndex) }
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.kaleyraActions.horizontalSmoothScrollToNext(actionIndex) }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.bandyerActions.horizontalSmoothScrollToPrevious(actionIndex) }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.kaleyraActions.horizontalSmoothScrollToPrevious(actionIndex) }
 }

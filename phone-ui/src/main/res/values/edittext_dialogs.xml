@@ -17,39 +17,39 @@
 
 <resources>
 
-    <declare-styleable name="BandyerSDKDesign.TextEditorStyle">
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_negativeButtonStyle" />
-        <attr name="bandyer_positiveButtonStyle" />
+    <declare-styleable name="KaleyraSDKDesign.TextEditorStyle">
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_negativeButtonStyle" />
+        <attr name="kaleyra_positiveButtonStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.TextEditorStyle" parent="">
-        <item name="textInputStyle">@style/BandyerSDKDesign.TextInputLayout.Dialog</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.ConfirmDataLoss</item>
-        <item name="bandyer_negativeButtonStyle">@style/BandyerSDKDesign.ActionButton.CancelButton</item>
-        <item name="bandyer_positiveButtonStyle">@style/BandyerSDKDesign.ActionButton.ConfirmButton</item>
+    <style name="KaleyraSDKDesign.TextEditorStyle" parent="">
+        <item name="textInputStyle">@style/KaleyraSDKDesign.TextInputLayout.Dialog</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.ConfirmDataLoss</item>
+        <item name="kaleyra_negativeButtonStyle">@style/KaleyraSDKDesign.ActionButton.CancelButton</item>
+        <item name="kaleyra_positiveButtonStyle">@style/KaleyraSDKDesign.ActionButton.ConfirmButton</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextEditorStyle.Day" parent="">
-        <item name="textInputStyle">@style/BandyerSDKDesign.TextInputLayout.Dialog.Day</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.ConfirmDataLoss.Day</item>
-        <item name="bandyer_negativeButtonStyle">@style/BandyerSDKDesign.ActionButton.CancelButton.Day</item>
-        <item name="bandyer_positiveButtonStyle">@style/BandyerSDKDesign.ActionButton.ConfirmButton.Day</item>
+    <style name="KaleyraSDKDesign.TextEditorStyle.Day" parent="">
+        <item name="textInputStyle">@style/KaleyraSDKDesign.TextInputLayout.Dialog.Day</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.ConfirmDataLoss.Day</item>
+        <item name="kaleyra_negativeButtonStyle">@style/KaleyraSDKDesign.ActionButton.CancelButton.Day</item>
+        <item name="kaleyra_positiveButtonStyle">@style/KaleyraSDKDesign.ActionButton.ConfirmButton.Day</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.V16" parent="BandyerSDKDesign.BottomSheetDialog.V16">
-        <item name="bandyer_textEditorStyle">@style/BandyerSDKDesign.TextEditorStyle</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V16" parent="KaleyraSDKDesign.BottomSheetDialog.V16">
+        <item name="kaleyra_textEditorStyle">@style/KaleyraSDKDesign.TextEditorStyle</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.V16.Day" parent="BandyerSDKDesign.BottomSheetDialog.V16.Day">
-        <item name="bandyer_textEditorStyle">@style/BandyerSDKDesign.TextEditorStyle.Day</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V16.Day" parent="KaleyraSDKDesign.BottomSheetDialog.V16.Day">
+        <item name="kaleyra_textEditorStyle">@style/KaleyraSDKDesign.TextEditorStyle.Day</item>
     </style>
 
-    <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.TextEditor">
-        <attr name="bandyer_textEditorStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.BottomSheetDialog.TextEditor">
+        <attr name="kaleyra_textEditorStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor" parent="BandyerSDKDesign.BottomSheetDialog.TextEditor.V16"/>
-    <style name="BandyerSDKDesign.BottomSheetDialog.TextEditor.Day" parent="BandyerSDKDesign.BottomSheetDialog.TextEditor.V16.Day"/>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.TextEditor" parent="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V16"/>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.TextEditor.Day" parent="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V16.Day"/>
 
 </resources>

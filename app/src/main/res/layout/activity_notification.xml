@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,7 +23,7 @@
     tools:context=".NotificationActivity">
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/bandyer_title"
+        android:id="@+id/kaleyra_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="API 21 notification"
@@ -16,56 +32,56 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bandyer_incoming_button"
-        android:layout_width="@dimen/bandyer_dimen_space0"
+        android:id="@+id/kaleyra_incoming_button"
+        android:layout_width="@dimen/kaleyra_dimen_space0"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/bandyer_dimen_space16"
-        android:layout_marginEnd="@dimen/bandyer_dimen_space16"
+        android:layout_marginStart="@dimen/kaleyra_dimen_space16"
+        android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
         android:text="Incoming call"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bandyer_title" />
+        app:layout_constraintTop_toBottomOf="@id/kaleyra_title" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/bandyer_title_api_31"
+        android:id="@+id/kaleyra_title_api_31"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="API 31 notification"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bandyer_incoming_button" />
+        app:layout_constraintTop_toBottomOf="@id/kaleyra_incoming_button" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bandyer_incoming_api31_button"
-        android:layout_width="@dimen/bandyer_dimen_space0"
+        android:id="@+id/kaleyra_incoming_api31_button"
+        android:layout_width="@dimen/kaleyra_dimen_space0"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/bandyer_dimen_space16"
-        android:layout_marginEnd="@dimen/bandyer_dimen_space16"
+        android:layout_marginStart="@dimen/kaleyra_dimen_space16"
+        android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
         android:text="Incoming call"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bandyer_title_api_31" />
+        app:layout_constraintTop_toBottomOf="@id/kaleyra_title_api_31" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bandyer_ongoing_api31_button"
-        android:layout_width="@dimen/bandyer_dimen_space0"
+        android:id="@+id/kaleyra_ongoing_api31_button"
+        android:layout_width="@dimen/kaleyra_dimen_space0"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/bandyer_dimen_space16"
-        android:layout_marginEnd="@dimen/bandyer_dimen_space16"
+        android:layout_marginStart="@dimen/kaleyra_dimen_space16"
+        android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
         android:text="Ongoing call"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bandyer_incoming_api31_button" />
+        app:layout_constraintTop_toBottomOf="@id/kaleyra_incoming_api31_button" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/bandyer_screening_api31_button"
-        android:layout_width="@dimen/bandyer_dimen_space0"
+        android:id="@+id/kaleyra_screening_api31_button"
+        android:layout_width="@dimen/kaleyra_dimen_space0"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/bandyer_dimen_space16"
-        android:layout_marginEnd="@dimen/bandyer_dimen_space16"
+        android:layout_marginStart="@dimen/kaleyra_dimen_space16"
+        android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
         android:text="Screening call"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bandyer_ongoing_api31_button" />
+        app:layout_constraintTop_toBottomOf="@id/kaleyra_ongoing_api31_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

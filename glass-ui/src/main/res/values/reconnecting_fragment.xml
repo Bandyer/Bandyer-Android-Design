@@ -16,62 +16,62 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Reconnecting">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_callWatermarkStyle" />
+    <declare-styleable name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Reconnecting">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_callWatermarkStyle" />
         <attr name="recyclerViewStyle" />
-        <attr name="bandyer_recyclerViewItemStyle" />
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_subtitleStyle" />
+        <attr name="kaleyra_recyclerViewItemStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_subtitleStyle" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- RECONNECTING FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Reconnecting" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
-        <item name="android:horizontalScrollViewStyle">@style/BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog.Reconnecting</item>
-        <item name="linearProgressIndicatorStyle">@style/BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar.Reconnecting</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.Reconnecting</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Reconnecting</item>
-        <item name="bandyer_counterStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Counter.Reconnecting</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Reconnecting</item>
+    <style name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Reconnecting" parent="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
+        <item name="android:horizontalScrollViewStyle">@style/KaleyraSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog.Reconnecting</item>
+        <item name="linearProgressIndicatorStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar.Reconnecting</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.FullScreenDialog.Reconnecting</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog.Reconnecting</item>
+        <item name="kaleyra_counterStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog.Counter.Reconnecting</item>
+        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Reconnecting</item>
     </style>
 
     <!-- TITLE -->
-    <style name="BandyerSDKDesign.TextView.Title.FullScreenDialog.Reconnecting" parent="BandyerSDKDesign.TextView.Title.FullScreenDialog">
-        <item name="android:text">@string/bandyer_glass_offline</item>
+    <style name="KaleyraSDKDesign.TextView.Title.FullScreenDialog.Reconnecting" parent="KaleyraSDKDesign.TextView.Title.FullScreenDialog">
+        <item name="android:text">@string/kaleyra_glass_offline</item>
     </style>
 
     <!-- SUBTITLE -->
-    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Reconnecting" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog">
-        <item name="android:text">@string/bandyer_glass_connecting</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog.Reconnecting" parent="KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog">
+        <item name="android:text">@string/kaleyra_glass_connecting</item>
     </style>
 
     <!-- COUNTER -->
-    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Counter.Reconnecting" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Counter">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog.Counter.Reconnecting" parent="KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog.Counter">
         <item name="android:visibility">gone</item>
     </style>
 
     <!-- SCROLLVIEW -->
-    <style name="BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog.Reconnecting" parent="BandyerSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog">
+    <style name="KaleyraSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog.Reconnecting" parent="KaleyraSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog">
         <item name="android:visibility">gone</item>
     </style>
 
     <!-- PROGRESS BAR -->
-    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar.Reconnecting" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar">
+    <style name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar.Reconnecting" parent="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar">
         <item name="android:visibility">gone</item>
     </style>
 
     <!-- BOTTOM NAVIGATION -->
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Reconnecting" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo">
-        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog.Reconnecting</item>
-        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Reconnecting</item>
+    <style name="KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Reconnecting" parent="KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo">
+        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog.Reconnecting</item>
+        <item name="kaleyra_tapItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Reconnecting</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog.Reconnecting" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog.Reconnecting" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog">
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Reconnecting" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Reconnecting" parent="KaleyraSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog">
         <item name="android:visibility">gone</item>
     </style>
 </resources>

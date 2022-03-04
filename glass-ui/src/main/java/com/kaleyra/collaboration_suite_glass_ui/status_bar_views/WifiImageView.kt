@@ -59,21 +59,21 @@ internal class WifiImageView @JvmOverloads constructor(
         /**
          * d i s a b l e d
          */
-        DISABLED(intArrayOf(R.attr.bandyer_state_wifi_disabled)),
+        DISABLED(intArrayOf(R.attr.kaleyra_state_wifi_disabled)),
 
         /**
          * l o w
          */
-        LOW(intArrayOf(R.attr.bandyer_state_wifi_low)),
+        LOW(intArrayOf(R.attr.kaleyra_state_wifi_low)),
 
         /**
          * m o d e r a t e
          */
-        MODERATE(intArrayOf(R.attr.bandyer_state_wifi_moderate)),
+        MODERATE(intArrayOf(R.attr.kaleyra_state_wifi_moderate)),
 
         /**
          * f u l l
          */
-        FULL(intArrayOf(R.attr.bandyer_state_wifi_full)),
+        FULL(intArrayOf(R.attr.kaleyra_state_wifi_full)),
     }
 }

@@ -45,12 +45,12 @@ internal class ParticipantStateTextView @JvmOverloads constructor(
     fun setUserState(state: UserState, lastSeenTime: Long = 0) {
         this.state = state
         text = when (state) {
-            UserState.Online    -> resources.getString(R.string.bandyer_glass_online)
+            UserState.Online    -> resources.getString(R.string.kaleyra_glass_online)
             UserState.Offline -> resources.getString(
-                R.string.bandyer_glass_last_seen_pattern,
+                R.string.kaleyra_glass_last_seen_pattern,
                 Iso8601.parseTimestamp(context, lastSeenTime)
             )
-            else   -> resources.getString(R.string.bandyer_glass_invited)
+            else   -> resources.getString(R.string.kaleyra_glass_invited)
         }
     }
 }

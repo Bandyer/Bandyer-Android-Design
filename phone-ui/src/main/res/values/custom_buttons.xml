@@ -17,17 +17,17 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Ongoing call button -->
-    <style name="BandyerSDKDesign.OngoingCallButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="android:text">@string/bandyer_ongoing_call_label</item>
-        <item name="backgroundTint">@color/bandyer_color_answer_button</item>
-        <item name="cornerRadius">@dimen/bandyer_dimen_space0</item>
+    <style name="KaleyraSDKDesign.OngoingCallButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:text">@string/kaleyra_ongoing_call_label</item>
+        <item name="backgroundTint">@color/kaleyra_color_answer_button</item>
+        <item name="cornerRadius">@dimen/kaleyra_dimen_space0</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:insetTop">@dimen/bandyer_dimen_space0</item>
-        <item name="android:insetBottom">@dimen/bandyer_dimen_space0</item>
+        <item name="android:insetTop">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:insetBottom">@dimen/kaleyra_dimen_space0</item>
         <item name="android:letterSpacing" tools:targetApi="lollipop">0</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
-        <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:minHeight">@dimen/kaleyra_dimen_space0</item>
         <item name="android:gravity">start</item>
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">viewStart</item>
         <item name="android:textAllCaps">false</item>
@@ -35,37 +35,37 @@
     </style>
 
     <!-- Fullscreen info -->
-    <style name="BandyerSDKDesign.FullscreenToastButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="backgroundTint">@color/bandyer_color_surface_40</item>
-        <item name="android:text">@string/bandyer_fullscreen_info</item>
+    <style name="KaleyraSDKDesign.FullscreenToastButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="backgroundTint">@color/kaleyra_color_surface_40</item>
+        <item name="android:text">@string/kaleyra_fullscreen_info</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:padding">@dimen/bandyer_dimen_space8</item>
+        <item name="android:padding">@dimen/kaleyra_dimen_space8</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:letterSpacing" tools:targetApi="lollipop">0</item>
         <item name="android:clickable">false</item>
         <item name="android:focusable">false</item>
-        <item name="shapeAppearanceOverlay">@style/BandyerSDKDesign.FullscreenToastButton.ShapeAppearance</item>
+        <item name="shapeAppearanceOverlay">@style/KaleyraSDKDesign.FullscreenToastButton.ShapeAppearance</item>
     </style>
 
-    <style name="BandyerSDKDesign.FullscreenToastButton.ShapeAppearance" parent="">
+    <style name="KaleyraSDKDesign.FullscreenToastButton.ShapeAppearance" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="BandyerSDKDesign.CollaborateButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
-        <item name="android:layout_margin">@dimen/bandyer_dimen_space16</item>
-        <item name="android:text">@string/bandyer_collaborate_button</item>
+    <style name="KaleyraSDKDesign.CollaborateButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+        <item name="android:layout_margin">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:text">@string/kaleyra_collaborate_button</item>
         <item name="android:textColor">@android:color/black</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_normal</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_normal</item>
         <item name="android:letterSpacing" tools:targetApi="lollipop">0</item>
         <item name="backgroundTint">@android:color/white</item>
-        <item name="icon">@drawable/ic_bandyer_nav_share_whiteboard</item>
+        <item name="icon">@drawable/ic_kaleyra_nav_share_whiteboard</item>
         <item name="iconGravity">textEnd</item>
-        <item name="iconSize">@dimen/bandyer_dimen_space24</item>
+        <item name="iconSize">@dimen/kaleyra_dimen_space24</item>
         <item name="iconTint">@android:color/black</item>
-        <item name="elevation">@dimen/bandyer_dimen_space6</item>
-        <item name="android:elevation" tools:targetApi="lollipop">@dimen/bandyer_dimen_space6</item>
+        <item name="elevation">@dimen/kaleyra_dimen_space6</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/kaleyra_dimen_space6</item>
     </style>
 
 </resources>

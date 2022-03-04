@@ -17,51 +17,51 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="BandyerSDKDesign.ChatNetworkProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+    <style name="KaleyraSDKDesign.ChatNetworkProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_margin">@dimen/bandyer_dimen_space16</item>
+        <item name="android:layout_margin">@dimen/kaleyra_dimen_space16</item>
         <item name="android:indeterminate">true</item>
         <item name="trackColor">?attr/colorOnBackground</item>
     </style>
 
-    <style name="BandyerSDKDesign.UploadProgressIndicator" parent="BandyerSDKDesign.UploadProgressIndicator.V21"/>
+    <style name="KaleyraSDKDesign.UploadProgressIndicator" parent="KaleyraSDKDesign.UploadProgressIndicator.V21"/>
 
-    <style name="BandyerSDKDesign.UploadProgressIndicator.V21" parent="Widget.MaterialComponents.CircularProgressIndicator">
-        <item name="android:layout_height">@dimen/bandyer_dimen_progress_bar_circular_size</item>
-        <item name="android:layout_width">@dimen/bandyer_dimen_progress_bar_circular_size</item>
-        <item name="indicatorSize">@dimen/bandyer_dimen_space56</item>
-        <item name="trackColor">@color/bandyer_color_grey</item>
+    <style name="KaleyraSDKDesign.UploadProgressIndicator.V21" parent="Widget.MaterialComponents.CircularProgressIndicator">
+        <item name="android:layout_height">@dimen/kaleyra_dimen_progress_bar_circular_size</item>
+        <item name="android:layout_width">@dimen/kaleyra_dimen_progress_bar_circular_size</item>
+        <item name="indicatorSize">@dimen/kaleyra_dimen_space56</item>
+        <item name="trackColor">@color/kaleyra_color_grey</item>
         <item name="android:gravity">center</item>
         <item name="indicatorColor">?attr/colorSecondaryVariant</item>
     </style>
 
-    <style name="BandyerSDKDesign.LoadingProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
+    <style name="KaleyraSDKDesign.LoadingProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
         <item name="android:layout_marginTop">?attr/actionBarSize</item>
-        <item name="trackThickness">@dimen/bandyer_dimen_space2</item>
+        <item name="trackThickness">@dimen/kaleyra_dimen_space2</item>
         <item name="indicatorColor">?attr/colorSecondary</item>
-        <item name="android:elevation" tools:targetApi="lollipop">@dimen/bandyer_dimen_space6</item>
-        <item name="elevation">@dimen/bandyer_dimen_space6</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/kaleyra_dimen_space6</item>
+        <item name="elevation">@dimen/kaleyra_dimen_space6</item>
     </style>
 
-    <style name="BandyerSDKDesign.FileShare.ProgressBar" parent="BandyerSDKDesign.FileShare.ProgressBar.V21"/>
+    <style name="KaleyraSDKDesign.FileShare.ProgressBar" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21"/>
 
-    <style name="BandyerSDKDesign.FileShare.ProgressBar.Day" parent="BandyerSDKDesign.FileShare.ProgressBar.V21.Day"/>
+    <style name="KaleyraSDKDesign.FileShare.ProgressBar.Day" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21.Day"/>
 
-    <style name="BandyerSDKDesign.FileShare.ProgressBar.V21" parent="Widget.MaterialComponents.LinearProgressIndicator">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space0</item>
+    <style name="KaleyraSDKDesign.FileShare.ProgressBar.V21" parent="Widget.MaterialComponents.LinearProgressIndicator">
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space0</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space6</item>
-        <item name="trackThickness">@dimen/bandyer_dimen_space4</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space6</item>
+        <item name="trackThickness">@dimen/kaleyra_dimen_space4</item>
         <item name="indicatorColor">?attr/colorSecondaryVariant</item>
-        <item name="trackColor">@color/bandyer_color_progressbar</item>
-        <item name="trackCornerRadius">@dimen/bandyer_dimen_space3</item>
+        <item name="trackColor">@color/kaleyra_color_progressbar</item>
+        <item name="trackCornerRadius">@dimen/kaleyra_dimen_space3</item>
     </style>
 
-    <style name="BandyerSDKDesign.FileShare.ProgressBar.V21.Day" parent="BandyerSDKDesign.FileShare.ProgressBar.V21">
-        <item name="trackColor">@color/bandyer_color_progressbar</item>
-        <item name="indicatorColor">@color/bandyer_colorSecondaryVariant</item>
+    <style name="KaleyraSDKDesign.FileShare.ProgressBar.V21.Day" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21">
+        <item name="trackColor">@color/kaleyra_color_progressbar</item>
+        <item name="indicatorColor">@color/kaleyra_colorSecondaryVariant</item>
     </style>
 
 </resources>

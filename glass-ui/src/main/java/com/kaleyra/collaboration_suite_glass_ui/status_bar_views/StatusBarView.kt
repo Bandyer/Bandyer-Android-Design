@@ -21,7 +21,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassStatusBarLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassStatusBarLayoutBinding
 
 /**
  * A custom state bar view
@@ -89,7 +89,7 @@ internal class StatusBarView @JvmOverloads constructor(
         FULL
     }
 
-    private var binding: BandyerGlassStatusBarLayoutBinding = BandyerGlassStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    private var binding: KaleyraGlassStatusBarLayoutBinding = KaleyraGlassStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     init {
         hideCamMutedIcon()
@@ -101,34 +101,34 @@ internal class StatusBarView @JvmOverloads constructor(
      * Show the recording icon and text
      */
     fun showRec() {
-        binding.bandyerRec.visibility = View.VISIBLE
+        binding.kaleyraRec.visibility = View.VISIBLE
     }
 
     /**
      * Hide the recording icon and text
      */
     fun hideRec() {
-        binding.bandyerRec.visibility = View.GONE
+        binding.kaleyraRec.visibility = View.GONE
     }
 
     /**
      * Show the centered title
      */
     fun showCenteredTitle() {
-        binding.bandyerCenteredTitle.visibility = View.VISIBLE
+        binding.kaleyraCenteredTitle.visibility = View.VISIBLE
     }
 
     /**
      * Hide the centered title
      */
     fun hideCenteredTitle() {
-        binding.bandyerCenteredTitle.visibility = View.GONE
+        binding.kaleyraCenteredTitle.visibility = View.GONE
     }
 
     /**
      * Show the cam muted icon
      */
-    fun showCamMutedIcon(isBlocked: Boolean = false) = with(binding.bandyerCamMutedIcon) {
+    fun showCamMutedIcon(isBlocked: Boolean = false) = with(binding.kaleyraCamMutedIcon) {
         visibility = View.VISIBLE
         isActivated = isBlocked
     }
@@ -137,13 +137,13 @@ internal class StatusBarView @JvmOverloads constructor(
      * Hide the cam muted icon
      */
     fun hideCamMutedIcon() {
-        binding.bandyerCamMutedIcon.visibility = View.GONE
+        binding.kaleyraCamMutedIcon.visibility = View.GONE
     }
 
     /**
      * Show the mic muted icon
      */
-    fun showMicMutedIcon(isBlocked: Boolean = false) = with(binding.bandyerMicMutedIcon) {
+    fun showMicMutedIcon(isBlocked: Boolean = false) = with(binding.kaleyraMicMutedIcon) {
         visibility = View.VISIBLE
         isActivated = isBlocked
     }
@@ -152,21 +152,21 @@ internal class StatusBarView @JvmOverloads constructor(
      * Hide the mic muted icon
      */
     fun hideMicMutedIcon() {
-        binding.bandyerMicMutedIcon.visibility = View.GONE
+        binding.kaleyraMicMutedIcon.visibility = View.GONE
     }
 
     /**
      * Show the chat icon
      */
     fun showChatIcon() {
-        binding.bandyerChatIcon.visibility = View.VISIBLE
+        binding.kaleyraChatIcon.visibility = View.VISIBLE
     }
 
     /**
      * Hide the chat icon
      */
     fun hideChatIcon() {
-        binding.bandyerChatIcon.visibility = View.GONE
+        binding.kaleyraChatIcon.visibility = View.GONE
     }
 
 
@@ -175,7 +175,7 @@ internal class StatusBarView @JvmOverloads constructor(
      *
      * @param charge The level of the charge
      */
-    fun setBatteryCharge(charge: Int) = binding.bandyerBattery.setCharge(charge)
+    fun setBatteryCharge(charge: Int) = binding.kaleyraBattery.setCharge(charge)
 
     /**
      * Set the
@@ -183,20 +183,20 @@ internal class StatusBarView @JvmOverloads constructor(
      * @param isCharging Boolean
      */
     fun setBatteryChargingState(isCharging: Boolean) =
-        binding.bandyerBattery.setCharging(isCharging)
+        binding.kaleyraBattery.setCharging(isCharging)
 
     /**
      * Show the WiFi signal icon
      */
     fun showWiFiSignalIcon() {
-        binding.bandyerWifiIcon.visibility = View.VISIBLE
+        binding.kaleyraWifiIcon.visibility = View.VISIBLE
     }
 
     /**
      * Hide the WiFi signal icon
      */
     fun hideWiFiSignalIcon() {
-        binding.bandyerWifiIcon.visibility = View.GONE
+        binding.kaleyraWifiIcon.visibility = View.GONE
     }
 
     /**
@@ -205,7 +205,7 @@ internal class StatusBarView @JvmOverloads constructor(
      * @param state WiFiSignalState
      */
     fun setWiFiSignalState(state: WiFiSignalState) {
-        binding.bandyerWifiIcon.state = when(state) {
+        binding.kaleyraWifiIcon.state = when(state) {
             WiFiSignalState.DISABLED -> WifiImageView.State.DISABLED
             WiFiSignalState.LOW      -> WifiImageView.State.LOW
             WiFiSignalState.MODERATE -> WifiImageView.State.MODERATE

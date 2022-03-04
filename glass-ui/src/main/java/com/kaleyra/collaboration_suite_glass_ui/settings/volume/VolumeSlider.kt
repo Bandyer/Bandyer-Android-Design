@@ -21,7 +21,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.common.SettingSlider
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassSliderLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassSliderLayoutBinding
 
 /**
  *  Slider for the volume fragment
@@ -34,7 +34,7 @@ internal class VolumeSlider @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : SettingSlider(context, attrs, defStyleAttr) {
 
-    override var binding: BandyerGlassSliderLayoutBinding = BandyerGlassSliderLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    override var binding: KaleyraGlassSliderLayoutBinding = KaleyraGlassSliderLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     override var minProgress: Int = MIN_VALUE
 
@@ -43,7 +43,7 @@ internal class VolumeSlider @JvmOverloads constructor(
         setSliderText(minProgress)
     }
 
-    override fun setSliderText(progress: Int) { binding.bandyerPercentage.text = resources.getString(R.string.bandyer_glass_slider_volume_pattern, progress) }
+    override fun setSliderText(progress: Int) { binding.kaleyraPercentage.text = resources.getString(R.string.kaleyra_glass_slider_volume_pattern, progress) }
 
     companion object {
         const val MIN_VALUE = 1

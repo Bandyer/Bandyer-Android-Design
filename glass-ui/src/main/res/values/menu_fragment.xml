@@ -16,128 +16,128 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.Menu">
+    <declare-styleable name="KaleyraSDKDesign.Glass.Menu">
         <attr name="recyclerViewStyle" />
-        <attr name="bandyer_recyclerViewMicItemStyle" format="reference" />
-        <attr name="bandyer_recyclerViewCameraItemStyle" format="reference" />
-        <attr name="bandyer_recyclerViewVolumeItemStyle" format="reference" />
-        <attr name="bandyer_recyclerViewZoomItemStyle" format="reference" />
-        <attr name="bandyer_recyclerViewParticipantsItemStyle" format="reference" />
-        <attr name="bandyer_recyclerViewChatItemStyle" format="reference" />
+        <attr name="kaleyra_recyclerViewMicItemStyle" format="reference" />
+        <attr name="kaleyra_recyclerViewCameraItemStyle" format="reference" />
+        <attr name="kaleyra_recyclerViewVolumeItemStyle" format="reference" />
+        <attr name="kaleyra_recyclerViewZoomItemStyle" format="reference" />
+        <attr name="kaleyra_recyclerViewParticipantsItemStyle" format="reference" />
+        <attr name="kaleyra_recyclerViewChatItemStyle" format="reference" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- MENU FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.Menu" parent="BandyerSDKDesign.Glass">
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.Glass.RecyclerView</item>
-        <item name="bandyer_recyclerViewMicItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Microphone</item>
-        <item name="bandyer_recyclerViewCameraItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Camera</item>
-        <item name="bandyer_recyclerViewVolumeItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Volume</item>
-        <item name="bandyer_recyclerViewZoomItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Zoom</item>
-        <item name="bandyer_recyclerViewParticipantsItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Participants</item>
-        <item name="bandyer_recyclerViewChatItemStyle">@style/BandyerSDKDesign.Glass.RecyclerViewItem.Chat</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.Menu</item>
+    <style name="KaleyraSDKDesign.Glass.Menu" parent="KaleyraSDKDesign.Glass">
+        <item name="recyclerViewStyle">@style/KaleyraSDKDesign.Glass.RecyclerView</item>
+        <item name="kaleyra_recyclerViewMicItemStyle">@style/KaleyraSDKDesign.Glass.RecyclerViewItem.Microphone</item>
+        <item name="kaleyra_recyclerViewCameraItemStyle">@style/KaleyraSDKDesign.Glass.RecyclerViewItem.Camera</item>
+        <item name="kaleyra_recyclerViewVolumeItemStyle">@style/KaleyraSDKDesign.Glass.RecyclerViewItem.Volume</item>
+        <item name="kaleyra_recyclerViewZoomItemStyle">@style/KaleyraSDKDesign.Glass.RecyclerViewItem.Zoom</item>
+        <item name="kaleyra_recyclerViewParticipantsItemStyle">@style/KaleyraSDKDesign.Glass.RecyclerViewItem.Participants</item>
+        <item name="kaleyra_recyclerViewChatItemStyle">@style/KaleyraSDKDesign.Glass.RecyclerViewItem.Chat</item>
+        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.Menu</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.Menu.RecyclerViewItem.RootLayout" parent="">
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space64</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space64</item>
+    <style name="KaleyraSDKDesign.Glass.Menu.RecyclerViewItem.RootLayout" parent="">
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space64</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space64</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Microphone" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassRecyclerViewItem.Microphone</item>
+    <style name="KaleyraSDKDesign.Glass.RecyclerViewItem.Microphone" parent="KaleyraSDKDesign.Glass.RecyclerViewItem">
+        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.GlassRecyclerViewItem.Microphone</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassRecyclerViewItem.Microphone" parent="BandyerSDKDesign.TextView.GlassRecyclerViewItem">
-        <item name="android:text">@string/bandyer_glass_menu_microphone</item>
+    <style name="KaleyraSDKDesign.TextView.GlassRecyclerViewItem.Microphone" parent="KaleyraSDKDesign.TextView.GlassRecyclerViewItem">
+        <item name="android:text">@string/kaleyra_glass_menu_microphone</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Camera" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassRecyclerViewItem.Camera</item>
+    <style name="KaleyraSDKDesign.Glass.RecyclerViewItem.Camera" parent="KaleyraSDKDesign.Glass.RecyclerViewItem">
+        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.GlassRecyclerViewItem.Camera</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassRecyclerViewItem.Camera" parent="BandyerSDKDesign.TextView.GlassRecyclerViewItem">
-        <item name="android:text">@string/bandyer_glass_menu_camera</item>
+    <style name="KaleyraSDKDesign.TextView.GlassRecyclerViewItem.Camera" parent="KaleyraSDKDesign.TextView.GlassRecyclerViewItem">
+        <item name="android:text">@string/kaleyra_glass_menu_camera</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Volume" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassRecyclerViewItem.Volume</item>
+    <style name="KaleyraSDKDesign.Glass.RecyclerViewItem.Volume" parent="KaleyraSDKDesign.Glass.RecyclerViewItem">
+        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.GlassRecyclerViewItem.Volume</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassRecyclerViewItem.Volume" parent="BandyerSDKDesign.TextView.GlassRecyclerViewItem">
-        <item name="android:text">@string/bandyer_glass_menu_volume</item>
+    <style name="KaleyraSDKDesign.TextView.GlassRecyclerViewItem.Volume" parent="KaleyraSDKDesign.TextView.GlassRecyclerViewItem">
+        <item name="android:text">@string/kaleyra_glass_menu_volume</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Zoom" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassRecyclerViewItem.Zoom</item>
+    <style name="KaleyraSDKDesign.Glass.RecyclerViewItem.Zoom" parent="KaleyraSDKDesign.Glass.RecyclerViewItem">
+        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.GlassRecyclerViewItem.Zoom</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassRecyclerViewItem.Zoom" parent="BandyerSDKDesign.TextView.GlassRecyclerViewItem">
-        <item name="android:text">@string/bandyer_glass_menu_zoom</item>
+    <style name="KaleyraSDKDesign.TextView.GlassRecyclerViewItem.Zoom" parent="KaleyraSDKDesign.TextView.GlassRecyclerViewItem">
+        <item name="android:text">@string/kaleyra_glass_menu_zoom</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Participants" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassRecyclerViewItem.Participants</item>
+    <style name="KaleyraSDKDesign.Glass.RecyclerViewItem.Participants" parent="KaleyraSDKDesign.Glass.RecyclerViewItem">
+        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.GlassRecyclerViewItem.Participants</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassRecyclerViewItem.Participants" parent="BandyerSDKDesign.TextView.GlassRecyclerViewItem">
-        <item name="android:text">@string/bandyer_glass_menu_participants</item>
+    <style name="KaleyraSDKDesign.TextView.GlassRecyclerViewItem.Participants" parent="KaleyraSDKDesign.TextView.GlassRecyclerViewItem">
+        <item name="android:text">@string/kaleyra_glass_menu_participants</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.RecyclerViewItem.Chat" parent="BandyerSDKDesign.Glass.RecyclerViewItem">
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.GlassRecyclerViewItem.Chat</item>
+    <style name="KaleyraSDKDesign.Glass.RecyclerViewItem.Chat" parent="KaleyraSDKDesign.Glass.RecyclerViewItem">
+        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.GlassRecyclerViewItem.Chat</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassRecyclerViewItem.Chat" parent="BandyerSDKDesign.TextView.GlassRecyclerViewItem">
-        <item name="android:text">@string/bandyer_glass_menu_chat</item>
+    <style name="KaleyraSDKDesign.TextView.GlassRecyclerViewItem.Chat" parent="KaleyraSDKDesign.TextView.GlassRecyclerViewItem">
+        <item name="android:text">@string/kaleyra_glass_menu_chat</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.Menu" parent="BandyerSDKDesign.Glass.BottomNavigation">
-        <item name="bandyer_swipeHorizontalItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Menu</item>
-        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Menu</item>
-        <item name="bandyer_tapItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Tap.Menu</item>
+    <style name="KaleyraSDKDesign.Glass.BottomNavigation.Menu" parent="KaleyraSDKDesign.Glass.BottomNavigation">
+        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Menu</item>
+        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.Menu</item>
+        <item name="kaleyra_tapItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.Tap.Menu</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Menu</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeMenu</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Menu" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Menu</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.SwipeMenu</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal">
-        <item name="android:contentDescription">@string/bandyer_glass_browse</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Menu" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal">
+        <item name="android:contentDescription">@string/kaleyra_glass_browse</item>
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeMenu" parent="BandyerSDKDesign.TextView.GlassLabel">
-        <item name="android:text">@string/bandyer_glass_browse</item>
+    <style name="KaleyraSDKDesign.TextView.GlassLabel.SwipeMenu" parent="KaleyraSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_browse</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Menu</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownMenu</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.Menu" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Menu</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.SwipeDownMenu</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
-        <item name="android:contentDescription">@string/bandyer_glass_close</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Menu" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
+        <item name="android:contentDescription">@string/kaleyra_glass_close</item>
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownMenu" parent="BandyerSDKDesign.TextView.GlassLabel">
-        <item name="android:text">@string/bandyer_glass_close</item>
+    <style name="KaleyraSDKDesign.TextView.GlassLabel.SwipeDownMenu" parent="KaleyraSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_close</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Tap.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.Menu</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.TapMenu</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.Tap.Menu" parent="KaleyraSDKDesign.Glass.BottomActionItem.Tap">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap.Menu</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.TapMenu</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap.Menu" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
-        <item name="android:contentDescription">@string/bandyer_glass_select</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap.Menu" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
+        <item name="android:contentDescription">@string/kaleyra_glass_select</item>
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassLabel.TapMenu" parent="BandyerSDKDesign.TextView.GlassLabel">
-        <item name="android:text">@string/bandyer_glass_select</item>
+    <style name="KaleyraSDKDesign.TextView.GlassLabel.TapMenu" parent="KaleyraSDKDesign.TextView.GlassLabel">
+        <item name="android:text">@string/kaleyra_glass_select</item>
     </style>
 </resources>

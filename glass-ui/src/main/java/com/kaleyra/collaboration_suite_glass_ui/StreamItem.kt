@@ -16,13 +16,15 @@
 
 package com.kaleyra.collaboration_suite_glass_ui
 
+import android.net.Uri
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.extensions.StringExtensions.parseToColor
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassCallMyStreamItemLayoutBinding
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassCallOtherStreamItemLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassCallMyStreamItemLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassCallOtherStreamItemLayoutBinding
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
 import com.mikepenz.fastadapter.FastAdapter
@@ -166,7 +168,7 @@ internal class MyStreamItem(
      * The layout for the given item
      */
     override val layoutRes: Int
-        get() = R.layout.bandyer_glass_call_my_stream_item_layout
+        get() = R.layout.kaleyra_glass_call_my_stream_item_layout
 
     /**
      * The type of the Item. Can be a hardcoded INT, but preferred is a defined id
@@ -186,7 +188,7 @@ internal class MyStreamItem(
      */
     class ViewHolder(view: View) : StreamItem.ViewHolder<MyStreamItem>(view) {
 
-        private var binding = BandyerGlassCallMyStreamItemLayoutBinding.bind(itemView)
+        private var binding = KaleyraGlassCallMyStreamItemLayoutBinding.bind(itemView)
 
         /**
          * Binds the data of this item onto the viewHolder
@@ -195,18 +197,18 @@ internal class MyStreamItem(
             super.bindView(item, payloads)
 
             jobs += item.micPermission.onEach {
-                binding.bandyerMicMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
+                binding.kaleyraMicMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
             }.launchIn(item.scope)
 
             jobs += item.camPermission.onEach {
-                binding.bandyerCamMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
+                binding.kaleyraCamMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
             }.launchIn(item.scope)
 
-            binding.bandyerSubtitleLayout.bandyerSubtitle.text = itemView.context.getString(
-                R.string.bandyer_glass_you_pattern,
+            binding.kaleyraSubtitleLayout.kaleyraSubtitle.text = itemView.context.getString(
+                R.string.kaleyra_glass_you_pattern,
                 item.streamParticipant.userDescription
             )
-            binding.bandyerCenteredSubtitle.text = item.streamParticipant.userDescription
+            binding.kaleyraCenteredSubtitle.text = item.streamParticipant.userDescription
         }
 
         /**
@@ -215,26 +217,26 @@ internal class MyStreamItem(
         override fun unbindView(item: MyStreamItem): Unit = with(binding) {
             super.unbindView(item)
             unbind()
-            bandyerVideoWrapper.removeAllViews()
+            kaleyraVideoWrapper.removeAllViews()
         }
 
         override fun onAudioEnabled(value: Boolean) = with(binding) {
             val visibility = if (value) View.GONE else View.VISIBLE
-            bandyerSubtitleLayout.bandyerSubtitleIcon.visibility = visibility
-            bandyerMicMutedIcon.visibility = visibility
+            kaleyraSubtitleLayout.kaleyraSubtitleIcon.visibility = visibility
+            kaleyraMicMutedIcon.visibility = visibility
         }
 
         override fun onVideoEnabled(value: Boolean) = with(binding) {
-            bandyerVideoWrapper.visibility = if (value) View.VISIBLE else View.GONE
-            bandyerCenteredGroup.visibility = if (value) View.GONE else View.VISIBLE
-            bandyerSubtitleLayout.root.visibility = if (value) View.VISIBLE else View.GONE
-            bandyerInfoWrapper.gravity = if (value) Gravity.START else Gravity.CENTER
+            kaleyraVideoWrapper.visibility = if (value) View.VISIBLE else View.GONE
+            kaleyraCenteredGroup.visibility = if (value) View.GONE else View.VISIBLE
+            kaleyraSubtitleLayout.root.visibility = if (value) View.VISIBLE else View.GONE
+            kaleyraInfoWrapper.gravity = if (value) Gravity.START else Gravity.CENTER
         }
 
         override fun onStreamView(view: View) = with(binding) {
             (view.parent as? ViewGroup)?.removeAllViews()
-            bandyerVideoWrapper.removeAllViews()
-            bandyerVideoWrapper.addView(view.apply { id = View.generateViewId() })
+            kaleyraVideoWrapper.removeAllViews()
+            kaleyraVideoWrapper.addView(view.apply { id = View.generateViewId() })
         }
     }
 }
@@ -246,7 +248,7 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope
      * The layout for the given item
      */
     override val layoutRes: Int
-        get() = R.layout.bandyer_glass_call_other_stream_item_layout
+        get() = R.layout.kaleyra_glass_call_other_stream_item_layout
 
     /**
      * The type of the Item. Can be a hardcoded INT, but preferred is a defined id
@@ -266,7 +268,7 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope
      */
     class ViewHolder(view: View) : StreamItem.ViewHolder<OtherStreamItem>(view) {
 
-        private var binding = BandyerGlassCallOtherStreamItemLayoutBinding.bind(itemView)
+        private var binding = KaleyraGlassCallOtherStreamItemLayoutBinding.bind(itemView)
 
         /**
          * Binds the data of this item onto the viewHolder
@@ -274,15 +276,15 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope
         override fun bindView(item: OtherStreamItem, payloads: List<Any>) = with(binding) {
             super.bindView(item, payloads)
             val userDesc = item.streamParticipant.userDescription
-            bandyerSubtitleLayout.bandyerSubtitle.text = userDesc
+            kaleyraSubtitleLayout.kaleyraSubtitle.text = userDesc
 
             val image = item.streamParticipant.userImage
             if (image != Uri.EMPTY) {
-                bandyerAvatar.setImage(image)
+                kaleyraAvatar.setImage(image)
                 return@with
             }
-            bandyerAvatar.setBackground(userDesc.parseToColor())
-            bandyerAvatar.setText(userDesc.first().toString())
+            kaleyraAvatar.setBackground(userDesc.parseToColor())
+            kaleyraAvatar.setText(userDesc.first().toString())
         }
 
         /**
@@ -291,24 +293,24 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope
         override fun unbindView(item: OtherStreamItem): Unit = with(binding) {
             super.unbindView(item)
             unbind()
-            bandyerVideoWrapper.removeAllViews()
+            kaleyraVideoWrapper.removeAllViews()
         }
 
         override fun onAudioEnabled(value: Boolean) {
-            binding.bandyerSubtitleLayout.bandyerSubtitleIcon.visibility =
+            binding.kaleyraSubtitleLayout.kaleyraSubtitleIcon.visibility =
                 if (value) View.GONE else View.VISIBLE
         }
 
         override fun onVideoEnabled(value: Boolean) = with(binding) {
-            bandyerVideoWrapper.visibility = if (value) View.VISIBLE else View.GONE
-            bandyerAvatar.visibility = if (value) View.GONE else View.VISIBLE
-            bandyerInfoWrapper.gravity = if (value) Gravity.START else Gravity.CENTER
+            kaleyraVideoWrapper.visibility = if (value) View.VISIBLE else View.GONE
+            kaleyraAvatar.visibility = if (value) View.GONE else View.VISIBLE
+            kaleyraInfoWrapper.gravity = if (value) Gravity.START else Gravity.CENTER
         }
 
         override fun onStreamView(view: View) = with(binding) {
             (view.parent as? ViewGroup)?.removeAllViews()
-            bandyerVideoWrapper.removeAllViews()
-            bandyerVideoWrapper.addView(view.apply { id = View.generateViewId() })
+            kaleyraVideoWrapper.removeAllViews()
+            kaleyraVideoWrapper.addView(view.apply { id = View.generateViewId() })
         }
     }
 }

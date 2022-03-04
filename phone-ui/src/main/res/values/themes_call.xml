@@ -17,92 +17,92 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="BandyerSDKDesign.Theme.Call">
-        <attr name="bandyer_bottomSheetCallStyle" format="reference" />
-        <attr name="bandyer_bottomSheetAudioRouteStyle" format="reference" />
-        <attr name="bandyer_bottomSheetRingingStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.Theme.Call">
+        <attr name="kaleyra_bottomSheetCallStyle" format="reference" />
+        <attr name="kaleyra_bottomSheetAudioRouteStyle" format="reference" />
+        <attr name="kaleyra_bottomSheetRingingStyle" format="reference" />
 
-        <attr name="bandyer_answerHelperTextStyle" format="reference" />
-        <attr name="bandyer_livePointerStyle" format="reference" />
+        <attr name="kaleyra_answerHelperTextStyle" format="reference" />
+        <attr name="kaleyra_livePointerStyle" format="reference" />
 
-        <attr name="bandyer_userInfoStyle" format="reference" />
-        <attr name="bandyer_callInfoStyle" format="reference" />
-        <attr name="bandyer_userStatusStyle" format="reference"/>
+        <attr name="kaleyra_userInfoStyle" format="reference" />
+        <attr name="kaleyra_callInfoStyle" format="reference" />
+        <attr name="kaleyra_userStatusStyle" format="reference"/>
 
-        <attr name="bandyer_whiteboardDialogStyle" format="reference" />
+        <attr name="kaleyra_whiteboardDialogStyle" format="reference" />
 
-        <attr name="bandyer_screenShareDialogStyle" format="reference" />
-        <attr name="bandyer_fileShareDialogStyle" format="reference" />
+        <attr name="kaleyra_screenShareDialogStyle" format="reference" />
+        <attr name="kaleyra_fileShareDialogStyle" format="reference" />
 
-        <attr name="bandyer_feedbackDialogStyle" format="reference" />
+        <attr name="kaleyra_feedbackDialogStyle" format="reference" />
 
-        <attr name="bandyer_smartGlassDialogMenuStyle" format="reference" />
+        <attr name="kaleyra_smartGlassDialogMenuStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Theme.Call.DayNight.V16" parent="BandyerSDKDesign.Theme.DayNight">
+    <style name="KaleyraSDKDesign.Theme.Call.DayNight.V16" parent="KaleyraSDKDesign.Theme.DayNight">
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="bandyer_answerHelperTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
-        <item name="bandyer_bottomSheetCallStyle">@style/BandyerSDKDesign.BottomSheet.Call</item>
-        <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
-        <item name="bandyer_bottomSheetRingingStyle">@style/BandyerSDKDesign.BottomSheet.Ringing</item>
-        <item name="bandyer_livePointerStyle">@style/BandyerSDKDesign.LivePointer</item>
-        <item name="bandyer_smartGlassDialogMenuStyle">@style/BandyerSDKDesign.SmartGlassDialogMenu</item>
-        <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>
-        <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
-        <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
-        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
-        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
-        <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare</item>
-        <item name="bandyer_feedbackDialogStyle">@style/BandyerSDKDesign.FragmentDialog.Feedback</item>
+        <item name="kaleyra_answerHelperTextStyle">@style/KaleyraSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
+        <item name="kaleyra_bottomSheetCallStyle">@style/KaleyraSDKDesign.BottomSheet.Call</item>
+        <item name="kaleyra_bottomSheetAudioRouteStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute</item>
+        <item name="kaleyra_bottomSheetRingingStyle">@style/KaleyraSDKDesign.BottomSheet.Ringing</item>
+        <item name="kaleyra_livePointerStyle">@style/KaleyraSDKDesign.LivePointer</item>
+        <item name="kaleyra_smartGlassDialogMenuStyle">@style/KaleyraSDKDesign.SmartGlassDialogMenu</item>
+        <item name="kaleyra_userInfoStyle">@style/KaleyraSDKDesign.UserInfo</item>
+        <item name="kaleyra_callInfoStyle">@style/KaleyraSDKDesign.CallInfo</item>
+        <item name="kaleyra_userStatusStyle">@style/KaleyraSDKDesign.TextView.Title.UserStatus</item>
+        <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.Whiteboard</item>
+        <item name="kaleyra_screenShareDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="kaleyra_fileShareDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare</item>
+        <item name="kaleyra_feedbackDialogStyle">@style/KaleyraSDKDesign.FragmentDialog.Feedback</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Call.Day.V16" parent="BandyerSDKDesign.Theme.Day">
+    <style name="KaleyraSDKDesign.Theme.Call.Day.V16" parent="KaleyraSDKDesign.Theme.Day">
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="bandyer_answerHelperTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
-        <item name="bandyer_bottomSheetCallStyle">@style/BandyerSDKDesign.BottomSheet.Call</item>
-        <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
-        <item name="bandyer_bottomSheetRingingStyle">@style/BandyerSDKDesign.BottomSheet.Ringing</item>
-        <item name="bandyer_livePointerStyle">@style/BandyerSDKDesign.LivePointer</item>
-        <item name="bandyer_smartGlassDialogMenuStyle">@style/BandyerSDKDesign.SmartGlassDialogMenu</item>
-        <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>
-        <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
-        <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
-        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
-        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
-        <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare</item>
-        <item name="bandyer_feedbackDialogStyle">@style/BandyerSDKDesign.FragmentDialog.Feedback</item>
+        <item name="kaleyra_answerHelperTextStyle">@style/KaleyraSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
+        <item name="kaleyra_bottomSheetCallStyle">@style/KaleyraSDKDesign.BottomSheet.Call</item>
+        <item name="kaleyra_bottomSheetAudioRouteStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute</item>
+        <item name="kaleyra_bottomSheetRingingStyle">@style/KaleyraSDKDesign.BottomSheet.Ringing</item>
+        <item name="kaleyra_livePointerStyle">@style/KaleyraSDKDesign.LivePointer</item>
+        <item name="kaleyra_smartGlassDialogMenuStyle">@style/KaleyraSDKDesign.SmartGlassDialogMenu</item>
+        <item name="kaleyra_userInfoStyle">@style/KaleyraSDKDesign.UserInfo</item>
+        <item name="kaleyra_callInfoStyle">@style/KaleyraSDKDesign.CallInfo</item>
+        <item name="kaleyra_userStatusStyle">@style/KaleyraSDKDesign.TextView.Title.UserStatus</item>
+        <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.Whiteboard</item>
+        <item name="kaleyra_screenShareDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="kaleyra_fileShareDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare</item>
+        <item name="kaleyra_feedbackDialogStyle">@style/KaleyraSDKDesign.FragmentDialog.Feedback</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Call.Night.V16" parent="BandyerSDKDesign.Theme.Night">
+    <style name="KaleyraSDKDesign.Theme.Call.Night.V16" parent="KaleyraSDKDesign.Theme.Night">
         <item name="android:fitsSystemWindows">false</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="bandyer_answerHelperTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
-        <item name="bandyer_bottomSheetCallStyle">@style/BandyerSDKDesign.BottomSheet.Call</item>
-        <item name="bandyer_bottomSheetAudioRouteStyle">@style/BandyerSDKDesign.BottomSheet.AudioRoute</item>
-        <item name="bandyer_bottomSheetRingingStyle">@style/BandyerSDKDesign.BottomSheet.Ringing.Night</item>
-        <item name="bandyer_livePointerStyle">@style/BandyerSDKDesign.LivePointer</item>
-        <item name="bandyer_smartGlassDialogMenuStyle">@style/BandyerSDKDesign.SmartGlassDialogMenu</item>
-        <item name="bandyer_userInfoStyle">@style/BandyerSDKDesign.UserInfo</item>
-        <item name="bandyer_callInfoStyle">@style/BandyerSDKDesign.CallInfo</item>
-        <item name="bandyer_userStatusStyle">@style/BandyerSDKDesign.TextView.Title.UserStatus</item>
-        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard</item>
-        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
-        <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare</item>
-        <item name="bandyer_feedbackDialogStyle">@style/BandyerSDKDesign.FragmentDialog.Feedback</item>
+        <item name="kaleyra_answerHelperTextStyle">@style/KaleyraSDKDesign.TextView.Subtitle.AnswerCallHelperText</item>
+        <item name="kaleyra_bottomSheetCallStyle">@style/KaleyraSDKDesign.BottomSheet.Call</item>
+        <item name="kaleyra_bottomSheetAudioRouteStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute</item>
+        <item name="kaleyra_bottomSheetRingingStyle">@style/KaleyraSDKDesign.BottomSheet.Ringing.Night</item>
+        <item name="kaleyra_livePointerStyle">@style/KaleyraSDKDesign.LivePointer</item>
+        <item name="kaleyra_smartGlassDialogMenuStyle">@style/KaleyraSDKDesign.SmartGlassDialogMenu</item>
+        <item name="kaleyra_userInfoStyle">@style/KaleyraSDKDesign.UserInfo</item>
+        <item name="kaleyra_callInfoStyle">@style/KaleyraSDKDesign.CallInfo</item>
+        <item name="kaleyra_userStatusStyle">@style/KaleyraSDKDesign.TextView.Title.UserStatus</item>
+        <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.Whiteboard</item>
+        <item name="kaleyra_screenShareDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="kaleyra_fileShareDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare</item>
+        <item name="kaleyra_feedbackDialogStyle">@style/KaleyraSDKDesign.FragmentDialog.Feedback</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Call.DayNight" parent="BandyerSDKDesign.Theme.Call.DayNight.V16"/>
+    <style name="KaleyraSDKDesign.Theme.Call.DayNight" parent="KaleyraSDKDesign.Theme.Call.DayNight.V16"/>
 
-    <style name="BandyerSDKDesign.Theme.Call.Day" parent="BandyerSDKDesign.Theme.Call.Day.V16"/>
+    <style name="KaleyraSDKDesign.Theme.Call.Day" parent="KaleyraSDKDesign.Theme.Call.Day.V16"/>
 
-    <style name="BandyerSDKDesign.Theme.Call.Night" parent="BandyerSDKDesign.Theme.Call.Night.V16"/>
+    <style name="KaleyraSDKDesign.Theme.Call.Night" parent="KaleyraSDKDesign.Theme.Call.Night.V16"/>
 
-    <style name="BandyerSDKDesign.Theme.Call" parent="BandyerSDKDesign.Theme.Call.Night">
-        <item name="bandyer_whiteboardDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.Whiteboard.Day</item>
-        <item name="bandyer_screenShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
-        <item name="bandyer_fileShareDialogStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Day</item>
+    <style name="KaleyraSDKDesign.Theme.Call" parent="KaleyraSDKDesign.Theme.Call.Night">
+        <item name="kaleyra_whiteboardDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.Whiteboard.Day</item>
+        <item name="kaleyra_screenShareDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.ScreenSharePicker</item>
+        <item name="kaleyra_fileShareDialogStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.Day</item>
     </style>
 
 </resources>

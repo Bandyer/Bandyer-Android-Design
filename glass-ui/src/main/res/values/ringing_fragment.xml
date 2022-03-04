@@ -16,50 +16,50 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_callWatermarkStyle" />
+    <declare-styleable name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Ringing">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_callWatermarkStyle" />
         <attr name="recyclerViewStyle" />
-        <attr name="bandyer_recyclerViewItemStyle" />
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_subtitleStyle" />
+        <attr name="kaleyra_recyclerViewItemStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_subtitleStyle" />
         <attr name="bottomNavigationStyle" />
     </declare-styleable>
 
     <!-- RINGING FRAGMENT -->
-    <style name="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Ringing" parent="BandyerSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.FullScreenDialog.Ringing</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Ringing</item>
-        <item name="bottomNavigationStyle">@style/BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Ringing</item>
+    <style name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Ringing" parent="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.FullScreenDialog.Ringing</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog.Ringing</item>
+        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Ringing</item>
     </style>
 
     <!-- TITLE -->
-    <style name="BandyerSDKDesign.TextView.Title.FullScreenDialog.Ringing" parent="BandyerSDKDesign.TextView.Title.FullScreenDialog">
+    <style name="KaleyraSDKDesign.TextView.Title.FullScreenDialog.Ringing" parent="KaleyraSDKDesign.TextView.Title.FullScreenDialog">
         <item name="android:visibility">gone</item>
     </style>
 
     <!-- SUBTITLE -->
-    <style name="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog.Ringing" parent="BandyerSDKDesign.TextView.Subtitle.FullScreenDialog">
-        <item name="android:text">@string/bandyer_glass_ringing</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog.Ringing" parent="KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog">
+        <item name="android:text">@string/kaleyra_glass_ringing</item>
     </style>
 
     <!-- BOTTOM NAVIGATION -->
-    <style name="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Ringing" parent="BandyerSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo">
-        <item name="bandyer_swipeDownItemStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog.Ringing</item>
+    <style name="KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Ringing" parent="KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo">
+        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog.Ringing</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog.Ringing</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog.Ringing</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog.Ringing" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog.Ringing</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog.Ringing</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog.Ringing" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog">
         <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/bandyer_glass_decline</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_decline</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog.Ringing" parent="BandyerSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog">
-        <item name="android:text">@string/bandyer_glass_decline</item>
+    <style name="KaleyraSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog.Ringing" parent="KaleyraSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog">
+        <item name="android:text">@string/kaleyra_glass_decline</item>
     </style>
 </resources>
 

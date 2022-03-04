@@ -16,13 +16,13 @@
 
 <resources>
 
-    <declare-styleable name="BandyerSDKDesign.ChatEmptyItem">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_titleStyle" />
+    <declare-styleable name="KaleyraSDKDesign.ChatEmptyItem">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_titleStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.ChatEmptyItem" parent="">
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Subtitle.ChatEmpty</item>
+    <style name="KaleyraSDKDesign.ChatEmptyItem" parent="">
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ChatEmpty</item>
     </style>
 
 </resources>

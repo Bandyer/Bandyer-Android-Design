@@ -16,61 +16,61 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.ChatMessage.LoggedUser" parent="BandyerSDKDesign.ChatMessage">
-        <item name="materialCardViewStyle">@style/BandyerSDKDesign.ChatMessageBackground.LoggedUser</item>
-        <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.Subtitle.ChatMessageTimestamp.LoggedUser</item>
-        <item name="bandyer_messageStyle">@style/BandyerSDKDesign.TextView.ChatMessage.LoggedUser</item>
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.ChatMessageStatusImageView</item>
+    <style name="KaleyraSDKDesign.ChatMessage.LoggedUser" parent="KaleyraSDKDesign.ChatMessage">
+        <item name="materialCardViewStyle">@style/KaleyraSDKDesign.ChatMessageBackground.LoggedUser</item>
+        <item name="kaleyra_timestampStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp.LoggedUser</item>
+        <item name="kaleyra_messageStyle">@style/KaleyraSDKDesign.TextView.ChatMessage.LoggedUser</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ChatMessageStatusImageView</item>
     </style>
 
-    <style name="BandyerSDKDesign.ChatMessage.OtherUser" parent="BandyerSDKDesign.ChatMessage">
-        <item name="materialCardViewStyle">@style/BandyerSDKDesign.ChatMessageBackground.OtherUser</item>
-        <item name="bandyer_timestampStyle">@style/BandyerSDKDesign.TextView.Subtitle.ChatMessageTimestamp.OtherUser</item>
-        <item name="bandyer_messageStyle">@style/BandyerSDKDesign.TextView.ChatMessage.OtherUser</item>
+    <style name="KaleyraSDKDesign.ChatMessage.OtherUser" parent="KaleyraSDKDesign.ChatMessage">
+        <item name="materialCardViewStyle">@style/KaleyraSDKDesign.ChatMessageBackground.OtherUser</item>
+        <item name="kaleyra_timestampStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp.OtherUser</item>
+        <item name="kaleyra_messageStyle">@style/KaleyraSDKDesign.TextView.ChatMessage.OtherUser</item>
     </style>
 
     <!-- Chat Message Text Data View Container -->
 
-    <style name="BandyerSDKDesign.ChatMessageBackground" parent="Widget.MaterialComponents.CardView">
+    <style name="KaleyraSDKDesign.ChatMessageBackground" parent="Widget.MaterialComponents.CardView">
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:descendantFocusability">blocksDescendants</item>
         <item name="cardPreventCornerOverlap">false</item>
-        <item name="contentPaddingTop">@dimen/bandyer_dimen_space8</item>
-        <item name="contentPaddingBottom">@dimen/bandyer_dimen_space8</item>
-        <item name="contentPaddingLeft">@dimen/bandyer_dimen_space16</item>
-        <item name="contentPaddingRight">@dimen/bandyer_dimen_space16</item>
-        <item name="cardElevation">@dimen/bandyer_dimen_space0</item>
-        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
+        <item name="contentPaddingTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="contentPaddingBottom">@dimen/kaleyra_dimen_space8</item>
+        <item name="contentPaddingLeft">@dimen/kaleyra_dimen_space16</item>
+        <item name="contentPaddingRight">@dimen/kaleyra_dimen_space16</item>
+        <item name="cardElevation">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="BandyerSDKDesign.ChatMessageBackground.LoggedUser" parent="BandyerSDKDesign.ChatMessageBackground">
+    <style name="KaleyraSDKDesign.ChatMessageBackground.LoggedUser" parent="KaleyraSDKDesign.ChatMessageBackground">
         <item name="cardBackgroundColor">?attr/colorSecondary</item>
-        <item name="shapeAppearance">@style/BandyerSDKDesign.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay</item>
+        <item name="shapeAppearance">@style/KaleyraSDKDesign.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay</item>
     </style>
 
-    <style name="BandyerSDKDesign.ChatMessageBackground.OtherUser" parent="BandyerSDKDesign.ChatMessageBackground">
+    <style name="KaleyraSDKDesign.ChatMessageBackground.OtherUser" parent="KaleyraSDKDesign.ChatMessageBackground">
         <item name="cardBackgroundColor">?attr/colorPrimaryVariant</item>
-        <item name="shapeAppearance">@style/BandyerSDKDesign.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay</item>
+        <item name="shapeAppearance">@style/KaleyraSDKDesign.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay</item>
     </style>
 
-    <style name="BandyerSDKDesign.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay" parent="">
+    <style name="KaleyraSDKDesign.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopRight">@dimen/bandyer_dimen_space12</item>
-        <item name="cornerSizeTopLeft">@dimen/bandyer_dimen_space24</item>
-        <item name="cornerSizeBottomRight">@dimen/bandyer_dimen_space0</item>
-        <item name="cornerSizeBottomLeft">@dimen/bandyer_dimen_space24</item>
+        <item name="cornerSizeTopRight">@dimen/kaleyra_dimen_space12</item>
+        <item name="cornerSizeTopLeft">@dimen/kaleyra_dimen_space24</item>
+        <item name="cornerSizeBottomRight">@dimen/kaleyra_dimen_space0</item>
+        <item name="cornerSizeBottomLeft">@dimen/kaleyra_dimen_space24</item>
     </style>
 
-    <style name="BandyerSDKDesign.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay" parent="">
+    <style name="KaleyraSDKDesign.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopRight">@dimen/bandyer_dimen_space24</item>
-        <item name="cornerSizeTopLeft">@dimen/bandyer_dimen_space0</item>
-        <item name="cornerSizeBottomRight">@dimen/bandyer_dimen_space24</item>
-        <item name="cornerSizeBottomLeft">@dimen/bandyer_dimen_space12</item>
+        <item name="cornerSizeTopRight">@dimen/kaleyra_dimen_space24</item>
+        <item name="cornerSizeTopLeft">@dimen/kaleyra_dimen_space0</item>
+        <item name="cornerSizeBottomRight">@dimen/kaleyra_dimen_space24</item>
+        <item name="cornerSizeBottomLeft">@dimen/kaleyra_dimen_space12</item>
     </style>
 
 </resources>

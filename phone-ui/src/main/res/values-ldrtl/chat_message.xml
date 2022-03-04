@@ -17,20 +17,20 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay" parent="">
+    <style name="KaleyraSDKDesign.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopLeft">@dimen/bandyer_dimen_space12</item>
-        <item name="cornerSizeTopRight">@dimen/bandyer_dimen_space24</item>
-        <item name="cornerSizeBottomLeft">@dimen/bandyer_dimen_space0</item>
-        <item name="cornerSizeBottomRight">@dimen/bandyer_dimen_space24</item>
+        <item name="cornerSizeTopLeft">@dimen/kaleyra_dimen_space12</item>
+        <item name="cornerSizeTopRight">@dimen/kaleyra_dimen_space24</item>
+        <item name="cornerSizeBottomLeft">@dimen/kaleyra_dimen_space0</item>
+        <item name="cornerSizeBottomRight">@dimen/kaleyra_dimen_space24</item>
     </style>
 
-    <style name="BandyerSDKDesign.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay" parent="">
+    <style name="KaleyraSDKDesign.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay" parent="">
         <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopLeft" >@dimen/bandyer_dimen_space24</item>
-        <item name="cornerSizeTopRight">@dimen/bandyer_dimen_space0</item>
-        <item name="cornerSizeBottomLeft">@dimen/bandyer_dimen_space24</item>
-        <item name="cornerSizeBottomRight">@dimen/bandyer_dimen_space12</item>
+        <item name="cornerSizeTopLeft" >@dimen/kaleyra_dimen_space24</item>
+        <item name="cornerSizeTopRight">@dimen/kaleyra_dimen_space0</item>
+        <item name="cornerSizeBottomLeft">@dimen/kaleyra_dimen_space24</item>
+        <item name="cornerSizeBottomRight">@dimen/kaleyra_dimen_space12</item>
     </style>
 
 </resources>

@@ -16,22 +16,22 @@
   -->
 
 <resources>
-    <item name="ic_bandyer_glass_charging" type="drawable">@drawable/bandyer_glass_charging_icon</item>
-    <item name="ic_bandyer_glass_cell_missing" type="drawable">@drawable/bandyer_glass_cell_missing_icon</item>
-    <item name="ic_bandyer_glass_cell_low" type="drawable">@drawable/bandyer_glass_cell_low_icon</item>
-    <item name="ic_bandyer_glass_cell_moderate" type="drawable">@drawable/bandyer_glass_cell_moderate_icon</item>
-    <item name="ic_bandyer_glass_cell_good" type="drawable">@drawable/bandyer_glass_cell_good_icon</item>
-    <item name="ic_bandyer_glass_cell_full" type="drawable">@drawable/bandyer_glass_cell_full_icon</item>
-    <item name="ic_bandyer_glass_badge_new_mess" type="drawable">@drawable/bandyer_glass_badge_new_mess_icon</item>
-    <item name="ic_bandyer_glass_close_arrow" type="drawable">@drawable/bandyer_glass_close_arrow_icon</item>
-    <item name="ic_bandyer_glass_mic_off" type="drawable">@drawable/bandyer_glass_mic_off_icon</item>
-    <item name="ic_bandyer_glass_cam_off" type="drawable">@drawable/bandyer_glass_cam_off_icon</item>
-    <item name="ic_bandyer_glass_select" type="drawable">@drawable/bandyer_glass_select_icon</item>
-    <item name="ic_bandyer_glas_swipe_arrow" type="drawable">@drawable/bandyer_glass_swipe_arrow_icon</item>
-    <item name="ic_bandyer_glass_wifi_disabled" type="drawable">@drawable/bandyer_glass_wifi_disabled_icon</item>
-    <item name="ic_bandyer_glass_wifi_low" type="drawable">@drawable/bandyer_glass_wifi_low_icon</item>
-    <item name="ic_bandyer_glass_wifi_moderate" type="drawable">@drawable/bandyer_glass_wifi_moderate_icon</item>
-    <item name="ic_bandyer_glass_wifi_full" type="drawable">@drawable/bandyer_glass_wifi_full_icon</item>
-    <item name="ic_bandyer_glass_rec" type="drawable">@drawable/bandyer_rec_icon</item>
-    <item name="ic_bandyer_glass_alert" type="drawable">@drawable/bandyer_alert_icon</item>
+    <item name="ic_kaleyra_glass_charging" type="drawable">@drawable/kaleyra_glass_charging_icon</item>
+    <item name="ic_kaleyra_glass_cell_missing" type="drawable">@drawable/kaleyra_glass_cell_missing_icon</item>
+    <item name="ic_kaleyra_glass_cell_low" type="drawable">@drawable/kaleyra_glass_cell_low_icon</item>
+    <item name="ic_kaleyra_glass_cell_moderate" type="drawable">@drawable/kaleyra_glass_cell_moderate_icon</item>
+    <item name="ic_kaleyra_glass_cell_good" type="drawable">@drawable/kaleyra_glass_cell_good_icon</item>
+    <item name="ic_kaleyra_glass_cell_full" type="drawable">@drawable/kaleyra_glass_cell_full_icon</item>
+    <item name="ic_kaleyra_glass_badge_new_mess" type="drawable">@drawable/kaleyra_glass_badge_new_mess_icon</item>
+    <item name="ic_kaleyra_glass_close_arrow" type="drawable">@drawable/kaleyra_glass_close_arrow_icon</item>
+    <item name="ic_kaleyra_glass_mic_off" type="drawable">@drawable/kaleyra_glass_mic_off_icon</item>
+    <item name="ic_kaleyra_glass_cam_off" type="drawable">@drawable/kaleyra_glass_cam_off_icon</item>
+    <item name="ic_kaleyra_glass_select" type="drawable">@drawable/kaleyra_glass_select_icon</item>
+    <item name="ic_kaleyra_glas_swipe_arrow" type="drawable">@drawable/kaleyra_glass_swipe_arrow_icon</item>
+    <item name="ic_kaleyra_glass_wifi_disabled" type="drawable">@drawable/kaleyra_glass_wifi_disabled_icon</item>
+    <item name="ic_kaleyra_glass_wifi_low" type="drawable">@drawable/kaleyra_glass_wifi_low_icon</item>
+    <item name="ic_kaleyra_glass_wifi_moderate" type="drawable">@drawable/kaleyra_glass_wifi_moderate_icon</item>
+    <item name="ic_kaleyra_glass_wifi_full" type="drawable">@drawable/kaleyra_glass_wifi_full_icon</item>
+    <item name="ic_kaleyra_glass_rec" type="drawable">@drawable/kaleyra_rec_icon</item>
+    <item name="ic_kaleyra_glass_alert" type="drawable">@drawable/kaleyra_alert_icon</item>
 </resources>

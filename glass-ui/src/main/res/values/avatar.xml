@@ -16,41 +16,41 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.Glass.Avatar">
-        <attr name="bandyer_iconStyle" />
+    <declare-styleable name="KaleyraSDKDesign.Glass.Avatar">
+        <attr name="kaleyra_iconStyle" />
         <attr name="android:textViewStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Glass.Avatar" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.RoundedImageGlass.Bordered</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatar</item>
+    <style name="KaleyraSDKDesign.Glass.Avatar" parent="KaleyraSDKDesign.Glass">
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.RoundedImageGlass.Bordered</item>
+        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Title.GlassAvatar</item>
     </style>
 
     <!-- TEXT -->
-    <style name="BandyerSDKDesign.TextView.Title.GlassAvatar" parent="BandyerSDKDesign.TextView.Title">
+    <style name="KaleyraSDKDesign.TextView.Title.GlassAvatar" parent="KaleyraSDKDesign.TextView.Title">
         <item name="android:gravity">center</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
         <item name="android:maxLines">1</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_h1</item>
-        <item name="autoSizeMinTextSize">@dimen/bandyer_dimen_text_2sp</item>
+        <item name="autoSizeMaxTextSize">@dimen/kaleyra_dimen_text_h1</item>
+        <item name="autoSizeMinTextSize">@dimen/kaleyra_dimen_text_2sp</item>
         <item name="autoSizeTextType">uniform</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.Avatar.Big" parent="BandyerSDKDesign.Glass.Avatar">
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.RoundedImageGlass.Big</item>
-        <item name="android:textViewStyle">@style/BandyerSDKDesign.TextView.Title.GlassAvatar.Big</item>
+    <style name="KaleyraSDKDesign.Glass.Avatar.Big" parent="KaleyraSDKDesign.Glass.Avatar">
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.RoundedImageGlass.Big</item>
+        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Title.GlassAvatar.Big</item>
     </style>
 
-    <style name="BandyerSDKDesign.RoundedImageGlass.Big" parent="BandyerSDKDesign.RoundedImageGlass.Bordered">
-        <item name="android:layout_width">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_glass_participants_avatar_size</item>
-        <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
+    <style name="KaleyraSDKDesign.RoundedImageGlass.Big" parent="KaleyraSDKDesign.RoundedImageGlass.Bordered">
+        <item name="android:layout_width">@dimen/kaleyra_dimen_glass_participants_avatar_size</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_glass_participants_avatar_size</item>
+        <item name="strokeWidth">@dimen/kaleyra_dimen_space0</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Title.GlassAvatar.Big" parent="BandyerSDKDesign.TextView.Title.GlassAvatar">
-        <item name="autoSizeMaxTextSize">@dimen/bandyer_dimen_text_40sp</item>
+    <style name="KaleyraSDKDesign.TextView.Title.GlassAvatar.Big" parent="KaleyraSDKDesign.TextView.Title.GlassAvatar">
+        <item name="autoSizeMaxTextSize">@dimen/kaleyra_dimen_text_40sp</item>
     </style>
 </resources>

@@ -20,11 +20,14 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
+
+
 import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassToastLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassToastLayoutBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getCallThemeAttribute
 import java.util.*
 
@@ -35,9 +38,9 @@ internal class ToastContainer @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     private val theme = context.getThemeAttribute(
-        context.getCallThemeAttribute(R.styleable.BandyerSDKDesign_Theme_Glass_Call_bandyer_toastContainerStyle),
-        R.styleable.BandyerSDKDesign_Theme_GlassCall_ToastContainerStyle,
-        R.styleable.BandyerSDKDesign_Theme_GlassCall_ToastContainerStyle_bandyer_toastStyle
+        context.getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Glass_Call_kaleyra_toastContainerStyle),
+        R.styleable.KaleyraSDKDesign_Theme_GlassCall_ToastContainerStyle,
+        R.styleable.KaleyraSDKDesign_Theme_GlassCall_ToastContainerStyle_kaleyra_toastStyle
     )
 
     /**
@@ -86,12 +89,12 @@ internal class ToastContainer @JvmOverloads constructor(
         defStyleAttr: Int = 0
     ) : LinearLayout(context, attrs, defStyleAttr)  {
 
-        private val binding = BandyerGlassToastLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+        private val binding = KaleyraGlassToastLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
-        fun setIcon(@DrawableRes resId: Int? = null) = with(binding.bandyerIcon) {
+        fun setIcon(@DrawableRes resId: Int? = null) = with(binding.kaleyraIcon) {
             resId?.also { setImageResource(it) } ?: kotlin.run { visibility = View.GONE }
         }
 
-        fun setText(text: String) { binding.bandyerText.text = text }
+        fun setText(text: String) { binding.kaleyraText.text = text }
     }
 }

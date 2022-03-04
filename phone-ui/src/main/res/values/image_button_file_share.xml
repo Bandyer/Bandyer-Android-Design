@@ -16,24 +16,24 @@
   -->
 
 <resources>
-    <style name="BandyerSDKDesign.ImageButton.FileShareAction" parent="BandyerSDKDesign.ImageButton">
-        <item name="android:layout_width">@dimen/bandyer_dimen_space32</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space32</item>
+    <style name="KaleyraSDKDesign.ImageButton.FileShareAction" parent="KaleyraSDKDesign.ImageButton">
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space32</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_space32</item>
         <item name="android:clickable">false</item>
         <item name="android:focusable">false</item>
         <item name="rippleColor">@android:color/transparent</item>
-        <item name="backgroundTint">@color/bandyer_file_share_action_background_color</item>
-        <item name="strokeWidth">@dimen/bandyer_dimen_space2</item>
-        <item name="strokeColor">@color/bandyer_file_share_action_stroke_color</item>
-        <item name="icon">@drawable/bandyer_file_share_action_icon</item>
-        <item name="iconSize">@dimen/bandyer_dimen_space16</item>
+        <item name="backgroundTint">@color/kaleyra_file_share_action_background_color</item>
+        <item name="strokeWidth">@dimen/kaleyra_dimen_space2</item>
+        <item name="strokeColor">@color/kaleyra_file_share_action_stroke_color</item>
+        <item name="icon">@drawable/kaleyra_file_share_action_icon</item>
+        <item name="iconSize">@dimen/kaleyra_dimen_space16</item>
         <item name="android:focusableInTouchMode">false</item>
-        <item name="iconTint">@color/bandyer_file_share_action_icon_color</item>
+        <item name="iconTint">@color/kaleyra_file_share_action_icon_color</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.FileShareAction.Day" parent="BandyerSDKDesign.ImageButton.FileShareAction">
-        <item name="backgroundTint">@color/bandyer_file_share_action_background_color_day</item>
-        <item name="strokeColor">@color/bandyer_file_share_action_stroke_color_day</item>
-        <item name="iconTint">@color/bandyer_file_share_action_icon_color_day</item>
+    <style name="KaleyraSDKDesign.ImageButton.FileShareAction.Day" parent="KaleyraSDKDesign.ImageButton.FileShareAction">
+        <item name="backgroundTint">@color/kaleyra_file_share_action_background_color_day</item>
+        <item name="strokeColor">@color/kaleyra_file_share_action_stroke_color_day</item>
+        <item name="iconTint">@color/kaleyra_file_share_action_icon_color_day</item>
     </style>
 </resources>

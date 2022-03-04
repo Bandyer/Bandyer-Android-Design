@@ -23,7 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassFragmentZoomBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentZoomBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 
@@ -32,8 +32,8 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
  */
 internal class ZoomFragment : BaseFragment(), TiltListener {
 
-    private var _binding: BandyerGlassFragmentZoomBinding? = null
-    override val binding: BandyerGlassFragmentZoomBinding get() = _binding!!
+    private var _binding: KaleyraGlassFragmentZoomBinding? = null
+    override val binding: KaleyraGlassFragmentZoomBinding get() = _binding!!
 
     private var deltaAzimuth = 0f
 
@@ -55,10 +55,10 @@ internal class ZoomFragment : BaseFragment(), TiltListener {
         super.onCreateView(inflater, container, savedInstanceState)
 
         // Add view binding
-        _binding = BandyerGlassFragmentZoomBinding
+        _binding = KaleyraGlassFragmentZoomBinding
             .inflate(inflater, container, false)
             .apply {
-                if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
+                if(GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear()
                 root.setOnTouchListener { _, _ -> true }
             }
 
@@ -85,7 +85,7 @@ internal class ZoomFragment : BaseFragment(), TiltListener {
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = true.also { binding.bandyerSlider.increaseProgress() }
+    override fun onSwipeForward(isKeyEvent: Boolean) = true.also { binding.kaleyraSlider.increaseProgress() }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = true.also { binding.bandyerSlider.decreaseProgress() }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = true.also { binding.kaleyraSlider.decreaseProgress() }
 }

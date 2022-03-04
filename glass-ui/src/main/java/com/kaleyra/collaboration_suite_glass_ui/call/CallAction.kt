@@ -22,7 +22,7 @@ import androidx.annotation.AttrRes
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassMenuItemLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassMenuItemLayoutBinding
 
 /**
  * Class representing a Menu Action
@@ -105,13 +105,13 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
         /**
          * The layout binding
          */
-        private var binding: BandyerGlassMenuItemLayoutBinding? = null
+        private var binding: KaleyraGlassMenuItemLayoutBinding? = null
 
         /**
          * Toggle the menu action
          */
         fun toggle(toggled: Boolean) {
-            binding?.bandyerText?.apply {
+            binding?.kaleyraText?.apply {
                 isActivated = !toggled
                 text = if(toggled) toggledText else defaultText
             }
@@ -122,7 +122,7 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
          * Disable the menu action
          */
         fun disable(disabled: Boolean) {
-            binding?.bandyerText?.isEnabled = !disabled
+            binding?.kaleyraText?.isEnabled = !disabled
             this.disabled = disabled
         }
 
@@ -131,7 +131,7 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
          */
         override fun onReady() {
             super.onReady()
-            binding = BandyerGlassMenuItemLayoutBinding.bind(itemView!!)
+            binding = KaleyraGlassMenuItemLayoutBinding.bind(itemView!!)
             toggle(toggled)
             disable(disabled)
         }
@@ -142,9 +142,9 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
      * @property toggled true to activate, false otherwise
      * @constructor
      */
-    class MICROPHONE(ctx: Context): ToggleableCallAction(R.id.id_glass_menu_mic_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewMicItemStyle) {
-        override val defaultText = ctx.getString(R.string.bandyer_glass_menu_microphone)
-        override val toggledText = ctx.getString(R.string.bandyer_glass_menu_microphone_toggled)
+    class MICROPHONE(ctx: Context): ToggleableCallAction(R.id.id_glass_menu_mic_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewMicItemStyle) {
+        override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_microphone)
+        override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_microphone_toggled)
     }
 
     /**
@@ -152,32 +152,32 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
      * @property toggled true to activate, false otherwise
      * @constructor
      */
-    class CAMERA(ctx: Context): ToggleableCallAction(R.id.id_glass_menu_camera_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewCameraItemStyle) {
-        override val defaultText = ctx.getString(R.string.bandyer_glass_menu_camera)
-        override val toggledText = ctx.getString(R.string.bandyer_glass_menu_camera_toggled)
+    class CAMERA(ctx: Context): ToggleableCallAction(R.id.id_glass_menu_camera_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewCameraItemStyle) {
+        override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_camera)
+        override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_camera_toggled)
     }
 
     /**
      * Volume menu action item
      * @constructor
      */
-    class VOLUME: CallAction(R.id.id_glass_menu_volume_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewVolumeItemStyle)
+    class VOLUME: CallAction(R.id.id_glass_menu_volume_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewVolumeItemStyle)
 
     /**
      * Zoom menu action item
      * @constructor
      */
-    class ZOOM: CallAction(R.id.id_glass_menu_zoom_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewZoomItemStyle)
+    class ZOOM: CallAction(R.id.id_glass_menu_zoom_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewZoomItemStyle)
 
     /**
      * Participants menu action item
      * @constructor
      */
-    class PARTICIPANTS: CallAction(R.id.id_glass_menu_participants_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewParticipantsItemStyle)
+    class PARTICIPANTS: CallAction(R.id.id_glass_menu_participants_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewParticipantsItemStyle)
 
     /**
      * Chat menu action item
      * @constructor
      */
-    class CHAT: CallAction(R.id.id_glass_menu_chat_item, R.layout.bandyer_glass_menu_item_layout, R.attr.bandyer_recyclerViewChatItemStyle)
+    class CHAT: CallAction(R.id.id_glass_menu_chat_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewChatItemStyle)
 }

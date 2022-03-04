@@ -16,17 +16,17 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.ChatLoadingItem">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_progressStyle" />
+    <declare-styleable name="KaleyraSDKDesign.ChatLoadingItem">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_progressStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.ChatLoadingItem" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ChatLoadingItem.RootLayout</item>
-        <item name="bandyer_progressStyle">@style/BandyerSDKDesign.ChatNetworkProgressIndicator</item>
+    <style name="KaleyraSDKDesign.ChatLoadingItem" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.ChatLoadingItem.RootLayout</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraSDKDesign.ChatNetworkProgressIndicator</item>
     </style>
 
-    <style name="BandyerSDKDesign.ChatLoadingItem.RootLayout" parent="">
+    <style name="KaleyraSDKDesign.ChatLoadingItem.RootLayout" parent="">
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>

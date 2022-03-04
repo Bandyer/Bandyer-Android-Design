@@ -16,80 +16,80 @@
   -->
 
 <resources>
-    <string name="bandyer_glass_ringing_pattern" translatable="false">, %1$s</string>
-    <string name="bandyer_glass_ringing_rtl_pattern" translatable="false">%1$s ،</string>
-    <string name="bandyer_glass_group_contacts_pattern" translatable="false">+%1$d</string>
-    <string name="bandyer_glass_message_counter_pattern" translatable="false">%1$d</string>
-    <string name="bandyer_glass_n_of_participants_pattern">%1$d participants</string>
-    <string name="bandyer_glass_slider_volume_pattern">Volume: %1$d</string>
-    <string name="bandyer_glass_slider_zoom_pattern">Zoom: %1$d%%</string>
-    <string name="bandyer_glass_new_messages_pattern">%1$d new messages</string>
-    <string name="bandyer_glass_user_joined_pattern">%1$s joined</string>
-    <string name="bandyer_glass_user_left_pattern">%1$s left</string>
-    <string name="bandyer_glass_you_pattern">%1$s (Tu)</string>
-    <string name="bandyer_glass_swipe">Swipe</string>
-    <string name="bandyer_glass_tap">Tap</string>
-    <string name="bandyer_glass_close">close</string>
-    <string name="bandyer_glass_browse">browse</string>
-    <string name="bandyer_glass_select">select</string>
-    <string name="bandyer_glass_cancel">cancel</string>
-    <string name="bandyer_glass_change">change</string>
-    <string name="bandyer_glass_confirm">confirm</string>
-    <string name="bandyer_glass_end">end</string>
-    <string name="bandyer_glass_accept">answer</string>
-    <string name="bandyer_glass_decline">decline</string>
-    <string name="bandyer_glass_hangup">hang up</string>
-    <string name="bandyer_glass_volume">Volume</string>
-    <string name="bandyer_glass_zoom">Zoom</string>
-    <string name="bandyer_glass_ringing">is calling…</string>
-    <string name="bandyer_glass_ringing_group">incoming group call…</string>
-    <string name="bandyer_glass_dialing">dialing…</string>
-    <string name="bandyer_glass_dialing_group">group call ringing…</string>
-    <string name="bandyer_glass_connecting">connecting…</string>
-    <string name="bandyer_glass_offline">You\'re offline</string>
-    <string name="bandyer_glass_want_end_call">End the call?</string>
-    <string name="bandyer_glass_confirm_end_call">Do you confirm to end the conversation?</string>
-    <string name="bandyer_glass_call_ended">Call ended</string>
-    <string name="bandyer_glass_participants_camera">participants</string>
-    <string name="bandyer_glass_open_menu">menu</string>
-    <string name="bandyer_glass_contact_info">contact</string>
-    <string name="bandyer_glass_now">Now</string>
-    <string name="bandyer_glass_read">read</string>
-    <string name="bandyer_glass_hide_notification">dismiss</string>
-    <string name="bandyer_glass_online">Online</string>
-    <string name="bandyer_glass_invited">Invited</string>
-    <string name="bandyer_glass_last_seen_pattern">Last seen: %1$s</string>
-    <string name="bandyer_glass_call">Call</string>
-    <string name="bandyer_glass_videocall">Video call</string>
-    <string name="bandyer_glass_browse_right">browse right</string>
-    <string name="bandyer_glass_browse_left">browse left</string>
-    <string name="bandyer_glass_right_left">scroll</string>
-    <string name="bandyer_glass_camera_off">Your camera is off</string>
-    <string name="bandyer_glass_menu_microphone">Enable microphone</string>
-    <string name="bandyer_glass_menu_microphone_toggled">Mute microphone</string>
-    <string name="bandyer_glass_menu_camera">Enable camera</string>
-    <string name="bandyer_glass_menu_camera_toggled">Mute camera</string>
-    <string name="bandyer_glass_menu_participants">Participants</string>
-    <string name="bandyer_glass_menu_volume">Volume</string>
-    <string name="bandyer_glass_menu_zoom">Zoom</string>
-    <string name="bandyer_glass_menu_chat">Chat</string>
-    <string name="bandyer_glass_rec">Rec</string>
-    <string name="bandyer_glass_call_declined">Declined</string>
-    <string name="bandyer_glass_call_error_occurred">An error occurred</string>
-    <string name="bandyer_glass_call_timeout">Connection timeout</string>
-    <string name="bandyer_glass_answered_on_another_device">Answered on another device</string>
-    <string name="bandyer_glass_line_busy">Line busy</string>
-    <string name="bandyer_glass_call_hunged_up">Hunged up</string>
-    <string name="bandyer_glass_mic_not_active">The mic is not active</string>
-    <string name="bandyer_glass_cam_not_active">The cam is not active</string>
-    <string name="bandyer_glass_mic_and_cam_not_active">The mic and the camera are not active</string>
-    <string name="bandyer_glass_mic_blocked">The mic is blocked</string>
-    <string name="bandyer_glass_cam_blocked">The camera is blocked</string>
-    <string name="bandyer_glass_mic_and_cam_blocked">The mic and the camera are blocked</string>
-    <string name="bandyer_glass_alone">You\'re alone here. Wait for other to join</string>
+    <string name="kaleyra_glass_ringing_pattern" translatable="false">, %1$s</string>
+    <string name="kaleyra_glass_ringing_rtl_pattern" translatable="false">%1$s ،</string>
+    <string name="kaleyra_glass_group_contacts_pattern" translatable="false">+%1$d</string>
+    <string name="kaleyra_glass_message_counter_pattern" translatable="false">%1$d</string>
+    <string name="kaleyra_glass_n_of_participants_pattern">%1$d participants</string>
+    <string name="kaleyra_glass_slider_volume_pattern">Volume: %1$d</string>
+    <string name="kaleyra_glass_slider_zoom_pattern">Zoom: %1$d%%</string>
+    <string name="kaleyra_glass_new_messages_pattern">%1$d new messages</string>
+    <string name="kaleyra_glass_user_joined_pattern">%1$s joined</string>
+    <string name="kaleyra_glass_user_left_pattern">%1$s left</string>
+    <string name="kaleyra_glass_you_pattern">%1$s (Tu)</string>
+    <string name="kaleyra_glass_swipe">Swipe</string>
+    <string name="kaleyra_glass_tap">Tap</string>
+    <string name="kaleyra_glass_close">close</string>
+    <string name="kaleyra_glass_browse">browse</string>
+    <string name="kaleyra_glass_select">select</string>
+    <string name="kaleyra_glass_cancel">cancel</string>
+    <string name="kaleyra_glass_change">change</string>
+    <string name="kaleyra_glass_confirm">confirm</string>
+    <string name="kaleyra_glass_end">end</string>
+    <string name="kaleyra_glass_accept">answer</string>
+    <string name="kaleyra_glass_decline">decline</string>
+    <string name="kaleyra_glass_hangup">hang up</string>
+    <string name="kaleyra_glass_volume">Volume</string>
+    <string name="kaleyra_glass_zoom">Zoom</string>
+    <string name="kaleyra_glass_ringing">is calling…</string>
+    <string name="kaleyra_glass_ringing_group">incoming group call…</string>
+    <string name="kaleyra_glass_dialing">dialing…</string>
+    <string name="kaleyra_glass_dialing_group">group call ringing…</string>
+    <string name="kaleyra_glass_connecting">connecting…</string>
+    <string name="kaleyra_glass_offline">You\'re offline</string>
+    <string name="kaleyra_glass_want_end_call">End the call?</string>
+    <string name="kaleyra_glass_confirm_end_call">Do you confirm to end the conversation?</string>
+    <string name="kaleyra_glass_call_ended">Call ended</string>
+    <string name="kaleyra_glass_participants_camera">participants</string>
+    <string name="kaleyra_glass_open_menu">menu</string>
+    <string name="kaleyra_glass_contact_info">contact</string>
+    <string name="kaleyra_glass_now">Now</string>
+    <string name="kaleyra_glass_read">read</string>
+    <string name="kaleyra_glass_hide_notification">dismiss</string>
+    <string name="kaleyra_glass_online">Online</string>
+    <string name="kaleyra_glass_invited">Invited</string>
+    <string name="kaleyra_glass_last_seen_pattern">Last seen: %1$s</string>
+    <string name="kaleyra_glass_call">Call</string>
+    <string name="kaleyra_glass_videocall">Video call</string>
+    <string name="kaleyra_glass_browse_right">browse right</string>
+    <string name="kaleyra_glass_browse_left">browse left</string>
+    <string name="kaleyra_glass_right_left">scroll</string>
+    <string name="kaleyra_glass_camera_off">Your camera is off</string>
+    <string name="kaleyra_glass_menu_microphone">Enable microphone</string>
+    <string name="kaleyra_glass_menu_microphone_toggled">Mute microphone</string>
+    <string name="kaleyra_glass_menu_camera">Enable camera</string>
+    <string name="kaleyra_glass_menu_camera_toggled">Mute camera</string>
+    <string name="kaleyra_glass_menu_participants">Participants</string>
+    <string name="kaleyra_glass_menu_volume">Volume</string>
+    <string name="kaleyra_glass_menu_zoom">Zoom</string>
+    <string name="kaleyra_glass_menu_chat">Chat</string>
+    <string name="kaleyra_glass_rec">Rec</string>
+    <string name="kaleyra_glass_call_declined">Declined</string>
+    <string name="kaleyra_glass_call_error_occurred">An error occurred</string>
+    <string name="kaleyra_glass_call_timeout">Connection timeout</string>
+    <string name="kaleyra_glass_answered_on_another_device">Answered on another device</string>
+    <string name="kaleyra_glass_line_busy">Line busy</string>
+    <string name="kaleyra_glass_call_hunged_up">Hunged up</string>
+    <string name="kaleyra_glass_mic_not_active">The mic is not active</string>
+    <string name="kaleyra_glass_cam_not_active">The cam is not active</string>
+    <string name="kaleyra_glass_mic_and_cam_not_active">The mic and the camera are not active</string>
+    <string name="kaleyra_glass_mic_blocked">The mic is blocked</string>
+    <string name="kaleyra_glass_cam_blocked">The camera is blocked</string>
+    <string name="kaleyra_glass_mic_and_cam_blocked">The mic and the camera are blocked</string>
+    <string name="kaleyra_glass_alone">You\'re alone here. Wait for other to join</string>
 
     <!-- PLURALS -->
-    <plurals name="bandyer_glass_users_in_call_pattern">
+    <plurals name="kaleyra_glass_users_in_call_pattern">
         <item quantity="one">%d participant</item>
         <item quantity="other">%d participants</item>
     </plurals>

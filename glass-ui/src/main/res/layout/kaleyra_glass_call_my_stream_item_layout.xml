@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/kaleyra_video_wrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:animateLayoutChanges="true"/>
+
+        <LinearLayout
+            android:id="@+id/kaleyra_info_wrapper"
+            style="?attr/kaleyra_rootLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:theme="?attr/kaleyra_recyclerViewItemStyle">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/kaleyra_centered_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/kaleyra_mic_muted_icon"
+                    style="?attr/kaleyra_bigMicIconStyle"
+                    app:layout_constraintBottom_toTopOf="@id/kaleyra_centered_subtitle"
+                    app:layout_constraintEnd_toStartOf="@id/kaleyra_cam_muted_icon"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="packed" />
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/kaleyra_cam_muted_icon"
+                    style="?attr/kaleyra_bigCamIconStyle"
+                    app:layout_constraintBottom_toTopOf="@id/kaleyra_centered_subtitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/kaleyra_mic_muted_icon"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/kaleyra_centered_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:text="Mario Lario" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <include
+                android:id="@+id/kaleyra_subtitle_layout"
+                layout="@layout/kaleyra_glass_call_stream_subtitle_layout" />
+        </LinearLayout>
+    </FrameLayout>
+</layout>

@@ -27,6 +27,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import com.kaleyra.collaboration_suite.phonebox.Call
@@ -38,12 +40,14 @@ import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_glass_ui.ActivityExtensions.enableImmersiveMode
 import com.kaleyra.collaboration_suite_glass_ui.call.CallEndedFragmentArgs
 import com.kaleyra.collaboration_suite_glass_ui.chat.notification.ChatNotificationManager
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerActivityGlassBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraActivityGlassBinding
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassGestureDetector
 import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.turnScreenOnAndKeyguardOff
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
+import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.dropWhile
@@ -61,7 +65,7 @@ internal class GlassCallActivity :
     ChatNotificationManager.NotificationListener,
     TouchEventListener {
 
-    private lateinit var binding: BandyerActivityGlassBinding
+    private lateinit var binding: KaleyraActivityGlassBinding
 
     private var isActivityInForeground = false
 
@@ -89,18 +93,18 @@ internal class GlassCallActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.bandyer_activity_glass)
+        binding = DataBindingUtil.setContentView(this, R.layout.kaleyra_activity_glass)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.bandyer_nav_host_fragment) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.kaleyra_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         glassGestureDetector = GlassGestureDetector(this, this)
 
         notificationManager =
-            ChatNotificationManager(binding.bandyerContent).also { it.addListener(this) }
+            ChatNotificationManager(binding.kaleyraContent).also { it.addListener(this) }
 
         // Set up the streams' recycler view
-        with(binding.bandyerStreams) {
+        with(binding.kaleyraStreams) {
             itemAdapter = ItemAdapter()
             val fastAdapter = FastAdapter.with(itemAdapter!!)
             val layoutManager =
@@ -129,7 +133,7 @@ internal class GlassCallActivity :
         viewModel.onRequestCameraPermission(this)
 
         // Add a scroll listener to the recycler view to show mic/cam blocked/disabled toasts
-        with(binding.bandyerStreams){
+        with(binding.kaleyraStreams){
             val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -147,21 +151,21 @@ internal class GlassCallActivity :
                         val isCameraEnabled = viewModel.cameraEnabled.value
 
                         when {
-                            isMicBlocked && isCamBlocked -> resources.getString(R.string.bandyer_glass_mic_and_cam_blocked)
-                            isMicBlocked -> resources.getString(R.string.bandyer_glass_mic_blocked)
-                            isCamBlocked -> resources.getString(R.string.bandyer_glass_cam_blocked)
+                            isMicBlocked && isCamBlocked -> resources.getString(R.string.kaleyra_glass_mic_and_cam_blocked)
+                            isMicBlocked -> resources.getString(R.string.kaleyra_glass_mic_blocked)
+                            isCamBlocked -> resources.getString(R.string.kaleyra_glass_cam_blocked)
                             else -> null
-                        }?.also { binding.bandyerToastContainer.show(BLOCKED_TOAST_ID, it) }
+                        }?.also { binding.kaleyraToastContainer.show(BLOCKED_TOAST_ID, it) }
 
                         when {
                             !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled ->
-                                resources.getString(R.string.bandyer_glass_mic_and_cam_not_active)
+                                resources.getString(R.string.kaleyra_glass_mic_and_cam_not_active)
                             !isMicBlocked && !isMicEnabled ->
-                                resources.getString(R.string.bandyer_glass_mic_not_active)
+                                resources.getString(R.string.kaleyra_glass_mic_not_active)
                             !isCamBlocked && !isCameraEnabled ->
-                                resources.getString(R.string.bandyer_glass_cam_not_active)
+                                resources.getString(R.string.kaleyra_glass_cam_not_active)
                             else -> null
-                        }?.also { binding.bandyerToastContainer.show(DISABLED_TOAST_ID, it) }
+                        }?.also { binding.kaleyraToastContainer.show(DISABLED_TOAST_ID, it) }
                     }
 
                     currentStreamItemIndex = position
@@ -169,7 +173,7 @@ internal class GlassCallActivity :
             })
         }
 
-        with(binding.bandyerStatusBar) {
+        with(binding.kaleyraStatusBar) {
             if (viewModel.call.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
         }
 
@@ -184,7 +188,7 @@ internal class GlassCallActivity :
             viewModel
                 .battery
                 .onEach {
-                    with(binding.bandyerStatusBar) {
+                    with(binding.kaleyraStatusBar) {
                         setBatteryChargingState(it.state == BatteryInfo.State.CHARGING)
                         setBatteryCharge(it.percentage)
                     }
@@ -194,7 +198,7 @@ internal class GlassCallActivity :
             viewModel
                 .wifi
                 .onEach {
-                    binding.bandyerStatusBar.setWiFiSignalState(
+                    binding.kaleyraStatusBar.setWiFiSignalState(
                         when {
                             it.state == WiFiInfo.State.DISABLED -> StatusBarView.WiFiSignalState.DISABLED
                             it.level == WiFiInfo.Level.NO_SIGNAL || it.level == WiFiInfo.Level.POOR -> StatusBarView.WiFiSignalState.LOW
@@ -210,17 +214,17 @@ internal class GlassCallActivity :
                 .onEach {
                     if (it is Call.State.Reconnecting) navController!!.navigate(R.id.reconnectingFragment)
                     if (it is Call.State.Disconnected.Ended) {
-                        val title = resources.getString(R.string.bandyer_glass_call_ended)
+                        val title = resources.getString(R.string.kaleyra_glass_call_ended)
 
                         val subtitle = when (it) {
-                            is Call.State.Disconnected.Ended.Declined -> resources.getString(R.string.bandyer_glass_call_declined)
+                            is Call.State.Disconnected.Ended.Declined -> resources.getString(R.string.kaleyra_glass_call_declined)
                             is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> resources.getString(
-                                R.string.bandyer_glass_answered_on_another_device
+                                R.string.kaleyra_glass_answered_on_another_device
                             )
-                            is Call.State.Disconnected.Ended.LineBusy -> resources.getString(R.string.bandyer_glass_line_busy)
-                            is Call.State.Disconnected.Ended.HangUp -> resources.getString(R.string.bandyer_glass_call_hunged_up)
-                            is Call.State.Disconnected.Ended.Error -> resources.getString(R.string.bandyer_glass_call_error_occurred)
-                            is Call.State.Disconnected.Ended.Timeout -> resources.getString(R.string.bandyer_glass_call_timeout)
+                            is Call.State.Disconnected.Ended.LineBusy -> resources.getString(R.string.kaleyra_glass_line_busy)
+                            is Call.State.Disconnected.Ended.HangUp -> resources.getString(R.string.kaleyra_glass_call_hunged_up)
+                            is Call.State.Disconnected.Ended.Error -> resources.getString(R.string.kaleyra_glass_call_error_occurred)
+                            is Call.State.Disconnected.Ended.Timeout -> resources.getString(R.string.kaleyra_glass_call_timeout)
                             else -> null
                         }
 
@@ -231,11 +235,11 @@ internal class GlassCallActivity :
 
             viewModel.amIAlone
                 .onEach {
-                    with(binding.bandyerToastContainer) {
+                    with(binding.kaleyraToastContainer) {
                         if (it) show(
                             ALONE_TOAST_ID,
-                            resources.getString(R.string.bandyer_glass_alone),
-                            R.drawable.ic_bandyer_glass_alert,
+                            resources.getString(R.string.kaleyra_glass_alone),
+                            R.drawable.ic_kaleyra_glass_alert,
                             0L
                         )
                         else cancel(ALONE_TOAST_ID)
@@ -244,14 +248,14 @@ internal class GlassCallActivity :
 
             viewModel.cameraEnabled
                 .onEach {
-                    with(binding.bandyerStatusBar) {
+                    with(binding.kaleyraStatusBar) {
                         if (it) hideCamMutedIcon() else showCamMutedIcon()
                     }
                 }.launchIn(this)
 
             viewModel.micEnabled
                 .onEach {
-                    with(binding.bandyerStatusBar) {
+                    with(binding.kaleyraStatusBar) {
                         if (it) hideMicMutedIcon() else showMicMutedIcon()
                     }
                 }.launchIn(this)
@@ -259,33 +263,33 @@ internal class GlassCallActivity :
             viewModel.micPermission
                 .onEach {
                     if (!it.isAllowed && it.neverAskAgain)
-                        binding.bandyerStatusBar.showMicMutedIcon(true)
+                        binding.kaleyraStatusBar.showMicMutedIcon(true)
                 }
                 .launchIn(this)
 
             viewModel.camPermission
                 .onEach {
                     if (!it.isAllowed && it.neverAskAgain)
-                        binding.bandyerStatusBar.showCamMutedIcon(true)
+                        binding.kaleyraStatusBar.showCamMutedIcon(true)
                 }
                 .launchIn(this)
 
             viewModel.onParticipantJoin
                 .onEach { part ->
                     val text = resources.getString(
-                        R.string.bandyer_glass_user_joined_pattern,
+                        R.string.kaleyra_glass_user_joined_pattern,
                         viewModel.usersDescription.name(listOf(part.userAlias))
                     )
-                    binding.bandyerToastContainer.show(text = text)
+                    binding.kaleyraToastContainer.show(text = text)
                 }.launchIn(this)
 
             viewModel.onParticipantLeave
                 .onEach { part ->
                     val text = resources.getString(
-                        R.string.bandyer_glass_user_left_pattern,
+                        R.string.kaleyra_glass_user_left_pattern,
                         viewModel.usersDescription.name(listOf(part.userAlias))
                     )
-                    binding.bandyerToastContainer.show(text = text)
+                    binding.kaleyraToastContainer.show(text = text)
                 }.launchIn(this)
 
             viewModel.streams
@@ -355,17 +359,17 @@ internal class GlassCallActivity :
             notificationManager!!.dnd = it
         }
 
-        binding.bandyerStatusBar.setBackgroundColor(
+        binding.kaleyraStatusBar.setBackgroundColor(
             if (fragmentsWithDimmedStatusBar.contains(destinationId))
                 ResourcesCompat.getColor(
                     resources,
-                    R.color.bandyer_glass_dimmed_background_color,
+                    R.color.kaleyra_glass_dimmed_background_color,
                     null
                 )
             else Color.TRANSPARENT
         )
 
-        binding.bandyerToastContainer.visibility =
+        binding.kaleyraToastContainer.visibility =
             if (destinationId == R.id.emptyFragment) View.VISIBLE else View.GONE
     }
 

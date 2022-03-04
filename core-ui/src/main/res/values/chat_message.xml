@@ -16,16 +16,16 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.ChatMessage">
-        <attr name="bandyer_avatarStyle"/>
-        <attr name="bandyer_titleStyle"/>
-        <attr name="bandyer_messageStyle" format="reference" />
-        <attr name="bandyer_timestampStyle" format="reference" />
-        <attr name="bandyer_iconStyle"/>
+    <declare-styleable name="KaleyraSDKDesign.ChatMessage">
+        <attr name="kaleyra_avatarStyle"/>
+        <attr name="kaleyra_titleStyle"/>
+        <attr name="kaleyra_messageStyle" format="reference" />
+        <attr name="kaleyra_timestampStyle" format="reference" />
+        <attr name="kaleyra_iconStyle"/>
         <attr name="bottomNavigationStyle"/>
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.ChatMessage" parent="" >
+    <style name="KaleyraSDKDesign.ChatMessage" parent="" >
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
     </style>

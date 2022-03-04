@@ -80,7 +80,7 @@ object Iso8601 {
         return if (zonedDateTime.isLastWeek()) {
             when {
                 zonedDateTime.isToday() -> parseTime(timestamp)
-                zonedDateTime.isYesterday() -> context.resources.getString(R.string.bandyer_yesterday) + ", " + parseTime(timestamp)
+                zonedDateTime.isYesterday() -> context.resources.getString(R.string.kaleyra_yesterday) + ", " + parseTime(timestamp)
                 else -> zonedDateTime.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()).replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() } + ", " + parseTime(timestamp)
             }
         } else DateTimeFormatter
@@ -103,8 +103,8 @@ object Iso8601 {
             .atZone(ZoneId.systemDefault())
 
         return when {
-            zonedDateTime.isToday() -> context.resources.getString(R.string.bandyer_today)
-            zonedDateTime.isYesterday() -> context.resources.getString(R.string.bandyer_yesterday)
+            zonedDateTime.isToday() -> context.resources.getString(R.string.kaleyra_today)
+            zonedDateTime.isYesterday() -> context.resources.getString(R.string.kaleyra_yesterday)
             else -> DateTimeFormatter
                 .ofLocalizedDate(FormatStyle.LONG)
                 .withLocale(Locale.getDefault())

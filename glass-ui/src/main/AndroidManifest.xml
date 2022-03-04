@@ -17,14 +17,14 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="collaboration_suite_glass_ui">
+    package="com.kaleyra.collaboration_suite_glass_ui">
 
     <!-- TODO REMOVE CONFIG CHANGES -->
     <application>
         <activity
-            android:name="collaboration_suite_glass_ui.GlassCallActivity"
-            android:taskAffinity="collaboration_suite_glass_ui.GlassActivity"
-            android:theme="@style/BandyerSDKDesign.Theme.DayNight.GlassCall"
+            android:name=".GlassCallActivity"
+            android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.GlassActivity"
+            android:theme="@style/KaleyraSDKDesign.Theme.DayNight.GlassCall"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
             android:showOnLockScreen="true"
             android:showWhenLocked="true"

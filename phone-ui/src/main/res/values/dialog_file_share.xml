@@ -17,76 +17,76 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="BandyerSDKDesign.BottomSheetDialog.FileShare">
-        <attr name="bandyer_fileShareItemStyle" format="reference" />
-        <attr name="bandyer_emptyListLayoutStyle" format="reference" />
-        <attr name="bandyer_fabTextStyle" format="reference" />
-        <attr name="bandyer_fabWrapperStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.BottomSheetDialog.FileShare">
+        <attr name="kaleyra_fileShareItemStyle" format="reference" />
+        <attr name="kaleyra_emptyListLayoutStyle" format="reference" />
+        <attr name="kaleyra_fabTextStyle" format="reference" />
+        <attr name="kaleyra_fabWrapperStyle" format="reference" />
         <attr name="floatingActionButtonStyle"/>
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.V21" parent="BandyerSDKDesign.BottomSheetDialog">
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>
-        <item name="bandyer_fileShareItemStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item</item>
-        <item name="bandyer_emptyListLayoutStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout</item>
-        <item name="floatingActionButtonStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Fab</item>
-        <item name="bandyer_fabTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareFabText</item>
-        <item name="bandyer_fabWrapperStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.FabWrapper</item>
-        <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare.V21" parent="KaleyraSDKDesign.BottomSheetDialog">
+        <item name="recyclerViewStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>
+        <item name="kaleyra_fileShareItemStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.Item</item>
+        <item name="kaleyra_emptyListLayoutStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout</item>
+        <item name="floatingActionButtonStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.Fab</item>
+        <item name="kaleyra_fabTextStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FileShareFabText</item>
+        <item name="kaleyra_fabWrapperStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.FabWrapper</item>
+        <item name="bottomSheetStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.FileShare</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.V21"/>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare" parent="KaleyraSDKDesign.BottomSheetDialog.FileShare.V21"/>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Day" parent="BandyerSDKDesign.BottomSheetDialog.Day">
-        <item name="recyclerViewStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>
-        <item name="bandyer_fileShareItemStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Item.Day</item>
-        <item name="bandyer_emptyListLayoutStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Day</item>
-        <item name="floatingActionButtonStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.Fab.Day</item>
-        <item name="bandyer_fabTextStyle">@style/BandyerSDKDesign.TextView.Subtitle.FileShareFabText.Day</item>
-        <item name="bandyer_fabWrapperStyle">@style/BandyerSDKDesign.BottomSheetDialog.FileShare.FabWrapper.Day</item>
-        <item name="bottomSheetStyle">@style/BandyerSDKDesign.BottomSheetModalStyle.FileShare.Day</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare.Day" parent="KaleyraSDKDesign.BottomSheetDialog.Day">
+        <item name="recyclerViewStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.RecyclerView</item>
+        <item name="kaleyra_fileShareItemStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.Item.Day</item>
+        <item name="kaleyra_emptyListLayoutStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Day</item>
+        <item name="floatingActionButtonStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.Fab.Day</item>
+        <item name="kaleyra_fabTextStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FileShareFabText.Day</item>
+        <item name="kaleyra_fabWrapperStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.FabWrapper.Day</item>
+        <item name="bottomSheetStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.FileShare.Day</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.RecyclerView" parent="">
+    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare.RecyclerView" parent="">
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space72</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space72</item>
         <item name="android:clipToPadding">false</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare" parent="BandyerSDKDesign.BottomSheetModalStyle">
+    <style name="KaleyraSDKDesign.BottomSheetModalStyle.FileShare" parent="KaleyraSDKDesign.BottomSheetModalStyle">
         <item name="backgroundTint">?android:attr/colorBackground</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetModalStyle.FileShare.Day" parent="BandyerSDKDesign.BottomSheetModalStyle.FileShare">
-        <item name="backgroundTint">@color/bandyer_colorBackground</item>
+    <style name="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.Day" parent="KaleyraSDKDesign.BottomSheetModalStyle.FileShare">
+        <item name="backgroundTint">@color/kaleyra_colorBackground</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Fab" parent="Widget.MaterialComponents.FloatingActionButton">
+    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare.Fab" parent="Widget.MaterialComponents.FloatingActionButton">
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="borderWidth">0dp</item>
         <item name="elevation">0dp</item>
         <item name="fabSize">normal</item>
-        <item name="srcCompat">@drawable/ic_bandyer_add</item>
+        <item name="srcCompat">@drawable/ic_kaleyra_add</item>
         <item name="tint">?android:attr/colorBackground</item>
         <item name="useCompatPadding">false</item>
         <item name="rippleColor">@android:color/transparent</item>
         <item name="android:focusable">false</item>
         <item name="android:clickable">false</item>
-        <item name="hoveredFocusedTranslationZ">@dimen/bandyer_dimen_space0</item>
-        <item name="pressedTranslationZ">@dimen/bandyer_dimen_space0</item>
-        <item name="android:contentDescription">@string/bandyer_fileshare_add_description</item>
+        <item name="hoveredFocusedTranslationZ">@dimen/kaleyra_dimen_space0</item>
+        <item name="pressedTranslationZ">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:contentDescription">@string/kaleyra_fileshare_add_description</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.Fab.Day" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.Fab">
-        <item name="tint">@color/bandyer_colorBackground</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare.Fab.Day" parent="KaleyraSDKDesign.BottomSheetDialog.FileShare.Fab">
+        <item name="tint">@color/kaleyra_colorBackground</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.FabWrapper" parent="">
-        <item name="android:layout_margin">@dimen/bandyer_dimen_space32</item>
-        <item name="android:background">@drawable/bandyer_file_share_fab_corner</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare.FabWrapper" parent="">
+        <item name="android:layout_margin">@dimen/kaleyra_dimen_space32</item>
+        <item name="android:background">@drawable/kaleyra_file_share_fab_corner</item>
         <item name="android:clipToPadding">false</item>
-        <item name="android:elevation">@dimen/bandyer_dimen_space6</item>
+        <item name="android:elevation">@dimen/kaleyra_dimen_space6</item>
         <item name="android:animateLayoutChanges">true</item>
         <item name="android:outlineProvider">background</item>
         <item name="android:gravity">center_vertical</item>
@@ -97,7 +97,7 @@
         <item name="android:descendantFocusability">blocksDescendants</item>
     </style>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.FileShare.FabWrapper.Day" parent="BandyerSDKDesign.BottomSheetDialog.FileShare.FabWrapper">
-        <item name="android:background">@drawable/bandyer_file_share_fab_corner_day</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare.FabWrapper.Day" parent="KaleyraSDKDesign.BottomSheetDialog.FileShare.FabWrapper">
+        <item name="android:background">@drawable/kaleyra_file_share_fab_corner_day</item>
     </style>
 </resources>

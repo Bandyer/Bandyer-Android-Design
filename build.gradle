@@ -25,7 +25,6 @@ buildscript {
     ext.sdkVersion = 31
     ext.buildToolsVersion = "30.0.2"
     ext.kotlin_version = '1.5.20'
-    ext.bandyer_common = "1.0.10"
     ext.bandyer_core_av = "2.3.9"
     ext.serialization_version = '0.5.1'
     ext.nav_version = "2.3.5"
@@ -38,12 +37,10 @@ buildscript {
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://oss.sonatype.org/content/repositories/releases' }
-        maven { url 'https://storage.googleapis.com/r8-releases/raw' }
         maven { url 'https://maven.bandyer.com/releases' }
     }
 
     dependencies {
-        classpath classPaths.r8ClassPath
         classpath classPaths.gradleClassPath
         classpath classPaths.neenbedanktGradlePlugin
         classpath classPaths.benManesGradlePlugin
@@ -62,12 +59,7 @@ allprojects {
         maven { url 'https://jitpack.io' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
         maven { url 'https://oss.sonatype.org/content/repositories/releases' }
-        maven { url 'https://storage.googleapis.com/r8-releases/raw' }
         maven { url 'https://maven.bandyer.com/releases' }
-    }
-
-    configurations.all {
-        resolutionStrategy.force bandyer.common
     }
 }
 

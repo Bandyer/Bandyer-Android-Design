@@ -16,63 +16,63 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="BandyerSDKDesign.Theme.Chat">
-        <attr name="bandyer_chatInputWidgetStyle" format="reference" />
-        <attr name="bandyer_chatUnreadMessagesWidgetStyle" format="reference" />
-        <attr name="bandyer_chatInfoWidgetStyle" format="reference" />
-        <attr name="bandyer_chatTimestampStyle" format="reference" />
-        <attr name="bandyer_chatEmptyLoaderStyle" format="reference" />
-        <attr name="bandyer_chatNetworkLoaderStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.Theme.Chat">
+        <attr name="kaleyra_chatInputWidgetStyle" format="reference" />
+        <attr name="kaleyra_chatUnreadMessagesWidgetStyle" format="reference" />
+        <attr name="kaleyra_chatInfoWidgetStyle" format="reference" />
+        <attr name="kaleyra_chatTimestampStyle" format="reference" />
+        <attr name="kaleyra_chatEmptyLoaderStyle" format="reference" />
+        <attr name="kaleyra_chatNetworkLoaderStyle" format="reference" />
         <attr name="toolbarStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Theme.Chat.DayNight.V16" parent="BandyerSDKDesign.Theme.DayNight">
-        <item name="colorOnSecondary">@color/bandyer_colorOnSecondary</item>
-        <item name="bandyer_chatInfoWidgetStyle">@style/BandyerSDKDesign.ChatInfo</item>
-        <item name="bandyer_chatInputWidgetStyle">@style/BandyerSDKDesign.ChatInput</item>
-        <item name="bandyer_chatTimestampStyle">@style/BandyerSDKDesign.Chat.ChatTimestamp</item>
-        <item name="bandyer_chatUnreadMessagesWidgetStyle">@style/BandyerSDKDesign.ImageButton.ChatUnreadMessages</item>
-        <item name="bandyer_chatEmptyLoaderStyle">@style/BandyerSDKDesign.ChatEmptyItem</item>
-        <item name="bandyer_chatNetworkLoaderStyle">@style/BandyerSDKDesign.ChatLoadingItem</item>
-        <item name="toolbarStyle">@style/BandyerSDKDesign.Theme.Chat.ToolBarStyle</item>
+    <style name="KaleyraSDKDesign.Theme.Chat.DayNight.V16" parent="KaleyraSDKDesign.Theme.DayNight">
+        <item name="colorOnSecondary">@color/kaleyra_colorOnSecondary</item>
+        <item name="kaleyra_chatInfoWidgetStyle">@style/KaleyraSDKDesign.ChatInfo</item>
+        <item name="kaleyra_chatInputWidgetStyle">@style/KaleyraSDKDesign.ChatInput</item>
+        <item name="kaleyra_chatTimestampStyle">@style/KaleyraSDKDesign.Chat.ChatTimestamp</item>
+        <item name="kaleyra_chatUnreadMessagesWidgetStyle">@style/KaleyraSDKDesign.ImageButton.ChatUnreadMessages</item>
+        <item name="kaleyra_chatEmptyLoaderStyle">@style/KaleyraSDKDesign.ChatEmptyItem</item>
+        <item name="kaleyra_chatNetworkLoaderStyle">@style/KaleyraSDKDesign.ChatLoadingItem</item>
+        <item name="toolbarStyle">@style/KaleyraSDKDesign.Theme.Chat.ToolBarStyle</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Chat.DayNight" parent="BandyerSDKDesign.Theme.Chat.DayNight.V16"/>
+    <style name="KaleyraSDKDesign.Theme.Chat.DayNight" parent="KaleyraSDKDesign.Theme.Chat.DayNight.V16"/>
 
-    <style name="BandyerSDKDesign.Theme.Chat.Day" parent="BandyerSDKDesign.Theme.Day">
-        <item name="colorOnSecondary">@color/bandyer_colorOnSecondary</item>
+    <style name="KaleyraSDKDesign.Theme.Chat.Day" parent="KaleyraSDKDesign.Theme.Day">
+        <item name="colorOnSecondary">@color/kaleyra_colorOnSecondary</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/black</item>
-        <item name="bandyer_chatInfoWidgetStyle">@style/BandyerSDKDesign.ChatInfo</item>
-        <item name="bandyer_chatInputWidgetStyle">@style/BandyerSDKDesign.ChatInput</item>
-        <item name="bandyer_chatTimestampStyle">@style/BandyerSDKDesign.Chat.ChatTimestamp</item>
-        <item name="bandyer_chatUnreadMessagesWidgetStyle">@style/BandyerSDKDesign.ImageButton.ChatUnreadMessages</item>
-        <item name="bandyer_chatEmptyLoaderStyle">@style/BandyerSDKDesign.ChatEmptyItem</item>
-        <item name="bandyer_chatNetworkLoaderStyle">@style/BandyerSDKDesign.ChatLoadingItem</item>
-        <item name="toolbarStyle">@style/BandyerSDKDesign.Theme.Chat.ToolBarStyle</item>
+        <item name="kaleyra_chatInfoWidgetStyle">@style/KaleyraSDKDesign.ChatInfo</item>
+        <item name="kaleyra_chatInputWidgetStyle">@style/KaleyraSDKDesign.ChatInput</item>
+        <item name="kaleyra_chatTimestampStyle">@style/KaleyraSDKDesign.Chat.ChatTimestamp</item>
+        <item name="kaleyra_chatUnreadMessagesWidgetStyle">@style/KaleyraSDKDesign.ImageButton.ChatUnreadMessages</item>
+        <item name="kaleyra_chatEmptyLoaderStyle">@style/KaleyraSDKDesign.ChatEmptyItem</item>
+        <item name="kaleyra_chatNetworkLoaderStyle">@style/KaleyraSDKDesign.ChatLoadingItem</item>
+        <item name="toolbarStyle">@style/KaleyraSDKDesign.Theme.Chat.ToolBarStyle</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Chat.Night" parent="BandyerSDKDesign.Theme.Night">
-        <item name="colorOnSecondary">@color/bandyer_colorOnSecondary</item>
+    <style name="KaleyraSDKDesign.Theme.Chat.Night" parent="KaleyraSDKDesign.Theme.Night">
+        <item name="colorOnSecondary">@color/kaleyra_colorOnSecondary</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/black</item>
-        <item name="bandyer_chatInfoWidgetStyle">@style/BandyerSDKDesign.ChatInfo</item>
-        <item name="bandyer_chatInputWidgetStyle">@style/BandyerSDKDesign.ChatInput</item>
-        <item name="bandyer_chatTimestampStyle">@style/BandyerSDKDesign.Chat.ChatTimestamp</item>
-        <item name="bandyer_chatUnreadMessagesWidgetStyle">@style/BandyerSDKDesign.ImageButton.ChatUnreadMessages</item>
-        <item name="bandyer_chatEmptyLoaderStyle">@style/BandyerSDKDesign.ChatEmptyItem</item>
-        <item name="bandyer_chatNetworkLoaderStyle">@style/BandyerSDKDesign.ChatLoadingItem</item>
-        <item name="toolbarStyle">@style/BandyerSDKDesign.Theme.Chat.ToolBarStyle</item>
+        <item name="kaleyra_chatInfoWidgetStyle">@style/KaleyraSDKDesign.ChatInfo</item>
+        <item name="kaleyra_chatInputWidgetStyle">@style/KaleyraSDKDesign.ChatInput</item>
+        <item name="kaleyra_chatTimestampStyle">@style/KaleyraSDKDesign.Chat.ChatTimestamp</item>
+        <item name="kaleyra_chatUnreadMessagesWidgetStyle">@style/KaleyraSDKDesign.ImageButton.ChatUnreadMessages</item>
+        <item name="kaleyra_chatEmptyLoaderStyle">@style/KaleyraSDKDesign.ChatEmptyItem</item>
+        <item name="kaleyra_chatNetworkLoaderStyle">@style/KaleyraSDKDesign.ChatLoadingItem</item>
+        <item name="toolbarStyle">@style/KaleyraSDKDesign.Theme.Chat.ToolBarStyle</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Chat" parent="BandyerSDKDesign.Theme.Chat.DayNight" />
+    <style name="KaleyraSDKDesign.Theme.Chat" parent="KaleyraSDKDesign.Theme.Chat.DayNight" />
 
-    <style name="BandyerSDKDesign.Theme.Chat.ToolBarStyle" parent="@style/BandyerSDKDesign.ToolBarStyle">
-        <item name="materialThemeOverlay">@style/BandyerSDKDesign.Theme.Chat.ToolBarStyle.MaterialThemeOverlay</item>
+    <style name="KaleyraSDKDesign.Theme.Chat.ToolBarStyle" parent="@style/KaleyraSDKDesign.ToolBarStyle">
+        <item name="materialThemeOverlay">@style/KaleyraSDKDesign.Theme.Chat.ToolBarStyle.MaterialThemeOverlay</item>
         <item name="contentInsetStart">0dp</item>
         <item name="contentInsetStartWithNavigation">50dp</item>
         <item name="android:touchscreenBlocksFocus" tools:targetApi="lollipop">false</item>
     </style>
 
-    <style name="BandyerSDKDesign.Theme.Chat.ToolBarStyle.MaterialThemeOverlay" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+    <style name="KaleyraSDKDesign.Theme.Chat.ToolBarStyle.MaterialThemeOverlay" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
         <item name="drawableTint">?attr/colorOnPrimary</item>
     </style>
 

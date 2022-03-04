@@ -26,7 +26,7 @@ import androidx.navigation.fragment.findNavController
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassFragmentFullScreenDialogBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenDialogBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
@@ -35,8 +35,8 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensio
  */
 internal class EndCallFragment : BaseFragment() {
 
-    private var _binding: BandyerGlassFragmentFullScreenDialogBinding? = null
-    override val binding: BandyerGlassFragmentFullScreenDialogBinding get() = _binding!!
+    private var _binding: KaleyraGlassFragmentFullScreenDialogBinding? = null
+    override val binding: KaleyraGlassFragmentFullScreenDialogBinding get() = _binding!!
 
     private val viewModel: GlassViewModel by activityViewModels()
 
@@ -51,14 +51,14 @@ internal class EndCallFragment : BaseFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
 
         // Apply theme wrapper and add view binding
-        val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_endCallStyle)
-        _binding = BandyerGlassFragmentFullScreenDialogBinding
+        val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.kaleyra_endCallStyle)
+        _binding = KaleyraGlassFragmentFullScreenDialogBinding
             .inflate(
                 inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
                 container,
                 false
             )
-            .apply { if (GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear() }
+            .apply { if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear() }
 
         return binding.root
     }

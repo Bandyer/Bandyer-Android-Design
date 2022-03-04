@@ -16,26 +16,26 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.CallInfo">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_iconStyle" />
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_subtitleStyle" />
-        <attr name="bandyer_recordingStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.CallInfo">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_iconStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_subtitleStyle" />
+        <attr name="kaleyra_recordingStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.CallInfo" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.CallInfo.RootLayout</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.CallInfo</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.CallInfo</item>
-        <item name="bandyer_recordingStyle">@style/BandyerSDKDesign.TextView.Subtitle.Recording</item>
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.CallWatermark</item>
+    <style name="KaleyraSDKDesign.CallInfo" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.CallInfo.RootLayout</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.CallInfo</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.CallInfo</item>
+        <item name="kaleyra_recordingStyle">@style/KaleyraSDKDesign.TextView.Subtitle.Recording</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.CallWatermark</item>
     </style>
 
-    <style name="BandyerSDKDesign.CallInfo.RootLayout">
+    <style name="KaleyraSDKDesign.CallInfo.RootLayout">
         <item name="android:orientation">vertical</item>
-        <item name="android:background">@drawable/bandyer_shape_transparent_black_background</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
+        <item name="android:background">@drawable/kaleyra_shape_transparent_black_background</item>
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
     </style>
 
 </resources>

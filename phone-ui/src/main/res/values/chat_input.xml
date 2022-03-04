@@ -16,14 +16,14 @@
   -->
 
 <resources>
-    <style name="BandyerSDKDesign.ChatInput" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.ChatInput.RootLayout</item>
-        <item name="textInputStyle">@style/BandyerSDKDesign.TextInputLayout.Chat</item>
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.Send</item>
+    <style name="KaleyraSDKDesign.ChatInput" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.ChatInput.RootLayout</item>
+        <item name="textInputStyle">@style/KaleyraSDKDesign.TextInputLayout.Chat</item>
+        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Send</item>
     </style>
 
-    <style name="BandyerSDKDesign.ChatInput.RootLayout" parent="">
+    <style name="KaleyraSDKDesign.ChatInput.RootLayout" parent="">
         <item name="android:paddingTop">1dp</item>
-        <item name="android:background">@color/bandyer_color_grey_light</item>
+        <item name="android:background">@color/kaleyra_color_grey_light</item>
     </style>
 </resources>

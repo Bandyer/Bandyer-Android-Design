@@ -17,31 +17,31 @@
 
 <resources>
 
-    <style name="BandyerSDKDesign.TextView.Title.UploadProgress" parent="BandyerSDKDesign.TextView.Title">
+    <style name="KaleyraSDKDesign.TextView.Title.UploadProgress" parent="KaleyraSDKDesign.TextView.Title">
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Title.UploadProgress.Day" parent="BandyerSDKDesign.TextView.Title.UploadProgress">
-        <item name="android:textColor">@color/bandyer_colorOnSurface</item>
+    <style name="KaleyraSDKDesign.TextView.Title.UploadProgress.Day" parent="KaleyraSDKDesign.TextView.Title.UploadProgress">
+        <item name="android:textColor">@color/kaleyra_colorOnSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.UploadProgress" parent="BandyerSDKDesign.TextView.Subtitle">
-        <item name="android:textColor">@color/bandyer_color_on_surface_80</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space2</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.UploadProgress" parent="KaleyraSDKDesign.TextView.Subtitle">
+        <item name="android:textColor">@color/kaleyra_color_on_surface_80</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space2</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.UploadProgress.Day" parent="BandyerSDKDesign.TextView.Subtitle.UploadProgress">
-        <item name="android:textColor">@color/bandyer_color_on_surface_80_day</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.UploadProgress.Day" parent="KaleyraSDKDesign.TextView.Subtitle.UploadProgress">
+        <item name="android:textColor">@color/kaleyra_color_on_surface_80_day</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.UploadProgressPercentage" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.UploadProgressPercentage" parent="KaleyraSDKDesign.TextView.Subtitle">
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:visibility">visible</item>
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.UploadProgressPercentage.Day" parent="BandyerSDKDesign.TextView.Subtitle.UploadProgressPercentage">
-        <item name="android:textColor">@color/bandyer_colorOnSurface</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.UploadProgressPercentage.Day" parent="KaleyraSDKDesign.TextView.Subtitle.UploadProgressPercentage">
+        <item name="android:textColor">@color/kaleyra_colorOnSurface</item>
     </style>
 
 </resources>

@@ -16,19 +16,19 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.UserInfo">
-        <attr name="bandyer_rootLayoutStyle" />
+    <declare-styleable name="KaleyraSDKDesign.UserInfo">
+        <attr name="kaleyra_rootLayoutStyle" />
         <attr name="materialButtonStyle" />
-        <attr name="bandyer_titleStyle" />
+        <attr name="kaleyra_titleStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.UserInfo" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.UserInfo.RootLayout</item>
-        <item name="materialButtonStyle">@style/BandyerSDKDesign.ImageButton.FullScreen</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.UserInfo</item>
+    <style name="KaleyraSDKDesign.UserInfo" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.UserInfo.RootLayout</item>
+        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.FullScreen</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.UserInfo</item>
     </style>
 
-    <style name="BandyerSDKDesign.UserInfo.RootLayout">
-        <item name="android:background">@drawable/bandyer_shape_transparent_black_background</item>
+    <style name="KaleyraSDKDesign.UserInfo.RootLayout">
+        <item name="android:background">@drawable/kaleyra_shape_transparent_black_background</item>
     </style>
 </resources>

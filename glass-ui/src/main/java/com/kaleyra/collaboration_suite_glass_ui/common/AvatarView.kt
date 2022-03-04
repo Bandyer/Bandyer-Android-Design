@@ -25,7 +25,8 @@ import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import com.kaleyra.collaboration_suite_core_ui.extensions.ColorIntExtensions.requiresLightColor
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassContactAvatarLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassContactAvatarLayoutBinding
+import com.squareup.picasso.Picasso
 import java.util.*
 
 /**
@@ -39,8 +40,8 @@ internal class AvatarView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    private val binding: BandyerGlassContactAvatarLayoutBinding =
-        BandyerGlassContactAvatarLayoutBinding.inflate(
+    private val binding: KaleyraGlassContactAvatarLayoutBinding =
+        KaleyraGlassContactAvatarLayoutBinding.inflate(
             LayoutInflater.from(context), this, true
         )
 
@@ -53,8 +54,8 @@ internal class AvatarView @JvmOverloads constructor(
      * @param resId The resource id. If null, any avatar resource previously set (either local or remote) is removed and the background color and the text became visible again.
      */
     fun setImage(@DrawableRes resId: Int?) = with(binding) {
-        bandyerAvatarImage.setImageResource(resId ?: defaultAvatar)
-        bandyerAvatarText.visibility = if (resId == null) VISIBLE else GONE
+        kaleyraAvatarImage.setImageResource(resId ?: defaultAvatar)
+        kaleyraAvatarText.visibility = if (resId == null) VISIBLE else GONE
     }
 
     /**
@@ -63,8 +64,8 @@ internal class AvatarView @JvmOverloads constructor(
      * @param url The avatar's url
      */
     fun setImage(url: String) = with(binding) {
-        Picasso.get().load(url).placeholder(defaultAvatar).error(defaultAvatar).into(bandyerAvatarImage)
-        bandyerAvatarText.visibility = GONE
+        Picasso.get().load(url).placeholder(defaultAvatar).error(defaultAvatar).into(kaleyraAvatarImage)
+        kaleyraAvatarText.visibility = GONE
     }
 
     /**
@@ -73,8 +74,8 @@ internal class AvatarView @JvmOverloads constructor(
      * @param uri The avatar's uri
      */
     fun setImage(uri: Uri) = with(binding) {
-        Picasso.get().load(uri).placeholder(defaultAvatar).error(defaultAvatar).into(bandyerAvatarImage)
-        bandyerAvatarText.visibility = GONE
+        Picasso.get().load(uri).placeholder(defaultAvatar).error(defaultAvatar).into(kaleyraAvatarImage)
+        kaleyraAvatarText.visibility = GONE
     }
 
     /**
@@ -83,7 +84,7 @@ internal class AvatarView @JvmOverloads constructor(
      * @param text String?
      */
     fun setText(text: String?) {
-        binding.bandyerAvatarText.text = text?.uppercase(Locale.getDefault())
+        binding.kaleyraAvatarText.text = text?.uppercase(Locale.getDefault())
     }
 
     /**
@@ -92,10 +93,10 @@ internal class AvatarView @JvmOverloads constructor(
      * @param color The color int resource. If null Color.GRAY is set as default.
      */
     fun setBackground(@ColorInt color: Int?) = with(binding) {
-        bandyerAvatarImage.setBackgroundColor(
+        kaleyraAvatarImage.setBackgroundColor(
             color ?: defaultBackgroundColor
         )
-        bandyerAvatarText.setTextColor(if (color?.requiresLightColor() == true) Color.WHITE else Color.BLACK)
+        kaleyraAvatarText.setTextColor(if (color?.requiresLightColor() == true) Color.WHITE else Color.BLACK)
     }
 }
 

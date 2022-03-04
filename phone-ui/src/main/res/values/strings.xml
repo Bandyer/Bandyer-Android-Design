@@ -17,174 +17,174 @@
 <resources>
 
     <!-- Audio route labels -->
-    <string name="bandyer_call_action_audio_route_bluetooth">Bluetooth</string>
-    <string name="bandyer_call_action_audio_route_wired_headset">Wired headset</string>
-    <string name="bandyer_call_action_audio_route_loudspeaker">Loudspeaker</string>
-    <string name="bandyer_call_action_audio_route_earpiece">Earpiece</string>
-    <string name="bandyer_call_action_audio_route_muted">Muted</string>
-    <string name="bandyer_call_action_audio_route_bluetooth_connected">Connected</string>
-    <string name="bandyer_call_action_audio_route_bluetooth_deactivating">Deactivating…</string>
-    <string name="bandyer_call_action_audio_route_bluetooth_disconnected">Disconnected</string>
-    <string name="bandyer_call_action_audio_route_bluetooth_failed">Unable to connect to device. Please try turning it off and on again.</string>
-    <string name="bandyer_call_action_audio_route_bluetooth_activating">Activating…</string>
-    <string name="bandyer_call_action_audio_route_bluetooth_available">Available</string>
-    <string name="bandyer_call_action_audio_route_bluetooth_battery_level">Battery level:</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth">Bluetooth</string>
+    <string name="kaleyra_call_action_audio_route_wired_headset">Wired headset</string>
+    <string name="kaleyra_call_action_audio_route_loudspeaker">Loudspeaker</string>
+    <string name="kaleyra_call_action_audio_route_earpiece">Earpiece</string>
+    <string name="kaleyra_call_action_audio_route_muted">Muted</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_connected">Connected</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_deactivating">Deactivating…</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_disconnected">Disconnected</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_failed">Unable to connect to device. Please try turning it off and on again.</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_activating">Activating…</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_available">Available</string>
+    <string name="kaleyra_call_action_audio_route_bluetooth_battery_level">Battery level:</string>
 
     <!-- Action labels -->
-    <string name="bandyer_call_action_muted">Muted</string>
-    <string name="bandyer_call_action_mic_mute">Mute</string>
-    <string name="bandyer_call_action_video_disable">Disable</string>
-    <string name="bandyer_call_action_screen_share">Screen Share</string>
-    <string name="bandyer_call_action_switch_camera">Switch</string>
-    <string name="bandyer_call_action_chat">Chat</string>
-    <string name="bandyer_call_action_whiteboard">Whiteboard</string>
-    <string name="bandyer_call_action_file_share">File Share</string>
-    <string name="bandyer_call_action_participants">Participants</string>
-    <string name="bandyer_call_action_audio_route">Audio Output</string>
-    <string name="bandyer_call_action_options">Options</string>
+    <string name="kaleyra_call_action_muted">Muted</string>
+    <string name="kaleyra_call_action_mic_mute">Mute</string>
+    <string name="kaleyra_call_action_video_disable">Disable</string>
+    <string name="kaleyra_call_action_screen_share">Screen Share</string>
+    <string name="kaleyra_call_action_switch_camera">Switch</string>
+    <string name="kaleyra_call_action_chat">Chat</string>
+    <string name="kaleyra_call_action_whiteboard">Whiteboard</string>
+    <string name="kaleyra_call_action_file_share">File Share</string>
+    <string name="kaleyra_call_action_participants">Participants</string>
+    <string name="kaleyra_call_action_audio_route">Audio Output</string>
+    <string name="kaleyra_call_action_options">Options</string>
 
-    <string name="bandyer_call_action_switch_camera_description">Switch camera</string>
-    <string name="bandyer_call_action_enable_mic_description">Enable microphone</string>
-    <string name="bandyer_call_action_disable_mic_description">Mute microphone</string>
-    <string name="bandyer_call_action_enable_camera_description">Enable camera</string>
-    <string name="bandyer_call_action_disable_camera_description">Disable camera</string>
+    <string name="kaleyra_call_action_switch_camera_description">Switch camera</string>
+    <string name="kaleyra_call_action_enable_mic_description">Enable microphone</string>
+    <string name="kaleyra_call_action_disable_mic_description">Mute microphone</string>
+    <string name="kaleyra_call_action_enable_camera_description">Enable camera</string>
+    <string name="kaleyra_call_action_disable_camera_description">Disable camera</string>
 
     <!-- Chat -->
-    <string name="bandyer_edit_text_input_placeholder">Write here &#8230;</string>
-    <string name="bandyer_chat_channel_loading">Loading &#8230;</string>
-    <string name="bandyer_chat_user_status_online">online</string>
-    <string name="bandyer_chat_user_status_last_login">last login:</string>
-    <string name="bandyer_chat_user_status_offline">seen recently</string>
-    <string name="bandyer_chat_user_status_typing">typing</string>
-    <string name="bandyer_chat_state_waiting_for_network">waiting for network&#8230;</string>
-    <string name="bandyer_chat_state_connecting">connecting&#8230;</string>
-    <string name="bandyer_chat_send">Send message</string>
-    <string name="bandyer_chat_scroll_to_last_message">Scroll to the last message</string>
-    <string name="bandyer_chat_msg_status_pending">Message pending</string>
-    <string name="bandyer_chat_msg_status_sent">Message sent</string>
-    <string name="bandyer_chat_msg_status_seen">Message seen</string>
+    <string name="kaleyra_edit_text_input_placeholder">Write here &#8230;</string>
+    <string name="kaleyra_chat_channel_loading">Loading &#8230;</string>
+    <string name="kaleyra_chat_user_status_online">online</string>
+    <string name="kaleyra_chat_user_status_last_login">last login:</string>
+    <string name="kaleyra_chat_user_status_offline">seen recently</string>
+    <string name="kaleyra_chat_user_status_typing">typing</string>
+    <string name="kaleyra_chat_state_waiting_for_network">waiting for network&#8230;</string>
+    <string name="kaleyra_chat_state_connecting">connecting&#8230;</string>
+    <string name="kaleyra_chat_send">Send message</string>
+    <string name="kaleyra_chat_scroll_to_last_message">Scroll to the last message</string>
+    <string name="kaleyra_chat_msg_status_pending">Message pending</string>
+    <string name="kaleyra_chat_msg_status_sent">Message sent</string>
+    <string name="kaleyra_chat_msg_status_seen">Message seen</string>
 
     <!-- Call -->
-    <string name="bandyer_call_status_dialing">Dialing &#8230;</string>
+    <string name="kaleyra_call_status_dialing">Dialing &#8230;</string>
 
-    <plurals name="bandyer_call_status_ringing">
+    <plurals name="kaleyra_call_status_ringing">
         <item quantity="one">Ringing &#8230;</item>
         <item quantity="other">Ringing &#8230;</item>
     </plurals>
 
-    <string name="bandyer_call_status_connecting">Connecting…</string>
+    <string name="kaleyra_call_status_connecting">Connecting…</string>
 
-    <string name="bandyer_call_status_ended">Call ended</string>
+    <string name="kaleyra_call_status_ended">Call ended</string>
 
-    <string name="bandyer_call_status_user_disconnected">Internet connection has been interrupted.</string>
+    <string name="kaleyra_call_status_user_disconnected">Internet connection has been interrupted.</string>
 
-    <plurals name="bandyer_call_status_declined">
+    <plurals name="kaleyra_call_status_declined">
         <item quantity="one">The user has declined.</item>
         <item quantity="other">All users have declined.</item>
     </plurals>
 
-    <string name="bandyer_call_status_answered_on_other_device">You have answered on another device.</string>
+    <string name="kaleyra_call_status_answered_on_other_device">You have answered on another device.</string>
 
-    <plurals name="bandyer_call_status_no_answer">
+    <plurals name="kaleyra_call_status_no_answer">
         <item quantity="one">The user has not answered.</item>
         <item quantity="other">No user has answered.</item>
     </plurals>
 
-    <string name="bandyer_call_info_recording">This call will be recorded</string>
-    <string name="bandyer_call_info_ongoing_recording">This call is being recorded</string>
-    <string name="bandyer_action_dismiss">Dismiss</string>
-    <string name="bandyer_action_cancel">Cancel</string>
-    <string name="bandyer_action_discard_changes">Discard changes</string>
-    <string name="bandyer_action_confirm">Confirm</string>
-    <string name="bandyer_data_loss_confirm_message">Are you sure?\nAll data will be lost.</string>
-    <string name="bandyer_call_hangup">Hangup</string>
-    <string name="bandyer_ongoing_call_label">Tap to go back to call</string>
-    <string name="bandyer_call_left_alone">You are left alone</string>
-    <string name="bandyer_call_offline">You are offline</string>
-    <string name="bandyer_error_button_reload">Reload</string>
-    <string name="bandyer_error_title">An error occurred</string>
-    <string name="bandyer_error_subtitle">Please tap to reload</string>
+    <string name="kaleyra_call_info_recording">This call will be recorded</string>
+    <string name="kaleyra_call_info_ongoing_recording">This call is being recorded</string>
+    <string name="kaleyra_action_dismiss">Dismiss</string>
+    <string name="kaleyra_action_cancel">Cancel</string>
+    <string name="kaleyra_action_discard_changes">Discard changes</string>
+    <string name="kaleyra_action_confirm">Confirm</string>
+    <string name="kaleyra_data_loss_confirm_message">Are you sure?\nAll data will be lost.</string>
+    <string name="kaleyra_call_hangup">Hangup</string>
+    <string name="kaleyra_ongoing_call_label">Tap to go back to call</string>
+    <string name="kaleyra_call_left_alone">You are left alone</string>
+    <string name="kaleyra_call_offline">You are offline</string>
+    <string name="kaleyra_error_button_reload">Reload</string>
+    <string name="kaleyra_error_title">An error occurred</string>
+    <string name="kaleyra_error_subtitle">Please tap to reload</string>
 
-    <string name="bandyer_share_whiteboard">Share on whiteboard</string>
-    <string name="bandyer_download">Save</string>
+    <string name="kaleyra_share_whiteboard">Share on whiteboard</string>
+    <string name="kaleyra_download">Save</string>
 
-    <string name="bandyer_fullscreen_info">Fullscreen mode</string>
-    <string name="bandyer_fullscreen_button">Enter/exit fullscreen mode</string>
+    <string name="kaleyra_fullscreen_info">Fullscreen mode</string>
+    <string name="kaleyra_fullscreen_button">Enter/exit fullscreen mode</string>
 
-    <string name="bandyer_ringing_answer">Answer</string>
-    <string name="bandyer_ringing_decline">Decline</string>
+    <string name="kaleyra_ringing_answer">Answer</string>
+    <string name="kaleyra_ringing_decline">Decline</string>
 
     <!-- WHITEBOARD -->
-    <string name="bandyer_collaborate_button">Collaborate</string>
+    <string name="kaleyra_collaborate_button">Collaborate</string>
 
-    <string name="bandyer_confirm_message">Yes</string>
-    <string name="bandyer_cancel_message">No</string>
+    <string name="kaleyra_confirm_message">Yes</string>
+    <string name="kaleyra_cancel_message">No</string>
 
-    <string name="bandyer_snapshot_saved_in_gallery">Saved in gallery</string>
-    <string name="bandyer_alert_discard_snapshot_title">Do you want to discard the snapshot?</string>
-    <string name="bandyer_alert_discard_snapshot_message">This snapshot will not be available anymore if you don\'t save it locally.</string>
-    <string name="bandyer_alert_save_snapshot_title">Do you want to save the image locally?</string>
-    <string name="bandyer_alert_save_snapshot_message">This snapshot will not be available anymore if you don\'t save it locally.</string>
+    <string name="kaleyra_snapshot_saved_in_gallery">Saved in gallery</string>
+    <string name="kaleyra_alert_discard_snapshot_title">Do you want to discard the snapshot?</string>
+    <string name="kaleyra_alert_discard_snapshot_message">This snapshot will not be available anymore if you don\'t save it locally.</string>
+    <string name="kaleyra_alert_save_snapshot_title">Do you want to save the image locally?</string>
+    <string name="kaleyra_alert_save_snapshot_message">This snapshot will not be available anymore if you don\'t save it locally.</string>
 
-    <string name="bandyer_upload_file_error">Error occurred uploading file image</string>
-    <string name="bandyer_file_upload_percentage">%1$d %%</string>
-    <string name="bandyer_upload_file">Upload file</string>
+    <string name="kaleyra_upload_file_error">Error occurred uploading file image</string>
+    <string name="kaleyra_file_upload_percentage">%1$d %%</string>
+    <string name="kaleyra_upload_file">Upload file</string>
 
     <!-- TEMPLATES -->
-    <string name="bandyer_bluetooth_info">%1$s%2$s%3$s</string>
-    <string name="bandyer_bluetooth_battery_info">&#160;| %1$s %2$d %%</string>
-    <string name="bandyer_bluetooth_connecting_status_info">&#160;| %1$s</string>
+    <string name="kaleyra_bluetooth_info">%1$s%2$s%3$s</string>
+    <string name="kaleyra_bluetooth_battery_info">&#160;| %1$s %2$d %%</string>
+    <string name="kaleyra_bluetooth_connecting_status_info">&#160;| %1$s</string>
 
     <!-- SNAPSHOT -->
-    <string name="bandyer_snapshot_save">Save screen snapshot</string>
-    <string name="bandyer_snapshot_close">Close snapshot dialog</string>
+    <string name="kaleyra_snapshot_save">Save screen snapshot</string>
+    <string name="kaleyra_snapshot_close">Close snapshot dialog</string>
 
 
     <!-- SCREEN SHARE PICKER -->
-    <string name="bandyer_screenshare_picker_title">What do you want to share?</string>
-    <string name="bandyer_screenshare_app_only">App only screen</string>
-    <string name="bandyer_screenshare_full_device">Whole device screen</string>
+    <string name="kaleyra_screenshare_picker_title">What do you want to share?</string>
+    <string name="kaleyra_screenshare_app_only">App only screen</string>
+    <string name="kaleyra_screenshare_full_device">Whole device screen</string>
 
     <!-- FILE SHARE -->
-    <string name="bandyer_fileshare_add">Upload</string>
-    <string name="bandyer_fileshare_add_description">Upload a new file</string>
-    <string name="bandyer_fileshare_upload_error">Upload failed - Retry</string>
-    <string name="bandyer_fileshare_download_error">Download failed - Retry</string>
-    <string name="bandyer_fileshare_na">N/A</string>
-    <string name="bandyer_fileshare_you">You</string>
-    <string name="bandyer_fileshare_progress">%1$d %%</string>
-    <string name="bandyer_fileshare_upload">Upload</string>
-    <string name="bandyer_fileshare_download">Download</string>
-    <string name="bandyer_fileshare_file">Generic file</string>
-    <string name="bandyer_fileshare_media">Media file</string>
-    <string name="bandyer_fileshare_archive">Archive file</string>
-    <string name="bandyer_fileshare_cancel">Cancel</string>
-    <string name="bandyer_fileshare_download_descr">Start download</string>
-    <string name="bandyer_fileshare_success">File shared</string>
-    <string name="bandyer_fileshare_retry">Retry</string>
-    <string name="bandyer_no_file_shared">Still no file shared…</string>
-    <string name="bandyer_click_to_share_file">Click on “+” button to start sharing documents and images</string>
-    <string name="bandyer_write_permission_dialog_descr">Memory permission needed to download files</string>
-    <string name="bandyer_write_permission_dialog_title">Memory permission denied</string>
-    <string name="bandyer_button_ok">Ok</string>
-    <string name="bandyer_fileshare_chooser_title">Choose an application</string>
-    <string name="bandyer_fileshare_impossible_open_file">Can\'t open file</string>
-    <string name="bandyer_fileshare_file_cancelled">File cancelled</string>
-    <string name="bandyer_max_bytes_dialog_descr">It is allowed to share files up to 150 MB</string>
-    <string name="bandyer_max_bytes_dialog_title">File share limit</string>
+    <string name="kaleyra_fileshare_add">Upload</string>
+    <string name="kaleyra_fileshare_add_description">Upload a new file</string>
+    <string name="kaleyra_fileshare_upload_error">Upload failed - Retry</string>
+    <string name="kaleyra_fileshare_download_error">Download failed - Retry</string>
+    <string name="kaleyra_fileshare_na">N/A</string>
+    <string name="kaleyra_fileshare_you">You</string>
+    <string name="kaleyra_fileshare_progress">%1$d %%</string>
+    <string name="kaleyra_fileshare_upload">Upload</string>
+    <string name="kaleyra_fileshare_download">Download</string>
+    <string name="kaleyra_fileshare_file">Generic file</string>
+    <string name="kaleyra_fileshare_media">Media file</string>
+    <string name="kaleyra_fileshare_archive">Archive file</string>
+    <string name="kaleyra_fileshare_cancel">Cancel</string>
+    <string name="kaleyra_fileshare_download_descr">Start download</string>
+    <string name="kaleyra_fileshare_success">File shared</string>
+    <string name="kaleyra_fileshare_retry">Retry</string>
+    <string name="kaleyra_no_file_shared">Still no file shared…</string>
+    <string name="kaleyra_click_to_share_file">Click on “+” button to start sharing documents and images</string>
+    <string name="kaleyra_write_permission_dialog_descr">Memory permission needed to download files</string>
+    <string name="kaleyra_write_permission_dialog_title">Memory permission denied</string>
+    <string name="kaleyra_button_ok">Ok</string>
+    <string name="kaleyra_fileshare_chooser_title">Choose an application</string>
+    <string name="kaleyra_fileshare_impossible_open_file">Can\'t open file</string>
+    <string name="kaleyra_fileshare_file_cancelled">File cancelled</string>
+    <string name="kaleyra_max_bytes_dialog_descr">It is allowed to share files up to 150 MB</string>
+    <string name="kaleyra_max_bytes_dialog_title">File share limit</string>
 
     <!-- FEEDBACK -->
-    <string name="bandyer_feedback_vote">Vote</string>
-    <string name="bandyer_feedback_close">Close</string>
-    <string name="bandyer_feedback_evaluate_call">Please rate the quality of your call</string>
-    <string name="bandyer_feedback_bad">Awful</string>
-    <string name="bandyer_feedback_poor">Poor</string>
-    <string name="bandyer_feedback_neutral">Neutral</string>
-    <string name="bandyer_feedback_good">Good</string>
-    <string name="bandyer_feedback_excellent">Excellent</string>
-    <string name="bandyer_feedback_leave_a_comment">Leave a comment…</string>
-    <string name="bandyer_feedback_rating_bar_descr">Rating</string>
-    <string name="bandyer_feedback_see_you_soon">We hope to see you again soon.</string>
-    <string name="bandyer_feedback_thank_you">Thank you for your feedback!</string>
+    <string name="kaleyra_feedback_vote">Vote</string>
+    <string name="kaleyra_feedback_close">Close</string>
+    <string name="kaleyra_feedback_evaluate_call">Please rate the quality of your call</string>
+    <string name="kaleyra_feedback_bad">Awful</string>
+    <string name="kaleyra_feedback_poor">Poor</string>
+    <string name="kaleyra_feedback_neutral">Neutral</string>
+    <string name="kaleyra_feedback_good">Good</string>
+    <string name="kaleyra_feedback_excellent">Excellent</string>
+    <string name="kaleyra_feedback_leave_a_comment">Leave a comment…</string>
+    <string name="kaleyra_feedback_rating_bar_descr">Rating</string>
+    <string name="kaleyra_feedback_see_you_soon">We hope to see you again soon.</string>
+    <string name="kaleyra_feedback_thank_you">Thank you for your feedback!</string>
 
 </resources>

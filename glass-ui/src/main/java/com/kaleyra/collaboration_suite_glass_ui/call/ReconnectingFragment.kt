@@ -37,13 +37,13 @@ internal class ReconnectingFragment : ConnectingFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_reconnectingStyle)
+        themeResId = requireActivity().theme.getAttributeResourceId(R.attr.kaleyra_reconnectingStyle)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     override fun onConnected() { findNavController().safeNavigate(ReconnectingFragmentDirections.actionReconnectingFragmentToEmptyFragment()) }
 
-    override fun setSubtitle(isGroupCall: Boolean) { binding.bandyerSubtitle.text = resources.getString(R.string.bandyer_glass_connecting) }
+    override fun setSubtitle(isGroupCall: Boolean) { binding.kaleyraSubtitle.text = resources.getString(R.string.kaleyra_glass_connecting) }
 
     override fun onTap() = false
 

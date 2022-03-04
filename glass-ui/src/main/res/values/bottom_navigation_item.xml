@@ -18,52 +18,52 @@
 <resources>
 
     <!-- BOTTOM NAVIGATION ITEM -->
-    <declare-styleable name="BandyerSDKDesign.Glass.BottomActionItem">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_iconStyle" />
-        <attr name="bandyer_iconTipStyle" format="reference" />
-        <attr name="bandyer_labelStyle" format="reference" />
+    <declare-styleable name="KaleyraSDKDesign.Glass.BottomActionItem">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_iconStyle" />
+        <attr name="kaleyra_iconTipStyle" format="reference" />
+        <attr name="kaleyra_labelStyle" format="reference" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem" parent="BandyerSDKDesign.Glass">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.RootLayout</item>
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.Glass.BottomActionItem.Icon</item>
-        <item name="bandyer_iconTipStyle">@style/BandyerSDKDesign.TextView.GlassIconTip</item>
-        <item name="bandyer_labelStyle">@style/BandyerSDKDesign.TextView.GlassLabel</item>
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem" parent="KaleyraSDKDesign.Glass">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.Icon</item>
+        <item name="kaleyra_iconTipStyle">@style/KaleyraSDKDesign.TextView.GlassIconTip</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel</item>
     </style>
 
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.RootLayout" parent="">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout" parent="">
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
     <!-- GESTURE ICON -->
-    <style name="BandyerSDKDesign.Glass.BottomActionItem.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="KaleyraSDKDesign.Glass.BottomActionItem.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="tint">?attr/colorSecondary</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:layout_width">@dimen/bandyer_dimen_space24</item>
-        <item name="android:layout_height">@dimen/bandyer_dimen_space24</item>
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space24</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_space24</item>
     </style>
 
     <!-- ICON TIP TEXT -->
-    <style name="BandyerSDKDesign.TextView.GlassIconTip" parent="BandyerSDKDesign.TextView">
+    <style name="KaleyraSDKDesign.TextView.GlassIconTip" parent="KaleyraSDKDesign.TextView">
         <item name="android:maxLines">1</item>
-        <item name="android:text">@string/bandyer_glass_tap</item>
+        <item name="android:text">@string/kaleyra_glass_tap</item>
         <item name="android:textColor">?attr/colorSecondary</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_h1</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
     </style>
 
     <!-- LABEL TEXT -->
-    <style name="BandyerSDKDesign.TextView.GlassLabel" parent="BandyerSDKDesign.TextView">
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space4</item>
+    <style name="KaleyraSDKDesign.TextView.GlassLabel" parent="KaleyraSDKDesign.TextView">
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space4</item>
         <item name="android:maxLines">1</item>
         <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_h1</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_h1</item>
         <item name="android:layout_gravity">center</item>
         <item name="android:includeFontPadding">false</item>
-        <item name="android:lineSpacingExtra">@dimen/bandyer_dimen_space0</item>
+        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
     </style>
 </resources>

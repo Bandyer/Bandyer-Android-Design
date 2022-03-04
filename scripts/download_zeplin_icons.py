@@ -9,7 +9,7 @@ ZEPLIN_STYLE_GUIDES = sys.argv[2]
 PROJECT_NAME = sys.argv[3]
 SOURCE_FOLDER = '../img/assets/'
 DESTINATION_FOLDER = '../' + PROJECT_NAME + '/src/main/res/drawable/'
-FILE_PREFIX = 'bandyer_z_'
+FILE_PREFIX = 'kaleyra_z_'
 
 
 def camel_to_snake(name):

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/smartglass_nav_graph"
+    app:startDestination="@id/startFragment">
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.menu.MenuFragment"
+        android:label="MenuFragment">
+        <action
+            android:id="@+id/action_menuFragment_to_volumeFragment"
+            app:destination="@id/volumeFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_zoomFragment"
+            app:destination="@id/zoomFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_participantsFragment"
+            app:destination="@id/participantsFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_smartglass_nav_graph_chat"
+            app:destination="@id/smartglass_nav_graph_chat">
+            <argument
+                android:name="enableTilt"
+                android:defaultValue="false"
+                app:argType="boolean" />
+        </action>
+        <argument
+            android:name="enableTilt"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="options"
+            android:defaultValue="@null"
+            app:argType="com.kaleyra.collaboration_suite_glass_ui.model.Option[]"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/volumeFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.settings.volume.VolumeFragment"
+        android:label="VolumeFragment">
+        <argument
+            android:name="enableTilt"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/zoomFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.settings.zoom.ZoomFragment"
+        android:label="ZoomFragment">
+        <argument
+            android:name="enableTilt"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/callEndedFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.CallEndedFragment"
+        android:label="CallEndedFragment">
+        <argument
+            android:name="title"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="subtitle"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/endCallFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.EndCallFragment"
+        android:label="EndCallFragment" />
+    <fragment
+        android:id="@+id/ringingFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.RingingFragment"
+        android:label="RingingFragment">
+        <action
+            android:id="@+id/action_ringingFragment_to_emptyFragment"
+            app:destination="@id/emptyFragment"
+            app:popUpTo="@id/ringingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/dialingFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.DialingFragment"
+        android:label="DialingFragment">
+        <action
+            android:id="@+id/action_dialingFragment_to_emptyFragment"
+            app:destination="@id/emptyFragment"
+            app:popUpTo="@id/dialingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/emptyFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.EmptyFragment"
+        android:label="EmptyFragment">
+        <action
+            android:id="@+id/action_emptyFragment_to_endCallFragment"
+            app:destination="@id/endCallFragment" />
+        <action
+            android:id="@+id/action_emptyFragment_to_menuFragment"
+            app:destination="@id/menuFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out" />
+        <argument
+            android:name="enableTilt"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
+    <fragment
+        android:id="@+id/participantsFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.participants.ParticipantsFragment"
+        android:label="ParticipantsFragment">
+        <argument
+            android:name="enableTilt"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
+    <include app:graph="@navigation/kaleyra_glass_nav_graph_chat" />
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.StartFragment"
+        android:label="fragment_start"
+        tools:layout="@layout/kaleyra_glass_fragment_start">
+        <action
+            android:id="@+id/action_startFragment_to_dialingFragment"
+            app:destination="@id/dialingFragment"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_startFragment_to_ringingFragment"
+            app:destination="@id/ringingFragment"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_startFragment_to_emptyFragment"
+            app:destination="@id/emptyFragment"
+            app:popUpTo="@id/startFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/reconnectingFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.ReconnectingFragment"
+        android:label="ReconnectingFragment">
+        <action
+            android:id="@+id/action_reconnectingFragment_to_emptyFragment"
+            app:destination="@id/emptyFragment" />
+        <action
+            android:id="@+id/action_reconnectingFragment_to_endCallFragment"
+            app:destination="@id/endCallFragment" />
+    </fragment>
+</navigation>

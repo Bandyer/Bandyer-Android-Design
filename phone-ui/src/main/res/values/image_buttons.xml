@@ -18,194 +18,194 @@
 
     <!-- IMAGE BUTTON STYLE -->
 
-    <style name="BandyerSDKDesign.ImageButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
-        <item name="android:insetLeft">@dimen/bandyer_dimen_space0</item>
-        <item name="android:insetRight">@dimen/bandyer_dimen_space0</item>
-        <item name="android:insetTop">@dimen/bandyer_dimen_space0</item>
-        <item name="android:insetBottom">@dimen/bandyer_dimen_space0</item>
-        <item name="android:minHeight">@dimen/bandyer_dimen_space0</item>
-        <item name="android:minWidth">@dimen/bandyer_dimen_space0</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingRight">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingLeft">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space8</item>
-        <item name="strokeWidth">@dimen/bandyer_dimen_space0</item>
-        <item name="iconPadding">@dimen/bandyer_dimen_space0</item>
+    <style name="KaleyraSDKDesign.ImageButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+        <item name="android:insetLeft">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:insetRight">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:insetTop">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:insetBottom">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:minHeight">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:minWidth">@dimen/kaleyra_dimen_space0</item>
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingRight">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingLeft">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space8</item>
+        <item name="strokeWidth">@dimen/kaleyra_dimen_space0</item>
+        <item name="iconPadding">@dimen/kaleyra_dimen_space0</item>
         <item name="iconGravity">textStart</item>
         <item name="backgroundTint">@android:color/transparent</item>
-        <item name="rippleColor">@color/bandyer_call_action_button_ripple_color</item>
-        <item name="iconSize">@dimen/bandyer_dimen_normal_image_button</item>
-        <item name="shapeAppearanceOverlay">@style/BandyerSDKDesign.ImageButton.ShapeAppearanceOverlay.Circle</item>
+        <item name="rippleColor">@color/kaleyra_call_action_button_ripple_color</item>
+        <item name="iconSize">@dimen/kaleyra_dimen_normal_image_button</item>
+        <item name="shapeAppearanceOverlay">@style/KaleyraSDKDesign.ImageButton.ShapeAppearanceOverlay.Circle</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.ShapeAppearanceOverlay.Circle" parent="">
+    <style name="KaleyraSDKDesign.ImageButton.ShapeAppearanceOverlay.Circle" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.AudioRoute" parent="BandyerSDKDesign.ImageButton">
-        <item name="android:paddingRight">@dimen/bandyer_dimen_space16</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space16</item>
-        <item name="iconTint">@color/bandyer_audio_route_icon_color</item>
+    <style name="KaleyraSDKDesign.ImageButton.AudioRoute" parent="KaleyraSDKDesign.ImageButton">
+        <item name="android:paddingRight">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
+        <item name="iconTint">@color/kaleyra_audio_route_icon_color</item>
         <item name="android:clickable">false</item>
         <item name="android:focusable">false</item>
         <item name="rippleColor">@android:color/transparent</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.Send" parent="BandyerSDKDesign.ImageButton">
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space4</item>
-        <item name="android:paddingRight">@dimen/bandyer_dimen_space4</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space4</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space4</item>
-        <item name="android:paddingLeft">@dimen/bandyer_dimen_space4</item>
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space4</item>
+    <style name="KaleyraSDKDesign.ImageButton.Send" parent="KaleyraSDKDesign.ImageButton">
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:paddingRight">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:paddingLeft">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space4</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space8</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space8</item>
-        <item name="icon">@drawable/ic_bandyer_send</item>
-        <item name="iconTint">@color/bandyer_input_layout_widget_send_color</item>
-        <item name="iconSize">@dimen/bandyer_dimen_send_image_button</item>
+        <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space8</item>
+        <item name="icon">@drawable/ic_kaleyra_send</item>
+        <item name="iconTint">@color/kaleyra_input_layout_widget_send_color</item>
+        <item name="iconSize">@dimen/kaleyra_dimen_send_image_button</item>
         <item name="android:rotation">@integer/auto_mirror</item>
-        <item name="android:contentDescription">@string/bandyer_chat_send</item>
+        <item name="android:contentDescription">@string/kaleyra_chat_send</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.Confirm" parent="BandyerSDKDesign.ImageButton">
-        <item name="icon">@drawable/ic_bandyer_confirm</item>
-        <item name="android:contentDescription">@string/bandyer_action_confirm</item>
+    <style name="KaleyraSDKDesign.ImageButton.Confirm" parent="KaleyraSDKDesign.ImageButton">
+        <item name="icon">@drawable/ic_kaleyra_confirm</item>
+        <item name="android:contentDescription">@string/kaleyra_action_confirm</item>
         <item name="iconTint">?attr/colorOnSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.Cancel" parent="BandyerSDKDesign.ImageButton">
-        <item name="icon">@drawable/bandyer_whiteboard_editor_cancel_button_icon</item>
+    <style name="KaleyraSDKDesign.ImageButton.Cancel" parent="KaleyraSDKDesign.ImageButton">
+        <item name="icon">@drawable/kaleyra_whiteboard_editor_cancel_button_icon</item>
         <item name="iconTint">?attr/colorOnSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.Confirm.Day" parent="BandyerSDKDesign.ImageButton.Confirm">
-        <item name="iconTint">@color/bandyer_colorOnSurface</item>
+    <style name="KaleyraSDKDesign.ImageButton.Confirm.Day" parent="KaleyraSDKDesign.ImageButton.Confirm">
+        <item name="iconTint">@color/kaleyra_colorOnSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.Cancel.Day" parent="BandyerSDKDesign.ImageButton.Cancel">
-        <item name="iconTint">@color/bandyer_colorOnSurface</item>
+    <style name="KaleyraSDKDesign.ImageButton.Cancel.Day" parent="KaleyraSDKDesign.ImageButton.Cancel">
+        <item name="iconTint">@color/kaleyra_colorOnSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.Reload" parent="BandyerSDKDesign.ImageButton">
+    <style name="KaleyraSDKDesign.ImageButton.Reload" parent="KaleyraSDKDesign.ImageButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="icon">@drawable/ic_bandyer_reload</item>
+        <item name="icon">@drawable/ic_kaleyra_reload</item>
         <item name="android:clickable">false</item>
         <item name="iconTint">@android:color/black</item>
-        <item name="iconSize">@dimen/bandyer_dimen_big_image_size</item>
-        <item name="android:contentDescription">@string/bandyer_error_button_reload</item>
+        <item name="iconSize">@dimen/kaleyra_dimen_big_image_size</item>
+        <item name="android:contentDescription">@string/kaleyra_error_button_reload</item>
     </style>
 
     <!-- Line style -->
-    <style name="BandyerSDKDesign.ImageButton.BottomSheetLine" parent="BandyerSDKDesign.ImageButton">
+    <style name="KaleyraSDKDesign.ImageButton.BottomSheetLine" parent="KaleyraSDKDesign.ImageButton">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:gravity">center</item>
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space12</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space12</item>
-        <item name="icon">@drawable/bandyer_bottom_sheet_widget_line</item>
-        <item name="iconTint">@color/bandyer_call_line_color</item>
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space12</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space12</item>
+        <item name="icon">@drawable/kaleyra_bottom_sheet_widget_line</item>
+        <item name="iconTint">@color/kaleyra_call_line_color</item>
         <item name="iconSize">0dp</item>
         <item name="rippleColor">@android:color/transparent</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.BottomSheetLine.Ringing" parent="BandyerSDKDesign.ImageButton.BottomSheetLine">
+    <style name="KaleyraSDKDesign.ImageButton.BottomSheetLine.Ringing" parent="KaleyraSDKDesign.ImageButton.BottomSheetLine">
         <item name="android:visibility">gone</item>
     </style>
 
     <!-- CALL USER INFO -->
 
-    <style name="BandyerSDKDesign.ImageButton.Snapshot" parent="BandyerSDKDesign.ImageButton">
-        <item name="android:layout_margin">@dimen/bandyer_dimen_space16</item>
-        <item name="icon">@drawable/ic_bandyer_snapshot</item>
+    <style name="KaleyraSDKDesign.ImageButton.Snapshot" parent="KaleyraSDKDesign.ImageButton">
+        <item name="android:layout_margin">@dimen/kaleyra_dimen_space16</item>
+        <item name="icon">@drawable/ic_kaleyra_snapshot</item>
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.FullScreen" parent="BandyerSDKDesign.ImageButton">
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingRight">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingLeft">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space8</item>
-        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space4</item>
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space4</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space4</item>
-        <item name="android:layout_marginBottom">@dimen/bandyer_dimen_space4</item>
+    <style name="KaleyraSDKDesign.ImageButton.FullScreen" parent="KaleyraSDKDesign.ImageButton">
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingRight">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingLeft">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space4</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="iconTint">@android:color/white</item>
         <item name="android:visibility">visible</item>
         <item name="rippleColor">@android:color/white</item>
-        <item name="icon">@drawable/bandyer_call_user_info_fullscreen_icon</item>
-        <item name="android:contentDescription">@string/bandyer_fullscreen_button</item>
+        <item name="icon">@drawable/kaleyra_call_user_info_fullscreen_icon</item>
+        <item name="android:contentDescription">@string/kaleyra_fullscreen_button</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.Close" parent="BandyerSDKDesign.ImageButton">
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginStart">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginLeft">@dimen/bandyer_dimen_space16</item>
-        <item name="icon">@drawable/ic_bandyer_nav_close</item>
-        <item name="iconSize">@dimen/bandyer_dimen_space32</item>
+    <style name="KaleyraSDKDesign.ImageButton.Close" parent="KaleyraSDKDesign.ImageButton">
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space16</item>
+        <item name="icon">@drawable/ic_kaleyra_nav_close</item>
+        <item name="iconSize">@dimen/kaleyra_dimen_space32</item>
         <item name="iconTint">@android:color/white</item>
-        <item name="android:contentDescription">@string/bandyer_snapshot_close</item>
+        <item name="android:contentDescription">@string/kaleyra_snapshot_close</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.Save" parent="BandyerSDKDesign.ImageButton">
-        <item name="android:layout_marginEnd">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginRight">@dimen/bandyer_dimen_space16</item>
-        <item name="android:layout_marginTop">@dimen/bandyer_dimen_space16</item>
-        <item name="icon">@drawable/ic_bandyer_save</item>
-        <item name="iconSize">@dimen/bandyer_dimen_space32</item>
+    <style name="KaleyraSDKDesign.ImageButton.Save" parent="KaleyraSDKDesign.ImageButton">
+        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space16</item>
+        <item name="icon">@drawable/ic_kaleyra_save</item>
+        <item name="iconSize">@dimen/kaleyra_dimen_space32</item>
         <item name="iconTint">@android:color/white</item>
-        <item name="android:contentDescription">@string/bandyer_snapshot_save</item>
+        <item name="android:contentDescription">@string/kaleyra_snapshot_save</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.UploadError" parent="BandyerSDKDesign.ImageButton">
+    <style name="KaleyraSDKDesign.ImageButton.UploadError" parent="KaleyraSDKDesign.ImageButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">@dimen/bandyer_dimen_space8</item>
-        <item name="icon">@drawable/ic_bandyer_close</item>
-        <item name="iconSize">@dimen/bandyer_dimen_big_image_button</item>
+        <item name="android:padding">@dimen/kaleyra_dimen_space8</item>
+        <item name="icon">@drawable/ic_kaleyra_close</item>
+        <item name="iconSize">@dimen/kaleyra_dimen_big_image_button</item>
         <item name="iconTint">?attr/colorError</item>
         <item name="android:clickable">false</item>
         <item name="android:visibility">invisible</item>
         <item name="rippleColor">@android:color/transparent</item>
-        <item name="android:contentDescription">@string/bandyer_upload_file_error</item>
+        <item name="android:contentDescription">@string/kaleyra_upload_file_error</item>
     </style>
 
-    <style name="BandyerSDKDesign.ImageButton.ChatUnreadMessages" parent="BandyerSDKDesign.ImageButton">
-        <item name="android:minWidth">@dimen/bandyer_dimen_space32</item>
-        <item name="android:minHeight">@dimen/bandyer_dimen_space32</item>
-        <item name="android:paddingTop">@dimen/bandyer_dimen_space4</item>
-        <item name="android:paddingRight">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingEnd">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingBottom">@dimen/bandyer_dimen_space4</item>
-        <item name="android:paddingLeft">@dimen/bandyer_dimen_space8</item>
-        <item name="android:paddingStart">@dimen/bandyer_dimen_space8</item>
+    <style name="KaleyraSDKDesign.ImageButton.ChatUnreadMessages" parent="KaleyraSDKDesign.ImageButton">
+        <item name="android:minWidth">@dimen/kaleyra_dimen_space32</item>
+        <item name="android:minHeight">@dimen/kaleyra_dimen_space32</item>
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:paddingRight">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:paddingLeft">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space8</item>
         <item name="android:gravity">end|center_vertical</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="backgroundTint">?attr/colorPrimary</item>m>
-        <item name="icon">@drawable/ic_bandyer_double_arrow_down</item>
+        <item name="icon">@drawable/ic_kaleyra_double_arrow_down</item>
         <item name="iconGravity">textEnd</item>
-        <item name="iconPadding">@dimen/bandyer_dimen_space4</item>
-        <item name="iconSize">@dimen/bandyer_dimen_space16</item>
+        <item name="iconPadding">@dimen/kaleyra_dimen_space4</item>
+        <item name="iconSize">@dimen/kaleyra_dimen_space16</item>
         <item name="iconTint">?attr/colorOnPrimary</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_normal</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_normal</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
         <item name="rippleColor">@color/mtrl_fab_ripple_color</item>
-        <item name="elevation">@dimen/bandyer_dimen_space4</item>
-        <item name="android:elevation" tools:targetApi="lollipop">@dimen/bandyer_dimen_space4</item>
-        <item name="android:contentDescription">@string/bandyer_chat_scroll_to_last_message</item>
+        <item name="elevation">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:elevation" tools:targetApi="lollipop">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:contentDescription">@string/kaleyra_chat_scroll_to_last_message</item>
     </style>
 
 </resources>

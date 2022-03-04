@@ -26,7 +26,7 @@ import androidx.navigation.fragment.findNavController
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassFragmentStartBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentStartBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 import kotlinx.coroutines.flow.combine
@@ -38,8 +38,8 @@ import kotlinx.coroutines.flow.takeWhile
  */
 internal class StartFragment : BaseFragment() {
 
-    private var _binding: BandyerGlassFragmentStartBinding? = null
-    override val binding: BandyerGlassFragmentStartBinding get() = _binding!!
+    private var _binding: KaleyraGlassFragmentStartBinding? = null
+    override val binding: KaleyraGlassFragmentStartBinding get() = _binding!!
 
     private val viewModel: GlassViewModel by activityViewModels()
 
@@ -56,7 +56,7 @@ internal class StartFragment : BaseFragment() {
             viewModel.onHangup()
         }
 
-        _binding = BandyerGlassFragmentStartBinding.inflate(inflater, container, false)
+        _binding = KaleyraGlassFragmentStartBinding.inflate(inflater, container, false)
         return binding.root
     }
 

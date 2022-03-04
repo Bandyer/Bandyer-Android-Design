@@ -17,75 +17,75 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel" parent="BandyerSDKDesign.TextView.Subtitle">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel" parent="KaleyraSDKDesign.TextView.Subtitle">
         <item name="android:gravity">center</item>
-        <item name="android:padding">@dimen/bandyer_dimen_space6</item>
+        <item name="android:padding">@dimen/kaleyra_dimen_space6</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
-        <item name="android:textColor">@color/bandyer_call_action_button_label_color</item>
+        <item name="android:textColor">@color/kaleyra_call_action_button_label_color</item>
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextAppearance.ButtonLabel.Cancel" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraSDKDesign.TextAppearance.ButtonLabel.Cancel" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextAppearance.ButtonLabel.Confirm" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:text">@string/bandyer_action_confirm</item>
+    <style name="KaleyraSDKDesign.TextAppearance.ButtonLabel.Confirm" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_action_confirm</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Microphone" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:text">@string/bandyer_call_action_mic_mute</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Microphone" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_mic_mute</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Participants" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:text">@string/bandyer_call_action_participants</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Participants" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_participants</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Chat" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:text">@string/bandyer_call_action_chat</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Chat" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_chat</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Whiteboard" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:text">@string/bandyer_call_action_whiteboard</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Whiteboard" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_whiteboard</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.FileShare" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:text">@string/bandyer_call_action_file_share</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.FileShare" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_file_share</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.ScreenShare" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:text">@string/bandyer_call_action_screen_share</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.ScreenShare" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_screen_share</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Camera" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:text">@string/bandyer_call_action_video_disable</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Camera" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_video_disable</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SwitchCamera" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:text">@string/bandyer_call_action_switch_camera</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SwitchCamera" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_switch_camera</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.AudioRoute" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:text">@string/bandyer_call_action_audio_route</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.AudioRoute" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_audio_route</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.Options" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:text">@string/bandyer_call_action_options</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Options" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_options</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.HangUp" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
-        <item name="android:text">@string/bandyer_call_hangup</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.HangUp" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_hangup</item>
     </style>
 
     <!-- Smartglass BUTTON LABELS -->
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
-        <item name="android:textSize">@dimen/bandyer_dimen_text_64sp</item>
-        <item name="android:padding">@dimen/bandyer_dimen_space16</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_64sp</item>
+        <item name="android:padding">@dimen/kaleyra_dimen_space16</item>
         <item name="android:maxLines">2</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:gravity">center</item>
@@ -93,16 +93,16 @@
         <item name="android:clickable">false</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Microphone" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">
-        <item name="android:text">@string/bandyer_call_action_mic_mute</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Microphone" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">
+        <item name="android:text">@string/kaleyra_call_action_mic_mute</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Camera" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">
-        <item name="android:text">@string/bandyer_call_action_video_disable</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Camera" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">
+        <item name="android:text">@string/kaleyra_call_action_video_disable</item>
     </style>
 
-    <style name="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Participants" parent="BandyerSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">
-        <item name="android:text">@string/bandyer_call_action_participants</item>
+    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Participants" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">
+        <item name="android:text">@string/kaleyra_call_action_participants</item>
     </style>
 
 </resources>

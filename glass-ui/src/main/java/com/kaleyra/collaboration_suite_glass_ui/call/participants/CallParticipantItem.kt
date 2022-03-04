@@ -18,7 +18,7 @@ package com.kaleyra.collaboration_suite_glass_ui.call.participants
 
 import android.view.View
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassParticipantItemLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassParticipantItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -44,7 +44,7 @@ internal class CallParticipantItem(val data: ParticipantItemData): AbstractItem<
      * The layout for the given item
      */
     override val layoutRes: Int
-        get() = R.layout.bandyer_glass_participant_item_layout
+        get() = R.layout.kaleyra_glass_participant_item_layout
 
     /**
      * The type of the Item. Can be a hardcoded INT, but preferred is a defined id
@@ -66,13 +66,13 @@ internal class CallParticipantItem(val data: ParticipantItemData): AbstractItem<
      */
     class ViewHolder(view: View): FastAdapter.ViewHolder<CallParticipantItem>(view) {
 
-        private val binding: BandyerGlassParticipantItemLayoutBinding = BandyerGlassParticipantItemLayoutBinding.bind(view)
+        private val binding: KaleyraGlassParticipantItemLayoutBinding = KaleyraGlassParticipantItemLayoutBinding.bind(view)
 
         /**
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: CallParticipantItem, payloads: List<Any>) {
-            binding.bandyerText.text = item.data.userDescription
+            binding.kaleyraText.text = item.data.userDescription
         }
 
         /**
@@ -80,7 +80,7 @@ internal class CallParticipantItem(val data: ParticipantItemData): AbstractItem<
          */
         override fun unbindView(item: CallParticipantItem) {
             binding.unbind()
-            binding.bandyerText.text = null
+            binding.kaleyraText.text = null
         }
     }
 }

@@ -59,26 +59,26 @@ internal class CellImageView @JvmOverloads constructor(
         /**
          * m i s s i n g
          */
-        MISSING(intArrayOf(R.attr.bandyer_state_cell_missing)),
+        MISSING(intArrayOf(R.attr.kaleyra_state_cell_missing)),
 
         /**
          * l o w
          */
-        LOW(intArrayOf(R.attr.bandyer_state_cell_low)),
+        LOW(intArrayOf(R.attr.kaleyra_state_cell_low)),
 
         /**
          * m o d e r a t e
          */
-        MODERATE(intArrayOf(R.attr.bandyer_state_cell_moderate)),
+        MODERATE(intArrayOf(R.attr.kaleyra_state_cell_moderate)),
 
         /**
          * g o o d
          */
-        GOOD(intArrayOf(R.attr.bandyer_state_cell_good)),
+        GOOD(intArrayOf(R.attr.kaleyra_state_cell_good)),
 
         /**
          * f u l l
          */
-        FULL(intArrayOf(R.attr.bandyer_state_cell_full)),
+        FULL(intArrayOf(R.attr.kaleyra_state_cell_full)),
     }
 }

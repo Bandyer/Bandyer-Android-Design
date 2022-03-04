@@ -40,8 +40,8 @@ internal object ContextExtensions {
         @StyleableRes styleAttribute: Int
     ): Int =
         this.getThemeAttribute(
-            R.style.BandyerSDKDesign_Theme_GlassCall,
-            R.styleable.BandyerSDKDesign_Theme_Glass_Call,
+            R.style.KaleyraSDKDesign_Theme_GlassCall,
+            R.styleable.KaleyraSDKDesign_Theme_Glass_Call,
             styleAttribute
         )
 
@@ -56,8 +56,8 @@ internal object ContextExtensions {
         @StyleableRes styleAttribute: Int
     ): Int =
         this.getThemeAttribute(
-            R.style.BandyerSDKDesign_Theme_GlassChat,
-            R.styleable.BandyerSDKDesign_Theme_Glass_Chat,
+            R.style.KaleyraSDKDesign_Theme_GlassChat,
+            R.styleable.KaleyraSDKDesign_Theme_Glass_Chat,
             styleAttribute
         )
 

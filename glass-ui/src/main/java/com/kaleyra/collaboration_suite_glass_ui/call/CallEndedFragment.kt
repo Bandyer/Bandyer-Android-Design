@@ -25,7 +25,7 @@ import androidx.core.view.postDelayed
 import androidx.navigation.fragment.navArgs
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassFragmentFullScreenLogoDialogBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenLogoDialogBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
@@ -34,8 +34,8 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensio
  */
 internal class CallEndedFragment : BaseFragment() {
 
-    private var _binding: BandyerGlassFragmentFullScreenLogoDialogBinding? = null
-    override val binding: BandyerGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
+    private var _binding: KaleyraGlassFragmentFullScreenLogoDialogBinding? = null
+    override val binding: KaleyraGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
 
     private val args: CallEndedFragmentArgs by navArgs()
 
@@ -54,15 +54,15 @@ internal class CallEndedFragment : BaseFragment() {
         }
 
         // Apply theme wrapper and add view binding
-        val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.bandyer_callEndedStyle)
-        _binding = BandyerGlassFragmentFullScreenLogoDialogBinding.inflate(
+        val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.kaleyra_callEndedStyle)
+        _binding = KaleyraGlassFragmentFullScreenLogoDialogBinding.inflate(
             inflater.cloneInContext(android.view.ContextThemeWrapper(requireContext(), themeResId)),
             container,
             false
         ).apply {
-            if(GlassDeviceUtils.isRealWear) bandyerBottomNavigation.setListenersForRealwear()
-            bandyerTitle.text = args.title
-            bandyerSubtitle.text = args.subtitle
+            if(GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear()
+            kaleyraTitle.text = args.title
+            kaleyraSubtitle.text = args.subtitle
         }
 
         return binding.root

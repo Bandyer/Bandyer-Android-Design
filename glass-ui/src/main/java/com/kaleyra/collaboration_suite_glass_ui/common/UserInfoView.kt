@@ -24,7 +24,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
 import com.kaleyra.collaboration_suite_core_ui.extensions.StringExtensions.parseToColor
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassUserInfoLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassUserInfoLayoutBinding
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.UserState
 
 internal class UserInfoView @JvmOverloads constructor(
@@ -33,26 +33,26 @@ internal class UserInfoView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    val binding = BandyerGlassUserInfoLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    val binding = KaleyraGlassUserInfoLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
-    fun setName(name: String) { binding.bandyerName.text = name }
+    fun setName(name: String) { binding.kaleyraName.text = name }
 
     fun setAvatarBackgroundAndLetter(name: String) = with(binding) {
-        bandyerAvatar.setText(name.first().toString())
-        bandyerAvatar.setBackground(name.parseToColor())
+        kaleyraAvatar.setText(name.first().toString())
+        kaleyraAvatar.setBackground(name.parseToColor())
     }
 
-//    fun setAvatar(url: String) = binding.bandyerAvatar.setImage(url)
+//    fun setAvatar(url: String) = binding.kaleyraAvatar.setImage(url)
 
-    fun setAvatar(uri: Uri) = binding.bandyerAvatar.setImage(uri)
+    fun setAvatar(uri: Uri) = binding.kaleyraAvatar.setImage(uri)
 
-    fun setAvatar(@DrawableRes resId: Int?) = binding.bandyerAvatar.setImage(resId)
+    fun setAvatar(@DrawableRes resId: Int?) = binding.kaleyraAvatar.setImage(resId)
 
     fun setState(state: UserState, lastSeenTime: Long = 0) = with(binding) {
-        if(state is UserState.Offline) bandyerUserStateText.setUserState(state, lastSeenTime)
-        else bandyerUserStateText.setUserState(state)
-        bandyerUserStateDot.isActivated = state == UserState.Online
+        if(state is UserState.Offline) kaleyraUserStateText.setUserState(state, lastSeenTime)
+        else kaleyraUserStateText.setUserState(state)
+        kaleyraUserStateDot.isActivated = state == UserState.Online
     }
 
-    fun hideName(value: Boolean) { binding.bandyerName.visibility = if (value) View.GONE else View.VISIBLE }
+    fun hideName(value: Boolean) { binding.kaleyraName.visibility = if (value) View.GONE else View.VISIBLE }
 }

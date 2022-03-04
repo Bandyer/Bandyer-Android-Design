@@ -18,7 +18,7 @@ package com.kaleyra.collaboration_suite_glass_ui.chat.menu
 
 import android.view.View
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.databinding.BandyerGlassChatMenuItemLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatMenuItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
@@ -34,7 +34,7 @@ internal class ChatMenuItem(val text: String): AbstractItem<ChatMenuItem.ViewHol
      * The layout for the given item
      */
     override val layoutRes: Int
-        get() = R.layout.bandyer_glass_chat_menu_item_layout
+        get() = R.layout.kaleyra_glass_chat_menu_item_layout
 
     /**
      * The type of the Item. Can be a hardcoded INT, but preferred is a defined id
@@ -52,25 +52,25 @@ internal class ChatMenuItem(val text: String): AbstractItem<ChatMenuItem.ViewHol
     /**
      *
      *
-     * @property binding [@androidx.annotation.NonNull] BandyerChatMenuItemLayoutBinding
+     * @property binding [@androidx.annotation.NonNull] KaleyraChatMenuItemLayoutBinding
      * @constructor
      */
     class ViewHolder(view: View): FastAdapter.ViewHolder<ChatMenuItem>(view) {
 
-        private val binding = BandyerGlassChatMenuItemLayoutBinding.bind(view)
+        private val binding = KaleyraGlassChatMenuItemLayoutBinding.bind(view)
 
         /**
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: ChatMenuItem, payloads: List<Any>) {
-            binding.bandyerText.text = item.text
+            binding.kaleyraText.text = item.text
         }
 
         /**
          * View needs to release resources when its recycled
          */
         override fun unbindView(item: ChatMenuItem) {
-            binding.bandyerText.text = null
+            binding.kaleyraText.text = null
         }
     }
 }

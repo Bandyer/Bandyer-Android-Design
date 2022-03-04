@@ -17,75 +17,75 @@
 <resources>
 
     <!-- Light theme colors -->
-    <color name="bandyer_colorPrimary">#ffffff</color>
-    <color name="bandyer_colorPrimaryVariant">#EFEFEF</color>
-    <color name="bandyer_colorOnPrimary">#000000</color>
-    <color name="bandyer_colorSecondary">#D80D30</color>
-    <color name="bandyer_colorSecondaryVariant">#6C6C6C</color>
-    <color name="bandyer_colorOnSecondary">#FFFFFF</color>
-    <color name="bandyer_colorBackground">#FFFFFF</color>
-    <color name="bandyer_colorOnBackground">#0E0E0E</color>
-    <color name="bandyer_colorSurface">#ffffff</color>
-    <color name="bandyer_colorOnSurface">#000000</color>
+    <color name="kaleyra_colorPrimary">#ffffff</color>
+    <color name="kaleyra_colorPrimaryVariant">#EFEFEF</color>
+    <color name="kaleyra_colorOnPrimary">#000000</color>
+    <color name="kaleyra_colorSecondary">#D80D30</color>
+    <color name="kaleyra_colorSecondaryVariant">#6C6C6C</color>
+    <color name="kaleyra_colorOnSecondary">#FFFFFF</color>
+    <color name="kaleyra_colorBackground">#FFFFFF</color>
+    <color name="kaleyra_colorOnBackground">#0E0E0E</color>
+    <color name="kaleyra_colorSurface">#ffffff</color>
+    <color name="kaleyra_colorOnSurface">#000000</color>
 
     <!-- Night theme colors -->
-    <color name="bandyer_colorPrimary_night">#303030</color>
-    <color name="bandyer_colorPrimaryVariant_night">#1E1E1E</color>
-    <color name="bandyer_colorOnPrimary_night">#FFFFFF</color>
-    <color name="bandyer_colorSecondary_night">#9E000A</color>
-    <color name="bandyer_colorSecondaryVariant_night">#FFFFFF</color>
-    <color name="bandyer_colorOnSecondary_night">#000000</color>
-    <color name="bandyer_colorBackground_night">#0E0E0E</color>
-    <color name="bandyer_colorOnBackground_night">#FFFFFF</color>
-    <color name="bandyer_colorSurface_night">#242424</color>
-    <color name="bandyer_colorOnSurface_night">#FFFFFF</color>
+    <color name="kaleyra_colorPrimary_night">#303030</color>
+    <color name="kaleyra_colorPrimaryVariant_night">#1E1E1E</color>
+    <color name="kaleyra_colorOnPrimary_night">#FFFFFF</color>
+    <color name="kaleyra_colorSecondary_night">#9E000A</color>
+    <color name="kaleyra_colorSecondaryVariant_night">#FFFFFF</color>
+    <color name="kaleyra_colorOnSecondary_night">#000000</color>
+    <color name="kaleyra_colorBackground_night">#0E0E0E</color>
+    <color name="kaleyra_colorOnBackground_night">#FFFFFF</color>
+    <color name="kaleyra_colorSurface_night">#242424</color>
+    <color name="kaleyra_colorOnSurface_night">#FFFFFF</color>
 
     <!-- Light/dark theme common colors -->
-    <color name="bandyer_colorError">#c70000</color>
-    <color name="bandyer_colorOnError">#FFFFFF</color>
+    <color name="kaleyra_colorError">#c70000</color>
+    <color name="kaleyra_colorOnError">#FFFFFF</color>
 
     <!-- hang up button -->
-    <color name="bandyer_color_hang_up_button">#FF0000</color>
-    <color name="bandyer_color_hang_up_button_dark">#C2E00000</color>
-    <color name="bandyer_color_hang_up_button_night">#c20000</color>
-    <color name="bandyer_color_hang_up_button_dark_night">#C2A50000</color>
+    <color name="kaleyra_color_hang_up_button">#FF0000</color>
+    <color name="kaleyra_color_hang_up_button_dark">#C2E00000</color>
+    <color name="kaleyra_color_hang_up_button_night">#c20000</color>
+    <color name="kaleyra_color_hang_up_button_dark_night">#C2A50000</color>
 
     <!-- answer button -->
-    <color name="bandyer_color_answer_button">#7ED321</color>
-    <color name="bandyer_color_answer_button_dark">#C261A01B</color>
-    <color name="bandyer_color_answer_button_night">#48a100</color>
-    <color name="bandyer_color_answer_button_dark_night">#C22E7100</color>
+    <color name="kaleyra_color_answer_button">#7ED321</color>
+    <color name="kaleyra_color_answer_button_dark">#C261A01B</color>
+    <color name="kaleyra_color_answer_button_night">#48a100</color>
+    <color name="kaleyra_color_answer_button_dark_night">#C22E7100</color>
 
     <!-- commons -->
-    <color name="bandyer_color_link">#1797db</color>
-    <color name="bandyer_color_link_night">#0069a9</color>
+    <color name="kaleyra_color_link">#1797db</color>
+    <color name="kaleyra_color_link_night">#0069a9</color>
 
-    <color name="bandyer_color_grey">#80000000</color>
-    <color name="bandyer_color_grey_light">#1E000000</color>
+    <color name="kaleyra_color_grey">#80000000</color>
+    <color name="kaleyra_color_grey_light">#1E000000</color>
 
     <!-- whiteboard -->
-    <color name="bandyer_color_loading_whiteboard_background">#F5F5F5</color>
+    <color name="kaleyra_color_loading_whiteboard_background">#F5F5F5</color>
 
     <!-- background color -->
-    <color name="bandyer_color_background">#303030</color>
-    <color name="bandyer_color_background_dark">#202020</color>
+    <color name="kaleyra_color_background">#303030</color>
+    <color name="kaleyra_color_background_dark">#202020</color>
 
     <!-- file share -->
-    <color name="bandyer_color_progressbar">#E6E6E6</color>
-    <color name="bandyer_color_progressbar_night">#2D2E2F</color>
+    <color name="kaleyra_color_progressbar">#E6E6E6</color>
+    <color name="kaleyra_color_progressbar_night">#2D2E2F</color>
 
     <!-- screen share color -->
-    <color name="bandyer_screen_share_color">#D50000</color>
-    <color name="bandyer_screen_share_color_night">#FF5131</color>
+    <color name="kaleyra_screen_share_color">#D50000</color>
+    <color name="kaleyra_screen_share_color_night">#FF5131</color>
 
     <!-- recording color -->
-    <color name="bandyer_recording_color">#D50000</color>
+    <color name="kaleyra_recording_color">#D50000</color>
 
     <!-- API 21 colors -->
-    <color name="bandyer_api21_color_on_surface_12">#FFE0E0E0</color>
-    <color name="bandyer_api21_color_on_surface_30">#B1B1B1</color>
+    <color name="kaleyra_api21_color_on_surface_12">#FFE0E0E0</color>
+    <color name="kaleyra_api21_color_on_surface_30">#B1B1B1</color>
 
     <!-- blocked input color -->
-    <color name="bandyer_blocked_input_color">#FF0000</color>
+    <color name="kaleyra_blocked_input_color">#FF0000</color>
 
 </resources>

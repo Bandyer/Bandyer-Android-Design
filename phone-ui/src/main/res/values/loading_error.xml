@@ -16,21 +16,21 @@
   -->
 
 <resources>
-    <declare-styleable name="BandyerSDKDesign.LoadingError">
-        <attr name="bandyer_rootLayoutStyle" />
-        <attr name="bandyer_iconStyle" />
-        <attr name="bandyer_titleStyle" />
-        <attr name="bandyer_subtitleStyle" />
+    <declare-styleable name="KaleyraSDKDesign.LoadingError">
+        <attr name="kaleyra_rootLayoutStyle" />
+        <attr name="kaleyra_iconStyle" />
+        <attr name="kaleyra_titleStyle" />
+        <attr name="kaleyra_subtitleStyle" />
     </declare-styleable>
 
-    <style name="BandyerSDKDesign.BottomSheetDialog.Whiteboard.LoadingError" parent="">
-        <item name="bandyer_rootLayoutStyle">@style/BandyerSDKDesign.LoadingError.RootLayout</item>
-        <item name="bandyer_iconStyle">@style/BandyerSDKDesign.ImageButton.Reload</item>
-        <item name="bandyer_titleStyle">@style/BandyerSDKDesign.TextView.Title.Reload</item>
-        <item name="bandyer_subtitleStyle">@style/BandyerSDKDesign.TextView.Subtitle.Reload</item>
+    <style name="KaleyraSDKDesign.BottomSheetDialog.Whiteboard.LoadingError" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.LoadingError.RootLayout</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageButton.Reload</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.Reload</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.Reload</item>
     </style>
 
-    <style name="BandyerSDKDesign.LoadingError.RootLayout" parent="">
-        <item name="android:background">@color/bandyer_color_loading_whiteboard_background</item>
+    <style name="KaleyraSDKDesign.LoadingError.RootLayout" parent="">
+        <item name="android:background">@color/kaleyra_color_loading_whiteboard_background</item>
     </style>
 </resources>
