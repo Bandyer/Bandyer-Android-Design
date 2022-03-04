@@ -1,22 +1,37 @@
+/*
+ * Copyright 2022 Kaleyra @ https://www.kaleyra.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.bandyer.video_android_core_ui
 
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
-import android.database.DefaultDatabaseErrorHandler
 import android.os.IBinder
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
-import com.bandyer.collaboration_center.Collaboration
-import com.bandyer.collaboration_center.Collaboration.Configuration
-import com.bandyer.collaboration_center.Collaboration.Credentials
-import com.bandyer.collaboration_center.User
-import com.bandyer.collaboration_center.phonebox.Call
-import com.bandyer.collaboration_center.phonebox.PhoneBox
-import com.bandyer.collaboration_center.phonebox.PhoneBox.CreationOptions
-import com.bandyer.collaboration_center.phonebox.PhoneBox.State.Connecting
+import com.kaleyra.collaboration_suite.Collaboration
+import com.kaleyra.collaboration_suite.Collaboration.Configuration
+import com.kaleyra.collaboration_suite.Collaboration.Credentials
+import com.kaleyra.collaboration_suite.User
+import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.PhoneBox
+import com.kaleyra.collaboration_suite.phonebox.PhoneBox.CreationOptions
+import com.kaleyra.collaboration_suite.phonebox.PhoneBox.State.Connecting
 import com.bandyer.video_android_core_ui.call.CallActivity
 import com.bandyer.video_android_core_ui.call.CallService
 import com.bandyer.video_android_core_ui.common.BoundService
