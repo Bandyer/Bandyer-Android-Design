@@ -13,6 +13,7 @@ import com.bandyer.collaboration_center.Collaboration
 import com.bandyer.collaboration_center.Collaboration.Configuration
 import com.bandyer.collaboration_center.Collaboration.Credentials
 import com.bandyer.collaboration_center.User
+import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.collaboration_center.phonebox.PhoneBox
 import com.bandyer.collaboration_center.phonebox.PhoneBox.CreationOptions
 import com.bandyer.collaboration_center.phonebox.PhoneBox.State.Connecting
@@ -23,16 +24,29 @@ import com.bandyer.video_android_core_ui.model.UsersDescription
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
 
 object CollaborationUI {
 
     private var collaboration: Collaboration? = null
 
+    private var wasPhoneBoxConnected = false
+
     private var lifecycleObserver = object : DefaultLifecycleObserver {
         override fun onStart(owner: LifecycleOwner) {
             super.onStart(owner)
-            phoneBox.connect()
+            if (wasPhoneBoxConnected) phoneBox.connect()
+        }
+
+        override fun onStop(owner: LifecycleOwner) {
+            super.onStop(owner)
+            wasPhoneBoxConnected =
+                phoneBox.state.value !is PhoneBox.State.Disconnected && phoneBox.state.value !is PhoneBox.State.Disconnecting
+            val call = phoneBox.call.replayCache.firstOrNull() ?: return
+            call.state.takeWhile { it !is Call.State.Disconnected.Ended }
+                .onCompletion { stopPhoneBoxService() }.launchIn(MainScope())
         }
     }
 
@@ -52,12 +66,14 @@ object CollaborationUI {
         if (collaboration != null) return false
         Collaboration.create(credentials, configuration).apply { collaboration = this }
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
-        phoneBox.state.filter { it is Connecting }.onEach { startPhoneBoxService(activityClazz) }.launchIn(MainScope())
+        phoneBox.state.filter { it is Connecting }.onEach { startPhoneBoxService(activityClazz) }
+            .launchIn(MainScope())
         return true
     }
 
     fun dispose() {
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
+        wasPhoneBoxConnected = false
         stopPhoneBoxService()
         phoneBox.disconnect()
         collaboration = null

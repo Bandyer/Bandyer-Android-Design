@@ -129,8 +129,6 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     override fun onStop(owner: LifecycleOwner) {
         isAppInForeground = false
-        if (currentCall != null) return
-        stopSelf()
     }
 
     // ActivityLifecycleCallbacks
@@ -228,8 +226,6 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 permissionsJob.cancel()
                 streamsJob.cancel()
                 currentCall = null
-
-                if (!isAppInForeground) stopSelf()
 
                 stopForeground(true)
                 NotificationHelper.cancelNotification(this@CallService, CALL_NOTIFICATION_ID)
