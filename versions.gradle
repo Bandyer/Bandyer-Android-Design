@@ -50,7 +50,6 @@ ext {
             neenbedanktGradlePlugin: "com.neenbedankt.gradle.plugins:android-apt:$androidAptVersion",
             benManesGradlePlugin: "com.github.ben-manes:gradle-versions-plugin:$benManesGradleVersion",
             kotlinGradlePluginClassPath: "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion",
-            kotlinSerializationClassPath: "org.jetbrains.kotlin:kotlin-serialization:$kotlinVersion",
             sageArgsClassPath: "androidx.navigation:navigation-safe-args-gradle-plugin:$navVersion"
     ]
 

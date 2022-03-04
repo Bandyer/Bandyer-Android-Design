@@ -50,7 +50,6 @@ buildscript {
 
         //classpath dependencies to import library project
         classpath classPaths.kotlinGradlePluginClassPath
-        classpath classPaths.kotlinSerializationClassPath
         classpath classPaths.sageArgsClassPath
     }
 }
