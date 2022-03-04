@@ -14,8 +14,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.android_common.battery_observer.BatteryInfo
-import com.bandyer.android_common.network_observer.WiFiInfo
+import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
+import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.video_android_core_ui.call.CallActivity
 import com.bandyer.video_android_core_ui.call.CallService

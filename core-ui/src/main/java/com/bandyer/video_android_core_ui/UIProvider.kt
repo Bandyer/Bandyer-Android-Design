@@ -2,7 +2,7 @@ package com.bandyer.video_android_core_ui
 
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
-import com.bandyer.android_common.ContextRetainer
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.bandyer.video_android_core_ui.utils.DeviceUtils.isSmartGlass
 
 internal object UIProvider {

@@ -8,7 +8,7 @@ import android.os.IBinder
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.bandyer.android_common.ContextRetainer
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.bandyer.collaboration_center.Collaboration
 import com.bandyer.collaboration_center.Collaboration.Configuration
 import com.bandyer.collaboration_center.Collaboration.Credentials

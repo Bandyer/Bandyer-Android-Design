@@ -4,8 +4,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.bandyer.android_common.battery_observer.BatteryInfo
-import com.bandyer.android_common.network_observer.WiFiInfo
+import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
+import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import com.bandyer.collaboration_center.Participant
 import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.collaboration_center.phonebox.CallParticipant

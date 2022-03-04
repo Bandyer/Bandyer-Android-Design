@@ -12,11 +12,11 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.bandyer.android_common.audio.CallAudioManager
-import com.bandyer.android_common.battery_observer.BatteryInfo
-import com.bandyer.android_common.battery_observer.BatteryObserver
-import com.bandyer.android_common.network_observer.WiFiInfo
-import com.bandyer.android_common.network_observer.WiFiObserver
+import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
+import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
+import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
+import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
+import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
 import com.bandyer.collaboration_center.phonebox.Call
 import com.bandyer.collaboration_center.phonebox.Input
 import com.bandyer.collaboration_center.phonebox.Inputs

@@ -47,7 +47,6 @@ dependencies {
     //    api bandyer.collaboration
 
     compileOnly project(path: ':collaboration_center')
-    compileOnly project(path: ':bandyer-android-common')
 
     // UI
     api fastAdapter.fastAdapter

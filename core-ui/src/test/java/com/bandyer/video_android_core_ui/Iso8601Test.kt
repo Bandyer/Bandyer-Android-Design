@@ -1,6 +1,6 @@
 package com.bandyer.video_android_core_ui
 
-import com.bandyer.android_common.assertIsTrue
+import com.kaleyra.collaboration_suite_utils.assertIsTrue
 import com.bandyer.video_android_core_ui.utils.Iso8601
 import com.bandyer.video_android_core_ui.utils.Iso8601.isLastWeek
 import com.bandyer.video_android_core_ui.utils.Iso8601.isToday
