@@ -148,5 +148,8 @@
         <action
             android:id="@+id/action_reconnectingFragment_to_emptyFragment"
             app:destination="@id/emptyFragment" />
+        <action
+            android:id="@+id/action_reconnectingFragment_to_endCallFragment"
+            app:destination="@id/endCallFragment" />
     </fragment>
 </navigation>

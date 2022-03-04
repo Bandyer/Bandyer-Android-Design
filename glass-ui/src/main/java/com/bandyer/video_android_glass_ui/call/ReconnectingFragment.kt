@@ -31,7 +31,7 @@ internal class ReconnectingFragment : ConnectingFragment() {
 
     override fun onTap() = false
 
-    override fun onSwipeDown() = true.also { viewModel.onHangup() }
+    override fun onSwipeDown() = true.also { findNavController().safeNavigate(ReconnectingFragmentDirections.actionReconnectingFragmentToEndCallFragment()) }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = false
 
