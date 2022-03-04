@@ -55,7 +55,7 @@ internal object NotificationHelper {
 
     fun <T> buildOngoingCallNotification(context: Context, usersDescription: String, activityClazz: Class<T>): Notification {
         val contentIntent = createCallActivityPendingIntent(context.applicationContext, CONTENT_REQUEST_CODE, activityClazz)
-        val contextText = context.getString(R.string.bandyer_notification_ongoing_call)
+        val contentText = context.getString(R.string.bandyer_notification_ongoing_call)
         val hangUpAction = NotificationCompat.Action(
             R.drawable.bandyer_z_end_call,
             context.getString(R.string.bandyer_notification_hangup),
@@ -67,7 +67,7 @@ internal object NotificationHelper {
             channelId = NOTIFICATION_DEFAULT_CHANNEL_ID,
             channelName = context.getString(R.string.bandyer_notification_ongoing_call),
             isHighPriority = false,
-            contentText = contextText,
+            contentText = contentText,
             contentIntent = contentIntent,
             actions = listOf(hangUpAction)
         )
