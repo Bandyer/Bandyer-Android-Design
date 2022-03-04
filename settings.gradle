@@ -15,24 +15,20 @@
  */
 // TODO
 include ':app',
-        ':collaboration_center',
+        ':collaboration-suite',
         ':communication_center',
         ':bandyer-android-coreav',
-        ':bandyer-android-common',
         ':extension_usb_camera',
         ':extension_live_pointer',
         ':extension_file_share',
-        ':networking',
         ':core-ui',
         ':phone-ui',
         ':glass-ui'
 
-project(':collaboration_center').projectDir = file('../Bandyer-Android-CollaborationCenter/collaboration_center/')
+project(':collaboration-suite').projectDir = file('../Bandyer-Android-CollaborationCenter/collaboration-suite/')
 project(':communication_center').projectDir = file('../Bandyer-Android-CommunicationCenter/communication_center/')
 project(':extension_live_pointer').projectDir = file('../Bandyer-Android-CommunicationCenter/extension_live_pointer/')
 project(':bandyer-android-coreav').projectDir = file('../Bandyer-Android-Core-AV/core_av/')
 project(':extension_usb_camera').projectDir = file('../Bandyer-Android-Core-AV/extension_usb_camera/')
-project(':bandyer-android-common').projectDir = file('../Bandyer-Android-Common/bandyer-android-common/')
 project(':extension_file_share').projectDir = file('../Bandyer-Android-CommunicationCenter/extension_file_share')
-project(':networking').projectDir = file('../bandyer-android-networking/networking')
 
