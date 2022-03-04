@@ -36,7 +36,9 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
 
 /**
  * GlassCallActivity
@@ -48,6 +50,8 @@ internal class GlassCallActivity :
     TouchEventListener {
 
     private lateinit var binding: BandyerActivityGlassBinding
+
+    private var isActivityInForeground = false
 
     private var service: CallService? = null
     val isServiceBound: Boolean
@@ -156,6 +160,13 @@ internal class GlassCallActivity :
         with(binding.bandyerStatusBar) {
             if (viewModel.call.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
         }
+
+        viewModel.call.state
+            .dropWhile { it == Call.State.Disconnected }
+            .takeWhile { it !is Call.State.Disconnected }
+            .onCompletion {
+                if (!isActivityInForeground) finishAndRemoveTask()
+            }.launchIn(lifecycleScope)
 
         repeatOnStarted {
             viewModel
@@ -284,6 +295,16 @@ internal class GlassCallActivity :
             viewModel.onEnableCamera(wasPausedForBackground)
             wasPausedForBackground = false
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        isActivityInForeground = true
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isActivityInForeground = false
     }
 
     override fun onTopResumedActivityChanged(isTopResumedActivity: Boolean) {
