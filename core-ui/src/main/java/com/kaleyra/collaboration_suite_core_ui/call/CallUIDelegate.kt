@@ -19,7 +19,17 @@ package com.kaleyra.collaboration_suite_core_ui.call
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 
+/**
+ * Call UI delegate
+ */
 interface CallUIDelegate {
+    /**
+     * Call
+     */
     val call: Call
+
+    /**
+     * Users description
+     */
     val usersDescription: UsersDescription
 }

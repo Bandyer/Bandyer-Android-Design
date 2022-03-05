@@ -21,7 +21,14 @@ import android.os.Binder
 import android.os.IBinder
 import androidx.lifecycle.LifecycleService
 
+/**
+ * Bound service
+ */
 abstract class BoundService : LifecycleService() {
+
+    /**
+     * @suppress
+     */
     @Suppress("UNCHECKED_CAST")
     inner class ServiceBinder : Binder() {
         fun <T : BoundService> getService(): T = this@BoundService as T
@@ -29,11 +36,17 @@ abstract class BoundService : LifecycleService() {
 
     private var binder: ServiceBinder? = null
 
+    /**
+     * @suppress
+     */
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
         return ServiceBinder().also { binder = it }
     }
 
+    /**
+     * @suppress
+     */
     override fun onDestroy() {
         super.onDestroy()
         binder = null

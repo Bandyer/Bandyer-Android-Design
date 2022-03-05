@@ -20,25 +20,79 @@ import androidx.fragment.app.FragmentActivity
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 
+/**
+ * Call UI controller
+ */
 interface CallUIController {
+
+    /**
+     * On request mic permission
+     *
+     * @param context activity
+     * @return [Permission]
+     */
     suspend fun onRequestMicPermission(context: FragmentActivity): Permission
 
+    /**
+     * On request camera permission
+     *
+     * @param context activity
+     * @return [Permission]
+     */
     suspend fun onRequestCameraPermission(context: FragmentActivity): Permission
 
+
+    /**
+     * On answer
+     *
+     */
     fun onAnswer()
 
+    /**
+     * On hangup
+     *
+     */
     fun onHangup()
 
+    /**
+     * On enable camera
+     *
+     * @param enable true to enable, false otherwise
+     */
     fun onEnableCamera(enable: Boolean)
 
+    /**
+     * On enable mic
+     *
+     * @param enable true to enable, false otherwise
+     */
     fun onEnableMic(enable: Boolean)
 
+    /**
+     * On switch camera
+     *
+     */
     fun onSwitchCamera()
 
+    /**
+     * On get volume
+     *
+     * @return [Volume] volume
+     */
     fun onGetVolume(): Volume
 
+    /**
+     * On set volume
+     *
+     * @param value level of volume to set
+     */
     fun onSetVolume(value: Int)
 
+    /**
+     * On set zoom
+     *
+     * @param value zoom level
+     */
     fun onSetZoom(value: Int)
 }
 

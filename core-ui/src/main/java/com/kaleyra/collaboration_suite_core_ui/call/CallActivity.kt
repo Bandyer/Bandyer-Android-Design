@@ -18,4 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui.call
 
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceActivity
 
+/**
+ * Abstract Call activity
+ */
 abstract class CallActivity: BoundServiceActivity<CallService>(CallService::class.java)

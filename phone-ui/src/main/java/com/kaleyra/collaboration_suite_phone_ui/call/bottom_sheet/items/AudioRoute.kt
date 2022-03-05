@@ -59,6 +59,9 @@ sealed class AudioRoute(val ctx: Context?, val identifier: String, val name: Str
      */
     protected var subtitle: AudioRouteTextView? = null
 
+    /**
+     * @suppress
+     */
     companion object {
 
         /**

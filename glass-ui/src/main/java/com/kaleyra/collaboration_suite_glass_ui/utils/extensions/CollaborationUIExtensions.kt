@@ -20,6 +20,12 @@ import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_glass_ui.GlassCallActivity
 
+/**
+ * Set up with glass u i
+ *
+ * @param credentials to use when Collaboration tools need to be connected
+ * @param configuration representing a set of info necessary to instantiate the communication
+ */
 fun CollaborationUI.setUpWithGlassUI(
     credentials: Collaboration.Credentials,
     configuration: Collaboration.Configuration

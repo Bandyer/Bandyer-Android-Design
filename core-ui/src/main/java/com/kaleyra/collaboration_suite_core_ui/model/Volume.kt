@@ -16,6 +16,13 @@
 
 package com.kaleyra.collaboration_suite_core_ui.model
 
+/**
+ * Volume
+ *
+ * @property current level
+ * @property min level
+ * @property max level
+ */
 data class Volume(
     val current: Int,
     val min: Int,

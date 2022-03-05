@@ -23,8 +23,12 @@ import android.os.Bundle
 import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
 
-abstract class BoundServiceActivity<T : BoundService>(private val clazz: Class<T>) :
-    AppCompatActivity() {
+/**
+ * Boundouble activity to service
+ *
+ * @suppress
+ */
+abstract class BoundServiceActivity<T : BoundService>(private val clazz: Class<T>) : AppCompatActivity() {
 
     interface Observer {
         fun onServiceBound()

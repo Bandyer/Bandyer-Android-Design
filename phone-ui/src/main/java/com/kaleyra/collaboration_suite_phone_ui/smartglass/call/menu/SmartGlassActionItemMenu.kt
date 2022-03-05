@@ -37,6 +37,9 @@ import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.utils.motio
  */
 class SmartGlassActionItemMenu : DialogFragment() {
 
+    /**
+     * @suppress
+     */
     companion object {
         private const val TAG = "SmartglassActionItemMenu"
         private const val ITEMS = "items"

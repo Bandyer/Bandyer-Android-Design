@@ -32,6 +32,9 @@ import com.google.android.material.button.MaterialButton
  */
 class WhiteboardEditorCancelButton @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : MaterialButton(context, attrs, defStyleAttr) {
 
+    /**
+     * @suppress
+     */
     companion object {
         private val STATE_DISMISS = intArrayOf(R.attr.kaleyra_state_dismiss)
         private val STATE_DISCARD_CHANGES = intArrayOf(R.attr.kaleyra_state_discard_changes)

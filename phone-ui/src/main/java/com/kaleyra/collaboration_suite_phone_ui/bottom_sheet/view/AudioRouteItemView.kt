@@ -47,6 +47,9 @@ sealed class AudioRouteState(val value: IntArray) : Serializable {
      */
     sealed class BLUETOOTH(value: IntArray) : AudioRouteState(value) {
 
+        /**
+         * @suppress
+         */
         companion object {
             /**
              * Returns the Bluetooth State corresponding to the name provided

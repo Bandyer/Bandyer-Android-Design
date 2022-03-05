@@ -16,6 +16,12 @@
 
 package com.kaleyra.collaboration_suite_core_ui.model
 
+/**
+ * Permission
+ *
+ * @property isAllowed if permission is allowed
+ * @property neverAskAgain true if never ask again is triggered
+ */
 data class Permission(
     val isAllowed: Boolean,
     val neverAskAgain: Boolean

@@ -20,7 +20,17 @@ import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.flow.SharedFlow
 
+/**
+ * Device status delegate
+ */
 interface DeviceStatusDelegate {
+    /**
+     * Battery flow
+     */
     val battery: SharedFlow<BatteryInfo>
+
+    /**
+     * Wifi flow
+     */
     val wifi: SharedFlow<WiFiInfo>
 }

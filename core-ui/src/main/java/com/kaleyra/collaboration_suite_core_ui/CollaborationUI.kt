@@ -23,7 +23,6 @@ import android.os.IBinder
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite.Collaboration.Credentials
@@ -36,6 +35,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.call.CallService
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -43,6 +43,11 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
+/**
+ * Collaboration UI
+ *
+ * This object allows the usage of a Collaboration UI
+ */
 object CollaborationUI {
 
     private var collaboration: Collaboration? = null
@@ -65,14 +70,29 @@ object CollaborationUI {
         }
     }
 
+    /**
+     * Users description to be used for the UI
+     */
     var usersDescription: UsersDescription? = null
 
+    /**
+     * Phone box
+     */
     val phoneBox: PhoneBoxUI
         get() {
             require(collaboration != null) { "setUp the CollaborationUI to use the phoneBox" }
             return PhoneBoxUI(collaboration!!.phoneBox)
         }
 
+    /**
+     * Set up
+     *
+     * @param T activity of type [CallActivity] to be used for the UI
+     * @param credentials to use when Collaboration tools need to be connected
+     * @param configuration representing a set of info necessary to instantiate the communication
+     * @param activityClazz class of the activity
+     * @return
+     */
     fun <T : CallActivity> setUp(
         credentials: Credentials,
         configuration: Configuration,
@@ -86,6 +106,9 @@ object CollaborationUI {
         return true
     }
 
+    /**
+     * Dispose the collaboration UI
+     */
     fun dispose() {
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         wasPhoneBoxConnected = false
@@ -120,9 +143,26 @@ object CollaborationUI {
     }
 }
 
-data class PhoneBoxUI(private val phoneBox: PhoneBox) : PhoneBox by phoneBox {
-    fun dial(users: List<User>, conf: (CreationOptions.() -> Unit)? = null) =
-        create(users, conf).apply { connect() }
+/**
+ * Phone box UI
+ *
+ * @param phoneBox delegated property
+ */
+class PhoneBoxUI(phoneBox: PhoneBox) : PhoneBox by phoneBox {
 
+    /**
+     * Call
+     *
+     * @param users to be called
+     * @param options creation options
+     */
+    fun call(users: List<User>, options: (CreationOptions.() -> Unit)? = null) =
+        create(users, options).apply { connect() }
+
+    /**
+     * Join an url
+     *
+     * @param url to join
+     */
     fun join(url: String) = create(url).apply { connect() }
 }

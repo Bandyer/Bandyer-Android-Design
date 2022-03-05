@@ -55,6 +55,9 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
+/**
+ * @suppress
+ */
 @SuppressLint("MissingPermission")
 class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStatusDelegate,
     DefaultLifecycleObserver, Application.ActivityLifecycleCallbacks {
