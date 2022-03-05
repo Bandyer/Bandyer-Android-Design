@@ -23,7 +23,7 @@
         style="?attr/kaleyra_rootLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/KaleyraSDKDesign.ChatMessage.GlassNotification">
+        android:theme="@style/KaleyraCollaborationSuiteUI.ChatMessage.GlassNotification">
 
         <com.kaleyra.collaboration_suite_glass_ui.common.AvatarGroupView
             android:id="@+id/kaleyra_avatars"

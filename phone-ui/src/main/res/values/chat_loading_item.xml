@@ -16,17 +16,17 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.ChatLoadingItem">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.ChatLoadingItem">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_progressStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.ChatLoadingItem" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.ChatLoadingItem.RootLayout</item>
-        <item name="kaleyra_progressStyle">@style/KaleyraSDKDesign.ChatNetworkProgressIndicator</item>
+    <style name="KaleyraCollaborationSuiteUI.ChatLoadingItem" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.ChatLoadingItem.RootLayout</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraCollaborationSuiteUI.ChatNetworkProgressIndicator</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ChatLoadingItem.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.ChatLoadingItem.RootLayout" parent="">
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>

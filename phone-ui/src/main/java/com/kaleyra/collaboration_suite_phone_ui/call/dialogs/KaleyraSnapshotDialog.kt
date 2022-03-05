@@ -65,11 +65,11 @@ class KaleyraSnapshotDialog : KaleyraDialog<KaleyraSnapshotDialog.SnapshotDialog
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            setStyle(DialogFragment.STYLE_NO_TITLE, R.style.KaleyraSDKDesign_BottomSheetDialog_Snapshot)
+            setStyle(DialogFragment.STYLE_NO_TITLE, R.style.KaleyraCollaborationSuiteUI_BottomSheetDialog_Snapshot)
         }
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-            rootView = KaleyraSnapshotDialogLayout(ContextThemeWrapper(context, R.style.KaleyraSDKDesign_BottomSheetDialog_Snapshot_Layout))
+            rootView = KaleyraSnapshotDialogLayout(ContextThemeWrapper(context, R.style.KaleyraCollaborationSuiteUI_BottomSheetDialog_Snapshot_Layout))
             return rootView
         }
 
@@ -176,7 +176,7 @@ class KaleyraSnapshotDialog : KaleyraDialog<KaleyraSnapshotDialog.SnapshotDialog
         }
 
         private fun showDialog(title: String, body: String, positiveCallback: () -> Unit, negativeCallback: () -> Unit) {
-            confirmDialog = AlertDialog.Builder(requireContext(), R.style.KaleyraSDKDesign_AlertDialogTheme)
+            confirmDialog = AlertDialog.Builder(requireContext(), R.style.KaleyraCollaborationSuiteUI_AlertDialogTheme)
                     .setTitle(title)
                     .setCancelable(true)
                     .setPositiveButton(context?.resources?.getString(R.string.kaleyra_confirm_message)) { dialog, which ->

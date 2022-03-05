@@ -15,18 +15,18 @@
   -->
 <resources>
 
-    <declare-styleable name="KaleyraSDKDesign.LivePointer">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.LivePointer">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="materialButtonStyle" />
         <attr name="android:textViewStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.LivePointer" parent="">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.LivePointer</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.LivePointer</item>
+    <style name="KaleyraCollaborationSuiteUI.LivePointer" parent="">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.LivePointer</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.LivePointer</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.LivePointer" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.LivePointer" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:minWidth">@dimen/kaleyra_dimen_normal_image_button</item>
         <item name="android:minHeight">@dimen/kaleyra_dimen_normal_image_button</item>
         <item name="icon">@drawable/kaleyra_circular_background</item>
@@ -34,9 +34,9 @@
         <item name="iconSize">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.LivePointer" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.LivePointer" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:textColor">?attr/colorSecondary</item>
-        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance</item>
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance</item>
     </style>
 
 </resources>

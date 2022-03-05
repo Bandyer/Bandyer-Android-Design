@@ -16,22 +16,22 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.Glass.UserInfo">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Glass.UserInfo">
         <attr name="kaleyra_avatarStyle" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
         <attr name="kaleyra_contactStateDotStyle" format="reference"/>
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.Glass.UserInfo" parent="KaleyraSDKDesign.Glass">
-        <item name="kaleyra_avatarStyle">@style/KaleyraSDKDesign.Glass.Avatar.Big</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.GlassUserInfo</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.SubTitle.GlassUserInfo</item>
-        <item name="kaleyra_contactStateDotStyle">@style/KaleyraSDKDesign.RoundedImageGlass.StateUserInfo</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.UserInfo" parent="KaleyraCollaborationSuiteUI.Glass">
+        <item name="kaleyra_avatarStyle">@style/KaleyraCollaborationSuiteUI.Glass.Avatar.Big</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.GlassUserInfo</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.SubTitle.GlassUserInfo</item>
+        <item name="kaleyra_contactStateDotStyle">@style/KaleyraCollaborationSuiteUI.RoundedImageGlass.StateUserInfo</item>
     </style>
 
     <!-- CONTACT STATE DOT -->
-    <style name="KaleyraSDKDesign.RoundedImageGlass.StateUserInfo" parent="KaleyraSDKDesign.RoundedImageGlass.Bordered">
+    <style name="KaleyraCollaborationSuiteUI.RoundedImageGlass.StateUserInfo" parent="KaleyraCollaborationSuiteUI.RoundedImageGlass.Bordered">
         <item name="android:visibility">gone</item>
         <item name="android:layout_width">@dimen/kaleyra_dimen_space28</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_space28</item>
@@ -41,7 +41,7 @@
     </style>
 
     <!-- NAME -->
-    <style name="KaleyraSDKDesign.TextView.Title.GlassUserInfo" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassUserInfo" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/kaleyra_dimen_text_h1</item>
@@ -50,7 +50,7 @@
     </style>
 
     <!-- CONTACT STATE TEXT -->
-    <style name="KaleyraSDKDesign.TextView.SubTitle.GlassUserInfo" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.SubTitle.GlassUserInfo" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:includeFontPadding">false</item>

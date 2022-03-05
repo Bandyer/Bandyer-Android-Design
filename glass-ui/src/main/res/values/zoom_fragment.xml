@@ -16,63 +16,63 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.Glass.Zoom">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Glass.Zoom">
         <attr name="bottomNavigationStyle" />
         <attr name="sliderStyle" />
     </declare-styleable>
 
     <!-- ZOOM FRAGMENT -->
-    <style name="KaleyraSDKDesign.Glass.Zoom" parent="KaleyraSDKDesign.Glass">
-        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.Zoom</item>
-        <item name="sliderStyle">@style/KaleyraSDKDesign.Glass.Slider</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.Zoom" parent="KaleyraCollaborationSuiteUI.Glass">
+        <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Zoom</item>
+        <item name="sliderStyle">@style/KaleyraCollaborationSuiteUI.Glass.Slider</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->
-    <style name="KaleyraSDKDesign.Glass.BottomNavigation.Zoom" parent="KaleyraSDKDesign.Glass.BottomNavigation">
-        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Zoom</item>
-        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.Zoom</item>
-        <item name="kaleyra_tapItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.Tap.Zoom</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Zoom" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation">
+        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.Zoom</item>
+        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.Zoom</item>
+        <item name="kaleyra_tapItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.Zoom</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.Zoom" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Zoom</item>
-        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.SwipeZoom</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.Zoom" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Zoom</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeZoom</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Zoom" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Zoom" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/kaleyra_glass_change</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.GlassLabel.SwipeZoom" parent="KaleyraSDKDesign.TextView.GlassLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeZoom" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
         <item name="android:text">@string/kaleyra_glass_change</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.Zoom" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Zoom</item>
-        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.SwipeDownZoom</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.Zoom" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.Zoom</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownZoom</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.Zoom" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.Zoom" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/kaleyra_glass_cancel</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.GlassLabel.SwipeDownZoom" parent="KaleyraSDKDesign.TextView.GlassLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownZoom" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
         <item name="android:text">@string/kaleyra_glass_cancel</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.Tap.Zoom" parent="KaleyraSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap.Zoom</item>
-        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.TapZoom</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.Zoom" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.Zoom</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapZoom</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap.Zoom" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.Zoom" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/kaleyra_glass_confirm</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.GlassLabel.TapZoom" parent="KaleyraSDKDesign.TextView.GlassLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapZoom" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
         <item name="android:text">@string/kaleyra_glass_confirm</item>
     </style>
 </resources>

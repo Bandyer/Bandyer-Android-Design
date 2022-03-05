@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.Theme.Glass">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Theme.Glass">
         <attr name="kaleyra_statusBarStyle" format="reference" />
         <attr name="kaleyra_recyclerViewItemStyle" format="reference"/>
     </declare-styleable>

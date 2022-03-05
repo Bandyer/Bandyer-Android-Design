@@ -37,7 +37,7 @@ class KaleyraChatTextMessageItem(val chatTextMessage: KaleyraChatTextMessage) : 
      * @suppress
      */
     override fun createView(ctx: Context, parent: ViewGroup?): View {
-        val style = chatTextMessage.style ?: if(chatTextMessage.mine) R.style.KaleyraSDKDesign_ChatMessage_LoggedUser else R.style.KaleyraSDKDesign_ChatMessage_OtherUser
+        val style = chatTextMessage.style ?: if(chatTextMessage.mine) R.style.KaleyraCollaborationSuiteUI_ChatMessage_LoggedUser else R.style.KaleyraCollaborationSuiteUI_ChatMessage_OtherUser
         return LayoutInflater.from(ContextThemeWrapper(ctx, style)).inflate(layoutRes, parent, false)
     }
 

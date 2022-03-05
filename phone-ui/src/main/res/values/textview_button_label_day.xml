@@ -17,11 +17,11 @@
 
 <resources>
 
-    <style name="KaleyraSDKDesign.TextAppearance.ButtonLabel.Cancel.Day" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.ButtonLabel.Cancel.Day" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:textColor">@color/kaleyra_colorOnSurface</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextAppearance.ButtonLabel.Confirm.Day" parent="KaleyraSDKDesign.TextAppearance.ButtonLabel.Confirm">
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.ButtonLabel.Confirm.Day" parent="KaleyraCollaborationSuiteUI.TextAppearance.ButtonLabel.Confirm">
         <item name="android:textColor">@color/kaleyra_colorOnSurface</item>
     </style>
 

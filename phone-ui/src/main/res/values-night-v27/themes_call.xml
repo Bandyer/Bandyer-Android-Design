@@ -17,7 +17,7 @@
 
 <resources>
 
-    <style name="KaleyraSDKDesign.Theme.Call.DayNight" parent="KaleyraSDKDesign.Theme.Call.DayNight.V27">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight.V27">
         <item name="android:windowLightNavigationBar">false</item>
     </style>
 

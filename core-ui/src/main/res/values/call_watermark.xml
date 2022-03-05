@@ -16,32 +16,32 @@
 
 <resources>
 
-    <declare-styleable name="KaleyraSDKDesign.CallWatermark">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.CallWatermark">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_iconStyle" />
         <attr name="kaleyra_titleStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.CallWatermark" parent="KaleyraSDKDesign.DefaultCallWatermark" />
+    <style name="KaleyraCollaborationSuiteUI.CallWatermark" parent="KaleyraCollaborationSuiteUI.DefaultCallWatermark" />
 
-    <style name="KaleyraSDKDesign.DefaultCallWatermark" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.CallWatermark.RootLayout</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.CallWatermarkImageView</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.CallWatermark</item>
+    <style name="KaleyraCollaborationSuiteUI.DefaultCallWatermark" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.CallWatermark.RootLayout</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.CallWatermarkImageView</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.CallWatermark</item>
     </style>
 
-    <style name="KaleyraSDKDesign.CallWatermark.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.CallWatermark.RootLayout" parent="">
         <item name="android:minHeight">@dimen/kaleyra_watermark_max_height</item>
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="KaleyraSDKDesign.CallWatermarkImageView" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="KaleyraCollaborationSuiteUI.CallWatermarkImageView" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:adjustViewBounds">true</item>
         <item name="android:scaleType">fitCenter</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.CallWatermark" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.CallWatermark" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:gravity">center_vertical</item>

@@ -16,7 +16,7 @@
 
 <resources>
 
-    <declare-styleable name="KaleyraSDKDesign.BottomSheet.Call">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.BottomSheet.Call">
         <attr name="kaleyra_lineStyle" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_recyclerViewStyle" />
@@ -36,18 +36,18 @@
 
     <!-- CALL BOTTOM SHEET -->
 
-    <style name="KaleyraSDKDesign.BottomSheet.Call" parent="KaleyraSDKDesign.BottomSheet">
-        <item name="kaleyra_cameraStyle">@style/KaleyraSDKDesign.ActionButton.Camera</item>
-        <item name="kaleyra_microphoneStyle">@style/KaleyraSDKDesign.ActionButton.Microphone</item>
-        <item name="kaleyra_screenShareStyle">@style/KaleyraSDKDesign.ActionButton.ScreenShare</item>
-        <item name="kaleyra_whiteboardStyle">@style/KaleyraSDKDesign.ActionButton.Whiteboard</item>
-        <item name="kaleyra_switchCameraStyle">@style/KaleyraSDKDesign.ActionButton.SwitchCamera</item>
-        <item name="kaleyra_participantsStyle">@style/KaleyraSDKDesign.ActionButton.Participants</item>
-        <item name="kaleyra_chatStyle">@style/KaleyraSDKDesign.ActionButton.Chat</item>
-        <item name="kaleyra_optionsStyle">@style/KaleyraSDKDesign.ActionButton.Options</item>
-        <item name="kaleyra_audioRouteStyle">@style/KaleyraSDKDesign.ActionButton.AudioRoute</item>
-        <item name="kaleyra_fileShareStyle">@style/KaleyraSDKDesign.ActionButton.FileShare</item>
-        <item name="kaleyra_hangUpStyle">@style/KaleyraSDKDesign.ActionButton.HangUp</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet.Call" parent="KaleyraCollaborationSuiteUI.BottomSheet">
+        <item name="kaleyra_cameraStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Camera</item>
+        <item name="kaleyra_microphoneStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Microphone</item>
+        <item name="kaleyra_screenShareStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.ScreenShare</item>
+        <item name="kaleyra_whiteboardStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Whiteboard</item>
+        <item name="kaleyra_switchCameraStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.SwitchCamera</item>
+        <item name="kaleyra_participantsStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Participants</item>
+        <item name="kaleyra_chatStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Chat</item>
+        <item name="kaleyra_optionsStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Options</item>
+        <item name="kaleyra_audioRouteStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.AudioRoute</item>
+        <item name="kaleyra_fileShareStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.FileShare</item>
+        <item name="kaleyra_hangUpStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.HangUp</item>
     </style>
 
 </resources>

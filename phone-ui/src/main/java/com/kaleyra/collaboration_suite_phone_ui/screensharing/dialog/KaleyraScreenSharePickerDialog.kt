@@ -92,7 +92,7 @@ class KaleyraScreenSharePickerDialog : KaleyraDialog<KaleyraBottomSheetDialog> {
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_screenShareDialogStyle))
+            setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_screenShareDialogStyle))
         }
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

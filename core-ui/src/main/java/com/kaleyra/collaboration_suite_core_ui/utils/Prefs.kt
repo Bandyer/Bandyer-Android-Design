@@ -20,7 +20,7 @@ import android.content.Context
 import android.view.View
 
 /**
- * KaleyraSDKDesign prefs that can be used as an alternative default values to some views
+ * KaleyraCollaborationSuiteUI prefs that can be used as an alternative default values to some views
  * @author kristiyan
  */
 const val DESIGN_PREFS = "KaleyraCollaborationSuiteUIPrefs"

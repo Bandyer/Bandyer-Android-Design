@@ -18,7 +18,7 @@
 
     <!-- TEXT VIEW STYLE -->
 
-    <style name="KaleyraSDKDesign.TextView.Stream.UserDetails" parent="KaleyraSDKDesign.TextView">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Stream.UserDetails" parent="KaleyraCollaborationSuiteUI.TextView">
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space56</item>
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space16</item>
@@ -27,17 +27,17 @@
         <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.AudioRoute" parent="KaleyraSDKDesign.TextView">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.AudioRoute" parent="KaleyraCollaborationSuiteUI.TextView">
         <item name="android:textColor">@color/kaleyra_audio_route_title_color</item>
         <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space2</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:ellipsize">end</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
-        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextView.Title.AudioRoute.TextAppearance</item>
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextView.Title.AudioRoute.TextAppearance</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.AudioRoute" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.AudioRoute" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:textColor">@color/kaleyra_audio_route_subtitle_color</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:focusable">true</item>
@@ -46,23 +46,23 @@
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.AudioRoute.TextAppearance.Active" parent="KaleyraSDKDesign.TextView.Title.AudioRoute.TextAppearance">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.AudioRoute.TextAppearance.Active" parent="KaleyraCollaborationSuiteUI.TextView.Title.AudioRoute.TextAppearance">
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.AudioRoute.TextAppearance" parent="">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.AudioRoute.TextAppearance" parent="">
         <item name="android:textStyle">normal</item>
     </style>
 
     <!-- BOUNCING DOTS -->
 
-    <declare-styleable name="KaleyraSDKDesign.TextView.Subtitle.BouncingDots">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.TextView.Subtitle.BouncingDots">
         <attr name="kaleyra_period" />
         <attr name="kaleyra_animationHeight" />
         <attr name="kaleyra_autoplay" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.BouncingDots" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.BouncingDots" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:textAllCaps">false</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:focusable">false</item>
@@ -83,8 +83,8 @@
 
     <!-- ANSWER CALL HELPER TEXTVIEW -->
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.AnswerCallHelperText" parent="KaleyraSDKDesign.TextView.Subtitle">
-        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance.Large</item>
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.AnswerCallHelperText" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance.Large</item>
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space16</item>
@@ -103,7 +103,7 @@
 
     <!-- BUTTON LABEL STYLE -->
 
-    <style name="KaleyraSDKDesign.TextView.Title.ConfirmDataLoss" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.ConfirmDataLoss" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:paddingRight">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
@@ -112,32 +112,32 @@
         <item name="android:text">@string/kaleyra_data_loss_confirm_message</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.ConfirmDataLoss.Day" parent="KaleyraSDKDesign.TextView.Title.ConfirmDataLoss">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.ConfirmDataLoss.Day" parent="KaleyraCollaborationSuiteUI.TextView.Title.ConfirmDataLoss">
         <item name="android:textColor">@color/kaleyra_colorOnSurface</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.Decline" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.Decline" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:text">@string/kaleyra_ringing_decline</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:padding">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance</item>
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.Answer" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.Answer" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:text">@string/kaleyra_ringing_answer</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:padding">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance</item>
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance</item>
     </style>
 
     <!-- Title style -->
-    <style name="KaleyraSDKDesign.TextView.Title.BottomSheet" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.BottomSheet" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:visibility">gone</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.Recording" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.Recording" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:paddingRight">@dimen/kaleyra_dimen_space16</item>
@@ -147,12 +147,12 @@
         <item name="android:drawablePadding">@dimen/kaleyra_dimen_space8</item>
         <item name="android:drawableStart">@drawable/ic_kaleyra_record</item>
         <item name="drawableTint">@color/kaleyra_recording_color</item>
-        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance</item>
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance</item>
     </style>
 
     <!-- Call User Info -->
-    <style name="KaleyraSDKDesign.TextView.Title.UserInfo" parent="KaleyraSDKDesign.TextView.Title">
-        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance</item>
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.UserInfo" parent="KaleyraCollaborationSuiteUI.TextView.Title">
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance</item>
         <item name="android:text">@string/kaleyra_call_hangup</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space16</item>
@@ -162,7 +162,7 @@
     </style>
 
     <!-- User Status -->
-    <style name="KaleyraSDKDesign.TextView.Title.UserStatus" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.UserStatus" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:background">@color/kaleyra_color_grey</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_margin">@dimen/kaleyra_dimen_space8</item>
@@ -170,7 +170,7 @@
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.Reload" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.Reload" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space20</item>
@@ -179,7 +179,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.Reload" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.Reload" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:text">@string/kaleyra_error_subtitle</item>

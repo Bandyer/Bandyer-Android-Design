@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenLogoDialog.Dialing">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenLogoDialog.Dialing">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_callWatermarkStyle" />
         <attr name="recyclerViewStyle" />
@@ -27,28 +27,28 @@
     </declare-styleable>
 
     <!-- DIALING FRAGMENT -->
-    <style name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.Dialing" parent="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo">
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.FullScreenDialog.Dialing</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog.Dialing</item>
-        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Dialing</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo.Dialing" parent="KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo">
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.FullScreenDialog.Dialing</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog.Dialing</item>
+        <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo.Dialing</item>
     </style>
 
     <!-- TITLE -->
-    <style name="KaleyraSDKDesign.TextView.Title.FullScreenDialog.Dialing" parent="KaleyraSDKDesign.TextView.Title.FullScreenDialog">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.FullScreenDialog.Dialing" parent="KaleyraCollaborationSuiteUI.TextView.Title.FullScreenDialog">
         <item name="android:visibility">gone</item>
     </style>
 
     <!-- SUBTITLE -->
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog.Dialing" parent="KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog.Dialing" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog">
         <item name="android:text">@string/kaleyra_glass_dialing</item>
     </style>
 
     <!-- BOTTOM NAVIGATION -->
-    <style name="KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo.Dialing" parent="KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo">
-        <item name="kaleyra_tapItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Dialing</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo.Dialing" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo">
+        <item name="kaleyra_tapItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Dialing</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Dialing" parent="KaleyraSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Dialing" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.FullScreenLogoDialog">
         <item name="android:visibility">gone</item>
     </style>
 </resources>

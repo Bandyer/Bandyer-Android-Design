@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareError" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareError" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:visibility">gone</item>
@@ -25,11 +25,11 @@
         <item name="android:textColor">?attr/colorError</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareError.Day" parent="KaleyraSDKDesign.TextView.Subtitle.FileShareError">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareError.Day" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareError">
         <item name="android:textColor">@color/kaleyra_colorError</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareProgress" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareProgress" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/kaleyra_color_on_background_50</item>
@@ -37,11 +37,11 @@
         <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareProgress.Day" parent="KaleyraSDKDesign.TextView.Subtitle.FileShareProgress">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareProgress.Day" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareProgress">
         <item name="android:textColor">@color/kaleyra_color_on_background_50_day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareUser" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareUser" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_width">@dimen/kaleyra_dimen_space0</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space8</item>
@@ -54,11 +54,11 @@
         <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareUser.Day" parent="KaleyraSDKDesign.TextView.Subtitle.FileShareUser">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareUser.Day" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareUser">
         <item name="android:textColor">@color/kaleyra_color_on_background_50_day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.FileName" parent="KaleyraSDKDesign.TextView">
+    <style name="KaleyraCollaborationSuiteUI.TextView.FileName" parent="KaleyraCollaborationSuiteUI.TextView">
         <item name="android:layout_width">@dimen/kaleyra_dimen_space0</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space28</item>
@@ -71,11 +71,11 @@
         <item name="android:textColor">?attr/colorOnBackground</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.FileName.Day" parent="KaleyraSDKDesign.TextView.FileName">
+    <style name="KaleyraCollaborationSuiteUI.TextView.FileName.Day" parent="KaleyraCollaborationSuiteUI.TextView.FileName">
         <item name="android:textColor">@color/kaleyra_colorOnBackground</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FileSize" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileSize" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
@@ -84,11 +84,11 @@
         <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FileSize.Day" parent="KaleyraSDKDesign.TextView.Subtitle.FileSize">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileSize.Day" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileSize">
         <item name="android:textColor">@color/kaleyra_color_on_background_50_day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.EmptyListLayout" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.EmptyListLayout" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:text">@string/kaleyra_no_file_shared</item>
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
@@ -96,11 +96,11 @@
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space20</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.EmptyListLayout.Day" parent="KaleyraSDKDesign.TextView.Title.EmptyListLayout">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.EmptyListLayout.Day" parent="KaleyraCollaborationSuiteUI.TextView.Title.EmptyListLayout">
         <item name="android:textColor">@color/kaleyra_color_on_background_30_day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.EmptyListLayout" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.EmptyListLayout" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:text">@string/kaleyra_click_to_share_file</item>
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
@@ -108,11 +108,11 @@
         <item name="android:layout_gravity">center</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.EmptyListLayout.Day" parent="KaleyraSDKDesign.TextView.Subtitle.EmptyListLayout">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.EmptyListLayout.Day" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.EmptyListLayout">
         <item name="android:textColor">@color/kaleyra_color_on_background_30_day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareFabText" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareFabText" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space0</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space20</item>
         <item name="android:text">@string/kaleyra_fileshare_add</item>
@@ -127,7 +127,7 @@
         <item name="android:letterSpacing">0.0892857143</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FileShareFabText.Day" parent="KaleyraSDKDesign.TextView.Subtitle.FileShareFabText">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareFabText.Day" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareFabText">
         <item name="android:textColor">@color/kaleyra_colorBackground</item>
     </style>
 </resources>

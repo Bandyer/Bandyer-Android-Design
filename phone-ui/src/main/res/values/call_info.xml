@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.CallInfo">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.CallInfo">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_iconStyle" />
         <attr name="kaleyra_titleStyle" />
@@ -24,15 +24,15 @@
         <attr name="kaleyra_recordingStyle" format="reference" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.CallInfo" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.CallInfo.RootLayout</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.CallInfo</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.CallInfo</item>
-        <item name="kaleyra_recordingStyle">@style/KaleyraSDKDesign.TextView.Subtitle.Recording</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.CallWatermark</item>
+    <style name="KaleyraCollaborationSuiteUI.CallInfo" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.CallInfo.RootLayout</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.CallInfo</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.CallInfo</item>
+        <item name="kaleyra_recordingStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.Recording</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.CallWatermark</item>
     </style>
 
-    <style name="KaleyraSDKDesign.CallInfo.RootLayout">
+    <style name="KaleyraCollaborationSuiteUI.CallInfo.RootLayout">
         <item name="android:orientation">vertical</item>
         <item name="android:background">@drawable/kaleyra_shape_transparent_black_background</item>
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>

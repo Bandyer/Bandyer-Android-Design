@@ -16,27 +16,27 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.BottomSheetDialog.FileShare.EmptyListLayout">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.EmptyListLayout">
         <attr name="kaleyra_rootLayoutStyle"/>
         <attr name="kaleyra_iconStyle"/>
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.EmptyListLayout</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.EmptyListLayout</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetModalStyle.FileShare.EmptyListLayout" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.EmptyListLayout</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.EmptyListLayout</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Day" parent="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout">
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon.Day</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.EmptyListLayout.Day</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.EmptyListLayout.Day</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetModalStyle.FileShare.EmptyListLayout.Day" parent="KaleyraCollaborationSuiteUI.BottomSheetModalStyle.FileShare.EmptyListLayout">
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon.Day</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.EmptyListLayout.Day</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.EmptyListLayout.Day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetModalStyle.FileShare.EmptyListLayout.RootLayout" parent="">
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space48</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space48</item>
     </style>

@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.ChatInfo">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.ChatInfo">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_iconStyle" />
         <attr name="kaleyra_titleStyle" />
@@ -24,14 +24,14 @@
         <attr name="kaleyra_bouncingDotsStyle" format="reference" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.ChatInfo" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.ChatInfo.RootLayout</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.ChatInfo</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ChatInfo</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageViewAvatar.Chat</item>
-        <item name="kaleyra_bouncingDotsStyle">@style/KaleyraSDKDesign.TextView.Subtitle.BouncingDots</item>
+    <style name="KaleyraCollaborationSuiteUI.ChatInfo" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.ChatInfo.RootLayout</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.ChatInfo</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ChatInfo</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.ImageViewAvatar.Chat</item>
+        <item name="kaleyra_bouncingDotsStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.BouncingDots</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ChatInfo.RootLayout" parent="" />
+    <style name="KaleyraCollaborationSuiteUI.ChatInfo.RootLayout" parent="" />
 
 </resources>

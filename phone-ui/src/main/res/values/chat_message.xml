@@ -16,22 +16,22 @@
 
 <resources>
 
-    <style name="KaleyraSDKDesign.ChatMessage.LoggedUser" parent="KaleyraSDKDesign.ChatMessage">
-        <item name="materialCardViewStyle">@style/KaleyraSDKDesign.ChatMessageBackground.LoggedUser</item>
-        <item name="kaleyra_timestampStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp.LoggedUser</item>
-        <item name="kaleyra_messageStyle">@style/KaleyraSDKDesign.TextView.ChatMessage.LoggedUser</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ChatMessageStatusImageView</item>
+    <style name="KaleyraCollaborationSuiteUI.ChatMessage.LoggedUser" parent="KaleyraCollaborationSuiteUI.ChatMessage">
+        <item name="materialCardViewStyle">@style/KaleyraCollaborationSuiteUI.ChatMessageBackground.LoggedUser</item>
+        <item name="kaleyra_timestampStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ChatMessageTimestamp.LoggedUser</item>
+        <item name="kaleyra_messageStyle">@style/KaleyraCollaborationSuiteUI.TextView.ChatMessage.LoggedUser</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.ChatMessageStatusImageView</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ChatMessage.OtherUser" parent="KaleyraSDKDesign.ChatMessage">
-        <item name="materialCardViewStyle">@style/KaleyraSDKDesign.ChatMessageBackground.OtherUser</item>
-        <item name="kaleyra_timestampStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp.OtherUser</item>
-        <item name="kaleyra_messageStyle">@style/KaleyraSDKDesign.TextView.ChatMessage.OtherUser</item>
+    <style name="KaleyraCollaborationSuiteUI.ChatMessage.OtherUser" parent="KaleyraCollaborationSuiteUI.ChatMessage">
+        <item name="materialCardViewStyle">@style/KaleyraCollaborationSuiteUI.ChatMessageBackground.OtherUser</item>
+        <item name="kaleyra_timestampStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ChatMessageTimestamp.OtherUser</item>
+        <item name="kaleyra_messageStyle">@style/KaleyraCollaborationSuiteUI.TextView.ChatMessage.OtherUser</item>
     </style>
 
     <!-- Chat Message Text Data View Container -->
 
-    <style name="KaleyraSDKDesign.ChatMessageBackground" parent="Widget.MaterialComponents.CardView">
+    <style name="KaleyraCollaborationSuiteUI.ChatMessageBackground" parent="Widget.MaterialComponents.CardView">
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:descendantFocusability">blocksDescendants</item>
@@ -47,17 +47,17 @@
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ChatMessageBackground.LoggedUser" parent="KaleyraSDKDesign.ChatMessageBackground">
+    <style name="KaleyraCollaborationSuiteUI.ChatMessageBackground.LoggedUser" parent="KaleyraCollaborationSuiteUI.ChatMessageBackground">
         <item name="cardBackgroundColor">?attr/colorSecondary</item>
-        <item name="shapeAppearance">@style/KaleyraSDKDesign.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay</item>
+        <item name="shapeAppearance">@style/KaleyraCollaborationSuiteUI.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ChatMessageBackground.OtherUser" parent="KaleyraSDKDesign.ChatMessageBackground">
+    <style name="KaleyraCollaborationSuiteUI.ChatMessageBackground.OtherUser" parent="KaleyraCollaborationSuiteUI.ChatMessageBackground">
         <item name="cardBackgroundColor">?attr/colorPrimaryVariant</item>
-        <item name="shapeAppearance">@style/KaleyraSDKDesign.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay</item>
+        <item name="shapeAppearance">@style/KaleyraCollaborationSuiteUI.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay" parent="">
+    <style name="KaleyraCollaborationSuiteUI.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">@dimen/kaleyra_dimen_space12</item>
         <item name="cornerSizeTopLeft">@dimen/kaleyra_dimen_space24</item>
@@ -65,7 +65,7 @@
         <item name="cornerSizeBottomLeft">@dimen/kaleyra_dimen_space24</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay" parent="">
+    <style name="KaleyraCollaborationSuiteUI.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">@dimen/kaleyra_dimen_space24</item>
         <item name="cornerSizeTopLeft">@dimen/kaleyra_dimen_space0</item>

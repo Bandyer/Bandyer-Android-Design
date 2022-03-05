@@ -16,13 +16,13 @@
 
 <resources>
 
-    <declare-styleable name="KaleyraSDKDesign.ChatEmptyItem">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.ChatEmptyItem">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_titleStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.ChatEmptyItem" parent="">
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ChatEmpty</item>
+    <style name="KaleyraCollaborationSuiteUI.ChatEmptyItem" parent="">
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ChatEmpty</item>
     </style>
 
 </resources>

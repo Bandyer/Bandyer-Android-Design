@@ -96,7 +96,7 @@ sealed class AudioRoute(val ctx: Context?, val identifier: String, val name: Str
                          name: String? = null,
                          var batteryLevel: Int? = null,
                          var bluetoothConnectionStatus: AudioRouteState.BLUETOOTH)
-        : AudioRoute(ctx, identifier, name, bluetoothConnectionStatus is AudioRouteState.BLUETOOTH.PLAYING_AUDIO, identifier.hashCode(), R.layout.kaleyra_call_audioroute_item, ctx?.getAudioRouteItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_AudioRoute_kaleyra_bluetoothItemStyle)
+        : AudioRoute(ctx, identifier, name, bluetoothConnectionStatus is AudioRouteState.BLUETOOTH.PLAYING_AUDIO, identifier.hashCode(), R.layout.kaleyra_call_audioroute_item, ctx?.getAudioRouteItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_AudioRoute_kaleyra_bluetoothItemStyle)
             ?: 0) {
 
         override fun onReady() {
@@ -137,28 +137,28 @@ sealed class AudioRoute(val ctx: Context?, val identifier: String, val name: Str
      * Loudspeaker AudioRoute Item
      * @constructor
      */
-    open class LOUDSPEAKER(ctx: Context? = null, identifier: String, name: String? = null, isActive: Boolean = false) : AudioRoute(ctx, identifier, name, isActive, R.id.kaleyra_id_loudspeaker, R.layout.kaleyra_call_audioroute_item, ctx?.getAudioRouteItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_AudioRoute_kaleyra_loudspeakerItemStyle)
+    open class LOUDSPEAKER(ctx: Context? = null, identifier: String, name: String? = null, isActive: Boolean = false) : AudioRoute(ctx, identifier, name, isActive, R.id.kaleyra_id_loudspeaker, R.layout.kaleyra_call_audioroute_item, ctx?.getAudioRouteItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_AudioRoute_kaleyra_loudspeakerItemStyle)
             ?: 0)
 
     /**
      * Earpiece AudioRoute Item
      * @constructor
      */
-    open class EARPIECE(ctx: Context? = null, identifier: String, name: String? = null, isActive: Boolean = false) : AudioRoute(ctx, identifier, name, isActive, R.id.kaleyra_id_earpiece, R.layout.kaleyra_call_audioroute_item, ctx?.getAudioRouteItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_AudioRoute_kaleyra_earpieceItemStyle)
+    open class EARPIECE(ctx: Context? = null, identifier: String, name: String? = null, isActive: Boolean = false) : AudioRoute(ctx, identifier, name, isActive, R.id.kaleyra_id_earpiece, R.layout.kaleyra_call_audioroute_item, ctx?.getAudioRouteItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_AudioRoute_kaleyra_earpieceItemStyle)
             ?: 0)
 
     /**
      * Wired headset AudioRoute Item
      * @constructor
      */
-    open class WIRED_HEADSET(ctx: Context? = null, identifier: String, name: String? = null, isActive: Boolean = false) : AudioRoute(ctx, identifier, name, isActive, R.id.kaleyra_id_wiredheadset, R.layout.kaleyra_call_audioroute_item, ctx?.getAudioRouteItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_AudioRoute_kaleyra_wiredHeadsetItemStyle)
+    open class WIRED_HEADSET(ctx: Context? = null, identifier: String, name: String? = null, isActive: Boolean = false) : AudioRoute(ctx, identifier, name, isActive, R.id.kaleyra_id_wiredheadset, R.layout.kaleyra_call_audioroute_item, ctx?.getAudioRouteItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_AudioRoute_kaleyra_wiredHeadsetItemStyle)
             ?: 0)
 
     /**
      * Muted AudioRoute Item
      * @constructor
      */
-    open class MUTED(ctx: Context? = null, identifier: String, name: String? = null, isActive: Boolean = false) : AudioRoute(ctx, identifier, name, isActive, R.id.kaleyra_id_muted, R.layout.kaleyra_call_audioroute_item, ctx?.getAudioRouteItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_AudioRoute_kaleyra_mutedItemStyle)
+    open class MUTED(ctx: Context? = null, identifier: String, name: String? = null, isActive: Boolean = false) : AudioRoute(ctx, identifier, name, isActive, R.id.kaleyra_id_muted, R.layout.kaleyra_call_audioroute_item, ctx?.getAudioRouteItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_AudioRoute_kaleyra_mutedItemStyle)
             ?: 0)
 
     /**
@@ -174,10 +174,10 @@ sealed class AudioRoute(val ctx: Context?, val identifier: String, val name: Str
 
         if (isActive) {
             setAudioRouteItemState(AudioRouteState.BLUETOOTH.PLAYING_AUDIO())
-            ctx?.setTextAppearance(title, R.style.KaleyraSDKDesign_TextView_Title_AudioRoute_TextAppearance_Active)
+            ctx?.setTextAppearance(title, R.style.KaleyraCollaborationSuiteUI_TextView_Title_AudioRoute_TextAppearance_Active)
         } else {
             setAudioRouteItemState(AudioRouteState.DEFAULT())
-            ctx?.setTextAppearance(title, R.style.KaleyraSDKDesign_TextView_Title_AudioRoute_TextAppearance)
+            ctx?.setTextAppearance(title, R.style.KaleyraCollaborationSuiteUI_TextView_Title_AudioRoute_TextAppearance)
         }
     }
 

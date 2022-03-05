@@ -17,16 +17,16 @@
 
 <resources>
 
-    <style name="KaleyraSDKDesign.AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-        <item name="buttonBarNegativeButtonStyle">@style/KaleyraSDKDesign.AlertDialogThemeNegativeButton</item>
-        <item name="buttonBarPositiveButtonStyle">@style/KaleyraSDKDesign.AlertDialogThemePositiveButton</item>
+    <style name="KaleyraCollaborationSuiteUI.AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/KaleyraCollaborationSuiteUI.AlertDialogThemeNegativeButton</item>
+        <item name="buttonBarPositiveButtonStyle">@style/KaleyraCollaborationSuiteUI.AlertDialogThemePositiveButton</item>
     </style>
 
-    <style name="KaleyraSDKDesign.AlertDialogThemeNegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <style name="KaleyraCollaborationSuiteUI.AlertDialogThemeNegativeButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">?attr/colorSecondary</item>
     </style>
 
-    <style name="KaleyraSDKDesign.AlertDialogThemePositiveButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <style name="KaleyraCollaborationSuiteUI.AlertDialogThemePositiveButton" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">?attr/colorSecondary</item>
     </style>
 

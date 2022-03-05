@@ -130,7 +130,7 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
      * @property toggled true or false to toggle
      * @constructor
      */
-    open class CAMERA(mToggled: Boolean, private val ctx: Context) : TogglableCallAction(R.id.kaleyra_id_camera, mToggled, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Call_kaleyra_cameraStyle)) {
+    open class CAMERA(mToggled: Boolean, private val ctx: Context) : TogglableCallAction(R.id.kaleyra_id_camera, mToggled, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_cameraStyle)) {
 
         override fun updateContentDescription(button: View?) {
             button?.contentDescription =
@@ -144,7 +144,7 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
      * @property toggled true or false to toggle
      * @constructor
      */
-    open class MICROPHONE(mToggled: Boolean, private val ctx: Context) : TogglableCallAction(R.id.kaleyra_id_microphone, mToggled, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Call_kaleyra_microphoneStyle)) {
+    open class MICROPHONE(mToggled: Boolean, private val ctx: Context) : TogglableCallAction(R.id.kaleyra_id_microphone, mToggled, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_microphoneStyle)) {
 
         override fun updateContentDescription(button: View?) {
             button?.contentDescription =
@@ -158,32 +158,32 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
      * @property switchWith CallAction to replace the options with
      * @constructor
      */
-    open class OPTIONS(val switchWith: CallAction, ctx: Context) : CallAction(R.id.kaleyra_id_options, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Call_kaleyra_optionsStyle))
+    open class OPTIONS(val switchWith: CallAction, ctx: Context) : CallAction(R.id.kaleyra_id_options, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_optionsStyle))
 
     /**
      * Switch camera call action item
      * @constructor
      */
-    open class SWITCH_CAMERA(ctx: Context) : CallAction(R.id.kaleyra_id_switchcamera, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Call_kaleyra_switchCameraStyle))
+    open class SWITCH_CAMERA(ctx: Context) : CallAction(R.id.kaleyra_id_switchcamera, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_switchCameraStyle))
 
     /**
      * Participants call action item
      * @constructor
      */
-    open class PARTICIPANTS(ctx: Context) : CallAction(R.id.kaleyra_id_participants, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Call_kaleyra_participantsStyle))
+    open class PARTICIPANTS(ctx: Context) : CallAction(R.id.kaleyra_id_participants, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_participantsStyle))
 
     /**
      * Open Chat call action item
      * @constructor
      */
-    open class CHAT(ctx: Context) : CallAction(R.id.kaleyra_id_chat, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Call_kaleyra_chatStyle))
+    open class CHAT(ctx: Context) : CallAction(R.id.kaleyra_id_chat, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_chatStyle))
 
     /**
      * AudioRoute call action item
      * @property mCurrent AudioRoute? current AudioRoute device
      * @constructor
      */
-    open class AUDIOROUTE(ctx: Context) : CallAction(R.id.kaleyra_id_audioroute, R.layout.kaleyra_call_action_audioroute_item, ctx.getCallActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Call_kaleyra_audioRouteStyle)) {
+    open class AUDIOROUTE(ctx: Context) : CallAction(R.id.kaleyra_id_audioroute, R.layout.kaleyra_call_action_audioroute_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_audioRouteStyle)) {
 
         var mCurrent: AudioRoute? = null
 
@@ -230,34 +230,34 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
      * Hangup call action item
      * @constructor
      */
-    open class DECLINE(ctx: Context) : CallAction(R.id.kaleyra_id_decline, R.layout.kaleyra_call_action_item, ctx.getRingingActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Ringing_kaleyra_declineStyle))
+    open class DECLINE(ctx: Context) : CallAction(R.id.kaleyra_id_decline, R.layout.kaleyra_call_action_item, ctx.getRingingActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Ringing_kaleyra_declineStyle))
 
     /**
 
      * Hangup call action item
      * @constructor
      */
-    open class HANGUP(ctx: Context) : CallAction(R.id.kaleyra_id_hangup, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Call_kaleyra_hangUpStyle))
+    open class HANGUP(ctx: Context) : CallAction(R.id.kaleyra_id_hangup, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_hangUpStyle))
 
     /**
      * Answer call action item
      * @constructor
      */
-    open class ANSWER(ctx: Context) : CallAction(R.id.kaleyra_id_answer, R.layout.kaleyra_call_action_item, ctx.getRingingActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Ringing_kaleyra_answerStyle))
+    open class ANSWER(ctx: Context) : CallAction(R.id.kaleyra_id_answer, R.layout.kaleyra_call_action_item, ctx.getRingingActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Ringing_kaleyra_answerStyle))
 
 
     /**
      * Whiteboard call action item
      * @constructor
      */
-    open class WHITEBOARD(ctx: Context) : CallAction(R.id.kaleyra_id_whiteboard, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Call_kaleyra_whiteboardStyle))
+    open class WHITEBOARD(ctx: Context) : CallAction(R.id.kaleyra_id_whiteboard, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_whiteboardStyle))
 
 
     /**
      * Upload call action item
      * @constructor
      */
-    open class FILE_SHARE(ctx: Context) : CallAction(R.id.kaleyra_id_fileshare, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Call_kaleyra_fileShareStyle)) {
+    open class FILE_SHARE(ctx: Context) : CallAction(R.id.kaleyra_id_fileshare, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_fileShareStyle)) {
 
         private var oldLabelText: String? = null
 
@@ -298,7 +298,7 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
      * @property toggled true or false to toggle
      * @constructor
      */
-    open class SCREEN_SHARE(mToggled: Boolean = false, ctx: Context) : TogglableCallAction(R.id.kaleyra_id_screenshare, mToggled, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraSDKDesign_BottomSheet_Call_kaleyra_screenShareStyle))
+    open class SCREEN_SHARE(mToggled: Boolean = false, ctx: Context) : TogglableCallAction(R.id.kaleyra_id_screenshare, mToggled, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_screenShareStyle))
 
     /**
      * Called when the layout has been inflated

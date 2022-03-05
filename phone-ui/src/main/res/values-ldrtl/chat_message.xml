@@ -17,7 +17,7 @@
 
 <resources>
 
-    <style name="KaleyraSDKDesign.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay" parent="">
+    <style name="KaleyraCollaborationSuiteUI.ChatMessageBackground.LoggedUser.ShapeAppereanceOverlay" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft">@dimen/kaleyra_dimen_space12</item>
         <item name="cornerSizeTopRight">@dimen/kaleyra_dimen_space24</item>
@@ -25,7 +25,7 @@
         <item name="cornerSizeBottomRight">@dimen/kaleyra_dimen_space24</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay" parent="">
+    <style name="KaleyraCollaborationSuiteUI.ChatMessageBackground.OtherUser.ShapeAppearanceOverlay" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopLeft" >@dimen/kaleyra_dimen_space24</item>
         <item name="cornerSizeTopRight">@dimen/kaleyra_dimen_space0</item>

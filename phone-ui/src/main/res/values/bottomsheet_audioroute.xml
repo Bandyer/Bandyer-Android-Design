@@ -17,7 +17,7 @@
 
 <resources>
 
-    <declare-styleable name="KaleyraSDKDesign.BottomSheet.AudioRoute">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute">
         <attr name="kaleyra_bluetoothItemStyle" format="reference" />
         <attr name="kaleyra_wiredHeadsetItemStyle" format="reference" />
         <attr name="kaleyra_loudspeakerItemStyle" format="reference" />
@@ -25,12 +25,12 @@
         <attr name="kaleyra_mutedItemStyle" format="reference" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute" parent="KaleyraSDKDesign.BottomSheet">
-        <item name="kaleyra_bluetoothItemStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Bluetooth</item>
-        <item name="kaleyra_wiredHeadsetItemStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute.Item.WiredHeadset</item>
-        <item name="kaleyra_loudspeakerItemStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Loudspeaker</item>
-        <item name="kaleyra_earpieceItemStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Earpiece</item>
-        <item name="kaleyra_mutedItemStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Muted</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute" parent="KaleyraCollaborationSuiteUI.BottomSheet">
+        <item name="kaleyra_bluetoothItemStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item.Bluetooth</item>
+        <item name="kaleyra_wiredHeadsetItemStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item.WiredHeadset</item>
+        <item name="kaleyra_loudspeakerItemStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item.Loudspeaker</item>
+        <item name="kaleyra_earpieceItemStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item.Earpiece</item>
+        <item name="kaleyra_mutedItemStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item.Muted</item>
     </style>
 
 </resources>

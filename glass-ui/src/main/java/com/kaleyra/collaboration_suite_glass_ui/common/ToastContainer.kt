@@ -38,9 +38,9 @@ internal class ToastContainer @JvmOverloads constructor(
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
     private val theme = context.getThemeAttribute(
-        context.getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Glass_Call_kaleyra_toastContainerStyle),
-        R.styleable.KaleyraSDKDesign_Theme_GlassCall_ToastContainerStyle,
-        R.styleable.KaleyraSDKDesign_Theme_GlassCall_ToastContainerStyle_kaleyra_toastStyle
+        context.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Call_kaleyra_toastContainerStyle),
+        R.styleable.KaleyraCollaborationSuiteUI_Theme_GlassCall_ToastContainerStyle,
+        R.styleable.KaleyraCollaborationSuiteUI_Theme_GlassCall_ToastContainerStyle_kaleyra_toastStyle
     )
 
     /**

@@ -17,7 +17,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="KaleyraSDKDesign.ChatNetworkProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+    <style name="KaleyraCollaborationSuiteUI.ChatNetworkProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>
@@ -26,9 +26,9 @@
         <item name="trackColor">?attr/colorOnBackground</item>
     </style>
 
-    <style name="KaleyraSDKDesign.UploadProgressIndicator" parent="KaleyraSDKDesign.UploadProgressIndicator.V21"/>
+    <style name="KaleyraCollaborationSuiteUI.UploadProgressIndicator" parent="KaleyraCollaborationSuiteUI.UploadProgressIndicator.V21"/>
 
-    <style name="KaleyraSDKDesign.UploadProgressIndicator.V21" parent="Widget.MaterialComponents.CircularProgressIndicator">
+    <style name="KaleyraCollaborationSuiteUI.UploadProgressIndicator.V21" parent="Widget.MaterialComponents.CircularProgressIndicator">
         <item name="android:layout_height">@dimen/kaleyra_dimen_progress_bar_circular_size</item>
         <item name="android:layout_width">@dimen/kaleyra_dimen_progress_bar_circular_size</item>
         <item name="indicatorSize">@dimen/kaleyra_dimen_space56</item>
@@ -37,7 +37,7 @@
         <item name="indicatorColor">?attr/colorSecondaryVariant</item>
     </style>
 
-    <style name="KaleyraSDKDesign.LoadingProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
+    <style name="KaleyraCollaborationSuiteUI.LoadingProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
         <item name="android:layout_marginTop">?attr/actionBarSize</item>
         <item name="trackThickness">@dimen/kaleyra_dimen_space2</item>
         <item name="indicatorColor">?attr/colorSecondary</item>
@@ -45,11 +45,11 @@
         <item name="elevation">@dimen/kaleyra_dimen_space6</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FileShare.ProgressBar" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21"/>
+    <style name="KaleyraCollaborationSuiteUI.FileShare.ProgressBar" parent="KaleyraCollaborationSuiteUI.FileShare.ProgressBar.V21"/>
 
-    <style name="KaleyraSDKDesign.FileShare.ProgressBar.Day" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21.Day"/>
+    <style name="KaleyraCollaborationSuiteUI.FileShare.ProgressBar.Day" parent="KaleyraCollaborationSuiteUI.FileShare.ProgressBar.V21.Day"/>
 
-    <style name="KaleyraSDKDesign.FileShare.ProgressBar.V21" parent="Widget.MaterialComponents.LinearProgressIndicator">
+    <style name="KaleyraCollaborationSuiteUI.FileShare.ProgressBar.V21" parent="Widget.MaterialComponents.LinearProgressIndicator">
         <item name="android:layout_width">@dimen/kaleyra_dimen_space0</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space6</item>
@@ -59,7 +59,7 @@
         <item name="trackCornerRadius">@dimen/kaleyra_dimen_space3</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FileShare.ProgressBar.V21.Day" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21">
+    <style name="KaleyraCollaborationSuiteUI.FileShare.ProgressBar.V21.Day" parent="KaleyraCollaborationSuiteUI.FileShare.ProgressBar.V21">
         <item name="trackColor">@color/kaleyra_color_progressbar</item>
         <item name="indicatorColor">@color/kaleyra_colorSecondaryVariant</item>
     </style>

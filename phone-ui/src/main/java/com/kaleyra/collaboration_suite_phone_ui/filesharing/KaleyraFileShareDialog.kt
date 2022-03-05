@@ -121,7 +121,7 @@ class KaleyraFileShareDialog : KaleyraDialog<KaleyraFileShareDialog.FileShareBot
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_fileShareDialogStyle))
+            setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_fileShareDialogStyle))
             smoothScroller = LinearSmoothScroller(requireContext())
             requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
                 if (it) permissionGrantedCallback?.invoke()

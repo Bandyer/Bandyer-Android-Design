@@ -333,11 +333,11 @@ class KaleyraBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
         peekHeight = a.getDimensionPixelSize(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, 0)
         isHideable = a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false)
         a.recycle()
-        a = context.obtainStyledAttributes(attrs, R.styleable.KaleyraSDKDesign_BottomSheet_Behavior)
+        a = context.obtainStyledAttributes(attrs, R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Behavior)
         if (attrs != null) {
-            mAnchorPoint = a.getDimension(R.styleable.KaleyraSDKDesign_BottomSheet_Behavior_kaleyra_anchorPoint, -1f).toInt()
+            mAnchorPoint = a.getDimension(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Behavior_kaleyra_anchorPoint, -1f).toInt()
             skipAnchor = mAnchorPoint < 0
-            mState = a.getInt(R.styleable.KaleyraSDKDesign_BottomSheet_Behavior_kaleyra_defaultStatus, STATE_COLLAPSED)
+            mState = a.getInt(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Behavior_kaleyra_defaultStatus, STATE_COLLAPSED)
         }
         a.recycle()
         val configuration = ViewConfiguration.get(context)

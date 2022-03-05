@@ -20,8 +20,11 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 
+/**
+ * Option
+ */
 @Keep
-internal sealed class Option : Parcelable {
+sealed class Option : Parcelable {
 
     companion object {
         val all = listOf(CHAT)

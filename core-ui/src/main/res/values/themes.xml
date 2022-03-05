@@ -16,7 +16,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="KaleyraSDKDesign.Theme.Base.V16" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Base.V16" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <item name="fontFamily">@font/kaleyra_font</item>
         <item name="android:fontFamily">@font/kaleyra_font</item>
@@ -40,24 +40,24 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 
         <item name="elevationOverlayEnabled">false</item>
-        <item name="toolbarStyle">@style/KaleyraSDKDesign.ToolBarStyle</item>
+        <item name="toolbarStyle">@style/KaleyraCollaborationSuiteUI.ToolBarStyle</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
         <item name="android:enforceStatusBarContrast" tools:targetApi="q">false</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.Base" parent="KaleyraSDKDesign.Theme.Base.V16"/>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Base" parent="KaleyraCollaborationSuiteUI.Theme.Base.V16"/>
 
-    <style name="KaleyraSDKDesign.ToolBarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
+    <style name="KaleyraCollaborationSuiteUI.ToolBarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ToolBarShadow" parent="">
+    <style name="KaleyraCollaborationSuiteUI.ToolBarShadow" parent="">
         <item name="android:visibility">visible</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.Base.Day" parent="KaleyraSDKDesign.Theme" />
+    <style name="KaleyraCollaborationSuiteUI.Theme.Base.Day" parent="KaleyraCollaborationSuiteUI.Theme" />
 
-    <style name="KaleyraSDKDesign.Theme.Base.Night" parent="KaleyraSDKDesign.Theme">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Base.Night" parent="KaleyraCollaborationSuiteUI.Theme">
         <item name="colorPrimary">@color/kaleyra_colorPrimary_night</item>
         <item name="colorPrimaryVariant">@color/kaleyra_colorPrimaryVariant_night</item>
         <item name="colorSecondary">@color/kaleyra_colorSecondary_night</item>
@@ -73,12 +73,12 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme" parent="KaleyraSDKDesign.Theme.Base" />
+    <style name="KaleyraCollaborationSuiteUI.Theme" parent="KaleyraCollaborationSuiteUI.Theme.Base" />
 
-    <style name="KaleyraSDKDesign.Theme.Day" parent="KaleyraSDKDesign.Theme.Base.Day" />
+    <style name="KaleyraCollaborationSuiteUI.Theme.Day" parent="KaleyraCollaborationSuiteUI.Theme.Base.Day" />
 
-    <style name="KaleyraSDKDesign.Theme.Night" parent="KaleyraSDKDesign.Theme.Base.Night" />
+    <style name="KaleyraCollaborationSuiteUI.Theme.Night" parent="KaleyraCollaborationSuiteUI.Theme.Base.Night" />
 
-    <style name="KaleyraSDKDesign.Theme.DayNight" parent="KaleyraSDKDesign.Theme.Day" />
+    <style name="KaleyraCollaborationSuiteUI.Theme.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.Day" />
 
 </resources>

@@ -17,39 +17,39 @@
 
 <resources>
 
-    <declare-styleable name="KaleyraSDKDesign.TextEditorStyle">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.TextEditorStyle">
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_negativeButtonStyle" />
         <attr name="kaleyra_positiveButtonStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.TextEditorStyle" parent="">
-        <item name="textInputStyle">@style/KaleyraSDKDesign.TextInputLayout.Dialog</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.ConfirmDataLoss</item>
-        <item name="kaleyra_negativeButtonStyle">@style/KaleyraSDKDesign.ActionButton.CancelButton</item>
-        <item name="kaleyra_positiveButtonStyle">@style/KaleyraSDKDesign.ActionButton.ConfirmButton</item>
+    <style name="KaleyraCollaborationSuiteUI.TextEditorStyle" parent="">
+        <item name="textInputStyle">@style/KaleyraCollaborationSuiteUI.TextInputLayout.Dialog</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.ConfirmDataLoss</item>
+        <item name="kaleyra_negativeButtonStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.CancelButton</item>
+        <item name="kaleyra_positiveButtonStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.ConfirmButton</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextEditorStyle.Day" parent="">
-        <item name="textInputStyle">@style/KaleyraSDKDesign.TextInputLayout.Dialog.Day</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.ConfirmDataLoss.Day</item>
-        <item name="kaleyra_negativeButtonStyle">@style/KaleyraSDKDesign.ActionButton.CancelButton.Day</item>
-        <item name="kaleyra_positiveButtonStyle">@style/KaleyraSDKDesign.ActionButton.ConfirmButton.Day</item>
+    <style name="KaleyraCollaborationSuiteUI.TextEditorStyle.Day" parent="">
+        <item name="textInputStyle">@style/KaleyraCollaborationSuiteUI.TextInputLayout.Dialog.Day</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.ConfirmDataLoss.Day</item>
+        <item name="kaleyra_negativeButtonStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.CancelButton.Day</item>
+        <item name="kaleyra_positiveButtonStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.ConfirmButton.Day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V16" parent="KaleyraSDKDesign.BottomSheetDialog.V16">
-        <item name="kaleyra_textEditorStyle">@style/KaleyraSDKDesign.TextEditorStyle</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.TextEditor.V16" parent="KaleyraCollaborationSuiteUI.BottomSheetDialog.V16">
+        <item name="kaleyra_textEditorStyle">@style/KaleyraCollaborationSuiteUI.TextEditorStyle</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V16.Day" parent="KaleyraSDKDesign.BottomSheetDialog.V16.Day">
-        <item name="kaleyra_textEditorStyle">@style/KaleyraSDKDesign.TextEditorStyle.Day</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.TextEditor.V16.Day" parent="KaleyraCollaborationSuiteUI.BottomSheetDialog.V16.Day">
+        <item name="kaleyra_textEditorStyle">@style/KaleyraCollaborationSuiteUI.TextEditorStyle.Day</item>
     </style>
 
-    <declare-styleable name="KaleyraSDKDesign.BottomSheetDialog.TextEditor">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.BottomSheetDialog.TextEditor">
         <attr name="kaleyra_textEditorStyle" format="reference" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.TextEditor" parent="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V16"/>
-    <style name="KaleyraSDKDesign.BottomSheetDialog.TextEditor.Day" parent="KaleyraSDKDesign.BottomSheetDialog.TextEditor.V16.Day"/>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.TextEditor" parent="KaleyraCollaborationSuiteUI.BottomSheetDialog.TextEditor.V16"/>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.TextEditor.Day" parent="KaleyraCollaborationSuiteUI.BottomSheetDialog.TextEditor.V16.Day"/>
 
 </resources>

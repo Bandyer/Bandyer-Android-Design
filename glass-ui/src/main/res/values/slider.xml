@@ -17,13 +17,13 @@
 
 <resources>
     <!-- SLIDER -->
-    <style name="KaleyraSDKDesign.Glass.Slider" parent="KaleyraSDKDesign.Glass">
-        <item name="seekBarStyle">@style/KaleyraSDKDesign.Glass.Slider.SeekBar</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.GlassSlider</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.Slider" parent="KaleyraCollaborationSuiteUI.Glass">
+        <item name="seekBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.Slider.SeekBar</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassSlider</item>
     </style>
 
     <!-- SLIDER SEEKBAR -->
-    <style name="KaleyraSDKDesign.Glass.Slider.SeekBar" parent="Widget.AppCompat.SeekBar.Discrete">
+    <style name="KaleyraCollaborationSuiteUI.Glass.Slider.SeekBar" parent="Widget.AppCompat.SeekBar.Discrete">
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space0</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space0</item>
         <item name="android:thumb">@null</item>
@@ -33,7 +33,7 @@
     </style>
 
     <!-- SLIDER TEXT -->
-    <style name="KaleyraSDKDesign.TextView.GlassSlider" parent="KaleyraSDKDesign.TextView">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassSlider" parent="KaleyraCollaborationSuiteUI.TextView">
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textSize">@dimen/kaleyra_dimen_text_40sp</item>

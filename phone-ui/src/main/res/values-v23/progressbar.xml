@@ -16,15 +16,15 @@
   -->
 
 <resources>
-    <style name="KaleyraSDKDesign.UploadProgressIndicator" parent="KaleyraSDKDesign.UploadProgressIndicator.V21">
+    <style name="KaleyraCollaborationSuiteUI.UploadProgressIndicator" parent="KaleyraCollaborationSuiteUI.UploadProgressIndicator.V21">
         <item name="trackColor">@color/kaleyra_color_on_background_12</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FileShare.ProgressBar" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21">
+    <style name="KaleyraCollaborationSuiteUI.FileShare.ProgressBar" parent="KaleyraCollaborationSuiteUI.FileShare.ProgressBar.V21">
         <item name="trackColor">@color/kaleyra_color_on_background_12</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FileShare.ProgressBar.Day" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21.Day">
+    <style name="KaleyraCollaborationSuiteUI.FileShare.ProgressBar.Day" parent="KaleyraCollaborationSuiteUI.FileShare.ProgressBar.V21.Day">
         <item name="trackColor">@color/kaleyra_color_on_background_12_day</item>
     </style>
 </resources>

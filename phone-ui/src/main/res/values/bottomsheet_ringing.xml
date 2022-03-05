@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.BottomSheet.Ringing">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.BottomSheet.Ringing">
         <attr name="kaleyra_lineStyle" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_recyclerViewStyle" />
@@ -25,19 +25,19 @@
         <attr name="kaleyra_answerStyle" format="reference" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.BottomSheet.Ringing" parent="KaleyraSDKDesign.BottomSheet">
-        <item name="materialCardViewStyle">@style/KaleyraSDKDesign.BottomSheetBackground.Ringing</item>
-        <item name="kaleyra_lineStyle">@style/KaleyraSDKDesign.ImageButton.BottomSheetLine.Ringing</item>
-        <item name="kaleyra_declineStyle">@style/KaleyraSDKDesign.ActionButton.Decline</item>
-        <item name="kaleyra_answerStyle">@style/KaleyraSDKDesign.ActionButton.Answer</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet.Ringing" parent="KaleyraCollaborationSuiteUI.BottomSheet">
+        <item name="materialCardViewStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetBackground.Ringing</item>
+        <item name="kaleyra_lineStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.BottomSheetLine.Ringing</item>
+        <item name="kaleyra_declineStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Decline</item>
+        <item name="kaleyra_answerStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Answer</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheet.Ringing.Night" parent="KaleyraSDKDesign.BottomSheet.Ringing">
-        <item name="kaleyra_declineStyle">@style/KaleyraSDKDesign.ActionButton.Decline.Night</item>
-        <item name="kaleyra_answerStyle">@style/KaleyraSDKDesign.ActionButton.Answer.Night</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet.Ringing.Night" parent="KaleyraCollaborationSuiteUI.BottomSheet.Ringing">
+        <item name="kaleyra_declineStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Decline.Night</item>
+        <item name="kaleyra_answerStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Answer.Night</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetBackground.Ringing" parent="KaleyraSDKDesign.BottomSheetBackground">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetBackground.Ringing" parent="KaleyraCollaborationSuiteUI.BottomSheetBackground">
         <item name="cardBackgroundColor">@android:color/transparent</item>
     </style>
 </resources>

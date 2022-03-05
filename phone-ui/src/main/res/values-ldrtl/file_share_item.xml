@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Item.RootLayout" parent="">
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space18</item>
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space2</item>
         <item name="android:paddingBottom">@dimen/kaleyra_dimen_space16</item>

@@ -99,7 +99,7 @@ class SmartGlassActionItemMenu : DialogFragment() {
             dismiss()
             return
         }
-        setStyle(STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_smartGlassDialogMenuStyle))
+        setStyle(STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_smartGlassDialogMenuStyle))
     }
 
     /**
@@ -112,7 +112,7 @@ class SmartGlassActionItemMenu : DialogFragment() {
      * @suppress
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        smartglassMenuLayout = SmartGlassMenuLayout(ContextThemeWrapper(requireContext(), requireContext().getSmartGlassMenuDialogAttribute(R.styleable.KaleyraSDKDesign_SmartGlassDialogMenu_kaleyra_smartGlassMenuStyle)))
+        smartglassMenuLayout = SmartGlassMenuLayout(ContextThemeWrapper(requireContext(), requireContext().getSmartGlassMenuDialogAttribute(R.styleable.KaleyraCollaborationSuiteUI_SmartGlassDialogMenu_kaleyra_smartGlassMenuStyle)))
         smartglassMenuLayout!!.items = items ?: listOf()
         motionEventInterceptor?.let { smartglassMenuLayout!!.motionEventInterceptor = motionEventInterceptor }
         return smartglassMenuLayout!!

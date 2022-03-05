@@ -17,19 +17,19 @@
 
 <resources>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialogStyle.V27" parent="KaleyraSDKDesign.BottomSheetDialogStyle.V23">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialogStyle.V27" parent="KaleyraCollaborationSuiteUI.BottomSheetDialogStyle.V23">
         <item name="android:navigationBarColor">?attr/colorSurface</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialogStyle.V27.Day" parent="KaleyraSDKDesign.BottomSheetDialogStyle.V23.Day">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialogStyle.V27.Day" parent="KaleyraCollaborationSuiteUI.BottomSheetDialogStyle.V23.Day">
         <item name="android:navigationBarColor">@color/kaleyra_colorSurface</item>
         <item name="android:windowLightNavigationBar">true</item>
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog" parent="KaleyraSDKDesign.BottomSheetDialogStyle.V27"/>
-    <style name="KaleyraSDKDesign.BottomSheetDialog.Day" parent="KaleyraSDKDesign.BottomSheetDialogStyle.V27.Day"/>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog" parent="KaleyraCollaborationSuiteUI.BottomSheetDialogStyle.V27"/>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.Day" parent="KaleyraCollaborationSuiteUI.BottomSheetDialogStyle.V27.Day"/>
 
 </resources>

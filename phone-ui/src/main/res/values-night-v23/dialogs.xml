@@ -17,7 +17,7 @@
 
 <resources>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialogStyle.V23" parent="KaleyraSDKDesign.BottomSheetDialogStyle.V21">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialogStyle.V23" parent="KaleyraCollaborationSuiteUI.BottomSheetDialogStyle.V21">
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="android:windowLightStatusBar">false</item>
     </style>

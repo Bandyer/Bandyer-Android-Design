@@ -16,7 +16,7 @@
 
 <resources>
 
-    <declare-styleable name="KaleyraSDKDesign.UploadImage">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.UploadImage">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
@@ -25,16 +25,16 @@
         <attr name="kaleyra_errorIconStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.Whiteboard.UploadImage" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.UploadImageRootLayout</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.UploadProgress</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.UploadProgress</item>
-        <item name="kaleyra_progressTextStyle">@style/KaleyraSDKDesign.TextView.Subtitle.UploadProgressPercentage</item>
-        <item name="kaleyra_progressStyle">@style/KaleyraSDKDesign.UploadProgressIndicator</item>
-        <item name="kaleyra_errorIconStyle">@style/KaleyraSDKDesign.ImageButton.UploadError</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard.UploadImage" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.UploadImageRootLayout</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UploadProgress</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.UploadProgress</item>
+        <item name="kaleyra_progressTextStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.UploadProgressPercentage</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraCollaborationSuiteUI.UploadProgressIndicator</item>
+        <item name="kaleyra_errorIconStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.UploadError</item>
     </style>
 
-    <style name="KaleyraSDKDesign.UploadImageRootLayout" parent="Widget.MaterialComponents.CardView">
+    <style name="KaleyraCollaborationSuiteUI.UploadImageRootLayout" parent="Widget.MaterialComponents.CardView">
         <item name="cardElevation">@dimen/kaleyra_dimen_space3</item>
         <item name="cardCornerRadius">@dimen/kaleyra_dimen_space3</item>
         <item name="contentPaddingLeft">@dimen/kaleyra_dimen_space8</item>
@@ -44,16 +44,16 @@
         <item name="cardUseCompatPadding">true</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.Whiteboard.UploadImage.Day" parent="KaleyraSDKDesign.BottomSheetDialog.Whiteboard.UploadImage">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.UploadImageRootLayout.Day</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.UploadProgress.Day</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.UploadProgress.Day</item>
-        <item name="kaleyra_progressTextStyle">@style/KaleyraSDKDesign.TextView.Subtitle.UploadProgressPercentage.Day</item>
-        <item name="kaleyra_progressStyle">@style/KaleyraSDKDesign.UploadProgressIndicator</item>
-        <item name="kaleyra_errorIconStyle">@style/KaleyraSDKDesign.ImageButton.UploadError</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard.UploadImage.Day" parent="KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard.UploadImage">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.UploadImageRootLayout.Day</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UploadProgress.Day</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.UploadProgress.Day</item>
+        <item name="kaleyra_progressTextStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.UploadProgressPercentage.Day</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraCollaborationSuiteUI.UploadProgressIndicator</item>
+        <item name="kaleyra_errorIconStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.UploadError</item>
     </style>
 
-    <style name="KaleyraSDKDesign.UploadImageRootLayout.Day" parent="KaleyraSDKDesign.UploadImageRootLayout">
+    <style name="KaleyraCollaborationSuiteUI.UploadImageRootLayout.Day" parent="KaleyraCollaborationSuiteUI.UploadImageRootLayout">
         <item name="cardBackgroundColor">@color/kaleyra_colorSurface</item>
     </style>
 

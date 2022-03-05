@@ -132,8 +132,8 @@ fun Context.scanForFragmentActivity(): androidx.fragment.app.FragmentActivity? {
  */
 fun Context.getChatInfoStyle(@StyleableRes styleAttribute: Int): Int =
     this.getThemeAttribute(
-        R.style.KaleyraSDKDesign_ChatInfo,
-        R.styleable.KaleyraSDKDesign_ChatInfo,
+        R.style.KaleyraCollaborationSuiteUI_ChatInfo,
+        R.styleable.KaleyraCollaborationSuiteUI_ChatInfo,
         styleAttribute
     )
 
@@ -144,7 +144,7 @@ fun Context.getChatInfoStyle(@StyleableRes styleAttribute: Int): Int =
  * @return The value relative to the attribute
  */
 fun Context.getPagerIndicatorIntAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.KaleyraSDKDesign_SmartGlassMenu_kaleyra_pagerIndicatorStyle), R.styleable.KaleyraSDKDesign_PagerIndicator)
+    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.KaleyraCollaborationSuiteUI_SmartGlassMenu_kaleyra_pagerIndicatorStyle), R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator)
     val value = if(ta.hasValue(styleAttribute))
         ta.getInt(styleAttribute, 0) else 0
     ta.recycle()
@@ -158,7 +158,7 @@ fun Context.getPagerIndicatorIntAttribute(@StyleableRes styleAttribute: Int): In
  * @return The value relative to the attribute
  */
 fun Context.getPagerIndicatorBooleanAttribute(@StyleableRes styleAttribute: Int): Boolean {
-    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.KaleyraSDKDesign_SmartGlassMenu_kaleyra_pagerIndicatorStyle), R.styleable.KaleyraSDKDesign_PagerIndicator)
+    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.KaleyraCollaborationSuiteUI_SmartGlassMenu_kaleyra_pagerIndicatorStyle), R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator)
     val value = if(ta.hasValue(styleAttribute))
         ta.getBoolean(styleAttribute, false) else false
     ta.recycle()
@@ -173,7 +173,7 @@ fun Context.getPagerIndicatorBooleanAttribute(@StyleableRes styleAttribute: Int)
  * @return The value relative to the attribute
  */
 fun Context.getPagerIndicatorColorAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.KaleyraSDKDesign_SmartGlassMenu_kaleyra_pagerIndicatorStyle), R.styleable.KaleyraSDKDesign_PagerIndicator)
+    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.KaleyraCollaborationSuiteUI_SmartGlassMenu_kaleyra_pagerIndicatorStyle), R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator)
     val value = if(ta.hasValue(styleAttribute))
         ta.getColor(styleAttribute, 0) else 0
     ta.recycle()
@@ -187,7 +187,7 @@ fun Context.getPagerIndicatorColorAttribute(@StyleableRes styleAttribute: Int): 
  * @return The value relative to the attribute
  */
 fun Context.getPagerIndicatorDimensionPixelSizeAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.KaleyraSDKDesign_SmartGlassMenu_kaleyra_pagerIndicatorStyle), R.styleable.KaleyraSDKDesign_PagerIndicator)
+    val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.KaleyraCollaborationSuiteUI_SmartGlassMenu_kaleyra_pagerIndicatorStyle), R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator)
     val value = if(ta.hasValue(styleAttribute))
         ta.getDimensionPixelSize(styleAttribute, 0) else 0
     ta.recycle()
@@ -201,7 +201,7 @@ fun Context.getPagerIndicatorDimensionPixelSizeAttribute(@StyleableRes styleAttr
  * @return The value relative to the attribute
  */
 fun Context.getBouncingDotsIntAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getChatInfoStyle(R.styleable.KaleyraSDKDesign_ChatInfo_kaleyra_bouncingDotsStyle), R.styleable.KaleyraSDKDesign_TextView_Subtitle_BouncingDots)
+    val ta = obtainStyledAttributes(getChatInfoStyle(R.styleable.KaleyraCollaborationSuiteUI_ChatInfo_kaleyra_bouncingDotsStyle), R.styleable.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots)
     val value = if(ta.hasValue(styleAttribute))
         ta.getInt(styleAttribute, 0) else 0
     ta.recycle()
@@ -215,7 +215,7 @@ fun Context.getBouncingDotsIntAttribute(@StyleableRes styleAttribute: Int): Int 
  * @return The value relative to the attribute
  */
 fun Context.getBouncingDotsBooleanAttribute(@StyleableRes styleAttribute: Int): Boolean {
-    val ta = obtainStyledAttributes(getChatInfoStyle(R.styleable.KaleyraSDKDesign_ChatInfo_kaleyra_bouncingDotsStyle), R.styleable.KaleyraSDKDesign_TextView_Subtitle_BouncingDots)
+    val ta = obtainStyledAttributes(getChatInfoStyle(R.styleable.KaleyraCollaborationSuiteUI_ChatInfo_kaleyra_bouncingDotsStyle), R.styleable.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots)
     val value = if(ta.hasValue(styleAttribute))
         ta.getBoolean(styleAttribute, false) else false
     ta.recycle()
@@ -229,7 +229,7 @@ fun Context.getBouncingDotsBooleanAttribute(@StyleableRes styleAttribute: Int): 
  * @return The value relative to the attribute
  */
 fun Context.getBouncingDotsDimensionAttribute(@StyleableRes styleAttribute: Int): Float {
-    val ta = obtainStyledAttributes(getChatInfoStyle(R.styleable.KaleyraSDKDesign_ChatInfo_kaleyra_bouncingDotsStyle), R.styleable.KaleyraSDKDesign_TextView_Subtitle_BouncingDots)
+    val ta = obtainStyledAttributes(getChatInfoStyle(R.styleable.KaleyraCollaborationSuiteUI_ChatInfo_kaleyra_bouncingDotsStyle), R.styleable.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots)
     val value = if(ta.hasValue(styleAttribute))
         ta.getDimension(styleAttribute, 0f) else 0f
     ta.recycle()
@@ -243,7 +243,7 @@ fun Context.getBouncingDotsDimensionAttribute(@StyleableRes styleAttribute: Int)
  * @return The style relative to the styleAttribute
  */
 fun Context.getAudioRouteItemStyle(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_bottomSheetAudioRouteStyle), R.styleable.KaleyraSDKDesign_BottomSheet_AudioRoute)
+    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_bottomSheetAudioRouteStyle), R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_AudioRoute)
     val value = if(ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
@@ -257,7 +257,7 @@ fun Context.getAudioRouteItemStyle(@StyleableRes styleAttribute: Int): Int {
  * @return The style relative to the styleAttribute
  */
 fun Context.getCallActionItemStyle(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_bottomSheetCallStyle), R.styleable.KaleyraSDKDesign_BottomSheet_Call)
+    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_bottomSheetCallStyle), R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call)
     val value = if(ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
@@ -271,7 +271,7 @@ fun Context.getCallActionItemStyle(@StyleableRes styleAttribute: Int): Int {
  * @return The style relative to the styleAttribute
  */
 fun Context.getSmartGlassMenuAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getSmartGlassMenuDialogAttribute(R.styleable.KaleyraSDKDesign_SmartGlassDialogMenu_kaleyra_smartGlassMenuStyle), R.styleable.KaleyraSDKDesign_SmartGlassMenu)
+    val ta = obtainStyledAttributes(getSmartGlassMenuDialogAttribute(R.styleable.KaleyraCollaborationSuiteUI_SmartGlassDialogMenu_kaleyra_smartGlassMenuStyle), R.styleable.KaleyraCollaborationSuiteUI_SmartGlassMenu)
     val value = if(ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
@@ -285,7 +285,7 @@ fun Context.getSmartGlassMenuAttribute(@StyleableRes styleAttribute: Int): Int {
  * @return The style relative to the styleAttribute
  */
 fun Context.getRingingActionItemStyle(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_bottomSheetRingingStyle), R.styleable.KaleyraSDKDesign_BottomSheet_Ringing)
+    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_bottomSheetRingingStyle), R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Ringing)
     val value = if(ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
@@ -300,8 +300,8 @@ fun Context.getRingingActionItemStyle(@StyleableRes styleAttribute: Int): Int {
  */
 fun Context.getCallThemeAttribute(@StyleableRes styleAttribute: Int): Int =
     this.getThemeAttribute(
-        R.style.KaleyraSDKDesign_Theme_Call,
-        R.styleable.KaleyraSDKDesign_Theme_Call,
+        R.style.KaleyraCollaborationSuiteUI_Theme_Call,
+        R.styleable.KaleyraCollaborationSuiteUI_Theme_Call,
         styleAttribute
     )
 
@@ -312,7 +312,7 @@ fun Context.getCallThemeAttribute(@StyleableRes styleAttribute: Int): Int =
  * @return The style relative to the styleAttribute
  */
 fun Context.getWhiteboardDialogAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_whiteboardDialogStyle), R.styleable.KaleyraSDKDesign_BottomSheetDialog_Whiteboard)
+    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_whiteboardDialogStyle), R.styleable.KaleyraCollaborationSuiteUI_BottomSheetDialog_Whiteboard)
     val value = if(ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
@@ -326,7 +326,7 @@ fun Context.getWhiteboardDialogAttribute(@StyleableRes styleAttribute: Int): Int
  * @return The style relative to the styleAttribute
  */
 fun Context.getTextEditorDialogAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getWhiteboardDialogAttribute(R.styleable.KaleyraSDKDesign_BottomSheetDialog_Whiteboard_kaleyra_textEditorDialogStyle), R.styleable.KaleyraSDKDesign_BottomSheetDialog_TextEditor)
+    val ta = obtainStyledAttributes(getWhiteboardDialogAttribute(R.styleable.KaleyraCollaborationSuiteUI_BottomSheetDialog_Whiteboard_kaleyra_textEditorDialogStyle), R.styleable.KaleyraCollaborationSuiteUI_BottomSheetDialog_TextEditor)
     val value = if(ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()
@@ -340,7 +340,7 @@ fun Context.getTextEditorDialogAttribute(@StyleableRes styleAttribute: Int): Int
  * @return The style relative to the styleAttribute
  */
 fun Context.getSmartGlassMenuDialogAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_smartGlassDialogMenuStyle), R.styleable.KaleyraSDKDesign_SmartGlassDialogMenu)
+    val ta = obtainStyledAttributes(getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_smartGlassDialogMenuStyle), R.styleable.KaleyraCollaborationSuiteUI_SmartGlassDialogMenu)
     val value = if(ta.hasValue(styleAttribute))
         ta.getResourceId(styleAttribute, 0) else 0
     ta.recycle()

@@ -16,7 +16,7 @@
   -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <declare-styleable name="KaleyraSDKDesign.Glass.StatusBar">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Glass.StatusBar">
         <attr name="kaleyra_camIconStyle" format="reference"/>
         <attr name="kaleyra_micIconStyle" format="reference"/>
         <attr name="kaleyra_chatIconStyle" format="reference"/>
@@ -26,19 +26,19 @@
         <attr name="kaleyra_recordingStyle" format="reference"/>
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.Glass.StatusBar" parent="KaleyraSDKDesign.Glass">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.StatusBar.RootLayout</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.GlassStatusBar</item>
-        <item name="kaleyra_camIconStyle">@style/KaleyraSDKDesign.GlassStatusBarIcon.Activable.Camera</item>
-        <item name="kaleyra_micIconStyle">@style/KaleyraSDKDesign.GlassStatusBarIcon.Activable.Mic</item>
-        <item name="kaleyra_chatIconStyle">@style/KaleyraSDKDesign.GlassStatusBarIcon.Chat</item>
-        <item name="kaleyra_cellIconStyle">@style/KaleyraSDKDesign.GlassStatusBarIcon.Cell</item>
-        <item name="kaleyra_wifiIconStyle">@style/KaleyraSDKDesign.GlassStatusBarIcon.Wifi</item>
-        <item name="kaleyra_batteryStyle">@style/KaleyraSDKDesign.Glass.StatusBar.Battery</item>
-        <item name="kaleyra_recordingStyle">@style/KaleyraSDKDesign.TextView.Title.GlassRec</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.StatusBar" parent="KaleyraCollaborationSuiteUI.Glass">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar.RootLayout</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassStatusBar</item>
+        <item name="kaleyra_camIconStyle">@style/KaleyraCollaborationSuiteUI.GlassStatusBarIcon.Activable.Camera</item>
+        <item name="kaleyra_micIconStyle">@style/KaleyraCollaborationSuiteUI.GlassStatusBarIcon.Activable.Mic</item>
+        <item name="kaleyra_chatIconStyle">@style/KaleyraCollaborationSuiteUI.GlassStatusBarIcon.Chat</item>
+        <item name="kaleyra_cellIconStyle">@style/KaleyraCollaborationSuiteUI.GlassStatusBarIcon.Cell</item>
+        <item name="kaleyra_wifiIconStyle">@style/KaleyraCollaborationSuiteUI.GlassStatusBarIcon.Wifi</item>
+        <item name="kaleyra_batteryStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar.Battery</item>
+        <item name="kaleyra_recordingStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.GlassRec</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.StatusBar.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.Glass.StatusBar.RootLayout" parent="">
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
@@ -48,46 +48,46 @@
         <item name="android:background">@drawable/kaleyra_glass_status_bar_gradient</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.GlassStatusBar" parent="KaleyraSDKDesign.TextView">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassStatusBar" parent="KaleyraCollaborationSuiteUI.TextView">
         <item name="android:includeFontPadding">false</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/kaleyra_dimen_text_h1</item>
     </style>
 
-    <style name="KaleyraSDKDesign.GlassStatusBarIcon" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="KaleyraCollaborationSuiteUI.GlassStatusBarIcon" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:tint">@android:color/white</item>
         <item name="android:layout_width">@dimen/kaleyra_dimen_space32</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_space32</item>
     </style>
 
-    <style name="KaleyraSDKDesign.GlassStatusBarIcon.Chat" parent="KaleyraSDKDesign.GlassStatusBarIcon">
+    <style name="KaleyraCollaborationSuiteUI.GlassStatusBarIcon.Chat" parent="KaleyraCollaborationSuiteUI.GlassStatusBarIcon">
         <item name="srcCompat">@drawable/ic_kaleyra_glass_badge_new_mess</item>
     </style>
 
-    <style name="KaleyraSDKDesign.GlassStatusBarIcon.Wifi" parent="KaleyraSDKDesign.GlassStatusBarIcon">
+    <style name="KaleyraCollaborationSuiteUI.GlassStatusBarIcon.Wifi" parent="KaleyraCollaborationSuiteUI.GlassStatusBarIcon">
         <item name="srcCompat">@drawable/kaleyra_wifi_icon</item>
     </style>
 
-    <style name="KaleyraSDKDesign.GlassStatusBarIcon.Cell" parent="KaleyraSDKDesign.GlassStatusBarIcon">
+    <style name="KaleyraCollaborationSuiteUI.GlassStatusBarIcon.Cell" parent="KaleyraCollaborationSuiteUI.GlassStatusBarIcon">
         <item name="srcCompat">@drawable/kaleyra_glass_cell_icon</item>
     </style>
 
-    <style name="KaleyraSDKDesign.GlassStatusBarIcon.Activable.Camera" parent="KaleyraSDKDesign.RoundedImageGlass.ActivableStatusBarIcon">
+    <style name="KaleyraCollaborationSuiteUI.GlassStatusBarIcon.Activable.Camera" parent="KaleyraCollaborationSuiteUI.RoundedImageGlass.ActivableStatusBarIcon">
         <item name="srcCompat">@drawable/ic_kaleyra_glass_cam_off</item>
     </style>
 
-    <style name="KaleyraSDKDesign.GlassStatusBarIcon.Activable.Mic" parent="KaleyraSDKDesign.RoundedImageGlass.ActivableStatusBarIcon">
+    <style name="KaleyraCollaborationSuiteUI.GlassStatusBarIcon.Activable.Mic" parent="KaleyraCollaborationSuiteUI.RoundedImageGlass.ActivableStatusBarIcon">
         <item name="srcCompat">@drawable/ic_kaleyra_glass_mic_off</item>
     </style>
 
-    <style name="KaleyraSDKDesign.RoundedImageGlass.ActivableStatusBarIcon" parent="KaleyraSDKDesign.RoundedImageGlass">
+    <style name="KaleyraCollaborationSuiteUI.RoundedImageGlass.ActivableStatusBarIcon" parent="KaleyraCollaborationSuiteUI.RoundedImageGlass">
         <item name="android:layout_width">@dimen/kaleyra_dimen_space32</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_space32</item>
         <item name="android:background">@drawable/kaleyra_glass_flat_white</item>
         <item name="android:backgroundTint">@color/kaleyra_glass_input_background</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.StatusBar.Battery" parent="">
+    <style name="KaleyraCollaborationSuiteUI.Glass.StatusBar.Battery" parent="">
         <item name="android:layout_width">@dimen/kaleyra_dimen_space48</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_space32</item>
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
@@ -96,7 +96,7 @@
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space7</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.GlassRec" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassRec" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:drawableStart">@drawable/ic_kaleyra_glass_rec</item>
         <item name="android:drawableTint" tools:targetApi="m">@color/kaleyra_recording_color</item>
         <item name="android:textColor">@color/kaleyra_recording_color</item>

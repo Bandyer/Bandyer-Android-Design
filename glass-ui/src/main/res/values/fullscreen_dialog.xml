@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
@@ -24,14 +24,14 @@
     </declare-styleable>
 
     <!-- FULL SCREEN DIALOG FRAGMENT -->
-    <style name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog" parent="KaleyraSDKDesign.Glass.DarkBackground">
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.FullScreenDialog</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog</item>
-        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog" parent="KaleyraCollaborationSuiteUI.Glass.DarkBackground">
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.FullScreenDialog</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog</item>
+        <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog</item>
     </style>
 
     <!-- TITLE -->
-    <style name="KaleyraSDKDesign.TextView.Title.FullScreenDialog" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.FullScreenDialog" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:textSize">@dimen/kaleyra_dimen_text_32sp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:includeFontPadding">false</item>
@@ -41,7 +41,7 @@
     </style>
 
     <!-- SUBTITLE -->
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:textSize">@dimen/kaleyra_dimen_text_h2</item>
         <item name="android:textColor">@color/kaleyra_color_white_80</item>
@@ -51,11 +51,11 @@
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->
-    <style name="KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog" parent="KaleyraSDKDesign.Glass.BottomNavigation">
-        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenDialog</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation">
+        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.FullScreenDialog</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenDialog" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.FullScreenDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal">
         <item name="android:visibility">gone</item>
     </style>
 

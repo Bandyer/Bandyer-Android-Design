@@ -99,11 +99,11 @@ class KaleyraWhiteboardTextEditorDialog : KaleyraDialog<KaleyraWhiteboardTextEdi
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
             mText = arguments?.getString(TEXT_PLACEHOLDER)
-            setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getWhiteboardDialogAttribute(R.styleable.KaleyraSDKDesign_BottomSheetDialog_Whiteboard_kaleyra_textEditorDialogStyle))
+            setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getWhiteboardDialogAttribute(R.styleable.KaleyraCollaborationSuiteUI_BottomSheetDialog_Whiteboard_kaleyra_textEditorDialogStyle))
         }
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-            whiteboardTextEditorLayout = KaleyraWhiteboardTextEditorLayout(ContextThemeWrapper(requireContext(), requireContext().getTextEditorDialogAttribute(R.styleable.KaleyraSDKDesign_BottomSheetDialog_TextEditor_kaleyra_textEditorStyle)))
+            whiteboardTextEditorLayout = KaleyraWhiteboardTextEditorLayout(ContextThemeWrapper(requireContext(), requireContext().getTextEditorDialogAttribute(R.styleable.KaleyraCollaborationSuiteUI_BottomSheetDialog_TextEditor_kaleyra_textEditorStyle)))
             return whiteboardTextEditorLayout
         }
 

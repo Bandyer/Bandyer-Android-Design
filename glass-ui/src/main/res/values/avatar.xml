@@ -16,18 +16,18 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.Glass.Avatar">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Glass.Avatar">
         <attr name="kaleyra_iconStyle" />
         <attr name="android:textViewStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.Glass.Avatar" parent="KaleyraSDKDesign.Glass">
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.RoundedImageGlass.Bordered</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Title.GlassAvatar</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.Avatar" parent="KaleyraCollaborationSuiteUI.Glass">
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.RoundedImageGlass.Bordered</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.GlassAvatar</item>
     </style>
 
     <!-- TEXT -->
-    <style name="KaleyraSDKDesign.TextView.Title.GlassAvatar" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassAvatar" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:gravity">center</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
@@ -39,18 +39,18 @@
         <item name="autoSizeTextType">uniform</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.Avatar.Big" parent="KaleyraSDKDesign.Glass.Avatar">
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.RoundedImageGlass.Big</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Title.GlassAvatar.Big</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.Avatar.Big" parent="KaleyraCollaborationSuiteUI.Glass.Avatar">
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.RoundedImageGlass.Big</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.GlassAvatar.Big</item>
     </style>
 
-    <style name="KaleyraSDKDesign.RoundedImageGlass.Big" parent="KaleyraSDKDesign.RoundedImageGlass.Bordered">
+    <style name="KaleyraCollaborationSuiteUI.RoundedImageGlass.Big" parent="KaleyraCollaborationSuiteUI.RoundedImageGlass.Bordered">
         <item name="android:layout_width">@dimen/kaleyra_dimen_glass_participants_avatar_size</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_glass_participants_avatar_size</item>
         <item name="strokeWidth">@dimen/kaleyra_dimen_space0</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.GlassAvatar.Big" parent="KaleyraSDKDesign.TextView.Title.GlassAvatar">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassAvatar.Big" parent="KaleyraCollaborationSuiteUI.TextView.Title.GlassAvatar">
         <item name="autoSizeMaxTextSize">@dimen/kaleyra_dimen_text_40sp</item>
     </style>
 </resources>

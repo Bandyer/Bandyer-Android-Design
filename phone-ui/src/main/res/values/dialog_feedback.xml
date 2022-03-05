@@ -16,18 +16,18 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.FragmentDialog.Feedback">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.FragmentDialog.Feedback">
         <attr name="kaleyra_feedbackLayoutStyle" format="reference" />
         <attr name="kaleyra_feedbackSentLayoutStyle" format="reference" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.FragmentDialog.Feedback" parent="KaleyraSDKDesign.FragmentDialog">
+    <style name="KaleyraCollaborationSuiteUI.FragmentDialog.Feedback" parent="KaleyraCollaborationSuiteUI.FragmentDialog">
         <item name="colorOnSecondary">@color/kaleyra_colorOnSecondary</item>
-        <item name="kaleyra_feedbackLayoutStyle">@style/KaleyraSDKDesign.FragmentDialog.FeedbackLayout</item>
-        <item name="kaleyra_feedbackSentLayoutStyle">@style/KaleyraSDKDesign.FragmentDialog.FeedbackSentLayout</item>
+        <item name="kaleyra_feedbackLayoutStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout</item>
+        <item name="kaleyra_feedbackSentLayoutStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout</item>
     </style>
 
-    <declare-styleable name="KaleyraSDKDesign.FragmentDialog.FeedbackLayout">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_closeButtonStyle" />
         <attr name="kaleyra_ratingBarStyle" format="reference" />
@@ -37,24 +37,24 @@
         <attr name="kaleyra_positiveButtonStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.FragmentDialog.FeedbackLayout" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.FragmentDialog.FeedbackLayout.RootLayout</item>
-        <item name="kaleyra_closeButtonStyle">@style/KaleyraSDKDesign.ImageButton.FeedbackLayoutCloseButton</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.FeedbackLayout</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FeedbackLayout</item>
-        <item name="kaleyra_ratingBarStyle">@style/KaleyraSDKDesign.FragmentDialog.FeedbackLayout.RatingBarStyle</item>
-        <item name="textInputStyle">@style/KaleyraSDKDesign.FragmentDialog.FeedbackLayout.TextInputLayout</item>
-        <item name="kaleyra_positiveButtonStyle">@style/KaleyraSDKDesign.FragmentDialog.FeedbackLayout.PositiveButton</item>
+    <style name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout.RootLayout</item>
+        <item name="kaleyra_closeButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.FeedbackLayoutCloseButton</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.FeedbackLayout</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FeedbackLayout</item>
+        <item name="kaleyra_ratingBarStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout.RatingBarStyle</item>
+        <item name="textInputStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout.TextInputLayout</item>
+        <item name="kaleyra_positiveButtonStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout.PositiveButton</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FragmentDialog.FeedbackLayout.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout.RootLayout" parent="">
         <item name="android:padding">@dimen/kaleyra_dimen_space4</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:animateLayoutChanges">true</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.FeedbackLayoutCloseButton" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.FeedbackLayoutCloseButton" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="icon">@drawable/ic_kaleyra_close_bold</item>
         <item name="iconSize">@dimen/kaleyra_dimen_space20</item>
         <item name="iconTint">?attr/colorOnSurface</item>
@@ -67,7 +67,7 @@
         <item name="android:paddingBottom">@dimen/kaleyra_dimen_space12</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.FeedbackLayout" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.FeedbackLayout" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space28</item>
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space28</item>
         <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space16</item>
@@ -81,7 +81,7 @@
         <item name="android:textColor">@color/kaleyra_color_on_surface_80</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FeedbackLayout" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FeedbackLayout" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space28</item>
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space28</item>
         <item name="android:gravity">center</item>
@@ -94,7 +94,7 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FragmentDialog.FeedbackLayout.RatingBarStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout.RatingBarStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space28</item>
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space28</item>
         <item name="android:clickable">true</item>
@@ -108,8 +108,8 @@
         <item name="drawableTint">?attr/colorSecondary</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FragmentDialog.FeedbackLayout.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="materialThemeOverlay">@style/KaleyraSDKDesign.FragmentDialog.FeedbackLayout.TextInputLayout.MaterialThemeOverlay</item>
+    <style name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="materialThemeOverlay">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout.TextInputLayout.MaterialThemeOverlay</item>
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space24</item>
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
@@ -119,11 +119,11 @@
         <item name="hintEnabled">false</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FragmentDialog.FeedbackLayout.TextInputLayout.MaterialThemeOverlay" parent="">
-        <item name="editTextStyle">@style/KaleyraSDKDesign.TextInputEditText.FeedbackLayout</item>
+    <style name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout.TextInputLayout.MaterialThemeOverlay" parent="">
+        <item name="editTextStyle">@style/KaleyraCollaborationSuiteUI.TextInputEditText.FeedbackLayout</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextInputEditText.FeedbackLayout" parent="KaleyraSDKDesign.TextInputEditText">
+    <style name="KaleyraCollaborationSuiteUI.TextInputEditText.FeedbackLayout" parent="KaleyraCollaborationSuiteUI.TextInputEditText">
         <item name="android:hint">@string/kaleyra_feedback_leave_a_comment</item>
         <item name="android:maxLines">4</item>
         <item name="android:background">@drawable/kaleyra_edittext_background</item>
@@ -132,14 +132,14 @@
         <item name="android:scrollbars">vertical</item>
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space10</item>
         <item name="android:paddingBottom">@dimen/kaleyra_dimen_space10</item>
-        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance.TextInputEditText.FeedbackLayout</item>
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance.TextInputEditText.FeedbackLayout</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextAppearance.TextInputEditText.FeedbackLayout" parent="KaleyraSDKDesign.TextAppearance.TextInputEditText">
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.TextInputEditText.FeedbackLayout" parent="KaleyraCollaborationSuiteUI.TextAppearance.TextInputEditText">
         <item name="android:textSize">@dimen/kaleyra_dimen_text_normal</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FragmentDialog.FeedbackLayout.PositiveButton" parent="Widget.MaterialComponents.Button">
+    <style name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout.PositiveButton" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
@@ -153,27 +153,27 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <declare-styleable name="KaleyraSDKDesign.FragmentDialog.FeedbackSentLayout">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
         <attr name="kaleyra_closeButtonStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.FragmentDialog.FeedbackSentLayout" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.FragmentDialog.FeedbackSentLayout.RootLayout</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.FeedbackSentLayout</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FeedbackSentLayout</item>
-        <item name="kaleyra_closeButtonStyle">@style/KaleyraSDKDesign.FragmentDialog.FeedbackSentLayout.PositiveButton</item>
+    <style name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout.RootLayout</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.FeedbackSentLayout</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FeedbackSentLayout</item>
+        <item name="kaleyra_closeButtonStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout.PositiveButton</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FragmentDialog.FeedbackSentLayout.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout.RootLayout" parent="">
         <item name="android:padding">@dimen/kaleyra_dimen_space16</item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.FeedbackSentLayout" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.FeedbackSentLayout" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space32</item>
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
@@ -187,7 +187,7 @@
         <item name="android:textSize">@dimen/kaleyra_dimen_text_h3</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FeedbackSentLayout" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FeedbackSentLayout" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space16</item>
@@ -202,7 +202,7 @@
         <item name="android:text">@string/kaleyra_feedback_see_you_soon</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FragmentDialog.FeedbackSentLayout.PositiveButton" parent="Widget.MaterialComponents.Button">
+    <style name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout.PositiveButton" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space32</item>
         <item name="android:backgroundTint">?attr/colorSecondary</item>
         <item name="android:letterSpacing">0.04</item>

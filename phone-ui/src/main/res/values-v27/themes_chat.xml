@@ -16,11 +16,11 @@
   -->
 
 <resources>
-    <style name="KaleyraSDKDesign.Theme.Chat.DayNight.V27" parent="KaleyraSDKDesign.Theme.Chat.DayNight.V16">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat.DayNight.V27" parent="KaleyraCollaborationSuiteUI.Theme.Chat.DayNight.V16">
         <item name="android:navigationBarColor">@android:color/white</item>
         <item name="android:windowLightNavigationBar">true</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.Chat.DayNight" parent="KaleyraSDKDesign.Theme.Chat.DayNight.V27"/>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.Chat.DayNight.V27"/>
 
 </resources>

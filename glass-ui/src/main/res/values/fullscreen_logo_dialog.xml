@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenLogoDialog">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenLogoDialog">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_callWatermarkStyle" format="reference" />
         <attr name="android:horizontalScrollViewStyle" />
@@ -29,23 +29,23 @@
     </declare-styleable>
 
     <!-- FULL SCREEN LOGO DIALOG FRAGMENT -->
-    <style name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo" parent="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog">
-        <item name="kaleyra_callWatermarkStyle">@style/KaleyraSDKDesign.CallWatermark</item>
-        <item name="android:horizontalScrollViewStyle">@style/KaleyraSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog</item>
-        <item name="kaleyra_participantsStyle">@style/KaleyraSDKDesign.TextView.Title.FullScreenLogoDialogParticipants</item>
-        <item name="linearProgressIndicatorStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.FullScreenDialog</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog</item>
-        <item name="kaleyra_counterStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog.Counter</item>
-        <item name="bottomNavigationStyle">@style/KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo" parent="KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog">
+        <item name="kaleyra_callWatermarkStyle">@style/KaleyraCollaborationSuiteUI.CallWatermark</item>
+        <item name="android:horizontalScrollViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.HorizontalScrollView.FullScreenLogoDialog</item>
+        <item name="kaleyra_participantsStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.FullScreenLogoDialogParticipants</item>
+        <item name="linearProgressIndicatorStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.FullScreenDialog</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog</item>
+        <item name="kaleyra_counterStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog.Counter</item>
+        <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo</item>
     </style>
 
     <!-- SCROLLVIEW -->
-    <style name="KaleyraSDKDesign.Glass.HorizontalScrollView.FullScreenLogoDialog" parent="">
+    <style name="KaleyraCollaborationSuiteUI.Glass.HorizontalScrollView.FullScreenLogoDialog" parent="">
         <item name="android:fillViewport">true</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.FullScreenLogoDialogParticipants" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.FullScreenLogoDialogParticipants" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textColor">@color/kaleyra_glass_menu_item_color</item>
@@ -59,63 +59,63 @@
     </style>
 
     <!-- PROGRESS BAR -->
-    <style name="KaleyraSDKDesign.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar" parent="Widget.MaterialComponents.LinearProgressIndicator">
+    <style name="KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo.ProgressBar" parent="Widget.MaterialComponents.LinearProgressIndicator">
         <item name="indicatorColor">?attr/colorSecondary</item>
     </style>
 
     <!-- COUNTER -->
-    <style name="KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog.Counter" parent="KaleyraSDKDesign.TextView.Subtitle.FullScreenDialog">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog.Counter" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog">
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space16</item>
         <item name="android:textColor">?attr/colorSecondary</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->
-    <style name="KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog.Logo" parent="KaleyraSDKDesign.Glass.BottomNavigation.FullScreenDialog">
-        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog</item>
-        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog</item>
-        <item name="kaleyra_tapItemStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog">
+        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog</item>
+        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog</item>
+        <item name="kaleyra_tapItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.FullScreenLogoDialog</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.FullScreenLogoDialog</item>
-        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.SwipeHorizontalFullScreenLogoDialog</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal.FullScreenLogoDialog</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeHorizontalFullScreenLogoDialog</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeHorizontal.FullScreenLogoDialog" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/kaleyra_glass_browse</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.GlassLabel.SwipeHorizontalFullScreenLogoDialog" parent="KaleyraSDKDesign.TextView.GlassLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeHorizontalFullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
         <item name="android:text">@string/kaleyra_glass_browse</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog" parent="KaleyraSDKDesign.Glass.BottomActionItem.SwipeDown">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog</item>
-        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownFullScreenLogoDialog</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.SwipeDown">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/kaleyra_glass_close</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.GlassLabel.SwipeDownFullScreenLogoDialog" parent="KaleyraSDKDesign.TextView.GlassLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownFullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
         <item name="android:text">@string/kaleyra_glass_close</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.Tap.FullScreenLogoDialog" parent="KaleyraSDKDesign.Glass.BottomActionItem.Tap">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap.FullScreenLogoDialog</item>
-        <item name="kaleyra_labelStyle">@style/KaleyraSDKDesign.TextView.GlassLabel.TapFullScreenLogoDialog</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.FullScreenLogoDialog</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapFullScreenLogoDialog</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap.FullScreenLogoDialog" parent="KaleyraSDKDesign.Glass.BottomActionItem.RootLayout.Tap">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/kaleyra_glass_accept</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.GlassLabel.TapFullScreenLogoDialog" parent="KaleyraSDKDesign.TextView.GlassLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapFullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
         <item name="android:text">@string/kaleyra_glass_accept</item>
     </style>
 </resources>

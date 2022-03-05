@@ -69,11 +69,11 @@ class KaleyraTextViewBouncingDots @JvmOverloads constructor(context: Context, at
 
     init {
 
-        autoPlay = context.getBouncingDotsBooleanAttribute(R.styleable.KaleyraSDKDesign_TextView_Subtitle_BouncingDots_kaleyra_autoplay)
+        autoPlay = context.getBouncingDotsBooleanAttribute(R.styleable.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots_kaleyra_autoplay)
 
-        period = context.getBouncingDotsIntAttribute(R.styleable.KaleyraSDKDesign_TextView_Subtitle_BouncingDots_kaleyra_period)
+        period = context.getBouncingDotsIntAttribute(R.styleable.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots_kaleyra_period)
 
-        jumpHeight = context.getBouncingDotsDimensionAttribute(R.styleable.KaleyraSDKDesign_TextView_Subtitle_BouncingDots_kaleyra_animationHeight).roundToInt()
+        jumpHeight = context.getBouncingDotsDimensionAttribute(R.styleable.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots_kaleyra_animationHeight).roundToInt()
 
         dotOne = JumpingSpan()
         dotTwo = JumpingSpan()

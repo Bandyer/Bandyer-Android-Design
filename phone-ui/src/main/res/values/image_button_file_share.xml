@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <style name="KaleyraSDKDesign.ImageButton.FileShareAction" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.FileShareAction" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:layout_width">@dimen/kaleyra_dimen_space32</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_space32</item>
         <item name="android:clickable">false</item>
@@ -31,7 +31,7 @@
         <item name="iconTint">@color/kaleyra_file_share_action_icon_color</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.FileShareAction.Day" parent="KaleyraSDKDesign.ImageButton.FileShareAction">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.FileShareAction.Day" parent="KaleyraCollaborationSuiteUI.ImageButton.FileShareAction">
         <item name="backgroundTint">@color/kaleyra_file_share_action_background_color_day</item>
         <item name="strokeColor">@color/kaleyra_file_share_action_stroke_color_day</item>
         <item name="iconTint">@color/kaleyra_file_share_action_icon_color_day</item>

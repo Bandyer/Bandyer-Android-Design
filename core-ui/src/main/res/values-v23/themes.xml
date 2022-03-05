@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <style name="KaleyraSDKDesign.Theme.Base" parent="KaleyraSDKDesign.Theme.Base.V16">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Base" parent="KaleyraCollaborationSuiteUI.Theme.Base.V16">
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
     </style>
 </resources>

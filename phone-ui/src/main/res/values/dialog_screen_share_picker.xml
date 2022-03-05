@@ -17,21 +17,21 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="KaleyraSDKDesign.BottomSheetDialog.ScreenSharePicker">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_titleStyle"/>
         <attr name="kaleyra_screenShareAppOnlyButtonStyle" format="reference" />
         <attr name="kaleyra_screenShareDeviceButtonStyle" format="reference" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.ScreenSharePicker" parent="KaleyraSDKDesign.BottomSheetDialog" >
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.ScreenSharePicker</item>
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.BottomSheetDialog.ScreenSharePicker.Layout</item>
-        <item name="kaleyra_screenShareAppOnlyButtonStyle">@style/KaleyraSDKDesign.ImageButton.ScreenShare.AppOnly</item>
-        <item name="kaleyra_screenShareDeviceButtonStyle">@style/KaleyraSDKDesign.ImageButton.ScreenShare.Device</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker" parent="KaleyraCollaborationSuiteUI.BottomSheetDialog" >
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.ScreenSharePicker</item>
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker.Layout</item>
+        <item name="kaleyra_screenShareAppOnlyButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.ScreenShare.AppOnly</item>
+        <item name="kaleyra_screenShareDeviceButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.ScreenShare.Device</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.ScreenSharePicker" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.ScreenSharePicker" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:text">@string/kaleyra_screenshare_picker_title</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:padding">@dimen/kaleyra_dimen_space8</item>
@@ -40,12 +40,12 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.ScreenSharePicker.Layout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker.Layout" parent="">
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingBottom">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.ScreenShare" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.ScreenShare" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:gravity">start|center_vertical</item>
         <item name="android:text">Share this app only</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
@@ -58,12 +58,12 @@
         <item name="android:letterSpacing" tools:targetApi="lollipop">0</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.ScreenShare.AppOnly" parent="KaleyraSDKDesign.ImageButton.ScreenShare">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.ScreenShare.AppOnly" parent="KaleyraCollaborationSuiteUI.ImageButton.ScreenShare">
         <item name="android:text">@string/kaleyra_screenshare_app_only</item>
         <item name="icon">@drawable/ic_kaleyra_screen_share_app</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.ScreenShare.Device" parent="KaleyraSDKDesign.ImageButton.ScreenShare">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.ScreenShare.Device" parent="KaleyraCollaborationSuiteUI.ImageButton.ScreenShare">
         <item name="icon">@drawable/ic_kaleyra_screen_share_device</item>
         <item name="android:text">@string/kaleyra_screenshare_full_device</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>

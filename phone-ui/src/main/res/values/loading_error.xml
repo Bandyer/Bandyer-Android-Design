@@ -16,21 +16,21 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.LoadingError">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.LoadingError">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_iconStyle" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.Whiteboard.LoadingError" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.LoadingError.RootLayout</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageButton.Reload</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.Reload</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.Reload</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.Whiteboard.LoadingError" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.LoadingError.RootLayout</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Reload</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.Reload</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.Reload</item>
     </style>
 
-    <style name="KaleyraSDKDesign.LoadingError.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.LoadingError.RootLayout" parent="">
         <item name="android:background">@color/kaleyra_color_loading_whiteboard_background</item>
     </style>
 </resources>

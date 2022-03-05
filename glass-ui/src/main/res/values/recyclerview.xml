@@ -17,24 +17,24 @@
 
 <resources>
     <!-- RECYCLER VIEW -->
-    <style name="KaleyraSDKDesign.Glass.RecyclerView" parent="KaleyraSDKDesign.Glass">
+    <style name="KaleyraCollaborationSuiteUI.Glass.RecyclerView" parent="KaleyraCollaborationSuiteUI.Glass">
         <item name="android:background">@color/kaleyra_glass_dimmed_background_color</item>
     </style>
 
     <!-- RECYCLER VIEW ITEM -->
-    <style name="KaleyraSDKDesign.Glass.RecyclerViewItem" parent="KaleyraSDKDesign.Glass">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.RecyclerViewItem.RootLayout</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.GlassRecyclerViewItem</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem" parent="KaleyraCollaborationSuiteUI.Glass">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.RootLayout</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassRecyclerViewItem</item>
         <item name="android:focusable">false</item>
         <item name="android:clickable">false</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.RecyclerViewItem.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.RootLayout" parent="">
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space64</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space64</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.GlassRecyclerViewItem" parent="KaleyraSDKDesign.TextView">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassRecyclerViewItem" parent="KaleyraCollaborationSuiteUI.TextView">
         <item name="android:minHeight">@dimen/kaleyra_dimen_glass_menu_size</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@color/kaleyra_glass_menu_item_color</item>

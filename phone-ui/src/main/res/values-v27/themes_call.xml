@@ -17,7 +17,7 @@
 
 <resources>
 
-    <style name="KaleyraSDKDesign.Theme.Call.DayNight.V27" parent="KaleyraSDKDesign.Theme.Call.DayNight.V16">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call.DayNight.V27" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight.V16">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
@@ -25,7 +25,7 @@
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.Call.Day.V27" parent="KaleyraSDKDesign.Theme.Call.Day.V16">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Day.V27" parent="KaleyraCollaborationSuiteUI.Theme.Call.Day.V16">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
@@ -33,7 +33,7 @@
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.Call.Night.V27" parent="KaleyraSDKDesign.Theme.Call.Night.V16">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Night.V27" parent="KaleyraCollaborationSuiteUI.Theme.Call.Night.V16">
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
@@ -41,10 +41,10 @@
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.Call.DayNight" parent="KaleyraSDKDesign.Theme.Call.DayNight.V27"/>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight.V27"/>
 
-    <style name="KaleyraSDKDesign.Theme.Call.Day" parent="KaleyraSDKDesign.Theme.Call.Day.V27"/>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Day" parent="KaleyraCollaborationSuiteUI.Theme.Call.Day.V27"/>
 
-    <style name="KaleyraSDKDesign.Theme.Call.Night" parent="KaleyraSDKDesign.Theme.Call.Night.V27"/>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Night" parent="KaleyraCollaborationSuiteUI.Theme.Call.Night.V27"/>
 
 </resources>

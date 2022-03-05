@@ -17,45 +17,45 @@
 
 <resources>
 
-    <declare-styleable name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_iconStyle" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.BottomSheet.AudioRoute.Item.RootLayout</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.AudioRoute</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.AudioRoute</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item.RootLayout</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.AudioRoute</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.AudioRoute</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item.RootLayout" parent="">
         <item name="android:padding">@dimen/kaleyra_dimen_space16</item>
         <item name="android:descendantFocusability">blocksDescendants</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Bluetooth" parent="KaleyraSDKDesign.BottomSheet.AudioRoute.Item">
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageButton.AudioRoute.Bluetooth</item>
-        <item name="kaleyra_subtitleStyle">@style/KaleyraSDKDesign.TextView.Subtitle.AudioRoute.Bluetooth</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item.Bluetooth" parent="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item">
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.AudioRoute.Bluetooth</item>
+        <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.AudioRoute.Bluetooth</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item.WiredHeadset" parent="KaleyraSDKDesign.BottomSheet.AudioRoute.Item">
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageButton.AudioRoute.WiredHeadset</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item.WiredHeadset" parent="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item">
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.AudioRoute.WiredHeadset</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Loudspeaker" parent="KaleyraSDKDesign.BottomSheet.AudioRoute.Item">
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageButton.AudioRoute.Loudspeaker</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item.Loudspeaker" parent="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item">
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.AudioRoute.Loudspeaker</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Earpiece" parent="KaleyraSDKDesign.BottomSheet.AudioRoute.Item">
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageButton.AudioRoute.Earpiece</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item.Earpiece" parent="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item">
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.AudioRoute.Earpiece</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheet.AudioRoute.Item.Muted" parent="KaleyraSDKDesign.BottomSheet.AudioRoute.Item">
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.ImageButton.AudioRoute.Muted</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item.Muted" parent="KaleyraCollaborationSuiteUI.BottomSheet.AudioRoute.Item">
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.AudioRoute.Muted</item>
     </style>
 
 </resources>

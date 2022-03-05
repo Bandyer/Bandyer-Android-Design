@@ -16,9 +16,9 @@
   -->
 
 <resources>
-    <style name="KaleyraSDKDesign.FileShare.ProgressBar" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21">
+    <style name="KaleyraCollaborationSuiteUI.FileShare.ProgressBar" parent="KaleyraCollaborationSuiteUI.FileShare.ProgressBar.V21">
         <item name="trackColor">@color/kaleyra_color_progressbar_night</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FileShare.ProgressBar.Day" parent="KaleyraSDKDesign.FileShare.ProgressBar.V21.Day"/>
+    <style name="KaleyraCollaborationSuiteUI.FileShare.ProgressBar.Day" parent="KaleyraCollaborationSuiteUI.FileShare.ProgressBar.V21.Day"/>
 </resources>

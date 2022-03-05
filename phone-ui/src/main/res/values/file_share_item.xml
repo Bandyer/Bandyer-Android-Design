@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.BottomSheetDialog.FileShare.Item">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Item">
         <attr name="kaleyra_fileTypeStyle" format="reference" />
         <attr name="kaleyra_fileSizeStyle" format="reference" />
         <attr name="kaleyra_buttonClickArea" format="reference" />
@@ -30,42 +30,42 @@
         <attr name="kaleyra_progressTextStyle"/>
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare.Item" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout</item>
-        <item name="kaleyra_fileTypeStyle">@style/KaleyraSDKDesign.FileShare.FileType</item>
-        <item name="kaleyra_fileSizeStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FileSize</item>
-        <item name="kaleyra_buttonClickArea">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.Item.ButtonClickArea</item>
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.FileShareAction</item>
-        <item name="kaleyra_fileNameStyle">@style/KaleyraSDKDesign.TextView.FileName</item>
-        <item name="kaleyra_progressStyle">@style/KaleyraSDKDesign.FileShare.ProgressBar</item>
-        <item name="kaleyra_operationIconStyle">@style/KaleyraSDKDesign.FileShare.OperationType</item>
-        <item name="kaleyra_usernameStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FileShareUser</item>
-        <item name="kaleyra_errorStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FileShareError</item>
-        <item name="kaleyra_progressTextStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FileShareProgress</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Item" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Item.RootLayout</item>
+        <item name="kaleyra_fileTypeStyle">@style/KaleyraCollaborationSuiteUI.FileShare.FileType</item>
+        <item name="kaleyra_fileSizeStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FileSize</item>
+        <item name="kaleyra_buttonClickArea">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Item.ButtonClickArea</item>
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.FileShareAction</item>
+        <item name="kaleyra_fileNameStyle">@style/KaleyraCollaborationSuiteUI.TextView.FileName</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraCollaborationSuiteUI.FileShare.ProgressBar</item>
+        <item name="kaleyra_operationIconStyle">@style/KaleyraCollaborationSuiteUI.FileShare.OperationType</item>
+        <item name="kaleyra_usernameStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareUser</item>
+        <item name="kaleyra_errorStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareError</item>
+        <item name="kaleyra_progressTextStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareProgress</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare.Item.Day" parent="KaleyraSDKDesign.BottomSheetDialog.FileShare.Item">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout</item>
-        <item name="kaleyra_fileTypeStyle">@style/KaleyraSDKDesign.FileShare.FileType.Day</item>
-        <item name="kaleyra_fileSizeStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FileSize.Day</item>
-        <item name="kaleyra_buttonClickArea">@style/KaleyraSDKDesign.BottomSheetDialog.FileShare.Item.ButtonClickArea</item>
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.FileShareAction.Day</item>
-        <item name="kaleyra_fileNameStyle">@style/KaleyraSDKDesign.TextView.FileName.Day</item>
-        <item name="kaleyra_progressStyle">@style/KaleyraSDKDesign.FileShare.ProgressBar.Day</item>
-        <item name="kaleyra_operationIconStyle">@style/KaleyraSDKDesign.FileShare.OperationType.Day</item>
-        <item name="kaleyra_usernameStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FileShareUser.Day</item>
-        <item name="kaleyra_errorStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FileShareError.Day</item>
-        <item name="kaleyra_progressTextStyle">@style/KaleyraSDKDesign.TextView.Subtitle.FileShareProgress.Day</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Item.Day" parent="KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Item">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Item.RootLayout</item>
+        <item name="kaleyra_fileTypeStyle">@style/KaleyraCollaborationSuiteUI.FileShare.FileType.Day</item>
+        <item name="kaleyra_fileSizeStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FileSize.Day</item>
+        <item name="kaleyra_buttonClickArea">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Item.ButtonClickArea</item>
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.FileShareAction.Day</item>
+        <item name="kaleyra_fileNameStyle">@style/KaleyraCollaborationSuiteUI.TextView.FileName.Day</item>
+        <item name="kaleyra_progressStyle">@style/KaleyraCollaborationSuiteUI.FileShare.ProgressBar.Day</item>
+        <item name="kaleyra_operationIconStyle">@style/KaleyraCollaborationSuiteUI.FileShare.OperationType.Day</item>
+        <item name="kaleyra_usernameStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareUser.Day</item>
+        <item name="kaleyra_errorStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareError.Day</item>
+        <item name="kaleyra_progressTextStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FileShareProgress.Day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare.Item.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Item.RootLayout" parent="">
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space18</item>
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingBottom">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space2</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare.Item.ButtonClickArea" parent="">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.Item.ButtonClickArea" parent="">
         <item name="android:layout_width">0dp</item>
         <item name="layout_constraintDimensionRatio">1:1</item>
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space4</item>

@@ -17,7 +17,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:gravity">center</item>
         <item name="android:padding">@dimen/kaleyra_dimen_space6</item>
         <item name="android:focusable">false</item>
@@ -26,62 +26,62 @@
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextAppearance.ButtonLabel.Cancel" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.ButtonLabel.Cancel" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextAppearance.ButtonLabel.Confirm" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.ButtonLabel.Confirm" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_action_confirm</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Microphone" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Microphone" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_mic_mute</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Participants" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Participants" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_participants</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Chat" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Chat" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_chat</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Whiteboard" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Whiteboard" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_whiteboard</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.FileShare" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.FileShare" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_file_share</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.ScreenShare" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.ScreenShare" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_screen_share</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Camera" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Camera" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_video_disable</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SwitchCamera" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.SwitchCamera" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_switch_camera</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.AudioRoute" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.AudioRoute" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_audio_route</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Options" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Options" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_options</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.HangUp" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.HangUp" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_hangup</item>
     </style>
 
     <!-- Smartglass BUTTON LABELS -->
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.SmartGlass" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:textColor">?attr/colorOnSurface</item>
         <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">center</item>
         <item name="android:textSize">@dimen/kaleyra_dimen_text_64sp</item>
@@ -93,15 +93,15 @@
         <item name="android:clickable">false</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Microphone" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.SmartGlass.Microphone" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.SmartGlass">
         <item name="android:text">@string/kaleyra_call_action_mic_mute</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Camera" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.SmartGlass.Camera" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.SmartGlass">
         <item name="android:text">@string/kaleyra_call_action_video_disable</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Participants" parent="KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.SmartGlass.Participants" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.SmartGlass">
         <item name="android:text">@string/kaleyra_call_action_participants</item>
     </style>
 

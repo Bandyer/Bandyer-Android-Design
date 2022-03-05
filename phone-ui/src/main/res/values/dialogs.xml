@@ -15,24 +15,24 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="KaleyraSDKDesign.FragmentDialog">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.FragmentDialog">
         <!-- Dialog auto dismiss time in milliseconds. The timer starts after the user has pressed the vote button. Setting a value of -1 will not dismiss the dialog. -->
         <attr name="kaleyra_autoDismissTime" format="integer" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.FragmentDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+    <style name="KaleyraCollaborationSuiteUI.FragmentDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@drawable/kaleyra_floating_dialog_background</item>
-        <item name="android:windowAnimationStyle">@style/KaleyraSDKDesign.FragmentDialog.Animation</item>
+        <item name="android:windowAnimationStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Animation</item>
         <item name="kaleyra_autoDismissTime">3000</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FragmentDialog.Animation" parent="@style/Animation.AppCompat.Dialog">
+    <style name="KaleyraCollaborationSuiteUI.FragmentDialog.Animation" parent="@style/Animation.AppCompat.Dialog">
         <item name="android:windowEnterAnimation">@anim/kaleyra_slide_up</item>
         <item name="android:windowExitAnimation">@anim/kaleyra_slide_down</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.V16" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.V16" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
@@ -40,62 +40,62 @@
         <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
         <item name="android:enforceStatusBarContrast" tools:targetApi="q">false</item>
         <item name="elevationOverlayEnabled">false</item>
-        <item name="toolbarStyle">@style/KaleyraSDKDesign.BottomSheetDialogToolbarStyle</item>
-        <item name="toolbarNavigationButtonStyle">@style/KaleyraSDKDesign.BottomSheetDialog.V16.ToolbarNavigationButtonStyle</item>
-        <item name="bottomSheetStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle</item>
+        <item name="toolbarStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialogToolbarStyle</item>
+        <item name="toolbarNavigationButtonStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.V16.ToolbarNavigationButtonStyle</item>
+        <item name="bottomSheetStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetModalStyle</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.V16.Day" parent="KaleyraSDKDesign.BottomSheetDialog.V16">
-        <item name="toolbarStyle">@style/KaleyraSDKDesign.BottomSheetDialogToolbarStyle.Day</item>
-        <item name="toolbarNavigationButtonStyle">@style/KaleyraSDKDesign.BottomSheetDialog.V16.ToolbarNavigationButtonStyle.Day</item>
-        <item name="bottomSheetStyle">@style/KaleyraSDKDesign.BottomSheetModalStyle.Day</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.V16.Day" parent="KaleyraCollaborationSuiteUI.BottomSheetDialog.V16">
+        <item name="toolbarStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialogToolbarStyle.Day</item>
+        <item name="toolbarNavigationButtonStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.V16.ToolbarNavigationButtonStyle.Day</item>
+        <item name="bottomSheetStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetModalStyle.Day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetModalStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetModalStyle" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="backgroundTint">?attr/colorSurface</item>
         <item name="android:elevation" tools:targetApi="lollipop">0dp</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetModalStyle.Day" parent="KaleyraSDKDesign.BottomSheetModalStyle">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetModalStyle.Day" parent="KaleyraCollaborationSuiteUI.BottomSheetModalStyle">
         <item name="backgroundTint">@color/kaleyra_colorSurface</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FullScreenDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+    <style name="KaleyraCollaborationSuiteUI.FullScreenDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.V16.ToolbarNavigationButtonStyle" parent="">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.V16.ToolbarNavigationButtonStyle" parent="">
         <item name="android:tint">?attr/colorOnPrimary</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.V16.ToolbarNavigationButtonStyle.Day" parent="">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.V16.ToolbarNavigationButtonStyle.Day" parent="">
         <item name="android:tint">@color/kaleyra_colorOnPrimary</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialogToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
-        <item name="materialThemeOverlay">@style/KaleyraSDKDesign.BottomSheetDialogToolbarStyle.MaterialThemeOverlay</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialogToolbarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="materialThemeOverlay">@style/KaleyraCollaborationSuiteUI.BottomSheetDialogToolbarStyle.MaterialThemeOverlay</item>
         <item name="android:touchscreenBlocksFocus" tools:targetApi="lollipop">false</item>
         <item name="navigationIcon">@drawable/ic_kaleyra_back_down</item>
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space12</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialogToolbarStyle.Day" parent="KaleyraSDKDesign.BottomSheetDialogToolbarStyle">
-        <item name="materialThemeOverlay">@style/KaleyraSDKDesign.BottomSheetDialogToolbarStyle.MaterialThemeOverlay.Day</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialogToolbarStyle.Day" parent="KaleyraCollaborationSuiteUI.BottomSheetDialogToolbarStyle">
+        <item name="materialThemeOverlay">@style/KaleyraCollaborationSuiteUI.BottomSheetDialogToolbarStyle.MaterialThemeOverlay.Day</item>
         <item name="android:background">@color/kaleyra_colorPrimary</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialogToolbarStyle.MaterialThemeOverlay" parent="">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialogToolbarStyle.MaterialThemeOverlay" parent="">
         <item name="drawableTint">@color/kaleyra_whiteboard_toolbar_menu_color</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialogToolbarStyle.MaterialThemeOverlay.Day" parent="">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialogToolbarStyle.MaterialThemeOverlay.Day" parent="">
         <item name="drawableTint">@color/kaleyra_whiteboard_toolbar_menu_color_day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetDialog.Day" parent="KaleyraSDKDesign.BottomSheetDialog.V16.Day"/>
-    <style name="KaleyraSDKDesign.BottomSheetDialog" parent="KaleyraSDKDesign.BottomSheetDialog.V16"/>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.Day" parent="KaleyraCollaborationSuiteUI.BottomSheetDialog.V16.Day"/>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog" parent="KaleyraCollaborationSuiteUI.BottomSheetDialog.V16"/>
 
 </resources>

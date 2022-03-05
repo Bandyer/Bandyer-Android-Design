@@ -17,17 +17,17 @@
 
 <resources>
 
-    <style name="KaleyraSDKDesign.Theme.Call.DayNight" parent="KaleyraSDKDesign.Theme.Call.DayNight.V16">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight.V16">
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.Call.Day" parent="KaleyraSDKDesign.Theme.Call.Day.V16">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Day" parent="KaleyraCollaborationSuiteUI.Theme.Call.Day.V16">
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.Call.Night" parent="KaleyraSDKDesign.Theme.Call.Night.V16">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call.Night" parent="KaleyraCollaborationSuiteUI.Theme.Call.Night.V16">
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>

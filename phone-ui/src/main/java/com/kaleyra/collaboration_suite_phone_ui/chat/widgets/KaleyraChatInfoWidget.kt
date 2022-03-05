@@ -75,31 +75,31 @@ class KaleyraChatInfoWidget @JvmOverloads constructor(context: Context, attrs: A
             contactStatusView ?: return
             when (value) {
                 is KaleyraChatInfoWidgetState.OFFLINE -> {
-                    context.setTextAppearance(binding.kaleyraSubtitleText, R.style.KaleyraSDKDesign_TextAppearance_Subtitle_Chat_Offline)
+                    context.setTextAppearance(binding.kaleyraSubtitleText, R.style.KaleyraCollaborationSuiteUI_TextAppearance_Subtitle_Chat_Offline)
                     binding.kaleyraSubtitleText.text = resources.getString(R.string.kaleyra_chat_user_status_offline)
                     if (value.lastLogin != null && !value.lastLogin.isNullOrBlank())
                         binding.kaleyraSubtitleText.text = context.getString(R.string.kaleyra_chat_user_status_last_login) + " " + value.lastLogin!!
                     showSubtitle(true)
                 }
                 is KaleyraChatInfoWidgetState.ONLINE -> {
-                    context.setTextAppearance(binding.kaleyraSubtitleText, R.style.KaleyraSDKDesign_TextAppearance_Subtitle_Chat_Online)
+                    context.setTextAppearance(binding.kaleyraSubtitleText, R.style.KaleyraCollaborationSuiteUI_TextAppearance_Subtitle_Chat_Online)
                     binding.kaleyraSubtitleText.text = resources.getString(R.string.kaleyra_chat_user_status_online)
                     showSubtitle(true)
                 }
                 is KaleyraChatInfoWidgetState.TYPING -> {
                     if (typingDotsView?.isPlaying == false) typingDotsView?.showAndPlay()
-                    context.setTextAppearance(binding.kaleyraSubtitleText, R.style.KaleyraSDKDesign_TextAppearance_Subtitle_Chat_Typing)
+                    context.setTextAppearance(binding.kaleyraSubtitleText, R.style.KaleyraCollaborationSuiteUI_TextAppearance_Subtitle_Chat_Typing)
                     binding.kaleyraSubtitleText.text = resources.getString(R.string.kaleyra_chat_user_status_typing)
                     showSubtitle(true)
                     showTyping(true)
                 }
                 is KaleyraChatInfoWidgetState.WAITING_FOR_NETWORK -> {
-                    context.setTextAppearance(binding.kaleyraSubtitleText, R.style.KaleyraSDKDesign_TextAppearance_Subtitle_Chat_WaitingForNetwork)
+                    context.setTextAppearance(binding.kaleyraSubtitleText, R.style.KaleyraCollaborationSuiteUI_TextAppearance_Subtitle_Chat_WaitingForNetwork)
                     binding.kaleyraSubtitleText.text = resources.getString(R.string.kaleyra_chat_state_waiting_for_network)
                     showSubtitle(true)
                 }
                 is KaleyraChatInfoWidgetState.CONNECTING -> {
-                    context.setTextAppearance(binding.kaleyraSubtitleText, R.style.KaleyraSDKDesign_TextAppearance_Subtitle_Chat_Connecting)
+                    context.setTextAppearance(binding.kaleyraSubtitleText, R.style.KaleyraCollaborationSuiteUI_TextAppearance_Subtitle_Chat_Connecting)
                     binding.kaleyraSubtitleText.text = resources.getString(R.string.kaleyra_chat_state_connecting)
                     showSubtitle(true)
                 }

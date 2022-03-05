@@ -16,13 +16,13 @@
   -->
 
 <resources>
-    <style name="KaleyraSDKDesign.Glass"  parent="KaleyraSDKDesign"/>
+    <style name="KaleyraCollaborationSuiteUI.Glass"  parent="KaleyraCollaborationSuiteUI"/>
 
-    <style name="KaleyraSDKDesign.Glass.DarkBackground"  parent="KaleyraSDKDesign.Glass">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Glass.DarkBackground.RootLayout</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.DarkBackground"  parent="KaleyraCollaborationSuiteUI.Glass">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.RootLayout</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Glass.DarkBackground.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.Glass.DarkBackground.RootLayout" parent="">
         <item name="android:background">@color/kaleyra_glass_dimmed_background_color</item>
     </style>
 </resources>

@@ -17,7 +17,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Ongoing call button -->
-    <style name="KaleyraSDKDesign.OngoingCallButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <style name="KaleyraCollaborationSuiteUI.OngoingCallButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:text">@string/kaleyra_ongoing_call_label</item>
         <item name="backgroundTint">@color/kaleyra_color_answer_button</item>
         <item name="cornerRadius">@dimen/kaleyra_dimen_space0</item>
@@ -35,7 +35,7 @@
     </style>
 
     <!-- Fullscreen info -->
-    <style name="KaleyraSDKDesign.FullscreenToastButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <style name="KaleyraCollaborationSuiteUI.FullscreenToastButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="backgroundTint">@color/kaleyra_color_surface_40</item>
         <item name="android:text">@string/kaleyra_fullscreen_info</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
@@ -44,15 +44,15 @@
         <item name="android:letterSpacing" tools:targetApi="lollipop">0</item>
         <item name="android:clickable">false</item>
         <item name="android:focusable">false</item>
-        <item name="shapeAppearanceOverlay">@style/KaleyraSDKDesign.FullscreenToastButton.ShapeAppearance</item>
+        <item name="shapeAppearanceOverlay">@style/KaleyraCollaborationSuiteUI.FullscreenToastButton.ShapeAppearance</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FullscreenToastButton.ShapeAppearance" parent="">
+    <style name="KaleyraCollaborationSuiteUI.FullscreenToastButton.ShapeAppearance" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="KaleyraSDKDesign.CollaborateButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+    <style name="KaleyraCollaborationSuiteUI.CollaborateButton" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
         <item name="android:layout_margin">@dimen/kaleyra_dimen_space16</item>
         <item name="android:text">@string/kaleyra_collaborate_button</item>
         <item name="android:textColor">@android:color/black</item>

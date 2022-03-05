@@ -91,14 +91,14 @@ class SmartGlassMenuPagerIndicator @JvmOverloads constructor(context: Context, a
     private var offsetPercent: Float = 0f
 
     init {
-        dotCount = context.getPagerIndicatorIntAttribute(R.styleable.KaleyraSDKDesign_PagerIndicator_kaleyra_pagerIndicatorDotCount)
-        fadingDotCount = context.getPagerIndicatorIntAttribute(R.styleable.KaleyraSDKDesign_PagerIndicator_kaleyra_pagerIndicatorFadingDotCount)
-        dotRadiusPx = context.getPagerIndicatorDimensionPixelSizeAttribute(R.styleable.KaleyraSDKDesign_PagerIndicator_kaleyra_pagerIndicatorDotRadius)
-        selectedDotRadiusPx = context.getPagerIndicatorDimensionPixelSizeAttribute(R.styleable.KaleyraSDKDesign_PagerIndicator_kaleyra_pagerIndicatorSelectedDotRadius)
-        dotColor = context.getPagerIndicatorColorAttribute(R.styleable.KaleyraSDKDesign_PagerIndicator_kaleyra_pagerIndicatorDotColor)
-        selectedDotColor = context.getPagerIndicatorColorAttribute(R.styleable.KaleyraSDKDesign_PagerIndicator_kaleyra_pagerIndicatorSelectedDotColor)
-        dotSeparationDistancePx = context.getPagerIndicatorDimensionPixelSizeAttribute(R.styleable.KaleyraSDKDesign_PagerIndicator_kaleyra_pagerIndicatorDotSeparation)
-        verticalSupport = context.getPagerIndicatorBooleanAttribute(R.styleable.KaleyraSDKDesign_PagerIndicator_kaleyra_pagerIndicatorVerticalSupport)
+        dotCount = context.getPagerIndicatorIntAttribute(R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator_kaleyra_pagerIndicatorDotCount)
+        fadingDotCount = context.getPagerIndicatorIntAttribute(R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator_kaleyra_pagerIndicatorFadingDotCount)
+        dotRadiusPx = context.getPagerIndicatorDimensionPixelSizeAttribute(R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator_kaleyra_pagerIndicatorDotRadius)
+        selectedDotRadiusPx = context.getPagerIndicatorDimensionPixelSizeAttribute(R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator_kaleyra_pagerIndicatorSelectedDotRadius)
+        dotColor = context.getPagerIndicatorColorAttribute(R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator_kaleyra_pagerIndicatorDotColor)
+        selectedDotColor = context.getPagerIndicatorColorAttribute(R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator_kaleyra_pagerIndicatorSelectedDotColor)
+        dotSeparationDistancePx = context.getPagerIndicatorDimensionPixelSizeAttribute(R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator_kaleyra_pagerIndicatorDotSeparation)
+        verticalSupport = context.getPagerIndicatorBooleanAttribute(R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator_kaleyra_pagerIndicatorVerticalSupport)
 
         selectedDotPaint = getDefaultPaintConfig(defaultColor = selectedDotColor)
         dotPaint = getDefaultPaintConfig(defaultColor = dotColor)

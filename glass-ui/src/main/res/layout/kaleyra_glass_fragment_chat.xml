@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:theme="@style/KaleyraSDKDesign.Theme.GlassChat">
+        android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChat">
 
         <com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessageView
             android:id="@+id/kaleyra_chat_message"

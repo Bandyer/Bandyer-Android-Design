@@ -18,13 +18,13 @@
 <resources>
 
     <!-- Background style -->
-    <style name="KaleyraSDKDesign.BottomSheetBackground" parent="Widget.MaterialComponents.CardView">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetBackground" parent="Widget.MaterialComponents.CardView">
         <item name="cardElevation">0dp</item>
         <item name="cardMaxElevation">0dp</item>
-        <item name="shapeAppearance">@style/KaleyraSDKDesign.BottomSheetBackground.ShapeAppearance</item>
+        <item name="shapeAppearance">@style/KaleyraCollaborationSuiteUI.BottomSheetBackground.ShapeAppearance</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetBackground.ShapeAppearance" parent="">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetBackground.ShapeAppearance" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSizeTopRight">8dp</item>
         <item name="cornerSizeTopLeft">8dp</item>

@@ -18,7 +18,7 @@
 
     <!-- CHAT INFO STYLE -->
 
-    <style name="KaleyraSDKDesign.TextView.Title.ChatInfo" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.ChatInfo" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:layout_width">@dimen/kaleyra_dimen_space0</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">?attr/colorOnPrimary</item>
@@ -33,7 +33,7 @@
         <item name="android:fadingEdge">horizontal</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ChatInfo" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ChatInfo" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:includeFontPadding">false</item>
@@ -49,7 +49,7 @@
         <item name="android:textColor">@color/kaleyra_color_on_primary_50</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextAppearance.Subtitle.Chat" parent="KaleyraSDKDesign.TextAppearance.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.Subtitle.Chat" parent="KaleyraCollaborationSuiteUI.TextAppearance.Subtitle">
         <item name="android:textSize">@dimen/kaleyra_dimen_text_small</item>
         <item name="android:textStyle">normal</item>
         <item name="android:shadowDx">0</item>
@@ -57,21 +57,21 @@
         <item name="android:shadowRadius">0</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextAppearance.Subtitle.Chat.Online" parent="KaleyraSDKDesign.TextAppearance.Subtitle.Chat"/>
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.Subtitle.Chat.Online" parent="KaleyraCollaborationSuiteUI.TextAppearance.Subtitle.Chat"/>
 
-    <style name="KaleyraSDKDesign.TextAppearance.Subtitle.Chat.Offline" parent="KaleyraSDKDesign.TextAppearance.Subtitle.Chat"/>
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.Subtitle.Chat.Offline" parent="KaleyraCollaborationSuiteUI.TextAppearance.Subtitle.Chat"/>
 
-    <style name="KaleyraSDKDesign.TextAppearance.Subtitle.Chat.WaitingForNetwork" parent="KaleyraSDKDesign.TextAppearance.Subtitle.Chat"/>
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.Subtitle.Chat.WaitingForNetwork" parent="KaleyraCollaborationSuiteUI.TextAppearance.Subtitle.Chat"/>
 
-    <style name="KaleyraSDKDesign.TextAppearance.Subtitle.Chat.Connecting" parent="KaleyraSDKDesign.TextAppearance.Subtitle.Chat"/>
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.Subtitle.Chat.Connecting" parent="KaleyraCollaborationSuiteUI.TextAppearance.Subtitle.Chat"/>
 
-    <style name="KaleyraSDKDesign.TextAppearance.Subtitle.Chat.Typing" parent="KaleyraSDKDesign.TextAppearance.Subtitle.Chat">
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.Subtitle.Chat.Typing" parent="KaleyraCollaborationSuiteUI.TextAppearance.Subtitle.Chat">
         <item name="android:textStyle">italic</item>
     </style>
 
     <!-- CHAT TEXT MESSAGE DATAVIEW -->
 
-    <style name="KaleyraSDKDesign.TextView.ChatMessage" parent="KaleyraSDKDesign.TextView">
+    <style name="KaleyraCollaborationSuiteUI.TextView.ChatMessage" parent="KaleyraCollaborationSuiteUI.TextView">
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space8</item>
         <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space8</item>
         <item name="android:gravity">start</item>
@@ -80,18 +80,18 @@
         <item name="android:textColorLink">@color/kaleyra_color_link</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.ChatMessage.LoggedUser" parent="KaleyraSDKDesign.TextView.ChatMessage">
+    <style name="KaleyraCollaborationSuiteUI.TextView.ChatMessage.LoggedUser" parent="KaleyraCollaborationSuiteUI.TextView.ChatMessage">
         <item name="android:textColor">?attr/colorOnSecondary</item>
         <item name="android:textColorLink">?attr/colorOnSecondary</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.ChatMessage.OtherUser" parent="KaleyraSDKDesign.TextView.ChatMessage">
+    <style name="KaleyraCollaborationSuiteUI.TextView.ChatMessage.OtherUser" parent="KaleyraCollaborationSuiteUI.TextView.ChatMessage">
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
     <!-- CHAT TIMESTAMP TEXT MESSAGE -->
 
-    <style name="KaleyraSDKDesign.Chat.ChatTimestamp" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.Chat.ChatTimestamp" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
@@ -101,7 +101,7 @@
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ChatMessageTimestamp" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space2</item>
         <item name="android:gravity">end</item>
         <item name="android:textSize">@dimen/kaleyra_dimen_text_small</item>
@@ -110,21 +110,21 @@
         <item name="singleLine">false</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp.LoggedUser" parent="KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ChatMessageTimestamp.LoggedUser" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ChatMessageTimestamp">
         <item name="android:textColor">?attr/colorOnSecondary</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp.OtherUser" parent="KaleyraSDKDesign.TextView.Subtitle.ChatMessageTimestamp">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ChatMessageTimestamp.OtherUser" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ChatMessageTimestamp">
         <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 
     <!-- CHAT TIMESTAMP TEXT MESSAGE -->
 
-    <style name="KaleyraSDKDesign.Chat.UnreadMessages" parent="KaleyraSDKDesign.Chat.ChatTimestamp" />
+    <style name="KaleyraCollaborationSuiteUI.Chat.UnreadMessages" parent="KaleyraCollaborationSuiteUI.Chat.ChatTimestamp" />
 
     <!-- CHAT LOADING MESSAGE TEXT STYLE -->
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.ChatEmpty" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ChatEmpty" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">center</item>

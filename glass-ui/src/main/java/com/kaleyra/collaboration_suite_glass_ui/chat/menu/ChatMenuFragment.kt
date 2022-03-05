@@ -72,7 +72,7 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
 //        val data = args.participantData!!
 
         // Apply theme wrapper and add view binding
-        val themeResId = requireContext().getChatThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Glass_Chat_kaleyra_chatMenuStyle)
+        val themeResId = requireContext().getChatThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Chat_kaleyra_chatMenuStyle)
         _binding = KaleyraGlassFragmentChatMenuBinding.inflate(
             inflater.cloneInContext(ContextThemeWrapper(requireActivity(), themeResId)),
             container,

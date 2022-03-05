@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.ChatMessage">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.ChatMessage">
         <attr name="kaleyra_avatarStyle"/>
         <attr name="kaleyra_titleStyle"/>
         <attr name="kaleyra_messageStyle" format="reference" />
@@ -25,7 +25,7 @@
         <attr name="bottomNavigationStyle"/>
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.ChatMessage" parent="" >
+    <style name="KaleyraCollaborationSuiteUI.ChatMessage" parent="" >
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">true</item>
     </style>

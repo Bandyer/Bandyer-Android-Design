@@ -17,37 +17,37 @@
 
 <resources>
     <!-- TOAST CONTAINER -->
-    <declare-styleable name="KaleyraSDKDesign.Theme.GlassCall.ToastContainerStyle">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Theme.GlassCall.ToastContainerStyle">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_toastStyle" format="reference" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.Theme.GlassCall.ToastContainer" parent="">
+    <style name="KaleyraCollaborationSuiteUI.Theme.GlassCall.ToastContainer" parent="">
         <item name="android:gravity">center</item>
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Theme.GlassCall.ToastContainer.RootLayout</item>
-        <item name="kaleyra_toastStyle">@style/KaleyraSDKDesign.Theme.GlassCall.Toast</item>
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.ToastContainer.RootLayout</item>
+        <item name="kaleyra_toastStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.Toast</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.GlassCall.ToastContainer.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.Theme.GlassCall.ToastContainer.RootLayout" parent="">
         <item name="android:orientation">vertical</item>
         <item name="android:paddingBottom">@dimen/kaleyra_dimen_space56</item>
         <item name="android:animateLayoutChanges">true</item>
     </style>
 
     <!-- TOAST -->
-    <declare-styleable name="KaleyraSDKDesign.Theme.GlassCall.ToastStyle">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Theme.GlassCall.ToastStyle">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_iconStyle" />
         <attr name="android:textViewStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.Theme.GlassCall.Toast" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.Theme.GlassCall.Toast.RootLayout</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraSDKDesign.RoundedImageGlass.Toast</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Title.Toast</item>
+    <style name="KaleyraCollaborationSuiteUI.Theme.GlassCall.Toast" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.Toast.RootLayout</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.RoundedImageGlass.Toast</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.Toast</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.GlassCall.Toast.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.Theme.GlassCall.Toast.RootLayout" parent="">
         <item name="android:background">@drawable/kaleyra_glass_rounded_background</item>
         <item name="android:gravity">center</item>
         <item name="android:minHeight">@dimen/kaleyra_dimen_space32</item>
@@ -58,7 +58,7 @@
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space12</item>
     </style>
 
-    <style name="KaleyraSDKDesign.RoundedImageGlass.Toast" parent="KaleyraSDKDesign.RoundedImageGlass">
+    <style name="KaleyraCollaborationSuiteUI.RoundedImageGlass.Toast" parent="KaleyraCollaborationSuiteUI.RoundedImageGlass">
         <item name="android:layout_width">@dimen/kaleyra_dimen_space28</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_space28</item>
         <item name="android:padding">@dimen/kaleyra_dimen_space2</item>
@@ -66,7 +66,7 @@
         <item name="android:background">@color/kaleyra_glass_toast_icon_color</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Title.Toast" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.Toast" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:textSize">@dimen/kaleyra_dimen_text_h2</item>
         <item name="android:textAlignment">center</item>
         <item name="android:gravity">center</item>

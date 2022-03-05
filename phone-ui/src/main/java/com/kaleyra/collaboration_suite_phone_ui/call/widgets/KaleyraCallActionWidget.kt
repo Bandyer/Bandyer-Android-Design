@@ -648,7 +648,7 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
             context,
             callActionItems,
             bottomSheetLayoutType,
-            context.getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_bottomSheetCallStyle)
+            context.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_bottomSheetCallStyle)
         )
         callBottomSheet?.onStateChangedBottomSheetListener = onBottomSheetCallBacks
         callBottomSheet?.onActionBottomSheetListener = onBottomSheetAction
@@ -661,7 +661,7 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         ringingBottomSheet = RingingBottomSheet(
             context,
             bottomSheetLayoutType,
-            context.getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_bottomSheetRingingStyle)
+            context.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_bottomSheetRingingStyle)
         )
         ringingBottomSheet?.onStateChangedBottomSheetListener = onBottomSheetCallBacks
         ringingBottomSheet?.onActionBottomSheetListener = onBottomSheetAction
@@ -675,7 +675,7 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
             context = context,
             audioRouteItems = onAudioRoutesRequest?.onAudioRoutesRequested(),
             bottomSheetLayoutType = bottomSheetLayoutType,
-            bottomSheetStyle = context.getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_bottomSheetAudioRouteStyle),
+            bottomSheetStyle = context.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_bottomSheetAudioRouteStyle),
             onAudioRoutesRequest = onAudioRoutesListener
         )
         audioRouteBottomSheet?.onStateChangedBottomSheetListener = onBottomSheetCallBacks

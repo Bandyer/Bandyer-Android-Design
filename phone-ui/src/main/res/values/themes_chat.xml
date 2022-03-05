@@ -16,7 +16,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <declare-styleable name="KaleyraSDKDesign.Theme.Chat">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.Theme.Chat">
         <attr name="kaleyra_chatInputWidgetStyle" format="reference" />
         <attr name="kaleyra_chatUnreadMessagesWidgetStyle" format="reference" />
         <attr name="kaleyra_chatInfoWidgetStyle" format="reference" />
@@ -26,53 +26,53 @@
         <attr name="toolbarStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.Theme.Chat.DayNight.V16" parent="KaleyraSDKDesign.Theme.DayNight">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat.DayNight.V16" parent="KaleyraCollaborationSuiteUI.Theme.DayNight">
         <item name="colorOnSecondary">@color/kaleyra_colorOnSecondary</item>
-        <item name="kaleyra_chatInfoWidgetStyle">@style/KaleyraSDKDesign.ChatInfo</item>
-        <item name="kaleyra_chatInputWidgetStyle">@style/KaleyraSDKDesign.ChatInput</item>
-        <item name="kaleyra_chatTimestampStyle">@style/KaleyraSDKDesign.Chat.ChatTimestamp</item>
-        <item name="kaleyra_chatUnreadMessagesWidgetStyle">@style/KaleyraSDKDesign.ImageButton.ChatUnreadMessages</item>
-        <item name="kaleyra_chatEmptyLoaderStyle">@style/KaleyraSDKDesign.ChatEmptyItem</item>
-        <item name="kaleyra_chatNetworkLoaderStyle">@style/KaleyraSDKDesign.ChatLoadingItem</item>
-        <item name="toolbarStyle">@style/KaleyraSDKDesign.Theme.Chat.ToolBarStyle</item>
+        <item name="kaleyra_chatInfoWidgetStyle">@style/KaleyraCollaborationSuiteUI.ChatInfo</item>
+        <item name="kaleyra_chatInputWidgetStyle">@style/KaleyraCollaborationSuiteUI.ChatInput</item>
+        <item name="kaleyra_chatTimestampStyle">@style/KaleyraCollaborationSuiteUI.Chat.ChatTimestamp</item>
+        <item name="kaleyra_chatUnreadMessagesWidgetStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.ChatUnreadMessages</item>
+        <item name="kaleyra_chatEmptyLoaderStyle">@style/KaleyraCollaborationSuiteUI.ChatEmptyItem</item>
+        <item name="kaleyra_chatNetworkLoaderStyle">@style/KaleyraCollaborationSuiteUI.ChatLoadingItem</item>
+        <item name="toolbarStyle">@style/KaleyraCollaborationSuiteUI.Theme.Chat.ToolBarStyle</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.Chat.DayNight" parent="KaleyraSDKDesign.Theme.Chat.DayNight.V16"/>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.Chat.DayNight.V16"/>
 
-    <style name="KaleyraSDKDesign.Theme.Chat.Day" parent="KaleyraSDKDesign.Theme.Day">
-        <item name="colorOnSecondary">@color/kaleyra_colorOnSecondary</item>
-        <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/black</item>
-        <item name="kaleyra_chatInfoWidgetStyle">@style/KaleyraSDKDesign.ChatInfo</item>
-        <item name="kaleyra_chatInputWidgetStyle">@style/KaleyraSDKDesign.ChatInput</item>
-        <item name="kaleyra_chatTimestampStyle">@style/KaleyraSDKDesign.Chat.ChatTimestamp</item>
-        <item name="kaleyra_chatUnreadMessagesWidgetStyle">@style/KaleyraSDKDesign.ImageButton.ChatUnreadMessages</item>
-        <item name="kaleyra_chatEmptyLoaderStyle">@style/KaleyraSDKDesign.ChatEmptyItem</item>
-        <item name="kaleyra_chatNetworkLoaderStyle">@style/KaleyraSDKDesign.ChatLoadingItem</item>
-        <item name="toolbarStyle">@style/KaleyraSDKDesign.Theme.Chat.ToolBarStyle</item>
-    </style>
-
-    <style name="KaleyraSDKDesign.Theme.Chat.Night" parent="KaleyraSDKDesign.Theme.Night">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat.Day" parent="KaleyraCollaborationSuiteUI.Theme.Day">
         <item name="colorOnSecondary">@color/kaleyra_colorOnSecondary</item>
         <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/black</item>
-        <item name="kaleyra_chatInfoWidgetStyle">@style/KaleyraSDKDesign.ChatInfo</item>
-        <item name="kaleyra_chatInputWidgetStyle">@style/KaleyraSDKDesign.ChatInput</item>
-        <item name="kaleyra_chatTimestampStyle">@style/KaleyraSDKDesign.Chat.ChatTimestamp</item>
-        <item name="kaleyra_chatUnreadMessagesWidgetStyle">@style/KaleyraSDKDesign.ImageButton.ChatUnreadMessages</item>
-        <item name="kaleyra_chatEmptyLoaderStyle">@style/KaleyraSDKDesign.ChatEmptyItem</item>
-        <item name="kaleyra_chatNetworkLoaderStyle">@style/KaleyraSDKDesign.ChatLoadingItem</item>
-        <item name="toolbarStyle">@style/KaleyraSDKDesign.Theme.Chat.ToolBarStyle</item>
+        <item name="kaleyra_chatInfoWidgetStyle">@style/KaleyraCollaborationSuiteUI.ChatInfo</item>
+        <item name="kaleyra_chatInputWidgetStyle">@style/KaleyraCollaborationSuiteUI.ChatInput</item>
+        <item name="kaleyra_chatTimestampStyle">@style/KaleyraCollaborationSuiteUI.Chat.ChatTimestamp</item>
+        <item name="kaleyra_chatUnreadMessagesWidgetStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.ChatUnreadMessages</item>
+        <item name="kaleyra_chatEmptyLoaderStyle">@style/KaleyraCollaborationSuiteUI.ChatEmptyItem</item>
+        <item name="kaleyra_chatNetworkLoaderStyle">@style/KaleyraCollaborationSuiteUI.ChatLoadingItem</item>
+        <item name="toolbarStyle">@style/KaleyraCollaborationSuiteUI.Theme.Chat.ToolBarStyle</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.Chat" parent="KaleyraSDKDesign.Theme.Chat.DayNight" />
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat.Night" parent="KaleyraCollaborationSuiteUI.Theme.Night">
+        <item name="colorOnSecondary">@color/kaleyra_colorOnSecondary</item>
+        <item name="android:navigationBarColor" tools:targetApi="lollipop">@android:color/black</item>
+        <item name="kaleyra_chatInfoWidgetStyle">@style/KaleyraCollaborationSuiteUI.ChatInfo</item>
+        <item name="kaleyra_chatInputWidgetStyle">@style/KaleyraCollaborationSuiteUI.ChatInput</item>
+        <item name="kaleyra_chatTimestampStyle">@style/KaleyraCollaborationSuiteUI.Chat.ChatTimestamp</item>
+        <item name="kaleyra_chatUnreadMessagesWidgetStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.ChatUnreadMessages</item>
+        <item name="kaleyra_chatEmptyLoaderStyle">@style/KaleyraCollaborationSuiteUI.ChatEmptyItem</item>
+        <item name="kaleyra_chatNetworkLoaderStyle">@style/KaleyraCollaborationSuiteUI.ChatLoadingItem</item>
+        <item name="toolbarStyle">@style/KaleyraCollaborationSuiteUI.Theme.Chat.ToolBarStyle</item>
+    </style>
 
-    <style name="KaleyraSDKDesign.Theme.Chat.ToolBarStyle" parent="@style/KaleyraSDKDesign.ToolBarStyle">
-        <item name="materialThemeOverlay">@style/KaleyraSDKDesign.Theme.Chat.ToolBarStyle.MaterialThemeOverlay</item>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat" parent="KaleyraCollaborationSuiteUI.Theme.Chat.DayNight" />
+
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat.ToolBarStyle" parent="@style/KaleyraCollaborationSuiteUI.ToolBarStyle">
+        <item name="materialThemeOverlay">@style/KaleyraCollaborationSuiteUI.Theme.Chat.ToolBarStyle.MaterialThemeOverlay</item>
         <item name="contentInsetStart">0dp</item>
         <item name="contentInsetStartWithNavigation">50dp</item>
         <item name="android:touchscreenBlocksFocus" tools:targetApi="lollipop">false</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.Chat.ToolBarStyle.MaterialThemeOverlay" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
+    <style name="KaleyraCollaborationSuiteUI.Theme.Chat.ToolBarStyle.MaterialThemeOverlay" parent="ThemeOverlay.MaterialComponents.Toolbar.Primary">
         <item name="drawableTint">?attr/colorOnPrimary</item>
     </style>
 

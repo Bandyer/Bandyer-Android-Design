@@ -18,7 +18,7 @@
 
     <!-- CALL BUTTONS -->
 
-    <style name="KaleyraSDKDesign.ImageButton.Call" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingRight">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
@@ -32,7 +32,7 @@
         <item name="iconTint">@color/kaleyra_call_action_button_icon_color</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Large" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Large" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="android:layout_height">@dimen/kaleyra_dimen_big_image_button</item>
         <item name="android:layout_width">@dimen/kaleyra_dimen_big_image_button</item>
         <item name="elevation">@dimen/kaleyra_dimen_space6</item>
@@ -41,72 +41,72 @@
         <item name="iconSize">@dimen/kaleyra_dimen_big_image_button</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Large.Answer" parent="KaleyraSDKDesign.ImageButton.Call.Large">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Large.Answer" parent="KaleyraCollaborationSuiteUI.ImageButton.Call.Large">
         <item name="backgroundTint">@color/kaleyra_color_answer_button</item>
         <item name="icon">@drawable/ic_kaleyra_answer</item>
         <item name="android:contentDescription">@string/kaleyra_ringing_decline</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Large.Decline" parent="KaleyraSDKDesign.ImageButton.Call.Large">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Large.Decline" parent="KaleyraCollaborationSuiteUI.ImageButton.Call.Large">
         <item name="backgroundTint">@color/kaleyra_color_hang_up_button</item>
         <item name="icon">@drawable/ic_kaleyra_decline</item>
         <item name="android:contentDescription">@string/kaleyra_ringing_decline</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Large.Answer.Night" parent="KaleyraSDKDesign.ImageButton.Call.Large.Answer">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Large.Answer.Night" parent="KaleyraCollaborationSuiteUI.ImageButton.Call.Large.Answer">
         <item name="backgroundTint">@color/kaleyra_color_answer_button_night</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Large.Decline.Night" parent="KaleyraSDKDesign.ImageButton.Call.Large.Decline">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Large.Decline.Night" parent="KaleyraCollaborationSuiteUI.ImageButton.Call.Large.Decline">
         <item name="backgroundTint">@color/kaleyra_color_hang_up_button_night</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Participants" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Participants" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_participants</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_participants</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Chat" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Chat" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_chat</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_chat</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Whiteboard" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Whiteboard" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_whiteboard</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_whiteboard</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.FileShare" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.FileShare" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_file_share</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_file_share</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Camera" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Camera" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_camera_off</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_disable_camera_description</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.SwitchCamera" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.SwitchCamera" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_switch_camera</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_switch_camera_description</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Options" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Options" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_options</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_options</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Microphone" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Microphone" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_mic_off</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_disable_mic_description</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.ScreenShare" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.ScreenShare" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_screen_share</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_screen_share</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.HangUp" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.HangUp" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="backgroundTint">@color/kaleyra_color_hang_up_button</item>
         <item name="iconTint">@android:color/white</item>
         <item name="icon">@drawable/ic_kaleyra_hangup</item>
@@ -115,7 +115,7 @@
 
     <!-- SMARTGLASS CALL BUTTONS -->
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.SmartGlass" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.SmartGlass" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="iconTint">?attr/colorOnSurface</item>
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="iconSize">@dimen/kaleyra_dimen_smart_glass_image_button_size</item>
@@ -123,42 +123,42 @@
         <item name="rippleColor">@null</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.SmartGlass.Microphone" parent="KaleyraSDKDesign.ImageButton.Call.SmartGlass">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.SmartGlass.Microphone" parent="KaleyraCollaborationSuiteUI.ImageButton.Call.SmartGlass">
         <item name="icon">@drawable/kaleyra_glass_call_action_button_microphone_icon</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_disable_mic_description</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.SmartGlass.Camera" parent="KaleyraSDKDesign.ImageButton.Call.SmartGlass">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.SmartGlass.Camera" parent="KaleyraCollaborationSuiteUI.ImageButton.Call.SmartGlass">
         <item name="icon">@drawable/kaleyra_glass_call_action_button_camera_icon</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_disable_camera_description
         </item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.SmartGlass.Participants" parent="KaleyraSDKDesign.ImageButton.Call.SmartGlass">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.SmartGlass.Participants" parent="KaleyraCollaborationSuiteUI.ImageButton.Call.SmartGlass">
         <item name="icon">@drawable/ic_kaleyra_glass_participants</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_participants</item>
     </style>
 
     <!-- AUDIO ROUTE BOTTOM SHEET BUTTONS -->
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.AudioRoute" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.AudioRoute" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/kaleyra_call_action_button_audioroute_icon</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_audio_route</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Muted" parent="KaleyraSDKDesign.ImageButton.Call.AudioRoute">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Muted" parent="KaleyraCollaborationSuiteUI.ImageButton.Call.AudioRoute">
         <item name="icon">@drawable/ic_kaleyra_muted</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Earpiece" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Earpiece" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_earpiece</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Headset" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Headset" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_wired_headset</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Call.Bluetooth" parent="KaleyraSDKDesign.ImageButton.Call">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.Bluetooth" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_bluetooth_headset</item>
     </style>
 

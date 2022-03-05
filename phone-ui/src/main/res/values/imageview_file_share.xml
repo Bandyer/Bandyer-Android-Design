@@ -16,18 +16,18 @@
   -->
 
 <resources>
-    <style name="KaleyraSDKDesign.FileShare.OperationType" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="KaleyraCollaborationSuiteUI.FileShare.OperationType" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:layout_width">@dimen/kaleyra_dimen_space12</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_space12</item>
         <item name="tint">@color/kaleyra_color_on_background_80</item>
         <item name="srcCompat">@drawable/kaleyra_op_type_icon</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FileShare.OperationType.Day" parent="KaleyraSDKDesign.FileShare.OperationType">
+    <style name="KaleyraCollaborationSuiteUI.FileShare.OperationType.Day" parent="KaleyraCollaborationSuiteUI.FileShare.OperationType">
         <item name="tint">@color/kaleyra_color_on_background_80_day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FileShare.FileType" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="KaleyraCollaborationSuiteUI.FileShare.FileType" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:layout_width">@dimen/kaleyra_dimen_space28</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_space28</item>
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space12</item>
@@ -37,18 +37,18 @@
         <item name="android:adjustViewBounds">true</item>
     </style>
 
-    <style name="KaleyraSDKDesign.FileShare.FileType.Day" parent="KaleyraSDKDesign.FileShare.FileType">
+    <style name="KaleyraCollaborationSuiteUI.FileShare.FileType.Day" parent="KaleyraCollaborationSuiteUI.FileShare.FileType">
         <item name="tint">@color/kaleyra_colorOnBackground</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:layout_width">@dimen/kaleyra_dimen_big_image_size</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_big_image_size</item>
         <item name="srcCompat">@drawable/ic_kaleyra_folder</item>
         <item name="tint">@color/kaleyra_color_on_background_30</item>
     </style>
 
-    <style name="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon.Day" parent="KaleyraSDKDesign.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon.Day" parent="KaleyraCollaborationSuiteUI.BottomSheetModalStyle.FileShare.EmptyListLayout.Icon">
         <item name="tint">@color/kaleyra_color_on_background_30_day</item>
     </style>
 

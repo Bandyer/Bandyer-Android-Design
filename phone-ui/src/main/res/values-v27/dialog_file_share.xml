@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <style name="KaleyraSDKDesign.BottomSheetDialog.FileShare" parent="KaleyraSDKDesign.BottomSheetDialog.FileShare.V21">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare" parent="KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare.V21">
         <item name="android:navigationBarColor">?android:attr/colorBackground</item>
     </style>
 </resources>

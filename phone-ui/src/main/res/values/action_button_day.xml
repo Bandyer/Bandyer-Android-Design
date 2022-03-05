@@ -16,14 +16,14 @@
 
 <resources>
 
-    <style name="KaleyraSDKDesign.ActionButton.ConfirmButton.Day" parent="KaleyraSDKDesign.ActionButton.ConfirmButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Confirm.Day</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextAppearance.ButtonLabel.Confirm.Day</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.ConfirmButton.Day" parent="KaleyraCollaborationSuiteUI.ActionButton.ConfirmButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Confirm.Day</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextAppearance.ButtonLabel.Confirm.Day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.CancelButton.Day" parent="KaleyraSDKDesign.ActionButton.CancelButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Cancel.Day</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextAppearance.ButtonLabel.Cancel.Day</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.CancelButton.Day" parent="KaleyraCollaborationSuiteUI.ActionButton.CancelButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Cancel.Day</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextAppearance.ButtonLabel.Cancel.Day</item>
     </style>
 
 </resources>

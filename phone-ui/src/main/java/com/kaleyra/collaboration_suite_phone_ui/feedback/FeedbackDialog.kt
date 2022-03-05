@@ -51,11 +51,11 @@ class FeedbackDialog : DialogFragment() {
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireContext().obtainStyledAttributes(R.style.KaleyraSDKDesign_FragmentDialog, R.styleable.KaleyraSDKDesign_FragmentDialog).apply {
-            autoDismissTime = getInt(R.styleable.KaleyraSDKDesign_FragmentDialog_kaleyra_autoDismissTime, -1)
+        requireContext().obtainStyledAttributes(R.style.KaleyraCollaborationSuiteUI_FragmentDialog, R.styleable.KaleyraCollaborationSuiteUI_FragmentDialog).apply {
+            autoDismissTime = getInt(R.styleable.KaleyraCollaborationSuiteUI_FragmentDialog_kaleyra_autoDismissTime, -1)
             recycle()
         }
-        setStyle(STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_feedbackDialogStyle))
+        setStyle(STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_feedbackDialogStyle))
     }
 
     /**

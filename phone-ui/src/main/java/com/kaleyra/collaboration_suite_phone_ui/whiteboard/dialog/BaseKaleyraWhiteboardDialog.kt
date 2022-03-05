@@ -88,7 +88,7 @@ abstract class BaseKaleyraWhiteboardDialog<T : BaseKaleyraWhiteboardDialog.BaseW
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraSDKDesign_Theme_Call_kaleyra_whiteboardDialogStyle))
+            setStyle(DialogFragment.STYLE_NO_TITLE, requireContext().getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Call_kaleyra_whiteboardDialogStyle))
         }
 
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

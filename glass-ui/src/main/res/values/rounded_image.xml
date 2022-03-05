@@ -16,21 +16,21 @@
   -->
 
 <resources>
-    <style name="KaleyraSDKDesign.RoundedImageGlass" parent="Widget.MaterialComponents.ShapeableImageView">
+    <style name="KaleyraCollaborationSuiteUI.RoundedImageGlass" parent="Widget.MaterialComponents.ShapeableImageView">
         <item name="android:adjustViewBounds">true</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="android:layout_width">@dimen/kaleyra_dimen_space40</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_space40</item>
-        <item name="shapeAppearanceOverlay">@style/KaleyraSDKDesign.RoundedImageGlass.ShapeAppearanceOverlay</item>
+        <item name="shapeAppearanceOverlay">@style/KaleyraCollaborationSuiteUI.RoundedImageGlass.ShapeAppearanceOverlay</item>
     </style>
 
-    <style name="KaleyraSDKDesign.RoundedImageGlass.Bordered" parent="KaleyraSDKDesign.RoundedImageGlass">
+    <style name="KaleyraCollaborationSuiteUI.RoundedImageGlass.Bordered" parent="KaleyraCollaborationSuiteUI.RoundedImageGlass">
         <item name="strokeWidth">@dimen/kaleyra_dimen_space1</item>
         <item name="android:padding">@dimen/kaleyra_dimen_space1</item>
         <item name="strokeColor">@android:color/black</item>
     </style>
 
-    <style name="KaleyraSDKDesign.RoundedImageGlass.ShapeAppearanceOverlay" parent="">
+    <style name="KaleyraCollaborationSuiteUI.RoundedImageGlass.ShapeAppearanceOverlay" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>

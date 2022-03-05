@@ -16,7 +16,7 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.PagerIndicator">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.PagerIndicator">
         <attr name="kaleyra_pagerIndicatorDotCount" format="integer" />
         <attr name="kaleyra_pagerIndicatorFadingDotCount" format="integer" />
         <attr name="kaleyra_pagerIndicatorDotRadius" format="dimension" />
@@ -27,7 +27,7 @@
         <attr name="kaleyra_pagerIndicatorVerticalSupport" format="boolean" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.PagerIndicator">
+    <style name="KaleyraCollaborationSuiteUI.PagerIndicator">
         <item name="kaleyra_pagerIndicatorDotCount">5</item>
         <item name="kaleyra_pagerIndicatorFadingDotCount">3</item>
         <item name="kaleyra_pagerIndicatorDotRadius">@dimen/kaleyra_dimen_space4</item>

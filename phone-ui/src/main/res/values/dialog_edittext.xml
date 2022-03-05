@@ -16,34 +16,34 @@
 
 <resources>
 
-    <style name="KaleyraSDKDesign.TextInputEditText.Dialog" parent="KaleyraSDKDesign.TextInputEditText">
+    <style name="KaleyraCollaborationSuiteUI.TextInputEditText.Dialog" parent="KaleyraCollaborationSuiteUI.TextInputEditText">
         <item name="android:padding">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextInputLayoutDialogMaterialThemeOverlay" parent="">
-        <item name="editTextStyle">@style/KaleyraSDKDesign.TextInputEditText.Dialog</item>
+    <style name="KaleyraCollaborationSuiteUI.TextInputLayoutDialogMaterialThemeOverlay" parent="">
+        <item name="editTextStyle">@style/KaleyraCollaborationSuiteUI.TextInputEditText.Dialog</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextInputLayoutDialogMaterialThemeOverlay.Day" parent="KaleyraSDKDesign.TextInputLayoutDialogMaterialThemeOverlay">
-        <item name="editTextStyle">@style/KaleyraSDKDesign.TextInputEditText.Dialog.Day</item>
+    <style name="KaleyraCollaborationSuiteUI.TextInputLayoutDialogMaterialThemeOverlay.Day" parent="KaleyraCollaborationSuiteUI.TextInputLayoutDialogMaterialThemeOverlay">
+        <item name="editTextStyle">@style/KaleyraCollaborationSuiteUI.TextInputEditText.Dialog.Day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextInputEditText.Dialog.Day" parent="KaleyraSDKDesign.TextInputEditText.Dialog">
+    <style name="KaleyraCollaborationSuiteUI.TextInputEditText.Dialog.Day" parent="KaleyraCollaborationSuiteUI.TextInputEditText.Dialog">
         <item name="android:background">@color/kaleyra_colorSurface</item>
         <item name="android:textColorHint">@color/kaleyra_color_on_surface_50_day</item>
-        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance.TextInputEditText.Dialog.Day</item>
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance.TextInputEditText.Dialog.Day</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextAppearance.TextInputEditText.Dialog.Day" parent="KaleyraSDKDesign.TextAppearance.TextInputEditText">
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.TextInputEditText.Dialog.Day" parent="KaleyraCollaborationSuiteUI.TextAppearance.TextInputEditText">
         <item name="android:textColor">@color/kaleyra_colorOnSurface</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextInputLayout.Dialog" parent="KaleyraSDKDesign.TextInputLayout">
-        <item name="materialThemeOverlay">@style/KaleyraSDKDesign.TextInputLayoutDialogMaterialThemeOverlay</item>
+    <style name="KaleyraCollaborationSuiteUI.TextInputLayout.Dialog" parent="KaleyraCollaborationSuiteUI.TextInputLayout">
+        <item name="materialThemeOverlay">@style/KaleyraCollaborationSuiteUI.TextInputLayoutDialogMaterialThemeOverlay</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextInputLayout.Dialog.Day" parent="KaleyraSDKDesign.TextInputLayout">
-        <item name="materialThemeOverlay">@style/KaleyraSDKDesign.TextInputLayoutDialogMaterialThemeOverlay.Day</item>
+    <style name="KaleyraCollaborationSuiteUI.TextInputLayout.Dialog.Day" parent="KaleyraCollaborationSuiteUI.TextInputLayout">
+        <item name="materialThemeOverlay">@style/KaleyraCollaborationSuiteUI.TextInputLayoutDialogMaterialThemeOverlay.Day</item>
     </style>
 
 </resources>

@@ -17,8 +17,8 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="KaleyraSDKDesign.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
-        <item name="materialThemeOverlay">@style/KaleyraSDKDesign.TextInputLayout.MaterialThemeOverlay</item>
+    <style name="KaleyraCollaborationSuiteUI.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="materialThemeOverlay">@style/KaleyraCollaborationSuiteUI.TextInputLayout.MaterialThemeOverlay</item>
         <item name="boxBackgroundMode">none</item>
         <item name="hintEnabled">false</item>
         <item name="android:focusable">true</item>
@@ -28,46 +28,46 @@
         <item name="boxCollapsedPaddingTop">0dp</item>
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">0dp</item>
-        <item name="shapeAppearanceOverlay">@style/KaleyraSDKDesign.TextInputLayout.ShapeAppearanceOverlay</item>
+        <item name="shapeAppearanceOverlay">@style/KaleyraCollaborationSuiteUI.TextInputLayout.ShapeAppearanceOverlay</item>
         <item name="android:focusedByDefault" tools:targetApi="o">true</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextInputLayout.ShapeAppearanceOverlay" parent="">
+    <style name="KaleyraCollaborationSuiteUI.TextInputLayout.ShapeAppearanceOverlay" parent="">
         <item name="cornerSize">0dp</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextInputLayout.MaterialThemeOverlay" parent="">
-        <item name="editTextStyle">@style/KaleyraSDKDesign.TextInputEditText</item>
+    <style name="KaleyraCollaborationSuiteUI.TextInputLayout.MaterialThemeOverlay" parent="">
+        <item name="editTextStyle">@style/KaleyraCollaborationSuiteUI.TextInputEditText</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextInputEditText" parent="Base.Widget.MaterialComponents.TextInputEditText">
+    <style name="KaleyraCollaborationSuiteUI.TextInputEditText" parent="Base.Widget.MaterialComponents.TextInputEditText">
         <item name="android:background">@null</item>
         <item name="android:gravity">start</item>
         <item name="android:hint">@string/kaleyra_edit_text_input_placeholder</item>
         <item name="android:textColorHint">@color/kaleyra_color_on_surface_50</item>
         <item name="android:textAlignment">viewStart</item>
         <item name="android:textDirection">locale</item>
-        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance.TextInputEditText</item>
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance.TextInputEditText</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextAppearance.TextInputEditText" parent="KaleyraSDKDesign.TextAppearance">
+    <style name="KaleyraCollaborationSuiteUI.TextAppearance.TextInputEditText" parent="KaleyraCollaborationSuiteUI.TextAppearance">
         <item name="android:shadowDx">0</item>
         <item name="android:shadowDy">0</item>
         <item name="android:shadowRadius">0</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextInputLayout.Chat" parent="KaleyraSDKDesign.TextInputLayout">
-        <item name="materialThemeOverlay">@style/KaleyraSDKDesign.TextInputLayout.Chat.MaterialThemeOverlay</item>
+    <style name="KaleyraCollaborationSuiteUI.TextInputLayout.Chat" parent="KaleyraCollaborationSuiteUI.TextInputLayout">
+        <item name="materialThemeOverlay">@style/KaleyraCollaborationSuiteUI.TextInputLayout.Chat.MaterialThemeOverlay</item>
         <item name="boxBackgroundColor">?attr/colorSurface</item>
         <item name="boxBackgroundMode">filled</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextInputLayout.Chat.MaterialThemeOverlay" parent="">
-        <item name="editTextStyle">@style/KaleyraSDKDesign.TextInputEditText.Chat</item>
+    <style name="KaleyraCollaborationSuiteUI.TextInputLayout.Chat.MaterialThemeOverlay" parent="">
+        <item name="editTextStyle">@style/KaleyraCollaborationSuiteUI.TextInputEditText.Chat</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextInputEditText.Chat" parent="KaleyraSDKDesign.TextInputEditText">
+    <style name="KaleyraCollaborationSuiteUI.TextInputEditText.Chat" parent="KaleyraCollaborationSuiteUI.TextInputEditText">
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingRight">@dimen/kaleyra_dimen_space64</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space64</item>

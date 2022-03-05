@@ -17,7 +17,7 @@
 
 <resources>
 
-    <style name="KaleyraSDKDesign.TextView.Title.CallInfo" parent="KaleyraSDKDesign.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.CallInfo" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:singleLine">true</item>
         <item name="android:paddingRight">@dimen/kaleyra_dimen_space16</item>
@@ -27,18 +27,18 @@
         <item name="android:ellipsize">marquee</item>
         <item name="android:fadingEdge">horizontal</item>
         <item name="android:marqueeRepeatLimit">marquee_forever</item>
-        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance</item>
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance</item>
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="KaleyraSDKDesign.TextView.Subtitle.CallInfo" parent="KaleyraSDKDesign.TextView.Subtitle">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.CallInfo" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
         <item name="android:textColor">@android:color/white</item>
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:paddingRight">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingLeft">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:textAppearance">@style/KaleyraSDKDesign.TextAppearance</item>
+        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance</item>
     </style>
 
 </resources>

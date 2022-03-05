@@ -18,7 +18,7 @@
 
     <!-- ACTION BUTTON STYLEABLE -->
 
-    <declare-styleable name="KaleyraSDKDesign.ActionButton" tools:ignore="MissingDefaultResource">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.ActionButton" tools:ignore="MissingDefaultResource">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="materialButtonStyle" />
         <attr name="android:textViewStyle" />
@@ -26,15 +26,15 @@
 
     <!-- ACTION BUTTON STYLES -->
 
-    <style name="KaleyraSDKDesign.ActionButton">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.ActionButton.RootLayout</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.RootLayout</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.SmartGlass" parent="KaleyraSDKDesign.ActionButton">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.ActionButton.RootLayout.SmartGlass</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.SmartGlass" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.RootLayout.SmartGlass</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.RootLayout" parent="">
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.RootLayout" parent="">
         <item name="android:paddingBottom">@dimen/kaleyra_dimen_space8</item>
         <item name="android:orientation">vertical</item>
         <item name="android:gravity">top|center_horizontal</item>
@@ -46,7 +46,7 @@
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space20</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.RootLayout.SmartGlass" parent="KaleyraSDKDesign.ActionButton.RootLayout">
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.RootLayout.SmartGlass" parent="KaleyraCollaborationSuiteUI.ActionButton.RootLayout">
         <item name="android:clickable">true</item>
         <item name="android:gravity">center</item>
         <item name="android:background">?attr/selectableItemBackground</item>
@@ -54,106 +54,106 @@
         <item name="android:paddingBottom">@dimen/kaleyra_dimen_space0</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.ConfirmButton" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Confirm</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextAppearance.ButtonLabel.Confirm</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.ConfirmButton" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Confirm</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextAppearance.ButtonLabel.Confirm</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.CancelButton" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Cancel</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextAppearance.ButtonLabel.Cancel</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.CancelButton" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Cancel</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextAppearance.ButtonLabel.Cancel</item>
     </style>
 
     <!-- CALL ACTION BUTTONS -->
 
-    <style name="KaleyraSDKDesign.ActionButton.AudioRoute" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.AudioRoute</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.AudioRoute</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.AudioRoute" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.AudioRoute</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.AudioRoute</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.Participants" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.Participants</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Participants</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.Participants" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.Participants</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Participants</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.Chat" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.Chat</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Chat</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.Chat" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.Chat</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Chat</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.Whiteboard" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.Whiteboard</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Whiteboard</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.Whiteboard" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.Whiteboard</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Whiteboard</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.FileShare" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.FileShare</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.FileShare</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.FileShare" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.FileShare</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.FileShare</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.Options" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.Options</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Options</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.Options" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.Options</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Options</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.SwitchCamera" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.SwitchCamera</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SwitchCamera</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.SwitchCamera" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.SwitchCamera</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.SwitchCamera</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.HangUp" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.HangUp</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.HangUp</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.HangUp" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.HangUp</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.HangUp</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.Answer" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.Large.Answer</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.Answer</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.Answer" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.Large.Answer</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.Answer</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.Decline" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.Large.Decline</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.Decline</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.Decline" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.Large.Decline</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.Decline</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.Answer.Night" parent="KaleyraSDKDesign.ActionButton.Answer">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.Large.Answer.Night</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.Answer.Night" parent="KaleyraCollaborationSuiteUI.ActionButton.Answer">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.Large.Answer.Night</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.Decline.Night" parent="KaleyraSDKDesign.ActionButton.Decline">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.Large.Decline.Night</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.Decline.Night" parent="KaleyraCollaborationSuiteUI.ActionButton.Decline">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.Large.Decline.Night</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.Microphone" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.Microphone</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Microphone</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.Microphone" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.Microphone</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Microphone</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.Camera" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.Camera</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.Camera</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.Camera" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.Camera</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.Camera</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.ScreenShare" parent="KaleyraSDKDesign.ActionButton">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.ScreenShare</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.ScreenShare</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.ScreenShare" parent="KaleyraCollaborationSuiteUI.ActionButton">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.ScreenShare</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.ScreenShare</item>
     </style>
 
     <!-- SMARTGLASS CALL ACTION BUTTONS -->
 
-    <style name="KaleyraSDKDesign.ActionButton.SmartGlass.Microphone" parent="KaleyraSDKDesign.ActionButton.SmartGlass">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.SmartGlass.Microphone</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Microphone</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.SmartGlass.Microphone" parent="KaleyraCollaborationSuiteUI.ActionButton.SmartGlass">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.SmartGlass.Microphone</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.SmartGlass.Microphone</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.SmartGlass.Camera" parent="KaleyraSDKDesign.ActionButton.SmartGlass">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.SmartGlass.Camera</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Camera</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.SmartGlass.Camera" parent="KaleyraCollaborationSuiteUI.ActionButton.SmartGlass">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.SmartGlass.Camera</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.SmartGlass.Camera</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ActionButton.SmartGlass.Participants" parent="KaleyraSDKDesign.ActionButton.SmartGlass">
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.Call.SmartGlass.Participants</item>
-        <item name="android:textViewStyle">@style/KaleyraSDKDesign.TextView.Subtitle.ButtonLabel.SmartGlass.Participants</item>
+    <style name="KaleyraCollaborationSuiteUI.ActionButton.SmartGlass.Participants" parent="KaleyraCollaborationSuiteUI.ActionButton.SmartGlass">
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Call.SmartGlass.Participants</item>
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.SmartGlass.Participants</item>
     </style>
 
 </resources>

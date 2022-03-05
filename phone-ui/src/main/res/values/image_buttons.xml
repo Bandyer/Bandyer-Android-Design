@@ -18,7 +18,7 @@
 
     <!-- IMAGE BUTTON STYLE -->
 
-    <style name="KaleyraSDKDesign.ImageButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
         <item name="android:insetLeft">@dimen/kaleyra_dimen_space0</item>
         <item name="android:insetRight">@dimen/kaleyra_dimen_space0</item>
         <item name="android:insetTop">@dimen/kaleyra_dimen_space0</item>
@@ -37,15 +37,15 @@
         <item name="backgroundTint">@android:color/transparent</item>
         <item name="rippleColor">@color/kaleyra_call_action_button_ripple_color</item>
         <item name="iconSize">@dimen/kaleyra_dimen_normal_image_button</item>
-        <item name="shapeAppearanceOverlay">@style/KaleyraSDKDesign.ImageButton.ShapeAppearanceOverlay.Circle</item>
+        <item name="shapeAppearanceOverlay">@style/KaleyraCollaborationSuiteUI.ImageButton.ShapeAppearanceOverlay.Circle</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.ShapeAppearanceOverlay.Circle" parent="">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.ShapeAppearanceOverlay.Circle" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.AudioRoute" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.AudioRoute" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:paddingRight">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
         <item name="iconTint">@color/kaleyra_audio_route_icon_color</item>
@@ -55,7 +55,7 @@
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Send" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Send" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space4</item>
         <item name="android:paddingRight">@dimen/kaleyra_dimen_space4</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space4</item>
@@ -73,26 +73,26 @@
         <item name="android:contentDescription">@string/kaleyra_chat_send</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Confirm" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Confirm" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="icon">@drawable/ic_kaleyra_confirm</item>
         <item name="android:contentDescription">@string/kaleyra_action_confirm</item>
         <item name="iconTint">?attr/colorOnSurface</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Cancel" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Cancel" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="icon">@drawable/kaleyra_whiteboard_editor_cancel_button_icon</item>
         <item name="iconTint">?attr/colorOnSurface</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Confirm.Day" parent="KaleyraSDKDesign.ImageButton.Confirm">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Confirm.Day" parent="KaleyraCollaborationSuiteUI.ImageButton.Confirm">
         <item name="iconTint">@color/kaleyra_colorOnSurface</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Cancel.Day" parent="KaleyraSDKDesign.ImageButton.Cancel">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Cancel.Day" parent="KaleyraCollaborationSuiteUI.ImageButton.Cancel">
         <item name="iconTint">@color/kaleyra_colorOnSurface</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Reload" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Reload" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="icon">@drawable/ic_kaleyra_reload</item>
@@ -103,7 +103,7 @@
     </style>
 
     <!-- Line style -->
-    <style name="KaleyraSDKDesign.ImageButton.BottomSheetLine" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.BottomSheetLine" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:gravity">center</item>
         <item name="backgroundTint">@android:color/transparent</item>
@@ -117,19 +117,19 @@
         <item name="rippleColor">@android:color/transparent</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.BottomSheetLine.Ringing" parent="KaleyraSDKDesign.ImageButton.BottomSheetLine">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.BottomSheetLine.Ringing" parent="KaleyraCollaborationSuiteUI.ImageButton.BottomSheetLine">
         <item name="android:visibility">gone</item>
     </style>
 
     <!-- CALL USER INFO -->
 
-    <style name="KaleyraSDKDesign.ImageButton.Snapshot" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Snapshot" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:layout_margin">@dimen/kaleyra_dimen_space16</item>
         <item name="icon">@drawable/ic_kaleyra_snapshot</item>
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.FullScreen" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.FullScreen" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:paddingRight">@dimen/kaleyra_dimen_space8</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space8</item>
@@ -149,7 +149,7 @@
         <item name="android:contentDescription">@string/kaleyra_fullscreen_button</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Close" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Close" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space16</item>
@@ -159,7 +159,7 @@
         <item name="android:contentDescription">@string/kaleyra_snapshot_close</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.Save" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Save" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space16</item>
@@ -169,7 +169,7 @@
         <item name="android:contentDescription">@string/kaleyra_snapshot_save</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.UploadError" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.UploadError" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">@dimen/kaleyra_dimen_space8</item>
@@ -182,7 +182,7 @@
         <item name="android:contentDescription">@string/kaleyra_upload_file_error</item>
     </style>
 
-    <style name="KaleyraSDKDesign.ImageButton.ChatUnreadMessages" parent="KaleyraSDKDesign.ImageButton">
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.ChatUnreadMessages" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:minWidth">@dimen/kaleyra_dimen_space32</item>
         <item name="android:minHeight">@dimen/kaleyra_dimen_space32</item>
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space4</item>

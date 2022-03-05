@@ -18,7 +18,7 @@
 
     <!-- BOTTOM SHEET BEHAVIOUR -->
 
-    <declare-styleable name="KaleyraSDKDesign.BottomSheet.Behavior">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.BottomSheet.Behavior">
         <attr name="kaleyra_anchorPoint" format="dimension" />
         <attr name="kaleyra_defaultStatus" format="enum">
             <enum name="stateAnchorPoint" value="3" />
@@ -28,25 +28,25 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="KaleyraSDKDesign.BottomSheet">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.BottomSheet">
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_recyclerViewStyle"/>
         <attr name="kaleyra_lineStyle" />
         <attr name="materialCardViewStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.BottomSheet" parent="">
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.BottomSheet</item>
-        <item name="kaleyra_recyclerViewStyle">@style/KaleyraSDKDesign.BottomSheet.RecyclerView</item>
-        <item name="materialCardViewStyle">@style/KaleyraSDKDesign.BottomSheetBackground</item>
-        <item name="kaleyra_lineStyle">@style/KaleyraSDKDesign.ImageButton.BottomSheetLine</item>
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet" parent="">
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.BottomSheet</item>
+        <item name="kaleyra_recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.BottomSheet.RecyclerView</item>
+        <item name="materialCardViewStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetBackground</item>
+        <item name="kaleyra_lineStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.BottomSheetLine</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="android:orientation">vertical</item>
     </style>
 
     <!-- RecyclerView style -->
-    <style name="KaleyraSDKDesign.BottomSheet.RecyclerView" parent="">
+    <style name="KaleyraCollaborationSuiteUI.BottomSheet.RecyclerView" parent="">
         <item name="android:layout_gravity">center</item>
         <item name="android:clipToPadding">false</item>
         <item name="android:paddingBottom">@dimen/kaleyra_dimen_space8</item>

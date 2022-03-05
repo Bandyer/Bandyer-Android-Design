@@ -16,19 +16,19 @@
   -->
 
 <resources>
-    <declare-styleable name="KaleyraSDKDesign.UserInfo">
+    <declare-styleable name="KaleyraCollaborationSuiteUI.UserInfo">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="materialButtonStyle" />
         <attr name="kaleyra_titleStyle" />
     </declare-styleable>
 
-    <style name="KaleyraSDKDesign.UserInfo" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.UserInfo.RootLayout</item>
-        <item name="materialButtonStyle">@style/KaleyraSDKDesign.ImageButton.FullScreen</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraSDKDesign.TextView.Title.UserInfo</item>
+    <style name="KaleyraCollaborationSuiteUI.UserInfo" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.UserInfo.RootLayout</item>
+        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.FullScreen</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserInfo</item>
     </style>
 
-    <style name="KaleyraSDKDesign.UserInfo.RootLayout">
+    <style name="KaleyraCollaborationSuiteUI.UserInfo.RootLayout">
         <item name="android:background">@drawable/kaleyra_shape_transparent_black_background</item>
     </style>
 </resources>
