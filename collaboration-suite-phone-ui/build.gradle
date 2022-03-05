@@ -60,8 +60,8 @@ dependencies {
 
     implementation androidX.recyclerView
     api google.flexbox
+    implementation project(':collaboration-suite-core-ui')
 
     /** Kaleyra **/
-    implementation project(':core-ui')
     compileOnly kaleyra.utils
 }

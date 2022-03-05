@@ -48,9 +48,9 @@ dependencies {
     // UI
     api fastAdapter.fastAdapter
     api fastAdapter.diff
+    api project(':collaboration-suite-core-ui')
 
     /** Kaleyra **/
-    api project(':core-ui')
     compileOnly project(path: ':collaboration-suite')
     compileOnly kaleyra.utils
 }
