@@ -35,7 +35,7 @@ ext {
     def kotlinCoroutinesVersion = "1.6.0"
 
     def collaborationSuiteUtilsVersion = "1.0.0"
-//    def bandyerCollaborationVersion = "1.0.0"
+    def collaborationSuiteVersion = "1.0.0-alpha1"
 
     def junitVersion = "4.13.2"
     def testRunnerVersion = "1.4.0"
@@ -101,7 +101,7 @@ ext {
 
     kaleyra = [
            utils: "com.kaleyra:collaboration-suite-utils:$collaborationSuiteUtilsVersion",
-//           collaboration: "com.bandyer:collaboration_center:$bandyerCollaborationVersion"
+           collaboration: "com.kaleyra:collaboration-suite:$collaborationSuiteVersion"
     ]
 
     test = [
