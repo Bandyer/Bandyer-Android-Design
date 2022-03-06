@@ -23,7 +23,7 @@ import androidx.annotation.DrawableRes
  *
  * @property id Id of the message
  * @property sender The message sender
- * @property userAlias The sender user alias
+ * @property userId The sender user identifier
  * @property message The message text
  * @property time The time the message was sent
  * @property userAvatarId The local resource id for the user's avatar
@@ -34,7 +34,7 @@ import androidx.annotation.DrawableRes
 internal data class ChatMessageData(
     val id: String,
     val sender: String? = null,
-    val userAlias: String? = null,
+    val userId: String? = null,
     val message: String? = null,
     val time: Long? = null,
     @DrawableRes val userAvatarId: Int? = null,

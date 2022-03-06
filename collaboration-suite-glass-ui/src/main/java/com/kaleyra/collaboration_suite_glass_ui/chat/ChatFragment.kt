@@ -140,8 +140,8 @@ internal class ChatFragment : BaseFragment(), TiltListener {
         binding.kaleyraMessages.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
 
     override fun onTap() = true.also {
-        val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userAlias
-//        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt, contactData.first { it.userAlias.contains(username!!) })
+        val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userId
+//        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt, contactData.first { it.userId.contains(username!!) })
 //        findNavController().navigate(action)
     }
 
@@ -175,7 +175,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
                                 ChatMessageData(
                                     data.id,
                                     data.sender,
-                                    data.userAlias,
+                                    data.userId,
                                     pageList[i].toString(),
                                     data.time,
                                     data.userAvatarId,

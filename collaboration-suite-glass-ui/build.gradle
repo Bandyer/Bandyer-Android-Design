@@ -51,6 +51,6 @@ dependencies {
     api project(':collaboration-suite-core-ui')
 
     /** Kaleyra **/
-    compileOnly project(path: ':collaboration-suite')
+    compileOnly kaleyra.collaboration
     compileOnly kaleyra.utils
 }

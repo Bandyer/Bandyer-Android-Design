@@ -202,8 +202,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             call.setup()
 
             val participants = call.participants.value
-            val userAliases = participants.others.map { it.userAlias }
-            val usersDescription = usersDescription.name(userAliases)
+            val userIds = participants.others.map { it.userId }
+            val usersDescription = usersDescription.name(userIds)
 
             // If it is an incoming call
             if (participants.me != participants.creator()) {

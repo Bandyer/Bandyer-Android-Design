@@ -42,8 +42,8 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
                         participants.others.size + 1
                     )
 
-                    val userAliases = participants.others.plus(participants.me).map { it.userAlias }
-                    kaleyraParticipants.text = viewModel.usersDescription.name(userAliases)
+                    val userIds = participants.others.plus(participants.me).map { it.userId }
+                    kaleyraParticipants.text = viewModel.usersDescription.name(userIds)
                     updateUIOnParticipantsViewChange()
 
                     setSubtitle(participants.others.count() + 1 > 2)

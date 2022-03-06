@@ -278,7 +278,7 @@ internal class GlassCallActivity :
                 .onEach { part ->
                     val text = resources.getString(
                         R.string.kaleyra_glass_user_joined_pattern,
-                        viewModel.usersDescription.name(listOf(part.userAlias))
+                        viewModel.usersDescription.name(listOf(part.userId))
                     )
                     binding.kaleyraToastContainer.show(text = text)
                 }.launchIn(this)
@@ -287,7 +287,7 @@ internal class GlassCallActivity :
                 .onEach { part ->
                     val text = resources.getString(
                         R.string.kaleyra_glass_user_left_pattern,
-                        viewModel.usersDescription.name(listOf(part.userAlias))
+                        viewModel.usersDescription.name(listOf(part.userId))
                     )
                     binding.kaleyraToastContainer.show(text = text)
                 }.launchIn(this)

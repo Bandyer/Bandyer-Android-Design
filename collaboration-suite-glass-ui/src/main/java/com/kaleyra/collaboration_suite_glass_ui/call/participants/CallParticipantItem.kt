@@ -23,7 +23,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
 internal data class ParticipantItemData(
-    val userAlias: String,
+    val userId: String,
     val userDescription: String
 )
 
@@ -38,7 +38,7 @@ internal class CallParticipantItem(val data: ParticipantItemData): AbstractItem<
     /**
      * Set an unique identifier for the identifiable which do not have one set already
      */
-    override var identifier: Long = data.userAlias.hashCode().toLong()
+    override var identifier: Long = data.userId.hashCode().toLong()
 
     /**
      * The layout for the given item

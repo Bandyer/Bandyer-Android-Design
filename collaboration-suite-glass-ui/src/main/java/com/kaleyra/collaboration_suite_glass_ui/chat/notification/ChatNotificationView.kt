@@ -73,14 +73,14 @@ internal class ChatNotificationView @JvmOverloads constructor(
             with(kaleyraAvatars) {
                 addAvatar(
                     item.name.first().uppercase(),
-                    item.userAlias.parseToColor()
+                    item.userId.parseToColor()
                 )
                 if (item.imageRes != null) addAvatar(item.imageRes)
                 else if (item.imageUrl != null) addAvatar(item.imageUrl)
             }
         }
 
-        val distinctUsers = data.distinctBy { it.userAlias }.size
+        val distinctUsers = data.distinctBy { it.userId }.size
         if (distinctUsers > 2)
             kaleyraAvatars.addAvatar(
                 resources.getString(

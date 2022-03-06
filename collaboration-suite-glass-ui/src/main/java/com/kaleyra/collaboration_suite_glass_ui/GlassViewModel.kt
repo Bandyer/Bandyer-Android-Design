@@ -87,9 +87,9 @@ internal class GlassViewModel(
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = ConcurrentHashMap<String, CallParticipant>()
             call.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, itsMe, streams, state ->
-                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) participants[participant.userAlias] =
+                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) participants[participant.userId] =
                     participant
-                else participants.remove(participant.userAlias)
+                else participants.remove(participant.userId)
                 emit(participants.values.toList())
             }.launchIn(viewModelScope)
         }
@@ -122,8 +122,8 @@ internal class GlassViewModel(
                     val newStreams = streams.map {
                         StreamParticipant(
                             participant, itsMe, it, usersDescription.name(
-                                listOf(participant.userAlias)
-                            ), usersDescription.image(listOf(participant.userAlias))
+                                listOf(participant.userId)
+                            ), usersDescription.image(listOf(participant.userId))
                         )
                     }
                     val currentStreams = uiStreams.filter { it.participant == participant }

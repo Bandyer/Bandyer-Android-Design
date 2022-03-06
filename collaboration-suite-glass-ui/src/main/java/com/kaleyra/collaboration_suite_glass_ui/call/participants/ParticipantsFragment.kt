@@ -119,20 +119,20 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                     val foundView = snapHelper!!.findSnapView(layoutManager) ?: return
                     currentParticipantIndex = layoutManager!!.getPosition(foundView)
 
-                    val userAlias =
-                        itemAdapter!!.getAdapterItem(currentParticipantIndex).data.userAlias
+                    val userId =
+                        itemAdapter!!.getAdapterItem(currentParticipantIndex).data.userId
                     with(binding.kaleyraUserInfo) {
                         hideName(true)
 
                         lifecycleScope.launch {
-                            val image = viewModel.usersDescription.image(listOf(userAlias))
+                            val image = viewModel.usersDescription.image(listOf(userId))
 
                             if (image != Uri.EMPTY) {
                                 setAvatar(image)
                                 return@launch
                             }
 
-                            val desc = viewModel.usersDescription.name(listOf(userAlias))
+                            val desc = viewModel.usersDescription.name(listOf(userId))
                             setAvatar(null)
                             setAvatarBackgroundAndLetter(desc)
                         }
@@ -149,9 +149,9 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                 .takeWhile { it.first.isNotEmpty() }
                 .collect { pair ->
                     val sortedList =
-                        pair.first.sortedBy { pair.second.me.userAlias != it.userAlias }
+                        pair.first.sortedBy { pair.second.me.userId != it.userId }
                     val items = sortedList.map { part ->
-                        val data = part.userAlias.let {
+                        val data = part.userId.let {
                             ParticipantItemData(
                                 it,
                                 viewModel.usersDescription.name(listOf(it))

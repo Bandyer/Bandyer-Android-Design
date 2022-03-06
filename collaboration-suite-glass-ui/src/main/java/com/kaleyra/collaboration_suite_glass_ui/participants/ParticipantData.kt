@@ -27,7 +27,7 @@ import kotlinx.parcelize.RawValue
  * ParticipantData
  *
  * @property name The name
- * @property userAlias The user alias
+ * @property userId The user identifier
  * @property userState UserState
  * @property avatarImageId The local avatar resource
  * @property avatarImageUrl The remote avatar url resource
@@ -38,7 +38,7 @@ import kotlinx.parcelize.RawValue
 @Parcelize
 internal data class ParticipantData(
     val name: String,
-    val userAlias: String,
+    val userId: String,
     val userState: @RawValue UserState,
     @DrawableRes val avatarImageId: Int? = null,
     val avatarImageUrl: String? = null,
