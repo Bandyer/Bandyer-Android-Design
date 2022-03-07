@@ -64,9 +64,14 @@ object CollaborationUI {
             super.onStop(owner)
             wasPhoneBoxConnected =
                 phoneBox.state.value !is PhoneBox.State.Disconnected && phoneBox.state.value !is PhoneBox.State.Disconnecting
-            val call = phoneBox.call.replayCache.firstOrNull() ?: return
-            call.state.takeWhile { it !is Call.State.Disconnected.Ended }
-                .onCompletion { stopPhoneBoxService() }.launchIn(MainScope())
+            val call = phoneBox.call.replayCache.firstOrNull()
+            call?.also { c ->
+                c.state
+                    .takeWhile { it !is Call.State.Disconnected.Ended }
+                    .onCompletion {
+                        stopPhoneBoxService()
+                    }.launchIn(MainScope())
+            } ?: stopPhoneBoxService()
         }
     }
 
