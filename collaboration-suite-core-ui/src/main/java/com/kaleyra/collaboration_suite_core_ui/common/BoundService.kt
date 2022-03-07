@@ -41,7 +41,7 @@ abstract class BoundService : LifecycleService() {
      */
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
-        return ServiceBinder().also { binder = it }
+        return binder ?: ServiceBinder().also { binder = it }
     }
 
     /**
