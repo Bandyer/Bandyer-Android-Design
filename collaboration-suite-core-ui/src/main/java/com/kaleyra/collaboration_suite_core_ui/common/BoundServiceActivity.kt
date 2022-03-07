@@ -52,7 +52,6 @@ abstract class BoundServiceActivity<T : BoundService>(private val clazz: Class<T
 
         with(applicationContext) {
             val intent = Intent(this, clazz)
-            startService(intent)
             bindService(intent, serviceConnection!!, 0)
         }
     }
