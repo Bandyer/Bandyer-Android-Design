@@ -25,7 +25,7 @@
         <item name="fontFamily">@font/kaleyra_font</item>
         <item name="android:fontFamily">@font/kaleyra_font</item>
         <item name="elevationOverlayEnabled">false</item>
-        <item name="toolbarStyle">@style/KaleyraSDKDesign.ToolBarStyle</item>
+        <item name="toolbarStyle">@style/KaleyraCollaborationSuiteUI.ToolBarStyle</item>
     </style>
 
     <style name="BaseDesignDemoApp" parent="BaseDesignDemoApp.V21"/>
@@ -43,21 +43,21 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
-    <style name="KaleyraSDKDesign.Theme.Call" parent="KaleyraSDKDesign.Theme.Call.DayNight"/>
+    <style name="KaleyraCollaborationSuiteUI.Theme.Call" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight"/>
 
     <!-- CALL WATERMARK CUSTOMIZATION -->
 
-    <style name="KaleyraSDKDesign.CallWatermark" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraSDKDesign.CallWatermark.RootLayout</item>
+    <style name="KaleyraCollaborationSuiteUI.CallWatermark" parent="">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.CallWatermark.RootLayout</item>
         <item name="kaleyra_iconStyle">@style/CallWatermark</item>
         <item name="kaleyra_titleStyle">@style/TitleWatermark</item>
     </style>
 
-    <style name="CallWatermark" parent="KaleyraSDKDesign.CallWatermarkImageView">
+    <style name="CallWatermark" parent="KaleyraCollaborationSuiteUI.CallWatermarkImageView">
         <item name="android:src">@drawable/logo</item>
     </style>
 
-    <style name="TitleWatermark" parent="KaleyraSDKDesign.TextView.CallWatermark">
+    <style name="TitleWatermark" parent="KaleyraCollaborationSuiteUI.TextView.CallWatermark">
         <item name="android:text">@string/kaleyra</item>
     </style>
 

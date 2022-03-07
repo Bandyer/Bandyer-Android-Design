@@ -21,7 +21,6 @@ plugins {
 }
 
 def kotlin_coroutines = "1.4.3"
-def kaleyra_audio_session_version = '2.0.10'
 def kotlinVersion = "1.6.10"
 
 android {
@@ -87,10 +86,10 @@ dependencies {
     /***  Leak Canary ***/
     debugImplementation "com.squareup.leakcanary:leakcanary-android:2.8.1"
 
-    /***  KaleyraSDKDesign ***/
-
-    implementation project(':phone-ui')
-    implementation project(':glass-ui')
-    implementation project(':core-ui')
-    implementation "com.bandyer:bandyer-android-audiosession:$kaleyra_audio_session_version"
+    /***  KaleyraCollaborationSuiteUI ***/
+    implementation project(':collaboration-suite-phone-ui')
+    implementation project(':collaboration-suite-glass-ui')
+    implementation project(':collaboration-suite-core-ui')
+    implementation "com.kaleyra:collaboration-suite-utils:1.0.0"
+    implementation "com.bandyer:bandyer-android-audiosession:2.0.10"
 }

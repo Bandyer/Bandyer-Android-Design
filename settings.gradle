@@ -14,20 +14,6 @@
  *  limitations under the License.
  */
 include ':app',
-        ':collaboration-suite',
-        ':communication_center',
-        ':bandyer-android-coreav',
-        ':extension_usb_camera',
-        ':extension_live_pointer',
-        ':extension_file_share',
-        ':core-ui',
-        ':phone-ui',
-        ':glass-ui'
-
-project(':collaboration-suite').projectDir = file('../Bandyer-Android-CollaborationCenter/collaboration-suite/')
-project(':communication_center').projectDir = file('../Bandyer-Android-CommunicationCenter/communication_center/')
-project(':extension_live_pointer').projectDir = file('../Bandyer-Android-CommunicationCenter/extension_live_pointer/')
-project(':bandyer-android-coreav').projectDir = file('../Bandyer-Android-Core-AV/core_av/')
-project(':extension_usb_camera').projectDir = file('../Bandyer-Android-Core-AV/extension_usb_camera/')
-project(':extension_file_share').projectDir = file('../Bandyer-Android-CommunicationCenter/extension_file_share')
-
+        ':collaboration-suite-core-ui',
+        ':collaboration-suite-phone-ui',
+        ':collaboration-suite-glass-ui'

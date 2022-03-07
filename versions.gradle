@@ -7,7 +7,6 @@ ext {
 
     // Versions
     def kotlinVersion = '1.6.10'
-    def r8Version = "3.0.73"
     def gradleVersion = "7.0.4"
     def androidAptVersion = "1.8"
     def benManesGradleVersion = "0.21.0"
@@ -45,7 +44,6 @@ ext {
 
     // Dependencies
     classPaths = [
-            r8ClassPath: "com.android.tools:r8:$r8Version",
             gradleClassPath: "com.android.tools.build:gradle:$gradleVersion",
             neenbedanktGradlePlugin: "com.neenbedankt.gradle.plugins:android-apt:$androidAptVersion",
             benManesGradlePlugin: "com.github.ben-manes:gradle-versions-plugin:$benManesGradleVersion",

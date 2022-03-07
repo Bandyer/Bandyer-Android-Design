@@ -57,7 +57,7 @@
 
         <com.kaleyra.collaboration_suite_phone_ui.buttons.KaleyraHideableButton
             android:id="@+id/fullscreen_info"
-            style="@style/KaleyraSDKDesign.FullscreenToastButton"
+            style="@style/KaleyraCollaborationSuiteUI.FullscreenToastButton"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

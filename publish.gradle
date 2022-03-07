@@ -54,7 +54,7 @@ dokkaHtml {
     moduleName.set(project.getName())
     dokkaSourceSets {
         configureEach {
-            jdkVersion.set(11)
+            jdkVersion.set(8)
             suppressInheritedMembers.set(true)
             reportUndocumented.set(true)
             skipEmptyPackages.set(true)
