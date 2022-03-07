@@ -62,8 +62,8 @@ internal class StartFragment : BaseFragment() {
 
     override fun onServiceBound() {
         repeatOnStarted {
-            viewModel.call.state
-                .combine(viewModel.call.participants) { state, participants ->
+            viewModel.callState
+                .combine(viewModel.participants) { state, participants ->
                     when {
                         state is Call.State.Connecting && participants.me == participants.creator()  ->
                             findNavController().safeNavigate(StartFragmentDirections.actionStartFragmentToDialingFragment())

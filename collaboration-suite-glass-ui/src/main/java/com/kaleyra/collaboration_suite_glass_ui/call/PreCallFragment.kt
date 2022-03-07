@@ -36,7 +36,7 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
             root.setOnTouchListener { _, event -> kaleyraParticipantsScrollView.onTouchEvent(event) }
 
             repeatOnStarted {
-                viewModel.call.participants.onEach { participants ->
+                viewModel.participants.onEach { participants ->
                     kaleyraCounter.text = resources.getString(
                         R.string.kaleyra_glass_n_of_participants_pattern,
                         participants.others.size + 1

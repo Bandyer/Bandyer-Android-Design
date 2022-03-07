@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui.call
 
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import kotlinx.coroutines.flow.SharedFlow
 
 /**
  * Call UI delegate
@@ -26,7 +27,7 @@ interface CallUIDelegate {
     /**
      * Call
      */
-    val call: Call
+    val call: SharedFlow<Call>
 
     /**
      * Users description

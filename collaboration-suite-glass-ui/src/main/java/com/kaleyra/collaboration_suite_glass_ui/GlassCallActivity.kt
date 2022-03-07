@@ -95,7 +95,8 @@ internal class GlassCallActivity :
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.kaleyra_activity_glass)
 
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.kaleyra_nav_host_fragment) as NavHostFragment
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.kaleyra_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
         glassGestureDetector = GlassGestureDetector(this, this)
@@ -133,7 +134,7 @@ internal class GlassCallActivity :
         viewModel.onRequestCameraPermission(this)
 
         // Add a scroll listener to the recycler view to show mic/cam blocked/disabled toasts
-        with(binding.kaleyraStreams){
+        with(binding.kaleyraStreams) {
             val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -173,11 +174,7 @@ internal class GlassCallActivity :
             })
         }
 
-        with(binding.kaleyraStatusBar) {
-            if (viewModel.call.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
-        }
-
-        viewModel.call.state
+        viewModel.callState
             .dropWhile { it == Call.State.Disconnected }
             .takeWhile { it !is Call.State.Disconnected }
             .onCompletion {
@@ -209,7 +206,7 @@ internal class GlassCallActivity :
                 }
                 .launchIn(this)
 
-            viewModel.call.state
+            viewModel.callState
                 .dropWhile { it == Call.State.Disconnected }
                 .onEach {
                     if (it is Call.State.Reconnecting) navController!!.navigate(R.id.reconnectingFragment)
@@ -291,6 +288,12 @@ internal class GlassCallActivity :
                     )
                     binding.kaleyraToastContainer.show(text = text)
                 }.launchIn(this)
+
+            viewModel.call.onEach {
+                with(binding.kaleyraStatusBar) {
+                    if (it.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
+                }
+            }.launchIn(this)
 
             viewModel.streams
                 .onEach { streams ->

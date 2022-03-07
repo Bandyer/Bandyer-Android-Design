@@ -46,7 +46,9 @@ import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_core_ui.utils.NotificationHelper
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -86,10 +88,10 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private var callAudioManager: CallAudioManager? = null
 
-    //    private var ongoingCalls: MutableSet<Call> = mutableSetOf()
+    private val ongoingCall: MutableSharedFlow<Call> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
 
-    override val call: Call
-        get() = currentCall!!
+    override val call: SharedFlow<Call>
+        get() = ongoingCall.asSharedFlow()
 
     override var usersDescription: UsersDescription = UsersDescription()
 
@@ -195,10 +197,9 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     private fun PhoneBox.observe(): Job =
         call.onEach { call ->
             if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return@onEach
-//                if (ongoingCalls.isNotEmpty()) return@onEach
 
-//                ongoingCalls.add(call)
             currentCall = call
+            ongoingCall.emit(call)
             call.setup()
 
             val participants = call.participants.value
@@ -249,7 +250,6 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
                 stopForeground(true)
                 NotificationHelper.cancelNotification(this@CallService, CALL_NOTIFICATION_ID)
-//                ongoingCalls.remove(this@setup)
             }.launchIn(lifecycleScope)
     }
 

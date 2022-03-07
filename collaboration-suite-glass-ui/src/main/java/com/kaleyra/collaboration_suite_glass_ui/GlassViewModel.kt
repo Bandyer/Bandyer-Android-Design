@@ -73,7 +73,11 @@ internal class GlassViewModel(
     private val callController: CallUIController
 ) : ViewModel() {
 
-    val call: Call = callDelegate.call
+    val call: SharedFlow<Call> = callDelegate.call
+
+    val callState= call.flatMapLatest { it.state }
+
+    val participants = call.flatMapLatest { it.participants }
 
     val battery: SharedFlow<BatteryInfo> = deviceStatusDelegate.battery
 
@@ -86,7 +90,7 @@ internal class GlassViewModel(
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = ConcurrentHashMap<String, CallParticipant>()
-            call.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, itsMe, streams, state ->
+            this@GlassViewModel.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, itsMe, streams, state ->
                 if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) participants[participant.userId] =
                     participant
                 else participants.remove(participant.userId)
@@ -117,7 +121,7 @@ internal class GlassViewModel(
     val streams: SharedFlow<List<StreamParticipant>> =
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
-            call.participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
+            participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
                 if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
                     val newStreams = streams.map {
                         StreamParticipant(
@@ -137,10 +141,10 @@ internal class GlassViewModel(
         }
 
     private val myStreams: Flow<List<Stream>> =
-        call.participants.map { it.me }.flatMapLatest { it.streams }
+        participants.map { it.me }.flatMapLatest { it.streams }
 
     private val otherStreams: Flow<List<Stream>> =
-        call.participants.map { it.others }.flatMapLatest { it.map { it.streams }.merge() }
+        participants.map { it.others }.flatMapLatest { it.map { it.streams }.merge() }
 
     private val cameraStream: Flow<Stream?> =
         myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it is Input.Video.Camera } != null } }
