@@ -71,7 +71,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
         fun onNotificationAnswer() = currentCall?.connect()
 
-        fun onNotificationHangUp() = currentCall?.disconnect()
+        fun onNotificationHangUp() = currentCall?.end()
     }
 
     private var activityClazz: Class<*>? = null
@@ -132,7 +132,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
         NotificationHelper.cancelNotification(this, CALL_NOTIFICATION_ID)
 
-        currentCall?.disconnect()
+        currentCall?.end()
         phoneBox?.disconnect()
         batteryObserver?.stop()
         wifiObserver?.stop()
@@ -317,7 +317,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     }
 
     override fun onHangup() {
-        currentCall?.disconnect()
+        currentCall?.end()
     }
 
     override fun onEnableCamera(enable: Boolean) {
