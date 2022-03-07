@@ -25,7 +25,7 @@ internal object UIProvider {
     fun <T> showCall(activityClazz: Class<T>) =
         with(ContextRetainer.context) {
             val intent = Intent(this, activityClazz).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 putExtra("enableTilt", isSmartGlass)
             }
             startActivity(intent)

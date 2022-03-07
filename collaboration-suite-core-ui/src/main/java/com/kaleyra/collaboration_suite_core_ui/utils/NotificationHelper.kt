@@ -109,7 +109,7 @@ internal object NotificationHelper {
         val intent = Intent(applicationContext, activityClazz).apply {
             action = Intent.ACTION_MAIN
             addCategory(Intent.CATEGORY_LAUNCHER)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             putExtra("enableTilt", DeviceUtils.isSmartGlass)
             putExtra("autoAnswer", enableAutoAnswer)
         }
