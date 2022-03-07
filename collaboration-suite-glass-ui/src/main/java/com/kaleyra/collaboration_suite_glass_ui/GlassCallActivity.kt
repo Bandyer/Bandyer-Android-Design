@@ -16,6 +16,7 @@
 
 package com.kaleyra.collaboration_suite_glass_ui
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
@@ -122,6 +123,11 @@ internal class GlassCallActivity :
 
         enableImmersiveMode()
         turnScreenOnAndKeyguardOff()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        if (intent?.extras?.get("autoAnswer") == true) viewModel.onAnswer()
     }
 
     override fun onServiceBound(service: CallService) {

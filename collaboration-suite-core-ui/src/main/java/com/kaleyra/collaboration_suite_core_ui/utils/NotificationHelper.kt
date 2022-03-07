@@ -107,8 +107,9 @@ internal object NotificationHelper {
     private fun <T> createCallActivityPendingIntent(context: Context, requestCode: Int, activityClazz: Class<T>, enableAutoAnswer: Boolean = false): PendingIntent {
         val applicationContext = context.applicationContext
         val intent = Intent(applicationContext, activityClazz).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            putExtra("enableTilt", false)
+            action = Intent.ACTION_MAIN
+            addCategory(Intent.CATEGORY_LAUNCHER)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             putExtra("autoAnswer", enableAutoAnswer)
         }
         return PendingIntent.getActivity(applicationContext, requestCode, intent, PendingIntentExtensions.updateFlags)
