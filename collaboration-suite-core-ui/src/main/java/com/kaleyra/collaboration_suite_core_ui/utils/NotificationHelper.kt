@@ -110,6 +110,7 @@ internal object NotificationHelper {
             action = Intent.ACTION_MAIN
             addCategory(Intent.CATEGORY_LAUNCHER)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            putExtra("enableTilt", DeviceUtils.isSmartGlass)
             putExtra("autoAnswer", enableAutoAnswer)
         }
         return PendingIntent.getActivity(applicationContext, requestCode, intent, PendingIntentExtensions.updateFlags)
