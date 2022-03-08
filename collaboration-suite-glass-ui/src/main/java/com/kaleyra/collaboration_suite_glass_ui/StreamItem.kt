@@ -22,6 +22,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
@@ -30,6 +31,7 @@ import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassCallMySt
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassCallOtherStreamItemLayoutBinding
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getCallThemeAttribute
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.CoroutineName
@@ -179,9 +181,9 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
                 return
             }
 
-            // TODO add style
+            val context = parent.context
             val livePointerView =
-                livePointerViews[userId] ?: LivePointerView(parent.context).also {
+                livePointerViews[userId] ?: LivePointerView(ContextThemeWrapper(context, context.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Call_kaleyra_livePointerStyle))).also {
                     it.id = View.generateViewId()
                     livePointerViews[userId] = it
                     parent.addView(it)

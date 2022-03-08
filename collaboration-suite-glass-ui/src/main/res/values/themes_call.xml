@@ -15,12 +15,13 @@
   ~ limitations under the License.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <declare-styleable name="KaleyraCollaborationSuiteUI.Theme.Glass.Call">
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_statusBarStyle" />
-        <attr name="recyclerViewStyle" />
+        <attr name="recyclerViewStyle" tools:ignore="ResourceName" />
         <attr name="kaleyra_recyclerViewItemStyle" />
+        <attr name="kaleyra_livePointerStyle" format="reference" />
         <attr name="kaleyra_toastContainerStyle" format="reference" />
         <attr name="kaleyra_menuStyle" format="reference" />
         <attr name="kaleyra_volumeStyle" format="reference" />
@@ -38,6 +39,7 @@
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.RootLayout</item>
         <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
         <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.RecyclerViewItem</item>
+        <item name="kaleyra_livePointerStyle">@style/KaleyraCollaborationSuiteUI.LivePointer</item>
         <item name="kaleyra_toastContainerStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.ToastContainer</item>
         <item name="kaleyra_menuStyle">@style/KaleyraCollaborationSuiteUI.Glass.Menu</item>
         <item name="kaleyra_volumeStyle">@style/KaleyraCollaborationSuiteUI.Glass.Volume</item>
@@ -55,6 +57,7 @@
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.RootLayout</item>
         <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
         <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.RecyclerViewItem</item>
+        <item name="kaleyra_livePointerStyle">@style/KaleyraCollaborationSuiteUI.LivePointer</item>
         <item name="kaleyra_toastContainerStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.ToastContainer</item>
         <item name="kaleyra_menuStyle">@style/KaleyraCollaborationSuiteUI.Glass.Menu</item>
         <item name="kaleyra_volumeStyle">@style/KaleyraCollaborationSuiteUI.Glass.Volume</item>
@@ -72,6 +75,7 @@
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.RootLayout</item>
         <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
         <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.RecyclerViewItem</item>
+        <item name="kaleyra_livePointerStyle">@style/KaleyraCollaborationSuiteUI.LivePointer</item>
         <item name="kaleyra_toastContainerStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.ToastContainer</item>
         <item name="kaleyra_menuStyle">@style/KaleyraCollaborationSuiteUI.Glass.Menu</item>
         <item name="kaleyra_volumeStyle">@style/KaleyraCollaborationSuiteUI.Glass.Volume</item>
