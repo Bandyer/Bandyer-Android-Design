@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.utils;
+package com.kaleyra.collaboration_suite_core_ui.utils
 
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -26,7 +26,7 @@ import androidx.transition.TransitionManager
  *
  * @constructor Create
  */
-internal class KotlinConstraintSet : ConstraintSet() {
+class KotlinConstraintSet : ConstraintSet() {
 
     companion object {
         inline fun ConstraintLayout.changeConstraints(block: KotlinConstraintSet.() -> Unit) {
@@ -89,6 +89,6 @@ internal class KotlinConstraintSet : ConstraintSet() {
 
 
 }
-internal enum class Constraints {
+enum class Constraints {
     TOP, BOTTOM, START, END, RIGHT, LEFT
 }

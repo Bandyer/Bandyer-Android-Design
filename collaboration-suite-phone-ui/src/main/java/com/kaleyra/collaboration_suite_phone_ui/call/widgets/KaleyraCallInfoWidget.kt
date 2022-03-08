@@ -37,7 +37,7 @@ import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraWidgetCallInf
 import com.kaleyra.collaboration_suite_phone_ui.extensions.*
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
-import com.kaleyra.collaboration_suite_phone_ui.widgets.HideableWidget
+import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
 import com.google.android.material.textview.MaterialTextView
 
 /**

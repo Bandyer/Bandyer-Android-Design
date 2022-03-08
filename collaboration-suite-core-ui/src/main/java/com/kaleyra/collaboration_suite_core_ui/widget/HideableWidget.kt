@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.widgets
+package com.kaleyra.collaboration_suite_core_ui.widget
 
 import android.os.CountDownTimer
 

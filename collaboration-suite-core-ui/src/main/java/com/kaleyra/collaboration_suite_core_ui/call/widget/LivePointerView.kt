@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.call.widgets
+package com.kaleyra.collaboration_suite_core_ui.call.widget
 
 import android.content.Context
 import android.util.AttributeSet
@@ -23,10 +23,10 @@ import android.view.View
 import androidx.annotation.FloatRange
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
-import com.kaleyra.collaboration_suite_phone_ui.utils.KotlinConstraintSet.Companion.changeConstraints
-import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraWidgetLivePointerBinding
-import com.kaleyra.collaboration_suite_phone_ui.textviews.KaleyraAutoHideTextView
 import com.google.android.material.button.MaterialButton
+import com.kaleyra.collaboration_suite_core_ui.databinding.KaleyraWidgetLivePointerBinding
+import com.kaleyra.collaboration_suite_core_ui.textview.KaleyraAutoHideTextView
+import com.kaleyra.collaboration_suite_core_ui.utils.KotlinConstraintSet.Companion.changeConstraints
 
 /**
  * Kaleyra live pointer view

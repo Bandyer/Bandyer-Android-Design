@@ -47,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="@+id/kaleyra_vertical_guideline"
         app:layout_constraintRight_toRightOf="@+id/kaleyra_vertical_guideline"/>
 
-    <com.kaleyra.collaboration_suite_phone_ui.textviews.KaleyraAutoHideTextView
+    <com.kaleyra.collaboration_suite_core_ui.textview.KaleyraAutoHideTextView
         android:id="@+id/kaleyra_pointer_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

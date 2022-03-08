@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_phone_ui.textviews
+package com.kaleyra.collaboration_suite_core_ui.textview
 
 import android.content.Context
 import android.os.CountDownTimer
 import android.util.AttributeSet
 import android.view.View
-import com.kaleyra.collaboration_suite_phone_ui.widgets.HideableWidget
 import com.google.android.material.textview.MaterialTextView
+import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
 
 /**
  * Auto hide Kaleyra text view

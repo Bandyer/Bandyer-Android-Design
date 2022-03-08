@@ -17,6 +17,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.widgets
 
 import android.os.CountDownTimer
+import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
 
 /**
  * A composite of Hideable Widgets

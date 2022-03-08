@@ -20,7 +20,7 @@ import android.text.format.DateUtils
 import android.view.View
 import com.kaleyra.collaboration_suite_phone_ui.chat.imageviews.KaleyraChatMessageStatusImageView
 import com.kaleyra.collaboration_suite_phone_ui.chat.layout.KaleyraBaseChatMessageLayout
-import com.kaleyra.collaboration_suite_phone_ui.utils.KotlinConstraintSet.Companion.changeConstraints
+import com.kaleyra.collaboration_suite_core_ui.utils.KotlinConstraintSet.Companion.changeConstraints
 import com.google.android.material.card.MaterialCardView
 import com.mikepenz.fastadapter.FastAdapter
 

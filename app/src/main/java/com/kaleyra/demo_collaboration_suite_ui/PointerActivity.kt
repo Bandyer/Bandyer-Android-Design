@@ -19,7 +19,7 @@ package com.kaleyra.demo_collaboration_suite_ui
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.kaleyra.collaboration_suite_phone_ui.call.widgets.LivePointerView
+import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
 import com.google.android.material.appbar.MaterialToolbar
 import java.util.*
 

@@ -44,7 +44,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.RingingBottomS
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.AudioRoute
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getCallThemeAttribute
-import com.kaleyra.collaboration_suite_phone_ui.widgets.HideableWidget
+import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
 
 /**
  * Widget used during a call to perform actions such as mute video/audio, change audioRoute etc.
@@ -54,7 +54,8 @@ import com.kaleyra.collaboration_suite_phone_ui.widgets.HideableWidget
  * @constructor
  * @author kristiyan
  */
-class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordinatorLayout: CoordinatorLayout, val callActionItems: List<CallAction>) : HideableWidget where T : ActionItem, F : KaleyraBottomSheet {
+class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordinatorLayout: CoordinatorLayout, val callActionItems: List<CallAction>) :
+    HideableWidget where T : ActionItem, F : KaleyraBottomSheet {
 
     override var hidingTimer: CountDownTimer? = null
 
