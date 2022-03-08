@@ -17,11 +17,14 @@
 package com.kaleyra.collaboration_suite_glass_ui
 
 import android.net.Uri
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
 import com.kaleyra.collaboration_suite_core_ui.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassCallMyStreamItemLayoutBinding
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassCallOtherStreamItemLayoutBinding
@@ -64,6 +67,11 @@ internal interface IStreamItem {
         val jobs: ArrayList<Job>
 
         /**
+         * An hash map containing all live pointer views
+         */
+        val livePointerViews: MutableMap<String, LivePointerView>
+
+        /**
          * Called when the audio is enabled/disabled
          *
          * @param value True if the audio is enabled, false otherwise
@@ -83,6 +91,13 @@ internal interface IStreamItem {
          * @param view The stream view
          */
         fun onStreamView(view: View)
+
+        /**
+         * Called when a pointer event is received
+         *
+         * @param event Pointer event
+         */
+        fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String)
     }
 }
 
@@ -113,10 +128,9 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
     internal abstract class ViewHolder<T : StreamItem<*>>(view: View) :
         FastAdapter.ViewHolder<T>(view), IStreamItem.IViewHolder {
 
-        /**
-         * The jobs launched in the ViewHolder
-         */
         override val jobs: ArrayList<Job> = arrayListOf()
+
+        override val livePointerViews: MutableMap<String, LivePointerView> = hashMapOf()
 
         /**
          * Binds the data of this item onto the viewHolder
@@ -133,24 +147,30 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
                 .onEach { if (it == null) onVideoEnabled(false) }
                 .filter { it != null }
                 .flatMapLatest {
-                    combine(it!!.state, it.enabled, it.view) { s, e, v ->
-                        Triple(
-                            s,
-                            e,
-                            v
-                        )
-                    }
+                    combine(it!!.state, it.enabled, it.view) { s, e, v -> Triple(s, e, v) }
                 }
                 .onEach {
                     onVideoEnabled(if (it.first !is Input.State.Active) false else it.second)
                     it.third?.also { onStreamView(it) }
                 }.launchIn(item.scope)
+
+            jobs += video
+                .filter { it != null }
+                .flatMapLatest { it!!.events }
+                .onEach {
+                    if (it !is Input.Video.Event.Pointer) return@onEach
+                    onPointerEvent(it, item.streamParticipant.userDescription)
+                }
+                .launchIn(item.scope)
         }
 
         /**
          * View needs to release resources when its recycled
          */
-        override fun unbindView(item: T) = jobs.forEach { it.cancel() }
+        override fun unbindView(item: T) {
+            livePointerViews.clear()
+            jobs.forEach { it.cancel() }
+        }
     }
 }
 
@@ -217,6 +237,7 @@ internal class MyStreamItem(
         override fun unbindView(item: MyStreamItem): Unit = with(binding) {
             super.unbindView(item)
             unbind()
+            kaleyraLivePointersContainer.removeAllViews()
             kaleyraVideoWrapper.removeAllViews()
         }
 
@@ -238,6 +259,27 @@ internal class MyStreamItem(
             kaleyraVideoWrapper.removeAllViews()
             kaleyraVideoWrapper.addView(view.apply { id = View.generateViewId() })
         }
+
+        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) =
+            with(binding.kaleyraLivePointersContainer) {
+                val userId = event.producer.userId
+
+                if (event.action is Input.Video.Event.Action.Idle) {
+                    removeView(livePointerViews[userId])
+                    livePointerViews.remove(userId)
+                    return@with
+                }
+
+                val livePointerView =
+                    livePointerViews[userId] ?: LivePointerView(context).also {
+                        it.id = View.generateViewId()
+                        livePointerViews[userId] = it
+                        addView(it, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+                    }
+
+                livePointerView.updateLabelText(userDescription)
+                livePointerView.updateLivePointerPosition(100 - event.position.x, event.position.y)
+            }
     }
 }
 
@@ -293,6 +335,7 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope
         override fun unbindView(item: OtherStreamItem): Unit = with(binding) {
             super.unbindView(item)
             unbind()
+            kaleyraLivePointersContainer.removeAllViews()
             kaleyraVideoWrapper.removeAllViews()
         }
 
@@ -307,10 +350,34 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope
             kaleyraInfoWrapper.gravity = if (value) Gravity.START else Gravity.CENTER
         }
 
+        // TODO remove code duplication
         override fun onStreamView(view: View) = with(binding) {
             (view.parent as? ViewGroup)?.removeAllViews()
             kaleyraVideoWrapper.removeAllViews()
             kaleyraVideoWrapper.addView(view.apply { id = View.generateViewId() })
         }
+
+        // TODO remove code duplication
+        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) =
+            with(binding.kaleyraLivePointersContainer) {
+                val userId = event.producer.userId
+
+                if (event.action is Input.Video.Event.Action.Idle) {
+                    removeView(livePointerViews[userId])
+                    livePointerViews.remove(userId)
+                    return@with
+                }
+
+                // TODO add style
+                val livePointerView =
+                    livePointerViews[userId] ?: LivePointerView(context).also {
+                        it.id = View.generateViewId()
+                        livePointerViews[userId] = it
+                        addView(it)
+                    }
+
+                livePointerView.updateLabelText(userDescription)
+                livePointerView.updateLivePointerPosition(event.position.x, event.position.y)
+            }
     }
 }

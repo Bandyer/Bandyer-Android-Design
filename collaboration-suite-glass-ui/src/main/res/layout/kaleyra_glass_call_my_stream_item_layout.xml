@@ -29,6 +29,11 @@
             android:layout_height="match_parent"
             android:animateLayoutChanges="true"/>
 
+        <FrameLayout
+            android:id="@+id/kaleyra_live_pointers_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <LinearLayout
             android:id="@+id/kaleyra_info_wrapper"
             style="?attr/kaleyra_rootLayoutStyle"
