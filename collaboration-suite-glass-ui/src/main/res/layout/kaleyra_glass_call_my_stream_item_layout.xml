@@ -30,7 +30,7 @@
             android:animateLayoutChanges="true"/>
 
         <FrameLayout
-            android:id="@+id/kaleyra_live_pointers_container"
+            android:id="@+id/kaleyra_live_pointers"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

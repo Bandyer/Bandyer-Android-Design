@@ -164,6 +164,33 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
                 .launchIn(item.scope)
         }
 
+        protected fun onStreamView(parent: ViewGroup, view: View) {
+            (view.parent as? ViewGroup)?.removeAllViews()
+            parent.removeAllViews()
+            parent.addView(view.apply { id = View.generateViewId() })
+        }
+
+        protected fun onPointerEvent(parent: ViewGroup, event: Input.Video.Event.Pointer, userDescription: String) {
+            val userId = event.producer.userId
+
+            if (event.action is Input.Video.Event.Action.Idle) {
+                parent.removeView(livePointerViews[userId])
+                livePointerViews.remove(userId)
+                return
+            }
+
+            // TODO add style
+            val livePointerView =
+                livePointerViews[userId] ?: LivePointerView(parent.context).also {
+                    it.id = View.generateViewId()
+                    livePointerViews[userId] = it
+                    parent.addView(it)
+                }
+
+            livePointerView.updateLabelText(userDescription)
+            livePointerView.updateLivePointerPosition(event.position.x, event.position.y)
+        }
+
         /**
          * View needs to release resources when its recycled
          */
@@ -237,7 +264,7 @@ internal class MyStreamItem(
         override fun unbindView(item: MyStreamItem): Unit = with(binding) {
             super.unbindView(item)
             unbind()
-            kaleyraLivePointersContainer.removeAllViews()
+            kaleyraLivePointers.removeAllViews()
             kaleyraVideoWrapper.removeAllViews()
         }
 
@@ -254,32 +281,10 @@ internal class MyStreamItem(
             kaleyraInfoWrapper.gravity = if (value) Gravity.START else Gravity.CENTER
         }
 
-        override fun onStreamView(view: View) = with(binding) {
-            (view.parent as? ViewGroup)?.removeAllViews()
-            kaleyraVideoWrapper.removeAllViews()
-            kaleyraVideoWrapper.addView(view.apply { id = View.generateViewId() })
-        }
+        override fun onStreamView(view: View) = onStreamView(binding.kaleyraVideoWrapper, view)
 
-        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) =
-            with(binding.kaleyraLivePointersContainer) {
-                val userId = event.producer.userId
+        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) = onPointerEvent(binding.kaleyraLivePointers, event, userDescription)
 
-                if (event.action is Input.Video.Event.Action.Idle) {
-                    removeView(livePointerViews[userId])
-                    livePointerViews.remove(userId)
-                    return@with
-                }
-
-                val livePointerView =
-                    livePointerViews[userId] ?: LivePointerView(context).also {
-                        it.id = View.generateViewId()
-                        livePointerViews[userId] = it
-                        addView(it, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
-                    }
-
-                livePointerView.updateLabelText(userDescription)
-                livePointerView.updateLivePointerPosition(100 - event.position.x, event.position.y)
-            }
     }
 }
 
@@ -335,7 +340,7 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope
         override fun unbindView(item: OtherStreamItem): Unit = with(binding) {
             super.unbindView(item)
             unbind()
-            kaleyraLivePointersContainer.removeAllViews()
+            kaleyraLivePointers.removeAllViews()
             kaleyraVideoWrapper.removeAllViews()
         }
 
@@ -350,34 +355,8 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope
             kaleyraInfoWrapper.gravity = if (value) Gravity.START else Gravity.CENTER
         }
 
-        // TODO remove code duplication
-        override fun onStreamView(view: View) = with(binding) {
-            (view.parent as? ViewGroup)?.removeAllViews()
-            kaleyraVideoWrapper.removeAllViews()
-            kaleyraVideoWrapper.addView(view.apply { id = View.generateViewId() })
-        }
+        override fun onStreamView(view: View) = onStreamView(binding.kaleyraVideoWrapper, view)
 
-        // TODO remove code duplication
-        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) =
-            with(binding.kaleyraLivePointersContainer) {
-                val userId = event.producer.userId
-
-                if (event.action is Input.Video.Event.Action.Idle) {
-                    removeView(livePointerViews[userId])
-                    livePointerViews.remove(userId)
-                    return@with
-                }
-
-                // TODO add style
-                val livePointerView =
-                    livePointerViews[userId] ?: LivePointerView(context).also {
-                        it.id = View.generateViewId()
-                        livePointerViews[userId] = it
-                        addView(it)
-                    }
-
-                livePointerView.updateLabelText(userDescription)
-                livePointerView.updateLivePointerPosition(event.position.x, event.position.y)
-            }
+        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) = onPointerEvent(binding.kaleyraLivePointers, event, userDescription)
     }
 }
