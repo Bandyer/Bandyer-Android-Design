@@ -24,6 +24,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
+
 internal object ActivityExtensions {
     fun AppCompatActivity.enableImmersiveMode() {
         lifecycle.addObserver(object : DefaultLifecycleObserver {
@@ -44,6 +45,7 @@ internal object ActivityExtensions {
         })
     }
 
+    @Suppress("DEPRECATION")
     private fun AppCompatActivity.enterImmersiveMode() {
         supportActionBar?.hide()
 
@@ -57,6 +59,7 @@ internal object ActivityExtensions {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun AppCompatActivity.hideSystemUI() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(false)

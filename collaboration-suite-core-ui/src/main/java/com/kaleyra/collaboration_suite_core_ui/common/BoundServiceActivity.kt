@@ -42,7 +42,7 @@ abstract class BoundServiceActivity<T : BoundService>(private val clazz: Class<T
         super.onCreate(savedInstanceState)
         serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
-                val service = (binder as BoundService.ServiceBinder).getService<T>()
+                val service = (binder as BoundServiceBinder).getService<T>()
                 onServiceBound(service)
                 notifyServiceBound()
             }

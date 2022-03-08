@@ -20,28 +20,21 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import androidx.lifecycle.LifecycleService
+import java.lang.ref.WeakReference
 
 /**
  * Bound service
  */
 abstract class BoundService : LifecycleService() {
 
-    /**
-     * @suppress
-     */
-    @Suppress("UNCHECKED_CAST")
-    inner class ServiceBinder : Binder() {
-        fun <T : BoundService> getService(): T = this@BoundService as T
-    }
-
-    private var binder: ServiceBinder? = null
+    private var binder: BoundServiceBinder? = null
 
     /**
      * @suppress
      */
     override fun onBind(intent: Intent): IBinder {
         super.onBind(intent)
-        return binder ?: ServiceBinder().also { binder = it }
+        return binder ?: BoundServiceBinder(this).also { binder = it }
     }
 
     /**
@@ -51,4 +44,17 @@ abstract class BoundService : LifecycleService() {
         super.onDestroy()
         binder = null
     }
+}
+
+/**
+ * BoundService binder
+ *
+ * @property service A BoundService
+ * @constructor
+ */
+internal class BoundServiceBinder(svc: BoundService): Binder() {
+    private var service: WeakReference<BoundService> = WeakReference(svc)
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T : BoundService> getService(): T = service.get() as T
 }

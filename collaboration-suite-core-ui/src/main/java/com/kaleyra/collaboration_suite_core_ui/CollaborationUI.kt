@@ -33,7 +33,7 @@ import com.kaleyra.collaboration_suite.phonebox.PhoneBox.CreationOptions
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.State.Connecting
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.call.CallService
-import com.kaleyra.collaboration_suite_core_ui.common.BoundService
+import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.MainScope
@@ -125,7 +125,7 @@ object CollaborationUI {
     private fun <T : CallActivity> startPhoneBoxService(activityClazz: Class<T>) {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
-                val service = (binder as BoundService.ServiceBinder).getService<CallService>()
+                val service = (binder as BoundServiceBinder).getService<CallService>()
                 service.bind(phoneBox, usersDescription)
             }
 
