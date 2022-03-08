@@ -172,7 +172,12 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
             parent.addView(view.apply { id = View.generateViewId() })
         }
 
-        protected fun onPointerEvent(parent: ViewGroup, event: Input.Video.Event.Pointer, userDescription: String) {
+        protected fun onPointerEvent(
+            parent: ViewGroup,
+            event: Input.Video.Event.Pointer,
+            userDescription: String,
+            isMirrored: Boolean = false
+        ) {
             val userId = event.producer.userId
 
             if (event.action is Input.Video.Event.Action.Idle) {
@@ -183,14 +188,22 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
 
             val context = parent.context
             val livePointerView =
-                livePointerViews[userId] ?: LivePointerView(ContextThemeWrapper(context, context.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Call_kaleyra_livePointerStyle))).also {
+                livePointerViews[userId] ?: LivePointerView(
+                    ContextThemeWrapper(
+                        context,
+                        context.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Call_kaleyra_livePointerStyle)
+                    )
+                ).also {
                     it.id = View.generateViewId()
                     livePointerViews[userId] = it
                     parent.addView(it)
                 }
 
             livePointerView.updateLabelText(userDescription)
-            livePointerView.updateLivePointerPosition(event.position.x, event.position.y)
+            livePointerView.updateLivePointerPosition(
+                if (isMirrored) 100 - event.position.x else event.position.x,
+                event.position.y
+            )
         }
 
         /**
@@ -285,7 +298,8 @@ internal class MyStreamItem(
 
         override fun onStreamView(view: View) = onStreamView(binding.kaleyraVideoWrapper, view)
 
-        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) = onPointerEvent(binding.kaleyraLivePointers, event, userDescription)
+        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) =
+            onPointerEvent(binding.kaleyraLivePointers, event, userDescription, true)
 
     }
 }
@@ -359,6 +373,7 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope
 
         override fun onStreamView(view: View) = onStreamView(binding.kaleyraVideoWrapper, view)
 
-        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) = onPointerEvent(binding.kaleyraLivePointers, event, userDescription)
+        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) =
+            onPointerEvent(binding.kaleyraLivePointers, event, userDescription)
     }
 }
