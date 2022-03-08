@@ -13,11 +13,11 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <declare-styleable name="KaleyraCollaborationSuiteUI.LivePointer">
         <attr name="kaleyra_rootLayoutStyle" />
-        <attr name="materialButtonStyle" />
+        <attr name="materialButtonStyle" tools:ignore="ResourceName" />
         <attr name="android:textViewStyle" />
     </declare-styleable>
 

@@ -13,37 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <resources xmlns:tools="http://schemas.android.com/tools">
-
-    <!-- IMAGE BUTTON STYLE -->
-
-    <style name="KaleyraCollaborationSuiteUI.ImageButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
-        <item name="android:insetLeft">@dimen/kaleyra_dimen_space0</item>
-        <item name="android:insetRight">@dimen/kaleyra_dimen_space0</item>
-        <item name="android:insetTop">@dimen/kaleyra_dimen_space0</item>
-        <item name="android:insetBottom">@dimen/kaleyra_dimen_space0</item>
-        <item name="android:minHeight">@dimen/kaleyra_dimen_space0</item>
-        <item name="android:minWidth">@dimen/kaleyra_dimen_space0</item>
-        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:paddingRight">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:paddingLeft">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:paddingStart">@dimen/kaleyra_dimen_space8</item>
-        <item name="strokeWidth">@dimen/kaleyra_dimen_space0</item>
-        <item name="iconPadding">@dimen/kaleyra_dimen_space0</item>
-        <item name="iconGravity">textStart</item>
-        <item name="backgroundTint">@android:color/transparent</item>
-        <item name="rippleColor">@color/kaleyra_call_action_button_ripple_color</item>
-        <item name="iconSize">@dimen/kaleyra_dimen_normal_image_button</item>
-        <item name="shapeAppearanceOverlay">@style/KaleyraCollaborationSuiteUI.ImageButton.ShapeAppearanceOverlay.Circle</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.ImageButton.ShapeAppearanceOverlay.Circle" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item>
-    </style>
 
     <style name="KaleyraCollaborationSuiteUI.ImageButton.AudioRoute" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="android:paddingRight">@dimen/kaleyra_dimen_space16</item>
@@ -207,5 +177,4 @@
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/kaleyra_dimen_space4</item>
         <item name="android:contentDescription">@string/kaleyra_chat_scroll_to_last_message</item>
     </style>
-
 </resources>
