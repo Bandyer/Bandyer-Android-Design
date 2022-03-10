@@ -94,6 +94,7 @@ class LivePointerView @JvmOverloads constructor(
     fun updateLivePointerPosition(
         @FloatRange(from = 0.0, to = 100.0) leftPercentage: Float,
         @FloatRange(from = 0.0, to = 100.0) topPercentage: Float,
+        enableAutoHide: Boolean = true,
         adjustTextOnEdge: Boolean = false
     ) {
         show(showLabel = false)
@@ -105,7 +106,8 @@ class LivePointerView @JvmOverloads constructor(
         if (!hasShownLabel) {
             hasShownLabel = true
             label!!.visibility = View.VISIBLE
-            label!!.autoHide(AUTOHIDE_LABEL__MILLIS)
+            if (enableAutoHide) label!!.autoHide(AUTOHIDE_LABEL__MILLIS)
+            else label!!.disableAutoHide()
         }
 
         if (adjustTextOnEdge)

@@ -390,7 +390,8 @@ internal class GlassCallActivity :
         livePointerView.updateLivePointerPosition(
             if (isOnTheLeft) 0f else 100f,
             event.position.y,
-            true
+            enableAutoHide = false,
+            adjustTextOnEdge = true
         )
     }
 

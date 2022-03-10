@@ -209,7 +209,7 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
             livePointerView.updateLivePointerPosition(
                 if (isMirrored) 100 - event.position.x else event.position.x,
                 event.position.y,
-                true
+                adjustTextOnEdge = true
             )
         }
     }
