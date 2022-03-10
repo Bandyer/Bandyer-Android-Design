@@ -19,10 +19,13 @@ package com.kaleyra.collaboration_suite_glass_ui
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.viewModels
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -33,10 +36,12 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.call.CallService
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
+import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_glass_ui.ActivityExtensions.enableImmersiveMode
 import com.kaleyra.collaboration_suite_glass_ui.call.CallEndedFragmentArgs
@@ -46,6 +51,7 @@ import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassGestureDetector
 import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.turnScreenOnAndKeyguardOff
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getCallThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.mikepenz.fastadapter.FastAdapter
@@ -56,6 +62,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.launch
 
 /**
  * GlassCallActivity
@@ -84,6 +91,13 @@ internal class GlassCallActivity :
 
     private var itemAdapter: ItemAdapter<StreamItem<*>>? = null
     private var currentStreamItemIndex = 0
+
+    private var streamIds: List<String> = emptyList()
+    // TODO settare valore iniziale
+    private var currentStreamId: String = "main"
+
+//    private var videoIds: List<String> = emptyList()
+//    private var currentVideoId: String = ""
 
     private var navController: NavController? = null
 
@@ -146,8 +160,11 @@ internal class GlassCallActivity :
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val foundView = snapHelper.findSnapView(layoutManager) ?: return
                     val position = layoutManager!!.getPosition(foundView)
+                    if (currentStreamItemIndex == position) return
 
-                    if (itemAdapter!!.getAdapterItem(position).streamParticipant.isMyStream && currentStreamItemIndex != position) {
+                    val streamParticipant = itemAdapter!!.getAdapterItem(position).streamParticipant
+
+                    if (streamParticipant.isMyStream) {
                         val isMicBlocked = viewModel.micPermission.value.let {
                             !it.isAllowed && it.neverAskAgain
                         }
@@ -174,6 +191,9 @@ internal class GlassCallActivity :
                             else -> null
                         }?.also { binding.kaleyraToastContainer.show(DISABLED_TOAST_ID, it) }
                     }
+//                    Log.e("videoIds", videoIds.toString())
+//                    currentVideoId = streamParticipant.stream.video.value?.id ?: ""
+                    currentStreamId = streamParticipant.stream.id
 
                     currentStreamItemIndex = position
                 }
@@ -303,16 +323,56 @@ internal class GlassCallActivity :
 
             viewModel.streams
                 .onEach { streams ->
-                    val orderedList = streams.sortedBy { !it.isMyStream }.map {
-                        if (it.isMyStream) MyStreamItem(
-                            it,
-                            lifecycleScope,
-                            viewModel.micPermission,
-                            viewModel.camPermission
-                        ) else OtherStreamItem(it, lifecycleScope)
+                    val sortedStreams = streams.sortedBy { !it.isMyStream }
+//                    videoIds =
+//                        sortedStreams.map { it.stream.video.value?.id ?: "" }.filter { it != "" }
+                    streamIds = sortedStreams.map { it.stream.id }
+
+                    val items = sortedStreams.map {
+                        if (it.isMyStream)
+                            MyStreamItem(
+                                it,
+                                lifecycleScope,
+                                viewModel.micPermission,
+                                viewModel.camPermission
+                            ) { streamId, height, event ->
+//                                Log.e("livePointer", "$streamId, $height, $event")
+//                                onPointerEvent(streamId, height, event)
+                            }
+                        else
+                            OtherStreamItem(it, lifecycleScope) { streamId, height, event ->
+//                                Log.e("livePointer", "$streamId, $height, $event")
+//                                onPointerEvent(streamId, height, event)
+                            }
                     }
                     FastAdapterDiffUtil[itemAdapter!!] =
-                        FastAdapterDiffUtil.calculateDiff(itemAdapter!!, orderedList, true)
+                        FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
+                }.launchIn(this)
+
+            viewModel.livePointerEvents
+                .onEach { pair ->
+                    val userId = pair.second.producer.userId
+//                    if (currentStreamId == "") return@onEach
+                    if (pair.first == currentStreamId) {
+                        binding.kaleyraOuterPointers.removeView(livePointerViews[userId])
+                        livePointerViews.remove(userId)
+                        return@onEach
+                    }
+
+                    val currentVideoPosition = streamIds.indexOfFirst { it == currentStreamId }
+                    val eventVideoPosition = streamIds.indexOfFirst { it == pair.first }
+
+                    onPointerEvent(
+                        binding.kaleyraOuterPointers,
+                        pair.second,
+                        userId,
+                        currentVideoPosition > eventVideoPosition
+                    )
+
+//                    Log.e(
+//                        "livePointers",
+//                        if (currentVideoPosition > eventVideoPosition) "left: ${pair.second.producer.userId}" else "right: ${pair.second.producer.userId}"
+//                    )
                 }.launchIn(this)
         }
 
@@ -320,6 +380,77 @@ internal class GlassCallActivity :
             viewModel.onEnableCamera(wasPausedForBackground)
             wasPausedForBackground = false
         }
+    }
+
+    private val livePointerViews: MutableMap<String, LivePointerView> = hashMapOf()
+
+//    private fun onPointerEvent(streamId: String, height: Int, event: Input.Video.Event.Pointer) =
+//        lifecycleScope.launch {
+//            val userId = event.producer.userId
+//
+//            if (streamId == currentStreamId) {
+//                binding.kaleyraOuterPointers.removeView(livePointerViews[userId])
+//                livePointerViews.remove(userId)
+//                return@launch
+//            }
+//
+//            val currentStreamPosition = streamIds.indexOfFirst { it == currentStreamId }
+//            val eventStreamPosition = streamIds.indexOfFirst { it == streamId }
+//
+//            val livePointerView =
+//                livePointerViews[userId] ?: LivePointerView(
+//                    ContextThemeWrapper(
+//                        this@GlassCallActivity,
+//                        this@GlassCallActivity.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Call_kaleyra_livePointerStyle)
+//                    )
+//                ).also {
+//                    it.id = View.generateViewId()
+//                    livePointerViews[userId] = it
+//                    val layoutParams = it.layoutParams
+//                    layoutParams.height = height
+//                    it.layoutParams = layoutParams
+//                    binding.kaleyraOuterPointers.addView(it)
+//                }
+//
+//            livePointerView.updateLabelText(viewModel.usersDescription.name(listOf(userId)))
+//            livePointerView.updateLivePointerPosition(
+//                if (currentStreamPosition > eventStreamPosition) 0f else 100f,
+//                event.position.y
+//            )
+//        }
+
+    private fun onPointerEvent(
+        parent: ViewGroup,
+        event: Input.Video.Event.Pointer,
+        userDescription: String,
+        isOnTheLeft: Boolean
+    ) {
+        val userId = event.producer.userId
+
+//        if (event.action is Input.Video.Event.Action.Idle) {
+//            parent.removeView(livePointerViews[userId])
+//            livePointerViews.remove(userId)
+//            return
+//        }
+
+        val context = parent.context
+        val livePointerView =
+            livePointerViews[userId] ?: LivePointerView(
+                ContextThemeWrapper(
+                    context,
+                    context.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Call_kaleyra_livePointerStyle)
+                )
+            ).also {
+                it.id = View.generateViewId()
+                livePointerViews[userId] = it
+                parent.addView(it)
+            }
+
+        livePointerView.updateLabelText(userDescription)
+        livePointerView.updateLivePointerPosition(
+            if (isOnTheLeft) 0f else 100f,
+            event.position.y
+        )
     }
 
     override fun onStart() {

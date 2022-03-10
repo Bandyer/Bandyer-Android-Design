@@ -28,6 +28,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <FrameLayout
+            android:id="@+id/kaleyra_outer_pointers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
         <com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
             android:id="@+id/kaleyra_status_bar"
             android:layout_width="match_parent"

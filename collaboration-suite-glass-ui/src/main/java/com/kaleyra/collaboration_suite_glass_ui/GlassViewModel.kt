@@ -16,6 +16,7 @@
 
 package com.kaleyra.collaboration_suite_glass_ui
 
+import android.view.inputmethod.InputContentInfo
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -52,6 +53,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import java.util.concurrent.ConcurrentHashMap
@@ -75,7 +78,7 @@ internal class GlassViewModel(
 
     val call: SharedFlow<Call> = callDelegate.call
 
-    val callState= call.flatMapLatest { it.state }
+    val callState = call.flatMapLatest { it.state }
 
     val participants = call.flatMapLatest { it.participants }
 
@@ -214,6 +217,40 @@ internal class GlassViewModel(
         otherStreams,
         myLiveStreams
     ) { otherStreams, myLiveStreams -> otherStreams.isEmpty() && myLiveStreams.isNotEmpty() }
+
+    val livePointerEvents: SharedFlow<Pair<String, Input.Video.Event.Pointer>> =
+        MutableSharedFlow<Pair<String, Input.Video.Event.Pointer>>(
+            replay = 1,
+            extraBufferCapacity = 1
+        ).apply {
+            participants
+                .map { it.others + it.me }
+                .flatMapLatest { p -> p.map { it.streams }.merge() }
+                .transform { s -> s.forEach { emit(Pair(it.id, it.video)) } }
+                .onEach { pair ->
+                    val streamId = pair.first
+                    val video = pair.second
+                    video
+                        .filter { it != null }
+                        .flatMapLatest { it!!.events }
+                        .filter { it is Input.Video.Event.Pointer }
+                        .onEach {
+                            emit(Pair(streamId, it as Input.Video.Event.Pointer))
+                        }
+                        .launchIn(viewModelScope)
+                }
+                .launchIn(viewModelScope)
+//                .onEach { video ->
+//                    video ?: return@onEach
+//                    video.events
+//                        .filter { it is Input.Video.Event.Pointer }
+//                        .onEach {
+//                            emit(Pair(video.id, it as Input.Video.Event.Pointer))
+//                        }
+//                        .launchIn(viewModelScope)
+//                }
+
+        }
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,
