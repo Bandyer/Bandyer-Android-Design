@@ -47,6 +47,10 @@ class KotlinConstraintSet : ConstraintSet() {
         connect(this, TOP, bottom, BOTTOM, it)
     } ?: connect(this, TOP, bottom, BOTTOM)
 
+    infix fun Int.bottomToTopOf(top: Int) = margin?.let {
+        connect(this, BOTTOM, top, TOP, it)
+    } ?: connect(this, BOTTOM, top, TOP)
+
     infix fun Int.bottomToBottomOf(bottom: Int) = margin?.let {
         connect(this, BOTTOM, bottom, BOTTOM, it)
     } ?: connect(this, BOTTOM, bottom, BOTTOM)
@@ -66,6 +70,10 @@ class KotlinConstraintSet : ConstraintSet() {
     infix fun Int.endToEndOf(end: Int) = margin?.let {
         connect(this, END, end, END, it)
     } ?: connect(this, END, end, END)
+
+    infix fun Int.endToStartOf(start: Int) = margin?.let {
+        connect(this, END, start, START, it)
+    } ?: connect(this, END, start, START)
 
     infix fun Int.guidePercentTo(end: Float) = setGuidelinePercent(this, end)
 

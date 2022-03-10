@@ -389,7 +389,8 @@ internal class GlassCallActivity :
         livePointerView.updateLabelText(userDescription)
         livePointerView.updateLivePointerPosition(
             if (isOnTheLeft) 0f else 100f,
-            event.position.y
+            event.position.y,
+            true
         )
     }
 

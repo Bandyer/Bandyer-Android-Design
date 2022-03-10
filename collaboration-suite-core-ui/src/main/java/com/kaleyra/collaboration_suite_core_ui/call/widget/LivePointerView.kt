@@ -26,13 +26,18 @@ import androidx.constraintlayout.widget.Guideline
 import com.google.android.material.button.MaterialButton
 import com.kaleyra.collaboration_suite_core_ui.databinding.KaleyraWidgetLivePointerBinding
 import com.kaleyra.collaboration_suite_core_ui.textview.KaleyraAutoHideTextView
+import com.kaleyra.collaboration_suite_core_ui.utils.Constraints
 import com.kaleyra.collaboration_suite_core_ui.utils.KotlinConstraintSet.Companion.changeConstraints
 
 /**
  * Kaleyra live pointer view
  * @constructor
  */
-class LivePointerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
+class LivePointerView @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     /**
      * Live pointer view properties
@@ -59,7 +64,14 @@ class LivePointerView @JvmOverloads constructor(context: Context, attrs: Attribu
     private var horizontalGuideline: Guideline? = null
     private var verticalGuideline: Guideline? = null
 
-    private val binding: KaleyraWidgetLivePointerBinding by lazy { KaleyraWidgetLivePointerBinding.inflate(LayoutInflater.from(context), this) }
+    private var currentEdge: Edge = Edge.NONE
+
+    private val binding: KaleyraWidgetLivePointerBinding by lazy {
+        KaleyraWidgetLivePointerBinding.inflate(
+            LayoutInflater.from(context),
+            this
+        )
+    }
 
     init {
         pointerView = binding.kaleyraPointerButton
@@ -79,7 +91,11 @@ class LivePointerView @JvmOverloads constructor(context: Context, attrs: Attribu
      * @param leftPercentage Float left percentage
      * @param topPercentage Float top percentage
      */
-    fun updateLivePointerPosition(@FloatRange(from = 0.0, to = 100.0) leftPercentage: Float, @FloatRange(from = 0.0, to = 100.0) topPercentage: Float) {
+    fun updateLivePointerPosition(
+        @FloatRange(from = 0.0, to = 100.0) leftPercentage: Float,
+        @FloatRange(from = 0.0, to = 100.0) topPercentage: Float,
+        adjustTextOnEdge: Boolean = false
+    ) {
         show(showLabel = false)
         changeConstraints {
             transition = true
@@ -90,6 +106,52 @@ class LivePointerView @JvmOverloads constructor(context: Context, attrs: Attribu
             hasShownLabel = true
             label!!.visibility = View.VISIBLE
             label!!.autoHide(AUTOHIDE_LABEL__MILLIS)
+        }
+
+        if (adjustTextOnEdge)
+            adjustTextOnEdge()
+    }
+
+    private fun adjustTextOnEdge() {
+        val targetEdge = when {
+            label!!.right > (right - label!!.width) -> Edge.RIGHT
+            label!!.left < (left + label!!.width) -> Edge.LEFT
+            pointerView!!.bottom + label!!.height > (bottom - label!!.height) -> Edge.BOTTOM
+            else -> Edge.NONE
+        }
+
+        if (currentEdge == targetEdge) return
+        currentEdge = targetEdge
+
+        when (targetEdge) {
+            Edge.RIGHT -> changeConstraints {
+                transition = true
+                label!!.id.clear(Constraints.START)
+                label!!.id topToTopOf pointerView!!.id
+                label!!.id bottomToBottomOf pointerView!!.id
+                label!!.id endToStartOf pointerView!!.id
+            }
+            Edge.LEFT -> changeConstraints {
+                transition = true
+                label!!.id.clear(Constraints.END)
+                label!!.id topToTopOf pointerView!!.id
+                label!!.id bottomToBottomOf pointerView!!.id
+                label!!.id startToEndOf pointerView!!.id
+            }
+            Edge.BOTTOM -> changeConstraints {
+                transition = true
+                label!!.id.clear(Constraints.TOP)
+                label!!.id bottomToTopOf pointerView!!.id
+                label!!.id startToStartOf pointerView!!.id
+                label!!.id endToEndOf pointerView!!.id
+            }
+            else -> changeConstraints {
+                transition = true
+                label!!.id.clear(Constraints.BOTTOM)
+                label!!.id topToBottomOf pointerView!!.id
+                label!!.id startToStartOf pointerView!!.id
+                label!!.id endToEndOf pointerView!!.id
+            }
         }
     }
 
@@ -130,4 +192,12 @@ class LivePointerView @JvmOverloads constructor(context: Context, attrs: Attribu
         label!!.hidingTimer?.cancel()
         hasShownLabel = false
     }
+}
+
+private enum class Edge {
+    TOP,
+    BOTTOM,
+    RIGHT,
+    LEFT,
+    NONE
 }

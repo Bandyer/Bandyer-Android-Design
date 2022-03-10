@@ -208,7 +208,8 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
             livePointerView.updateLabelText(userDescription)
             livePointerView.updateLivePointerPosition(
                 if (isMirrored) 100 - event.position.x else event.position.x,
-                event.position.y
+                event.position.y,
+                true
             )
         }
     }
