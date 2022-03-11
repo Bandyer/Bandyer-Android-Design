@@ -46,6 +46,7 @@ import com.kaleyra.collaboration_suite_glass_ui.ActivityExtensions.enableImmersi
 import com.kaleyra.collaboration_suite_glass_ui.call.CallEndedFragmentArgs
 import com.kaleyra.collaboration_suite_glass_ui.chat.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraActivityGlassBinding
+import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassGestureDetector
 import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
@@ -57,11 +58,14 @@ import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
+import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
  * GlassCallActivity
@@ -159,7 +163,7 @@ internal class GlassCallActivity :
 
                     val streamParticipant = itemAdapter!!.getAdapterItem(position).streamParticipant
 
-                    if (streamParticipant.isMyStream) {
+                    if (streamParticipant.itsMe) {
                         val isMicBlocked = viewModel.micPermission.value.let {
                             !it.isAllowed && it.neverAskAgain
                         }
@@ -313,32 +317,37 @@ internal class GlassCallActivity :
                 }
             }.launchIn(this)
 
+            val spJobs = mutableListOf<Job>()
             viewModel.streams
                 .onEach { streams ->
-                    val sortedStreams = streams.sortedBy { !it.isMyStream }
-//                    videoIds =
-//                        sortedStreams.map { it.stream.video.value?.id ?: "" }.filter { it != "" }
-                    streamIds = sortedStreams.map { it.stream.id }
-
-                    val items = sortedStreams.map {
-                        if (it.isMyStream)
-                            MyStreamItem(
-                                it,
-                                lifecycleScope,
-                                viewModel.micPermission,
-                                viewModel.camPermission
-                            )
-                        else
-                            OtherStreamItem(it, lifecycleScope)
+                    spJobs.forEach {
+                        it.cancel()
+                        it.join()
                     }
-                    FastAdapterDiffUtil[itemAdapter!!] =
-                        FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
+                    spJobs.clear()
+
+                    streams.forEach { sp ->
+                        spJobs += sp.stream.video.onEach { _ ->
+                            val sortedStreams = streams.sortedWith(
+                                compareBy({ it.stream.video.value !is Input.Video.Screen }, { !it.itsMe })
+                            )
+                            synchronized(this) {
+                                FastAdapterDiffUtil.setDiffItems(itemAdapter!!, sortedStreams.mapToStreamItem())
+                            }
+                        }.launchIn(this)
+                    }
+
+                    // Set streamsIds used by the live pointers
+                    streamIds = streams.sortedWith(
+                        compareBy({ it.stream.video.value !is Input.Video.Screen }, { !it.itsMe })
+                    ).map { it.stream.id }
                 }.launchIn(this)
 
             viewModel.livePointerEvents
                 .onEach { pair ->
                     val userId = pair.second.producer.userId
-                    val currentStreamId = itemAdapter!!.getAdapterItem(currentStreamItemIndex).streamParticipant.stream.id
+                    val currentStreamId =
+                        itemAdapter!!.getAdapterItem(currentStreamItemIndex).streamParticipant.stream.id
 
                     if (pair.first == currentStreamId) {
                         binding.kaleyraOuterPointers.removeView(livePointerViews[userId])
@@ -364,6 +373,22 @@ internal class GlassCallActivity :
         }
     }
 
+    private fun FastAdapterDiffUtil.setDiffItems(itemAdapter: ItemAdapter<StreamItem<*>>, items: List<StreamItem<*>>) {
+        this[itemAdapter] = calculateDiff(itemAdapter, items, true)
+    }
+
+    private fun List<StreamParticipant>.mapToStreamItem() =
+        map {
+            if (it.itsMe)
+                MyStreamItem(
+                    it,
+                    lifecycleScope,
+                    viewModel.micPermission,
+                    viewModel.camPermission
+                )
+            else
+                OtherStreamItem(it, lifecycleScope)
+        }
 
     private fun onPointerEvent(
         parent: ViewGroup,

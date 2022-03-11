@@ -22,7 +22,7 @@ import com.kaleyra.collaboration_suite.phonebox.Stream
 
 internal data class StreamParticipant(
     val participant: CallParticipant,
-    val isMyStream: Boolean,
+    val itsMe: Boolean,
     val stream: Stream,
     val userDescription: String,
     val userImage: Uri

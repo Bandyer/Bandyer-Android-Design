@@ -128,9 +128,11 @@ internal class GlassViewModel(
                 if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
                     val newStreams = streams.map {
                         StreamParticipant(
-                            participant, itsMe, it, usersDescription.name(
-                                listOf(participant.userId)
-                            ), usersDescription.image(listOf(participant.userId))
+                            participant,
+                            itsMe,
+                            it,
+                            usersDescription.name(listOf(participant.userId)),
+                            usersDescription.image(listOf(participant.userId))
                         )
                     }
                     val currentStreams = uiStreams.filter { it.participant == participant }
