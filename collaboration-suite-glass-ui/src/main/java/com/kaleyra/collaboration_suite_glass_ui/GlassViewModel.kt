@@ -223,33 +223,25 @@ internal class GlassViewModel(
             replay = 1,
             extraBufferCapacity = 1
         ).apply {
-            participants
-                .map { it.others + it.me }
-                .flatMapLatest { p -> p.map { it.streams }.merge() }
-                .transform { s -> s.forEach { emit(Pair(it.id, it.video)) } }
-                .onEach { pair ->
-                    val streamId = pair.first
-                    val video = pair.second
-                    video
+            val jobs = mutableMapOf<String, List<Job>>()
+            participants.forEachParticipant(viewModelScope) { participant, _, streams, _ ->
+                jobs[participant.userId]?.forEach {
+                    it.cancel()
+                    it.join()
+                }
+                jobs.remove(participant.userId)
+                streams.forEach { stream ->
+                    val streamId = stream.id
+                    val participantJobs = mutableListOf<Job>()
+                    participantJobs += stream.video
                         .filter { it != null }
                         .flatMapLatest { it!!.events }
                         .filter { it is Input.Video.Event.Pointer }
-                        .onEach {
-                            emit(Pair(streamId, it as Input.Video.Event.Pointer))
-                        }
+                        .onEach { emit(Pair(streamId, it as Input.Video.Event.Pointer)) }
                         .launchIn(viewModelScope)
+                    jobs[participant.userId] = participantJobs
                 }
-                .launchIn(viewModelScope)
-//                .onEach { video ->
-//                    video ?: return@onEach
-//                    video.events
-//                        .filter { it is Input.Video.Event.Pointer }
-//                        .onEach {
-//                            emit(Pair(video.id, it as Input.Video.Event.Pointer))
-//                        }
-//                        .launchIn(viewModelScope)
-//                }
-
+            }.launchIn(viewModelScope)
         }
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
