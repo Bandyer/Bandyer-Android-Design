@@ -24,6 +24,8 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.viewModels
+import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
@@ -478,16 +480,8 @@ internal class GlassCallActivity :
 
         binding.kaleyraStatusBar.setBackgroundColor(
             when {
-                destinationId == R.id.participantsFragment -> ResourcesCompat.getColor(
-                    resources,
-                    R.color.kaleyra_glass_background_color,
-                    null
-                )
-                fragmentsWithDimmedStatusBar.contains(destinationId) -> ResourcesCompat.getColor(
-                    resources,
-                    R.color.kaleyra_glass_dimmed_background_color,
-                    null
-                )
+                destinationId == R.id.participantsFragment -> getResourceColor(R.color.kaleyra_glass_background_color)
+                fragmentsWithDimmedStatusBar.contains(destinationId) -> getResourceColor(R.color.kaleyra_glass_dimmed_background_color)
                 else -> Color.TRANSPARENT
             }
         )
@@ -495,6 +489,9 @@ internal class GlassCallActivity :
         binding.kaleyraToastContainer.visibility =
             if (destinationId == R.id.emptyFragment) View.VISIBLE else View.GONE
     }
+
+    private fun getResourceColor(@ColorRes color: Int) =
+        ResourcesCompat.getColor(resources, color, null)
 
     /**
      * @suppress
