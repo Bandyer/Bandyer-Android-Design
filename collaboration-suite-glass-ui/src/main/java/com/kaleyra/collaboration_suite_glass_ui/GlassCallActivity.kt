@@ -311,6 +311,16 @@ internal class GlassCallActivity :
                     binding.kaleyraToastContainer.show(text = text)
                 }.launchIn(this)
 
+            viewModel.inCallParticipants
+                .onEach {
+                    binding.kaleyraStatusBar.setCenteredText(
+                        resources.getString(
+                            R.string.kaleyra_glass_users_in_call_pattern,
+                            it.count()
+                        )
+                    )
+                }.launchIn(this)
+
             viewModel.call.onEach {
                 with(binding.kaleyraStatusBar) {
                     if (it.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
@@ -467,13 +477,19 @@ internal class GlassCallActivity :
         }
 
         binding.kaleyraStatusBar.setBackgroundColor(
-            if (fragmentsWithDimmedStatusBar.contains(destinationId))
-                ResourcesCompat.getColor(
+            when {
+                destinationId == R.id.participantsFragment -> ResourcesCompat.getColor(
+                    resources,
+                    R.color.kaleyra_glass_background_color,
+                    null
+                )
+                fragmentsWithDimmedStatusBar.contains(destinationId) -> ResourcesCompat.getColor(
                     resources,
                     R.color.kaleyra_glass_dimmed_background_color,
                     null
                 )
-            else Color.TRANSPARENT
+                else -> Color.TRANSPARENT
+            }
         )
 
         binding.kaleyraToastContainer.visibility =
@@ -557,8 +573,7 @@ internal class GlassCallActivity :
             R.id.endCallFragment,
             R.id.callEndedFragment,
             R.id.chatFragment,
-            R.id.chatMenuFragment,
-            R.id.participantsFragment
+            R.id.chatMenuFragment
         )
         var wasPausedForBackground = false
     }

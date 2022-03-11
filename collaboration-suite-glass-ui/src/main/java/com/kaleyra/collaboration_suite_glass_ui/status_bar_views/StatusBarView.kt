@@ -112,6 +112,15 @@ internal class StatusBarView @JvmOverloads constructor(
     }
 
     /**
+     * Set the centered title
+     *
+     * @param text The centered title text
+     */
+    fun setCenteredText(text: String) {
+        binding.kaleyraCenteredTitle.text = text
+    }
+
+    /**
      * Show the centered title
      */
     fun showCenteredTitle() {
