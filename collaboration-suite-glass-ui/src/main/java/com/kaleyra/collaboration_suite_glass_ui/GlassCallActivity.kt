@@ -346,7 +346,7 @@ internal class GlassCallActivity :
                             val sortedStreams = streams.sortedWith(
                                 compareBy({ it.stream.video.value !is Input.Video.Screen }, { !it.itsMe })
                             )
-                            streamMutex.withLock { FastAdapterDiffUtil.setDiffItems(itemAdapter!!, sortedStreams.mapToStreamItem() }
+                            streamMutex.withLock { FastAdapterDiffUtil.setDiffItems(itemAdapter!!, sortedStreams.mapToStreamItem()) }
                         }.launchIn(this)
                     }
 
