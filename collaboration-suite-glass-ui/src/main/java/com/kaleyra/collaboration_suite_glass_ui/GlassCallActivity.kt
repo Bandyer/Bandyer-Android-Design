@@ -67,6 +67,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
@@ -96,6 +98,7 @@ internal class GlassCallActivity :
 
     private var itemAdapter: ItemAdapter<StreamItem<*>>? = null
     private var currentStreamItemIndex = 0
+    private var streamMutex = Mutex()
 
     private val livePointerViews: MutableMap<String, LivePointerView> = hashMapOf()
     private var streamIds: List<String> = emptyList()
@@ -343,9 +346,7 @@ internal class GlassCallActivity :
                             val sortedStreams = streams.sortedWith(
                                 compareBy({ it.stream.video.value !is Input.Video.Screen }, { !it.itsMe })
                             )
-                            synchronized(this) {
-                                FastAdapterDiffUtil.setDiffItems(itemAdapter!!, sortedStreams.mapToStreamItem())
-                            }
+                            streamMutex.withLock { FastAdapterDiffUtil.setDiffItems(itemAdapter!!, sortedStreams.mapToStreamItem() }
                         }.launchIn(this)
                     }
 
