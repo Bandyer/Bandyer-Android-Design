@@ -319,8 +319,9 @@ internal class GlassCallActivity :
             viewModel.inCallParticipants
                 .onEach {
                     binding.kaleyraStatusBar.setCenteredText(
-                        resources.getString(
-                            R.string.kaleyra_glass_users_in_call_pattern,
+                        resources.getQuantityString(
+                            R.plurals.kaleyra_glass_users_in_call_pattern,
+                            it.count(),
                             it.count()
                         )
                     )
