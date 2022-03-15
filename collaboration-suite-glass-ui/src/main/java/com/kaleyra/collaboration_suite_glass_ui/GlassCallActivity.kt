@@ -84,9 +84,6 @@ internal class GlassCallActivity :
 
     private lateinit var binding: KaleyraActivityGlassBinding
 
-    private val navDestinationChangedListener =
-        NavController.OnDestinationChangedListener { _, destination, _ -> onDestinationChanged(destination.id) }
-
     private var isActivityInForeground = false
 
     private var service: CallService? = null
@@ -143,8 +140,6 @@ internal class GlassCallActivity :
             isFocusable = false
             setHasFixedSize(true)
         }
-
-        navController!!.addOnDestinationChangedListener(navDestinationChangedListener)
 
 //        enableImmersiveMode()
         turnScreenOnAndKeyguardOff()
@@ -482,7 +477,6 @@ internal class GlassCallActivity :
 
     override fun onDestroy() {
         super.onDestroy()
-        navController!!.removeOnDestinationChangedListener(navDestinationChangedListener)
         itemAdapter!!.clear()
         service = null
         itemAdapter = null
@@ -500,7 +494,7 @@ internal class GlassCallActivity :
      *
      *  @param destinationId The destination fragment's id
      */
-    private fun onDestinationChanged(destinationId: Int) {
+    fun onDestinationChanged(destinationId: Int) {
         (destinationId == R.id.chatFragment).also {
             if (it) notificationManager!!.dismiss(false)
             notificationManager!!.dnd = it
