@@ -91,9 +91,6 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        NavHostFragment.findNavController(this).currentDestination?.id?.also {
-            activity.onDestinationChanged(it)
-        }
         activity.addNotificationListener(this)
         activity.addServiceBoundObserver(this)
 
@@ -105,6 +102,9 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        NavHostFragment.findNavController(this).currentDestination?.id?.also {
+            activity.onDestinationChanged(it)
+        }
         if (isServiceBound)
             onServiceBound()
     }
