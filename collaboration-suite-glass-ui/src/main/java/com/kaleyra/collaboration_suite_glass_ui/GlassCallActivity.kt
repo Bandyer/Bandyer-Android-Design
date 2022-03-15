@@ -345,9 +345,16 @@ internal class GlassCallActivity :
                     streams.forEach { sp ->
                         spJobs += sp.stream.video.onEach { _ ->
                             val sortedStreams = streams.sortedWith(
-                                compareBy({ it.stream.video.value !is Input.Video.Screen }, { !it.itsMe })
+                                compareBy(
+                                    { it.stream.video.value !is Input.Video.Screen },
+                                    { !it.itsMe })
                             )
-                            streamMutex.withLock { FastAdapterDiffUtil.setDiffItems(itemAdapter!!, sortedStreams.mapToStreamItem()) }
+                            streamMutex.withLock {
+                                FastAdapterDiffUtil.setDiffItems(
+                                    itemAdapter!!,
+                                    sortedStreams.mapToStreamItem()
+                                )
+                            }
                         }.launchIn(this)
                     }
 
@@ -387,7 +394,10 @@ internal class GlassCallActivity :
         }
     }
 
-    private fun FastAdapterDiffUtil.setDiffItems(itemAdapter: ItemAdapter<StreamItem<*>>, items: List<StreamItem<*>>) {
+    private fun FastAdapterDiffUtil.setDiffItems(
+        itemAdapter: ItemAdapter<StreamItem<*>>,
+        items: List<StreamItem<*>>
+    ) {
         this[itemAdapter] = calculateDiff(itemAdapter, items, true)
     }
 
@@ -480,13 +490,17 @@ internal class GlassCallActivity :
             notificationManager!!.dnd = it
         }
 
-        binding.kaleyraStatusBar.setBackgroundColor(
-            when {
-                destinationId == R.id.participantsFragment -> getResourceColor(R.color.kaleyra_glass_background_color)
-                fragmentsWithDimmedStatusBar.contains(destinationId) -> getResourceColor(R.color.kaleyra_glass_dimmed_background_color)
-                else -> Color.TRANSPARENT
-            }
-        )
+        with(binding.kaleyraStatusBar) {
+            setBackgroundColor(
+                when {
+                    destinationId == R.id.participantsFragment -> getResourceColor(R.color.kaleyra_glass_background_color)
+                    fragmentsWithDimmedStatusBar.contains(destinationId) -> getResourceColor(R.color.kaleyra_glass_dimmed_background_color)
+                    else -> Color.TRANSPARENT
+                }
+            )
+            if (destinationId == R.id.ringingFragment || destinationId == R.id.dialingFragment) hideCenteredTitle()
+            else showCenteredTitle()
+        }
 
         binding.kaleyraToastContainer.visibility =
             if (destinationId == R.id.emptyFragment) View.VISIBLE else View.GONE
