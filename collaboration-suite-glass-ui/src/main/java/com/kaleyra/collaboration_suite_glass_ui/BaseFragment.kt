@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceActivity
 import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
@@ -31,7 +30,8 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.TiltFragment
 /**
  * BaseFragment. A base class for all the smart glass fragments
  */
-internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatNotificationManager.NotificationListener,
+internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
+    ChatNotificationManager.NotificationListener,
     BoundServiceActivity.Observer {
 
     /**
@@ -89,7 +89,6 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener, ChatN
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity.onDestinationChanged(NavHostFragment.findNavController(this).currentDestination!!.id)
         activity.addNotificationListener(this)
         activity.addServiceBoundObserver(this)
 

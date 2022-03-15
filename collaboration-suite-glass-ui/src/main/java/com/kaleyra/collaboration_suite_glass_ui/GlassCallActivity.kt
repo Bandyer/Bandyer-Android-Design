@@ -31,6 +31,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
+import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -82,6 +83,9 @@ internal class GlassCallActivity :
     TouchEventListener {
 
     private lateinit var binding: KaleyraActivityGlassBinding
+
+    private val navDestinationChangedListener =
+        NavController.OnDestinationChangedListener { _, destination, _ -> onDestinationChanged(destination.id) }
 
     private var isActivityInForeground = false
 
@@ -140,7 +144,9 @@ internal class GlassCallActivity :
             setHasFixedSize(true)
         }
 
-        enableImmersiveMode()
+        navController!!.addOnDestinationChangedListener(navDestinationChangedListener)
+
+//        enableImmersiveMode()
         turnScreenOnAndKeyguardOff()
     }
 
@@ -476,6 +482,7 @@ internal class GlassCallActivity :
 
     override fun onDestroy() {
         super.onDestroy()
+        navController!!.removeOnDestinationChangedListener(navDestinationChangedListener)
         itemAdapter!!.clear()
         service = null
         itemAdapter = null
@@ -493,7 +500,7 @@ internal class GlassCallActivity :
      *
      *  @param destinationId The destination fragment's id
      */
-    fun onDestinationChanged(destinationId: Int) {
+    private fun onDestinationChanged(destinationId: Int) {
         (destinationId == R.id.chatFragment).also {
             if (it) notificationManager!!.dismiss(false)
             notificationManager!!.dnd = it
