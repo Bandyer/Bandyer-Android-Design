@@ -514,8 +514,8 @@ internal class GlassCallActivity :
                     else -> Color.TRANSPARENT
                 }
             )
-            if (destinationId == R.id.ringingFragment || destinationId == R.id.dialingFragment) hideCenteredTitle()
-            else showCenteredTitle()
+            if (fragmentWithParticipantsNumber.contains(destinationId)) showCenteredTitle()
+            else hideCenteredTitle()
         }
 
         binding.kaleyraToastContainer.visibility =
@@ -603,6 +603,13 @@ internal class GlassCallActivity :
             R.id.callEndedFragment,
             R.id.chatFragment,
             R.id.chatMenuFragment
+        )
+        val fragmentWithParticipantsNumber = setOf(
+            R.id.emptyFragment,
+            R.id.menuFragment,
+            R.id.participantsFragment,
+            R.id.zoomFragment,
+            R.id.volumeFragment
         )
         var wasPausedForBackground = false
     }
