@@ -343,7 +343,7 @@ internal class GlassCallActivity :
                     spJobs.clear()
 
                     streams.forEach { sp ->
-                        spJobs += sp.stream.video.onEach { _ ->
+                        spJobs += sp.stream.video.onEach { video ->
                             val sortedStreams = streams.sortedWith(
                                 compareBy(
                                     { it.stream.video.value !is Input.Video.Screen },
@@ -355,6 +355,9 @@ internal class GlassCallActivity :
                                     sortedStreams.mapToStreamItem()
                                 )
                             }
+
+                            if (video is Input.Video.Screen)
+                                binding.kaleyraStreams.smoothScrollToPosition(sortedStreams.indexOf(sp))
                         }.launchIn(this)
                     }
 
