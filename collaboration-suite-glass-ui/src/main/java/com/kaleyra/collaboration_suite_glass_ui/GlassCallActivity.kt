@@ -24,14 +24,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.viewModels
-import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -39,14 +37,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
-import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.call.CallService
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
-import com.kaleyra.collaboration_suite_glass_ui.ActivityExtensions.enableImmersiveMode
 import com.kaleyra.collaboration_suite_glass_ui.call.CallEndedFragmentArgs
 import com.kaleyra.collaboration_suite_glass_ui.chat.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraActivityGlassBinding
@@ -63,15 +59,14 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.dropWhile
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import java.util.concurrent.ConcurrentLinkedQueue
 
 /**
  * GlassCallActivity
@@ -101,6 +96,8 @@ internal class GlassCallActivity :
     private var itemAdapter: ItemAdapter<StreamItem<*>>? = null
     private var currentStreamItemIndex = 0
     private var streamMutex = Mutex()
+
+    private val hideStreamOverlay = MutableStateFlow(true)
 
     private val livePointerViews: MutableMap<String, LivePointerView> = hashMapOf()
     private var streamIds: List<String> = emptyList()
@@ -417,11 +414,12 @@ internal class GlassCallActivity :
                 MyStreamItem(
                     it,
                     lifecycleScope,
+                    hideStreamOverlay,
                     viewModel.micPermission,
                     viewModel.camPermission
                 )
             else
-                OtherStreamItem(it, lifecycleScope)
+                OtherStreamItem(it, lifecycleScope, hideStreamOverlay)
         }
 
     private fun onPointerEvent(
@@ -508,12 +506,14 @@ internal class GlassCallActivity :
                     else -> Color.TRANSPARENT
                 }
             )
-            if (fragmentWithParticipantsNumber.contains(destinationId)) showCenteredTitle()
+            if (fragmentsWithParticipantsNumber.contains(destinationId)) showCenteredTitle()
             else hideCenteredTitle()
         }
 
         binding.kaleyraToastContainer.visibility =
             if (destinationId == R.id.emptyFragment) View.VISIBLE else View.GONE
+
+        hideStreamOverlay.value = fragmentsWithNoStreamOverlay.contains(destinationId)
     }
 
     private fun getResourceColor(@ColorRes color: Int) =
@@ -598,12 +598,19 @@ internal class GlassCallActivity :
             R.id.chatFragment,
             R.id.chatMenuFragment
         )
-        val fragmentWithParticipantsNumber = setOf(
+        val fragmentsWithParticipantsNumber = setOf(
             R.id.emptyFragment,
             R.id.menuFragment,
             R.id.participantsFragment,
             R.id.zoomFragment,
             R.id.volumeFragment
+        )
+        val fragmentsWithNoStreamOverlay = setOf(
+            R.id.ringingFragment,
+            R.id.dialingFragment,
+            R.id.endCallFragment,
+            R.id.callEndedFragment,
+            R.id.reconnectingFragment
         )
         var wasPausedForBackground = false
     }

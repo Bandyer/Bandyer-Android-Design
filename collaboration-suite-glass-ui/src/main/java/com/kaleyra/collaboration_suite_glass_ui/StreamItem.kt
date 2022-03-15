@@ -58,6 +58,11 @@ internal interface IStreamItem {
     val scope: CoroutineScope
 
     /**
+     * Flow which tells when to hide the stream overlay
+     */
+    val hideStreamOverlay: StateFlow<Boolean>
+
+    /**
      * IViewHolder
      */
     interface IViewHolder {
@@ -98,6 +103,13 @@ internal interface IStreamItem {
          * @param event Pointer event
          */
         fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String)
+
+        /**
+         * Called when the stream overlay should be hidden because there are other UI elements above it
+         *
+         * @param value True if the overlay should be hidden, false otherwise
+         */
+        fun onHideStreamOverlay(value: Boolean)
     }
 }
 
@@ -108,7 +120,8 @@ internal interface IStreamItem {
  */
 internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
     final override val streamParticipant: StreamParticipant,
-    parentScope: CoroutineScope
+    parentScope: CoroutineScope,
+    final override val hideStreamOverlay: StateFlow<Boolean>
 ) : AbstractItem<T>(), IStreamItem {
 
     /**
@@ -162,6 +175,8 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
                     onPointerEvent(it, item.streamParticipant.userDescription)
                 }
                 .launchIn(item.scope)
+
+            jobs += item.hideStreamOverlay.onEach { onHideStreamOverlay(it) }.launchIn(item.scope)
         }
 
         /**
@@ -218,11 +233,13 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
 internal class MyStreamItem(
     streamParticipant: StreamParticipant,
     parentScope: CoroutineScope,
+    hideStreamOverlay: StateFlow<Boolean>,
     val micPermission: StateFlow<Permission>,
-    val camPermission: StateFlow<Permission>
+    val camPermission: StateFlow<Permission>,
 ) : StreamItem<StreamItem.ViewHolder<MyStreamItem>>(
     streamParticipant,
-    parentScope
+    parentScope,
+    hideStreamOverlay
 ) {
 
     /**
@@ -300,11 +317,23 @@ internal class MyStreamItem(
         override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) =
             onPointerEvent(binding.kaleyraLivePointers, event, userDescription, true)
 
+        override fun onHideStreamOverlay(value: Boolean) {
+            binding.kaleyraInfoWrapper.visibility = if(value) View.GONE else View.VISIBLE
+        }
+
     }
 }
 
-internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope: CoroutineScope) :
-    StreamItem<StreamItem.ViewHolder<OtherStreamItem>>(streamParticipant, parentScope) {
+internal class OtherStreamItem(
+    streamParticipant: StreamParticipant,
+    parentScope: CoroutineScope,
+    hideStreamOverlay: StateFlow<Boolean>
+) :
+    StreamItem<StreamItem.ViewHolder<OtherStreamItem>>(
+        streamParticipant,
+        parentScope,
+        hideStreamOverlay
+    ) {
 
     /**
      * The layout for the given item
@@ -374,5 +403,9 @@ internal class OtherStreamItem(streamParticipant: StreamParticipant, parentScope
 
         override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) =
             onPointerEvent(binding.kaleyraLivePointers, event, userDescription)
+
+        override fun onHideStreamOverlay(value: Boolean) {
+            binding.kaleyraInfoWrapper.visibility = if(value) View.GONE else View.VISIBLE
+        }
     }
 }
