@@ -19,7 +19,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.kaleyra.collaboration_suite_glass_ui">
 
-    <!-- TODO REMOVE CONFIG CHANGES -->
     <application>
         <activity
             android:name=".GlassCallActivity"

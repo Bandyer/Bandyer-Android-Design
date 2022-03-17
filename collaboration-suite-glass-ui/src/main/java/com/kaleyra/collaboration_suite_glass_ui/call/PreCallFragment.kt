@@ -52,11 +52,6 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
         }
     }
 
-//    override fun onConfigurationChanged(newConfig: Configuration) {
-//        super.onConfigurationChanged(newConfig)
-//        updateUIOnParticipantsViewChange()
-//    }
-
     private fun updateUIOnParticipantsViewChange() = with(binding) {
         kaleyraParticipants.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         val hideProgressUI =
