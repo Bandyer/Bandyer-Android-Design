@@ -19,7 +19,6 @@ package com.kaleyra.collaboration_suite_glass_ui.common
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Handler
 import android.os.Looper
 import android.util.AttributeSet
@@ -39,53 +38,37 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
 
     private var mainHandler: Handler? = null
     private var animator: ObjectAnimator? = null
-    private var lastTarget = 0
 
     private var lastScrollPosition = 0
-    private val scrollStopMs = 100L
     private var scrollStopRunner: Runnable? = null
 
     var onScrollListener: OnScrollListener? = null
-
-    init {
-        post { performAutoScroll() }
-    }
-
-    override fun onConfigurationChanged(newConfig: Configuration?) {
-        super.onConfigurationChanged(newConfig)
-        post { performAutoScroll() }
-    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         mainHandler = Handler(Looper.getMainLooper())
         scrollStopRunner = object : Runnable {
             override fun run() {
-                val currentScrollPosition = scrollX
-                if (lastScrollPosition == currentScrollPosition) {
+                if (lastScrollPosition == scrollX) {
                     performAutoScroll()
                 } else {
-                    lastScrollPosition = currentScrollPosition
-                    mainHandler?.postDelayed(this, scrollStopMs)
+                    lastScrollPosition = scrollX
+                    mainHandler?.postDelayed(this, SCROLL_STOP_MS)
                 }
             }
         }
+        post { performAutoScroll() }
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        animator?.cancel()
-        mainHandler?.removeCallbacksAndMessages(null)
-        animator = null
-        scrollStopRunner = null
-        mainHandler = null
-        onScrollListener = null
+        stopAutoScroll()
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent?): Boolean {
         when (ev?.action) {
-            MotionEvent.ACTION_UP -> scrollStopRunner?.apply { mainHandler?.postDelayed(this, scrollStopMs) }
+            MotionEvent.ACTION_UP -> scrollStopRunner?.apply { mainHandler?.postDelayed(this, SCROLL_STOP_MS) }
             MotionEvent.ACTION_DOWN -> {
                 animator?.cancel()
                 mainHandler?.removeCallbacksAndMessages(null)
@@ -104,7 +87,7 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
         animator?.cancel()
         mainHandler?.removeCallbacksAndMessages(null)
         smoothScrollBy(dx, dy)
-        scrollStopRunner?.apply { mainHandler?.postDelayed(this, scrollStopMs) }
+        scrollStopRunner?.apply { mainHandler?.postDelayed(this, SCROLL_STOP_MS) }
     }
 
     private fun performAutoScroll() {
@@ -112,17 +95,30 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
         if (diff <= 0) return
         animator?.cancel()
         mainHandler?.removeCallbacksAndMessages(null)
-        val duration = diff * 4L
         val target = when {
             (abs(scrollX - diff) < 5) -> 0
             (scrollX < 5) -> diff
             else -> lastTarget
         }
+        val duration = abs(scrollX - target) * 4L
         lastTarget = target
         animator = ObjectAnimator.ofInt(this@HorizontalAutoScrollView, "scrollX", target).apply {
             this.duration = duration
             start()
         }
         mainHandler?.postDelayed({ performAutoScroll() }, duration)
+    }
+
+    private fun stopAutoScroll() {
+        animator?.cancel()
+        mainHandler?.removeCallbacksAndMessages(null)
+        animator = null
+        mainHandler = null
+        scrollStopRunner = null
+    }
+
+    private companion object {
+        const val SCROLL_STOP_MS = 100L
+        var lastTarget = 0
     }
 }

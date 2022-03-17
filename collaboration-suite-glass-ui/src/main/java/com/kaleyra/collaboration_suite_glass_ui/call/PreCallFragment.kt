@@ -52,6 +52,11 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.kaleyraParticipantsScrollView.onScrollListener = null
+    }
+
     private fun updateUIOnParticipantsViewChange() = with(binding) {
         kaleyraParticipants.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         val hideProgressUI =
