@@ -49,6 +49,7 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
         mainHandler = Handler(Looper.getMainLooper())
         scrollStopRunner = object : Runnable {
             override fun run() {
+                val scrollX = scrollX
                 if (lastScrollPosition == scrollX) {
                     performAutoScroll()
                 } else {
@@ -95,6 +96,7 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
         if (diff <= 0) return
         animator?.cancel()
         mainHandler?.removeCallbacksAndMessages(null)
+        val scrollX = scrollX
         val target = when {
             (abs(scrollX - diff) < 5) -> 0
             (scrollX < 5) -> diff
