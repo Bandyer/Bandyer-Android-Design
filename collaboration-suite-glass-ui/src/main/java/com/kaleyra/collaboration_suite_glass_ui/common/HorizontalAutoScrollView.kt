@@ -66,6 +66,13 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
         stopAutoScroll()
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        animator?.cancel()
+        mainHandler?.removeCallbacksAndMessages(null)
+        post { performAutoScroll() }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(ev: MotionEvent?): Boolean {
         when (ev?.action) {
