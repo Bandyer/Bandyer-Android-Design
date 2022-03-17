@@ -106,8 +106,8 @@ internal class HorizontalAutoScrollView @JvmOverloads constructor(
         val scrollX = scrollX
         val target = when {
             (abs(scrollX - diff) < 5) -> 0
-            (scrollX < 5) -> diff
-            else -> lastTarget
+            lastTarget != 0 || scrollX < 5 -> diff
+            else -> 0
         }
         val duration = abs(scrollX - target) * 4L
         lastTarget = target
