@@ -14,26 +14,34 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.utils.extensions
+package com.kaleyra.collaboration_suite_core_ui.utils.extensions
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.KeyguardManager
 import android.content.Context
 import android.os.Build
+import android.os.PowerManager
 import android.view.WindowManager
 
-internal object ActivityExtensions {
+object ActivityExtensions {
+    @SuppressLint("WakelockTimeout")
     fun Activity.turnScreenOnAndKeyguardOff() {
+        val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+
+        val cpuWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, javaClass.simpleName)
+        cpuWakeLock!!.acquire()
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
             setTurnScreenOn(true)
         } else {
-            // TODO check this flags
             window.addFlags(
-                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
-                        or WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON
+                WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON
+                        or WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED
             )
         }
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
 
