@@ -29,6 +29,8 @@ interface HideableWidget {
 
     var hidingTimer: CountDownTimer?
 
+    var millisUntilTimerFinish: Long
+
     /**
      * Triggers onHidingTimerFinishedCallback after input milliseconds.
      * @param afterMillis hidingTimer duration in milliseconds.
@@ -42,7 +44,9 @@ interface HideableWidget {
                     onHidingTimerFinished()
                 }
 
-                override fun onTick(millisUntilFinished: Long) {}
+                override fun onTick(millisUntilFinished: Long) {
+                    millisUntilTimerFinish = millisUntilFinished
+                }
             }
         }
         hidingTimer!!.start()

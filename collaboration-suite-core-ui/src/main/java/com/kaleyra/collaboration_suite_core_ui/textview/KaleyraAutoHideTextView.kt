@@ -32,7 +32,19 @@ class KaleyraAutoHideTextView @JvmOverloads constructor(context: Context, attrs:
 
     override var hidingTimer: CountDownTimer? = null
 
+    override var millisUntilTimerFinish: Long = 0
+
     override fun onHidingTimerFinished() {
         visibility = View.GONE
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        autoHide(millisUntilTimerFinish)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        disableAutoHide()
     }
 }

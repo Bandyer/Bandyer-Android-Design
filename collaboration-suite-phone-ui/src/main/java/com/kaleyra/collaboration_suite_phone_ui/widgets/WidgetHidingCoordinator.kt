@@ -28,6 +28,8 @@ class WidgetHidingCoordinator : HideableWidget {
 
     private var hideableWidgets = mutableListOf<HideableWidget>()
 
+    override var millisUntilTimerFinish: Long = 0
+
     /**
      * Add the widgets you want to behave at the same time
      * @property hideAfterMillis millis to wait before hiding the widgets added

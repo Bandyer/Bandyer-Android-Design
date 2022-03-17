@@ -74,6 +74,8 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
 
     override var hidingTimer: CountDownTimer? = null
 
+    override var millisUntilTimerFinish: Long = 0
+
     /**
      * Determines if the view is showing or shown
      */

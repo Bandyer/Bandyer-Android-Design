@@ -59,6 +59,7 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
 
     override var hidingTimer: CountDownTimer? = null
 
+    override var millisUntilTimerFinish: Long = 0
     /**
      * Click listener for when an item has been clicked
      */

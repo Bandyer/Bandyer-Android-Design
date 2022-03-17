@@ -22,15 +22,12 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.annotation.FloatRange
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.Guideline
-import com.google.android.material.button.MaterialButton
 import com.kaleyra.collaboration_suite_core_ui.databinding.KaleyraWidgetLivePointerBinding
-import com.kaleyra.collaboration_suite_core_ui.textview.KaleyraAutoHideTextView
 import com.kaleyra.collaboration_suite_core_ui.utils.Constraints
 import com.kaleyra.collaboration_suite_core_ui.utils.KotlinConstraintSet.Companion.changeConstraints
 
 /**
- * Kaleyra live pointer view
+ * Live pointer view
  * @constructor
  */
 class LivePointerView @JvmOverloads constructor(
@@ -49,20 +46,7 @@ class LivePointerView @JvmOverloads constructor(
         const val AUTOHIDE_LABEL__MILLIS = 3000L
     }
 
-    /**
-     * Pointer view
-     */
-    var pointerView: MaterialButton? = null
-
-    /**
-     * Pointer text label
-     */
-    var label: KaleyraAutoHideTextView? = null
-
     private var hasShownLabel = false
-
-    private var horizontalGuideline: Guideline? = null
-    private var verticalGuideline: Guideline? = null
 
     private var currentEdge: Edge = Edge.NONE
 
@@ -74,15 +58,14 @@ class LivePointerView @JvmOverloads constructor(
     }
 
     init {
-        pointerView = binding.kaleyraPointerButton
-        label = binding.kaleyraPointerLabel
-        horizontalGuideline = binding.kaleyraHorizontalGuideline
-        verticalGuideline = binding.kaleyraVerticalGuideline
-
-        pointerView!!.setOnClickListener {
-            label!!.visibility = View.VISIBLE
-            label!!.hidingTimer?.cancel()
-            label!!.autoHide(AUTOHIDE_LABEL__MILLIS)
+        with(binding) {
+            kaleyraPointerButton.setOnClickListener {
+                kaleyraPointerLabel.apply {
+                    visibility = View.VISIBLE
+                    disableAutoHide()
+                    autoHide(AUTOHIDE_LABEL__MILLIS)
+                }
+            }
         }
     }
 
@@ -96,18 +79,18 @@ class LivePointerView @JvmOverloads constructor(
         @FloatRange(from = 0.0, to = 100.0) topPercentage: Float,
         enableAutoHide: Boolean = true,
         adjustTextOnEdge: Boolean = false
-    ) {
+    ) = with(binding) {
         show(showLabel = false)
         changeConstraints {
             transition = true
-            horizontalGuideline!!.id guidePercentTo topPercentage / 100f
-            verticalGuideline!!.id guidePercentTo leftPercentage / 100f
+            kaleyraHorizontalGuideline.id guidePercentTo topPercentage / 100f
+            kaleyraVerticalGuideline.id guidePercentTo leftPercentage / 100f
         }
         if (!hasShownLabel) {
             hasShownLabel = true
-            label!!.visibility = View.VISIBLE
-            if (enableAutoHide) label!!.autoHide(AUTOHIDE_LABEL__MILLIS)
-            else label!!.disableAutoHide()
+            kaleyraPointerLabel.visibility = View.VISIBLE
+            if (enableAutoHide) kaleyraPointerLabel.autoHide(AUTOHIDE_LABEL__MILLIS)
+            else kaleyraPointerLabel.disableAutoHide()
         }
 
         if (adjustTextOnEdge)
@@ -115,10 +98,12 @@ class LivePointerView @JvmOverloads constructor(
     }
 
     private fun adjustTextOnEdge() {
+        val label = binding.kaleyraPointerLabel
+        val pointer = binding.kaleyraPointerButton
         val targetEdge = when {
-            label!!.right > (right - label!!.width) -> Edge.RIGHT
-            label!!.left < (left + label!!.width) -> Edge.LEFT
-            pointerView!!.bottom + label!!.height > (bottom - label!!.height) -> Edge.BOTTOM
+            label.right > (right - label.width) -> Edge.RIGHT
+            label.left < (left + label.width) -> Edge.LEFT
+            pointer.bottom + label.height > (bottom - label.height) -> Edge.BOTTOM
             else -> Edge.NONE
         }
 
@@ -128,41 +113,33 @@ class LivePointerView @JvmOverloads constructor(
         when (targetEdge) {
             Edge.RIGHT -> changeConstraints {
                 transition = true
-                label!!.id.clear(Constraints.START)
-                label!!.id topToTopOf pointerView!!.id
-                label!!.id bottomToBottomOf pointerView!!.id
-                label!!.id endToStartOf pointerView!!.id
+                label.id.clear(Constraints.START)
+                label.id topToTopOf pointer.id
+                label.id bottomToBottomOf pointer.id
+                label.id endToStartOf pointer.id
             }
             Edge.LEFT -> changeConstraints {
                 transition = true
-                label!!.id.clear(Constraints.END)
-                label!!.id topToTopOf pointerView!!.id
-                label!!.id bottomToBottomOf pointerView!!.id
-                label!!.id startToEndOf pointerView!!.id
+                label.id.clear(Constraints.END)
+                label.id topToTopOf pointer.id
+                label.id bottomToBottomOf pointer.id
+                label.id startToEndOf pointer.id
             }
             Edge.BOTTOM -> changeConstraints {
                 transition = true
-                label!!.id.clear(Constraints.TOP)
-                label!!.id bottomToTopOf pointerView!!.id
-                label!!.id startToStartOf pointerView!!.id
-                label!!.id endToEndOf pointerView!!.id
+                label.id.clear(Constraints.TOP)
+                label.id bottomToTopOf pointer.id
+                label.id startToStartOf pointer.id
+                label.id endToEndOf pointer.id
             }
             else -> changeConstraints {
                 transition = true
-                label!!.id.clear(Constraints.BOTTOM)
-                label!!.id topToBottomOf pointerView!!.id
-                label!!.id startToStartOf pointerView!!.id
-                label!!.id endToEndOf pointerView!!.id
+                label.id.clear(Constraints.BOTTOM)
+                label.id topToBottomOf pointer.id
+                label.id startToStartOf pointer.id
+                label.id endToEndOf pointer.id
             }
         }
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        label!!.hidingTimer?.cancel()
     }
 
     /**
@@ -170,28 +147,28 @@ class LivePointerView @JvmOverloads constructor(
      * @param labelText String label text
      */
     fun updateLabelText(labelText: String) {
-        label!!.text = labelText
+        binding.kaleyraPointerLabel.text = labelText
     }
 
     /**
      * Show the pointer
      */
-    fun show(showLabel: Boolean? = true) {
-        pointerView!!.visibility = View.VISIBLE
+    fun show(showLabel: Boolean? = true) = with(binding) {
+        kaleyraPointerButton.visibility = View.VISIBLE
         if (showLabel == false) return
-        pointerView!!.performClick()
-        label!!.visibility = View.VISIBLE
-        label!!.hidingTimer?.cancel()
-        label!!.autoHide(AUTOHIDE_LABEL__MILLIS)
+        kaleyraPointerButton.performClick()
+        kaleyraPointerLabel.visibility = View.VISIBLE
+        kaleyraPointerLabel.disableAutoHide()
+        kaleyraPointerLabel.autoHide(AUTOHIDE_LABEL__MILLIS)
     }
 
     /**
      * Hide the pointer
      */
-    fun hide() {
-        pointerView!!.visibility = View.GONE
-        label!!.visibility = View.GONE
-        label!!.hidingTimer?.cancel()
+    fun hide() = with(binding) {
+        kaleyraPointerButton.visibility = View.GONE
+        kaleyraPointerLabel.visibility = View.GONE
+        kaleyraPointerLabel.disableAutoHide()
         hasShownLabel = false
     }
 }
