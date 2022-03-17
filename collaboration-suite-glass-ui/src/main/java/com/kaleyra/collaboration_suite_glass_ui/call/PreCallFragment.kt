@@ -53,8 +53,8 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         binding.kaleyraParticipantsScrollView.onScrollListener = null
+        super.onDestroyView()
     }
 
     private fun updateUIOnParticipantsViewChange() = with(binding) {
