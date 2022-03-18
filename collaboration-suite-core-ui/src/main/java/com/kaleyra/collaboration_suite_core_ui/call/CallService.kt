@@ -28,11 +28,6 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
-import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
-import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
-import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
-import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Inputs
@@ -45,17 +40,25 @@ import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_core_ui.utils.NotificationHelper
+import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
+import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
+import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
+import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
+import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.plus
 
 /**
  * @suppress
@@ -88,7 +91,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private var callAudioManager: CallAudioManager? = null
 
-    private val ongoingCall: MutableSharedFlow<Call> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
+    private val ongoingCall: MutableSharedFlow<Call> =
+        MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
 
     override val call: SharedFlow<Call>
         get() = ongoingCall.asSharedFlow()
@@ -238,14 +242,14 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         }.launchIn(lifecycleScope)
 
     private fun Call.setup() {
-        val permissionsJob = observePermissions()
-        val streamsJob = setupStreamsAndVideos()
+        val coroutineScope = MainScope() + CoroutineName("CallScope:$id")
+        observePermissions(coroutineScope)
+        setupStreamsAndVideos(coroutineScope)
 
         state
             .takeWhile { it !is Call.State.Disconnected.Ended }
             .onCompletion {
-                permissionsJob.cancel()
-                streamsJob.cancel()
+                coroutineScope.cancel()
                 currentCall = null
 
                 stopForeground(true)
@@ -262,10 +266,10 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         }
     }
 
-    private fun Call.observePermissions(): Job {
+    private fun Call.observePermissions(coroutineScope: CoroutineScope) {
         val hasVideo = extras.preferredType.hasVideo()
 
-        return inputs.allowList.onEach { inputs ->
+        inputs.allowList.onEach { inputs ->
             if (inputs.isEmpty()) return@onEach
 
             val videoInput = inputs.lastOrNull { it is Input.Video.My } as? Input.Video.My
@@ -279,22 +283,51 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 if (hasVideo) it.video.value = videoInput
             }
 
-        }.launchIn(lifecycleScope)
+        }.launchIn(coroutineScope)
     }
 
-    private fun Call.setupStreamsAndVideos(): Job =
+    private fun Call.setupStreamsAndVideos(coroutineScope: CoroutineScope) {
+        val pJobs = mutableListOf<Job>()
+        val sJobs = hashMapOf<String, List<Job>>()
         participants
             .map { it.others + it.me }
-            .flatMapLatest { participants -> participants.map { it.streams }.merge() }
-            .onEach { streams ->
-                streams.forEach { it.open() }
-            }
-            .flatMapLatest { streams -> streams.map { it.video }.merge() }
-            .onEach { video ->
-                if (video?.view?.value != null) return@onEach
-                video?.view?.value = VideoStreamView(applicationContext)
-            }
-            .launchIn(lifecycleScope)
+            .onEach { participants ->
+                pJobs.forEach {
+                    it.cancel()
+                    it.join()
+                }
+                pJobs.clear()
+
+                sJobs.values.forEach { jobs ->
+                    jobs.forEach {
+                        it.cancel()
+                        it.join()
+                    }
+                }
+                sJobs.clear()
+
+                participants.forEach { participant ->
+                    pJobs += participant.streams
+                        .onEach { streams ->
+                            sJobs[participant.userId]?.forEach {
+                                it.cancel()
+                                it.join()
+                            }
+                            val streamsJobs = mutableListOf<Job>()
+                            streams.forEach { stream ->
+                                stream.open()
+                                streamsJobs += stream.video.onEach { video ->
+                                    if (video?.view?.value != null) return@onEach
+                                    video?.view?.value = VideoStreamView(applicationContext)
+                                }.launchIn(coroutineScope)
+                            }
+                            sJobs[participant.userId] = streamsJobs
+                        }
+                        .launchIn(coroutineScope)
+                }
+            }.launchIn(coroutineScope)
+    }
+
 
     override suspend fun onRequestMicPermission(context: FragmentActivity): Permission =
         if (currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Audio } != null) Permission(
