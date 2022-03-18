@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui
+package com.kaleyra.collaboration_suite_glass_ui.utils.extensions
 
 import android.os.Build
 import android.view.View
@@ -23,7 +23,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-
 
 internal object ActivityExtensions {
     fun AppCompatActivity.enableImmersiveMode() {
