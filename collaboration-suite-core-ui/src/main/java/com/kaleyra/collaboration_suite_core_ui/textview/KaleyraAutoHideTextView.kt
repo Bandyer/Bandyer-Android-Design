@@ -40,6 +40,7 @@ class KaleyraAutoHideTextView @JvmOverloads constructor(context: Context, attrs:
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
+        if (millisUntilTimerFinish == 0L) return
         autoHide(millisUntilTimerFinish)
     }
 
