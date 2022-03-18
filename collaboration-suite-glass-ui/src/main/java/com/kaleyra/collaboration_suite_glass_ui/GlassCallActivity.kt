@@ -153,8 +153,12 @@ internal class GlassCallActivity :
         if (intent.extras?.get("autoAnswer") == true)
             viewModel.onAnswer()
 
-        viewModel.onRequestMicPermission(this)
-        viewModel.onRequestCameraPermission(this)
+        val preferredType = viewModel.call.replayCache.last().extras.preferredType
+        if (preferredType.hasAudio() && preferredType.isAudioEnabled())
+            viewModel.onRequestMicPermission(this)
+
+        if (preferredType.hasVideo() && preferredType.isVideoEnabled())
+            viewModel.onRequestCameraPermission(this)
 
         // Add a scroll listener to the recycler view to show mic/cam blocked/disabled toasts
         with(binding.kaleyraStreams) {
