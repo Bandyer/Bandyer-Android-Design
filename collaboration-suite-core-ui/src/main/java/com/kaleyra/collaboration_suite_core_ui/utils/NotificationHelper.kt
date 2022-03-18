@@ -24,10 +24,12 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.PowerManager
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationReceiver
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isScreenOff
 
 internal object NotificationHelper {
 
@@ -56,6 +58,9 @@ internal object NotificationHelper {
             context.getString(R.string.kaleyra_notification_decline),
             createBroadcastPendingIntent(context, DECLINE_REQUEST_CODE, NotificationReceiver.ACTION_HANGUP)
         )
+
+        if (isHighPriority && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
+            turnOnScreen(context.applicationContext)
 
         return context.buildNotification(
             usersDescription = usersDescription,
@@ -162,5 +167,13 @@ internal object NotificationHelper {
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         }
         notificationManager.createNotificationChannel(notificationChannel)
+    }
+
+    // Needed for some devices
+    private fun turnOnScreen(context: Context) {
+        if (!context.isScreenOff()) return
+        val pm = context.applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP, javaClass.name)
+        wl.acquire(3000)
     }
 }
