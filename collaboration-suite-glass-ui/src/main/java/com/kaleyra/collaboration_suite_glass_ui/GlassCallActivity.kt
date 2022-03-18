@@ -43,7 +43,8 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOnAndKeyguardOff
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_glass_ui.call.CallEndedFragmentArgs
 import com.kaleyra.collaboration_suite_glass_ui.chat.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraActivityGlassBinding
@@ -139,7 +140,7 @@ internal class GlassCallActivity :
         }
 
 //        enableImmersiveMode()
-        turnScreenOnAndKeyguardOff()
+        turnScreenOn()
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -481,6 +482,7 @@ internal class GlassCallActivity :
 
     override fun onDestroy() {
         super.onDestroy()
+        turnScreenOff()
         itemAdapter!!.clear()
         service = null
         itemAdapter = null
