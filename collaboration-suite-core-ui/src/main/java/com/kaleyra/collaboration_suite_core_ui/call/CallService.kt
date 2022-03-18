@@ -355,14 +355,14 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     override fun onEnableCamera(enable: Boolean) {
         val video =
-            currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value
+            currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera.Internal }
                 ?: return
         if (enable) video.tryEnable() else video.tryDisable()
     }
 
     override fun onEnableMic(enable: Boolean) {
         val audio =
-            currentCall?.participants?.value?.me?.streams?.value?.firstOrNull()?.audio?.value
+            currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Audio }
                 ?: return
         if (enable) audio.tryEnable() else audio.tryDisable()
     }

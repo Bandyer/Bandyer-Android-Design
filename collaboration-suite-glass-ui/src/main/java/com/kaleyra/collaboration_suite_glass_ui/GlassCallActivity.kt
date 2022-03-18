@@ -296,6 +296,7 @@ internal class GlassCallActivity :
                 .onEach {
                     if (!it.isAllowed && it.neverAskAgain)
                         binding.kaleyraStatusBar.showMicMutedIcon(true)
+                    else if (it.isAllowed) viewModel.onEnableMic(true)
                 }
                 .launchIn(this)
 
@@ -303,6 +304,7 @@ internal class GlassCallActivity :
                 .onEach {
                     if (!it.isAllowed && it.neverAskAgain)
                         binding.kaleyraStatusBar.showCamMutedIcon(true)
+                    else if (it.isAllowed) viewModel.onEnableCamera(true)
                 }
                 .launchIn(this)
 
