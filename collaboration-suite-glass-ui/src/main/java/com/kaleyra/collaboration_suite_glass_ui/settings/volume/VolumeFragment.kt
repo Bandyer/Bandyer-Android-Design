@@ -91,14 +91,21 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
         else if (this.deltaAzimuth <= -2) onSwipeBackward(true).also { this.deltaAzimuth = 0f }
     }
 
-    override fun onTap() = true.also {
-        viewModel.onSetVolume(binding.kaleyraSlider.progress)
-        findNavController().popBackStack()
-    }
+    override fun onTap() = false
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = true.also { binding.kaleyraSlider.increaseProgress() }
+    override fun onSwipeForward(isKeyEvent: Boolean) = true.also {
+        with(binding.kaleyraSlider) {
+            increaseProgress()
+            viewModel.onSetVolume(progress)
+        }
+    }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = true.also { binding.kaleyraSlider.decreaseProgress() }
+    override fun onSwipeBackward(isKeyEvent: Boolean) = true.also {
+        with(binding.kaleyraSlider) {
+            decreaseProgress()
+            viewModel.onSetVolume(progress)
+        }
+    }
 }
