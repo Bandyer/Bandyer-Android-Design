@@ -168,6 +168,10 @@ internal class GlassCallActivity :
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     binding.kaleyraOuterPointers.visibility = if (newState != SCROLL_STATE_IDLE) View.GONE else View.VISIBLE
+                    livePointerViews.values.forEach {
+                        binding.kaleyraOuterPointers.removeView(it)
+                    }
+                    livePointerViews.clear()
                 }
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
