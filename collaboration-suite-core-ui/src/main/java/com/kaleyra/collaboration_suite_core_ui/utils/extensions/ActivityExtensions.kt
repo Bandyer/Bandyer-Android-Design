@@ -26,7 +26,7 @@ import android.view.WindowManager
 
 object ActivityExtensions {
     @SuppressLint("WakelockTimeout")
-    fun Activity.turnScreenOnAndKeyguardOff() {
+    fun Activity.turnScreenOn() {
         val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
 
         val cpuWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, javaClass.simpleName)
@@ -42,5 +42,11 @@ object ActivityExtensions {
             )
         }
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+    }
+
+    fun Activity.turnScreenOff() {
+        window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) setTurnScreenOn(false)
+        else window.clearFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
     }
 }
