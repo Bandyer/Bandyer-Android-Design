@@ -70,7 +70,29 @@ internal object NotificationHelper {
             contentText = contextText,
             contentIntent = contentIntent,
             fullscreenIntent = fullScreenIntent,
+            useTimer = false,
             actions = listOf(answerAction, declineAction)
+        )
+    }
+
+    fun <T> buildOutgoingCallNotification(context: Context, usersDescription: String, activityClazz: Class<T>): Notification {
+        val contextText = context.getString(R.string.kaleyra_notification_outgoing_call)
+        val contentIntent = createCallActivityPendingIntent(context.applicationContext, CONTENT_REQUEST_CODE, activityClazz)
+        val hangUpAction = NotificationCompat.Action(
+            R.drawable.kaleyra_z_end_call,
+            context.getString(R.string.kaleyra_notification_hangup),
+            createBroadcastPendingIntent(context, HANGUP_REQUEST_CODE, NotificationReceiver.ACTION_HANGUP)
+        )
+
+        return context.buildNotification(
+            usersDescription = usersDescription,
+            channelId = NOTIFICATION_DEFAULT_CHANNEL_ID,
+            channelName = context.getString(R.string.kaleyra_notification_outgoing_call),
+            isHighPriority = false,
+            contentText = contextText,
+            contentIntent = contentIntent,
+            useTimer = false,
+            actions = listOf(hangUpAction)
         )
     }
 
@@ -90,6 +112,7 @@ internal object NotificationHelper {
             isHighPriority = false,
             contentText = contentText,
             contentIntent = contentIntent,
+            useTimer = true,
             actions = listOf(hangUpAction)
         )
     }
@@ -129,6 +152,7 @@ internal object NotificationHelper {
         contentText: String,
         contentIntent: PendingIntent? = null,
         fullscreenIntent: PendingIntent? = null,
+        useTimer: Boolean,
         actions: List<NotificationCompat.Action> = listOf()
     ): Notification {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
@@ -137,6 +161,7 @@ internal object NotificationHelper {
         val builder = NotificationCompat.Builder(applicationContext, channelId)
             .setAutoCancel(false)
             .setOngoing(true)
+            .setUsesChronometer(useTimer)
             .setSmallIcon(R.drawable.kaleyra_z_audio_only)
             .setCategory(NotificationCompat.CATEGORY_CALL)
             .setPriority(if (isHighPriority) NotificationCompat.PRIORITY_MAX else NotificationCompat.PRIORITY_DEFAULT)

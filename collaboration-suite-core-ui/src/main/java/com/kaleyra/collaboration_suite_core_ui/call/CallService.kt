@@ -228,7 +228,16 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 UIProvider.showCall(activityClazz!!)
 
             call.state
-                .takeWhile { it !is Call.State.Connecting }
+                .takeWhile { it !is Call.State.Connected }
+                .onEach {
+                    val notification = NotificationHelper.buildOutgoingCallNotification(
+                        this@CallService,
+                        usersDescription,
+                        activityClazz!!
+                    )
+
+                    startForeground(CALL_NOTIFICATION_ID, notification)
+                }
                 .onCompletion {
                     val notification = NotificationHelper.buildOngoingCallNotification(
                         this@CallService,

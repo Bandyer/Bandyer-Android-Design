@@ -23,4 +23,5 @@
     <string name="kaleyra_notification_hangup">Hang Up</string>
     <string name="kaleyra_notification_ongoing_call">Ongoing call</string>
     <string name="kaleyra_notification_incoming_call">Incoming call</string>
+    <string name="kaleyra_notification_outgoing_call">Outgoing call</string>
 </resources>
