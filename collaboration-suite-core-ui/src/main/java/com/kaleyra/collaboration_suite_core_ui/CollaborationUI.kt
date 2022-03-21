@@ -115,6 +115,7 @@ object CollaborationUI {
      * Dispose the collaboration UI
      */
     fun dispose() {
+        if (collaboration == null) return
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         wasPhoneBoxConnected = false
         stopPhoneBoxService()
