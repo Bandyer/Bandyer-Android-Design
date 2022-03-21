@@ -30,6 +30,7 @@
     <string name="kaleyra_glass_swipe">Swipe</string>
     <string name="kaleyra_glass_tap">Tap</string>
     <string name="kaleyra_glass_close">close</string>
+    <string name="kaleyra_glass_back">back</string>
     <string name="kaleyra_glass_browse">browse</string>
     <string name="kaleyra_glass_select">select</string>
     <string name="kaleyra_glass_cancel">cancel</string>

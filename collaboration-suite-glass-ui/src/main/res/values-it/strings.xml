@@ -26,6 +26,7 @@
     <string name="kaleyra_glass_swipe">Scorri</string>
     <string name="kaleyra_glass_tap">Tocca</string>
     <string name="kaleyra_glass_close">chiudi</string>
+    <string name="kaleyra_glass_back">indietro</string>
     <string name="kaleyra_glass_browse">naviga</string>
     <string name="kaleyra_glass_select">seleziona</string>
     <string name="kaleyra_glass_cancel">annulla</string>
