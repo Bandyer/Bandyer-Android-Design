@@ -229,7 +229,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
             call.state
                 .takeWhile { it !is Call.State.Connected }
-                .onEach {
+                .onEach callState@{
+                    if (it !is Call.State.Connecting || participants.me != participants.creator()) return@callState
                     val notification = NotificationHelper.buildOutgoingCallNotification(
                         this@CallService,
                         usersDescription,
