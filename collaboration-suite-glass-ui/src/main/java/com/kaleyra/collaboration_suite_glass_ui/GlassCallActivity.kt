@@ -98,9 +98,11 @@ internal class GlassCallActivity :
     private var currentStreamItemIndex = 0
     private var streamMutex = Mutex()
 
+
     private val hideStreamOverlay = MutableStateFlow(true)
 
     private val livePointerViews: MutableMap<String, LivePointerView> = hashMapOf()
+    private val pointersPerStream = hashMapOf<String, List<String>>()
     private var streamIds: List<String> = emptyList()
 
     private var navController: NavController? = null
@@ -168,10 +170,6 @@ internal class GlassCallActivity :
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     binding.kaleyraOuterPointers.visibility = if (newState != SCROLL_STATE_IDLE) View.GONE else View.VISIBLE
-                    livePointerViews.values.forEach {
-                        binding.kaleyraOuterPointers.removeView(it)
-                    }
-                    livePointerViews.clear()
                 }
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -207,6 +205,12 @@ internal class GlassCallActivity :
                                 resources.getString(R.string.kaleyra_glass_cam_not_active)
                             else -> null
                         }?.also { binding.kaleyraToastContainer.show(DISABLED_TOAST_ID, it) }
+                    }
+
+                    val streamId = streamParticipant.stream.id
+                    val usersIds = pointersPerStream[streamId] ?: listOf()
+                    livePointerViews.forEach { (userId, pointerView) ->
+                        pointerView.visibility = if (usersIds.contains(userId)) View.GONE else View.VISIBLE
                     }
 
                     currentStreamItemIndex = position
@@ -387,15 +391,18 @@ internal class GlassCallActivity :
                     val userId = pair.second.producer.userId
                     val currentStreamId =
                         itemAdapter!!.getAdapterItem(currentStreamItemIndex).streamParticipant.stream.id
+                    val streamId = pair.first
 
-                    if (pair.first == currentStreamId) {
+                    updatePointersPerStream(streamId, userId)
+
+                    if (streamId == currentStreamId) {
                         binding.kaleyraOuterPointers.removeView(livePointerViews[userId])
                         livePointerViews.remove(userId)
                         return@onEach
                     }
 
                     val currentVideoPosition = streamIds.indexOfFirst { it == currentStreamId }
-                    val eventVideoPosition = streamIds.indexOfFirst { it == pair.first }
+                    val eventVideoPosition = streamIds.indexOfFirst { it == streamId }
 
                     onPointerEvent(
                         binding.kaleyraOuterPointers,
@@ -433,6 +440,13 @@ internal class GlassCallActivity :
                 OtherStreamItem(it, lifecycleScope, hideStreamOverlay)
         }
 
+    private fun updatePointersPerStream(streamId: String, userId: String) {
+        val entry = pointersPerStream.filterValues { it.contains(userId) }.entries.firstOrNull()
+        entry?.also { en -> pointersPerStream[en.key] = en.value.filter { it != userId } }
+        val streamUsers =  pointersPerStream[streamId] ?: listOf()
+        pointersPerStream[streamId] = streamUsers + userId
+    }
+
     private fun onPointerEvent(
         parent: ViewGroup,
         event: Input.Video.Event.Pointer,
@@ -440,6 +454,12 @@ internal class GlassCallActivity :
         isOnTheLeft: Boolean
     ) {
         val userId = event.producer.userId
+
+        if (event.action is Input.Video.Event.Action.Idle) {
+            parent.removeView(livePointerViews[userId])
+            livePointerViews.remove(userId)
+            return
+        }
 
         val context = parent.context
         val livePointerView =
