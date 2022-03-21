@@ -25,12 +25,13 @@ import android.os.PowerManager
 import android.view.WindowManager
 
 object ActivityExtensions {
+
     @SuppressLint("WakelockTimeout")
     fun Activity.turnScreenOn() {
-        val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
-
-        val cpuWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, javaClass.simpleName)
-        cpuWakeLock!!.acquire()
+//        val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+//
+//        val cpuWakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, javaClass.simpleName)
+//        cpuWakeLock!!.acquire()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
