@@ -46,6 +46,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
@@ -93,7 +94,7 @@ internal class GlassViewModel(
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = ConcurrentHashMap<String, CallParticipant>()
-            this@GlassViewModel.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants")) { participant, itsMe, streams, state ->
+            this@GlassViewModel.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants"), debounceMs = 1000) { participant, itsMe, streams, state ->
                 if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) participants[participant.userId] =
                     participant
                 else participants.remove(participant.userId)
@@ -104,21 +105,23 @@ internal class GlassViewModel(
     val onParticipantJoin: SharedFlow<CallParticipant> =
         MutableSharedFlow<CallParticipant>().apply {
             var participants = listOf<CallParticipant>()
-            inCallParticipants.onEach {
-                val diff = it.minus(participants.toSet())
-                diff.forEach { p -> emit(p) }
-                participants = it
-            }.launchIn(viewModelScope)
+            inCallParticipants
+                .onEach {
+                    val diff = it.minus(participants.toSet())
+                    diff.forEach { p -> emit(p) }
+                    participants = it
+                }.launchIn(viewModelScope)
         }
 
     val onParticipantLeave: SharedFlow<CallParticipant> =
         MutableSharedFlow<CallParticipant>().apply {
             var participants = listOf<CallParticipant>()
-            inCallParticipants.onEach {
-                val left = participants.minus(it.toSet())
-                left.forEach { p -> emit(p) }
-                participants = it
-            }.launchIn(viewModelScope)
+            inCallParticipants
+                .onEach {
+                    val left = participants.minus(it.toSet())
+                    left.forEach { p -> emit(p) }
+                    participants = it
+                }.launchIn(viewModelScope)
         }
 
     val streams: SharedFlow<List<StreamParticipant>> =
@@ -214,6 +217,7 @@ internal class GlassViewModel(
         myLiveStreams,
         camPermission
     ) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }
+        .debounce(1000)
 
     val amIVisibleToOthers: Flow<Boolean> = combine(
         otherStreams,
@@ -279,6 +283,7 @@ internal class GlassViewModel(
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,
+        debounceMs: Long = 0L,
         crossinline action: suspend (CallParticipant, Boolean, List<Stream>, Participant.State) -> Unit
     ): Flow<CallParticipants> {
         val pJobs = mutableListOf<Job>()
@@ -289,7 +294,7 @@ internal class GlassViewModel(
             }
             pJobs.clear()
             participants.others.plus(participants.me).forEach { participant ->
-                pJobs += combine(participant.streams, participant.state) { streams, state ->
+                pJobs += participant.streams.debounce(debounceMs).combine(participant.state) { streams, state ->
                     action(participant, participant == participants.me, streams, state)
                 }.launchIn(scope)
             }
