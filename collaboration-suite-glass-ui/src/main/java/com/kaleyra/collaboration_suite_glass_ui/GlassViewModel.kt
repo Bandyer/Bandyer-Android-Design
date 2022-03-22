@@ -246,6 +246,37 @@ internal class GlassViewModel(
             }.launchIn(viewModelScope)
         }
 
+    val livePointerEventsPerStream: StateFlow<HashMap<String, List<Input.Video.Event.Pointer>>> =
+        MutableStateFlow<HashMap<String, List<Input.Video.Event.Pointer>>>(hashMapOf()).apply {
+            val eventPerStream = hashMapOf<String, List<Input.Video.Event.Pointer>>()
+            livePointerEvents
+                .onEach { pair ->
+                    val streamId = pair.first
+                    val pointerEvent = pair.second
+
+                    if (pointerEvent.action is Input.Video.Event.Action.Idle) {
+                        val streamEvents = eventPerStream[streamId]
+                        streamEvents?.firstOrNull { it.producer.userId == pointerEvent.producer.userId }
+                            ?.also {
+                                eventPerStream[streamId] = streamEvents - it
+                            }
+                        return@onEach
+                    }
+
+                    eventPerStream.forEach { (streamId, events) ->
+                        events.firstOrNull { it.producer.userId == pointerEvent.producer.userId }
+                            ?.also {
+                                eventPerStream[streamId] = events - it
+                            }
+                    }
+
+                    eventPerStream[streamId] =
+                        eventPerStream[streamId]?.plus(pointerEvent) ?: listOf(pointerEvent)
+
+                    value = eventPerStream
+                }.launchIn(viewModelScope)
+        }
+
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,
         crossinline action: suspend (CallParticipant, Boolean, List<Stream>, Participant.State) -> Unit
