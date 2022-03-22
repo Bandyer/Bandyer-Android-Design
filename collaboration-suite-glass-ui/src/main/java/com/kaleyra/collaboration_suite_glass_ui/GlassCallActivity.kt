@@ -102,7 +102,6 @@ internal class GlassCallActivity :
     private val hideStreamOverlay = MutableStateFlow(true)
 
     private val livePointerViews: MutableMap<String, LivePointerView> = hashMapOf()
-    private val pointersPerStream = hashMapOf<String, List<String>>()
     private var streamIds: List<String> = emptyList()
 
     private var navController: NavController? = null
@@ -169,7 +168,8 @@ internal class GlassCallActivity :
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    binding.kaleyraOuterPointers.visibility = if (newState != SCROLL_STATE_IDLE) View.GONE else View.VISIBLE
+                    binding.kaleyraOuterPointers.visibility =
+                        if (newState != SCROLL_STATE_IDLE) View.GONE else View.VISIBLE
                 }
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -208,9 +208,32 @@ internal class GlassCallActivity :
                     }
 
                     val streamId = streamParticipant.stream.id
-                    val usersIds = pointersPerStream[streamId] ?: listOf()
-                    livePointerViews.forEach { (userId, pointerView) ->
-                        pointerView.visibility = if (usersIds.contains(userId)) View.GONE else View.VISIBLE
+                    val livePointerEventsPerStream = viewModel.livePointerEventsPerStream.value
+                    val userIds =
+                        livePointerEventsPerStream[streamId]?.map { it.producer.userId }?.toSet()
+                            ?: setOf()
+                    userIds.forEach { livePointerViews[it]?.visibility = View.GONE }
+                    val otherIds = livePointerViews.keys - userIds
+
+                    otherIds.forEach { userId ->
+                        val livePointerView = livePointerViews[userId] ?: return@forEach
+                        val currentVideoPosition = streamIds.indexOfFirst { it == streamId }
+
+                        var entry: Pair<String, Input.Video.Event.Pointer>? = null
+                        for (element in livePointerEventsPerStream) {
+                            val event = element.value.firstOrNull { it.producer.userId == userId } ?: continue
+                            entry = Pair(element.key, event)
+                            break
+                        }
+
+                        val eventVideoPosition = streamIds.indexOfFirst { it == entry?.first }
+                        livePointerView.updateLivePointerPosition(
+                            if (currentVideoPosition > eventVideoPosition) 0f else 100f,
+                            entry?.second?.position?.y ?: 0f,
+                            enableAutoHide = false,
+                            adjustTextOnEdge = true
+                        )
+                        livePointerViews[userId]?.visibility = View.VISIBLE
                     }
 
                     currentStreamItemIndex = position
@@ -376,7 +399,11 @@ internal class GlassCallActivity :
                             }
 
                             if (video is Input.Video.Screen)
-                                binding.kaleyraStreams.smoothScrollToPosition(sortedStreams.indexOf(sp))
+                                binding.kaleyraStreams.smoothScrollToPosition(
+                                    sortedStreams.indexOf(
+                                        sp
+                                    )
+                                )
                         }.launchIn(this)
                     }
 
@@ -388,25 +415,19 @@ internal class GlassCallActivity :
 
             viewModel.livePointerEvents
                 .onEach { pair ->
-                    val userId = pair.second.producer.userId
+                    val streamId = pair.first
+                    val event = pair.second
+                    val userId = event.producer.userId
                     val currentStreamId =
                         itemAdapter!!.getAdapterItem(currentStreamItemIndex).streamParticipant.stream.id
-                    val streamId = pair.first
-
-                    updatePointersPerStream(streamId, userId)
-
-                    if (streamId == currentStreamId) {
-                        binding.kaleyraOuterPointers.removeView(livePointerViews[userId])
-                        livePointerViews.remove(userId)
-                        return@onEach
-                    }
 
                     val currentVideoPosition = streamIds.indexOfFirst { it == currentStreamId }
                     val eventVideoPosition = streamIds.indexOfFirst { it == streamId }
 
                     onPointerEvent(
                         binding.kaleyraOuterPointers,
-                        pair.second,
+                        event,
+                        streamId == currentStreamId,
                         viewModel.usersDescription.name(listOf(userId)),
                         currentVideoPosition > eventVideoPosition
                     )
@@ -440,16 +461,10 @@ internal class GlassCallActivity :
                 OtherStreamItem(it, lifecycleScope, hideStreamOverlay)
         }
 
-    private fun updatePointersPerStream(streamId: String, userId: String) {
-        val entry = pointersPerStream.filterValues { it.contains(userId) }.entries.firstOrNull()
-        entry?.also { en -> pointersPerStream[en.key] = en.value.filter { it != userId } }
-        val streamUsers =  pointersPerStream[streamId] ?: listOf()
-        pointersPerStream[streamId] = streamUsers + userId
-    }
-
     private fun onPointerEvent(
         parent: ViewGroup,
         event: Input.Video.Event.Pointer,
+        isCurrentStream: Boolean,
         userDescription: String,
         isOnTheLeft: Boolean
     ) {
@@ -470,6 +485,7 @@ internal class GlassCallActivity :
                 )
             ).also {
                 it.id = View.generateViewId()
+                it.visibility = if (isCurrentStream) View.GONE else View.VISIBLE
                 livePointerViews[userId] = it
                 parent.addView(it)
             }
