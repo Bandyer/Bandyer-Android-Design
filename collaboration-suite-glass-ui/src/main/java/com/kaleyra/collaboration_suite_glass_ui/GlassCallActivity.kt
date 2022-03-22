@@ -207,34 +207,30 @@ internal class GlassCallActivity :
                         }?.also { binding.kaleyraToastContainer.show(DISABLED_TOAST_ID, it) }
                     }
 
-                    val streamId = streamParticipant.stream.id
                     val livePointerEventsPerStream = viewModel.livePointerEventsPerStream.value
+
+                    val streamId = streamParticipant.stream.id
+                    val currentVideoPosition = streamIds.indexOfFirst { it == streamId }
+
+                    val previousStreamId =
+                        itemAdapter!!.getAdapterItem(currentStreamItemIndex).streamParticipant.stream.id
+                    val previousVideoPosition = streamIds.indexOfFirst { it == previousStreamId }
+                    val previousStreamEvents = livePointerEventsPerStream[previousStreamId]
+                    previousStreamEvents?.forEach {
+                        livePointerViews[it.producer.userId]?.updateLivePointerPosition(
+                            if (currentVideoPosition > previousVideoPosition) 0f else 100f,
+                            it.position.y,
+                            enableAutoHide = false,
+                            adjustTextOnEdge = true
+                        )
+                    }
+
                     val userIds =
                         livePointerEventsPerStream[streamId]?.map { it.producer.userId }?.toSet()
                             ?: setOf()
                     userIds.forEach { livePointerViews[it]?.visibility = View.GONE }
                     val otherIds = livePointerViews.keys - userIds
-
-                    otherIds.forEach { userId ->
-                        val livePointerView = livePointerViews[userId] ?: return@forEach
-                        val currentVideoPosition = streamIds.indexOfFirst { it == streamId }
-
-                        var entry: Pair<String, Input.Video.Event.Pointer>? = null
-                        for (element in livePointerEventsPerStream) {
-                            val event = element.value.firstOrNull { it.producer.userId == userId } ?: continue
-                            entry = Pair(element.key, event)
-                            break
-                        }
-
-                        val eventVideoPosition = streamIds.indexOfFirst { it == entry?.first }
-                        livePointerView.updateLivePointerPosition(
-                            if (currentVideoPosition > eventVideoPosition) 0f else 100f,
-                            entry?.second?.position?.y ?: 0f,
-                            enableAutoHide = false,
-                            adjustTextOnEdge = true
-                        )
-                        livePointerViews[userId]?.visibility = View.VISIBLE
-                    }
+                    otherIds.forEach { userId -> livePointerViews[userId]?.visibility = View.VISIBLE }
 
                     currentStreamItemIndex = position
                 }
