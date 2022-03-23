@@ -44,6 +44,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
@@ -94,7 +95,10 @@ internal class GlassViewModel(
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = ConcurrentHashMap<String, CallParticipant>()
-            this@GlassViewModel.participants.forEachParticipant(viewModelScope + CoroutineName("InCallParticipants"), debounceMs = 1000) { participant, itsMe, streams, state ->
+            this@GlassViewModel.participants.forEachParticipant(
+                viewModelScope + CoroutineName("InCallParticipants"),
+                debounceMs = 1000
+            ) { participant, itsMe, streams, state ->
                 if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) participants[participant.userId] =
                     participant
                 else participants.remove(participant.userId)
@@ -124,6 +128,10 @@ internal class GlassViewModel(
                 }.launchIn(viewModelScope)
         }
 
+    private val _removedStreams: MutableSharedFlow<String> =
+        MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
+    val removedStreams: SharedFlow<String> = _removedStreams.asSharedFlow()
+
     val streams: SharedFlow<List<StreamParticipant>> =
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
@@ -143,7 +151,15 @@ internal class GlassViewModel(
                     val removedStreams = currentStreams - newStreams.toSet()
                     uiStreams += addedStreams
                     uiStreams -= removedStreams.toSet()
-                } else uiStreams.removeAll { it.participant == participant }
+
+                    removedStreams.map { it.stream.id }.forEach { _removedStreams.emit(it) }
+                } else {
+                    uiStreams
+                        .filter { it.participant == participant }
+                        .map { it.stream.id }
+                        .forEach { _removedStreams.emit(it) }
+                    uiStreams.removeAll { it.participant == participant }
+                }
                 emit(uiStreams.toList())
             }.launchIn(viewModelScope)
         }
@@ -219,11 +235,6 @@ internal class GlassViewModel(
     ) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }
         .debounce(1000)
 
-    val amIVisibleToOthers: Flow<Boolean> = combine(
-        otherStreams,
-        myLiveStreams
-    ) { otherStreams, myLiveStreams -> otherStreams.isEmpty() && myLiveStreams.isNotEmpty() }
-
     val livePointerEvents: SharedFlow<Pair<String, Input.Video.Event.Pointer>> =
         MutableSharedFlow<Pair<String, Input.Video.Event.Pointer>>(
             replay = 1,
@@ -250,37 +261,6 @@ internal class GlassViewModel(
             }.launchIn(viewModelScope)
         }
 
-    val livePointerEventsPerStream: StateFlow<HashMap<String, List<Input.Video.Event.Pointer>>> =
-        MutableStateFlow<HashMap<String, List<Input.Video.Event.Pointer>>>(hashMapOf()).apply {
-            val eventPerStream = hashMapOf<String, List<Input.Video.Event.Pointer>>()
-            livePointerEvents
-                .onEach { pair ->
-                    val streamId = pair.first
-                    val pointerEvent = pair.second
-
-                    if (pointerEvent.action is Input.Video.Event.Action.Idle) {
-                        val streamEvents = eventPerStream[streamId]
-                        streamEvents?.firstOrNull { it.producer.userId == pointerEvent.producer.userId }
-                            ?.also {
-                                eventPerStream[streamId] = streamEvents - it
-                            }
-                        return@onEach
-                    }
-
-                    eventPerStream.forEach { (streamId, events) ->
-                        events.firstOrNull { it.producer.userId == pointerEvent.producer.userId }
-                            ?.also {
-                                eventPerStream[streamId] = events - it
-                            }
-                    }
-
-                    eventPerStream[streamId] =
-                        eventPerStream[streamId]?.plus(pointerEvent) ?: listOf(pointerEvent)
-
-                    value = eventPerStream
-                }.launchIn(viewModelScope)
-        }
-
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,
         debounceMs: Long = 0L,
@@ -294,9 +274,10 @@ internal class GlassViewModel(
             }
             pJobs.clear()
             participants.others.plus(participants.me).forEach { participant ->
-                pJobs += participant.streams.debounce(debounceMs).combine(participant.state) { streams, state ->
-                    action(participant, participant == participants.me, streams, state)
-                }.launchIn(scope)
+                pJobs += participant.streams.debounce(debounceMs)
+                    .combine(participant.state) { streams, state ->
+                        action(participant, participant == participants.me, streams, state)
+                    }.launchIn(scope)
             }
         }
     }

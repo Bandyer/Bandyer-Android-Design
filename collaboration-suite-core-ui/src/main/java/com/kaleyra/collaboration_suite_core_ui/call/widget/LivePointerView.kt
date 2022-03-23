@@ -97,6 +97,21 @@ class LivePointerView @JvmOverloads constructor(
             adjustTextOnEdge()
     }
 
+    /**
+     * Update pointer position by left percentage
+     * @param leftPercentage Float left percentage
+     */
+    fun updateLivePointerHorizontalPosition(
+        @FloatRange(from = 0.0, to = 100.0) leftPercentage: Float,
+        adjustTextOnEdge: Boolean = false
+    ) {
+        changeConstraints {
+            binding.kaleyraVerticalGuideline.id guidePercentTo leftPercentage / 100f
+        }
+        if (adjustTextOnEdge)
+            adjustTextOnEdge()
+    }
+
     private fun adjustTextOnEdge() {
         val label = binding.kaleyraPointerLabel
         val pointer = binding.kaleyraPointerButton
