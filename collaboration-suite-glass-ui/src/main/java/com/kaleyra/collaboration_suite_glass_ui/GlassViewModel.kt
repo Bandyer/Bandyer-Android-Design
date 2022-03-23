@@ -168,7 +168,7 @@ internal class GlassViewModel(
         participants.map { it.me }.flatMapLatest { it.streams }
 
     private val otherStreams: Flow<List<Stream>> =
-        participants.map { it.others }.flatMapLatest { it.map { it.streams }.merge() }
+        streams.transform { value -> emit(value.filter { !it.itsMe }.map { it.stream }) }
 
     private val cameraStream: Flow<Stream?> =
         myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it is Input.Video.Camera } != null } }

@@ -466,13 +466,13 @@ internal class GlassCallActivity :
         streamId: String,
         event: Input.Video.Event.Pointer,
         userDescription: String
-    ) = with(binding) {
+    ) {
         val userId = event.producer.userId
         val livePointer = livePointers.filterValues { it.first == userId }.keys.firstOrNull()
 
         if (event.action is Input.Video.Event.Action.Idle) {
             livePointer?.also {
-                kaleyraOuterPointers.removeView(it)
+                binding.kaleyraOuterPointers.removeView(it)
                 livePointers.remove(it)
             }
             return
@@ -480,7 +480,7 @@ internal class GlassCallActivity :
 
         val currentStreamId =
             itemAdapter!!.adapterItems.getOrNull(currentStreamItemIndex)?.streamParticipant?.stream?.id
-                ?: return@with
+                ?: return
         val livePointerView =
             livePointer ?: LivePointerView(
                 ContextThemeWrapper(
@@ -491,7 +491,7 @@ internal class GlassCallActivity :
                 it.id = View.generateViewId()
                 it.visibility = if (currentStreamId == streamId) View.GONE else View.VISIBLE
                 livePointers[it] = Pair(userId, streamId)
-                kaleyraOuterPointers.addView(it)
+                binding.kaleyraOuterPointers.addView(it)
             }
 
         val currentVideoPosition = streamIds.indexOfFirst { it == currentStreamId }
