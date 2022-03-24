@@ -210,7 +210,6 @@ internal class GlassCallActivity :
                         }?.also { binding.kaleyraToastContainer.show(DISABLED_TOAST_ID, it) }
                     }
 
-
                     val currentStreamId = streamParticipant.stream.id
 
                     val previousStreamId =

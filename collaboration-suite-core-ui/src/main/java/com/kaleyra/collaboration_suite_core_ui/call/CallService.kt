@@ -190,7 +190,12 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     override fun onActivityDestroyed(activity: Activity) = Unit
 
     // CallService
-    fun bind(phoneBox: PhoneBox, usersDescription: UsersDescription? = null) {
+    fun bind(
+        phoneBox: PhoneBox,
+        usersDescription: UsersDescription? = null,
+        activityClazz: Class<*>
+    ) {
+        this.activityClazz = activityClazz
         this.phoneBox = phoneBox.apply {
             phoneBoxJob?.cancel()
             phoneBoxJob = observe()
