@@ -27,7 +27,9 @@ import android.os.Build
 import android.os.PowerManager
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.call.CallService
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationReceiver
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isScreenOff
 
@@ -117,9 +119,15 @@ internal object NotificationHelper {
         )
     }
 
-    fun cancelNotification(context: Context, notifyId: Int) {
+    fun notify(context: Context, notificationId: Int, notification: Notification) {
+        NotificationManagerCompat.from(context).notify(
+            notificationId, notification
+        )
+    }
+
+    fun cancelNotification(context: Context, notificationId: Int) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.cancel(notifyId)
+        notificationManager.cancel(notificationId)
     }
 
     private fun createBroadcastPendingIntent(context: Context, requestCode: Int, action: String) =
