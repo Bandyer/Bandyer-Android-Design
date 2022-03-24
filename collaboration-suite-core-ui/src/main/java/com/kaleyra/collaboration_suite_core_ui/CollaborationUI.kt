@@ -127,7 +127,7 @@ object CollaborationUI {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
                 val service = (binder as BoundServiceBinder).getService<CallService>()
-                service.bind(phoneBox, usersDescription)
+                service.bind(phoneBox, usersDescription, activityClazz)
             }
 
             override fun onServiceDisconnected(componentName: ComponentName) = Unit
@@ -136,11 +136,7 @@ object CollaborationUI {
         with(ContextRetainer.context) {
             val intent = Intent(this, CallService::class.java)
             startService(intent)
-            bindService(
-                intent.apply { putExtra("activityClazzName", activityClazz.name) },
-                serviceConnection,
-                0
-            )
+            bindService(intent, serviceConnection, 0)
         }
     }
 
