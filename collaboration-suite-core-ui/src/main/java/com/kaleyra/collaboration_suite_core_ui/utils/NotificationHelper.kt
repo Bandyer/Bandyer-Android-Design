@@ -169,6 +169,7 @@ internal object NotificationHelper {
         val builder = NotificationCompat.Builder(applicationContext, channelId)
             .setAutoCancel(false)
             .setOngoing(true)
+            .setOnlyAlertOnce(true)
             .setUsesChronometer(useTimer)
             .setSmallIcon(R.drawable.kaleyra_z_audio_only)
             .setCategory(NotificationCompat.CATEGORY_CALL)
