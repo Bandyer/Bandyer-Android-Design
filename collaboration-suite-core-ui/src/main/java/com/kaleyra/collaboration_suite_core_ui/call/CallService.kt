@@ -19,10 +19,9 @@ package com.kaleyra.collaboration_suite_core_ui.call
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
+import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
-import android.os.IBinder
-import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -58,6 +57,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 
 /**
@@ -80,6 +80,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     private var activityClazz: Class<*>? = null
 
     private var isAppInForeground = false
+    private var isServiceInForeground = false
 
     private var phoneBox: PhoneBox? = null
     private var phoneBoxJob: Job? = null
@@ -157,6 +158,22 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     override fun onActivityStarted(activity: Activity) {
         if (activity.javaClass != activityClazz) return
+
+        val participants = currentCall!!.participants.value
+        if (!isServiceInForeground && currentCall!!.state.value is Call.State.Disconnected && participants.me != participants.creator()) {
+            val userIds = participants.others.map { it.userId }
+            lifecycleScope.launch {
+                val usersDescription = usersDescription.name(userIds)
+                val notification = NotificationHelper.buildIncomingCallNotification(
+                    applicationContext,
+                    usersDescription,
+                    false,
+                    activityClazz!!
+                )
+                moveToForeground(notification)
+            }
+        }
+
         val video =
             currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera }
                 ?: return
@@ -215,10 +232,13 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                     !isAppInForeground,
                     activityClazz!!
                 )
-                if (!isAppInForeground) NotificationManagerCompat.from(applicationContext).notify(
-                    CALL_NOTIFICATION_ID, notification
-                )
-                else startForeground(CALL_NOTIFICATION_ID, notification)
+                if (!isAppInForeground)
+                    NotificationHelper.notify(
+                        applicationContext,
+                        CALL_NOTIFICATION_ID,
+                        notification
+                    )
+                else moveToForeground(notification)
             }
 
             if (isAppInForeground)
@@ -234,7 +254,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                         activityClazz!!
                     )
 
-                    startForeground(CALL_NOTIFICATION_ID, notification)
+                    moveToForeground(notification)
                 }
                 .onCompletion {
                     val notification = NotificationHelper.buildOngoingCallNotification(
@@ -243,7 +263,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                         activityClazz!!
                     )
 
-                    startForeground(CALL_NOTIFICATION_ID, notification)
+                    moveToForeground(notification)
                 }
                 .launchIn(lifecycleScope)
         }.launchIn(lifecycleScope)
@@ -259,8 +279,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 coroutineScope.cancel()
                 currentCall = null
 
-                stopForeground(true)
-                NotificationHelper.cancelNotification(this@CallService, CALL_NOTIFICATION_ID)
+                removeFromForeground()
+                NotificationHelper.cancelNotification(applicationContext, CALL_NOTIFICATION_ID)
             }.launchIn(lifecycleScope)
     }
 
@@ -385,5 +405,11 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     override fun onSetVolume(value: Int) = callAudioManager!!.setVolume(value)
 
     override fun onSetZoom(value: Int) = Unit
+
+    private fun moveToForeground(notification: Notification) =
+        startForeground(CALL_NOTIFICATION_ID, notification).also { isServiceInForeground = true }
+
+    private fun removeFromForeground() =
+        stopForeground(true).also { isServiceInForeground = false }
 
 }
