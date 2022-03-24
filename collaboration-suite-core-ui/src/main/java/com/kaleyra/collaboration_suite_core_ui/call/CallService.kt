@@ -159,18 +159,12 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     override fun onActivityStarted(activity: Activity) {
         if (activity.javaClass != activityClazz) return
 
-        val participants = currentCall!!.participants.value
-        if (!isServiceInForeground && currentCall!!.state.value is Call.State.Disconnected && participants.me != participants.creator()) {
-            val userIds = participants.others.map { it.userId }
-            lifecycleScope.launch {
+        lifecycleScope.launch {
+            val participants = currentCall!!.participants.value
+            if (!isServiceInForeground && currentCall!!.state.value is Call.State.Disconnected && participants.me != participants.creator()) {
+                val userIds = participants.others.map { it.userId }
                 val usersDescription = usersDescription.name(userIds)
-                val notification = NotificationHelper.buildIncomingCallNotification(
-                    applicationContext,
-                    usersDescription,
-                    false,
-                    activityClazz!!
-                )
-                moveToForeground(notification)
+                showIncomingCallNotification(usersDescription, isHighPriority = false, moveToForeground = true)
             }
         }
 
@@ -213,8 +207,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     }
 
     private fun PhoneBox.observe(): Job =
-        call.onEach { call ->
-            if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return@onEach
+        call.onEach onEachCall@{ call ->
+            if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return@onEachCall
 
             currentCall = call
             ongoingCall.emit(call)
@@ -224,47 +218,19 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             val userIds = participants.others.map { it.userId }
             val usersDescription = usersDescription.name(userIds)
 
-            // If it is an incoming call
-            if (participants.me != participants.creator()) {
-                val notification = NotificationHelper.buildIncomingCallNotification(
-                    this@CallService,
-                    usersDescription,
-                    !isAppInForeground,
-                    activityClazz!!
-                )
-                if (!isAppInForeground)
-                    NotificationHelper.notify(
-                        applicationContext,
-                        CALL_NOTIFICATION_ID,
-                        notification
-                    )
-                else moveToForeground(notification)
-            }
+            if (participants.me != participants.creator())
+                showIncomingCallNotification(usersDescription, !isAppInForeground, !isAppInForeground)
 
             if (isAppInForeground)
                 UIProvider.showCall(activityClazz!!)
 
             call.state
                 .takeWhile { it !is Call.State.Connected }
-                .onEach callState@{
-                    if (it !is Call.State.Connecting || participants.me != participants.creator()) return@callState
-                    val notification = NotificationHelper.buildOutgoingCallNotification(
-                        this@CallService,
-                        usersDescription,
-                        activityClazz!!
-                    )
-
-                    moveToForeground(notification)
+                .onEach {
+                    if (it !is Call.State.Connecting || participants.me != participants.creator()) return@onEach
+                    showOutgoingCallNotification(usersDescription)
                 }
-                .onCompletion {
-                    val notification = NotificationHelper.buildOngoingCallNotification(
-                        this@CallService,
-                        usersDescription,
-                        activityClazz!!
-                    )
-
-                    moveToForeground(notification)
-                }
+                .onCompletion { showOnGoingCallNotification(usersDescription) }
                 .launchIn(lifecycleScope)
         }.launchIn(lifecycleScope)
 
@@ -279,7 +245,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 coroutineScope.cancel()
                 currentCall = null
 
-                removeFromForeground()
+                stopForegroundLocal()
                 NotificationHelper.cancelNotification(applicationContext, CALL_NOTIFICATION_ID)
             }.launchIn(lifecycleScope)
     }
@@ -318,7 +284,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         val sJobs = hashMapOf<String, List<Job>>()
         participants
             .map { it.others + it.me }
-            .onEach { participants ->
+            .onEach onEachParticipants@{ participants ->
                 pJobs.forEach {
                     it.cancel()
                     it.join()
@@ -335,7 +301,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
                 participants.forEach { participant ->
                     pJobs += participant.streams
-                        .onEach { streams ->
+                        .onEach onEachStreams@{ streams ->
                             sJobs[participant.userId]?.forEach {
                                 it.cancel()
                                 it.join()
@@ -349,12 +315,10 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                                 }.launchIn(coroutineScope)
                             }
                             sJobs[participant.userId] = streamsJobs
-                        }
-                        .launchIn(coroutineScope)
+                        }.launchIn(coroutineScope)
                 }
             }.launchIn(coroutineScope)
     }
-
 
     override suspend fun onRequestMicPermission(context: FragmentActivity): Permission =
         if (currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Audio } != null) Permission(
@@ -372,13 +336,9 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         else currentCall?.inputs?.request(context, Inputs.Type.Camera.Internal)
             .let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
 
-    override fun onAnswer() {
-        currentCall?.connect()
-    }
+    override fun onAnswer() = currentCall?.connect() ?: Unit
 
-    override fun onHangup() {
-        currentCall?.end()
-    }
+    override fun onHangup() = currentCall?.end() ?: Unit
 
     override fun onEnableCamera(enable: Boolean) {
         val video =
@@ -406,10 +366,47 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     override fun onSetZoom(value: Int) = Unit
 
-    private fun moveToForeground(notification: Notification) =
+    private fun showIncomingCallNotification(
+        usersDescription: String,
+        isHighPriority: Boolean,
+        moveToForeground: Boolean
+    ) {
+        val notification = NotificationHelper.buildIncomingCallNotification(
+            applicationContext,
+            usersDescription,
+            isHighPriority,
+            activityClazz!!
+        )
+        showNotification(notification, moveToForeground)
+    }
+
+    private fun showOutgoingCallNotification(usersDescription: String) {
+        val notification = NotificationHelper.buildOutgoingCallNotification(
+            applicationContext,
+            usersDescription,
+            activityClazz!!
+        )
+        showNotification(notification, true)
+    }
+
+    private fun showOnGoingCallNotification(usersDescription: String) {
+        val notification = NotificationHelper.buildOngoingCallNotification(
+            applicationContext,
+            usersDescription,
+            activityClazz!!
+        )
+        showNotification(notification, true)
+    }
+
+    private fun showNotification(notification: Notification, moveToForeground: Boolean) {
+        if (moveToForeground) startForegroundLocal(notification)
+        else NotificationHelper.notify(applicationContext, CALL_NOTIFICATION_ID, notification)
+    }
+
+    private fun startForegroundLocal(notification: Notification) =
         startForeground(CALL_NOTIFICATION_ID, notification).also { isServiceInForeground = true }
 
-    private fun removeFromForeground() =
+    private fun stopForegroundLocal() =
         stopForeground(true).also { isServiceInForeground = false }
 
 }
