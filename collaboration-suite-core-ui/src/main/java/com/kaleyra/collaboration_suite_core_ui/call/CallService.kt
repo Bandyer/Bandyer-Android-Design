@@ -121,14 +121,6 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         return START_NOT_STICKY
     }
 
-    override fun onBind(intent: Intent): IBinder {
-        with(intent.getStringExtra("activityClazzName")) {
-            require(this != null) { "ui activity class name not specified" }
-            activityClazz = Class.forName(this)
-        }
-        return super.onBind(intent)
-    }
-
     override fun onDestroy() {
         super<BoundService>.onDestroy()
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
