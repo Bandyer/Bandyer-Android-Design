@@ -166,7 +166,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     override fun onActivityStarted(activity: Activity) {
         if (activity.javaClass != activityClazz) return
         val video =
-            currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value
+            currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera }
                 ?: return
         if (wasVideoEnabledOnDestroy) video.tryEnable() else video.tryDisable()
         wasVideoEnabledOnDestroy = false
@@ -179,7 +179,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     override fun onActivityStopped(activity: Activity) {
         if (activity.javaClass != activityClazz) return
         val video =
-            currentCall?.participants?.value?.me?.streams?.value?.lastOrNull { it.video.value is Input.Video.Camera }?.video?.value
+            currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera }
                 ?: return
         wasVideoEnabledOnDestroy = video.enabled.value
         video.tryDisable()
