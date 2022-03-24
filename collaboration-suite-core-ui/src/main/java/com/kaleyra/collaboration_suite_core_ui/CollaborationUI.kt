@@ -20,6 +20,7 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -38,6 +39,7 @@ import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -53,24 +55,24 @@ object CollaborationUI {
     private var collaboration: Collaboration? = null
 
     private var wasPhoneBoxConnected = false
+    private var isAppInForeground = false
 
     private var lifecycleObserver = object : DefaultLifecycleObserver {
         override fun onStart(owner: LifecycleOwner) {
             super.onStart(owner)
+            isAppInForeground = true
             if (wasPhoneBoxConnected) phoneBox.connect()
         }
 
         override fun onStop(owner: LifecycleOwner) {
             super.onStop(owner)
+            isAppInForeground = false
             wasPhoneBoxConnected =
-                phoneBox.state.value !is PhoneBox.State.Disconnected && phoneBox.state.value !is PhoneBox.State.Disconnecting
-            val call = phoneBox.call.replayCache.firstOrNull()
-            call?.also { c ->
-                c.state
-                    .takeWhile { it !is Call.State.Disconnected.Ended }
-                    .onCompletion {
-                        stopPhoneBoxService()
-                    }.launchIn(MainScope())
+                phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
+            phoneBox.call.replayCache.firstOrNull()?.state?.value?.also {
+                if (it !is Call.State.Disconnected.Ended) return@also
+                stopPhoneBoxService()
+                Log.e("CollaborationUI", "stopService2")
             } ?: stopPhoneBoxService()
         }
     }
@@ -106,8 +108,18 @@ object CollaborationUI {
         if (collaboration != null) return false
         Collaboration.create(credentials, configuration).apply { collaboration = this }
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
-        phoneBox.state.filter { it is Connecting }.onEach { startPhoneBoxService(activityClazz) }
+        phoneBox.state
+            .filter { it is Connecting }
+            .onEach { startPhoneBoxService(activityClazz) }
             .launchIn(MainScope())
+        phoneBox.call
+            .flatMapLatest { it.state }
+            .onEach {
+                Log.e("CollaborationUI", "call state: $it")
+                if (isAppInForeground || it !is Call.State.Disconnected.Ended) return@onEach
+                stopPhoneBoxService()
+                Log.e("CollaborationUI", "stopService")
+            }.launchIn(MainScope())
         return true
     }
 
