@@ -85,8 +85,6 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     private var phoneBox: PhoneBox? = null
     private var phoneBoxJob: Job? = null
 
-    private var wasVideoEnabledOnDestroy = false
-
     private var batteryObserver: BatteryObserver? = null
     private var wifiObserver: WiFiObserver? = null
 
@@ -157,30 +155,15 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     }
 
     override fun onActivityStarted(activity: Activity) {
-        if (activity.javaClass != activityClazz) return
-
-        if (!isServiceInForeground)
-            startForegroundIfIncomingCall()
-
-        val video =
-            currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera }
-                ?: return
-        if (wasVideoEnabledOnDestroy) video.tryEnable() else video.tryDisable()
-        wasVideoEnabledOnDestroy = false
+        if (activity.javaClass != activityClazz || isServiceInForeground) return
+        startForegroundIfIncomingCall()
     }
 
     override fun onActivityResumed(activity: Activity) = Unit
 
     override fun onActivityPaused(activity: Activity) = Unit
 
-    override fun onActivityStopped(activity: Activity) {
-        if (activity.javaClass != activityClazz) return
-        val video =
-            currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera }
-                ?: return
-        wasVideoEnabledOnDestroy = video.enabled.value
-        video.tryDisable()
-    }
+    override fun onActivityStopped(activity: Activity) = Unit
 
     override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) = Unit
 
