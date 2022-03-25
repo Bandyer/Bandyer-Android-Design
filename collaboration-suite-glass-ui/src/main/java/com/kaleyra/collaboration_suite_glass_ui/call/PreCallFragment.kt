@@ -42,7 +42,7 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
                         participants.others.size + 1
                     )
 
-                    val userIds = participants.others.plus(participants.me).map { it.userId }
+                    val userIds = participants.others.map { it.userId }
                     kaleyraParticipants.text = viewModel.usersDescription.name(userIds)
                     updateUIOnParticipantsViewChange()
 
