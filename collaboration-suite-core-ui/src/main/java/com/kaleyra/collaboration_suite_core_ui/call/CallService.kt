@@ -28,6 +28,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Inputs
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
@@ -73,7 +74,6 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         private var currentCall: Call? = null
 
         fun onNotificationAnswer() = currentCall?.connect()
-
         fun onNotificationHangUp() = currentCall?.end()
     }
 
@@ -153,20 +153,14 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     // ActivityLifecycleCallbacks
     override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
         if (activity.javaClass != activityClazz) return
-        currentCall!!.publishMySelf(activity as FragmentActivity)
+        publishMyStream(currentCall!!, activity as FragmentActivity)
     }
 
     override fun onActivityStarted(activity: Activity) {
         if (activity.javaClass != activityClazz) return
 
-        lifecycleScope.launch {
-            val participants = currentCall!!.participants.value
-            if (!isServiceInForeground && currentCall!!.state.value is Call.State.Disconnected && participants.me != participants.creator()) {
-                val userIds = participants.others.map { it.userId }
-                val usersDescription = usersDescription.name(userIds)
-                showIncomingCallNotification(usersDescription, isHighPriority = false, moveToForeground = true)
-            }
-        }
+        if (!isServiceInForeground)
+            startForegroundIfIncomingCall()
 
         val video =
             currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera }
@@ -191,134 +185,6 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) = Unit
 
     override fun onActivityDestroyed(activity: Activity) = Unit
-
-    // CallService
-    fun bind(
-        phoneBox: PhoneBox,
-        usersDescription: UsersDescription? = null,
-        activityClazz: Class<*>
-    ) {
-        this.activityClazz = activityClazz
-        this.phoneBox = phoneBox.apply {
-            phoneBoxJob?.cancel()
-            phoneBoxJob = observe()
-            usersDescription?.also { this@CallService.usersDescription = it }
-        }
-    }
-
-    private fun PhoneBox.observe(): Job =
-        call.onEach onEachCall@{ call ->
-            if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return@onEachCall
-
-            currentCall = call
-            ongoingCall.emit(call)
-            call.setup()
-
-            val participants = call.participants.value
-            val userIds = participants.others.map { it.userId }
-            val usersDescription = usersDescription.name(userIds)
-
-            if (participants.me != participants.creator())
-                showIncomingCallNotification(usersDescription, !isAppInForeground, !isAppInForeground)
-
-            if (isAppInForeground)
-                UIProvider.showCall(activityClazz!!)
-
-            call.state
-                .takeWhile { it !is Call.State.Connected }
-                .onEach {
-                    if (it !is Call.State.Connecting || participants.me != participants.creator()) return@onEach
-                    showOutgoingCallNotification(usersDescription)
-                }
-                .onCompletion { showOnGoingCallNotification(usersDescription) }
-                .launchIn(lifecycleScope)
-        }.launchIn(lifecycleScope)
-
-    private fun Call.setup() {
-        val coroutineScope = MainScope() + CoroutineName("CallScope:$id")
-        observePermissions(coroutineScope)
-        setupStreamsAndVideos(coroutineScope)
-
-        state
-            .takeWhile { it !is Call.State.Disconnected.Ended }
-            .onCompletion {
-                coroutineScope.cancel()
-                currentCall = null
-
-                stopForegroundLocal()
-                NotificationHelper.cancelNotification(applicationContext, CALL_NOTIFICATION_ID)
-            }.launchIn(lifecycleScope)
-    }
-
-    private fun Call.publishMySelf(fragmentActivity: FragmentActivity) {
-        val me = participants.value.me
-        if (me.streams.value.firstOrNull { it.id == MY_STREAM_ID } != null) return
-        me.addStream(fragmentActivity, MY_STREAM_ID).let {
-            it.audio.value = null
-            it.video.value = null
-        }
-    }
-
-    private fun Call.observePermissions(coroutineScope: CoroutineScope) {
-        val hasVideo = extras.preferredType.hasVideo()
-
-        inputs.allowList.onEach { inputs ->
-            if (inputs.isEmpty()) return@onEach
-
-            val videoInput = inputs.lastOrNull { it is Input.Video.My } as? Input.Video.My
-            val audioInput = inputs.firstOrNull { it is Input.Audio } as? Input.Audio
-
-            videoInput?.setQuality(Input.Video.Quality.Definition.HD)
-
-            val me = participants.value.me
-            me.streams.value.firstOrNull { it.id == MY_STREAM_ID }?.let {
-                it.audio.value = audioInput
-                if (hasVideo) it.video.value = videoInput
-            }
-
-        }.launchIn(coroutineScope)
-    }
-
-    private fun Call.setupStreamsAndVideos(coroutineScope: CoroutineScope) {
-        val pJobs = mutableListOf<Job>()
-        val sJobs = hashMapOf<String, List<Job>>()
-        participants
-            .map { it.others + it.me }
-            .onEach onEachParticipants@{ participants ->
-                pJobs.forEach {
-                    it.cancel()
-                    it.join()
-                }
-                pJobs.clear()
-
-                sJobs.values.forEach { jobs ->
-                    jobs.forEach {
-                        it.cancel()
-                        it.join()
-                    }
-                }
-                sJobs.clear()
-
-                participants.forEach { participant ->
-                    pJobs += participant.streams
-                        .onEach onEachStreams@{ streams ->
-                            sJobs[participant.userId]?.forEach {
-                                it.cancel()
-                                it.join()
-                            }
-                            val streamsJobs = mutableListOf<Job>()
-                            streams.forEach { stream ->
-                                stream.open()
-                                streamsJobs += stream.video.onEach { video ->
-                                    if (video?.view?.value != null) return@onEach
-                                    video?.view?.value = VideoStreamView(applicationContext)
-                                }.launchIn(coroutineScope)
-                            }
-                            sJobs[participant.userId] = streamsJobs
-                        }.launchIn(coroutineScope)
-                }
-            }.launchIn(coroutineScope)
-    }
 
     override suspend fun onRequestMicPermission(context: FragmentActivity): Permission =
         if (currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Audio } != null) Permission(
@@ -366,6 +232,161 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     override fun onSetZoom(value: Int) = Unit
 
+    // CallService
+    fun bind(
+        phoneBox: PhoneBox,
+        usersDescription: UsersDescription? = null,
+        activityClazz: Class<*>
+    ) {
+        this.phoneBox = phoneBox
+        this.usersDescription = usersDescription ?: UsersDescription()
+        this.activityClazz = activityClazz
+        phoneBoxJob?.cancel()
+        phoneBoxJob = observeCall(phoneBox)
+    }
+
+    private fun observeCall(phoneBox: PhoneBox): Job =
+        phoneBox.call.onEach onEachCall@{ call ->
+            if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return@onEachCall
+
+            currentCall = call
+            call.state
+                .takeWhile { it !is Call.State.Disconnected.Ended }
+                .onCompletion { currentCall = null }
+                .launchIn(lifecycleScope)
+
+            setupCall(call)
+
+            ongoingCall.emit(call)
+            if (isAppInForeground)
+                UIProvider.showCall(activityClazz!!)
+        }.launchIn(lifecycleScope)
+
+    private suspend fun setupCall(call: Call) {
+        val coroutineScope = MainScope() + CoroutineName("call scope: ${call.id}")
+        setUpStreamsAndVideos(call, coroutineScope = coroutineScope)
+        updateStreamInputsOnPermissions(call, coroutineScope = coroutineScope)
+        syncNotificationWithCallState(call)
+        clearScopeAndNotificationOnCallEnd(call, scopeToCancel = coroutineScope)
+    }
+
+    private fun publishMyStream(call: Call, fragmentActivity: FragmentActivity) {
+        val me = call.participants.value.me
+        if (me.streams.value.firstOrNull { it.id == MY_STREAM_ID } != null) return
+        me.addStream(fragmentActivity, MY_STREAM_ID).let {
+            it.audio.value = null
+            it.video.value = null
+        }
+    }
+
+    private fun updateStreamInputsOnPermissions(call: Call, coroutineScope: CoroutineScope) {
+        val hasVideo = call.extras.preferredType.hasVideo()
+
+        call.inputs.allowList.onEach { inputs ->
+            if (inputs.isEmpty()) return@onEach
+
+            val videoInput = inputs.lastOrNull { it is Input.Video.My } as? Input.Video.My
+            val audioInput = inputs.firstOrNull { it is Input.Audio } as? Input.Audio
+
+            videoInput?.setQuality(Input.Video.Quality.Definition.HD)
+
+            val me = call.participants.value.me
+            me.streams.value.firstOrNull { it.id == MY_STREAM_ID }?.let {
+                it.audio.value = audioInput
+                if (hasVideo) it.video.value = videoInput
+            }
+
+        }.launchIn(coroutineScope)
+    }
+
+    private fun setUpStreamsAndVideos(call: Call, coroutineScope: CoroutineScope) {
+        val pJobs = mutableListOf<Job>()
+        val sJobs = hashMapOf<String, List<Job>>()
+        call.participants
+            .map { it.others + it.me }
+            .onEach onEachParticipants@{ participants ->
+                pJobs.forEach {
+                    it.cancel()
+                    it.join()
+                }
+                pJobs.clear()
+
+                sJobs.values.forEach { jobs ->
+                    jobs.forEach {
+                        it.cancel()
+                        it.join()
+                    }
+                }
+                sJobs.clear()
+
+                participants.forEach { participant ->
+                    pJobs += participant.streams
+                        .onEach onEachStreams@{ streams ->
+                            sJobs[participant.userId]?.forEach {
+                                it.cancel()
+                                it.join()
+                            }
+                            val streamsJobs = mutableListOf<Job>()
+                            streams.forEach { stream ->
+                                stream.open()
+                                streamsJobs += stream.video.onEach { video ->
+                                    if (video?.view?.value != null) return@onEach
+                                    video?.view?.value = VideoStreamView(applicationContext)
+                                }.launchIn(coroutineScope)
+                            }
+                            sJobs[participant.userId] = streamsJobs
+                        }.launchIn(coroutineScope)
+                }
+            }.launchIn(coroutineScope)
+    }
+
+    private suspend fun syncNotificationWithCallState(call: Call) {
+        val participants = call.participants.value
+        val usersDescription = getUsersDescription(participants)
+
+        if (participants.me != participants.creator())
+            showIncomingCallNotification(
+                usersDescription,
+                !isAppInForeground,
+                !isAppInForeground
+            )
+
+        call.state
+            .takeWhile { it !is Call.State.Connected }
+            .onEach {
+                if (it !is Call.State.Connecting || participants.me != participants.creator()) return@onEach
+                showOutgoingCallNotification(usersDescription)
+            }
+            .onCompletion { showOnGoingCallNotification(usersDescription) }
+            .launchIn(lifecycleScope)
+    }
+
+    private fun clearScopeAndNotificationOnCallEnd(call: Call, scopeToCancel: CoroutineScope) {
+        call.state
+            .takeWhile { it !is Call.State.Disconnected.Ended }
+            .onCompletion {
+                scopeToCancel.cancel()
+                stopForegroundLocal()
+                NotificationHelper.cancelNotification(applicationContext, CALL_NOTIFICATION_ID)
+            }.launchIn(lifecycleScope)
+    }
+
+    private fun startForegroundIfIncomingCall() =
+        lifecycleScope.launch {
+            val participants = currentCall!!.participants.value
+            if (currentCall!!.state.value !is Call.State.Disconnected || participants.me == participants.creator()) return@launch
+            showIncomingCallNotification(
+                getUsersDescription(participants),
+                isHighPriority = false,
+                moveToForeground = true
+            )
+        }
+
+    private suspend fun getUsersDescription(participants: CallParticipants): String {
+        val userIds = participants.others.map { it.userId }
+        return usersDescription.name(userIds)
+    }
+
     private fun showIncomingCallNotification(
         usersDescription: String,
         isHighPriority: Boolean,
@@ -408,5 +429,4 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private fun stopForegroundLocal() =
         stopForeground(true).also { isServiceInForeground = false }
-
 }
