@@ -53,9 +53,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -97,7 +95,7 @@ internal class GlassViewModel(
             val participants = ConcurrentHashMap<String, CallParticipant>()
             this@GlassViewModel.participants.forEachParticipant(
                 viewModelScope + CoroutineName("InCallParticipants"),
-                debounceMs = 1000
+                debounceMs = SHORT_DEBOUNCE_MS
             ) { participant, itsMe, streams, state ->
                 if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) participants[participant.userId] =
                     participant
@@ -233,7 +231,7 @@ internal class GlassViewModel(
         myLiveStreams,
         camPermission
     ) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }
-        .debounce(1000)
+        .debounce(LONG_DEBOUNCE_MS)
 
     val livePointerEvents: SharedFlow<Pair<String, Input.Video.Event.Pointer>> =
         MutableSharedFlow<Pair<String, Input.Video.Event.Pointer>>(
@@ -305,6 +303,11 @@ internal class GlassViewModel(
     fun onSetVolume(value: Int) = callController.onSetVolume(value)
 
     fun onSetZoom(value: Int) = callController.onSetZoom(value)
+
+    private companion object {
+        const val LONG_DEBOUNCE_MS = 5000L
+        const val SHORT_DEBOUNCE_MS = 1000L
+    }
 }
 
 
