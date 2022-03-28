@@ -17,7 +17,8 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import android.content.Intent
-import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils.isSmartGlass
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils.isRealWear
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils.isVuzix
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 internal object UIProvider {
@@ -26,7 +27,7 @@ internal object UIProvider {
         with(ContextRetainer.context) {
             val intent = Intent(this, activityClazz).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                putExtra("enableTilt", isSmartGlass)
+                putExtra("enableTilt", isVuzix || isRealWear)
             }
             startActivity(intent)
         }
