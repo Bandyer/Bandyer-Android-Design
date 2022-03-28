@@ -59,6 +59,7 @@ import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
+import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.dropWhile
@@ -96,17 +97,17 @@ internal class GlassCallActivity :
         )
     }
 
-    private var itemAdapter: ItemAdapter<StreamItem<*>>? = null
+    private var fastAdapter: FastAdapter<AbstractItem<*>>? = null
+    private var streamsItemAdapter: ItemAdapter<StreamItem<*>>? = null
+    private var whiteboardItemAdapter: ItemAdapter<WhiteboardItem>? = null
     private var currentStreamItemIndex = 0
     private var streamMutex = Mutex()
 
-
     private val hideStreamOverlay = MutableStateFlow(true)
 
-    // The value is a Pair<UserId, StreamId>
-    private val livePointers: ConcurrentMap<LivePointerView, Pair<String, String>> =
+    // The value is a Pair<UserId, ItemIdentifier>
+    private val livePointers: ConcurrentMap<LivePointerView, Pair<String, Long>> =
         ConcurrentHashMap()
-    private var streamIds: List<String> = emptyList()
 
     private var navController: NavController? = null
 
@@ -130,18 +131,21 @@ internal class GlassCallActivity :
 
         // Set up the streams' recycler view
         with(binding.kaleyraStreams) {
-            itemAdapter = ItemAdapter()
-            val fastAdapter = FastAdapter.with(itemAdapter!!)
+            streamsItemAdapter = ItemAdapter()
+            whiteboardItemAdapter = ItemAdapter()
+            fastAdapter = FastAdapter.with(listOf(whiteboardItemAdapter!!, streamsItemAdapter!!))
             val layoutManager =
                 LinearLayoutManager(this@GlassCallActivity, LinearLayoutManager.HORIZONTAL, false)
 
             this.layoutManager = layoutManager
-            adapter = fastAdapter.apply {
+            adapter = fastAdapter!!.apply {
                 stateRestorationPolicy =
                     RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             }
             isFocusable = false
             setHasFixedSize(true)
+
+            whiteboardItemAdapter!!.add(WhiteboardItem())
         }
 
         enableImmersiveMode()
@@ -181,9 +185,9 @@ internal class GlassCallActivity :
                     val position = layoutManager!!.getPosition(foundView)
                     if (currentStreamItemIndex == position) return
 
-                    val streamParticipant = itemAdapter!!.getAdapterItem(position).streamParticipant
+                    val currentItem = fastAdapter!!.getItem(position) ?: return
 
-                    if (streamParticipant.itsMe) {
+                    if ((currentItem as? StreamItem?)?.streamParticipant?.itsMe == true) {
                         val isMicBlocked = viewModel.micPermission.value.let {
                             !it.isAllowed && it.neverAskAgain
                         }
@@ -211,22 +215,22 @@ internal class GlassCallActivity :
                         }?.also { binding.kaleyraToastContainer.show(DISABLED_TOAST_ID, it) }
                     }
 
-                    val currentStreamId = streamParticipant.stream.id
+                    val previousItem = fastAdapter!!.getItem(currentStreamItemIndex)
+                    previousItem?.also { item ->
+                        val currentVideoPosition = fastAdapter!!.getPosition(currentItem.identifier)
+                        val previousVideoPosition = fastAdapter!!.getPosition(item.identifier)
 
-                    val previousStreamId =
-                        itemAdapter!!.adapterItems.getOrNull(currentStreamItemIndex)?.streamParticipant?.stream?.id
-                    previousStreamId?.also { streamId ->
-                        val currentVideoPosition = streamIds.indexOfFirst { it == currentStreamId }
-                        val previousVideoPosition =
-                            streamIds.indexOfFirst { it == previousStreamId }
-
-                        livePointers.filterValues { it.second == streamId }.keys.forEach {
-                            it.updateLivePointerHorizontalPosition(if (currentVideoPosition > previousVideoPosition) 0f else 100f, true)
+                        livePointers.filterValues { it.second == item.identifier }.keys.forEach {
+                            it.updateLivePointerHorizontalPosition(
+                                if (currentVideoPosition > previousVideoPosition) 0f else 100f,
+                                enableAutoHide = false,
+                                adjustTextOnEdge = true
+                            )
                         }
                     }
 
                     val streamLivePointers =
-                        livePointers.filterValues { it.second == currentStreamId }.keys
+                        livePointers.filterValues { it.second == currentItem.identifier }.keys
                     streamLivePointers.forEach { it.visibility = View.GONE }
                     val otherStreamsLivePointers = livePointers.keys - streamLivePointers
                     otherStreamsLivePointers.forEach { it.visibility = View.VISIBLE }
@@ -377,7 +381,7 @@ internal class GlassCallActivity :
 
             val spJobs = mutableListOf<Job>()
             viewModel.streams
-                .onEach { streams ->
+                .onEach onEachStreams@{ streams ->
                     spJobs.forEach {
                         it.cancel()
                         it.join()
@@ -385,7 +389,7 @@ internal class GlassCallActivity :
                     spJobs.clear()
 
                     streams.forEach { sp ->
-                        spJobs += sp.stream.video.onEach { video ->
+                        spJobs += sp.stream.video.onEach onEachVideo@{ video ->
                             val sortedStreams = streams.sortedWith(
                                 compareBy(
                                     { it.stream.video.value !is Input.Video.Screen },
@@ -393,29 +397,23 @@ internal class GlassCallActivity :
                             )
                             streamMutex.withLock {
                                 FastAdapterDiffUtil.setDiffItems(
-                                    itemAdapter!!,
+                                    streamsItemAdapter!!,
                                     sortedStreams.mapToStreamItem()
                                 )
                             }
 
-                            if (video is Input.Video.Screen)
-                                binding.kaleyraStreams.smoothScrollToPosition(
-                                    sortedStreams.indexOf(
-                                        sp
-                                    )
-                                )
+                            if (video !is Input.Video.Screen) return@onEachVideo
+                            binding.kaleyraStreams.smoothScrollToPosition(
+                                fastAdapter!!.getPosition(sp.hashCode().toLong())
+                            )
                         }.launchIn(this)
                     }
-
-                    // Set streamsIds used by the live pointers
-                    streamIds = streams.sortedWith(
-                        compareBy({ it.stream.video.value !is Input.Video.Screen }, { !it.itsMe })
-                    ).map { it.stream.id }
                 }.launchIn(this)
 
             viewModel.removedStreams
                 .onEach { streamId ->
-                    livePointers.filterValues { it.second == streamId }.keys.firstOrNull()?.also {
+                    val item = streamsItemAdapter!!.adapterItems.firstOrNull { it.streamParticipant.stream.id == streamId } ?: return@onEach
+                    livePointers.filterValues { it.second == item.identifier }.keys.firstOrNull()?.also {
                         binding.kaleyraOuterPointers.removeView(it)
                         livePointers.remove(it)
                     }
@@ -478,9 +476,8 @@ internal class GlassCallActivity :
             return
         }
 
-        val currentStreamId =
-            itemAdapter!!.adapterItems.getOrNull(currentStreamItemIndex)?.streamParticipant?.stream?.id
-                ?: return
+        val currentItemId = fastAdapter!!.getItem(currentStreamItemIndex)?.identifier ?: return
+        val itemId = streamsItemAdapter!!.adapterItems.firstOrNull { it.streamParticipant.stream.id == streamId }?.identifier ?: return
         val livePointerView =
             livePointer ?: LivePointerView(
                 ContextThemeWrapper(
@@ -489,13 +486,13 @@ internal class GlassCallActivity :
                 )
             ).also {
                 it.id = View.generateViewId()
-                it.visibility = if (currentStreamId == streamId) View.GONE else View.VISIBLE
-                livePointers[it] = Pair(userId, streamId)
+                it.visibility = if (currentItemId == itemId) View.GONE else View.VISIBLE
+                livePointers[it] = Pair(userId, itemId)
                 binding.kaleyraOuterPointers.addView(it)
             }
 
-        val currentVideoPosition = streamIds.indexOfFirst { it == currentStreamId }
-        val eventVideoPosition = streamIds.indexOfFirst { it == streamId }
+        val currentVideoPosition = fastAdapter!!.getPosition(currentItemId)
+        val eventVideoPosition = fastAdapter!!.getPosition(itemId)
 
         livePointerView.updateLabelText(userDescription)
         livePointerView.updateLivePointerPosition(
@@ -530,9 +527,11 @@ internal class GlassCallActivity :
     override fun onDestroy() {
         super.onDestroy()
         turnScreenOff()
-        itemAdapter!!.clear()
+        streamsItemAdapter!!.clear()
+        whiteboardItemAdapter!!.clear()
         service = null
-        itemAdapter = null
+        streamsItemAdapter = null
+        whiteboardItemAdapter = null
         navController = null
         glassGestureDetector = null
         notificationManager = null

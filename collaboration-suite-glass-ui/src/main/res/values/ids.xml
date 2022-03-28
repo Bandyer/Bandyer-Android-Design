@@ -28,4 +28,5 @@
     <item name="id_glass_chat_menu_item" type="id" />
     <item name="id_glass_call_my_stream_item" type="id" />
     <item name="id_glass_call_other_stream_item" type="id" />
+    <item name="id_glass_whiteboard_item" type="id" />
 </resources>

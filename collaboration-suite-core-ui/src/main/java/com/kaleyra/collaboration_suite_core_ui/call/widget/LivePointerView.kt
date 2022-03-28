@@ -80,21 +80,12 @@ class LivePointerView @JvmOverloads constructor(
         enableAutoHide: Boolean = true,
         adjustTextOnEdge: Boolean = false
     ) = with(binding) {
-        show(showLabel = false)
         changeConstraints {
             transition = true
             kaleyraHorizontalGuideline.id guidePercentTo topPercentage / 100f
             kaleyraVerticalGuideline.id guidePercentTo leftPercentage / 100f
         }
-        if (!hasShownLabel) {
-            hasShownLabel = true
-            kaleyraPointerLabel.visibility = View.VISIBLE
-            if (enableAutoHide) kaleyraPointerLabel.autoHide(AUTOHIDE_LABEL__MILLIS)
-            else kaleyraPointerLabel.disableAutoHide()
-        }
-
-        if (adjustTextOnEdge)
-            adjustTextOnEdge()
+        updateLivePointerInternal(enableAutoHide, adjustTextOnEdge)
     }
 
     /**
@@ -103,11 +94,27 @@ class LivePointerView @JvmOverloads constructor(
      */
     fun updateLivePointerHorizontalPosition(
         @FloatRange(from = 0.0, to = 100.0) leftPercentage: Float,
+        enableAutoHide: Boolean = true,
         adjustTextOnEdge: Boolean = false
-    ) {
+        ) {
         changeConstraints {
             binding.kaleyraVerticalGuideline.id guidePercentTo leftPercentage / 100f
         }
+        updateLivePointerInternal(enableAutoHide, adjustTextOnEdge)
+    }
+
+    private fun updateLivePointerInternal(
+        enableAutoHide: Boolean,
+        adjustTextOnEdge: Boolean
+    ) = with(binding) {
+        show(showLabel = false)
+        if (!hasShownLabel) {
+            hasShownLabel = true
+            kaleyraPointerLabel.visibility = View.VISIBLE
+            if (enableAutoHide) kaleyraPointerLabel.autoHide(AUTOHIDE_LABEL__MILLIS)
+            else kaleyraPointerLabel.disableAutoHide()
+        }
+
         if (adjustTextOnEdge)
             adjustTextOnEdge()
     }
