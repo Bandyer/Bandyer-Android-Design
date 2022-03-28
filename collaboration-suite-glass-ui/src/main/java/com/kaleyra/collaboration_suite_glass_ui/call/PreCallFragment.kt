@@ -25,7 +25,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlin.math.roundToInt
 
-internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoScrollView.OnScrollListener {
+internal abstract class PreCallFragment : ConnectingFragment(),
+    HorizontalAutoScrollView.OnScrollListener {
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onServiceBound() {
@@ -42,11 +43,13 @@ internal abstract class PreCallFragment : ConnectingFragment(), HorizontalAutoSc
                         participants.others.size + 1
                     )
 
-                    val userIds = participants.others.map { it.userId }
+                    val nParticipants = participants.others.count() + 1
+                    val userIds =
+                        participants.others.let { if (nParticipants > 2) it.plus(participants.me) else it }.map { it.userId }
                     kaleyraParticipants.text = viewModel.usersDescription.name(userIds)
                     updateUIOnParticipantsViewChange()
 
-                    setSubtitle(participants.others.count() + 1 > 2)
+                    setSubtitle(nParticipants > 2)
                 }.launchIn(this@repeatOnStarted)
             }
         }

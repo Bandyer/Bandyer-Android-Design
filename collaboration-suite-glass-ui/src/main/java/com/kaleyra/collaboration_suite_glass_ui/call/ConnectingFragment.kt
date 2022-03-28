@@ -84,6 +84,13 @@ internal abstract class ConnectingFragment : BaseFragment() {
                     binding.kaleyraSubtitle.text =
                         resources.getString(R.string.kaleyra_glass_connecting)
                 }.launchIn(this@repeatOnStarted)
+
+            viewModel.participants
+                .onEach {
+                    binding.kaleyraCounter.visibility =
+                        if (it.others.count() + 1 > 2) View.VISIBLE else View.GONE
+                }
+                .launchIn(this@repeatOnStarted)
         }
     }
 
