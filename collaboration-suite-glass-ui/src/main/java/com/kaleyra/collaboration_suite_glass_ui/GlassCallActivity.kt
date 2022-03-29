@@ -63,7 +63,9 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
@@ -144,8 +146,6 @@ internal class GlassCallActivity :
             }
             isFocusable = false
             setHasFixedSize(true)
-
-            whiteboardItemAdapter!!.add(WhiteboardItem())
         }
 
         enableImmersiveMode()
@@ -248,6 +248,11 @@ internal class GlassCallActivity :
             }.launchIn(lifecycleScope)
 
         repeatOnStarted {
+            viewModel.whiteboard.onEach {
+                whiteboardItemAdapter!!.clear()
+                whiteboardItemAdapter!!.add(WhiteboardItem(it))
+            }.launchIn(this)
+
             viewModel
                 .battery
                 .onEach {

@@ -53,6 +53,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
@@ -77,6 +78,8 @@ internal class GlassViewModel(
 ) : ViewModel() {
 
     val call: SharedFlow<Call> = callDelegate.call
+
+    val whiteboard = call.mapLatest { it.whiteboard }
 
     val callState = call.flatMapLatest { it.state }
 

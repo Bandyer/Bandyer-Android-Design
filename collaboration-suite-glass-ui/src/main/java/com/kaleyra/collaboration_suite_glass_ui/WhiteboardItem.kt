@@ -1,11 +1,14 @@
 package com.kaleyra.collaboration_suite_glass_ui
 
 import android.view.View
+import com.kaleyra.collaboration_suite.phonebox.Whiteboard
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassWhiteboardItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
-class WhiteboardItem : AbstractItem<WhiteboardItem.ViewHolder>() {
+class WhiteboardItem(val whiteboard: Whiteboard) : AbstractItem<WhiteboardItem.ViewHolder>() {
+
+    override var identifier: Long = whiteboard.hashCode().toLong()
 
     override val type: Int
         get() = R.id.id_glass_whiteboard_item
@@ -26,7 +29,7 @@ class WhiteboardItem : AbstractItem<WhiteboardItem.ViewHolder>() {
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: WhiteboardItem, payloads: List<Any>) {
-            binding.kaleyraWebView.loadUrl("https://sandbox.bandyer.com/connect/mobile-whiteboard")
+            item.whiteboard.load(binding.kaleyraWhiteboard)
         }
 
         /**
@@ -34,6 +37,7 @@ class WhiteboardItem : AbstractItem<WhiteboardItem.ViewHolder>() {
          */
         override fun unbindView(item: WhiteboardItem) {
             binding.unbind()
+            item.whiteboard.unload()
         }
     }
 }
