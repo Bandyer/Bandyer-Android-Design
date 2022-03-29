@@ -63,9 +63,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.dropWhile
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
@@ -248,11 +246,6 @@ internal class GlassCallActivity :
             }.launchIn(lifecycleScope)
 
         repeatOnStarted {
-            viewModel.whiteboard.onEach {
-                whiteboardItemAdapter!!.clear()
-                whiteboardItemAdapter!!.add(WhiteboardItem(it))
-            }.launchIn(this)
-
             viewModel
                 .battery
                 .onEach {
@@ -436,6 +429,15 @@ internal class GlassCallActivity :
                         viewModel.usersDescription.name(listOf(userId))
                     )
                 }.launchIn(this)
+
+            viewModel.whiteboard.onEach { wb ->
+                viewModel.callState
+                    .takeWhile { it !is Call.State.Connected }
+                    .onCompletion {
+                        whiteboardItemAdapter!!.clear()
+                        whiteboardItemAdapter!!.add(WhiteboardItem(wb))
+                    }.launchIn(this)
+            }.launchIn(this)
         }
 
         if (wasPausedForBackground) {
