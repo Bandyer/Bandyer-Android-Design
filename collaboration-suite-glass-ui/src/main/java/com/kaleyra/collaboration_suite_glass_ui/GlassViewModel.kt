@@ -231,7 +231,6 @@ internal class GlassViewModel(
         myLiveStreams,
         camPermission
     ) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }
-        .debounce(LONG_DEBOUNCE_MS)
 
     val livePointerEvents: SharedFlow<Pair<String, Input.Video.Event.Pointer>> =
         MutableSharedFlow<Pair<String, Input.Video.Event.Pointer>>(
@@ -305,7 +304,6 @@ internal class GlassViewModel(
     fun onSetZoom(value: Int) = callController.onSetZoom(value)
 
     private companion object {
-        const val LONG_DEBOUNCE_MS = 5000L
         const val SHORT_DEBOUNCE_MS = 1000L
     }
 }
