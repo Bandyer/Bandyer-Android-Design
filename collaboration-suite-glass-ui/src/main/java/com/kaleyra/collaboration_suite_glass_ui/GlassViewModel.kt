@@ -97,7 +97,7 @@ internal class GlassViewModel(
                 viewModelScope + CoroutineName("InCallParticipants"),
                 debounceMs = SHORT_DEBOUNCE_MS
             ) { participant, itsMe, streams, state ->
-                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) participants[participant.userId] =
+                if (itsMe || state == CallParticipant.State.IN_CALL || streams.isNotEmpty()) participants[participant.userId] =
                     participant
                 else participants.remove(participant.userId)
                 emit(participants.values.toList())
