@@ -102,7 +102,7 @@ internal interface IStreamItem {
          *
          * @param event Pointer event
          */
-        fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String)
+        fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String, mirrorPointer: Boolean)
 
         /**
          * Called when the stream overlay should be hidden because there are other UI elements above it
@@ -172,7 +172,9 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
                 .flatMapLatest { it!!.events }
                 .onEach {
                     if (it !is Input.Video.Event.Pointer) return@onEach
-                    onPointerEvent(it, item.streamParticipant.userDescription)
+                    val camera = video.value as? Input.Video.Camera.Internal
+                    val mirrorPointer = camera?.currentLens?.value?.isRear == false
+                    onPointerEvent(it, item.streamParticipant.userDescription, mirrorPointer)
                 }
                 .launchIn(item.scope)
 
@@ -197,7 +199,7 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
             parent: ViewGroup,
             event: Input.Video.Event.Pointer,
             userDescription: String,
-            isMirrored: Boolean = false
+            mirrorPointer: Boolean
         ) {
             val userId = event.producer.userId
 
@@ -222,7 +224,7 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
 
             livePointerView.updateLabelText(userDescription)
             livePointerView.updateLivePointerPosition(
-                if (isMirrored) 100 - event.position.x else event.position.x,
+                if (mirrorPointer) 100 - event.position.x else event.position.x,
                 event.position.y,
                 adjustTextOnEdge = true
             )
@@ -314,8 +316,9 @@ internal class MyStreamItem(
 
         override fun onStreamView(view: View) = onStreamView(binding.kaleyraVideoWrapper, view)
 
-        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) =
-            onPointerEvent(binding.kaleyraLivePointers, event, userDescription, true)
+        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String, mirrorPointer: Boolean) {
+            onPointerEvent(binding.kaleyraLivePointers, event, userDescription, mirrorPointer)
+        }
 
         override fun onHideStreamOverlay(value: Boolean) {
             binding.kaleyraInfoWrapper.visibility = if(value) View.GONE else View.VISIBLE
@@ -401,8 +404,8 @@ internal class OtherStreamItem(
 
         override fun onStreamView(view: View) = onStreamView(binding.kaleyraVideoWrapper, view)
 
-        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String) =
-            onPointerEvent(binding.kaleyraLivePointers, event, userDescription)
+        override fun onPointerEvent(event: Input.Video.Event.Pointer, userDescription: String, mirrorPointer: Boolean) =
+            onPointerEvent(binding.kaleyraLivePointers, event, userDescription, mirrorPointer)
 
         override fun onHideStreamOverlay(value: Boolean) {
             binding.kaleyraInfoWrapper.visibility = if(value) View.GONE else View.VISIBLE
