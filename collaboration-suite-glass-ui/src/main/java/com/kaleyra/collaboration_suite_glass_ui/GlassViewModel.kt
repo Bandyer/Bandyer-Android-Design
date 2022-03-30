@@ -94,8 +94,7 @@ internal class GlassViewModel(
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = ConcurrentHashMap<String, CallParticipant>()
             this@GlassViewModel.participants.forEachParticipant(
-                viewModelScope + CoroutineName("InCallParticipants"),
-                debounceMs = SHORT_DEBOUNCE_MS
+                viewModelScope + CoroutineName("InCallParticipants")
             ) { participant, itsMe, streams, state ->
                 if (itsMe || state == CallParticipant.State.IN_CALL || streams.isNotEmpty()) participants[participant.userId] =
                     participant
@@ -260,7 +259,6 @@ internal class GlassViewModel(
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,
-        debounceMs: Long = 0L,
         crossinline action: suspend (CallParticipant, Boolean, List<Stream>, Participant.State) -> Unit
     ): Flow<CallParticipants> {
         val pJobs = mutableListOf<Job>()
@@ -271,10 +269,9 @@ internal class GlassViewModel(
             }
             pJobs.clear()
             participants.others.plus(participants.me).forEach { participant ->
-                pJobs += participant.streams.debounce(debounceMs)
-                    .combine(participant.state) { streams, state ->
-                        action(participant, participant == participants.me, streams, state)
-                    }.launchIn(scope)
+                pJobs += participant.streams.combine(participant.state) { streams, state ->
+                    action(participant, participant == participants.me, streams, state)
+                }.launchIn(scope)
             }
         }
     }
@@ -302,10 +299,6 @@ internal class GlassViewModel(
     fun onSetVolume(value: Int) = callController.onSetVolume(value)
 
     fun onSetZoom(value: Int) = callController.onSetZoom(value)
-
-    private companion object {
-        const val SHORT_DEBOUNCE_MS = 1000L
-    }
 }
 
 
