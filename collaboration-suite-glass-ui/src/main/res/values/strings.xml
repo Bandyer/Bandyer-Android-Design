@@ -80,7 +80,7 @@
     <string name="kaleyra_glass_call_timeout">Connection timeout</string>
     <string name="kaleyra_glass_answered_on_another_device">Answered on another device</string>
     <string name="kaleyra_glass_line_busy">Line busy</string>
-    <string name="kaleyra_glass_call_hunged_up">Hunged up</string>
+    <string name="kaleyra_glass_call_hung_up">Hung up</string>
     <string name="kaleyra_glass_mic_not_active">The mic is not active</string>
     <string name="kaleyra_glass_cam_not_active">The cam is not active</string>
     <string name="kaleyra_glass_mic_and_cam_not_active">The mic and the camera are not active</string>
