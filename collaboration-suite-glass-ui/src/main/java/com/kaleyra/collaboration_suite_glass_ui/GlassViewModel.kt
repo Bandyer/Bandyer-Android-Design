@@ -16,7 +16,6 @@
 
 package com.kaleyra.collaboration_suite_glass_ui
 
-import android.view.inputmethod.InputContentInfo
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

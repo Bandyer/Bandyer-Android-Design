@@ -21,6 +21,7 @@ import android.app.Activity
 import android.app.Application
 import android.app.Notification
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -28,7 +29,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Inputs
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
@@ -125,7 +125,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(this)
 
-        NotificationHelper.cancelNotification(this, CALL_NOTIFICATION_ID)
+        NotificationHelper.cancelNotification(CALL_NOTIFICATION_ID)
 
         currentCall?.end()
         phoneBox?.disconnect()
@@ -325,11 +325,11 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private suspend fun syncNotificationWithCallState(call: Call) {
         val participants = call.participants.value
-        val usersDescription = getUsersDescription(participants)
 
         if (participants.me != participants.creator())
             showIncomingCallNotification(
-                usersDescription,
+                usersDescription.name(listOf(participants.creator()?.userId ?: "")),
+                usersDescription.image(listOf(participants.creator()?.userId ?: "")),
                 !isAppInForeground,
                 !isAppInForeground
             )
@@ -338,9 +338,17 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             .takeWhile { it !is Call.State.Connected }
             .onEach {
                 if (it !is Call.State.Connecting || participants.me != participants.creator()) return@onEach
-                showOutgoingCallNotification(usersDescription)
+                showOutgoingCallNotification(
+                    usersDescription.name(listOf(participants.creator()?.userId ?: "")),
+                    usersDescription.image(listOf(participants.creator()?.userId ?: "")),
+                )
             }
-            .onCompletion { showOnGoingCallNotification(usersDescription) }
+            .onCompletion {
+                showOnGoingCallNotification(
+                    usersDescription.name(listOf(participants.creator()?.userId ?: "")),
+                    usersDescription.image(listOf(participants.creator()?.userId ?: "")),
+                )
+            }
             .launchIn(lifecycleScope)
     }
 
@@ -350,7 +358,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             .onCompletion {
                 scopeToCancel.cancel()
                 stopForegroundLocal()
-                NotificationHelper.cancelNotification(applicationContext, CALL_NOTIFICATION_ID)
+                NotificationHelper.cancelNotification(CALL_NOTIFICATION_ID)
             }.launchIn(lifecycleScope)
     }
 
@@ -359,52 +367,55 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             val participants = currentCall!!.participants.value
             if (currentCall!!.state.value !is Call.State.Disconnected || participants.me == participants.creator()) return@launch
             showIncomingCallNotification(
-                getUsersDescription(participants),
+                usersDescription.name(listOf(participants.creator()?.userId ?: "")),
+                usersDescription.image(listOf(participants.creator()?.userId ?: "")),
                 isHighPriority = false,
                 moveToForeground = true
             )
         }
 
-    private suspend fun getUsersDescription(participants: CallParticipants): String {
-        val userIds = participants.others.map { it.userId }
-        return usersDescription.name(userIds)
-    }
-
     private fun showIncomingCallNotification(
         usersDescription: String,
+        image: Uri,
         isHighPriority: Boolean,
         moveToForeground: Boolean
     ) {
         val notification = NotificationHelper.buildIncomingCallNotification(
-            applicationContext,
             usersDescription,
+            image,
+            activityClazz!!,
             isHighPriority,
-            activityClazz!!
-        )
+        ) {
+            NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
+        }
         showNotification(notification, moveToForeground)
     }
 
-    private fun showOutgoingCallNotification(usersDescription: String) {
+    private fun showOutgoingCallNotification(usersDescription: String, image: Uri) {
         val notification = NotificationHelper.buildOutgoingCallNotification(
-            applicationContext,
             usersDescription,
+            image,
             activityClazz!!
-        )
+        ) {
+            NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
+        }
         showNotification(notification, true)
     }
 
-    private fun showOnGoingCallNotification(usersDescription: String) {
+    private fun showOnGoingCallNotification(usersDescription: String, image: Uri) {
         val notification = NotificationHelper.buildOngoingCallNotification(
-            applicationContext,
             usersDescription,
+            image,
             activityClazz!!
-        )
+        ) {
+            NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
+        }
         showNotification(notification, true)
     }
 
     private fun showNotification(notification: Notification, moveToForeground: Boolean) {
         if (moveToForeground) startForegroundLocal(notification)
-        else NotificationHelper.notify(applicationContext, CALL_NOTIFICATION_ID, notification)
+        else NotificationHelper.notify(CALL_NOTIFICATION_ID, notification)
     }
 
     private fun startForegroundLocal(notification: Notification) =
