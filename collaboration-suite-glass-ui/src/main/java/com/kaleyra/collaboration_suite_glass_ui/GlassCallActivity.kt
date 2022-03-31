@@ -281,7 +281,7 @@ internal class GlassCallActivity :
                                 R.string.kaleyra_glass_answered_on_another_device
                             )
                             is Call.State.Disconnected.Ended.LineBusy -> resources.getString(R.string.kaleyra_glass_line_busy)
-                            is Call.State.Disconnected.Ended.HangUp -> resources.getString(R.string.kaleyra_glass_call_hunged_up)
+                            is Call.State.Disconnected.Ended.HangUp -> resources.getString(R.string.kaleyra_glass_call_hung_up)
                             is Call.State.Disconnected.Ended.Error -> resources.getString(R.string.kaleyra_glass_call_error_occurred)
                             is Call.State.Disconnected.Ended.Timeout -> resources.getString(R.string.kaleyra_glass_call_timeout)
                             else -> null

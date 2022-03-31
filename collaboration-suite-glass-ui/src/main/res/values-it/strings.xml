@@ -76,7 +76,7 @@
     <string name="kaleyra_glass_call_timeout">Timeout di connessione</string>
     <string name="kaleyra_glass_answered_on_another_device">Risposto su un altro dispositivo</string>
     <string name="kaleyra_glass_line_busy">Linea occupata</string>
-    <string name="kaleyra_glass_call_hunged_up">Riattaccato</string>
+    <string name="kaleyra_glass_call_hung_up">Riattaccato</string>
     <string name="kaleyra_glass_mic_not_active">Microfono non attivo</string>
     <string name="kaleyra_glass_cam_not_active">Camera non attiva</string>
     <string name="kaleyra_glass_mic_and_cam_not_active">Microfono e camera non attivi</string>
