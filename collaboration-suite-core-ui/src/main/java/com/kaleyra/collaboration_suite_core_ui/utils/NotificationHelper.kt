@@ -21,26 +21,16 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.isScreenOff
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationReceiver
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isScreenOff
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import java.lang.Exception
 
 // TODO change contentText for group calls
 internal object NotificationHelper {
@@ -88,8 +78,8 @@ internal object NotificationHelper {
                 channelName = context.getString(R.string.kaleyra_notification_incoming_call),
                 type = CallNotification.Type.INCOMING
             )
-            .caller(caller)
-            .image(BitmapFactory.decodeResource(context.resources, R.drawable.avatar))
+            .user(caller)
+            .image(ContextCompat.getDrawable(context, R.drawable.kaleyra_z_avatar)!!.toBitmap())
             .importance(isHighPriority)
             .contentText(context.getString(R.string.kaleyra_notification_incoming_call))
             .contentIntent(contentPendingIntent(context, activityClazz))
@@ -97,10 +87,16 @@ internal object NotificationHelper {
             .answerIntent(answerPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
 
-        BitmapUtils.uriToBitmap(image, IMAGE_SIZE, IMAGE_SIZE, onSuccess = {
-            it?.also { builder.image(it) }
-            onImageLoaded.invoke(builder.build())
-        }, onFailure = { })
+        BitmapUtils.uriToBitmap(
+            image,
+            IMAGE_SIZE,
+            IMAGE_SIZE,
+            onSuccess = {
+                it?.also { builder.image(it) }
+                onImageLoaded.invoke(builder.build())
+            },
+            onFailure = { }
+        )
 
         return builder.build()
     }
@@ -119,16 +115,22 @@ internal object NotificationHelper {
                 channelName = context.getString(R.string.kaleyra_notification_outgoing_call),
                 type = CallNotification.Type.OUTGOING
             )
-            .caller(caller)
-            .image(BitmapFactory.decodeResource(context.resources, R.drawable.avatar))
+            .user(caller)
+            .image(ContextCompat.getDrawable(context, R.drawable.kaleyra_z_avatar)!!.toBitmap())
             .contentText(context.getString(R.string.kaleyra_notification_outgoing_call))
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
 
-        BitmapUtils.uriToBitmap(image, IMAGE_SIZE, IMAGE_SIZE, onSuccess = {
-            it?.also { builder.image(it) }
-            onImageLoaded.invoke(builder.build())
-        }, onFailure = { })
+        BitmapUtils.uriToBitmap(
+            image,
+            IMAGE_SIZE,
+            IMAGE_SIZE,
+            onSuccess = {
+                it?.also { builder.image(it) }
+                onImageLoaded.invoke(builder.build())
+            },
+            onFailure = { }
+        )
 
         return builder.build()
     }
@@ -147,16 +149,22 @@ internal object NotificationHelper {
                 channelName = context.getString(R.string.kaleyra_notification_ongoing_call),
                 type = CallNotification.Type.ONGOING
             )
-            .caller(caller)
-            .image(BitmapFactory.decodeResource(context.resources, R.drawable.avatar))
+            .user(caller)
+            .image(ContextCompat.getDrawable(context, R.drawable.kaleyra_z_avatar)!!.toBitmap())
             .contentText(context.getString(R.string.kaleyra_notification_ongoing_call))
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
 
-        BitmapUtils.uriToBitmap(image, IMAGE_SIZE, IMAGE_SIZE, onSuccess = {
-            it?.also { builder.image(it) }
-            onImageLoaded.invoke(builder.build())
-        }, onFailure = { })
+        BitmapUtils.uriToBitmap(
+            image,
+            IMAGE_SIZE,
+            IMAGE_SIZE,
+            onSuccess = {
+                it?.also { builder.image(it) }
+                onImageLoaded.invoke(builder.build())
+            },
+            onFailure = { }
+        )
 
         return builder.build()
     }
