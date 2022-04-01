@@ -243,6 +243,16 @@ internal class GlassCallActivity :
                 if (!isActivityInForeground) finishAndRemoveTask()
             }.launchIn(lifecycleScope)
 
+        viewModel.micPermission
+            .takeWhile { !it.isAllowed }
+            .onCompletion { viewModel.onEnableMic(true) }
+            .launchIn(lifecycleScope)
+
+        viewModel.camPermission
+            .takeWhile { !it.isAllowed }
+            .onCompletion { viewModel.onEnableCamera(true) }
+            .launchIn(lifecycleScope)
+
         repeatOnStarted {
             viewModel
                 .battery
@@ -320,20 +330,14 @@ internal class GlassCallActivity :
                 }.launchIn(this)
 
             viewModel.micPermission
-                .onEach {
-                    if (!it.isAllowed && it.neverAskAgain)
-                        binding.kaleyraStatusBar.showMicMutedIcon(true)
-                    else if (it.isAllowed) viewModel.onEnableMic(true)
-                }
-                .launchIn(this)
+                .takeWhile { it.isAllowed || !it.neverAskAgain }
+                .onCompletion { binding.kaleyraStatusBar.showMicMutedIcon(true) }
+                .launchIn(lifecycleScope)
 
             viewModel.camPermission
-                .onEach {
-                    if (!it.isAllowed && it.neverAskAgain)
-                        binding.kaleyraStatusBar.showCamMutedIcon(true)
-                    else if (it.isAllowed) viewModel.onEnableCamera(true)
-                }
-                .launchIn(this)
+                .takeWhile { it.isAllowed || !it.neverAskAgain }
+                .onCompletion { binding.kaleyraStatusBar.showCamMutedIcon(true) }
+                .launchIn(lifecycleScope)
 
             viewModel.onParticipantJoin
                 .onEach { part ->
