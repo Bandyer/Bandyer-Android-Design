@@ -243,6 +243,16 @@ internal class GlassCallActivity :
                 if (!isActivityInForeground) finishAndRemoveTask()
             }.launchIn(lifecycleScope)
 
+        viewModel.micPermission
+            .takeWhile { !it.isAllowed }
+            .onCompletion { viewModel.onEnableMic(true) }
+            .launchIn(lifecycleScope)
+
+        viewModel.camPermission
+            .takeWhile { !it.isAllowed }
+            .onCompletion { viewModel.onEnableCamera(true) }
+            .launchIn(lifecycleScope)
+
         repeatOnStarted {
             viewModel
                 .battery
@@ -281,7 +291,7 @@ internal class GlassCallActivity :
                                 R.string.kaleyra_glass_answered_on_another_device
                             )
                             is Call.State.Disconnected.Ended.LineBusy -> resources.getString(R.string.kaleyra_glass_line_busy)
-                            is Call.State.Disconnected.Ended.HangUp -> resources.getString(R.string.kaleyra_glass_call_hunged_up)
+                            is Call.State.Disconnected.Ended.HangUp -> resources.getString(R.string.kaleyra_glass_call_hung_up)
                             is Call.State.Disconnected.Ended.Error -> resources.getString(R.string.kaleyra_glass_call_error_occurred)
                             is Call.State.Disconnected.Ended.Timeout -> resources.getString(R.string.kaleyra_glass_call_timeout)
                             else -> null
@@ -320,20 +330,14 @@ internal class GlassCallActivity :
                 }.launchIn(this)
 
             viewModel.micPermission
-                .onEach {
-                    if (!it.isAllowed && it.neverAskAgain)
-                        binding.kaleyraStatusBar.showMicMutedIcon(true)
-                    else if (it.isAllowed) viewModel.onEnableMic(true)
-                }
-                .launchIn(this)
+                .takeWhile { it.isAllowed || !it.neverAskAgain }
+                .onCompletion { binding.kaleyraStatusBar.showMicMutedIcon(true) }
+                .launchIn(lifecycleScope)
 
             viewModel.camPermission
-                .onEach {
-                    if (!it.isAllowed && it.neverAskAgain)
-                        binding.kaleyraStatusBar.showCamMutedIcon(true)
-                    else if (it.isAllowed) viewModel.onEnableCamera(true)
-                }
-                .launchIn(this)
+                .takeWhile { it.isAllowed || !it.neverAskAgain }
+                .onCompletion { binding.kaleyraStatusBar.showCamMutedIcon(true) }
+                .launchIn(lifecycleScope)
 
             viewModel.onParticipantJoin
                 .onEach { part ->
