@@ -8,11 +8,10 @@ import android.app.Service
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
-import android.os.PowerManager
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isScreenOff
+import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getApplicationIconId
 
 internal class CallNotification {
 
@@ -28,7 +27,7 @@ internal class CallNotification {
         val channelName: String,
         val type: Type,
         var isHighImportance: Boolean = false,
-        var caller: String? = null,
+        var user: String? = null,
         var image: Bitmap? = null,
         var contentText: String? = null,
         var contentIntent: PendingIntent? = null,
@@ -36,7 +35,7 @@ internal class CallNotification {
         var answerIntent: PendingIntent? = null,
         var declineIntent: PendingIntent? = null,
     ) {
-        fun caller(caller: String) = apply { this.caller = caller }
+        fun user(user: String) = apply { this.user = user }
 
         fun image(image: Bitmap) = apply { this.image = image }
 
@@ -72,7 +71,7 @@ internal class CallNotification {
                 channelId,
                 isHighImportance,
                 type == Type.ONGOING,
-                caller,
+                user,
                 image,
                 contentText,
                 contentIntent,
@@ -88,8 +87,8 @@ internal class CallNotification {
             channelId: String,
             isHighPriority: Boolean,
             useTimer: Boolean,
-            usersDescription: String? = null,
-            usersAvatar: Bitmap? = null,
+            title: String? = null,
+            icon: Bitmap? = null,
             contentText: String? = null,
             contentIntent: PendingIntent? = null,
             fullscreenIntent: PendingIntent? = null,
@@ -101,15 +100,14 @@ internal class CallNotification {
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
                 .setUsesChronometer(useTimer)
-                // TODO change this with the app icon
-                .setSmallIcon(R.drawable.kaleyra_z_audio_only)
+                .setSmallIcon(context.getApplicationIconId())
                 .setCategory(NotificationCompat.CATEGORY_CALL)
                 .setPriority(if (isHighPriority) NotificationCompat.PRIORITY_MAX else NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentText(contentText)
-                .setContentTitle(usersDescription)
+                .setContentTitle(title)
 
-            usersAvatar?.also { builder.setLargeIcon(BitmapUtils.roundBitmap(it)) }
+            icon?.also { builder.setLargeIcon(icon) }
             contentIntent?.also { builder.setContentIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
 
@@ -153,7 +151,7 @@ internal class CallNotification {
     }
 }
 
-
+//
 //    @RequiresApi(Build.VERSION_CODES.P)
 //    private fun buildNotificationApi31(
 //        context: Context,
@@ -203,7 +201,6 @@ internal class CallNotification {
 //            .setOngoing(true)
 //            .setOnlyAlertOnce(true)
 //            .setUsesChronometer(useTimer)
-//            // TODO change this with the app icon
 //            .setSmallIcon(R.drawable.kaleyra_z_audio_only)
 //            .setCategory(Notification.CATEGORY_CALL)
 //            .setVisibility(Notification.VISIBILITY_PUBLIC)
