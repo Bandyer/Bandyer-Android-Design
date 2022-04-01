@@ -123,7 +123,7 @@ internal class CallNotification {
             }
 
             val declineAction = NotificationCompat.Action(
-                R.drawable.kaleyra_z_audio_only,
+                R.drawable.kaleyra_z_end_call,
                 context.getString(if (type == Type.INCOMING) R.string.kaleyra_notification_decline else R.string.kaleyra_notification_hangup),
                 declineIntent
             )
