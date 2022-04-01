@@ -19,14 +19,18 @@ package com.kaleyra.collaboration_suite_core_ui.extensions
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.pm.PackageManager
 import android.graphics.Point
+import android.hardware.display.DisplayManager
 import android.os.Build
 import android.util.DisplayMetrics
+import android.view.Display
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
 import androidx.fragment.app.FragmentActivity
+import com.kaleyra.collaboration_suite_utils.HostAppInfo
 import java.util.*
 
 /**
@@ -127,4 +131,27 @@ object ContextExtensions {
         ta.recycle()
         return value
     }
+
+    /**
+     * Check if the screen is off
+     *
+     * @receiver Context
+     * @return True if the screen is off, false otherwise
+     */
+    internal fun Context.isScreenOff(): Boolean = (getSystemService(Context.DISPLAY_SERVICE) as DisplayManager).displays.all { it.state != Display.STATE_ON }
+
+    /**
+     * Retrieve the application's icon resource id
+     *
+     * @receiver Context
+     */
+    fun Context.getApplicationIconId(): Int {
+        val packageManager = packageManager
+        val applicationInfo = packageManager.getApplicationInfo(
+            HostAppInfo.name,
+            PackageManager.GET_META_DATA
+        )
+        return applicationInfo.icon
+    }
 }
+

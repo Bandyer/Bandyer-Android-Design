@@ -30,6 +30,7 @@ import android.os.Build
 import android.os.PowerManager
 import androidx.core.app.NotificationManagerCompat
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.isScreenOff
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationReceiver
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isScreenOff
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
