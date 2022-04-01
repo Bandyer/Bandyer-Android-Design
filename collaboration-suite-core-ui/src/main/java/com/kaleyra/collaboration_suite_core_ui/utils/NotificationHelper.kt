@@ -23,12 +23,11 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.PowerManager
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.isScreenOff
+import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.turnOnScreen
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationReceiver
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
@@ -69,7 +68,7 @@ internal object NotificationHelper {
         val context = ContextRetainer.context
 
         if (isHighPriority && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
-            turnOnScreen(context)
+            context.turnOnScreen()
 
         val builder = CallNotification
             .Builder(
@@ -222,16 +221,4 @@ internal object NotificationHelper {
             },
             PendingIntentExtensions.updateFlags
         )
-
-    // Needed for some devices
-    private fun turnOnScreen(context: Context) {
-        if (!context.isScreenOff()) return
-        val pm =
-            context.applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
-        val wl = pm.newWakeLock(
-            PowerManager.SCREEN_DIM_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
-            javaClass.name
-        )
-        wl.acquire(3000)
-    }
 }

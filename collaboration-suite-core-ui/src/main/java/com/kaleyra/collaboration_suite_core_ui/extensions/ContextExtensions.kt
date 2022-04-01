@@ -23,6 +23,7 @@ import android.content.pm.PackageManager
 import android.graphics.Point
 import android.hardware.display.DisplayManager
 import android.os.Build
+import android.os.PowerManager
 import android.util.DisplayMetrics
 import android.view.Display
 import android.view.View
@@ -141,11 +142,27 @@ object ContextExtensions {
     internal fun Context.isScreenOff(): Boolean = (getSystemService(Context.DISPLAY_SERVICE) as DisplayManager).displays.all { it.state != Display.STATE_ON }
 
     /**
+     * Turn on the screen, it is needed for the notifications on some devices
+     *
+     * @receiver Context
+     */
+    internal fun Context.turnOnScreen() {
+        if (!isScreenOff()) return
+        val pm =
+            applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val wl = pm.newWakeLock(
+            PowerManager.SCREEN_DIM_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
+            javaClass.name
+        )
+        wl.acquire(3000)
+    }
+
+    /**
      * Retrieve the application's icon resource id
      *
      * @receiver Context
      */
-    fun Context.getApplicationIconId(): Int {
+    internal fun Context.getApplicationIconId(): Int {
         val packageManager = packageManager
         val applicationInfo = packageManager.getApplicationInfo(
             HostAppInfo.name,
