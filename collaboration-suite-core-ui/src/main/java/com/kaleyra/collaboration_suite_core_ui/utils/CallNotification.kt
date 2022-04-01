@@ -4,9 +4,13 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.Person
 import android.app.Service
 import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.drawable.Icon
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -65,11 +69,23 @@ internal class CallNotification {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 createNotificationChannel(context, channelId, channelName, isHighImportance)
 
-            return buildNotificationApi21(
+            return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) buildNotificationApi21(
                 context,
                 type,
                 channelId,
                 isHighImportance,
+                type == Type.ONGOING,
+                user,
+                image,
+                contentText,
+                contentIntent,
+                fullscreenIntent,
+                answerIntent,
+                declineIntent
+            ) else buildNotificationApi31(
+                context,
+                type,
+                channelId,
                 type == Type.ONGOING,
                 user,
                 image,
@@ -87,7 +103,7 @@ internal class CallNotification {
             channelId: String,
             isHighPriority: Boolean,
             useTimer: Boolean,
-            title: String? = null,
+            user: String? = null,
             icon: Bitmap? = null,
             contentText: String? = null,
             contentIntent: PendingIntent? = null,
@@ -105,9 +121,9 @@ internal class CallNotification {
                 .setPriority(if (isHighPriority) NotificationCompat.PRIORITY_MAX else NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentText(contentText)
-                .setContentTitle(title)
+                .setContentTitle(user)
 
-            icon?.also { builder.setLargeIcon(icon) }
+            icon?.also { builder.setLargeIcon(BitmapUtils.roundBitmap(icon)) }
             contentIntent?.also { builder.setContentIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
 
@@ -126,6 +142,74 @@ internal class CallNotification {
                 declineIntent
             )
             builder.addAction(declineAction)
+
+            return builder.build()
+        }
+
+        @RequiresApi(Build.VERSION_CODES.S)
+        private fun buildNotificationApi31(
+            context: Context,
+            type: Type,
+            channelId: String,
+            useTimer: Boolean,
+            user: String? = null,
+            icon: Bitmap? = null,
+            contentText: String? = null,
+            contentIntent: PendingIntent? = null,
+            fullscreenIntent: PendingIntent? = null,
+            answerIntent: PendingIntent? = null,
+            declineIntent: PendingIntent? = null
+        ): Notification {
+            val person = Person.Builder()
+                .setName("Maria")
+                .setIcon(Icon.createWithBitmap(BitmapUtils.roundBitmap(icon!!)))
+                .build()
+
+            val defaultIntent =
+                PendingIntent.getActivity(context, 0, Intent(), PendingIntentExtensions.updateFlags)
+
+            val style = when (type) {
+                Type.INCOMING -> Notification.CallStyle.forIncomingCall(
+                    person,
+                    declineIntent ?: defaultIntent,
+                    answerIntent ?: defaultIntent
+                )
+                else -> Notification.CallStyle.forOngoingCall(
+                    person,
+                    declineIntent ?: defaultIntent
+                )
+            }.apply {
+                setAnswerButtonColorHint(
+                    context.resources.getColor(
+                        R.color.kaleyra_color_answer_button,
+                        null
+                    )
+                )
+                setDeclineButtonColorHint(
+                    context.resources.getColor(
+                        R.color.kaleyra_color_hang_up_button,
+                        null
+                    )
+                )
+            }
+
+            val builder = Notification.Builder(context.applicationContext, channelId)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setOnlyAlertOnce(true)
+                .setUsesChronometer(useTimer)
+                .setSmallIcon(R.drawable.kaleyra_z_audio_only)
+                .setCategory(Notification.CATEGORY_CALL)
+                .setVisibility(Notification.VISIBILITY_PUBLIC)
+                .setContentText(contentText)
+                .addPerson(person)
+                .setColorized(true)
+                // TODO update color with the app's background color
+                .setColor(Color.WHITE)
+                .setStyle(style)
+
+            contentIntent?.also { builder.setContentIntent(it) }
+            fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
 
             return builder.build()
         }
@@ -150,77 +234,3 @@ internal class CallNotification {
         }
     }
 }
-
-//
-//    @RequiresApi(Build.VERSION_CODES.P)
-//    private fun buildNotificationApi31(
-//        context: Context,
-//        caller: String,
-//        usersAvatar: Bitmap,
-//        channelId: String,
-//        contentText: String,
-//        contentIntent: PendingIntent? = null,
-//        fullscreenIntent: PendingIntent? = null,
-//        useTimer: Boolean,
-//        actions: List<NotificationCompat.Action> = listOf(),
-//        type: NotificationType
-//    ): Notification {
-//        val person = Person.Builder()
-//            .setName(caller)
-//            .setIcon(Icon.createWithBitmap(usersAvatar))
-//            .build()
-//
-//        val style1 = when (type) {
-//            NotificationType.INCOMING_CALL -> Notification.CallStyle.forIncomingCall(
-//                person,
-//                callIntent,
-//                callIntent
-//            )
-//            ONGOING_CALL -> Notification.CallStyle.forOngoingCall(
-//                person,
-//                callIntent
-//            )
-//        }.apply {
-//            setAnswerButtonColorHint(
-//                context.resources.getColor(
-//                    R.color.kaleyra_color_answer_button,
-//                    null
-//                )
-//            )
-//            setDeclineButtonColorHint(
-//                context.resources.getColor(
-//                    R.color.kaleyra_color_hang_up_button,
-//                    null
-//                )
-//            )
-////            setIsVideo(true)
-//        }
-//
-//        val builder = Notification.Builder(context.applicationContext, channelId)
-//            .setAutoCancel(false)
-//            .setOngoing(true)
-//            .setOnlyAlertOnce(true)
-//            .setUsesChronometer(useTimer)
-//            .setSmallIcon(R.drawable.kaleyra_z_audio_only)
-//            .setCategory(Notification.CATEGORY_CALL)
-//            .setVisibility(Notification.VISIBILITY_PUBLIC)
-//            .setContentText(contentText)
-//            .addPerson(person)
-//            .style = style1
-//
-//
-//        builder.setColorized(true)
-//        builder.setColor(
-//            context.getThemeAttribute(
-//                com.kaleyra.collaboration_suite_phone_ui.R.style.KaleyraCollaborationSuiteUI_Theme_Call,
-//                com.kaleyra.collaboration_suite_phone_ui.R.styleable.KaleyraCollaborationSuiteUI_Theme_Call,
-//                R.attr.backgroundColor
-//            )
-//        )
-//
-//        contentIntent?.also { builder.setContentIntent(it) }
-//        fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
-//        actions.forEach { builder.addAction(it) }
-//
-//        return builder.build()
-//    }
