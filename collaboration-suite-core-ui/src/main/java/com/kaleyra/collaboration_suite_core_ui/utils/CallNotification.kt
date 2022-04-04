@@ -14,6 +14,7 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import com.google.android.material.color.MaterialColors
 import com.kaleyra.collaboration_suite_core_ui.R
 
 internal class CallNotification {
@@ -30,7 +31,6 @@ internal class CallNotification {
         val channelName: String,
         val type: Type,
         var isHighImportance: Boolean = false,
-        var isVideo: Boolean = false,
         var user: String? = null,
         var image: Bitmap? = null,
         var contentText: String? = null,
@@ -44,8 +44,6 @@ internal class CallNotification {
         fun image(image: Bitmap) = apply { this.image = image }
 
         fun importance(isHigh: Boolean) = apply { this.isHighImportance = isHigh }
-
-        fun isVideo(isVideo: Boolean) = apply { this.isVideo = isVideo }
 
         fun contentText(text: String) = apply {
             this.contentText = text
@@ -75,7 +73,6 @@ internal class CallNotification {
                 context = context,
                 type = type,
                 channelId = channelId,
-                isVideo = isVideo,
                 isHighPriority = isHighImportance,
                 useTimer = type == Type.ONGOING,
                 user = user,
@@ -89,7 +86,6 @@ internal class CallNotification {
                 context = context,
                 type = type,
                 channelId = channelId,
-                isVideo = isVideo,
                 useTimer = type == Type.ONGOING,
                 user = user,
                 icon = image,
@@ -105,7 +101,6 @@ internal class CallNotification {
             context: Context,
             type: Type,
             channelId: String,
-            isVideo: Boolean,
             isHighPriority: Boolean,
             useTimer: Boolean,
             user: String? = null,
@@ -157,7 +152,6 @@ internal class CallNotification {
             context: Context,
             type: Type,
             channelId: String,
-            isVideo: Boolean,
             useTimer: Boolean,
             user: String? = null,
             icon: Bitmap? = null,
@@ -185,19 +179,6 @@ internal class CallNotification {
                     person,
                     declineIntent ?: defaultIntent
                 )
-            }.apply {
-                setAnswerButtonColorHint(
-                    context.resources.getColor(
-                        R.color.kaleyra_color_answer_button,
-                        null
-                    )
-                )
-                setDeclineButtonColorHint(
-                    context.resources.getColor(
-                        R.color.kaleyra_color_hang_up_button,
-                        null
-                    )
-                )
             }
 
             val builder = Notification.Builder(context.applicationContext, channelId)
@@ -211,17 +192,12 @@ internal class CallNotification {
                 .setContentText(contentText)
                 .addPerson(person)
                 .setStyle(style)
-                .setColorized(true)
-                .setColor(Color.BLUE)
 
             contentIntent?.also { builder.setContentIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
 
             return builder.build()
         }
-
-        private fun smallIconResource(isVideo: Boolean) =
-            if (isVideo) R.drawable.kaleyra_z_cam_22 else R.drawable.kaleyra_z_audio_only
 
         @RequiresApi(Build.VERSION_CODES.O)
         private fun createNotificationChannel(
