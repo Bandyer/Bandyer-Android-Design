@@ -90,7 +90,7 @@ internal class CallNotification {
                 type = type,
                 channelId = channelId,
                 isVideo = isVideo,
-                useTimer =type == Type.ONGOING,
+                useTimer = type == Type.ONGOING,
                 user = user,
                 icon = image,
                 contentText = contentText,
@@ -151,6 +151,7 @@ internal class CallNotification {
             return builder.build()
         }
 
+        // Be aware callStyle notifications require either to be linked to a foreground service or have a fullscreen intent
         @RequiresApi(Build.VERSION_CODES.S)
         private fun buildNotificationApi31(
             context: Context,
@@ -211,7 +212,7 @@ internal class CallNotification {
                 .addPerson(person)
                 .setStyle(style)
                 .setColorized(true)
-                .setColor(Color.WHITE)
+                .setColor(Color.BLUE)
 
             contentIntent?.also { builder.setContentIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
