@@ -74,31 +74,30 @@ internal class CallNotification {
                 createNotificationChannel(context, channelId, channelName, isHighImportance)
 
             return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) buildNotificationApi21(
-                context,
-                type,
-                channelId,
-                isHighImportance,
-                type == Type.ONGOING,
-                user,
-                image,
-                contentText,
-                contentIntent,
-                fullscreenIntent,
-                answerIntent,
-                declineIntent
+                context = context,
+                type = type,
+                channelId = channelId,
+                isHighPriority = isHighImportance,
+                useTimer = type == Type.ONGOING,
+                user = user,
+                icon = image,
+                contentText = contentText,
+                contentIntent = contentIntent,
+                fullscreenIntent = fullscreenIntent,
+                answerIntent = answerIntent,
+                declineIntent = declineIntent
             ) else buildNotificationApi31(
-                context,
-                type,
-                channelId,
-                type == Type.ONGOING,
-                isVideo,
-                user,
-                image,
-                contentText,
-                contentIntent,
-                fullscreenIntent,
-                answerIntent,
-                declineIntent
+                context = context,
+                type = type,
+                channelId = channelId,
+                useTimer =type == Type.ONGOING,
+                user = user,
+                icon = image,
+                contentText = contentText,
+                contentIntent = contentIntent,
+                fullscreenIntent = fullscreenIntent,
+                answerIntent = answerIntent,
+                declineIntent = declineIntent
             )
         }
 
@@ -156,7 +155,6 @@ internal class CallNotification {
             context: Context,
             type: Type,
             channelId: String,
-            isVideo: Boolean,
             useTimer: Boolean,
             user: String? = null,
             icon: Bitmap? = null,
@@ -204,7 +202,7 @@ internal class CallNotification {
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
                 .setUsesChronometer(useTimer)
-                .setSmallIcon(if (isVideo) R.drawable.kaleyra_z_cam_22 else R.drawable.kaleyra_z_audio_only)
+                .setSmallIcon(context.getApplicationIconId())
                 .setCategory(Notification.CATEGORY_CALL)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .setContentText(contentText)
