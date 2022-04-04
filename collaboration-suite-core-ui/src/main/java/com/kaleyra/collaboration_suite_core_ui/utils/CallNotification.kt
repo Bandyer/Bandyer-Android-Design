@@ -15,8 +15,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getApplicationIconId
-
 
 internal class CallNotification {
 
@@ -77,6 +75,7 @@ internal class CallNotification {
                 context = context,
                 type = type,
                 channelId = channelId,
+                isVideo = isVideo,
                 isHighPriority = isHighImportance,
                 useTimer = type == Type.ONGOING,
                 user = user,
@@ -90,6 +89,7 @@ internal class CallNotification {
                 context = context,
                 type = type,
                 channelId = channelId,
+                isVideo = isVideo,
                 useTimer =type == Type.ONGOING,
                 user = user,
                 icon = image,
@@ -105,6 +105,7 @@ internal class CallNotification {
             context: Context,
             type: Type,
             channelId: String,
+            isVideo: Boolean,
             isHighPriority: Boolean,
             useTimer: Boolean,
             user: String? = null,
@@ -120,7 +121,7 @@ internal class CallNotification {
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
                 .setUsesChronometer(useTimer)
-                .setSmallIcon(context.getApplicationIconId())
+                .setSmallIcon(smallIconResource(isVideo))
                 .setCategory(NotificationCompat.CATEGORY_CALL)
                 .setPriority(if (isHighPriority) NotificationCompat.PRIORITY_MAX else NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -155,6 +156,7 @@ internal class CallNotification {
             context: Context,
             type: Type,
             channelId: String,
+            isVideo: Boolean,
             useTimer: Boolean,
             user: String? = null,
             icon: Bitmap? = null,
@@ -202,7 +204,7 @@ internal class CallNotification {
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
                 .setUsesChronometer(useTimer)
-                .setSmallIcon(context.getApplicationIconId())
+                .setSmallIcon(smallIconResource(isVideo))
                 .setCategory(Notification.CATEGORY_CALL)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .setContentText(contentText)
@@ -216,6 +218,9 @@ internal class CallNotification {
 
             return builder.build()
         }
+
+        private fun smallIconResource(isVideo: Boolean) =
+            if (isVideo) R.drawable.kaleyra_z_cam_22 else R.drawable.kaleyra_z_audio_only
 
         @RequiresApi(Build.VERSION_CODES.O)
         private fun createNotificationChannel(

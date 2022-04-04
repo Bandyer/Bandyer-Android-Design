@@ -156,19 +156,5 @@ object ContextExtensions {
         )
         wl.acquire(3000)
     }
-
-    /**
-     * Retrieve the application's icon resource id
-     *
-     * @receiver Context
-     */
-    internal fun Context.getApplicationIconId(): Int {
-        val packageManager = packageManager
-        val applicationInfo = packageManager.getApplicationInfo(
-            HostAppInfo.name,
-            PackageManager.GET_META_DATA
-        )
-        return applicationInfo.icon
-    }
 }
 

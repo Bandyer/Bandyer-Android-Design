@@ -61,6 +61,7 @@ internal object NotificationHelper {
     fun <T> buildIncomingCallNotification(
         caller: String,
         image: Uri,
+        isVideo: Boolean,
         activityClazz: Class<T>,
         isHighPriority: Boolean,
         onImageLoaded: (Notification) -> Unit
@@ -79,6 +80,7 @@ internal object NotificationHelper {
             )
             .user(caller)
             .image(ContextCompat.getDrawable(context, R.drawable.kaleyra_z_avatar)!!.toBitmap())
+            .isVideo(isVideo)
             .importance(isHighPriority)
             .contentText(context.getString(R.string.kaleyra_notification_incoming_call))
             .contentIntent(contentPendingIntent(context, activityClazz))
@@ -103,6 +105,7 @@ internal object NotificationHelper {
     fun <T> buildOutgoingCallNotification(
         caller: String,
         image: Uri,
+        isVideo: Boolean,
         activityClazz: Class<T>,
         onImageLoaded: (Notification) -> Unit
     ): Notification {
@@ -116,6 +119,7 @@ internal object NotificationHelper {
             )
             .user(caller)
             .image(ContextCompat.getDrawable(context, R.drawable.kaleyra_z_avatar)!!.toBitmap())
+            .isVideo(isVideo)
             .contentText(context.getString(R.string.kaleyra_notification_outgoing_call))
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
@@ -137,6 +141,7 @@ internal object NotificationHelper {
     fun <T> buildOngoingCallNotification(
         caller: String,
         image: Uri,
+        isVideo: Boolean,
         activityClazz: Class<T>,
         onImageLoaded: (Notification) -> Unit
     ): Notification {
@@ -150,6 +155,7 @@ internal object NotificationHelper {
             )
             .user(caller)
             .image(ContextCompat.getDrawable(context, R.drawable.kaleyra_z_avatar)!!.toBitmap())
+            .isVideo(isVideo)
             .contentText(context.getString(R.string.kaleyra_notification_ongoing_call))
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))

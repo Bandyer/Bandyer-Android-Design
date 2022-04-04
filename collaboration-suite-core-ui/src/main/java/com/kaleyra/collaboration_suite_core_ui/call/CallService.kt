@@ -325,11 +325,13 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private suspend fun syncNotificationWithCallState(call: Call) {
         val participants = call.participants.value
+        val hasVideo = call.extras.preferredType.hasVideo()
 
         if (participants.me != participants.creator())
             showIncomingCallNotification(
                 usersDescription.name(listOf(participants.creator()?.userId ?: "")),
                 usersDescription.image(listOf(participants.creator()?.userId ?: "")),
+                hasVideo,
                 !isAppInForeground,
                 !isAppInForeground
             )
@@ -341,12 +343,14 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 showOutgoingCallNotification(
                     usersDescription.name(listOf(participants.creator()?.userId ?: "")),
                     usersDescription.image(listOf(participants.creator()?.userId ?: "")),
+                    hasVideo
                 )
             }
             .onCompletion {
                 showOnGoingCallNotification(
                     usersDescription.name(listOf(participants.creator()?.userId ?: "")),
                     usersDescription.image(listOf(participants.creator()?.userId ?: "")),
+                    hasVideo
                 )
             }
             .launchIn(lifecycleScope)
@@ -369,6 +373,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             showIncomingCallNotification(
                 usersDescription.name(listOf(participants.creator()?.userId ?: "")),
                 usersDescription.image(listOf(participants.creator()?.userId ?: "")),
+                currentCall!!.extras.preferredType.hasVideo(),
                 isHighPriority = false,
                 moveToForeground = true
             )
@@ -377,12 +382,14 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     private fun showIncomingCallNotification(
         usersDescription: String,
         image: Uri,
+        isVideo: Boolean,
         isHighPriority: Boolean,
         moveToForeground: Boolean
     ) {
         val notification = NotificationHelper.buildIncomingCallNotification(
             usersDescription,
             image,
+            isVideo,
             activityClazz!!,
             isHighPriority,
         ) {
@@ -391,10 +398,11 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         showNotification(notification, moveToForeground)
     }
 
-    private fun showOutgoingCallNotification(usersDescription: String, image: Uri) {
+    private fun showOutgoingCallNotification(usersDescription: String, image: Uri, isVideo: Boolean) {
         val notification = NotificationHelper.buildOutgoingCallNotification(
             usersDescription,
             image,
+            isVideo,
             activityClazz!!
         ) {
             NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
@@ -402,10 +410,11 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         showNotification(notification, true)
     }
 
-    private fun showOnGoingCallNotification(usersDescription: String, image: Uri) {
+    private fun showOnGoingCallNotification(usersDescription: String, image: Uri, isVideo: Boolean) {
         val notification = NotificationHelper.buildOngoingCallNotification(
             usersDescription,
             image,
+            isVideo,
             activityClazz!!
         ) {
             NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
