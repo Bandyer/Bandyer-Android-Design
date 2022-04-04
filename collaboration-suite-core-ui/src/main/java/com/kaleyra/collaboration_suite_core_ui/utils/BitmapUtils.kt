@@ -6,11 +6,6 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
-import android.graphics.drawable.Drawable
-import android.net.Uri
-import androidx.annotation.Px
-import com.squareup.picasso.Picasso
-import com.squareup.picasso.Target
 
 object BitmapUtils {
     fun roundBitmap(bitmap: Bitmap): Bitmap {
@@ -27,44 +22,5 @@ object BitmapUtils {
         }
         canvas.drawPath(path, paint)
         return newBitmap
-    }
-
-//    suspend fun uriToBitmap(uri: Uri, @Px width: Int, @Px height: Int) =
-//        suspendCancellableCoroutine<Bitmap?> { continuation ->
-//            Picasso.get()
-//                .load(uri)
-//                .resize(500, 500)
-//                .centerCrop()
-//                .into(object : Target {
-//                    override fun onPrepareLoad(placeHolderDrawable: Drawable?) = Unit
-//
-//                    override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) =
-//                        continuation.resume(bitmap, null)
-//
-//                    override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) =
-//                        continuation.resume(null, null)
-//                })
-//        }
-
-    fun uriToBitmap(
-        uri: Uri,
-        @Px width: Int,
-        @Px height: Int,
-        onSuccess: (Bitmap?) -> Unit,
-        onFailure: () -> Unit
-    ) {
-        Picasso.get()
-            .load(uri)
-            .resize(width, height)
-            .centerCrop()
-            .into(object : Target {
-                override fun onPrepareLoad(placeHolderDrawable: Drawable?) = Unit
-
-                override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) =
-                    onSuccess.invoke(bitmap)
-
-                override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) =
-                    onFailure.invoke()
-            })
     }
 }

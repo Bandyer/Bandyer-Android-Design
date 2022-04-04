@@ -60,10 +60,8 @@ internal object NotificationHelper {
 
     fun <T> buildIncomingCallNotification(
         caller: String,
-        image: Uri,
         activityClazz: Class<T>,
-        isHighPriority: Boolean,
-        onImageLoaded: (Notification) -> Unit
+        isHighPriority: Boolean
     ): Notification {
         val context = ContextRetainer.context
 
@@ -78,7 +76,6 @@ internal object NotificationHelper {
                 type = CallNotification.Type.INCOMING
             )
             .user(caller)
-            .image(ContextCompat.getDrawable(context, R.drawable.kaleyra_z_avatar)!!.toBitmap())
             .importance(isHighPriority)
             .contentText(context.getString(R.string.kaleyra_notification_incoming_call))
             .contentIntent(contentPendingIntent(context, activityClazz))
@@ -86,25 +83,12 @@ internal object NotificationHelper {
             .answerIntent(answerPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
 
-        BitmapUtils.uriToBitmap(
-            image,
-            IMAGE_SIZE,
-            IMAGE_SIZE,
-            onSuccess = {
-                it?.also { builder.image(it) }
-                onImageLoaded.invoke(builder.build())
-            },
-            onFailure = { }
-        )
-
         return builder.build()
     }
 
     fun <T> buildOutgoingCallNotification(
         caller: String,
-        image: Uri,
         activityClazz: Class<T>,
-        onImageLoaded: (Notification) -> Unit
     ): Notification {
         val context = ContextRetainer.context
         val builder = CallNotification
@@ -115,30 +99,16 @@ internal object NotificationHelper {
                 type = CallNotification.Type.OUTGOING
             )
             .user(caller)
-            .image(ContextCompat.getDrawable(context, R.drawable.kaleyra_z_avatar)!!.toBitmap())
             .contentText(context.getString(R.string.kaleyra_notification_outgoing_call))
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
-
-        BitmapUtils.uriToBitmap(
-            image,
-            IMAGE_SIZE,
-            IMAGE_SIZE,
-            onSuccess = {
-                it?.also { builder.image(it) }
-                onImageLoaded.invoke(builder.build())
-            },
-            onFailure = { }
-        )
 
         return builder.build()
     }
 
     fun <T> buildOngoingCallNotification(
         caller: String,
-        image: Uri,
         activityClazz: Class<T>,
-        onImageLoaded: (Notification) -> Unit
     ): Notification {
         val context = ContextRetainer.context
         val builder = CallNotification
@@ -149,21 +119,9 @@ internal object NotificationHelper {
                 type = CallNotification.Type.ONGOING
             )
             .user(caller)
-            .image(ContextCompat.getDrawable(context, R.drawable.kaleyra_z_avatar)!!.toBitmap())
             .contentText(context.getString(R.string.kaleyra_notification_ongoing_call))
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
-
-        BitmapUtils.uriToBitmap(
-            image,
-            IMAGE_SIZE,
-            IMAGE_SIZE,
-            onSuccess = {
-                it?.also { builder.image(it) }
-                onImageLoaded.invoke(builder.build())
-            },
-            onFailure = { }
-        )
 
         return builder.build()
     }

@@ -390,34 +390,25 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     ) {
         val notification = NotificationHelper.buildIncomingCallNotification(
             usersDescription,
-            image,
             activityClazz!!,
             isHighPriority,
-        ) {
-//            NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
-        }
+        )
         showNotification(notification, moveToForeground)
     }
 
     private fun showOutgoingCallNotification(usersDescription: String, image: Uri) {
         val notification = NotificationHelper.buildOutgoingCallNotification(
             usersDescription,
-            image,
             activityClazz!!
-        ) {
-//            NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
-        }
+        )
         showNotification(notification, true)
     }
 
     private fun showOnGoingCallNotification(usersDescription: String, image: Uri) {
         val notification = NotificationHelper.buildOngoingCallNotification(
             usersDescription,
-            image,
             activityClazz!!
-        ) {
-//            NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
-        }
+        )
         showNotification(notification, true)
     }
 

@@ -14,8 +14,10 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.google.android.material.color.MaterialColors
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_utils.HostAppInfo
 
 internal class CallNotification {
 
@@ -32,7 +34,6 @@ internal class CallNotification {
         val type: Type,
         var isHighImportance: Boolean = false,
         var user: String? = null,
-        var image: Bitmap? = null,
         var contentText: String? = null,
         var contentIntent: PendingIntent? = null,
         var fullscreenIntent: PendingIntent? = null,
@@ -40,8 +41,6 @@ internal class CallNotification {
         var declineIntent: PendingIntent? = null,
     ) {
         fun user(user: String) = apply { this.user = user }
-
-        fun image(image: Bitmap) = apply { this.image = image }
 
         fun importance(isHigh: Boolean) = apply { this.isHighImportance = isHigh }
 
@@ -76,7 +75,6 @@ internal class CallNotification {
                 isHighPriority = isHighImportance,
                 useTimer = type == Type.ONGOING,
                 user = user,
-                icon = image,
                 contentText = contentText,
                 contentIntent = contentIntent,
                 fullscreenIntent = fullscreenIntent,
@@ -88,7 +86,6 @@ internal class CallNotification {
                 channelId = channelId,
                 useTimer = type == Type.ONGOING,
                 user = user,
-                icon = image,
                 contentText = contentText,
                 contentIntent = contentIntent,
                 fullscreenIntent = fullscreenIntent,
@@ -104,13 +101,13 @@ internal class CallNotification {
             isHighPriority: Boolean,
             useTimer: Boolean,
             user: String? = null,
-            icon: Bitmap? = null,
             contentText: String? = null,
             contentIntent: PendingIntent? = null,
             fullscreenIntent: PendingIntent? = null,
             answerIntent: PendingIntent? = null,
             declineIntent: PendingIntent? = null
         ): Notification {
+            val applicationIcon = context.applicationContext.packageManager.getApplicationIcon(HostAppInfo.name)
             val builder = NotificationCompat.Builder(context.applicationContext, channelId)
                 .setAutoCancel(false)
                 .setOngoing(true)
@@ -122,8 +119,8 @@ internal class CallNotification {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentText(contentText)
                 .setContentTitle(user)
+                .setLargeIcon(applicationIcon.toBitmap())
 
-            icon?.also { builder.setLargeIcon(BitmapUtils.roundBitmap(icon)) }
             contentIntent?.also { builder.setContentIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
 
@@ -154,16 +151,16 @@ internal class CallNotification {
             channelId: String,
             useTimer: Boolean,
             user: String? = null,
-            icon: Bitmap? = null,
             contentText: String? = null,
             contentIntent: PendingIntent? = null,
             fullscreenIntent: PendingIntent? = null,
             answerIntent: PendingIntent? = null,
             declineIntent: PendingIntent? = null
         ): Notification {
+            val applicationIcon = context.applicationContext.packageManager.getApplicationIcon(HostAppInfo.name)
             val person = Person.Builder()
                 .setName(user)
-                .setIcon(Icon.createWithBitmap(BitmapUtils.roundBitmap(icon!!)))
+                .setIcon(Icon.createWithBitmap(applicationIcon.toBitmap()))
                 .build()
 
             val defaultIntent =
