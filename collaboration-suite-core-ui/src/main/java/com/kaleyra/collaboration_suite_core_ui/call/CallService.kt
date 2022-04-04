@@ -337,7 +337,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 usersDescription.image(listOf(participants.creator()?.userId ?: "")),
                 hasVideo,
                 !isAppInForeground,
-                !isAppInForeground
+                isAppInForeground
             )
 
         call.state
@@ -401,7 +401,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             activityClazz!!,
             isHighPriority,
         ) {
-            NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
+//            NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
         }
         showNotification(notification, moveToForeground)
     }
@@ -413,7 +413,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             isVideo,
             activityClazz!!
         ) {
-            NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
+//            NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
         }
         showNotification(notification, true)
     }
@@ -425,7 +425,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             isVideo,
             activityClazz!!
         ) {
-            NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
+//            NotificationHelper.notify(CALL_NOTIFICATION_ID, it)
         }
         showNotification(notification, true)
     }
