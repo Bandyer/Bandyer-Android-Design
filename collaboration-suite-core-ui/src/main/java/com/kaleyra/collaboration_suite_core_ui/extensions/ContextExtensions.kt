@@ -19,9 +19,9 @@ package com.kaleyra.collaboration_suite_core_ui.extensions
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import android.content.pm.PackageManager
 import android.graphics.Point
 import android.hardware.display.DisplayManager
+import android.media.AudioManager
 import android.os.Build
 import android.os.PowerManager
 import android.util.DisplayMetrics
@@ -30,9 +30,10 @@ import android.view.View
 import android.view.WindowManager
 import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import com.kaleyra.collaboration_suite_utils.HostAppInfo
 import java.util.*
+
 
 /**
  * Context extensions
@@ -155,6 +156,17 @@ object ContextExtensions {
             javaClass.name
         )
         wl.acquire(3000)
+    }
+
+    /**
+     * Check if the device is in silent mode
+     *
+     * @receiver Context
+     * @return Boolean
+     */
+    internal fun Context.isSilent(): Boolean {
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager?
+        return audioManager?.ringerMode == AudioManager.RINGER_MODE_SILENT
     }
 }
 

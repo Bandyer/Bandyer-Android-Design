@@ -36,6 +36,7 @@ import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
 import com.kaleyra.collaboration_suite_core_ui.UIProvider
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
+import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
@@ -241,7 +242,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             setupCall(call)
 
             ongoingCall.emit(call)
-            if (isAppInForeground)
+            if (isAppInForeground && !this@CallService.isSilent())
                 UIProvider.showCall(activityClazz!!)
         }.launchIn(lifecycleScope)
 
