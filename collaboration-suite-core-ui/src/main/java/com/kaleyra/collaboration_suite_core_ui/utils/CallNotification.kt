@@ -17,6 +17,7 @@ import androidx.core.app.NotificationCompat
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getApplicationIconId
 
+
 internal class CallNotification {
 
     enum class Type {
@@ -31,6 +32,7 @@ internal class CallNotification {
         val channelName: String,
         val type: Type,
         var isHighImportance: Boolean = false,
+        var isVideo: Boolean = false,
         var user: String? = null,
         var image: Bitmap? = null,
         var contentText: String? = null,
@@ -44,6 +46,8 @@ internal class CallNotification {
         fun image(image: Bitmap) = apply { this.image = image }
 
         fun importance(isHigh: Boolean) = apply { this.isHighImportance = isHigh }
+
+        fun isVideo(isVideo: Boolean) = apply { this.isVideo = isVideo }
 
         fun contentText(text: String) = apply {
             this.contentText = text
@@ -87,6 +91,7 @@ internal class CallNotification {
                 type,
                 channelId,
                 type == Type.ONGOING,
+                isVideo,
                 user,
                 image,
                 contentText,
@@ -151,6 +156,7 @@ internal class CallNotification {
             context: Context,
             type: Type,
             channelId: String,
+            isVideo: Boolean,
             useTimer: Boolean,
             user: String? = null,
             icon: Bitmap? = null,
@@ -161,7 +167,7 @@ internal class CallNotification {
             declineIntent: PendingIntent? = null
         ): Notification {
             val person = Person.Builder()
-                .setName("Maria")
+                .setName(user)
                 .setIcon(Icon.createWithBitmap(BitmapUtils.roundBitmap(icon!!)))
                 .build()
 
@@ -198,15 +204,14 @@ internal class CallNotification {
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
                 .setUsesChronometer(useTimer)
-                .setSmallIcon(R.drawable.kaleyra_z_audio_only)
+                .setSmallIcon(if (isVideo) R.drawable.kaleyra_z_cam_22 else R.drawable.kaleyra_z_audio_only)
                 .setCategory(Notification.CATEGORY_CALL)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .setContentText(contentText)
                 .addPerson(person)
-                .setColorized(true)
-                // TODO update color with the app's background color
-                .setColor(Color.WHITE)
                 .setStyle(style)
+                .setColorized(true)
+                .setColor(Color.WHITE)
 
             contentIntent?.also { builder.setContentIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
