@@ -126,7 +126,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(this)
 
-        NotificationHelper.cancelNotification(CALL_NOTIFICATION_ID)
+        clearNotification()
 
         currentCall?.end()
         phoneBox?.disconnect()
@@ -188,7 +188,10 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     override fun onAnswer() = currentCall?.connect() ?: Unit
 
-    override fun onHangup() = currentCall?.end() ?: Unit
+    override fun onHangup() {
+        currentCall?.end() ?: Unit
+        clearNotification()
+    }
 
     override fun onEnableCamera(enable: Boolean) {
         val video =
@@ -362,9 +365,13 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             .takeWhile { it !is Call.State.Disconnected.Ended }
             .onCompletion {
                 scopeToCancel.cancel()
-                stopForegroundLocal()
-                NotificationHelper.cancelNotification(CALL_NOTIFICATION_ID)
+                clearNotification()
             }.launchIn(lifecycleScope)
+    }
+
+    private fun clearNotification() {
+        stopForegroundLocal()
+        NotificationHelper.cancelNotification(CALL_NOTIFICATION_ID)
     }
 
     private fun startForegroundIfIncomingCall() =
