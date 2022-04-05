@@ -32,9 +32,9 @@ import com.kaleyra.collaboration_suite_utils.ContextRetainer
 internal object NotificationHelper {
 
     private const val NOTIFICATION_DEFAULT_CHANNEL_ID =
-        "com.kaleyra.collaboration_suite_glass_ui.notification_channel_default"
+        "com.kaleyra.collaboration_suite_core_ui.notification_channel_default"
     private const val NOTIFICATION_IMPORTANT_CHANNEL_ID =
-        "com.kaleyra.collaboration_suite_glass_ui.notification_channel_important"
+        "com.kaleyra.collaboration_suite_core_ui.notification_channel_important"
 
     private const val FULL_SCREEN_REQUEST_CODE = 123
     private const val CONTENT_REQUEST_CODE = 456
