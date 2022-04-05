@@ -30,8 +30,6 @@ import androidx.transition.Transition
 import androidx.transition.TransitionManager
 
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.animateViewHeight
-import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatNotificationLayoutBinding
 
 /**

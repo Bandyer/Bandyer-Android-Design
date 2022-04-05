@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceActivity

@@ -30,7 +30,6 @@ import android.view.View
 import android.view.WindowManager
 import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import java.util.*
 

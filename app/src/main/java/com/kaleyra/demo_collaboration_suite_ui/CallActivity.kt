@@ -43,7 +43,6 @@ import com.bandyer.android_audiosession.session.AudioCallSession
 import com.bandyer.android_audiosession.session.AudioCallSessionListener
 import com.bandyer.android_audiosession.session.AudioCallSessionState
 import com.bandyer.android_audiosession.session.audioCallSessionOptions
-import com.kaleyra.demo_collaboration_suite_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.KaleyraBottomSheet
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem

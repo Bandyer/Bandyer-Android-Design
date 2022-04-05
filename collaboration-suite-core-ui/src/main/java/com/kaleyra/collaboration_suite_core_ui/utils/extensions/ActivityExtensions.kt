@@ -18,10 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui.utils.extensions
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.KeyguardManager
-import android.content.Context
 import android.os.Build
-import android.os.PowerManager
 import android.view.WindowManager
 
 object ActivityExtensions {
