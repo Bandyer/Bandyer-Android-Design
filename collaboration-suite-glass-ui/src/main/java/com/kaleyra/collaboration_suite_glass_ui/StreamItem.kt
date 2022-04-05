@@ -16,6 +16,8 @@
 
 package com.kaleyra.collaboration_suite_glass_ui
 
+import android.net.Uri
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
