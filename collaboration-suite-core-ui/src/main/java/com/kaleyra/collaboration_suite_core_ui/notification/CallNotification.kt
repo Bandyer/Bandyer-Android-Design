@@ -17,14 +17,47 @@ import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.HostAppInfo
 
+/**
+ * CallNotification. Be aware: on api > 31, the notifications requires either to be linked to a foreground service or to have a fullscreen intent.
+ */
 internal class CallNotification {
 
+    /**
+     * Different type of call notifications
+     */
     enum class Type {
+        /**
+         * i n c o m i n g
+         */
         INCOMING,
+
+        /**
+         * o n g o i n g
+         */
         ONGOING,
+
+        /**
+         * o u t g o i n g
+         */
         OUTGOING
     }
 
+    /**
+     * Constructor
+     *
+     * @property context The context used to construct the notification. Mandatory.
+     * @property channelId The notification channel id. Mandatory.
+     * @property channelName The notification channel name showed to the users. Mandatory.
+     * @property type The notification type. Mandatory.
+     * @property isHighImportance True to set the notification with high importance/priority. Optional.
+     * @property user The user to be show in the notification. Optional.
+     * @property contentText The text to be shown inside the notification. Optional.
+     * @property contentIntent The pending intent to be executed when the user tap on the notification. Optional.
+     * @property fullscreenIntent The pending intent to be executed when notification is in the lock screen. Optional.
+     * @property answerIntent The pending intent to be executed when the user taps the answer button. Optional.
+     * @property declineIntent The pending intent to be executed when the user taps the decline button. Optional.
+     * @constructor
+     */
     data class Builder(
         val context: Context,
         val channelId: String,
@@ -38,30 +71,77 @@ internal class CallNotification {
         var answerIntent: PendingIntent? = null,
         var declineIntent: PendingIntent? = null,
     ) {
+        /**
+         * Set the user
+         *
+         * @param user String
+         * @return Builder
+         */
         fun user(user: String) = apply { this.user = user }
 
+        /**
+         * Set the notification importance/priority
+         *
+         * @param isHigh True if the notification should have an high importance, false otherwise
+         * @return Builder
+         */
         fun importance(isHigh: Boolean) = apply { this.isHighImportance = isHigh }
 
+        /**
+         * The text to be shown inside the notification
+         *
+         * @param text String
+         * @return Builder
+         */
         fun contentText(text: String) = apply {
             this.contentText = text
         }
 
+        /**
+         * The pending intent to be executed when the user tap on the notification
+         *
+         * @param pendingIntent PendingIntent
+         * @return Builder
+         */
         fun contentIntent(pendingIntent: PendingIntent) = apply {
             this.contentIntent = pendingIntent
         }
 
+        /**
+         * The pending intent to be executed when notification is in the lock screen
+         *
+         * @param pendingIntent PendingIntent
+         * @return Builder
+         */
         fun fullscreenIntent(pendingIntent: PendingIntent) = apply {
             this.fullscreenIntent = pendingIntent
         }
 
+        /**
+         * The pending intent to be executed when the user taps the answer button
+         *
+         * @param pendingIntent PendingIntent
+         * @return Builder
+         */
         fun answerIntent(pendingIntent: PendingIntent) = apply {
             this.answerIntent = pendingIntent
         }
 
+        /**
+         * The pending intent to be executed when the user taps the decline button
+         *
+         * @param pendingIntent PendingIntent
+         * @return Builder
+         */
         fun declineIntent(pendingIntent: PendingIntent) = apply {
             this.declineIntent = pendingIntent
         }
 
+        /**
+         * Build the call notification
+         *
+         * @return Notification
+         */
         fun build(): Notification {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 createNotificationChannel(context, channelId, channelName, isHighImportance)
@@ -141,7 +221,6 @@ internal class CallNotification {
             return builder.build()
         }
 
-        // Be aware callStyle notifications require either to be linked to a foreground service or have a fullscreen intent
         @RequiresApi(Build.VERSION_CODES.S)
         private fun buildNotificationApi31(
             context: Context,

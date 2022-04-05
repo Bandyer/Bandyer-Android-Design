@@ -29,6 +29,9 @@ import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
+/**
+ * An helper class to show/cancel notifications and to build call notification
+ */
 internal object NotificationHelper {
 
     private const val NOTIFICATION_DEFAULT_CHANNEL_ID =
@@ -41,18 +44,38 @@ internal object NotificationHelper {
     private const val ANSWER_REQUEST_CODE = 789
     private const val DECLINE_REQUEST_CODE = 987
 
+    /**
+     * Notify the system to add a notification
+     *
+     * @param notificationId Int
+     * @param notification Notification
+     */
     fun notify(notificationId: Int, notification: Notification) {
         NotificationManagerCompat.from(ContextRetainer.context).notify(
             notificationId, notification
         )
     }
 
+    /**
+     * Cancel a notification
+     *
+     * @param notificationId Int
+     */
     fun cancelNotification(notificationId: Int) {
         val notificationManager =
             ContextRetainer.context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.cancel(notificationId)
     }
 
+    /**
+     * Utility function which builds an incoming notification
+     *
+     * @param user The callee/caller
+     * @param isGroupCall True if the call is group call, false otherwise
+     * @param activityClazz The call ui activity class
+     * @param isHighPriority True to set the notification with high priority, false otherwise
+     * @return Notification
+     */
     fun <T> buildIncomingCallNotification(
         user: String,
         isGroupCall: Boolean,
@@ -84,6 +107,14 @@ internal object NotificationHelper {
         return builder.build()
     }
 
+    /**
+     * Utility function which builds an outgoing notification
+     *
+     * @param user The callee/caller
+     * @param isGroupCall True if the call is group call, false otherwise
+     * @param activityClazz The call ui activity class
+     * @return Notification
+     */
     fun <T> buildOutgoingCallNotification(
         user: String,
         isGroupCall: Boolean,
@@ -107,6 +138,15 @@ internal object NotificationHelper {
         return builder.build()
     }
 
+    /**
+     * Utility function which builds an ongoing notification
+     *
+     * @param user The callee/caller
+     * @param isGroupCall True if the call is group call, false otherwise
+     * @param isCallRecorded True if the call is recorded, false otherwise
+     * @param activityClazz The call ui activity class
+     * @return Notification
+     */
     fun <T> buildOngoingCallNotification(
         user: String,
         isGroupCall: Boolean,
