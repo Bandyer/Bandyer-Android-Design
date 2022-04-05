@@ -330,11 +330,14 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private suspend fun syncNotificationWithCallState(call: Call) {
         val participants = call.participants.value
+        val callerDescription = usersDescription.name(listOf(participants.creator()?.userId ?: ""))
+        val calleeDescription = usersDescription.name(participants.others.map { it.userId })
+        val isGroupCall = participants.others.count() > 1
 
         if (participants.me != participants.creator())
             showIncomingCallNotification(
-                usersDescription.name(listOf(participants.creator()?.userId ?: "")),
-                usersDescription.image(listOf(participants.creator()?.userId ?: "")),
+                callerDescription,
+                isGroupCall,
                 !isAppInForeground,
                 isAppInForeground
             )
@@ -343,16 +346,10 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             .takeWhile { it !is Call.State.Connected }
             .onEach {
                 if (it !is Call.State.Connecting || participants.me != participants.creator()) return@onEach
-                showOutgoingCallNotification(
-                    usersDescription.name(listOf(participants.creator()?.userId ?: "")),
-                    usersDescription.image(listOf(participants.creator()?.userId ?: ""))
-                )
+                showOutgoingCallNotification(calleeDescription, isGroupCall)
             }
             .onCompletion {
-                showOnGoingCallNotification(
-                    usersDescription.name(listOf(participants.creator()?.userId ?: "")),
-                    usersDescription.image(listOf(participants.creator()?.userId ?: ""))
-                )
+                showOnGoingCallNotification(calleeDescription, isGroupCall)
             }
             .launchIn(lifecycleScope)
     }
@@ -377,37 +374,40 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             if (currentCall!!.state.value !is Call.State.Disconnected || participants.me == participants.creator()) return@launch
             showIncomingCallNotification(
                 usersDescription.name(listOf(participants.creator()?.userId ?: "")),
-                usersDescription.image(listOf(participants.creator()?.userId ?: "")),
-                isHighPriority =false,
+                participants.others.count() > 1,
+                isHighPriority = false,
                 moveToForeground = true
             )
         }
 
     private fun showIncomingCallNotification(
         usersDescription: String,
-        image: Uri,
+        isGroupCall: Boolean,
         isHighPriority: Boolean,
         moveToForeground: Boolean
     ) {
         val notification = NotificationHelper.buildIncomingCallNotification(
             usersDescription,
+            isGroupCall,
             activityClazz!!,
             isHighPriority,
         )
         showNotification(notification, moveToForeground)
     }
 
-    private fun showOutgoingCallNotification(usersDescription: String, image: Uri) {
+    private fun showOutgoingCallNotification(usersDescription: String, isGroupCall: Boolean) {
         val notification = NotificationHelper.buildOutgoingCallNotification(
             usersDescription,
+            isGroupCall,
             activityClazz!!
         )
         showNotification(notification, true)
     }
 
-    private fun showOnGoingCallNotification(usersDescription: String, image: Uri) {
+    private fun showOnGoingCallNotification(usersDescription: String, isGroupCall: Boolean) {
         val notification = NotificationHelper.buildOngoingCallNotification(
             usersDescription,
+            isGroupCall,
             activityClazz!!
         )
         showNotification(notification, true)
