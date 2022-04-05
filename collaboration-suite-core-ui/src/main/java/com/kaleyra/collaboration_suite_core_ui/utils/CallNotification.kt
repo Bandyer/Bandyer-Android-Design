@@ -8,14 +8,11 @@ import android.app.Person
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.drawable.Icon
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.graphics.drawable.toBitmap
-import com.google.android.material.color.MaterialColors
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_utils.HostAppInfo
 
@@ -34,7 +31,6 @@ internal class CallNotification {
         val type: Type,
         var isHighImportance: Boolean = false,
         var user: String? = null,
-        var isGroupCall: Boolean = false,
         var contentText: String? = null,
         var contentIntent: PendingIntent? = null,
         var fullscreenIntent: PendingIntent? = null,
@@ -42,8 +38,6 @@ internal class CallNotification {
         var declineIntent: PendingIntent? = null,
     ) {
         fun user(user: String) = apply { this.user = user }
-
-        fun isGroupCall(isGroupCall: Boolean) = apply { this.isGroupCall = isGroupCall }
 
         fun importance(isHigh: Boolean) = apply { this.isHighImportance = isHigh }
 
@@ -111,7 +105,6 @@ internal class CallNotification {
             declineIntent: PendingIntent? = null
         ): Notification {
             val applicationIcon = context.applicationContext.packageManager.getApplicationIcon(HostAppInfo.name)
-            val ongoingCallText = context.resources.getString(R.string.kaleyra_notification_ongoing_call)
             val builder = NotificationCompat.Builder(context.applicationContext, channelId)
                 .setAutoCancel(false)
                 .setOngoing(true)
@@ -122,7 +115,7 @@ internal class CallNotification {
                 .setPriority(if (isHighPriority) NotificationCompat.PRIORITY_MAX else NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentText(contentText)
-                .setContentTitle(if (isGroupCall) ongoingCallText else user)
+                .setContentTitle(user)
                 .setLargeIcon(applicationIcon.toBitmap())
 
             contentIntent?.also { builder.setContentIntent(it) }
@@ -162,9 +155,8 @@ internal class CallNotification {
             declineIntent: PendingIntent? = null
         ): Notification {
             val applicationIcon = context.applicationContext.packageManager.getApplicationIcon(HostAppInfo.name)
-            val ongoingCallText = context.resources.getString(R.string.kaleyra_notification_ongoing_call)
             val person = Person.Builder()
-                .setName(if (isGroupCall) ongoingCallText else user)
+                .setName(user)
                 .setIcon(Icon.createWithBitmap(applicationIcon.toBitmap()))
                 .build()
 
