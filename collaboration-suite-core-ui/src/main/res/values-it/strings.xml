@@ -22,7 +22,7 @@
     <string name="kaleyra_notification_decline">Rifiuta</string>
     <string name="kaleyra_notification_hangup">Termina</string>
     <string name="kaleyra_notification_tap_to_return">Tocca per tornare alla chiamata</string>
-    <string name="kaleyra_notification_incoming_call">Chiamata in ingresso</string>
-    <string name="kaleyra_notification_outgoing_call">Chiamata in uscita</string>
     <string name="kaleyra_notification_ongoing_call">Chiamata in corso</string>
+    <string name="kaleyra_notification_channel_name">Chiamate</string>
+    <string name="kaleyra_notification_call_recorded">Registrazione chiamata in corsos</string>
 </resources>

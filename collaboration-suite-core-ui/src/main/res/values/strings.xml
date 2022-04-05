@@ -22,7 +22,7 @@
     <string name="kaleyra_notification_decline">Decline</string>
     <string name="kaleyra_notification_hangup">Hang Up</string>
     <string name="kaleyra_notification_tap_to_return">Tap to return to the call</string>
-    <string name="kaleyra_notification_incoming_call">Incoming call</string>
-    <string name="kaleyra_notification_outgoing_call">Outgoing call</string>
     <string name="kaleyra_notification_ongoing_call">Ongoing call</string>
+    <string name="kaleyra_notification_channel_name">Calls</string>
+    <string name="kaleyra_notification_call_recorded">This call is being recorded</string>
 </resources>

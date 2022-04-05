@@ -348,7 +348,11 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
                 showOutgoingCallNotification(calleeDescription, isGroupCall)
             }
             .onCompletion {
-                showOnGoingCallNotification(calleeDescription, isGroupCall)
+                showOnGoingCallNotification(
+                    calleeDescription,
+                    isGroupCall,
+                    call.extras.recording is Call.Recording.OnConnect
+                )
             }
             .launchIn(lifecycleScope)
     }
@@ -389,7 +393,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             user = usersDescription,
             isGroupCall = isGroupCall,
             activityClazz = activityClazz!!,
-            isHighPriority,
+            isHighPriority = isHighPriority,
         )
         showNotification(notification, moveToForeground)
     }
@@ -403,10 +407,15 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         showNotification(notification, true)
     }
 
-    private fun showOnGoingCallNotification(usersDescription: String, isGroupCall: Boolean) {
+    private fun showOnGoingCallNotification(
+        usersDescription: String,
+        isGroupCall: Boolean,
+        isCallRecorded: Boolean
+    ) {
         val notification = NotificationHelper.buildOngoingCallNotification(
             user = usersDescription,
             isGroupCall = isGroupCall,
+            isCallRecorded = isCallRecorded,
             activityClazz = activityClazz!!
         )
         showNotification(notification, true)

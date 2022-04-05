@@ -67,17 +67,17 @@ internal object NotificationHelper {
             context.turnOnScreen()
 
         val ongoingCallText = context.resources.getString(R.string.kaleyra_notification_ongoing_call)
+        val tapToReturnText = context.getString(R.string.kaleyra_notification_tap_to_return)
         val builder = CallNotification
             .Builder(
                 context = context,
                 channelId = if (isHighPriority) NOTIFICATION_IMPORTANT_CHANNEL_ID else NOTIFICATION_DEFAULT_CHANNEL_ID,
-                channelName = context.getString(R.string.kaleyra_notification_incoming_call),
+                channelName = context.resources.getString(R.string.kaleyra_notification_channel_name),
                 type = CallNotification.Type.INCOMING
             )
             .user(if (isGroupCall) ongoingCallText else user)
-            .isGroupCall(isGroupCall)
             .importance(isHighPriority)
-            .contentText(context.getString(R.string.kaleyra_notification_incoming_call))
+            .contentText(tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
             .fullscreenIntent(fullScreenPendingIntent(context, activityClazz))
             .answerIntent(answerPendingIntent(context, activityClazz))
@@ -93,16 +93,16 @@ internal object NotificationHelper {
     ): Notification {
         val context = ContextRetainer.context
         val ongoingCallText = context.resources.getString(R.string.kaleyra_notification_ongoing_call)
+        val tapToReturnText = context.getString(R.string.kaleyra_notification_tap_to_return)
         val builder = CallNotification
             .Builder(
                 context = context,
                 channelId = NOTIFICATION_DEFAULT_CHANNEL_ID,
-                channelName = context.getString(R.string.kaleyra_notification_outgoing_call),
+                channelName = context.resources.getString(R.string.kaleyra_notification_channel_name),
                 type = CallNotification.Type.OUTGOING
             )
             .user(if (isGroupCall) ongoingCallText else user)
-            .isGroupCall(isGroupCall)
-            .contentText(context.getString(R.string.kaleyra_notification_outgoing_call))
+            .contentText(tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
 
@@ -112,20 +112,22 @@ internal object NotificationHelper {
     fun <T> buildOngoingCallNotification(
         user: String,
         isGroupCall: Boolean,
+        isCallRecorded: Boolean,
         activityClazz: Class<T>,
     ): Notification {
         val context = ContextRetainer.context
         val ongoingCallText = context.resources.getString(R.string.kaleyra_notification_ongoing_call)
+        val tapToReturnText = context.getString(R.string.kaleyra_notification_tap_to_return)
+        val recordingText = context.getString(R.string.kaleyra_notification_call_recorded)
         val builder = CallNotification
             .Builder(
                 context = context,
                 channelId = NOTIFICATION_DEFAULT_CHANNEL_ID,
-                channelName = context.getString(R.string.kaleyra_notification_tap_to_return),
+                channelName = context.resources.getString(R.string.kaleyra_notification_channel_name),
                 type = CallNotification.Type.ONGOING
             )
             .user(if (isGroupCall) ongoingCallText else user)
-            .isGroupCall(isGroupCall)
-            .contentText(context.getString(R.string.kaleyra_notification_tap_to_return))
+            .contentText(if (isCallRecorded) recordingText else tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
 
