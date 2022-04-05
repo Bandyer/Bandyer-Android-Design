@@ -20,14 +20,20 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.graphics.Point
+import android.hardware.display.DisplayManager
+import android.media.AudioManager
 import android.os.Build
+import android.os.PowerManager
 import android.util.DisplayMetrics
+import android.view.Display
 import android.view.View
 import android.view.WindowManager
 import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import java.util.*
+
 
 /**
  * Context extensions
@@ -127,4 +133,40 @@ object ContextExtensions {
         ta.recycle()
         return value
     }
+
+    /**
+     * Check if the screen is off
+     *
+     * @receiver Context
+     * @return True if the screen is off, false otherwise
+     */
+    internal fun Context.isScreenOff(): Boolean = (getSystemService(Context.DISPLAY_SERVICE) as DisplayManager).displays.all { it.state != Display.STATE_ON }
+
+    /**
+     * Turn on the screen, it is needed for the notifications on some devices
+     *
+     * @receiver Context
+     */
+    internal fun Context.turnOnScreen() {
+        if (!isScreenOff()) return
+        val pm =
+            applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
+        val wl = pm.newWakeLock(
+            PowerManager.SCREEN_DIM_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP,
+            javaClass.name
+        )
+        wl.acquire(3000)
+    }
+
+    /**
+     * Check if the device is in silent mode
+     *
+     * @receiver Context
+     * @return Boolean
+     */
+    internal fun Context.isSilent(): Boolean {
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager?
+        return audioManager?.ringerMode == AudioManager.RINGER_MODE_SILENT
+    }
 }
+

@@ -28,7 +28,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Inputs
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
@@ -36,6 +35,7 @@ import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
 import com.kaleyra.collaboration_suite_core_ui.UIProvider
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
+import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
@@ -125,7 +125,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(this)
 
-        NotificationHelper.cancelNotification(this, CALL_NOTIFICATION_ID)
+        clearNotification()
 
         currentCall?.end()
         phoneBox?.disconnect()
@@ -187,7 +187,10 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     override fun onAnswer() = currentCall?.connect() ?: Unit
 
-    override fun onHangup() = currentCall?.end() ?: Unit
+    override fun onHangup() {
+        currentCall?.end() ?: Unit
+        clearNotification()
+    }
 
     override fun onEnableCamera(enable: Boolean) {
         val video =
@@ -241,7 +244,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             setupCall(call)
 
             ongoingCall.emit(call)
-            if (isAppInForeground)
+            val participants = call.participants.value
+            if (isAppInForeground && (!this@CallService.isSilent() || participants.me == participants.creator()))
                 UIProvider.showCall(activityClazz!!)
         }.launchIn(lifecycleScope)
 
@@ -325,22 +329,31 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private suspend fun syncNotificationWithCallState(call: Call) {
         val participants = call.participants.value
-        val usersDescription = getUsersDescription(participants)
+        val callerDescription = usersDescription.name(listOf(participants.creator()?.userId ?: ""))
+        val calleeDescription = usersDescription.name(participants.others.map { it.userId })
+        val isGroupCall = participants.others.count() > 1
 
         if (participants.me != participants.creator())
             showIncomingCallNotification(
-                usersDescription,
+                callerDescription,
+                isGroupCall,
                 !isAppInForeground,
-                !isAppInForeground
+                isAppInForeground
             )
 
         call.state
             .takeWhile { it !is Call.State.Connected }
             .onEach {
                 if (it !is Call.State.Connecting || participants.me != participants.creator()) return@onEach
-                showOutgoingCallNotification(usersDescription)
+                showOutgoingCallNotification(calleeDescription, isGroupCall)
             }
-            .onCompletion { showOnGoingCallNotification(usersDescription) }
+            .onCompletion {
+                showOnGoingCallNotification(
+                    calleeDescription,
+                    isGroupCall,
+                    call.extras.recording is Call.Recording.OnConnect
+                )
+            }
             .launchIn(lifecycleScope)
     }
 
@@ -349,9 +362,13 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             .takeWhile { it !is Call.State.Disconnected.Ended }
             .onCompletion {
                 scopeToCancel.cancel()
-                stopForegroundLocal()
-                NotificationHelper.cancelNotification(applicationContext, CALL_NOTIFICATION_ID)
+                clearNotification()
             }.launchIn(lifecycleScope)
+    }
+
+    private fun clearNotification() {
+        stopForegroundLocal()
+        NotificationHelper.cancelNotification(CALL_NOTIFICATION_ID)
     }
 
     private fun startForegroundIfIncomingCall() =
@@ -359,52 +376,54 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             val participants = currentCall!!.participants.value
             if (currentCall!!.state.value !is Call.State.Disconnected || participants.me == participants.creator()) return@launch
             showIncomingCallNotification(
-                getUsersDescription(participants),
+                usersDescription.name(listOf(participants.creator()?.userId ?: "")),
+                participants.others.count() > 1,
                 isHighPriority = false,
                 moveToForeground = true
             )
         }
 
-    private suspend fun getUsersDescription(participants: CallParticipants): String {
-        val userIds = participants.others.map { it.userId }
-        return usersDescription.name(userIds)
-    }
-
     private fun showIncomingCallNotification(
         usersDescription: String,
+        isGroupCall: Boolean,
         isHighPriority: Boolean,
         moveToForeground: Boolean
     ) {
         val notification = NotificationHelper.buildIncomingCallNotification(
-            applicationContext,
-            usersDescription,
-            isHighPriority,
-            activityClazz!!
+            user = usersDescription,
+            isGroupCall = isGroupCall,
+            activityClazz = activityClazz!!,
+            isHighPriority = isHighPriority,
         )
         showNotification(notification, moveToForeground)
     }
 
-    private fun showOutgoingCallNotification(usersDescription: String) {
+    private fun showOutgoingCallNotification(usersDescription: String, isGroupCall: Boolean) {
         val notification = NotificationHelper.buildOutgoingCallNotification(
-            applicationContext,
-            usersDescription,
-            activityClazz!!
+            user = usersDescription,
+            isGroupCall = isGroupCall,
+            activityClazz = activityClazz!!
         )
         showNotification(notification, true)
     }
 
-    private fun showOnGoingCallNotification(usersDescription: String) {
+    private fun showOnGoingCallNotification(
+        usersDescription: String,
+        isGroupCall: Boolean,
+        isCallRecorded: Boolean
+    ) {
         val notification = NotificationHelper.buildOngoingCallNotification(
-            applicationContext,
-            usersDescription,
-            activityClazz!!
+            user = usersDescription,
+            isGroupCall = isGroupCall,
+            isCallRecorded = isCallRecorded,
+            activityClazz = activityClazz!!
         )
         showNotification(notification, true)
     }
 
     private fun showNotification(notification: Notification, moveToForeground: Boolean) {
         if (moveToForeground) startForegroundLocal(notification)
-        else NotificationHelper.notify(applicationContext, CALL_NOTIFICATION_ID, notification)
+        else NotificationHelper.notify(CALL_NOTIFICATION_ID, notification)
     }
 
     private fun startForegroundLocal(notification: Notification) =
