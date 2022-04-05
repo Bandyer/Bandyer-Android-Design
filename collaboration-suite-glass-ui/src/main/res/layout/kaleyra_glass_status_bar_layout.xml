@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,32 +16,30 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         style="?attr/kaleyra_rootLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="?attr/kaleyra_statusBarStyle"
-        android:animateLayoutChanges="true">
+        android:animateLayoutChanges="true"
+        android:theme="?attr/kaleyra_statusBarStyle">
 
-        <TextClock
-            android:id="@+id/kaleyra_time"
-            style="?android:attr/textViewStyle"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/kaleyra_rec"
+            style="?attr/kaleyra_recordingStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="@id/kaleyra_battery"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/kaleyra_battery"
-            tools:text="13:48" />
+            app:layout_constraintTop_toTopOf="@id/kaleyra_battery" />
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/kaleyra_rec"
+            android:id="@+id/kaleyra_timer"
+            style="?attr/kaleyra_timerStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?attr/kaleyra_recordingStyle"
             app:layout_constraintBottom_toBottomOf="@id/kaleyra_battery"
-            app:layout_constraintStart_toEndOf="@id/kaleyra_time"
+            app:layout_constraintStart_toEndOf="@id/kaleyra_rec"
             app:layout_constraintTop_toTopOf="@id/kaleyra_battery" />
 
         <com.google.android.material.textview.MaterialTextView
@@ -87,7 +84,18 @@
             android:id="@+id/kaleyra_battery"
             style="?attr/kaleyra_batteryStyle"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/kaleyra_time"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextClock
+            android:id="@+id/kaleyra_time"
+            style="?android:attr/textViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/kaleyra_battery"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/kaleyra_battery"
+            tools:text="13:48" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

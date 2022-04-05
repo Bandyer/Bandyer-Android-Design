@@ -92,6 +92,10 @@ internal class GlassViewModel(
 
     val volume: Volume get() = callController.onGetVolume()
 
+    val callDuration = call.flatMapLatest { it.extras.duration }
+
+    val callTimeToLive = call.flatMapLatest { it.constraints.timeToLive }
+
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = ConcurrentHashMap<String, CallParticipant>()

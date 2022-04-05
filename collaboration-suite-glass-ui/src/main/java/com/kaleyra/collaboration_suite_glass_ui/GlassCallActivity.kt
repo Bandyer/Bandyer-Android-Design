@@ -62,6 +62,7 @@ import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
@@ -305,6 +306,11 @@ internal class GlassCallActivity :
                 }.launchIn(this)
 
             viewModel.amIAlone
+                .takeWhile { it }
+                .onCompletion { binding.kaleyraStatusBar.showTimer() }
+                .launchIn(this@repeatOnStarted)
+
+            viewModel.amIAlone
                 .onEach {
                     with(binding.kaleyraToastContainer) {
                         if (it) show(
@@ -340,6 +346,10 @@ internal class GlassCallActivity :
                 .takeWhile { it.isAllowed || !it.neverAskAgain }
                 .onCompletion { binding.kaleyraStatusBar.showCamMutedIcon(true) }
                 .launchIn(lifecycleScope)
+
+            combine(viewModel.callTimeToLive, viewModel.callDuration) { ttl, duration ->
+                binding.kaleyraStatusBar.setTimer(ttl ?: duration)
+            }.launchIn(lifecycleScope)
 
             viewModel.onParticipantJoin
                 .onEach { part ->

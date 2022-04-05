@@ -21,6 +21,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassStatusBarLayoutBinding
 
 /**
@@ -89,7 +90,8 @@ internal class StatusBarView @JvmOverloads constructor(
         FULL
     }
 
-    private var binding: KaleyraGlassStatusBarLayoutBinding = KaleyraGlassStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    private var binding: KaleyraGlassStatusBarLayoutBinding =
+        KaleyraGlassStatusBarLayoutBinding.inflate(LayoutInflater.from(context), this, true)
 
     init {
         hideCamMutedIcon()
@@ -214,11 +216,40 @@ internal class StatusBarView @JvmOverloads constructor(
      * @param state WiFiSignalState
      */
     fun setWiFiSignalState(state: WiFiSignalState) {
-        binding.kaleyraWifiIcon.state = when(state) {
+        binding.kaleyraWifiIcon.state = when (state) {
             WiFiSignalState.DISABLED -> WifiImageView.State.DISABLED
-            WiFiSignalState.LOW      -> WifiImageView.State.LOW
+            WiFiSignalState.LOW -> WifiImageView.State.LOW
             WiFiSignalState.MODERATE -> WifiImageView.State.MODERATE
-            WiFiSignalState.FULL     -> WifiImageView.State.FULL
+            WiFiSignalState.FULL -> WifiImageView.State.FULL
         }
+    }
+
+    /**
+     * Set the timer text
+     *
+     * @param timestamp Timestamp expressed in seconds
+     */
+    fun setTimer(timestamp: Long) {
+        val hours = timestamp / 3600
+        val minutes = (timestamp / 60) % 60
+        val seconds = timestamp % 60
+        val text =
+            if (hours == 0L) String.format("%02d:%02d", seconds % 3600 / 60, seconds % 60)
+            else String.format("%02d:%02d:%02d", hours, minutes, seconds)
+        binding.kaleyraTimer.text = text
+    }
+
+    /**
+     * Show the timer text
+     */
+    fun showTimer() {
+        binding.kaleyraTimer.visibility = View.VISIBLE
+    }
+
+    /**
+     * Hide the timer text
+     */
+    fun hideTimer() {
+        binding.kaleyraTimer.visibility = View.GONE
     }
 }
