@@ -66,7 +66,7 @@ internal object NotificationHelper {
         if (isHighPriority && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
             context.turnOnScreen()
 
-        val ongoingCallText = context.resources.getString(R.string.kaleyra_notification_ongoing_call)
+        val incomingCallText = context.resources.getString(R.string.kaleyra_notification_incoming_call)
         val tapToReturnText = context.getString(R.string.kaleyra_notification_tap_to_return)
         val builder = CallNotification
             .Builder(
@@ -75,7 +75,7 @@ internal object NotificationHelper {
                 channelName = context.resources.getString(R.string.kaleyra_notification_channel_name),
                 type = CallNotification.Type.INCOMING
             )
-            .user(if (isGroupCall) ongoingCallText else user)
+            .user(if (isGroupCall) incomingCallText else user)
             .importance(isHighPriority)
             .contentText(tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
@@ -92,7 +92,7 @@ internal object NotificationHelper {
         activityClazz: Class<T>,
     ): Notification {
         val context = ContextRetainer.context
-        val ongoingCallText = context.resources.getString(R.string.kaleyra_notification_ongoing_call)
+        val outgoingCallText = context.resources.getString(R.string.kaleyra_notification_outgoing_call)
         val tapToReturnText = context.getString(R.string.kaleyra_notification_tap_to_return)
         val builder = CallNotification
             .Builder(
@@ -101,7 +101,7 @@ internal object NotificationHelper {
                 channelName = context.resources.getString(R.string.kaleyra_notification_channel_name),
                 type = CallNotification.Type.OUTGOING
             )
-            .user(if (isGroupCall) ongoingCallText else user)
+            .user(if (isGroupCall) outgoingCallText else user)
             .contentText(tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
