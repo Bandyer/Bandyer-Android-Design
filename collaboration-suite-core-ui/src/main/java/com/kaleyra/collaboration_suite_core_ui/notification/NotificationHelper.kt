@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_core_ui.utils
+package com.kaleyra.collaboration_suite_core_ui.notification
 
 import android.app.Notification
 import android.app.NotificationManager
@@ -25,10 +25,10 @@ import android.os.Build
 import androidx.core.app.NotificationManagerCompat
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.turnOnScreen
-import com.kaleyra.collaboration_suite_core_ui.notification.NotificationReceiver
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
+import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-// TODO change contentText for group calls
 internal object NotificationHelper {
 
     private const val NOTIFICATION_DEFAULT_CHANNEL_ID =
@@ -40,8 +40,6 @@ internal object NotificationHelper {
     private const val CONTENT_REQUEST_CODE = 456
     private const val ANSWER_REQUEST_CODE = 789
     private const val DECLINE_REQUEST_CODE = 987
-
-    private const val IMAGE_SIZE = 500
 
     fun notify(notificationId: Int, notification: Notification) {
         NotificationManagerCompat.from(ContextRetainer.context).notify(
