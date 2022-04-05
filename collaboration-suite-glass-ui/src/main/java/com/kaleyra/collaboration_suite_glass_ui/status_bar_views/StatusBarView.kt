@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
+import com.kaleyra.collaboration_suite_core_ui.utils.TimerParser
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassStatusBarLayoutBinding
 
 /**
@@ -230,13 +231,7 @@ internal class StatusBarView @JvmOverloads constructor(
      * @param timestamp Timestamp expressed in seconds
      */
     fun setTimer(timestamp: Long) {
-        val hours = timestamp / 3600
-        val minutes = (timestamp / 60) % 60
-        val seconds = timestamp % 60
-        val text =
-            if (hours == 0L) String.format("%02d:%02d", seconds % 3600 / 60, seconds % 60)
-            else String.format("%02d:%02d:%02d", hours, minutes, seconds)
-        binding.kaleyraTimer.text = text
+        binding.kaleyraTimer.text = TimerParser.parseTimestamp(timestamp)
     }
 
     /**
