@@ -245,7 +245,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             setupCall(call)
 
             ongoingCall.emit(call)
-            if (isAppInForeground && !this@CallService.isSilent())
+            val participants = call.participants.value
+            if (isAppInForeground && (!this@CallService.isSilent() || participants.me == participants.creator()))
                 UIProvider.showCall(activityClazz!!)
         }.launchIn(lifecycleScope)
 
