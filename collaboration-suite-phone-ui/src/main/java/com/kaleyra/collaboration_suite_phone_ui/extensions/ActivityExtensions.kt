@@ -22,7 +22,7 @@ import android.graphics.PointF
 import android.graphics.Rect
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getScreenSize
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
 
 /**
  * Method to check if device is in Landscape or not

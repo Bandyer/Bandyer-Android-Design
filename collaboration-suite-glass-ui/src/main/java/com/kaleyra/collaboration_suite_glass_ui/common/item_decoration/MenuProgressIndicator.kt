@@ -25,9 +25,9 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite_core_ui.extensions.ColorIntExtensions.darkenColor
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.dp2px
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.isRTL
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ColorIntExtensions.darkenColor
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.dp2px
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isRTL
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.google.android.material.color.MaterialColors
 import java.lang.ref.WeakReference

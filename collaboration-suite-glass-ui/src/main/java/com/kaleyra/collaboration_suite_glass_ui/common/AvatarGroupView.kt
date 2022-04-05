@@ -22,7 +22,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.dp2px
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.dp2px
 
 /**
  * A view aggregator of [AvatarView]

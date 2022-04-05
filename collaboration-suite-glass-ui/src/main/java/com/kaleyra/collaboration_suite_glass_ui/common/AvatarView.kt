@@ -24,7 +24,7 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
-import com.kaleyra.collaboration_suite_core_ui.extensions.ColorIntExtensions.requiresLightColor
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ColorIntExtensions.requiresLightColor
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassContactAvatarLayoutBinding
 import com.squareup.picasso.Picasso
 import java.util.*

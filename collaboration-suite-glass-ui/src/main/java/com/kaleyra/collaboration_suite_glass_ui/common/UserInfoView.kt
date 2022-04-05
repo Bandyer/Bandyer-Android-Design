@@ -23,7 +23,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
-import com.kaleyra.collaboration_suite_core_ui.extensions.StringExtensions.parseToColor
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassUserInfoLayoutBinding
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.UserState
 

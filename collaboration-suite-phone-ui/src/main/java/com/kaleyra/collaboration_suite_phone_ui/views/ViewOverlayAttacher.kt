@@ -24,7 +24,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getScreenSize
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
 import com.kaleyra.collaboration_suite_phone_ui.R
 import java.lang.Integer.max
 

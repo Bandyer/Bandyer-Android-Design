@@ -21,10 +21,10 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.util.AttributeSet
 import android.widget.FrameLayout
-import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setPaddingEnd
-import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setPaddingLeft
-import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setPaddingRight
-import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setPaddingStart
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingEnd
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingLeft
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingRight
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingStart
 import com.kaleyra.collaboration_suite_phone_ui.extensions.*
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener

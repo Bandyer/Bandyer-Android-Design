@@ -34,7 +34,7 @@ import androidx.annotation.IntRange
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.children
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.dp2px
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.dp2px
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.extensions.FloatExtensions.floor
 import com.kaleyra.collaboration_suite_phone_ui.extensions.FloatExtensions.round

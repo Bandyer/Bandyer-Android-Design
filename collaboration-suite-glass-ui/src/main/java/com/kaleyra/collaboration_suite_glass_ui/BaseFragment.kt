@@ -24,7 +24,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceActivity
-import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setAlphaWithAnimation
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setAlphaWithAnimation
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.chat.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltFragment

@@ -19,7 +19,7 @@ package com.kaleyra.demo_collaboration_suite_ui
 import android.graphics.Rect
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.dp2px
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.dp2px
 
 internal class ChatRecyclerViewItemDecorator : RecyclerView.ItemDecoration() {
 

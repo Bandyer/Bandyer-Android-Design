@@ -23,7 +23,7 @@ import android.view.LayoutInflater
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraWidgetCallUserInfoBinding
 import com.kaleyra.collaboration_suite_phone_ui.extensions.scanForFragmentActivity
-import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setPaddingTop
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingTop
 import com.kaleyra.collaboration_suite_phone_ui.layout.SystemControlsAwareHorizontalConstraintLayout
 import com.kaleyra.collaboration_suite_phone_ui.utils.ToggleableVisibilityInterface
 import com.kaleyra.collaboration_suite_phone_ui.utils.VisibilityToggle

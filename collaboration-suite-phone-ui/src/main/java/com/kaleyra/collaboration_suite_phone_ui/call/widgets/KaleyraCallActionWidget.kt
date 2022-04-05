@@ -27,7 +27,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.RecyclerView
 
 import com.badoo.mobile.util.WeakHandler
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getScreenSize
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.KaleyraActionBottomSheet
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.KaleyraBottomSheet

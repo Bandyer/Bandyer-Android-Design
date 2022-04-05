@@ -35,11 +35,11 @@ import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
 import com.kaleyra.collaboration_suite_core_ui.UIProvider
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.isSilent
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
-import com.kaleyra.collaboration_suite_core_ui.utils.NotificationHelper
+import com.kaleyra.collaboration_suite_core_ui.notification.NotificationHelper
 import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver

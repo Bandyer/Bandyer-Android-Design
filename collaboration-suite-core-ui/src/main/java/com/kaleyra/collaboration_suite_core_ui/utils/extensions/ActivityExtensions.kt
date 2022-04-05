@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_core_ui.extensions
+package com.kaleyra.collaboration_suite_core_ui.utils.extensions
 
 import android.annotation.SuppressLint
 import android.app.Activity

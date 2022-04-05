@@ -27,10 +27,10 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 
 
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getActivity
-import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setPaddingLeft
-import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setPaddingRight
-import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setPaddingTop
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getActivity
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingLeft
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingRight
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingTop
 import com.kaleyra.collaboration_suite_core_ui.layout.KaleyraCallWatermarkLayout
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraWidgetCallInfoBinding

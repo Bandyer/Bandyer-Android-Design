@@ -28,9 +28,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.DialogFragment
 
-import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setPaddingLeft
-import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setPaddingRight
-import com.kaleyra.collaboration_suite_core_ui.extensions.ViewExtensions.setPaddingTop
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingLeft
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingRight
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingTop
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.KaleyraBottomSheetDialog
 import com.kaleyra.collaboration_suite_phone_ui.dialogs.KaleyraDialog

@@ -26,8 +26,8 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.dp2px
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getScreenSize
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.dp2px
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.extensions.scanForFragmentActivity
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver

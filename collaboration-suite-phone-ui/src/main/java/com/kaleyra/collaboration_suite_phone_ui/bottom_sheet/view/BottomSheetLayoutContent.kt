@@ -24,7 +24,7 @@ import android.view.View
 import android.view.View.OnFocusChangeListener
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getActivity
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getActivity
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.buttons.KaleyraLineButton
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraBottomSheetWidgetLayoutBinding

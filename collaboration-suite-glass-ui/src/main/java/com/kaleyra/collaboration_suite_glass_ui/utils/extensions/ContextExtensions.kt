@@ -21,7 +21,7 @@ import android.content.res.Resources
 import android.util.TypedValue
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleableRes
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getThemeAttribute
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.R
 
 /**

@@ -29,8 +29,8 @@ import androidx.annotation.StyleableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getActivity
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getThemeAttribute
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getActivity
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getThemeAttribute
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.google.android.material.textview.MaterialTextView
 import kotlin.math.min

@@ -17,7 +17,7 @@
 package com.kaleyra.collaboration_suite_glass_ui.chat
 
 import android.view.View
-import com.kaleyra.collaboration_suite_core_ui.extensions.StringExtensions.parseToColor
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatMessageItemLayoutBinding
 import com.mikepenz.fastadapter.FastAdapter

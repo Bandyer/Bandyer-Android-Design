@@ -17,7 +17,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.adapter_items.message.text
 
 import android.view.View
-import com.kaleyra.collaboration_suite_core_ui.extensions.ContextExtensions.getScreenSize
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
 import com.kaleyra.collaboration_suite_phone_ui.chat.adapter_items.message.abstract_message.KaleyraBaseChatMessageViewHolder
 import com.kaleyra.collaboration_suite_phone_ui.chat.layout.KaleyraChatTextMessageLayout
 
