@@ -21,7 +21,6 @@ import android.app.Activity
 import android.app.Application
 import android.app.Notification
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -387,9 +386,9 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         moveToForeground: Boolean
     ) {
         val notification = NotificationHelper.buildIncomingCallNotification(
-            usersDescription,
-            isGroupCall,
-            activityClazz!!,
+            user = usersDescription,
+            isGroupCall = isGroupCall,
+            activityClazz = activityClazz!!,
             isHighPriority,
         )
         showNotification(notification, moveToForeground)
@@ -397,18 +396,18 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private fun showOutgoingCallNotification(usersDescription: String, isGroupCall: Boolean) {
         val notification = NotificationHelper.buildOutgoingCallNotification(
-            usersDescription,
-            isGroupCall,
-            activityClazz!!
+            user = usersDescription,
+            isGroupCall = isGroupCall,
+            activityClazz = activityClazz!!
         )
         showNotification(notification, true)
     }
 
     private fun showOnGoingCallNotification(usersDescription: String, isGroupCall: Boolean) {
         val notification = NotificationHelper.buildOngoingCallNotification(
-            usersDescription,
-            isGroupCall,
-            activityClazz!!
+            user = usersDescription,
+            isGroupCall = isGroupCall,
+            activityClazz = activityClazz!!
         )
         showNotification(notification, true)
     }

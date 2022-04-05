@@ -56,7 +56,7 @@ internal object NotificationHelper {
     }
 
     fun <T> buildIncomingCallNotification(
-        caller: String,
+        user: String,
         isGroupCall: Boolean,
         activityClazz: Class<T>,
         isHighPriority: Boolean
@@ -74,7 +74,7 @@ internal object NotificationHelper {
                 channelName = context.getString(R.string.kaleyra_notification_incoming_call),
                 type = CallNotification.Type.INCOMING
             )
-            .user(if (isGroupCall) ongoingCallText else caller)
+            .user(if (isGroupCall) ongoingCallText else user)
             .isGroupCall(isGroupCall)
             .importance(isHighPriority)
             .contentText(context.getString(R.string.kaleyra_notification_incoming_call))
@@ -87,7 +87,7 @@ internal object NotificationHelper {
     }
 
     fun <T> buildOutgoingCallNotification(
-        caller: String,
+        user: String,
         isGroupCall: Boolean,
         activityClazz: Class<T>,
     ): Notification {
@@ -100,7 +100,7 @@ internal object NotificationHelper {
                 channelName = context.getString(R.string.kaleyra_notification_outgoing_call),
                 type = CallNotification.Type.OUTGOING
             )
-            .user(if (isGroupCall) ongoingCallText else caller)
+            .user(if (isGroupCall) ongoingCallText else user)
             .isGroupCall(isGroupCall)
             .contentText(context.getString(R.string.kaleyra_notification_outgoing_call))
             .contentIntent(contentPendingIntent(context, activityClazz))
@@ -110,7 +110,7 @@ internal object NotificationHelper {
     }
 
     fun <T> buildOngoingCallNotification(
-        caller: String,
+        user: String,
         isGroupCall: Boolean,
         activityClazz: Class<T>,
     ): Notification {
@@ -123,7 +123,7 @@ internal object NotificationHelper {
                 channelName = context.getString(R.string.kaleyra_notification_tap_to_return),
                 type = CallNotification.Type.ONGOING
             )
-            .user(if (isGroupCall) ongoingCallText else caller)
+            .user(if (isGroupCall) ongoingCallText else user)
             .isGroupCall(isGroupCall)
             .contentText(context.getString(R.string.kaleyra_notification_tap_to_return))
             .contentIntent(contentPendingIntent(context, activityClazz))
