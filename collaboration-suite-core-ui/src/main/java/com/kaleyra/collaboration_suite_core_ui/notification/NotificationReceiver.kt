@@ -21,13 +21,19 @@ import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.call.CallService
 
+/**
+ * The notification broadcast receiver, it handles the answer and hang up events
+ */
 internal class NotificationReceiver: BroadcastReceiver() {
 
     companion object {
-        const val ACTION_ANSWER = "com.kaleyra.collaboration_suite_glass_ui.ANSWER"
-        const val ACTION_HANGUP = "com.kaleyra.collaboration_suite_glass_ui.HANGUP"
+        const val ACTION_ANSWER = "com.kaleyra.collaboration_suite_core_ui.ANSWER"
+        const val ACTION_HANGUP = "com.kaleyra.collaboration_suite_core_ui.HANGUP"
     }
 
+    /**
+     * @suppress
+     */
     override fun onReceive(context: Context?, intent: Intent?) {
         intent ?: return
 
