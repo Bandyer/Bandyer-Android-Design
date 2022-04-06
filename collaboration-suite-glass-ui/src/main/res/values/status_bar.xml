@@ -80,10 +80,12 @@
 
     <style name="KaleyraCollaborationSuiteUI.GlassStatusBarIcon.Activable.Camera" parent="KaleyraCollaborationSuiteUI.RoundedImageGlass.ActivableStatusBarIcon">
         <item name="srcCompat">@drawable/ic_kaleyra_glass_cam_off</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.GlassStatusBarIcon.Activable.Mic" parent="KaleyraCollaborationSuiteUI.RoundedImageGlass.ActivableStatusBarIcon">
         <item name="srcCompat">@drawable/ic_kaleyra_glass_mic_off</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.RoundedImageGlass.ActivableStatusBarIcon" parent="KaleyraCollaborationSuiteUI.RoundedImageGlass">
