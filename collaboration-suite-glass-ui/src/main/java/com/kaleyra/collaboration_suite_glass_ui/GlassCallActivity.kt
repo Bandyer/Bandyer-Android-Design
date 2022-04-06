@@ -65,6 +65,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -351,6 +352,21 @@ internal class GlassCallActivity :
             combine(viewModel.callTimeToLive, viewModel.callDuration) { ttl, duration ->
                 binding.kaleyraStatusBar.setTimer(ttl ?: duration)
             }.launchIn(this)
+
+            viewModel.callTimeToLive
+                .filter { it != null }
+                .onEach {
+                    val minutes = (it!! / 60).toInt()
+                    if (it % 60 != 0L || !ttlWarningThresholds.contains(minutes)) return@onEach
+
+                    val text = resources.getQuantityString(
+                        R.plurals.kaleyra_glass_ttl_expiration_pattern,
+                        minutes,
+                        minutes
+                    )
+                    binding.kaleyraToastContainer.show(TTL_TOAST_ID, text)
+                }
+                .launchIn(this)
 
             viewModel.onParticipantJoin
                 .onEach { part ->
@@ -673,6 +689,8 @@ internal class GlassCallActivity :
         const val BLOCKED_TOAST_ID = "blocked-input"
         const val DISABLED_TOAST_ID = "disabled-input"
         const val ALONE_TOAST_ID = "alone-in-call"
+        const val TTL_TOAST_ID = "time-to-live-call"
+        val ttlWarningThresholds = setOf(5, 2, 1) // minutes
         val fragmentsWithDimmedStatusBar = setOf(
             R.id.dialingFragment,
             R.id.ringingFragment,

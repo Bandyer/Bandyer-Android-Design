@@ -95,4 +95,9 @@
         <item quantity="other">%d participants</item>
     </plurals>
 
+    <plurals name="kaleyra_glass_ttl_expiration_pattern">
+        <item quantity="one">%d minute left to the end of the call</item>
+        <item quantity="other">%d minutes left to the end of the call</item>
+    </plurals>
+
 </resources>

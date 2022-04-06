@@ -91,4 +91,9 @@
         <item quantity="other">%d partecipanti</item>
     </plurals>
 
+    <plurals name="kaleyra_glass_ttl_expiration_pattern">
+        <item quantity="one">Manca %d minuto al termine della chiamata</item>
+        <item quantity="other">Mancano %d minuti al termine della chiamata</item>
+    </plurals>
+
 </resources>
