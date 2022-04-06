@@ -21,9 +21,10 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_core_ui.utils.TimerParser
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.blink
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassStatusBarLayoutBinding
+
 
 /**
  * A custom state bar view
@@ -246,5 +247,18 @@ internal class StatusBarView @JvmOverloads constructor(
      */
     fun hideTimer() {
         binding.kaleyraTimer.visibility = View.GONE
+    }
+
+    /**
+     * Blink the timer a certain amount of times
+     *
+     * @param repeatCount The number of times to blink the timer. If set to -1, the timer blinks indefinitely
+     */
+    fun blinkTimer(repeatCount: Int) {
+        binding.kaleyraTimer.blink(BLINK_DURATION, repeatCount)
+    }
+
+    private companion object {
+        const val BLINK_DURATION = 500L // millis
     }
 }

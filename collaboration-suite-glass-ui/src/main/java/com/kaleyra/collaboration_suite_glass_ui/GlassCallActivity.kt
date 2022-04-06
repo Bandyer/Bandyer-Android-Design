@@ -357,16 +357,19 @@ internal class GlassCallActivity :
                 .filter { it != null }
                 .onEach {
                     val minutes = (it!! / 60).toInt()
-                    if (it % 60 != 0L || !ttlWarningThresholds.contains(minutes)) return@onEach
-
-                    val text = resources.getQuantityString(
-                        R.plurals.kaleyra_glass_ttl_expiration_pattern,
-                        minutes,
-                        minutes
-                    )
-                    binding.kaleyraToastContainer.show(TTL_TOAST_ID, text)
-                }
-                .launchIn(this)
+                    when {
+                        it == TIMER_BLINK_FOREVER_TH -> binding.kaleyraStatusBar.blinkTimer(-1)
+                        it % 60 == 0L && ttlWarningThresholds.contains(minutes) -> {
+                            val text = resources.getQuantityString(
+                                R.plurals.kaleyra_glass_ttl_expiration_pattern,
+                                minutes,
+                                minutes
+                            )
+                            binding.kaleyraToastContainer.show(TTL_TOAST_ID, text)
+                            binding.kaleyraStatusBar.blinkTimer(TIMER_BLINK_COUNT)
+                        }
+                    }
+                }.launchIn(this)
 
             viewModel.onParticipantJoin
                 .onEach { part ->
@@ -690,6 +693,8 @@ internal class GlassCallActivity :
         const val DISABLED_TOAST_ID = "disabled-input"
         const val ALONE_TOAST_ID = "alone-in-call"
         const val TTL_TOAST_ID = "time-to-live-call"
+        const val TIMER_BLINK_COUNT = 3
+        const val TIMER_BLINK_FOREVER_TH = 30L // seconds
         val ttlWarningThresholds = setOf(5, 2, 1) // minutes
         val fragmentsWithDimmedStatusBar = setOf(
             R.id.dialingFragment,

@@ -20,6 +20,8 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.os.Build
 import android.view.View
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
 import androidx.annotation.Px
@@ -145,4 +147,20 @@ object ViewExtensions {
             .also {
                 it.duration = duration
             }.start()
+
+    /**
+     * Apply a blink animation the the view
+     *
+     * @receiver View
+     * @param duration The duration of the animation
+     * @param repeatCount The number of times to blink the view. If set to -1, the view blinks indefinitely
+     */
+    fun View.blink(duration: Long, repeatCount: Int) {
+        val anim = AlphaAnimation(1.0f, 0.0f)
+        anim.duration = duration
+        anim.repeatMode = Animation.REVERSE
+        anim.repeatCount = repeatCount
+        startAnimation(anim)
+    }
+
 }
