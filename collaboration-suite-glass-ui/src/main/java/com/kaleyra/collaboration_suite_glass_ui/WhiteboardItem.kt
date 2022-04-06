@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_glass_ui
 
+import android.annotation.SuppressLint
 import android.view.View
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassWhiteboardItemLayoutBinding
@@ -28,8 +29,11 @@ class WhiteboardItem(val whiteboard: Whiteboard) : AbstractItem<WhiteboardItem.V
         /**
          * Binds the data of this item onto the viewHolder
          */
+        @SuppressLint("ClickableViewAccessibility")
         override fun bindView(item: WhiteboardItem, payloads: List<Any>) {
-            item.whiteboard.view.value = binding.kaleyraWhiteboard
+            item.whiteboard.view.value = binding.kaleyraWhiteboard.also {
+                it.setOnTouchListener { _, _ -> true }
+            }
         }
 
         /**
