@@ -147,7 +147,7 @@ internal class GlassCallActivity :
             setHasFixedSize(true)
         }
 
-        enableImmersiveMode()
+//        enableImmersiveMode()
         turnScreenOn()
     }
 
@@ -448,9 +448,14 @@ internal class GlassCallActivity :
                 viewModel.callState
                     .takeWhile { it !is Call.State.Connected }
                     .onCompletion {
+                        wb.load()
                         whiteboardItemAdapter!!.clear()
                         whiteboardItemAdapter!!.add(WhiteboardItem(wb))
                     }.launchIn(this)
+                viewModel.callState
+                    .takeWhile { it !is Call.State.Disconnected.Ended }
+                    .onCompletion { wb.unload() }
+                    .launchIn(this)
             }.launchIn(this)
         }
 

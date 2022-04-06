@@ -30,7 +30,6 @@ class WhiteboardItem(val whiteboard: Whiteboard) : AbstractItem<WhiteboardItem.V
          */
         override fun bindView(item: WhiteboardItem, payloads: List<Any>) {
             item.whiteboard.view.value = binding.kaleyraWhiteboard
-            item.whiteboard.load()
         }
 
         /**
@@ -39,7 +38,6 @@ class WhiteboardItem(val whiteboard: Whiteboard) : AbstractItem<WhiteboardItem.V
         override fun unbindView(item: WhiteboardItem) {
             binding.unbind()
             item.whiteboard.view.value = null
-            item.whiteboard.unload()
         }
     }
 }
