@@ -21,7 +21,8 @@
     <string name="kaleyra_notification_answer">Rispondi</string>
     <string name="kaleyra_notification_decline">Rifiuta</string>
     <string name="kaleyra_notification_hangup">Termina</string>
-    <string name="kaleyra_notification_channel_name">Chiamate</string>
+    <string name="kaleyra_notification_channel_high_priority_name">Chiamate Alta Priorità</string>
+    <string name="kaleyra_notification_channel_low_priority_name">Chiamate Bassa Priorità</string>
     <string name="kaleyra_notification_incoming_call">Chiamata in ingresso</string>
     <string name="kaleyra_notification_outgoing_call">Chiamata in uscita</string>
     <string name="kaleyra_notification_ongoing_call">Chiamata in corso</string>
