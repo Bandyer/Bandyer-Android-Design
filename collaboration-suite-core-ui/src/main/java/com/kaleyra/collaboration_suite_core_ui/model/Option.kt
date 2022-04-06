@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.model
+package com.kaleyra.collaboration_suite_core_ui.model
 
 import android.os.Parcelable
 import androidx.annotation.Keep
@@ -27,9 +27,12 @@ import kotlinx.parcelize.Parcelize
 sealed class Option : Parcelable {
 
     companion object {
-        val all = listOf(CHAT)
+        val all = setOf(WHITEBOARD, CHAT)
     }
 
     @Parcelize
     object CHAT: Option()
+
+    @Parcelize
+    object WHITEBOARD: Option()
 }

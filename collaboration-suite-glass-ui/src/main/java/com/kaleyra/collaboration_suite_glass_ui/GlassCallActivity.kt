@@ -42,6 +42,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
+import com.kaleyra.collaboration_suite_core_ui.model.Option
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_glass_ui.call.CallEndedFragmentArgs
@@ -159,7 +160,7 @@ internal class GlassCallActivity :
     override fun onServiceBound(service: CallService) {
         this.service = service
 
-        if (intent.extras?.get("autoAnswer") == true)
+        if (intent.extras?.getBoolean("autoAnswer") == true)
             viewModel.onAnswer()
 
         val preferredType = viewModel.call.replayCache.last().extras.preferredType
@@ -444,19 +445,22 @@ internal class GlassCallActivity :
                     )
                 }.launchIn(this)
 
-            viewModel.whiteboard.onEach { wb ->
-                viewModel.callState
-                    .takeWhile { it !is Call.State.Connected }
-                    .onCompletion {
-                        wb.load()
-                        whiteboardItemAdapter!!.clear()
-                        whiteboardItemAdapter!!.add(WhiteboardItem(wb))
-                    }.launchIn(this)
-                viewModel.callState
-                    .takeWhile { it !is Call.State.Disconnected.Ended }
-                    .onCompletion { wb.unload() }
-                    .launchIn(this)
-            }.launchIn(this)
+            val options = intent.extras?.getParcelableArray("options")
+            if (options?.contains(Option.WHITEBOARD) == true) {
+                viewModel.whiteboard.onEach { wb ->
+                    viewModel.callState
+                        .takeWhile { it !is Call.State.Connected }
+                        .onCompletion {
+                            wb.load()
+                            whiteboardItemAdapter!!.clear()
+                            whiteboardItemAdapter!!.add(WhiteboardItem(wb))
+                        }.launchIn(this)
+                    viewModel.callState
+                        .takeWhile { it !is Call.State.Disconnected.Ended }
+                        .onCompletion { wb.unload() }
+                        .launchIn(this)
+                }.launchIn(this)
+            }
         }
 
         if (wasPausedForBackground) {
