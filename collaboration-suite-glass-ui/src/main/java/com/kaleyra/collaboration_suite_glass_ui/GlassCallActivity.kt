@@ -339,15 +339,15 @@ internal class GlassCallActivity :
                 }
             }.launchIn(this)
 
-            viewModel.micPermission
-                .takeWhile { it.isAllowed || !it.neverAskAgain }
-                .onCompletion { binding.kaleyraStatusBar.showMicMutedIcon(true) }
-                .launchIn(this)
+            combine(viewModel.micPermission, viewModel.callState) { permission, state ->
+                if (state != Call.State.Connected || permission.isAllowed || !permission.neverAskAgain) return@combine
+                binding.kaleyraStatusBar.showMicMutedIcon(true)
+            }.launchIn(this)
 
-            viewModel.camPermission
-                .takeWhile { it.isAllowed || !it.neverAskAgain }
-                .onCompletion { binding.kaleyraStatusBar.showCamMutedIcon(true) }
-                .launchIn(this)
+            combine(viewModel.camPermission, viewModel.callState) { permission, state ->
+                if (state != Call.State.Connected || permission.isAllowed || !permission.neverAskAgain) return@combine
+                binding.kaleyraStatusBar.showCamMutedIcon(true)
+            }.launchIn(this)
 
             combine(viewModel.callTimeToLive, viewModel.callDuration) { ttl, duration ->
                 binding.kaleyraStatusBar.setTimer(ttl ?: duration)
