@@ -42,13 +42,14 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
     companion object Items {
         /**
          * Get all actions for an audio&Video call
-         * @param withChat True if by default the chat should be shown, false otherwise
+         * @param withCamera True to add the camera action, false otherwise
+         * @param withChat True to add the chat action, false otherwise
          * @return List<CallAction>
          */
-        fun getActions(ctx: Context, withChat: Boolean): List<CallAction> {
+        fun getActions(ctx: Context, withCamera: Boolean, withChat: Boolean): List<CallAction> {
             return mutableListOf<CallAction>().apply {
                 add(MICROPHONE(ctx))
-                add(CAMERA(ctx))
+                if(withCamera) add(CAMERA(ctx))
                 add(VOLUME())
                 // TODO de-comment this when zoom will be implemented
 //                add(ZOOM())
