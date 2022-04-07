@@ -202,7 +202,7 @@ internal class GlassViewModel(
         }
 
     val cameraEnabled: StateFlow<Boolean> =
-        MutableStateFlow(true).apply {
+        MutableStateFlow(false).apply {
             cameraStream
                 .filter { it != null }
                 .flatMapLatest { it!!.video }
@@ -213,7 +213,7 @@ internal class GlassViewModel(
         }
 
     val micEnabled: StateFlow<Boolean> =
-        MutableStateFlow(true).apply {
+        MutableStateFlow(false).apply {
             audioStream
                 .filter { it != null }
                 .flatMapLatest { it!!.audio }

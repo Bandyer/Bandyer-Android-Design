@@ -325,19 +325,19 @@ internal class GlassCallActivity :
                     }
                 }.launchIn(this)
 
-            viewModel.cameraEnabled
-                .onEach {
-                    with(binding.kaleyraStatusBar) {
-                        if (it) hideCamMutedIcon() else showCamMutedIcon()
-                    }
-                }.launchIn(this)
+            combine(viewModel.cameraEnabled, viewModel.callState) { enabled, state ->
+                if (state != Call.State.Connected) return@combine
+                with(binding.kaleyraStatusBar) {
+                    if (enabled) hideCamMutedIcon() else showCamMutedIcon()
+                }
+            }.launchIn(this)
 
-            viewModel.micEnabled
-                .onEach {
-                    with(binding.kaleyraStatusBar) {
-                        if (it) hideMicMutedIcon() else showMicMutedIcon()
-                    }
-                }.launchIn(this)
+            combine(viewModel.micEnabled, viewModel.callState) { enabled, state ->
+                if (state != Call.State.Connected) return@combine
+                with(binding.kaleyraStatusBar) {
+                    if (enabled) hideMicMutedIcon() else showMicMutedIcon()
+                }
+            }.launchIn(this)
 
             viewModel.micPermission
                 .takeWhile { it.isAllowed || !it.neverAskAgain }
@@ -444,11 +444,14 @@ internal class GlassCallActivity :
 
             viewModel.removedStreams
                 .onEach { streamId ->
-                    val item = streamsItemAdapter!!.adapterItems.firstOrNull { it.streamParticipant.stream.id == streamId } ?: return@onEach
-                    livePointers.filterValues { it.second == item.identifier }.keys.firstOrNull()?.also {
-                        binding.kaleyraOuterPointers.removeView(it)
-                        livePointers.remove(it)
-                    }
+                    val item =
+                        streamsItemAdapter!!.adapterItems.firstOrNull { it.streamParticipant.stream.id == streamId }
+                            ?: return@onEach
+                    livePointers.filterValues { it.second == item.identifier }.keys.firstOrNull()
+                        ?.also {
+                            binding.kaleyraOuterPointers.removeView(it)
+                            livePointers.remove(it)
+                        }
                 }.launchIn(this)
 
             viewModel.livePointerEvents
@@ -526,7 +529,9 @@ internal class GlassCallActivity :
         }
 
         val currentItemId = fastAdapter!!.getItem(currentStreamItemIndex)?.identifier ?: return
-        val itemId = streamsItemAdapter!!.adapterItems.firstOrNull { it.streamParticipant.stream.id == streamId }?.identifier ?: return
+        val itemId =
+            streamsItemAdapter!!.adapterItems.firstOrNull { it.streamParticipant.stream.id == streamId }?.identifier
+                ?: return
         val livePointerView =
             livePointer ?: LivePointerView(
                 ContextThemeWrapper(
