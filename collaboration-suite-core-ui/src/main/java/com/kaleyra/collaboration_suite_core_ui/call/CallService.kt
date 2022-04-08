@@ -35,7 +35,6 @@ import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
 import com.kaleyra.collaboration_suite_core_ui.UIProvider
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
-import com.kaleyra.collaboration_suite_core_ui.model.Option
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
@@ -336,23 +335,23 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
         if (participants.me != participants.creator())
             showIncomingCallNotification(
-                callerDescription,
-                isGroupCall,
-                !isAppInForeground,
-                isAppInForeground
+                usersDescription = callerDescription,
+                isGroupCall = isGroupCall,
+                isHighPriority = !isAppInForeground || this@CallService.isSilent(),
+                moveToForeground = isAppInForeground
             )
 
         call.state
             .takeWhile { it !is Call.State.Connected }
             .onEach {
                 if (it !is Call.State.Connecting || participants.me != participants.creator()) return@onEach
-                showOutgoingCallNotification(calleeDescription, isGroupCall)
+                showOutgoingCallNotification(usersDescription = calleeDescription, isGroupCall = isGroupCall)
             }
             .onCompletion {
                 showOnGoingCallNotification(
-                    calleeDescription,
-                    isGroupCall,
-                    call.extras.recording is Call.Recording.OnConnect
+                    usersDescription = calleeDescription,
+                    isGroupCall = isGroupCall,
+                    isCallRecorded = call.extras.recording is Call.Recording.OnConnect
                 )
             }
             .launchIn(lifecycleScope)
