@@ -40,6 +40,7 @@ ext {
     def espressoVersion = "3.4.0"
     def mockkVersion = "1.12.0"
     def mockitoVersion = "2.28.2"
+    def flowTestVersion = "1.5.1"
 
     // Dependencies
     classPaths = [
@@ -106,7 +107,9 @@ ext {
             runner: "androidx.test:runner:$testRunnerVersion",
             espresso: "androidx.test.espresso:espresso-core:$espressoVersion",
             mockk: "io.mockk:mockk:$mockkVersion",
-            mockito: "org.mockito:mockito-android:$mockitoVersion"
+            mockito: "org.mockito:mockito-android:$mockitoVersion",
+            coroutines: "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion",
+            flow: "com.github.ologe:flow-test-observer:$flowTestVersion"
     ]
 }
 

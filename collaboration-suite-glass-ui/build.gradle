@@ -32,6 +32,10 @@ dependencies {
     coreLibraryDesugaring androidX.desugar
 
     testImplementation test.jUnit
+    testImplementation test.coroutines
+    testImplementation kaleyra.collaboration
+    testImplementation test.mockk
+    testImplementation test.flow
     androidTestImplementation test.espresso
 
     // Platform
