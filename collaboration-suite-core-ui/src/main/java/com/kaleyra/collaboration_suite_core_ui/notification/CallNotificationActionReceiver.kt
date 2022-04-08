@@ -19,17 +19,38 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import com.kaleyra.collaboration_suite_core_ui.call.CallService
 
 /**
  * The call notification broadcast receiver, it handles the answer and hang up events
  */
-internal class CallNotificationReceiver: BroadcastReceiver() {
+internal class CallNotificationActionReceiver: BroadcastReceiver() {
+
+    /**
+     * ActionDelegate. Responsible to handle the behaviour on notification action tap
+     */
+    internal interface ActionDelegate {
+        fun onAnswerAction()
+        fun onHangUpAction()
+        fun onScreenShareAction()
+    }
 
     companion object {
+        /**
+         * ActionAnswer
+         */
         const val ACTION_ANSWER = "com.kaleyra.collaboration_suite_core_ui.ANSWER"
+        /**
+         * ActionHangUp
+         */
         const val ACTION_HANGUP = "com.kaleyra.collaboration_suite_core_ui.HANGUP"
+        /**
+         * ActionStopScreenShare
+         */
         const val ACTION_STOP_SCREEN_SHARE = "com.kaleyra.collaboration_suite_core_ui.STOP_SCREEN_SHARE"
+        /**
+         * The call action notification delegate
+         */
+        var actionDelegate: ActionDelegate? = null
     }
 
     /**
@@ -39,9 +60,9 @@ internal class CallNotificationReceiver: BroadcastReceiver() {
         intent ?: return
 
         when (intent.action) {
-            ACTION_ANSWER -> CallService.onNotificationAnswer()
-            ACTION_HANGUP -> CallService.onNotificationHangUp()
-            ACTION_STOP_SCREEN_SHARE -> { /* TODO asdasds */ }
+            ACTION_ANSWER -> actionDelegate?.onAnswerAction()
+            ACTION_HANGUP -> actionDelegate?.onHangUpAction()
+            ACTION_STOP_SCREEN_SHARE -> actionDelegate?.onScreenShareAction()
             else -> Unit
         }
     }

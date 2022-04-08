@@ -22,8 +22,8 @@
     <string name="kaleyra_notification_decline">Decline</string>
     <string name="kaleyra_notification_hangup">Hang Up</string>
     <string name="kaleyra_notification_stop_screen_share">Stop Screen Share</string>
-    <string name="kaleyra_notification_channel_high_priority_name">Calls High Priority</string>
-    <string name="kaleyra_notification_channel_low_priority_name">Calls Low Priority</string>
+    <string name="kaleyra_notification_call_channel_high_priority_name">Calls High Priority</string>
+    <string name="kaleyra_notification_call_channel_low_priority_name">Calls Low Priority</string>
     <string name="kaleyra_notification_incoming_call">Incoming call</string>
     <string name="kaleyra_notification_outgoing_call">Outgoing call</string>
     <string name="kaleyra_notification_ongoing_call">Ongoing call</string>

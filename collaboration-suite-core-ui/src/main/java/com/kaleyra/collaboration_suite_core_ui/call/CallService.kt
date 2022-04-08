@@ -35,11 +35,12 @@ import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
 import com.kaleyra.collaboration_suite_core_ui.UIProvider
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
-import com.kaleyra.collaboration_suite_core_ui.notification.NotificationHelper
+import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
+import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
@@ -66,15 +67,11 @@ import kotlinx.coroutines.plus
  */
 @SuppressLint("MissingPermission")
 class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStatusDelegate,
-    DefaultLifecycleObserver, Application.ActivityLifecycleCallbacks {
+    CallNotificationActionReceiver.ActionDelegate, DefaultLifecycleObserver, Application.ActivityLifecycleCallbacks {
 
-    companion object {
-        private const val CALL_NOTIFICATION_ID = 22
-        private const val MY_STREAM_ID = "main"
-        private var currentCall: Call? = null
-
-        fun onNotificationAnswer() = currentCall?.connect()
-        fun onNotificationHangUp() = currentCall?.end()
+    private companion object {
+        const val CALL_NOTIFICATION_ID = 22
+        const val MY_STREAM_ID = "main"
     }
 
     private var activityClazz: Class<*>? = null
@@ -84,6 +81,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private var phoneBox: PhoneBox? = null
     private var phoneBoxJob: Job? = null
+
+    private var currentCall: Call? = null
 
     private var batteryObserver: BatteryObserver? = null
     private var wifiObserver: WiFiObserver? = null
@@ -113,6 +112,8 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         batteryObserver = BatteryObserver(this)
         wifiObserver = WiFiObserver(this)
         callAudioManager = CallAudioManager(this)
+
+        CallNotificationActionReceiver.actionDelegate = this
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -124,6 +125,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         super<BoundService>.onDestroy()
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(this)
+
 
         clearNotification()
 
@@ -137,6 +139,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         batteryObserver = null
         wifiObserver = null
         callAudioManager = null
+        CallNotificationActionReceiver.actionDelegate = null
     }
 
     // DefaultLifecycleObserver
@@ -368,7 +371,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private fun clearNotification() {
         stopForegroundLocal()
-        NotificationHelper.cancelNotification(CALL_NOTIFICATION_ID)
+        NotificationManager.cancelNotification(CALL_NOTIFICATION_ID)
     }
 
     private fun startForegroundIfIncomingCall() =
@@ -389,17 +392,17 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         isHighPriority: Boolean,
         moveToForeground: Boolean
     ) {
-        val notification = NotificationHelper.buildIncomingCallNotification(
+        val notification = NotificationManager.buildIncomingCallNotification(
             user = usersDescription,
             isGroupCall = isGroupCall,
             activityClazz = activityClazz!!,
-            isHighPriority = isHighPriority,
+            isHighPriority = isHighPriority
         )
         showNotification(notification, moveToForeground)
     }
 
     private fun showOutgoingCallNotification(usersDescription: String, isGroupCall: Boolean) {
-        val notification = NotificationHelper.buildOutgoingCallNotification(
+        val notification = NotificationManager.buildOutgoingCallNotification(
             user = usersDescription,
             isGroupCall = isGroupCall,
             activityClazz = activityClazz!!
@@ -412,11 +415,11 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         isGroupCall: Boolean,
         isCallRecorded: Boolean
     ) {
-        val notification = NotificationHelper.buildOngoingCallNotification(
+        val notification = NotificationManager.buildOngoingCallNotification(
             user = usersDescription,
             isGroupCall = isGroupCall,
             isCallRecorded = isCallRecorded,
-            isSharingScreen = true,
+            isSharingScreen = false,
             activityClazz = activityClazz!!
         )
         showNotification(notification, true)
@@ -424,7 +427,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private fun showNotification(notification: Notification, moveToForeground: Boolean) {
         if (moveToForeground) startForegroundLocal(notification)
-        else NotificationHelper.notify(CALL_NOTIFICATION_ID, notification)
+        else NotificationManager.notify(CALL_NOTIFICATION_ID, notification)
     }
 
     private fun startForegroundLocal(notification: Notification) =
@@ -432,4 +435,10 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private fun stopForegroundLocal() =
         stopForeground(true).also { isServiceInForeground = false }
+
+    override fun onAnswerAction() { currentCall?.connect() }
+
+    override fun onHangUpAction() { currentCall?.end() }
+
+    override fun onScreenShareAction() = Unit
 }
