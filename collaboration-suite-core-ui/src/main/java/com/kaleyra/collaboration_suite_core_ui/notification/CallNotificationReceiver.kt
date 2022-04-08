@@ -22,13 +22,14 @@ import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.call.CallService
 
 /**
- * The notification broadcast receiver, it handles the answer and hang up events
+ * The call notification broadcast receiver, it handles the answer and hang up events
  */
-internal class NotificationReceiver: BroadcastReceiver() {
+internal class CallNotificationReceiver: BroadcastReceiver() {
 
     companion object {
         const val ACTION_ANSWER = "com.kaleyra.collaboration_suite_core_ui.ANSWER"
         const val ACTION_HANGUP = "com.kaleyra.collaboration_suite_core_ui.HANGUP"
+        const val ACTION_STOP_SCREEN_SHARE = "com.kaleyra.collaboration_suite_core_ui.STOP_SCREEN_SHARE"
     }
 
     /**
@@ -40,6 +41,7 @@ internal class NotificationReceiver: BroadcastReceiver() {
         when (intent.action) {
             ACTION_ANSWER -> CallService.onNotificationAnswer()
             ACTION_HANGUP -> CallService.onNotificationHangUp()
+            ACTION_STOP_SCREEN_SHARE -> { /* TODO asdasds */ }
             else -> Unit
         }
     }

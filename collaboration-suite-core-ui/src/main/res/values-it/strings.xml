@@ -21,6 +21,7 @@
     <string name="kaleyra_notification_answer">Rispondi</string>
     <string name="kaleyra_notification_decline">Rifiuta</string>
     <string name="kaleyra_notification_hangup">Termina</string>
+    <string name="kaleyra_notification_stop_screen_share">Ferma Condivisione</string>
     <string name="kaleyra_notification_channel_high_priority_name">Chiamate Alta Priorità</string>
     <string name="kaleyra_notification_channel_low_priority_name">Chiamate Bassa Priorità</string>
     <string name="kaleyra_notification_incoming_call">Chiamata in ingresso</string>

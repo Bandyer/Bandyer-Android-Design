@@ -416,6 +416,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             user = usersDescription,
             isGroupCall = isGroupCall,
             isCallRecorded = isCallRecorded,
+            isSharingScreen = true,
             activityClazz = activityClazz!!
         )
         showNotification(notification, true)

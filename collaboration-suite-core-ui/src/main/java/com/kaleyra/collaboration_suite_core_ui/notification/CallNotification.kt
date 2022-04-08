@@ -56,6 +56,7 @@ internal class CallNotification {
      * @property fullscreenIntent The pending intent to be executed when notification is in the lock screen. Optional.
      * @property answerIntent The pending intent to be executed when the user taps the answer button. Optional.
      * @property declineIntent The pending intent to be executed when the user taps the decline button. Optional.
+     * @property screenShareIntent The pending intent to be executed when the user taps the stop screen share button
      * @constructor
      */
     data class Builder(
@@ -70,6 +71,7 @@ internal class CallNotification {
         var fullscreenIntent: PendingIntent? = null,
         var answerIntent: PendingIntent? = null,
         var declineIntent: PendingIntent? = null,
+        var screenShareIntent: PendingIntent? = null
     ) {
         /**
          * Set the user
@@ -93,9 +95,7 @@ internal class CallNotification {
          * @param text String
          * @return Builder
          */
-        fun contentText(text: String) = apply {
-            this.contentText = text
-        }
+        fun contentText(text: String) = apply { this.contentText = text }
 
         /**
          * The pending intent to be executed when the user tap on the notification
@@ -103,9 +103,8 @@ internal class CallNotification {
          * @param pendingIntent PendingIntent
          * @return Builder
          */
-        fun contentIntent(pendingIntent: PendingIntent) = apply {
-            this.contentIntent = pendingIntent
-        }
+        fun contentIntent(pendingIntent: PendingIntent) =
+            apply { this.contentIntent = pendingIntent }
 
         /**
          * The pending intent to be executed when notification is in the lock screen
@@ -113,9 +112,8 @@ internal class CallNotification {
          * @param pendingIntent PendingIntent
          * @return Builder
          */
-        fun fullscreenIntent(pendingIntent: PendingIntent) = apply {
-            this.fullscreenIntent = pendingIntent
-        }
+        fun fullscreenIntent(pendingIntent: PendingIntent) =
+            apply { this.fullscreenIntent = pendingIntent }
 
         /**
          * The pending intent to be executed when the user taps the answer button
@@ -123,9 +121,7 @@ internal class CallNotification {
          * @param pendingIntent PendingIntent
          * @return Builder
          */
-        fun answerIntent(pendingIntent: PendingIntent) = apply {
-            this.answerIntent = pendingIntent
-        }
+        fun answerIntent(pendingIntent: PendingIntent) = apply { this.answerIntent = pendingIntent }
 
         /**
          * The pending intent to be executed when the user taps the decline button
@@ -133,9 +129,17 @@ internal class CallNotification {
          * @param pendingIntent PendingIntent
          * @return Builder
          */
-        fun declineIntent(pendingIntent: PendingIntent) = apply {
-            this.declineIntent = pendingIntent
-        }
+        fun declineIntent(pendingIntent: PendingIntent) =
+            apply { this.declineIntent = pendingIntent }
+
+        /**
+         * The pending intent to be executed when the user taps the stop screen share button
+         *
+         * @param pendingIntent PendingIntent
+         * @return Builder
+         */
+        fun screenShareIntent(pendingIntent: PendingIntent) =
+            apply { this.screenShareIntent = pendingIntent }
 
         /**
          * Build the call notification
@@ -154,6 +158,7 @@ internal class CallNotification {
                 useTimer = type == Type.ONGOING,
                 user = user,
                 contentText = contentText,
+                screenShareIntent = screenShareIntent,
                 contentIntent = contentIntent,
                 fullscreenIntent = fullscreenIntent,
                 answerIntent = answerIntent,
@@ -165,6 +170,7 @@ internal class CallNotification {
                 useTimer = type == Type.ONGOING,
                 user = user,
                 contentText = contentText,
+                screenShareIntent = screenShareIntent,
                 contentIntent = contentIntent,
                 fullscreenIntent = fullscreenIntent,
                 answerIntent = answerIntent,
@@ -183,9 +189,11 @@ internal class CallNotification {
             contentIntent: PendingIntent? = null,
             fullscreenIntent: PendingIntent? = null,
             answerIntent: PendingIntent? = null,
-            declineIntent: PendingIntent? = null
+            declineIntent: PendingIntent? = null,
+            screenShareIntent: PendingIntent? = null
         ): Notification {
-            val applicationIcon = context.applicationContext.packageManager.getApplicationIcon(HostAppInfo.name)
+            val applicationIcon =
+                context.applicationContext.packageManager.getApplicationIcon(HostAppInfo.name)
             val builder = NotificationCompat.Builder(context.applicationContext, channelId)
                 .setAutoCancel(false)
                 .setOngoing(true)
@@ -201,6 +209,14 @@ internal class CallNotification {
 
             contentIntent?.also { builder.setContentIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
+            screenShareIntent?.also {
+                val screenShareAction = NotificationCompat.Action(
+                    R.drawable.kaleyra_z_screen_share,
+                    context.getString(R.string.kaleyra_notification_stop_screen_share),
+                    it
+                )
+                builder.addAction(screenShareAction)
+            }
 
             if (type == Type.INCOMING) {
                 val answerAction = NotificationCompat.Action(
@@ -232,9 +248,11 @@ internal class CallNotification {
             contentIntent: PendingIntent? = null,
             fullscreenIntent: PendingIntent? = null,
             answerIntent: PendingIntent? = null,
-            declineIntent: PendingIntent? = null
+            declineIntent: PendingIntent? = null,
+            screenShareIntent: PendingIntent? = null
         ): Notification {
-            val applicationIcon = context.applicationContext.packageManager.getApplicationIcon(HostAppInfo.name)
+            val applicationIcon =
+                context.applicationContext.packageManager.getApplicationIcon(HostAppInfo.name)
             val person = Person.Builder()
                 .setName(user)
                 .setIcon(Icon.createWithBitmap(applicationIcon.toBitmap()))
@@ -269,6 +287,14 @@ internal class CallNotification {
 
             contentIntent?.also { builder.setContentIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
+            screenShareIntent?.also {
+                val screenShareAction = Notification.Action.Builder(
+                    Icon.createWithResource(context, R.drawable.kaleyra_z_screen_share),
+                    context.getString(R.string.kaleyra_notification_stop_screen_share),
+                    it
+                ).build()
+                builder.addAction(screenShareAction)
+            }
 
             return builder.build()
         }

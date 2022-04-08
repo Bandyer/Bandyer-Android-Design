@@ -43,6 +43,7 @@ internal object NotificationHelper {
     private const val CONTENT_REQUEST_CODE = 456
     private const val ANSWER_REQUEST_CODE = 789
     private const val DECLINE_REQUEST_CODE = 987
+    private const val SCREEN_SHARING_REQUEST_CODE = 654
 
     /**
      * Notify the system to add a notification
@@ -153,6 +154,7 @@ internal object NotificationHelper {
         user: String,
         isGroupCall: Boolean,
         isCallRecorded: Boolean,
+        isSharingScreen: Boolean,
         activityClazz: Class<T>,
     ): Notification {
         val context = ContextRetainer.context
@@ -171,6 +173,7 @@ internal object NotificationHelper {
             .contentText(if (isCallRecorded) recordingText else tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
+            .apply { if (isSharingScreen) screenShareIntent(screenSharePendingIntent(context)) }
 
         return builder.build()
     }
@@ -223,8 +226,18 @@ internal object NotificationHelper {
         PendingIntent.getBroadcast(
             context,
             DECLINE_REQUEST_CODE,
-            Intent(context, NotificationReceiver::class.java).apply {
-                action = NotificationReceiver.ACTION_HANGUP
+            Intent(context, CallNotificationReceiver::class.java).apply {
+                action = CallNotificationReceiver.ACTION_HANGUP
+            },
+            PendingIntentExtensions.updateFlags
+        )
+
+    private fun screenSharePendingIntent(context: Context) =
+        PendingIntent.getBroadcast(
+            context,
+            SCREEN_SHARING_REQUEST_CODE,
+            Intent(context, CallNotificationReceiver::class.java).apply {
+                action = CallNotificationReceiver.ACTION_STOP_SCREEN_SHARE
             },
             PendingIntentExtensions.updateFlags
         )
