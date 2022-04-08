@@ -64,7 +64,7 @@ internal interface CallNotificationManager {
             .contentText(tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
             .fullscreenIntent(fullScreenPendingIntent(context, activityClazz))
-            .answerIntent(answerPendingIntent(context, activityClazz))
+            .answerIntent(answerPendingIntent(context))
             .declineIntent(declinePendingIntent(context))
 
         return builder.build()
@@ -140,32 +140,36 @@ internal interface CallNotificationManager {
     }
 
     private fun fullScreenPendingIntent(context: Context, activityClazz: Class<*>) =
-        createCallActivityPendingIntent(
-            context,
-            FULL_SCREEN_REQUEST_CODE,
-            activityClazz
-        )
+        createCallActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE, activityClazz)
 
     private fun contentPendingIntent(context: Context, activityClazz: Class<*>) =
-        createCallActivityPendingIntent(
-            context,
-            CONTENT_REQUEST_CODE,
-            activityClazz
-        )
+        createCallActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityClazz)
 
-    private fun answerPendingIntent(context: Context, activityClazz: Class<*>) =
-        createCallActivityPendingIntent(
+    private fun answerPendingIntent(context: Context) =
+        createBroadcastPendingIntent(
             context,
             ANSWER_REQUEST_CODE,
-            activityClazz,
-            true
+            CallNotificationActionReceiver.ACTION_ANSWER
+        )
+
+    private fun declinePendingIntent(context: Context) =
+        createBroadcastPendingIntent(
+            context,
+            DECLINE_REQUEST_CODE,
+            CallNotificationActionReceiver.ACTION_HANGUP
+        )
+
+    private fun screenSharePendingIntent(context: Context) =
+        createBroadcastPendingIntent(
+            context,
+            SCREEN_SHARING_REQUEST_CODE,
+            CallNotificationActionReceiver.ACTION_STOP_SCREEN_SHARE
         )
 
     private fun <T> createCallActivityPendingIntent(
         context: Context,
         requestCode: Int,
-        activityClazz: Class<T>,
-        enableAutoAnswer: Boolean = false
+        activityClazz: Class<T>
     ): PendingIntent {
         val applicationContext = context.applicationContext
         val intent = Intent(applicationContext, activityClazz).apply {
@@ -173,7 +177,6 @@ internal interface CallNotificationManager {
             addCategory(Intent.CATEGORY_LAUNCHER)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             putExtra("enableTilt", DeviceUtils.isSmartGlass)
-            putExtra("autoAnswer", enableAutoAnswer)
         }
         return PendingIntent.getActivity(
             applicationContext,
@@ -183,22 +186,12 @@ internal interface CallNotificationManager {
         )
     }
 
-    private fun declinePendingIntent(context: Context) =
+    private fun createBroadcastPendingIntent(context: Context, requestCode: Int, action: String) =
         PendingIntent.getBroadcast(
             context,
-            DECLINE_REQUEST_CODE,
+            requestCode,
             Intent(context, CallNotificationActionReceiver::class.java).apply {
-                action = CallNotificationActionReceiver.ACTION_HANGUP
-            },
-            PendingIntentExtensions.updateFlags
-        )
-
-    private fun screenSharePendingIntent(context: Context) =
-        PendingIntent.getBroadcast(
-            context,
-            SCREEN_SHARING_REQUEST_CODE,
-            Intent(context, CallNotificationActionReceiver::class.java).apply {
-                action = CallNotificationActionReceiver.ACTION_STOP_SCREEN_SHARE
+                this.action = action
             },
             PendingIntentExtensions.updateFlags
         )

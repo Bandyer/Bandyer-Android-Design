@@ -161,9 +161,6 @@ internal class GlassCallActivity :
     override fun onServiceBound(service: CallService) {
         this.service = service
 
-        if (intent.extras?.getBoolean("autoAnswer") == true)
-            viewModel.onAnswer()
-
         val preferredType = viewModel.call.replayCache.last().extras.preferredType
         if (preferredType.hasAudio() && preferredType.isAudioEnabled())
             viewModel.onRequestMicPermission(this)
