@@ -146,7 +146,7 @@ internal interface CallNotificationManager {
         createCallActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityClazz)
 
     private fun answerPendingIntent(context: Context, activityClazz: Class<*>) =
-        createCallActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityClazz)
+        createCallActivityPendingIntent(context, ANSWER_REQUEST_CODE, activityClazz)
 
     private fun declinePendingIntent(context: Context) =
         createBroadcastPendingIntent(
