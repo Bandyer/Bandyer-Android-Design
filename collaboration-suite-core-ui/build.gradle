@@ -42,5 +42,6 @@ dependencies {
     /** Kaleyra **/
 //    compileOnly kaleyra.collaboration
     compileOnly project(":collaboration-suite")
+    compileOnly project(":bandyer-android-chat")
     compileOnly kaleyra.utils
 }
