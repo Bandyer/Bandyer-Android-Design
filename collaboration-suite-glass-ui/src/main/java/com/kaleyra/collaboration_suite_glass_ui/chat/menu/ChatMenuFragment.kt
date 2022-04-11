@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_glass_ui.*
+import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatMenuBinding

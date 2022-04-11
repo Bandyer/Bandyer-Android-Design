@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.call
+package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.os.Bundle
 import android.view.ContextThemeWrapper
@@ -23,8 +23,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
-import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
+import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
+import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenDialogBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
@@ -38,7 +38,7 @@ internal class EndCallFragment : BaseFragment() {
     private var _binding: KaleyraGlassFragmentFullScreenDialogBinding? = null
     override val binding: KaleyraGlassFragmentFullScreenDialogBinding get() = _binding!!
 
-    private val viewModel: GlassViewModel by activityViewModels()
+    private val viewModel: CallViewModel by activityViewModels()
 
     /**
      * @suppress

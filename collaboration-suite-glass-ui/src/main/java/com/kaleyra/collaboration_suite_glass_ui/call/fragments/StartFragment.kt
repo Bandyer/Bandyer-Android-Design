@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.call
+package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,8 +24,8 @@ import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
-import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
+import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
+import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentStartBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
@@ -41,7 +41,7 @@ internal class StartFragment : BaseFragment() {
     private var _binding: KaleyraGlassFragmentStartBinding? = null
     override val binding: KaleyraGlassFragmentStartBinding get() = _binding!!
 
-    private val viewModel: GlassViewModel by activityViewModels()
+    private val viewModel: CallViewModel by activityViewModels()
 
     /**
      * @suppress

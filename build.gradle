@@ -21,6 +21,22 @@ buildscript {
 
     apply from: 'versions.gradle'
 
+    // Chat dependencies
+    ext.kotlin_version = "1.5.32"
+    ext.kotlin_std_lib_version = "1.5.0"
+    ext.collaboration_suite_utils = "2.0.1"
+    ext.collaboration_suite_networking = "2.0.0"
+    ext.collaboration_suite_core_ui = "3.0.1"
+    ext.collaboration_suite_phone_ui = "3.0.1"
+
+    // Collaboration dependencies
+    ext.bandyer_core_av = "5.0.2"
+    ext.bandyer_comm_center = "3.0.1"
+    ext.bandyer_utils = "2.0.1"
+    ext.bandyer_networking = "2.0.0"
+    ext.serialization_version = '0.5.1'
+    ext.nav_version = "2.3.5"
+
     repositories {
         gradlePluginPortal()
         mavenLocal()
@@ -40,6 +56,7 @@ buildscript {
         //classpath dependencies to import library project
         classpath classPaths.kotlinGradlePluginClassPath
         classpath classPaths.sageArgsClassPath
+        classpath 'com.guardsquare:proguard-gradle:7.1.0'
     }
 }
 

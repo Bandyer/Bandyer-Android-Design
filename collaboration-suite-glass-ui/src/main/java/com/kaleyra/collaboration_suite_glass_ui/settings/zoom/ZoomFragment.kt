@@ -22,7 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
+import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentZoomBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener

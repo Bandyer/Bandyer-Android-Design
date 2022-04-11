@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.call.participants
+package com.kaleyra.collaboration_suite_glass_ui.call.adapter_items
 
 import android.view.View
 import com.kaleyra.collaboration_suite_glass_ui.R

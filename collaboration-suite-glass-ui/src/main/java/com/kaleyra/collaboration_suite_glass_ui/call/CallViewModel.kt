@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui
+package com.kaleyra.collaboration_suite_glass_ui.call
 
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -46,7 +46,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
@@ -61,16 +60,16 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
 @Suppress("UNCHECKED_CAST")
-internal class GlassViewModelFactory(
+internal class CallViewModelFactory(
     private val callDelegate: CallUIDelegate,
     private val deviceStatusDelegate: DeviceStatusDelegate,
     private val callController: CallUIController
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        GlassViewModel(callDelegate, deviceStatusDelegate, callController) as T
+        CallViewModel(callDelegate, deviceStatusDelegate, callController) as T
 }
 
-internal class GlassViewModel(
+internal class CallViewModel(
     callDelegate: CallUIDelegate,
     deviceStatusDelegate: DeviceStatusDelegate,
     private val callController: CallUIController
@@ -99,7 +98,7 @@ internal class GlassViewModel(
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val participants = ConcurrentHashMap<String, CallParticipant>()
-            this@GlassViewModel.participants.forEachParticipant(
+            this@CallViewModel.participants.forEachParticipant(
                 viewModelScope + CoroutineName("InCallParticipants")
             ) { participant, itsMe, streams, state ->
                 if (itsMe || state == CallParticipant.State.IN_CALL || streams.isNotEmpty()) participants[participant.userId] =

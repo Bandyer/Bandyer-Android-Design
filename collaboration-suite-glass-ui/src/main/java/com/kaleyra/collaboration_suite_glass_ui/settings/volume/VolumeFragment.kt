@@ -23,8 +23,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
-import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
+import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
+import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentVolumeBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
@@ -41,7 +41,7 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
 
     private val args: VolumeFragmentArgs by lazy { VolumeFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
 
-    private val viewModel: GlassViewModel by activityViewModels()
+    private val viewModel: CallViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

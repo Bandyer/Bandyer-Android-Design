@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.call
+package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,9 +26,9 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensio
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 
 /**
- * DialingFragment
+ * RingingFragment
  */
-internal class DialingFragment : PreCallFragment() {
+internal class RingingFragment : PreCallFragment() {
 
     override var themeResId = 0
 
@@ -37,15 +37,15 @@ internal class DialingFragment : PreCallFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        themeResId = requireActivity().theme.getAttributeResourceId(R.attr.kaleyra_dialingStyle)
+        themeResId = requireActivity().theme.getAttributeResourceId(R.attr.kaleyra_ringingStyle)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onConnected() { findNavController().safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment()) }
+    override fun onConnected() { findNavController().safeNavigate(RingingFragmentDirections.actionRingingFragmentToEmptyFragment()) }
 
-    override fun setSubtitle(isGroupCall: Boolean) { binding.kaleyraSubtitle.text = resources.getString(if (isGroupCall) R.string.kaleyra_glass_dialing_group else R.string.kaleyra_glass_dialing) }
+    override fun setSubtitle(isGroupCall: Boolean) { binding.kaleyraSubtitle.text =  resources.getString(if(isGroupCall) R.string.kaleyra_glass_ringing_group else R.string.kaleyra_glass_ringing) }
 
-    override fun onTap() = false
+    override fun onTap() = true.also { viewModel.onAnswer() }
 
     override fun onSwipeDown() = true.also { viewModel.onHangup() }
 

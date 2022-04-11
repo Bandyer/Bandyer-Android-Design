@@ -26,8 +26,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
-import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
+import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
+import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.CallAction
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
@@ -58,7 +58,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
 
     private var currentMenuItemIndex = 0
 
-    private val viewModel: GlassViewModel by activityViewModels()
+    private val viewModel: CallViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -148,7 +148,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             }
         }
 
-        return CallAction.getActions(requireContext(), withCamera = withCamera, withChat = withChat)
+        return CallAction.getActions(requireContext(), withCamera = withCamera, withChat = true)
     }
 
     override fun onDismiss() = Unit

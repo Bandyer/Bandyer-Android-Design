@@ -27,9 +27,8 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite_glass_ui.chat.ChatFragmentArgs
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
-import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
+import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.UserState
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatBinding
@@ -121,7 +120,9 @@ internal class ChatFragment : BaseFragment(), TiltListener {
         return binding.root
     }
 
-    override fun onServiceBound() = Unit
+    override fun onServiceBound() {
+
+    }
 
     /**
      * @suppress
@@ -141,7 +142,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
 
     override fun onTap() = true.also {
         val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userId
-//        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt, contactData.first { it.userId.contains(username!!) })
+//        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt)
 //        findNavController().navigate(action)
     }
 

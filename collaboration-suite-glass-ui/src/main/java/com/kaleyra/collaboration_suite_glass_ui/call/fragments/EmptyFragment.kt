@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.call
+package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,8 +24,8 @@ import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 
-import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
-import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
+import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
+import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentEmptyBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
@@ -38,7 +38,7 @@ internal class EmptyFragment : BaseFragment() {
     private var _binding: KaleyraGlassFragmentEmptyBinding? = null
     override val binding: KaleyraGlassFragmentEmptyBinding get() = _binding!!
 
-    private val viewModel: GlassViewModel by activityViewModels()
+    private val viewModel: CallViewModel by activityViewModels()
 
     /**
      * @suppress

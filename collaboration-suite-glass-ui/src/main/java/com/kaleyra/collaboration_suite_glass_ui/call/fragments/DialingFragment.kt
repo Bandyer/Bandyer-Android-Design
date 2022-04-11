@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.call
+package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,9 +26,9 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensio
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 
 /**
- * ConnectingFragment
+ * DialingFragment
  */
-internal class ReconnectingFragment : ConnectingFragment() {
+internal class DialingFragment : PreCallFragment() {
 
     override var themeResId = 0
 
@@ -37,19 +37,19 @@ internal class ReconnectingFragment : ConnectingFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        themeResId = requireActivity().theme.getAttributeResourceId(R.attr.kaleyra_reconnectingStyle)
+        themeResId = requireActivity().theme.getAttributeResourceId(R.attr.kaleyra_dialingStyle)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onConnected() { findNavController().safeNavigate(ReconnectingFragmentDirections.actionReconnectingFragmentToEmptyFragment()) }
+    override fun onConnected() { findNavController().safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment()) }
 
-    override fun setSubtitle(isGroupCall: Boolean) { binding.kaleyraSubtitle.text = resources.getString(R.string.kaleyra_glass_connecting) }
+    override fun setSubtitle(isGroupCall: Boolean) { binding.kaleyraSubtitle.text = resources.getString(if (isGroupCall) R.string.kaleyra_glass_dialing_group else R.string.kaleyra_glass_dialing) }
 
     override fun onTap() = false
 
-    override fun onSwipeDown() = true.also { findNavController().safeNavigate(ReconnectingFragmentDirections.actionReconnectingFragmentToEndCallFragment()) }
+    override fun onSwipeDown() = true.also { viewModel.onHangup() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = false
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.kaleyraParticipantsScrollView.smoothScrollByWithAutoScroll(resources.displayMetrics.densityDpi / 2, 0) }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = false
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if(it) binding.kaleyraParticipantsScrollView.smoothScrollByWithAutoScroll(-resources.displayMetrics.densityDpi / 2, 0) }
 }

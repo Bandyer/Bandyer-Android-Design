@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui
+package com.kaleyra.collaboration_suite_glass_ui.call.adapter_items
 
 import android.net.Uri
 import android.view.Gravity
@@ -26,6 +26,7 @@ import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
+import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassCallMyStreamItemLayoutBinding
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassCallOtherStreamItemLayoutBinding
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.call.participants
+package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.annotation.SuppressLint
 import android.net.Uri
@@ -28,8 +28,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
-import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
+import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
+import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
+import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.CallParticipantItem
+import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItemData
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentParticipantsBinding
@@ -64,7 +66,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
         )
     }
 
-    private val viewModel: GlassViewModel by activityViewModels()
+    private val viewModel: CallViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

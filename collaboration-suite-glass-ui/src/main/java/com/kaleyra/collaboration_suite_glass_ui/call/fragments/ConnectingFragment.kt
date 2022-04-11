@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.call
+package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -24,8 +24,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
-import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
-import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
+import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
+import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenLogoDialogBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
@@ -40,7 +40,7 @@ internal abstract class ConnectingFragment : BaseFragment() {
     private var _binding: KaleyraGlassFragmentFullScreenLogoDialogBinding? = null
     override val binding: KaleyraGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
 
-    protected val viewModel: GlassViewModel by activityViewModels()
+    protected val viewModel: CallViewModel by activityViewModels()
 
     abstract val themeResId: Int
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui
+package com.kaleyra.collaboration_suite_glass_ui.common
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,7 +24,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setAlphaWithAnimation
+import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
+import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
+import com.kaleyra.collaboration_suite_glass_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_glass_ui.chat.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltFragment
 
@@ -36,10 +39,10 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
     BoundServiceActivity.Observer {
 
     /**
-     * The [GlassCallActivity]
+     * The [CallActivity]
      */
     private val activity
-        get() = requireActivity() as GlassCallActivity
+        get() = requireActivity() as CallActivity
 
     /**
      * Flag which point outs if the call service is already bound
@@ -127,10 +130,10 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
      * This method should NOT be overridden. Use onTap, onSwipeDown, onSwipeForward, onSwipeBackward instead.
      */
     override fun onTouch(event: TouchEvent) = when (event.type) {
-        TouchEvent.Type.TAP             -> onTap()
-        TouchEvent.Type.SWIPE_DOWN      -> onSwipeDown()
-        TouchEvent.Type.SWIPE_FORWARD   -> onSwipeForward(event.source == TouchEvent.Source.KEY)
-        TouchEvent.Type.SWIPE_BACKWARD  -> onSwipeBackward(event.source == TouchEvent.Source.KEY)
+        TouchEvent.Type.TAP -> onTap()
+        TouchEvent.Type.SWIPE_DOWN -> onSwipeDown()
+        TouchEvent.Type.SWIPE_FORWARD -> onSwipeForward(event.source == TouchEvent.Source.KEY)
+        TouchEvent.Type.SWIPE_BACKWARD -> onSwipeBackward(event.source == TouchEvent.Source.KEY)
         else -> false
     }
 

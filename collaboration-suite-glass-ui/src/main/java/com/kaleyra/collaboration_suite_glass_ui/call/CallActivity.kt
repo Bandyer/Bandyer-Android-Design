@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui
+package com.kaleyra.collaboration_suite_glass_ui.call
 
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.KeyEvent
@@ -45,14 +44,20 @@ import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.Option
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
-import com.kaleyra.collaboration_suite_glass_ui.call.CallEndedFragmentArgs
+import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
+import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
+import com.kaleyra.collaboration_suite_glass_ui.WhiteboardItem
+import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.MyStreamItem
+import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.OtherStreamItem
+import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.StreamItem
+import com.kaleyra.collaboration_suite_glass_ui.call.fragments.CallEndedFragmentArgs
 import com.kaleyra.collaboration_suite_glass_ui.chat.notification.ChatNotificationManager
-import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraActivityGlassBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraCallActivityGlassBinding
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassGestureDetector
 import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
-import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.enableImmersiveMode
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getCallThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
@@ -76,15 +81,15 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
 /**
- * GlassCallActivity
+ * CallActivity
  */
-internal class GlassCallActivity :
+internal class CallActivity :
     CallActivity(),
     GlassGestureDetector.OnGestureListener,
     ChatNotificationManager.NotificationListener,
     TouchEventListener {
 
-    private lateinit var binding: KaleyraActivityGlassBinding
+    private lateinit var binding: KaleyraCallActivityGlassBinding
 
     private var isActivityInForeground = false
 
@@ -92,8 +97,8 @@ internal class GlassCallActivity :
     val isServiceBound: Boolean
         get() = service != null
 
-    private val viewModel: GlassViewModel by viewModels {
-        GlassViewModelFactory(
+    private val viewModel: CallViewModel by viewModels {
+        CallViewModelFactory(
             service as CallUIDelegate,
             service as DeviceStatusDelegate,
             service as CallUIController
@@ -121,7 +126,7 @@ internal class GlassCallActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.kaleyra_activity_glass)
+        binding = DataBindingUtil.setContentView(this, R.layout.kaleyra_call_activity_glass)
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.kaleyra_nav_host_fragment) as NavHostFragment
@@ -138,7 +143,7 @@ internal class GlassCallActivity :
             whiteboardItemAdapter = ItemAdapter()
             fastAdapter = FastAdapter.with(listOf(whiteboardItemAdapter!!, streamsItemAdapter!!))
             val layoutManager =
-                LinearLayoutManager(this@GlassCallActivity, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(this@CallActivity, LinearLayoutManager.HORIZONTAL, false)
 
             this.layoutManager = layoutManager
             adapter = fastAdapter!!.apply {
@@ -527,8 +532,8 @@ internal class GlassCallActivity :
         val livePointerView =
             livePointer ?: LivePointerView(
                 ContextThemeWrapper(
-                    this@GlassCallActivity,
-                    this@GlassCallActivity.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Call_kaleyra_livePointerStyle)
+                    this@CallActivity,
+                    this@CallActivity.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Call_kaleyra_livePointerStyle)
                 )
             ).also {
                 it.id = View.generateViewId()

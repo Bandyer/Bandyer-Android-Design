@@ -72,7 +72,7 @@
     </fragment>
     <fragment
         android:id="@+id/callEndedFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.call.CallEndedFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.CallEndedFragment"
         android:label="CallEndedFragment">
         <argument
             android:name="title"
@@ -87,11 +87,11 @@
     </fragment>
     <fragment
         android:id="@+id/endCallFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.call.EndCallFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.EndCallFragment"
         android:label="EndCallFragment" />
     <fragment
         android:id="@+id/ringingFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.call.RingingFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.RingingFragment"
         android:label="RingingFragment">
         <action
             android:id="@+id/action_ringingFragment_to_emptyFragment"
@@ -101,7 +101,7 @@
     </fragment>
     <fragment
         android:id="@+id/dialingFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.call.DialingFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.DialingFragment"
         android:label="DialingFragment">
         <action
             android:id="@+id/action_dialingFragment_to_emptyFragment"
@@ -111,7 +111,7 @@
     </fragment>
     <fragment
         android:id="@+id/emptyFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.call.EmptyFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.EmptyFragment"
         android:label="EmptyFragment">
         <action
             android:id="@+id/action_emptyFragment_to_endCallFragment"
@@ -128,17 +128,17 @@
     </fragment>
     <fragment
         android:id="@+id/participantsFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.call.participants.ParticipantsFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.ParticipantsFragment"
         android:label="ParticipantsFragment">
         <argument
             android:name="enableTilt"
             android:defaultValue="false"
             app:argType="boolean" />
     </fragment>
-    <include app:graph="@navigation/kaleyra_glass_nav_graph_chat" />
+    <include app:graph="@navigation/kaleyra_glass_chat_nav_graph" />
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.call.StartFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.StartFragment"
         android:label="fragment_start"
         tools:layout="@layout/kaleyra_glass_fragment_start">
         <action
@@ -159,7 +159,7 @@
     </fragment>
     <fragment
         android:id="@+id/reconnectingFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.call.ReconnectingFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.ReconnectingFragment"
         android:label="ReconnectingFragment">
         <action
             android:id="@+id/action_reconnectingFragment_to_emptyFragment"

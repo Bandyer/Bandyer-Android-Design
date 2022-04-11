@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.call
+package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,7 +23,7 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.core.view.postDelayed
 import androidx.navigation.fragment.navArgs
-import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
+import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenLogoDialogBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils

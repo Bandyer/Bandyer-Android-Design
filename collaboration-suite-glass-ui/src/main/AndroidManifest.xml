@@ -21,7 +21,7 @@
 
     <application>
         <activity
-            android:name=".GlassCallActivity"
+            android:name=".call.CallActivity"
             android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.GlassCallActivity"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.DayNight.GlassCall"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
