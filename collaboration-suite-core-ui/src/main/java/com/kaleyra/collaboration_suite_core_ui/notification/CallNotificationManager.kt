@@ -49,8 +49,7 @@ internal interface CallNotificationManager {
         if (isHighPriority && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
             context.turnOnScreen()
 
-        val incomingCallText =
-            context.resources.getString(R.string.kaleyra_notification_incoming_call)
+        val userText = if (isGroupCall) context.resources.getString(R.string.kaleyra_notification_incoming_call) else user
         val tapToReturnText = context.getString(R.string.kaleyra_notification_tap_to_return)
         val builder = CallNotification
             .Builder(
@@ -59,12 +58,12 @@ internal interface CallNotificationManager {
                 channelName = context.resources.getString(if (isHighPriority) R.string.kaleyra_notification_call_channel_high_priority_name else R.string.kaleyra_notification_call_channel_low_priority_name),
                 type = CallNotification.Type.INCOMING
             )
-            .user(if (isGroupCall) incomingCallText else user)
+            .user(userText)
             .importance(isHighPriority)
             .contentText(tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
             .fullscreenIntent(fullScreenPendingIntent(context, activityClazz))
-            .answerIntent(answerPendingIntent(context))
+            .answerIntent(answerPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
 
         return builder.build()
@@ -84,8 +83,8 @@ internal interface CallNotificationManager {
         activityClazz: Class<T>,
     ): Notification {
         val context = ContextRetainer.context
-        val outgoingCallText =
-            context.resources.getString(R.string.kaleyra_notification_outgoing_call)
+        val userText =
+            if (isGroupCall) context.resources.getString(R.string.kaleyra_notification_outgoing_call) else user
         val tapToReturnText = context.getString(R.string.kaleyra_notification_tap_to_return)
         val builder = CallNotification
             .Builder(
@@ -94,7 +93,7 @@ internal interface CallNotificationManager {
                 channelName = context.resources.getString(R.string.kaleyra_notification_call_channel_low_priority_name),
                 type = CallNotification.Type.OUTGOING
             )
-            .user(if (isGroupCall) outgoingCallText else user)
+            .user(userText)
             .contentText(tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
@@ -116,13 +115,19 @@ internal interface CallNotificationManager {
         isGroupCall: Boolean,
         isCallRecorded: Boolean,
         isSharingScreen: Boolean,
+        isConnecting: Boolean,
         activityClazz: Class<T>,
     ): Notification {
         val context = ContextRetainer.context
-        val ongoingCallText =
-            context.resources.getString(R.string.kaleyra_notification_ongoing_call)
-        val tapToReturnText = context.getString(R.string.kaleyra_notification_tap_to_return)
-        val recordingText = context.getString(R.string.kaleyra_notification_call_recorded)
+        val userText =
+            if (isGroupCall) context.resources.getString(R.string.kaleyra_notification_ongoing_call) else user
+        val contentText = context.resources.getString(
+            when {
+                isConnecting -> R.string.kaleyra_notification_connecting_call
+                isCallRecorded -> R.string.kaleyra_notification_call_recorded
+                else -> R.string.kaleyra_notification_tap_to_return
+            }
+        )
         val builder = CallNotification
             .Builder(
                 context = context,
@@ -130,10 +135,11 @@ internal interface CallNotificationManager {
                 channelName = context.resources.getString(R.string.kaleyra_notification_call_channel_low_priority_name),
                 type = CallNotification.Type.ONGOING
             )
-            .user(if (isGroupCall) ongoingCallText else user)
-            .contentText(if (isCallRecorded) recordingText else tapToReturnText)
+            .user(userText)
+            .contentText(contentText)
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
+            .timer(!isConnecting)
             .apply { if (isSharingScreen) screenShareIntent(screenSharePendingIntent(context)) }
 
         return builder.build()
@@ -145,12 +151,8 @@ internal interface CallNotificationManager {
     private fun contentPendingIntent(context: Context, activityClazz: Class<*>) =
         createCallActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityClazz)
 
-    private fun answerPendingIntent(context: Context) =
-        createBroadcastPendingIntent(
-            context,
-            ANSWER_REQUEST_CODE,
-            CallNotificationActionReceiver.ACTION_ANSWER
-        )
+    private fun answerPendingIntent(context: Context, activityClazz: Class<*>) =
+        createCallActivityPendingIntent(context, ANSWER_REQUEST_CODE, activityClazz, CallNotificationActionReceiver.ACTION_ANSWER)
 
     private fun declinePendingIntent(context: Context) =
         createBroadcastPendingIntent(
@@ -169,14 +171,16 @@ internal interface CallNotificationManager {
     private fun <T> createCallActivityPendingIntent(
         context: Context,
         requestCode: Int,
-        activityClazz: Class<T>
+        activityClazz: Class<T>,
+        action: String? = null
     ): PendingIntent {
         val applicationContext = context.applicationContext
         val intent = Intent(applicationContext, activityClazz).apply {
-            action = Intent.ACTION_MAIN
-            addCategory(Intent.CATEGORY_LAUNCHER)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            putExtra("enableTilt", DeviceUtils.isSmartGlass)
+            this.action = Intent.ACTION_MAIN
+            this.addCategory(Intent.CATEGORY_LAUNCHER)
+            this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            this.putExtra("enableTilt", DeviceUtils.isSmartGlass)
+            action?.also { this.putExtra("action", it) }
         }
         return PendingIntent.getActivity(
             applicationContext,

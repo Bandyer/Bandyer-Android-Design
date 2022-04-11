@@ -42,6 +42,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.Option
+import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -156,6 +157,13 @@ internal class CallActivity :
 
 //        enableImmersiveMode()
         turnScreenOn()
+
+        handleIntentAction(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntentAction(intent)
     }
 
     override fun onServiceBound(service: CallService) {
@@ -308,6 +316,11 @@ internal class CallActivity :
                 .takeWhile { it }
                 .onCompletion { binding.kaleyraStatusBar.showTimer() }
                 .launchIn(this@repeatOnStarted)
+
+            viewModel.callState
+                .takeWhile { it !is Call.State.Disconnected.Ended }
+                .onCompletion { binding.kaleyraStatusBar.hideTimer() }
+                .launchIn(this)
 
             viewModel.amIAlone
                 .onEach {
@@ -486,6 +499,13 @@ internal class CallActivity :
             viewModel.onEnableCamera(wasPausedForBackground)
             wasPausedForBackground = false
         }
+    }
+
+    private fun handleIntentAction(intent: Intent) {
+        val action = intent.extras?.getString("action") ?: return
+        sendBroadcast( Intent(this, CallNotificationActionReceiver::class.java).apply {
+            this.action = action
+        })
     }
 
     private fun FastAdapterDiffUtil.setDiffItems(
