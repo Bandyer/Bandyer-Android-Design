@@ -153,11 +153,6 @@ internal class GlassCallActivity :
         turnScreenOn()
     }
 
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        if (intent?.extras?.get("autoAnswer") == true) viewModel.onAnswer()
-    }
-
     override fun onServiceBound(service: CallService) {
         this.service = service
 
