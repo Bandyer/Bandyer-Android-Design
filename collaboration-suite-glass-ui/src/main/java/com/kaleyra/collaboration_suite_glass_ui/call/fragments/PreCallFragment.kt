@@ -17,7 +17,13 @@
 package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.annotation.SuppressLint
+import android.view.View
+import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlin.math.roundToInt
 
 internal abstract class PreCallFragment : ConnectingFragment(),
     HorizontalAutoScrollView.OnScrollListener {
