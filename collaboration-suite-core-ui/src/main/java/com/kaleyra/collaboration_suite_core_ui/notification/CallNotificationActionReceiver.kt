@@ -23,12 +23,12 @@ import android.content.Intent
 /**
  * The call notification broadcast receiver, it handles the answer and hang up events
  */
-internal class CallNotificationActionReceiver: BroadcastReceiver() {
+class CallNotificationActionReceiver: BroadcastReceiver() {
 
     /**
      * ActionDelegate. Responsible to handle the behaviour on notification action tap
      */
-    internal interface ActionDelegate {
+    interface ActionDelegate {
         fun onAnswerAction()
         fun onHangUpAction()
         fun onScreenShareAction()

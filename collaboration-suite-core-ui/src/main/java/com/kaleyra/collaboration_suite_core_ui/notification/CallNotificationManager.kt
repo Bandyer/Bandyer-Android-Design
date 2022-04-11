@@ -152,7 +152,7 @@ internal interface CallNotificationManager {
         createCallActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityClazz)
 
     private fun answerPendingIntent(context: Context, activityClazz: Class<*>) =
-        createCallActivityPendingIntent(context, ANSWER_REQUEST_CODE, activityClazz)
+        createCallActivityPendingIntent(context, ANSWER_REQUEST_CODE, activityClazz, CallNotificationActionReceiver.ACTION_ANSWER)
 
     private fun declinePendingIntent(context: Context) =
         createBroadcastPendingIntent(
@@ -171,14 +171,16 @@ internal interface CallNotificationManager {
     private fun <T> createCallActivityPendingIntent(
         context: Context,
         requestCode: Int,
-        activityClazz: Class<T>
+        activityClazz: Class<T>,
+        action: String? = null
     ): PendingIntent {
         val applicationContext = context.applicationContext
         val intent = Intent(applicationContext, activityClazz).apply {
-            action = Intent.ACTION_MAIN
-            addCategory(Intent.CATEGORY_LAUNCHER)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            putExtra("enableTilt", DeviceUtils.isSmartGlass)
+            this.action = Intent.ACTION_MAIN
+            this.addCategory(Intent.CATEGORY_LAUNCHER)
+            this.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            this.putExtra("enableTilt", DeviceUtils.isSmartGlass)
+            action?.also { this.putExtra("action", it) }
         }
         return PendingIntent.getActivity(
             applicationContext,
