@@ -64,7 +64,7 @@ internal interface CallNotificationManager {
             .contentText(tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
             .fullscreenIntent(fullScreenPendingIntent(context, activityClazz))
-            .answerIntent(answerPendingIntent(context))
+            .answerIntent(answerPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
 
         return builder.build()
@@ -145,12 +145,8 @@ internal interface CallNotificationManager {
     private fun contentPendingIntent(context: Context, activityClazz: Class<*>) =
         createCallActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityClazz)
 
-    private fun answerPendingIntent(context: Context) =
-        createBroadcastPendingIntent(
-            context,
-            ANSWER_REQUEST_CODE,
-            CallNotificationActionReceiver.ACTION_ANSWER
-        )
+    private fun answerPendingIntent(context: Context, activityClazz: Class<*>) =
+        createCallActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityClazz)
 
     private fun declinePendingIntent(context: Context) =
         createBroadcastPendingIntent(

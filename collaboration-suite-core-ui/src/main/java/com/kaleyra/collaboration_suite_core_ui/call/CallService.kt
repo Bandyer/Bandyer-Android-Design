@@ -436,10 +436,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     private fun stopForegroundLocal() =
         stopForeground(true).also { isServiceInForeground = false }
 
-    override fun onAnswerAction() {
-        currentCall?.connect()
-        UIProvider.showCall(activityClazz!!)
-    }
+    override fun onAnswerAction() { currentCall?.connect() }
 
     override fun onHangUpAction() { currentCall?.end() }
 
