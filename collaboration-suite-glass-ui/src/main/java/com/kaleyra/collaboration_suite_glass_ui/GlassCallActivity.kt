@@ -312,6 +312,11 @@ internal class GlassCallActivity :
                 .onCompletion { binding.kaleyraStatusBar.showTimer() }
                 .launchIn(this@repeatOnStarted)
 
+            viewModel.callState
+                .takeWhile { it !is Call.State.Disconnected.Ended }
+                .onCompletion { binding.kaleyraStatusBar.hideTimer() }
+                .launchIn(this)
+
             viewModel.amIAlone
                 .onEach {
                     with(binding.kaleyraToastContainer) {
