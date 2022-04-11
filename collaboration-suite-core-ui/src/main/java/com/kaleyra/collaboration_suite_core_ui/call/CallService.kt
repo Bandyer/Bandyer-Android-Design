@@ -345,18 +345,19 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
             )
 
         call.state
-            .takeWhile { it !is Call.State.Connected }
             .onEach {
-                if (it !is Call.State.Connecting || participants.me != participants.creator()) return@onEach
-                showOutgoingCallNotification(usersDescription = calleeDescription, isGroupCall = isGroupCall)
+                when {
+                    it is Call.State.Connecting && participants.me == participants.creator() ->
+                        showOutgoingCallNotification(usersDescription = calleeDescription, isGroupCall = isGroupCall)
+                    it is Call.State.Connecting || it is Call.State.Connected -> showOnGoingCallNotification(
+                        usersDescription = calleeDescription,
+                        isGroupCall = isGroupCall,
+                        isCallRecorded = call.extras.recording is Call.Recording.OnConnect,
+                        isConnecting = it is Call.State.Connecting
+                    )
+                }
             }
-            .onCompletion {
-                showOnGoingCallNotification(
-                    usersDescription = calleeDescription,
-                    isGroupCall = isGroupCall,
-                    isCallRecorded = call.extras.recording is Call.Recording.OnConnect
-                )
-            }
+            .takeWhile { it !is Call.State.Connected }
             .launchIn(lifecycleScope)
     }
 
@@ -413,13 +414,15 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     private fun showOnGoingCallNotification(
         usersDescription: String,
         isGroupCall: Boolean,
-        isCallRecorded: Boolean
+        isCallRecorded: Boolean,
+        isConnecting: Boolean
     ) {
         val notification = NotificationManager.buildOngoingCallNotification(
             user = usersDescription,
             isGroupCall = isGroupCall,
             isCallRecorded = isCallRecorded,
             isSharingScreen = false,
+            isConnecting = isConnecting,
             activityClazz = activityClazz!!
         )
         showNotification(notification, true)

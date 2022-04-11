@@ -66,6 +66,7 @@ internal class CallNotification {
         val type: Type,
         var isHighImportance: Boolean = false,
         var user: String? = null,
+        var enableTimer: Boolean = false,
         var contentText: String? = null,
         var contentIntent: PendingIntent? = null,
         var fullscreenIntent: PendingIntent? = null,
@@ -88,6 +89,14 @@ internal class CallNotification {
          * @return Builder
          */
         fun importance(isHigh: Boolean) = apply { this.isHighImportance = isHigh }
+
+        /**
+         * Enable the notification timer
+         *
+         * @param enable String
+         * @return Builder
+         */
+        fun timer(enable: Boolean) = apply { this.enableTimer = enable }
 
         /**
          * The text to be shown inside the notification
@@ -155,7 +164,7 @@ internal class CallNotification {
                 type = type,
                 channelId = channelId,
                 isHighPriority = isHighImportance,
-                useTimer = type == Type.ONGOING,
+                enableTimer = enableTimer,
                 user = user,
                 contentText = contentText,
                 screenShareIntent = screenShareIntent,
@@ -167,7 +176,7 @@ internal class CallNotification {
                 context = context,
                 type = type,
                 channelId = channelId,
-                useTimer = type == Type.ONGOING,
+                enableTimer = enableTimer,
                 user = user,
                 contentText = contentText,
                 screenShareIntent = screenShareIntent,
@@ -183,7 +192,7 @@ internal class CallNotification {
             type: Type,
             channelId: String,
             isHighPriority: Boolean,
-            useTimer: Boolean,
+            enableTimer: Boolean,
             user: String? = null,
             contentText: String? = null,
             contentIntent: PendingIntent? = null,
@@ -198,7 +207,7 @@ internal class CallNotification {
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
-                .setUsesChronometer(useTimer)
+                .setUsesChronometer(enableTimer)
                 .setSmallIcon(R.drawable.kaleyra_z_audio_only)
                 .setCategory(NotificationCompat.CATEGORY_CALL)
                 .setPriority(if (isHighPriority) NotificationCompat.PRIORITY_MAX else NotificationCompat.PRIORITY_DEFAULT)
@@ -242,7 +251,7 @@ internal class CallNotification {
             context: Context,
             type: Type,
             channelId: String,
-            useTimer: Boolean,
+            enableTimer: Boolean,
             user: String? = null,
             contentText: String? = null,
             contentIntent: PendingIntent? = null,
@@ -277,7 +286,7 @@ internal class CallNotification {
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
-                .setUsesChronometer(useTimer)
+                .setUsesChronometer(enableTimer)
                 .setSmallIcon(R.drawable.kaleyra_z_audio_only)
                 .setCategory(Notification.CATEGORY_CALL)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
