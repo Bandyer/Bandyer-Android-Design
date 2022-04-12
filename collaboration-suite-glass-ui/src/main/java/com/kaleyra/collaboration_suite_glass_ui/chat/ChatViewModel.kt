@@ -23,4 +23,12 @@ class ChatViewModel(
     chatDelegate: ChatUIDelegate,
     deviceStatusDelegate: DeviceStatusDelegate
 ) : ViewModel() {
+
+    val channel: ChatChannel = chatDelegate.channel
+
+    val usersDescription: UsersDescription = chatDelegate.usersDescription
+
+    val battery: SharedFlow<BatteryInfo> = deviceStatusDelegate.battery
+
+    val wifi: SharedFlow<WiFiInfo> = deviceStatusDelegate.wifi
 }
