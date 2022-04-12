@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
+import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.CallParticipantItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItemData
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
@@ -50,7 +51,7 @@ import kotlinx.coroutines.launch
 /**
  * ParticipantsFragment
  */
-internal class ParticipantsFragment : BaseFragment(), TiltListener {
+internal class ParticipantsFragment : BaseFragment<GlassCallActivity>(), TiltListener {
 
     private var _binding: KaleyraGlassFragmentParticipantsBinding? = null
     override val binding: KaleyraGlassFragmentParticipantsBinding get() = _binding!!
