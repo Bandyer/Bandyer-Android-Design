@@ -66,14 +66,9 @@
 
     <!-- BOTTOM NAVIGATION BAR -->
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Chat" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.RootLayout.Chat</item>
         <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.Chat</item>
         <item name="kaleyra_swipeDownItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.Chat</item>
         <item name="kaleyra_tapItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.Chat</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.RootLayout.Chat" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.RootLayout">
-        <item name="android:background">@color/kaleyra_glass_dimmed_background_color</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.Chat" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal">

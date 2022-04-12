@@ -18,7 +18,7 @@
 <resources>
     <!-- RECYCLER VIEW -->
     <style name="KaleyraCollaborationSuiteUI.Glass.RecyclerView" parent="KaleyraCollaborationSuiteUI.Glass">
-        <item name="android:background">@color/kaleyra_glass_dimmed_background_color</item>
+<!--        <item name="android:background">@color/kaleyra_glass_dimmed_background_color</item>-->
     </style>
 
     <!-- RECYCLER VIEW ITEM -->
