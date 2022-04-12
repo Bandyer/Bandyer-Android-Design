@@ -2,16 +2,25 @@ package com.kaleyra.collaboration_suite_glass_ui.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
-import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
+import com.bandyer.android_chat_sdk.api.ChatChannel
+import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
+import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
+import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
+import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
+import kotlinx.coroutines.flow.SharedFlow
 
 @Suppress("UNCHECKED_CAST")
 internal class ChatViewModelFactory(
-
+    private val chatDelegate: ChatUIDelegate,
+    private val deviceStatusDelegate: DeviceStatusDelegate
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        ChatViewModel() as T
+        ChatViewModel(chatDelegate, deviceStatusDelegate) as T
 }
 
-class ChatViewModel(): ViewModel() {
+class ChatViewModel(
+    chatDelegate: ChatUIDelegate,
+    deviceStatusDelegate: DeviceStatusDelegate
+) : ViewModel() {
 }
