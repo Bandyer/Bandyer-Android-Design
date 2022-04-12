@@ -84,7 +84,7 @@ internal class AvatarView @JvmOverloads constructor(
      * @param text String?
      */
     fun setText(text: String?) {
-        binding.kaleyraAvatarText.text = text?.uppercase(Locale.getDefault())
+        binding.kaleyraAvatarText.text = text?.uppercase(Locale.getDefault()) ?: ""
     }
 
     /**

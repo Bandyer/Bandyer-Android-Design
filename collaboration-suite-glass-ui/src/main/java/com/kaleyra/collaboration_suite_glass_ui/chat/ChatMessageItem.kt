@@ -68,7 +68,8 @@ internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMes
                 val data = item.data
                 if (data.userAvatarId != null) setAvatar(data.userAvatarId)
                 else if (data.userAvatarUrl != null) setAvatar(data.userAvatarUrl)
-                setAvatarBackground(data.userId?.parseToColor())
+                setAvatarBackground(data.sender.parseToColor())
+                setAvatarText(data.sender.first().toString())
                 setMessage(data.message)
                 setTime(data.time)
                 if (!data.isFirstPage) hideName()
@@ -84,6 +85,7 @@ internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMes
             setName(null)
             showName()
             setAvatarBackground(null)
+            setAvatarText(null)
             setTime(null)
             setMessage(null)
         }

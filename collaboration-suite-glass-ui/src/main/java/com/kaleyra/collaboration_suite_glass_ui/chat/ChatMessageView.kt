@@ -61,7 +61,6 @@ internal class ChatMessageView @JvmOverloads constructor(
      */
     fun setName(text: String?) = with(binding) {
         kaleyraName.text = text
-        kaleyraAvatar.setText(text?.first().toString())
     }
 
     /**
@@ -84,6 +83,13 @@ internal class ChatMessageView @JvmOverloads constructor(
      * @param color The color resource
      */
     fun setAvatarBackground(@ColorInt color: Int?) = binding.kaleyraAvatar.setBackground(color)
+
+    /**
+     * Set the avatar text
+     *
+     * @param text String?
+     */
+    fun setAvatarText(text: String?) = binding.kaleyraAvatar.setText(text?.first().toString())
 
     /**
      * Set the message text
