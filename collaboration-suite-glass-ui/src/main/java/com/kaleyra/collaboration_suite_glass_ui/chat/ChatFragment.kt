@@ -46,7 +46,7 @@ import java.util.*
 /**
  * ChatFragment
  */
-internal class ChatFragment : BaseFragment(), TiltListener {
+internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 
     private var _binding: KaleyraGlassFragmentChatBinding? = null
     override val binding: KaleyraGlassFragmentChatBinding get() = _binding!!
@@ -81,7 +81,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
             .inflate(inflater, container, false)
             .apply {
                 if(GlassDeviceUtils.isRealWear)
-                    kaleyraBottomNavigation.setListenersForRealwear()
+                    kaleyraBottomNavigation.setListenersForRealWear()
 
                 // Init the RecyclerView
                 kaleyraMessages.apply {

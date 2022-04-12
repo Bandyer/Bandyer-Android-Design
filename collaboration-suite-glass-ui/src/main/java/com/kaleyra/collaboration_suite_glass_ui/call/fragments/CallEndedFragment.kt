@@ -25,6 +25,7 @@ import androidx.core.view.postDelayed
 import androidx.navigation.fragment.navArgs
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenLogoDialogBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
@@ -32,7 +33,7 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensio
 /**
  * CallEndedFragment
  */
-internal class CallEndedFragment : BaseFragment() {
+internal class CallEndedFragment : BaseFragment<GlassCallActivity>() {
 
     private var _binding: KaleyraGlassFragmentFullScreenLogoDialogBinding? = null
     override val binding: KaleyraGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
@@ -60,7 +61,7 @@ internal class CallEndedFragment : BaseFragment() {
             container,
             false
         ).apply {
-            if(GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear()
+            if(GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear()
             kaleyraTitle.text = args.title
             kaleyraSubtitle.text = args.subtitle
         }

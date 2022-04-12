@@ -55,6 +55,7 @@ import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.OtherStreamIt
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.StreamItem
 import com.kaleyra.collaboration_suite_glass_ui.call.fragments.CallEndedFragmentArgs
 import com.kaleyra.collaboration_suite_glass_ui.chat.notification.ChatNotificationManager
+import com.kaleyra.collaboration_suite_glass_ui.common.OnDestinationChangedListener
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraCallActivityGlassBinding
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
@@ -89,6 +90,7 @@ internal class GlassCallActivity :
     CallActivity(),
     GlassGestureDetector.OnGestureListener,
 //    ChatNotificationManager.NotificationListener,
+    OnDestinationChangedListener,
     TouchEventListener {
 
     private lateinit var binding: KaleyraCallActivityGlassBinding
@@ -96,8 +98,6 @@ internal class GlassCallActivity :
     private var isActivityInForeground = false
 
     private var service: CallService? = null
-    val isServiceBound: Boolean
-        get() = service != null
 
     private val viewModel: CallViewModel by viewModels {
         CallViewModelFactory(
@@ -618,7 +618,7 @@ internal class GlassCallActivity :
      *
      *  @param destinationId The destination fragment's id
      */
-    fun onDestinationChanged(destinationId: Int) {
+    override fun onDestinationChanged(destinationId: Int) {
 //        (destinationId == R.id.chatFragment).also {
 //            if (it) notificationManager!!.dismiss(false)
 //            notificationManager!!.dnd = it

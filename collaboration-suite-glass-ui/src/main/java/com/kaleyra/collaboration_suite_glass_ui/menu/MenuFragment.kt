@@ -33,6 +33,7 @@ import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.Horizonta
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentMenuBinding
 import com.kaleyra.collaboration_suite_core_ui.model.Option
+import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -47,7 +48,7 @@ import kotlinx.coroutines.flow.onEach
 /**
  * KaleyraGlassMenuFragment
  */
-internal class MenuFragment : BaseFragment(), TiltListener {
+internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
 
     private var _binding: KaleyraGlassFragmentMenuBinding? = null
     override val binding: KaleyraGlassFragmentMenuBinding get() = _binding!!
@@ -80,7 +81,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             .inflate(inflater, container, false)
             .apply {
                 if (GlassDeviceUtils.isRealWear)
-                    kaleyraBottomNavigation.setListenersForRealwear()
+                    kaleyraBottomNavigation.setListenersForRealWear()
 
                 // Init the RecyclerView
                 with(kaleyraMenu) {
@@ -151,7 +152,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         return CallAction.getActions(requireContext(), withCamera = withCamera, withChat = true)
     }
 
-    override fun onDismiss() = Unit
+//    override fun onDismiss() = Unit
 
     override fun onTap() = onTap(itemAdapter!!.getAdapterItem(currentMenuItemIndex).action)
 

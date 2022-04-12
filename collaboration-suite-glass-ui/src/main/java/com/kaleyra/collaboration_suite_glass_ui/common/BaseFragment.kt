@@ -23,32 +23,24 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceActivity
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setAlphaWithAnimation
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
-import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
-import com.kaleyra.collaboration_suite_glass_ui.chat.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltFragment
 
 /**
  * BaseFragment. A base class for all the smart glass fragments
  */
-internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
-    ChatNotificationManager.NotificationListener,
-    BoundServiceActivity.Observer {
+internal abstract class BaseFragment<T> : TiltFragment(), TouchEventListener,
+    //    ChatNotificationManager.NotificationListener,
+    BoundServiceActivity.Observer where T : BoundServiceActivity<*>, T : OnDestinationChangedListener {
 
     /**
-     * The [GlassCallActivity]
+     * The activity
      */
+    @Suppress("UNCHECKED_CAST")
     private val activity
-        get() = requireActivity() as GlassCallActivity
-
-    /**
-     * Flag which point outs if the call service is already bound
-     */
-    private val isServiceBound: Boolean
-        get() = activity.isServiceBound
+        get() = requireActivity() as T
 
     /**
      * The fragment's view binding
@@ -93,7 +85,7 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity.addNotificationListener(this)
+//        activity.addNotificationListener(this)
         activity.addServiceBoundObserver(this)
 
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -107,8 +99,8 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
         NavHostFragment.findNavController(this).currentDestination?.id?.also {
             activity.onDestinationChanged(it)
         }
-        if (isServiceBound)
-            onServiceBound()
+        if (!activity.isServiceBound) return
+        onServiceBound()
     }
 
     /**
@@ -117,14 +109,14 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
     override fun onDestroyView() {
         super.onDestroyView()
         activity.removeServiceBoundObserver(this)
-        activity.removeNotificationListener(this)
+//        activity.removeNotificationListener(this)
     }
 
-    override fun onShow() = binding.root.setAlphaWithAnimation(0f, 100L)
+//    override fun onShow() = binding.root.setAlphaWithAnimation(0f, 100L)
 
-    override fun onExpanded() = Unit
+//    override fun onExpanded() = Unit
 
-    override fun onDismiss() = binding.root.setAlphaWithAnimation(1f, 100L)
+//    override fun onDismiss() = binding.root.setAlphaWithAnimation(1f, 100L)
 
     /**
      * This method should NOT be overridden. Use onTap, onSwipeDown, onSwipeForward, onSwipeBackward instead.
@@ -142,7 +134,7 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
      *
      * @receiver BottomNavigationView
      */
-    protected fun BottomNavigationView.setListenersForRealwear() {
+    protected fun BottomNavigationView.setListenersForRealWear() {
         setTapOnClickListener { onTap() }
         setSwipeDownOnClickListener { onSwipeDown() }
         setSwipeHorizontalOnClickListener { onSwipeForward(true) }

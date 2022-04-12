@@ -26,6 +26,7 @@ import androidx.navigation.fragment.findNavController
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
+import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentStartBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
@@ -36,7 +37,7 @@ import kotlinx.coroutines.flow.takeWhile
 /**
  * StartFragment, used as start destination in the nav graph
  */
-internal class StartFragment : BaseFragment() {
+internal class StartFragment : BaseFragment<GlassCallActivity>() {
 
     private var _binding: KaleyraGlassFragmentStartBinding? = null
     override val binding: KaleyraGlassFragmentStartBinding get() = _binding!!

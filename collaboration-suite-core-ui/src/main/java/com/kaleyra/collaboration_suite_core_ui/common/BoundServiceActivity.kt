@@ -24,7 +24,7 @@ import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
 
 /**
- * Boundouble activity to service
+ * An activity that can be bound to a service
  *
  * @suppress
  */
@@ -34,8 +34,10 @@ abstract class BoundServiceActivity<T : BoundService>(private val clazz: Class<T
         fun onServiceBound()
     }
 
-    private val observers: ArrayList<Observer> = arrayListOf()
+    var isServiceBound: Boolean = false
+        private set
 
+    private val observers: ArrayList<Observer> = arrayListOf()
     private var serviceConnection: ServiceConnection? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,9 +47,12 @@ abstract class BoundServiceActivity<T : BoundService>(private val clazz: Class<T
                 val service = (binder as BoundServiceBinder).getService<T>()
                 onServiceBound(service)
                 notifyServiceBound()
+                isServiceBound = true
             }
 
-            override fun onServiceDisconnected(componentName: ComponentName) = Unit
+            override fun onServiceDisconnected(componentName: ComponentName) {
+                isServiceBound = false
+            }
         }
 
         with(applicationContext) {

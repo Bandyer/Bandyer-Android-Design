@@ -26,6 +26,7 @@ import androidx.navigation.fragment.findNavController
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenDialogBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
@@ -33,7 +34,7 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensio
 /**
  * EndCallFragment
  */
-internal class EndCallFragment : BaseFragment() {
+internal class EndCallFragment : BaseFragment<GlassCallActivity>() {
 
     private var _binding: KaleyraGlassFragmentFullScreenDialogBinding? = null
     override val binding: KaleyraGlassFragmentFullScreenDialogBinding get() = _binding!!
@@ -58,7 +59,7 @@ internal class EndCallFragment : BaseFragment() {
                 container,
                 false
             )
-            .apply { if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear() }
+            .apply { if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear() }
 
         return binding.root
     }

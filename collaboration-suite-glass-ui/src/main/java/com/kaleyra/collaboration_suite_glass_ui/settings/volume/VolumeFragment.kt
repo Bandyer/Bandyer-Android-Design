@@ -25,6 +25,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
+import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentVolumeBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
@@ -32,7 +33,7 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 /**
  * VolumeFragment
  */
-internal class VolumeFragment : BaseFragment(), TiltListener {
+internal class VolumeFragment : BaseFragment<GlassCallActivity>(), TiltListener {
 
     private var _binding: KaleyraGlassFragmentVolumeBinding? = null
     override val binding: KaleyraGlassFragmentVolumeBinding get() = _binding!!
@@ -62,7 +63,7 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
         _binding = KaleyraGlassFragmentVolumeBinding
             .inflate(inflater, container, false)
             .apply {
-                if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear()
+                if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear()
                 root.setOnTouchListener { _, _ -> true }
             }
 

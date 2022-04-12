@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentZoomBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
@@ -30,7 +31,7 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 /**
  * ZoomFragment
  */
-internal class ZoomFragment : BaseFragment(), TiltListener {
+internal class ZoomFragment : BaseFragment<GlassCallActivity>(), TiltListener {
 
     private var _binding: KaleyraGlassFragmentZoomBinding? = null
     override val binding: KaleyraGlassFragmentZoomBinding get() = _binding!!
@@ -58,7 +59,7 @@ internal class ZoomFragment : BaseFragment(), TiltListener {
         _binding = KaleyraGlassFragmentZoomBinding
             .inflate(inflater, container, false)
             .apply {
-                if(GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear()
+                if(GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear()
                 root.setOnTouchListener { _, _ -> true }
             }
 

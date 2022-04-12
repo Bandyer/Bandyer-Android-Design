@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_glass_ui.*
+import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
@@ -43,7 +44,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 /**
  * ChatMenuFragment
  */
-internal class ChatMenuFragment : BaseFragment(), TiltListener {
+internal class ChatMenuFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 
     private var _binding: KaleyraGlassFragmentChatMenuBinding? = null
     override val binding: KaleyraGlassFragmentChatMenuBinding get() = _binding!!
@@ -80,7 +81,7 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
             false
         ).apply {
             if(GlassDeviceUtils.isRealWear)
-                kaleyraBottomNavigation.setListenersForRealwear()
+                kaleyraBottomNavigation.setListenersForRealWear()
 
             // Init the RecyclerView
             with(kaleyraActions) {

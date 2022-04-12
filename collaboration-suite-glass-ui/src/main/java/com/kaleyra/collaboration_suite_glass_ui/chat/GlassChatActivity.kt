@@ -8,9 +8,10 @@ import com.kaleyra.collaboration_suite_core_ui.chat.ChatService
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.common.OnDestinationChangedListener
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatActivityGlassBinding
 
-class GlassChatActivity : ChatActivity() {
+class GlassChatActivity : ChatActivity(), OnDestinationChangedListener {
 
     private lateinit var binding: KaleyraChatActivityGlassBinding
 
@@ -33,4 +34,6 @@ class GlassChatActivity : ChatActivity() {
     override fun onServiceBound(service: ChatService) {
         this.service = service
     }
+
+    override fun onDestinationChanged(destinationId: Int) = Unit
 }

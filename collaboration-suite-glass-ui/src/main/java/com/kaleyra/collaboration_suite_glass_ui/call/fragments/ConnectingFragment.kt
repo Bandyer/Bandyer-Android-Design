@@ -27,6 +27,7 @@ import androidx.fragment.app.activityViewModels
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenLogoDialogBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -35,7 +36,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
-internal abstract class ConnectingFragment : BaseFragment() {
+internal abstract class ConnectingFragment : BaseFragment<GlassCallActivity>() {
 
     private var _binding: KaleyraGlassFragmentFullScreenLogoDialogBinding? = null
     override val binding: KaleyraGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
@@ -61,7 +62,7 @@ internal abstract class ConnectingFragment : BaseFragment() {
                 container,
                 false
             ).apply {
-                if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear()
+                if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear()
             }
 
         return binding.root

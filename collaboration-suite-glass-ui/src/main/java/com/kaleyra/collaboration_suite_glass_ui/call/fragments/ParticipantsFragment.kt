@@ -88,7 +88,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
             .inflate(inflater, container, false)
             .apply {
                 if (GlassDeviceUtils.isRealWear)
-                    kaleyraBottomNavigation.setListenersForRealwear()
+                    kaleyraBottomNavigation.setListenersForRealWear()
 
                 // Init the RecyclerView
                 with(kaleyraParticipants) {
