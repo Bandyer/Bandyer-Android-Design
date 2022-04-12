@@ -16,6 +16,7 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.chat
 
+import android.net.Uri
 import androidx.annotation.DrawableRes
 
 /**
@@ -26,18 +27,16 @@ import androidx.annotation.DrawableRes
  * @property userId The sender user identifier
  * @property message The message text
  * @property time The time the message was sent
- * @property userAvatarId The local resource id for the user's avatar
- * @property userAvatarUrl The remote resource url for the user's avatar
+ * @property avatar The uri resource for the user's avatar
  * @property isFirstPage True if it is the first page of the message, false otherwise
  * @constructor
  */
 internal data class ChatMessageData(
     val id: String,
-    val sender: String,
     val userId: String,
+    val sender: String,
+    val avatar: Uri,
     val message: String,
     val time: Long,
-    @DrawableRes val userAvatarId: Int? = null,
-    val userAvatarUrl: String? = null,
     val isFirstPage: Boolean = true
 )

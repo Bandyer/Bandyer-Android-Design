@@ -16,6 +16,7 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.chat
 
+import android.net.Uri
 import android.view.View
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -66,8 +67,7 @@ internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMes
             with(binding.kaleyraChatMessage) {
                 itemView.isClickable = false
                 val data = item.data
-                if (data.userAvatarId != null) setAvatar(data.userAvatarId)
-                else if (data.userAvatarUrl != null) setAvatar(data.userAvatarUrl)
+                if (data.avatar != Uri.EMPTY) setAvatar(data.avatar)
                 setAvatarBackground(data.sender.parseToColor())
                 setAvatarText(data.sender.first().toString())
                 setMessage(data.message)

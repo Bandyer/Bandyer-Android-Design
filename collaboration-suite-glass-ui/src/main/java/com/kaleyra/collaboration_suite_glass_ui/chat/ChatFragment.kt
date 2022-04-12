@@ -147,6 +147,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                             it.messageSid,
                             it.author,
                             viewModel.usersDescription.name(listOf(it.author)),
+                            viewModel.usersDescription.image(listOf(it.author)),
                             it.messageBody,
                             it.timestamp ?: 0L
                         )
@@ -206,7 +207,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
             post {
                 with(binding) {
                     kaleyraName.text = data.sender
-                    kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), data.time!!)
+                    kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), data.time)
                     kaleyraMessage.text = data.message
                     val pageList = kaleyraMessage.paginate()
                     for (i in pageList.indices) {
@@ -216,10 +217,9 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                                     data.id,
                                     data.sender,
                                     data.userId,
+                                    data.avatar,
                                     pageList[i].toString(),
                                     data.time,
-                                    data.userAvatarId,
-                                    data.userAvatarUrl,
                                     i == 0
                                 )
                             )

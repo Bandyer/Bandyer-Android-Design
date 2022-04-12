@@ -17,12 +17,12 @@
 package com.kaleyra.collaboration_suite_glass_ui.chat
 
 import android.content.Context
+import android.net.Uri
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.constraintlayout.widget.ConstraintLayout
-
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatMessageLayoutBinding
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 
@@ -50,9 +50,9 @@ internal class ChatMessageView @JvmOverloads constructor(
     /**
      * Set the user avatar
      *
-     * @param url String
+     * @param uri The local resource id
      */
-    fun setAvatar(url: String) = binding.kaleyraAvatar.setImage(url)
+    fun setAvatar(uri: Uri) = binding.kaleyraAvatar.setImage(uri)
 
     /**
      * Set the sender's name
