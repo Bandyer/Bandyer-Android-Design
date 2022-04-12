@@ -126,16 +126,18 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(this)
 
-
         clearNotification()
 
+        phoneBoxJob?.cancel()
         currentCall?.end()
         phoneBox?.disconnect()
         batteryObserver?.stop()
         wifiObserver?.stop()
 
+        activityClazz = null
         currentCall = null
         phoneBox = null
+        phoneBoxJob = null
         batteryObserver = null
         wifiObserver = null
         callAudioManager = null
