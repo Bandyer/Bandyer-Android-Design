@@ -65,7 +65,6 @@ import kotlinx.coroutines.plus
 /**
  * @suppress
  */
-@SuppressLint("MissingPermission")
 class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStatusDelegate,
     CallNotificationActionReceiver.ActionDelegate, DefaultLifecycleObserver, Application.ActivityLifecycleCallbacks {
 
