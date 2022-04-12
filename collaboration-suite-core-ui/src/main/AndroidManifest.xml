@@ -18,6 +18,7 @@
 <manifest package="com.kaleyra.collaboration_suite_core_ui"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -32,8 +33,9 @@
 
         <receiver android:name=".notification.CallNotificationActionReceiver"  android:exported="false">
             <intent-filter>
-                <action android:name="android.intent.action.ACTION_HANGUP"/>
-                <action android:name="android.intent.action.ACTION_ANSWER"/>
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.HANGUP"/>
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.ANSWER"/>
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.STOP_SCREEN_SHARE"/>
             </intent-filter>
         </receiver>
     </application>
