@@ -102,6 +102,7 @@
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.Chat" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.Chat</item>
         <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapChat</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.Chat" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap">
