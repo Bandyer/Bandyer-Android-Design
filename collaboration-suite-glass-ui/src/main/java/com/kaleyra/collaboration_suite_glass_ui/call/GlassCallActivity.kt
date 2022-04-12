@@ -88,7 +88,7 @@ import java.util.concurrent.ConcurrentMap
 internal class GlassCallActivity :
     CallActivity(),
     GlassGestureDetector.OnGestureListener,
-    ChatNotificationManager.NotificationListener,
+//    ChatNotificationManager.NotificationListener,
     TouchEventListener {
 
     private lateinit var binding: KaleyraCallActivityGlassBinding
@@ -123,8 +123,8 @@ internal class GlassCallActivity :
 
     private var glassGestureDetector: GlassGestureDetector? = null
 
-    private var notificationManager: ChatNotificationManager? = null
-    private var isNotificationVisible = false
+//    private var notificationManager: ChatNotificationManager? = null
+//    private var isNotificationVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -136,8 +136,8 @@ internal class GlassCallActivity :
 
         glassGestureDetector = GlassGestureDetector(this, this)
 
-        notificationManager =
-            ChatNotificationManager(binding.kaleyraContent).also { it.addListener(this) }
+//        notificationManager =
+//            ChatNotificationManager(binding.kaleyraContent).also { it.addListener(this) }
 
         // Set up the streams' recycler view
         with(binding.kaleyraStreams) {
@@ -606,7 +606,7 @@ internal class GlassCallActivity :
         whiteboardItemAdapter = null
         navController = null
         glassGestureDetector = null
-        notificationManager = null
+//        notificationManager = null
     }
 
     /**
@@ -619,10 +619,10 @@ internal class GlassCallActivity :
      *  @param destinationId The destination fragment's id
      */
     fun onDestinationChanged(destinationId: Int) {
-        (destinationId == R.id.chatFragment).also {
-            if (it) notificationManager!!.dismiss(false)
-            notificationManager!!.dnd = it
-        }
+//        (destinationId == R.id.chatFragment).also {
+//            if (it) notificationManager!!.dismiss(false)
+//            notificationManager!!.dnd = it
+//        }
 
         with(binding.kaleyraStatusBar) {
             setBackgroundColor(
@@ -667,49 +667,48 @@ internal class GlassCallActivity :
         handleSmartGlassTouchEvent(TouchEvent.getEvent(gesture))
 
     private fun handleSmartGlassTouchEvent(glassEvent: TouchEvent): Boolean =
-        if (isNotificationVisible) onTouch(glassEvent)
-        else (supportFragmentManager.currentNavigationFragment as? TouchEventListener)?.onTouch(
-            glassEvent
-        ) ?: false
+//        if (isNotificationVisible) onTouch(glassEvent)
+//        else
+        (supportFragmentManager.currentNavigationFragment as? TouchEventListener)?.onTouch(glassEvent) ?: false
 
-    override fun onTouch(event: TouchEvent): Boolean =
-        when (event.type) {
-            TouchEvent.Type.TAP -> true.also { notificationManager!!.expand() }
-            TouchEvent.Type.SWIPE_DOWN -> true.also { notificationManager!!.dismiss() }
-            else -> false
-        }
+    override fun onTouch(event: TouchEvent): Boolean = false
+//        when (event.type) {
+//            TouchEvent.Type.TAP -> true.also { notificationManager!!.expand() }
+//            TouchEvent.Type.SWIPE_DOWN -> true.also { notificationManager!!.dismiss() }
+//            else -> false
+//        }
 
-    override fun onShow() {
-        isNotificationVisible = true
-    }
+//    override fun onShow() {
+//        isNotificationVisible = true
+//    }
 
-    override fun onExpanded() {
-        isNotificationVisible = false
-        if (supportFragmentManager.currentNavigationFragment?.id != R.id.smartglass_nav_graph_chat)
-            navController!!.navigate(R.id.smartglass_nav_graph_chat)
-    }
+//    override fun onExpanded() {
+//        isNotificationVisible = false
+//        if (supportFragmentManager.currentNavigationFragment?.id != R.id.smartglass_nav_graph_chat)
+//            navController!!.navigate(R.id.smartglass_nav_graph_chat)
+//    }
 
-    override fun onDismiss() {
-        isNotificationVisible = false
-    }
+//    override fun onDismiss() {
+//        isNotificationVisible = false
+//    }
 
-    /**
-     * Add a notification listener
-     *
-     * @param listener NotificationListener
-     */
-    fun addNotificationListener(listener: ChatNotificationManager.NotificationListener) {
-        notificationManager!!.addListener(listener)
-    }
+//    /**
+//     * Add a notification listener
+//     *
+//     * @param listener NotificationListener
+//     */
+//    fun addNotificationListener(listener: ChatNotificationManager.NotificationListener) {
+//        notificationManager!!.addListener(listener)
+//    }
 
-    /**
-     * Remove a notification listener
-     *
-     * @param listener NotificationListener
-     */
-    fun removeNotificationListener(listener: ChatNotificationManager.NotificationListener) {
-        notificationManager!!.removeListener(listener)
-    }
+//    /**
+//     * Remove a notification listener
+//     *
+//     * @param listener NotificationListener
+//     */
+//    fun removeNotificationListener(listener: ChatNotificationManager.NotificationListener) {
+//        notificationManager!!.removeListener(listener)
+//    }
 
     private companion object {
         const val BLOCKED_TOAST_ID = "blocked-input"
