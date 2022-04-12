@@ -27,7 +27,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.s
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
-import com.kaleyra.collaboration_suite_glass_ui.call.CallActivity
+import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.chat.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltFragment
 
@@ -39,10 +39,10 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
     BoundServiceActivity.Observer {
 
     /**
-     * The [CallActivity]
+     * The [GlassCallActivity]
      */
     private val activity
-        get() = requireActivity() as CallActivity
+        get() = requireActivity() as GlassCallActivity
 
     /**
      * Flag which point outs if the call service is already bound

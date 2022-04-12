@@ -83,9 +83,9 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentMap
 
 /**
- * CallActivity
+ * GlassCallActivity
  */
-internal class CallActivity :
+internal class GlassCallActivity :
     CallActivity(),
     GlassGestureDetector.OnGestureListener,
     ChatNotificationManager.NotificationListener,
@@ -145,7 +145,7 @@ internal class CallActivity :
             whiteboardItemAdapter = ItemAdapter()
             fastAdapter = FastAdapter.with(listOf(whiteboardItemAdapter!!, streamsItemAdapter!!))
             val layoutManager =
-                LinearLayoutManager(this@CallActivity, LinearLayoutManager.HORIZONTAL, false)
+                LinearLayoutManager(this@GlassCallActivity, LinearLayoutManager.HORIZONTAL, false)
 
             this.layoutManager = layoutManager
             adapter = fastAdapter!!.apply {
@@ -553,8 +553,8 @@ internal class CallActivity :
         val livePointerView =
             livePointer ?: LivePointerView(
                 ContextThemeWrapper(
-                    this@CallActivity,
-                    this@CallActivity.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Call_kaleyra_livePointerStyle)
+                    this@GlassCallActivity,
+                    this@GlassCallActivity.getCallThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Call_kaleyra_livePointerStyle)
                 )
             ).also {
                 it.id = View.generateViewId()

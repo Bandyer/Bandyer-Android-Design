@@ -125,8 +125,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         super<BoundService>.onDestroy()
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(this)
-
-
+        
         clearNotification()
 
         currentCall?.end()

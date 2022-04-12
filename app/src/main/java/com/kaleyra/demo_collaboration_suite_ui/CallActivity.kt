@@ -66,7 +66,7 @@ import java.util.*
 
 class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, KaleyraCallActionWidget.OnClickListener {
 
-    private val TAG = "CallActivity"
+    private val TAG = "GlassCallActivity"
 
     private var callActionWidget: KaleyraCallActionWidget<ActionItem, KaleyraBottomSheet>? = null
 

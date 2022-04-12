@@ -13,7 +13,7 @@ import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModelFactory
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatActivityGlassBinding
 
-class ChatActivity : ChatActivity() {
+class GlassChatActivity : ChatActivity() {
 
     private lateinit var binding: KaleyraChatActivityGlassBinding
 
