@@ -33,10 +33,10 @@ import androidx.annotation.DrawableRes
  */
 internal data class ChatMessageData(
     val id: String,
-    val sender: String? = null,
-    val userId: String? = null,
-    val message: String? = null,
-    val time: Long? = null,
+    val sender: String,
+    val userId: String,
+    val message: String,
+    val time: Long,
     @DrawableRes val userAvatarId: Int? = null,
     val userAvatarUrl: String? = null,
     val isFirstPage: Boolean = true
