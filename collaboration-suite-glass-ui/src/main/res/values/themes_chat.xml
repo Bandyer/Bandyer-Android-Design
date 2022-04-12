@@ -22,6 +22,8 @@
     </declare-styleable>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.DayNight.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.DayNight">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassChat.RootLayout</item>
+        <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
         <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView</item>
         <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem</item>
         <item name="kaleyra_counterStyle">@style/KaleyraCollaborationSuiteUI.TextView.CounterGlassChat</item>
@@ -30,6 +32,8 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Day.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.Day">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassChat.RootLayout</item>
+        <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
         <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView</item>
         <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem</item>
         <item name="kaleyra_counterStyle">@style/KaleyraCollaborationSuiteUI.TextView.CounterGlassChat</item>
@@ -38,11 +42,17 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Night.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.Night">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassChat.RootLayout</item>
+        <item name="kaleyra_statusBarStyle">@style/KaleyraCollaborationSuiteUI.Glass.StatusBar</item>
         <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView</item>
         <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem</item>
         <item name="kaleyra_counterStyle">@style/KaleyraCollaborationSuiteUI.TextView.CounterGlassChat</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Chat</item>
         <item name="kaleyra_chatMenuStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.ChatMenu</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Theme.GlassChat.RootLayout" parent="">
+        <item name="android:background">@color/kaleyra_glass_background_color</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.DayNight.GlassChat"/>

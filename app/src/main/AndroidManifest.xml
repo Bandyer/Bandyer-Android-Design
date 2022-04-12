@@ -79,7 +79,7 @@
         <activity
             android:name="com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity"
             android:exported="true"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Chat">
+            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
