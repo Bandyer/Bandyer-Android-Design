@@ -1,8 +1,6 @@
 package com.kaleyra.collaboration_suite_core_ui.chat
 
-import android.annotation.SuppressLint
 import android.content.Intent
-import com.bandyer.android_chat_sdk.ChatClient
 import com.bandyer.android_chat_sdk.ChatClientInstance
 import com.bandyer.android_chat_sdk.api.ChatChannel
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
@@ -14,7 +12,6 @@ import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
 import kotlinx.coroutines.flow.SharedFlow
 
-@SuppressLint("MissingPermission")
 class ChatService : BoundService(), ChatUIDelegate, DeviceStatusDelegate {
 
     private var activityClazz: Class<*>? = null
