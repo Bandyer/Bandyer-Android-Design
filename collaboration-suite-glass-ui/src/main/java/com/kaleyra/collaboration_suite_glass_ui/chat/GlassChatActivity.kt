@@ -28,6 +28,32 @@ class GlassChatActivity : ChatActivity(), OnDestinationChangedListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.kaleyra_chat_activity_glass)
 
+        // TODO move in onServiceBound
+        repeatOnStarted {
+            viewModel
+                .battery
+                .onEach {
+                    with(binding.kaleyraStatusBar) {
+                        setBatteryChargingState(it.state == BatteryInfo.State.CHARGING)
+                        setBatteryCharge(it.percentage)
+                    }
+                }
+                .launchIn(this)
+
+            viewModel
+                .wifi
+                .onEach {
+                    binding.kaleyraStatusBar.setWiFiSignalState(
+                        when {
+                            it.state == WiFiInfo.State.DISABLED -> StatusBarView.WiFiSignalState.DISABLED
+                            it.level == WiFiInfo.Level.NO_SIGNAL || it.level == WiFiInfo.Level.POOR -> StatusBarView.WiFiSignalState.LOW
+                            it.level == WiFiInfo.Level.FAIR || it.level == WiFiInfo.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
+                            else -> StatusBarView.WiFiSignalState.FULL
+                        }
+                    )
+                }
+                .launchIn(this)
+        }
 //        enableImmersiveMode()
     }
 
