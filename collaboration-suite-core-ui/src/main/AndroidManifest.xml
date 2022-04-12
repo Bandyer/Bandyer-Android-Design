@@ -27,6 +27,9 @@
             android:name=".call.CallService"
             android:foregroundServiceType="phoneCall|mediaProjection|camera|microphone" />
 
+        <service
+            android:name=".chat.ChatService" />
+
         <receiver android:name=".notification.CallNotificationActionReceiver"  android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_HANGUP"/>
