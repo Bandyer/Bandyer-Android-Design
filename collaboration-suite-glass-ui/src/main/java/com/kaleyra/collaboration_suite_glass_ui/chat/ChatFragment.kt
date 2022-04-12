@@ -135,7 +135,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         pagesIds = arrayListOf()
     }
 
-    override fun onShow() = Unit
+//    override fun onShow() = Unit
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
         binding.kaleyraMessages.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
