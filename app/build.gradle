@@ -91,6 +91,6 @@ dependencies {
     implementation project(':collaboration-suite-phone-ui')
     implementation project(':collaboration-suite-glass-ui')
     implementation project(':collaboration-suite-core-ui')
-    implementation "com.kaleyra:collaboration-suite-utils:1.0.0"
-    implementation "com.bandyer:bandyer-android-audiosession:2.0.10"
+    implementation "com.kaleyra:collaboration-suite-utils:2.0.1"
+    implementation "com.bandyer:bandyer-android-audiosession:2.2.1"
 }
