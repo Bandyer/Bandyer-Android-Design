@@ -7,12 +7,14 @@ import com.bandyer.android_chat_sdk.api.ChatChannel
 import com.bandyer.android_chat_sdk.api.ChatMessages
 import com.bandyer.android_chat_sdk.api.ChatParticipant
 import com.bandyer.android_chat_sdk.api.ChatParticipants
+import com.bandyer.android_chat_sdk.chat_service.model.Message
 import com.bandyer.android_chat_sdk.persistence.entities.ChatMessage
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatService
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.common.OnDestinationChangedListener
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatActivityGlassBinding
@@ -25,6 +27,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.time.Instant
 
 class GlassChatActivity : ChatActivity(), OnDestinationChangedListener {
 
@@ -87,9 +90,36 @@ var mockParticipants = object : ChatParticipants {
     override val participants: StateFlow<List<ChatParticipant>> = MutableStateFlow(listOf())
 }
 
+var mockMessagesList = listOf(
+    ChatMessage(Message(
+        "mId1",
+        "chatChannelId",
+        "user1",
+        "Come se fosse antani con lo scappellamento a sinistra",
+        Iso8601.parseMillisToIso8601(Instant.now().toEpochMilli() - 3600 * 1000),
+        attributes = "{}"
+    )),
+    ChatMessage(Message(
+        "mId1",
+        "chatChannelId",
+        "user2",
+        "Tuttavia, perché voi intendiate da dove sia nato tutto questo errore, di quelli che incolpano il piacere ed esaltano il dolore, io spiegherò tutta la questione, e presenterò le idee espresse dal famoso esploratore della verità, vorrei quasi dire dal costruttore della felicità umana. Nessuno, infatti, detesta, odia, o rifugge il piacere in quanto tale, solo perché è piacere, ma perché grandi sofferenze colpiscono quelli che non sono capaci di raggiungere il piacere attraverso la ragione; e al contrario, non c'è nessuno che ami, insegua, voglia raggiungere il dolore in se stesso, soltanto perché è dolore, ma perché qualche volta accadono situazioni tali per cui attraverso la sofferenza o il dolore si cerca di raggiungere un qualche grande piacere. Concentrandoci su casi di piccola importanza: chi di noi intraprende un esercizio ginnico, se non per ottenerne un qualche vantaggio? E d'altra parte, chi avrebbe motivo di criticare colui che desidera provare un piacere cui non segua nessun fastidio, o colui che fugge un dolore che non produce nessun piacere?",
+        Iso8601.parseMillisToIso8601(Instant.now().toEpochMilli() - 24 * 3600 * 1000),
+        attributes = "{}"
+    )),
+    ChatMessage(Message(
+        "mId1",
+        "chatChannelId",
+        "user3",
+        "Mi piacciono i treni",
+        Iso8601.parseMillisToIso8601(Instant.now().toEpochMilli() - 90 * 3600 * 1000),
+        attributes = "{}"
+    ))
+)
+
 var mockMessages = object : ChatMessages {
     override val channelId: Any = "chatChannelId"
-    override val messageList: StateFlow<List<ChatMessage>> = MutableStateFlow(listOf())
+    override val messageList: StateFlow<List<ChatMessage>> = MutableStateFlow(mockMessagesList)
     override fun sendTextMessage(message: String) = Unit
     override fun loadPrevious(success: () -> Unit, error: (Exception) -> Unit) = Unit
 }

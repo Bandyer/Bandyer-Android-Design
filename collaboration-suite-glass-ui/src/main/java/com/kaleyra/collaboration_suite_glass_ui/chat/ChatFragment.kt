@@ -21,13 +21,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
 import androidx.databinding.ObservableInt
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
+import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.UserState
@@ -35,10 +39,13 @@ import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragment
 import com.kaleyra.collaboration_suite_glass_ui.participants.ParticipantData
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
@@ -59,11 +66,22 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     private var lastMsgIndex = 0
     private var pagesIds = arrayListOf<String>()
 
+    private val viewModel: ChatViewModel by viewModels {
+//        ChatViewModelFactory(
+//            service as ChatUIDelegate,
+//            service as DeviceStatusDelegate
+//        )
+        ChatViewModelFactory(
+            mockChatUIDelegate,
+            mockDeviceStatusDelegate
+        )
+    }
+
     private val args: ChatFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(args.enableTilt) tiltListener = this
+        if (args.enableTilt) tiltListener = this
     }
 
     /**
@@ -80,7 +98,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         _binding = KaleyraGlassFragmentChatBinding
             .inflate(inflater, container, false)
             .apply {
-                if(GlassDeviceUtils.isRealWear)
+                if (GlassDeviceUtils.isRealWear)
                     kaleyraBottomNavigation.setListenersForRealWear()
 
                 // Init the RecyclerView
@@ -115,9 +133,27 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                 }
             }
 
-        mockMessages()
-
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // TODO move in onServiceBound
+        repeatOnStarted {
+            viewModel.channel.chatMessages.messageList.onEach { msgs ->
+                msgs.forEach {
+                    addChatItem(
+                        ChatMessageData(
+                            it.messageSid,
+                            it.author,
+                            viewModel.usersDescription.name(listOf(it.author)),
+                            it.messageBody,
+                            it.timestamp ?: 0L
+                        )
+                    )
+                }
+            }.launchIn(this)
+        }
     }
 
     override fun onServiceBound() {
@@ -138,7 +174,10 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 //    override fun onShow() = Unit
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.kaleyraMessages.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
+        binding.kaleyraMessages.scrollBy(
+            (deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(),
+            0
+        )
 
     override fun onTap() = true.also {
         val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userId
@@ -192,61 +231,30 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         }
     }
 
-    private val contactData = listOf(
-        ParticipantData(
-            "Mario Rossi",
-            "Mario Rossi",
-            UserState.Online,
-            null,
-            null,
-            Instant.now().toEpochMilli()
-        ),
-        ParticipantData(
-            "Ugo Trapasso",
-            "Ugo Trapasso",
-             UserState.Offline,
-            null,
-            "https://2.bp.blogspot.com/-jLEDf_NyZ1g/WmmyFZKOd-I/AAAAAAAAHd8/FZvIj2o_jqwl0S_yz4zBU16N1yGj-UCrACLcBGAs/s1600/heisenberg-breaking-bad.jpg",
-            Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
-        ),
-        ParticipantData(
-            "Gianfranco Sala",
-            "Gianfranco Sala",
-             UserState.Invited(false),
-            null,
-            null,
-            Instant.now().toEpochMilli()
-        )
-    )
-
-    private fun mockMessages() {
-        addChatItem(
-            ChatMessageData(
-                UUID.randomUUID().toString(),
-                "Mario",
-                "Mario",
-                "Tuttavia, perché voi intendiate da dove sia nato tutto questo errore, di quelli che incolpano il piacere ed esaltano il dolore, io spiegherò tutta la questione, e presenterò le idee espresse dal famoso esploratore della verità, vorrei quasi dire dal costruttore della felicità umana. Nessuno, infatti, detesta, odia, o rifugge il piacere in quanto tale, solo perché è piacere, ma perché grandi sofferenze colpiscono quelli che non sono capaci di raggiungere il piacere attraverso la ragione; e al contrario, non c'è nessuno che ami, insegua, voglia raggiungere il dolore in se stesso, soltanto perché è dolore, ma perché qualche volta accadono situazioni tali per cui attraverso la sofferenza o il dolore si cerca di raggiungere un qualche grande piacere. Concentrandoci su casi di piccola importanza: chi di noi intraprende un esercizio ginnico, se non per ottenerne un qualche vantaggio? E d'altra parte, chi avrebbe motivo di criticare colui che desidera provare un piacere cui non segua nessun fastidio, o colui che fugge un dolore che non produce nessun piacere?",
-                Instant.now().toEpochMilli()
-            )
-        )
-        addChatItem(
-            ChatMessageData(
-                UUID.randomUUID().toString(),
-                "Ugo",
-                "Ugo",
-                "Come se fosse antani con lo scappellamento a sinistra",
-                Instant.now().toEpochMilli(),
-                userAvatarUrl = "https://2.bp.blogspot.com/-jLEDf_NyZ1g/WmmyFZKOd-I/AAAAAAAAHd8/FZvIj2o_jqwl0S_yz4zBU16N1yGj-UCrACLcBGAs/s1600/heisenberg-breaking-bad.jpg"
-            )
-        )
-        addChatItem(
-            ChatMessageData(
-                UUID.randomUUID().toString(),
-                "Gianfranco",
-                "Gianfranco",
-                "Mi piacciono i treni",
-                Instant.now().toEpochMilli()
-            )
-        )
-    }
+//    private val contactData = listOf(
+//        ParticipantData(
+//            "Mario Rossi",
+//            "Mario Rossi",
+//            UserState.Online,
+//            null,
+//            null,
+//            Instant.now().toEpochMilli()
+//        ),
+//        ParticipantData(
+//            "Ugo Trapasso",
+//            "Ugo Trapasso",
+//            UserState.Offline,
+//            null,
+//            "https://2.bp.blogspot.com/-jLEDf_NyZ1g/WmmyFZKOd-I/AAAAAAAAHd8/FZvIj2o_jqwl0S_yz4zBU16N1yGj-UCrACLcBGAs/s1600/heisenberg-breaking-bad.jpg",
+//            Instant.now().minus(8, ChronoUnit.DAYS).toEpochMilli()
+//        ),
+//        ParticipantData(
+//            "Gianfranco Sala",
+//            "Gianfranco Sala",
+//            UserState.Invited(false),
+//            null,
+//            null,
+//            Instant.now().toEpochMilli()
+//        )
+//    )
 }
