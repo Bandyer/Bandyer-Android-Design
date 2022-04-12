@@ -24,7 +24,7 @@ class ChatService : BoundService(), ChatUIDelegate, DeviceStatusDelegate {
     private var batteryObserver: BatteryObserver? = null
     private var wifiObserver: WiFiObserver? = null
 
-    override val channel: SharedFlow<ChatChannel>
+    override val channel: ChatChannel
         get() = TODO("Not yet implemented")
 
     override var usersDescription: UsersDescription = UsersDescription()
