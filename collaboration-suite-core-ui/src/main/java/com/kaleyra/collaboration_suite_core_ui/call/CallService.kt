@@ -16,7 +16,6 @@
 
 package com.kaleyra.collaboration_suite_core_ui.call
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Application
 import android.app.Notification
