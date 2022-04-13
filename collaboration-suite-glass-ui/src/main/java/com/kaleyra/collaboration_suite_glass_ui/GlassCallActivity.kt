@@ -53,7 +53,6 @@ import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassGestureDetector
 import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
-import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.enableImmersiveMode
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getCallThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
@@ -164,26 +163,12 @@ internal class GlassCallActivity :
     override fun onServiceBound(service: CallService) {
         this.service = service
 
-        val preferredType = viewModel.call.replayCache.last().extras.preferredType
-        if (!wasMicPermissionGranted && preferredType.hasAudio() && preferredType.isAudioEnabled()) {
-            viewModel.micPermission
-                .takeWhile { !it.isAllowed }
-                .onCompletion {
-                    wasMicPermissionGranted = true
-                    viewModel.onEnableMic(true)
-                }.launchIn(lifecycleScope)
+        val preferredType = viewModel.call.replayCache.first().extras.preferredType
+        if (!viewModel.micPermission.value.isAllowed && preferredType.hasAudio() && preferredType.isAudioEnabled())
             viewModel.onRequestMicPermission(this)
-        }
 
-        if (!wasCamPermissionGranted && preferredType.hasVideo() && preferredType.isVideoEnabled()) {
-            viewModel.camPermission
-                .takeWhile { !it.isAllowed }
-                .onCompletion {
-                    wasCamPermissionGranted = true
-                    viewModel.onEnableCamera(true)
-                }.launchIn(lifecycleScope)
+        if (!viewModel.camPermission.value.isAllowed && preferredType.hasVideo() && preferredType.isVideoEnabled())
             viewModel.onRequestCameraPermission(this)
-        }
 
         // Add a scroll listener to the recycler view to show mic/cam blocked/disabled toasts
         with(binding.kaleyraStreams) {
@@ -261,6 +246,18 @@ internal class GlassCallActivity :
             .onCompletion {
                 if (!isActivityInForeground) finishAndRemoveTask()
             }.launchIn(lifecycleScope)
+
+        if (!viewModel.micPermission.value.isAllowed)
+            viewModel.micPermission
+                .takeWhile { !it.isAllowed }
+                .onCompletion { viewModel.onEnableMic(true) }
+                .launchIn(lifecycleScope)
+
+        if (!viewModel.camPermission.value.isAllowed)
+            viewModel.camPermission
+                .takeWhile { !it.isAllowed }
+                .onCompletion { viewModel.onEnableCamera(true) }
+                .launchIn(lifecycleScope)
 
         repeatOnStarted {
             viewModel
@@ -741,8 +738,5 @@ internal class GlassCallActivity :
             R.id.reconnectingFragment
         )
         var wasPausedForBackground = false
-        // Needed to check the permissions after the activity has been destroyed and recreated
-        var wasMicPermissionGranted = false
-        var wasCamPermissionGranted = false
     }
 }

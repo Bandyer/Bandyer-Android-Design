@@ -224,11 +224,13 @@ internal class GlassViewModel(
         }
 
     private val _micPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
+        MutableStateFlow(Permission(isAllowed = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Audio } != null,
+            neverAskAgain = false))
     val micPermission: StateFlow<Permission> = _micPermission.asStateFlow()
 
     private val _camPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
+        MutableStateFlow(Permission(isAllowed = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } != null,
+            neverAskAgain = false))
     val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
 
     val amIAlone: Flow<Boolean> = combine(
