@@ -21,6 +21,7 @@ import android.os.Build
 import android.text.Layout
 import android.text.StaticLayout
 import android.util.AttributeSet
+import androidx.core.view.doOnLayout
 import com.google.android.material.textview.MaterialTextView
 
 /**
@@ -37,25 +38,27 @@ internal class PaginatedTextView @JvmOverloads constructor(
      *
      * @return List<CharSequence>
      */
-    fun paginate(): List<CharSequence> {
-        val pageList = arrayListOf<CharSequence>()
+    fun paginate(onPagination: (List<CharSequence>) -> Unit) {
+        doOnLayout {
+            val pageList = arrayListOf<CharSequence>()
 
-        val layout = from(layout)
-        val lines = layout.lineCount
-        var startOffset = 0
-        var height = height
-        val heightWithoutPaddings = height - paddingTop - paddingBottom
+            val layout = from(layout)
+            val lines = layout.lineCount
+            var startOffset = 0
+            var height = height
+            val heightWithoutPaddings = height - paddingTop - paddingBottom
 
-        for (i in 0 until lines) {
-            if (height < layout.getLineBottom(i)) {
-                pageList.add(layout.text.subSequence(startOffset, layout.getLineStart(i)))
-                startOffset = layout.getLineStart(i)
-                height = layout.getLineTop(i) + heightWithoutPaddings
+            for (i in 0 until lines) {
+                if (height < layout.getLineBottom(i)) {
+                    pageList.add(layout.text.subSequence(startOffset, layout.getLineStart(i)))
+                    startOffset = layout.getLineStart(i)
+                    height = layout.getLineTop(i) + heightWithoutPaddings
+                }
+                if (i == lines - 1)
+                    pageList.add(layout.text.subSequence(startOffset, layout.getLineEnd(i)))
             }
-            if (i == lines - 1)
-                pageList.add(layout.text.subSequence(startOffset, layout.getLineEnd(i)))
+            onPagination.invoke(pageList)
         }
-        return pageList
     }
 
     private fun from(layout: Layout): Layout =
