@@ -46,9 +46,9 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
          * @param withChat True to add the chat action, false otherwise
          * @return List<CallAction>
          */
-        fun getActions(ctx: Context, withCamera: Boolean, withChat: Boolean): List<CallAction> {
+        fun getActions(ctx: Context, withMicrophone: Boolean, withCamera: Boolean, withChat: Boolean): List<CallAction> {
             return mutableListOf<CallAction>().apply {
-                add(MICROPHONE(ctx))
+                if(withMicrophone) add(MICROPHONE(ctx))
                 if(withCamera) add(CAMERA(ctx))
                 add(VOLUME())
                 // TODO de-comment this when zoom will be implemented
