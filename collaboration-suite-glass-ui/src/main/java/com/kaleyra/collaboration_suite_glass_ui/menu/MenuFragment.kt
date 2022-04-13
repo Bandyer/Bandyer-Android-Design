@@ -116,18 +116,23 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
     }
 
     override fun onServiceBound() {
-        val hasVideo = viewModel.call.replayCache.last().extras.preferredType.hasVideo()
+        val hasAudio = viewModel.preferredCallType.hasAudio()
+        val hasVideo = viewModel.preferredCallType.hasVideo()
         val options = args.options ?: arrayOf()
-        getActions(hasVideo, options).forEach { itemAdapter!!.add(MenuItem(it)) }
+        getActions(hasAudio, hasVideo, options).forEach { itemAdapter!!.add(MenuItem(it)) }
 
         val cameraAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.CAMERA }?.action as? CallAction.ToggleableCallAction)
-        val micAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.MICROPHONE }.action as CallAction.ToggleableCallAction)
+        val micAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.MICROPHONE }?.action as? CallAction.ToggleableCallAction)
 
         repeatOnStarted {
-            viewModel.cameraEnabled.onEach { cameraAction?.toggle(it) }.launchIn(this)
-            viewModel.micEnabled.onEach { micAction.toggle(it) }.launchIn(this)
-            viewModel.micPermission.onEach { micAction.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
-            viewModel.camPermission.onEach { cameraAction?.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
+            cameraAction?.also { action ->
+                viewModel.cameraEnabled.onEach { action.toggle(it) }.launchIn(this)
+                viewModel.camPermission.onEach { action.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
+            }
+            micAction?.also { action ->
+                viewModel.micEnabled.onEach { action.toggle(it) }.launchIn(this)
+                viewModel.micPermission.onEach { action.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
+            }
         }
     }
 
@@ -140,7 +145,7 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
         itemAdapter = null
     }
 
-    private fun getActions(withCamera: Boolean, options: Array<Option>): List<CallAction> {
+    private fun getActions(withMicrophone: Boolean, withCamera: Boolean, options: Array<Option>): List<CallAction> {
         var withChat = false
 
         options.forEach {
@@ -158,11 +163,11 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
 
     private fun onTap(action: CallAction) = when (action) {
         is CallAction.MICROPHONE -> true.also {
-            viewModel.onRequestMicPermission(requireActivity())
+            if(!viewModel.micPermission.value.isAllowed) viewModel.onRequestMicPermission(requireActivity())
             viewModel.onEnableMic(!viewModel.micEnabled.value)
         }
         is CallAction.CAMERA -> true.also {
-            viewModel.onRequestCameraPermission(requireActivity())
+            if(!viewModel.camPermission.value.isAllowed) viewModel.onRequestCameraPermission(requireActivity())
             viewModel.onEnableCamera(!viewModel.cameraEnabled.value)
         }
         is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment(args.enableTilt)) }

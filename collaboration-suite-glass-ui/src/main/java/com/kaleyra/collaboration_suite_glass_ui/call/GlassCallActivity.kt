@@ -170,11 +170,10 @@ internal class GlassCallActivity :
     override fun onServiceBound(service: CallService) {
         this.service = service
 
-        val preferredType = viewModel.call.replayCache.last().extras.preferredType
-        if (preferredType.hasAudio() && preferredType.isAudioEnabled())
+        if (!viewModel.micPermission.value.isAllowed && viewModel.preferredCallType.hasAudio() && viewModel.preferredCallType.isAudioEnabled())
             viewModel.onRequestMicPermission(this)
 
-        if (preferredType.hasVideo() && preferredType.isVideoEnabled())
+        if (!viewModel.camPermission.value.isAllowed && viewModel.preferredCallType.hasVideo() && viewModel.preferredCallType.isVideoEnabled())
             viewModel.onRequestCameraPermission(this)
 
         // Add a scroll listener to the recycler view to show mic/cam blocked/disabled toasts
@@ -254,15 +253,17 @@ internal class GlassCallActivity :
                 if (!isActivityInForeground) finishAndRemoveTask()
             }.launchIn(lifecycleScope)
 
-        viewModel.micPermission
-            .takeWhile { !it.isAllowed }
-            .onCompletion { viewModel.onEnableMic(true) }
-            .launchIn(lifecycleScope)
+        if (!viewModel.micPermission.value.isAllowed)
+            viewModel.micPermission
+                .takeWhile { !it.isAllowed }
+                .onCompletion { viewModel.onEnableMic(true) }
+                .launchIn(lifecycleScope)
 
-        viewModel.camPermission
-            .takeWhile { !it.isAllowed }
-            .onCompletion { viewModel.onEnableCamera(true) }
-            .launchIn(lifecycleScope)
+        if (!viewModel.camPermission.value.isAllowed)
+            viewModel.camPermission
+                .takeWhile { !it.isAllowed }
+                .onCompletion { viewModel.onEnableCamera(true) }
+                .launchIn(lifecycleScope)
 
         repeatOnStarted {
             viewModel
@@ -504,7 +505,7 @@ internal class GlassCallActivity :
 
     private fun handleIntentAction(intent: Intent) {
         val action = intent.extras?.getString("action") ?: return
-        sendBroadcast( Intent(this, CallNotificationActionReceiver::class.java).apply {
+        sendBroadcast(Intent(this, CallNotificationActionReceiver::class.java).apply {
             this.action = action
         })
     }

@@ -77,6 +77,8 @@ internal class CallViewModel(
 
     val call: SharedFlow<Call> = callDelegate.call
 
+    val preferredCallType = call.replayCache.first().extras.preferredType
+
     val whiteboard = call.mapLatest { it.whiteboard }
 
     val callState = call.flatMapLatest { it.state }
@@ -223,11 +225,13 @@ internal class CallViewModel(
         }
 
     private val _micPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
+        MutableStateFlow(Permission(isAllowed = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Audio } != null,
+            neverAskAgain = false))
     val micPermission: StateFlow<Permission> = _micPermission.asStateFlow()
 
     private val _camPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
+        MutableStateFlow(Permission(isAllowed = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } != null,
+            neverAskAgain = false))
     val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
 
     val amIAlone: Flow<Boolean> = combine(
