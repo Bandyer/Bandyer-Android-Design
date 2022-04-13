@@ -121,13 +121,17 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         getActions(hasAudio, hasVideo, options).forEach { itemAdapter!!.add(MenuItem(it)) }
 
         val cameraAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.CAMERA }?.action as? CallAction.ToggleableCallAction)
-        val micAction = (itemAdapter!!.adapterItems.first { it.action is CallAction.MICROPHONE }.action as CallAction.ToggleableCallAction)
+        val micAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.MICROPHONE }?.action as? CallAction.ToggleableCallAction)
 
         repeatOnStarted {
-            viewModel.cameraEnabled.onEach { cameraAction?.toggle(it) }.launchIn(this)
-            viewModel.micEnabled.onEach { micAction.toggle(it) }.launchIn(this)
-            viewModel.micPermission.onEach { micAction.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
-            viewModel.camPermission.onEach { cameraAction?.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
+            cameraAction?.also { action ->
+                viewModel.cameraEnabled.onEach { action.toggle(it) }.launchIn(this)
+                viewModel.camPermission.onEach { action.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
+            }
+            micAction?.also { action ->
+                viewModel.micEnabled.onEach { action.toggle(it) }.launchIn(this)
+                viewModel.micPermission.onEach { action.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
+            }
         }
     }
 
