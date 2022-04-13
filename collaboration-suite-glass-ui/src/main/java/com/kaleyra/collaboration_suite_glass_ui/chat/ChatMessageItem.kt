@@ -28,10 +28,10 @@ import com.mikepenz.fastadapter.items.AbstractItem
 /**
  * A chat item
  *
- * @property data The data related to a chat message
+ * @property page The chat message page
  * @constructor
  */
-internal class ChatMessageItem(val data: ChatMessage) : AbstractItem<ChatMessageItem.ViewHolder>() {
+internal class ChatMessageItem(val page: ChatMessagePage) : AbstractItem<ChatMessageItem.ViewHolder>() {
 
     /**
      * The layout for the given item
@@ -67,14 +67,14 @@ internal class ChatMessageItem(val data: ChatMessage) : AbstractItem<ChatMessage
         override fun bindView(item: ChatMessageItem, payloads: List<Any>) =
             with(binding.kaleyraChatMessage) {
                 itemView.isClickable = false
-                val data = item.data
-                if (data.avatar != Uri.EMPTY) kaleyraAvatar.setImage(data.avatar)
-                kaleyraAvatar.setBackground(data.sender.parseToColor())
-                kaleyraAvatar.setText(data.sender.first().toString())
-                kaleyraMessage.text = data.message
-                kaleyraTime.text = Iso8601.parseTimestamp(itemView.context, data.time)
-                if (!data.isFirstPage) kaleyraName.visibility = View.GONE
-                else kaleyraName.text = data.sender
+                val page = item.page
+                if (page.avatar != Uri.EMPTY) kaleyraAvatar.setImage(page.avatar)
+                kaleyraAvatar.setBackground(page.sender.parseToColor())
+                kaleyraAvatar.setText(page.sender.first().toString())
+                kaleyraMessage.text = page.message
+                kaleyraTime.text = Iso8601.parseTimestamp(itemView.context, page.time)
+                if (!page.isFirstPage) kaleyraName.visibility = View.GONE
+                else kaleyraName.text = page.sender
             }
 
         /**

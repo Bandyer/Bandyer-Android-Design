@@ -19,7 +19,7 @@ package com.kaleyra.collaboration_suite_glass_ui.chat
 import android.net.Uri
 
 /**
- * ChatMessage
+ * ChatMessagePage
  *
  * @property id Id of the message
  * @property sender The message sender
@@ -30,12 +30,12 @@ import android.net.Uri
  * @property isFirstPage True if it is the first page of the message, false otherwise
  * @constructor
  */
-internal data class ChatMessage(
+internal data class ChatMessagePage(
     val id: String,
     val userId: String,
     val sender: String,
     val avatar: Uri,
     val message: String,
     val time: Long,
-    val isFirstPage: Boolean = true
+    val isFirstPage: Boolean
 )

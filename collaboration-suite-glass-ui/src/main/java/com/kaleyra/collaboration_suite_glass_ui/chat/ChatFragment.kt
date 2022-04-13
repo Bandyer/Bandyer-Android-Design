@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnLayout
 import androidx.databinding.ObservableInt
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -28,6 +29,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.bandyer.android_chat_sdk.persistence.entities.ChatMessage
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
@@ -39,8 +41,11 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoot
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlin.coroutines.resume
 
 /**
  * ChatFragment
@@ -53,9 +58,9 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     private var itemAdapter: ItemAdapter<ChatMessageItem>? = null
 
     private var currentMsgItemIndex = 0
-    private var newMessagesCounter = ObservableInt(-1)
+//    private var newMessagesCounter = ObservableInt(-1)
 
-    private var lastMsgIndex = 0
+//    private var lastMsgIndex = 0
     private var pagesIds = arrayListOf<String>()
 
     private val viewModel: ChatViewModel by viewModels {
@@ -109,14 +114,14 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 
                     addOnScrollListener(object : RecyclerView.OnScrollListener() {
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                            val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                            val currentMsgIndex = layoutManager.getPosition(foundView)
+//                            val foundView = snapHelper.findSnapView(layoutManager) ?: return
+//                            val currentMsgIndex = layoutManager.getPosition(foundView)
 
-                            if (currentMsgIndex > lastMsgIndex && pagesIds[currentMsgIndex] != pagesIds[lastMsgIndex]) {
-                                newMessagesCounter?.apply { set(get() - 1) }
-                                lastMsgIndex = currentMsgIndex
-                            }
-                            currentMsgItemIndex = currentMsgIndex
+//                            if (currentMsgIndex > lastMsgIndex && pagesIds[currentMsgIndex] != pagesIds[lastMsgIndex]) {
+//                                newMessagesCounter?.apply { set(get() - 1) }
+//                                lastMsgIndex = currentMsgIndex
+//                            }
+//                            currentMsgItemIndex = currentMsgIndex
                         }
                     })
 
@@ -132,20 +137,13 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         super.onViewCreated(view, savedInstanceState)
         // TODO move in onServiceBound
         repeatOnStarted {
-            viewModel.channel.chatMessages.messageList.onEach { msgs ->
-                msgs.forEach {
-                    addChatItem(
-                        ChatMessage(
-                            it.messageSid,
-                            it.author,
-                            viewModel.usersDescription.name(listOf(it.author)),
-                            viewModel.usersDescription.image(listOf(it.author)),
-                            it.messageBody,
-                            it.timestamp ?: 0L
-                        )
-                    )
-                }
-            }.launchIn(this)
+            viewModel.channel.chatMessages.messageList
+                .onEach { msgs ->
+                    val pages = toChatMessagePages(msgs)
+                    val items = pages.map { ChatMessageItem(it) }
+                    FastAdapterDiffUtil[itemAdapter!!] =
+                        FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
+                }.launchIn(this)
         }
     }
 
@@ -171,7 +169,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         )
 
     override fun onTap() = true.also {
-        val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userId
+//        val username = itemAdapter!!.adapterItems[currentMsgItemIndex].page.userId
 //        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt)
 //        findNavController().navigate(action)
     }
@@ -186,38 +184,40 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         if (it) binding.kaleyraMessages.horizontalSmoothScrollToPrevious(currentMsgItemIndex)
     }
 
-    /**
-     * Add a chat item to the recycler view. If the text is too long to fit in one screen, more than a chat item will be added
-     *
-     * @param data The [ChatMessage]
-     */
-    private fun addChatItem(data: ChatMessage) {
-        newMessagesCounter.apply { set(get() + 1) }
-        with(binding.kaleyraChatMessage.root) {
-            post {
-                with(binding.kaleyraChatMessage) {
-                    kaleyraName.text = data.sender
-                    kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), data.time)
-                    kaleyraMessage.text = data.message
-                    val pageList = kaleyraMessage.paginate()
-                    for (i in pageList.indices) {
-                        itemAdapter!!.add(
-                            ChatMessageItem(
-                                ChatMessage(
-                                    data.id,
-                                    data.sender,
-                                    data.userId,
-                                    data.avatar,
-                                    pageList[i].toString(),
-                                    data.time,
-                                    i == 0
-                                )
-                            )
-                        )
-                        pagesIds.add(data.id)
-                    }
+    private suspend fun toChatMessagePages(messages: List<ChatMessage>): List<ChatMessagePage> {
+        val allPages = mutableListOf<ChatMessagePage>()
+        messages.forEach {
+            val user = viewModel.usersDescription.name(listOf(it.author))
+            val avatar = viewModel.usersDescription.image(listOf(it.author))
+            val pages = paginateMessage(user, it.messageBody, it.timestamp ?: 0L)
+            for (i in pages.indices) {
+                allPages.add(
+                    ChatMessagePage(
+                        it.messageSid,
+                        it.author,
+                        user,
+                        avatar,
+                        pages[i].toString(),
+                        it.timestamp ?: 0L,
+                        i == 0
+                    )
+                )
+//                    pagesIds.add(id)
+            }
+
+        }
+        return allPages
+    }
+
+    private suspend fun paginateMessage(user: String, message: String, timestamp: Long) =
+        suspendCancellableCoroutine<List<CharSequence>> { continuation ->
+            with(binding.kaleyraChatMessage) {
+                root.doOnLayout {
+                    kaleyraName.text = user
+                    kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), timestamp)
+                    kaleyraMessage.text = message
+                    kaleyraMessage.paginate { continuation.resume(it) }
                 }
             }
         }
-    }
 }
