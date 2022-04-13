@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_glass_ui.chat
 
 import android.net.Uri
 import android.view.View
+import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatMessageItemLayoutBinding
@@ -30,7 +31,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property data The data related to a chat message
  * @constructor
  */
-internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMessageItem.ViewHolder>() {
+internal class ChatMessageItem(val data: ChatMessage) : AbstractItem<ChatMessageItem.ViewHolder>() {
 
     /**
      * The layout for the given item
@@ -67,13 +68,13 @@ internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMes
             with(binding.kaleyraChatMessage) {
                 itemView.isClickable = false
                 val data = item.data
-                if (data.avatar != Uri.EMPTY) setAvatar(data.avatar)
-                setAvatarBackground(data.sender.parseToColor())
-                setAvatarText(data.sender.first().toString())
-                setMessage(data.message)
-                setTime(data.time)
-                if (!data.isFirstPage) hideName()
-                else setName(data.sender)
+                if (data.avatar != Uri.EMPTY) kaleyraAvatar.setImage(data.avatar)
+                kaleyraAvatar.setBackground(data.sender.parseToColor())
+                kaleyraAvatar.setText(data.sender.first().toString())
+                kaleyraMessage.text = data.message
+                kaleyraTime.text = Iso8601.parseTimestamp(itemView.context, data.time)
+                if (!data.isFirstPage) kaleyraName.visibility = View.GONE
+                else kaleyraName.text = data.sender
             }
 
         /**
@@ -81,13 +82,13 @@ internal class ChatMessageItem(val data: ChatMessageData) : AbstractItem<ChatMes
          */
         override fun unbindView(item: ChatMessageItem) = with(binding.kaleyraChatMessage) {
             itemView.isClickable = true
-            setAvatar(null)
-            setName(null)
-            showName()
-            setAvatarBackground(null)
-            setAvatarText(null)
-            setTime(null)
-            setMessage(null)
+            kaleyraName.text = null
+            kaleyraMessage.text = null
+            kaleyraTime.text = null
+            kaleyraAvatar.setImage(null)
+            kaleyraAvatar.setBackground(color = null)
+            kaleyraAvatar.setText(null)
+            kaleyraName.visibility = View.VISIBLE
         }
     }
 }

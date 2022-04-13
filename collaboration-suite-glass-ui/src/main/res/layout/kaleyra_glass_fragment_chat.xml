@@ -28,15 +28,15 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChat">
 
-        <com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessageView
+        <include
             android:id="@+id/kaleyra_chat_message"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            layout="@layout/kaleyra_glass_chat_message_layout"
             android:visibility="invisible"
-            android:theme="?attr/kaleyra_recyclerViewItemStyle"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/kaleyra_messages"
-            app:layout_constraintBottom_toBottomOf="@id/kaleyra_messages"/>
+            app:layout_constraintBottom_toBottomOf="@id/kaleyra_messages" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/kaleyra_messages"

@@ -22,9 +22,10 @@
         android:layout_height="match_parent"
         android:theme="?attr/kaleyra_recyclerViewItemStyle">
 
-        <com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessageView
+        <include
             android:id="@+id/kaleyra_chat_message"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            layout="@layout/kaleyra_glass_chat_message_layout" />
     </FrameLayout>
 </layout>
