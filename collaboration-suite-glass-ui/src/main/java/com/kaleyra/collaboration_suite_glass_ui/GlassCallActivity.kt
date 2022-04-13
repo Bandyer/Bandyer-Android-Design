@@ -163,11 +163,10 @@ internal class GlassCallActivity :
     override fun onServiceBound(service: CallService) {
         this.service = service
 
-        val preferredType = viewModel.call.replayCache.first().extras.preferredType
-        if (!viewModel.micPermission.value.isAllowed && preferredType.hasAudio() && preferredType.isAudioEnabled())
+        if (!viewModel.micPermission.value.isAllowed && viewModel.preferredCallType.hasAudio() && viewModel.preferredCallType.isAudioEnabled())
             viewModel.onRequestMicPermission(this)
 
-        if (!viewModel.camPermission.value.isAllowed && preferredType.hasVideo() && preferredType.isVideoEnabled())
+        if (!viewModel.camPermission.value.isAllowed && viewModel.preferredCallType.hasVideo() && viewModel.preferredCallType.isVideoEnabled())
             viewModel.onRequestCameraPermission(this)
 
         // Add a scroll listener to the recycler view to show mic/cam blocked/disabled toasts

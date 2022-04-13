@@ -115,7 +115,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
     }
 
     override fun onServiceBound() {
-        val hasVideo = viewModel.call.replayCache.last().extras.preferredType.hasVideo()
+        val hasVideo = viewModel.preferredCallType.hasVideo()
         val options = args.options ?: arrayOf()
         getActions(hasVideo, options).forEach { itemAdapter!!.add(MenuItem(it)) }
 
