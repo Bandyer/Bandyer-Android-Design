@@ -165,11 +165,25 @@ internal class GlassCallActivity :
         this.service = service
 
         val preferredType = viewModel.call.replayCache.last().extras.preferredType
-        if (preferredType.hasAudio() && preferredType.isAudioEnabled())
+        if (!wasMicPermissionGranted && preferredType.hasAudio() && preferredType.isAudioEnabled()) {
+            viewModel.micPermission
+                .takeWhile { !it.isAllowed }
+                .onCompletion {
+                    wasMicPermissionGranted = true
+                    viewModel.onEnableMic(true)
+                }.launchIn(lifecycleScope)
             viewModel.onRequestMicPermission(this)
+        }
 
-        if (preferredType.hasVideo() && preferredType.isVideoEnabled())
+        if (!wasCamPermissionGranted && preferredType.hasVideo() && preferredType.isVideoEnabled()) {
+            viewModel.camPermission
+                .takeWhile { !it.isAllowed }
+                .onCompletion {
+                    wasCamPermissionGranted = true
+                    viewModel.onEnableCamera(true)
+                }.launchIn(lifecycleScope)
             viewModel.onRequestCameraPermission(this)
+        }
 
         // Add a scroll listener to the recycler view to show mic/cam blocked/disabled toasts
         with(binding.kaleyraStreams) {
@@ -247,16 +261,6 @@ internal class GlassCallActivity :
             .onCompletion {
                 if (!isActivityInForeground) finishAndRemoveTask()
             }.launchIn(lifecycleScope)
-
-        viewModel.micPermission
-            .takeWhile { !it.isAllowed }
-            .onCompletion { viewModel.onEnableMic(true) }
-            .launchIn(lifecycleScope)
-
-        viewModel.camPermission
-            .takeWhile { !it.isAllowed }
-            .onCompletion { viewModel.onEnableCamera(true) }
-            .launchIn(lifecycleScope)
 
         repeatOnStarted {
             viewModel
@@ -498,7 +502,7 @@ internal class GlassCallActivity :
 
     private fun handleIntentAction(intent: Intent) {
         val action = intent.extras?.getString("action") ?: return
-        sendBroadcast( Intent(this, CallNotificationActionReceiver::class.java).apply {
+        sendBroadcast(Intent(this, CallNotificationActionReceiver::class.java).apply {
             this.action = action
         })
     }
@@ -737,5 +741,8 @@ internal class GlassCallActivity :
             R.id.reconnectingFragment
         )
         var wasPausedForBackground = false
+        // Needed to check the permissions after the activity has been destroyed and recreated
+        var wasMicPermissionGranted = false
+        var wasCamPermissionGranted = false
     }
 }
