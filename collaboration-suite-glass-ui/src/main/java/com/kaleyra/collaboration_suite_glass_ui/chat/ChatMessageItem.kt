@@ -34,6 +34,7 @@ import com.mikepenz.fastadapter.items.AbstractItem
 internal class ChatMessageItem(val page: ChatMessagePage) :
     AbstractItem<ChatMessageItem.ViewHolder>() {
 
+    override var identifier: Long = page.hashCode().toLong()
     /**
      * The layout for the given item
      */
