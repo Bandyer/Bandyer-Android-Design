@@ -117,11 +117,40 @@ var mockMessagesList = listOf(
     ))
 )
 
+val mockFlowMessageList = MutableStateFlow(mockMessagesList)
+var newMessagesLoaded = false
+
 var mockMessages = object : ChatMessages {
     override val channelId: Any = "chatChannelId"
-    override val messageList: StateFlow<List<ChatMessage>> = MutableStateFlow(mockMessagesList)
+    override val messageList: StateFlow<List<ChatMessage>> = mockFlowMessageList
     override fun sendTextMessage(message: String) = Unit
-    override fun loadPrevious(success: () -> Unit, error: (Exception) -> Unit) = Unit
+    override fun loadPrevious(success: () -> Unit, error: (Exception) -> Unit) {
+        if (newMessagesLoaded) return
+        newMessagesLoaded = true
+        val list = messageList.value.toMutableList()
+        list.add(
+            ChatMessage(Message(
+                "mId4",
+                "chatChannelId",
+                "user1",
+                "Franchino fammi volare, sopra le nuvole, magiaaaaaa",
+                Iso8601.parseMillisToIso8601(Instant.now().toEpochMilli() - 180 * 3600 * 1000),
+                attributes = "{}"
+            ))
+        )
+        list.add(
+            ChatMessage(Message(
+                "mId5",
+                "chatChannelId",
+                "user2",
+                "Anatra animale definitivo",
+                Iso8601.parseMillisToIso8601(Instant.now().toEpochMilli() - 270 * 3600 * 1000),
+                attributes = "{}"
+            ))
+        )
+        mockFlowMessageList.value = list
+        success.invoke()
+    }
 }
 
 var mockChannel = object : ChatChannel {

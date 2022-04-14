@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.doOnLayout
 import androidx.databinding.ObservableInt
@@ -64,7 +65,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     private var currentMsgItemIndex = 0
 //    private var newMessagesCounter = ObservableInt(-1)
 
-//    private var lastMsgIndex = 0
+    //    private var lastMsgIndex = 0
     private var pagesIds = arrayListOf<String>()
 
     private val viewModel: ChatViewModel by viewModels {
@@ -95,13 +96,14 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val themeResId = requireContext().getChatThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Chat_kaleyra_chatStyle)
+        val themeResId =
+            requireContext().getChatThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Chat_kaleyra_chatStyle)
         // Add view binding
         _binding = KaleyraGlassFragmentChatBinding.inflate(
-                inflater.cloneInContext(ContextThemeWrapper(requireActivity(), themeResId)),
-                container,
-                false
-            )
+            inflater.cloneInContext(ContextThemeWrapper(requireActivity(), themeResId)),
+            container,
+            false
+        )
             .apply {
                 if (GlassDeviceUtils.isRealWear)
                     kaleyraBottomNavigation.setListenersForRealWear()
@@ -121,7 +123,27 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                     addItemDecoration(ReadProgressDecoration(requireContext()))
 
                     addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                        private var isLoading = false
+
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                            val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+                            if (!isLoading && fastAdapter.itemCount <= (lastVisibleItem + LOAD_MORE_THRESHOLD)) {
+                                viewModel.channel.chatMessages.loadPrevious({
+                                    isLoading = false
+                                    Toast.makeText(
+                                        requireContext().applicationContext,
+                                        "loaded previous messages",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }, {
+                                    Toast.makeText(
+                                        requireContext().applicationContext,
+                                        it.message,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                })
+                                isLoading = true
+                            }
 //                            val foundView = snapHelper.findSnapView(layoutManager) ?: return
 //                            val currentMsgIndex = layoutManager.getPosition(foundView)
 
@@ -229,4 +251,8 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                 }
             }
         }
+
+    private companion object {
+        const val LOAD_MORE_THRESHOLD = 2
+    }
 }
