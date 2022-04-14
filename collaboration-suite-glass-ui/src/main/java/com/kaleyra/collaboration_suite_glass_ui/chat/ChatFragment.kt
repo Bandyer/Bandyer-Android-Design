@@ -21,6 +21,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.doOnLayout
 import androidx.databinding.ObservableInt
 import androidx.fragment.app.viewModels
@@ -31,11 +32,14 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.android_chat_sdk.persistence.entities.ChatMessage
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
+import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatMenuBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
@@ -91,9 +95,13 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
+        val themeResId = requireContext().getChatThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Chat_kaleyra_chatStyle)
         // Add view binding
-        _binding = KaleyraGlassFragmentChatBinding
-            .inflate(inflater, container, false)
+        _binding = KaleyraGlassFragmentChatBinding.inflate(
+                inflater.cloneInContext(ContextThemeWrapper(requireActivity(), themeResId)),
+                container,
+                false
+            )
             .apply {
                 if (GlassDeviceUtils.isRealWear)
                     kaleyraBottomNavigation.setListenersForRealWear()
@@ -159,6 +167,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 //        newMessagesCounter = 0
         pagesIds = arrayListOf()
     }
+
 
 //    override fun onShow() = Unit
 

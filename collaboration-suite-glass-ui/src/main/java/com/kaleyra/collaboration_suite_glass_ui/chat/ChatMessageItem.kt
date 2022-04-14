@@ -31,7 +31,8 @@ import com.mikepenz.fastadapter.items.AbstractItem
  * @property page The chat message page
  * @constructor
  */
-internal class ChatMessageItem(val page: ChatMessagePage) : AbstractItem<ChatMessageItem.ViewHolder>() {
+internal class ChatMessageItem(val page: ChatMessagePage) :
+    AbstractItem<ChatMessageItem.ViewHolder>() {
 
     /**
      * The layout for the given item
@@ -59,7 +60,8 @@ internal class ChatMessageItem(val page: ChatMessagePage) : AbstractItem<ChatMes
      */
     class ViewHolder(view: View) : FastAdapter.ViewHolder<ChatMessageItem>(view) {
 
-        private val binding: KaleyraGlassChatMessageItemLayoutBinding = KaleyraGlassChatMessageItemLayoutBinding.bind(view)
+        private val binding: KaleyraGlassChatMessageItemLayoutBinding =
+            KaleyraGlassChatMessageItemLayoutBinding.bind(view)
 
         /**
          * Binds the data of this item onto the viewHolder
@@ -80,15 +82,16 @@ internal class ChatMessageItem(val page: ChatMessagePage) : AbstractItem<ChatMes
         /**
          * View needs to release resources when its recycled
          */
-        override fun unbindView(item: ChatMessageItem) = with(binding.kaleyraChatMessage) {
-            itemView.isClickable = true
-            kaleyraName.text = null
-            kaleyraMessage.text = null
-            kaleyraTime.text = null
-            kaleyraAvatar.setImage(null)
-            kaleyraAvatar.setBackground(color = null)
-            kaleyraAvatar.setText(null)
-            kaleyraName.visibility = View.VISIBLE
-        }
+        override fun unbindView(item: ChatMessageItem) =
+            with(binding.kaleyraChatMessage) {
+                itemView.isClickable = true
+                kaleyraName.text = null
+                kaleyraMessage.text = null
+                kaleyraTime.text = null
+                kaleyraAvatar.setImage(null)
+                kaleyraAvatar.setBackground(color = null)
+                kaleyraAvatar.setText(null)
+                kaleyraName.visibility = View.VISIBLE
+            }
     }
 }

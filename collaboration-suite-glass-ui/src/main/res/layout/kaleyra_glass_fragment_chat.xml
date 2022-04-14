@@ -25,8 +25,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChat">
+        style="?attr/kaleyra_rootLayoutStyle"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
 
         <include
             android:id="@+id/kaleyra_chat_message"

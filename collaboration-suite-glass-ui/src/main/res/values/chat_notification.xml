@@ -44,7 +44,7 @@
     </style>
 
     <!-- MESSAGE -->
-    <style name="KaleyraCollaborationSuiteUI.TextView.MessageGlassChat.Notification" parent="KaleyraCollaborationSuiteUI.TextView.MessageGlassChat">
+    <style name="KaleyraCollaborationSuiteUI.TextView.MessageGlassChat.Notification" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.MessageGlassChat">
         <item name="android:minHeight">@dimen/kaleyra_dimen_space0</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space8</item>
         <item name="android:ellipsize">end</item>
@@ -52,7 +52,7 @@
     </style>
 
     <!-- TIMESTAMP -->
-    <style name="KaleyraCollaborationSuiteUI.TextView.TimestampGlassChat.Notification" parent="KaleyraCollaborationSuiteUI.TextView.TimestampGlassChat">
+    <style name="KaleyraCollaborationSuiteUI.TextView.TimestampGlassChat.Notification" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.TimestampGlassChat">
         <item name="android:text">@string/kaleyra_glass_now</item>
     </style>
 

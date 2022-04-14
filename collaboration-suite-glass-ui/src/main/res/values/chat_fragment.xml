@@ -15,45 +15,26 @@
   ~ limitations under the License.
   -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <declare-styleable name="KaleyraCollaborationSuiteUI.Glass.Chat">
-        <attr name="recyclerViewStyle" />
+        <attr name="recyclerViewStyle" tools:ignore="ResourceName" />
         <attr name="kaleyra_recyclerViewItemStyle" />
+        <attr name="kaleyra_chatMessageLayoutStyle" format="reference" />
         <attr name="kaleyra_counterStyle" format="reference" />
-        <attr name="bottomNavigationStyle" />
+        <attr name="bottomNavigationStyle" tools:ignore="ResourceName" />
     </declare-styleable>
 
     <!-- CHAT FRAGMENT -->
     <style name="KaleyraCollaborationSuiteUI.Glass.Chat" parent="KaleyraCollaborationSuiteUI.Glass">
         <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView</item>
         <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem</item>
+        <item name="kaleyra_chatMessageLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.MessageLayout</item>
         <item name="kaleyra_counterStyle">@style/KaleyraCollaborationSuiteUI.TextView.CounterGlassChat</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Chat</item>
     </style>
 
-    <!-- RECYCLER VIEW ITEM -->
     <style name="KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem" parent="">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem.RootLayout</item>
-        <item name="kaleyra_avatarStyle">@style/KaleyraCollaborationSuiteUI.Glass.Avatar</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.GlassChat.RecyclerViewItem</item>
-        <item name="kaleyra_messageStyle">@style/KaleyraCollaborationSuiteUI.TextView.MessageGlassChat.RecyclerViewItem</item>
-        <item name="kaleyra_timestampStyle">@style/KaleyraCollaborationSuiteUI.TextView.TimestampGlassChat</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem.RootLayout" parent="">
-        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassChat.RecyclerViewItem" parent="KaleyraCollaborationSuiteUI.TextView.Title.GlassChat">
-        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.TextView.MessageGlassChat.RecyclerViewItem" parent="KaleyraCollaborationSuiteUI.TextView.MessageGlassChat">
-        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space56</item>
-        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_glass_chat_right_margin</item>
+        <item name="kaleyra_chatMessageLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.MessageLayout</item>
     </style>
 
     <!-- COUNTER -->
