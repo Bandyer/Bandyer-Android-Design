@@ -66,7 +66,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 //    private var newMessagesCounter = ObservableInt(-1)
 
     //    private var lastMsgIndex = 0
-    private var pagesIds = arrayListOf<String>()
+//    private var pagesIds = arrayListOf<String>()
 
     private val viewModel: ChatViewModel by viewModels {
 //        ChatViewModelFactory(
@@ -79,7 +79,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         )
     }
 
-    private val args: ChatFragmentArgs by navArgs()
+    private val args: ChatFragmentArgs by lazy { ChatFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -188,7 +188,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         _binding = null
         itemAdapter = null
 //        newMessagesCounter = 0
-        pagesIds = arrayListOf()
+//        pagesIds = arrayListOf()
     }
 
 
