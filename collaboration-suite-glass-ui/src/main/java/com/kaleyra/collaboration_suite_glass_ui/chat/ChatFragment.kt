@@ -136,6 +136,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }, {
+                                    isLoading = false
                                     Toast.makeText(
                                         requireContext().applicationContext,
                                         it.message,
