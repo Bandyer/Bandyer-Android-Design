@@ -78,7 +78,7 @@ internal class GlassViewModel(
 
     val call: SharedFlow<Call> = callDelegate.call
 
-    val preferredCallType = call.replayCache.first().extras.preferredType
+    val preferredCallType get() = call.replayCache.first().extras.preferredType
 
     val whiteboard = call.mapLatest { it.whiteboard }
 
