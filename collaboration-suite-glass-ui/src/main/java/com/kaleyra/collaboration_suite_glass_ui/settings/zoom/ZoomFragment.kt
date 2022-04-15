@@ -18,7 +18,6 @@ package com.kaleyra.collaboration_suite_glass_ui.settings.zoom
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,27 +28,17 @@ import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.common.SettingSlider
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentZoomBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
-import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import kotlin.math.roundToInt
 
 /**
  * ZoomFragment
  */
-internal class ZoomFragment : BaseFragment(), TiltListener {
+internal class ZoomFragment : BaseFragment() {
 
     private var _binding: KaleyraGlassFragmentZoomBinding? = null
     override val binding: KaleyraGlassFragmentZoomBinding get() = _binding!!
 
-    private var deltaAzimuth = 0f
-
-    private val args: ZoomFragmentArgs by lazy { ZoomFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
-
     private val viewModel: GlassViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if(args.enableTilt) tiltListener = this
-    }
 
     /**
      * @suppress
@@ -96,12 +85,6 @@ internal class ZoomFragment : BaseFragment(), TiltListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) {
-        this.deltaAzimuth += deltaAzimuth
-        if (this.deltaAzimuth >= 2) onSwipeForward(true).also { this.deltaAzimuth = 0f }
-        else if (this.deltaAzimuth <= -2) onSwipeBackward(true).also { this.deltaAzimuth = 0f }
     }
 
     override fun onTap() = true.also { findNavController().popBackStack() }

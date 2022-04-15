@@ -27,26 +27,16 @@ import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentVolumeBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
-import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 
 /**
  * VolumeFragment
  */
-internal class VolumeFragment : BaseFragment(), TiltListener {
+internal class VolumeFragment : BaseFragment() {
 
     private var _binding: KaleyraGlassFragmentVolumeBinding? = null
     override val binding: KaleyraGlassFragmentVolumeBinding get() = _binding!!
 
-    private var deltaAzimuth = 0f
-
-    private val args: VolumeFragmentArgs by lazy { VolumeFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
-
     private val viewModel: GlassViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (args.enableTilt) tiltListener = this
-    }
 
     /**
      * @suppress
@@ -83,12 +73,6 @@ internal class VolumeFragment : BaseFragment(), TiltListener {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) {
-        this.deltaAzimuth += deltaAzimuth
-        if (this.deltaAzimuth >= 2) onSwipeForward(true).also { this.deltaAzimuth = 0f }
-        else if (this.deltaAzimuth <= -2) onSwipeBackward(true).also { this.deltaAzimuth = 0f }
     }
 
     override fun onTap() = false
