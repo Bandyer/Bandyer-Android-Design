@@ -45,12 +45,13 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
          * @param withChat True to add the chat action, false otherwise
          * @return List<CallAction>
          */
-        fun getActions(ctx: Context, withMicrophone: Boolean, withCamera: Boolean, withZoom: Boolean, withChat: Boolean): List<CallAction> {
+        fun getActions(ctx: Context, withMicrophone: Boolean, withCamera: Boolean, withFlashLight: Boolean, withZoom: Boolean, withChat: Boolean): List<CallAction> {
             return mutableListOf<CallAction>().apply {
                 if(withMicrophone) add(MICROPHONE(ctx))
                 if(withCamera) add(CAMERA(ctx))
                 add(VOLUME())
                 if (withZoom) add(ZOOM())
+                if (withFlashLight) add(FLASHLIGHT(ctx))
                 add(PARTICIPANTS())
                 if (withChat) add(CHAT())
             }
@@ -148,6 +149,16 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
     class CAMERA(ctx: Context): ToggleableCallAction(R.id.id_glass_menu_camera_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewCameraItemStyle) {
         override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_camera)
         override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_camera_toggled)
+    }
+
+    /**
+     * Torch menu action item
+     * @property toggled true to activate, false otherwise
+     * @constructor
+     */
+    class FLASHLIGHT(ctx: Context): ToggleableCallAction(R.id.id_glass_menu_flashlight_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewFlashLightItemStyle) {
+        override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_flashlight)
+        override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_flashlight_toggled)
     }
 
     /**

@@ -69,6 +69,8 @@
     <string name="kaleyra_glass_menu_participants">Partecipanti</string>
     <string name="kaleyra_glass_menu_volume">Volume</string>
     <string name="kaleyra_glass_menu_zoom">Zoom</string>
+    <string name="kaleyra_glass_menu_flashlight">Abilita Torcia</string>
+    <string name="kaleyra_glass_menu_flashlight_toggled">Disabilita Torcia</string>
     <string name="kaleyra_glass_menu_chat">Chat</string>
     <string name="kaleyra_glass_rec">Rec</string>
     <string name="kaleyra_glass_call_declined">Rifiutata</string>

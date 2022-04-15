@@ -26,6 +26,7 @@ import com.kaleyra.collaboration_suite.Participant
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
+import com.kaleyra.collaboration_suite.phonebox.FlashLight
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
@@ -84,6 +85,8 @@ internal class GlassViewModel(
     val call: SharedFlow<Call> = callDelegate.call
 
     val zoom: Input.Video.Camera.Internal.Zoom? get() = cameraInput?.zoom
+    
+    val flashLight: FlashLight get() = call.replayCache.first().flashLight
 
     val preferredCallType get() = call.replayCache.first().extras.preferredType
 
