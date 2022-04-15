@@ -22,6 +22,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.kaleyra.collaboration_suite_glass_ui.call.CallAction
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassMenuItemLayoutBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
@@ -68,11 +69,13 @@ internal class MenuItem(val action: CallAction) : AbstractItem<MenuItem.ViewHold
      */
     class ViewHolder(view: View) : FastAdapter.ViewHolder<MenuItem>(view) {
 
+        private val binding = KaleyraGlassMenuItemLayoutBinding.bind(view)
+
         /**
          * Binds the data of this item onto the viewHolder
          */
         override fun bindView(item: MenuItem, payloads: List<Any>) {
-            item.action.itemView = itemView
+            item.action.binding = binding
             item.action.onReady()
         }
 
@@ -80,7 +83,7 @@ internal class MenuItem(val action: CallAction) : AbstractItem<MenuItem.ViewHold
          * View needs to release resources when its recycled
          */
         override fun unbindView(item: MenuItem) {
-            item.action.itemView = null
+            item.action.binding = null
         }
     }
 }
