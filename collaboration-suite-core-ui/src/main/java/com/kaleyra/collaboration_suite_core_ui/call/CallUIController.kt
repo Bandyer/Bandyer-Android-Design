@@ -93,7 +93,7 @@ interface CallUIController {
      *
      * @param value zoom level
      */
-    fun onSetZoom(value: Int)
+    fun onSetZoom(value: Float)
 }
 
 //interface CallWaitingUIController {

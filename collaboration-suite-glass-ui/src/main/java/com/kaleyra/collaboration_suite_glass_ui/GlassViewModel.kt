@@ -46,7 +46,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
@@ -76,7 +75,15 @@ internal class GlassViewModel(
     private val callController: CallUIController
 ) : ViewModel() {
 
+    private val cameraInput: Input.Video.Camera.Internal?
+        get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } as? Input.Video.Camera.Internal
+
+    private val audioInput: Input.Audio?
+        get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Audio } as? Input.Audio
+
     val call: SharedFlow<Call> = callDelegate.call
+
+    val zoom: Input.Video.Camera.Internal.Zoom? get() = cameraInput?.zoom
 
     val preferredCallType get() = call.replayCache.first().extras.preferredType
 
@@ -226,12 +233,12 @@ internal class GlassViewModel(
         }
 
     private val _micPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(Permission(isAllowed = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Audio } != null,
+        MutableStateFlow(Permission(isAllowed = audioInput != null,
             neverAskAgain = false))
     val micPermission: StateFlow<Permission> = _micPermission.asStateFlow()
 
     private val _camPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(Permission(isAllowed = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } != null,
+        MutableStateFlow(Permission(isAllowed = cameraInput != null,
             neverAskAgain = false))
     val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
 
@@ -308,7 +315,7 @@ internal class GlassViewModel(
 
     fun onSetVolume(value: Int) = callController.onSetVolume(value)
 
-    fun onSetZoom(value: Int) = callController.onSetZoom(value)
+    fun onSetZoom(value: Float) = callController.onSetZoom(value)
 }
 
 

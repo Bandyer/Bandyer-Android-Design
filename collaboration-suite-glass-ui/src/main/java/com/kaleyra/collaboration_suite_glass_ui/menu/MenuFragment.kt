@@ -117,8 +117,9 @@ internal class MenuFragment : BaseFragment(), TiltListener {
     override fun onServiceBound() {
         val hasAudio = viewModel.preferredCallType.hasAudio()
         val hasVideo = viewModel.preferredCallType.hasVideo()
+        val hasZoom = viewModel.zoom?.isSupported ?: false
         val options = args.options ?: arrayOf()
-        getActions(hasAudio, hasVideo, options).forEach { itemAdapter!!.add(MenuItem(it)) }
+        getActions(hasAudio, hasVideo, hasZoom, options).forEach { itemAdapter!!.add(MenuItem(it)) }
 
         val cameraAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.CAMERA }?.action as? CallAction.ToggleableCallAction)
         val micAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.MICROPHONE }?.action as? CallAction.ToggleableCallAction)
@@ -144,16 +145,17 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         itemAdapter = null
     }
 
-    private fun getActions(withMicrophone: Boolean, withCamera: Boolean, options: Array<Option>): List<CallAction> {
+    private fun getActions(hasAudio: Boolean, hasVideo: Boolean, hasZoom: Boolean, options: Array<Option>): List<CallAction> {
         var withChat = false
 
         options.forEach {
             when(it) {
                 is Option.CHAT -> withChat = true
+                else -> Unit
             }
         }
 
-        return CallAction.getActions(requireContext(), withMicrophone = withMicrophone, withCamera = withCamera, withChat = withChat)
+        return CallAction.getActions(requireContext(), withMicrophone = hasAudio, withCamera = hasVideo, withZoom = hasZoom, withChat = withChat)
     }
 
     override fun onDismiss() = Unit
