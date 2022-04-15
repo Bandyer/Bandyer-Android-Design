@@ -55,21 +55,11 @@
     <fragment
         android:id="@+id/volumeFragment"
         android:name="com.kaleyra.collaboration_suite_glass_ui.settings.volume.VolumeFragment"
-        android:label="VolumeFragment">
-        <argument
-            android:name="enableTilt"
-            android:defaultValue="false"
-            app:argType="boolean" />
-    </fragment>
+        android:label="VolumeFragment" />
     <fragment
         android:id="@+id/zoomFragment"
         android:name="com.kaleyra.collaboration_suite_glass_ui.settings.zoom.ZoomFragment"
-        android:label="ZoomFragment">
-        <argument
-            android:name="enableTilt"
-            android:defaultValue="false"
-            app:argType="boolean" />
-    </fragment>
+        android:label="ZoomFragment" />
     <fragment
         android:id="@+id/callEndedFragment"
         android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.CallEndedFragment"

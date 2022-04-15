@@ -21,29 +21,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
-import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
+import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
+import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
+import com.kaleyra.collaboration_suite_glass_ui.common.SettingSlider
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentZoomBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
-import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
+import kotlin.math.roundToInt
 
 /**
  * ZoomFragment
  */
-internal class ZoomFragment : BaseFragment<GlassCallActivity>(), TiltListener {
+internal class ZoomFragment : BaseFragment<GlassCallActivity>() {
 
     private var _binding: KaleyraGlassFragmentZoomBinding? = null
     override val binding: KaleyraGlassFragmentZoomBinding get() = _binding!!
 
-    private var deltaAzimuth = 0f
-
-    private val args: ZoomFragmentArgs by lazy { ZoomFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if(args.enableTilt) tiltListener = this
-    }
+    private val viewModel: GlassViewModel by activityViewModels()
 
     /**
      * @suppress
@@ -66,7 +61,23 @@ internal class ZoomFragment : BaseFragment<GlassCallActivity>(), TiltListener {
         return binding.root
     }
 
-    override fun onServiceBound() = Unit
+    override fun onServiceBound() {
+        with(binding.kaleyraSlider) {
+            val currentValue = viewModel.zoom!!.value
+            val upperValue = viewModel.zoom!!.range.upper
+            val lowerValue = viewModel.zoom!!.range.lower
+            maxProgress = MAX_ZOOM_PROGRESS
+            progress = currentValue.roundToInt()
+
+            onSliderChangeListener = object : SettingSlider.OnSliderChangeListener {
+                override fun onProgressChanged(progress: Int) {
+                    val percentage = progress.toFloat() / MAX_ZOOM_PROGRESS
+                    val value = (percentage * (upperValue - lowerValue)) + lowerValue
+                    viewModel.onSetZoom(value)
+                }
+            }
+        }
+    }
 
     /**
      * @suppress
@@ -76,12 +87,6 @@ internal class ZoomFragment : BaseFragment<GlassCallActivity>(), TiltListener {
         _binding = null
     }
 
-    override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) {
-        this.deltaAzimuth += deltaAzimuth
-        if (this.deltaAzimuth >= 2) onSwipeForward(true).also { this.deltaAzimuth = 0f }
-        else if (this.deltaAzimuth <= -2) onSwipeBackward(true).also { this.deltaAzimuth = 0f }
-    }
-
     override fun onTap() = true.also { findNavController().popBackStack() }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
@@ -89,4 +94,8 @@ internal class ZoomFragment : BaseFragment<GlassCallActivity>(), TiltListener {
     override fun onSwipeForward(isKeyEvent: Boolean) = true.also { binding.kaleyraSlider.increaseProgress() }
 
     override fun onSwipeBackward(isKeyEvent: Boolean) = true.also { binding.kaleyraSlider.decreaseProgress() }
+
+    private companion object {
+        const val MAX_ZOOM_PROGRESS = 10
+    }
 }

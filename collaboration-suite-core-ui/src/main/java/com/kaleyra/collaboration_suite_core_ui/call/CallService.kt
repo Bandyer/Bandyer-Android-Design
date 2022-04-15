@@ -219,7 +219,10 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     override fun onSetVolume(value: Int) = callAudioManager!!.setVolume(value)
 
-    override fun onSetZoom(value: Int) = Unit
+    override fun onSetZoom(value: Float) {
+        val video = currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera.Internal } as? Input.Video.Camera.Internal ?: return
+        video.zoom.value = value
+    }
 
     // CallService
     fun bind(

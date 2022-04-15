@@ -21,6 +21,7 @@
     <item name="id_glass_menu_camera_item" type="id" />
     <item name="id_glass_menu_volume_item" type="id" />
     <item name="id_glass_menu_zoom_item" type="id" />
+    <item name="id_glass_menu_flashlight_item" type="id" />
     <item name="id_glass_menu_participants_item" type="id" />
     <item name="id_glass_menu_chat_item" type="id" />
     <item name="id_glass_participants_item" type="id" />

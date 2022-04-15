@@ -17,11 +17,13 @@
 package com.kaleyra.collaboration_suite_glass_ui.menu
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
@@ -43,7 +45,9 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
 
 /**
  * KaleyraGlassMenuFragment
@@ -118,11 +122,15 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
     override fun onServiceBound() {
         val hasAudio = viewModel.preferredCallType.hasAudio()
         val hasVideo = viewModel.preferredCallType.hasVideo()
+        val hasZoom = viewModel.zoom?.isSupported ?: false
+        val hasFlashLight = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) viewModel.flashLight.units.isNotEmpty() else false
         val options = args.options ?: arrayOf()
-        getActions(hasAudio, hasVideo, options).forEach { itemAdapter!!.add(MenuItem(it)) }
+        getActions(hasAudio, hasVideo, hasZoom, hasFlashLight, options).forEach { itemAdapter!!.add(MenuItem(it)) }
 
         val cameraAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.CAMERA }?.action as? CallAction.ToggleableCallAction)
         val micAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.MICROPHONE }?.action as? CallAction.ToggleableCallAction)
+        val flashAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.FLASHLIGHT }?.action as? CallAction.ToggleableCallAction)
+        flashAction?.toggle(false)
 
         repeatOnStarted {
             cameraAction?.also { action ->
@@ -145,16 +153,17 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
         itemAdapter = null
     }
 
-    private fun getActions(withMicrophone: Boolean, withCamera: Boolean, options: Array<Option>): List<CallAction> {
+    private fun getActions(hasAudio: Boolean, hasVideo: Boolean, hasZoom: Boolean, hasFlashLight: Boolean, options: Array<Option>): List<CallAction> {
         var withChat = false
 
         options.forEach {
             when(it) {
                 is Option.CHAT -> withChat = true
+                else -> Unit
             }
         }
 
-        return CallAction.getActions(requireContext(), withCamera = withCamera, withChat = true)
+        return CallAction.getActions(requireContext(), withMicrophone = hasAudio, withCamera = hasVideo, withFlashLight = hasFlashLight, withZoom = hasZoom, withChat = withChat)
     }
 
 //    override fun onDismiss() = Unit
@@ -170,10 +179,18 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
             if(!viewModel.camPermission.value.isAllowed) viewModel.onRequestCameraPermission(requireActivity())
             viewModel.onEnableCamera(!viewModel.cameraEnabled.value)
         }
-        is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment(args.enableTilt)) }
-        is CallAction.ZOOM -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment(args.enableTilt)) }
-        is CallAction.PARTICIPANTS -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToParticipantsFragment(args.enableTilt)) }
-        is CallAction.CHAT -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToSmartglassNavGraphChat(args.enableTilt)) }
+        is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment()) }
+        is CallAction.ZOOM -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
+        is CallAction.FLASHLIGHT -> true.also {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return@also
+//            val isRearLens = viewModel.cameraInput?.currentLens?.value?.isRear
+            val flashUnit = viewModel.flashLight.units.firstOrNull { /* it.isRear == isRearLens && */ it.available.value } ?: return@also
+            val isEnabled = flashUnit.enabled.value
+            flashUnit.enabled.takeWhile { it == isEnabled }.onCompletion { action.toggle(!isEnabled) }.launchIn(lifecycleScope)
+            if (isEnabled) flashUnit.tryDisable() else flashUnit.tryEnable()
+        }
+        is CallAction.PARTICIPANTS -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToParticipantsFragment()) }
+        is CallAction.CHAT -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToSmartglassNavGraphChat()) }
         else -> false
     }
 

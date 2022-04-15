@@ -26,6 +26,7 @@ import com.kaleyra.collaboration_suite.Participant
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
+import com.kaleyra.collaboration_suite.phonebox.FlashLight
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
@@ -75,9 +76,19 @@ internal class CallViewModel(
     private val callController: CallUIController
 ) : ViewModel() {
 
+    private val cameraInput: Input.Video.Camera.Internal?
+        get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } as? Input.Video.Camera.Internal
+
+    private val audioInput: Input.Audio?
+        get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Audio } as? Input.Audio
+
     val call: SharedFlow<Call> = callDelegate.call
 
-    val preferredCallType = call.replayCache.first().extras.preferredType
+    val zoom: Input.Video.Camera.Internal.Zoom? get() = cameraInput?.zoom
+    
+    val flashLight: FlashLight get() = call.replayCache.first().flashLight
+
+    val preferredCallType get() = call.replayCache.first().extras.preferredType
 
     val whiteboard = call.mapLatest { it.whiteboard }
 
@@ -225,12 +236,12 @@ internal class CallViewModel(
         }
 
     private val _micPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(Permission(isAllowed = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Audio } != null,
+        MutableStateFlow(Permission(isAllowed = audioInput != null,
             neverAskAgain = false))
     val micPermission: StateFlow<Permission> = _micPermission.asStateFlow()
 
     private val _camPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(Permission(isAllowed = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } != null,
+        MutableStateFlow(Permission(isAllowed = cameraInput != null,
             neverAskAgain = false))
     val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
 
@@ -307,7 +318,7 @@ internal class CallViewModel(
 
     fun onSetVolume(value: Int) = callController.onSetVolume(value)
 
-    fun onSetZoom(value: Int) = callController.onSetZoom(value)
+    fun onSetZoom(value: Float) = callController.onSetZoom(value)
 }
 
 

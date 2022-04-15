@@ -17,7 +17,6 @@
 package com.kaleyra.collaboration_suite_glass_ui.call
 
 import android.content.Context
-import android.view.View
 import androidx.annotation.AttrRes
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
@@ -32,9 +31,9 @@ import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassMenuItem
 internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layoutRes: Int, @AttrRes val styleAttr: Int) {
 
     /**
-     * Menu action item view
+     * Menu action binding
      */
-    var itemView: View? = null
+    var binding: KaleyraGlassMenuItemLayoutBinding? = null
 
     /**
      * Instance of CallAction
@@ -46,13 +45,13 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
          * @param withChat True to add the chat action, false otherwise
          * @return List<CallAction>
          */
-        fun getActions(ctx: Context, withMicrophone: Boolean, withCamera: Boolean, withChat: Boolean): List<CallAction> {
+        fun getActions(ctx: Context, withMicrophone: Boolean, withCamera: Boolean, withFlashLight: Boolean, withZoom: Boolean, withChat: Boolean): List<CallAction> {
             return mutableListOf<CallAction>().apply {
                 if(withMicrophone) add(MICROPHONE(ctx))
                 if(withCamera) add(CAMERA(ctx))
                 add(VOLUME())
-                // TODO de-comment this when zoom will be implemented
-//                add(ZOOM())
+                if (withZoom) add(ZOOM())
+                if (withFlashLight) add(FLASHLIGHT(ctx))
                 add(PARTICIPANTS())
                 if (withChat) add(CHAT())
             }
@@ -104,11 +103,6 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
         private var disabled: Boolean = false
 
         /**
-         * The layout binding
-         */
-        private var binding: KaleyraGlassMenuItemLayoutBinding? = null
-
-        /**
          * Toggle the menu action
          */
         fun toggle(toggled: Boolean) {
@@ -132,7 +126,6 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
          */
         override fun onReady() {
             super.onReady()
-            binding = KaleyraGlassMenuItemLayoutBinding.bind(itemView!!)
             toggle(toggled)
             disable(disabled)
         }
@@ -156,6 +149,16 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
     class CAMERA(ctx: Context): ToggleableCallAction(R.id.id_glass_menu_camera_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewCameraItemStyle) {
         override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_camera)
         override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_camera_toggled)
+    }
+
+    /**
+     * Torch menu action item
+     * @property toggled true to activate, false otherwise
+     * @constructor
+     */
+    class FLASHLIGHT(ctx: Context): ToggleableCallAction(R.id.id_glass_menu_flashlight_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewFlashLightItemStyle) {
+        override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_flashlight)
+        override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_flashlight_toggled)
     }
 
     /**
