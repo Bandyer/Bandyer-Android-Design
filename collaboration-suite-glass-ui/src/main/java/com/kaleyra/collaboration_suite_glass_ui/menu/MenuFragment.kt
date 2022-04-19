@@ -182,11 +182,12 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         is CallAction.ZOOM -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
         is CallAction.FLASHLIGHT -> true.also {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return@also
-//            val isRearLens = viewModel.cameraInput?.currentLens?.value?.isRear
-            val flashUnit = viewModel.flashLight.units.firstOrNull { /* it.isRear == isRearLens && */ it.available.value } ?: return@also
-            val isEnabled = flashUnit.enabled.value
-            flashUnit.enabled.takeWhile { it == isEnabled }.onCompletion { action.toggle(!isEnabled) }.launchIn(lifecycleScope)
-            if (isEnabled) flashUnit.tryDisable() else flashUnit.tryEnable()
+            val cameraId = viewModel.cameraInput?.id
+            val cameraFlashLight = viewModel.flashLight.units.firstOrNull { it.id == cameraId && it.available.value }
+            val flashLight = cameraFlashLight ?: viewModel.flashLight.units.firstOrNull { it.isRear && it.available.value } ?: return@also
+            val isEnabled = flashLight.enabled.value
+            flashLight.enabled.takeWhile { it == isEnabled }.onCompletion { action.toggle(!isEnabled) }.launchIn(lifecycleScope)
+            if (isEnabled) flashLight.tryDisable() else flashLight.tryEnable()
         }
         is CallAction.PARTICIPANTS -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToParticipantsFragment()) }
         is CallAction.CHAT -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToSmartglassNavGraphChat()) }
