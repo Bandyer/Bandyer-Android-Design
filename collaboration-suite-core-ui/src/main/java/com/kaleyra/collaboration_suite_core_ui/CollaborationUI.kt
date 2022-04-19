@@ -33,7 +33,6 @@ import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.CreationOptions
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.State.Connecting
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
-import com.kaleyra.collaboration_suite_core_ui.call.CallService
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
