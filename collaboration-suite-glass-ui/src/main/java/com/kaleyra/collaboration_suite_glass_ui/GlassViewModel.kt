@@ -76,7 +76,7 @@ internal class GlassViewModel(
     private val callController: CallUIController
 ) : ViewModel() {
 
-    private val cameraInput: Input.Video.Camera.Internal?
+    val cameraInput: Input.Video.Camera.Internal?
         get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } as? Input.Video.Camera.Internal
 
     private val audioInput: Input.Audio?

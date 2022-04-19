@@ -128,6 +128,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
 
         val cameraAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.CAMERA }?.action as? CallAction.ToggleableCallAction)
         val micAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.MICROPHONE }?.action as? CallAction.ToggleableCallAction)
+        val zoomAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.ZOOM }?.action as? CallAction.ToggleableCallAction)
         val flashAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.FLASHLIGHT }?.action as? CallAction.ToggleableCallAction)
         flashAction?.toggle(false)
 
@@ -139,6 +140,9 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             micAction?.also { action ->
                 viewModel.micEnabled.onEach { action.toggle(it) }.launchIn(this)
                 viewModel.micPermission.onEach { action.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
+            }
+            zoomAction?.also { action ->
+                viewModel.cameraEnabled.onEach { action.disable(!it) }.launchIn(this)
             }
         }
     }
@@ -179,7 +183,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             viewModel.onEnableCamera(!viewModel.cameraEnabled.value)
         }
         is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment()) }
-        is CallAction.ZOOM -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
+        is CallAction.ZOOM -> true.also { if(!action.isDisabled) findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
         is CallAction.FLASHLIGHT -> true.also {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return@also
             val cameraId = viewModel.cameraInput?.id

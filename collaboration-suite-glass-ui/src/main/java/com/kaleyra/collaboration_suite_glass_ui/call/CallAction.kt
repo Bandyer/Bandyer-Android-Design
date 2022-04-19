@@ -50,7 +50,7 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
                 if(withMicrophone) add(MICROPHONE(ctx))
                 if(withCamera) add(CAMERA(ctx))
                 add(VOLUME())
-                if (withZoom) add(ZOOM())
+                if (withZoom) add(ZOOM(ctx))
                 if (withFlashLight) add(FLASHLIGHT(ctx))
                 add(PARTICIPANTS())
                 if (withChat) add(CHAT())
@@ -77,7 +77,7 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
 
     /**
      * Toggleable Menu Action
-     * @property toggled true to activate, false otherwise
+     * @property isToggled true to activate, false otherwise
      * @constructor
      */
     abstract class ToggleableCallAction(@IdRes viewId: Int, @LayoutRes layout: Int, @AttrRes styleAttr: Int): CallAction(viewId, layout, styleAttr) {
@@ -95,12 +95,14 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
         /**
          * Tells if the item is toggled
          */
-        private var toggled: Boolean = true
+        var isToggled: Boolean = true
+            private set
 
         /**
          * Tells if the item is disabled
          */
-        private var disabled: Boolean = false
+        var isDisabled: Boolean = false
+            private set
 
         /**
          * Toggle the menu action
@@ -110,7 +112,7 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
                 isActivated = !toggled
                 text = if(toggled) toggledText else defaultText
             }
-            this.toggled = toggled
+            this.isToggled = toggled
         }
 
         /**
@@ -118,7 +120,7 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
          */
         fun disable(disabled: Boolean) {
             binding?.kaleyraText?.isEnabled = !disabled
-            this.disabled = disabled
+            this.isDisabled = disabled
         }
 
         /**
@@ -126,14 +128,14 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
          */
         override fun onReady() {
             super.onReady()
-            toggle(toggled)
-            disable(disabled)
+            toggle(isToggled)
+            disable(isDisabled)
         }
     }
 
     /**
      * Microphone menu action item
-     * @property toggled true to activate, false otherwise
+     * @property isToggled true to activate, false otherwise
      * @constructor
      */
     class MICROPHONE(ctx: Context): ToggleableCallAction(R.id.id_glass_menu_mic_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewMicItemStyle) {
@@ -143,7 +145,7 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
 
     /**
      * Camera menu action item
-     * @property toggled true to activate, false otherwise
+     * @property isToggled true to activate, false otherwise
      * @constructor
      */
     class CAMERA(ctx: Context): ToggleableCallAction(R.id.id_glass_menu_camera_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewCameraItemStyle) {
@@ -153,7 +155,7 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
 
     /**
      * Torch menu action item
-     * @property toggled true to activate, false otherwise
+     * @property isToggled true to activate, false otherwise
      * @constructor
      */
     class FLASHLIGHT(ctx: Context): ToggleableCallAction(R.id.id_glass_menu_flashlight_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewFlashLightItemStyle) {
@@ -162,16 +164,19 @@ internal abstract class CallAction(@IdRes val viewId: Int, @LayoutRes val layout
     }
 
     /**
+     * Zoom menu action item
+     * @constructor
+     */
+    class ZOOM(ctx: Context): ToggleableCallAction(R.id.id_glass_menu_zoom_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewZoomItemStyle) {
+        override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_zoom)
+        override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_zoom)
+    }
+
+    /**
      * Volume menu action item
      * @constructor
      */
     class VOLUME: CallAction(R.id.id_glass_menu_volume_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewVolumeItemStyle)
-
-    /**
-     * Zoom menu action item
-     * @constructor
-     */
-    class ZOOM: CallAction(R.id.id_glass_menu_zoom_item, R.layout.kaleyra_glass_menu_item_layout, R.attr.kaleyra_recyclerViewZoomItemStyle)
 
     /**
      * Participants menu action item
