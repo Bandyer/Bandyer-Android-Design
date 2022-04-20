@@ -24,6 +24,7 @@ import android.view.LayoutInflater
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.common.SettingSlider
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassSliderLayoutBinding
+import kotlin.math.roundToInt
 
 /**
  *  Slider for the zoom fragment
@@ -44,6 +45,6 @@ internal class ZoomSlider @JvmOverloads constructor(
     }
 
     override fun setSliderText(progress: Int) {
-        binding.kaleyraPercentage.text = resources.getString(R.string.kaleyra_glass_slider_zoom_pattern, progress * 10)
+        binding.kaleyraPercentage.text = resources.getString(R.string.kaleyra_glass_slider_zoom_pattern, ((progress.toFloat() / maxProgress) * 100).roundToInt())
     }
 }

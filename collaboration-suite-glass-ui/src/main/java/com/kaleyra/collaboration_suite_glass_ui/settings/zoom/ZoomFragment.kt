@@ -67,7 +67,7 @@ internal class ZoomFragment : BaseFragment() {
             val upperValue = viewModel.zoom!!.range.upper
             val lowerValue = viewModel.zoom!!.range.lower
             maxProgress = MAX_ZOOM_PROGRESS
-            progress = currentValue.roundToInt()
+            progress = (((currentValue - lowerValue) * MAX_ZOOM_PROGRESS) / (upperValue - lowerValue)).roundToInt()
 
             onSliderChangeListener = object : SettingSlider.OnSliderChangeListener {
                 override fun onProgressChanged(progress: Int) {
@@ -96,6 +96,6 @@ internal class ZoomFragment : BaseFragment() {
     override fun onSwipeBackward(isKeyEvent: Boolean) = true.also { binding.kaleyraSlider.decreaseProgress() }
 
     private companion object {
-        const val MAX_ZOOM_PROGRESS = 10
+        const val MAX_ZOOM_PROGRESS = 20
     }
 }
