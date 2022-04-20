@@ -8,7 +8,7 @@ import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
 
-interface CallController : CallUIController {
+interface CallController: CallUIController {
 
     val callAudioManager: CallAudioManager
 

@@ -2,6 +2,8 @@ package com.kaleyra.collaboration_suite_core_ui.call
 
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
@@ -17,23 +19,24 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.plus
 
-interface CallStreamDelegate {
+interface CallStreamDelegate: LifecycleOwner {
 
     private companion object {
         const val MY_STREAM_ID = "main"
     }
 
-    fun setUpCall(call: Call, context: Context) {
+    fun setUpCallStreams(context: Context, call: Call) {
         val mainScope = MainScope() + CoroutineName("Call Scope: ${call.id}")
         setUpStreamsAndVideos(call, context, mainScope)
         updateStreamInputsOnPermissions(call, mainScope)
+
         call.state
             .takeWhile { it !is Call.State.Disconnected.Ended }
             .onCompletion { mainScope.cancel() }
-            .launchIn(mainScope)
+            .launchIn(lifecycleScope)
     }
 
-    fun publishMySelf(call: Call, fragmentActivity: FragmentActivity) {
+    fun publishMyStream(fragmentActivity: FragmentActivity, call: Call) {
         val me = call.participants.value.me
         if (me.streams.value.firstOrNull { it.id == MY_STREAM_ID } != null) return
         me.addStream(fragmentActivity, MY_STREAM_ID).let {
@@ -62,7 +65,11 @@ interface CallStreamDelegate {
         }.launchIn(coroutineScope)
     }
 
-    private fun setUpStreamsAndVideos(call: Call, context: Context, coroutineScope: CoroutineScope) {
+    private fun setUpStreamsAndVideos(
+        call: Call,
+        context: Context,
+        coroutineScope: CoroutineScope
+    ) {
         val pJobs = mutableListOf<Job>()
         val sJobs = hashMapOf<String, List<Job>>()
         call.participants
