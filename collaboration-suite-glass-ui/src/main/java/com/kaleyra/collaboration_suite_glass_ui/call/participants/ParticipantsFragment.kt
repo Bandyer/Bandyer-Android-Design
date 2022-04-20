@@ -35,6 +35,7 @@ import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgr
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentParticipantsBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
@@ -176,7 +177,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
         binding.kaleyraParticipants.scrollBy(
-            (deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(),
+            (deltaAzimuth * requireContext().tiltScrollFactor()).toInt(),
             0
         )
 

@@ -37,6 +37,7 @@ import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragment
 import com.kaleyra.collaboration_suite_core_ui.model.Option
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
@@ -205,5 +206,5 @@ internal class MenuFragment : BaseFragment(), TiltListener {
     override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also { if (it) binding.kaleyraMenu.horizontalSmoothScrollToPrevious(currentMenuItemIndex) }
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.kaleyraMenu.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
+        binding.kaleyraMenu.scrollBy((deltaAzimuth * requireContext().tiltScrollFactor()).toInt(), 0)
 }

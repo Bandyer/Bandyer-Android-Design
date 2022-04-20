@@ -36,6 +36,7 @@ import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragment
 import com.kaleyra.collaboration_suite_glass_ui.participants.ParticipantData
 import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
@@ -137,7 +138,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
     override fun onShow() = Unit
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.kaleyraMessages.scrollBy((deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(), 0)
+        binding.kaleyraMessages.scrollBy((deltaAzimuth * requireContext().tiltScrollFactor()).toInt(), 0)
 
     override fun onTap() = true.also {
         val username = itemAdapter!!.adapterItems[currentMsgItemIndex].data.userId
