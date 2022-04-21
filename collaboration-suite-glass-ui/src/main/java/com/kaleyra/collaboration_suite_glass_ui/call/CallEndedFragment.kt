@@ -60,7 +60,7 @@ internal class CallEndedFragment : BaseFragment() {
             container,
             false
         ).apply {
-            if(DeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear()
+            if(DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation)
             kaleyraTitle.text = args.title
             kaleyraSubtitle.text = args.subtitle
         }

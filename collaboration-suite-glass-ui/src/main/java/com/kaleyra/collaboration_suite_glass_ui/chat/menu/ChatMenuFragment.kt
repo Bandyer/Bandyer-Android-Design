@@ -80,7 +80,7 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
             false
         ).apply {
             if(DeviceUtils.isRealWear)
-                kaleyraBottomNavigation.setListenersForRealWear()
+                setListenersForRealWear(kaleyraBottomNavigation)
 
             // Init the RecyclerView
             with(kaleyraActions) {

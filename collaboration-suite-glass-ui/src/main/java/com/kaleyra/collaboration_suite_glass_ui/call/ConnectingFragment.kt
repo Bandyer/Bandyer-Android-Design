@@ -61,7 +61,7 @@ internal abstract class ConnectingFragment : BaseFragment() {
                 container,
                 false
             ).apply {
-                if (DeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear()
+                if (DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation)
             }
 
         return binding.root

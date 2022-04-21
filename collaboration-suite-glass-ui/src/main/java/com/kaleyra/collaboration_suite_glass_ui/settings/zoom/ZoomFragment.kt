@@ -55,6 +55,7 @@ internal class ZoomFragment : BaseFragment() {
             .inflate(inflater, container, false)
             .apply {
                 if(DeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear()
+                if (DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation)
                 root.setOnTouchListener { _, _ -> true }
             }
 

@@ -58,7 +58,7 @@ internal class EndCallFragment : BaseFragment() {
                 container,
                 false
             )
-            .apply { if (DeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear() }
+            .apply { if (DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation) }
 
         return binding.root
     }

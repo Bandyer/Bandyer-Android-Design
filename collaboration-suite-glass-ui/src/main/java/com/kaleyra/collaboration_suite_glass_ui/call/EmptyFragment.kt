@@ -56,7 +56,7 @@ internal class EmptyFragment : BaseFragment() {
         // Add view binding
         _binding = KaleyraGlassFragmentEmptyBinding
             .inflate(inflater, container, false)
-            .apply { if(DeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear() }
+            .apply { if(DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation) }
 
         return binding.root
     }

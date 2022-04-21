@@ -82,7 +82,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
             .inflate(inflater, container, false)
             .apply {
                 if(DeviceUtils.isRealWear)
-                    kaleyraBottomNavigation.setListenersForRealWear()
+                    setListenersForRealWear(kaleyraBottomNavigation)
 
                 // Init the RecyclerView
                 kaleyraMessages.apply {
