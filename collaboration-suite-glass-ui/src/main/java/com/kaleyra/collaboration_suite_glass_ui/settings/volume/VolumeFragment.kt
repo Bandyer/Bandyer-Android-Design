@@ -52,7 +52,7 @@ internal class VolumeFragment : BaseFragment() {
         _binding = KaleyraGlassFragmentVolumeBinding
             .inflate(inflater, container, false)
             .apply {
-                if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear()
+                if (DeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear()
                 root.setOnTouchListener { _, _ -> true }
             }
 

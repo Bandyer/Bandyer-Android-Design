@@ -76,6 +76,8 @@ internal class GlassViewModel(
     private val callController: CallUIController
 ) : ViewModel() {
 
+    val call: SharedFlow<Call> = callDelegate.call
+
     val cameraInput: Input.Video.Camera.Internal?
         get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } as? Input.Video.Camera.Internal
 
@@ -83,8 +85,6 @@ internal class GlassViewModel(
 
     private val audioInput: Input.Audio?
         get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Audio } as? Input.Audio
-
-    val call: SharedFlow<Call> = callDelegate.call
 
     val zoom: Input.Video.Camera.Internal.Zoom? get() = cameraInput?.zoom
     

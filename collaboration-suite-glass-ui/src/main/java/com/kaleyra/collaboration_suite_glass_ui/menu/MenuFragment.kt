@@ -35,7 +35,7 @@ import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.Horizonta
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentMenuBinding
 import com.kaleyra.collaboration_suite_core_ui.model.Option
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -84,8 +84,8 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         _binding = KaleyraGlassFragmentMenuBinding
             .inflate(inflater, container, false)
             .apply {
-                if (GlassDeviceUtils.isRealWear)
-                    kaleyraBottomNavigation.setListenersForRealwear()
+                if (DeviceUtils.isRealWear)
+                    kaleyraBottomNavigation.setListenersForRealWear()
 
                 // Init the RecyclerView
                 with(kaleyraMenu) {

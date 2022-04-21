@@ -23,11 +23,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.common.SettingSlider
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentZoomBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import kotlin.math.roundToInt
 
 /**
@@ -54,7 +54,7 @@ internal class ZoomFragment : BaseFragment() {
         _binding = KaleyraGlassFragmentZoomBinding
             .inflate(inflater, container, false)
             .apply {
-                if(GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear()
+                if(DeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear()
                 root.setOnTouchListener { _, _ -> true }
             }
 

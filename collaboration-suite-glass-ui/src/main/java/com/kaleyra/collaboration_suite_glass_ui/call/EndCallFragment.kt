@@ -23,11 +23,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenDialogBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
@@ -58,7 +58,7 @@ internal class EndCallFragment : BaseFragment() {
                 container,
                 false
             )
-            .apply { if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear() }
+            .apply { if (DeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear() }
 
         return binding.root
     }

@@ -27,14 +27,13 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite_glass_ui.chat.ChatFragmentArgs
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.UserState
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatBinding
 import com.kaleyra.collaboration_suite_glass_ui.participants.ParticipantData
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
@@ -82,8 +81,8 @@ internal class ChatFragment : BaseFragment(), TiltListener {
         _binding = KaleyraGlassFragmentChatBinding
             .inflate(inflater, container, false)
             .apply {
-                if(GlassDeviceUtils.isRealWear)
-                    kaleyraBottomNavigation.setListenersForRealwear()
+                if(DeviceUtils.isRealWear)
+                    kaleyraBottomNavigation.setListenersForRealWear()
 
                 // Init the RecyclerView
                 kaleyraMessages.apply {
