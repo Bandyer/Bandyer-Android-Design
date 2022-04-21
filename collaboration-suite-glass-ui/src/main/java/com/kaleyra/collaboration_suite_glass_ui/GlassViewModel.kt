@@ -76,13 +76,15 @@ internal class GlassViewModel(
     private val callController: CallUIController
 ) : ViewModel() {
 
-    private val cameraInput: Input.Video.Camera.Internal?
+    val call: SharedFlow<Call> = callDelegate.call
+
+    val cameraInput: Input.Video.Camera.Internal?
         get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } as? Input.Video.Camera.Internal
+
+    val hasSwitchCamera: Boolean = cameraInput?.lenses?.firstOrNull { it.isRear } != null && cameraInput?.lenses?.firstOrNull { !it.isRear } != null
 
     private val audioInput: Input.Audio?
         get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Audio } as? Input.Audio
-
-    val call: SharedFlow<Call> = callDelegate.call
 
     val zoom: Input.Video.Camera.Internal.Zoom? get() = cameraInput?.zoom
     
@@ -311,6 +313,8 @@ internal class GlassViewModel(
     fun onEnableCamera(enable: Boolean) = callController.onEnableCamera(enable)
 
     fun onEnableMic(enable: Boolean) = callController.onEnableMic(enable)
+
+    fun onSwitchCamera() = callController.onSwitchCamera()
 
     fun onAnswer() = callController.onAnswer()
 

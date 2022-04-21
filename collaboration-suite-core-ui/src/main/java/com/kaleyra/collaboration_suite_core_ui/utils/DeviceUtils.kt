@@ -18,7 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui.utils
 
 import android.os.Build
 
-internal object DeviceUtils {
+object DeviceUtils {
 
     val isGoogleGlass by lazy { Build.MANUFACTURER == "Google" && Build.DEVICE == "glass_v3" }
     val isVuzix by lazy { Build.MANUFACTURER == "vuzix" }

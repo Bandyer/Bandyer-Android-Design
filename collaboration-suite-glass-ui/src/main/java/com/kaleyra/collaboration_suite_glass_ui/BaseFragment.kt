@@ -139,9 +139,9 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
      *
      * @receiver BottomNavigationView
      */
-    protected fun BottomNavigationView.setListenersForRealwear() {
-        setTapOnClickListener { onTap() }
-        setSwipeDownOnClickListener { onSwipeDown() }
-        setSwipeHorizontalOnClickListener { onSwipeForward(true) }
+    protected open fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
+        bottomNavView.setTapOnClickListener { onTap() }
+        bottomNavView.setSwipeDownOnClickListener { onSwipeDown() }
+        bottomNavView.setSwipeHorizontalOnClickListener { onSwipeForward(true) }
     }
 }

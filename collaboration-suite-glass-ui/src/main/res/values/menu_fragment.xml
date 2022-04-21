@@ -20,6 +20,7 @@
         <attr name="recyclerViewStyle" />
         <attr name="kaleyra_recyclerViewMicItemStyle" format="reference" />
         <attr name="kaleyra_recyclerViewCameraItemStyle" format="reference" />
+        <attr name="kaleyra_recyclerViewSwitchCameraItemStyle" format="reference" />
         <attr name="kaleyra_recyclerViewVolumeItemStyle" format="reference" />
         <attr name="kaleyra_recyclerViewZoomItemStyle" format="reference" />
         <attr name="kaleyra_recyclerViewFlashLightItemStyle" format="reference" />
@@ -33,6 +34,7 @@
         <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView</item>
         <item name="kaleyra_recyclerViewMicItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.Microphone</item>
         <item name="kaleyra_recyclerViewCameraItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.Camera</item>
+        <item name="kaleyra_recyclerViewSwitchCameraItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.SwitchCamera</item>
         <item name="kaleyra_recyclerViewVolumeItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.Volume</item>
         <item name="kaleyra_recyclerViewZoomItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.Zoom</item>
         <item name="kaleyra_recyclerViewFlashLightItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.FlashLight</item>
@@ -60,6 +62,14 @@
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassRecyclerViewItem.Camera" parent="KaleyraCollaborationSuiteUI.TextView.GlassRecyclerViewItem">
         <item name="android:text">@string/kaleyra_glass_menu_camera</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.SwitchCamera" parent="KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem">
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassRecyclerViewItem.SwitchCamera</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassRecyclerViewItem.SwitchCamera" parent="KaleyraCollaborationSuiteUI.TextView.GlassRecyclerViewItem">
+        <item name="android:text">@string/kaleyra_glass_menu_switch_camera</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.Volume" parent="KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem">

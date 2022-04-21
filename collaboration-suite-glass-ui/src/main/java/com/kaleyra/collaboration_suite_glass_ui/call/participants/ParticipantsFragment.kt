@@ -28,13 +28,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentParticipantsBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
@@ -85,8 +86,8 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
         _binding = KaleyraGlassFragmentParticipantsBinding
             .inflate(inflater, container, false)
             .apply {
-                if (GlassDeviceUtils.isRealWear)
-                    kaleyraBottomNavigation.setListenersForRealwear()
+                if (DeviceUtils.isRealWear)
+                    setListenersForRealWear(kaleyraBottomNavigation)
 
                 // Init the RecyclerView
                 with(kaleyraParticipants) {
@@ -176,7 +177,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
         binding.kaleyraParticipants.scrollBy(
-            (deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(),
+            (deltaAzimuth * requireContext().tiltScrollFactor()).toInt(),
             0
         )
 
