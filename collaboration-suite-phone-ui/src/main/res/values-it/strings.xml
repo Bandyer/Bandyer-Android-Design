@@ -178,5 +178,6 @@
     <string name="kaleyra_feedback_rating_bar_descr">Voto</string>
     <string name="kaleyra_feedback_see_you_soon">Speriamo di rivederti presto</string>
     <string name="kaleyra_feedback_thank_you">Ti ringraziamo per aver contribuito a migliorare il nostro servizio!</string>
+    <string name="kaleyra_call_action_ar">AR</string>
 
 </resources>

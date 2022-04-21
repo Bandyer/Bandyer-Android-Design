@@ -38,6 +38,7 @@
     <string name="kaleyra_call_action_switch_camera">Switch</string>
     <string name="kaleyra_call_action_chat">Chat</string>
     <string name="kaleyra_call_action_whiteboard">Whiteboard</string>
+    <string name="kaleyra_call_action_ar">AR</string>
     <string name="kaleyra_call_action_file_share">File Share</string>
     <string name="kaleyra_call_action_participants">Participants</string>
     <string name="kaleyra_call_action_audio_route">Audio Output</string>

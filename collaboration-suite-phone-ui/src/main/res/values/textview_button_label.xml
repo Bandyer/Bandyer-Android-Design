@@ -51,6 +51,10 @@
         <item name="android:text">@string/kaleyra_call_action_whiteboard</item>
     </style>
 
+    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.AR" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
+        <item name="android:text">@string/kaleyra_call_action_ar</item>
+    </style>
+
     <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel.FileShare" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle.ButtonLabel">
         <item name="android:text">@string/kaleyra_call_action_file_share</item>
     </style>

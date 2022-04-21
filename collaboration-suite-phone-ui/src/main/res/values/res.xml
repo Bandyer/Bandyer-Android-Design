@@ -38,6 +38,7 @@
     <item name="ic_kaleyra_camera_off" type="drawable">@drawable/kaleyra_z_camera_off</item>
     <item name="ic_kaleyra_switch_camera" type="drawable">@drawable/kaleyra_z_flipcam</item>
     <item name="ic_kaleyra_whiteboard" type="drawable">@drawable/kaleyra_z_whiteboard</item>
+    <item name="ic_kaleyra_ar" type="drawable">@drawable/bandyer_ar</item>
     <item name="ic_kaleyra_enter_fullscreen" type="drawable">@drawable/kaleyra_z_maximize</item>
     <item name="ic_kaleyra_exit_fullscreen" type="drawable">@drawable/kaleyra_z_minimize</item>
     <item name="ic_kaleyra_record" type="drawable">@drawable/kaleyra_z_rec</item>

@@ -67,9 +67,10 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
          * @param withWhiteboard  True if by default the whiteboard should be shown, false otherwise
          * @param withFileShare  True if by default the file share should be shown, false otherwise
          * @param withScreenShare  True if by default the screen share should be shown, false otherwise
+         * @param withAr  True if by default the ar should be shown, false otherwise
          * @return List<CallAction>
          */
-        fun getActions(ctx: Context, micToggled: Boolean?, cameraToggled: Boolean?, withChat: Boolean, withWhiteboard: Boolean, withFileShare: Boolean, withScreenShare: Boolean): List<CallAction> =
+        fun getActions(ctx: Context, micToggled: Boolean?, cameraToggled: Boolean?, withChat: Boolean, withWhiteboard: Boolean, withFileShare: Boolean, withScreenShare: Boolean, withAr: Boolean): List<CallAction> =
             mutableListOf<CallAction>().apply {
                 if (micToggled != null) add(MICROPHONE(micToggled, ctx))
                 if (cameraToggled != null) {
@@ -81,6 +82,7 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
                 add(AUDIOROUTE(ctx))
                 if (withFileShare) add(FILE_SHARE(ctx))
                 if (withScreenShare) add(SCREEN_SHARE(false, ctx))
+                if (withAr) add(AR(ctx))
                 if (size < 3) add(1, HANGUP(ctx))
                 else add(3, HANGUP(ctx))
             }
@@ -252,6 +254,11 @@ open class CallAction(@IdRes viewId: Int, @LayoutRes viewLayoutRes: Int = 0, @St
      */
     open class WHITEBOARD(ctx: Context) : CallAction(R.id.kaleyra_id_whiteboard, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_whiteboardStyle))
 
+    /**
+     * AR call action item
+     * @constructor
+     */
+    open class AR(ctx: Context) : CallAction(R.id.kaleyra_id_ar, R.layout.kaleyra_call_action_item, ctx.getCallActionItemStyle(R.styleable.KaleyraCollaborationSuiteUI_BottomSheet_Call_kaleyra_arStyle))
 
     /**
      * Upload call action item

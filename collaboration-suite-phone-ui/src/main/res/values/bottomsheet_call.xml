@@ -26,6 +26,7 @@
         <attr name="kaleyra_switchCameraStyle" format="reference" />
         <attr name="kaleyra_screenShareStyle" format="reference" />
         <attr name="kaleyra_whiteboardStyle" format="reference" />
+        <attr name="kaleyra_arStyle" format="reference" />
         <attr name="kaleyra_participantsStyle" format="reference" />
         <attr name="kaleyra_chatStyle" format="reference" />
         <attr name="kaleyra_optionsStyle" format="reference" />
@@ -42,6 +43,7 @@
         <item name="kaleyra_screenShareStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.ScreenShare</item>
         <item name="kaleyra_whiteboardStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Whiteboard</item>
         <item name="kaleyra_switchCameraStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.SwitchCamera</item>
+        <item name="kaleyra_arStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.AR</item>
         <item name="kaleyra_participantsStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Participants</item>
         <item name="kaleyra_chatStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Chat</item>
         <item name="kaleyra_optionsStyle">@style/KaleyraCollaborationSuiteUI.ActionButton.Options</item>

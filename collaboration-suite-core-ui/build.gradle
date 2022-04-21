@@ -40,7 +40,7 @@ dependencies {
     api picasso.picasso
 
     /** Kaleyra **/
-//    compileOnly kaleyra.collaboration
-    compileOnly project(":collaboration-suite")
+    compileOnly kaleyra.collaboration
+//    compileOnly project(":collaboration-suite")
     compileOnly kaleyra.utils
 }

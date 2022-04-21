@@ -76,6 +76,11 @@
         <item name="android:contentDescription">@string/kaleyra_call_action_whiteboard</item>
     </style>
 
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.AR" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
+        <item name="icon">@drawable/ic_kaleyra_ar</item>
+        <item name="android:contentDescription">@string/kaleyra_call_action_ar</item>
+    </style>
+
     <style name="KaleyraCollaborationSuiteUI.ImageButton.Call.FileShare" parent="KaleyraCollaborationSuiteUI.ImageButton.Call">
         <item name="icon">@drawable/ic_kaleyra_file_share</item>
         <item name="android:contentDescription">@string/kaleyra_call_action_file_share</item>

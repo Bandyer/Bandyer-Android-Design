@@ -32,6 +32,7 @@
     <item name="kaleyra_id_microphone" type="id" />
     <item name="kaleyra_id_options" type="id" />
     <item name="kaleyra_id_participants" type="id" />
+    <item name="kaleyra_id_ar" type="id" />
     <item name="kaleyra_id_chat" type="id" />
     <item name="kaleyra_id_audioroute" type="id" />
     <item name="kaleyra_id_hangup" type="id" />
