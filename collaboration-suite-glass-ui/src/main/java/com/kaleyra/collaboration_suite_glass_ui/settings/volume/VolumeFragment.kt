@@ -28,6 +28,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentVolumeBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
@@ -101,5 +102,11 @@ internal class VolumeFragment : BaseFragment() {
             decreaseProgress()
             viewModel.onSetVolume(progress)
         }
+    }
+
+    override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
+        bottomNavView.setTapOnClickListener { onSwipeForward(true) }
+        bottomNavView.setSwipeDownOnClickListener { onSwipeDown() }
+        bottomNavView.setSwipeHorizontalOnClickListener { onSwipeBackward(true) }
     }
 }
