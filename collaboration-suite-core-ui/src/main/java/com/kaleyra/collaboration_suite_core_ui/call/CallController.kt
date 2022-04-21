@@ -12,40 +12,40 @@ interface CallController: CallUIController {
 
     val callAudioManager: CallAudioManager
 
-    val currentCall: Call
+    val currentCall: Call?
 
     override suspend fun onRequestMicPermission(context: FragmentActivity): Permission =
-        if (currentCall.inputs.allowList.value.firstOrNull { it is Input.Audio } != null) Permission(
+        if (currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Audio } != null) Permission(
             isAllowed = true,
             neverAskAgain = false
         )
-        else currentCall.inputs.request(context, Inputs.Type.Microphone)
+        else currentCall?.inputs?.request(context, Inputs.Type.Microphone)
             .let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
 
     override suspend fun onRequestCameraPermission(context: FragmentActivity): Permission =
-        if (currentCall.inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } != null) Permission(
+        if (currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera.Internal } != null) Permission(
             isAllowed = true,
             neverAskAgain = false
         )
-        else currentCall.inputs.request(context, Inputs.Type.Camera.Internal)
+        else currentCall?.inputs?.request(context, Inputs.Type.Camera.Internal)
             .let { Permission(it is Inputs.RequestResult.Allow, it is Inputs.RequestResult.Never) }
 
-    override fun onAnswer() { currentCall.connect() }
+    override fun onAnswer() { currentCall?.connect() }
 
-    override fun onHangup() { currentCall.end() }
+    override fun onHangup() { currentCall?.end() }
 
     override fun onEnableCamera(enable: Boolean) {
-        val video = currentCall.inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } ?: return
+        val video = currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera.Internal } ?: return
         if (enable) video.tryEnable() else video.tryDisable()
     }
 
     override fun onEnableMic(enable: Boolean) {
-        val audio = currentCall.inputs.allowList.value.firstOrNull { it is Input.Audio } ?: return
+        val audio = currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Audio } ?: return
         if (enable) audio.tryEnable() else audio.tryDisable()
     }
 
     override fun onSwitchCamera() {
-        val camera = currentCall.inputs.allowList.value.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull()
+        val camera = currentCall?.inputs?.allowList?.value?.filterIsInstance<Input.Video.Camera.Internal>()?.firstOrNull()
         val currentLens = camera?.currentLens?.value
         val newLens = camera?.lenses?.firstOrNull { it.isRear != currentLens?.isRear } ?: return
         camera.setLens(newLens)
@@ -60,7 +60,7 @@ interface CallController: CallUIController {
     override fun onSetVolume(value: Int) = callAudioManager.setVolume(value)
 
     override fun onSetZoom(value: Float) {
-        val video = currentCall.inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } as Input.Video.Camera.Internal ?: return
+        val video = currentCall?.inputs?.allowList?.value?.filterIsInstance<Input.Video.Camera.Internal>()?.firstOrNull() ?: return
         video.zoom.value = value
     }
 }

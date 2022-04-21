@@ -137,7 +137,7 @@ object CollaborationUI {
     private fun <T : CallActivity> startPhoneBoxService(activityClazz: Class<T>) {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
-                val service = (binder as BoundServiceBinder).getService<CallService>()
+                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
                 service.bind(phoneBox, usersDescription, activityClazz)
             }
 
@@ -145,14 +145,14 @@ object CollaborationUI {
         }
 
         with(ContextRetainer.context) {
-            val intent = Intent(this, CallService::class.java)
+            val intent = Intent(this, CollaborationService::class.java)
             startService(intent)
             bindService(intent, serviceConnection, 0)
         }
     }
 
     private fun stopPhoneBoxService() = with(ContextRetainer.context) {
-        stopService(Intent(this, CallService::class.java))
+        stopService(Intent(this, CollaborationService::class.java))
     }
 }
 

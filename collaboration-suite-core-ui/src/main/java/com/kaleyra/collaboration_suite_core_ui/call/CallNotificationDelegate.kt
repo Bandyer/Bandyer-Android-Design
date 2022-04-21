@@ -14,9 +14,9 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
-interface CallNotificationDelegate : DefaultLifecycleObserver, LifecycleOwner {
+interface CallNotificationDelegate: DefaultLifecycleObserver, LifecycleOwner {
 
-    val isAppInForeground: Boolean
+    var isAppInForeground: Boolean
 
     fun showNotification(notification: Notification, showInForeground: Boolean)
 
@@ -66,7 +66,7 @@ interface CallNotificationDelegate : DefaultLifecycleObserver, LifecycleOwner {
         }
     }
 
-    suspend fun syncNotificationWithCall(
+    suspend fun syncNotificationWithCallState(
         context: Context,
         call: Call,
         usersDescription: UsersDescription,
@@ -114,6 +114,14 @@ interface CallNotificationDelegate : DefaultLifecycleObserver, LifecycleOwner {
             .takeWhile { it !is Call.State.Disconnected.Ended }
             .onCompletion { clearNotification() }
             .launchIn(lifecycleScope)
+    }
+
+    override fun onStart(owner: LifecycleOwner) {
+        isAppInForeground = true
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        isAppInForeground = false
     }
 
     private fun Call.isIncoming() =

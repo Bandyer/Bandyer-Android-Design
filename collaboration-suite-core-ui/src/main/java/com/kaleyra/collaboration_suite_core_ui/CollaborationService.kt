@@ -6,7 +6,6 @@ import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
@@ -20,15 +19,22 @@ import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
-class CollaborationService : BoundService(),
+class CollaborationService: BoundService(),
     CallUIDelegate,
     CallStreamDelegate,
     CallNotificationDelegate,
@@ -41,34 +47,43 @@ class CollaborationService : BoundService(),
         const val CALL_NOTIFICATION_ID = 22
     }
 
-    private var mCallAudioManager: CallAudioManager? = null
-    private var mBatteryObserver: BatteryObserver? = null
-    private var mWifiObserver: WiFiObserver? = null
-    private var mCallActivityClazz: Class<*>? = null
-    private var mIsServiceInForeground: Boolean = false
+    private var phoneBox: PhoneBox? = null
 
-    override val call: SharedFlow<Call>
-        get() = TODO("Not yet implemented")
-    override val usersDescription: UsersDescription = UsersDescription()
+    private var phoneBoxJob: Job? = null
+
+    private var batteryObserver: BatteryObserver? = null
+
+    private var wifiObserver: WiFiObserver? = null
+
+    private var callActivityClazz: Class<*>? = null
+
+    private var isServiceInForeground: Boolean = false
+
+    private val _call: MutableSharedFlow<Call> =
+        MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
+    override val call: SharedFlow<Call> get() = _call
+
+    override var currentCall: Call? = null
+
+    private var _callAudioManager: CallAudioManager? = null
+    override val callAudioManager: CallAudioManager get() = _callAudioManager!!
+
+    override var usersDescription: UsersDescription = UsersDescription()
 
     override var isAppInForeground: Boolean = false
 
-    override val battery: SharedFlow<BatteryInfo> get() = mBatteryObserver!!.observe()
-    override val wifi: SharedFlow<WiFiInfo> get() = mWifiObserver!!.observe()
+    override val battery: SharedFlow<BatteryInfo> get() = batteryObserver!!.observe()
 
-    override val callAudioManager: CallAudioManager get() = mCallAudioManager!!
-
-    override val currentCall: Call
-        get() = TODO("Not yet implemented")
+    override val wifi: SharedFlow<WiFiInfo> get() = wifiObserver!!.observe()
 
     override fun onCreate() {
         super<BoundService>.onCreate()
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         application.registerActivityLifecycleCallbacks(this)
         CallNotificationActionReceiver.actionDelegate = this
-        mBatteryObserver = BatteryObserver(this)
-        mWifiObserver = WiFiObserver(this)
-        mCallAudioManager = CallAudioManager(this)
+        batteryObserver = BatteryObserver(this)
+        wifiObserver = WiFiObserver(this)
+        _callAudioManager = CallAudioManager(this)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -81,15 +96,21 @@ class CollaborationService : BoundService(),
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(this)
         clearNotification()
-        mBatteryObserver?.stop()
-        mWifiObserver?.stop()
+        phoneBoxJob?.cancel()
+        currentCall?.end()
+        phoneBox?.disconnect()
+        batteryObserver?.stop()
+        wifiObserver?.stop()
         CallNotificationActionReceiver.actionDelegate = null
-        mBatteryObserver = null
-        mWifiObserver = null
-        mCallAudioManager = null
+        currentCall = null
+        _callAudioManager = null
+        phoneBox = null
+        phoneBoxJob = null
+        callActivityClazz = null
+        batteryObserver = null
+        wifiObserver = null
     }
 
-    // CallService
     fun bind(
         phoneBox: PhoneBox,
         usersDescription: UsersDescription? = null,
@@ -97,37 +118,56 @@ class CollaborationService : BoundService(),
     ) {
         this.phoneBox = phoneBox
         this.usersDescription = usersDescription ?: UsersDescription()
-        this.mCallActivityClazz = activityClazz
+        this.callActivityClazz = activityClazz
         phoneBoxJob?.cancel()
-        phoneBoxJob = setUpCallStreams(phoneBox)
+        phoneBoxJob = listenToCalls(phoneBox, this.usersDescription, this.callActivityClazz!!)
     }
 
-    //////////////////////////////
-    // DefaultLifecycleObserver //
-    //////////////////////////////
-    override fun onStart(owner: LifecycleOwner) {
-        isAppInForeground = true
-    }
+    private fun listenToCalls(
+        phoneBox: PhoneBox,
+        usersDescription: UsersDescription,
+        callActivityClazz: Class<*>
+    ) =
+        phoneBox.call.onEach { call ->
+            if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return@onEach
+            currentCall = call
+            _call.emit(call)
 
-    override fun onStop(owner: LifecycleOwner) {
-        isAppInForeground = false
-    }
+            call.state
+                .takeWhile { it !is Call.State.Disconnected.Ended }
+                .onCompletion { currentCall = null }
+                .launchIn(lifecycleScope)
+
+            setUpCallStreams(this@CollaborationService, call)
+            syncNotificationWithCallState(
+                this@CollaborationService,
+                call,
+                usersDescription,
+                callActivityClazz
+            )
+
+            if (!shouldShowCallUI(call)) return@onEach
+            UIProvider.showCall(callActivityClazz)
+        }.launchIn(lifecycleScope)
+
+    private fun shouldShowCallUI(call: Call): Boolean =
+        isAppInForeground && (!this@CollaborationService.isSilent() || call.participants.value.let { it.me == it.creator() })
 
     ////////////////////////////////////////////
     // Application.ActivityLifecycleCallbacks //
     ////////////////////////////////////////////
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        if (activity.javaClass != mCallActivityClazz) return
-        publishMyStream(activity as FragmentActivity, currentCall)
+        if (activity.javaClass != callActivityClazz) return
+        publishMyStream(activity as FragmentActivity, currentCall!!)
     }
 
     override fun onActivityStarted(activity: Activity) {
-        if (activity.javaClass != mCallActivityClazz || mIsServiceInForeground) return
+        if (activity.javaClass != callActivityClazz || isServiceInForeground) return
         lifecycleScope.launch {
             moveNotificationToForeground(
-                currentCall,
+                this@CollaborationService.currentCall!!,
                 usersDescription,
-                mCallActivityClazz!!
+                callActivityClazz!!
             )
         }
     }
@@ -146,11 +186,11 @@ class CollaborationService : BoundService(),
     // CallNotificationActionReceiver.ActionDelegate //
     ///////////////////////////////////////////////////
     override fun onAnswerAction() {
-        currentCall.connect()
+        currentCall?.connect()
     }
 
     override fun onHangUpAction() {
-        currentCall.end()
+        currentCall?.end()
     }
 
     override fun onScreenShareAction() = Unit
@@ -169,13 +209,13 @@ class CollaborationService : BoundService(),
     override fun showNotification(notification: Notification, showInForeground: Boolean) {
         if (showInForeground) {
             startForeground(CALL_NOTIFICATION_ID, notification).also {
-                mIsServiceInForeground = true
+                isServiceInForeground = true
             }
         } else NotificationManager.notify(CALL_NOTIFICATION_ID, notification)
     }
 
     override fun clearNotification() {
-        stopForeground(true).also { mIsServiceInForeground = false }
+        stopForeground(true).also { isServiceInForeground = false }
         NotificationManager.cancelNotification(CALL_NOTIFICATION_ID)
     }
 }

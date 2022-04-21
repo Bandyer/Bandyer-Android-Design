@@ -36,8 +36,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite_core_ui.CollaborationService
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
-import com.kaleyra.collaboration_suite_core_ui.call.CallService
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
@@ -88,7 +88,7 @@ internal class GlassCallActivity :
 
     private var isActivityInForeground = false
 
-    private var service: CallService? = null
+    private var service: CollaborationService? = null
     val isServiceBound: Boolean
         get() = service != null
 
@@ -160,7 +160,7 @@ internal class GlassCallActivity :
         handleIntentAction(intent)
     }
 
-    override fun onServiceBound(service: CallService) {
+    override fun onServiceBound(service: CollaborationService) {
         this.service = service
 
         if (!viewModel.micPermission.value.isAllowed && viewModel.preferredCallType.hasAudio() && viewModel.preferredCallType.isAudioEnabled())
