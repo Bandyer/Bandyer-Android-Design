@@ -74,7 +74,7 @@ internal class ZoomFragment : BaseFragment() {
 
     override fun onServiceBound() {
         with(binding.kaleyraSlider) {
-            val currentValue = viewModel.zoom!!.value
+            val currentValue = viewModel.zoom!!.value.value
             val upperValue = viewModel.zoom!!.range.upper
             val lowerValue = viewModel.zoom!!.range.lower
             maxProgress = MAX_ZOOM_PROGRESS

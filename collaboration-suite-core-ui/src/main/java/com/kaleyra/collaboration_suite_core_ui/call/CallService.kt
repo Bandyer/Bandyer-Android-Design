@@ -225,8 +225,9 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     override fun onSetVolume(value: Int) = callAudioManager!!.setVolume(value)
 
     override fun onSetZoom(value: Float) {
-        val video = currentCall?.inputs?.allowList?.value?.firstOrNull { it is Input.Video.Camera.Internal } as? Input.Video.Camera.Internal ?: return
-        video.zoom.value = value
+        val camera = currentCall?.inputs?.allowList?.value?.filterIsInstance<Input.Video.Camera.Internal>()?.firstOrNull()
+        val currentLens = camera?.currentLens?.value ?: return
+        currentLens.zoom.tryZoom(value)
     }
 
     // CallService

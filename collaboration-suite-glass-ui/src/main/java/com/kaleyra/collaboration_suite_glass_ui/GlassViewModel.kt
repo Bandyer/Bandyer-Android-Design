@@ -20,22 +20,21 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
-import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import com.kaleyra.collaboration_suite.Participant
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
-import com.kaleyra.collaboration_suite.phonebox.FlashLight
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
+import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
+import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
+import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -86,9 +85,9 @@ internal class GlassViewModel(
     private val audioInput: Input.Audio?
         get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Audio } as? Input.Audio
 
-    val zoom: Input.Video.Camera.Internal.Zoom? get() = cameraInput?.zoom
+    val zoom: Input.Video.Camera.Internal.Zoom? get() = cameraInput?.currentLens?.value?.zoom
     
-    val flashLight: FlashLight get() = call.replayCache.first().flashLight
+    val flashLight: Input.Video.Camera.Internal.FlashLight? get() = cameraInput?.currentLens?.value?.flashLight
 
     val preferredCallType get() = call.replayCache.first().extras.preferredType
 

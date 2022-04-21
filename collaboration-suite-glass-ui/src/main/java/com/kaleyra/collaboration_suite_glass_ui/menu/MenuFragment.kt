@@ -17,25 +17,23 @@
 package com.kaleyra.collaboration_suite_glass_ui.menu
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.kaleyra.collaboration_suite_core_ui.model.Option
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.CallAction
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentMenuBinding
-import com.kaleyra.collaboration_suite_core_ui.model.Option
-import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -45,9 +43,7 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.takeWhile
 
 /**
  * KaleyraGlassMenuFragment
@@ -122,8 +118,8 @@ internal class MenuFragment : BaseFragment(), TiltListener {
     override fun onServiceBound() {
         val hasAudio = viewModel.preferredCallType.hasAudio()
         val hasVideo = viewModel.preferredCallType.hasVideo()
-        val hasZoom = viewModel.zoom?.isSupported ?: false
-        val hasFlashLight = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) viewModel.flashLight.units.isNotEmpty() else false
+        val hasZoom = viewModel.zoom?.isSupported == true
+        val hasFlashLight = viewModel.flashLight?.isSupported == true
         val options = args.options ?: arrayOf()
         getActions(hasAudio, hasVideo, viewModel.hasSwitchCamera, hasZoom, hasFlashLight, options).forEach { itemAdapter!!.add(MenuItem(it)) }
 
@@ -145,6 +141,10 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             zoomAction?.also { action ->
                 viewModel.cameraEnabled.onEach { action.disable(!it) }.launchIn(this)
             }
+            flashAction?.also { action ->
+                viewModel.cameraEnabled.onEach { action.disable(!it) }.launchIn(this)
+                viewModel.flashLight?.enabled?.onEach { action.toggle(it) }?.launchIn(this)
+            }
         }
     }
 
@@ -161,9 +161,9 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         var withChat = false
 
         options.forEach {
-            when(it) {
+            when (it) {
                 is Option.CHAT -> withChat = true
-                else -> Unit
+                else           -> Unit
             }
         }
 
@@ -175,29 +175,27 @@ internal class MenuFragment : BaseFragment(), TiltListener {
     override fun onTap() = onTap(itemAdapter!!.getAdapterItem(currentMenuItemIndex).action)
 
     private fun onTap(action: CallAction) = when (action) {
-        is CallAction.MICROPHONE -> true.also {
-            if(!viewModel.micPermission.value.isAllowed) viewModel.onRequestMicPermission(requireActivity())
+        is CallAction.MICROPHONE   -> true.also {
+            if (!viewModel.micPermission.value.isAllowed) viewModel.onRequestMicPermission(requireActivity())
             viewModel.onEnableMic(!viewModel.micEnabled.value)
         }
-        is CallAction.CAMERA -> true.also {
-            if(!viewModel.camPermission.value.isAllowed) viewModel.onRequestCameraPermission(requireActivity())
+        is CallAction.CAMERA       -> true.also {
+            if (!viewModel.camPermission.value.isAllowed) viewModel.onRequestCameraPermission(requireActivity())
             viewModel.onEnableCamera(!viewModel.cameraEnabled.value)
         }
+
         is CallAction.SWITCHCAMERA -> true.also { viewModel.onSwitchCamera() }
         is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment()) }
         is CallAction.ZOOM -> true.also { if(!action.isDisabled) findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
         is CallAction.FLASHLIGHT -> true.also {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return@also
-            val cameraId = viewModel.cameraInput?.id
-            val cameraFlashLight = viewModel.flashLight.units.firstOrNull { it.id == cameraId && it.available.value }
-            val flashLight = cameraFlashLight ?: viewModel.flashLight.units.firstOrNull { it.isRear && it.available.value } ?: return@also
+            if (action.isDisabled) return@also
+            val flashLight = viewModel.flashLight ?: return@also
             val isEnabled = flashLight.enabled.value
-            flashLight.enabled.takeWhile { it == isEnabled }.onCompletion { action.toggle(!isEnabled) }.launchIn(lifecycleScope)
             if (isEnabled) flashLight.tryDisable() else flashLight.tryEnable()
         }
         is CallAction.PARTICIPANTS -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToParticipantsFragment()) }
-        is CallAction.CHAT -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToSmartglassNavGraphChat()) }
-        else -> false
+        is CallAction.CHAT         -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToSmartglassNavGraphChat()) }
+        else                       -> false
     }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
