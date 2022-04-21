@@ -209,7 +209,12 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
         if (enable) audio.tryEnable() else audio.tryDisable()
     }
 
-    override fun onSwitchCamera() = Unit
+    override fun onSwitchCamera() {
+        val camera = currentCall?.inputs?.allowList?.value?.filterIsInstance<Input.Video.Camera.Internal>()?.firstOrNull()
+        val currentLens = camera?.currentLens?.value
+        val newLens = camera?.lenses?.firstOrNull { it.isRear != currentLens?.isRear } ?: return
+        camera.setLens(newLens)
+    }
 
     override fun onGetVolume(): Volume = Volume(
         callAudioManager!!.currentVolume,

@@ -125,7 +125,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         val hasZoom = viewModel.zoom?.isSupported ?: false
         val hasFlashLight = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) viewModel.flashLight.units.isNotEmpty() else false
         val options = args.options ?: arrayOf()
-        getActions(hasAudio, hasVideo, hasZoom, hasFlashLight, options).forEach { itemAdapter!!.add(MenuItem(it)) }
+        getActions(hasAudio, hasVideo, viewModel.hasSwitchCamera, hasZoom, hasFlashLight, options).forEach { itemAdapter!!.add(MenuItem(it)) }
 
         val cameraAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.CAMERA }?.action as? CallAction.ToggleableCallAction)
         val micAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.MICROPHONE }?.action as? CallAction.ToggleableCallAction)
@@ -157,7 +157,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         itemAdapter = null
     }
 
-    private fun getActions(hasAudio: Boolean, hasVideo: Boolean, hasZoom: Boolean, hasFlashLight: Boolean, options: Array<Option>): List<CallAction> {
+    private fun getActions(hasAudio: Boolean, hasVideo: Boolean, hasSwitchCamera: Boolean, hasZoom: Boolean, hasFlashLight: Boolean, options: Array<Option>): List<CallAction> {
         var withChat = false
 
         options.forEach {
@@ -167,7 +167,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             }
         }
 
-        return CallAction.getActions(requireContext(), withMicrophone = hasAudio, withCamera = hasVideo, withFlashLight = hasFlashLight, withZoom = hasZoom, withChat = withChat)
+        return CallAction.getActions(requireContext(), withMicrophone = hasAudio, withCamera = hasVideo, withSwitchCamera = hasSwitchCamera, withFlashLight = hasFlashLight, withZoom = hasZoom, withChat = withChat)
     }
 
     override fun onDismiss() = Unit
@@ -183,6 +183,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             if(!viewModel.camPermission.value.isAllowed) viewModel.onRequestCameraPermission(requireActivity())
             viewModel.onEnableCamera(!viewModel.cameraEnabled.value)
         }
+        is CallAction.SWITCHCAMERA -> true.also { viewModel.onSwitchCamera() }
         is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment()) }
         is CallAction.ZOOM -> true.also { if(!action.isDisabled) findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
         is CallAction.FLASHLIGHT -> true.also {

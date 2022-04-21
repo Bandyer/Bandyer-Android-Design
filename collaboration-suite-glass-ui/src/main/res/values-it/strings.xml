@@ -66,6 +66,7 @@
     <string name="kaleyra_glass_menu_microphone_toggled">Muta microfono</string>
     <string name="kaleyra_glass_menu_camera">Abilita camera</string>
     <string name="kaleyra_glass_menu_camera_toggled">Muta camera</string>
+    <string name="kaleyra_glass_menu_switch_camera">Cambia camera</string>
     <string name="kaleyra_glass_menu_participants">Partecipanti</string>
     <string name="kaleyra_glass_menu_volume">Volume</string>
     <string name="kaleyra_glass_menu_zoom">Zoom</string>

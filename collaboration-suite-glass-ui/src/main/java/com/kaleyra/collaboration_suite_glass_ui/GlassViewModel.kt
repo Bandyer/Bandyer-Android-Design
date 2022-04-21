@@ -79,6 +79,8 @@ internal class GlassViewModel(
     val cameraInput: Input.Video.Camera.Internal?
         get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } as? Input.Video.Camera.Internal
 
+    val hasSwitchCamera: Boolean = cameraInput?.lenses?.firstOrNull { it.isRear } != null && cameraInput?.lenses?.firstOrNull { !it.isRear } != null
+
     private val audioInput: Input.Audio?
         get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Audio } as? Input.Audio
 
@@ -311,6 +313,8 @@ internal class GlassViewModel(
     fun onEnableCamera(enable: Boolean) = callController.onEnableCamera(enable)
 
     fun onEnableMic(enable: Boolean) = callController.onEnableMic(enable)
+
+    fun onSwitchCamera() = callController.onSwitchCamera()
 
     fun onAnswer() = callController.onAnswer()
 
