@@ -18,15 +18,18 @@ package com.kaleyra.collaboration_suite_glass_ui.settings.volume
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
+import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentVolumeBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
  * VolumeFragment
@@ -48,9 +51,16 @@ internal class VolumeFragment : BaseFragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
+        val themeResId =
+            requireActivity().theme.getAttributeResourceId(if (DeviceUtils.isRealWear) R.attr.kaleyra_volumeRealWearStyle else R.attr.kaleyra_volumeStyle)
+
         // Add view binding
         _binding = KaleyraGlassFragmentVolumeBinding
-            .inflate(inflater, container, false)
+            .inflate(
+                inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
+                container,
+                false
+            )
             .apply {
                 if (DeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear()
                 root.setOnTouchListener { _, _ -> true }

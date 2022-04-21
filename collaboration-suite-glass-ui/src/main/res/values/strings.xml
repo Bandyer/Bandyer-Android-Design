@@ -34,6 +34,8 @@
     <string name="kaleyra_glass_browse">browse</string>
     <string name="kaleyra_glass_select">select</string>
     <string name="kaleyra_glass_cancel">cancel</string>
+    <string name="kaleyra_glass_increase">increase</string>
+    <string name="kaleyra_glass_decrease">decrease</string>
     <string name="kaleyra_glass_change">change</string>
     <string name="kaleyra_glass_confirm">confirm</string>
     <string name="kaleyra_glass_end">end</string>

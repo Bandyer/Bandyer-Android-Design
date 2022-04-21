@@ -27,6 +27,11 @@
         <item name="sliderStyle">@style/KaleyraCollaborationSuiteUI.Glass.Slider</item>
     </style>
 
+    <!-- VOLUME FRAGMENT REALWEAR -->
+    <style name="KaleyraCollaborationSuiteUI.Glass.Volume.RealWear" parent="KaleyraCollaborationSuiteUI.Glass.Volume">
+        <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Volume.RealWear</item>
+    </style>
+
     <!-- BOTTOM NAVIGATION BAR -->
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Volume" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation">
         <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.Volume</item>
@@ -73,5 +78,59 @@
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapVolume" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
         <item name="android:text">@string/kaleyra_glass_confirm</item>
+    </style>
+
+    <!-- BOTTOM NAVIGATION BAR REALWEAR -->
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Volume.RealWear" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Volume">
+        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.Volume.RealWear</item>
+        <item name="kaleyra_tapItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.Volume.RealWear</item>
+        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.Volume.RealWear</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.Volume.RealWear" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.Volume">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Volume.RealWear</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeVolume.RealWear</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Volume.RealWear" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Volume">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_decrease</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeVolume.RealWear" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeVolume">
+        <item name="android:text">@string/kaleyra_glass_decrease</item>
+    </style>
+
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.Volume.RealWear" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.Volume">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.Volume.RealWear</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownVolume.RealWear</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.Volume.RealWear" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.Volume">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_close</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownVolume.RealWear" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownVolume">
+        <item name="android:text">@string/kaleyra_glass_close</item>
+    </style>
+
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.Volume.RealWear" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.Volume">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.Volume.RealWear</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.SwipeHorizontal</item>
+        <item name="kaleyra_iconTipStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassIconTip.SwipeHorizontal</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapVolume.RealWear</item>
+        <item name="android:visibility">visible</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.Volume.RealWear" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.Volume">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_increase</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapVolume.RealWear" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapVolume">
+        <item name="android:text">@string/kaleyra_glass_increase</item>
     </style>
 </resources>

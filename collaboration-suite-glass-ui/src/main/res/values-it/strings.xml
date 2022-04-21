@@ -30,6 +30,8 @@
     <string name="kaleyra_glass_browse">naviga</string>
     <string name="kaleyra_glass_select">seleziona</string>
     <string name="kaleyra_glass_cancel">annulla</string>
+    <string name="kaleyra_glass_increase">incrementa</string>
+    <string name="kaleyra_glass_decrease">decrementa</string>
     <string name="kaleyra_glass_change">modifica</string>
     <string name="kaleyra_glass_confirm">conferma</string>
     <string name="kaleyra_glass_end">termina</string>
