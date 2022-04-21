@@ -47,7 +47,7 @@
         <item name="kaleyra_volumeStyle">@style/KaleyraCollaborationSuiteUI.Glass.Volume</item>
         <item name="kaleyra_volumeRealWearStyle">@style/KaleyraCollaborationSuiteUI.Glass.Volume.RealWear</item>
         <item name="kaleyra_zoomStyle">@style/KaleyraCollaborationSuiteUI.Glass.Zoom</item>
-        <item name="kaleyra_zoomRealWearStyle">@style/KaleyraCollaborationSuiteUI.Glass.Zoom</item>
+        <item name="kaleyra_zoomRealWearStyle">@style/KaleyraCollaborationSuiteUI.Glass.Zoom.RealWear</item>
         <item name="kaleyra_ringingStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo.Ringing</item>
         <item name="kaleyra_dialingStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo.Dialing</item>
         <item name="kaleyra_reconnectingStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo.Reconnecting</item>
