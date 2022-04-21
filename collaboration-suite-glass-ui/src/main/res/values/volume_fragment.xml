@@ -101,7 +101,6 @@
         <item name="android:text">@string/kaleyra_glass_decrease</item>
     </style>
 
-
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.Volume.RealWear" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.Volume">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.Volume.RealWear</item>
         <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownVolume.RealWear</item>
@@ -115,7 +114,6 @@
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownVolume.RealWear" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownVolume">
         <item name="android:text">@string/kaleyra_glass_close</item>
     </style>
-
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.Volume.RealWear" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.Volume">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.Volume.RealWear</item>
