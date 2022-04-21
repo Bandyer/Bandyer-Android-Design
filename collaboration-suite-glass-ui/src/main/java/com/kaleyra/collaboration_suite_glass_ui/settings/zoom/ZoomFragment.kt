@@ -44,6 +44,8 @@ internal class ZoomFragment : BaseFragment() {
 
     private val viewModel: GlassViewModel by activityViewModels()
 
+    private var previousValue = 0f
+
     /**
      * @suppress
      */
@@ -76,8 +78,8 @@ internal class ZoomFragment : BaseFragment() {
             val upperValue = viewModel.zoom!!.range.upper
             val lowerValue = viewModel.zoom!!.range.lower
             maxProgress = MAX_ZOOM_PROGRESS
-            progress =
-                (((currentValue - lowerValue) * MAX_ZOOM_PROGRESS) / (upperValue - lowerValue)).roundToInt()
+            progress = (((currentValue - lowerValue) * MAX_ZOOM_PROGRESS) / (upperValue - lowerValue)).roundToInt()
+            previousValue = currentValue
 
             onSliderChangeListener = object : SettingSlider.OnSliderChangeListener {
                 override fun onProgressChanged(progress: Int) {
@@ -99,7 +101,10 @@ internal class ZoomFragment : BaseFragment() {
 
     override fun onTap() = true.also { findNavController().popBackStack() }
 
-    override fun onSwipeDown() = true.also { findNavController().popBackStack() }
+    override fun onSwipeDown() = true.also {
+        findNavController().popBackStack()
+        viewModel.onSetZoom(previousValue)
+    }
 
     override fun onSwipeForward(isKeyEvent: Boolean) =
         true.also { binding.kaleyraSlider.increaseProgress() }
