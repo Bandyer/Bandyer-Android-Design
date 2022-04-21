@@ -16,6 +16,7 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.call
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -42,6 +43,7 @@ internal class CallEndedFragment : BaseFragment() {
     /**
      * @suppress
      */
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -63,6 +65,7 @@ internal class CallEndedFragment : BaseFragment() {
             if(DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation)
             kaleyraTitle.text = args.title
             kaleyraSubtitle.text = args.subtitle
+            root.setOnTouchListener { _, _ -> true }
         }
 
         return binding.root
