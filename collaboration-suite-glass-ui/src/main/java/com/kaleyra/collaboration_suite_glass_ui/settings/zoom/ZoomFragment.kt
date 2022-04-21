@@ -29,7 +29,7 @@ import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.common.SettingSlider
-import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentSliderBinding
+import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentZoomBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 import kotlin.math.roundToInt
 
@@ -38,8 +38,8 @@ import kotlin.math.roundToInt
  */
 internal class ZoomFragment : BaseFragment() {
 
-    private var _binding: KaleyraGlassFragmentSliderBinding? = null
-    override val binding: KaleyraGlassFragmentSliderBinding get() = _binding!!
+    private var _binding: KaleyraGlassFragmentZoomBinding? = null
+    override val binding: KaleyraGlassFragmentZoomBinding get() = _binding!!
 
     private val viewModel: GlassViewModel by activityViewModels()
 
@@ -55,9 +55,8 @@ internal class ZoomFragment : BaseFragment() {
 
         val themeResId =
             requireActivity().theme.getAttributeResourceId(if (DeviceUtils.isRealWear) R.attr.kaleyra_zoomRealWearStyle else R.attr.kaleyra_zoomStyle)
-
         // Add view binding
-        _binding = KaleyraGlassFragmentSliderBinding
+        _binding = KaleyraGlassFragmentZoomBinding
             .inflate(
                 inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
                 container,
