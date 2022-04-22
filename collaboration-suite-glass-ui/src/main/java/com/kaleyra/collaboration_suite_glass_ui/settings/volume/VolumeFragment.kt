@@ -18,7 +18,6 @@ package com.kaleyra.collaboration_suite_glass_ui.settings.volume
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,10 +26,8 @@ import androidx.navigation.fragment.findNavController
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
-import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentVolumeBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
  * VolumeFragment
@@ -102,8 +99,8 @@ internal class VolumeFragment : BaseFragment() {
     }
 
     override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
-        bottomNavView.setTapOnClickListener { onSwipeForward(true) }
-        bottomNavView.setSwipeDownOnClickListener { onSwipeDown() }
-        bottomNavView.setSwipeHorizontalOnClickListener { onSwipeBackward(true) }
+        bottomNavView.setFirstItemListener { onSwipeBackward(true) }
+        bottomNavView.setSecondItemListener { onSwipeForward(true) }
+        bottomNavView.setThirdItemListener { onSwipeDown() }
     }
 }

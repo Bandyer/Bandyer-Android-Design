@@ -42,35 +42,35 @@
 
     <!-- BOTTOM NAVIGATION BAR -->
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.EndCall" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog">
-        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.EndCall</item>
-        <item name="kaleyra_tapItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.EndCall</item>
+        <item name="kaleyra_thirdItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.EndCall</item>
+        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.EndCall</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.EndCall" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.EndCall</item>
-        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownEndCall</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.EndCall" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.EndCall</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemEndCall</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.EndCall" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.EndCall" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/kaleyra_glass_cancel</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownEndCall" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemEndCall" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
         <item name="android:text">@string/kaleyra_glass_cancel</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.EndCall" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.EndCall</item>
-        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapEndCall</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.EndCall" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.EndCall</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemEndCall</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.EndCall" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.EndCall" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/kaleyra_glass_end</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapEndCall" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemEndCall" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
         <item name="android:text">@string/kaleyra_glass_end</item>
     </style>
 </resources>

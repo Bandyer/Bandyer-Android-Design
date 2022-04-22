@@ -45,10 +45,10 @@
 
     <!-- BOTTOM NAVIGATION -->
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo.Dialing" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo">
-        <item name="kaleyra_tapItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Dialing</item>
+        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.FullScreenLogoDialog.Dialing</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Dialing" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.FullScreenLogoDialog">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.FullScreenLogoDialog.Dialing" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.FullScreenLogoDialog">
         <item name="android:visibility">gone</item>
     </style>
 </resources>

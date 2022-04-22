@@ -114,17 +114,17 @@
 
     <!-- BOTTOM NAVIGATION BAR -->
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation">
-        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.Menu</item>
-        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.Menu</item>
-        <item name="kaleyra_tapItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.Menu</item>
+        <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.Menu</item>
+        <item name="kaleyra_thirdItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.Menu</item>
+        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.Menu</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Menu</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.Menu</item>
         <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeMenu</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem">
         <item name="android:contentDescription">@string/kaleyra_glass_browse</item>
         <item name="android:clickable">true</item>
     </style>
@@ -133,31 +133,31 @@
         <item name="android:text">@string/kaleyra_glass_browse</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.Menu</item>
-        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownMenu</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.Menu</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemMenu</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem">
         <item name="android:contentDescription">@string/kaleyra_glass_close</item>
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownMenu" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemMenu" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
         <item name="android:text">@string/kaleyra_glass_close</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.Menu</item>
-        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapMenu</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.Menu</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemMenu</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.Menu" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem">
         <item name="android:contentDescription">@string/kaleyra_glass_select</item>
         <item name="android:clickable">true</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.TapMenu" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemMenu" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
         <item name="android:text">@string/kaleyra_glass_select</item>
     </style>
 </resources>
