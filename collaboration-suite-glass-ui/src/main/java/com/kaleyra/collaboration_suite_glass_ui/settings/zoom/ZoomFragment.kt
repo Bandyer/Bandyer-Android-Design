@@ -94,12 +94,9 @@ internal class ZoomFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onTap() = true.also { findNavController().popBackStack() }
+    override fun onTap() = false
 
-    override fun onSwipeDown() = true.also {
-        findNavController().popBackStack()
-        viewModel.onSetZoom(previousValue)
-    }
+    override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
     override fun onSwipeForward(isKeyEvent: Boolean) =
         true.also { binding.kaleyraSlider.increaseProgress() }
