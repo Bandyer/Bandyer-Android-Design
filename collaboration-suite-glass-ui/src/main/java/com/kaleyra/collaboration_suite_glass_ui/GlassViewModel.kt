@@ -77,13 +77,13 @@ internal class GlassViewModel(
 
     val call: SharedFlow<Call> = callDelegate.call
 
-    val cameraInput: Input.Video.Camera.Internal?
-        get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } as? Input.Video.Camera.Internal
-
-    val hasSwitchCamera: Boolean = cameraInput?.lenses?.firstOrNull { it.isRear } != null && cameraInput?.lenses?.firstOrNull { !it.isRear } != null
+    private val cameraInput: Input.Video.Camera.Internal?
+        get() = call.replayCache.first().inputs.allowList.value.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull()
 
     private val audioInput: Input.Audio?
-        get() = call.replayCache.first().inputs.allowList.value.firstOrNull { it is Input.Audio } as? Input.Audio
+        get() = call.replayCache.first().inputs.allowList.value.filterIsInstance<Input.Audio>().firstOrNull()
+
+    val hasSwitchCamera: Boolean get() = cameraInput?.lenses?.firstOrNull { it.isRear } != null && cameraInput?.lenses?.firstOrNull { !it.isRear } != null
 
     val zoom: Input.Video.Camera.Internal.Zoom? get() = cameraInput?.currentLens?.value?.zoom
     
