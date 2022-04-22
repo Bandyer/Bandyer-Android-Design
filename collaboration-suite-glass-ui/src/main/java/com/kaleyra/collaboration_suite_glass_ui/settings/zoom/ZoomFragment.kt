@@ -56,12 +56,10 @@ internal class ZoomFragment : BaseFragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val themeResId =
-            requireActivity().theme.getAttributeResourceId(if (DeviceUtils.isRealWear) R.attr.kaleyra_zoomRealWearStyle else R.attr.kaleyra_zoomStyle)
         // Add view binding
         _binding = KaleyraGlassFragmentZoomBinding
             .inflate(
-                inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
+                inflater,
                 container,
                 false
             ).apply {
