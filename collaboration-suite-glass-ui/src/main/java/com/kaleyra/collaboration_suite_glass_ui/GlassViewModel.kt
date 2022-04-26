@@ -77,17 +77,39 @@ internal class GlassViewModel(
 
     val call: SharedFlow<Call> = callDelegate.call
 
-    private val cameraInput: Input.Video.Camera.Internal?
-        get() = call.replayCache.first().inputs.allowList.value.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull()
+    val hasSwitchCamera: StateFlow<Boolean> = MutableStateFlow(false).apply {
+        call
+            .flatMapLatest { it.inputs.allowList }
+            .map { it.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() }
+            .map { c -> c?.lenses?.firstOrNull { it.isRear } != null && c.lenses.firstOrNull { !it.isRear } != null }
+            .onEach { value = it }
+            .launchIn(viewModelScope)
+    }
 
-    private val audioInput: Input.Audio?
-        get() = call.replayCache.first().inputs.allowList.value.filterIsInstance<Input.Audio>().firstOrNull()
+    val zoom: StateFlow<Input.Video.Camera.Internal.Zoom?> =
+        MutableStateFlow<Input.Video.Camera.Internal.Zoom?>(null).apply {
+            call
+                .flatMapLatest { it.inputs.allowList }
+                .map { it.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() }
+                .filter { it != null }
+                .flatMapLatest { it!!.currentLens }
+                .map { it.zoom }
+                .onEach { value = it }
+                .launchIn(viewModelScope)
+        }
 
-    val hasSwitchCamera: Boolean get() = cameraInput?.lenses?.firstOrNull { it.isRear } != null && cameraInput?.lenses?.firstOrNull { !it.isRear } != null
+    val flashLight: StateFlow<Input.Video.Camera.Internal.FlashLight?> =
+        MutableStateFlow<Input.Video.Camera.Internal.FlashLight?>(null).apply {
+            call
+                .flatMapLatest { it.inputs.allowList }
+                .map { it.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() }
+                .filter { it != null }
+                .flatMapLatest { it!!.currentLens }
+                .map { it.flashLight }
+                .onEach { value = it }
+                .launchIn(viewModelScope)
+        }
 
-    val zoom: Input.Video.Camera.Internal.Zoom? get() = cameraInput?.currentLens?.value?.zoom
-    
-    val flashLight: Input.Video.Camera.Internal.FlashLight? get() = cameraInput?.currentLens?.value?.flashLight
 
     val preferredCallType get() = call.replayCache.first().extras.preferredType
 
@@ -237,13 +259,23 @@ internal class GlassViewModel(
         }
 
     private val _micPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(Permission(isAllowed = audioInput != null,
-            neverAskAgain = false))
+        MutableStateFlow(
+            Permission(
+                isAllowed = call.replayCache.first().inputs.allowList.value.filterIsInstance<Input.Audio>()
+                    .firstOrNull() != null,
+                neverAskAgain = false
+            )
+        )
     val micPermission: StateFlow<Permission> = _micPermission.asStateFlow()
 
     private val _camPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(Permission(isAllowed = cameraInput != null,
-            neverAskAgain = false))
+        MutableStateFlow(
+            Permission(
+                isAllowed = call.replayCache.first().inputs.allowList.value.filterIsInstance<Input.Video.Camera.Internal>()
+                    .firstOrNull() != null,
+                neverAskAgain = false
+            )
+        )
     val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
 
     val amIAlone: Flow<Boolean> = combine(

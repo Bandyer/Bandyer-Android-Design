@@ -42,6 +42,9 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoot
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -118,16 +121,14 @@ internal class MenuFragment : BaseFragment(), TiltListener {
     override fun onServiceBound() {
         val hasAudio = viewModel.preferredCallType.hasAudio()
         val hasVideo = viewModel.preferredCallType.hasVideo()
-        val hasZoom = viewModel.zoom?.isSupported == true
-        val hasFlashLight = viewModel.flashLight?.isSupported == true
         val options = args.options ?: arrayOf()
-        getActions(hasAudio, hasVideo, viewModel.hasSwitchCamera, hasZoom, hasFlashLight, options).forEach { itemAdapter!!.add(MenuItem(it)) }
+        getActions(hasAudio, hasVideo, options).forEach { itemAdapter!!.add(MenuItem(it)) }
 
         val cameraAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.CAMERA }?.action as? CallAction.ToggleableCallAction)
         val micAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.MICROPHONE }?.action as? CallAction.ToggleableCallAction)
         val zoomAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.ZOOM }?.action as? CallAction.ToggleableCallAction)
         val flashAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.FLASHLIGHT }?.action as? CallAction.ToggleableCallAction)
-        flashAction?.toggle(false)
+        val switchCameraAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.SWITCHCAMERA }?.action as? CallAction.ToggleableCallAction)
 
         repeatOnStarted {
             cameraAction?.also { action ->
@@ -139,11 +140,24 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                 viewModel.micPermission.onEach { action.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
             }
             zoomAction?.also { action ->
-                viewModel.cameraEnabled.onEach { action.disable(!it) }.launchIn(this)
+                combine(viewModel.cameraEnabled, viewModel.zoom) { cameraEnabled, zoom ->
+                    action.disable(!cameraEnabled || zoom?.isSupported != true)
+                }.launchIn(this)
             }
             flashAction?.also { action ->
-                viewModel.cameraEnabled.onEach { action.disable(!it) }.launchIn(this)
-                viewModel.flashLight?.enabled?.onEach { action.toggle(it) }?.launchIn(this)
+                combine(viewModel.cameraEnabled, viewModel.flashLight) { cameraEnabled, flashLight ->
+                    action.disable(!cameraEnabled || flashLight?.isSupported != true)
+                }.launchIn(this)
+                viewModel.flashLight
+                    .filter { it != null }
+                    .flatMapLatest { it!!.enabled }
+                    .onEach { action.toggle(!it) }
+                    .launchIn(this)
+            }
+            switchCameraAction?.also { action ->
+                viewModel.hasSwitchCamera.onEach {
+                    action.disable(!it)
+                }.launchIn(this)
             }
         }
     }
@@ -157,7 +171,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         itemAdapter = null
     }
 
-    private fun getActions(hasAudio: Boolean, hasVideo: Boolean, hasSwitchCamera: Boolean, hasZoom: Boolean, hasFlashLight: Boolean, options: Array<Option>): List<CallAction> {
+    private fun getActions(hasAudio: Boolean, hasVideo: Boolean, options: Array<Option>): List<CallAction> {
         var withChat = false
 
         options.forEach {
@@ -167,7 +181,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             }
         }
 
-        return CallAction.getActions(requireContext(), withMicrophone = hasAudio, withCamera = hasVideo, withSwitchCamera = hasSwitchCamera, withFlashLight = hasFlashLight, withZoom = hasZoom, withChat = withChat)
+        return CallAction.getActions(requireContext(), withMicrophone = hasAudio, withCamera = hasVideo, withSwitchCamera = hasVideo, withFlashLight = hasVideo, withZoom = hasVideo, withChat = withChat)
     }
 
     override fun onDismiss() = Unit
@@ -189,7 +203,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         is CallAction.ZOOM -> true.also { if(!action.isDisabled) findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
         is CallAction.FLASHLIGHT -> true.also {
             if (action.isDisabled) return@also
-            val flashLight = viewModel.flashLight ?: return@also
+            val flashLight = viewModel.flashLight.replayCache.firstOrNull() ?: return@also
             val isEnabled = flashLight.enabled.value
             if (isEnabled) flashLight.tryDisable() else flashLight.tryEnable()
         }
