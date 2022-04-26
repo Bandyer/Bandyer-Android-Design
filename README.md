@@ -1,4 +1,4 @@
-# Kaleyra Collaboration Suite UI
+# Bandyer Android Design (now Kaleyra Collaboration Suite UI)
 
 This repository is the design library used by Bandyer's Android SDK - (now [Kaleyra Video Android SDK](https://github.com/Bandyer/Bandyer-Android-SDK))
 and [Kaleyra Android Collaboration Suite](https://github.com/Bandyer/Kaleyra-Android-Collaboration-Suite)
