@@ -154,7 +154,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
     // ActivityLifecycleCallbacks
     override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
         if (activity.javaClass != activityClazz) return
-        publishMyStream(currentCall!!, activity as FragmentActivity)
+        currentCall?.also { publishMyStream(it, activity as FragmentActivity) }
     }
 
     override fun onActivityStarted(activity: Activity) {
@@ -386,6 +386,7 @@ class CallService : BoundService(), CallUIDelegate, CallUIController, DeviceStat
 
     private fun startForegroundIfIncomingCall() =
         lifecycleScope.launch {
+            currentCall ?: return@launch
             val participants = currentCall!!.participants.value
             if (currentCall!!.state.value !is Call.State.Disconnected || participants.me == participants.creator()) return@launch
             showIncomingCallNotification(
