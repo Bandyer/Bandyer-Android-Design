@@ -31,7 +31,7 @@ buildscript {
 
     // Collaboration dependencies
     ext.kotlin_version = '1.5.20'
-    ext.bandyer_core_av = "6.0.0"
+    ext.bandyer_core_av = "7.0.0"
     ext.bandyer_comm_center = "4.0.0"
     ext.bandyer_utils = "2.0.1"
     ext.bandyer_networking = "2.0.0"
