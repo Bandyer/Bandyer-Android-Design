@@ -26,11 +26,15 @@
 
     <!-- CHAT FRAGMENT -->
     <style name="KaleyraCollaborationSuiteUI.Glass.Chat" parent="KaleyraCollaborationSuiteUI.Glass">
-        <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView</item>
+        <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView.Chat</item>
         <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem</item>
         <item name="kaleyra_chatMessageLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.MessageLayout</item>
         <item name="kaleyra_counterStyle">@style/KaleyraCollaborationSuiteUI.TextView.CounterGlassChat</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Chat</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.RecyclerView.Chat" parent="KaleyraCollaborationSuiteUI.Glass.RecyclerView">
+        <item name="android:background">@null</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem" parent="">
