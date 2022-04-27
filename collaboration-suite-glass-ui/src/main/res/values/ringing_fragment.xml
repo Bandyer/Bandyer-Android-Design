@@ -45,20 +45,20 @@
 
     <!-- BOTTOM NAVIGATION -->
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo.Ringing" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo">
-        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog.Ringing</item>
+        <item name="kaleyra_thirdItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.FullScreenLogoDialog.Ringing</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog.Ringing" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown.FullScreenLogoDialog">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog.Ringing</item>
-        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownFullScreenLogoDialog.Ringing</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.FullScreenLogoDialog.Ringing" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.FullScreenLogoDialog">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.FullScreenLogoDialog.Ringing</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemFullScreenLogoDialog.Ringing</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog.Ringing" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown.FullScreenLogoDialog">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.FullScreenLogoDialog.Ringing" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.FullScreenLogoDialog">
         <item name="android:clickable">true</item>
         <item name="android:contentDescription">@string/kaleyra_glass_decline</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownFullScreenLogoDialog.Ringing" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeDownFullScreenLogoDialog">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemFullScreenLogoDialog.Ringing" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemFullScreenLogoDialog">
         <item name="android:text">@string/kaleyra_glass_decline</item>
     </style>
 </resources>

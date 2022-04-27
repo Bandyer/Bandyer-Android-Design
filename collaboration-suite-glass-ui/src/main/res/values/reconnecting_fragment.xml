@@ -63,15 +63,15 @@
 
     <!-- BOTTOM NAVIGATION -->
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo.Reconnecting" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo">
-        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog.Reconnecting</item>
-        <item name="kaleyra_tapItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Reconnecting</item>
+        <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.FullScreenLogoDialog.Reconnecting</item>
+        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.FullScreenLogoDialog.Reconnecting</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog.Reconnecting" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal.FullScreenLogoDialog">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.FullScreenLogoDialog.Reconnecting" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.FullScreenLogoDialog">
         <item name="android:visibility">gone</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.FullScreenLogoDialog.Reconnecting" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap.FullScreenLogoDialog">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.FullScreenLogoDialog.Reconnecting" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.FullScreenLogoDialog">
         <item name="android:visibility">gone</item>
     </style>
 </resources>

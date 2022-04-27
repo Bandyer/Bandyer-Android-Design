@@ -158,14 +158,15 @@ class CollaborationService: BoundService(),
     ////////////////////////////////////////////
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         if (activity.javaClass != callActivityClazz) return
-        publishMyStream(activity as FragmentActivity, currentCall!!)
+        currentCall?.also { publishMyStream(activity as FragmentActivity, it) }
     }
 
     override fun onActivityStarted(activity: Activity) {
         if (activity.javaClass != callActivityClazz || isServiceInForeground) return
         lifecycleScope.launch {
+            currentCall ?: return@launch
             moveNotificationToForeground(
-                this@CollaborationService.currentCall!!,
+                currentCall!!,
                 usersDescription,
                 callActivityClazz!!
             )

@@ -125,8 +125,8 @@ internal class ChatNotificationView @JvmOverloads constructor(
         swipeDownCallback: () -> Unit,
         tapCallback: () -> Unit
     ) = with(binding.kaleyraBottomNavigation) {
-        setSwipeDownOnClickListener(swipeDownCallback)
-        setTapOnClickListener(tapCallback)
+        setThirdItemListener(swipeDownCallback)
+        setSecondItemListener(tapCallback)
     }
 
     private fun setVisibility(withAnimation: Boolean, visibility: Int, doOnEnd: (() -> Unit)? = null) {

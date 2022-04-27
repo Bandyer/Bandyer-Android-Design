@@ -61,7 +61,7 @@ internal abstract class CallAction(
             return mutableListOf<CallAction>().apply {
                 if (withMicrophone) add(MICROPHONE(ctx))
                 if (withCamera) add(CAMERA(ctx))
-                if (withSwitchCamera) add(SWITCHCAMERA())
+                if (withSwitchCamera) add(SWITCHCAMERA(ctx))
                 add(VOLUME())
                 if (withZoom) add(ZOOM(ctx))
                 if (withFlashLight) add(FLASHLIGHT(ctx))
@@ -193,6 +193,20 @@ internal abstract class CallAction(
     }
 
     /**
+     * Switch camera menu action item
+     * @property isToggled true to activate, false otherwise
+     * @constructor
+     */
+    class SWITCHCAMERA(ctx: Context) : ToggleableCallAction(
+        R.id.id_glass_menu_switch_camera_item,
+        R.layout.kaleyra_glass_menu_item_layout,
+        R.attr.kaleyra_recyclerViewSwitchCameraItemStyle
+    ) {
+        override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_switch_camera)
+        override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_switch_camera)
+    }
+
+    /**
      * Zoom menu action item
      * @constructor
      */
@@ -204,16 +218,6 @@ internal abstract class CallAction(
         override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_zoom)
         override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_zoom)
     }
-
-    /**
-     * Switch camera menu action item
-     * @constructor
-     */
-    class SWITCHCAMERA : CallAction(
-        R.id.id_glass_menu_switch_camera_item,
-        R.layout.kaleyra_glass_menu_item_layout,
-        R.attr.kaleyra_recyclerViewSwitchCameraItemStyle
-    )
 
     /**
      * Volume menu action item

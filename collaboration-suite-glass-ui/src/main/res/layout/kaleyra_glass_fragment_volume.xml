@@ -17,11 +17,13 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:theme="?attr/kaleyra_volumeStyle">
 
-        <com.kaleyra.collaboration_suite_glass_ui.settings.zoom.ZoomSlider
+        <com.kaleyra.collaboration_suite_glass_ui.settings.volume.VolumeSlider
             android:id="@+id/kaleyra_slider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

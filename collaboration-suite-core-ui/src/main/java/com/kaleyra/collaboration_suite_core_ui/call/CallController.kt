@@ -60,7 +60,8 @@ interface CallController: CallUIController {
     override fun onSetVolume(value: Int) = callAudioManager.setVolume(value)
 
     override fun onSetZoom(value: Float) {
-        val video = currentCall?.inputs?.allowList?.value?.filterIsInstance<Input.Video.Camera.Internal>()?.firstOrNull() ?: return
-        video.zoom.value = value
+        val camera = currentCall?.inputs?.allowList?.value?.filterIsInstance<Input.Video.Camera.Internal>()?.firstOrNull()
+        val currentLens = camera?.currentLens?.value ?: return
+        currentLens.zoom.tryZoom(value)
     }
 }

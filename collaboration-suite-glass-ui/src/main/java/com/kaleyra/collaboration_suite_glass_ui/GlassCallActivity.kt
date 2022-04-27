@@ -661,7 +661,7 @@ internal class GlassCallActivity :
         handleSmartGlassTouchEvent(TouchEvent.getEvent(gesture))
 
     private fun handleSmartGlassTouchEvent(glassEvent: TouchEvent): Boolean {
-        return if (isNotificationVisible) onTouch(glassEvent)
+        return if (isNotificationVisible) onNotificationTouch(glassEvent)
         else {
             val currentDest =
                 supportFragmentManager.currentNavigationFragment as? TouchEventListener
@@ -672,8 +672,6 @@ internal class GlassCallActivity :
 
     override fun onTouch(event: TouchEvent): Boolean =
         when {
-            event.type == TouchEvent.Type.TAP -> true.also { notificationManager!!.expand() }
-            event.type == TouchEvent.Type.SWIPE_DOWN -> true.also { notificationManager!!.dismiss() }
             event.type == TouchEvent.Type.SWIPE_FORWARD && event.source == TouchEvent.Source.KEY -> true.also {
                 binding.kaleyraStreams.smoothScrollToPosition(
                     currentStreamItemIndex.let { if (it < fastAdapter!!.itemCount) it + 1 else it }
@@ -684,6 +682,13 @@ internal class GlassCallActivity :
                     currentStreamItemIndex.let { if (it > 0) it - 1 else it }
                 )
             }
+            else -> false
+        }
+
+    private fun onNotificationTouch(event: TouchEvent): Boolean =
+        when (event.type) {
+            TouchEvent.Type.TAP -> true.also { notificationManager!!.expand() }
+            TouchEvent.Type.SWIPE_DOWN -> true.also { notificationManager!!.dismiss() }
             else -> false
         }
 
