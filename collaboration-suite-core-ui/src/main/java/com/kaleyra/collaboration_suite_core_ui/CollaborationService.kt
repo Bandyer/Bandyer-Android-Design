@@ -8,12 +8,17 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.bandyer.android_chat_sdk.api.ChatChannel
+import com.bandyer.android_chat_sdk.commons.UI
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
+import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
+import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
+import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
@@ -34,8 +39,9 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
-class CollaborationService: BoundService(),
+class CollaborationService : BoundService(),
     CallUIDelegate,
+    ChatUIDelegate,
     CallStreamDelegate,
     CallNotificationDelegate,
     DeviceStatusDelegate,
@@ -63,12 +69,17 @@ class CollaborationService: BoundService(),
         MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
     override val call: SharedFlow<Call> get() = _call
 
+    private var _channel: ChatChannel? = null
+    override val channel: ChatChannel get() = _channel!!
+
     override var currentCall: Call? = null
 
     private var _callAudioManager: CallAudioManager? = null
     override val callAudioManager: CallAudioManager get() = _callAudioManager!!
 
-    override var usersDescription: UsersDescription = UsersDescription()
+    override var callUsersDescription: UsersDescription = UsersDescription()
+
+    override var chatUsersDescription: UsersDescription = UsersDescription()
 
     override var isAppInForeground: Boolean = false
 
@@ -104,6 +115,7 @@ class CollaborationService: BoundService(),
         CallNotificationActionReceiver.actionDelegate = null
         currentCall = null
         _callAudioManager = null
+        _channel = null
         phoneBox = null
         phoneBoxJob = null
         callActivityClazz = null
@@ -111,21 +123,29 @@ class CollaborationService: BoundService(),
         wifiObserver = null
     }
 
-    fun bind(
+    fun <T : CallActivity> bindPhoneBox(
         phoneBox: PhoneBox,
-        usersDescription: UsersDescription? = null,
-        activityClazz: Class<*>
+        callUsersDescription: UsersDescription? = null,
+        callActivityClazz: Class<T>
     ) {
         this.phoneBox = phoneBox
-        this.usersDescription = usersDescription ?: UsersDescription()
-        this.callActivityClazz = activityClazz
+        this.callUsersDescription = callUsersDescription ?: UsersDescription()
+        this.callActivityClazz = callActivityClazz
         phoneBoxJob?.cancel()
-        phoneBoxJob = listenToCalls(phoneBox, this.usersDescription, this.callActivityClazz!!)
+        phoneBoxJob = listenToCalls(phoneBox, this.callUsersDescription, this.callActivityClazz!!)
+    }
+
+    fun bindChatChannel(
+        chatChannel: ChatChannel,
+        chatUsersDescription: UsersDescription
+    ) {
+        this._channel = chatChannel
+        this.chatUsersDescription= chatUsersDescription
     }
 
     private fun listenToCalls(
         phoneBox: PhoneBox,
-        usersDescription: UsersDescription,
+        callUsersDescription: UsersDescription,
         callActivityClazz: Class<*>
     ) =
         phoneBox.call.onEach { call ->
@@ -142,7 +162,7 @@ class CollaborationService: BoundService(),
             syncNotificationWithCallState(
                 this@CollaborationService,
                 call,
-                usersDescription,
+                callUsersDescription,
                 callActivityClazz
             )
 
@@ -167,7 +187,7 @@ class CollaborationService: BoundService(),
             currentCall ?: return@launch
             moveNotificationToForeground(
                 currentCall!!,
-                usersDescription,
+                callUsersDescription,
                 callActivityClazz!!
             )
         }

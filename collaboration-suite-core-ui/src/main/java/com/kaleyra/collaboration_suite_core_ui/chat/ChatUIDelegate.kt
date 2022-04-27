@@ -15,5 +15,5 @@ interface ChatUIDelegate {
     /**
      * Users description
      */
-    val usersDescription: UsersDescription
+    val chatUsersDescription: UsersDescription
 }

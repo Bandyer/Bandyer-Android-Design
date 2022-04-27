@@ -123,7 +123,7 @@ internal class CallViewModel(
 
     val wifi: SharedFlow<WiFiInfo> = deviceStatusDelegate.wifi
 
-    val usersDescription: UsersDescription = callDelegate.usersDescription
+    val usersDescription: UsersDescription = callDelegate.callUsersDescription
 
     val volume: Volume get() = callController.onGetVolume()
 

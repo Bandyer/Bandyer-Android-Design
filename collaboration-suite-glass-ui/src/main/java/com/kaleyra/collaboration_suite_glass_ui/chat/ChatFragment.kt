@@ -24,6 +24,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.doOnLayout
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -66,18 +67,11 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     //    private var lastMsgIndex = 0
 //    private var pagesIds = arrayListOf<String>()
 
-    private val viewModel: ChatViewModel by viewModels {
-//        ChatViewModelFactory(
-//            service as ChatUIDelegate,
-//            service as DeviceStatusDelegate
-//        )
-        ChatViewModelFactory(
-            mockChatUIDelegate,
-            mockDeviceStatusDelegate
-        )
-    }
+    private val viewModel: ChatViewModel by activityViewModels()
 
-    private val args: ChatFragmentArgs by lazy { ChatFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
+    private val args: ChatFragmentArgs by lazy {
+        requireActivity().intent?.extras?.let { ChatFragmentArgs.fromBundle(it)  } ?: ChatFragmentArgs()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,9 +156,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // TODO move in onServiceBound
+    override fun onServiceBound() {
         repeatOnStarted {
             viewModel.channel.chatMessages.messageList
                 .onEach { msgs ->
@@ -175,8 +167,6 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                 }.launchIn(this)
         }
     }
-
-    override fun onServiceBound() = Unit
 
     /**
      * @suppress
@@ -201,7 +191,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 //        findNavController().navigate(action)
     }
 
-    override fun onSwipeDown() = true.also { findNavController().popBackStack() }
+    override fun onSwipeDown() = true.also { requireActivity().finishAndRemoveTask() }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also {
         if (it) binding.kaleyraMessages.horizontalSmoothScrollToNext(currentMsgItemIndex)

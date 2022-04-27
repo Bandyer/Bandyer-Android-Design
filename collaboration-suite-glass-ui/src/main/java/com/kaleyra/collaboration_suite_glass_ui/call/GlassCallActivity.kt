@@ -54,7 +54,6 @@ import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.MyStreamItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.OtherStreamItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.StreamItem
 import com.kaleyra.collaboration_suite_glass_ui.call.fragments.CallEndedFragmentArgs
-import com.kaleyra.collaboration_suite_glass_ui.chat.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_glass_ui.common.OnDestinationChangedListener
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraCallActivityGlassBinding
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant

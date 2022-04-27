@@ -32,5 +32,5 @@ interface CallUIDelegate {
     /**
      * Users description
      */
-    val usersDescription: UsersDescription
+    val callUsersDescription: UsersDescription
 }

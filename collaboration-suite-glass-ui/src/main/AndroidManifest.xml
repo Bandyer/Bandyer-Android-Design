@@ -30,6 +30,11 @@
             android:showWhenLocked="true"
             android:showForAllUsers="true"
             tools:targetApi="m" />
+        <activity
+            android:name=".chat.GlassChatActivity"
+            android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.GlassChatActivity"
+            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.DayNight.GlassChat"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation" />
     </application>
 
 </manifest>

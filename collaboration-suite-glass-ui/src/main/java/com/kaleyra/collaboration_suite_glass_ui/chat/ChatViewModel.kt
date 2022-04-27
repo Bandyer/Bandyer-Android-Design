@@ -26,7 +26,7 @@ class ChatViewModel(
 
     val channel: ChatChannel = chatDelegate.channel
 
-    val usersDescription: UsersDescription = chatDelegate.usersDescription
+    val usersDescription: UsersDescription = chatDelegate.chatUsersDescription
 
     val battery: SharedFlow<BatteryInfo> = deviceStatusDelegate.battery
 

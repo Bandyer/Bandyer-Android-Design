@@ -24,6 +24,9 @@ import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.bandyer.android_chat_sdk.ChatClientInstance
+import com.bandyer.android_chat_sdk.api.ChatChannel
+import com.bandyer.android_chat_sdk.model.ChatUser
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite.Collaboration.Credentials
@@ -33,6 +36,8 @@ import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.CreationOptions
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.State.Connecting
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
+import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
+import com.kaleyra.collaboration_suite_core_ui.chat.mockChatClient
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
@@ -40,9 +45,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.takeWhile
 
 /**
  * Collaboration UI
@@ -52,6 +55,7 @@ import kotlinx.coroutines.flow.takeWhile
 object CollaborationUI {
 
     private var collaboration: Collaboration? = null
+    private var chatClient: ChatClientInstance? = null
 
     private var wasPhoneBoxConnected = false
     private var isAppInForeground = false
@@ -70,9 +74,9 @@ object CollaborationUI {
                 phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
             phoneBox.call.replayCache.firstOrNull()?.state?.value?.also {
                 if (it !is Call.State.Disconnected.Ended) return@also
-                stopPhoneBoxService()
+                stopCollaborationService()
                 Log.e("CollaborationUI", "stopService2")
-            } ?: stopPhoneBoxService()
+            } ?: stopCollaborationService()
         }
     }
 
@@ -91,32 +95,42 @@ object CollaborationUI {
         }
 
     /**
+     * Phone box
+     */
+    val chatClientUI: ChatClientUI
+        get() {
+            require(chatClient != null) { "setUp the chat" }
+            return ChatClientUI(chatClient!!)
+        }
+
+    /**
      * Set up
      *
      * @param T activity of type [CallActivity] to be used for the UI
      * @param credentials to use when Collaboration tools need to be connected
      * @param configuration representing a set of info necessary to instantiate the communication
-     * @param activityClazz class of the activity
+     * @param callActivityClazz class of the activity
      * @return
      */
     fun <T : CallActivity> setUp(
         credentials: Credentials,
         configuration: Configuration,
-        activityClazz: Class<T>
+        callActivityClazz: Class<T>
     ): Boolean {
         if (collaboration != null) return false
+        chatClient = mockChatClient
         Collaboration.create(credentials, configuration).apply { collaboration = this }
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
         phoneBox.state
             .filter { it is Connecting }
-            .onEach { startPhoneBoxService(activityClazz) }
+            .onEach { startCollaborationService(callActivityClazz) }
             .launchIn(MainScope())
         phoneBox.call
             .flatMapLatest { it.state }
             .onEach {
                 Log.e("CollaborationUI", "call state: $it")
                 if (isAppInForeground || it !is Call.State.Disconnected.Ended) return@onEach
-                stopPhoneBoxService()
+                stopCollaborationService()
                 Log.e("CollaborationUI", "stopService")
             }.launchIn(MainScope())
         return true
@@ -129,16 +143,16 @@ object CollaborationUI {
         if (collaboration == null) return
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         wasPhoneBoxConnected = false
-        stopPhoneBoxService()
+        stopCollaborationService()
         phoneBox.disconnect()
         collaboration = null
     }
 
-    private fun <T : CallActivity> startPhoneBoxService(activityClazz: Class<T>) {
+    private fun <T : CallActivity> startCollaborationService(activityClazz: Class<T>) {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
                 val service = (binder as BoundServiceBinder).getService<CollaborationService>()
-                service.bind(phoneBox, usersDescription, activityClazz)
+                service.bindPhoneBox(phoneBox, usersDescription, activityClazz)
             }
 
             override fun onServiceDisconnected(componentName: ComponentName) = Unit
@@ -151,7 +165,7 @@ object CollaborationUI {
         }
     }
 
-    private fun stopPhoneBoxService() = with(ContextRetainer.context) {
+    private fun stopCollaborationService() = with(ContextRetainer.context) {
         stopService(Intent(this, CollaborationService::class.java))
     }
 }
@@ -178,4 +192,41 @@ class PhoneBoxUI(phoneBox: PhoneBox) : PhoneBox by phoneBox {
      * @param url to join
      */
     fun join(url: String) = create(url).apply { connect() }
+}
+
+class ChatClientUI(
+    chatClient: ChatClientInstance
+) : ChatClientInstance by chatClient {
+    fun <T: ChatActivity> show(channel: ChatChannel, usersDescription: UsersDescription, activityClazz: Class<T>) {
+        bindCollaborationService(channel, usersDescription, activityClazz)
+    }
+
+    suspend fun <T: ChatActivity> create(list: List<ChatUser>, usersDescription: UsersDescription, activityClazz: Class<T>): ChatChannel =
+        chatChannels.create(list).also { show(it, usersDescription, activityClazz) }
+
+    fun <T: ChatActivity> sendMessage(channel: ChatChannel, message: String, usersDescription: UsersDescription, activityClazz: Class<T>) {
+        channel.chatMessages.sendTextMessage(message)
+        show(channel, usersDescription, activityClazz)
+    }
+
+    private fun <T : ChatActivity> bindCollaborationService(
+        chatChannel: ChatChannel,
+        usersDescription: UsersDescription,
+        chatActivityClazz: Class<T>
+    ) {
+        val serviceConnection = object : ServiceConnection {
+            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
+                service.bindChatChannel(chatChannel, usersDescription)
+                UIProvider.showChat(chatActivityClazz)
+            }
+
+            override fun onServiceDisconnected(name: ComponentName?) = Unit
+        }
+
+        with(ContextRetainer.context) {
+            val intent = Intent(this, CollaborationService::class.java)
+            bindService(intent, serviceConnection, 0)
+        }
+    }
 }
