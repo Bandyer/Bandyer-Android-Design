@@ -26,8 +26,8 @@ import androidx.navigation.fragment.findNavController
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentEmptyBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 
 /**
@@ -56,7 +56,7 @@ internal class EmptyFragment : BaseFragment<GlassCallActivity>() {
         // Add view binding
         _binding = KaleyraGlassFragmentEmptyBinding
             .inflate(inflater, container, false)
-            .apply { if(GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear() }
+            .apply { if(DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation) }
 
         return binding.root
     }

@@ -25,7 +25,7 @@
 
     <application>
         <service
-            android:name=".call.CallService"
+            android:name=".CollaborationService"
             android:foregroundServiceType="phoneCall|mediaProjection|camera|microphone" />
 
         <service

@@ -24,23 +24,21 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.doOnLayout
-import androidx.databinding.ObservableInt
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.bandyer.android_chat_sdk.persistence.entities.ChatMessage
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatBinding
-import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatMenuBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
@@ -105,8 +103,8 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
             false
         )
             .apply {
-                if (GlassDeviceUtils.isRealWear)
-                    kaleyraBottomNavigation.setListenersForRealWear()
+                if(DeviceUtils.isRealWear)
+                    setListenersForRealWear(kaleyraBottomNavigation)
 
                 // Init the RecyclerView
                 kaleyraMessages.apply {
@@ -195,10 +193,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 //    override fun onShow() = Unit
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.kaleyraMessages.scrollBy(
-            (deltaAzimuth * resources.displayMetrics.densityDpi / 5).toInt(),
-            0
-        )
+        binding.kaleyraMessages.scrollBy((deltaAzimuth * requireContext().tiltScrollFactor()).toInt(), 0)
 
     override fun onTap() = true.also {
 //        val username = itemAdapter!!.adapterItems[currentMsgItemIndex].page.userId

@@ -30,6 +30,8 @@
     <string name="kaleyra_glass_browse">naviga</string>
     <string name="kaleyra_glass_select">seleziona</string>
     <string name="kaleyra_glass_cancel">annulla</string>
+    <string name="kaleyra_glass_increase">incrementa</string>
+    <string name="kaleyra_glass_decrease">decrementa</string>
     <string name="kaleyra_glass_change">modifica</string>
     <string name="kaleyra_glass_confirm">conferma</string>
     <string name="kaleyra_glass_end">termina</string>
@@ -66,11 +68,12 @@
     <string name="kaleyra_glass_menu_microphone_toggled">Muta microfono</string>
     <string name="kaleyra_glass_menu_camera">Abilita camera</string>
     <string name="kaleyra_glass_menu_camera_toggled">Muta camera</string>
+    <string name="kaleyra_glass_menu_switch_camera">Cambia camera</string>
     <string name="kaleyra_glass_menu_participants">Partecipanti</string>
     <string name="kaleyra_glass_menu_volume">Volume</string>
     <string name="kaleyra_glass_menu_zoom">Zoom</string>
-    <string name="kaleyra_glass_menu_flashlight">Abilita Torcia</string>
-    <string name="kaleyra_glass_menu_flashlight_toggled">Disabilita Torcia</string>
+    <string name="kaleyra_glass_menu_flashlight_toggled">Abilita Torcia</string>
+    <string name="kaleyra_glass_menu_flashlight">Disabilita Torcia</string>
     <string name="kaleyra_glass_menu_chat">Chat</string>
     <string name="kaleyra_glass_rec">Rec</string>
     <string name="kaleyra_glass_call_declined">Rifiutata</string>

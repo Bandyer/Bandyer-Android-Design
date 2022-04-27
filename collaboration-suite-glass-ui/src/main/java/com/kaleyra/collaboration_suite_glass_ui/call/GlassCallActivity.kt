@@ -36,8 +36,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite_core_ui.CollaborationService
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
-import com.kaleyra.collaboration_suite_core_ui.call.CallService
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
@@ -97,7 +97,7 @@ internal class GlassCallActivity :
 
     private var isActivityInForeground = false
 
-    private var service: CallService? = null
+    private var service: CollaborationService? = null
 
     private val viewModel: CallViewModel by viewModels {
         CallViewModelFactory(
@@ -167,7 +167,7 @@ internal class GlassCallActivity :
         handleIntentAction(intent)
     }
 
-    override fun onServiceBound(service: CallService) {
+    override fun onServiceBound(service: CollaborationService) {
         this.service = service
 
         if (!viewModel.micPermission.value.isAllowed && viewModel.preferredCallType.hasAudio() && viewModel.preferredCallType.isAudioEnabled())
@@ -667,12 +667,32 @@ internal class GlassCallActivity :
     override fun onGesture(gesture: GlassGestureDetector.Gesture): Boolean =
         handleSmartGlassTouchEvent(TouchEvent.getEvent(gesture))
 
-    private fun handleSmartGlassTouchEvent(glassEvent: TouchEvent): Boolean =
-//        if (isNotificationVisible) onTouch(glassEvent)
-//        else
-        (supportFragmentManager.currentNavigationFragment as? TouchEventListener)?.onTouch(glassEvent) ?: false
+    private fun handleSmartGlassTouchEvent(glassEvent: TouchEvent): Boolean {
+//        return if (isNotificationVisible) onNotificationTouch(glassEvent)
+//        else {
+            val currentDest =
+                supportFragmentManager.currentNavigationFragment as? TouchEventListener
+                    ?: return false
+            return if (!currentDest.onTouch(glassEvent)) onTouch(glassEvent) else true
+//        }
+    }
 
-    override fun onTouch(event: TouchEvent): Boolean = false
+    override fun onTouch(event: TouchEvent): Boolean =
+        when {
+            event.type == TouchEvent.Type.SWIPE_FORWARD && event.source == TouchEvent.Source.KEY -> true.also {
+                binding.kaleyraStreams.smoothScrollToPosition(
+                    currentStreamItemIndex.let { if (it < fastAdapter!!.itemCount) it + 1 else it }
+                )
+            }
+            event.type == TouchEvent.Type.SWIPE_BACKWARD && event.source == TouchEvent.Source.KEY -> true.also {
+                binding.kaleyraStreams.smoothScrollToPosition(
+                    currentStreamItemIndex.let { if (it > 0) it - 1 else it }
+                )
+            }
+            else -> false
+        }
+
+//    private fun onNotificationTouch(event: TouchEvent): Boolean =
 //        when (event.type) {
 //            TouchEvent.Type.TAP -> true.also { notificationManager!!.expand() }
 //            TouchEvent.Type.SWIPE_DOWN -> true.also { notificationManager!!.dismiss() }

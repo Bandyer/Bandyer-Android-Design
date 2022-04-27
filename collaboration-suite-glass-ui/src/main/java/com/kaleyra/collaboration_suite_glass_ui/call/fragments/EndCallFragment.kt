@@ -16,6 +16,7 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
@@ -25,10 +26,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenDialogBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
@@ -44,6 +45,7 @@ internal class EndCallFragment : BaseFragment<GlassCallActivity>() {
     /**
      * @suppress
      */
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,7 +61,10 @@ internal class EndCallFragment : BaseFragment<GlassCallActivity>() {
                 container,
                 false
             )
-            .apply { if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear() }
+            .apply {
+                if (DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation)
+                root.setOnTouchListener { _, _ -> true }
+            }
 
         return binding.root
     }

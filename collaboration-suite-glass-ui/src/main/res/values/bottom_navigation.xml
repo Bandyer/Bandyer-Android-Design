@@ -19,16 +19,16 @@
     <!-- BOTTOM NAVIGATION BAR -->
     <declare-styleable name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation">
         <attr name="kaleyra_rootLayoutStyle"/>
-        <attr name="kaleyra_swipeHorizontalItemStyle" format="reference"/>
-        <attr name="kaleyra_swipeDownItemStyle" format="reference"/>
-        <attr name="kaleyra_tapItemStyle" format="reference"/>
+        <attr name="kaleyra_firstItemStyle" format="reference"/>
+        <attr name="kaleyra_secondItemStyle" format="reference"/>
+        <attr name="kaleyra_thirdItemStyle" format="reference"/>
     </declare-styleable>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation" parent="KaleyraCollaborationSuiteUI.Glass">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.RootLayout</item>
-        <item name="kaleyra_swipeHorizontalItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal</item>
-        <item name="kaleyra_swipeDownItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown</item>
-        <item name="kaleyra_tapItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap</item>
+        <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem</item>
+        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem</item>
+        <item name="kaleyra_thirdItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.RootLayout" parent="">
@@ -41,59 +41,59 @@
     </style>
 
     <!-- SWIPE HORIZONTAL ITEM -->
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeHorizontal" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.SwipeHorizontal</item>
-        <item name="kaleyra_iconTipStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassIconTip.SwipeHorizontal</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.FirstItem</item>
+        <item name="kaleyra_iconTipStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassIconTip.FirstItem</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeHorizontal" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout">
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space4</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.SwipeHorizontal" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.FirstItem" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon">
         <item name="srcCompat">@drawable/ic_kaleyra_glas_swipe_arrow</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.GlassIconTip.SwipeHorizontal" parent="KaleyraCollaborationSuiteUI.TextView.GlassIconTip">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassIconTip.FirstItem" parent="KaleyraCollaborationSuiteUI.TextView.GlassIconTip">
         <item name="android:text">@string/kaleyra_glass_swipe</item>
     </style>
 
     <!-- SWIPE DOWN ITEM -->
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SwipeDown" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.SwipeDown</item>
-        <item name="kaleyra_iconTipStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassIconTip.SwipeDown</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.ThirdItem</item>
+        <item name="kaleyra_iconTipStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassIconTip.ThirdItem</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SwipeDown" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout">
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space8</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.SwipeDown" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.ThirdItem" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon">
         <item name="srcCompat">@drawable/ic_kaleyra_glass_close_arrow</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.GlassIconTip.SwipeDown" parent="KaleyraCollaborationSuiteUI.TextView.GlassIconTip">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassIconTip.ThirdItem" parent="KaleyraCollaborationSuiteUI.TextView.GlassIconTip">
         <item name="android:text">@string/kaleyra_glass_swipe</item>
     </style>
 
     <!-- TAP ITEM -->
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Tap" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.Tap</item>
-        <item name="kaleyra_iconTipStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassIconTip.Tap</item>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem</item>
+        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.SecondItem</item>
+        <item name="kaleyra_iconTipStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassIconTip.SecondItem</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.Tap" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout">
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space8</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.Tap" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.SecondItem" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon">
         <item name="srcCompat">@drawable/ic_kaleyra_glass_select</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.GlassIconTip.Tap" parent="KaleyraCollaborationSuiteUI.TextView.GlassIconTip">
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassIconTip.SecondItem" parent="KaleyraCollaborationSuiteUI.TextView.GlassIconTip">
         <item name="android:text">@string/kaleyra_glass_tap</item>
     </style>
 </resources>

@@ -64,7 +64,7 @@ internal abstract class PreCallFragment : ConnectingFragment(),
         kaleyraParticipants.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
         val hideProgressUI =
             resources.displayMetrics.widthPixels - kaleyraParticipants.measuredWidth > 0
-        kaleyraBottomNavigation.apply { if (hideProgressUI) hideSwipeHorizontalItem() else showSwipeHorizontalItem() }
+        kaleyraBottomNavigation.apply { if (hideProgressUI) hideFirstItem() else showFirstItem() }
         kaleyraProgress.visibility = if (hideProgressUI) View.GONE else View.VISIBLE
     }
 

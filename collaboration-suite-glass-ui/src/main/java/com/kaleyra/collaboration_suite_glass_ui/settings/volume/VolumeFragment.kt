@@ -24,10 +24,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
-import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
+import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
+import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentVolumeBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 
 /**
  * VolumeFragment
@@ -37,7 +38,7 @@ internal class VolumeFragment : BaseFragment<GlassCallActivity>() {
     private var _binding: KaleyraGlassFragmentVolumeBinding? = null
     override val binding: KaleyraGlassFragmentVolumeBinding get() = _binding!!
 
-    private val viewModel: GlassViewModel by activityViewModels()
+    private val viewModel: CallViewModel by activityViewModels()
 
     /**
      * @suppress
@@ -51,9 +52,13 @@ internal class VolumeFragment : BaseFragment<GlassCallActivity>() {
 
         // Add view binding
         _binding = KaleyraGlassFragmentVolumeBinding
-            .inflate(inflater, container, false)
+            .inflate(
+                inflater,
+                container,
+                false
+            )
             .apply {
-                if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear()
+                if (DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation)
                 root.setOnTouchListener { _, _ -> true }
             }
 
@@ -92,5 +97,11 @@ internal class VolumeFragment : BaseFragment<GlassCallActivity>() {
             decreaseProgress()
             viewModel.onSetVolume(progress)
         }
+    }
+
+    override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
+        bottomNavView.setFirstItemListener { onSwipeBackward(true) }
+        bottomNavView.setSecondItemListener { onSwipeForward(true) }
+        bottomNavView.setThirdItemListener { onSwipeDown() }
     }
 }

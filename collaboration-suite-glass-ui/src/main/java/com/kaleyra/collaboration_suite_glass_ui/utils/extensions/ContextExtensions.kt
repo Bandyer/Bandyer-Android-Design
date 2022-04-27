@@ -75,4 +75,6 @@ internal object ContextExtensions {
             .also {
                 resolveAttribute(attr, it, true)
             }.resourceId
+
+    internal fun Context.tiltScrollFactor() = resources.displayMetrics.densityDpi / 8f
 }

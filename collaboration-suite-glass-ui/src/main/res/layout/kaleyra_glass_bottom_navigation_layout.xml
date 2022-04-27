@@ -23,22 +23,22 @@
         android:layout_height="wrap_content">
 
         <com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationItemView
-            android:id="@+id/kaleyra_swipe"
+            android:id="@+id/kaleyra_first_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="?attr/kaleyra_swipeHorizontalItemStyle" />
+            android:theme="?attr/kaleyra_firstItemStyle" />
 
         <com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationItemView
-            android:id="@+id/kaleyra_tap"
+            android:id="@+id/kaleyra_second_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="?attr/kaleyra_tapItemStyle" />
+            android:theme="?attr/kaleyra_secondItemStyle" />
 
         <com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationItemView
-            android:id="@+id/kaleyra_swipe_down"
+            android:id="@+id/kaleyra_third_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:theme="?attr/kaleyra_swipeDownItemStyle" />
+            android:theme="?attr/kaleyra_thirdItemStyle" />
 
     </LinearLayout>
 </layout>

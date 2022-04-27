@@ -16,6 +16,7 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,10 +25,10 @@ import androidx.activity.addCallback
 import androidx.core.view.postDelayed
 import androidx.navigation.fragment.navArgs
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenLogoDialogBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
@@ -43,6 +44,7 @@ internal class CallEndedFragment : BaseFragment<GlassCallActivity>() {
     /**
      * @suppress
      */
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,15 +57,17 @@ internal class CallEndedFragment : BaseFragment<GlassCallActivity>() {
         }
 
         // Apply theme wrapper and add view binding
-        val themeResId = requireActivity().theme.getAttributeResourceId(R.attr.kaleyra_callEndedStyle)
+        val themeResId =
+            requireActivity().theme.getAttributeResourceId(R.attr.kaleyra_callEndedStyle)
         _binding = KaleyraGlassFragmentFullScreenLogoDialogBinding.inflate(
             inflater.cloneInContext(android.view.ContextThemeWrapper(requireContext(), themeResId)),
             container,
             false
         ).apply {
-            if(GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealWear()
+            if (DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation)
             kaleyraTitle.text = args.title
             kaleyraSubtitle.text = args.subtitle
+            root.setOnTouchListener { _, _ -> true }
         }
 
         return binding.root
