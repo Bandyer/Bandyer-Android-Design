@@ -20,8 +20,8 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
-def kotlin_coroutines = "1.5.2"
-def kotlinVersion = "1.5.32"
+def kotlin_coroutines = "1.4.3"
+def kotlinVersion = "1.6.10"
 
 android {
     compileSdkVersion 31
