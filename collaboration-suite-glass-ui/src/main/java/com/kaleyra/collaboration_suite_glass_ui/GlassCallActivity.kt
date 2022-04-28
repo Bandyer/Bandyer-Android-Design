@@ -119,6 +119,8 @@ internal class GlassCallActivity :
     private var notificationManager: ChatNotificationManager? = null
     private var isNotificationVisible = false
 
+    private var lastTouchEventTime = 0L
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.kaleyra_activity_glass)
@@ -661,6 +663,9 @@ internal class GlassCallActivity :
         handleSmartGlassTouchEvent(TouchEvent.getEvent(gesture))
 
     private fun handleSmartGlassTouchEvent(glassEvent: TouchEvent): Boolean {
+        val now = System.currentTimeMillis()
+        if (now - TOUCH_EVENT_INTERVAL < lastTouchEventTime) return false
+        lastTouchEventTime = now
         return if (isNotificationVisible) onNotificationTouch(glassEvent)
         else {
             val currentDest =
@@ -731,6 +736,7 @@ internal class GlassCallActivity :
         const val TTL_TOAST_ID = "time-to-live-call"
         const val TIMER_BLINK_COUNT = 3
         const val TIMER_BLINK_FOREVER_TH = 30L // seconds
+        const val TOUCH_EVENT_INTERVAL = 100L
         val ttlWarningThresholds = setOf(5, 2, 1) // minutes
         val fragmentsWithDimmedStatusBar = setOf(
             R.id.dialingFragment,
