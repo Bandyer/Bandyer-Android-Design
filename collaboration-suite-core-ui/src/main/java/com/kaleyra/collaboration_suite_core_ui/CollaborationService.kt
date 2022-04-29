@@ -140,10 +140,10 @@ class CollaborationService : BoundService(),
 
     fun bindChatChannel(
         chatChannel: ChatChannel,
-        chatUsersDescription: UsersDescription
+        chatUsersDescription: UsersDescription? = null
     ) {
         this._channel = chatChannel
-        this.chatUsersDescription= chatUsersDescription
+        this.chatUsersDescription= chatUsersDescription ?: UsersDescription()
     }
 
     private fun listenToCalls(
