@@ -53,6 +53,7 @@ object CollaborationUI {
 
     private var collaboration: Collaboration? = null
     private var chatClient: ChatClientInstance? = null
+    private var chatActivityClazz: Class<*>? = null
 
     private var wasPhoneBoxConnected = false
 
@@ -88,8 +89,9 @@ object CollaborationUI {
      */
     val chatClientUI: ChatClientUI
         get() {
-            require(chatClient != null) { "setUp the chat" }
-            return ChatClientUI(chatClient!!)
+            require(chatClient != null) { "setUp the CollaborationUI to use the chat" }
+            require(chatActivityClazz != null) { "setUp the CollaborationUI to use the chat" }
+            return ChatClientUI(chatClient!!, usersDescription, chatActivityClazz!!)
         }
 
     /**
@@ -101,19 +103,22 @@ object CollaborationUI {
      * @param callActivityClazz class of the activity
      * @return
      */
-    fun <T : CallActivity> setUp(
+    fun <T : CallActivity, S : ChatActivity> setUp(
         credentials: Credentials,
         configuration: Configuration,
-        callActivityClazz: Class<T>
+        callActivityClazz: Class<T>,
+        chatActivityClazz: Class<S>? = null
     ): Boolean {
         if (collaboration != null) return false
-        chatClient = mockChatClient
         Collaboration.create(credentials, configuration).apply { collaboration = this }
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
         phoneBox.state
             .filter { it is Connecting }
             .onEach { startCollaborationService(callActivityClazz) }
             .launchIn(MainScope())
+
+        this.chatClient = mockChatClient
+        this.chatActivityClazz = chatActivityClazz
         return true
     }
 
@@ -176,24 +181,26 @@ class PhoneBoxUI(phoneBox: PhoneBox) : PhoneBox by phoneBox {
 }
 
 class ChatClientUI(
-    chatClient: ChatClientInstance
+    chatClient: ChatClientInstance,
+    private val usersDescription: UsersDescription? = null,
+    private val chatActivityClazz: Class<*>
 ) : ChatClientInstance by chatClient {
-    fun <T: ChatActivity> show(channel: ChatChannel, usersDescription: UsersDescription, activityClazz: Class<T>) {
-        bindCollaborationService(channel, usersDescription, activityClazz)
+    fun show(channel: ChatChannel) {
+        bindCollaborationService(channel, usersDescription, chatActivityClazz)
     }
 
-    suspend fun <T: ChatActivity> create(list: List<ChatUser>, usersDescription: UsersDescription, activityClazz: Class<T>): ChatChannel =
-        chatChannels.create(list).also { show(it, usersDescription, activityClazz) }
+    suspend fun create(list: List<ChatUser>): ChatChannel =
+        chatChannels.create(list).also { bindCollaborationService(it, usersDescription, chatActivityClazz) }
 
-    fun <T: ChatActivity> sendMessage(channel: ChatChannel, message: String, usersDescription: UsersDescription, activityClazz: Class<T>) {
+    fun sendMessage(channel: ChatChannel, message: String) {
         channel.chatMessages.sendTextMessage(message)
-        show(channel, usersDescription, activityClazz)
+        bindCollaborationService(channel, usersDescription, chatActivityClazz)
     }
 
-    private fun <T : ChatActivity> bindCollaborationService(
+    private fun bindCollaborationService(
         chatChannel: ChatChannel,
-        usersDescription: UsersDescription,
-        chatActivityClazz: Class<T>
+        usersDescription: UsersDescription?,
+        chatActivityClazz: Class<*>
     ) {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {

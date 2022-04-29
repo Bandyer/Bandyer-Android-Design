@@ -212,7 +212,7 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
             if (isEnabled) flashLight.tryDisable() else flashLight.tryEnable()
         }
         is CallAction.PARTICIPANTS -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToParticipantsFragment()) }
-        is CallAction.CHAT         -> true.also { CollaborationUI.chatClientUI.show(mockChannel, viewModel.usersDescription, GlassChatActivity::class.java) }
+        is CallAction.CHAT         -> true.also { CollaborationUI.chatClientUI.show(mockChannel) }
         else                       -> false
     }
 
