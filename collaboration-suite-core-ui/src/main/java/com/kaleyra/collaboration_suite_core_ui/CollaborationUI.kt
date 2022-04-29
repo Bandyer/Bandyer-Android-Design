@@ -20,7 +20,6 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
-import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -31,7 +30,6 @@ import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite.Collaboration.Credentials
 import com.kaleyra.collaboration_suite.User
-import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.CreationOptions
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.State.Connecting
@@ -43,7 +41,6 @@ import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -58,18 +55,15 @@ object CollaborationUI {
     private var chatClient: ChatClientInstance? = null
 
     private var wasPhoneBoxConnected = false
-    private var isAppInForeground = false
 
     private var lifecycleObserver = object : DefaultLifecycleObserver {
         override fun onStart(owner: LifecycleOwner) {
             super.onStart(owner)
-            isAppInForeground = true
             if (wasPhoneBoxConnected) phoneBox.connect()
         }
 
         override fun onStop(owner: LifecycleOwner) {
             super.onStop(owner)
-            isAppInForeground = false
             wasPhoneBoxConnected =
                 phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
         }
