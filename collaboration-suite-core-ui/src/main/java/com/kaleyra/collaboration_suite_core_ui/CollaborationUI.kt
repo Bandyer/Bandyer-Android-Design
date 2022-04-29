@@ -72,11 +72,6 @@ object CollaborationUI {
             isAppInForeground = false
             wasPhoneBoxConnected =
                 phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
-            phoneBox.call.replayCache.firstOrNull()?.state?.value?.also {
-                if (it !is Call.State.Disconnected.Ended) return@also
-                stopCollaborationService()
-                Log.e("CollaborationUI", "stopService2")
-            } ?: stopCollaborationService()
         }
     }
 
@@ -125,14 +120,6 @@ object CollaborationUI {
             .filter { it is Connecting }
             .onEach { startCollaborationService(callActivityClazz) }
             .launchIn(MainScope())
-        phoneBox.call
-            .flatMapLatest { it.state }
-            .onEach {
-                Log.e("CollaborationUI", "call state: $it")
-                if (isAppInForeground || it !is Call.State.Disconnected.Ended) return@onEach
-                stopCollaborationService()
-                Log.e("CollaborationUI", "stopService")
-            }.launchIn(MainScope())
         return true
     }
 

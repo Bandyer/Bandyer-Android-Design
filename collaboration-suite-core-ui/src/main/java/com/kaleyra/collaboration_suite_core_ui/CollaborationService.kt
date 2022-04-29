@@ -5,7 +5,10 @@ import android.app.Application
 import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bandyer.android_chat_sdk.api.ChatChannel
@@ -155,7 +158,12 @@ class CollaborationService : BoundService(),
 
             call.state
                 .takeWhile { it !is Call.State.Disconnected.Ended }
-                .onCompletion { currentCall = null }
+                .onCompletion {
+                    currentCall = null
+                    if (isAppInForeground) return@onCompletion
+                    stopSelf()
+                    Log.e("CollaborationService", "stopping service onCompletion")
+                }
                 .launchIn(lifecycleScope)
 
             setUpCallStreams(this@CollaborationService, call)
@@ -172,6 +180,13 @@ class CollaborationService : BoundService(),
 
     private fun shouldShowCallUI(call: Call): Boolean =
         isAppInForeground && (!this@CollaborationService.isSilent() || call.participants.value.let { it.me == it.creator() })
+
+    override fun onStop(owner: LifecycleOwner) {
+        super.onStop(owner)
+        if (currentCall != null && currentCall!!.state.value !is Call.State.Disconnected.Ended) return
+        stopSelf()
+        Log.e("CollaborationService", "stopping service onStop")
+    }
 
     ////////////////////////////////////////////
     // Application.ActivityLifecycleCallbacks //
