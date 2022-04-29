@@ -40,9 +40,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.takeWhile
 
 /**
  * Collaboration UI
@@ -68,11 +66,6 @@ object CollaborationUI {
             isAppInForeground = false
             wasPhoneBoxConnected =
                 phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
-            phoneBox.call.replayCache.firstOrNull()?.state?.value?.also {
-                if (it !is Call.State.Disconnected.Ended) return@also
-                stopPhoneBoxService()
-                Log.e("CollaborationUI", "stopService2")
-            } ?: stopPhoneBoxService()
         }
     }
 
@@ -111,14 +104,6 @@ object CollaborationUI {
             .filter { it is Connecting }
             .onEach { startPhoneBoxService(activityClazz) }
             .launchIn(MainScope())
-        phoneBox.call
-            .flatMapLatest { it.state }
-            .onEach {
-                Log.e("CollaborationUI", "call state: $it")
-                if (isAppInForeground || it !is Call.State.Disconnected.Ended) return@onEach
-                stopPhoneBoxService()
-                Log.e("CollaborationUI", "stopService")
-            }.launchIn(MainScope())
         return true
     }
 
