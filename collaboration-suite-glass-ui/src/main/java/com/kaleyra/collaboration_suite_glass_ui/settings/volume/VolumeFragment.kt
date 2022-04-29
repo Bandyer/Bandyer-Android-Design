@@ -27,7 +27,9 @@ import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
+import com.kaleyra.collaboration_suite_glass_ui.common.SettingSlider
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentVolumeBinding
+import com.kaleyra.collaboration_suite_glass_ui.settings.zoom.ZoomFragment
 
 /**
  * VolumeFragment
@@ -69,6 +71,12 @@ internal class VolumeFragment : BaseFragment() {
             val volume = viewModel.volume
             maxProgress = volume.max
             progress = volume.current
+
+            onSliderChangeListener = object : SettingSlider.OnSliderChangeListener {
+                override fun onProgressChanged(progress: Int) {
+                    viewModel.onSetVolume(progress)
+                }
+            }
         }
     }
 
@@ -85,17 +93,11 @@ internal class VolumeFragment : BaseFragment() {
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
     override fun onSwipeForward(isKeyEvent: Boolean) = true.also {
-        with(binding.kaleyraSlider) {
-            increaseProgress()
-            viewModel.onSetVolume(progress)
-        }
+        binding.kaleyraSlider.increaseProgress()
     }
 
     override fun onSwipeBackward(isKeyEvent: Boolean) = true.also {
-        with(binding.kaleyraSlider) {
-            decreaseProgress()
-            viewModel.onSetVolume(progress)
-        }
+        binding.kaleyraSlider.decreaseProgress()
     }
 
     override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
