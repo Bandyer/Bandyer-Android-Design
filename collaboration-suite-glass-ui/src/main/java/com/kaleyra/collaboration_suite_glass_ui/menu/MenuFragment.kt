@@ -203,7 +203,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         is CallAction.ZOOM -> true.also { if(!action.isDisabled) findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
         is CallAction.FLASHLIGHT -> true.also {
             if (action.isDisabled) return@also
-            val flashLight = viewModel.flashLight.replayCache.firstOrNull() ?: return@also
+            val flashLight = viewModel.flashLight.value ?: return@also
             val isEnabled = flashLight.enabled.value
             if (isEnabled) flashLight.tryDisable() else flashLight.tryEnable()
         }
