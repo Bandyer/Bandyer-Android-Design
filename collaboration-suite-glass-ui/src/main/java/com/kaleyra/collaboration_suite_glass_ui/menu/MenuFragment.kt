@@ -148,6 +148,12 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                 combine(viewModel.cameraEnabled, viewModel.flashLight) { cameraEnabled, flashLight ->
                     action.disable(!cameraEnabled || flashLight?.isSupported != true)
                 }.launchIn(this)
+                viewModel.cameraEnabled
+                    .onEach {
+                        if (it) return@onEach
+                        viewModel.flashLight.value?.tryDisable()
+                    }
+                    .launchIn(this)
                 viewModel.flashLight
                     .filter { it != null }
                     .flatMapLatest { it!!.enabled }
