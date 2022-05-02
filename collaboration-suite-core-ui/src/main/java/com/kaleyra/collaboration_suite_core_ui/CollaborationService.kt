@@ -5,9 +5,7 @@ import android.app.Application
 import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
@@ -162,7 +160,7 @@ class CollaborationService : BoundService(),
                     currentCall = null
                     if (isAppInForeground) return@onCompletion
                     stopSelf()
-                    Log.e("CollaborationService", "stopping service onCompletion")
+//                    Log.e("CollaborationService", "stopping service onCompletion")
                 }
                 .launchIn(lifecycleScope)
 
@@ -185,7 +183,7 @@ class CollaborationService : BoundService(),
         super.onStop(owner)
         if (currentCall != null && currentCall!!.state.value !is Call.State.Disconnected.Ended) return
         stopSelf()
-        Log.e("CollaborationService", "stopping service onStop")
+//        Log.e("CollaborationService", "stopping service onStop")
     }
 
     ////////////////////////////////////////////

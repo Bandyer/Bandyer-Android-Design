@@ -41,7 +41,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/kaleyra_snapshot_share_close_button"
-        style="?attr/kaleyra_closeButtonStyle"
+        style="?attr/kaleyra_negativeButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
@@ -51,7 +51,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/kaleyra_snapshot_share_save_button"
-        style="?attr/kaleyra_saveButtonStyle"
+        style="?attr/kaleyra_positiveButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"

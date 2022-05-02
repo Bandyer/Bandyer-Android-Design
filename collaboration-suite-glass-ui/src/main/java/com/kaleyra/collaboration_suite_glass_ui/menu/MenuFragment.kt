@@ -152,6 +152,12 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
                 combine(viewModel.cameraEnabled, viewModel.flashLight) { cameraEnabled, flashLight ->
                     action.disable(!cameraEnabled || flashLight?.isSupported != true)
                 }.launchIn(this)
+                viewModel.cameraEnabled
+                    .onEach {
+                        if (it) return@onEach
+                        viewModel.flashLight.value?.tryDisable()
+                    }
+                    .launchIn(this)
                 viewModel.flashLight
                     .filter { it != null }
                     .flatMapLatest { it!!.enabled }
@@ -159,8 +165,8 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
                     .launchIn(this)
             }
             switchCameraAction?.also { action ->
-                viewModel.hasSwitchCamera.onEach {
-                    action.disable(!it)
+                combine(viewModel.cameraEnabled, viewModel.hasSwitchCamera) { cameraEnabled, hasSwitchCamera ->
+                    action.disable(!cameraEnabled || !hasSwitchCamera)
                 }.launchIn(this)
             }
         }
@@ -207,7 +213,7 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
         is CallAction.ZOOM -> true.also { if(!action.isDisabled) findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
         is CallAction.FLASHLIGHT -> true.also {
             if (action.isDisabled) return@also
-            val flashLight = viewModel.flashLight.replayCache.firstOrNull() ?: return@also
+            val flashLight = viewModel.flashLight.value ?: return@also
             val isEnabled = flashLight.enabled.value
             if (isEnabled) flashLight.tryDisable() else flashLight.tryEnable()
         }

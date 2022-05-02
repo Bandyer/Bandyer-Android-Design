@@ -29,7 +29,7 @@
 
     <declare-styleable name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout">
         <attr name="kaleyra_rootLayoutStyle" />
-        <attr name="kaleyra_closeButtonStyle" />
+        <attr name="kaleyra_negativeButtonStyle" />
         <attr name="kaleyra_ratingBarStyle" format="reference" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
@@ -39,7 +39,7 @@
 
     <style name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout" parent="">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout.RootLayout</item>
-        <item name="kaleyra_closeButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.FeedbackLayoutCloseButton</item>
+        <item name="kaleyra_negativeButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.FeedbackLayoutCloseButton</item>
         <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.FeedbackLayout</item>
         <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FeedbackLayout</item>
         <item name="kaleyra_ratingBarStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackLayout.RatingBarStyle</item>
@@ -157,14 +157,14 @@
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
-        <attr name="kaleyra_closeButtonStyle" />
+        <attr name="kaleyra_negativeButtonStyle" />
     </declare-styleable>
 
     <style name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout" parent="">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout.RootLayout</item>
         <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.FeedbackSentLayout</item>
         <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FeedbackSentLayout</item>
-        <item name="kaleyra_closeButtonStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout.PositiveButton</item>
+        <item name="kaleyra_negativeButtonStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout.PositiveButton</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.FragmentDialog.FeedbackSentLayout.RootLayout" parent="">
