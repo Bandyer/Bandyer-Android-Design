@@ -9,13 +9,13 @@ import com.kaleyra.collaboration_suite_core_ui.CollaborationService
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
+import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
 import com.kaleyra.collaboration_suite_glass_ui.common.OnDestinationChangedListener
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatActivityGlassBinding
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassGestureDetector
 import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
@@ -23,8 +23,7 @@ import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-internal class GlassChatActivity : ChatActivity(), GlassGestureDetector.OnGestureListener,
-    TouchEventListener, OnDestinationChangedListener {
+internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener, GlassTouchEventManager.Listener {
 
     private lateinit var binding: KaleyraChatActivityGlassBinding
 
@@ -37,19 +36,19 @@ internal class GlassChatActivity : ChatActivity(), GlassGestureDetector.OnGestur
         )
     }
 
-    private var glassGestureDetector: GlassGestureDetector? = null
+    private var glassTouchEventManager: GlassTouchEventManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.kaleyra_chat_activity_glass)
-        glassGestureDetector = GlassGestureDetector(this, this)
+        glassTouchEventManager = GlassTouchEventManager(this, this)
 //        enableImmersiveMode()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         service = null
-        glassGestureDetector = null
+        glassTouchEventManager = null
     }
 
     override fun onServiceBound(service: CollaborationService) {
@@ -84,27 +83,24 @@ internal class GlassChatActivity : ChatActivity(), GlassGestureDetector.OnGestur
 
     override fun onDestinationChanged(destinationId: Int) = Unit
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        // Dispatch the touch event to the gesture detector
-        return if (ev != null && glassGestureDetector!!.onTouchEvent(ev)) true
+    /**
+     * @suppress
+     */
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean =
+        if (glassTouchEventManager!!.toGlassTouchEvent(ev)) true
         else super.dispatchTouchEvent(ev)
-    }
 
+    /**
+     * @suppress
+     */
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean =
-        if (event?.action == MotionEvent.ACTION_DOWN &&
-            handleSmartGlassTouchEvent(TouchEvent.getEvent(event))
-        ) true
+        if (glassTouchEventManager!!.toGlassTouchEvent(event)) true
         else super.dispatchKeyEvent(event)
 
-    override fun onGesture(gesture: GlassGestureDetector.Gesture): Boolean =
-        handleSmartGlassTouchEvent(TouchEvent.getEvent(gesture))
-
-    private fun handleSmartGlassTouchEvent(glassEvent: TouchEvent): Boolean {
+    override fun onGlassTouchEvent(glassEvent: TouchEvent): Boolean {
         val currentDest =
             supportFragmentManager.currentNavigationFragment as? TouchEventListener
                 ?: return false
-        return if (!currentDest.onTouch(glassEvent)) onTouch(glassEvent) else true
+        return !currentDest.onTouch(glassEvent)
     }
-
-    override fun onTouch(event: TouchEvent): Boolean = false
 }

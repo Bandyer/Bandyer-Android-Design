@@ -49,6 +49,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensio
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
+import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.WhiteboardItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.MyStreamItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.OtherStreamItem
@@ -58,7 +59,6 @@ import com.kaleyra.collaboration_suite_glass_ui.common.OnDestinationChangedListe
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraCallActivityGlassBinding
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassGestureDetector
 import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getCallThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -87,10 +87,10 @@ import java.util.concurrent.ConcurrentMap
  */
 internal class GlassCallActivity :
     CallActivity(),
-    GlassGestureDetector.OnGestureListener,
 //    ChatNotificationManager.NotificationListener,
     OnDestinationChangedListener,
-    TouchEventListener {
+    TouchEventListener,
+    GlassTouchEventManager.Listener {
 
     private lateinit var binding: KaleyraCallActivityGlassBinding
 
@@ -120,12 +120,10 @@ internal class GlassCallActivity :
 
     private var navController: NavController? = null
 
-    private var glassGestureDetector: GlassGestureDetector? = null
+    private var glassTouchEventManager: GlassTouchEventManager? = null
 
 //    private var notificationManager: ChatNotificationManager? = null
 //    private var isNotificationVisible = false
-
-    private var lastTouchEventTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,7 +133,7 @@ internal class GlassCallActivity :
             supportFragmentManager.findFragmentById(R.id.kaleyra_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        glassGestureDetector = GlassGestureDetector(this, this)
+        glassTouchEventManager = GlassTouchEventManager(this, this)
 
 //        notificationManager =
 //            ChatNotificationManager(binding.kaleyraContent).also { it.addListener(this) }
@@ -607,7 +605,7 @@ internal class GlassCallActivity :
         streamsItemAdapter = null
         whiteboardItemAdapter = null
         navController = null
-        glassGestureDetector = null
+        glassTouchEventManager = null
 //        notificationManager = null
     }
 
@@ -650,34 +648,24 @@ internal class GlassCallActivity :
     /**
      * @suppress
      */
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        // Dispatch the touch event to the gesture detector
-        return if (ev != null && glassGestureDetector!!.onTouchEvent(ev)) true
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean =
+        if (glassTouchEventManager!!.toGlassTouchEvent(ev)) true
         else super.dispatchTouchEvent(ev)
-    }
 
     /**
      * @suppress
      */
     override fun dispatchKeyEvent(event: KeyEvent?): Boolean =
-        if (event?.action == MotionEvent.ACTION_DOWN &&
-            handleSmartGlassTouchEvent(TouchEvent.getEvent(event))
-        ) true
+        if (glassTouchEventManager!!.toGlassTouchEvent(event)) true
         else super.dispatchKeyEvent(event)
 
-    override fun onGesture(gesture: GlassGestureDetector.Gesture): Boolean =
-        handleSmartGlassTouchEvent(TouchEvent.getEvent(gesture))
-
-    private fun handleSmartGlassTouchEvent(glassEvent: TouchEvent): Boolean {
-        val now = System.currentTimeMillis()
-        if (now - TOUCH_EVENT_INTERVAL < lastTouchEventTime) return false
-        lastTouchEventTime = now
+    override fun onGlassTouchEvent(glassEvent: TouchEvent): Boolean {
 //        return if (isNotificationVisible) onNotificationTouch(glassEvent)
 //        else {
-            val currentDest =
-                supportFragmentManager.currentNavigationFragment as? TouchEventListener
-                    ?: return false
-            return if (!currentDest.onTouch(glassEvent)) onTouch(glassEvent) else true
+        val currentDest =
+            supportFragmentManager.currentNavigationFragment as? TouchEventListener
+                ?: return false
+        return if (!currentDest.onTouch(glassEvent)) onTouch(glassEvent) else true
 //        }
     }
 
