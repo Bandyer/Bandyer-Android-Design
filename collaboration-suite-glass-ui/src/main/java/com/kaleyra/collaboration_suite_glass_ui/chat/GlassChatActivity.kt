@@ -101,6 +101,6 @@ internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener,
         val currentDest =
             supportFragmentManager.currentNavigationFragment as? TouchEventListener
                 ?: return false
-        return !currentDest.onTouch(glassEvent)
+        return currentDest.onTouch(glassEvent)
     }
 }
