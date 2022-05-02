@@ -33,6 +33,7 @@ dependencies {
     /*** Testing ***/
     testImplementation test.jUnit
     testImplementation test.mockk
+    testImplementation kaleyra.utils
 
     androidTestImplementation test.runner
     androidTestImplementation test.mockito
