@@ -33,7 +33,7 @@ ext {
     def kotlinCoroutinesVersion = "1.5.2"
 
     def collaborationSuiteUtilsVersion = "2.0.1"
-    def collaborationSuiteVersion = "1.0.0-alpha3"
+    def collaborationSuiteVersion = "1.0.0-alpha5"
 
     def junitVersion = "4.13.2"
     def testRunnerVersion = "1.4.0"
