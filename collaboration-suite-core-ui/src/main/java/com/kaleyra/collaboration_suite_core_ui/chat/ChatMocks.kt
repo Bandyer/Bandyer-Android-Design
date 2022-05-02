@@ -4,13 +4,9 @@ import com.bandyer.android_chat_sdk.ChatClientInstance
 import com.bandyer.android_chat_sdk.ChatClientObserver
 import com.bandyer.android_chat_sdk.ChatClientState
 import com.bandyer.android_chat_sdk.OnIncomingChatMessageObserver
-import com.bandyer.android_chat_sdk.OnLastUnreadMessageListener
 import com.bandyer.android_chat_sdk.OnNotificationObserver
 import com.bandyer.android_chat_sdk.api.ChatChannel
-import com.bandyer.android_chat_sdk.api.ChatChannels
-import com.bandyer.android_chat_sdk.api.ChatMessages
 import com.bandyer.android_chat_sdk.api.ChatParticipant
-import com.bandyer.android_chat_sdk.api.ChatParticipants
 import com.bandyer.android_chat_sdk.chat_service.model.Message
 import com.bandyer.android_chat_sdk.model.ChatUser
 import com.bandyer.android_chat_sdk.persistence.ChannelRepositoryInstance
@@ -28,10 +24,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import java.time.Instant
-
-var mockParticipants = object : ChatParticipants {
-    override val participants: StateFlow<List<ChatParticipant>> = MutableStateFlow(listOf())
-}
 
 var mockMessagesList = listOf(
     ChatMessage(
@@ -87,36 +79,39 @@ val mockFlowMessageList = MutableStateFlow(mockMessagesList).apply {
 }
 var newMessagesLoaded = false
 
-var mockMessages = object : ChatMessages {
-    override val channelId: Any = "chatChannelId"
-    override val messageList: StateFlow<List<ChatMessage>> = mockFlowMessageList
+var mockChannel = object : ChatChannel {
+    override val id: Any = "chatChannelId"
+    override val participants: StateFlow<List<ChatParticipant>> = MutableStateFlow(listOf())
+    override val messages: StateFlow<List<ChatMessage>> = mockFlowMessageList
+    override fun subscribe() = Unit
+    override fun unsubscribe() = Unit
     override fun sendTextMessage(message: String) = Unit
-    override fun loadPrevious(success: () -> Unit, error: (Exception) -> Unit) {
+    override fun fetch(success: () -> Unit, error: (String) -> Unit) {
         if (newMessagesLoaded) return
         newMessagesLoaded = true
-        val list = messageList.value.toMutableList()
+        val list = messages.value.toMutableList()
         list.add(
             ChatMessage(
                 Message(
-                "mId4",
-                "chatChannelId",
-                "user1",
-                "Franchino fammi volare, sopra le nuvole, magiaaaaaa",
-                Iso8601.parseMillisToIso8601(Instant.now().toEpochMilli() - 180 * 3600 * 1000),
-                attributes = "{}"
-            )
+                    "mId4",
+                    "chatChannelId",
+                    "user1",
+                    "Franchino fammi volare, sopra le nuvole, magiaaaaaa",
+                    Iso8601.parseMillisToIso8601(Instant.now().toEpochMilli() - 180 * 3600 * 1000),
+                    attributes = "{}"
+                )
             )
         )
         list.add(
             ChatMessage(
                 Message(
-                "mId5",
-                "chatChannelId",
-                "user2",
-                "Anatra animale definitivo",
-                Iso8601.parseMillisToIso8601(Instant.now().toEpochMilli() - 270 * 3600 * 1000),
-                attributes = "{}"
-            )
+                    "mId5",
+                    "chatChannelId",
+                    "user2",
+                    "Anatra animale definitivo",
+                    Iso8601.parseMillisToIso8601(Instant.now().toEpochMilli() - 270 * 3600 * 1000),
+                    attributes = "{}"
+                )
             )
         )
         mockFlowMessageList.value = list
@@ -124,23 +119,11 @@ var mockMessages = object : ChatMessages {
     }
 }
 
-var mockChannel = object : ChatChannel {
-    override val id: Any = "chatChannelId"
-    override val chatMessages: ChatMessages = mockMessages
-    override val chatParticipants: ChatParticipants = mockParticipants
-    override fun subscribe() = Unit
-    override fun unsubscribe() = Unit
-}
-
 val mockChatClient = object : ChatClientInstance {
-
-    override val chatChannels: ChatChannels = object : ChatChannels {
-        override val chatChannelsList: StateFlow<List<ChatChannel>> = MutableStateFlow(listOf(mockChannel))
-        override suspend fun create(users: List<ChatUser>): ChatChannel = mockChannel
-        override suspend fun delete(users: List<ChatUser>): ChatChannel = mockChannel
-    }
     override val state: StateFlow<ChatClientState> = MutableStateFlow(ChatClientState.Disconnected)
-
+    override suspend fun createChannel(users: List<ChatUser>): ChatChannel = mockChannel
+    override suspend fun deleteChannel(users: List<ChatUser>) = Unit
+    override fun fetchChannels(pageSize: Int, success: () -> Unit, error: (String) -> Unit) = Unit
     override val configuration: Configuration = object : Configuration {
         override val appId: String = ""
         override val environment: Environment = object : Environment {
@@ -151,37 +134,22 @@ val mockChatClient = object : ChatClientInstance {
         override val region: Region = Region.Eu
     }
     override var userId: String? = null
-
     override var channelRepository: ChannelRepositoryInstance? = null
-
     override var chatMessageRepository: ChatMessageRepository? = null
-
     override fun addChatClientStateObserver(chatClientObserver: ChatClientObserver) = Unit
-
     override fun removeChatClientStateObserver(chatClientObserver: ChatClientObserver) = Unit
-
     override fun addIncomingChatMessageObserver(observer: OnIncomingChatMessageObserver) = Unit
-
     override fun removeIncomingChatMessageObserver(observer: OnIncomingChatMessageObserver) = Unit
-
     override fun removeObservers() = Unit
-
     override fun connect(userId: String, accessToken: String) = Unit
-
     override fun disconnect() = Unit
-
     override fun updateToken(
         accessToken: String,
         onSuccess: () -> Unit,
         onError: (Throwable) -> Unit
     ) = Unit
-
     override fun handleNotification(data: String, onNotificationObserver: OnNotificationObserver) = Unit
-
     override fun clearUserCache() = Unit
-
-    override fun getLastUnreadMessageForChat(
-        alias: String,
-        onLastUnreadMessage: OnLastUnreadMessageListener
-    ) = Unit
+    override val channels: StateFlow<List<ChatChannel>>
+        get() = TODO("Not yet implemented")
 }

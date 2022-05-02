@@ -25,8 +25,6 @@ import android.widget.Toast
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -120,7 +118,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                             val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
                             if (!isLoading && fastAdapter.itemCount <= (lastVisibleItem + LOAD_MORE_THRESHOLD)) {
-                                viewModel.channel.chatMessages.loadPrevious({
+                                viewModel.channel.fetch({
                                     isLoading = false
                                     Toast.makeText(
                                         requireContext().applicationContext,
@@ -131,7 +129,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                                     isLoading = false
                                     Toast.makeText(
                                         requireContext().applicationContext,
-                                        it.message,
+                                        it,
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 })
@@ -158,7 +156,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 
     override fun onServiceBound() {
         repeatOnStarted {
-            viewModel.channel.chatMessages.messageList
+            viewModel.channel.messages
                 .onEach { msgs ->
                     val pages = toChatMessagePages(msgs)
                     val items = pages.map { ChatMessageItem(it) }
