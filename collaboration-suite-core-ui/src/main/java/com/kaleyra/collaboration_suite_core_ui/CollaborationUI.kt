@@ -190,7 +190,7 @@ class ChatClientUI(
     }
 
     suspend fun create(list: List<ChatUser>): ChatChannel =
-        create(list).also { bindCollaborationService(it, usersDescription, chatActivityClazz) }
+        createChannel(list).also { bindCollaborationService(it, usersDescription, chatActivityClazz) }
 
     fun sendMessage(channel: ChatChannel, message: String) {
         channel.sendTextMessage(message)
