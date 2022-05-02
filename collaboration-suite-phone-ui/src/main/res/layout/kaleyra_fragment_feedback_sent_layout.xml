@@ -36,7 +36,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/kaleyra_close"
-        style="?attr/kaleyra_closeButtonStyle"
+        style="?attr/kaleyra_negativeButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Close" />
