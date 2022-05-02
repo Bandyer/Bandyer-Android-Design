@@ -161,8 +161,8 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                     .launchIn(this)
             }
             switchCameraAction?.also { action ->
-                viewModel.hasSwitchCamera.onEach {
-                    action.disable(!it)
+                combine(viewModel.cameraEnabled, viewModel.hasSwitchCamera) { cameraEnabled, hasSwitchCamera ->
+                    action.disable(!cameraEnabled || !hasSwitchCamera)
                 }.launchIn(this)
             }
         }
