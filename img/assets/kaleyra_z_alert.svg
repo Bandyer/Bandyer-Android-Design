@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="19.5" height="19.5" viewBox="0 0 19.5 19.5">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: #000;
+        stroke-linecap: round;
+        stroke-width: 1.5px;
+      }
+    </style>
+  </defs>
+  <g id="question" transform="translate(0.75 0.75)">
+    <path id="Tracciato_1054" data-name="Tracciato 1054" class="cls-1" d="M12,21a9,9,0,1,0-9-9A9,9,0,0,0,12,21Z" transform="translate(-3 -3)"/>
+  </g>
+</svg>
