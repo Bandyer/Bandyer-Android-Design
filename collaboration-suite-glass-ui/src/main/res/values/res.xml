@@ -34,4 +34,5 @@
     <item name="ic_kaleyra_glass_wifi_full" type="drawable">@drawable/kaleyra_glass_wifi_full_icon</item>
     <item name="ic_kaleyra_glass_rec" type="drawable">@drawable/kaleyra_rec_icon</item>
     <item name="ic_kaleyra_glass_alert" type="drawable">@drawable/kaleyra_alert_icon</item>
+    <item name="ic_kaleyra_glass_voice_command" type="drawable">@drawable/kaleyra_voice_command</item>
 </resources>
