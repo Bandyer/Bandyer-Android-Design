@@ -106,9 +106,9 @@ internal class ZoomFragment : BaseFragment() {
         true.also { binding.kaleyraSlider.decreaseProgress() }
 
     override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
-        bottomNavView.setSecondItemListener { onSwipeForward(true) }
-        bottomNavView.setThirdItemListener { onTap() }
         bottomNavView.setFirstItemListener { onSwipeBackward(true) }
+        bottomNavView.setSecondItemListener { onSwipeForward(true) }
+        bottomNavView.setThirdItemListener { onSwipeDown() }
     }
 
     private companion object {
