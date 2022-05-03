@@ -25,7 +25,7 @@ import android.os.Build
 import android.view.Surface
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils.isGoogleGlass
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils.isGoogleGlass
 import java.util.*
 import kotlin.math.abs
 

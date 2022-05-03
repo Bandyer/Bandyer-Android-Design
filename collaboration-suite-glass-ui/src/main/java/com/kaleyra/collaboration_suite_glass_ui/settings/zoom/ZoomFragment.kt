@@ -23,11 +23,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
+import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.common.SettingSlider
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentZoomBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import kotlin.math.roundToInt
 
 /**
@@ -39,6 +40,8 @@ internal class ZoomFragment : BaseFragment() {
     override val binding: KaleyraGlassFragmentZoomBinding get() = _binding!!
 
     private val viewModel: GlassViewModel by activityViewModels()
+
+    private var previousValue = 0f
 
     /**
      * @suppress
@@ -52,9 +55,12 @@ internal class ZoomFragment : BaseFragment() {
 
         // Add view binding
         _binding = KaleyraGlassFragmentZoomBinding
-            .inflate(inflater, container, false)
-            .apply {
-                if(GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear()
+            .inflate(
+                inflater,
+                container,
+                false
+            ).apply {
+                if (DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation)
                 root.setOnTouchListener { _, _ -> true }
             }
 
@@ -63,11 +69,13 @@ internal class ZoomFragment : BaseFragment() {
 
     override fun onServiceBound() {
         with(binding.kaleyraSlider) {
-            val currentValue = viewModel.zoom!!.value
-            val upperValue = viewModel.zoom!!.range.upper
-            val lowerValue = viewModel.zoom!!.range.lower
+            val zoom = viewModel.zoom.value ?: return@with
+            val currentValue = zoom.value.value
+            val upperValue = zoom.range.upper
+            val lowerValue = zoom.range.lower
             maxProgress = MAX_ZOOM_PROGRESS
             progress = (((currentValue - lowerValue) * MAX_ZOOM_PROGRESS) / (upperValue - lowerValue)).roundToInt()
+            previousValue = currentValue
 
             onSliderChangeListener = object : SettingSlider.OnSliderChangeListener {
                 override fun onProgressChanged(progress: Int) {
@@ -87,13 +95,21 @@ internal class ZoomFragment : BaseFragment() {
         _binding = null
     }
 
-    override fun onTap() = true.also { findNavController().popBackStack() }
+    override fun onTap() = false
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = true.also { binding.kaleyraSlider.increaseProgress() }
+    override fun onSwipeForward(isKeyEvent: Boolean) =
+        true.also { binding.kaleyraSlider.increaseProgress() }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = true.also { binding.kaleyraSlider.decreaseProgress() }
+    override fun onSwipeBackward(isKeyEvent: Boolean) =
+        true.also { binding.kaleyraSlider.decreaseProgress() }
+
+    override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
+        bottomNavView.setSecondItemListener { onSwipeForward(true) }
+        bottomNavView.setThirdItemListener { onTap() }
+        bottomNavView.setFirstItemListener { onSwipeBackward(true) }
+    }
 
     private companion object {
         const val MAX_ZOOM_PROGRESS = 20

@@ -19,7 +19,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version("1.6.10")
+    id 'org.jetbrains.dokka' version("1.5.31")
 }
 
 apply from: '../versions.gradle'
@@ -31,6 +31,7 @@ dependencies {
     coreLibraryDesugaring androidX.desugar
 
     testImplementation test.jUnit
+    testImplementation kaleyra.utils
     androidTestImplementation test.espresso
 
     api jetbrains.stdlib
@@ -41,6 +42,5 @@ dependencies {
 
     /** Kaleyra **/
     compileOnly kaleyra.collaboration
-//    compileOnly project(":collaboration-suite")
     compileOnly kaleyra.utils
 }

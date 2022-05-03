@@ -25,14 +25,14 @@
 
     <declare-styleable name="KaleyraCollaborationSuiteUI.BottomSheetDialog.Snapshot.Layout">
         <attr name="kaleyra_collaborateButtonStyle" format="reference" />
-        <attr name="kaleyra_closeButtonStyle" />
-        <attr name="kaleyra_saveButtonStyle" format="reference" />
+        <attr name="kaleyra_negativeButtonStyle" />
+        <attr name="kaleyra_positiveButtonStyle" />
     </declare-styleable>
 
     <style name="KaleyraCollaborationSuiteUI.BottomSheetDialog.Snapshot.Layout" parent="">
         <item name="kaleyra_collaborateButtonStyle">@style/KaleyraCollaborationSuiteUI.CollaborateButton</item>
-        <item name="kaleyra_closeButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Close</item>
-        <item name="kaleyra_saveButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Save</item>
+        <item name="kaleyra_negativeButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Close</item>
+        <item name="kaleyra_positiveButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.Save</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.BottomSheetModalStyle.Snapshot" parent="KaleyraCollaborationSuiteUI.BottomSheetModalStyle">

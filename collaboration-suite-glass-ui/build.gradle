@@ -19,7 +19,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version("1.6.10")
+    id 'org.jetbrains.dokka' version("1.5.31")
     id 'androidx.navigation.safeargs.kotlin'
 }
 
@@ -51,7 +51,6 @@ dependencies {
     api project(':collaboration-suite-core-ui')
 
     /** Kaleyra **/
-//    compileOnly kaleyra.collaboration
-    compileOnly project(":collaboration-suite")
+    compileOnly kaleyra.collaboration
     compileOnly kaleyra.utils
 }

@@ -43,8 +43,8 @@ internal class BottomNavigationView @JvmOverloads constructor(
      *
      * @param callback function
      */
-    fun setSwipeHorizontalOnClickListener(callback: () -> Unit) =
-        binding.kaleyraSwipe.setOnClickListener {
+    fun setFirstItemListener(callback: () -> Unit) =
+        binding.kaleyraFirstItem.setOnClickListener {
             callback.invoke()
         }
 
@@ -53,8 +53,8 @@ internal class BottomNavigationView @JvmOverloads constructor(
      *
      * @param callback function
      */
-    fun setTapOnClickListener(callback: () -> Unit) =
-        binding.kaleyraTap.setOnClickListener {
+    fun setSecondItemListener(callback: () -> Unit) =
+        binding.kaleyraSecondItem.setOnClickListener {
             callback.invoke()
         }
 
@@ -63,29 +63,29 @@ internal class BottomNavigationView @JvmOverloads constructor(
      *
      * @param callback function
      */
-    fun setSwipeDownOnClickListener(callback: () -> Unit) =
-        binding.kaleyraSwipeDown.setOnClickListener {
+    fun setThirdItemListener(callback: () -> Unit) =
+        binding.kaleyraThirdItem.setOnClickListener {
             callback.invoke()
         }
 
     /**
      * Show the swipe horizontal element
      */
-    fun showSwipeHorizontalItem() {
-        binding.kaleyraSwipe.visibility = View.VISIBLE
+    fun showFirstItem() {
+        binding.kaleyraFirstItem.visibility = View.VISIBLE
     }
 
     /**
      * Hide the swipe horizontal element
      */
-    fun hideSwipeHorizontalItem() {
-        binding.kaleyraSwipe.visibility = View.GONE
+    fun hideFirstItem() {
+        binding.kaleyraFirstItem.visibility = View.GONE
     }
 
     /**
      * Hide the tap element
      */
-    fun hideTapItem() {
-        binding.kaleyraTap.visibility = View.GONE
+    fun hideSecondItem() {
+        binding.kaleyraSecondItem.visibility = View.GONE
     }
 }

@@ -33,7 +33,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
       - name: Set dryRun to false
-        run: sed -i '/def dryRun = true/c\\tdef dryRun = false' ./bandyer-android-design/build.gradle
+        run: sed -i '/def dryRun = true/c\\tdef dryRun = false' ./publish.gradle
       - name: Update Maven credentials
         env:
           MAVEN_ACCESSKEY: ${{ secrets.MAVEN_ACCESSKEY }}

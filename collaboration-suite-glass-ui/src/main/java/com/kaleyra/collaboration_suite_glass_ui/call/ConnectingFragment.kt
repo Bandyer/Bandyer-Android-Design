@@ -24,11 +24,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenLogoDialogBinding
-import com.kaleyra.collaboration_suite_glass_ui.utils.GlassDeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
@@ -61,7 +61,7 @@ internal abstract class ConnectingFragment : BaseFragment() {
                 container,
                 false
             ).apply {
-                if (GlassDeviceUtils.isRealWear) kaleyraBottomNavigation.setListenersForRealwear()
+                if (DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation)
             }
 
         return binding.root

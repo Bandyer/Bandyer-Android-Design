@@ -1,11 +1,11 @@
 ext {
     sdkVersion = 31
     buildToolsVersion = "31.0.0"
-    moduleVersion = "3.0.2"
+    moduleVersion = "3.0.4"
     moduleGroupId = "com.kaleyra"
 
     // Versions
-    def kotlinVersion = '1.6.10'
+    def kotlinVersion = '1.5.32'
     def gradleVersion = "7.0.4"
     def androidAptVersion = "1.8"
     def benManesGradleVersion = "0.21.0"
@@ -30,10 +30,10 @@ ext {
 
     def picassoVersion = "2.71828"
 
-    def kotlinCoroutinesVersion = "1.6.0"
+    def kotlinCoroutinesVersion = "1.5.2"
 
     def collaborationSuiteUtilsVersion = "2.0.1"
-    def collaborationSuiteVersion = "1.0.0-alpha3"
+    def collaborationSuiteVersion = "1.0.0-alpha5"
 
     def junitVersion = "4.13.2"
     def testRunnerVersion = "1.4.0"

@@ -20,7 +20,6 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
-import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -28,22 +27,17 @@ import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite.Collaboration.Credentials
 import com.kaleyra.collaboration_suite.User
-import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.CreationOptions
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.State.Connecting
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
-import com.kaleyra.collaboration_suite_core_ui.call.CallService
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.takeWhile
 
 /**
  * Collaboration UI
@@ -55,25 +49,17 @@ object CollaborationUI {
     private var collaboration: Collaboration? = null
 
     private var wasPhoneBoxConnected = false
-    private var isAppInForeground = false
 
     private var lifecycleObserver = object : DefaultLifecycleObserver {
         override fun onStart(owner: LifecycleOwner) {
             super.onStart(owner)
-            isAppInForeground = true
             if (wasPhoneBoxConnected) phoneBox.connect()
         }
 
         override fun onStop(owner: LifecycleOwner) {
             super.onStop(owner)
-            isAppInForeground = false
             wasPhoneBoxConnected =
                 phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
-            phoneBox.call.replayCache.firstOrNull()?.state?.value?.also {
-                if (it !is Call.State.Disconnected.Ended) return@also
-                stopPhoneBoxService()
-                Log.e("CollaborationUI", "stopService2")
-            } ?: stopPhoneBoxService()
         }
     }
 
@@ -112,14 +98,6 @@ object CollaborationUI {
             .filter { it is Connecting }
             .onEach { startPhoneBoxService(activityClazz) }
             .launchIn(MainScope())
-        phoneBox.call
-            .flatMapLatest { it.state }
-            .onEach {
-                Log.e("CollaborationUI", "call state: $it")
-                if (isAppInForeground || it !is Call.State.Disconnected.Ended) return@onEach
-                stopPhoneBoxService()
-                Log.e("CollaborationUI", "stopService")
-            }.launchIn(MainScope())
         return true
     }
 
@@ -138,7 +116,7 @@ object CollaborationUI {
     private fun <T : CallActivity> startPhoneBoxService(activityClazz: Class<T>) {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
-                val service = (binder as BoundServiceBinder).getService<CallService>()
+                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
                 service.bind(phoneBox, usersDescription, activityClazz)
             }
 
@@ -146,14 +124,14 @@ object CollaborationUI {
         }
 
         with(ContextRetainer.context) {
-            val intent = Intent(this, CallService::class.java)
+            val intent = Intent(this, CollaborationService::class.java)
             startService(intent)
             bindService(intent, serviceConnection, 0)
         }
     }
 
     private fun stopPhoneBoxService() = with(ContextRetainer.context) {
-        stopService(Intent(this, CallService::class.java))
+        stopService(Intent(this, CollaborationService::class.java))
     }
 }
 
