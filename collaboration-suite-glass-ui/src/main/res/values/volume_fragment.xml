@@ -29,11 +29,6 @@
         <item name="sliderStyle">@style/KaleyraCollaborationSuiteUI.Glass.Slider</item>
     </style>
 
-    <!-- VOLUME FRAGMENT VOICE COMMAND -->
-    <style name="KaleyraCollaborationSuiteUI.Glass.Volume.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.Volume">
-        <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Volume.VoiceCommand</item>
-    </style>
-
     <!-- BOTTOM NAVIGATION BAR -->
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Volume" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation">
         <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.Volume</item>
