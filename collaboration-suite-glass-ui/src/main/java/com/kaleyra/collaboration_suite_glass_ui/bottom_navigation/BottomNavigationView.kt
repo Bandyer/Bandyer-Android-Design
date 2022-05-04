@@ -43,9 +43,7 @@ internal class BottomNavigationView @JvmOverloads constructor(
 
     init {
         val themeResId = context.theme.getAttributeResourceId(
-//            if (DeviceUtils.isRealWear)
-                R.attr.kaleyra_bottomNavigationVoiceStyle
-//            else R.attr.bottomNavigationStyle
+            if (DeviceUtils.isRealWear) R.attr.kaleyra_bottomNavigationVoiceStyle else R.attr.bottomNavigationStyle
         )
         binding = KaleyraGlassBottomNavigationLayoutBinding.inflate(
             LayoutInflater.from(context).cloneInContext(ContextThemeWrapper(context, themeResId)),
