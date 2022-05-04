@@ -102,9 +102,7 @@
         <item name="kaleyra_iconTipStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassIconTip.SecondItem.VoiceCommand</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem">
-        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space32</item>
-    </style>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem"/>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.SecondItem.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.SecondItem">
         <item name="srcCompat">@drawable/ic_kaleyra_glass_voice_command</item>
@@ -140,9 +138,7 @@
         <item name="kaleyra_iconTipStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassIconTip.ThirdItem.VoiceCommand</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem">
-        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space32</item>
-    </style>
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem"/>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.ThirdItem.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.ThirdItem">
         <item name="srcCompat">@drawable/ic_kaleyra_glass_voice_command</item>
