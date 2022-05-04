@@ -54,13 +54,10 @@ internal class VolumeFragment : BaseFragment() {
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
 
-        val themeResId = requireActivity().theme.getAttributeResourceId(
-            if (DeviceUtils.isRealWear) R.attr.kaleyra_volumeVoiceCommandStyle else R.attr.kaleyra_volumeStyle
-        )
         // Add view binding
         _binding = KaleyraGlassFragmentVolumeBinding
             .inflate(
-                inflater.cloneInContext(ContextThemeWrapper(requireContext(), themeResId)),
+                inflater,
                 container,
                 false
             )

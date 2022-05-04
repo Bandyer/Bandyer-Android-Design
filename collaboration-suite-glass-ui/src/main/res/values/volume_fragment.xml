@@ -18,12 +18,14 @@
 <resources>
     <declare-styleable name="KaleyraCollaborationSuiteUI.Glass.Volume">
         <attr name="bottomNavigationStyle" />
+        <attr name="kaleyra_bottomNavigationVoiceStyle" />
         <attr name="sliderStyle" />
     </declare-styleable>
 
     <!-- VOLUME FRAGMENT -->
     <style name="KaleyraCollaborationSuiteUI.Glass.Volume" parent="KaleyraCollaborationSuiteUI.Glass">
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Volume</item>
+        <item name="kaleyra_bottomNavigationVoiceStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Volume.VoiceCommand</item>
         <item name="sliderStyle">@style/KaleyraCollaborationSuiteUI.Glass.Slider</item>
     </style>
 

@@ -21,7 +21,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import androidx.appcompat.view.ContextThemeWrapper
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
+import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassBottomNavigationLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
  * Bottom action bar view, it describes the actions the user performs
@@ -35,8 +39,21 @@ internal class BottomNavigationView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    private var binding: KaleyraGlassBottomNavigationLayoutBinding =
-        KaleyraGlassBottomNavigationLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    private var binding: KaleyraGlassBottomNavigationLayoutBinding
+
+
+    init {
+        val themeResId = context.theme.getAttributeResourceId(
+//            if (DeviceUtils.isRealWear)
+                R.attr.kaleyra_bottomNavigationVoiceStyle
+//            else R.attr.bottomNavigationStyle
+        )
+        binding = KaleyraGlassBottomNavigationLayoutBinding.inflate(
+            LayoutInflater.from(context).cloneInContext(ContextThemeWrapper(context, themeResId)),
+            this,
+            true
+        )
+    }
 
     /**
      * Set an on click listener on the swipe element. Needed for realwear glasses.

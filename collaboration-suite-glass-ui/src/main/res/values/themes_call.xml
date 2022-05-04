@@ -25,7 +25,6 @@
         <attr name="kaleyra_toastContainerStyle" format="reference" />
         <attr name="kaleyra_menuStyle" format="reference" />
         <attr name="kaleyra_volumeStyle" format="reference" />
-        <attr name="kaleyra_volumeVoiceCommandStyle" format="reference" />
         <attr name="kaleyra_zoomStyle" format="reference" />
         <attr name="kaleyra_ringingStyle" format="reference" />
         <attr name="kaleyra_dialingStyle" format="reference" />
@@ -44,7 +43,6 @@
         <item name="kaleyra_toastContainerStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.ToastContainer</item>
         <item name="kaleyra_menuStyle">@style/KaleyraCollaborationSuiteUI.Glass.Menu</item>
         <item name="kaleyra_volumeStyle">@style/KaleyraCollaborationSuiteUI.Glass.Volume</item>
-        <item name="kaleyra_volumeVoiceCommandStyle">@style/KaleyraCollaborationSuiteUI.Glass.Volume.VoiceCommand</item>
         <item name="kaleyra_zoomStyle">@style/KaleyraCollaborationSuiteUI.Glass.Zoom</item>
         <item name="kaleyra_ringingStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo.Ringing</item>
         <item name="kaleyra_dialingStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo.Dialing</item>
@@ -63,7 +61,6 @@
         <item name="kaleyra_toastContainerStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.ToastContainer</item>
         <item name="kaleyra_menuStyle">@style/KaleyraCollaborationSuiteUI.Glass.Menu</item>
         <item name="kaleyra_volumeStyle">@style/KaleyraCollaborationSuiteUI.Glass.Volume</item>
-        <item name="kaleyra_volumeVoiceCommandStyle">@style/KaleyraCollaborationSuiteUI.Glass.Volume.VoiceCommand</item>
         <item name="kaleyra_zoomStyle">@style/KaleyraCollaborationSuiteUI.Glass.Zoom</item>
         <item name="kaleyra_ringingStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo.Ringing</item>
         <item name="kaleyra_dialingStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo.Dialing</item>
@@ -82,7 +79,6 @@
         <item name="kaleyra_toastContainerStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassCall.ToastContainer</item>
         <item name="kaleyra_menuStyle">@style/KaleyraCollaborationSuiteUI.Glass.Menu</item>
         <item name="kaleyra_volumeStyle">@style/KaleyraCollaborationSuiteUI.Glass.Volume</item>
-        <item name="kaleyra_volumeVoiceCommandStyle">@style/KaleyraCollaborationSuiteUI.Glass.Volume.VoiceCommand</item>
         <item name="kaleyra_zoomStyle">@style/KaleyraCollaborationSuiteUI.Glass.Zoom</item>
         <item name="kaleyra_ringingStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo.Ringing</item>
         <item name="kaleyra_dialingStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.FullScreenDialog.Logo.Dialing</item>
