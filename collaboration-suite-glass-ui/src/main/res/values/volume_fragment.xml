@@ -82,15 +82,13 @@
 
     <!-- VOICE COMMANDS -->
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Volume.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Volume">
-        <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.Volume.VoiceCommand</item>
-        <item name="kaleyra_thirdItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.Volume.VoiceCommand</item>
-        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.Volume.VoiceCommand</item>
+        <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.Volume</item>
+        <item name="kaleyra_thirdItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand.Volume</item>
+        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.Volume</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.Volume.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.Volume">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.Volume" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand.Volume</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.FirstItem.VoiceCommand</item>
-        <item name="kaleyra_iconTipStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassIconTip.FirstItem.VoiceCommand</item>
         <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeVolume.VoiceCommand</item>
     </style>
 
@@ -103,10 +101,8 @@
         <item name="android:text">@string/kaleyra_glass_decrease_capitalized</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.Volume.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.Volume">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand.Volume" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand.Volume</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.ThirdItem.VoiceCommand</item>
-        <item name="kaleyra_iconTipStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassIconTip.ThirdItem.VoiceCommand</item>
         <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemVolume.VoiceCommand</item>
     </style>
 
@@ -119,10 +115,8 @@
         <item name="android:text">@string/kaleyra_glass_close_capitalized</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.Volume.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.Volume">
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.Volume" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand.Volume</item>
-        <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.Icon.SecondItem.VoiceCommand</item>
-        <item name="kaleyra_iconTipStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassIconTip.SecondItem.VoiceCommand</item>
         <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemVolume.VoiceCommand</item>
     </style>
 
