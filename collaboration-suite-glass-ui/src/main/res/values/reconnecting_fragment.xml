@@ -24,6 +24,7 @@
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
         <attr name="bottomNavigationStyle" />
+        <attr name="kaleyra_bottomNavigationVoiceStyle" />
     </declare-styleable>
 
     <!-- RECONNECTING FRAGMENT -->
@@ -34,6 +35,7 @@
         <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog.Reconnecting</item>
         <item name="kaleyra_counterStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog.Counter.Reconnecting</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo.Reconnecting</item>
+        <item name="kaleyra_bottomNavigationVoiceStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo.VoiceCommand.Reconnecting</item>
     </style>
 
     <!-- TITLE -->
@@ -72,6 +74,20 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.FullScreenLogoDialog.Reconnecting" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.FullScreenLogoDialog">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- VOICE COMMAND -->
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo.VoiceCommand.Reconnecting" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo.VoiceCommand">
+        <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.FullScreenLogoDialog.Reconnecting</item>
+        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.FullScreenLogoDialog.Reconnecting</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.FullScreenLogoDialog.Reconnecting" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.FullScreenLogoDialog">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.FullScreenLogoDialog.Reconnecting" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.FullScreenLogoDialog">
         <item name="android:visibility">gone</item>
     </style>
 </resources>
