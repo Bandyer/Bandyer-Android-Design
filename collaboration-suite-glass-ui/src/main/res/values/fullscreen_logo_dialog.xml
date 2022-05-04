@@ -26,6 +26,7 @@
         <attr name="kaleyra_subtitleStyle" />
         <attr name="kaleyra_counterStyle" />
         <attr name="bottomNavigationStyle" />
+        <attr name="kaleyra_bottomNavigationVoiceStyle" />
     </declare-styleable>
 
     <!-- FULL SCREEN LOGO DIALOG FRAGMENT -->
@@ -38,6 +39,7 @@
         <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog</item>
         <item name="kaleyra_counterStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog.Counter</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo</item>
+        <item name="kaleyra_bottomNavigationVoiceStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo.VoiceCommand</item>
     </style>
 
     <!-- SCROLLVIEW -->
@@ -78,13 +80,7 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.FullScreenLogoDialog</item>
         <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.FirstItemFullScreenLogoDialog</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem">
-        <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/kaleyra_glass_browse</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.FirstItemFullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
@@ -92,13 +88,7 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.FullScreenLogoDialog</item>
         <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemFullScreenLogoDialog</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem">
-        <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/kaleyra_glass_close</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemFullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
@@ -106,16 +96,59 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem">
-        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.FullScreenLogoDialog</item>
         <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemFullScreenLogoDialog</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem">
-        <item name="android:clickable">true</item>
-        <item name="android:contentDescription">@string/kaleyra_glass_accept</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemFullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel">
         <item name="android:text">@string/kaleyra_glass_accept</item>
+    </style>
+
+    <!-- VOICE COMMANDS -->
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.Logo">
+        <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.FullScreenLogoDialog</item>
+        <item name="kaleyra_secondItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.FullScreenLogoDialog</item>
+        <item name="kaleyra_thirdItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand.FullScreenLogoDialog</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand.FullScreenLogoDialog</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.FirstItemFullScreenLogoDialog.VoiceCommand</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.FirstItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_browse</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.FirstItemFullScreenLogoDialog.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.FirstItemFullScreenLogoDialog">
+        <item name="android:text">@string/kaleyra_glass_browse_capitalized</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand.FullScreenLogoDialog</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemFullScreenLogoDialog.VoiceCommand</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.ThirdItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_close</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemFullScreenLogoDialog.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemFullScreenLogoDialog">
+        <item name="android:text">@string/kaleyra_glass_close_capitalized</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand">
+        <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand.FullScreenLogoDialog</item>
+        <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemFullScreenLogoDialog.VoiceCommand</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.VoiceCommand">
+        <item name="android:clickable">true</item>
+        <item name="android:contentDescription">@string/kaleyra_glass_accept</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemFullScreenLogoDialog.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemFullScreenLogoDialog">
+        <item name="android:text">@string/kaleyra_glass_accept_capitalized</item>
     </style>
 </resources>

@@ -41,7 +41,6 @@ internal class BottomNavigationView @JvmOverloads constructor(
 
     private var binding: KaleyraGlassBottomNavigationLayoutBinding
 
-
     init {
         val themeResId = context.theme.getAttributeResourceId(
 //            if (DeviceUtils.isRealWear)
