@@ -34,7 +34,6 @@
             android:id="@+id/kaleyra_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="?attr/bottomNavigationStyle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 

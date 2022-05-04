@@ -102,8 +102,7 @@
         <com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
             android:id="@+id/kaleyra_bottom_navigation"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="?attr/bottomNavigationStyle" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 </layout>
