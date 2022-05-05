@@ -49,7 +49,12 @@ internal class BottomNavigationView @JvmOverloads constructor(
             LayoutInflater.from(context).cloneInContext(ContextThemeWrapper(context, themeResId)),
             this,
             true
-        )
+        ).apply {
+            if (!DeviceUtils.isRealWear) return@apply
+            kaleyraFirstItem.capitalizeActionText()
+            kaleyraSecondItem.capitalizeActionText()
+            kaleyraThirdItem.capitalizeActionText()
+        }
     }
 
     /**

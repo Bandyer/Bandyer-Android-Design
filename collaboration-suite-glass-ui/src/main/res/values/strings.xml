@@ -94,28 +94,6 @@
     <string name="kaleyra_glass_browse_right">browse right</string>
     <string name="kaleyra_glass_browse_left">browse left</string>
     <string name="kaleyra_glass_right_left">scroll</string>
-    <!-- voice command actions -->
-    <string name="kaleyra_glass_close_capitalized">Close</string>
-    <string name="kaleyra_glass_back_capitalized">Back</string>
-    <string name="kaleyra_glass_browse_capitalized">Browse</string>
-    <string name="kaleyra_glass_select_capitalized">Select</string>
-    <string name="kaleyra_glass_cancel_capitalized">Cancel</string>
-    <string name="kaleyra_glass_increase_capitalized">Increase</string>
-    <string name="kaleyra_glass_decrease_capitalized">Decrease</string>
-    <string name="kaleyra_glass_change_capitalized">Change</string>
-    <string name="kaleyra_glass_confirm_capitalized">Confirm</string>
-    <string name="kaleyra_glass_end_capitalized">End</string>
-    <string name="kaleyra_glass_accept_capitalized">Answer</string>
-    <string name="kaleyra_glass_decline_capitalized">Decline</string>
-    <string name="kaleyra_glass_hangup_capitalized">Hang up</string>
-    <string name="kaleyra_glass_participants_camera_capitalized">Participants</string>
-    <string name="kaleyra_glass_open_menu_capitalized">Menu</string>
-    <string name="kaleyra_glass_contact_info_capitalized">Contact</string>
-    <string name="kaleyra_glass_read_capitalized">Read</string>
-    <string name="kaleyra_glass_hide_notification_capitalized">Dismiss</string>
-    <string name="kaleyra_glass_browse_right_capitalized">Browse right</string>
-    <string name="kaleyra_glass_browse_left_capitalized">Browse left</string>
-    <string name="kaleyra_glass_right_left_capitalized">Scroll</string>
 
     <!-- PLURALS -->
     <plurals name="kaleyra_glass_users_in_call_pattern">

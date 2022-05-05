@@ -121,7 +121,7 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.FirstItemFullScreenLogoDialog.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.FirstItemFullScreenLogoDialog">
-        <item name="android:text">@string/kaleyra_glass_browse_capitalized</item>
+        <item name="android:text">@string/kaleyra_glass_browse</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand">
@@ -135,7 +135,7 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemFullScreenLogoDialog.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemFullScreenLogoDialog">
-        <item name="android:text">@string/kaleyra_glass_close_capitalized</item>
+        <item name="android:text">@string/kaleyra_glass_close</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.FullScreenLogoDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand">
@@ -149,6 +149,6 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemFullScreenLogoDialog.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemFullScreenLogoDialog">
-        <item name="android:text">@string/kaleyra_glass_accept_capitalized</item>
+        <item name="android:text">@string/kaleyra_glass_accept</item>
     </style>
 </resources>

@@ -92,7 +92,7 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemFullScreenLogoDialog.Ringing.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemFullScreenLogoDialog.Ringing">
-        <item name="android:text">@string/kaleyra_glass_decline_capitalized</item>
+        <item name="android:text">@string/kaleyra_glass_decline</item>
     </style>
 </resources>
 

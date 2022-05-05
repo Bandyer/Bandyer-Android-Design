@@ -21,6 +21,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassBottomNavigationItemLayoutBinding
+import java.util.*
 
 /**
  * Bottom action bar item view, it describes an action the user performs on a given gesture
@@ -41,5 +42,11 @@ internal class BottomNavigationItemView @JvmOverloads constructor(
 
     override fun setOnClickListener(l: OnClickListener?) {
         binding.root.setOnClickListener(l)
+    }
+
+    fun capitalizeActionText() {
+        val text = binding.kaleyraActionText.text.toString()
+        val capitalizedText = text.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+        binding.kaleyraActionText.text = capitalizedText
     }
 }

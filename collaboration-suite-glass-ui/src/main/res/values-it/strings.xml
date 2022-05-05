@@ -90,28 +90,6 @@
     <string name="kaleyra_glass_browse_right">naviga a destra</string>
     <string name="kaleyra_glass_browse_left">naviga a sinistra</string>
     <string name="kaleyra_glass_right_left">scorri</string>
-    <!-- voice command actions -->
-    <string name="kaleyra_glass_close_capitalized">Chiudi</string>
-    <string name="kaleyra_glass_back_capitalized">Indietro</string>
-    <string name="kaleyra_glass_browse_capitalized">Naviga</string>
-    <string name="kaleyra_glass_select_capitalized">Seleziona</string>
-    <string name="kaleyra_glass_cancel_capitalized">Annulla</string>
-    <string name="kaleyra_glass_increase_capitalized">Aumenta</string>
-    <string name="kaleyra_glass_decrease_capitalized">Diminuisci</string>
-    <string name="kaleyra_glass_change_capitalized">Modifica</string>
-    <string name="kaleyra_glass_confirm_capitalized">Conferma</string>
-    <string name="kaleyra_glass_end_capitalized">Termina</string>
-    <string name="kaleyra_glass_accept_capitalized">Accetta</string>
-    <string name="kaleyra_glass_decline_capitalized">Rifiuta</string>
-    <string name="kaleyra_glass_hangup_capitalized">Chiudi</string>
-    <string name="kaleyra_glass_participants_camera_capitalized">Partecipanti</string>
-    <string name="kaleyra_glass_open_menu_capitalized">Menu</string>
-    <string name="kaleyra_glass_hide_notification_capitalized">Nascondi</string>
-    <string name="kaleyra_glass_contact_info_capitalized">Contatto</string>
-    <string name="kaleyra_glass_read_capitalized">Leggi</string>
-    <string name="kaleyra_glass_browse_right_capitalized">Naviga a destra</string>
-    <string name="kaleyra_glass_browse_left_capitalized">Naviga a sinistra</string>
-    <string name="kaleyra_glass_right_left_capitalized">Scorri</string>
 
     <!-- PLURALS -->
     <plurals name="kaleyra_glass_users_in_call_pattern">

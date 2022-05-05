@@ -109,7 +109,7 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemCallEnded.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemCallEnded">
-        <item name="android:text">@string/kaleyra_glass_close_capitalized</item>
+        <item name="android:text">@string/kaleyra_glass_close</item>
     </style>
 
 </resources>

@@ -77,7 +77,7 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeCall.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SwipeCall">
-        <item name="android:text">@string/kaleyra_glass_participants_camera_capitalized</item>
+        <item name="android:text">@string/kaleyra_glass_participants_camera</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand.Call" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.ThirdItem.VoiceCommand">
@@ -91,7 +91,7 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemCall.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.ThirdItemCall">
-        <item name="android:text">@string/kaleyra_glass_hangup_capitalized</item>
+        <item name="android:text">@string/kaleyra_glass_hangup</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand.Call" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.VoiceCommand">
@@ -105,6 +105,6 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemCall.VoiceCommand" parent="KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemCall">
-        <item name="android:text">@string/kaleyra_glass_open_menu_capitalized</item>
+        <item name="android:text">@string/kaleyra_glass_open_menu</item>
     </style>
 </resources>
