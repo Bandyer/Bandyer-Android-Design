@@ -8,7 +8,7 @@ ZEPLIN_TOKEN = sys.argv[1]
 ZEPLIN_STYLE_GUIDES = sys.argv[2]
 PROJECT_NAME = sys.argv[3]
 SOURCE_FOLDER = '../img/assets/'
-DESTINATION_FOLDER = '../' + PROJECT_NAME + '/src/main/res/drawable/'
+DESTINATION_FOLDER = '../img/unused_drawables/'
 FILE_PREFIX = 'kaleyra_z_'
 
 

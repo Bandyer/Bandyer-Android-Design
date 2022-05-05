@@ -17,7 +17,7 @@
 
 <resources>
     <!-- CHAT ACTION BAR -->
-    <item name="ic_kaleyra_audio_call" type="drawable">@drawable/kaleyra_z_audio_only</item>
+    <item name="ic_kaleyra_audio_call" type="drawable">@drawable/ic_kaleyra_answer</item>
     <item name="ic_kaleyra_audio_upgradable_call" type="drawable">@drawable/kaleyra_z_audio_upgradable</item>
     <item name="ic_kaleyra_video_call" type="drawable">@drawable/kaleyra_z_cam_22</item>
 
@@ -32,8 +32,6 @@
     <!-- CALL -->
     <item name="ic_kaleyra_avatar_bold" type="drawable">@drawable/kaleyra_z_user_1</item>
     <item name="ic_kaleyra_avatars_bold" type="drawable">@drawable/kaleyra_z_users_1</item>
-    <item name="ic_kaleyra_answer" type="drawable">@drawable/kaleyra_z_audio_only</item>
-    <item name="ic_kaleyra_decline" type="drawable">@drawable/kaleyra_z_end_call</item>
     <item name="ic_kaleyra_hangup" type="drawable">@drawable/kaleyra_z_end_call_24</item>
     <item name="ic_kaleyra_camera_off" type="drawable">@drawable/kaleyra_z_camera_off</item>
     <item name="ic_kaleyra_switch_camera" type="drawable">@drawable/kaleyra_z_flipcam</item>
@@ -41,7 +39,6 @@
     <item name="ic_kaleyra_enter_fullscreen" type="drawable">@drawable/kaleyra_z_maximize</item>
     <item name="ic_kaleyra_exit_fullscreen" type="drawable">@drawable/kaleyra_z_minimize</item>
     <item name="ic_kaleyra_record" type="drawable">@drawable/kaleyra_z_rec</item>
-    <item name="ic_kaleyra_screen_share" type="drawable">@drawable/kaleyra_z_screen_share</item>
     <item name="ic_kaleyra_snapshot" type="drawable">@drawable/kaleyra_z_snapshot</item>
     <item name="ic_kaleyra_chat" type="drawable">@drawable/kaleyra_z_chat</item>
     <item name="ic_kaleyra_file_share" type="drawable">@drawable/kaleyra_z_file_share</item>
