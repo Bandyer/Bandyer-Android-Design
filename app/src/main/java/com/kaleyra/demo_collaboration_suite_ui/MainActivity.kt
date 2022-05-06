@@ -117,7 +117,6 @@ class MainActivity : AppCompatActivity() {
 
         btnFeedback.setOnClickListener { FeedbackDialog().show(supportFragmentManager, FeedbackDialog.TAG) }
 
-        btnNotification.setOnClickListener { startActivity(Intent(this@MainActivity, NotificationActivity::class.java)) }
     }
 
     private fun showSmartGlassAction(): SmartGlassActionItemMenu = SmartGlassActionItemMenu.show(
