@@ -22,6 +22,8 @@ jobs:
           ZSTYLE: ${{ secrets.ZSTYLE }}
         run:
           echo -e "zeplin.token=$ZTOKEN\nzeplin.styleguide=$ZSTYLE" >> ./local.properties
+      - name: Install pip libs
+        run: pip install lxml
       - name: Update icons
         run: ./gradlew downloadIcons
       - name: Move icons
