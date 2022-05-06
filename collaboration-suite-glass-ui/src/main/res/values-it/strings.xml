@@ -33,7 +33,7 @@
     <string name="kaleyra_glass_dialing_group">chiamata di gruppo in uscita…</string>
     <string name="kaleyra_glass_connecting">connessione in corso…</string>
     <string name="kaleyra_glass_offline">Sei offline</string>
-    <string name="kaleyra_glass_want_end_call">Terminare la chiamata?</string>
+    <string name="kaleyra_glass_want_end_call">Termina chiamata</string>
     <string name="kaleyra_glass_confirm_end_call">Confermi di voler chiudere la conversazione?</string>
     <string name="kaleyra_glass_call_ended">Chiamata terminata</string>
     <string name="kaleyra_glass_now">Adesso</string>
@@ -78,9 +78,9 @@
     <string name="kaleyra_glass_decrease">diminuisci</string>
     <string name="kaleyra_glass_confirm">conferma</string>
     <string name="kaleyra_glass_end">termina</string>
-    <string name="kaleyra_glass_accept">accetta</string>
+    <string name="kaleyra_glass_accept">rispondi</string>
     <string name="kaleyra_glass_decline">rifiuta</string>
-    <string name="kaleyra_glass_hangup">chiudi</string>
+    <string name="kaleyra_glass_hangup">termina</string>
     <string name="kaleyra_glass_participants_camera">partecipanti</string>
     <string name="kaleyra_glass_open_menu">menu</string>
     <string name="kaleyra_glass_hide_notification">nascondi</string>
