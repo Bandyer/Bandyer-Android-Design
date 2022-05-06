@@ -76,7 +76,6 @@
     <string name="kaleyra_glass_cancel">annulla</string>
     <string name="kaleyra_glass_increase">aumenta</string>
     <string name="kaleyra_glass_decrease">diminuisci</string>
-    <string name="kaleyra_glass_change">modifica</string>
     <string name="kaleyra_glass_confirm">conferma</string>
     <string name="kaleyra_glass_end">termina</string>
     <string name="kaleyra_glass_accept">accetta</string>
@@ -87,9 +86,6 @@
     <string name="kaleyra_glass_hide_notification">nascondi</string>
     <string name="kaleyra_glass_contact_info">contatto</string>
     <string name="kaleyra_glass_read">leggi</string>
-    <string name="kaleyra_glass_browse_right">naviga a destra</string>
-    <string name="kaleyra_glass_browse_left">naviga a sinistra</string>
-    <string name="kaleyra_glass_right_left">scorri</string>
 
     <!-- PLURALS -->
     <plurals name="kaleyra_glass_users_in_call_pattern">

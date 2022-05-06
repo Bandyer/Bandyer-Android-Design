@@ -80,7 +80,6 @@
     <string name="kaleyra_glass_cancel">cancel</string>
     <string name="kaleyra_glass_increase">increase</string>
     <string name="kaleyra_glass_decrease">decrease</string>
-    <string name="kaleyra_glass_change">change</string>
     <string name="kaleyra_glass_confirm">confirm</string>
     <string name="kaleyra_glass_end">end</string>
     <string name="kaleyra_glass_accept">answer</string>
@@ -91,9 +90,6 @@
     <string name="kaleyra_glass_contact_info">contact</string>
     <string name="kaleyra_glass_read">read</string>
     <string name="kaleyra_glass_hide_notification">dismiss</string>
-    <string name="kaleyra_glass_browse_right">browse right</string>
-    <string name="kaleyra_glass_browse_left">browse left</string>
-    <string name="kaleyra_glass_right_left">scroll</string>
 
     <!-- PLURALS -->
     <plurals name="kaleyra_glass_users_in_call_pattern">
