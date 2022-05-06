@@ -58,17 +58,19 @@ internal class BottomNavigationView @JvmOverloads constructor(
     }
 
     /**
-     * Set an on click listener on the swipe element. Needed for realwear glasses.
+     * Set on click listeners on the first element. It also has an optional secondary callback for a secondary command. Needed for realwear glasses.
      *
      * @param callback function
      */
-    fun setFirstItemListener(callback: () -> Unit) =
-        binding.kaleyraFirstItem.setOnClickListener {
-            callback.invoke()
+    fun setFirstItemListeners(callback: () -> Unit, secondaryCallBack: (() -> Unit)? = null) =
+        with(binding.kaleyraFirstItem) {
+            setOnClickListener { callback.invoke() }
+            secondaryCallBack?.also { cb -> setSecondaryOnClickListener { cb.invoke() } }
         }
 
+
     /**
-     * Set an on click listener on the tap element. Needed for realwear glasses.
+     * Set an on click listener on the second element. Needed for realwear glasses.
      *
      * @param callback function
      */
@@ -78,7 +80,7 @@ internal class BottomNavigationView @JvmOverloads constructor(
         }
 
     /**
-     * Set an on click listener on the swipe down element. Needed for realwear glasses.
+     * Set an on click listener on the third element. Needed for realwear glasses.
      *
      * @param callback function
      */

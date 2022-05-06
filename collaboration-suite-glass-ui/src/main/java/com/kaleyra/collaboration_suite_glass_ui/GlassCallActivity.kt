@@ -88,12 +88,6 @@ internal class GlassCallActivity :
 
     private lateinit var binding: KaleyraActivityGlassBinding
 
-    private var isActivityInForeground = false
-
-    private var service: CollaborationService? = null
-    val isServiceBound: Boolean
-        get() = service != null
-
     private val viewModel: GlassViewModel by viewModels {
         GlassViewModelFactory(
             service as CallUIDelegate,
@@ -102,26 +96,24 @@ internal class GlassCallActivity :
         )
     }
 
+    private var isActivityInForeground = false
+    private var service: CollaborationService? = null
     private var fastAdapter: FastAdapter<AbstractItem<*>>? = null
     private var streamsItemAdapter: ItemAdapter<StreamItem<*>>? = null
     private var whiteboardItemAdapter: ItemAdapter<WhiteboardItem>? = null
     private var currentStreamItemIndex = 0
     private var streamMutex = Mutex()
-
     private val hideStreamOverlay = MutableStateFlow(true)
-
     // The value is a Pair<UserId, ItemIdentifier>
-    private val livePointers: ConcurrentMap<LivePointerView, Pair<String, Long>> =
-        ConcurrentHashMap()
-
+    private val livePointers: ConcurrentMap<LivePointerView, Pair<String, Long>> = ConcurrentHashMap()
     private var navController: NavController? = null
-
     private var glassGestureDetector: GlassGestureDetector? = null
-
     private var notificationManager: ChatNotificationManager? = null
     private var isNotificationVisible = false
-
     private var lastTouchEventTime = 0L
+
+    val rvStreams: RecyclerView get() = binding.kaleyraStreams
+    val isServiceBound: Boolean get() = service != null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

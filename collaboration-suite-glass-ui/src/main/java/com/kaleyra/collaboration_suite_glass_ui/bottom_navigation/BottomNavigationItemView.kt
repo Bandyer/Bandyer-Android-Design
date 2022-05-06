@@ -44,6 +44,10 @@ internal class BottomNavigationItemView @JvmOverloads constructor(
         binding.root.setOnClickListener(l)
     }
 
+    fun setSecondaryOnClickListener(l: OnClickListener?) {
+        binding.kaleyraGestureIcon.setOnClickListener(l)
+    }
+
     fun capitalizeActionText() {
         val text = binding.kaleyraActionText.text.toString()
         val capitalizedText = text.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
