@@ -15,8 +15,8 @@
     <style name="KaleyraCollaborationSuiteUI.RecordingWidget.RootLayout" parent="KaleyraCollaborationSuiteUI.RecordingWidget">
         <item name="android:paddingTop">@dimen/kaleyra_dimen_space4</item>
         <item name="android:paddingBottom">@dimen/kaleyra_dimen_space4</item>
-        <item name="android:paddingStart">@dimen/kaleyra_dimen_space6</item>
-        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space6</item>
+        <item name="android:paddingStart">@dimen/kaleyra_dimen_space4</item>
+        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space8</item>
         <item name="android:background">@drawable/kaleyra_recording_widget_background</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space8</item>
