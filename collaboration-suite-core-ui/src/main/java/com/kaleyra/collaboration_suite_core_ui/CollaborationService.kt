@@ -9,8 +9,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.bandyer.android_chat_sdk.api.ChatChannel
-import com.bandyer.android_chat_sdk.commons.UI
+import com.kaleyra.collaboration_suite.chatbox.Chat
+import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
@@ -18,7 +18,6 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
-import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
@@ -56,6 +55,8 @@ class CollaborationService : BoundService(),
 
     private var phoneBox: PhoneBox? = null
 
+    private var chatBox: ChatBox? = null
+
     private var phoneBoxJob: Job? = null
 
     private var batteryObserver: BatteryObserver? = null
@@ -70,8 +71,8 @@ class CollaborationService : BoundService(),
         MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
     override val call: SharedFlow<Call> get() = _call
 
-    private var _channel: ChatChannel? = null
-    override val channel: ChatChannel get() = _channel!!
+    private var _chat: Chat? = null
+    override val chat: Chat get() = _chat!!
 
     override var currentCall: Call? = null
 
@@ -111,13 +112,15 @@ class CollaborationService : BoundService(),
         phoneBoxJob?.cancel()
         currentCall?.end()
         phoneBox?.disconnect()
+        chatBox?.disconnect()
         batteryObserver?.stop()
         wifiObserver?.stop()
         CallNotificationActionReceiver.actionDelegate = null
         currentCall = null
         _callAudioManager = null
-        _channel = null
+        _chat = null
         phoneBox = null
+        chatBox = null
         phoneBoxJob = null
         callActivityClazz = null
         batteryObserver = null
@@ -137,10 +140,10 @@ class CollaborationService : BoundService(),
     }
 
     fun bindChatChannel(
-        chatChannel: ChatChannel,
+        chatChat: Chat,
         chatUsersDescription: UsersDescription? = null
     ) {
-        this._channel = chatChannel
+        this._chat = chatChat
         this.chatUsersDescription= chatUsersDescription ?: UsersDescription()
     }
 

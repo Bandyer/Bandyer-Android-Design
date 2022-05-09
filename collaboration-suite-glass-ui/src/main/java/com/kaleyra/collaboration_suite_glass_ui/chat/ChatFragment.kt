@@ -21,14 +21,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.bandyer.android_chat_sdk.persistence.entities.ChatMessage
+import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -68,7 +67,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     private val viewModel: ChatViewModel by activityViewModels()
 
     private val args: ChatFragmentArgs by lazy {
-        requireActivity().intent?.extras?.let { ChatFragmentArgs.fromBundle(it)  } ?: ChatFragmentArgs()
+        requireActivity().intent?.extras?.let { ChatFragmentArgs.fromBundle(it) } ?: ChatFragmentArgs()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -95,7 +94,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
             false
         )
             .apply {
-                if(DeviceUtils.isRealWear)
+                if (DeviceUtils.isRealWear)
                     setListenersForRealWear(kaleyraBottomNavigation)
 
                 // Init the RecyclerView
@@ -118,21 +117,9 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                             val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
                             if (!isLoading && fastAdapter.itemCount <= (lastVisibleItem + LOAD_MORE_THRESHOLD)) {
-                                viewModel.channel.fetch({
+                                viewModel.chat.fetch(LOAD_MORE_THRESHOLD) {
                                     isLoading = false
-                                    Toast.makeText(
-                                        requireContext().applicationContext,
-                                        "loaded previous messages",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                }, {
-                                    isLoading = false
-                                    Toast.makeText(
-                                        requireContext().applicationContext,
-                                        it,
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                })
+                                }
                                 isLoading = true
                             }
 //                            val foundView = snapHelper.findSnapView(layoutManager) ?: return
@@ -156,12 +143,11 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 
     override fun onServiceBound() {
         repeatOnStarted {
-            viewModel.channel.messages
+            viewModel.chat.messages
                 .onEach { msgs ->
-                    val pages = toChatMessagePages(msgs)
+                    val pages = toChatMessagePages((msgs.other + msgs.my).sortedByDescending { it.creationDate })
                     val items = pages.map { ChatMessageItem(it) }
-                    FastAdapterDiffUtil[itemAdapter!!] =
-                        FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
+                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                 }.launchIn(this)
         }
     }
@@ -199,21 +185,21 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         if (it) binding.kaleyraMessages.horizontalSmoothScrollToPrevious(currentMsgItemIndex)
     }
 
-    private suspend fun toChatMessagePages(messages: List<ChatMessage>): List<ChatMessagePage> {
+    private suspend fun toChatMessagePages(messages: List<Message>): List<ChatMessagePage> {
         val allPages = mutableListOf<ChatMessagePage>()
         messages.forEach {
-            val user = viewModel.usersDescription.name(listOf(it.author))
-            val avatar = viewModel.usersDescription.image(listOf(it.author))
-            val pages = paginateMessage(user, it.messageBody, it.timestamp ?: 0L)
+            val user = viewModel.usersDescription.name(listOf(it.creator.userId))
+            val avatar = viewModel.usersDescription.image(listOf(it.creator.userId))
+            val pages = paginateMessage(user, it.content, it.creationDate.time)
             for (i in pages.indices) {
                 allPages.add(
                     ChatMessagePage(
-                        it.messageSid,
-                        it.author,
+                        it.id,
+                        it.creator.userId,
                         user,
                         avatar,
                         pages[i].toString(),
-                        it.timestamp ?: 0L,
+                        it.creationDate.time,
                         i == 0
                     )
                 )
@@ -224,13 +210,13 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         return allPages
     }
 
-    private suspend fun paginateMessage(user: String, message: String, timestamp: Long) =
+    private suspend fun paginateMessage(user: String, content: Message.Content, timestamp: Long) =
         suspendCancellableCoroutine<List<CharSequence>> { continuation ->
             with(binding.kaleyraChatMessage) {
                 root.doOnLayout {
                     kaleyraName.text = user
                     kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), timestamp)
-                    kaleyraMessage.text = message
+                    if (content is Message.Content.Text) kaleyraMessage.text = content.message
                     kaleyraMessage.paginate { continuation.resume(it) }
                 }
             }

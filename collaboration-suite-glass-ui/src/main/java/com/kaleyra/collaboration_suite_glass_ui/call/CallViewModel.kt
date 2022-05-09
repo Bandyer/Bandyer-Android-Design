@@ -37,11 +37,13 @@ import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -53,6 +55,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -69,6 +72,7 @@ internal class CallViewModelFactory(
         CallViewModel(callDelegate, deviceStatusDelegate, callController) as T
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 internal class CallViewModel(
     callDelegate: CallUIDelegate,
     deviceStatusDelegate: DeviceStatusDelegate,
@@ -117,7 +121,7 @@ internal class CallViewModel(
 
     val callState = call.flatMapLatest { it.state }
 
-    val participants = call.flatMapLatest { it.participants }
+    val participants = call.flatMapLatest { it.participants }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
     val battery: SharedFlow<BatteryInfo> = deviceStatusDelegate.battery
 

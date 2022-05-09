@@ -2,7 +2,7 @@ package com.kaleyra.collaboration_suite_glass_ui.chat
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.bandyer.android_chat_sdk.api.ChatChannel
+import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
@@ -24,7 +24,7 @@ class ChatViewModel(
     deviceStatusDelegate: DeviceStatusDelegate
 ) : ViewModel() {
 
-    val channel: ChatChannel = chatDelegate.channel
+    val chat: Chat = chatDelegate.chat
 
     val usersDescription: UsersDescription = chatDelegate.chatUsersDescription
 

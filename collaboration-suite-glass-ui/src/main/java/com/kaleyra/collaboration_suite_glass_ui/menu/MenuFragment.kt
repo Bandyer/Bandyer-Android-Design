@@ -27,13 +27,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.chat.mockChannel
 import com.kaleyra.collaboration_suite_core_ui.model.Option
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.call.CallAction
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
-import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
@@ -209,16 +207,16 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
         }
 
         is CallAction.SWITCHCAMERA -> true.also { viewModel.onSwitchCamera() }
-        is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment()) }
-        is CallAction.ZOOM -> true.also { if(!action.isDisabled) findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
-        is CallAction.FLASHLIGHT -> true.also {
+        is CallAction.VOLUME       -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment()) }
+        is CallAction.ZOOM         -> true.also { if (!action.isDisabled) findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
+        is CallAction.FLASHLIGHT   -> true.also {
             if (action.isDisabled) return@also
             val flashLight = viewModel.flashLight.value ?: return@also
             val isEnabled = flashLight.enabled.value
             if (isEnabled) flashLight.tryDisable() else flashLight.tryEnable()
         }
         is CallAction.PARTICIPANTS -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToParticipantsFragment()) }
-        is CallAction.CHAT         -> true.also { CollaborationUI.chatClientUI.show(mockChannel) }
+        is CallAction.CHAT         -> true.also { CollaborationUI.chatBox.show(CollaborationUI.chatBox.create(viewModel.participants.replayCache.first().others)) }
         else                       -> false
     }
 
