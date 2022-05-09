@@ -26,7 +26,7 @@
     <style name="KaleyraCollaborationSuiteUI.RecordingWidget.Icon" parent="">
         <item name="android:layout_width">@dimen/kaleyra_dimen_space20</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_space20</item>
-        <item name="srcCompat">@drawable/kaleyra_recording_dot</item>
+        <item name="srcCompat">@drawable/ic_kaleyra_recording_dot</item>
         <item name="tint">@color/kaleyra_recording_color</item>
     </style>
 
