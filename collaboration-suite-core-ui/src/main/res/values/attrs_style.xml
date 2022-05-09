@@ -26,6 +26,8 @@
 
     <attr name="kaleyra_avatarStyle" format="reference" />
 
+    <attr name="kaleyra_recordingStyle" format="reference" />
+
     <attr name="kaleyra_userInfoStyle" format="reference" />
 
     <!-- Style for error views -->

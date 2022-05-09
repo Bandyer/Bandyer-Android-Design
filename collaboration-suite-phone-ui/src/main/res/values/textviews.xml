@@ -137,19 +137,6 @@
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.Recording" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:paddingRight">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:paddingLeft">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:drawablePadding">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:drawableStart">@drawable/ic_kaleyra_record</item>
-        <item name="drawableTint">@color/kaleyra_recording_color</item>
-        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance</item>
-    </style>
-
     <!-- Call User Info -->
     <style name="KaleyraCollaborationSuiteUI.TextView.Title.UserInfo" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance</item>

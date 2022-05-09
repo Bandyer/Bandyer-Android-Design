@@ -90,6 +90,7 @@
         <item quantity="other">No user has answered.</item>
     </plurals>
 
+    <string name="kaleyra_call_info_rec">Rec</string>
     <string name="kaleyra_call_info_recording">This call will be recorded</string>
     <string name="kaleyra_call_info_ongoing_recording">This call is being recorded</string>
     <string name="kaleyra_action_dismiss">Dismiss</string>

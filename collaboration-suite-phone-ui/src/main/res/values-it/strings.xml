@@ -83,6 +83,7 @@
         <item quantity="one">L\'utente chiamato non ha risposto.</item>
         <item quantity="other">Nessun utente ha risposto.</item>
     </plurals>
+    <string name="kaleyra_call_info_rec">Rec</string>
     <string name="kaleyra_call_info_recording">Questa chiamata verrà registrata</string>
     <string name="kaleyra_call_info_ongoing_recording">Registrazione chiamata in corso</string>
     <string name="kaleyra_action_dismiss">Chiudi</string>

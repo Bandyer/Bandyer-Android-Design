@@ -161,12 +161,12 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                     .flatMapLatest { it!!.enabled }
                     .onEach { action.toggle(!it) }
                     .launchIn(this)
-                viewModel.hasFlashLight
-                    .onEach {
-                        Log.e("MenuFragment", "$it")
+//                viewModel.hasFlashLight
+//                    .onEach {
+//                        Log.e("MenuFragment", "$it")
 //                        action.binding?.root?.visibility = if (!it) View.GONE else View.VISIBLE
-                    }
-                    .launchIn(this)
+//                    }
+//                    .launchIn(this)
             }
             switchCameraAction?.also { action ->
                 combine(viewModel.cameraEnabled, viewModel.hasSwitchCamera) { cameraEnabled, hasSwitchCamera ->
