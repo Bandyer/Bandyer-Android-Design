@@ -18,6 +18,8 @@
 
     <attr name="kaleyra_rootLayoutStyle" format="reference" />
 
+    <attr name="kaleyra_snackbarStyle" format="reference" />
+
     <attr name="kaleyra_titleStyle" format="reference" />
 
     <attr name="kaleyra_subtitleStyle" format="reference" />

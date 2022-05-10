@@ -2,6 +2,7 @@
 <view xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     class="com.kaleyra.collaboration_suite_phone_ui.recording.KaleyraSnackbarLayout"
+    android:theme="?attr/kaleyra_snackbarStyle"
     style="?attr/kaleyra_rootLayoutStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -9,18 +10,14 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/kaleyra_icon"
         style="?attr/kaleyra_iconStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_kaleyra_call_message_alert" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/kaleyra_title"
         style="?attr/kaleyra_titleStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Titolo"
         app:layout_constraintBottom_toBottomOf="@id/kaleyra_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/kaleyra_icon"
@@ -38,10 +35,8 @@
         style="?attr/kaleyra_subtitleStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Sottotitolo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/kaleyra_title"
         app:layout_constraintTop_toBottomOf="@id/kaleyra_barrier" />
-
 
 </view>
