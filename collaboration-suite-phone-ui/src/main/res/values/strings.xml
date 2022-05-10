@@ -188,4 +188,12 @@
     <string name="kaleyra_feedback_see_you_soon">We hope to see you again soon.</string>
     <string name="kaleyra_feedback_thank_you">Thank you for your feedback!</string>
 
+    <!-- RECORDING -->
+    <string name="kaleyra_recording_started">Recording started</string>
+    <string name="kaleyra_recording_started_message">Dear user, the call will be recorded from now on.</string>
+    <string name="kaleyra_recording_ended">Recording ended</string>
+    <string name="kaleyra_recording_ended_message">Dear user, the recording stopped.</string>
+    <string name="kaleyra_recording_error">Recording error</string>
+    <string name="kaleyra_recording_error_message">The device recording failed.</string>
+
 </resources>

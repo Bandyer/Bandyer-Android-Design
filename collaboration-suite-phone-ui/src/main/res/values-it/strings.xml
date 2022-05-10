@@ -180,4 +180,12 @@
     <string name="kaleyra_feedback_see_you_soon">Speriamo di rivederti presto</string>
     <string name="kaleyra_feedback_thank_you">Ti ringraziamo per aver contribuito a migliorare il nostro servizio!</string>
 
+    <!-- RECORDING -->
+    <string name="kaleyra_recording_started">Registrazione avviata</string>
+    <string name="kaleyra_recording_started_message">Gentile utente, da questo momento la chiamata sarà registrata.</string>
+    <string name="kaleyra_recording_ended">Registrazione terminata</string>
+    <string name="kaleyra_recording_ended_message">Gentile utente, la registrazione è stata interrotta.</string>
+    <string name="kaleyra_recording_error">Errore di registrazione</string>
+    <string name="kaleyra_recording_error_message">La registrazione del tuo dispositivo non è andata a buon fine.</string>
+
 </resources>
