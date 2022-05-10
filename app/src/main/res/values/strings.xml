@@ -25,6 +25,7 @@
     <string name="ringing">Call Ringing</string>
     <string name="bluetooth_audio_route">Bluetooth device states</string>
     <string name="live_pointer">Live pointer</string>
+    <string name="kaleyra_snackbar" translatable="false">Kaleyra Snackbar</string>
     <string name="night_mode">Night mode on/off</string>
     <string name="kaleyra_start_audio_call">Call</string>
     <string name="kaleyra_start_video_call">Video call</string>

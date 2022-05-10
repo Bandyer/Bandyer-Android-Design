@@ -48,7 +48,7 @@
             android:paddingBottom="@dimen/kaleyra_dimen_space32">
 
             <com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView
-                android:id="@+id/kaleyra_pippo"
+                android:id="@+id/kaleyra_horizontalAutoScrollView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
@@ -66,17 +66,30 @@
             </com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_kaleyra_snackbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
+                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
+                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
+                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
+                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
+                android:text="@string/kaleyra_snackbar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/kaleyra_horizontalAutoScrollView"/>
+
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_switch_night_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/kaleyra_dimen_space16"
                 android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
+                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
                 android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
                 android:layout_marginRight="@dimen/kaleyra_dimen_space16"
-                android:checked="false"
                 android:text="@string/night_mode"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/kaleyra_pippo" />
+                app:layout_constraintTop_toBottomOf="@id/btn_kaleyra_snackbar" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_chat"

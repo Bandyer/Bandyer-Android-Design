@@ -21,6 +21,8 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -42,6 +44,11 @@ import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.items.getSm
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.utils.MotionEventInterceptor
 import com.kaleyra.collaboration_suite_phone_ui.whiteboard.dialog.KaleyraWhiteboardTextEditorDialog
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
+import com.google.android.material.snackbar.Snackbar
+import com.kaleyra.collaboration_suite_phone_ui.recording.KaleyraSnackbar
 import com.kaleyra.demo_collaboration_suite_ui.databinding.ActivityMainBinding
 import java.util.concurrent.ConcurrentHashMap
 
@@ -64,6 +71,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeListeners() = with(binding) {
+        btnKaleyraSnackbar.setOnClickListener { KaleyraSnackbar.make(binding.root, "", LENGTH_INDEFINITE).show() }
+
         btnChat.setOnClickListener { startActivity(Intent(this@MainActivity, ChatActivity::class.java)) }
 
         btnCall.setOnClickListener { startActivity(Intent(this@MainActivity, CallActivity::class.java)) }
