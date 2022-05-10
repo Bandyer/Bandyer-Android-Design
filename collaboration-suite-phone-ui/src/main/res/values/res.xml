@@ -87,8 +87,8 @@
     <item name="ic_kaleyra_recording_dot" type="drawable">@drawable/kaleyra_recording_dot</item>
 
     <!-- CALL MESSAGE -->
-    <item name="ic_kaleyra_call_message_error" type="drawable">@drawable/kaleyra_z_error</item>
-    <item name="ic_kaleyra_call_message_alert" type="drawable">@drawable/kaleyra_z_alert</item>
+    <item name="ic_kaleyra_snackbar_error" type="drawable">@drawable/kaleyra_z_error</item>
+    <item name="ic_kaleyra_snackbar_alert" type="drawable">@drawable/kaleyra_z_alert</item>
 
     <!-- COMMON -->
     <item name="ic_kaleyra_back_down" type="drawable">@drawable/kaleyra_z_chevron_down</item>
