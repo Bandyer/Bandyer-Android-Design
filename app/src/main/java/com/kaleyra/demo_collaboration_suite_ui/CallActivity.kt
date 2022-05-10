@@ -179,7 +179,6 @@ class CallActivity : AppCompatActivity(), OnAudioRouteBottomSheetListener, Kaley
     private fun initializeCallInfoWidget() = with(findViewById<KaleyraCallInfoWidget>(R.id.call_info)) {
         setTitle("Bob Martin, John Doe, Mark Smith, Julie Randall")
         setSubtitle("Dialing...")
-        setRecordingText("Recording in progress...")
         setRecording(true)
 
         setOnClickListener {
