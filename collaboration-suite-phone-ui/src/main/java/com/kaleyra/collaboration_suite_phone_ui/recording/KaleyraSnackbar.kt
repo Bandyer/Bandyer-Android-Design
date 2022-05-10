@@ -1,15 +1,20 @@
 package com.kaleyra.collaboration_suite_phone_ui.recording
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.annotation.ColorInt
+import androidx.annotation.DrawableRes
 import androidx.annotation.IntDef
 import androidx.annotation.IntRange
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.kaleyra.collaboration_suite_phone_ui.R
 
+// TODO check accessibility
 class KaleyraSnackbar private constructor(
     parent: ViewGroup,
     content: View,
@@ -22,7 +27,12 @@ class KaleyraSnackbar private constructor(
     annotation class Duration
 
     companion object {
-        fun make(view: View, text: CharSequence, @Duration duration: Int): KaleyraSnackbar {
+        fun make(
+            view: View,
+            title: CharSequence,
+            subtitle: CharSequence,
+            @Duration duration: Int
+        ): KaleyraSnackbar {
             val parent = findSuitableParent(view)
             val context = parent.context
             val inflater = LayoutInflater.from(context)
@@ -31,9 +41,12 @@ class KaleyraSnackbar private constructor(
                 parent,
                 false
             ) as KaleyraSnackbarLayout
-            val snackbar = KaleyraSnackbar(parent, content, content)
-            snackbar.duration = duration
-            return snackbar
+            return KaleyraSnackbar(parent, content, content).also {
+                it.duration = duration
+                it.setTitle(title)
+                it.setSubTitle(subtitle)
+                it.setIcon(R.drawable.ic_kaleyra_snackbar_alert)
+            }
         }
 
         private fun findSuitableParent(providedView: View): ViewGroup {
@@ -63,4 +76,24 @@ class KaleyraSnackbar private constructor(
                 ?: throw IllegalArgumentException("No suitable parent found from the given view. " + "Please provide a valid view.")
         }
     }
+
+    fun setTitle(text: CharSequence): KaleyraSnackbar {
+        val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
+        contentLayout.title?.text = text
+        return this
+    }
+
+    fun setSubTitle(text: CharSequence?): KaleyraSnackbar {
+        val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
+        contentLayout.subTitle?.text = text
+        contentLayout.subTitle?.visibility = if (text == null) View.GONE else View.VISIBLE
+        return this
+    }
+
+    fun setIcon(@DrawableRes resId: Int): KaleyraSnackbar {
+        val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
+        contentLayout.icon?.setImageResource(resId)
+        return this
+    }
+
 }
