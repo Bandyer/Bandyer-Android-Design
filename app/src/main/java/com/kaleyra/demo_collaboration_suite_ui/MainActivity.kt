@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeListeners() = with(binding) {
-        btnKaleyraSnackbar.setOnClickListener { KaleyraSnackbar.make(binding.root, "", LENGTH_INDEFINITE).show() }
+        btnKaleyraSnackbar.setOnClickListener { KaleyraSnackbar.make(binding.root, "Registrazione avviata", "Gentile utente, da questo momento la chiamata sarà registrata.", LENGTH_INDEFINITE).show() }
 
         btnChat.setOnClickListener { startActivity(Intent(this@MainActivity, ChatActivity::class.java)) }
 

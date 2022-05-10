@@ -6,6 +6,7 @@ import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.ViewCompat
+import androidx.core.view.children
 import com.google.android.material.snackbar.ContentViewCallback
 import com.google.android.material.textview.MaterialTextView
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -33,29 +34,30 @@ class KaleyraSnackbarLayout @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        val parentView = parent as View
-        parentView.setPadding(0, 0, 0, 0)
+        (parent as View).setPadding(0, 0, 0, 0)
     }
 
     override fun animateContentIn(delay: Int, duration: Int) {
-        setOf(title, subTitle, icon).forEach { viewToAnimate ->
-            viewToAnimate ?: return@forEach
-            if (viewToAnimate.visibility == View.VISIBLE) {
-                viewToAnimate.alpha = 0f
-                ViewCompat.animate(viewToAnimate).alpha(1f).setDuration(duration.toLong())
-                    .setStartDelay(delay.toLong()).start()
-            }
+        children.forEach { child ->
+            if (child.visibility != View.VISIBLE) return@forEach
+            child.alpha = 0f
+            ViewCompat
+                .animate(child)
+                .alpha(1f)
+                .setDuration(duration.toLong())
+                .setStartDelay(delay.toLong()).start()
         }
     }
 
     override fun animateContentOut(delay: Int, duration: Int) {
-        setOf(title, subTitle, icon).forEach { viewToAnimate ->
-            viewToAnimate ?: return@forEach
-            if (viewToAnimate.visibility == View.VISIBLE) {
-                viewToAnimate.alpha = 1f
-                ViewCompat.animate(viewToAnimate).alpha(0f).setDuration(duration.toLong())
-                    .setStartDelay(delay.toLong()).start()
-            }
+        children.forEach { child ->
+            if (child.visibility != View.VISIBLE) return@forEach
+            child.alpha = 1f
+            ViewCompat
+                .animate(child)
+                .alpha(0f)
+                .setDuration(duration.toLong())
+                .setStartDelay(delay.toLong()).start()
         }
     }
 }
