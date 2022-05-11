@@ -9,6 +9,8 @@ import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 class KaleyraRecordingSnackbar private constructor(private val kaleyraSnackbar: KaleyraSnackbar) {
 
+    val view = kaleyraSnackbar.view
+
     enum class Type {
         TYPE_STARTED,
         TYPE_ENDED,
