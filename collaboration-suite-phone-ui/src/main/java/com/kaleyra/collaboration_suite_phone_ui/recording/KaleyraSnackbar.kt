@@ -118,6 +118,12 @@ class KaleyraSnackbar private constructor(
         return this
     }
 
+    fun setIconColor(@ColorInt color: Int): KaleyraSnackbar {
+        val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
+        contentLayout.icon?.setColorFilter(color)
+        return this
+    }
+
     fun setTextColor(@ColorInt color: Int): KaleyraSnackbar {
         val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
         contentLayout.title?.setTextColor(color)
