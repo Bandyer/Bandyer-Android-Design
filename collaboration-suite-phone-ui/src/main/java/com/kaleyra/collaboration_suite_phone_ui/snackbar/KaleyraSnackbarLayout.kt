@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.recording
+package com.kaleyra.collaboration_suite_phone_ui.snackbar
 
 import android.content.Context
 import android.util.AttributeSet
