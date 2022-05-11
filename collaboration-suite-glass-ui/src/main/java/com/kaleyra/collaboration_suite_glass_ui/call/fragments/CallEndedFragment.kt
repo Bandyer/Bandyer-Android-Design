@@ -97,6 +97,6 @@ internal class CallEndedFragment : BaseFragment<GlassCallActivity>() {
     override fun onSwipeForward(isKeyEvent: Boolean) = false
 
     private companion object {
-        const val AUTO_FINISH_TIME = 3000L
+        const val AUTO_FINISH_TIME = 2000L
     }
 }

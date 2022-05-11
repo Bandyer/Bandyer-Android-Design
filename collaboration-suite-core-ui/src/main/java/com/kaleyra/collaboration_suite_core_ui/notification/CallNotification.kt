@@ -208,7 +208,7 @@ internal class CallNotification {
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
                 .setUsesChronometer(enableTimer)
-                .setSmallIcon(R.drawable.kaleyra_z_audio_only)
+                .setSmallIcon(R.drawable.ic_kaleyra_answer)
                 .setCategory(NotificationCompat.CATEGORY_CALL)
                 .setPriority(if (isHighPriority) NotificationCompat.PRIORITY_MAX else NotificationCompat.PRIORITY_DEFAULT)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -220,7 +220,7 @@ internal class CallNotification {
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
             screenShareIntent?.also {
                 val screenShareAction = NotificationCompat.Action(
-                    R.drawable.kaleyra_z_screen_share,
+                    R.drawable.ic_kaleyra_screen_share,
                     context.getString(R.string.kaleyra_notification_stop_screen_share),
                     it
                 )
@@ -229,7 +229,7 @@ internal class CallNotification {
 
             if (type == Type.INCOMING) {
                 val answerAction = NotificationCompat.Action(
-                    R.drawable.kaleyra_z_audio_only,
+                    R.drawable.ic_kaleyra_answer,
                     context.getString(R.string.kaleyra_notification_answer),
                     answerIntent
                 )
@@ -237,7 +237,7 @@ internal class CallNotification {
             }
 
             val declineAction = NotificationCompat.Action(
-                R.drawable.kaleyra_z_end_call,
+                R.drawable.ic_kaleyra_decline,
                 context.getString(if (type == Type.INCOMING) R.string.kaleyra_notification_decline else R.string.kaleyra_notification_hangup),
                 declineIntent
             )
@@ -287,7 +287,7 @@ internal class CallNotification {
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
                 .setUsesChronometer(enableTimer)
-                .setSmallIcon(R.drawable.kaleyra_z_audio_only)
+                .setSmallIcon(R.drawable.ic_kaleyra_answer)
                 .setCategory(Notification.CATEGORY_CALL)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .setContentText(contentText)
@@ -298,7 +298,7 @@ internal class CallNotification {
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
             screenShareIntent?.also {
                 val screenShareAction = Notification.Action.Builder(
-                    Icon.createWithResource(context, R.drawable.kaleyra_z_screen_share),
+                    Icon.createWithResource(context, R.drawable.ic_kaleyra_screen_share),
                     context.getString(R.string.kaleyra_notification_stop_screen_share),
                     it
                 ).build()

@@ -29,19 +29,20 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
-
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.feedback.FeedbackDialog
-import com.kaleyra.collaboration_suite_phone_ui.filesharing.KaleyraFileShareDialog
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.FileShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.filesharing.KaleyraFileShareDialog
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.model.TransferData
+import com.kaleyra.collaboration_suite_phone_ui.recording.KaleyraRecordingSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.SmartGlassActionItemMenu
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.SmartGlassMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.items.getSmartglassActions
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.utils.MotionEventInterceptor
 import com.kaleyra.collaboration_suite_phone_ui.whiteboard.dialog.KaleyraWhiteboardTextEditorDialog
-import com.google.android.material.appbar.MaterialToolbar
 import com.kaleyra.demo_collaboration_suite_ui.databinding.ActivityMainBinding
 import java.util.concurrent.ConcurrentHashMap
 
@@ -64,6 +65,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeListeners() = with(binding) {
+        btnKaleyraSnackbar.setOnClickListener {
+            KaleyraRecordingSnackbar.make(binding.root, KaleyraRecordingSnackbar.Type.TYPE_ENDED, LENGTH_LONG).show()
+        }
+
         btnChat.setOnClickListener { startActivity(Intent(this@MainActivity, ChatActivity::class.java)) }
 
         btnCall.setOnClickListener { startActivity(Intent(this@MainActivity, CallActivity::class.java)) }
@@ -117,7 +122,6 @@ class MainActivity : AppCompatActivity() {
 
         btnFeedback.setOnClickListener { FeedbackDialog().show(supportFragmentManager, FeedbackDialog.TAG) }
 
-        btnNotification.setOnClickListener { startActivity(Intent(this@MainActivity, NotificationActivity::class.java)) }
     }
 
     private fun showSmartGlassAction(): SmartGlassActionItemMenu = SmartGlassActionItemMenu.show(

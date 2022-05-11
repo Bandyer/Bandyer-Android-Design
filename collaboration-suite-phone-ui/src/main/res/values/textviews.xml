@@ -90,6 +90,7 @@
         <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space16</item>
         <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space16</item>
         <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
         <item name="android:background">@null</item>
         <item name="android:visibility">gone</item>
         <item name="android:focusable">false</item>
@@ -135,19 +136,6 @@
         <item name="android:visibility">gone</item>
         <item name="android:focusable">false</item>
         <item name="android:focusableInTouchMode">false</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.Recording" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:paddingRight">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:paddingLeft">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:drawablePadding">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:drawableStart">@drawable/ic_kaleyra_record</item>
-        <item name="drawableTint">@color/kaleyra_recording_color</item>
-        <item name="android:textAppearance">@style/KaleyraCollaborationSuiteUI.TextAppearance</item>
     </style>
 
     <!-- Call User Info -->

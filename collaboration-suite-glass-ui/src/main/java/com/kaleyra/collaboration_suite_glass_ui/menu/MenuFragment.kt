@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.model.Option
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
+import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.call.CallAction
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
@@ -134,7 +135,7 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
 
         repeatOnStarted {
             cameraAction?.also { action ->
-                viewModel.cameraEnabled.onEach { action.toggle(it) }.launchIn(this)
+               viewModel.cameraEnabled.onEach { action.toggle(it) }.launchIn(this)
                 viewModel.camPermission.onEach { action.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
             }
             micAction?.also { action ->
@@ -161,6 +162,12 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
                     .flatMapLatest { it!!.enabled }
                     .onEach { action.toggle(!it) }
                     .launchIn(this)
+//                viewModel.hasFlashLight
+//                    .onEach {
+//                        Log.e("MenuFragment", "$it")
+//                        action.binding?.root?.visibility = if (!it) View.GONE else View.VISIBLE
+//                    }
+//                    .launchIn(this)
             }
             switchCameraAction?.also { action ->
                 combine(viewModel.cameraEnabled, viewModel.hasSwitchCamera) { cameraEnabled, hasSwitchCamera ->
@@ -228,4 +235,9 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
         binding.kaleyraMenu.scrollBy((deltaAzimuth * requireContext().tiltScrollFactor()).toInt(), 0)
+
+    override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
+        super.setListenersForRealWear(bottomNavView)
+        bottomNavView.setFirstItemListeners({ onSwipeForward(true) }, { onSwipeBackward(true)  })
+    }
 }

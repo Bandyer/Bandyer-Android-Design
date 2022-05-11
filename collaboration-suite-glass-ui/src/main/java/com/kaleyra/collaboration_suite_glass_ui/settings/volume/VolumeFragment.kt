@@ -30,7 +30,6 @@ import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigati
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.common.SettingSlider
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentVolumeBinding
-import com.kaleyra.collaboration_suite_glass_ui.settings.zoom.ZoomFragment
 
 /**
  * VolumeFragment
@@ -102,7 +101,7 @@ internal class VolumeFragment : BaseFragment<GlassCallActivity>() {
     }
 
     override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
-        bottomNavView.setFirstItemListener { onSwipeBackward(true) }
+        bottomNavView.setFirstItemListeners({ onSwipeBackward(true) }, null)
         bottomNavView.setSecondItemListener { onSwipeForward(true) }
         bottomNavView.setThirdItemListener { onSwipeDown() }
     }

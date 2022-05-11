@@ -21,14 +21,14 @@
         <attr name="kaleyra_iconStyle" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
-        <attr name="kaleyra_recordingStyle" format="reference" />
+        <attr name="kaleyra_recordingStyle" />
     </declare-styleable>
 
     <style name="KaleyraCollaborationSuiteUI.CallInfo" parent="">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.CallInfo.RootLayout</item>
         <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.CallInfo</item>
         <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.CallInfo</item>
-        <item name="kaleyra_recordingStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.Recording</item>
+        <item name="kaleyra_recordingStyle">@style/KaleyraCollaborationSuiteUI.RecordingWidget</item>
         <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.CallWatermark</item>
     </style>
 

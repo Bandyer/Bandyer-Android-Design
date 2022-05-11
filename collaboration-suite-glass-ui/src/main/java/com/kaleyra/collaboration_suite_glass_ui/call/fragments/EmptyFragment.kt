@@ -23,11 +23,16 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
+import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
-import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
+import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentEmptyBinding
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 
 /**
@@ -39,6 +44,8 @@ internal class EmptyFragment : BaseFragment<GlassCallActivity>() {
     override val binding: KaleyraGlassFragmentEmptyBinding get() = _binding!!
 
     private val viewModel: CallViewModel by activityViewModels()
+
+    private val streams: RecyclerView get() = (requireActivity() as GlassCallActivity).rvStreams
 
     /**
      * @suppress
@@ -56,7 +63,7 @@ internal class EmptyFragment : BaseFragment<GlassCallActivity>() {
         // Add view binding
         _binding = KaleyraGlassFragmentEmptyBinding
             .inflate(inflater, container, false)
-            .apply { if(DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation) }
+            .apply { if (DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation) }
 
         return binding.root
     }
@@ -71,11 +78,28 @@ internal class EmptyFragment : BaseFragment<GlassCallActivity>() {
         _binding = null
     }
 
-    override fun onTap() = true.also { findNavController().safeNavigate(EmptyFragmentDirections.actionEmptyFragmentToMenuFragment()) }
+    override fun onTap() =
+        true.also { findNavController().safeNavigate(EmptyFragmentDirections.actionEmptyFragmentToMenuFragment()) }
 
-    override fun onSwipeDown() = true.also { findNavController().safeNavigate(EmptyFragmentDirections.actionEmptyFragmentToEndCallFragment()) }
+    override fun onSwipeDown() =
+        true.also { findNavController().safeNavigate(EmptyFragmentDirections.actionEmptyFragmentToEndCallFragment()) }
 
-    override fun onSwipeBackward(isKeyEvent: Boolean) = false
+    override fun onSwipeBackward(isKeyEvent: Boolean) = isKeyEvent.also {
+        if (!it) return@also
+        val visibleItemPosition =
+            (streams.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        streams.horizontalSmoothScrollToPrevious(visibleItemPosition)
+    }
 
-    override fun onSwipeForward(isKeyEvent: Boolean) = false
+    override fun onSwipeForward(isKeyEvent: Boolean) = isKeyEvent.also {
+        if (!it) return@also
+        val visibleItemPosition =
+            (streams.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        streams.horizontalSmoothScrollToNext(visibleItemPosition)
+    }
+
+    override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
+        super.setListenersForRealWear(bottomNavView)
+        bottomNavView.setFirstItemListeners({ onSwipeForward(true) }, { onSwipeBackward(true) })
+    }
 }

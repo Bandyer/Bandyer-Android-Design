@@ -28,13 +28,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.CallParticipantItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItemData
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
+import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentParticipantsBinding
@@ -203,6 +203,11 @@ internal class ParticipantsFragment : BaseFragment<GlassCallActivity>(), TiltLis
                 currentParticipantIndex
             )
         }
+
+    override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
+        super.setListenersForRealWear(bottomNavView)
+        bottomNavView.setFirstItemListeners({ onSwipeForward(true) }, { onSwipeBackward(true)  })
+    }
 }
 
 
