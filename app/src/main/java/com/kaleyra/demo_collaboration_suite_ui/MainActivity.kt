@@ -21,8 +21,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -31,24 +29,20 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.net.toUri
-
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.feedback.FeedbackDialog
-import com.kaleyra.collaboration_suite_phone_ui.filesharing.KaleyraFileShareDialog
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.FileShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.filesharing.KaleyraFileShareDialog
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.model.TransferData
+import com.kaleyra.collaboration_suite_phone_ui.recording.KaleyraRecordingSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.SmartGlassActionItemMenu
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.SmartGlassMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.items.getSmartglassActions
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.utils.MotionEventInterceptor
 import com.kaleyra.collaboration_suite_phone_ui.whiteboard.dialog.KaleyraWhiteboardTextEditorDialog
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_INDEFINITE
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
-import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_SHORT
-import com.google.android.material.snackbar.Snackbar
-import com.kaleyra.collaboration_suite_phone_ui.recording.KaleyraSnackbar
 import com.kaleyra.demo_collaboration_suite_ui.databinding.ActivityMainBinding
 import java.util.concurrent.ConcurrentHashMap
 
@@ -71,7 +65,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeListeners() = with(binding) {
-        btnKaleyraSnackbar.setOnClickListener { KaleyraSnackbar.make(binding.root, "Registrazione avviata", "Gentile utente, da questo momento la chiamata sarà registrata.", LENGTH_INDEFINITE).show() }
+        btnKaleyraSnackbar.setOnClickListener {
+            KaleyraRecordingSnackbar.make(binding.root, KaleyraRecordingSnackbar.Type.TYPE_ENDED, LENGTH_LONG).show()
+        }
 
         btnChat.setOnClickListener { startActivity(Intent(this@MainActivity, ChatActivity::class.java)) }
 
