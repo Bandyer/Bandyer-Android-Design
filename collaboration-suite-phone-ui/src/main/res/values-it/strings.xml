@@ -187,5 +187,7 @@
     <string name="kaleyra_recording_ended_message">Gentile utente, la registrazione è stata interrotta.</string>
     <string name="kaleyra_recording_error">Errore di registrazione</string>
     <string name="kaleyra_recording_error_message">La registrazione del tuo dispositivo non è andata a buon fine.</string>
+    <string name="kaleyra_call_recorded">La chiamata sarà registrata</string>
+    <string name="kaleyra_call_might_be_recorded">La chiamata potrà essere registrata</string>
 
 </resources>

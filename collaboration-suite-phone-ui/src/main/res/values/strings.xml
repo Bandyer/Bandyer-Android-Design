@@ -195,5 +195,7 @@
     <string name="kaleyra_recording_ended_message">Dear user, the recording stopped.</string>
     <string name="kaleyra_recording_error">Recording error</string>
     <string name="kaleyra_recording_error_message">The device recording failed.</string>
+    <string name="kaleyra_call_recorded">The call will be recorded</string>
+    <string name="kaleyra_call_might_be_recorded">The call might be recorded</string>
 
 </resources>
