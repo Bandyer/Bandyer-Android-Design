@@ -73,6 +73,22 @@ class KaleyraSnackbar private constructor(
         }
     }
 
+    private val accessibilityManager = parent.context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+
+    override fun getDuration(): Int {
+        val userSetDuration = super.getDuration()
+        if (userSetDuration == LENGTH_INDEFINITE)
+            return LENGTH_INDEFINITE
+
+        if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+            return accessibilityManager.getRecommendedTimeoutMillis(
+                userSetDuration, AccessibilityManager.FLAG_CONTENT_ICONS or AccessibilityManager.FLAG_CONTENT_TEXT
+            )
+        }
+
+        return userSetDuration
+    }
+
     fun setTitle(text: CharSequence): KaleyraSnackbar {
         val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
         contentLayout.title?.text = text
