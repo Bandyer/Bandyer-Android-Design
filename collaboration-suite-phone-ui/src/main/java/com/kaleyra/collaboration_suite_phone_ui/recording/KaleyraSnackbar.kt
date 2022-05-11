@@ -14,6 +14,7 @@ import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.IntDef
 import androidx.annotation.IntRange
+import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
@@ -33,7 +34,23 @@ class KaleyraSnackbar private constructor(
     annotation class Duration
 
     companion object {
+        @JvmStatic
         fun make(
+            view: View,
+            title: CharSequence,
+            subtitle: CharSequence,
+            @Duration duration: Int
+        ): KaleyraSnackbar = makeInternal(view, title, subtitle, duration)
+
+        @JvmStatic
+        fun make(
+            view: View,
+            @StringRes title: Int,
+            @StringRes subtitle: Int,
+            @Duration duration: Int
+        ): KaleyraSnackbar = makeInternal(view, view.resources.getText(title), view.resources.getText(subtitle), duration)
+
+        private fun makeInternal(
             view: View,
             title: CharSequence,
             subtitle: CharSequence,
@@ -51,7 +68,12 @@ class KaleyraSnackbar private constructor(
                 it.duration = duration
                 it.setTitle(title)
                 it.setSubTitle(subtitle)
-                it.setBackgroundColor(ContextCompat.getColor(context, R.color.kaleyra_color_on_surface_80))
+                it.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.kaleyra_color_on_surface_80
+                    )
+                )
             }
         }
 
@@ -83,7 +105,8 @@ class KaleyraSnackbar private constructor(
         }
     }
 
-    private val accessibilityManager = parent.context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
+    private val accessibilityManager =
+        parent.context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
 
     override fun getDuration(): Int {
         val userSetDuration = super.getDuration()
@@ -92,7 +115,8 @@ class KaleyraSnackbar private constructor(
 
         if (VERSION.SDK_INT >= VERSION_CODES.Q) {
             return accessibilityManager.getRecommendedTimeoutMillis(
-                userSetDuration, AccessibilityManager.FLAG_CONTENT_ICONS or AccessibilityManager.FLAG_CONTENT_TEXT
+                userSetDuration,
+                AccessibilityManager.FLAG_CONTENT_ICONS or AccessibilityManager.FLAG_CONTENT_TEXT
             )
         }
 
