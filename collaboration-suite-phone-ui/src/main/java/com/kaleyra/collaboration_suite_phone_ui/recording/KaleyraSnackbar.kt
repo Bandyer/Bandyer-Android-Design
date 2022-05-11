@@ -92,4 +92,13 @@ class KaleyraSnackbar private constructor(
         return this
     }
 
+    fun setBackgroundColor(@ColorInt color: Int) {
+        if (view.background == null) return
+        val wrappedBackground = DrawableCompat.wrap(view.background.mutate())
+        DrawableCompat.setTintList(wrappedBackground, ColorStateList.valueOf(color))
+        DrawableCompat.setTintMode(wrappedBackground, PorterDuff.Mode.SRC_IN)
+        if (wrappedBackground === view.background) return
+        ViewCompat.setBackground(view, wrappedBackground)
+    }
+
 }
