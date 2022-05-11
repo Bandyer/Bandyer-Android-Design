@@ -118,19 +118,23 @@ class KaleyraSnackbar private constructor(
         return this
     }
 
-    fun setTextColor(@ColorInt color: Int) {
+    fun setTextColor(@ColorInt color: Int): KaleyraSnackbar {
         val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
         contentLayout.title?.setTextColor(color)
         contentLayout.subTitle?.setTextColor(color)
+        return this
     }
 
-    fun setBackgroundColor(@ColorInt color: Int) {
-        if (view.background == null) return
-        val wrappedBackground = DrawableCompat.wrap(view.background.mutate())
-        DrawableCompat.setTintList(wrappedBackground, ColorStateList.valueOf(color))
-        DrawableCompat.setTintMode(wrappedBackground, PorterDuff.Mode.SRC_IN)
-        if (wrappedBackground === view.background) return
-        ViewCompat.setBackground(view, wrappedBackground)
+    fun setBackgroundColor(@ColorInt color: Int): KaleyraSnackbar {
+        if (view.background != null) {
+            val wrappedBackground = DrawableCompat.wrap(view.background.mutate())
+            DrawableCompat.setTintList(wrappedBackground, ColorStateList.valueOf(color))
+            DrawableCompat.setTintMode(wrappedBackground, PorterDuff.Mode.SRC_IN)
+            if (wrappedBackground !== view.background) {
+                ViewCompat.setBackground(view, wrappedBackground)
+            }
+        }
+        return this
     }
 
 }
