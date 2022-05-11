@@ -2,7 +2,7 @@
 <view xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     class="com.kaleyra.collaboration_suite_phone_ui.recording.KaleyraSnackbarLayout"
-    android:theme="?attr/kaleyra_snackbarStyle"
+    android:theme="@style/KaleyraCollaborationSuiteUI.SnackBarStyle"
     style="?attr/kaleyra_rootLayoutStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
