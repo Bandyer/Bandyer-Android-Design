@@ -21,6 +21,13 @@ class RecordingWidget @JvmOverloads constructor(
         binding.kaleyraIcon.blink(BLINK_DURATION, -1)
     }
 
+    override fun setVisibility(visibility: Int) {
+        super.setVisibility(visibility)
+        binding.kaleyraIcon.also {
+            if (visibility == VISIBLE) it.blink(BLINK_DURATION, -1) else it.clearAnimation()
+        }
+    }
+
     private companion object {
         const val BLINK_DURATION = 1000L // millis
     }
