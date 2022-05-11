@@ -1,17 +1,26 @@
 package com.kaleyra.collaboration_suite_phone_ui.recording
 
+import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.PorterDuff
+import android.os.Build.VERSION
+import android.os.Build.VERSION_CODES
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.accessibility.AccessibilityManager
 import android.widget.FrameLayout
+import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.IntDef
 import androidx.annotation.IntRange
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.ViewCompat
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.kaleyra.collaboration_suite_phone_ui.R
 
-// TODO check accessibility
 class KaleyraSnackbar private constructor(
     parent: ViewGroup,
     content: View,
@@ -42,6 +51,7 @@ class KaleyraSnackbar private constructor(
                 it.duration = duration
                 it.setTitle(title)
                 it.setSubTitle(subtitle)
+                it.setBackgroundColor(ContextCompat.getColor(context, R.color.kaleyra_color_on_surface_80))
             }
         }
 
