@@ -43,6 +43,8 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoot
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -147,13 +149,10 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         repeatOnStarted {
             viewModel.chat.messages
                 .onEach { msgs ->
-                    binding.root.post {
-                        this@repeatOnStarted.launch {
-                            val pages = toChatMessagePages(msgs.list)
-                            val items = pages.map { ChatMessageItem(it) }
-                            FastAdapterDiffUtil[itemAdapter!!] =
-                                FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
-                        }
+                    toChatMessagePages(this, msgs.list) { pages ->
+                        val items = pages.map { ChatMessageItem(it) }
+                        FastAdapterDiffUtil[itemAdapter!!] =
+                            FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                     }
                 }.launchIn(this@repeatOnStarted)
         }
@@ -195,51 +194,45 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         if (it) binding.kaleyraMessages.horizontalSmoothScrollToPrevious(currentMsgItemIndex)
     }
 
-    private suspend fun toChatMessagePages(messages: List<Message>): List<ChatMessagePage> {
-        val allPages = mutableListOf<ChatMessagePage>()
-        messages.forEach {
-            val user = viewModel.usersDescription.name(listOf(it.creator.userId))
-            val avatar = viewModel.usersDescription.image(listOf(it.creator.userId))
-            with(binding.kaleyraChatMessage) {
-
-                kaleyraName.text = user
-                kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), it.creationDate.time)
-                kaleyraMessage.text =
-                    if (it.content is Message.Content.Text) (it.content as Message.Content.Text).message else ""
-                val pages = kaleyraMessage.paginate()
-                for (i in pages.indices) {
-                    allPages.add(
-                        ChatMessagePage(
-                            it.id,
-                            it.creator.userId,
-                            user,
-                            avatar,
-                            pages[i].toString(),
-                            it.creationDate.time,
-                            i == 0
+    private fun toChatMessagePages(scope: CoroutineScope, messages: List<Message>, callback: (List<ChatMessagePage>) -> Unit) {
+        binding.kaleyraChatMessage.root.doOnLayout {
+            scope.launch {
+                val allPages = mutableListOf<ChatMessagePage>()
+                messages.forEach {
+                    val user = viewModel.usersDescription.name(listOf(it.creator.userId))
+                    val avatar = viewModel.usersDescription.image(listOf(it.creator.userId))
+                    val pages = paginateMessage(user, it.content, it.creationDate.time)
+                    for (i in pages.indices) {
+                        allPages.add(
+                            ChatMessagePage(
+                                it.id,
+                                it.creator.userId,
+                                user,
+                                avatar,
+                                pages[i].toString(),
+                                it.creationDate.time,
+                                i == 0
+                            )
                         )
-                    )
 //                    pagesIds.add(id)
+                    }
                 }
+                callback.invoke(allPages)
             }
-//            val pages = paginateMessage(user, it.content, it.creationDate.time)
-
-
         }
-        return allPages
     }
 
-    private fun paginateMessage(user: String, content: Message.Content, timestamp: Long) =
-//        suspendCancellableCoroutine<List<CharSequence>> { continuation ->
+    private fun paginateMessage(
+        user: String,
+        content: Message.Content,
+        timestamp: Long
+    ): List<CharSequence> =
         with(binding.kaleyraChatMessage) {
-            root.post {
-                kaleyraName.text = user
-                kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), timestamp)
-                if (content is Message.Content.Text) kaleyraMessage.text = content.message
-                kaleyraMessage.paginate()
-            }
+            kaleyraName.text = user
+            kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), timestamp)
+            kaleyraMessage.text = if (content is Message.Content.Text) content.message else ""
+            return kaleyraMessage.paginate()
         }
-//        }
 
     private companion object {
         const val LOAD_MORE_THRESHOLD = 2

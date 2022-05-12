@@ -21,6 +21,7 @@ import android.os.Build
 import android.text.Layout
 import android.text.StaticLayout
 import android.util.AttributeSet
+import androidx.core.view.ViewCompat
 import androidx.core.view.doOnLayout
 import com.google.android.material.textview.MaterialTextView
 
@@ -34,30 +35,30 @@ internal class PaginatedTextView @JvmOverloads constructor(
 ) : MaterialTextView(context, attrs, defStyleAttr) {
 
     /**
-     * Compute the text for each page
+     * Compute the text for each page, the view needs to be laid out before executing this method
      *
      * @return List<CharSequence>
      */
     fun paginate(): List<CharSequence> {
-            val pageList = arrayListOf<CharSequence>()
+        if (!ViewCompat.isLaidOut(this)) return listOf()
+        val pageList = arrayListOf<CharSequence>()
 
-            val layout = from(layout)
-            val lines = layout.lineCount
-            var startOffset = 0
-            var height = height
-            val heightWithoutPaddings = height - paddingTop - paddingBottom
+        val layout = from(layout)
+        val lines = layout.lineCount
+        var startOffset = 0
+        var height = height
+        val heightWithoutPaddings = height - paddingTop - paddingBottom
 
-            for (i in 0 until lines) {
-                if (height < layout.getLineBottom(i)) {
-                    pageList.add(layout.text.subSequence(startOffset, layout.getLineStart(i)))
-                    startOffset = layout.getLineStart(i)
-                    height = layout.getLineTop(i) + heightWithoutPaddings
-                }
-                if (i == lines - 1)
-                    pageList.add(layout.text.subSequence(startOffset, layout.getLineEnd(i)))
+        for (i in 0 until lines) {
+            if (height < layout.getLineBottom(i)) {
+                pageList.add(layout.text.subSequence(startOffset, layout.getLineStart(i)))
+                startOffset = layout.getLineStart(i)
+                height = layout.getLineTop(i) + heightWithoutPaddings
             }
+            if (i == lines - 1)
+                pageList.add(layout.text.subSequence(startOffset, layout.getLineEnd(i)))
+        }
         return pageList
-//            onPagination.invoke(pageList)
     }
 
     private fun from(layout: Layout): Layout =
