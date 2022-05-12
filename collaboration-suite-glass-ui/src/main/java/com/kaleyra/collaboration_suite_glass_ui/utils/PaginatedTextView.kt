@@ -38,8 +38,7 @@ internal class PaginatedTextView @JvmOverloads constructor(
      *
      * @return List<CharSequence>
      */
-    fun paginate(onPagination: (List<CharSequence>) -> Unit) {
-        doOnLayout {
+    fun paginate(): List<CharSequence> {
             val pageList = arrayListOf<CharSequence>()
 
             val layout = from(layout)
@@ -57,8 +56,8 @@ internal class PaginatedTextView @JvmOverloads constructor(
                 if (i == lines - 1)
                     pageList.add(layout.text.subSequence(startOffset, layout.getLineEnd(i)))
             }
-            onPagination.invoke(pageList)
-        }
+        return pageList
+//            onPagination.invoke(pageList)
     }
 
     private fun from(layout: Layout): Layout =

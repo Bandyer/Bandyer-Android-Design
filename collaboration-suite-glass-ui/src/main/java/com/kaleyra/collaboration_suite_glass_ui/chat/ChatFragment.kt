@@ -45,6 +45,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
@@ -67,7 +68,8 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     private val viewModel: ChatViewModel by activityViewModels()
 
     private val args: ChatFragmentArgs by lazy {
-        requireActivity().intent?.extras?.let { ChatFragmentArgs.fromBundle(it) } ?: ChatFragmentArgs()
+        requireActivity().intent?.extras?.let { ChatFragmentArgs.fromBundle(it) }
+            ?: ChatFragmentArgs()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -145,10 +147,15 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         repeatOnStarted {
             viewModel.chat.messages
                 .onEach { msgs ->
-                    val pages = toChatMessagePages((msgs.other + msgs.my).sortedByDescending { it.creationDate })
-                    val items = pages.map { ChatMessageItem(it) }
-                    FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
-                }.launchIn(this)
+                    binding.root.post {
+                        this@repeatOnStarted.launch {
+                            val pages = toChatMessagePages(msgs.list)
+                            val items = pages.map { ChatMessageItem(it) }
+                            FastAdapterDiffUtil[itemAdapter!!] =
+                                FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
+                        }
+                    }
+                }.launchIn(this@repeatOnStarted)
         }
     }
 
@@ -167,7 +174,10 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 //    override fun onShow() = Unit
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
-        binding.kaleyraMessages.scrollBy((deltaAzimuth * requireContext().tiltScrollFactor()).toInt(), 0)
+        binding.kaleyraMessages.scrollBy(
+            (deltaAzimuth * requireContext().tiltScrollFactor()).toInt(),
+            0
+        )
 
     override fun onTap() = true.also {
 //        val username = itemAdapter!!.adapterItems[currentMsgItemIndex].page.userId
@@ -190,37 +200,46 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         messages.forEach {
             val user = viewModel.usersDescription.name(listOf(it.creator.userId))
             val avatar = viewModel.usersDescription.image(listOf(it.creator.userId))
-            val pages = paginateMessage(user, it.content, it.creationDate.time)
-            for (i in pages.indices) {
-                allPages.add(
-                    ChatMessagePage(
-                        it.id,
-                        it.creator.userId,
-                        user,
-                        avatar,
-                        pages[i].toString(),
-                        it.creationDate.time,
-                        i == 0
+            with(binding.kaleyraChatMessage) {
+
+                kaleyraName.text = user
+                kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), it.creationDate.time)
+                kaleyraMessage.text =
+                    if (it.content is Message.Content.Text) (it.content as Message.Content.Text).message else ""
+                val pages = kaleyraMessage.paginate()
+                for (i in pages.indices) {
+                    allPages.add(
+                        ChatMessagePage(
+                            it.id,
+                            it.creator.userId,
+                            user,
+                            avatar,
+                            pages[i].toString(),
+                            it.creationDate.time,
+                            i == 0
+                        )
                     )
-                )
 //                    pagesIds.add(id)
+                }
             }
+//            val pages = paginateMessage(user, it.content, it.creationDate.time)
+
 
         }
         return allPages
     }
 
-    private suspend fun paginateMessage(user: String, content: Message.Content, timestamp: Long) =
-        suspendCancellableCoroutine<List<CharSequence>> { continuation ->
-            with(binding.kaleyraChatMessage) {
-                root.doOnLayout {
-                    kaleyraName.text = user
-                    kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), timestamp)
-                    if (content is Message.Content.Text) kaleyraMessage.text = content.message
-                    kaleyraMessage.paginate { continuation.resume(it) }
-                }
+    private fun paginateMessage(user: String, content: Message.Content, timestamp: Long) =
+//        suspendCancellableCoroutine<List<CharSequence>> { continuation ->
+        with(binding.kaleyraChatMessage) {
+            root.post {
+                kaleyraName.text = user
+                kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), timestamp)
+                if (content is Message.Content.Text) kaleyraMessage.text = content.message
+                kaleyraMessage.paginate()
             }
         }
+//        }
 
     private companion object {
         const val LOAD_MORE_THRESHOLD = 2
