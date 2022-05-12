@@ -29,15 +29,15 @@ class KaleyraRecordingSnackbar private constructor(private val kaleyraSnackbar: 
                 )
                 Type.TYPE_ENDED -> KaleyraSnackbar.make(
                     view,
-                    R.string.kaleyra_recording_ended,
-                    R.string.kaleyra_recording_ended_message,
+                    R.string.kaleyra_recording_stopped,
+                    R.string.kaleyra_recording_stopped_message,
                     duration
                 )
                 else -> KaleyraSnackbar
                     .make(
                         view,
-                        R.string.kaleyra_recording_error,
-                        R.string.kaleyra_recording_error_message,
+                        R.string.kaleyra_recording_failed,
+                        R.string.kaleyra_recording_failed_message,
                         duration
                     )
                     .setIcon(R.drawable.ic_kaleyra_snackbar_error)
