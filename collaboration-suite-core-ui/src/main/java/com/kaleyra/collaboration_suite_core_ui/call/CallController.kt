@@ -62,6 +62,6 @@ interface CallController: CallUIController {
     override fun onSetZoom(value: Float) {
         val camera = currentCall?.inputs?.allowList?.value?.filterIsInstance<Input.Video.Camera.Internal>()?.firstOrNull()
         val currentLens = camera?.currentLens?.value ?: return
-        currentLens.zoom.tryZoom(value)
+        currentLens.zoom.value?.tryZoom(value)
     }
 }
