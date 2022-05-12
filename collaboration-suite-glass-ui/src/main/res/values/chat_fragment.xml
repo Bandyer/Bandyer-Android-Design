@@ -20,6 +20,7 @@
         <attr name="recyclerViewStyle" tools:ignore="ResourceName" />
         <attr name="kaleyra_recyclerViewItemStyle" />
         <attr name="kaleyra_chatMessageLayoutStyle" format="reference" />
+        <attr name="kaleyra_titleStyle" format="reference" />
         <attr name="kaleyra_counterStyle" format="reference" />
         <attr name="bottomNavigationStyle" tools:ignore="ResourceName" />
     </declare-styleable>
@@ -29,6 +30,7 @@
         <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView.Chat</item>
         <item name="kaleyra_recyclerViewItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem</item>
         <item name="kaleyra_chatMessageLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.MessageLayout</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.NoMessagesGlassChat</item>
         <item name="kaleyra_counterStyle">@style/KaleyraCollaborationSuiteUI.TextView.CounterGlassChat</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Chat</item>
     </style>
@@ -39,6 +41,13 @@
 
     <style name="KaleyraCollaborationSuiteUI.Glass.Chat.RecyclerViewItem" parent="">
         <item name="kaleyra_chatMessageLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat.MessageLayout</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.NoMessagesGlassChat" parent="KaleyraCollaborationSuiteUI.TextView.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/kaleyra_dimen_text_40sp</item>
+        <item name="android:text">@string/kaleyra_glass_no_messages</item>
+        <item name="android:visibility">gone</item>
     </style>
 
     <!-- COUNTER -->

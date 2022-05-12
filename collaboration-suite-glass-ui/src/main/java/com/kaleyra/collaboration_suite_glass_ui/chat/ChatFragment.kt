@@ -44,12 +44,9 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlin.coroutines.resume
 
 /**
  * ChatFragment
@@ -149,6 +146,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         repeatOnStarted {
             viewModel.chat.messages
                 .onEach { msgs ->
+                    binding.kaleyraNoMessages.visibility = if (msgs.list.count() == 0) View.VISIBLE else View.GONE
                     toChatMessagePages(this, msgs.list) { pages ->
                         val items = pages.map { ChatMessageItem(it) }
                         FastAdapterDiffUtil[itemAdapter!!] =

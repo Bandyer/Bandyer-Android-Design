@@ -38,6 +38,16 @@
             app:layout_constraintTop_toTopOf="@id/kaleyra_messages"
             app:layout_constraintBottom_toBottomOf="@id/kaleyra_messages" />
 
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/kaleyra_no_messages"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?attr/kaleyra_titleStyle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/kaleyra_messages"
             android:layout_width="match_parent"
