@@ -14,14 +14,38 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
+/**
+ * CallNotificationDelegate. It is responsible of syncing the call's notifications with the call's state.
+ *
+ * @property isAppInForeground Boolean
+ */
 interface CallNotificationDelegate: DefaultLifecycleObserver, LifecycleOwner {
 
+    /**
+     * Flag which tells if the app is in foreground
+     */
     var isAppInForeground: Boolean
 
+    /**
+     * Show the notification
+     *
+     * @param notification The notification
+     * @param showInForeground True of the notification should be coupled to a foreground service, false otherwise
+     */
     fun showNotification(notification: Notification, showInForeground: Boolean)
 
+    /**
+     * Clear the notification
+     */
     fun clearNotification()
 
+    /**
+     * Move the current shown notification to foreground
+     *
+     * @param call The call
+     * @param usersDescription The usersDescription
+     * @param activityClazz The call activity class
+     */
     suspend fun moveNotificationToForeground(
         call: Call,
         usersDescription: UsersDescription,
@@ -66,6 +90,14 @@ interface CallNotificationDelegate: DefaultLifecycleObserver, LifecycleOwner {
         }
     }
 
+    /**
+     * Sync the notifications with the call's state
+     *
+     * @param context The context
+     * @param call The call
+     * @param usersDescription The usersDescription
+     * @param activityClazz The call activity class
+     */
     suspend fun syncNotificationWithCallState(
         context: Context,
         call: Call,
@@ -116,10 +148,16 @@ interface CallNotificationDelegate: DefaultLifecycleObserver, LifecycleOwner {
             .launchIn(lifecycleScope)
     }
 
+    /**
+     * @suppress
+     */
     override fun onStart(owner: LifecycleOwner) {
         isAppInForeground = true
     }
 
+    /**
+     * @suppress
+     */
     override fun onStop(owner: LifecycleOwner) {
         isAppInForeground = false
     }

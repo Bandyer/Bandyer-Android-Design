@@ -21,7 +21,7 @@ import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 
 /**
- * Call UI controller
+ * Call UI controller. It contains methods called when the user interacts with the ui.
  */
 interface CallUIController {
 

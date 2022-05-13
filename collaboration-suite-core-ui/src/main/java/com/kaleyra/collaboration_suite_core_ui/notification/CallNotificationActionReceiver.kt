@@ -29,11 +29,25 @@ class CallNotificationActionReceiver: BroadcastReceiver() {
      * ActionDelegate. Responsible to handle the behaviour on notification action tap
      */
     interface ActionDelegate {
+        /**
+         * Invoked when the user clicks on the notification's answer action
+         */
         fun onAnswerAction()
+
+        /**
+         * Invoked when the user clicks on the notification's hang up action
+         */
         fun onHangUpAction()
+
+        /**
+         * Invoked when the user clicks on the notification's screen share action
+         */
         fun onScreenShareAction()
     }
 
+    /**
+     * @suppress
+     */
     companion object {
         /**
          * ActionAnswer
