@@ -73,8 +73,14 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
         RECORDING
     }
 
+    /**
+     * @suppress
+     */
     override var hidingTimer: CountDownTimer? = null
 
+    /**
+     * @suppress
+     */
     override var millisUntilTimerFinish: Long = 0
 
     /**
@@ -178,6 +184,9 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
         SystemViewLayoutOffsetListener.removeObserver(context.getActivity()!!, this)
     }
 
+    /**
+     * @suppress
+     */
     override fun onHidingTimerFinished() = animateHide()
 
     private fun animateHide(onHidden: (() -> Unit)? = null) {

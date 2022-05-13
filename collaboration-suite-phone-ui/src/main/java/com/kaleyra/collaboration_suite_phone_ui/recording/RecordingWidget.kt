@@ -7,6 +7,11 @@ import android.widget.LinearLayout
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.blink
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraRecordingWidgetBinding
 
+/**
+ * RecordingWidget. It has a blinking red dot and a REC text.
+ *
+ * @constructor
+ */
 class RecordingWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -21,6 +26,9 @@ class RecordingWidget @JvmOverloads constructor(
         binding.kaleyraIcon.blink(BLINK_DURATION, -1)
     }
 
+    /**
+     * @suppress
+     */
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
         binding.kaleyraIcon.also {
