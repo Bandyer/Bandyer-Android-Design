@@ -8,6 +8,7 @@ import android.os.Build.VERSION_CODES
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams
 import android.view.accessibility.AccessibilityManager
 import android.widget.FrameLayout
 import androidx.annotation.ColorInt
@@ -21,20 +22,34 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.ViewCompat
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.utils.SwipeDismissBehavior2
 
-internal class KaleyraSnackbar private constructor(
+
+/**
+ * Kaleyra snackbar
+ */
+class KaleyraSnackbar private constructor(
     parent: ViewGroup,
     content: View,
     contentViewCallback: com.google.android.material.snackbar.ContentViewCallback
 ) : BaseTransientBottomBar<KaleyraSnackbar>(parent, content, contentViewCallback) {
 
+    /**
+     * Duration
+     */
     @IntDef(LENGTH_INDEFINITE, LENGTH_SHORT, LENGTH_LONG)
     @IntRange(from = 1)
     @Retention(AnnotationRetention.SOURCE)
     annotation class Duration
 
-    companion object {
+    /**
+     * Companion
+     * @suppress
+     */
+    internal companion object {
+
         @JvmStatic
+        @JvmSynthetic
         fun make(
             view: View,
             title: CharSequence,
@@ -43,6 +58,7 @@ internal class KaleyraSnackbar private constructor(
         ): KaleyraSnackbar = makeInternal(view, title, subtitle, duration)
 
         @JvmStatic
+        @JvmSynthetic
         fun make(
             view: View,
             @StringRes title: Int,
@@ -114,6 +130,27 @@ internal class KaleyraSnackbar private constructor(
         setBackgroundColor(backgroundTint)
     }
 
+    /**
+     * @suppress
+     */
+    override fun show() {
+        addCallback(object : BaseTransientBottomBar.BaseCallback<KaleyraSnackbar>() {
+            override fun onShown(transientBottomBar: KaleyraSnackbar?) {
+                super.onShown(transientBottomBar)
+                removeCallback(this)
+                val params: LayoutParams = getView().layoutParams
+                if (params !is CoordinatorLayout.LayoutParams) return
+                val behavior = SwipeDismissBehavior2<View>()
+                behavior.setSwipeDirection(SwipeDismissBehavior2.SWIPE_DIRECTION_ANY)
+                params.behavior = behavior
+            }
+        })
+        super.show()
+    }
+
+    /**
+     * @suppress
+     */
     override fun getDuration(): Int {
         val userSetDuration = super.getDuration()
         if (userSetDuration == LENGTH_INDEFINITE)
@@ -129,39 +166,45 @@ internal class KaleyraSnackbar private constructor(
         return userSetDuration
     }
 
-    fun setTitle(text: CharSequence): KaleyraSnackbar {
+    @JvmSynthetic
+    internal fun setTitle(text: CharSequence): KaleyraSnackbar {
         val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
         contentLayout.title?.text = text
         return this
     }
 
-    fun setSubTitle(text: CharSequence?): KaleyraSnackbar {
+    @JvmSynthetic
+    internal fun setSubTitle(text: CharSequence?): KaleyraSnackbar {
         val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
         contentLayout.subTitle?.text = text
         contentLayout.subTitle?.visibility = if (text == null) View.GONE else View.VISIBLE
         return this
     }
 
-    fun setIcon(@DrawableRes resId: Int): KaleyraSnackbar {
+    @JvmSynthetic
+    internal fun setIcon(@DrawableRes resId: Int): KaleyraSnackbar {
         val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
         contentLayout.icon?.setImageResource(resId)
         return this
     }
 
-    fun setIconColor(@ColorInt color: Int): KaleyraSnackbar {
+    @JvmSynthetic
+    internal fun setIconColor(@ColorInt color: Int): KaleyraSnackbar {
         val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
         contentLayout.icon?.setColorFilter(color)
         return this
     }
 
-    fun setTextColor(@ColorInt color: Int): KaleyraSnackbar {
+    @JvmSynthetic
+    internal fun setTextColor(@ColorInt color: Int): KaleyraSnackbar {
         val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
         contentLayout.title?.setTextColor(color)
         contentLayout.subTitle?.setTextColor(color)
         return this
     }
 
-    fun setBackgroundColor(@ColorInt color: Int): KaleyraSnackbar {
+    @JvmSynthetic
+    internal fun setBackgroundColor(@ColorInt color: Int): KaleyraSnackbar {
         if (view.background != null) {
             val wrappedBackground = DrawableCompat.wrap(view.background.mutate())
             DrawableCompat.setTintList(wrappedBackground, ColorStateList.valueOf(color))
