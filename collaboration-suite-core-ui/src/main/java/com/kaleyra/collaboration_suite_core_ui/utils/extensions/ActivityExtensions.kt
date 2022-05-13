@@ -21,16 +21,8 @@ import android.app.Activity
 import android.os.Build
 import android.view.WindowManager
 
-/**
- * ActivityExtensions
- */
 object ActivityExtensions {
 
-    /**
-     * Turn and keep the screen on
-     *
-     * @receiver Activity
-     */
     @SuppressLint("WakelockTimeout")
     fun Activity.turnScreenOn() {
 //        val powerManager = applicationContext.getSystemService(Context.POWER_SERVICE) as PowerManager
@@ -50,11 +42,6 @@ object ActivityExtensions {
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
     }
 
-    /**
-     * Remove the turn and keep the screen on setting
-     *
-     * @receiver Activity
-     */
     fun Activity.turnScreenOff() {
         window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) setTurnScreenOn(false)

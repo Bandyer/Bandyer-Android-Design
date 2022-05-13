@@ -24,16 +24,10 @@ import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
  */
 class WidgetHidingCoordinator : HideableWidget {
 
-    /**
-     * @suppress
-     */
     override var hidingTimer: CountDownTimer? = null
 
     private var hideableWidgets = mutableListOf<HideableWidget>()
 
-    /**
-     * @suppress
-     */
     override var millisUntilTimerFinish: Long = 0
 
     /**
@@ -60,16 +54,10 @@ class WidgetHidingCoordinator : HideableWidget {
         hideableWidgets.remove(widget)
     }
 
-    /**
-     * @suppress
-     */
     override fun disableAutoHide() {
         hideableWidgets.forEach { it.disableAutoHide() }
     }
 
-    /**
-     * @suppress
-     */
     override fun onHidingTimerFinished() {
         hideableWidgets.forEach { it.onHidingTimerFinished() }
     }

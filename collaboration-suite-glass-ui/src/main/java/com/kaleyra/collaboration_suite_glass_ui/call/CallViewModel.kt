@@ -55,7 +55,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
@@ -90,20 +90,29 @@ internal class CallViewModel(
             .launchIn(viewModelScope)
     }
 
-    val zoom: StateFlow<Input.Video.Camera.Internal.Zoom?> = call
-        .flatMapLatest { it.inputs.allowList }
-        .map { it.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() }
-        .filter { it != null }
-        .flatMapLatest { it!!.currentLens }
-        .flatMapLatest { it.zoom }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+    val zoom: StateFlow<Input.Video.Camera.Internal.Zoom?> =
+        MutableStateFlow<Input.Video.Camera.Internal.Zoom?>(null).apply {
+            call
+                .flatMapLatest { it.inputs.allowList }
+                .map { it.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() }
+                .filter { it != null }
+                .flatMapLatest { it!!.currentLens }
+                .map { it.zoom }
+                .onEach { value = it }
+                .launchIn(viewModelScope)
+        }
 
-    val flashLight: StateFlow<Input.Video.Camera.Internal.FlashLight?> = call
-        .flatMapLatest { it.inputs.allowList }
-        .map { it.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() }
-        .filter { it != null }
-        .flatMapLatest { it!!.currentLens }
-        .flatMapLatest { it.flashLight }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+    val flashLight: StateFlow<Input.Video.Camera.Internal.FlashLight?> =
+        MutableStateFlow<Input.Video.Camera.Internal.FlashLight?>(null).apply {
+            call
+                .flatMapLatest { it.inputs.allowList }
+                .map { it.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() }
+                .filter { it != null }
+                .flatMapLatest { it!!.currentLens }
+                .map { it.flashLight }
+                .onEach { value = it }
+                .launchIn(viewModelScope)
+        }
 
 
     val preferredCallType get() = call.replayCache.first().extras.preferredType

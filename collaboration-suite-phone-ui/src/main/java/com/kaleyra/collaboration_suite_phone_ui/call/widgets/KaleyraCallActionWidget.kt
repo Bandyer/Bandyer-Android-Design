@@ -57,14 +57,8 @@ import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
 class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordinatorLayout: CoordinatorLayout, val callActionItems: List<CallAction>) :
     HideableWidget where T : ActionItem, F : KaleyraBottomSheet {
 
-    /**
-     * @suppress
-     */
     override var hidingTimer: CountDownTimer? = null
 
-    /**
-     * @suppress
-     */
     override var millisUntilTimerFinish: Long = 0
     /**
      * Click listener for when an item has been clicked
@@ -589,9 +583,6 @@ class KaleyraCallActionWidget<T, F>(val context: AppCompatActivity, val coordina
         audioRouteBottomSheet?.show()
     }
 
-    /**
-     * @suppress
-     */
     override fun onHidingTimerFinished() {
         if (!collapsible) return
         callBottomSheet?.collapse()

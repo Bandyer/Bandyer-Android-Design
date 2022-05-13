@@ -19,21 +19,12 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.plus
 
-/**
- * CallStreamDelegate. It is responsible of setting up the call's streams and videos.
- */
 interface CallStreamDelegate: LifecycleOwner {
 
     private companion object {
         const val MY_STREAM_ID = "main"
     }
 
-    /**
-     * Set up the call's streams
-     *
-     * @param context A context
-     * @param call The call
-     */
     fun setUpCallStreams(context: Context, call: Call) {
         val mainScope = MainScope() + CoroutineName("Call Scope: ${call.id}")
         setUpStreamsAndVideos(call, context, mainScope)
@@ -45,12 +36,6 @@ interface CallStreamDelegate: LifecycleOwner {
             .launchIn(lifecycleScope)
     }
 
-    /**
-     * Publish my stream
-     *
-     * @param fragmentActivity The fragment activity on which the stream will be added
-     * @param call The call
-     */
     fun publishMyStream(fragmentActivity: FragmentActivity, call: Call) {
         val me = call.participants.value.me
         if (me.streams.value.firstOrNull { it.id == MY_STREAM_ID } != null) return

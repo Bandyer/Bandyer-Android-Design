@@ -39,10 +39,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
-/**
- * The CollaborationService
- */
-class CollaborationService: BoundService(),
+class CollaborationService : BoundService(),
     CallUIDelegate,
     ChatUIDelegate,
     CallStreamDelegate,
@@ -92,9 +89,6 @@ class CollaborationService: BoundService(),
 
     override val wifi: SharedFlow<WiFiInfo> get() = wifiObserver!!.observe()
 
-    /**
-     * @suppress
-     */
     override fun onCreate() {
         super<BoundService>.onCreate()
         ProcessLifecycleOwner.get().lifecycle.addObserver(this)
@@ -105,17 +99,11 @@ class CollaborationService: BoundService(),
         _callAudioManager = CallAudioManager(this)
     }
 
-    /**
-     * @suppress
-     */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         return START_NOT_STICKY
     }
 
-    /**
-     * @suppress
-     */
     override fun onDestroy() {
         super<BoundService>.onDestroy()
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
@@ -139,7 +127,7 @@ class CollaborationService: BoundService(),
         wifiObserver = null
     }
 
-    fun bind(
+    fun <T : CallActivity> bindPhoneBox(
         phoneBox: PhoneBox,
         callUsersDescription: UsersDescription? = null,
         callActivityClazz: Class<T>
@@ -194,9 +182,6 @@ class CollaborationService: BoundService(),
     private fun shouldShowCallUI(call: Call): Boolean =
         isAppInForeground && (!this@CollaborationService.isSilent() || call.participants.value.let { it.me == it.creator() })
 
-    /**
-     * @suppress
-     */
     override fun onStop(owner: LifecycleOwner) {
         super.onStop(owner)
         if (currentCall != null && currentCall!!.state.value !is Call.State.Disconnected.Ended) return
@@ -207,17 +192,11 @@ class CollaborationService: BoundService(),
     ////////////////////////////////////////////
     // Application.ActivityLifecycleCallbacks //
     ////////////////////////////////////////////
-    /**
-     * @suppress
-     */
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         if (activity.javaClass != callActivityClazz) return
         currentCall?.also { publishMyStream(activity as FragmentActivity, it) }
     }
 
-    /**
-     * @suppress
-     */
     override fun onActivityStarted(activity: Activity) {
         if (activity.javaClass != callActivityClazz || isServiceInForeground) return
         lifecycleScope.launch {
@@ -230,59 +209,32 @@ class CollaborationService: BoundService(),
         }
     }
 
-    /**
-     * @suppress
-     */
     override fun onActivityResumed(activity: Activity) = Unit
 
-    /**
-     * @suppress
-     */
     override fun onActivityPaused(activity: Activity) = Unit
 
-    /**
-     * @suppress
-     */
     override fun onActivityStopped(activity: Activity) = Unit
 
-    /**
-     * @suppress
-     */
     override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) = Unit
 
-    /**
-     * @suppress
-     */
     override fun onActivityDestroyed(activity: Activity) = Unit
 
     ///////////////////////////////////////////////////
     // CallNotificationActionReceiver.ActionDelegate //
     ///////////////////////////////////////////////////
-    /**
-     * @suppress
-     */
     override fun onAnswerAction() {
         currentCall?.connect()
     }
 
-    /**
-     * @suppress
-     */
     override fun onHangUpAction() {
         currentCall?.end()
     }
 
-    /**
-     * @suppress
-     */
     override fun onScreenShareAction() = Unit
 
     /////////////////////
     // CallController //
     ////////////////////
-    /**
-     * @suppress
-     */
     override fun onHangup() {
         super.onHangup()
         clearNotification()
@@ -291,9 +243,6 @@ class CollaborationService: BoundService(),
     //////////////////////////////
     // CallNotificationDelegate //
     //////////////////////////////
-    /**
-     * @suppress
-     */
     override fun showNotification(notification: Notification, showInForeground: Boolean) {
         if (showInForeground) {
             startForeground(CALL_NOTIFICATION_ID, notification).also {
@@ -302,9 +251,6 @@ class CollaborationService: BoundService(),
         } else NotificationManager.notify(CALL_NOTIFICATION_ID, notification)
     }
 
-    /**
-     * @suppress
-     */
     override fun clearNotification() {
         stopForeground(true).also { isServiceInForeground = false }
         NotificationManager.cancelNotification(CALL_NOTIFICATION_ID)

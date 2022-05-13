@@ -190,18 +190,10 @@
 
     <!-- RECORDING -->
     <string name="kaleyra_recording_started">Recording started</string>
-    <string name="kaleyra_recording_started_message">The call recording has started.</string>
-    <string name="kaleyra_recording_stopped">Recording stopped</string>
-    <string name="kaleyra_recording_stopped_message">The call recording has been stopped.</string>
-    <string name="kaleyra_recording_failed">Recording error</string>
-    <string name="kaleyra_recording_failed_message">An error occurred while recording the call. Please hang up and retry.</string>
-    <string name="kaleyra_automatic_recording_disclaimer">The call will be recorded</string>
-    <string name="kaleyra_manual_recording_disclaimer">The call may be recorded</string>
-
-    <string name="kaleyra_utterance_recording_call_will_be_recorded">This call will be recorded</string>
-    <string name="kaleyra_utterance_recording_call_may_be_recorded">This call may be recorded</string>
-    <string name="kaleyra_utterance_recording_started">Recording starting now</string>
-    <string name="kaleyra_utterance_recording_stopped">Recording stopped</string>
-    <string name="kaleyra_utterance_recording_failed">Recording failed. Hang up and retry</string>
+    <string name="kaleyra_recording_started_message">Dear user, the call will be recorded from now on.</string>
+    <string name="kaleyra_recording_ended">Recording ended</string>
+    <string name="kaleyra_recording_ended_message">Dear user, the recording stopped.</string>
+    <string name="kaleyra_recording_error">Recording error</string>
+    <string name="kaleyra_recording_error_message">The device recording failed.</string>
 
 </resources>

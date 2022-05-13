@@ -21,30 +21,18 @@ import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 
 /**
- * Option. Define a functionality to set in the call ui
+ * Option
  */
 @Keep
 sealed class Option : Parcelable {
 
-    /**
-     * @suppress
-     */
     companion object {
-        /**
-         * A set of all options
-         */
         val all = setOf(WHITEBOARD, CHAT)
     }
 
-    /**
-     * The chat option
-     */
     @Parcelize
     object CHAT: Option()
 
-    /**
-     * The whiteboard option
-     */
     @Parcelize
     object WHITEBOARD: Option()
 }

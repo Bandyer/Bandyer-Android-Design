@@ -73,6 +73,12 @@ internal class KaleyraSnackbar private constructor(
                 it.duration = duration
                 it.setTitle(title)
                 it.setSubTitle(subtitle)
+                it.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.kaleyra_color_on_surface_80
+                    )
+                )
             }
         }
 
@@ -104,15 +110,8 @@ internal class KaleyraSnackbar private constructor(
         }
     }
 
-    private val backgroundDrawable = ContextCompat.getDrawable(context, R.drawable.kaleyra_snackbar_background)
-    private val backgroundTint = ContextCompat.getColor(context, R.color.kaleyra_color_on_surface_80)
     private val accessibilityManager =
         parent.context.getSystemService(Context.ACCESSIBILITY_SERVICE) as AccessibilityManager
-
-    init {
-        (view as View).background = backgroundDrawable
-        setBackgroundColor(backgroundTint)
-    }
 
     override fun getDuration(): Int {
         val userSetDuration = super.getDuration()

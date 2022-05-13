@@ -8,19 +8,10 @@ import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
 
-/**
- * CallController. It implements the CallUIController methods.
- */
 interface CallController: CallUIController {
 
-    /**
-     * The CallAudioManager
-     */
     val callAudioManager: CallAudioManager
 
-    /**
-     * The current call
-     */
     val currentCall: Call?
 
     override suspend fun onRequestMicPermission(context: FragmentActivity): Permission =
@@ -71,6 +62,6 @@ interface CallController: CallUIController {
     override fun onSetZoom(value: Float) {
         val camera = currentCall?.inputs?.allowList?.value?.filterIsInstance<Input.Video.Camera.Internal>()?.firstOrNull()
         val currentLens = camera?.currentLens?.value ?: return
-        currentLens.zoom.value?.tryZoom(value)
+        currentLens.zoom.tryZoom(value)
     }
 }

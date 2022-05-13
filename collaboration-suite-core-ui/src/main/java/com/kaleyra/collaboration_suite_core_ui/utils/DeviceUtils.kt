@@ -18,38 +18,13 @@ package com.kaleyra.collaboration_suite_core_ui.utils
 
 import android.os.Build
 
-/**
- * Utility class to check if the device is a smartglass
- */
 object DeviceUtils {
 
-    /**
-     * Flag. True if the device is a google glass, false otherwise
-     */
     val isGoogleGlass by lazy { Build.MANUFACTURER == "Google" && Build.DEVICE == "glass_v3" }
-
-    /**
-     * Flag. True if the device is a vuzix, false otherwise
-     */
     val isVuzix by lazy { Build.MANUFACTURER == "vuzix" }
-
-    /**
-     * Flag. True if the device is a realwear, false otherwise
-     */
     val isRealWear by lazy { Build.MANUFACTURER == "RealWear inc." }
-
-    /**
-     * Flag. True if the device is an epson moverio, false otherwise
-     */
     val isMoverio by lazy { Build.MANUFACTURER == "EPSON" }
 
-    /**
-     * Flag. True if the device is a smartglass, false otherwise
-     */
     val isSmartGlass by lazy { isGoogleGlass || isVuzix || isRealWear || isMoverio }
-
-    /**
-     * Flag. True if the device is a smartglass with a dpad input, false otherwise
-     */
     val isSmartGlassWithDpad by lazy { isGoogleGlass || isVuzix || isMoverio }
 }
