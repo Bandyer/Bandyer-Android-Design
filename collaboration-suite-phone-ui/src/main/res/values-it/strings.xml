@@ -182,10 +182,18 @@
 
     <!-- RECORDING -->
     <string name="kaleyra_recording_started">Registrazione avviata</string>
-    <string name="kaleyra_recording_started_message">Gentile utente, da questo momento la chiamata sarà registrata.</string>
-    <string name="kaleyra_recording_ended">Registrazione terminata</string>
-    <string name="kaleyra_recording_ended_message">Gentile utente, la registrazione è stata interrotta.</string>
-    <string name="kaleyra_recording_error">Errore di registrazione</string>
-    <string name="kaleyra_recording_error_message">La registrazione del tuo dispositivo non è andata a buon fine.</string>
+    <string name="kaleyra_recording_started_message">La registrazione della chiamata è stata avviata.</string>
+    <string name="kaleyra_recording_stopped">Registrazione terminata</string>
+    <string name="kaleyra_recording_stopped_message">La registrazione della chiamata è stata interrotta.</string>
+    <string name="kaleyra_recording_failed">Errore di registrazione</string>
+    <string name="kaleyra_recording_failed_message">Si è verificato un problema con la registrazione. Per favore chiudi la chiamata e riprova.</string>
+    <string name="kaleyra_automatic_recording_disclaimer">Questa chiamata sarà registrata</string>
+    <string name="kaleyra_manual_recording_disclaimer">Questa chiamata potrebbe essere registrata</string>
+
+    <string name="kaleyra_utterance_recording_call_will_be_recorded">Questa chiamata verrà registrata</string>
+    <string name="kaleyra_utterance_recording_call_may_be_recorded">Questa chiamata potrebbe essere registrata</string>
+    <string name="kaleyra_utterance_recording_started">Registrazione avviata</string>
+    <string name="kaleyra_utterance_recording_stopped">Registrazione interrotta</string>
+    <string name="kaleyra_utterance_recording_failed">Registrazione fallita. Chiudi la chiamata e riprova</string>
 
 </resources>

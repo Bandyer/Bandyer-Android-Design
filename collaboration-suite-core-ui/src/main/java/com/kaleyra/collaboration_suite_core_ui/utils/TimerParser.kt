@@ -1,5 +1,8 @@
 package com.kaleyra.collaboration_suite_core_ui.utils
 
+/**
+ * TimerParser
+ */
 object TimerParser {
     /**
      * Parse the timestamp into mm:ss or hh:mm:ss format
