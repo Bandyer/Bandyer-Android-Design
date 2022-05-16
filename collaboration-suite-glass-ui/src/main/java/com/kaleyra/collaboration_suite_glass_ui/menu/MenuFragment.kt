@@ -144,12 +144,12 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
             }
             zoomAction?.also { action ->
                 combine(viewModel.cameraEnabled, viewModel.zoom) { cameraEnabled, zoom ->
-                    action.disable(!cameraEnabled || zoom?.isSupported != true)
+                    action.disable(!cameraEnabled || zoom == null)
                 }.launchIn(this)
             }
             flashAction?.also { action ->
                 combine(viewModel.cameraEnabled, viewModel.flashLight) { cameraEnabled, flashLight ->
-                    action.disable(!cameraEnabled || flashLight?.isSupported != true)
+                    action.disable(!cameraEnabled || flashLight == null)
                 }.launchIn(this)
                 viewModel.cameraEnabled
                     .onEach {

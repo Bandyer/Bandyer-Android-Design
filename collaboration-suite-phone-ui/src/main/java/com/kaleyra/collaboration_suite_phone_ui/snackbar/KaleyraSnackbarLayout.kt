@@ -11,6 +11,11 @@ import com.google.android.material.snackbar.ContentViewCallback
 import com.google.android.material.textview.MaterialTextView
 import com.kaleyra.collaboration_suite_phone_ui.R
 
+/**
+ * KaleyraSnackbarLayout
+ *
+ * @constructor
+ */
 class KaleyraSnackbarLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -18,10 +23,21 @@ class KaleyraSnackbarLayout @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr, defStyleRes), ContentViewCallback {
 
+    /**
+     * The title view
+     */
     var title: MaterialTextView? = null
         private set
+
+    /**
+     * The subtitle view
+     */
     var subTitle: MaterialTextView? = null
         private set
+
+    /**
+     * The icon view
+     */
     var icon: AppCompatImageView? = null
         private set
 
@@ -37,6 +53,9 @@ class KaleyraSnackbarLayout @JvmOverloads constructor(
         (parent as View).setPadding(0, 0, 0, 0)
     }
 
+    /**
+     * @suppress
+     */
     override fun animateContentIn(delay: Int, duration: Int) {
         children.forEach { child ->
             if (child.visibility != View.VISIBLE) return@forEach
@@ -49,6 +68,9 @@ class KaleyraSnackbarLayout @JvmOverloads constructor(
         }
     }
 
+    /**
+     * @suppress
+     */
     override fun animateContentOut(delay: Int, duration: Int) {
         children.forEach { child ->
             if (child.visibility != View.VISIBLE) return@forEach
