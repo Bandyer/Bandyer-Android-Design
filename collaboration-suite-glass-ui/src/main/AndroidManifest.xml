@@ -23,7 +23,7 @@
         <activity
             android:name=".call.GlassCallActivity"
             android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.GlassCallActivity"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.DayNight.GlassCall"
+            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassCall"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
             android:launchMode="singleTask"
             android:showOnLockScreen="true"
@@ -33,7 +33,7 @@
         <activity
             android:name=".chat.GlassChatActivity"
             android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.GlassChatActivity"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.DayNight.GlassChat"
+            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChat"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation" />
     </application>
 
