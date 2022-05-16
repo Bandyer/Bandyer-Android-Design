@@ -58,11 +58,11 @@
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:exported="true"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ChatActivity"
@@ -75,17 +75,6 @@
             android:name=".NotificationActivity"
             android:exported="true"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call" />
-
-        <activity
-            android:name="com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity"
-            android:exported="true"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChat">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
 
         <service android:name=".NotificationServiceApi31" />
     </application>
