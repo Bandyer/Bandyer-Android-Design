@@ -52,4 +52,11 @@
 
     <style name="KaleyraCollaborationSuiteUI.Theme.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.DayNight.GlassChat"/>
 
+    <style name="KaleyraCollaborationSuiteUI.Theme.GlassChatNotification" parent="KaleyraCollaborationSuiteUI.Theme.GlassChat">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>

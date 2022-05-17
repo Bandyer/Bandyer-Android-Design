@@ -106,7 +106,6 @@ internal class CallViewModel(
         .flatMapLatest { it!!.currentLens }
         .flatMapLatest { it.flashLight }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
-
     val preferredCallType get() = call.replayCache.first().extras.preferredType
 
     val whiteboard = call.mapLatest { it.whiteboard }

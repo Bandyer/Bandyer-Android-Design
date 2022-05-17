@@ -146,7 +146,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         repeatOnStarted {
             viewModel.chat.messages
                 .onEach { msgs ->
-                    binding.kaleyraNoMessages.visibility = if (msgs.list.count() == 0) View.VISIBLE else View.GONE
+                    binding.kaleyraNoMessages.visibility = if (msgs.list.isEmpty()) View.VISIBLE else View.GONE
                     toChatMessagePages(this, msgs.list) { pages ->
                         val items = pages.map { ChatMessageItem(it) }
                         FastAdapterDiffUtil[itemAdapter!!] =
