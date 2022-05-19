@@ -143,6 +143,7 @@ class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Lis
             CollaborationUI.chatBox.show(CollaborationUI.chatBox.create(
                 participants.map { object : User { override val userId = it } }
             ))
+            finish()
         }
     }
 
