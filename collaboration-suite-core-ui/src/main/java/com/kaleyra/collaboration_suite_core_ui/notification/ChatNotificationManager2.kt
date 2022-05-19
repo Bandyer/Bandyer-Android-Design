@@ -2,8 +2,8 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.net.Uri
 import android.os.Bundle
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
@@ -22,12 +22,15 @@ data class ChatNotification(
     val userId: String,
     val message: String,
     val imageUri: Uri = Uri.EMPTY,
+    val usersList: List<String>
 )
 
-class ChatNotificationManager2(private val chatNotificationActivityClazz: Class<*>): Application.ActivityLifecycleCallbacks {
+class ChatNotificationManager2(private val chatNotificationActivityClazz: Class<*>) :
+    Application.ActivityLifecycleCallbacks {
 
-    private val application = ContextRetainer.context.applicationContext as Application
+    private val application = ContextRetainer.context.applicationContext as? Application
     private var isNotificationShown = false
+    private var context: Activity? = null
 
     /**
      * Do Not Disturb flag. If set to true, the notifications are no longer shown.
@@ -36,21 +39,27 @@ class ChatNotificationManager2(private val chatNotificationActivityClazz: Class<
 
     fun notify(notification: ChatNotification) {
         if (dnd || isNotificationShown) return
-        application.registerActivityLifecycleCallbacks(this)
+        application?.registerActivityLifecycleCallbacks(this)
         startNotificationActivity(notification)
     }
 
-    private fun startNotificationActivity(notification: ChatNotification) =
-        with(ContextRetainer.context) {
-            val intent = Intent(this, chatNotificationActivityClazz).apply {
-                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                putExtra("username", notification.name)
-                putExtra("userId", notification.userId)
-                putExtra("message", notification.message)
-                putExtra("imageUri", notification.imageUri)
-            }
-            startActivity(intent)
+    fun dispose() {
+        application?.unregisterActivityLifecycleCallbacks(this)
+//        context = null
+    }
+
+    private fun startNotificationActivity(notification: ChatNotification) {
+        val currentContext = context ?: ContextRetainer.context
+        val intent = Intent(currentContext, chatNotificationActivityClazz).apply {
+            context ?: addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra ("username", notification.name)
+            putExtra("userId", notification.userId)
+            putExtra("message", notification.message)
+            putExtra("imageUri", notification.imageUri)
+            putExtra("participants", notification.usersList.toTypedArray())
         }
+        currentContext.startActivity(intent)
+    }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
         if (activity.javaClass != chatNotificationActivityClazz) return
@@ -59,9 +68,14 @@ class ChatNotificationManager2(private val chatNotificationActivityClazz: Class<
 
     override fun onActivityStarted(activity: Activity) = Unit
 
-    override fun onActivityResumed(activity: Activity) = Unit
+    override fun onActivityResumed(activity: Activity) {
+        context = activity
+    }
 
-    override fun onActivityPaused(activity: Activity) = Unit
+    override fun onActivityPaused(activity: Activity) {
+        if (context != activity) return
+        context = null
+    }
 
     override fun onActivityStopped(activity: Activity) = Unit
 
@@ -69,7 +83,11 @@ class ChatNotificationManager2(private val chatNotificationActivityClazz: Class<
 
     override fun onActivityDestroyed(activity: Activity) {
         if (activity.javaClass != chatNotificationActivityClazz) return
-        application.unregisterActivityLifecycleCallbacks(this)
+//        application?.unregisterActivityLifecycleCallbacks(this)
         isNotificationShown = false
+    }
+
+    companion object {
+        const val AUTO_DISMISS_TIME = 3000L
     }
 }
