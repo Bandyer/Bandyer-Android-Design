@@ -16,10 +16,25 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.utils.extensions
 
+import android.content.Context
+import android.util.Log
 import com.kaleyra.collaboration_suite.Collaboration
+import com.kaleyra.collaboration_suite.chatbox.ChatBox
+import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.NotificationProvider
+import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotification
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager2
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
+import com.kaleyra.collaboration_suite_glass_ui.chat.ChatNotificationActivity
 import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onSubscription
+import java.lang.ref.WeakReference
 
 /**
  * Set up with glass u i
@@ -30,4 +45,47 @@ import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity
 fun CollaborationUI.setUpWithGlassUI(
     credentials: Collaboration.Credentials,
     configuration: Collaboration.Configuration
-) = setUp(credentials, configuration, GlassCallActivity::class.java, GlassChatActivity::class.java)
+) = setUp(credentials, configuration, GlassCallActivity::class.java, GlassChatActivity::class.java, ChatNotificationActivity::class.java)
+
+//fun CollaborationUI.setUpCustomGlassChatNotification(context: Context) {
+//    listenToChats(context, chatBox, usersDescription ?: UsersDescription())
+//}
+//
+//private fun listenToChats(context: Context, chatBox: ChatBox, usersDescription: UsersDescription): Job {
+//        val hashMap = hashMapOf<String, String>()
+//        val jobs = mutableListOf<Job>()
+//        val chatNotificationManager2 = ChatNotificationManager2(ChatNotificationActivity::class.java)
+//        return chatBox.channels.onEach { chats ->
+//            jobs.forEach {
+//                it.cancel()
+//                it.join()
+//            }
+//            jobs.clear()
+//            chats.forEach { chat ->
+//                jobs += chat.messages
+//                    .onEach onEachMessages@{ msgs ->
+//                        msgs.other.firstOrNull { it.state.value is Message.State.Received }?.also {
+//                            if (hashMap[chat.id] == it.id) return@onEachMessages
+//                            hashMap[chat.id] = it.id
+////                            _newMessages.emit(Pair(chat, it))
+//
+//                            val userId = it.creator.userId
+//                            val username = usersDescription.name(listOf(userId))
+//                            val message =
+//                                (chat.messages.value.list.firstOrNull()?.content as? Message.Content.Text)?.message
+//                                    ?: ""
+//                            val imageUri = usersDescription.image(listOf(userId))
+//
+//                            chatNotificationManager2.notify(
+//                                ChatNotification(
+//                                    username,
+//                                    userId,
+//                                    message,
+//                                    imageUri
+//                                )
+//                            )
+//                        }
+//                    }.launchIn(MainScope())
+//            }
+//        }.launchIn(MainScope())
+//    }

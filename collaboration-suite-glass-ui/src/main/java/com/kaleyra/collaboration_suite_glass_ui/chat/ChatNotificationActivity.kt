@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_glass_ui.chat
 import android.animation.Animator
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,6 +14,10 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.kaleyra.collaboration_suite.User
+import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager2
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.animateViewHeight
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -20,17 +25,12 @@ import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatNotificationActivityGlassBinding
 
-object NotificationLauncher {
-    fun show(context: Context) {
-        context.startActivity(Intent(context, ChatNotificationActivity::class.java))
-    }
-}
-
-internal class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Listener {
+class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Listener {
 
     private lateinit var binding: KaleyraChatNotificationActivityGlassBinding
 
     private var glassTouchEventManager: GlassTouchEventManager? = null
+    private var participants: Array<String> = arrayOf()
     private var isLayoutExpanded = false
 
     /**
@@ -43,7 +43,9 @@ internal class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventMa
                 this,
                 R.layout.kaleyra_chat_notification_activity_glass
             ).apply {
+                participants = intent.getStringArrayExtra("participants") ?: arrayOf()
                 setListenersForRealWear(kaleyraBottomNavigation)
+                initUI(this, intent)
             }
 
         glassTouchEventManager = GlassTouchEventManager(this, this)
@@ -58,7 +60,7 @@ internal class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventMa
         Handler(Looper.getMainLooper()).postDelayed({
             if (isLayoutExpanded) return@postDelayed
             finish()
-        }, AUTO_FINISH_TIME)
+        }, ChatNotificationManager2.AUTO_DISMISS_TIME)
         return super.onCreateView(name, context, attrs)
     }
 
@@ -109,14 +111,39 @@ internal class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventMa
             else -> false
         }
 
+    private fun initUI(binding: KaleyraChatNotificationActivityGlassBinding, intent: Intent) {
+        val username = intent.getStringExtra("username") ?: "null"
+        val userId = intent.getStringExtra("userId") ?: "null"
+        val message = intent.getStringExtra("message") ?: "null"
+        val imageUri = intent.getParcelableExtra("imageUri") as? Uri
+
+        binding.kaleyraTitle.text = username
+        binding.kaleyraMessage.text = message
+        binding.kaleyraMessage.maxLines = 2
+        binding.kaleyraTime.visibility = View.VISIBLE
+        binding.kaleyraAvatars.apply {
+            if (imageUri == null)
+                addAvatar(
+                    username[0].uppercase(),
+                    userId.parseToColor()
+                )
+            else addAvatar(imageUri)
+        }
+    }
+
     private fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
         bottomNavView.setThirdItemListener { onSwipeDown() }
         bottomNavView.setSecondItemListener { onTap() }
     }
 
     private fun onTap() {
-        isLayoutExpanded = true
-        expandRootView()
+        expandRootView {
+            isLayoutExpanded = true
+            binding.kaleyraMessage.maxLines = Int.MAX_VALUE
+            CollaborationUI.chatBox.show(CollaborationUI.chatBox.create(
+                participants.map { object : User { override val userId = it } }
+            ))
+        }
     }
 
     private fun onSwipeDown() {
@@ -134,7 +161,6 @@ internal class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventMa
     }
 
     private companion object {
-        const val AUTO_FINISH_TIME = 3000L
         const val ANIMATION_DURATION = 500L
     }
 }

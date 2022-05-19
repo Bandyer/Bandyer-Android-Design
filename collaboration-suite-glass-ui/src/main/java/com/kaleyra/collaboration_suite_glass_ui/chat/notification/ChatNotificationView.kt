@@ -76,7 +76,7 @@ internal class ChatNotificationView @JvmOverloads constructor(
                     item.userId.parseToColor()
                 )
                 if (item.imageRes != null) addAvatar(item.imageRes)
-                else if (item.imageUrl != null) addAvatar(item.imageUrl)
+//                else if (item.imageUrl != null) addAvatar(item.imageUrl)
             }
         }
 

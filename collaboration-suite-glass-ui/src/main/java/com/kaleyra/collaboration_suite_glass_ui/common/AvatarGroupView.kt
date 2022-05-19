@@ -17,6 +17,7 @@
 package com.kaleyra.collaboration_suite_glass_ui.common
 
 import android.content.Context
+import android.net.Uri
 import android.util.AttributeSet
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
@@ -45,9 +46,9 @@ internal class AvatarGroupView @JvmOverloads constructor(
     /**
      * Add an avatar
      *
-     * @param url The url remote resource for the avatar
+     * @param uri The uri for the avatar
      */
-    fun addAvatar(url: String) = addAvatar().setImage(url)
+    fun addAvatar(uri: Uri) = addAvatar().setImage(uri)
 
     /**
      * Add an avatar

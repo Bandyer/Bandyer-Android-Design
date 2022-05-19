@@ -73,7 +73,7 @@ import kotlin.math.tan
  * @param context is a context of the application.
  * @param onGestureListener is a listener for the gestures.
  */
-internal class GlassGestureDetector(context: Context, onGestureListener: OnGestureListener) {
+class GlassGestureDetector(context: Context, onGestureListener: OnGestureListener) {
     /**
      * Currently handled gestures.
      */

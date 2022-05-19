@@ -33,7 +33,7 @@ import android.view.KeyEvent.META_SHIFT_ON
  * @property source The event source
  * @constructor
  */
-internal data class TouchEvent(val type: Type, val source: Source) {
+data class TouchEvent(val type: Type, val source: Source) {
 
     /**
      * Type of the touch event

@@ -5,12 +5,14 @@ import android.app.Application
 import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
+import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
@@ -18,11 +20,14 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
+import com.kaleyra.collaboration_suite_core_ui.chat.ChatBoxUiDelegate
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotification
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager2
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
@@ -36,15 +41,17 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
 /**
  * The CollaborationService
  */
-class CollaborationService: BoundService(),
+class CollaborationService : BoundService(),
     CallUIDelegate,
     ChatUIDelegate,
+    ChatBoxUiDelegate,
     CallStreamDelegate,
     CallNotificationDelegate,
     DeviceStatusDelegate,
@@ -61,6 +68,8 @@ class CollaborationService: BoundService(),
     private var chatBox: ChatBox? = null
 
     private var phoneBoxJob: Job? = null
+
+    private var chatBoxJob: Job? = null
 
     private var batteryObserver: BatteryObserver? = null
 
@@ -143,8 +152,8 @@ class CollaborationService: BoundService(),
      * Bind the service to a phone box
      *
      * @param phoneBox The phonebox
-     * @param usersDescription The user description. Optional.
-     * @param activityClazz The call activity class
+     * @param callUsersDescription The user description. Optional.
+     * @param callActivityClazz The call activity class
      */
     fun <T : CallActivity> bindPhoneBox(
         phoneBox: PhoneBox,
@@ -152,6 +161,7 @@ class CollaborationService: BoundService(),
         callActivityClazz: Class<T>
     ) {
         this.phoneBox = phoneBox
+        this.chatBox = chatBox
         this.callUsersDescription = callUsersDescription ?: UsersDescription()
         this.callActivityClazz = callActivityClazz
         phoneBoxJob?.cancel()
@@ -159,11 +169,84 @@ class CollaborationService: BoundService(),
     }
 
     fun bindChatChannel(
-        chatChat: Chat,
+        chat: Chat,
         chatUsersDescription: UsersDescription? = null
     ) {
-        this._chat = chatChat
-        this.chatUsersDescription= chatUsersDescription ?: UsersDescription()
+        this._chat = chat
+        this.chatUsersDescription = chatUsersDescription ?: UsersDescription()
+    }
+
+    fun bindCustomChatNotification(
+        chatBox: ChatBox,
+        chatNotificationManager2: ChatNotificationManager2
+    ) {
+        chatBoxJob?.cancel()
+        chatBoxJob = listenToChats(chatBox, chatNotificationManager2)
+    }
+
+    private val _newMessages: MutableSharedFlow<Pair<Chat, Message>> =
+        MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
+    override val newMessages: SharedFlow<Pair<Chat, Message>> = _newMessages
+
+    private fun listenToChats(
+        chatBox: ChatBox,
+        chatNotificationManager2: ChatNotificationManager2
+    ): Job {
+        val hashMap = hashMapOf<String, String>()
+        val jobs = mutableListOf<Job>()
+        return chatBox.channels.onEach { chats ->
+            jobs.forEach {
+                it.cancel()
+                it.join()
+            }
+            jobs.clear()
+            chats.forEach { chat ->
+                jobs += chat.messages
+                    .onSubscription {
+                        Log.e(
+                            "CollaborationService",
+                            "Subscribe job chat: ${chat.id}"
+                        )
+                    }
+                    .onEach onEachMessages@{ msgs ->
+                        val msgId = chat.messages.value.list.firstOrNull()?.id
+                        val msgContent =
+                            (chat.messages.value.list.firstOrNull()?.content as? Message.Content.Text)?.message
+                        Log.e(
+                            "CollaborationService",
+                            "last message: id: $msgId, content: $msgContent"
+                        )
+
+                        msgs.other.firstOrNull { it.state.value is Message.State.Received }?.also {
+                            if (hashMap[chat.id] == it.id) return@onEachMessages
+                            hashMap[chat.id] = it.id
+                            _newMessages.emit(Pair(chat, it))
+
+                            Log.e(
+                                "CollaborationService",
+                                "ChatId: ${chat.id}, MsgId: ${it.id}"
+                            )
+
+                            val userId = it.creator.userId
+                            val username = callUsersDescription.name(listOf(userId))
+                            val message =
+                                (chat.messages.value.list.firstOrNull()?.content as? Message.Content.Text)?.message
+                                    ?: ""
+                            val imageUri = callUsersDescription.image(listOf(userId))
+
+                            chatNotificationManager2.notify(
+                                ChatNotification(
+                                    username,
+                                    userId,
+                                    message,
+                                    imageUri,
+                                    chat.participants.value.others.map { part -> part.userId }
+                                )
+                            )
+                        }
+                    }.launchIn(lifecycleScope)
+            }
+        }.launchIn(lifecycleScope)
     }
 
     private fun listenToCalls(
