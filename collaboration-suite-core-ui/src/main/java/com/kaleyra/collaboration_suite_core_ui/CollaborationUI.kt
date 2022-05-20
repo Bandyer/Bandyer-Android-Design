@@ -126,6 +126,7 @@ object CollaborationUI {
             .onEach { startCollaborationService(callActivityClazz, chatNotificationActivityClazz) }
             .launchIn(MainScope())
         this.chatActivityClazz = chatActivityClazz
+        this.callActivityClazz = callActivityClazz
         return true
     }
 
