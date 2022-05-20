@@ -131,6 +131,7 @@ class CollaborationService : BoundService(),
         application.unregisterActivityLifecycleCallbacks(this)
         clearNotification()
         phoneBoxJob?.cancel()
+        chatBoxJob?.cancel()
         currentCall?.end()
         phoneBox?.disconnect()
         chatBox?.disconnect()
