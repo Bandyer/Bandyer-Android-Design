@@ -205,14 +205,14 @@ class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: 
      * @param users to be called
      * @param options creation options
      */
-    fun call(users: List<User>, options: (CreationOptions.() -> Unit)? = null) = CallUI(create(users, options)).apply { connect() }
+    fun call(users: List<User>, options: (CreationOptions.() -> Unit)? = null): CallUI = create(users, options).apply { connect() }
 
     /**
      * Join an url
      *
      * @param url to join
      */
-    fun join(url: String) = CallUI(create(url)).apply { connect() }
+    fun join(url: String): CallUI = create(url).apply { connect() }
 
     override fun create(url: String) = CallUI(phoneBox.create(url))
 
