@@ -29,6 +29,7 @@ import com.kaleyra.collaboration_suite.Collaboration.Credentials
 import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
+import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.CreationOptions
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.State.Connecting
@@ -38,13 +39,12 @@ import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager2
+import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.transform
 
 /**
  * Collaboration UI
@@ -87,8 +87,10 @@ object CollaborationUI {
      */
     val phoneBox: PhoneBoxUI
         get() {
-            require(collaboration != null) { "setUp the CollaborationUI to use the phoneBox" }
-            return PhoneBoxUI(collaboration!!.phoneBox)
+            require(collaboration != null && callActivityClazz != null) { "setUp the CollaborationUI to use the phoneBox" }
+            return PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz!!).apply {
+                enableAudioRouting(logger = collaboration?.configuration?.logger)
+            }
         }
 
     /**
@@ -125,6 +127,11 @@ object CollaborationUI {
             .launchIn(MainScope())
         this.chatActivityClazz = chatActivityClazz
         return true
+    }
+
+    fun connect() {
+        phoneBox.connect()
+        chatBox.connect()
     }
 
     /**
@@ -175,7 +182,7 @@ object CollaborationUI {
  *
  * @param phoneBox delegated property
  */
-class PhoneBoxUI(phoneBox: PhoneBox) : PhoneBox by phoneBox {
+class PhoneBoxUI(phoneBox: PhoneBox, private val callActivityClazz: Class<*>) : PhoneBox by phoneBox {
 
     /**
      * Call
@@ -192,9 +199,16 @@ class PhoneBoxUI(phoneBox: PhoneBox) : PhoneBox by phoneBox {
      * @param url to join
      */
     fun join(url: String) = create(url).apply { connect() }
+
+
+    fun show(call: Call) {
+        // TODO: implement
+    }
+
 }
 
 class ChatBoxUI(chatBox: ChatBox, private val chatActivityClazz: Class<*>) : ChatBox by chatBox {
+
 
     fun show(chat: Chat) = bindCollaborationService(chat, usersDescription, chatActivityClazz)
 
