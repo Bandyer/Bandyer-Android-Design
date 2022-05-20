@@ -30,6 +30,7 @@ import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.Call.PreferredType
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.CreationOptions
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.State.Connecting
@@ -196,7 +197,7 @@ object CollaborationUI {
  *
  * @param phoneBox delegated property
  */
-class PhoneBoxUI(phoneBox: PhoneBox, private val callActivityClazz: Class<*>) : PhoneBox by phoneBox {
+class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: Class<*>) : PhoneBox by phoneBox {
 
     /**
      * Call
@@ -204,27 +205,41 @@ class PhoneBoxUI(phoneBox: PhoneBox, private val callActivityClazz: Class<*>) : 
      * @param users to be called
      * @param options creation options
      */
-    fun call(users: List<User>, options: (CreationOptions.() -> Unit)? = null) =
-        create(users, options).apply { connect() }
+    fun call(users: List<User>, options: (CreationOptions.() -> Unit)? = null) = CallUI(create(users, options)).apply { connect() }
 
     /**
      * Join an url
      *
      * @param url to join
      */
-    fun join(url: String) = create(url).apply { connect() }
+    fun join(url: String) = CallUI(create(url)).apply { connect() }
 
+    override fun create(url: String) = CallUI(phoneBox.create(url))
 
-    fun show(call: Call) {
+    override fun create(users: List<User>, conf: (CreationOptions.() -> Unit)?) = CallUI(phoneBox.create(users, conf))
+
+    fun show(call: CallUI) {
         // TODO: implement
     }
-
 }
 
-class ChatBoxUI(chatBox: ChatBox, private val chatActivityClazz: Class<*>) : ChatBox by chatBox {
+class CallUI(call: Call, var tools: List<Tool> = listOf()) : Call by call {
+
+    sealed class Tool {
+        object Zoom : Tool()
+        object Flashlight : Tool()
+        object Chat : Tool()
+        object Whiteboard : Tool()
+    }
+}
 
 
-    fun show(chat: Chat) = bindCollaborationService(chat, usersDescription, chatActivityClazz)
+class ChatBoxUI(private val chatBox: ChatBox, private val chatActivityClazz: Class<*>) : ChatBox by chatBox {
+
+
+    fun show(chat: ChatUI) = bindCollaborationService(chat, usersDescription, chatActivityClazz)
+
+    override fun create(users: List<User>) = ChatUI(chatBox.create(users))
 
 //    suspend fun create(list: List<ChatUser>): ChatChannel =
 //        createChannel(list).also { bindCollaborationService(it, usersDescription, chatActivityClazz) }
@@ -253,6 +268,13 @@ class ChatBoxUI(chatBox: ChatBox, private val chatActivityClazz: Class<*>) : Cha
             val intent = Intent(this, CollaborationService::class.java)
             bindService(intent, serviceConnection, 0)
         }
+    }
+}
+
+class ChatUI(chat: Chat, var tools: List<Tool> = listOf()) : Chat by chat {
+
+    sealed class Tool {
+        class Call(val preferredType: PreferredType) : Tool()
     }
 }
 
