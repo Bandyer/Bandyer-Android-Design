@@ -37,11 +37,14 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager2
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.transform
 
 /**
  * Collaboration UI
@@ -56,17 +59,21 @@ object CollaborationUI {
     private var callActivityClazz: Class<*>? = null
 
     private var wasPhoneBoxConnected = false
+    private var wasChatBoxConnected = false
 
     private var lifecycleObserver = object : DefaultLifecycleObserver {
         override fun onStart(owner: LifecycleOwner) {
             super.onStart(owner)
             if (wasPhoneBoxConnected) phoneBox.connect()
+            if (wasChatBoxConnected) chatBox.connect()
         }
 
         override fun onStop(owner: LifecycleOwner) {
             super.onStop(owner)
             wasPhoneBoxConnected =
                 phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
+            wasChatBoxConnected =
+                chatBox.state.value.let { it !is ChatBox.State.Disconnected && it !is ChatBox.State.Disconnecting }
         }
     }
 
@@ -106,14 +113,15 @@ object CollaborationUI {
         credentials: Credentials,
         configuration: Configuration,
         callActivityClazz: Class<T>,
-        chatActivityClazz: Class<S>? = null
+        chatActivityClazz: Class<S>? = null,
+        chatNotificationActivityClazz: Class<*>? = null
     ): Boolean {
         if (collaboration != null) return false
         Collaboration.create(credentials, configuration).apply { collaboration = this }
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
         phoneBox.state
             .filter { it is Connecting }
-            .onEach { startCollaborationService(callActivityClazz) }
+            .onEach { startCollaborationService(callActivityClazz, chatNotificationActivityClazz) }
             .launchIn(MainScope())
         this.chatActivityClazz = chatActivityClazz
         return true
@@ -131,11 +139,20 @@ object CollaborationUI {
         collaboration = null
     }
 
-    private fun <T : CallActivity> startCollaborationService(activityClazz: Class<T>) {
+    private fun <T : CallActivity> startCollaborationService(
+        activityClazz: Class<T>,
+        chatNotificationActivityClazz: Class<*>?
+    ) {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
                 val service = (binder as BoundServiceBinder).getService<CollaborationService>()
                 service.bindPhoneBox(phoneBox, usersDescription, activityClazz)
+                chatNotificationActivityClazz?.also {
+                    service.bindCustomChatNotification(
+                        chatBox,
+                        ChatNotificationManager2(it)
+                    )
+                }
             }
 
             override fun onServiceDisconnected(componentName: ComponentName) = Unit
@@ -190,14 +207,14 @@ class ChatBoxUI(chatBox: ChatBox, private val chatActivityClazz: Class<*>) : Cha
 //    }
 
     private fun bindCollaborationService(
-        chatChat: Chat,
+        chat: Chat,
         usersDescription: UsersDescription?,
         chatActivityClazz: Class<*>
     ) {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
                 val service = (binder as BoundServiceBinder).getService<CollaborationService>()
-                service.bindChatChannel(chatChat, usersDescription)
+                service.bindChatChannel(chat, usersDescription)
                 UIProvider.showChat(chatActivityClazz)
             }
 
