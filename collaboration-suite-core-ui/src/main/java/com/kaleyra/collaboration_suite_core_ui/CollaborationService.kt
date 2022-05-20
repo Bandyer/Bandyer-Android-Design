@@ -20,7 +20,6 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
-import com.kaleyra.collaboration_suite_core_ui.chat.ChatBoxUiDelegate
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
@@ -51,7 +50,6 @@ import kotlinx.coroutines.launch
 class CollaborationService : BoundService(),
     CallUIDelegate,
     ChatUIDelegate,
-    ChatBoxUiDelegate,
     CallStreamDelegate,
     CallNotificationDelegate,
     DeviceStatusDelegate,
@@ -185,9 +183,9 @@ class CollaborationService : BoundService(),
         chatBoxJob = listenToChats(chatBox, chatNotificationManager2)
     }
 
-    private val _newMessages: MutableSharedFlow<Pair<Chat, Message>> =
-        MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
-    override val newMessages: SharedFlow<Pair<Chat, Message>> = _newMessages
+//    private val _newMessages: MutableSharedFlow<Pair<Chat, Message>> =
+//        MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
+//    override val newMessages: SharedFlow<Pair<Chat, Message>> = _newMessages
 
     private fun listenToChats(
         chatBox: ChatBox,
@@ -221,7 +219,7 @@ class CollaborationService : BoundService(),
                         msgs.other.firstOrNull { it.state.value is Message.State.Received }?.also {
                             if (hashMap[chat.id] == it.id) return@onEachMessages
                             hashMap[chat.id] = it.id
-                            _newMessages.emit(Pair(chat, it))
+//                            _newMessages.emit(Pair(chat, it))
 
                             Log.e(
                                 "CollaborationService",
