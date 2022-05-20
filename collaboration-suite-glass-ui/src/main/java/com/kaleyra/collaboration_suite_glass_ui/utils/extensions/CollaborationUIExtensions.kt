@@ -16,25 +16,11 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.utils.extensions
 
-import android.content.Context
-import android.util.Log
 import com.kaleyra.collaboration_suite.Collaboration
-import com.kaleyra.collaboration_suite.chatbox.ChatBox
-import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.NotificationProvider
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotification
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager2
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatNotificationActivity
 import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onSubscription
-import java.lang.ref.WeakReference
 
 /**
  * Set up with glass u i
