@@ -59,17 +59,21 @@ object CollaborationUI {
     private var callActivityClazz: Class<*>? = null
 
     private var wasPhoneBoxConnected = false
+    private var wasChatBoxConnected = false
 
     private var lifecycleObserver = object : DefaultLifecycleObserver {
         override fun onStart(owner: LifecycleOwner) {
             super.onStart(owner)
             if (wasPhoneBoxConnected) phoneBox.connect()
+            if (wasChatBoxConnected) chatBox.connect()
         }
 
         override fun onStop(owner: LifecycleOwner) {
             super.onStop(owner)
             wasPhoneBoxConnected =
                 phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
+            wasChatBoxConnected =
+                chatBox.state.value.let { it !is ChatBox.State.Disconnected && it !is ChatBox.State.Disconnecting }
         }
     }
 
@@ -135,12 +139,20 @@ object CollaborationUI {
         collaboration = null
     }
 
-    private fun <T : CallActivity> startCollaborationService(activityClazz: Class<T>, chatNotificationActivityClazz: Class<*>?) {
+    private fun <T : CallActivity> startCollaborationService(
+        activityClazz: Class<T>,
+        chatNotificationActivityClazz: Class<*>?
+    ) {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
                 val service = (binder as BoundServiceBinder).getService<CollaborationService>()
                 service.bindPhoneBox(phoneBox, usersDescription, activityClazz)
-                chatNotificationActivityClazz?.also { service.bindCustomChatNotification(chatBox, ChatNotificationManager2(it)) }
+                chatNotificationActivityClazz?.also {
+                    service.bindCustomChatNotification(
+                        chatBox,
+                        ChatNotificationManager2(it)
+                    )
+                }
             }
 
             override fun onServiceDisconnected(componentName: ComponentName) = Unit
