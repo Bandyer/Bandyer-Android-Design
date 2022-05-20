@@ -207,6 +207,9 @@ class CollaborationService : BoundService(),
                             "Subscribe job chat: ${chat.id}"
                         )
                     }
+                    .onCompletion {
+                        chatNotificationManager2.dispose()
+                    }
                     .onEach onEachMessages@{ msgs ->
                         val msgId = chat.messages.value.list.firstOrNull()?.id
                         val msgContent =
