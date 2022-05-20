@@ -88,9 +88,7 @@ object CollaborationUI {
     val phoneBox: PhoneBoxUI
         get() {
             require(collaboration != null && callActivityClazz != null) { "setUp the CollaborationUI to use the phoneBox" }
-            return PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz!!).apply {
-                enableAudioRouting(logger = collaboration?.configuration?.logger)
-            }
+            return PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz!!)
         }
 
     /**
@@ -125,8 +123,11 @@ object CollaborationUI {
             .filter { it is Connecting }
             .onEach { startCollaborationService(callActivityClazz, chatNotificationActivityClazz) }
             .launchIn(MainScope())
+
         this.chatActivityClazz = chatActivityClazz
         this.callActivityClazz = callActivityClazz
+
+        phoneBox.enableAudioRouting(logger = collaboration?.configuration?.logger)
         return true
     }
 
