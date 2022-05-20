@@ -160,7 +160,6 @@ class CollaborationService : BoundService(),
         callActivityClazz: Class<T>
     ) {
         this.phoneBox = phoneBox
-        this.chatBox = chatBox
         this.callUsersDescription = callUsersDescription ?: UsersDescription()
         this.callActivityClazz = callActivityClazz
         phoneBoxJob?.cancel()
@@ -179,6 +178,7 @@ class CollaborationService : BoundService(),
         chatBox: ChatBox,
         chatNotificationManager2: ChatNotificationManager2
     ) {
+        this.chatBox = chatBox
         chatBoxJob?.cancel()
         chatBoxJob = listenToChats(chatBox, chatNotificationManager2)
     }
