@@ -23,15 +23,25 @@ import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
+import com.kaleyra.collaboration_suite_glass_ui.common.AvatarGroupView
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatNotificationActivityGlassBinding
 
 class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Listener {
 
+    private data class NotificationData(
+        val username: String,
+        val userId: String,
+        val message: String,
+        val imageUri: Uri
+    )
+
     private lateinit var binding: KaleyraChatNotificationActivityGlassBinding
 
     private var glassTouchEventManager: GlassTouchEventManager? = null
-    private var participants: Array<String> = arrayOf()
+    private var participants: Array<String>? = null
+    private var sendersId = mutableSetOf<String>()
     private var isLayoutExpanded = false
+    private var msgCounter = 1
 
     /**
      * @suppress
@@ -43,9 +53,17 @@ class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Lis
                 this,
                 R.layout.kaleyra_chat_notification_activity_glass
             ).apply {
-                participants = intent.getStringArrayExtra("participants") ?: arrayOf()
                 setListenersForRealWear(kaleyraBottomNavigation)
-                initUI(this, intent)
+
+                val data = getNotificationData(intent)
+                kaleyraTitle.text = data.username
+                kaleyraMessage.text = data.message
+                kaleyraMessage.maxLines = 2
+                kaleyraTime.visibility = View.VISIBLE
+                kaleyraAvatars.addAvatar(data)
+
+                participants = intent.getStringArrayExtra("participants")
+                sendersId.add(data.userId)
             }
 
         glassTouchEventManager = GlassTouchEventManager(this, this)
@@ -62,6 +80,25 @@ class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Lis
             finish()
         }, ChatNotificationManager2.AUTO_DISMISS_TIME)
         return super.onCreateView(name, context, attrs)
+    }
+
+    /**
+     * @suppress
+     */
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent ?: return
+        val data = getNotificationData(intent)
+        binding.kaleyraMessage.text = null
+        binding.kaleyraMessage.maxLines = 0
+        binding.kaleyraTime.visibility = View.GONE
+        binding.kaleyraTitle.text =
+            resources.getString(R.string.kaleyra_glass_new_messages_pattern, ++msgCounter)
+
+        sendersId.apply {
+            add(data.userId)
+            if (count() > 1) binding.kaleyraAvatars.addAvatar(data)
+        }
     }
 
     /**
@@ -111,24 +148,21 @@ class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Lis
             else -> false
         }
 
-    private fun initUI(binding: KaleyraChatNotificationActivityGlassBinding, intent: Intent) {
-        val username = intent.getStringExtra("username") ?: "null"
-        val userId = intent.getStringExtra("userId") ?: "null"
-        val message = intent.getStringExtra("message") ?: "null"
-        val imageUri = intent.getParcelableExtra("imageUri") as? Uri
+    private fun getNotificationData(intent: Intent) =
+        NotificationData(
+            intent.getStringExtra("username") ?: "null",
+            intent.getStringExtra("userId") ?: "null",
+            intent.getStringExtra("message") ?: "null",
+            intent.getParcelableExtra("imageUri") as? Uri ?: Uri.EMPTY
+        )
 
-        binding.kaleyraTitle.text = username
-        binding.kaleyraMessage.text = message
-        binding.kaleyraMessage.maxLines = 2
-        binding.kaleyraTime.visibility = View.VISIBLE
-        binding.kaleyraAvatars.apply {
-            if (imageUri == null)
-                addAvatar(
-                    username[0].uppercase(),
-                    userId.parseToColor()
-                )
-            else addAvatar(imageUri)
-        }
+    private fun AvatarGroupView.addAvatar(data: NotificationData) {
+        if (data.imageUri == Uri.EMPTY)
+            addAvatar(
+                data.username[0].uppercase(),
+                data.userId.parseToColor()
+            )
+        else addAvatar(data.imageUri)
     }
 
     private fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
@@ -140,9 +174,17 @@ class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Lis
         expandRootView {
             isLayoutExpanded = true
             binding.kaleyraMessage.maxLines = Int.MAX_VALUE
-            CollaborationUI.chatBox.show(CollaborationUI.chatBox.create(
-                participants.map { object : User { override val userId = it } }
-            ))
+
+            participants?.also { parts ->
+                CollaborationUI.chatBox.show(CollaborationUI.chatBox.create(
+                    parts.map {
+                        object : User {
+                            override val userId = it
+                        }
+                    }
+                ))
+            }
+
             finish()
         }
     }
