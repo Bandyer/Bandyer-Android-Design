@@ -120,13 +120,13 @@ object CollaborationUI {
     ): Boolean {
         if (collaboration != null) return false
         Collaboration.create(credentials, configuration).apply { collaboration = this }
+        this.chatActivityClazz = chatActivityClazz
+        this.callActivityClazz = callActivityClazz
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
         phoneBox.state
             .filter { it is Connecting }
             .onEach { startCollaborationService(callActivityClazz, chatNotificationActivityClazz) }
             .launchIn(MainScope())
-        this.chatActivityClazz = chatActivityClazz
-        this.callActivityClazz = callActivityClazz
         return true
     }
 
