@@ -123,14 +123,14 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                                 }
                                 isLoading = true
                             }
-//                            val foundView = snapHelper.findSnapView(layoutManager) ?: return
-//                            val currentMsgIndex = layoutManager.getPosition(foundView)
+                            val foundView = snapHelper.findSnapView(layoutManager) ?: return
+                            val currentMsgIndex = layoutManager.getPosition(foundView)
 
 //                            if (currentMsgIndex > lastMsgIndex && pagesIds[currentMsgIndex] != pagesIds[lastMsgIndex]) {
 //                                newMessagesCounter?.apply { set(get() - 1) }
 //                                lastMsgIndex = currentMsgIndex
 //                            }
-//                            currentMsgItemIndex = currentMsgIndex
+                            currentMsgItemIndex = currentMsgIndex
                         }
                     })
 
