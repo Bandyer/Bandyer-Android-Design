@@ -29,7 +29,6 @@ class ChatNotificationManager2(private val chatNotificationActivityClazz: Class<
     Application.ActivityLifecycleCallbacks {
 
     private val application = ContextRetainer.context.applicationContext as? Application
-    private var isNotificationShown = false
     private var context: Activity? = null
 
     /**
@@ -38,7 +37,7 @@ class ChatNotificationManager2(private val chatNotificationActivityClazz: Class<
     var dnd: Boolean = false
 
     fun notify(notification: ChatNotification) {
-        if (dnd || isNotificationShown) return
+        if (dnd) return
         application?.registerActivityLifecycleCallbacks(this)
         startNotificationActivity(notification)
     }
@@ -61,10 +60,7 @@ class ChatNotificationManager2(private val chatNotificationActivityClazz: Class<
         currentContext.startActivity(intent)
     }
 
-    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-        if (activity.javaClass != chatNotificationActivityClazz) return
-        isNotificationShown = true
-    }
+    override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) = Unit
 
     override fun onActivityStarted(activity: Activity) = Unit
 
@@ -81,12 +77,7 @@ class ChatNotificationManager2(private val chatNotificationActivityClazz: Class<
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
 
-    override fun onActivityDestroyed(activity: Activity) {
-        if (activity.javaClass != chatNotificationActivityClazz) return
-//        application?.unregisterActivityLifecycleCallbacks(this)
-        isNotificationShown = false
-    }
-
+    override fun onActivityDestroyed(activity: Activity) = Unit
     companion object {
         const val AUTO_DISMISS_TIME = 3000L
     }
