@@ -39,6 +39,7 @@ import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager2
+import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.MainScope
@@ -130,9 +131,20 @@ object CollaborationUI {
         return true
     }
 
+    /**
+     * Connect
+     */
     fun connect() {
         phoneBox.connect()
         chatBox.connect()
+    }
+
+    /**
+     * Disconnect
+     */
+    fun disconnect() {
+        phoneBox.disconnect()
+        chatBox.disconnect()
     }
 
     /**
@@ -143,7 +155,8 @@ object CollaborationUI {
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         wasPhoneBoxConnected = false
         stopCollaborationService()
-        phoneBox.disconnect()
+        disconnect()
+        phoneBox.disableAudioRouting(logger = collaboration?.configuration?.logger)
         collaboration = null
     }
 
