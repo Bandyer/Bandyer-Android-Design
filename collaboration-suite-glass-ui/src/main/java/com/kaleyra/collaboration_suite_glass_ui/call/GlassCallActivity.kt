@@ -19,7 +19,6 @@ package com.kaleyra.collaboration_suite_glass_ui.call
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -35,11 +34,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
-import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.CollaborationService
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
@@ -50,10 +47,10 @@ import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActi
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
+import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
-import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.WhiteboardItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.MyStreamItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.OtherStreamItem
@@ -67,6 +64,8 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.enableImmersiveMode
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getCallThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import com.mikepenz.fastadapter.FastAdapter
@@ -92,7 +91,6 @@ import java.util.concurrent.ConcurrentMap
  */
 internal class GlassCallActivity :
     CallActivity(),
-//    ChatNotificationManager.NotificationListener,
     OnDestinationChangedListener,
     TouchEventListener,
     GlassTouchEventManager.Listener {
@@ -119,8 +117,6 @@ internal class GlassCallActivity :
     private val livePointers: ConcurrentMap<LivePointerView, Pair<String, Long>> = ConcurrentHashMap()
     private var navController: NavController? = null
     private var glassTouchEventManager: GlassTouchEventManager? = null
-//    private var notificationManager: ChatNotificationManager? = null
-//    private var isNotificationVisible = false
 
     val rvStreams: RecyclerView get() = binding.kaleyraStreams
 
@@ -133,9 +129,6 @@ internal class GlassCallActivity :
         navController = navHostFragment.navController
 
         glassTouchEventManager = GlassTouchEventManager(this, this)
-
-//        notificationManager =
-//            ChatNotificationManager(binding.kaleyraContent).also { it.addListener(this) }
 
         // Set up the streams' recycler view
         with(binding.kaleyraStreams) {
@@ -605,7 +598,6 @@ internal class GlassCallActivity :
         whiteboardItemAdapter = null
         navController = null
         glassTouchEventManager = null
-//        notificationManager = null
     }
 
     /**
@@ -618,11 +610,6 @@ internal class GlassCallActivity :
      *  @param destinationId The destination fragment's id
      */
     override fun onDestinationChanged(destinationId: Int) {
-//        (destinationId == R.id.chatFragment).also {
-//            if (it) notificationManager!!.dismiss(false)
-//            notificationManager!!.dnd = it
-//        }
-
         with(binding.kaleyraStatusBar) {
             setBackgroundColor(
                 when {
@@ -658,69 +645,21 @@ internal class GlassCallActivity :
         if (glassTouchEventManager!!.toGlassTouchEvent(event)) true
         else super.dispatchKeyEvent(event)
 
-    override fun onGlassTouchEvent(glassEvent: TouchEvent): Boolean {
-//        return if (isNotificationVisible) onNotificationTouch(glassEvent)
-//        else {
-        val currentDest =
-            supportFragmentManager.currentNavigationFragment as? TouchEventListener
-                ?: return false
-        return if (!currentDest.onTouch(glassEvent)) onTouch(glassEvent) else true
-//        }
-    }
+    override fun onGlassTouchEvent(glassEvent: TouchEvent): Boolean =
+        (supportFragmentManager.currentNavigationFragment as? TouchEventListener)?.let {
+            if (it.onTouch(glassEvent)) true else onTouch(glassEvent)
+        } ?: false
 
     override fun onTouch(event: TouchEvent): Boolean =
         when {
             event.type == TouchEvent.Type.SWIPE_FORWARD && event.source == TouchEvent.Source.KEY -> true.also {
-                binding.kaleyraStreams.smoothScrollToPosition(
-                    currentStreamItemIndex.let { if (it < fastAdapter!!.itemCount) it + 1 else it }
-                )
+                binding.kaleyraStreams.horizontalSmoothScrollToNext(currentStreamItemIndex)
             }
             event.type == TouchEvent.Type.SWIPE_BACKWARD && event.source == TouchEvent.Source.KEY -> true.also {
-                binding.kaleyraStreams.smoothScrollToPosition(
-                    currentStreamItemIndex.let { if (it > 0) it - 1 else it }
-                )
+                binding.kaleyraStreams.horizontalSmoothScrollToPrevious(currentStreamItemIndex)
             }
             else -> false
         }
-
-//    private fun onNotificationTouch(event: TouchEvent): Boolean =
-//        when (event.type) {
-//            TouchEvent.Type.TAP -> true.also { notificationManager!!.expand() }
-//            TouchEvent.Type.SWIPE_DOWN -> true.also { notificationManager!!.dismiss() }
-//            else -> false
-//        }
-
-//    override fun onShow() {
-//        isNotificationVisible = true
-//    }
-
-//    override fun onExpanded() {
-//        isNotificationVisible = false
-//        if (supportFragmentManager.currentNavigationFragment?.id != R.id.smartglass_nav_graph_chat)
-//            navController!!.navigate(R.id.smartglass_nav_graph_chat)
-//    }
-
-//    override fun onDismiss() {
-//        isNotificationVisible = false
-//    }
-
-//    /**
-//     * Add a notification listener
-//     *
-//     * @param listener NotificationListener
-//     */
-//    fun addNotificationListener(listener: ChatNotificationManager.NotificationListener) {
-//        notificationManager!!.addListener(listener)
-//    }
-
-//    /**
-//     * Remove a notification listener
-//     *
-//     * @param listener NotificationListener
-//     */
-//    fun removeNotificationListener(listener: ChatNotificationManager.NotificationListener) {
-//        notificationManager!!.removeListener(listener)
-//    }
 
     private companion object {
         const val BLOCKED_TOAST_ID = "blocked-input"
