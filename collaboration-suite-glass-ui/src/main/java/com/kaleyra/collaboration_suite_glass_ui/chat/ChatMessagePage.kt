@@ -21,7 +21,7 @@ import android.net.Uri
 /**
  * ChatMessagePage
  *
- * @property id Id of the message
+ * @property messageId Id of the message
  * @property sender The message sender
  * @property userId The sender user identifier
  * @property message The message text
@@ -31,7 +31,7 @@ import android.net.Uri
  * @constructor
  */
 internal data class ChatMessagePage(
-    val id: String,
+    val messageId: String,
     val userId: String,
     val sender: String,
     val avatar: Uri,

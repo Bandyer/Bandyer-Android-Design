@@ -17,10 +17,6 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <data>
-        <import type="com.kaleyra.collaboration_suite_glass_ui.utils.BindingAdapters" />
-        <variable name="newMessagesCounter" type="androidx.databinding.ObservableInt"/>
-    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -62,8 +58,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?attr/kaleyra_counterStyle"
-            android:text="@{@string/kaleyra_glass_message_counter_pattern(newMessagesCounter)}"
-            app:hideIfZero="@{newMessagesCounter}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/kaleyra_bottom_navigation"/>
 

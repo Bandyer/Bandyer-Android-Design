@@ -59,10 +59,11 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     private var itemAdapter: ItemAdapter<ChatMessageItem>? = null
 
     private var currentMsgItemIndex = 0
-//    private var newMessagesCounter = ObservableInt(-1)
-
-    //    private var lastMsgIndex = 0
-//    private var pagesIds = arrayListOf<String>()
+    private var unreadMessagesIds = listOf<String>()
+        set(value) {
+            field = value
+            updateCounter(value.count())
+        }
 
     private val viewModel: ChatViewModel by activityViewModels()
 
@@ -123,13 +124,12 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                                 }
                                 isLoading = true
                             }
+
                             val foundView = snapHelper.findSnapView(layoutManager) ?: return
                             val currentMsgIndex = layoutManager.getPosition(foundView)
+                            val currentPage = itemAdapter!!.adapterItems[currentMsgIndex].page
+                            unreadMessagesIds = unreadMessagesIds - currentPage.messageId
 
-//                            if (currentMsgIndex > lastMsgIndex && pagesIds[currentMsgIndex] != pagesIds[lastMsgIndex]) {
-//                                newMessagesCounter?.apply { set(get() - 1) }
-//                                lastMsgIndex = currentMsgIndex
-//                            }
                             currentMsgItemIndex = currentMsgIndex
                         }
                     })
@@ -143,10 +143,13 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     }
 
     override fun onServiceBound() {
+        unreadMessagesIds = viewModel.chat.messages.value.other.filter { it.state.value is Message.State.Received }.map { it.id }
+
         repeatOnStarted {
             viewModel.chat.messages
                 .onEach { msgs ->
-                    binding.kaleyraNoMessages.visibility = if (msgs.list.isEmpty()) View.VISIBLE else View.GONE
+                    binding.kaleyraNoMessages.visibility =
+                        if (msgs.list.isEmpty()) View.VISIBLE else View.GONE
                     toChatMessagePages(this, msgs.list) { pages ->
                         val items = pages.map { ChatMessageItem(it) }
                         FastAdapterDiffUtil[itemAdapter!!] =
@@ -163,12 +166,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         super.onDestroyView()
         _binding = null
         itemAdapter = null
-//        newMessagesCounter = 0
-//        pagesIds = arrayListOf()
     }
-
-
-//    override fun onShow() = Unit
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
         binding.kaleyraMessages.scrollBy(
@@ -192,7 +190,11 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         if (it) binding.kaleyraMessages.horizontalSmoothScrollToPrevious(currentMsgItemIndex)
     }
 
-    private fun toChatMessagePages(scope: CoroutineScope, messages: List<Message>, callback: (List<ChatMessagePage>) -> Unit) {
+    private fun toChatMessagePages(
+        scope: CoroutineScope,
+        messages: List<Message>,
+        callback: (List<ChatMessagePage>) -> Unit
+    ) {
         binding.kaleyraChatMessage.root.doOnLayout {
             scope.launch {
                 val allPages = mutableListOf<ChatMessagePage>()
@@ -231,6 +233,11 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
             kaleyraMessage.text = if (content is Message.Content.Text) content.message else ""
             return kaleyraMessage.paginate()
         }
+
+    private fun updateCounter(count: Int) = with(binding.kaleyraCounter) {
+        visibility = if (count > 0) View.VISIBLE else View.GONE
+        text = resources.getString(R.string.kaleyra_glass_message_counter_pattern, count)
+    }
 
     private companion object {
         const val LOAD_MORE_THRESHOLD = 2
