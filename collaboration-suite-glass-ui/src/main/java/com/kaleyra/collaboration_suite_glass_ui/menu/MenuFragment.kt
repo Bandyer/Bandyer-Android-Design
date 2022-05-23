@@ -135,7 +135,7 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
 
     override fun onServiceBound() {
         getActions(viewModel.actions.value).forEach { itemAdapter!!.add(MenuItem(it)) }
-        viewModel.actions.drop(1).take(1).onEach { findNavController().popBackStack() }.launchIn(lifecycleScope)
+        viewModel.actions.drop(1).take(1).onEach { onSwipeDown() }.launchIn(lifecycleScope)
 
         val cameraAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.CAMERA }?.action as? CallAction.ToggleableCallAction)
         val micAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.MICROPHONE }?.action as? CallAction.ToggleableCallAction)
@@ -234,7 +234,10 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
         }
         is CallAction.PARTICIPANTS -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToParticipantsFragment()) }
         is CallAction.CHAT -> true.also { CollaborationUI.chatBox.show(CollaborationUI.chatBox.create(viewModel.participants.replayCache.first().others)) }
-        is CallAction.WHITEBOARD -> true.also { (requireActivity() as GlassCallActivity).rvStreams.smoothScrollToPosition(0) }
+        is CallAction.WHITEBOARD -> true.also {
+            onSwipeDown()
+            (requireActivity() as GlassCallActivity).rvStreams.smoothScrollToPosition(0)
+        }
         else -> false
     }
 
