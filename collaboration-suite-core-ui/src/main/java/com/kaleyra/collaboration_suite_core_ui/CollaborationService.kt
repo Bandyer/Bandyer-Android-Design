@@ -15,7 +15,6 @@ import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
-import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
@@ -48,14 +47,14 @@ import kotlinx.coroutines.launch
  * The CollaborationService
  */
 class CollaborationService : BoundService(),
-    CallUIDelegate,
-    ChatUIDelegate,
-    CallStreamDelegate,
-    CallNotificationDelegate,
-    DeviceStatusDelegate,
-    CallController,
-    Application.ActivityLifecycleCallbacks,
-    CallNotificationActionReceiver.ActionDelegate {
+                             CallUIDelegate,
+                             ChatUIDelegate,
+                             CallStreamDelegate,
+                             CallNotificationDelegate,
+                             DeviceStatusDelegate,
+                             CallController,
+                             Application.ActivityLifecycleCallbacks,
+                             CallNotificationActionReceiver.ActionDelegate {
 
     private companion object {
         const val CALL_NOTIFICATION_ID = 22
@@ -77,14 +76,14 @@ class CollaborationService : BoundService(),
 
     private var isServiceInForeground: Boolean = false
 
-    private val _call: MutableSharedFlow<Call> =
+    private val _call: MutableSharedFlow<CallUI> =
         MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
-    override val call: SharedFlow<Call> get() = _call
+    override val call: SharedFlow<CallUI> get() = _call
 
     private var _chat: Chat? = null
     override val chat: Chat get() = _chat!!
 
-    override var currentCall: Call? = null
+    override var currentCall: CallUI? = null
 
     private var _callAudioManager: CallAudioManager? = null
     override val callAudioManager: CallAudioManager get() = _callAudioManager!!
@@ -155,24 +154,51 @@ class CollaborationService : BoundService(),
      * @param callUsersDescription The user description. Optional.
      * @param callActivityClazz The call activity class
      */
-    fun <T : CallActivity> bindPhoneBox(
-        phoneBox: PhoneBox,
+    fun bindCall(
+        phoneBox: PhoneBoxUI,
+        call: CallUI,
         callUsersDescription: UsersDescription? = null,
-        callActivityClazz: Class<T>
-    ) {
+        callActivityClazz: Class<*>
+    ): Unit {
+        if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return
         this.phoneBox = phoneBox
         this.callUsersDescription = callUsersDescription ?: UsersDescription()
         this.callActivityClazz = callActivityClazz
         phoneBoxJob?.cancel()
-        phoneBoxJob = listenToCalls(phoneBox, this.callUsersDescription, this.callActivityClazz!!)
+        phoneBoxJob = lifecycleScope.launch {
+            currentCall = call
+            _call.emit(call)
+            call.state.takeWhile { it !is Call.State.Disconnected.Ended }
+                .onCompletion {
+                    currentCall = null
+                    if (isAppInForeground) return@onCompletion
+                    stopSelf()
+//                    Log.e("CollaborationService", "stopping service onCompletion")
+                }.launchIn(lifecycleScope)
+
+            setUpCallStreams(this@CollaborationService, call)
+
+            syncNotificationWithCallState(
+                this@CollaborationService,
+                call,
+                this@CollaborationService.callUsersDescription,
+                callActivityClazz
+            )
+        }
     }
+
 
     fun bindChatChannel(
         chat: Chat,
-        chatUsersDescription: UsersDescription? = null
+        chatUsersDescription: UsersDescription? = null,
+        chatActivityClazz: Class<*>
     ) {
         this._chat = chat
         this.chatUsersDescription = chatUsersDescription ?: UsersDescription()
+        bindCustomChatNotification(
+            CollaborationUI.chatBox,
+            ChatNotificationManager2(chatActivityClazz)
+        )
     }
 
     fun bindCustomChatNotification(
@@ -194,7 +220,7 @@ class CollaborationService : BoundService(),
     ): Job {
         val hashMap = hashMapOf<String, String>()
         val jobs = mutableListOf<Job>()
-        return chatBox.channels
+        return chatBox.chats
             .onEach { chats ->
                 jobs.forEach {
                     it.cancel()
@@ -254,39 +280,7 @@ class CollaborationService : BoundService(),
             }.launchIn(lifecycleScope)
     }
 
-    private fun listenToCalls(
-        phoneBox: PhoneBox,
-        callUsersDescription: UsersDescription,
-        callActivityClazz: Class<*>
-    ) =
-        phoneBox.call.onEach { call ->
-            if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return@onEach
-            currentCall = call
-            _call.emit(call)
-
-            call.state
-                .takeWhile { it !is Call.State.Disconnected.Ended }
-                .onCompletion {
-                    currentCall = null
-                    if (isAppInForeground) return@onCompletion
-                    stopSelf()
-//                    Log.e("CollaborationService", "stopping service onCompletion")
-                }
-                .launchIn(lifecycleScope)
-
-            setUpCallStreams(this@CollaborationService, call)
-            syncNotificationWithCallState(
-                this@CollaborationService,
-                call,
-                callUsersDescription,
-                callActivityClazz
-            )
-
-            if (!shouldShowCallUI(call)) return@onEach
-            UIProvider.showCall(callActivityClazz)
-        }.launchIn(lifecycleScope)
-
-    private fun shouldShowCallUI(call: Call): Boolean =
+    fun canShowCallActivity(call: Call): Boolean =
         isAppInForeground && (!this@CollaborationService.isSilent() || call.participants.value.let { it.me == it.creator() })
 
     /**

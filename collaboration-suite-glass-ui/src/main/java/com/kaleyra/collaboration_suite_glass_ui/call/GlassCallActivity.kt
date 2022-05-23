@@ -36,13 +36,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite.phonebox.Whiteboard.LoadOptions
+import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.CollaborationService
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
-import com.kaleyra.collaboration_suite_core_ui.model.Option
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
@@ -113,6 +114,7 @@ internal class GlassCallActivity :
     private var currentStreamItemIndex = 0
     private var streamMutex = Mutex()
     private val hideStreamOverlay = MutableStateFlow(true)
+
     // The value is a Pair<UserId, ItemIdentifier>
     private val livePointers: ConcurrentMap<LivePointerView, Pair<String, Long>> = ConcurrentHashMap()
     private var navController: NavController? = null
@@ -139,10 +141,8 @@ internal class GlassCallActivity :
                 LinearLayoutManager(this@GlassCallActivity, LinearLayoutManager.HORIZONTAL, false)
 
             this.layoutManager = layoutManager
-            adapter = fastAdapter!!.apply {
-                stateRestorationPolicy =
-                    RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
-            }
+            adapter = fastAdapter!!
+            adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             isFocusable = false
             setHasFixedSize(true)
         }
@@ -196,19 +196,19 @@ internal class GlassCallActivity :
 
                         when {
                             isMicBlocked && isCamBlocked -> resources.getString(R.string.kaleyra_glass_mic_and_cam_blocked)
-                            isMicBlocked -> resources.getString(R.string.kaleyra_glass_mic_blocked)
-                            isCamBlocked -> resources.getString(R.string.kaleyra_glass_cam_blocked)
-                            else -> null
+                            isMicBlocked                 -> resources.getString(R.string.kaleyra_glass_mic_blocked)
+                            isCamBlocked                 -> resources.getString(R.string.kaleyra_glass_cam_blocked)
+                            else                         -> null
                         }?.also { binding.kaleyraToastContainer.show(BLOCKED_TOAST_ID, it) }
 
                         when {
                             !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled ->
                                 resources.getString(R.string.kaleyra_glass_mic_and_cam_not_active)
-                            !isMicBlocked && !isMicEnabled ->
+                            !isMicBlocked && !isMicEnabled                                      ->
                                 resources.getString(R.string.kaleyra_glass_mic_not_active)
-                            !isCamBlocked && !isCameraEnabled ->
+                            !isCamBlocked && !isCameraEnabled                                   ->
                                 resources.getString(R.string.kaleyra_glass_cam_not_active)
-                            else -> null
+                            else                                                                -> null
                         }?.also { binding.kaleyraToastContainer.show(DISABLED_TOAST_ID, it) }
                     }
 
@@ -272,10 +272,10 @@ internal class GlassCallActivity :
                 .onEach {
                     binding.kaleyraStatusBar.setWiFiSignalState(
                         when {
-                            it.state == WiFiInfo.State.DISABLED -> StatusBarView.WiFiSignalState.DISABLED
+                            it.state == WiFiInfo.State.DISABLED                                     -> StatusBarView.WiFiSignalState.DISABLED
                             it.level == WiFiInfo.Level.NO_SIGNAL || it.level == WiFiInfo.Level.POOR -> StatusBarView.WiFiSignalState.LOW
-                            it.level == WiFiInfo.Level.FAIR || it.level == WiFiInfo.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
-                            else -> StatusBarView.WiFiSignalState.FULL
+                            it.level == WiFiInfo.Level.FAIR || it.level == WiFiInfo.Level.GOOD      -> StatusBarView.WiFiSignalState.MODERATE
+                            else                                                                    -> StatusBarView.WiFiSignalState.FULL
                         }
                     )
                 }
@@ -289,15 +289,15 @@ internal class GlassCallActivity :
                         val title = resources.getString(R.string.kaleyra_glass_call_ended)
 
                         val subtitle = when (it) {
-                            is Call.State.Disconnected.Ended.Declined -> resources.getString(R.string.kaleyra_glass_call_declined)
+                            is Call.State.Disconnected.Ended.Declined                -> resources.getString(R.string.kaleyra_glass_call_declined)
                             is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> resources.getString(
                                 R.string.kaleyra_glass_answered_on_another_device
                             )
-                            is Call.State.Disconnected.Ended.LineBusy -> resources.getString(R.string.kaleyra_glass_line_busy)
-                            is Call.State.Disconnected.Ended.HangUp -> resources.getString(R.string.kaleyra_glass_call_hung_up)
-                            is Call.State.Disconnected.Ended.Error -> resources.getString(R.string.kaleyra_glass_call_error_occurred)
-                            is Call.State.Disconnected.Ended.Timeout -> resources.getString(R.string.kaleyra_glass_call_timeout)
-                            else -> null
+                            is Call.State.Disconnected.Ended.LineBusy                -> resources.getString(R.string.kaleyra_glass_line_busy)
+                            is Call.State.Disconnected.Ended.HangUp                  -> resources.getString(R.string.kaleyra_glass_call_hung_up)
+                            is Call.State.Disconnected.Ended.Error                   -> resources.getString(R.string.kaleyra_glass_call_error_occurred)
+                            is Call.State.Disconnected.Ended.Timeout                 -> resources.getString(R.string.kaleyra_glass_call_timeout)
+                            else                                                     -> null
                         }
 
                         val navArgs = CallEndedFragmentArgs(title, subtitle).toBundle()
@@ -361,7 +361,7 @@ internal class GlassCallActivity :
                 .onEach {
                     val minutes = (it!! / 60).toInt()
                     when {
-                        it == TIMER_BLINK_FOREVER_TH -> binding.kaleyraStatusBar.blinkTimer(-1)
+                        it == TIMER_BLINK_FOREVER_TH                            -> binding.kaleyraStatusBar.blinkTimer(-1)
                         it % 60 == 0L && ttlWarningThresholds.contains(minutes) -> {
                             val text = resources.getQuantityString(
                                 R.plurals.kaleyra_glass_ttl_expiration_pattern,
@@ -470,13 +470,13 @@ internal class GlassCallActivity :
                     )
                 }.launchIn(this)
 
-            val options = intent.extras?.getParcelableArray("options")
-            if (options?.contains(Option.WHITEBOARD) == true) {
+            viewModel.actions.onEach { actions ->
                 viewModel.whiteboard.onEach { wb ->
                     viewModel.callState
                         .takeWhile { it !is Call.State.Connected }
                         .onCompletion {
-                            wb.load()
+                            val mode = if (actions.any { it is CallUI.Action.OpenWhiteboard.ViewOnly }) LoadOptions.Mode.ViewOnly else LoadOptions.Mode.Default
+                            wb.load(LoadOptions(mode))
                             whiteboardItemAdapter!!.clear()
                             whiteboardItemAdapter!!.add(WhiteboardItem(wb))
                         }.launchIn(this)
@@ -485,7 +485,7 @@ internal class GlassCallActivity :
                         .onCompletion { wb.unload() }
                         .launchIn(this)
                 }.launchIn(this)
-            }
+            }.launchIn(this@repeatOnStarted)
         }
 
         if (wasPausedForBackground) {
@@ -613,9 +613,9 @@ internal class GlassCallActivity :
         with(binding.kaleyraStatusBar) {
             setBackgroundColor(
                 when {
-                    destinationId == R.id.participantsFragment -> getResourceColor(R.color.kaleyra_glass_background_color)
+                    destinationId == R.id.participantsFragment           -> getResourceColor(R.color.kaleyra_glass_background_color)
                     fragmentsWithDimmedStatusBar.contains(destinationId) -> getResourceColor(R.color.kaleyra_glass_dimmed_background_color)
-                    else -> Color.TRANSPARENT
+                    else                                                 -> Color.TRANSPARENT
                 }
             )
             if (fragmentsWithParticipantsNumber.contains(destinationId)) showCenteredTitle()
@@ -658,7 +658,7 @@ internal class GlassCallActivity :
             event.type == TouchEvent.Type.SWIPE_BACKWARD && event.source == TouchEvent.Source.KEY -> true.also {
                 binding.kaleyraStreams.horizontalSmoothScrollToPrevious(currentStreamItemIndex)
             }
-            else -> false
+            else                                                                                  -> false
         }
 
     private companion object {

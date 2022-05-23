@@ -22,6 +22,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +35,8 @@ import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 /**
  * EmptyFragment
@@ -64,6 +67,11 @@ internal class EmptyFragment : BaseFragment<GlassCallActivity>() {
         _binding = KaleyraGlassFragmentEmptyBinding
             .inflate(inflater, container, false)
             .apply { if (DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation) }
+
+        viewModel.actions.onEach {
+            if (it.isEmpty()) _binding?.kaleyraBottomNavigation?.hideSecondItem()
+            else _binding?.kaleyraBottomNavigation?.showSecondItem()
+        }.launchIn(lifecycleScope)
 
         return binding.root
     }

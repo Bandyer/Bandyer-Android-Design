@@ -47,10 +47,11 @@
             android:defaultValue="false"
             app:argType="boolean" />
         <argument
-            android:name="options"
+            android:name="actions"
             android:defaultValue="@null"
-            app:argType="com.kaleyra.collaboration_suite_core_ui.model.Option[]"
-            app:nullable="true" />
+            app:argType="com.kaleyra.collaboration_suite_core_ui.CallUI$Action[]"
+            app:nullable="true"
+            />
     </fragment>
     <fragment
         android:id="@+id/volumeFragment"

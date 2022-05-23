@@ -58,6 +58,7 @@
     <string name="kaleyra_glass_menu_flashlight_toggled">Enable Torch</string>
     <string name="kaleyra_glass_menu_flashlight">Disable Torch</string>
     <string name="kaleyra_glass_menu_chat">Chat</string>
+    <string name="kaleyra_glass_menu_whiteboard">Whiteboard</string>
     <string name="kaleyra_glass_rec">Rec</string>
     <string name="kaleyra_glass_call_declined">Declined</string>
     <string name="kaleyra_glass_call_error_occurred">An error occurred</string>

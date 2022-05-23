@@ -26,6 +26,7 @@
         <attr name="kaleyra_recyclerViewFlashLightItemStyle" format="reference" />
         <attr name="kaleyra_recyclerViewParticipantsItemStyle" format="reference" />
         <attr name="kaleyra_recyclerViewChatItemStyle" format="reference" />
+        <attr name="kaleyra_recyclerViewWhiteboardItemStyle" format="reference" />
         <attr name="bottomNavigationStyle" />
         <attr name="kaleyra_bottomNavigationVoiceStyle" />
     </declare-styleable>
@@ -41,6 +42,7 @@
         <item name="kaleyra_recyclerViewFlashLightItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.FlashLight</item>
         <item name="kaleyra_recyclerViewParticipantsItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.Participants</item>
         <item name="kaleyra_recyclerViewChatItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.Chat</item>
+        <item name="kaleyra_recyclerViewWhiteboardItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.Whiteboard</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Menu</item>
         <item name="kaleyra_bottomNavigationVoiceStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Menu.VoiceCommand</item>
     </style>
@@ -112,6 +114,15 @@
 
     <style name="KaleyraCollaborationSuiteUI.TextView.GlassRecyclerViewItem.Chat" parent="KaleyraCollaborationSuiteUI.TextView.GlassRecyclerViewItem">
         <item name="android:text">@string/kaleyra_glass_menu_chat</item>
+    </style>
+
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.Whiteboard" parent="KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem">
+        <item name="android:textViewStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassRecyclerViewItem.Whiteboard</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.TextView.GlassRecyclerViewItem.Whiteboard" parent="KaleyraCollaborationSuiteUI.TextView.GlassRecyclerViewItem">
+        <item name="android:text">@string/kaleyra_glass_menu_whiteboard</item>
     </style>
 
     <!-- BOTTOM NAVIGATION BAR -->

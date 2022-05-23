@@ -47,6 +47,7 @@ internal abstract class CallAction(
          * Get all actions for an audio&Video call
          * @param withCamera True to add the camera action, false otherwise
          * @param withChat True to add the chat action, false otherwise
+         *
          * @return List<CallAction>
          */
         fun getActions(
@@ -55,19 +56,21 @@ internal abstract class CallAction(
             withCamera: Boolean,
             withSwitchCamera: Boolean,
             withFlashLight: Boolean,
+            withVolume: Boolean,
             withZoom: Boolean,
-            withChat: Boolean
-        ): List<CallAction> {
-            return mutableListOf<CallAction>().apply {
-                if (withMicrophone) add(MICROPHONE(ctx))
-                if (withCamera) add(CAMERA(ctx))
-                if (withSwitchCamera) add(SWITCHCAMERA(ctx))
-                add(VOLUME())
-                if (withZoom) add(ZOOM(ctx))
-                if (withFlashLight) add(FLASHLIGHT(ctx))
-                add(PARTICIPANTS())
-                if (withChat) add(CHAT())
-            }
+            withParticipants: Boolean,
+            withChat: Boolean,
+            withWhiteboard: Boolean
+        ): List<CallAction> = mutableListOf<CallAction>().apply {
+            if (withMicrophone) add(MICROPHONE(ctx))
+            if (withCamera) add(CAMERA(ctx))
+            if (withSwitchCamera) add(SWITCHCAMERA(ctx))
+            if (withVolume) add(VOLUME())
+            if (withZoom) add(ZOOM(ctx))
+            if (withFlashLight) add(FLASHLIGHT(ctx))
+            if (withParticipants) add(PARTICIPANTS())
+            if (withChat) add(CHAT())
+            if (withWhiteboard) add(WHITEBOARD())
         }
     }
 
@@ -247,5 +250,15 @@ internal abstract class CallAction(
         R.id.id_glass_menu_chat_item,
         R.layout.kaleyra_glass_menu_item_layout,
         R.attr.kaleyra_recyclerViewChatItemStyle
+    )
+
+    /**
+     * Chat menu action item
+     * @constructor
+     */
+    class WHITEBOARD : CallAction(
+        R.id.id_glass_menu_whiteboard_item,
+        R.layout.kaleyra_glass_menu_item_layout,
+        R.attr.kaleyra_recyclerViewWhiteboardItemStyle
     )
 }

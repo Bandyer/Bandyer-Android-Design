@@ -17,6 +17,7 @@
 
 <resources>
     <item name="id_glass_chat_message_item" type="id" />
+
     <item name="id_glass_menu_mic_item" type="id" />
     <item name="id_glass_menu_camera_item" type="id" />
     <item name="id_glass_menu_switch_camera_item" type="id" />
@@ -25,6 +26,8 @@
     <item name="id_glass_menu_flashlight_item" type="id" />
     <item name="id_glass_menu_participants_item" type="id" />
     <item name="id_glass_menu_chat_item" type="id" />
+    <item name="id_glass_menu_whiteboard_item" type="id" />
+
     <item name="id_glass_participants_item" type="id" />
     <item name="id_glass_full_screen_dialog_item" type="id" />
     <item name="id_glass_chat_menu_item" type="id" />

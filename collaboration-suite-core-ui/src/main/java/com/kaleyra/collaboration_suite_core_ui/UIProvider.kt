@@ -17,18 +17,17 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import android.content.Intent
-import com.kaleyra.collaboration_suite_core_ui.model.Option
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils.isSmartGlass
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 internal object UIProvider {
 
-    fun <T> showCall(activityClazz: Class<T>, options: Set<Option> = emptySet()) =
+    fun <T> showCall(activityClazz: Class<T>) =
         with(ContextRetainer.context) {
             val intent = Intent(this, activityClazz).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 putExtra("enableTilt", isSmartGlass)
-                putExtra("options", options.toTypedArray())
             }
             startActivity(intent)
         }

@@ -54,6 +54,7 @@
     <string name="kaleyra_glass_menu_flashlight_toggled">Abilita Torcia</string>
     <string name="kaleyra_glass_menu_flashlight">Disabilita Torcia</string>
     <string name="kaleyra_glass_menu_chat">Chat</string>
+    <string name="kaleyra_glass_menu_whiteboard">Lavagna</string>
     <string name="kaleyra_glass_rec">Rec</string>
     <string name="kaleyra_glass_call_declined">Rifiutata</string>
     <string name="kaleyra_glass_call_error_occurred">Si è verificato un errore</string>

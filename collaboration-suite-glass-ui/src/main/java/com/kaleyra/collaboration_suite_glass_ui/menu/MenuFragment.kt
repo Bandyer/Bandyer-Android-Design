@@ -22,12 +22,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ChangeVolume
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ChangeZoom
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.OpenChat
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.OpenWhiteboard
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ShowParticipants
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.SwitchCamera
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleCamera
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleFlashlight
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleMicrophone
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.model.Option
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.call.CallAction
@@ -46,10 +56,12 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 
 /**
  * KaleyraGlassMenuFragment
@@ -61,7 +73,7 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
 
     private var itemAdapter: ItemAdapter<MenuItem>? = null
 
-    private val args: MenuFragmentArgs by lazy { MenuFragmentArgs.fromBundle(requireActivity().intent!!.extras!!) }
+    private val args by lazy { MenuFragmentArgs.fromBundle(requireActivity().intent.extras!!) }
 
     private var currentMenuItemIndex = 0
 
@@ -122,10 +134,8 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
     }
 
     override fun onServiceBound() {
-        val hasAudio = viewModel.preferredCallType.hasAudio()
-        val hasVideo = viewModel.preferredCallType.hasVideo()
-        val options = args.options ?: arrayOf()
-        getActions(hasAudio, hasVideo, options).forEach { itemAdapter!!.add(MenuItem(it)) }
+        getActions(viewModel.actions.value).forEach { itemAdapter!!.add(MenuItem(it)) }
+        viewModel.actions.drop(1).take(1).onEach { findNavController().popBackStack() }.launchIn(lifecycleScope)
 
         val cameraAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.CAMERA }?.action as? CallAction.ToggleableCallAction)
         val micAction = (itemAdapter!!.adapterItems.firstOrNull { it.action is CallAction.MICROPHONE }?.action as? CallAction.ToggleableCallAction)
@@ -135,7 +145,7 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
 
         repeatOnStarted {
             cameraAction?.also { action ->
-               viewModel.cameraEnabled.onEach { action.toggle(it) }.launchIn(this)
+                viewModel.cameraEnabled.onEach { action.toggle(it) }.launchIn(this)
                 viewModel.camPermission.onEach { action.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
             }
             micAction?.also { action ->
@@ -186,45 +196,46 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
         itemAdapter = null
     }
 
-    private fun getActions(hasAudio: Boolean, hasVideo: Boolean, options: Array<Option>): List<CallAction> {
-        var withChat = false
-
-        options.forEach {
-            when (it) {
-                is Option.CHAT -> withChat = true
-                else           -> Unit
-            }
-        }
-
-        return CallAction.getActions(requireContext(), withMicrophone = hasAudio, withCamera = hasVideo, withSwitchCamera = hasVideo, withFlashLight = hasVideo, withZoom = hasVideo, withChat = true)
-    }
+    private fun getActions(actions: Set<Action>): List<CallAction> = CallAction.getActions(
+        requireContext(),
+        withMicrophone = actions.any { it is ToggleMicrophone },
+        withCamera = actions.any { it is ToggleCamera },
+        withSwitchCamera = actions.any { it is SwitchCamera },
+        withFlashLight = actions.any { it is ToggleFlashlight },
+        withVolume = actions.any { it is ChangeVolume },
+        withZoom = actions.any { it is ChangeZoom },
+        withParticipants = actions.any { it is ShowParticipants },
+        withChat = actions.any { it is OpenChat },
+        withWhiteboard = actions.any { it is OpenWhiteboard }
+    )
 
 //    override fun onDismiss() = Unit
 
     override fun onTap() = onTap(itemAdapter!!.getAdapterItem(currentMenuItemIndex).action)
 
     private fun onTap(action: CallAction) = when (action) {
-        is CallAction.MICROPHONE   -> true.also {
+        is CallAction.MICROPHONE -> true.also {
             if (!viewModel.micPermission.value.isAllowed) viewModel.onRequestMicPermission(requireActivity())
             viewModel.onEnableMic(!viewModel.micEnabled.value)
         }
-        is CallAction.CAMERA       -> true.also {
+        is CallAction.CAMERA -> true.also {
             if (!viewModel.camPermission.value.isAllowed) viewModel.onRequestCameraPermission(requireActivity())
             viewModel.onEnableCamera(!viewModel.cameraEnabled.value)
         }
 
         is CallAction.SWITCHCAMERA -> true.also { viewModel.onSwitchCamera() }
-        is CallAction.VOLUME       -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment()) }
-        is CallAction.ZOOM         -> true.also { if (!action.isDisabled) findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
-        is CallAction.FLASHLIGHT   -> true.also {
+        is CallAction.VOLUME -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToVolumeFragment()) }
+        is CallAction.ZOOM -> true.also { if (!action.isDisabled) findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToZoomFragment()) }
+        is CallAction.FLASHLIGHT -> true.also {
             if (action.isDisabled) return@also
             val flashLight = viewModel.flashLight.value ?: return@also
             val isEnabled = flashLight.enabled.value
             if (isEnabled) flashLight.tryDisable() else flashLight.tryEnable()
         }
         is CallAction.PARTICIPANTS -> true.also { findNavController().safeNavigate(MenuFragmentDirections.actionMenuFragmentToParticipantsFragment()) }
-        is CallAction.CHAT         -> true.also { CollaborationUI.chatBox.show(CollaborationUI.chatBox.create(viewModel.participants.replayCache.first().others)) }
-        else                       -> false
+        is CallAction.CHAT -> true.also { CollaborationUI.chatBox.show(CollaborationUI.chatBox.create(viewModel.participants.replayCache.first().others)) }
+        is CallAction.WHITEBOARD -> true.also { (requireActivity() as GlassCallActivity).rvStreams.smoothScrollToPosition(0) }
+        else -> false
     }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
@@ -238,6 +249,6 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
 
     override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
         super.setListenersForRealWear(bottomNavView)
-        bottomNavView.setFirstItemListeners({ onSwipeForward(true) }, { onSwipeBackward(true)  })
+        bottomNavView.setFirstItemListeners({ onSwipeForward(true) }, { onSwipeBackward(true) })
     }
 }

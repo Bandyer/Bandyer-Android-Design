@@ -20,6 +20,8 @@ import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
+import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -34,19 +36,32 @@ import com.kaleyra.collaboration_suite.phonebox.Call.PreferredType
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.CreationOptions
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.State.Connecting
+import com.kaleyra.collaboration_suite.utils.extensions.mapToStateFlow
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ChangeVolume
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ShowParticipants
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.SwitchCamera
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleCamera
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleMicrophone
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI.usersDescription
 import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager2
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.parcelize.Parcelize
 
 /**
  * Collaboration UI
@@ -168,13 +183,8 @@ object CollaborationUI {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
                 val service = (binder as BoundServiceBinder).getService<CollaborationService>()
-                service.bindPhoneBox(phoneBox, usersDescription, activityClazz)
-                chatNotificationActivityClazz?.also {
-                    service.bindCustomChatNotification(
-                        chatBox,
-                        ChatNotificationManager2(it)
-                    )
-                }
+                // service.bindPhoneBox(phoneBox, usersDescription, activityClazz)
+
             }
 
             override fun onServiceDisconnected(componentName: ComponentName) = Unit
@@ -199,6 +209,10 @@ object CollaborationUI {
  */
 class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: Class<*>) : PhoneBox by phoneBox {
 
+    override val call: SharedFlow<CallUI> = phoneBox.call.map { CallUI(it) }.shareIn(MainScope(), SharingStarted.Eagerly)
+
+    override val callHistory: SharedFlow<List<CallUI>> = phoneBox.callHistory.map { it.map { CallUI(it) } }.shareIn(MainScope(), SharingStarted.Eagerly)
+
     /**
      * Call
      *
@@ -218,24 +232,93 @@ class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: 
 
     override fun create(users: List<User>, conf: (CreationOptions.() -> Unit)?) = CallUI(phoneBox.create(users, conf))
 
-    fun show(call: CallUI) {
-        // TODO: implement
+    fun show(call: CallUI) = bindCollaborationService(call, usersDescription, callActivityClazz)
+
+    private fun bindCollaborationService(
+        call: CallUI,
+        usersDescription: UsersDescription?,
+        callActivityClazz: Class<*>
+    ) {
+        val serviceConnection = object : ServiceConnection {
+            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
+                service.bindCall(this@PhoneBoxUI, call, usersDescription, callActivityClazz)
+                if (!service.canShowCallActivity(call)) return
+                UIProvider.showCall(callActivityClazz)
+            }
+
+            override fun onServiceDisconnected(name: ComponentName?) = Unit
+        }
+
+        with(ContextRetainer.context) {
+            val intent = Intent(this, CollaborationService::class.java)
+            bindService(intent, serviceConnection, 0)
+        }
     }
 }
 
-class CallUI(call: Call, var tools: List<Tool> = listOf()) : Call by call {
-
-    sealed class Tool {
-        object Zoom : Tool()
-        object Flashlight : Tool()
-        object Chat : Tool()
-        object Whiteboard : Tool()
+private fun Call.getDefaultActions() = mutableSetOf<Action>().apply {
+    if (extras.preferredType.hasAudio()) add(ToggleMicrophone)
+    if (extras.preferredType.hasVideo()) {
+        add(ToggleCamera)
+        add(SwitchCamera)
     }
+    add(ChangeVolume)
+    add(ShowParticipants)
 }
 
+class CallUI(call: Call, val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(call.getDefaultActions())) : Call by call {
+
+    @Keep
+    sealed class Action : Parcelable {
+
+        /**
+         * @suppress
+         */
+        companion object {
+
+            /**
+             * A set of all tools
+             */
+            val all by lazy { setOf(ToggleMicrophone, ToggleCamera, SwitchCamera, ChangeZoom, ToggleFlashlight, OpenChat.ViewOnly, ShowParticipants, OpenWhiteboard.ViewOnly) }
+        }
+
+        @Parcelize
+        object ChangeVolume : Action()
+
+        @Parcelize
+        object ToggleCamera : Action()
+
+        @Parcelize
+        object ToggleMicrophone : Action()
+
+        @Parcelize
+        object SwitchCamera : Action()
+
+        @Parcelize
+        object ChangeZoom : Action()
+
+        @Parcelize
+        object ToggleFlashlight : Action()
+
+        @Parcelize
+        object ShowParticipants : Action()
+
+        sealed class OpenChat : Action() {
+            @Parcelize
+            object ViewOnly : OpenChat()
+        }
+
+        sealed class OpenWhiteboard : Action() {
+            @Parcelize
+            object ViewOnly : OpenWhiteboard()
+        }
+    }
+}
 
 class ChatBoxUI(private val chatBox: ChatBox, private val chatActivityClazz: Class<*>) : ChatBox by chatBox {
 
+    override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(MainScope()) { it.map { ChatUI(it) } }
 
     fun show(chat: ChatUI) = bindCollaborationService(chat, usersDescription, chatActivityClazz)
 
@@ -257,7 +340,8 @@ class ChatBoxUI(private val chatBox: ChatBox, private val chatActivityClazz: Cla
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
                 val service = (binder as BoundServiceBinder).getService<CollaborationService>()
-                service.bindChatChannel(chat, usersDescription)
+                service.bindChatChannel(chat, usersDescription, chatActivityClazz)
+                // if option show notification
                 UIProvider.showChat(chatActivityClazz)
             }
 
@@ -271,10 +355,23 @@ class ChatBoxUI(private val chatBox: ChatBox, private val chatActivityClazz: Cla
     }
 }
 
-class ChatUI(chat: Chat, var tools: List<Tool> = listOf()) : Chat by chat {
+class ChatUI(chat: Chat, val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(setOf())) : Chat by chat {
 
-    sealed class Tool {
-        class Call(val preferredType: PreferredType) : Tool()
+    @Keep
+    sealed class Action : Parcelable {
+        /**
+         * @suppress
+         */
+        companion object {
+
+            /**
+             * A set of all tools
+             */
+            val all = setOf(CreateCall(preferredType = PreferredType(video = Call.Video.Disabled)), CreateCall())
+        }
+
+        @Parcelize
+        data class CreateCall(val preferredType: PreferredType = PreferredType()) : Action()
     }
 }
 

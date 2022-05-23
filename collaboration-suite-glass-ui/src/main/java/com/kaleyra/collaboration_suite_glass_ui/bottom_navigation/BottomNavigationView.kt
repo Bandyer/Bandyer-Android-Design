@@ -109,4 +109,11 @@ internal class BottomNavigationView @JvmOverloads constructor(
     fun hideSecondItem() {
         binding.kaleyraSecondItem.visibility = View.GONE
     }
+
+    /**
+     * Show second item
+     */
+    fun showSecondItem() {
+        binding.kaleyraSecondItem.visibility = View.VISIBLE
+    }
 }

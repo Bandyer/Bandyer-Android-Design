@@ -26,6 +26,7 @@ import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
@@ -80,7 +81,7 @@ internal class CallViewModel(
     private val callController: CallUIController
 ) : ViewModel() {
 
-    val call: SharedFlow<Call> = callDelegate.call
+    val call: SharedFlow<CallUI> = callDelegate.call
 
     val hasSwitchCamera: StateFlow<Boolean> = MutableStateFlow(false).apply {
         call
@@ -241,6 +242,8 @@ internal class CallViewModel(
                 .onEach { value = it }
                 .launchIn(viewModelScope)
         }
+
+    val actions: StateFlow<Set<CallUI.Action>> = call.replayCache.first().actions
 
     val micEnabled: StateFlow<Boolean> =
         MutableStateFlow(false).apply {
