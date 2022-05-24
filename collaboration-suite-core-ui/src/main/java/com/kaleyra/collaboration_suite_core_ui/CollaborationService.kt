@@ -130,10 +130,9 @@ class CollaborationService : BoundService(),
         phoneBoxJob?.cancel()
         chatBoxJob?.cancel()
         currentCall?.end()
-        phoneBox?.disconnect()
-        chatBox?.disconnect()
         batteryObserver?.stop()
         wifiObserver?.stop()
+        CollaborationUI.disconnect()
         CallNotificationActionReceiver.actionDelegate = null
         currentCall = null
         _callAudioManager = null

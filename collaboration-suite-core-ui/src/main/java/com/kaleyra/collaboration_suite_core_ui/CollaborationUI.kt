@@ -35,7 +35,6 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Call.PreferredType
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox.CreationOptions
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox.State.Connecting
 import com.kaleyra.collaboration_suite.utils.extensions.mapToStateFlow
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ChangeVolume
@@ -56,10 +55,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.parcelize.Parcelize
 
@@ -81,8 +77,7 @@ object CollaborationUI {
     private var lifecycleObserver = object : DefaultLifecycleObserver {
         override fun onStart(owner: LifecycleOwner) {
             super.onStart(owner)
-            if (wasPhoneBoxConnected) phoneBox.connect()
-            if (wasChatBoxConnected) chatBox.connect()
+            startCollaborationService(wasPhoneBoxConnected, wasChatBoxConnected)
         }
 
         override fun onStop(owner: LifecycleOwner) {
@@ -138,11 +133,6 @@ object CollaborationUI {
         this.chatActivityClazz = chatActivityClazz
         this.callActivityClazz = callActivityClazz
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
-        phoneBox.state
-            .filter { it is Connecting }
-            .onEach { startCollaborationService(callActivityClazz, chatNotificationActivityClazz) }
-            .launchIn(MainScope())
-
         phoneBox.enableAudioRouting(logger = collaboration?.configuration?.logger)
         return true
     }
@@ -151,16 +141,14 @@ object CollaborationUI {
      * Connect
      */
     fun connect() {
-        phoneBox.connect()
-        chatBox.connect()
+        startCollaborationService(true, true)
     }
 
     /**
      * Disconnect
      */
     fun disconnect() {
-        phoneBox.disconnect()
-        chatBox.disconnect()
+        stopCollaborationService()
     }
 
     /**
@@ -169,24 +157,17 @@ object CollaborationUI {
     fun dispose() {
         if (collaboration == null) return
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
-        wasPhoneBoxConnected = false
         stopCollaborationService()
-        disconnect()
         phoneBox.disableAudioRouting(logger = collaboration?.configuration?.logger)
         collaboration = null
     }
 
-    private fun <T : CallActivity> startCollaborationService(
-        activityClazz: Class<T>,
-        chatNotificationActivityClazz: Class<*>?
-    ) {
+    private fun startCollaborationService(startPhoneBox: Boolean, startChatBox: Boolean) {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
-                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
-                // service.bindPhoneBox(phoneBox, usersDescription, activityClazz)
-
+                if (startPhoneBox) phoneBox.connect()
+                if (startChatBox) chatBox.connect()
             }
-
             override fun onServiceDisconnected(componentName: ComponentName) = Unit
         }
 
@@ -198,6 +179,8 @@ object CollaborationUI {
     }
 
     private fun stopCollaborationService() = with(ContextRetainer.context) {
+        phoneBox.disconnect()
+        chatBox.disconnect()
         stopService(Intent(this, CollaborationService::class.java))
     }
 }
@@ -232,7 +215,11 @@ class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: 
 
     override fun create(users: List<User>, conf: (CreationOptions.() -> Unit)?) = CallUI(phoneBox.create(users, conf))
 
-    fun show(call: CallUI) = bindCollaborationService(call, usersDescription, callActivityClazz)
+    fun show(call: CallUI) = bindCollaborationService(
+        call,
+        usersDescription,
+        callActivityClazz,
+    )
 
     private fun bindCollaborationService(
         call: CallUI,
@@ -255,6 +242,7 @@ class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: 
             bindService(intent, serviceConnection, 0)
         }
     }
+
 }
 
 private fun Call.getDefaultActions() = mutableSetOf<Action>().apply {
@@ -320,7 +308,11 @@ class ChatBoxUI(private val chatBox: ChatBox, private val chatActivityClazz: Cla
 
     override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(MainScope()) { it.map { ChatUI(it) } }
 
-    fun show(chat: ChatUI) = bindCollaborationService(chat, usersDescription, chatActivityClazz)
+    fun show(chat: ChatUI) = bindCollaborationService(
+        chat,
+        usersDescription,
+        chatActivityClazz
+    )
 
     override fun create(users: List<User>) = ChatUI(chatBox.create(users))
 
@@ -341,7 +333,6 @@ class ChatBoxUI(private val chatBox: ChatBox, private val chatActivityClazz: Cla
             override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
                 val service = (binder as BoundServiceBinder).getService<CollaborationService>()
                 service.bindChatChannel(chat, usersDescription, chatActivityClazz)
-                // if option show notification
                 UIProvider.showChat(chatActivityClazz)
             }
 
@@ -367,7 +358,7 @@ class ChatUI(chat: Chat, val actions: MutableStateFlow<Set<Action>> = MutableSta
             /**
              * A set of all tools
              */
-            val all = setOf(CreateCall(preferredType = PreferredType(video = Call.Video.Disabled)), CreateCall())
+            val all by lazy { setOf(CreateCall(preferredType = PreferredType(video = Call.Video.Disabled)), CreateCall()) }
         }
 
         @Parcelize
