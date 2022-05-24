@@ -79,7 +79,6 @@ internal class CallParticipantItem(val data: ParticipantItemData): AbstractItem<
          * View needs to release resources when its recycled
          */
         override fun unbindView(item: CallParticipantItem) {
-            binding.unbind()
             binding.kaleyraText.text = null
         }
     }

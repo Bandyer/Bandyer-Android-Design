@@ -299,7 +299,6 @@ internal class MyStreamItem(
          */
         override fun unbindView(item: MyStreamItem): Unit = with(binding) {
             super.unbindView(item)
-            unbind()
             kaleyraLivePointers.removeAllViews()
             kaleyraVideoWrapper.removeAllViews()
         }
@@ -392,7 +391,6 @@ internal class OtherStreamItem(
          */
         override fun unbindView(item: OtherStreamItem): Unit = with(binding) {
             super.unbindView(item)
-            unbind()
             kaleyraLivePointers.removeAllViews()
             kaleyraVideoWrapper.removeAllViews()
         }

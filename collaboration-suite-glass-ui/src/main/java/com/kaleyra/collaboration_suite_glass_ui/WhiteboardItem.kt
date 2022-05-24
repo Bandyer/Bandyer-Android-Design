@@ -58,7 +58,6 @@ class WhiteboardItem(val whiteboard: Whiteboard) : AbstractItem<WhiteboardItem.V
          * View needs to release resources when its recycled
          */
         override fun unbindView(item: WhiteboardItem) {
-            binding.unbind()
             item.whiteboard.view.value = null
         }
     }

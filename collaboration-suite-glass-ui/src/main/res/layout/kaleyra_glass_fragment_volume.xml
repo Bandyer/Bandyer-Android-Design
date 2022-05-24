@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,28 +14,25 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="?attr/kaleyra_volumeStyle">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+    <com.kaleyra.collaboration_suite_glass_ui.settings.volume.VolumeSlider
+        android:id="@+id/kaleyra_slider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:theme="?attr/kaleyra_volumeStyle">
+        android:layout_height="wrap_content"
+        android:theme="?attr/sliderStyle"
+        app:layout_constraintBottom_toTopOf="@+id/kaleyra_bottom_navigation"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <com.kaleyra.collaboration_suite_glass_ui.settings.volume.VolumeSlider
-            android:id="@+id/kaleyra_slider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="?attr/sliderStyle"
-            app:layout_constraintBottom_toTopOf="@+id/kaleyra_bottom_navigation"
-            app:layout_constraintStart_toStartOf="parent" />
+    <com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
+        android:id="@+id/kaleyra_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
-            android:id="@+id/kaleyra_bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

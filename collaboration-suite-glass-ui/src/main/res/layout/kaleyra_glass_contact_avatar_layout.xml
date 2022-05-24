@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,29 +14,26 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/kaleyra_avatar_image"
+        style="?attr/kaleyra_iconStyle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/kaleyra_avatar_image"
-            style="?attr/kaleyra_iconStyle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/kaleyra_avatar_text"
-            style="?android:attr/textViewStyle"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/kaleyra_avatar_image"
-            app:layout_constraintEnd_toEndOf="@id/kaleyra_avatar_image"
-            app:layout_constraintStart_toStartOf="@id/kaleyra_avatar_image"
-            app:layout_constraintTop_toTopOf="@id/kaleyra_avatar_image"
-            tools:text="M" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/kaleyra_avatar_text"
+        style="?android:attr/textViewStyle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@id/kaleyra_avatar_image"
+        app:layout_constraintEnd_toEndOf="@id/kaleyra_avatar_image"
+        app:layout_constraintStart_toStartOf="@id/kaleyra_avatar_image"
+        app:layout_constraintTop_toTopOf="@id/kaleyra_avatar_image"
+        tools:text="M" />
+</androidx.constraintlayout.widget.ConstraintLayout>

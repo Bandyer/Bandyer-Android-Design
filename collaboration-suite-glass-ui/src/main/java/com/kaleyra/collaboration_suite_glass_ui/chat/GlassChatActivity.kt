@@ -4,13 +4,11 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.activity.viewModels
-import androidx.databinding.DataBindingUtil
 import com.kaleyra.collaboration_suite_core_ui.CollaborationService
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
-import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
 import com.kaleyra.collaboration_suite_glass_ui.common.OnDestinationChangedListener
@@ -40,7 +38,8 @@ internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.kaleyra_chat_activity_glass)
+        binding = KaleyraChatActivityGlassBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         glassTouchEventManager = GlassTouchEventManager(this, this)
 //        enableImmersiveMode()
     }

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +14,14 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="?attr/kaleyra_recyclerViewItemStyle">
 
-    <FrameLayout
+    <include
+        android:id="@+id/kaleyra_chat_message"
+        layout="@layout/kaleyra_glass_chat_message_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:theme="?attr/kaleyra_recyclerViewItemStyle">
-
-        <include
-            android:id="@+id/kaleyra_chat_message"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            layout="@layout/kaleyra_glass_chat_message_layout" />
-    </FrameLayout>
-</layout>
+        android:layout_height="match_parent" />
+</FrameLayout>

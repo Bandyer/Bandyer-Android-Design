@@ -13,7 +13,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager2
@@ -49,22 +48,21 @@ class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Lis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding =
-            DataBindingUtil.setContentView<KaleyraChatNotificationActivityGlassBinding?>(
-                this,
-                R.layout.kaleyra_chat_notification_activity_glass
-            ).apply {
-                setListenersForRealWear(kaleyraBottomNavigation)
+            KaleyraChatNotificationActivityGlassBinding.inflate(layoutInflater)
+                .apply {
+                    setListenersForRealWear(kaleyraBottomNavigation)
 
-                val data = getNotificationData(intent)
-                kaleyraTitle.text = data.username
-                kaleyraMessage.text = data.message
-                kaleyraMessage.maxLines = 2
-                kaleyraTime.visibility = View.VISIBLE
-                kaleyraAvatars.addAvatar(data)
+                    val data = getNotificationData(intent)
+                    kaleyraTitle.text = data.username
+                    kaleyraMessage.text = data.message
+                    kaleyraMessage.maxLines = 2
+                    kaleyraTime.visibility = View.VISIBLE
+                    kaleyraAvatars.addAvatar(data)
 
-                participants = intent.getStringArrayExtra("participants")
-                sendersId.add(data.userId)
-            }
+                    participants = intent.getStringArrayExtra("participants")
+                    sendersId.add(data.userId)
+                }
+        setContentView(binding.root)
 
         glassTouchEventManager = GlassTouchEventManager(this, this)
 

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,31 +14,28 @@
   ~ limitations under the License.
   -->
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="?attr/kaleyra_rootLayoutStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <LinearLayout
-        xmlns:tools="http://schemas.android.com/tools"
-        style="?attr/kaleyra_rootLayoutStyle"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/kaleyra_gesture_icon"
+        style="?attr/kaleyra_iconStyle" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/kaleyra_gesture_text"
+        style="?attr/kaleyra_iconTipStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:text="Swipe" />
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/kaleyra_gesture_icon"
-            style="?attr/kaleyra_iconStyle" />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/kaleyra_action_text"
+        style="?attr/kaleyra_labelStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="cancel" />
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/kaleyra_gesture_text"
-            style="?attr/kaleyra_iconTipStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Swipe" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/kaleyra_action_text"
-            style="?attr/kaleyra_labelStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="cancel" />
-
-    </LinearLayout>
-</layout>
+</LinearLayout>
