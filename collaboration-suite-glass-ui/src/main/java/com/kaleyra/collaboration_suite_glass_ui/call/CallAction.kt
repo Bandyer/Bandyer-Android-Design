@@ -64,9 +64,9 @@ internal abstract class CallAction(
         ): List<CallAction> = mutableListOf<CallAction>().apply {
             if (withMicrophone) add(MICROPHONE(ctx))
             if (withCamera) add(CAMERA(ctx))
-            if (withSwitchCamera) add(SWITCHCAMERA(ctx))
+            if (withSwitchCamera) add(SWITCHCAMERA())
             if (withVolume) add(VOLUME())
-            if (withZoom) add(ZOOM(ctx))
+            if (withZoom) add(ZOOM())
             if (withFlashLight) add(FLASHLIGHT(ctx))
             if (withParticipants) add(PARTICIPANTS())
             if (withChat) add(CHAT())
@@ -197,30 +197,23 @@ internal abstract class CallAction(
 
     /**
      * Switch camera menu action item
-     * @property isToggled true to activate, false otherwise
      * @constructor
      */
-    class SWITCHCAMERA(ctx: Context) : ToggleableCallAction(
+    class SWITCHCAMERA : CallAction(
         R.id.id_glass_menu_switch_camera_item,
         R.layout.kaleyra_glass_menu_item_layout,
         R.attr.kaleyra_recyclerViewSwitchCameraItemStyle
-    ) {
-        override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_switch_camera)
-        override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_switch_camera)
-    }
+    )
 
     /**
      * Zoom menu action item
      * @constructor
      */
-    class ZOOM(ctx: Context) : ToggleableCallAction(
+    class ZOOM : CallAction(
         R.id.id_glass_menu_zoom_item,
         R.layout.kaleyra_glass_menu_item_layout,
         R.attr.kaleyra_recyclerViewZoomItemStyle
-    ) {
-        override val defaultText = ctx.getString(R.string.kaleyra_glass_menu_zoom)
-        override val toggledText = ctx.getString(R.string.kaleyra_glass_menu_zoom)
-    }
+    )
 
     /**
      * Volume menu action item
