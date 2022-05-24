@@ -133,7 +133,6 @@ object CollaborationUI {
         this.chatActivityClazz = chatActivityClazz
         this.callActivityClazz = callActivityClazz
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
-        phoneBox.enableAudioRouting(logger = collaboration?.configuration?.logger)
         return true
     }
 
@@ -141,6 +140,7 @@ object CollaborationUI {
      * Connect
      */
     fun connect() {
+        phoneBox.enableAudioRouting(logger = collaboration?.configuration?.logger)
         startCollaborationService(true, true)
     }
 
