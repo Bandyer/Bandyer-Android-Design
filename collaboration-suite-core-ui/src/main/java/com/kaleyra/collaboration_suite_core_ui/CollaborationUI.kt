@@ -148,6 +148,10 @@ object CollaborationUI {
      * Disconnect
      */
     fun disconnect() {
+        collaboration ?: return
+        phoneBox.disableAudioRouting(logger = collaboration?.configuration?.logger)
+        phoneBox.disconnect()
+        chatBox.disconnect()
         stopCollaborationService()
     }
 
@@ -155,10 +159,9 @@ object CollaborationUI {
      * Dispose the collaboration UI
      */
     fun dispose() {
-        if (collaboration == null) return
+        collaboration ?: return
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
-        stopCollaborationService()
-        phoneBox.disableAudioRouting(logger = collaboration?.configuration?.logger)
+        disconnect()
         collaboration = null
     }
 
@@ -168,6 +171,7 @@ object CollaborationUI {
                 if (startPhoneBox) phoneBox.connect()
                 if (startChatBox) chatBox.connect()
             }
+
             override fun onServiceDisconnected(componentName: ComponentName) = Unit
         }
 
@@ -179,8 +183,6 @@ object CollaborationUI {
     }
 
     private fun stopCollaborationService() = with(ContextRetainer.context) {
-        phoneBox.disconnect()
-        chatBox.disconnect()
         stopService(Intent(this, CollaborationService::class.java))
     }
 }
