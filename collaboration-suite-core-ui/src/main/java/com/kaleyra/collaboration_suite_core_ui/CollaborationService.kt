@@ -47,14 +47,14 @@ import kotlinx.coroutines.launch
  * The CollaborationService
  */
 class CollaborationService : BoundService(),
-                             CallUIDelegate,
-                             ChatUIDelegate,
-                             CallStreamDelegate,
-                             CallNotificationDelegate,
-                             DeviceStatusDelegate,
-                             CallController,
-                             Application.ActivityLifecycleCallbacks,
-                             CallNotificationActionReceiver.ActionDelegate {
+    CallUIDelegate,
+    ChatUIDelegate,
+    CallStreamDelegate,
+    CallNotificationDelegate,
+    DeviceStatusDelegate,
+    CallController,
+    Application.ActivityLifecycleCallbacks,
+    CallNotificationActionReceiver.ActionDelegate {
 
     private companion object {
         const val CALL_NOTIFICATION_ID = 22
@@ -74,7 +74,11 @@ class CollaborationService : BoundService(),
 
     private var callActivityClazz: Class<*>? = null
 
+    private var chatActivityClazz: Class<*>? = null
+
     private var isServiceInForeground: Boolean = false
+
+    private var isChatInForeground: Boolean = false
 
     private val _call: MutableSharedFlow<CallUI> =
         MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
@@ -194,6 +198,7 @@ class CollaborationService : BoundService(),
     ) {
         this._chat = chat
         this.chatUsersDescription = chatUsersDescription ?: UsersDescription()
+        this.chatActivityClazz = chatActivityClazz
         bindCustomChatNotification(
             CollaborationUI.chatBox,
             ChatNotificationManager(chatActivityClazz)
@@ -250,6 +255,8 @@ class CollaborationService : BoundService(),
                                         "ChatId: ${chat.id}, MsgId: ${it.id}"
                                     )
 
+                                    if (isChatInForeground) return@onEachMessages
+
                                     val userId = it.creator.userId
                                     val username = callUsersDescription.name(listOf(userId))
                                     val message =
@@ -300,14 +307,16 @@ class CollaborationService : BoundService(),
      * @suppress
      */
     override fun onActivityStarted(activity: Activity) {
-        if (activity.javaClass != callActivityClazz || isServiceInForeground) return
-        lifecycleScope.launch {
-            currentCall ?: return@launch
-            moveNotificationToForeground(
-                currentCall!!,
-                callUsersDescription,
-                callActivityClazz!!
-            )
+        when {
+            activity.javaClass == callActivityClazz && !isServiceInForeground -> lifecycleScope.launch {
+                currentCall ?: return@launch
+                moveNotificationToForeground(
+                    currentCall!!,
+                    callUsersDescription,
+                    callActivityClazz!!
+                )
+            }
+            activity.javaClass == chatActivityClazz -> isChatInForeground = true
         }
     }
 
@@ -324,7 +333,10 @@ class CollaborationService : BoundService(),
     /**
      * @suppress
      */
-    override fun onActivityStopped(activity: Activity) = Unit
+    override fun onActivityStopped(activity: Activity) {
+        if (activity.javaClass != chatActivityClazz) return
+        isChatInForeground = false
+    }
 
     /**
      * @suppress
