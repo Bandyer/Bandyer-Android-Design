@@ -25,7 +25,7 @@ import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotification
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager2
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
@@ -197,26 +197,22 @@ class CollaborationService : BoundService(),
         this.chatUsersDescription = chatUsersDescription ?: UsersDescription()
         bindCustomChatNotification(
             CollaborationUI.chatBox,
-            ChatNotificationManager2(chatActivityClazz)
+            ChatNotificationManager(chatActivityClazz)
         )
     }
 
     fun bindCustomChatNotification(
         chatBox: ChatBox,
-        chatNotificationManager2: ChatNotificationManager2
+        chatNotificationManager: ChatNotificationManager
     ) {
         this.chatBox = chatBox
         chatBoxJob?.cancel()
-        chatBoxJob = listenToChats(chatBox, chatNotificationManager2)
+        chatBoxJob = listenToChats(chatBox, chatNotificationManager)
     }
-
-//    private val _newMessages: MutableSharedFlow<Pair<Chat, Message>> =
-//        MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
-//    override val newMessages: SharedFlow<Pair<Chat, Message>> = _newMessages
 
     private fun listenToChats(
         chatBox: ChatBox,
-        chatNotificationManager2: ChatNotificationManager2
+        chatNotificationManager: ChatNotificationManager
     ): Job {
         val hashMap = hashMapOf<String, String>()
         val jobs = mutableListOf<Job>()
@@ -234,9 +230,6 @@ class CollaborationService : BoundService(),
                                 "CollaborationService",
                                 "Subscribe job chat: ${chat.id}"
                             )
-                        }
-                        .onCompletion {
-                            chatNotificationManager2.dispose()
                         }
                         .onEach onEachMessages@{ msgs ->
                             val msgId = chat.messages.value.list.firstOrNull()?.id
@@ -265,7 +258,7 @@ class CollaborationService : BoundService(),
                                             ?: ""
                                     val imageUri = callUsersDescription.image(listOf(userId))
 
-                                    chatNotificationManager2.notify(
+                                    chatNotificationManager.notify(
                                         ChatNotification(
                                             username,
                                             userId,

@@ -36,7 +36,7 @@
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChat"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation" />
         <activity
-            android:name=".chat.ChatNotificationActivity"
+            android:name=".chat.notification.ChatNotificationActivity"
             android:launchMode="singleTop"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChatNotification" />
     </application>

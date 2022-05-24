@@ -2,34 +2,20 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-/**
- * NotificationData
- *
- * @property name The user name
- * @property userId The user identifier
- * @property message The message sent by the user
- * @property imageUri The avatar image uri
- * @constructor
- */
-data class ChatNotification(
-    val name: String,
-    val userId: String,
-    val message: String,
-    val imageUri: Uri = Uri.EMPTY,
-    val usersList: List<String>
-)
-
-class ChatNotificationManager2(private val chatNotificationActivityClazz: Class<*>) :
+class ChatNotificationManager(private val chatNotificationActivityClazz: Class<*>) :
     Application.ActivityLifecycleCallbacks {
 
     private val application = ContextRetainer.context.applicationContext as? Application
     private var context: Activity? = null
+
+    init {
+        application?.registerActivityLifecycleCallbacks(this)
+    }
 
     /**
      * Do Not Disturb flag. If set to true, the notifications are no longer shown.
@@ -38,14 +24,12 @@ class ChatNotificationManager2(private val chatNotificationActivityClazz: Class<
 
     fun notify(notification: ChatNotification) {
         if (dnd) return
-        application?.registerActivityLifecycleCallbacks(this)
         startNotificationActivity(notification)
     }
 
-    fun dispose() {
-        application?.unregisterActivityLifecycleCallbacks(this)
-//        context = null
-    }
+//    fun dispose() {
+//        application?.unregisterActivityLifecycleCallbacks(this)
+//    }
 
     private fun startNotificationActivity(notification: ChatNotification) {
         val currentContext = context ?: ContextRetainer.context
@@ -78,6 +62,7 @@ class ChatNotificationManager2(private val chatNotificationActivityClazz: Class<
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = Unit
 
     override fun onActivityDestroyed(activity: Activity) = Unit
+
     companion object {
         const val AUTO_DISMISS_TIME = 3000L
     }

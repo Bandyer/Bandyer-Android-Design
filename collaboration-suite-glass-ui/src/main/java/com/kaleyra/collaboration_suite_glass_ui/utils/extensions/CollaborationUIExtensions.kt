@@ -19,7 +19,7 @@ package com.kaleyra.collaboration_suite_glass_ui.utils.extensions
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
-import com.kaleyra.collaboration_suite_glass_ui.chat.ChatNotificationActivity
+import com.kaleyra.collaboration_suite_glass_ui.chat.notification.ChatNotificationActivity
 import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity
 
 /**
