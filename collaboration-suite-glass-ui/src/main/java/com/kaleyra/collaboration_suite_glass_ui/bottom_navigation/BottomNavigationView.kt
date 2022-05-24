@@ -90,21 +90,21 @@ internal class BottomNavigationView @JvmOverloads constructor(
         }
 
     /**
-     * Show the swipe horizontal element
+     * Show the first item
      */
     fun showFirstItem() {
         binding.kaleyraFirstItem.visibility = View.VISIBLE
     }
 
     /**
-     * Hide the swipe horizontal element
+     * Hide the first item
      */
     fun hideFirstItem() {
         binding.kaleyraFirstItem.visibility = View.GONE
     }
 
     /**
-     * Hide the tap element
+     * Hide the second item
      */
     fun hideSecondItem() {
         binding.kaleyraSecondItem.visibility = View.GONE
@@ -116,4 +116,5 @@ internal class BottomNavigationView @JvmOverloads constructor(
     fun showSecondItem() {
         binding.kaleyraSecondItem.visibility = View.VISIBLE
     }
+
 }

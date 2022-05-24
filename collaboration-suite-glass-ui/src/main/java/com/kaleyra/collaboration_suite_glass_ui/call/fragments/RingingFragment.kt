@@ -21,9 +21,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.takeWhile
 
 /**
  * RingingFragment
@@ -39,6 +44,19 @@ internal class RingingFragment : PreCallFragment() {
     ): View {
         themeResId = requireActivity().theme.getAttributeResourceId(R.attr.kaleyra_ringingStyle)
         return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
+    override fun onServiceBound() {
+        super.onServiceBound()
+        repeatOnStarted {
+            viewModel.callState
+                .takeWhile { it !is Call.State.Connecting }
+                .onCompletion {
+                    binding.kaleyraSubtitle.text = resources.getString(R.string.kaleyra_glass_connecting)
+                    binding.kaleyraBottomNavigation.visibility = View.INVISIBLE
+                }
+                .launchIn(this)
+        }
     }
 
     override fun onConnected() { findNavController().safeNavigate(RingingFragmentDirections.actionRingingFragmentToEmptyFragment()) }
