@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite.phonebox.Whiteboard
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard.LoadOptions
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.CollaborationService
@@ -77,6 +78,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -470,22 +472,53 @@ internal class GlassCallActivity :
                     )
                 }.launchIn(this)
 
-            viewModel.actions.onEach { actions ->
-                viewModel.whiteboard.onEach { wb ->
-                    viewModel.callState
-                        .takeWhile { it !is Call.State.Connected }
-                        .onCompletion {
-                            val mode = if (actions.any { it is CallUI.Action.OpenWhiteboard.ViewOnly }) LoadOptions.Mode.ViewOnly else LoadOptions.Mode.Default
+            var currentWhiteboard: Whiteboard? = null
+            var wbJob: Job? = null
+            viewModel.callState
+                .takeWhile { it !is Call.State.Connected }
+                .onCompletion {
+                    combine(viewModel.whiteboard, viewModel.actions) { wb, actions ->
+                        if (!actions.any { it is CallUI.Action.OpenWhiteboard }) {
+                            if (currentWhiteboard == null) return@combine
+                            wbJob?.cancel()
+                            currentWhiteboard = null
+                            wbJob = null
+                        } else {
+                            if (currentWhiteboard == wb) return@combine
+                            val mode =
+                                if (actions.any { it is CallUI.Action.OpenWhiteboard.ViewOnly }) LoadOptions.Mode.ViewOnly else LoadOptions.Mode.Default
+                            wbJob?.cancel()
+                            wbJob?.join()
+//                            currentWhiteboard?.unload()
+                            currentWhiteboard = wb
                             wb.load(LoadOptions(mode))
-                            whiteboardItemAdapter!!.clear()
+//                            whiteboardItemAdapter!!.clear()
                             whiteboardItemAdapter!!.add(WhiteboardItem(wb))
-                        }.launchIn(this)
-                    viewModel.callState
-                        .takeWhile { it !is Call.State.Disconnected.Ended }
-                        .onCompletion { wb.unload() }
-                        .launchIn(this)
-                }.launchIn(this)
-            }.launchIn(this@repeatOnStarted)
+                            wbJob = viewModel.callState
+                                .takeWhile { it !is Call.State.Disconnected.Ended }
+                                .onCompletion {
+//                                    val linearLayoutManager =
+//                                        rvStreams.layoutManager as LinearLayoutManager
+//                                    if (linearLayoutManager.findFirstVisibleItemPosition() == 0) return@onCompletion
+                                    wb.unload()
+                                    whiteboardItemAdapter!!.clear()
+                                }
+                                .launchIn(this@repeatOnStarted)
+                        }
+                    }.launchIn(this@repeatOnStarted)
+                }
+                .launchIn(this)
+
+            // TODO rethink the logic to remove the whiteboard when the user is no longer on it
+//            rvStreams.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+//                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//                    if (newState != SCROLL_STATE_IDLE) return
+//                    val linearLayoutManager = recyclerView.layoutManager as LinearLayoutManager
+//                    if (viewModel.actions.value.any { it is CallUI.Action.OpenWhiteboard } || whiteboardItemAdapter?.adapterItemCount == 0 || linearLayoutManager.findFirstVisibleItemPosition() == 0) return
+//                    currentWhiteboard?.unload()
+//                    whiteboardItemAdapter!!.clear()
+//                }
+//            })
         }
 
         if (wasPausedForBackground) {
