@@ -259,6 +259,13 @@ internal class GlassCallActivity :
                 .launchIn(lifecycleScope)
 
         repeatOnStarted {
+            viewModel.whiteboard
+                .flatMapLatest { it.events }
+                .onEach {
+                    if (it !is Whiteboard.Event.Request.Show || whiteboardItemAdapter!!.adapterItemCount < 1) return@onEach
+                    binding.kaleyraStreams.smoothScrollToPosition(0)
+                }.launchIn(this)
+
             viewModel
                 .battery
                 .onEach {
