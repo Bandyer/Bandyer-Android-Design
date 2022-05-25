@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -57,6 +58,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     override val binding: KaleyraGlassFragmentChatBinding get() = _binding!!
 
     private var itemAdapter: ItemAdapter<ChatMessageItem>? = null
+    private val snapHelper = PagerSnapHelper()
 
     private var currentMsgItemIndex = 0
     private var unreadMessagesIds = listOf<String>()
@@ -94,50 +96,62 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
             inflater.cloneInContext(ContextThemeWrapper(requireActivity(), themeResId)),
             container,
             false
-        )
-            .apply {
-                if (DeviceUtils.isRealWear)
-                    setListenersForRealWear(kaleyraBottomNavigation)
+        ).apply {
 
-                // Init the RecyclerView
-                kaleyraMessages.apply {
-                    itemAdapter = ItemAdapter()
-                    val fastAdapter = FastAdapter.with(itemAdapter!!)
-                    val layoutManager =
-                        LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-                    val snapHelper = PagerSnapHelper().also { it.attachToRecyclerView(this) }
+            if (DeviceUtils.isRealWear)
+                setListenersForRealWear(kaleyraBottomNavigation)
 
-                    this.layoutManager = layoutManager
-                    adapter = fastAdapter
-                    isFocusable = false
-                    setHasFixedSize(true)
-                    addItemDecoration(ReadProgressDecoration(requireContext()))
+            // Init the RecyclerView
+            kaleyraMessages.apply {
+                snapHelper.attachToRecyclerView(this)
+                itemAdapter = ItemAdapter()
+                val fastAdapter = FastAdapter.with(itemAdapter!!)
+                val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-                    addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                        private var isLoading = false
+                fastAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+                    override fun onChanged() = markCurrentMessageAsRead()
+                    override fun onItemRangeInserted(positionStart: Int, itemCount: Int) = markCurrentMessageAsRead()
+                })
 
-                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                            val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-                            if (!isLoading && fastAdapter.itemCount <= (lastVisibleItem + LOAD_MORE_THRESHOLD)) {
-                                viewModel.chat.fetch(LOAD_MORE_THRESHOLD) {
-                                    isLoading = false
-                                }
-                                isLoading = true
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    private var isLoading = false
+
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
+                        if (!isLoading && fastAdapter.itemCount <= (lastVisibleItem + LOAD_MORE_THRESHOLD)) {
+                            viewModel.chat.fetch(LOAD_MORE_THRESHOLD) {
+                                isLoading = false
                             }
+                            isLoading = true
+                        }
 
-                            val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                            val currentMsgIndex = layoutManager.getPosition(foundView)
-                            val currentPage = itemAdapter!!.adapterItems[currentMsgIndex].page
+                        getCurrentMessageIndex()?.let { currentMsgIndex ->
+                            val currentItem = itemAdapter!!.adapterItems[currentMsgIndex]
+                            val currentPage = currentItem.page
+
+                            viewModel.chat.messages.value.list[currentMsgIndex]
                             unreadMessagesIds = unreadMessagesIds - currentPage.messageId
-
                             currentMsgItemIndex = currentMsgIndex
                         }
-                    })
+                    }
 
-                    // Forward the root view's touch event to the recycler view
-                    root.setOnTouchListener { _, event -> onTouchEvent(event) }
-                }
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+                        if (newState != RecyclerView.SCROLL_STATE_IDLE) return
+                        markCurrentMessageAsRead()
+                    }
+                })
+
+                this.layoutManager = layoutManager
+                adapter = fastAdapter
+                isFocusable = false
+                setHasFixedSize(true)
+                addItemDecoration(ReadProgressDecoration(requireContext()))
+
+                // Forward the root view's touch event to the recycler view
+                root.setOnTouchListener { _, event -> onTouchEvent(event) }
             }
+        }
 
         return binding.root
     }
@@ -150,7 +164,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                 .onEach { msgs ->
                     binding.kaleyraNoMessages.visibility =
                         if (msgs.list.isEmpty()) View.VISIBLE else View.GONE
-                    toChatMessagePages(this, msgs.list) { pages ->
+                    toChatMessagePages(this@repeatOnStarted, msgs.list) { pages ->
                         val items = pages.map { ChatMessageItem(it) }
                         FastAdapterDiffUtil[itemAdapter!!] =
                             FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
@@ -237,6 +251,23 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     private fun updateCounter(count: Int) = with(binding.kaleyraCounter) {
         visibility = if (count > 0) View.VISIBLE else View.GONE
         text = resources.getString(R.string.kaleyra_glass_message_counter_pattern, count)
+    }
+
+    private fun getCurrentMessageIndex(): Int? {
+        if (_binding == null) return null
+        val layoutManager = binding.kaleyraMessages.layoutManager as LinearLayoutManager
+        val foundView = snapHelper.findSnapView(layoutManager) ?: return null
+        return layoutManager.getPosition(foundView)
+    }
+
+    private fun markCurrentMessageAsRead() {
+        _binding ?: return
+        binding.kaleyraMessages.post {
+            getCurrentMessageIndex()?.let { currentMsgIndex ->
+                val chatMessage = viewModel.chat.messages.value.list[currentMsgIndex]
+                (chatMessage as? OtherMessage)?.markAsRead()
+            }
+        }
     }
 
     private companion object {
