@@ -146,6 +146,7 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
     }
 
     override fun onServiceBound() {
+        // Close the menu if the actions change
         viewModel.actions.drop(1).take(1).onEach { onSwipeDown() }.launchIn(lifecycleScope)
 
         val actions = getActions(viewModel.actions.value)

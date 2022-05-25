@@ -74,8 +74,7 @@ internal class ReadProgressDecoration(context: Context) : ItemDecoration() {
         val itemCount = parent.adapter?.itemCount ?: return
         if (itemCount < 2) return
 
-        // Set the decoration at the bottom of the recyclerView's parent
-        val y = (parent.parent as View).height - parent.top - this@ReadProgressDecoration.height / 2f
+        val y = parent.bottom - this@ReadProgressDecoration.height
         val containerWidth = (parent.parent as View).width
 
         canvas.drawInactive(parent, y, containerWidth)
