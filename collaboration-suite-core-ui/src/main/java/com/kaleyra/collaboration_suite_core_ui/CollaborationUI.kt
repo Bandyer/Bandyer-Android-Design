@@ -67,9 +67,26 @@ import kotlinx.parcelize.Parcelize
 object CollaborationUI {
 
     private var collaboration: Collaboration? = null
+        set(value) {
+            if (field == value) return
+            field = value
+            _chatBox = null
+            _phoneBox = null
+        }
 
     private var chatActivityClazz: Class<*>? = null
+        set(value) {
+            if (field == value) return
+            field = value
+            _chatBox = null
+        }
+
     private var callActivityClazz: Class<*>? = null
+        set(value) {
+            if (field == value) return
+            field = value
+            _phoneBox = null
+        }
 
     private var wasPhoneBoxConnected = false
     private var wasChatBoxConnected = false
@@ -97,19 +114,21 @@ object CollaborationUI {
     /**
      * Phone box
      */
+    private var _phoneBox: PhoneBoxUI? = null
     val phoneBox: PhoneBoxUI
         get() {
             require(collaboration != null && callActivityClazz != null) { "setUp the CollaborationUI to use the phoneBox" }
-            return PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz!!)
+            return _phoneBox ?: PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz!!).apply { _phoneBox = this }
         }
 
     /**
      * Chat box
      */
+    private var _chatBox: ChatBoxUI? = null
     val chatBox: ChatBoxUI
         get() {
             require(collaboration != null && chatActivityClazz != null) { "setUp the CollaborationUI to use the chatBox" }
-            return ChatBoxUI(collaboration!!.chatBox, chatActivityClazz!!)
+            return _chatBox ?: ChatBoxUI(collaboration!!.chatBox, chatActivityClazz!!).apply { _chatBox = this }
         }
 
     /**
