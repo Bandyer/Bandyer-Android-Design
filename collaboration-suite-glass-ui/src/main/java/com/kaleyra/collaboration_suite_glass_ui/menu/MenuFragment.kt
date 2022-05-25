@@ -37,6 +37,7 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.SwitchCamera
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleCamera
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleFlashlight
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleMicrophone
+import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
@@ -86,6 +87,8 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
     private var currentMenuItemIndex = 0
 
     private val viewModel: CallViewModel by activityViewModels()
+
+    private var chatUI: ChatUI? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -266,11 +269,8 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
             )
         }
         is CallAction.CHAT -> true.also {
-            CollaborationUI.chatBox.show(
-                CollaborationUI.chatBox.create(
-                    viewModel.participants.replayCache.first().others
-                )
-            )
+            chatUI = chatUI ?: CollaborationUI.chatBox.create(viewModel.participants.replayCache.first().others)
+            CollaborationUI.chatBox.show(chatUI!!)
         }
         is CallAction.WHITEBOARD -> true.also {
             onSwipeDown()
