@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.chatbox.Message
-import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -106,15 +105,12 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                 snapHelper.attachToRecyclerView(this)
                 itemAdapter = ItemAdapter()
                 val fastAdapter = FastAdapter.with(itemAdapter!!)
-                val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-                fastAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-                    override fun onChanged() = markCurrentMessageAsRead()
-                    override fun onItemRangeInserted(positionStart: Int, itemCount: Int) = markCurrentMessageAsRead()
-                })
+                val layoutManager =
+                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     private var isLoading = false
+                    private var currentPosition = 0
 
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
@@ -125,20 +121,14 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                             isLoading = true
                         }
 
-                        getCurrentMessageIndex()?.let { currentMsgIndex ->
-                            val currentItem = itemAdapter!!.adapterItems[currentMsgIndex]
-                            val currentPage = currentItem.page
+                        val foundView = snapHelper.findSnapView(layoutManager) ?: return
+                        val position = layoutManager.getPosition(foundView)
+                        if (currentPosition == position) return
+                        currentPosition = position
 
-                            viewModel.chat.messages.value.list[currentMsgIndex]
-                            unreadMessagesIds = unreadMessagesIds - currentPage.messageId
-                            currentMsgItemIndex = currentMsgIndex
-                        }
-                    }
-
-                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                        super.onScrollStateChanged(recyclerView, newState)
-                        if (newState != RecyclerView.SCROLL_STATE_IDLE) return
-                        markCurrentMessageAsRead()
+                        val messageId = itemAdapter!!.getAdapterItem(currentPosition).page.messageId
+                        viewModel.chat.messages.value.other.firstOrNull { it.id == messageId }?.markAsRead()
+                        unreadMessagesIds = unreadMessagesIds - messageId
                     }
                 })
 
@@ -249,25 +239,10 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         }
 
     private fun updateCounter(count: Int) = with(binding.kaleyraCounter) {
-        visibility = if (count > 0) View.VISIBLE else View.GONE
-        text = resources.getString(R.string.kaleyra_glass_message_counter_pattern, count)
-    }
-
-    private fun getCurrentMessageIndex(): Int? {
-        if (_binding == null) return null
-        val layoutManager = binding.kaleyraMessages.layoutManager as LinearLayoutManager
-        val foundView = snapHelper.findSnapView(layoutManager) ?: return null
-        return layoutManager.getPosition(foundView)
-    }
-
-    private fun markCurrentMessageAsRead() {
-        _binding ?: return
-        binding.kaleyraMessages.post {
-            getCurrentMessageIndex()?.let { currentMsgIndex ->
-                val chatMessage = viewModel.chat.messages.value.list[currentMsgIndex]
-                (chatMessage as? OtherMessage)?.markAsRead()
-            }
-        }
+        visibility = if (count > 0) {
+            text = resources.getString(R.string.kaleyra_glass_message_counter_pattern, count)
+            View.VISIBLE
+        } else View.GONE
     }
 
     private companion object {
