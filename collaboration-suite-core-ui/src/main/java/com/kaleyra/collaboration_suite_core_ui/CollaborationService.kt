@@ -202,21 +202,17 @@ class CollaborationService : BoundService(),
         this._chat = chat
         this.chatUsersDescription = chatUsersDescription ?: UsersDescription()
         this.chatActivityClazz = chatActivityClazz
-        bindCustomChatNotification(
-            CollaborationUI.chatBox,
-            ChatNotificationManager(chatActivityClazz)
-        )
     }
 
     fun bindCustomChatNotification(
         chatBox: ChatBox,
-        chatNotificationManager: ChatNotificationManager
+        chatNotificationActivityClazz: Class<*>
     ) {
         this.chatBox = chatBox
         chatBoxJob?.cancel()
         chatBoxMessagesJobs.forEach { it.cancel() }
         chatBoxMessagesJobs.clear()
-        chatBoxJob = listenToChats(chatBox, chatNotificationManager)
+        chatBoxJob = listenToChats(chatBox, ChatNotificationManager(chatNotificationActivityClazz))
     }
 
     private fun listenToChats(

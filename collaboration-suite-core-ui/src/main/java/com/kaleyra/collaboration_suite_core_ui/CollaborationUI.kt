@@ -55,7 +55,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.parcelize.Parcelize
 
@@ -73,6 +75,8 @@ object CollaborationUI {
             _chatBox = null
             _phoneBox = null
         }
+
+    private var chatNotificationActivityClazz: Class<*>? = null
 
     private var chatActivityClazz: Class<*>? = null
         set(value) {
@@ -151,6 +155,7 @@ object CollaborationUI {
         Collaboration.create(credentials, configuration).apply { collaboration = this }
         this.chatActivityClazz = chatActivityClazz
         this.callActivityClazz = callActivityClazz
+        this.chatNotificationActivityClazz = chatNotificationActivityClazz
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
         return true
     }
@@ -187,8 +192,12 @@ object CollaborationUI {
     private fun startCollaborationService(startPhoneBox: Boolean, startChatBox: Boolean) {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
+                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
                 if (startPhoneBox) phoneBox.connect()
-                if (startChatBox) chatBox.connect()
+                if (startChatBox) {
+                    chatBox.connect()
+                    service.bindCustomChatNotification(chatBox, chatNotificationActivityClazz!!)
+                }
             }
 
             override fun onServiceDisconnected(componentName: ComponentName) = Unit
@@ -367,7 +376,35 @@ class ChatBoxUI(private val chatBox: ChatBox, private val chatActivityClazz: Cla
     }
 }
 
-class ChatUI(chat: Chat, val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(setOf())) : Chat by chat {
+class ChatUI(private val chat: Chat, val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(setOf())) : Chat by chat {
+
+//    fun showUnreadMessages() {
+//        bindCollaborationService(
+//            chat,
+//            usersDescription,
+//            chatActivityClazz
+//        )
+//    }
+//
+//    private fun bindCollaborationService(
+//        chat: Chat,
+//        usersDescription: UsersDescription?,
+//        chatActivityClazz: Class<*>
+//    ) {
+//        val serviceConnection = object : ServiceConnection {
+//            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+//                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
+//                service.bindChatNotifications(chat, usersDescription, )
+//            }
+//
+//            override fun onServiceDisconnected(name: ComponentName?) = Unit
+//        }
+//
+//        with(ContextRetainer.context) {
+//            val intent = Intent(this, CollaborationService::class.java)
+//            bindService(intent, serviceConnection, 0)
+//        }
+//    }
 
     @Keep
     sealed class Action : Parcelable {
