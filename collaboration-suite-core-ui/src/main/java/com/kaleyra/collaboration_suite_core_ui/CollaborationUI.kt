@@ -47,6 +47,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
@@ -122,7 +123,10 @@ object CollaborationUI {
     val phoneBox: PhoneBoxUI
         get() {
             require(collaboration != null && callActivityClazz != null) { "setUp the CollaborationUI to use the phoneBox" }
-            return _phoneBox ?: PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz!!).apply { _phoneBox = this }
+            return _phoneBox ?: PhoneBoxUI(
+                collaboration!!.phoneBox,
+                callActivityClazz!!
+            ).apply { _phoneBox = this }
         }
 
     /**
@@ -132,7 +136,11 @@ object CollaborationUI {
     val chatBox: ChatBoxUI
         get() {
             require(collaboration != null && chatActivityClazz != null) { "setUp the CollaborationUI to use the chatBox" }
-            return _chatBox ?: ChatBoxUI(collaboration!!.chatBox, chatActivityClazz!!).apply { _chatBox = this }
+            return _chatBox ?: ChatBoxUI(
+                collaboration!!.chatBox,
+                chatActivityClazz!!,
+                chatNotificationActivityClazz
+            ).apply { _chatBox = this }
         }
 
     /**
@@ -196,7 +204,7 @@ object CollaborationUI {
                 if (startPhoneBox) phoneBox.connect()
                 if (startChatBox) {
                     chatBox.connect()
-                    service.bindCustomChatNotification(chatBox, chatNotificationActivityClazz!!)
+//                    service.bindCustomChatNotification(chatBox, chatNotificationActivityClazz!!)
                 }
             }
 
@@ -220,11 +228,15 @@ object CollaborationUI {
  *
  * @param phoneBox delegated property
  */
-class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: Class<*>) : PhoneBox by phoneBox {
+class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: Class<*>) :
+    PhoneBox by phoneBox {
 
-    override val call: SharedFlow<CallUI> = phoneBox.call.map { CallUI(it) }.shareIn(MainScope(), SharingStarted.Eagerly)
+    override val call: SharedFlow<CallUI> =
+        phoneBox.call.map { CallUI(it) }.shareIn(MainScope(), SharingStarted.Eagerly)
 
-    override val callHistory: SharedFlow<List<CallUI>> = phoneBox.callHistory.map { it.map { CallUI(it) } }.shareIn(MainScope(), SharingStarted.Eagerly)
+    override val callHistory: SharedFlow<List<CallUI>> =
+        phoneBox.callHistory.map { it.map { CallUI(it) } }
+            .shareIn(MainScope(), SharingStarted.Eagerly)
 
     /**
      * Call
@@ -232,7 +244,8 @@ class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: 
      * @param users to be called
      * @param options creation options
      */
-    fun call(users: List<User>, options: (CreationOptions.() -> Unit)? = null): CallUI = create(users, options).apply { connect() }
+    fun call(users: List<User>, options: (CreationOptions.() -> Unit)? = null): CallUI =
+        create(users, options).apply { connect() }
 
     /**
      * Join an url
@@ -243,7 +256,8 @@ class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: 
 
     override fun create(url: String) = CallUI(phoneBox.create(url))
 
-    override fun create(users: List<User>, conf: (CreationOptions.() -> Unit)?) = CallUI(phoneBox.create(users, conf))
+    override fun create(users: List<User>, conf: (CreationOptions.() -> Unit)?) =
+        CallUI(phoneBox.create(users, conf))
 
     fun show(call: CallUI) = bindCollaborationService(
         call,
@@ -285,7 +299,10 @@ private fun Call.getDefaultActions() = mutableSetOf<Action>().apply {
     add(ShowParticipants)
 }
 
-class CallUI(call: Call, val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(call.getDefaultActions())) : Call by call {
+class CallUI(
+    call: Call,
+    val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(call.getDefaultActions())
+) : Call by call {
 
     @Keep
     sealed class Action : Parcelable {
@@ -298,7 +315,18 @@ class CallUI(call: Call, val actions: MutableStateFlow<Set<Action>> = MutableSta
             /**
              * A set of all tools
              */
-            val all by lazy { setOf(ToggleMicrophone, ToggleCamera, SwitchCamera, ChangeZoom, ToggleFlashlight, OpenChat.ViewOnly, ShowParticipants, OpenWhiteboard.ViewOnly) }
+            val all by lazy {
+                setOf(
+                    ToggleMicrophone,
+                    ToggleCamera,
+                    SwitchCamera,
+                    ChangeZoom,
+                    ToggleFlashlight,
+                    OpenChat.ViewOnly,
+                    ShowParticipants,
+                    OpenWhiteboard.ViewOnly
+                )
+            }
         }
 
         @Parcelize
@@ -334,9 +362,20 @@ class CallUI(call: Call, val actions: MutableStateFlow<Set<Action>> = MutableSta
     }
 }
 
-class ChatBoxUI(private val chatBox: ChatBox, private val chatActivityClazz: Class<*>) : ChatBox by chatBox {
+class ChatBoxUI(
+    private val chatBox: ChatBox,
+    private val chatActivityClazz: Class<*>,
+    private val chatNotificationActivityClazz: Class<*>? = null
+) : ChatBox by chatBox {
 
-    override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(MainScope()) { it.map { ChatUI(it) } }
+    override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(MainScope()) {
+        it.map {
+            ChatUI(
+                it,
+                chatNotificationManager = chatNotificationActivityClazz?.let { ChatNotificationManager(it) }
+            )
+        }
+    }
 
     fun show(chat: ChatUI) = bindCollaborationService(
         chat,
@@ -376,35 +415,40 @@ class ChatBoxUI(private val chatBox: ChatBox, private val chatActivityClazz: Cla
     }
 }
 
-class ChatUI(private val chat: Chat, val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(setOf())) : Chat by chat {
+class ChatUI(
+    private val chat: Chat,
+    val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(setOf()),
+    private val chatNotificationManager: ChatNotificationManager? = null
+) : Chat by chat {
 
-//    fun showUnreadMessages() {
-//        bindCollaborationService(
-//            chat,
-//            usersDescription,
-//            chatActivityClazz
-//        )
-//    }
-//
-//    private fun bindCollaborationService(
-//        chat: Chat,
-//        usersDescription: UsersDescription?,
-//        chatActivityClazz: Class<*>
-//    ) {
-//        val serviceConnection = object : ServiceConnection {
-//            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-//                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
-//                service.bindChatNotifications(chat, usersDescription, )
-//            }
-//
-//            override fun onServiceDisconnected(name: ComponentName?) = Unit
-//        }
-//
-//        with(ContextRetainer.context) {
-//            val intent = Intent(this, CollaborationService::class.java)
-//            bindService(intent, serviceConnection, 0)
-//        }
-//    }
+    fun showUnreadMessages() {
+        chatNotificationManager ?: return
+        bindCollaborationService(
+            chat,
+            usersDescription ?: UsersDescription(),
+            chatNotificationManager
+        )
+    }
+
+    private fun bindCollaborationService(
+        chat: Chat,
+        usersDescription: UsersDescription,
+        chatNotificationManager: ChatNotificationManager
+    ) {
+        val serviceConnection = object : ServiceConnection {
+            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
+                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
+                service.bindChatNotifications(chat, usersDescription, chatNotificationManager)
+            }
+
+            override fun onServiceDisconnected(name: ComponentName?) = Unit
+        }
+
+        with(ContextRetainer.context) {
+            val intent = Intent(this, CollaborationService::class.java)
+            bindService(intent, serviceConnection, 0)
+        }
+    }
 
     @Keep
     sealed class Action : Parcelable {
@@ -416,7 +460,12 @@ class ChatUI(private val chat: Chat, val actions: MutableStateFlow<Set<Action>> 
             /**
              * A set of all tools
              */
-            val all by lazy { setOf(CreateCall(preferredType = PreferredType(video = Call.Video.Disabled)), CreateCall()) }
+            val all by lazy {
+                setOf(
+                    CreateCall(preferredType = PreferredType(video = Call.Video.Disabled)),
+                    CreateCall()
+                )
+            }
         }
 
         @Parcelize

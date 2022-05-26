@@ -13,17 +13,18 @@ class ChatNotificationManager(private val chatNotificationActivityClazz: Class<*
     private val application = ContextRetainer.context.applicationContext as? Application
     private var context: Activity? = null
 
-    init {
-        application?.registerActivityLifecycleCallbacks(this)
-    }
-
     /**
      * Do Not Disturb flag. If set to true, the notifications are no longer shown.
      */
     var dnd: Boolean = false
+    var isRegistered = false
 
     fun notify(notification: ChatNotification) {
         if (dnd) return
+        if (!isRegistered) {
+            application?.registerActivityLifecycleCallbacks(this)
+            isRegistered = true
+        }
         startNotificationActivity(notification)
     }
 

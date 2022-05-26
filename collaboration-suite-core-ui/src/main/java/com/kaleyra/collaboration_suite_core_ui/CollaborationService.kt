@@ -193,7 +193,6 @@ class CollaborationService : BoundService(),
         }
     }
 
-
     fun bindChatChannel(
         chat: Chat,
         chatUsersDescription: UsersDescription? = null,
@@ -204,66 +203,98 @@ class CollaborationService : BoundService(),
         this.chatActivityClazz = chatActivityClazz
     }
 
-    fun bindCustomChatNotification(
-        chatBox: ChatBox,
-        chatNotificationActivityClazz: Class<*>
-    ) {
-        this.chatBox = chatBox
-        chatBoxJob?.cancel()
-        chatBoxMessagesJobs.forEach { it.cancel() }
-        chatBoxMessagesJobs.clear()
-        chatBoxJob = listenToChats(chatBox, ChatNotificationManager(chatNotificationActivityClazz))
-    }
+    private var chatBoundedForNotifications = mutableListOf<Chat>()
 
-    private fun listenToChats(
-        chatBox: ChatBox,
+    fun bindChatNotifications(
+        chat: Chat,
+        chatUsersDescription: UsersDescription,
         chatNotificationManager: ChatNotificationManager
-    ): Job {
-        val hashMap = hashMapOf<String, String>()
-        return chatBox.chats
-            .onEach { chats ->
-                chatBoxMessagesJobs.forEach {
-                    it.cancel()
-                    it.join()
-                }
-                chatBoxMessagesJobs.clear()
-                chats.forEach { chat ->
-                    chatBoxMessagesJobs += chat.messages
-                        .onSubscription { Log.e("CollaborationService", "Subscribe job chat: ${chat.id}") }
-                        .onEach onEachMessages@{ msgs ->
-                            val msgId = chat.messages.value.list.firstOrNull()?.id
-                            val msgContent = (chat.messages.value.list.firstOrNull()?.content as? Message.Content.Text)?.message
-                            Log.e("CollaborationService", "last message: id: $msgId, content: $msgContent")
-
-                            msgs.other.firstOrNull { it.state.value is Message.State.Received }
-                                ?.also {
-                                    if (hashMap[chat.id] == it.id) return@onEachMessages
-                                    hashMap[chat.id] = it.id
-//                            _newMessages.emit(Pair(chat, it))
-
-                                    Log.e("CollaborationService", "ChatId: ${chat.id}, MsgId: ${it.id}")
-
-                                    if (isChatInForeground) return@onEachMessages
-
-                                    val userId = it.creator.userId
-                                    val username = callUsersDescription.name(listOf(userId))
-                                    val message = (chat.messages.value.list.firstOrNull()?.content as? Message.Content.Text)?.message ?: ""
-                                    val imageUri = callUsersDescription.image(listOf(userId))
-
-                                    chatNotificationManager.notify(
-                                        ChatNotification(
-                                            username,
-                                            userId,
-                                            message,
-                                            imageUri,
-                                            chat.participants.value.others.map { part -> part.userId }
-                                        )
-                                    )
-                                }
-                        }.launchIn(lifecycleScope)
-                }
-            }.launchIn(lifecycleScope)
+    ) {
+        if (chatBoundedForNotifications.contains(chat)) return
+        chatBoundedForNotifications.add(chat)
+        chat.messages.onEach { msgs ->
+            msgs.other.firstOrNull { it.state.value is Message.State.Received }?.also {
+                Log.e("CollaborationService", "last message: id: ${it.id}, content: ${it.content}")
+                val userId = it.creator.userId
+                val username = chatUsersDescription.name(listOf(userId))
+                val message =
+                    (chat.messages.value.list.firstOrNull()?.content as? Message.Content.Text)?.message
+                        ?: ""
+                val imageUri = chatUsersDescription.image(listOf(userId))
+                chatNotificationManager.notify(
+                    ChatNotification(
+                        username,
+                        userId,
+                        message,
+                        imageUri,
+                        chat.participants.value.others.map { part -> part.userId }
+                    )
+                )
+            }
+        }.launchIn(lifecycleScope)
     }
+
+
+//    fun bindCustomChatNotification(
+//        chatBox: ChatBox,
+//        chatNotificationActivityClazz: Class<*>
+//    ) {
+//        this.chatBox = chatBox
+//        chatBoxJob?.cancel()
+//        chatBoxMessagesJobs.forEach { it.cancel() }
+//        chatBoxMessagesJobs.clear()
+//        chatBoxJob = listenToChats(chatBox, ChatNotificationManager(chatNotificationActivityClazz))
+//    }
+
+//    private fun listenToChats(
+//        chatBox: ChatBox,
+//        chatNotificationManager: ChatNotificationManager
+//    ): Job {
+//        val hashMap = hashMapOf<String, String>()
+//        return chatBox.chats
+//            .onEach { chats ->
+//                chatBoxMessagesJobs.forEach {
+//                    it.cancel()
+//                    it.join()
+//                }
+//                chatBoxMessagesJobs.clear()
+//                chats.forEach { chat ->
+//                    chatBoxMessagesJobs += chat.messages
+//                        .onSubscription { Log.e("CollaborationService", "Subscribe job chat: ${chat.id}") }
+//                        .onEach onEachMessages@{ msgs ->
+//                            val msgId = chat.messages.value.list.firstOrNull()?.id
+//                            val msgContent = (chat.messages.value.list.firstOrNull()?.content as? Message.Content.Text)?.message
+//                            Log.e("CollaborationService", "last message: id: $msgId, content: $msgContent")
+//
+//                            msgs.other.firstOrNull { it.state.value is Message.State.Received }
+//                                ?.also {
+//                                    if (hashMap[chat.id] == it.id) return@onEachMessages
+//                                    hashMap[chat.id] = it.id
+////                            _newMessages.emit(Pair(chat, it))
+//
+//                                    Log.e("CollaborationService", "ChatId: ${chat.id}, MsgId: ${it.id}")
+//
+//                                    if (isChatInForeground) return@onEachMessages
+//
+//                                    val userId = it.creator.userId
+//                                    val username = callUsersDescription.name(listOf(userId))
+//                                    val message = (chat.messages.value.list.firstOrNull()?.content as? Message.Content.Text)?.message ?: ""
+//                                    val imageUri = callUsersDescription.image(listOf(userId))
+//
+//                                    chatNotificationManager.notify(
+//                                        ChatNotification(
+//                                            username,
+//                                            userId,
+//                                            message,
+//                                            imageUri,
+//                                            chat.participants.value.others.map { part -> part.userId }
+//                                        )
+//                                    )
+//                                }
+//                        }.launchIn(lifecycleScope)
+//                }
+//            }.launchIn(lifecycleScope)
+//    }
 
     fun canShowCallActivity(call: Call): Boolean =
         isAppInForeground && (!this@CollaborationService.isSilent() || call.participants.value.let { it.me == it.creator() })
