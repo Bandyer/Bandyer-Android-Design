@@ -36,7 +36,7 @@
 
     <!-- ROOT -->
     <style name="KaleyraCollaborationSuiteUI.ChatMessage.GlassNotification.RootLayout" parent="">
-        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:paddingTop">@dimen/kaleyra_dimen_space48</item>
         <item name="android:paddingBottom">@dimen/kaleyra_dimen_space8</item>
         <item name="android:paddingStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>

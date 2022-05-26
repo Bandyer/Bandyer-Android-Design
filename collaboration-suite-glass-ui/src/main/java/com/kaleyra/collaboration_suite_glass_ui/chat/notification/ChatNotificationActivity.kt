@@ -192,7 +192,7 @@ class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Lis
     }
 
     private fun expandRootView(onExpanded: ((Animator) -> Unit)? = null) {
-        val rootView = binding.root
+        val rootView = binding.kaleyraRoot
         rootView.animateViewHeight(
             rootView.height,
             (rootView.parent as View).height,
