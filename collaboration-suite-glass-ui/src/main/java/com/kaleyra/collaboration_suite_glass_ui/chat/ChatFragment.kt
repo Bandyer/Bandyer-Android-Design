@@ -110,7 +110,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     private var isLoading = false
-                    private var currentPosition = 0
+                    private var currentPosition = -1
 
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         val foundView = snapHelper.findSnapView(layoutManager) ?: return
