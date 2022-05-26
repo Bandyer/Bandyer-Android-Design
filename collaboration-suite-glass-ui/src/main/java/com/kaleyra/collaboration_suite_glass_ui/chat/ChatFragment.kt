@@ -116,10 +116,10 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                         if (currentMsgItemIndex == position) return
                         currentMsgItemIndex = position
 
-//                        if (!isLoading && fastAdapter.itemCount <= (currentPosition + LOAD_MORE_THRESHOLD)) {
-//                            viewModel.chat.fetch(LOAD_MORE_THRESHOLD) { isLoading = false }
-//                            isLoading = true
-//                        }
+                        if (!isLoading && fastAdapter.itemCount <= (currentMsgItemIndex + LOAD_MORE_THRESHOLD)) {
+                            viewModel.chat.fetch(LOAD_MORE_THRESHOLD) { isLoading = false }
+                            isLoading = true
+                        }
 
                         val messageId =
                             itemAdapter!!.getAdapterItem(currentMsgItemIndex).page.messageId
