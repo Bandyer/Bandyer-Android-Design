@@ -57,7 +57,6 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     override val binding: KaleyraGlassFragmentChatBinding get() = _binding!!
 
     private var itemAdapter: ItemAdapter<ChatMessageItem>? = null
-    private val snapHelper = PagerSnapHelper()
 
     private var currentMsgItemIndex = -1
     private var unreadMessagesIds = listOf<String>()
@@ -102,7 +101,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 
             // Init the RecyclerView
             kaleyraMessages.apply {
-                snapHelper.attachToRecyclerView(this)
+                val snapHelper = PagerSnapHelper().also { it.attachToRecyclerView(this) }
                 itemAdapter = ItemAdapter()
                 val fastAdapter = FastAdapter.with(itemAdapter!!)
                 val layoutManager =
@@ -122,8 +121,10 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 //                            isLoading = true
 //                        }
 
-                        val messageId = itemAdapter!!.getAdapterItem(currentMsgItemIndex).page.messageId
-                        viewModel.chat.messages.value.other.firstOrNull { it.id == messageId }?.markAsRead()
+                        val messageId =
+                            itemAdapter!!.getAdapterItem(currentMsgItemIndex).page.messageId
+                        viewModel.chat.messages.value.other.firstOrNull { it.id == messageId }
+                            ?.markAsRead()
                         unreadMessagesIds = unreadMessagesIds - messageId
                     }
                 })
@@ -143,7 +144,9 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     }
 
     override fun onServiceBound() {
-        unreadMessagesIds = viewModel.chat.messages.value.other.filter { it.state.value is Message.State.Received }.map { it.id }
+        unreadMessagesIds =
+            viewModel.chat.messages.value.other.filter { it.state.value is Message.State.Received }
+                .map { it.id }
 
         repeatOnStarted {
             viewModel.chat.messages
