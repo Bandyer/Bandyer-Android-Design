@@ -113,18 +113,17 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                     private var currentPosition = 0
 
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        val lastVisibleItem = layoutManager.findLastVisibleItemPosition()
-                        if (!isLoading && fastAdapter.itemCount <= (lastVisibleItem + LOAD_MORE_THRESHOLD)) {
+                        val foundView = snapHelper.findSnapView(layoutManager) ?: return
+                        val position = layoutManager.getPosition(foundView)
+                        if (currentPosition == position) return
+                        currentPosition = position
+
+                        if (!isLoading && fastAdapter.itemCount <= (currentPosition + LOAD_MORE_THRESHOLD)) {
                             viewModel.chat.fetch(LOAD_MORE_THRESHOLD) {
                                 isLoading = false
                             }
                             isLoading = true
                         }
-
-                        val foundView = snapHelper.findSnapView(layoutManager) ?: return
-                        val position = layoutManager.getPosition(foundView)
-                        if (currentPosition == position) return
-                        currentPosition = position
 
                         val messageId = itemAdapter!!.getAdapterItem(currentPosition).page.messageId
                         viewModel.chat.messages.value.other.firstOrNull { it.id == messageId }?.markAsRead()
@@ -246,6 +245,6 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     }
 
     private companion object {
-        const val LOAD_MORE_THRESHOLD = 2
+        const val LOAD_MORE_THRESHOLD = 3
     }
 }
