@@ -59,7 +59,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     private var itemAdapter: ItemAdapter<ChatMessageItem>? = null
     private val snapHelper = PagerSnapHelper()
 
-    private var currentMsgItemIndex = 0
+    private var currentMsgItemIndex = -1
     private var unreadMessagesIds = listOf<String>()
         set(value) {
             field = value
@@ -110,22 +110,19 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     private var isLoading = false
-                    private var currentPosition = -1
 
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         val foundView = snapHelper.findSnapView(layoutManager) ?: return
                         val position = layoutManager.getPosition(foundView)
-                        if (currentPosition == position) return
-                        currentPosition = position
+                        if (currentMsgItemIndex == position) return
+                        currentMsgItemIndex = position
 
-                        if (!isLoading && fastAdapter.itemCount <= (currentPosition + LOAD_MORE_THRESHOLD)) {
-                            viewModel.chat.fetch(LOAD_MORE_THRESHOLD) {
-                                isLoading = false
-                            }
-                            isLoading = true
-                        }
+//                        if (!isLoading && fastAdapter.itemCount <= (currentPosition + LOAD_MORE_THRESHOLD)) {
+//                            viewModel.chat.fetch(LOAD_MORE_THRESHOLD) { isLoading = false }
+//                            isLoading = true
+//                        }
 
-                        val messageId = itemAdapter!!.getAdapterItem(currentPosition).page.messageId
+                        val messageId = itemAdapter!!.getAdapterItem(currentMsgItemIndex).page.messageId
                         viewModel.chat.messages.value.other.firstOrNull { it.id == messageId }?.markAsRead()
                         unreadMessagesIds = unreadMessagesIds - messageId
                     }
