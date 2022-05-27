@@ -36,10 +36,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * The CollaborationService
@@ -69,6 +71,8 @@ class CollaborationService : BoundService(),
     private var callActivityClazz: Class<*>? = null
 
     private var chatActivityClazz: Class<*>? = null
+
+    private var chatBoundedForNotifications = ConcurrentHashMap<String, Chat>()
 
     private var isServiceInForeground: Boolean = false
 
@@ -191,35 +195,34 @@ class CollaborationService : BoundService(),
         this.chatActivityClazz = chatActivityClazz
     }
 
-    private var chatBoundedForNotifications = mutableListOf<Chat>()
-
     fun bindChatNotifications(
         chat: Chat,
-        chatUsersDescription: UsersDescription,
+        usersDescription: UsersDescription,
         chatNotificationManager: ChatNotificationManager
     ) {
-        if (chatBoundedForNotifications.contains(chat)) return
-        chatBoundedForNotifications.add(chat)
-        chat.messages.onEach { msgs ->
-            msgs.other.firstOrNull { it.state.value is Message.State.Received }?.also {
-                Log.e("CollaborationService", "last message: id: ${it.id}, content: ${it.content}")
-                val userId = it.creator.userId
-                val username = chatUsersDescription.name(listOf(userId))
-                val message =
-                    (chat.messages.value.list.firstOrNull()?.content as? Message.Content.Text)?.message
-                        ?: ""
-                val imageUri = chatUsersDescription.image(listOf(userId))
-                chatNotificationManager.notify(
-                    ChatNotification(
-                        username,
-                        userId,
-                        message,
-                        imageUri,
-                        chat.participants.value.others.map { part -> part.userId }
+        if (chatBoundedForNotifications.contains(chat.id)) return
+        chatBoundedForNotifications[chat.id] = chat
+        chat.messages
+            .map { it.other }
+            .onEach { msgs ->
+                msgs.firstOrNull { it.state.value is Message.State.Received }?.also {
+                    Log.e("CollaborationService", "last message: id: ${it.id}, content: ${it.content}")
+                    if (isChatInForeground) return@also
+                    val userId = it.creator.userId
+                    val username = usersDescription.name(listOf(userId))
+                    val message = (it.content as? Message.Content.Text)?.message ?: ""
+                    val imageUri = usersDescription.image(listOf(userId))
+                    chatNotificationManager.notify(
+                        ChatNotification(
+                            username,
+                            userId,
+                            message,
+                            imageUri,
+                            chat.participants.value.others.map { part -> part.userId }
+                        )
                     )
-                )
-            }
-        }.launchIn(lifecycleScope)
+                }
+            }.launchIn(lifecycleScope)
     }
 
     fun canShowCallActivity(call: Call): Boolean =
