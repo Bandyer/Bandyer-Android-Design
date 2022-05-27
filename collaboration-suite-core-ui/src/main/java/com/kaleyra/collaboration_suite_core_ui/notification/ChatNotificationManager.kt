@@ -44,6 +44,7 @@ class ChatNotificationManager(private val chatNotificationActivityClazz: Class<*
     override fun onActivityStarted(activity: Activity) = Unit
 
     override fun onActivityResumed(activity: Activity) {
+        if (context == chatNotificationActivityClazz) return
         context = activity
     }
 
