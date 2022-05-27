@@ -383,7 +383,7 @@ class ChatBoxUI(
         chatActivityClazz
     )
 
-    override fun create(users: List<User>) = ChatUI(chatBox.create(users))
+    override fun create(users: List<User>) = ChatUI(chatBox.create(users), chatNotificationManager = chatNotificationActivityClazz?.let { ChatNotificationManager(it) })
 
 //    suspend fun create(list: List<ChatUser>): ChatChannel =
 //        createChannel(list).also { bindCollaborationService(it, usersDescription, chatActivityClazz) }
