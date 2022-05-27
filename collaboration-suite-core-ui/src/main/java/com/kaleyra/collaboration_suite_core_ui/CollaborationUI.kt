@@ -362,14 +362,16 @@ class CallUI(
 class ChatBoxUI(
     private val chatBox: ChatBox,
     private val chatActivityClazz: Class<*>,
-    private val chatNotificationActivityClazz: Class<*>? = null
+    chatNotificationActivityClazz: Class<*>? = null
 ) : ChatBox by chatBox {
+
+    private val chatNotificationManager = chatNotificationActivityClazz?.let { ChatNotificationManager(it) }
 
     override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(MainScope()) {
         it.map {
             ChatUI(
                 it,
-                chatNotificationManager = chatNotificationActivityClazz?.let { ChatNotificationManager(it) }
+                chatNotificationManager = chatNotificationManager
             )
         }
     }
@@ -380,7 +382,7 @@ class ChatBoxUI(
         chatActivityClazz
     )
 
-    override fun create(users: List<User>) = ChatUI(chatBox.create(users), chatNotificationManager = chatNotificationActivityClazz?.let { ChatNotificationManager(it) })
+    override fun create(users: List<User>) = ChatUI(chatBox.create(users), chatNotificationManager = chatNotificationManager)
 
 //    suspend fun create(list: List<ChatUser>): ChatChannel =
 //        createChannel(list).also { bindCollaborationService(it, usersDescription, chatActivityClazz) }
