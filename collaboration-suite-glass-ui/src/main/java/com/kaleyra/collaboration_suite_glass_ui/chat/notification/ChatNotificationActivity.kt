@@ -24,6 +24,8 @@ import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.common.AvatarGroupView
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatNotificationActivityGlassBinding
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ConcurrentLinkedQueue
 
 class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Listener {
 
@@ -38,7 +40,7 @@ class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Lis
 
     private var glassTouchEventManager: GlassTouchEventManager? = null
     private var participants: Array<String>? = null
-    private var sendersId = mutableSetOf<String>()
+    private var sendersId = ConcurrentLinkedQueue<String>()
     private var isLayoutExpanded = false
     private var msgCounter = 1
 
@@ -93,10 +95,9 @@ class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Lis
         binding.kaleyraTitle.text =
             resources.getString(R.string.kaleyra_glass_new_messages_pattern, ++msgCounter)
 
-        sendersId.apply {
-            add(data.userId)
-            if (count() > 1) binding.kaleyraAvatars.addAvatar(data)
-        }
+        if (sendersId.contains(data.userId)) return
+        sendersId.add(data.userId)
+        if (sendersId.count() > 1) binding.kaleyraAvatars.addAvatar(data)
     }
 
     /**
