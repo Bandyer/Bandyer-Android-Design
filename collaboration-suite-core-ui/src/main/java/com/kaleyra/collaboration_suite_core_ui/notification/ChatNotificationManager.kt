@@ -3,7 +3,6 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 import android.app.Activity
 import android.app.Application
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
@@ -13,24 +12,19 @@ class ChatNotificationManager(private val chatNotificationActivityClazz: Class<*
     private val application = ContextRetainer.context.applicationContext as? Application
     private var context: Activity? = null
 
+    init {
+        application?.registerActivityLifecycleCallbacks(this)
+    }
+
     /**
      * Do Not Disturb flag. If set to true, the notifications are no longer shown.
      */
     var dnd: Boolean = false
-    var isRegistered = false
 
     fun notify(notification: ChatNotification) {
         if (dnd) return
-        if (!isRegistered) {
-            application?.registerActivityLifecycleCallbacks(this)
-            isRegistered = true
-        }
         startNotificationActivity(notification)
     }
-
-//    fun dispose() {
-//        application?.unregisterActivityLifecycleCallbacks(this)
-//    }
 
     private fun startNotificationActivity(notification: ChatNotification) {
         val currentContext = context ?: ContextRetainer.context
