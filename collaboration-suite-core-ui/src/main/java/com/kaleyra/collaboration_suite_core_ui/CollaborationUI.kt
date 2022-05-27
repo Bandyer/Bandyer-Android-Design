@@ -200,7 +200,6 @@ object CollaborationUI {
     private fun startCollaborationService(startPhoneBox: Boolean, startChatBox: Boolean) {
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
-                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
                 if (startPhoneBox) phoneBox.connect()
                 if (startChatBox) chatBox.connect()
             }
