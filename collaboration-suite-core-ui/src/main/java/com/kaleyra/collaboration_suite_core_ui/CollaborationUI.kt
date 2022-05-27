@@ -202,10 +202,7 @@ object CollaborationUI {
             override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
                 val service = (binder as BoundServiceBinder).getService<CollaborationService>()
                 if (startPhoneBox) phoneBox.connect()
-                if (startChatBox) {
-                    chatBox.connect()
-//                    service.bindCustomChatNotification(chatBox, chatNotificationActivityClazz!!)
-                }
+                if (startChatBox) chatBox.connect()
             }
 
             override fun onServiceDisconnected(componentName: ComponentName) = Unit
