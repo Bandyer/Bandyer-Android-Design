@@ -261,13 +261,13 @@ class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: 
 
     fun show(call: CallUI) = bindCollaborationService(
         call,
-        usersDescription,
+        usersDescription ?: UsersDescription(),
         callActivityClazz,
     )
 
     private fun bindCollaborationService(
         call: CallUI,
-        usersDescription: UsersDescription?,
+        usersDescription: UsersDescription,
         callActivityClazz: Class<*>
     ) {
         val serviceConnection = object : ServiceConnection {
@@ -379,7 +379,7 @@ class ChatBoxUI(
 
     fun show(chat: ChatUI) = bindCollaborationService(
         chat,
-        usersDescription,
+        usersDescription ?: UsersDescription(),
         chatActivityClazz
     )
 
@@ -395,7 +395,7 @@ class ChatBoxUI(
 
     private fun bindCollaborationService(
         chat: Chat,
-        usersDescription: UsersDescription?,
+        usersDescription: UsersDescription,
         chatActivityClazz: Class<*>
     ) {
         val serviceConnection = object : ServiceConnection {

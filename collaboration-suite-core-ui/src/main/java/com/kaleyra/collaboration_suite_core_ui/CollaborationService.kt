@@ -145,19 +145,19 @@ class CollaborationService : BoundService(),
      * Bind the service to a phone box
      *
      * @param phoneBox The phonebox
-     * @param callUsersDescription The user description. Optional.
+     * @param usersDescription The user description. Optional.
      * @param callActivityClazz The call activity class
      */
     fun bindCall(
         phoneBox: PhoneBoxUI,
         call: CallUI,
-        callUsersDescription: UsersDescription? = null,
+        usersDescription: UsersDescription,
         callActivityClazz: Class<*>
     ) {
 
         if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return
         this.phoneBox = phoneBox
-        this.callUsersDescription = callUsersDescription ?: UsersDescription()
+        this.callUsersDescription = usersDescription
         this.callActivityClazz = callActivityClazz
         phoneBoxJob?.cancel()
         phoneBoxJob = lifecycleScope.launch {
@@ -183,11 +183,11 @@ class CollaborationService : BoundService(),
 
     fun bindChatChannel(
         chat: Chat,
-        chatUsersDescription: UsersDescription? = null,
+        usersDescription: UsersDescription,
         chatActivityClazz: Class<*>
     ) {
         this._chat = chat
-        this.chatUsersDescription = chatUsersDescription ?: UsersDescription()
+        this.chatUsersDescription = usersDescription
         this.chatActivityClazz = chatActivityClazz
     }
 
