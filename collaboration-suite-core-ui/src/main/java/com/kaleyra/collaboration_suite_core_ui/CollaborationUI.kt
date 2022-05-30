@@ -21,16 +21,20 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.Parcelable
+import android.util.Log
 import androidx.annotation.Keep
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite.Collaboration.Credentials
 import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
+import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.chatbox.Messages
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Call.PreferredType
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
@@ -47,6 +51,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotification
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
@@ -54,13 +59,17 @@ import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.cached
 import com.kaleyra.collaboration_suite_utils.getValue
 import com.kaleyra.collaboration_suite_utils.setValue
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -362,6 +371,21 @@ class ChatBoxUI(
         chatActivityClazz
     )
 
+    fun showUnreadMessages() {
+        val jobs = mutableListOf<Job>()
+        chats.onEach {
+            jobs.forEach {
+                it.cancel()
+                it.join()
+            }
+            it.forEach {
+                jobs += it.messages.onEach {
+                    it.showUnread()
+                }.launchIn(MainScope())
+            }
+        }.launchIn(MainScope())
+    }
+
     override fun create(users: List<User>) = ChatUI(chatBox.create(users), chatNotificationManager = chatNotificationManager)
 
 //    suspend fun create(list: List<ChatUser>): ChatChannel =
@@ -400,35 +424,7 @@ class ChatUI(
     private val chatNotificationManager: ChatNotificationManager? = null
 ) : Chat by chat {
 
-    fun showUnreadMessages() {
-        chatNotificationManager ?: return
-        bindCollaborationService(
-            chat,
-            usersDescription ?: UsersDescription(),
-            chatNotificationManager
-        )
-    }
-
-
-    private fun bindCollaborationService(
-        chat: Chat,
-        usersDescription: UsersDescription,
-        chatNotificationManager: ChatNotificationManager
-    ) {
-        val serviceConnection = object : ServiceConnection {
-            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
-                service.bindChatNotifications(chat, usersDescription, chatNotificationManager)
-            }
-
-            override fun onServiceDisconnected(name: ComponentName?) = Unit
-        }
-
-        with(ContextRetainer.context) {
-            val intent = Intent(this, CollaborationService::class.java)
-            bindService(intent, serviceConnection, 0)
-        }
-    }
+    override val messages: StateFlow<MessagesUI> = chat.messages.mapToStateFlow(MainScope()) { MessagesUI(it, chat.participants.value.others.map { part -> part.userId }, chatNotificationManager) }
 
     @Keep
     sealed class Action : Parcelable {
@@ -450,6 +446,31 @@ class ChatUI(
 
         @Parcelize
         data class CreateCall(val preferredType: PreferredType = PreferredType()) : Action()
+    }
+}
+
+class MessagesUI(private val messages: Messages, private val chatUserIds: List<String>, private val chatNotificationManager: ChatNotificationManager? = null): Messages by messages {
+
+    fun showUnread() {
+        chatNotificationManager ?: return
+        MainScope().launch {
+            messages.other.firstOrNull { it.state.value is Message.State.Received }?.also {
+                val userId = it.creator.userId
+                val usersDescription = usersDescription ?: UsersDescription()
+                val username = usersDescription.name(listOf(userId))
+                val message = (it.content as? Message.Content.Text)?.message ?: ""
+                val imageUri = usersDescription.image(listOf(userId))
+                chatNotificationManager.notify(
+                    ChatNotification(
+                        username,
+                        userId,
+                        message,
+                        imageUri,
+                        chatUserIds
+                    )
+                )
+            }
+        }
     }
 }
 

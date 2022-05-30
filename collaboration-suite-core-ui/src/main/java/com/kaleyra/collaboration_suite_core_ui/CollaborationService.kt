@@ -75,10 +75,6 @@ class CollaborationService : BoundService(),
 
     private var chatActivityClazz: Class<*>? = null
 
-    private val chatNotificationMutex = Mutex()
-
-    private var chatBoundedForNotifications = mutableSetOf<String>()
-
     private var isServiceInForeground: Boolean = false
 
     private var isChatInForeground: Boolean = false
@@ -163,7 +159,6 @@ class CollaborationService : BoundService(),
         usersDescription: UsersDescription,
         callActivityClazz: Class<*>
     ) {
-
         if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return
         this.phoneBox = phoneBox
         this.callUsersDescription = usersDescription
@@ -198,43 +193,6 @@ class CollaborationService : BoundService(),
         this._chat = chat
         this.chatUsersDescription = usersDescription
         this.chatActivityClazz = chatActivityClazz
-    }
-
-    fun bindChatNotifications(
-        chat: Chat,
-        usersDescription: UsersDescription,
-        chatNotificationManager: ChatNotificationManager
-    ) {
-        lifecycleScope.launch {
-            chatNotificationMutex.withLock {
-                if (!chatBoundedForNotifications.add(chat.id)) return@withLock
-                chat.messages
-                    .onSubscription {
-                        Log.e("CollaborationService", "subscribe")
-                    }
-                    .map { it.other }
-                    .onEach { msgs ->
-                        msgs.firstOrNull { it.state.value is Message.State.Received }?.also {
-                            Log.e("CollaborationService", "last message: id: ${it.id}, content: ${it.content}")
-                            if (isChatInForeground) return@also
-                            val userId = it.creator.userId
-                            val username = usersDescription.name(listOf(userId))
-                            val message = (it.content as? Message.Content.Text)?.message ?: ""
-                            val imageUri = usersDescription.image(listOf(userId))
-                            chatNotificationManager.notify(
-                                ChatNotification(
-                                    username,
-                                    userId,
-                                    message,
-                                    imageUri,
-                                    chat.participants.value.others.map { part -> part.userId }
-                                )
-                            )
-                        }
-                    }.launchIn(lifecycleScope)
-            }
-        }
-
     }
 
     fun canShowCallActivity(call: Call): Boolean =
