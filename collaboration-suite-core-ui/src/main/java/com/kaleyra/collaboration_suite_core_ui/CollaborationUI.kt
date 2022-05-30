@@ -51,14 +51,15 @@ import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMana
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.collaboration_suite_utils.cached
+import com.kaleyra.collaboration_suite_utils.getValue
+import com.kaleyra.collaboration_suite_utils.setValue
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.parcelize.Parcelize
 
@@ -70,28 +71,11 @@ import kotlinx.parcelize.Parcelize
 object CollaborationUI {
 
     private var collaboration: Collaboration? = null
-        set(value) {
-            if (field == value) return
-            field = value
-            _chatBox = null
-            _phoneBox = null
-        }
 
     private var chatNotificationActivityClazz: Class<*>? = null
 
-    private var chatActivityClazz: Class<*>? = null
-        set(value) {
-            if (field == value) return
-            field = value
-            _chatBox = null
-        }
-
-    private var callActivityClazz: Class<*>? = null
-        set(value) {
-            if (field == value) return
-            field = value
-            _phoneBox = null
-        }
+    private lateinit var chatActivityClazz: Class<*>
+    private lateinit var callActivityClazz: Class<*>
 
     private var wasPhoneBoxConnected = false
     private var wasChatBoxConnected = false
@@ -116,31 +100,25 @@ object CollaborationUI {
      */
     var usersDescription: UsersDescription? = null
 
+    private var _phoneBox: PhoneBoxUI? by cached { PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz) }
+    private var _chatBox: ChatBoxUI? by cached { ChatBoxUI(collaboration!!.chatBox, chatActivityClazz, chatNotificationActivityClazz) }
+
     /**
      * Phone box
      */
-    private var _phoneBox: PhoneBoxUI? = null
     val phoneBox: PhoneBoxUI
         get() {
-            require(collaboration != null && callActivityClazz != null) { "setUp the CollaborationUI to use the phoneBox" }
-            return _phoneBox ?: PhoneBoxUI(
-                collaboration!!.phoneBox,
-                callActivityClazz!!
-            ).apply { _phoneBox = this }
+            require(collaboration != null) { "setUp the CollaborationUI to use the phoneBox" }
+            return _phoneBox!!
         }
 
     /**
      * Chat box
      */
-    private var _chatBox: ChatBoxUI? = null
     val chatBox: ChatBoxUI
         get() {
-            require(collaboration != null && chatActivityClazz != null) { "setUp the CollaborationUI to use the chatBox" }
-            return _chatBox ?: ChatBoxUI(
-                collaboration!!.chatBox,
-                chatActivityClazz!!,
-                chatNotificationActivityClazz
-            ).apply { _chatBox = this }
+            require(collaboration != null) { "setUp the CollaborationUI to use the chatBox" }
+            return _chatBox!!
         }
 
     /**
@@ -156,7 +134,7 @@ object CollaborationUI {
         credentials: Credentials,
         configuration: Configuration,
         callActivityClazz: Class<T>,
-        chatActivityClazz: Class<S>? = null,
+        chatActivityClazz: Class<S>,
         chatNotificationActivityClazz: Class<*>? = null
     ): Boolean {
         if (collaboration != null) return false
@@ -172,7 +150,8 @@ object CollaborationUI {
      * Connect
      */
     fun connect() {
-        phoneBox.enableAudioRouting(logger = collaboration?.configuration?.logger)
+        collaboration ?: return
+        phoneBox.enableAudioRouting(logger = collaboration!!.configuration.logger)
         startCollaborationService(true, true)
     }
 
@@ -195,6 +174,8 @@ object CollaborationUI {
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         disconnect()
         collaboration = null
+        _phoneBox = null
+        _chatBox = null
     }
 
     private fun startCollaborationService(startPhoneBox: Boolean, startChatBox: Boolean) {
@@ -427,6 +408,7 @@ class ChatUI(
             chatNotificationManager
         )
     }
+
 
     private fun bindCollaborationService(
         chat: Chat,
