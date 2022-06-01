@@ -52,6 +52,7 @@ import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotification
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationData
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
@@ -461,7 +462,7 @@ class MessagesUI(private val messages: Messages, private val chatUserIds: List<S
                 val message = (it.content as? Message.Content.Text)?.message ?: ""
                 val imageUri = usersDescription.image(listOf(userId))
                 chatNotificationManager.notify(
-                    ChatNotification(
+                    ChatNotificationData(
                         username,
                         userId,
                         message,

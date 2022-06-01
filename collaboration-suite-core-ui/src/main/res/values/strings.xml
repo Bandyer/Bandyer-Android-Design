@@ -30,4 +30,5 @@
     <string name="kaleyra_notification_connecting_call">Connecting…</string>
     <string name="kaleyra_notification_tap_to_return">Tap to return to the call</string>
     <string name="kaleyra_notification_call_recorded">This call is being recorded</string>
+    <string name="kaleyra_notification_chat_reply">Reply</string>
 </resources>

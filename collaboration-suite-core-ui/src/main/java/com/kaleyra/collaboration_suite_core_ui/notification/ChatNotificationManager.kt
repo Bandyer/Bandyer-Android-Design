@@ -21,12 +21,12 @@ class ChatNotificationManager(private val chatNotificationActivityClazz: Class<*
      */
     var dnd: Boolean = false
 
-    fun notify(notification: ChatNotification) {
+    fun notify(notification: ChatNotificationData) {
         if (dnd) return
         startNotificationActivity(notification)
     }
 
-    private fun startNotificationActivity(notification: ChatNotification) {
+    private fun startNotificationActivity(notification: ChatNotificationData) {
         val currentContext = context ?: ContextRetainer.context
         val intent = Intent(currentContext, chatNotificationActivityClazz).apply {
             context ?: addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
