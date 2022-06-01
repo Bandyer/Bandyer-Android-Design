@@ -206,6 +206,7 @@ internal class CallNotification {
             val builder = NotificationCompat.Builder(context.applicationContext, channelId)
                 .setAutoCancel(false)
                 .setOngoing(true)
+                .setSound(null)
                 .setOnlyAlertOnce(true)
                 .setUsesChronometer(enableTimer)
                 .setSmallIcon(R.drawable.ic_kaleyra_answer)
@@ -323,6 +324,7 @@ internal class CallNotification {
                 if (isHighImportance) NotificationManager.IMPORTANCE_HIGH else NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
                 lockscreenVisibility = Notification.VISIBILITY_PUBLIC
+                setSound(null, null)
             }
             notificationManager.createNotificationChannel(notificationChannel)
         }
