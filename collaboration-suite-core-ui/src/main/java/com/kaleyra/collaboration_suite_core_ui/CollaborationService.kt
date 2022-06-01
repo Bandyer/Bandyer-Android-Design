@@ -5,13 +5,11 @@ import android.app.Application
 import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.chatbox.Chat
-import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
@@ -23,8 +21,6 @@ import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotification
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
@@ -36,15 +32,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onSubscription
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import java.util.concurrent.ConcurrentHashMap
 
 /**
  * The CollaborationService
