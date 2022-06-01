@@ -6,7 +6,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -19,7 +18,11 @@ import com.google.android.material.color.MaterialColors
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_utils.HostAppInfo
 
-internal class ChatNotification {
+class ChatNotification {
+
+    companion object {
+        const val EXTRA_REPLY = "com.kaleyra.collaboration_suite_core_ui.EXTRA_REPLY"
+    }
 
     data class Builder(
         val context: Context,
@@ -32,6 +35,7 @@ internal class ChatNotification {
         var messages: List<ChatNotificationMessage> = listOf(),
         var isGroupChat: Boolean = false,
         var contentIntent: PendingIntent? = null,
+        var replyIntent: PendingIntent? = null,
         var deleteIntent: PendingIntent? = null,
         var fullscreenIntent: PendingIntent? = null,
     ) {
@@ -49,6 +53,9 @@ internal class ChatNotification {
 
         fun contentIntent(pendingIntent: PendingIntent) =
             apply { this.contentIntent = pendingIntent }
+
+        fun replyIntent(pendingIntent: PendingIntent) =
+            apply { this.replyIntent = pendingIntent }
 
         fun deleteIntent(pendingIntent: PendingIntent) = apply { this.deleteIntent = pendingIntent }
 
@@ -112,14 +119,16 @@ internal class ChatNotification {
                     .setAutoCancel(true)
                     // Number of new notifications for API <24 (M and below) devices.
                     .setSubText("$messageCount")
-                    .addAction(buildReplyAction())
                     .setCategory(Notification.CATEGORY_MESSAGE)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                     .setNumber(messageCount)
 
+
             contentIntent?.also { builder.setContentIntent(it) }
+            replyIntent?.also { builder.addAction(createReplyAction(context, it)) }
             deleteIntent?.also { builder.setDeleteIntent(it) }
+            fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
 
             MaterialColors
                 .getColor(context, R.attr.colorSecondary, -1)
@@ -128,35 +137,19 @@ internal class ChatNotification {
             return builder.build()
         }
 
-        private fun buildReplyAction(): NotificationCompat.Action {
-            // For API <24 (M and below) we need to use an Activity, so the lock-screen present
-            // the auth challenge. For API 24+ (N and above), we use a Service (could be a
-            // BroadcastReceiver), so the user can input from Notification or lock-screen (they have
-            // choice to allow) without leaving the notification.
+        private fun createReplyAction(
+            context: Context,
+            replyIntent: PendingIntent
+        ): NotificationCompat.Action {
             val replyLabel = context.resources.getString(R.string.kaleyra_notification_chat_reply)
-            val remoteInput = RemoteInput.Builder(MessagingNotificationReceiver.EXTRA_REPLY)
+            val remoteInput = RemoteInput.Builder(EXTRA_REPLY)
                 .setLabel(replyLabel)
                 .build()
 
-            // Pending intent =
-            //      API <24 (M and below): activity so the lock-screen presents the auth challenge.
-            //      API 24+ (N and above): this should be a Service or BroadcastReceiver.
-            val replyActionPendingIntent =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    val intent = Intent(
-                        context.applicationContext,
-                        MessagingNotificationReceiver::class.java
-                    )
-                    intent.action = MessagingNotificationReceiver.ACTION_REPLY
-                    PendingIntent.getBroadcast(
-                        context.applicationContext, 0, intent,
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE else 0
-                    )
-                } else contentIntent
             return NotificationCompat.Action.Builder(
                 R.drawable.ic_kaleyra_reply,
                 replyLabel,
-                replyActionPendingIntent
+                replyIntent
             )
                 .addRemoteInput(remoteInput)
                 .setShowsUserInterface(false) // Informs system we aren't bringing up our own custom UI for a reply action
