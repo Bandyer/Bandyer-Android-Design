@@ -21,12 +21,10 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.Parcelable
-import android.util.Log
 import androidx.annotation.Keep
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite.Collaboration.Credentials
@@ -51,9 +49,8 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotification
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationData
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager
+import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
@@ -355,7 +352,7 @@ class ChatBoxUI(
     chatNotificationActivityClazz: Class<*>? = null
 ) : ChatBox by chatBox {
 
-    private val chatNotificationManager = chatNotificationActivityClazz?.let { ChatNotificationManager(it) }
+    private val chatNotificationManager = chatNotificationActivityClazz?.let { CustomChatNotificationManager(it) }
 
     override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(MainScope()) {
         it.map {
@@ -422,7 +419,7 @@ class ChatBoxUI(
 class ChatUI(
     private val chat: Chat,
     val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(setOf()),
-    private val chatNotificationManager: ChatNotificationManager? = null
+    private val chatNotificationManager: CustomChatNotificationManager? = null
 ) : Chat by chat {
 
     override val messages: StateFlow<MessagesUI> = chat.messages.mapToStateFlow(MainScope()) { MessagesUI(it, chat.participants.value.others.map { part -> part.userId }, chatNotificationManager) }
@@ -450,7 +447,7 @@ class ChatUI(
     }
 }
 
-class MessagesUI(private val messages: Messages, private val chatUserIds: List<String>, private val chatNotificationManager: ChatNotificationManager? = null): Messages by messages {
+class MessagesUI(private val messages: Messages, private val chatUserIds: List<String>, private val chatNotificationManager: CustomChatNotificationManager? = null): Messages by messages {
 
     fun showUnread() {
         chatNotificationManager ?: return

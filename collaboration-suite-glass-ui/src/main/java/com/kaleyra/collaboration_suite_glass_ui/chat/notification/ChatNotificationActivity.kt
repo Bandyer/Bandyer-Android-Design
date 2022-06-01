@@ -15,7 +15,7 @@ import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager
+import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.animateViewHeight
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
@@ -24,7 +24,6 @@ import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.common.AvatarGroupView
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatNotificationActivityGlassBinding
-import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Listener {
@@ -78,7 +77,7 @@ class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Lis
         Handler(Looper.getMainLooper()).postDelayed({
             if (isLayoutExpanded) return@postDelayed
             finish()
-        }, ChatNotificationManager.AUTO_DISMISS_TIME)
+        }, CustomChatNotificationManager.AUTO_DISMISS_TIME)
         return super.onCreateView(name, context, attrs)
     }
 
