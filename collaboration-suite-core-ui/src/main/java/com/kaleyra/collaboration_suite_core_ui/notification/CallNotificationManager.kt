@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.turnOnScreen
@@ -32,16 +33,16 @@ internal interface CallNotificationManager {
     /**
      * Utility function which builds an incoming notification
      *
-     * @param user The callee/caller
+     * @param username The callee/caller
      * @param isGroupCall True if the call is group call, false otherwise
      * @param activityClazz The call ui activity class
      * @param isHighPriority True to set the notification with high priority, false otherwise
      * @return Notification
      */
-    fun <T> buildIncomingCallNotification(
-        user: String,
+    fun buildIncomingCallNotification(
+        username: String,
         isGroupCall: Boolean,
-        activityClazz: Class<T>,
+        activityClazz: Class<*>,
         isHighPriority: Boolean
     ): Notification {
         val context = ContextRetainer.context
@@ -49,7 +50,7 @@ internal interface CallNotificationManager {
         if (isHighPriority && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q)
             context.turnOnScreen()
 
-        val userText = if (isGroupCall) context.resources.getString(R.string.kaleyra_notification_incoming_call) else user
+        val userText = if (isGroupCall) context.resources.getString(R.string.kaleyra_notification_incoming_call) else username
         val tapToReturnText = context.getString(R.string.kaleyra_notification_tap_to_return)
         val builder = CallNotification
             .Builder(
@@ -72,19 +73,19 @@ internal interface CallNotificationManager {
     /**
      * Utility function which builds an outgoing notification
      *
-     * @param user The callee/caller
+     * @param username The callee/caller
      * @param isGroupCall True if the call is group call, false otherwise
      * @param activityClazz The call ui activity class
      * @return Notification
      */
-    fun <T> buildOutgoingCallNotification(
-        user: String,
+    fun buildOutgoingCallNotification(
+        username: String,
         isGroupCall: Boolean,
-        activityClazz: Class<T>,
+        activityClazz: Class<*>,
     ): Notification {
         val context = ContextRetainer.context
         val userText =
-            if (isGroupCall) context.resources.getString(R.string.kaleyra_notification_outgoing_call) else user
+            if (isGroupCall) context.resources.getString(R.string.kaleyra_notification_outgoing_call) else username
         val tapToReturnText = context.getString(R.string.kaleyra_notification_tap_to_return)
         val builder = CallNotification
             .Builder(
@@ -104,23 +105,23 @@ internal interface CallNotificationManager {
     /**
      * Utility function which builds an ongoing notification
      *
-     * @param user The callee/caller
+     * @param username The callee/caller
      * @param isGroupCall True if the call is group call, false otherwise
      * @param isCallRecorded True if the call is recorded, false otherwise
      * @param activityClazz The call ui activity class
      * @return Notification
      */
-    fun <T> buildOngoingCallNotification(
-        user: String,
+    fun buildOngoingCallNotification(
+        username: String,
         isGroupCall: Boolean,
         isCallRecorded: Boolean,
         isSharingScreen: Boolean,
         isConnecting: Boolean,
-        activityClazz: Class<T>,
+        activityClazz: Class<*>,
     ): Notification {
         val context = ContextRetainer.context
         val userText =
-            if (isGroupCall) context.resources.getString(R.string.kaleyra_notification_ongoing_call) else user
+            if (isGroupCall) context.resources.getString(R.string.kaleyra_notification_ongoing_call) else username
         val contentText = context.resources.getString(
             when {
                 isConnecting -> R.string.kaleyra_notification_connecting_call
