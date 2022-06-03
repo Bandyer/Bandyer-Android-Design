@@ -26,7 +26,7 @@ import com.kaleyra.collaboration_suite_glass_ui.common.AvatarGroupView
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatNotificationActivityGlassBinding
 import java.util.concurrent.ConcurrentLinkedQueue
 
-class ChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Listener {
+class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Listener {
 
     private data class NotificationData(
         val username: String,
