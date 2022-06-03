@@ -7,7 +7,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
@@ -23,17 +22,16 @@ interface ChatNotificationManager {
         private const val DELETE_REQUEST_CODE = 1110
     }
 
-    fun <T : ChatActivity> buildChatNotification(
+    fun buildChatNotification(
         userId: String,
         username: String,
         avatar: Uri,
         isGroupChat: Boolean,
         messages: List<ChatNotificationMessage>,
-        activityClazz: Class<T>,
+        activityClazz: Class<*>,
         asActivity: Boolean
     ): Notification {
         val context = ContextRetainer.context
-
 
         val contentIntent = contentPendingIntent(context, activityClazz)
         // Pending intent =
@@ -56,11 +54,17 @@ interface ChatNotificationManager {
             .deleteIntent(deletePendingIntent(context))
             .messages(messages)
 
+        if (asActivity)
+            builder.fullscreenIntent(fullScreenPendingIntent(context, activityClazz))
+
         return builder.build()
     }
 
     private fun contentPendingIntent(context: Context, activityClazz: Class<*>) =
         createChatActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityClazz)
+
+    private fun fullScreenPendingIntent(context: Context, activityClazz: Class<*>) =
+        createChatActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE, activityClazz)
 
     private fun <T> createChatActivityPendingIntent(
         context: Context,
