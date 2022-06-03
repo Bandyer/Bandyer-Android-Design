@@ -22,7 +22,7 @@
     <application>
         <activity
             android:name=".call.GlassCallActivity"
-            android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.GlassCallActivity"
+            android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassCall"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
             android:launchMode="singleTask"
@@ -32,12 +32,13 @@
             tools:targetApi="m" />
         <activity
             android:name=".chat.GlassChatActivity"
-            android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.GlassChatActivity"
-            android:launchMode="singleTop"
+            android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity"
+            android:launchMode="singleTask"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChat"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation" />
         <activity
-            android:name=".chat.notification.ChatNotificationActivity"
+            android:name=".chat.notification.GlassChatNotificationActivity"
+            android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.chat.notification.GlassChatNotificationActivity"
             android:launchMode="singleTop"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChatNotification" />
     </application>
