@@ -9,6 +9,7 @@ import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
@@ -50,6 +51,7 @@ internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener,
 
     override fun onDestroy() {
         super.onDestroy()
+        turnScreenOff()
         service = null
         glassTouchEventManager = null
     }
