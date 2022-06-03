@@ -8,6 +8,8 @@ import com.kaleyra.collaboration_suite_core_ui.CollaborationService
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
@@ -15,6 +17,7 @@ import com.kaleyra.collaboration_suite_glass_ui.common.OnDestinationChangedListe
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatActivityGlassBinding
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.enableImmersiveMode
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
@@ -41,7 +44,8 @@ internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener,
         binding = KaleyraChatActivityGlassBinding.inflate(layoutInflater)
         setContentView(binding.root)
         glassTouchEventManager = GlassTouchEventManager(this, this)
-//        enableImmersiveMode()
+        turnScreenOn()
+        if (DeviceUtils.isSmartGlass) enableImmersiveMode()
     }
 
     override fun onDestroy() {
