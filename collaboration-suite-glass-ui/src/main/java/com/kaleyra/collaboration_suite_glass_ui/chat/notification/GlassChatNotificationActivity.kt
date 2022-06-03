@@ -1,17 +1,16 @@
 package com.kaleyra.collaboration_suite_glass_ui.chat.notification
 
 import android.animation.Animator
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.AttributeSet
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
@@ -25,6 +24,7 @@ import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigati
 import com.kaleyra.collaboration_suite_glass_ui.common.AvatarGroupView
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatNotificationActivityGlassBinding
 import java.util.concurrent.ConcurrentLinkedQueue
+
 
 class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Listener {
 
@@ -42,6 +42,7 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
     private var sendersId = ConcurrentLinkedQueue<String>()
     private var isLayoutExpanded = false
     private var msgCounter = 1
+    private var handler: Handler? = null
 
     /**
      * @suppress
@@ -52,34 +53,26 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
             KaleyraChatNotificationActivityGlassBinding.inflate(layoutInflater)
                 .apply {
                     setListenersForRealWear(kaleyraBottomNavigation)
-
                     val data = getNotificationData(intent)
                     kaleyraTitle.text = data.username
                     kaleyraMessage.text = data.message
                     kaleyraMessage.maxLines = 2
                     kaleyraTime.visibility = View.VISIBLE
                     kaleyraAvatars.addAvatar(data)
-
                     participants = intent.getStringArrayExtra("participants")
                     sendersId.add(data.userId)
                 }
+
         setContentView(binding.root)
-
         glassTouchEventManager = GlassTouchEventManager(this, this)
-
-        overridePendingTransition(R.anim.kaleyra_notification_slide_down, R.anim.kaleyra_nothing)
     }
 
-    /**
-     * @suppress
-     */
-    override fun onCreateView(name: String, context: Context, attrs: AttributeSet): View? {
-        Handler(Looper.getMainLooper()).postDelayed({
-            if (isLayoutExpanded) return@postDelayed
-            finish()
-        }, CustomChatNotificationManager.AUTO_DISMISS_TIME)
-        return super.onCreateView(name, context, attrs)
+
+    override fun onResume() {
+        super.onResume()
+        setDismiss()
     }
+
 
     /**
      * @suppress
@@ -87,6 +80,7 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         intent ?: return
+        setDismiss()
         val data = getNotificationData(intent)
         binding.kaleyraMessage.text = null
         binding.kaleyraMessage.maxLines = 0
@@ -99,23 +93,27 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
         if (sendersId.count() > 1) binding.kaleyraAvatars.addAvatar(data)
     }
 
+    private fun setDismiss() {
+        handler?.removeCallbacksAndMessages(null)
+        handler = Handler(Looper.getMainLooper())
+        handler?.postDelayed({
+                                 if (isLayoutExpanded) return@postDelayed
+                                 handler = null
+                                 binding.root.startAnimation(AnimationUtils.loadAnimation(this, R.anim.kaleyra_notification_slide_up))
+                                 binding.root.postOnAnimation {
+                                     binding.root.visibility = View.INVISIBLE
+                                     overridePendingTransition(0, 0)
+                                 }
+                                 finishAndRemoveTask()
+                             }, CustomChatNotificationManager.AUTO_DISMISS_TIME)
+    }
+
     /**
      * @suppress
      */
     override fun onDestroy() {
         super.onDestroy()
         glassTouchEventManager = null
-    }
-
-    /**
-     * @suppress
-     */
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(
-            R.anim.kaleyra_nothing,
-            if (isLayoutExpanded) R.anim.kaleyra_nothing else R.anim.kaleyra_notification_slide_up
-        )
     }
 
     /**
@@ -172,7 +170,6 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
         expandRootView {
             isLayoutExpanded = true
             binding.kaleyraMessage.maxLines = Int.MAX_VALUE
-
             participants?.also { parts ->
                 CollaborationUI.chatBox.show(CollaborationUI.chatBox.create(
                     parts.map {
@@ -183,12 +180,12 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
                 ))
             }
 
-            finish()
+            finishAndRemoveTask()
         }
     }
 
     private fun onSwipeDown() {
-        finish()
+        finishAndRemoveTask()
     }
 
     private fun expandRootView(onExpanded: ((Animator) -> Unit)? = null) {
@@ -202,6 +199,6 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
     }
 
     private companion object {
-        const val ANIMATION_DURATION = 500L
+        const val ANIMATION_DURATION = 300L
     }
 }

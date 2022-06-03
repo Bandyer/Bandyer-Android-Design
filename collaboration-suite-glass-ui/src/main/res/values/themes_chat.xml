@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,13 +49,21 @@
         <item name="android:background">@color/kaleyra_glass_background_color</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.Theme.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.DayNight.GlassChat"/>
+    <style name="KaleyraCollaborationSuiteUI.Theme.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.DayNight.GlassChat" />
 
     <style name="KaleyraCollaborationSuiteUI.Theme.GlassChatNotification" parent="KaleyraCollaborationSuiteUI.Theme.GlassChat">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowIsTranslucent">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/KaleyraCollaborationSuiteUI.Theme.GlassChatNotification.Animation</item>
     </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Theme.GlassChatNotification.Animation" parent="">
+        <item name="android:activityOpenEnterAnimation">@anim/kaleyra_notification_slide_down</item>
+        <item name="android:activityOpenExitAnimation">@anim/kaleyra_notification_slide_up</item>
+    </style>
+
 
 </resources>
