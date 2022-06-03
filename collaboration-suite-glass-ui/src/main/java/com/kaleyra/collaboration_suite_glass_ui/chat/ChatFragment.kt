@@ -117,13 +117,14 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                         currentMsgItemIndex = position
 
                         if (!isLoading && fastAdapter.itemCount <= (currentMsgItemIndex + LOAD_MORE_THRESHOLD)) {
-                            viewModel.chat.fetch(LOAD_MORE_THRESHOLD) { isLoading = false }
+                            viewModel.chat.replayCache.firstOrNull()
+                                ?.fetch(LOAD_MORE_THRESHOLD) { isLoading = false }
                             isLoading = true
                         }
 
                         val messageId =
                             itemAdapter!!.getAdapterItem(currentMsgItemIndex).page.messageId
-                        viewModel.chat.messages.value.other.firstOrNull { it.id == messageId }
+                        viewModel.messages.replayCache.firstOrNull()?.other?.firstOrNull { it.id == messageId }
                             ?.markAsRead()
                         unreadMessagesIds = unreadMessagesIds - messageId
                     }
@@ -144,12 +145,13 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     }
 
     override fun onServiceBound() {
-        unreadMessagesIds =
-            viewModel.chat.messages.value.other.filter { it.state.value is Message.State.Received }
-                .map { it.id }
-
         repeatOnStarted {
-            viewModel.chat.messages
+            viewModel.chat.onEach { chat ->
+                unreadMessagesIds =
+                    chat.messages.replayCache.firstOrNull()?.other?.filter { it.state.value is Message.State.Received }?.map { it.id } ?: listOf()
+            }.launchIn(this@repeatOnStarted)
+
+            viewModel.messages
                 .onEach { msgs ->
                     binding.kaleyraNoMessages.visibility =
                         if (msgs.list.isEmpty()) View.VISIBLE else View.GONE

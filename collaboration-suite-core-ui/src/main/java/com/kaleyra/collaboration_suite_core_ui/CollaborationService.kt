@@ -73,8 +73,9 @@ class CollaborationService : BoundService(),
         MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
     override val call: SharedFlow<CallUI> get() = _call
 
-    private var _chat: Chat? = null
-    override val chat: Chat get() = _chat!!
+    private var _chat: MutableSharedFlow<Chat> =
+        MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
+    override val chat: SharedFlow<Chat> get() = _chat
 
     override var currentCall: CallUI? = null
 
@@ -128,7 +129,6 @@ class CollaborationService : BoundService(),
         CallNotificationActionReceiver.actionDelegate = null
         currentCall = null
         _callAudioManager = null
-        _chat = null
         phoneBox = null
         phoneBoxJob = null
         callActivityClazz = null
@@ -179,10 +179,10 @@ class CollaborationService : BoundService(),
         chat: Chat,
         usersDescription: UsersDescription,
         chatActivityClazz: Class<*>
-    ) {
-        this._chat = chat
-        this.chatUsersDescription = usersDescription
-        this.chatActivityClazz = chatActivityClazz
+    ) = lifecycleScope.launch {
+        this@CollaborationService._chat.emit(chat)
+        this@CollaborationService.chatUsersDescription = usersDescription
+        this@CollaborationService.chatActivityClazz = chatActivityClazz
     }
 
     fun canShowCallActivity(call: Call): Boolean =
