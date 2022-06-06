@@ -402,7 +402,7 @@ class ChatBoxUI(
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
                 val service = (binder as BoundServiceBinder).getService<CollaborationService>()
-                service.bindChatChannel(chat, usersDescription, chatActivityClazz)
+                service.bindChat(chat, usersDescription, chatActivityClazz)
                 UIProvider.showChat(chatActivityClazz)
             }
 

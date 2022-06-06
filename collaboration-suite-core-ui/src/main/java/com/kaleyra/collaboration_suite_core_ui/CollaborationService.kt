@@ -175,7 +175,7 @@ class CollaborationService : BoundService(),
         }
     }
 
-    fun bindChatChannel(
+    fun bindChat(
         chat: Chat,
         usersDescription: UsersDescription,
         chatActivityClazz: Class<*>
