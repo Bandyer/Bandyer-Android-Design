@@ -57,14 +57,17 @@ import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.cached
 import com.kaleyra.collaboration_suite_utils.getValue
 import com.kaleyra.collaboration_suite_utils.setValue
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
@@ -215,12 +218,40 @@ object CollaborationUI {
 class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: Class<*>) :
     PhoneBox by phoneBox {
 
+    private var mainScope: CoroutineScope? = null
+
+    var withUI = true
+        set(value) {
+            CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = value)
+            field = value
+        }
+
     override val call: SharedFlow<CallUI> =
         phoneBox.call.map { CallUI(it) }.shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
 
     override val callHistory: SharedFlow<List<CallUI>> =
         phoneBox.callHistory.map { it.map { CallUI(it) } }
             .shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
+
+    override fun connect() {
+        phoneBox.connect()
+        mainScope = MainScope()
+        call
+            .flatMapLatest { it.state }
+            .onEach {
+                if (it !is Call.State.Disconnected.Ended || withUI) return@onEach
+                CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = false)
+            }.launchIn(mainScope!!)
+        call.onEach {
+            if (!withUI) return@onEach
+            show(it)
+        }.launchIn(mainScope!!)
+    }
+
+    override fun disconnect() {
+        mainScope?.cancel()
+        phoneBox.disconnect()
+    }
 
     /**
      * Call
@@ -243,11 +274,14 @@ class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: 
     override fun create(users: List<User>, conf: (CreationOptions.() -> Unit)?) =
         CallUI(phoneBox.create(users, conf))
 
-    fun show(call: CallUI) = bindCollaborationService(
-        call,
-        usersDescription ?: UsersDescription(),
-        callActivityClazz,
-    )
+    fun show(call: CallUI) {
+        CollaborationUI.phoneBox.enableAudioRouting()
+        bindCollaborationService(
+            call,
+            usersDescription ?: UsersDescription(),
+            callActivityClazz,
+        )
+    }
 
     private fun bindCollaborationService(
         call: CallUI,
@@ -352,7 +386,17 @@ class ChatBoxUI(
     chatNotificationActivityClazz: Class<*>? = null
 ) : ChatBox by chatBox {
 
-    private val chatNotificationManager = chatNotificationActivityClazz?.let { CustomChatNotificationManager(it) }
+    private var mainScope: CoroutineScope? = null
+
+    var withUI: Boolean = true
+        set(value) {
+            if (value) enableNotifications()
+            else disableNotifications()
+            field = value
+        }
+
+    private val chatNotificationManager =
+        chatNotificationActivityClazz?.let { CustomChatNotificationManager(it) }
 
     override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(MainScope()) {
         it.map {
@@ -363,28 +407,51 @@ class ChatBoxUI(
         }
     }
 
+    override fun connect() {
+        chatBox.connect()
+        if (withUI) enableNotifications()
+    }
+
+    override fun disconnect() {
+        disableNotifications()
+        chatBox.disconnect()
+    }
+
     fun show(chat: ChatUI) = bindCollaborationService(
         chat,
         usersDescription ?: UsersDescription(),
         chatActivityClazz
     )
 
-    fun showUnreadMessages() {
+    private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
+
+    private fun enableNotifications() {
         val jobs = mutableListOf<Job>()
-        chats.onEach {
+        mainScope = MainScope()
+        chats.onEach { chats ->
             jobs.forEach {
                 it.cancel()
                 it.join()
             }
-            it.forEach {
-                jobs += it.messages.onEach {
-                    it.showUnread()
-                }.launchIn(MainScope())
+            jobs.clear()
+            chats.forEach { chat ->
+                jobs += chat.messages
+                    .onEach {
+                        val lastMessage =
+                            it.other.firstOrNull { it.state.value is Message.State.Received }
+                        if (lastMessage == null || lastMessagePerChat[chat.id] == lastMessage.id) return@onEach
+                        lastMessagePerChat[chat.id] = lastMessage.id
+                        it.showUnreadMsgs()
+                    }
+                    .launchIn(mainScope!!)
             }
-        }.launchIn(MainScope())
+        }.launchIn(mainScope!!)
     }
 
-    override fun create(users: List<User>) = ChatUI(chatBox.create(users), chatNotificationManager = chatNotificationManager)
+    private fun disableNotifications() = mainScope?.cancel()
+
+    override fun create(users: List<User>) =
+        ChatUI(chatBox.create(users), chatNotificationManager = chatNotificationManager)
 
 //    suspend fun create(list: List<ChatUser>): ChatChannel =
 //        createChannel(list).also { bindCollaborationService(it, usersDescription, chatActivityClazz) }
@@ -447,27 +514,31 @@ class ChatUI(
     }
 }
 
-class MessagesUI(private val messages: Messages, private val chatUserIds: List<String>, private val chatNotificationManager: CustomChatNotificationManager? = null): Messages by messages {
+class MessagesUI(
+    private val messages: Messages,
+    private val chatUserIds: List<String>,
+    private val chatNotificationManager: CustomChatNotificationManager? = null
+) : Messages by messages {
 
-    fun showUnread() {
+    fun showUnreadMsgs() {
         chatNotificationManager ?: return
         MainScope().launch {
-            messages.other.firstOrNull { it.state.value is Message.State.Received }?.also {
-                val userId = it.creator.userId
-                val usersDescription = usersDescription ?: UsersDescription()
-                val username = usersDescription.name(listOf(userId))
-                val message = (it.content as? Message.Content.Text)?.message ?: ""
-                val imageUri = usersDescription.image(listOf(userId))
-                chatNotificationManager.notify(
-                    ChatNotificationData(
-                        username,
-                        userId,
-                        message,
-                        imageUri,
-                        chatUserIds
-                    )
+            val message = messages.other.firstOrNull { it.state.value is Message.State.Received }
+                ?: return@launch
+            val userId = message.creator.userId
+            val usersDescription = usersDescription ?: UsersDescription()
+            val username = usersDescription.name(listOf(userId))
+            val text = (message.content as? Message.Content.Text)?.message ?: ""
+            val imageUri = usersDescription.image(listOf(userId))
+            chatNotificationManager.notify(
+                ChatNotificationData(
+                    username,
+                    userId,
+                    text,
+                    imageUri,
+                    chatUserIds
                 )
-            }
+            )
         }
     }
 }
