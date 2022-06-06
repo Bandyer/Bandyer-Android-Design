@@ -26,7 +26,6 @@ interface ChatNotificationManager {
         userId: String,
         username: String,
         avatar: Uri,
-        isGroupChat: Boolean,
         messages: List<ChatNotificationMessage>,
         activityClazz: Class<*>,
         asActivity: Boolean
@@ -48,7 +47,8 @@ interface ChatNotificationManager {
             .userId(userId)
             .username(username)
             .avatar(avatar)
-            .isGroupChat(isGroupChat)
+            .isGroupChat(true) // Always true because of a notification ui bug
+//            .isGroupChat(messages.map { it.userId }.distinct().count() > 1)
             .contentIntent(contentIntent)
             .replyIntent(replyIntent)
             .deleteIntent(deletePendingIntent(context))

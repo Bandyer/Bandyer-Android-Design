@@ -126,7 +126,6 @@ class ChatNotification {
 
 
             contentIntent?.also { builder.setContentIntent(it) }
-
             replyIntent?.also { builder.addAction(createReplyAction(context, it)) }
             deleteIntent?.also { builder.setDeleteIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
