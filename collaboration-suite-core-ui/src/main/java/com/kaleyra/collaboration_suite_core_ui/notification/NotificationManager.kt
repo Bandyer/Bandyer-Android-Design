@@ -25,7 +25,7 @@ import com.kaleyra.collaboration_suite_utils.ContextRetainer
 /**
  * NotificationManager
  */
-internal object NotificationManager: CallNotificationManager {
+internal object NotificationManager: CallNotificationManager, ChatNotificationManager {
     /**
      * Notify the system to add a notification
      *
