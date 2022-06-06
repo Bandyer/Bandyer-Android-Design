@@ -216,11 +216,11 @@ class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: 
     PhoneBox by phoneBox {
 
     override val call: SharedFlow<CallUI> =
-        phoneBox.call.map { CallUI(it) }.shareIn(MainScope(), SharingStarted.Eagerly)
+        phoneBox.call.map { CallUI(it) }.shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
 
     override val callHistory: SharedFlow<List<CallUI>> =
         phoneBox.callHistory.map { it.map { CallUI(it) } }
-            .shareIn(MainScope(), SharingStarted.Eagerly)
+            .shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
 
     /**
      * Call
