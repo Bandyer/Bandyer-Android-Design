@@ -461,7 +461,6 @@ class ChatBoxUI(
 class ChatUI(
     private val chat: Chat,
     val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(setOf()),
-    private val chatActivityClazz: Class<*>,
     private val chatNotificationManager: CustomChatNotificationManager? = null
 ) : Chat by chat {
 
@@ -469,7 +468,6 @@ class ChatUI(
         MessagesUI(
             it,
             chat.participants.value.others.map { part -> part.userId },
-            chatActivityClazz,
             chatNotificationManager
         )
     }
