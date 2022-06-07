@@ -26,13 +26,14 @@ interface ChatNotificationManager {
         userId: String,
         username: String,
         avatar: Uri,
+        chatId: String,
         messages: List<ChatNotificationMessage>,
         activityClazz: Class<*>,
         asActivity: Boolean
     ): Notification {
         val context = ContextRetainer.context
 
-        val contentIntent = contentPendingIntent(context, activityClazz)
+        val contentIntent = contentPendingIntent(context, activityClazz, chatId)
         // Pending intent =
         //      API <24 (M and below): activity so the lock-screen presents the auth challenge.
         //      API 24+ (N and above): this should be a Service or BroadcastReceiver.
@@ -55,25 +56,27 @@ interface ChatNotificationManager {
             .messages(messages)
 
         if (asActivity)
-            builder.fullscreenIntent(fullScreenPendingIntent(context, activityClazz))
+            builder.fullscreenIntent(fullScreenPendingIntent(context, activityClazz, chatId))
 
         return builder.build()
     }
 
-    private fun contentPendingIntent(context: Context, activityClazz: Class<*>) =
-        createChatActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityClazz)
+    private fun contentPendingIntent(context: Context, activityClazz: Class<*>, chatId: String) =
+        createChatActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityClazz, chatId)
 
-    private fun fullScreenPendingIntent(context: Context, activityClazz: Class<*>) =
-        createChatActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE, activityClazz)
+    private fun fullScreenPendingIntent(context: Context, activityClazz: Class<*>, chatId: String) =
+        createChatActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE, activityClazz, chatId)
 
     private fun <T> createChatActivityPendingIntent(
         context: Context,
         requestCode: Int,
-        activityClazz: Class<T>
+        activityClazz: Class<T>,
+        chatId: String
     ): PendingIntent {
         val applicationContext = context.applicationContext
         val intent = Intent(applicationContext, activityClazz).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            putExtra("chatId", chatId)
         }
         return PendingIntent.getActivity(
             applicationContext,
