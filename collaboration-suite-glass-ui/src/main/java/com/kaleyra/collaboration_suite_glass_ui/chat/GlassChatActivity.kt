@@ -6,7 +6,6 @@ import android.view.MotionEvent
 import androidx.activity.viewModels
 import com.kaleyra.collaboration_suite_core_ui.CollaborationService
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
-import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
@@ -33,7 +32,7 @@ internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener,
 
     private val viewModel: ChatViewModel by viewModels {
         ChatViewModelFactory(
-            service as ChatUIDelegate,
+//            service as ChatUIDelegate,
             service as DeviceStatusDelegate
         )
     }

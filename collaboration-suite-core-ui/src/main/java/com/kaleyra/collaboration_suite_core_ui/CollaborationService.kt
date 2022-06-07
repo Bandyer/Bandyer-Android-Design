@@ -9,14 +9,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
-import com.kaleyra.collaboration_suite_core_ui.chat.ChatUIDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
@@ -41,7 +39,6 @@ import kotlinx.coroutines.launch
  */
 class CollaborationService : BoundService(),
     CallUIDelegate,
-    ChatUIDelegate,
     CallStreamDelegate,
     CallNotificationDelegate,
     DeviceStatusDelegate,
@@ -63,19 +60,11 @@ class CollaborationService : BoundService(),
 
     private var callActivityClazz: Class<*>? = null
 
-    private var chatActivityClazz: Class<*>? = null
-
     private var isServiceInForeground: Boolean = false
-
-    private var isChatInForeground: Boolean = false
 
     private val _call: MutableSharedFlow<CallUI> =
         MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
     override val call: SharedFlow<CallUI> get() = _call
-
-    private var _chat: MutableSharedFlow<Chat> =
-        MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
-    override val chat: SharedFlow<Chat> get() = _chat
 
     override var currentCall: CallUI? = null
 
@@ -84,7 +73,7 @@ class CollaborationService : BoundService(),
 
     override var callUsersDescription: UsersDescription = UsersDescription()
 
-    override var chatUsersDescription: UsersDescription = UsersDescription()
+//    override var chatUsersDescription: UsersDescription = UsersDescription()
 
     override var isAppInForeground: Boolean = false
 
@@ -175,16 +164,6 @@ class CollaborationService : BoundService(),
         }
     }
 
-    fun bindChat(
-        chat: Chat,
-        usersDescription: UsersDescription,
-        chatActivityClazz: Class<*>
-    ) = lifecycleScope.launch {
-        this@CollaborationService._chat.emit(chat)
-        this@CollaborationService.chatUsersDescription = usersDescription
-        this@CollaborationService.chatActivityClazz = chatActivityClazz
-    }
-
     fun canShowCallActivity(call: Call): Boolean =
         isAppInForeground && (!this@CollaborationService.isSilent() || call.participants.value.let { it.me == it.creator() })
 
@@ -213,16 +192,14 @@ class CollaborationService : BoundService(),
      * @suppress
      */
     override fun onActivityStarted(activity: Activity) {
-        when {
-            activity.javaClass == callActivityClazz && !isServiceInForeground -> lifecycleScope.launch {
-                currentCall ?: return@launch
-                moveNotificationToForeground(
-                    currentCall!!,
-                    callUsersDescription,
-                    callActivityClazz!!
-                )
-            }
-            activity.javaClass == chatActivityClazz -> isChatInForeground = true
+        if (activity.javaClass != callActivityClazz || isServiceInForeground) return
+        lifecycleScope.launch {
+            currentCall ?: return@launch
+            moveNotificationToForeground(
+                currentCall!!,
+                callUsersDescription,
+                callActivityClazz!!
+            )
         }
     }
 
@@ -239,10 +216,7 @@ class CollaborationService : BoundService(),
     /**
      * @suppress
      */
-    override fun onActivityStopped(activity: Activity) {
-        if (activity.javaClass != chatActivityClazz) return
-        isChatInForeground = false
-    }
+    override fun onActivityStopped(activity: Activity) = Unit
 
     /**
      * @suppress

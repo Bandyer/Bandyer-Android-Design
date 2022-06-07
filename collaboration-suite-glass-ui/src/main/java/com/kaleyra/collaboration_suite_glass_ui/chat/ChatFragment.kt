@@ -27,7 +27,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -66,6 +69,7 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         }
 
     private val viewModel: ChatViewModel by activityViewModels()
+    private var chat: Chat? = null
 
     private val args: ChatFragmentArgs by lazy {
         requireActivity().intent?.extras?.let { ChatFragmentArgs.fromBundle(it) }
@@ -111,20 +115,20 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                     private var isLoading = false
 
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        chat ?: return
                         val foundView = snapHelper.findSnapView(layoutManager) ?: return
                         val position = layoutManager.getPosition(foundView)
                         if (currentMsgItemIndex == position) return
                         currentMsgItemIndex = position
 
                         if (!isLoading && fastAdapter.itemCount <= (currentMsgItemIndex + LOAD_MORE_THRESHOLD)) {
-                            viewModel.chat.replayCache.firstOrNull()
-                                ?.fetch(LOAD_MORE_THRESHOLD) { isLoading = false }
+                            chat!!.fetch(LOAD_MORE_THRESHOLD) { isLoading = false }
                             isLoading = true
                         }
 
                         val messageId =
                             itemAdapter!!.getAdapterItem(currentMsgItemIndex).page.messageId
-                        viewModel.messages.replayCache.firstOrNull()?.other?.firstOrNull { it.id == messageId }
+                        chat!!.messages.replayCache.firstOrNull()?.other?.firstOrNull { it.id == messageId }
                             ?.markAsRead()
                         unreadMessagesIds = unreadMessagesIds - messageId
                     }
@@ -145,13 +149,12 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     }
 
     override fun onServiceBound() {
-        repeatOnStarted {
-            viewModel.chat.onEach { chat ->
-                unreadMessagesIds =
-                    chat.messages.replayCache.firstOrNull()?.other?.filter { it.state.value is Message.State.Received }?.map { it.id } ?: listOf()
-            }.launchIn(this@repeatOnStarted)
+        chat = viewModel.getChat(args.chatId)
+        unreadMessagesIds =
+            chat!!.messages.replayCache.firstOrNull()?.other?.filter { it.state.value is Message.State.Received }?.map { it.id } ?: listOf()
 
-            viewModel.messages
+        repeatOnStarted {
+            chat!!.messages
                 .onEach { msgs ->
                     binding.kaleyraNoMessages.visibility =
                         if (msgs.list.isEmpty()) View.VISIBLE else View.GONE
@@ -200,12 +203,13 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         messages: List<Message>,
         callback: (List<ChatMessagePage>) -> Unit
     ) {
+        val usersDescription = args.usersDescription ?: UsersDescription()
         binding.kaleyraChatMessage.root.doOnLayout {
             scope.launch {
                 val allPages = mutableListOf<ChatMessagePage>()
                 messages.forEach {
-                    val user = viewModel.usersDescription.name(listOf(it.creator.userId))
-                    val avatar = viewModel.usersDescription.image(listOf(it.creator.userId))
+                    val user = usersDescription.name(listOf(it.creator.userId))
+                    val avatar = usersDescription.image(listOf(it.creator.userId))
                     val pages = paginateMessage(user, it.content, it.creationDate.time)
                     for (i in pages.indices) {
                         allPages.add(

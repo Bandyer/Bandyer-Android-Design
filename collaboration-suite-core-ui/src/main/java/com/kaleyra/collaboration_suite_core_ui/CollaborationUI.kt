@@ -417,11 +417,7 @@ class ChatBoxUI(
         chatBox.disconnect()
     }
 
-    fun show(chat: ChatUI) = bindCollaborationService(
-        chat,
-        usersDescription ?: UsersDescription(),
-        chatActivityClazz
-    )
+    fun show(chat: ChatUI) = UIProvider.showChat(chatActivityClazz, chat.id, usersDescription ?: UsersDescription())
 
     private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
 
@@ -460,36 +456,23 @@ class ChatBoxUI(
 //        channel.sendTextMessage(message)
 //        bindCollaborationService(channel, usersDescription, chatActivityClazz)
 //    }
-
-    private fun bindCollaborationService(
-        chat: Chat,
-        usersDescription: UsersDescription,
-        chatActivityClazz: Class<*>
-    ) {
-        val serviceConnection = object : ServiceConnection {
-            override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
-                val service = (binder as BoundServiceBinder).getService<CollaborationService>()
-                service.bindChat(chat, usersDescription, chatActivityClazz)
-                UIProvider.showChat(chatActivityClazz)
-            }
-
-            override fun onServiceDisconnected(name: ComponentName?) = Unit
-        }
-
-        with(ContextRetainer.context) {
-            val intent = Intent(this, CollaborationService::class.java)
-            bindService(intent, serviceConnection, 0)
-        }
-    }
 }
 
 class ChatUI(
     private val chat: Chat,
     val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(setOf()),
+    private val chatActivityClazz: Class<*>,
     private val chatNotificationManager: CustomChatNotificationManager? = null
 ) : Chat by chat {
 
-    override val messages: StateFlow<MessagesUI> = chat.messages.mapToStateFlow(MainScope()) { MessagesUI(it, chat.participants.value.others.map { part -> part.userId }, chatNotificationManager) }
+    override val messages: StateFlow<MessagesUI> = chat.messages.mapToStateFlow(MainScope()) {
+        MessagesUI(
+            it,
+            chat.participants.value.others.map { part -> part.userId },
+            chatActivityClazz,
+            chatNotificationManager
+        )
+    }
 
     @Keep
     sealed class Action : Parcelable {

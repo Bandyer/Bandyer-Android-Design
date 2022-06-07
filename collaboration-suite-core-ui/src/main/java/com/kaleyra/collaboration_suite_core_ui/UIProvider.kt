@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
+import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils.isSmartGlass
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
@@ -32,11 +33,13 @@ internal object UIProvider {
             startActivity(intent)
         }
 
-    fun <T> showChat(activityClazz: Class<T>) =
+    fun <T> showChat(activityClazz: Class<T>, chatId: String, usersDescription: UsersDescription) =
         with(ContextRetainer.context) {
             val intent = Intent(this, activityClazz).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 putExtra("enableTilt", isSmartGlass)
+                putExtra("chatId", chatId)
+                putExtra("usersDescription", usersDescription)
             }
             startActivity(intent)
         }
