@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="@id/kaleyra_messages" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/kaleyra_no_messages"
+        android:id="@+id/kaleyra_title"
         style="?attr/kaleyra_titleStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

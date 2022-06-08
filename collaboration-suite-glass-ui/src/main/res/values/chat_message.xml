@@ -39,7 +39,7 @@
         <item name="android:paddingEnd">@dimen/kaleyra_dimen_space16</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassChat.MessageLayout" parent="KaleyraCollaborationSuiteUI.TextView.Title.GlassChat">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassChat.MessageLayout" parent="KaleyraCollaborationSuiteUI.TextView.Title.GlassChatNotification">
         <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space16</item>
     </style>
 
@@ -49,7 +49,7 @@
     </style>
 
     <!-- SHARED STYLES WITH CHAT NOTIFICATION -->
-    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassChat" parent="KaleyraCollaborationSuiteUI.TextView.Title">
+    <style name="KaleyraCollaborationSuiteUI.TextView.Title.GlassChatNotification" parent="KaleyraCollaborationSuiteUI.TextView.Title">
         <item name="android:layout_height">@dimen/kaleyra_dimen_space40</item>
         <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
         <item name="android:includeFontPadding">false</item>

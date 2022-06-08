@@ -91,6 +91,7 @@
     <string name="kaleyra_glass_scroll_left">scorri a sinistra</string>
     <string name="kaleyra_glass_scroll_right">scorri a destra</string>
     <string name="kaleyra_glass_no_messages">Nessun messaggio</string>
+    <string name="kaleyra_glass_loading_messages">Caricamento messaggi</string>
 
     <!-- PLURALS -->
     <plurals name="kaleyra_glass_users_in_call_pattern">

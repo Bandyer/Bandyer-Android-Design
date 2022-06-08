@@ -28,7 +28,7 @@
     <style name="KaleyraCollaborationSuiteUI.ChatMessage.GlassNotification" parent="KaleyraCollaborationSuiteUI.ChatMessage">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.ChatMessage.GlassNotification.RootLayout</item>
         <item name="kaleyra_avatarStyle">@style/KaleyraCollaborationSuiteUI.Glass.Avatar</item>
-        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.GlassChat</item>
+        <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.GlassChatNotification</item>
         <item name="kaleyra_messageStyle">@style/KaleyraCollaborationSuiteUI.TextView.MessageGlassChat.Notification</item>
         <item name="kaleyra_timestampStyle">@style/KaleyraCollaborationSuiteUI.TextView.TimestampGlassChat.Notification</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.ChatNotification</item>

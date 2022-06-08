@@ -95,6 +95,7 @@
     <string name="kaleyra_glass_scroll_left">swipe left</string>
     <string name="kaleyra_glass_scroll_right">swipes right</string>
     <string name="kaleyra_glass_no_messages">No messages</string>
+    <string name="kaleyra_glass_loading_messages">Loading messages</string>
 
     <!-- PLURALS -->
     <plurals name="kaleyra_glass_users_in_call_pattern">

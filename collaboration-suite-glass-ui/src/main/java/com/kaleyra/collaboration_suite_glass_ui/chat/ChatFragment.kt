@@ -151,19 +151,30 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     override fun onServiceBound() {
         chat = viewModel.getChat(args.chatId)
         unreadMessagesIds =
-            chat!!.messages.replayCache.firstOrNull()?.other?.filter { it.state.value is Message.State.Received }?.map { it.id } ?: listOf()
+            chat!!.messages.replayCache.firstOrNull()?.other?.filter { it.state.value is Message.State.Received }
+                ?.map { it.id } ?: listOf()
 
+        var noMessages = true
         repeatOnStarted {
             chat!!.messages
                 .onEach { msgs ->
-                    binding.kaleyraNoMessages.visibility =
-                        if (msgs.list.isEmpty()) View.VISIBLE else View.GONE
+                    noMessages = msgs.list.isEmpty().also {
+                        if (!it) binding.kaleyraTitle.visibility = View.GONE
+                    }
                     toChatMessagePages(this@repeatOnStarted, msgs.list) { pages ->
                         val items = pages.map { ChatMessageItem(it) }
                         FastAdapterDiffUtil[itemAdapter!!] =
                             FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                     }
                 }.launchIn(this@repeatOnStarted)
+        }
+
+        with(binding.kaleyraTitle) {
+            postDelayed({
+                if (!noMessages) return@postDelayed
+                text = resources.getString(R.string.kaleyra_glass_no_messages)
+                visibility = View.VISIBLE
+            }, NO_MESSAGES_TIMEOUT)
         }
     }
 
@@ -252,5 +263,6 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
 
     private companion object {
         const val LOAD_MORE_THRESHOLD = 3
+        const val NO_MESSAGES_TIMEOUT = 3000L
     }
 }
