@@ -35,5 +35,12 @@
                 <action android:name="com.kaleyra.collaboration_suite_core_ui.STOP_SCREEN_SHARE"/>
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".notification.ChatNotificationActionReceiver"  android:exported="false">
+            <intent-filter>
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.ACTION_REPLY"/>
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.ACTION_DELETE"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

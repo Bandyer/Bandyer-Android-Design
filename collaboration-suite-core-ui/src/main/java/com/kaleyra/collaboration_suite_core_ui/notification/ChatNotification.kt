@@ -36,7 +36,7 @@ class ChatNotification {
         var isGroupChat: Boolean = false,
         var contentIntent: PendingIntent? = null,
         var replyIntent: PendingIntent? = null,
-        var deleteIntent: PendingIntent? = null,
+//        var deleteIntent: PendingIntent? = null,
         var fullscreenIntent: PendingIntent? = null,
     ) {
         fun username(text: String) = apply { this.username = text }
@@ -57,7 +57,7 @@ class ChatNotification {
         fun replyIntent(pendingIntent: PendingIntent) =
             apply { this.replyIntent = pendingIntent }
 
-        fun deleteIntent(pendingIntent: PendingIntent) = apply { this.deleteIntent = pendingIntent }
+//        fun deleteIntent(pendingIntent: PendingIntent) = apply { this.deleteIntent = pendingIntent }
 
         fun fullscreenIntent(pendingIntent: PendingIntent) =
             apply { this.fullscreenIntent = pendingIntent }
@@ -126,7 +126,7 @@ class ChatNotification {
 
 
             contentIntent?.also { builder.setContentIntent(it) }
-//            replyIntent?.also { builder.addAction(createReplyAction(context, it)) }
+            replyIntent?.also { builder.addAction(createReplyAction(context, it)) }
 //            deleteIntent?.also { builder.setDeleteIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
 

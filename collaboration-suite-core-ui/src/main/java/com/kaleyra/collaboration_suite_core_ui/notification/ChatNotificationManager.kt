@@ -37,7 +37,7 @@ interface ChatNotificationManager {
         // Pending intent =
         //      API <24 (M and below): activity so the lock-screen presents the auth challenge.
         //      API 24+ (N and above): this should be a Service or BroadcastReceiver.
-        val replyIntent = replyPendingIntent(context) ?: contentIntent
+        val replyIntent = replyPendingIntent(context, chatId) ?: contentIntent
 
         val builder = ChatNotification
             .Builder(
@@ -52,7 +52,7 @@ interface ChatNotificationManager {
 //            .isGroupChat(messages.map { it.userId }.distinct().count() > 1)
             .contentIntent(contentIntent)
             .replyIntent(replyIntent)
-            .deleteIntent(deletePendingIntent(context))
+//            .deleteIntent(deletePendingIntent(context))
             .messages(messages)
 
         if (asActivity)
@@ -86,13 +86,14 @@ interface ChatNotificationManager {
         )
     }
 
-    private fun replyPendingIntent(context: Context) =
+    private fun replyPendingIntent(context: Context, chatId: String) =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val intent = Intent(
                 context.applicationContext,
                 ChatNotificationActionReceiver::class.java
             ).apply {
                 action = ChatNotificationActionReceiver.ACTION_REPLY
+                putExtra("chatId", chatId)
             }
             PendingIntent.getBroadcast(
                 context.applicationContext,
