@@ -19,7 +19,6 @@ package com.kaleyra.collaboration_suite_core_ui
 import android.content.ComponentName
 import android.content.Intent
 import android.content.ServiceConnection
-import android.net.Uri
 import android.os.IBinder
 import android.os.Parcelable
 import androidx.annotation.Keep
@@ -50,7 +49,6 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
 import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationData
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMessage
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
@@ -387,7 +385,7 @@ class ChatBoxUI(
     private val chatBox: ChatBox,
     private val userId: String,
     private val chatActivityClazz: Class<*>,
-    chatNotificationActivityClazz: Class<*>? = null
+    private val chatNotificationActivityClazz: Class<*>? = null
 ) : ChatBox by chatBox {
 
     private var mainScope: CoroutineScope? = null
@@ -399,15 +397,12 @@ class ChatBoxUI(
             field = value
         }
 
-    private val chatNotificationManager =
-        chatNotificationActivityClazz?.let { CustomChatNotificationManager(it) }
-
     override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(MainScope()) {
         it.map {
             ChatUI(
                 it,
                 chatActivityClazz = chatActivityClazz,
-                chatNotificationManager = chatNotificationManager
+                chatNotificationActivityClazz = chatNotificationActivityClazz
             )
         }
     }
@@ -422,7 +417,8 @@ class ChatBoxUI(
         chatBox.disconnect()
     }
 
-    fun show(chat: ChatUI) = UIProvider.showChat(chatActivityClazz, chat.id, usersDescription ?: UsersDescription())
+    fun show(chat: ChatUI) =
+        UIProvider.showChat(chatActivityClazz, chat.id, usersDescription ?: UsersDescription())
 
     private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
 
@@ -452,22 +448,25 @@ class ChatBoxUI(
     private fun disableNotifications() = mainScope?.cancel()
 
     override fun create(users: List<User>) =
-        ChatUI(chatBox.create(users), chatActivityClazz = chatActivityClazz, chatNotificationManager = chatNotificationManager)
+        ChatUI(
+            chatBox.create(users),
+            chatActivityClazz = chatActivityClazz,
+            chatNotificationActivityClazz = chatNotificationActivityClazz
+        )
 }
 
 class ChatUI(
     private val chat: Chat,
     val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(setOf()),
     private val chatActivityClazz: Class<*>,
-    private val chatNotificationManager: CustomChatNotificationManager? = null
+    private val chatNotificationActivityClazz: Class<*>? = null
 ) : Chat by chat {
 
     override val messages: StateFlow<MessagesUI> = chat.messages.mapToStateFlow(MainScope()) {
         MessagesUI(
             it,
-            chat.participants.value.others.map { part -> part.userId },
             chatActivityClazz,
-            chatNotificationManager
+            chatNotificationActivityClazz
         )
     }
 
@@ -496,25 +495,26 @@ class ChatUI(
 
 class MessagesUI(
     private val messages: Messages,
-    private val chatUserIds: List<String>,
     private val chatActivityClazz: Class<*>,
-    private val chatNotificationManager: CustomChatNotificationManager? = null
+    private val chatNotificationActivityClazz: Class<*>? = null
 ) : Messages by messages {
 
     fun showUnreadMsgs(chatId: String, loggedUserId: String) {
-        if (chatNotificationManager == null) {
-            MainScope().launch {
-                val usersDescription = usersDescription ?: UsersDescription()
-                val messages = messages.other.filter { it.state.value is Message.State.Received }.map {
-                    val userId = it.creator.userId
-                    ChatNotificationMessage(
-                        userId,
-                        usersDescription.name(listOf(userId)),
-                        usersDescription.image(listOf(userId)),
-                        (it.content as? Message.Content.Text)?.message ?: "",
-                        it.creationDate.time
-                    )
-                }.sortedBy { it.timestamp }
+        val usersDescription = usersDescription ?: UsersDescription()
+
+        MainScope().launch {
+            if (chatNotificationActivityClazz == null) {
+                val messages =
+                    messages.other.filter { it.state.value is Message.State.Received }.map {
+                        val userId = it.creator.userId
+                        ChatNotificationMessage(
+                            userId,
+                            usersDescription.name(listOf(userId)),
+                            usersDescription.image(listOf(userId)),
+                            (it.content as? Message.Content.Text)?.message ?: "",
+                            it.creationDate.time
+                        )
+                    }.sortedBy { it.timestamp }
 
                 val notification = NotificationManager.buildChatNotification(
                     loggedUserId,
@@ -527,27 +527,31 @@ class MessagesUI(
                 )
 
                 NotificationManager.notify(chatId.hashCode(), notification)
-            }
-        } else {
-            MainScope().launch {
-                val message = messages.other.firstOrNull { it.state.value is Message.State.Received }
-                    ?: return@launch
+            } else {
+                val message =
+                    messages.other.firstOrNull { it.state.value is Message.State.Received }
+                        ?: return@launch
+                val nOfMessages = messages.other.count { it.state.value is Message.State.Received }
                 val userId = message.creator.userId
-                val usersDescription = usersDescription ?: UsersDescription()
                 val username = usersDescription.name(listOf(userId))
                 val text = (message.content as? Message.Content.Text)?.message ?: ""
-                val imageUri = usersDescription.image(listOf(userId))
-                chatNotificationManager.notify(
-                    ChatNotificationData(
-                        username,
+                val avatar = usersDescription.image(listOf(userId))
+                val timestamp = message.creationDate.time
+                CustomChatNotificationManager.notify(
+                    ChatNotificationMessage(
                         userId,
+                        username,
+                        avatar,
                         text,
-                        imageUri,
-                        chatUserIds
-                    )
+                        timestamp
+                    ),
+                    chatId,
+                    nOfMessages,
+                    chatNotificationActivityClazz
                 )
             }
         }
     }
+
 }
 
