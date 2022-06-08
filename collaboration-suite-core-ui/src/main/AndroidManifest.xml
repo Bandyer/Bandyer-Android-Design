@@ -28,9 +28,6 @@
             android:name=".CollaborationService"
             android:foregroundServiceType="phoneCall|mediaProjection|camera|microphone" />
 
-        <service
-            android:name=".chat.ChatService" />
-
         <receiver android:name=".notification.CallNotificationActionReceiver"  android:exported="false">
             <intent-filter>
                 <action android:name="com.kaleyra.collaboration_suite_core_ui.HANGUP"/>
