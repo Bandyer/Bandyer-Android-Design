@@ -93,7 +93,7 @@ class ChatNotification {
                 val participant = Person.Builder()
                     .setName(it.username)
                     .setKey(it.userId)
-                    .apply { if (avatar != Uri.EMPTY) setIcon(IconCompat.createWithContentUri(avatar)) }
+                    .apply { if (it.avatar != Uri.EMPTY) setIcon(IconCompat.createWithContentUri(it.avatar)) }
                     .build()
                 val message = NotificationCompat.MessagingStyle.Message(
                     it.text,
