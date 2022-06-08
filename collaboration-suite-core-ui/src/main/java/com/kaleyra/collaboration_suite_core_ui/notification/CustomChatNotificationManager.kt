@@ -13,10 +13,11 @@ object CustomChatNotificationManager {
     private fun startNotificationActivity(message: ChatNotificationMessage, chatId: String, nOfMessages: Int, chatNotificationActivityClazz: Class<*>) {
         val intent = Intent(ContextRetainer.context, chatNotificationActivityClazz).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT or Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
-            putExtra("username", message.username)
             putExtra("userId", message.userId)
+            putExtra("username", message.username)
+            putExtra("avatar", message.avatar)
             putExtra("message", message.text)
-            putExtra("imageUri", message.avatar)
+            putExtra("timestamp", message.timestamp)
             putExtra("chatId", chatId)
             putExtra("nOfMessages", nOfMessages)
         }
