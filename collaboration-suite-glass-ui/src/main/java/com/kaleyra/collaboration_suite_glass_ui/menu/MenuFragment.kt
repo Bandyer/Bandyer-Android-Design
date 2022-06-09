@@ -271,7 +271,7 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
         }
         is CallAction.CHAT -> true.also {
             chatUI = chatUI ?: CollaborationUI.chatBox.create(viewModel.participants.replayCache.first().others)
-            CollaborationUI.chatBox.show(chatUI!!)
+            CollaborationUI.chatBox.show(requireActivity(), chatUI!!)
         }
         is CallAction.WHITEBOARD -> true.also {
             onSwipeDown()

@@ -17,6 +17,7 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
@@ -430,9 +431,10 @@ class ChatBoxUI(
 
     /**
      * Show the chat ui
+     * @param context context to bind the chat ui
      * @param chat The chat object that should be shown.
      */
-    fun show(chat: ChatUI) = UIProvider.showChat(chatActivityClazz, chat.id, usersDescription)
+    fun show(context: Context, chat: ChatUI) = UIProvider.showChat(context, chatActivityClazz, chat.id, usersDescription)
 
     private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
 
@@ -466,10 +468,10 @@ class ChatBoxUI(
 
     /**
      * Given a user, open a chat ui.
-     *
+     * @param context launching context of the chat ui
      * @param user The user with whom you want to chat.
      */
-    fun chat(user: User): ChatUI = create(listOf(user)).apply { show(this) }
+    fun chat(context: Context, user: User): ChatUI = create(listOf(user)).apply { show(context, this) }
 }
 
 class ChatUI(
@@ -549,7 +551,7 @@ class MessagesUI(
         val message = messages.other.firstOrNull { it.state.value is Message.State.Received }?.toChatNotificationMessage() ?: return@launch
         val nOfMessages = messages.other.count { it.state.value is Message.State.Received }
 
-        if (AppLifecycle.isInForeground.value){
+        if (AppLifecycle.isInForeground.value) {
             CustomChatNotificationManager.notify(message, chatId, nOfMessages, chatCustomNotificationActivity)
             return@launch
         }

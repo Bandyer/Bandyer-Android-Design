@@ -184,7 +184,7 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
             isLayoutExpanded = true
             binding.kaleyraMessage.maxLines = Int.MAX_VALUE
             val chat = CollaborationUI.chatBox.chats.value.first { it.id == getChatId(intent) }
-            CollaborationUI.chatBox.show(chat)
+            CollaborationUI.chatBox.show(this@GlassChatNotificationActivity, chat)
             finishAndRemoveTask()
         }
     }
