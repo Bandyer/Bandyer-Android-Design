@@ -299,7 +299,7 @@ class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: 
         val serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
                 val service = (binder as BoundServiceBinder).getService<CollaborationService>()
-                service.bindCall(this@PhoneBoxUI, call, usersDescription, callActivityClazz)
+                service.bindCall(call, usersDescription, callActivityClazz)
                 if (!service.canShowCallActivity(call)) return
                 UIProvider.showCall(callActivityClazz)
             }

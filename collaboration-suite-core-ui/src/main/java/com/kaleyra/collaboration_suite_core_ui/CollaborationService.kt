@@ -50,10 +50,6 @@ class CollaborationService : BoundService(),
         const val CALL_NOTIFICATION_ID = 22
     }
 
-    private var phoneBox: PhoneBox? = null
-
-    private var phoneBoxJob: Job? = null
-
     private var batteryObserver: BatteryObserver? = null
 
     private var wifiObserver: WiFiObserver? = null
@@ -72,8 +68,6 @@ class CollaborationService : BoundService(),
     override val callAudioManager: CallAudioManager get() = _callAudioManager!!
 
     override var callUsersDescription: UsersDescription = UsersDescription()
-
-//    override var chatUsersDescription: UsersDescription = UsersDescription()
 
     override var isAppInForeground: Boolean = false
 
@@ -110,7 +104,6 @@ class CollaborationService : BoundService(),
         ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(this)
         clearNotification()
-        phoneBoxJob?.cancel()
         currentCall?.end()
         batteryObserver?.stop()
         wifiObserver?.stop()
@@ -118,8 +111,6 @@ class CollaborationService : BoundService(),
         CallNotificationActionReceiver.actionDelegate = null
         currentCall = null
         _callAudioManager = null
-        phoneBox = null
-        phoneBoxJob = null
         callActivityClazz = null
         batteryObserver = null
         wifiObserver = null
@@ -128,22 +119,18 @@ class CollaborationService : BoundService(),
     /**
      * Bind the service to a phone box
      *
-     * @param phoneBox The phonebox
      * @param usersDescription The user description. Optional.
      * @param callActivityClazz The call activity class
      */
     fun bindCall(
-        phoneBox: PhoneBoxUI,
         call: CallUI,
         usersDescription: UsersDescription,
         callActivityClazz: Class<*>
     ) {
         if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return
-        this.phoneBox = phoneBox
         this.callUsersDescription = usersDescription
         this.callActivityClazz = callActivityClazz
-        phoneBoxJob?.cancel()
-        phoneBoxJob = lifecycleScope.launch {
+        lifecycleScope.launch {
             currentCall = call
             _call.emit(call)
             call.state.takeWhile { it !is Call.State.Disconnected.Ended }
