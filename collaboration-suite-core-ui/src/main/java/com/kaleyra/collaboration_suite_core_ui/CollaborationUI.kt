@@ -58,6 +58,7 @@ import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.cached
 import com.kaleyra.collaboration_suite_utils.getValue
 import com.kaleyra.collaboration_suite_utils.setValue
+import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
@@ -72,6 +73,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.plus
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -275,6 +277,11 @@ class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: 
     override fun create(users: List<User>, conf: (CreationOptions.() -> Unit)?) =
         CallUI(phoneBox.create(users, conf))
 
+
+    /**
+     * Show the call ui
+     * @param call The call object that should be shown.
+     */
     fun show(call: CallUI) {
         CollaborationUI.phoneBox.enableAudioRouting()
         bindCollaborationService(
@@ -409,6 +416,7 @@ class ChatBoxUI(
 
     override fun connect() {
         chatBox.connect()
+        chatBox.fetch(10)
         if (withUI) enableNotifications()
     }
 
@@ -417,6 +425,11 @@ class ChatBoxUI(
         chatBox.disconnect()
     }
 
+
+    /**
+     * Show the chat ui
+     * @param chat The chat object that should be shown.
+     */
     fun show(chat: ChatUI) =
         UIProvider.showChat(chatActivityClazz, chat.id, usersDescription ?: UsersDescription())
 
@@ -424,7 +437,7 @@ class ChatBoxUI(
 
     private fun enableNotifications() {
         val jobs = mutableListOf<Job>()
-        mainScope = MainScope()
+        mainScope = MainScope() + CoroutineName("enableNotifications")
         chats.onEach { chats ->
             jobs.forEach {
                 it.cancel()
@@ -432,27 +445,30 @@ class ChatBoxUI(
             }
             jobs.clear()
             chats.forEach { chat ->
-                jobs += chat.messages
-                    .onEach {
-                        val lastMessage =
-                            it.other.firstOrNull { it.state.value is Message.State.Received }
-                        if (lastMessage == null || lastMessagePerChat[chat.id] == lastMessage.id) return@onEach
-                        lastMessagePerChat[chat.id] = lastMessage.id
-                        it.showUnreadMsgs(chat.id, userId)
-                    }
-                    .launchIn(mainScope!!)
+                jobs += chat.messages.onEach messagesUI@{
+                    val lastMessage = it.other.firstOrNull { it.state.value is Message.State.Received }
+                    if (lastMessage == null || lastMessagePerChat[chat.id] == lastMessage.id) return@messagesUI
+                    lastMessagePerChat[chat.id] = lastMessage.id
+                    it.showUnreadMsgs(chat.id, userId)
+                }.launchIn(mainScope!!)
             }
         }.launchIn(mainScope!!)
     }
 
     private fun disableNotifications() = mainScope?.cancel()
 
-    override fun create(users: List<User>) =
-        ChatUI(
-            chatBox.create(users),
-            chatActivityClazz = chatActivityClazz,
-            chatNotificationActivityClazz = chatNotificationActivityClazz
-        )
+    override fun create(users: List<User>) = ChatUI(
+        chatBox.create(users),
+        chatActivityClazz = chatActivityClazz,
+        chatNotificationActivityClazz = chatNotificationActivityClazz
+    )
+
+    /**
+     * Given a user, open a chat ui.
+     *
+     * @param user The user with whom you want to chat.
+     */
+    fun chat(user: User): ChatUI = create(listOf(user)).apply { show(this) }
 }
 
 class ChatUI(

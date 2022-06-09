@@ -19,33 +19,27 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
-import androidx.core.app.NotificationManagerCompat
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 /**
  * NotificationManager
  */
-internal object NotificationManager: CallNotificationManager, ChatNotificationManager {
+internal object NotificationManager : CallNotificationManager, ChatNotificationManager {
+
+    private val notificationManager by lazy { ContextRetainer.context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
+
     /**
      * Notify the system to add a notification
      *
      * @param notificationId Int
      * @param notification Notification
      */
-    fun notify(notificationId: Int, notification: Notification) {
-        NotificationManagerCompat.from(ContextRetainer.context).notify(
-            notificationId, notification
-        )
-    }
+    fun notify(notificationId: Int, notification: Notification) = notificationManager.notify(notificationId, notification)
 
     /**
      * Cancel a notification
      *
      * @param notificationId Int
      */
-    fun cancelNotification(notificationId: Int) {
-        val notificationManager =
-            ContextRetainer.context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.cancel(notificationId)
-    }
+    fun cancelNotification(notificationId: Int) = notificationManager.cancel(notificationId)
 }
