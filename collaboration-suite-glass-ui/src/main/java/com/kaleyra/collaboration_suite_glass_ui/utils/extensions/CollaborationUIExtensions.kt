@@ -18,9 +18,10 @@ package com.kaleyra.collaboration_suite_glass_ui.utils.extensions
 
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
-import com.kaleyra.collaboration_suite_glass_ui.chat.notification.GlassChatNotificationActivity
 import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity
+import com.kaleyra.collaboration_suite_glass_ui.chat.notification.GlassChatNotificationActivity
 
 /**
  * Set up with glass u i
@@ -31,4 +32,11 @@ import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity
 fun CollaborationUI.setUpWithGlassUI(
     credentials: Collaboration.Credentials,
     configuration: Collaboration.Configuration
-) = setUp(credentials, configuration, GlassCallActivity::class.java, GlassChatActivity::class.java, GlassChatNotificationActivity::class.java)
+) = setUp(
+    credentials,
+    configuration,
+    GlassCallActivity::class.java,
+    GlassChatActivity::class.java,
+    GlassChatNotificationActivity::class.java
+//        .takeIf { DeviceUtils.isGoogleGlass }
+)

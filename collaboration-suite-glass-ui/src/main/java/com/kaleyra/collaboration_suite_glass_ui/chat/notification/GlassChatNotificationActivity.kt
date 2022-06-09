@@ -16,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMessage
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.animateViewHeight
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
@@ -43,6 +45,7 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        turnScreenOn()
         binding =
             KaleyraChatNotificationActivityGlassBinding.inflate(layoutInflater)
                 .apply {
@@ -114,6 +117,7 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
      */
     override fun onDestroy() {
         super.onDestroy()
+        turnScreenOff()
         glassTouchEventManager = null
         sendersId.clear()
         msgsPerChat.clear()

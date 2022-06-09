@@ -33,6 +33,7 @@ import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.Messages
+import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Call.PreferredType
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
@@ -52,6 +53,7 @@ import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMessage
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
+import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
@@ -111,7 +113,7 @@ object CollaborationUI {
     /**
      * Users description to be used for the UI
      */
-    var usersDescription: UsersDescription? = null
+    var usersDescription: UsersDescription = UsersDescription()
 
     private var _phoneBox: PhoneBoxUI? by cached { PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz) }
     private var _chatBox: ChatBoxUI? by cached { ChatBoxUI(collaboration!!.chatBox, collaboration!!.configuration.userId, chatActivityClazz, chatNotificationActivityClazz) }
@@ -286,7 +288,7 @@ class PhoneBoxUI(private val phoneBox: PhoneBox, private val callActivityClazz: 
         CollaborationUI.phoneBox.enableAudioRouting()
         bindCollaborationService(
             call,
-            usersDescription ?: UsersDescription(),
+            usersDescription,
             callActivityClazz,
         )
     }
@@ -392,7 +394,7 @@ class ChatBoxUI(
     private val chatBox: ChatBox,
     private val userId: String,
     private val chatActivityClazz: Class<*>,
-    private val chatNotificationActivityClazz: Class<*>? = null
+    private val chatCustomNotificationActivity: Class<*>? = null
 ) : ChatBox by chatBox {
 
     private var mainScope: CoroutineScope? = null
@@ -409,7 +411,7 @@ class ChatBoxUI(
             ChatUI(
                 it,
                 chatActivityClazz = chatActivityClazz,
-                chatNotificationActivityClazz = chatNotificationActivityClazz
+                chatNotificationActivityClazz = chatCustomNotificationActivity
             )
         }
     }
@@ -430,8 +432,7 @@ class ChatBoxUI(
      * Show the chat ui
      * @param chat The chat object that should be shown.
      */
-    fun show(chat: ChatUI) =
-        UIProvider.showChat(chatActivityClazz, chat.id, usersDescription ?: UsersDescription())
+    fun show(chat: ChatUI) = UIProvider.showChat(chatActivityClazz, chat.id, usersDescription)
 
     private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
 
@@ -460,7 +461,7 @@ class ChatBoxUI(
     override fun create(users: List<User>) = ChatUI(
         chatBox.create(users),
         chatActivityClazz = chatActivityClazz,
-        chatNotificationActivityClazz = chatNotificationActivityClazz
+        chatNotificationActivityClazz = chatCustomNotificationActivity
     )
 
     /**
@@ -512,61 +513,58 @@ class ChatUI(
 class MessagesUI(
     private val messages: Messages,
     private val chatActivityClazz: Class<*>,
-    private val chatNotificationActivityClazz: Class<*>? = null
+    private val chatCustomNotificationActivity: Class<*>? = null
 ) : Messages by messages {
 
     fun showUnreadMsgs(chatId: String, loggedUserId: String) {
-        val usersDescription = usersDescription ?: UsersDescription()
+        chatCustomNotificationActivity?.let { showCustomInAppNotification(chatId, loggedUserId, it) } ?: showNotification(chatId, loggedUserId)
+    }
 
-        MainScope().launch {
-            if (chatNotificationActivityClazz == null) {
-                val messages =
-                    messages.other.filter { it.state.value is Message.State.Received }.map {
-                        val userId = it.creator.userId
-                        ChatNotificationMessage(
-                            userId,
-                            usersDescription.name(listOf(userId)),
-                            usersDescription.image(listOf(userId)),
-                            (it.content as? Message.Content.Text)?.message ?: "",
-                            it.creationDate.time
-                        )
-                    }.sortedBy { it.timestamp }
+    private fun showNotification(chatId: String, loggedUserId: String) = MainScope().launch {
+        val messages = messages.other.filter { it.state.value is Message.State.Received }.map { it.toChatNotificationMessage() }.sortedBy { it.timestamp }
+        val notification = NotificationManager.buildChatNotification(
+            loggedUserId,
+            usersDescription.name(listOf(loggedUserId)),
+            usersDescription.image(listOf(loggedUserId)),
+            chatId,
+            messages,
+            chatActivityClazz
+        )
+        NotificationManager.notify(chatId.hashCode(), notification)
+    }
 
-                val notification = NotificationManager.buildChatNotification(
-                    loggedUserId,
-                    usersDescription.name(listOf(loggedUserId)),
-                    usersDescription.image(listOf(loggedUserId)),
-                    chatId,
-                    messages,
-                    chatActivityClazz,
-                    false
-                )
+    private suspend fun OtherMessage.toChatNotificationMessage() = ChatNotificationMessage(
+        creator.userId,
+        usersDescription.name(listOf(creator.userId)),
+        usersDescription.image(listOf(creator.userId)),
+        (content as? Message.Content.Text)?.message ?: "",
+        creationDate.time
+    )
 
-                NotificationManager.notify(chatId.hashCode(), notification)
-            } else {
-                val message =
-                    messages.other.firstOrNull { it.state.value is Message.State.Received }
-                        ?: return@launch
-                val nOfMessages = messages.other.count { it.state.value is Message.State.Received }
-                val userId = message.creator.userId
-                val username = usersDescription.name(listOf(userId))
-                val text = (message.content as? Message.Content.Text)?.message ?: ""
-                val avatar = usersDescription.image(listOf(userId))
-                val timestamp = message.creationDate.time
-                CustomChatNotificationManager.notify(
-                    ChatNotificationMessage(
-                        userId,
-                        username,
-                        avatar,
-                        text,
-                        timestamp
-                    ),
-                    chatId,
-                    nOfMessages,
-                    chatNotificationActivityClazz
-                )
-            }
+    private fun showCustomInAppNotification(
+        chatId: String,
+        loggedUserId: String,
+        chatCustomNotificationActivity: Class<*>,
+    ) = MainScope().launch {
+        val message = messages.other.firstOrNull { it.state.value is Message.State.Received }?.toChatNotificationMessage() ?: return@launch
+        val nOfMessages = messages.other.count { it.state.value is Message.State.Received }
+
+        if (AppLifecycle.isInForeground.value){
+            CustomChatNotificationManager.notify(message, chatId, nOfMessages, chatCustomNotificationActivity)
+            return@launch
         }
+
+        val notification = NotificationManager.buildChatNotification(
+            loggedUserId,
+            usersDescription.name(listOf(loggedUserId)),
+            usersDescription.image(listOf(loggedUserId)),
+            chatId,
+            listOf(message),
+            chatActivityClazz,
+            chatCustomNotificationActivity
+        )
+
+        NotificationManager.notify(chatId.hashCode(), notification)
     }
 
 }

@@ -30,7 +30,7 @@ interface ChatNotificationManager {
         chatId: String,
         messages: List<ChatNotificationMessage>,
         activityClazz: Class<*>,
-        asActivity: Boolean
+        fullScreenIntentClazz: Class<*>? = null,
     ): Notification {
         val context = ContextRetainer.context
 
@@ -57,9 +57,7 @@ interface ChatNotificationManager {
 //            .deleteIntent(deletePendingIntent(context))
             .messages(messages)
 
-        if (asActivity)
-            builder.fullscreenIntent(fullScreenPendingIntent(context, activityClazz, chatId))
-
+        fullScreenIntentClazz?.let { builder.fullscreenIntent(fullScreenPendingIntent(context, it, chatId)) }
         return builder.build()
     }
 

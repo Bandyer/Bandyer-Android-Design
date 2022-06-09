@@ -6,8 +6,6 @@ import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
@@ -20,6 +18,7 @@ import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
+import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
@@ -29,8 +28,11 @@ import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
@@ -38,13 +40,13 @@ import kotlinx.coroutines.launch
  * The CollaborationService
  */
 class CollaborationService : BoundService(),
-    CallUIDelegate,
-    CallStreamDelegate,
-    CallNotificationDelegate,
-    DeviceStatusDelegate,
-    CallController,
-    Application.ActivityLifecycleCallbacks,
-    CallNotificationActionReceiver.ActionDelegate {
+                             CallUIDelegate,
+                             CallStreamDelegate,
+                             CallNotificationDelegate,
+                             DeviceStatusDelegate,
+                             CallController,
+                             Application.ActivityLifecycleCallbacks,
+                             CallNotificationActionReceiver.ActionDelegate {
 
     private companion object {
         const val CALL_NOTIFICATION_ID = 22
@@ -69,7 +71,7 @@ class CollaborationService : BoundService(),
 
     override var callUsersDescription: UsersDescription = UsersDescription()
 
-    override var isAppInForeground: Boolean = false
+    override val isAppInForeground: Boolean get() = AppLifecycle.isInForeground.value
 
     override val battery: SharedFlow<BatteryInfo> get() = batteryObserver!!.observe()
 
@@ -80,12 +82,14 @@ class CollaborationService : BoundService(),
      */
     override fun onCreate() {
         super<BoundService>.onCreate()
-        ProcessLifecycleOwner.get().lifecycle.addObserver(this)
         application.registerActivityLifecycleCallbacks(this)
         CallNotificationActionReceiver.actionDelegate = this
         batteryObserver = BatteryObserver(this)
         wifiObserver = WiFiObserver(this)
         _callAudioManager = CallAudioManager(this)
+        AppLifecycle.isInForeground.dropWhile { !it }.filterNot { it }.onEach {
+            if (currentCall == null || currentCall!!.state.value is Call.State.Disconnected.Ended) stopSelf()
+        }.launchIn(lifecycleScope)
     }
 
     /**
@@ -101,7 +105,6 @@ class CollaborationService : BoundService(),
      */
     override fun onDestroy() {
         super<BoundService>.onDestroy()
-        ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         application.unregisterActivityLifecycleCallbacks(this)
         clearNotification()
         currentCall?.end()
@@ -153,16 +156,6 @@ class CollaborationService : BoundService(),
 
     fun canShowCallActivity(call: Call): Boolean =
         isAppInForeground && (!this@CollaborationService.isSilent() || call.participants.value.let { it.me == it.creator() })
-
-    /**
-     * @suppress
-     */
-    override fun onStop(owner: LifecycleOwner) {
-        super.onStop(owner)
-        if (currentCall != null && currentCall!!.state.value !is Call.State.Disconnected.Ended) return
-        stopSelf()
-//        Log.e("CollaborationService", "stopping service onStop")
-    }
 
     ////////////////////////////////////////////
     // Application.ActivityLifecycleCallbacks //

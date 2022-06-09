@@ -19,12 +19,12 @@ import kotlinx.coroutines.flow.takeWhile
  *
  * @property isAppInForeground Boolean
  */
-interface CallNotificationDelegate: DefaultLifecycleObserver, LifecycleOwner {
+interface CallNotificationDelegate: LifecycleOwner {
 
     /**
      * Flag which tells if the app is in foreground
      */
-    var isAppInForeground: Boolean
+    val isAppInForeground: Boolean
 
     /**
      * Show the notification
@@ -146,20 +146,6 @@ interface CallNotificationDelegate: DefaultLifecycleObserver, LifecycleOwner {
             .takeWhile { it !is Call.State.Disconnected.Ended }
             .onCompletion { clearNotification() }
             .launchIn(lifecycleScope)
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onStart(owner: LifecycleOwner) {
-        isAppInForeground = true
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onStop(owner: LifecycleOwner) {
-        isAppInForeground = false
     }
 
     private fun Call.isIncoming() =
