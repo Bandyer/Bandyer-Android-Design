@@ -36,6 +36,7 @@ class ChatNotification {
         var isGroupChat: Boolean = false,
         var contentIntent: PendingIntent? = null,
         var replyIntent: PendingIntent? = null,
+        var markAsReadIntent: PendingIntent? = null,
 //        var deleteIntent: PendingIntent? = null,
         var fullscreenIntent: PendingIntent? = null,
     ) {
@@ -56,6 +57,9 @@ class ChatNotification {
 
         fun replyIntent(pendingIntent: PendingIntent) =
             apply { this.replyIntent = pendingIntent }
+
+        fun markAsReadIntent(pendingIntent: PendingIntent) =
+            apply { this.markAsReadIntent = pendingIntent }
 
 //        fun deleteIntent(pendingIntent: PendingIntent) = apply { this.deleteIntent = pendingIntent }
 
@@ -127,6 +131,14 @@ class ChatNotification {
 
             contentIntent?.also { builder.setContentIntent(it) }
             replyIntent?.also { builder.addAction(createReplyAction(context, it)) }
+            markAsReadIntent?.also {
+                val markAsReadAction = NotificationCompat.Action(
+                    R.drawable.ic_kaleyra_mark_as_read,
+                    context.getString(R.string.kaleyra_notification_chat_mark_as_read),
+                    it
+                )
+                builder.addAction(markAsReadAction)
+            }
 //            deleteIntent?.also { builder.setDeleteIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
 

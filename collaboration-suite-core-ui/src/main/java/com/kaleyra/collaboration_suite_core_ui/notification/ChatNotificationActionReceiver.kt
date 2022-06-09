@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.RemoteInput
+import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
@@ -19,7 +20,7 @@ class ChatNotificationActionReceiver: BroadcastReceiver() {
      */
     companion object {
         const val ACTION_REPLY = "com.kaleyra.collaboration_suite_core_ui.ACTION_REPLY"
-
+        const val ACTION_MARK_AS_READ = "com.kaleyra.collaboration_suite_core_ui.ACTION_MARK_AS_READ"
         const val ACTION_DELETE = "com.kaleyra.collaboration_suite_core_ui.ACTION_DELETE"
     }
 
@@ -27,7 +28,6 @@ class ChatNotificationActionReceiver: BroadcastReceiver() {
         intent ?: return
         when(intent.action) {
             ACTION_REPLY -> {
-                val chatId = intent.extras?.getString("chatId") ?: return
                 val reply = getReply(intent)
                 val participant = object : ChatParticipant {
                     override val state: StateFlow<ChatParticipant.State> = MutableStateFlow(ChatParticipant.State.Joined.Online)
@@ -42,14 +42,24 @@ class ChatNotificationActionReceiver: BroadcastReceiver() {
                     override val content = Message.Content.Text(reply.toString())
                     override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Created())
                 }
-                val chat = CollaborationUI.chatBox.chats.value.first { it.id == chatId }
-                chat.messages.value.other.forEach { it.markAsRead() }
+                val chat = getChat(intent) ?: return
+                chat.messages.value.other.filter { it.state.value is Message.State.Received }.forEach { it.markAsRead() }
                 chat.add(message)
-                NotificationManager.cancelNotification(chatId.hashCode())
+                NotificationManager.cancelNotification(chat.id.hashCode())
+            }
+            ACTION_MARK_AS_READ -> {
+                val chat = getChat(intent) ?: return
+                chat.messages.value.other.filter { it.state.value is Message.State.Received }.forEach { it.markAsRead() }
+                NotificationManager.cancelNotification(chat.id.hashCode())
             }
             else -> Unit
         }
     }
+
+    private fun getChat(intent: Intent): Chat? =
+        intent.extras?.getString("chatId")?.let { chatId ->
+            CollaborationUI.chatBox.chats.value.firstOrNull { it.id == chatId }
+        }
 
     private fun getReply(intent: Intent): CharSequence? =
         RemoteInput.getResultsFromIntent(intent)?.getCharSequence(ChatNotification.EXTRA_REPLY)

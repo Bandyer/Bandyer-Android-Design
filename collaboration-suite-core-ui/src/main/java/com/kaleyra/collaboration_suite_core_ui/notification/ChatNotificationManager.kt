@@ -20,6 +20,7 @@ interface ChatNotificationManager {
         private const val CONTENT_REQUEST_CODE = 654
         private const val REPLY_REQUEST_CODE = 987
         private const val DELETE_REQUEST_CODE = 1110
+        private const val MARK_AS_READ_REQUEST_CODE = 1312
     }
 
     fun buildChatNotification(
@@ -52,6 +53,7 @@ interface ChatNotificationManager {
 //            .isGroupChat(messages.map { it.userId }.distinct().count() > 1)
             .contentIntent(contentIntent)
             .replyIntent(replyIntent)
+            .markAsReadIntent(markAsReadIntent(context, chatId))
 //            .deleteIntent(deletePendingIntent(context))
             .messages(messages)
 
@@ -103,15 +105,26 @@ interface ChatNotificationManager {
             )
         } else null
 
+    private fun markAsReadIntent(context: Context, chatId: String): PendingIntent {
+        val intent = Intent(context, ChatNotificationActionReceiver::class.java).apply {
+            action = ChatNotificationActionReceiver.ACTION_MARK_AS_READ
+            putExtra("chatId", chatId)
+        }
+        return createBroadcastPendingIntent(context, MARK_AS_READ_REQUEST_CODE, intent)
+    }
+
     private fun deletePendingIntent(context: Context): PendingIntent {
         val intent = Intent(context, ChatNotificationActionReceiver::class.java).apply {
-            this.action = ChatNotificationActionReceiver.ACTION_DELETE
+            action = ChatNotificationActionReceiver.ACTION_DELETE
         }
-        return PendingIntent.getBroadcast(
+        return createBroadcastPendingIntent(context, DELETE_REQUEST_CODE, intent)
+    }
+
+    private fun createBroadcastPendingIntent(context: Context, requestCode: Int, intent: Intent) =
+        PendingIntent.getBroadcast(
             context,
-            DELETE_REQUEST_CODE,
+            requestCode,
             intent,
             PendingIntentExtensions.updateFlags
         )
-    }
 }
