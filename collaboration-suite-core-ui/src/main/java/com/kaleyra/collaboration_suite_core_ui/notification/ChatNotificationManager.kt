@@ -52,8 +52,8 @@ interface ChatNotificationManager {
             .isGroupChat(true) // Always true because of a notification ui bug
 //            .isGroupChat(messages.map { it.userId }.distinct().count() > 1)
             .contentIntent(contentIntent)
-            .replyIntent(replyIntent)
-            .markAsReadIntent(markAsReadIntent(context, chatId))
+//            .replyIntent(replyIntent)
+//            .markAsReadIntent(markAsReadIntent(context, chatId))
 //            .deleteIntent(deletePendingIntent(context))
             .messages(messages)
 
