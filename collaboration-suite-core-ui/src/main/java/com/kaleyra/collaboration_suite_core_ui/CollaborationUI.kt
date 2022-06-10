@@ -565,6 +565,7 @@ class MessagesUI(
             chatCustomNotificationActivity
         )
 
+        NotificationManager.cancelAll()
         NotificationManager.notify(chatId.hashCode(), notification)
     }
 

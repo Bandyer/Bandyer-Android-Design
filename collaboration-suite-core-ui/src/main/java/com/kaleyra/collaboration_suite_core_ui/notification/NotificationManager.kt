@@ -41,5 +41,10 @@ internal object NotificationManager : CallNotificationManager, ChatNotificationM
      *
      * @param notificationId Int
      */
-    fun cancelNotification(notificationId: Int) = notificationManager.cancel(notificationId)
+    fun cancel(notificationId: Int) = notificationManager.cancel(notificationId)
+
+    /**
+     * Cancel all notifications
+     */
+    fun cancelAll() = notificationManager.cancelAll()
 }

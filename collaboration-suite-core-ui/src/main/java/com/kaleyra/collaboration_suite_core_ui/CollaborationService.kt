@@ -8,7 +8,6 @@ import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
@@ -25,7 +24,6 @@ import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.dropWhile
@@ -260,6 +258,6 @@ class CollaborationService : BoundService(),
      */
     override fun clearNotification() {
         stopForeground(true).also { isServiceInForeground = false }
-        NotificationManager.cancelNotification(CALL_NOTIFICATION_ID)
+        NotificationManager.cancel(CALL_NOTIFICATION_ID)
     }
 }

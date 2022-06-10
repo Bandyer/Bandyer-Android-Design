@@ -3,7 +3,6 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import androidx.core.app.RemoteInput
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
@@ -45,12 +44,12 @@ class ChatNotificationActionReceiver: BroadcastReceiver() {
                 val chat = getChat(intent) ?: return
                 chat.messages.value.other.filter { it.state.value is Message.State.Received }.forEach { it.markAsRead() }
                 chat.add(message)
-                NotificationManager.cancelNotification(chat.id.hashCode())
+                NotificationManager.cancel(chat.id.hashCode())
             }
             ACTION_MARK_AS_READ -> {
                 val chat = getChat(intent) ?: return
                 chat.messages.value.other.filter { it.state.value is Message.State.Received }.forEach { it.markAsRead() }
-                NotificationManager.cancelNotification(chat.id.hashCode())
+                NotificationManager.cancel(chat.id.hashCode())
             }
             else -> Unit
         }
