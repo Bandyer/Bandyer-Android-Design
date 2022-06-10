@@ -47,6 +47,7 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -69,7 +70,6 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
         }
 
     private val viewModel: ChatViewModel by activityViewModels()
-    private var chat: Chat? = null
 
     private val args: ChatFragmentArgs by lazy {
         requireActivity().intent?.extras?.let { ChatFragmentArgs.fromBundle(it) }
@@ -115,21 +115,20 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
                     private var isLoading = false
 
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                        chat ?: return
                         val foundView = snapHelper.findSnapView(layoutManager) ?: return
                         val position = layoutManager.getPosition(foundView)
                         if (currentMsgItemIndex == position) return
                         currentMsgItemIndex = position
 
+                        val chat = viewModel.chat.replayCache.firstOrNull() ?: return
                         if (!isLoading && fastAdapter.itemCount <= (currentMsgItemIndex + LOAD_MORE_THRESHOLD)) {
-                            chat!!.fetch(LOAD_MORE_THRESHOLD) { isLoading = false }
+                            chat.fetch(LOAD_MORE_THRESHOLD) { isLoading = false }
                             isLoading = true
                         }
 
                         val messageId =
                             itemAdapter!!.getAdapterItem(currentMsgItemIndex).page.messageId
-                        chat!!.messages.replayCache.firstOrNull()?.other?.firstOrNull { it.id == messageId }
-                            ?.markAsRead()
+                        chat.messages.replayCache.firstOrNull()?.other?.firstOrNull { it.id == messageId }?.markAsRead()
                         unreadMessagesIds = unreadMessagesIds - messageId
                     }
                 })
@@ -149,14 +148,15 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
     }
 
     override fun onServiceBound() {
-        chat = viewModel.getChat(args.chatId)
-        unreadMessagesIds =
-            chat!!.messages.replayCache.firstOrNull()?.other?.filter { it.state.value is Message.State.Received }
-                ?.map { it.id } ?: listOf()
-
         var noMessages = true
         repeatOnStarted {
-            chat!!.messages
+            viewModel.chat.onEach { chat ->
+                unreadMessagesIds =
+                    chat.messages.replayCache.firstOrNull()?.other?.filter { it.state.value is Message.State.Received }?.map { it.id } ?: listOf()
+            }.launchIn(this@repeatOnStarted)
+
+            viewModel.chat
+                .flatMapLatest { it.messages }
                 .onEach { msgs ->
                     noMessages = msgs.list.isEmpty().also {
                         if (!it) binding.kaleyraTitle.visibility = View.GONE

@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_glass_ui.chat
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
@@ -21,8 +22,10 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensi
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener, GlassTouchEventManager.Listener {
 
@@ -32,7 +35,6 @@ internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener,
 
     private val viewModel: ChatViewModel by viewModels {
         ChatViewModelFactory(
-//            service as ChatUIDelegate,
             service as DeviceStatusDelegate
         )
     }
@@ -48,6 +50,11 @@ internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener,
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        onNewChatIntent(intent)
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         turnScreenOff()
@@ -57,6 +64,8 @@ internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener,
 
     override fun onServiceBound(service: CollaborationService) {
         this.service = service
+
+        onNewChatIntent(intent)
 
         repeatOnStarted {
             viewModel
@@ -106,5 +115,11 @@ internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener,
             supportFragmentManager.currentNavigationFragment as? TouchEventListener
                 ?: return false
         return currentDest.onTouch(glassEvent)
+    }
+
+    private fun onNewChatIntent(intent: Intent) {
+        val chatId = intent.extras?.getString("chatId") ?: return
+        val chat = viewModel.getChat(chatId)
+        MainScope().launch { viewModel.chat.emit(chat) }
     }
 }
