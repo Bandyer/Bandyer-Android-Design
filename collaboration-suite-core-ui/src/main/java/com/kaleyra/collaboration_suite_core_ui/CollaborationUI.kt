@@ -565,8 +565,13 @@ class MessagesUI(
             chatCustomNotificationActivity
         )
 
-        NotificationManager.cancelAll()
-        NotificationManager.notify(chatId.hashCode(), notification)
+        NotificationManager.cancel(FULLSCREEN_NOTIFICATION_TAG, FULLSCREEN_NOTIFICATION_ID)
+        NotificationManager.notify(FULLSCREEN_NOTIFICATION_TAG, FULLSCREEN_NOTIFICATION_ID, notification)
+    }
+
+    private companion object {
+        const val FULLSCREEN_NOTIFICATION_TAG = "customFullScreenNotification"
+        const val FULLSCREEN_NOTIFICATION_ID = 999
     }
 
 }

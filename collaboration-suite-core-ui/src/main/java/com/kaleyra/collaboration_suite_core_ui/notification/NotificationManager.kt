@@ -37,6 +37,15 @@ internal object NotificationManager : CallNotificationManager, ChatNotificationM
     fun notify(notificationId: Int, notification: Notification) = notificationManager.notify(notificationId, notification)
 
     /**
+     * Notify the system to add a notification
+     *
+     * @param notificationTag String
+     * @param notificationId Int
+     * @param notification Notification
+     */
+    fun notify(notificationTag: String, notificationId: Int, notification: Notification) = notificationManager.notify(notificationTag, notificationId, notification)
+
+    /**
      * Cancel a notification
      *
      * @param notificationId Int
@@ -44,7 +53,10 @@ internal object NotificationManager : CallNotificationManager, ChatNotificationM
     fun cancel(notificationId: Int) = notificationManager.cancel(notificationId)
 
     /**
-     * Cancel all notifications
+     * Cancel a notification
+     *
+     * @param notificationTag String
+     * @param notificationId Int
      */
-    fun cancelAll() = notificationManager.cancelAll()
+    fun cancel(notificationTag: String, notificationId: Int) = notificationManager.cancel(notificationTag, notificationId)
 }
