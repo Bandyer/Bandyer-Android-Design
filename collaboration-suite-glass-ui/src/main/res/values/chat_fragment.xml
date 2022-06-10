@@ -47,6 +47,8 @@
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">@dimen/kaleyra_dimen_text_40sp</item>
         <item name="android:text">@string/kaleyra_glass_loading_messages</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
     <!-- COUNTER -->
