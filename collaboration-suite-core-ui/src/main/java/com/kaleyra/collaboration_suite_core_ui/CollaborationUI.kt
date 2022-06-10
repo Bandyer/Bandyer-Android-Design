@@ -549,10 +549,9 @@ class MessagesUI(
         chatCustomNotificationActivity: Class<*>,
     ) = MainScope().launch {
         val message = messages.other.firstOrNull { it.state.value is Message.State.Received }?.toChatNotificationMessage() ?: return@launch
-        val nOfMessages = messages.other.count { it.state.value is Message.State.Received }
 
         if (AppLifecycle.isInForeground.value) {
-            CustomChatNotificationManager.notify(message, chatId, nOfMessages, chatCustomNotificationActivity)
+            CustomChatNotificationManager.notify(chatId, chatCustomNotificationActivity)
             return@launch
         }
 

@@ -6,15 +6,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import com.kaleyra.collaboration_suite.chatbox.Chat
+import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMessage
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
@@ -26,9 +27,10 @@ import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.common.AvatarGroupView
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatNotificationActivityGlassBinding
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
-
 
 class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Listener {
 
@@ -52,10 +54,7 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
                     setListenersForRealWear(kaleyraBottomNavigation)
                 }
 
-        val message = getMessage(intent)
-        val nOfMessages = getNOfMessages(intent)
-        msgsPerChat[getChatId(intent)] = nOfMessages
-        if (nOfMessages == 1) setSingleMessageUI(message) else setMultipleMessagesUI(message, nOfMessages)
+        updateUI(intent)
         setContentView(binding.root)
         glassTouchEventManager = GlassTouchEventManager(this, this)
     }
@@ -72,29 +71,43 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
         super.onNewIntent(intent)
         intent ?: return
         setDismiss()
-        msgsPerChat[getChatId(intent)] = getNOfMessages(intent)
-        Log.e("nOfMessages-not", "${getNOfMessages(intent)}" )
-        setMultipleMessagesUI(getMessage(intent), msgsPerChat.values.sum())
+        updateUI(intent)
     }
 
-    private fun setSingleMessageUI(message: ChatNotificationMessage) = with(binding) {
-        kaleyraTitle.text = message.username
-        kaleyraMessage.text = message.text
+    private fun updateUI(intent: Intent) = MainScope().launch {
+        val chat = getChat(intent) ?: return@launch
+        val nOfMessages = getNOfUnreadMessages(chat)
+        msgsPerChat[chat.id] = nOfMessages
+
+        val usersDescription = CollaborationUI.usersDescription
+        val message = getLastReceivedMessage(chat) ?: return@launch
+        val userId = message.creator.userId
+        val username = usersDescription.name(listOf(userId))
+        val avatar = usersDescription.image(listOf(userId))
+        val text = (message.content as? Message.Content.Text)?.message ?: ""
+        val counter = msgsPerChat.values.sum()
+
+        if (counter == 1) setSingleMessageUI(userId, username, avatar, text) else setMultipleMessagesUI(userId, username, avatar, counter)
+    }
+
+    private fun setSingleMessageUI(userId: String, username: String, avatar: Uri, text: String) = with(binding) {
+        kaleyraTitle.text = username
+        kaleyraMessage.text = text
         kaleyraMessage.maxLines = 2
         kaleyraTime.visibility = View.VISIBLE
-        sendersId.add(message.userId)
+        sendersId.add(userId)
         kaleyraAvatars.clean()
-        kaleyraAvatars.addAvatar(message)
+        kaleyraAvatars.addAvatar(userId, username, avatar)
     }
 
-    private fun setMultipleMessagesUI(message: ChatNotificationMessage, counter: Int) = with(binding) {
+    private fun setMultipleMessagesUI(userId: String, username: String, avatar: Uri, counter: Int) = with(binding) {
         kaleyraMessage.text = null
         kaleyraMessage.maxLines = 0
         kaleyraTime.visibility = View.GONE
         kaleyraTitle.text = resources.getString(R.string.kaleyra_glass_new_messages_pattern, counter)
-        if (sendersId.contains(message.userId)) return@with
-        sendersId.add(message.userId)
-        kaleyraAvatars.addAvatar(message)
+        if (sendersId.contains(userId)) return@with
+        sendersId.add(userId)
+        kaleyraAvatars.addAvatar(userId, username, avatar)
     }
 
     private fun setDismiss() {
@@ -152,26 +165,13 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
             else -> false
         }
 
-    private fun getMessage(intent: Intent) =
-        ChatNotificationMessage(
-            intent.getStringExtra("userId") ?: "null",
-            intent.getStringExtra("username") ?: "null",
-            intent.getParcelableExtra("avatar") as? Uri ?: Uri.EMPTY,
-            intent.getStringExtra("message") ?: "null",
-             intent.getLongExtra("timestamp", 0L)
-        )
-
-    private fun getChatId(intent: Intent) = intent.extras?.getString("chatId") ?: ""
-
-    private fun getNOfMessages(intent: Intent) = intent.extras?.getInt("nOfMessages") ?: 0
-
-    private fun AvatarGroupView.addAvatar(data: ChatNotificationMessage) {
-        if (data.avatar == Uri.EMPTY)
+    private fun AvatarGroupView.addAvatar(userId: String, username: String, avatar: Uri) {
+        if (avatar == Uri.EMPTY)
             addAvatar(
-                data.username[0].uppercase(),
-                data.userId.parseToColor()
+                username[0].uppercase(),
+                userId.parseToColor()
             )
-        else addAvatar(data.avatar)
+        else addAvatar(avatar)
     }
 
     private fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
@@ -183,8 +183,8 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
         expandRootView {
             isLayoutExpanded = true
             binding.kaleyraMessage.maxLines = Int.MAX_VALUE
-            val chat = CollaborationUI.chatBox.chats.value.first { it.id == getChatId(intent) }
-            CollaborationUI.chatBox.show(this@GlassChatNotificationActivity, chat)
+            val chat = CollaborationUI.chatBox.chats.value.firstOrNull { it.id == getChat(intent)?.id }
+            chat?.let { CollaborationUI.chatBox.show(this@GlassChatNotificationActivity, it) }
             finishAndRemoveTask()
         }
     }
@@ -201,6 +201,15 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
             ANIMATION_DURATION,
             AccelerateDecelerateInterpolator()
         ) { onExpanded?.invoke(it) }
+    }
+
+    private fun getNOfUnreadMessages(chat: Chat): Int = chat.messages.replayCache.firstOrNull()?.other?.count { it.state.value is Message.State.Received } ?: 0
+
+    private fun getLastReceivedMessage(chat: Chat): OtherMessage? = chat.messages.replayCache.firstOrNull()?.other?.firstOrNull { it.state.value is Message.State.Received }
+
+    private fun getChat(intent: Intent): Chat? {
+        val chatId = intent.extras?.getString("chatId") ?: ""
+        return CollaborationUI.chatBox.chats.value.firstOrNull { it.id == chatId }
     }
 
     private companion object {
