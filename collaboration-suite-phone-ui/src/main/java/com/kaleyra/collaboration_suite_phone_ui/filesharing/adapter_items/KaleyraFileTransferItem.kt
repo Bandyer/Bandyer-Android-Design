@@ -56,7 +56,7 @@ class KaleyraFileTransferItem(val data: TransferData) : AbstractItem<KaleyraFile
 
     override fun equals(other: Any?): Boolean =
         if (other !is KaleyraFileTransferItem) false
-        else this.identifier == other.identifier && this.data.bytesTransferred == other.data.bytesTransferred
+        else this.identifier == other.identifier && this.data.state == other.data.state && this.data.bytesTransferred == other.data.bytesTransferred
 
     override fun hashCode() = data.id.hashCode()
 
