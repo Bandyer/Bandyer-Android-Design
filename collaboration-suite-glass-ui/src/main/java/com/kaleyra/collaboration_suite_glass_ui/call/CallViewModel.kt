@@ -105,7 +105,8 @@ internal class CallViewModel(
         .map { it.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() }
         .filter { it != null }
         .flatMapLatest { it!!.currentLens }
-        .flatMapLatest { it.flashLight }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+        .flatMapLatest { it.flashLight }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val preferredCallType get() = call.replayCache.first().extras.preferredType
 

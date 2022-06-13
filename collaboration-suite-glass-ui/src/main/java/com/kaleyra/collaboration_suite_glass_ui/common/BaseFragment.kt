@@ -32,7 +32,6 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.TiltFragment
  * BaseFragment. A base class for all the smart glass fragments
  */
 internal abstract class BaseFragment<T> : TiltFragment(), TouchEventListener,
-    //    ChatNotificationManager.NotificationListener,
     BoundServiceActivity.Observer where T : BoundServiceActivity<*>, T : OnDestinationChangedListener {
 
     /**
@@ -85,7 +84,6 @@ internal abstract class BaseFragment<T> : TiltFragment(), TouchEventListener,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-//        activity.addNotificationListener(this)
         activity.addServiceBoundObserver(this)
 
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -109,14 +107,7 @@ internal abstract class BaseFragment<T> : TiltFragment(), TouchEventListener,
     override fun onDestroyView() {
         super.onDestroyView()
         activity.removeServiceBoundObserver(this)
-//        activity.removeNotificationListener(this)
     }
-
-//    override fun onShow() = binding.root.setAlphaWithAnimation(0f, 100L)
-
-//    override fun onExpanded() = Unit
-
-//    override fun onDismiss() = binding.root.setAlphaWithAnimation(1f, 100L)
 
     /**
      * This method should NOT be overridden. Use onTap, onSwipeDown, onSwipeForward, onSwipeBackward instead.

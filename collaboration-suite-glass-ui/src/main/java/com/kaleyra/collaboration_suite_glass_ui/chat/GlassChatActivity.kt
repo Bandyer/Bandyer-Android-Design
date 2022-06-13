@@ -119,7 +119,6 @@ internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener,
 
     private fun onNewChatIntent(intent: Intent) {
         val chatId = intent.extras?.getString("chatId") ?: return
-        val chat = viewModel.getChat(chatId)
-        MainScope().launch { viewModel.chat.emit(chat) }
+        viewModel.setChat(chatId)
     }
 }
