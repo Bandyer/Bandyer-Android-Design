@@ -79,7 +79,7 @@ class CollaborationService : BoundService(),
      * @suppress
      */
     override fun onCreate() {
-        super<BoundService>.onCreate()
+        super.onCreate()
         application.registerActivityLifecycleCallbacks(this)
         CallNotificationActionReceiver.actionDelegate = this
         batteryObserver = BatteryObserver(this)
@@ -102,7 +102,7 @@ class CollaborationService : BoundService(),
      * @suppress
      */
     override fun onDestroy() {
-        super<BoundService>.onDestroy()
+        super.onDestroy()
         application.unregisterActivityLifecycleCallbacks(this)
         clearNotification()
         currentCall?.end()
