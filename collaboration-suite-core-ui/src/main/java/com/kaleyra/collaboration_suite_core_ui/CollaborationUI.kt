@@ -16,14 +16,12 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
-import android.app.ActivityManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.Parcelable
-import android.util.Log
 import androidx.annotation.Keep
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -72,7 +70,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
@@ -109,10 +107,8 @@ object CollaborationUI {
 
         override fun onStop(owner: LifecycleOwner) {
             super.onStop(owner)
-            wasPhoneBoxConnected =
-                phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
-            wasChatBoxConnected =
-                chatBox.state.value.let { it !is ChatBox.State.Disconnected && it !is ChatBox.State.Disconnecting }
+            wasPhoneBoxConnected = phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
+            wasChatBoxConnected = chatBox.state.value.let { it !is ChatBox.State.Disconnected && it !is ChatBox.State.Disconnecting }
         }
     }
 
@@ -122,9 +118,12 @@ object CollaborationUI {
     var usersDescription: UsersDescription = UsersDescription()
 
     private var _phoneBox: PhoneBoxUI? by cached { PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz, collaboration!!.configuration.logger) }
-    private var _chatBox: ChatBoxUI? by cached { ChatBoxUI(collaboration!!.chatBox, collaboration!!.configuration.userId, chatActivityClazz, chatNotificationActivityClazz
+    private var _chatBox: ChatBoxUI? by cached {
+        ChatBoxUI(
+            collaboration!!.chatBox, collaboration!!.configuration.userId, chatActivityClazz, chatNotificationActivityClazz
 //        collaboration!!.configuration.logger
-    ) }
+        )
+    }
 
     /**
      * Phone box
@@ -229,39 +228,23 @@ object CollaborationUI {
 class PhoneBoxUI(
     private val phoneBox: PhoneBox,
     private val callActivityClazz: Class<*>,
-    private val logger: PriorityLogger? = null
-    ) :
-    PhoneBox by phoneBox {
+    private val logger: PriorityLogger? = null,
+    private val scope: CoroutineScope = MainScope()
+) : PhoneBox by phoneBox {
 
     var withUI = true
-        set(value) {
-            CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = value)
-            field = value
-        }
 
-    override val call: SharedFlow<CallUI> =
-        phoneBox.call.map { CallUI(it) }.shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
+    override val call: SharedFlow<CallUI> = phoneBox.call.map { CallUI(it) }.shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
 
-    override val callHistory: SharedFlow<List<CallUI>> =
-        phoneBox.callHistory.map { it.map { CallUI(it) } }
-            .shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
+    override val callHistory: SharedFlow<List<CallUI>> = phoneBox.callHistory.map { it.map { CallUI(it) } }.shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
 
     override fun connect() {
         if (phoneBox.state.value is PhoneBox.State.Connected) return
         phoneBox.connect()
-        val scope = MainScope() + CoroutineName("enableAudioRouting")
-        call
-            .flatMapLatest { it.state }
-            .onEach {
-                if (it !is Call.State.Disconnected.Ended || withUI) return@onEach
-                CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = false, logger = logger)
-            }.launchIn(scope)
-
-        call.onEach {
-            if (!withUI) return@onEach
+        call.filter { withUI }.onEach {
+            CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = withUI, logger = logger, coroutineScope = scope)
             show(it)
         }.launchIn(scope)
-
         phoneBox.state
             .takeWhile { it !is PhoneBox.State.Disconnecting }
             .onCompletion { scope.cancel() }
@@ -276,8 +259,7 @@ class PhoneBoxUI(
      * @param users to be called
      * @param options creation options
      */
-    fun call(users: List<User>, options: (CreationOptions.() -> Unit)? = null): CallUI =
-        create(users, options).apply { connect() }
+    fun call(users: List<User>, options: (CreationOptions.() -> Unit)? = null): CallUI = create(users, options).apply { connect() }
 
     /**
      * Join an url
@@ -288,22 +270,13 @@ class PhoneBoxUI(
 
     override fun create(url: String) = CallUI(phoneBox.create(url))
 
-    override fun create(users: List<User>, conf: (CreationOptions.() -> Unit)?) =
-        CallUI(phoneBox.create(users, conf))
-
+    override fun create(users: List<User>, conf: (CreationOptions.() -> Unit)?) = CallUI(phoneBox.create(users, conf))
 
     /**
      * Show the call ui
      * @param call The call object that should be shown.
      */
-    fun show(call: CallUI) {
-        CollaborationUI.phoneBox.enableAudioRouting(logger = logger)
-        bindCollaborationService(
-            call,
-            usersDescription,
-            callActivityClazz,
-        )
-    }
+    fun show(call: CallUI) = bindCollaborationService(call, usersDescription, callActivityClazz)
 
     private fun bindCollaborationService(
         call: CallUI,
@@ -408,7 +381,7 @@ class ChatBoxUI(
     private val chatActivityClazz: Class<*>,
     private val chatCustomNotificationActivity: Class<*>? = null
 //    private val logger: PriorityLogger? = null
-    ) : ChatBox by chatBox {
+) : ChatBox by chatBox {
 
     private var mainScope: CoroutineScope? = null
 
