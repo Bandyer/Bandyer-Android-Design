@@ -31,7 +31,6 @@ import kotlinx.coroutines.launch
  * The CollaborationService
  */
 class CollaborationService : BoundService(),
-                             CallUIDelegate,
                              CallStreamDelegate,
                              CallNotificationDelegate,
                              Application.ActivityLifecycleCallbacks,
@@ -41,17 +40,13 @@ class CollaborationService : BoundService(),
         const val CALL_NOTIFICATION_ID = 22
     }
 
+    private var usersDescription: UsersDescription = UsersDescription()
+
     private var callActivityClazz: Class<*>? = null
 
     private var isServiceInForeground: Boolean = false
 
-    private val _call: MutableSharedFlow<CallUI> =
-        MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
-    override val call: SharedFlow<CallUI> get() = _call
-
     var currentCall: CallUI? = null
-
-    override var usersDescription: UsersDescription = UsersDescription()
 
     override val isAppInForeground: Boolean get() = AppLifecycle.isInForeground.value
 
@@ -105,7 +100,6 @@ class CollaborationService : BoundService(),
         this.callActivityClazz = callActivityClazz
         lifecycleScope.launch {
             currentCall = call
-            _call.emit(call)
             call.state.takeWhile { it !is Call.State.Disconnected.Ended }
                 .onCompletion {
                     currentCall = null

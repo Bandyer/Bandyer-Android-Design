@@ -47,8 +47,6 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.SwitchCamera
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleCamera
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleMicrophone
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI.usersDescription
-import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
-import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMessage
@@ -70,7 +68,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
@@ -80,7 +77,6 @@ import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import kotlinx.parcelize.Parcelize
-
 
 /**
  * Collaboration UI

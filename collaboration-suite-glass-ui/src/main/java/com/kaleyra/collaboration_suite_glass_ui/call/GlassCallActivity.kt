@@ -24,7 +24,6 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.ColorRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
