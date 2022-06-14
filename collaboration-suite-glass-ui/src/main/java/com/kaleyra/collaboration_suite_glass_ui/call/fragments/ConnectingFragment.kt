@@ -38,7 +38,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
-internal abstract class ConnectingFragment : BaseFragment<GlassCallActivity>() {
+internal abstract class ConnectingFragment : BaseFragment() {
 
     private var _binding: KaleyraGlassFragmentFullScreenLogoDialogBinding? = null
     override val binding: KaleyraGlassFragmentFullScreenLogoDialogBinding get() = _binding!!
@@ -67,10 +67,11 @@ internal abstract class ConnectingFragment : BaseFragment<GlassCallActivity>() {
                 if (DeviceUtils.isRealWear) setListenersForRealWear(kaleyraBottomNavigation)
             }
 
+        bindUI()
         return binding.root
     }
 
-    override fun onServiceBound() {
+    open fun bindUI() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             viewModel.onHangup()
         }

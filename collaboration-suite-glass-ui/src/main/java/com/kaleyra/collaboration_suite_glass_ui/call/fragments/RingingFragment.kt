@@ -46,8 +46,9 @@ internal class RingingFragment : PreCallFragment() {
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 
-    override fun onServiceBound() {
-        super.onServiceBound()
+    override fun bindUI() {
+        super.bindUI()
+
         repeatOnStarted {
             viewModel.callState
                 .takeWhile { it !is Call.State.Connecting }

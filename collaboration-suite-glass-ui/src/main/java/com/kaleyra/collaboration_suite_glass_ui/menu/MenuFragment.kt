@@ -70,7 +70,7 @@ import kotlinx.coroutines.sync.withLock
 /**
  * KaleyraGlassMenuFragment
  */
-internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
+internal class MenuFragment : BaseFragment(), TiltListener {
 
     private var _binding: KaleyraGlassFragmentMenuBinding? = null
     override val binding: KaleyraGlassFragmentMenuBinding get() = _binding!!
@@ -142,10 +142,11 @@ internal class MenuFragment : BaseFragment<GlassCallActivity>(), TiltListener {
                 }
             }
 
+        bindUI()
         return binding.root
     }
 
-    override fun onServiceBound() {
+    fun bindUI() {
         // Close the menu if the actions change
         viewModel.actions.drop(1).take(1).onEach { onSwipeDown() }.launchIn(lifecycleScope)
 

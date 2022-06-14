@@ -26,16 +26,16 @@ import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
+import com.kaleyra.collaboration_suite.phonebox.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
-import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
-import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
-import com.kaleyra.collaboration_suite_core_ui.model.Permission
+import com.kaleyra.collaboration_suite_core_ui.call.CallController
+import com.kaleyra.collaboration_suite_core_ui.call.CallDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
-import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
+import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
+import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -47,7 +47,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
@@ -59,38 +58,65 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.transform
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.plus
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
 @Suppress("UNCHECKED_CAST")
 internal class CallViewModelFactory(
-    private val callDelegate: CallUIDelegate,
-    private val deviceStatusDelegate: DeviceStatusDelegate,
-    private val callController: CallUIController
+    private val callDelegate: CallDelegate,
+    private val callController: CallController,
+    private val batteryObserver: BatteryObserver,
+    private val wiFiObserver: WiFiObserver
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        CallViewModel(callDelegate, deviceStatusDelegate, callController) as T
+        CallViewModel(callDelegate, callController, batteryObserver, wiFiObserver) as T
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class CallViewModel(
-    callDelegate: CallUIDelegate,
-    deviceStatusDelegate: DeviceStatusDelegate,
-    private val callController: CallUIController
+    callDelegate: CallDelegate,
+    private val callController: CallController,
+    batteryObserver: BatteryObserver,
+    wiFiObserver: WiFiObserver,
 ) : ViewModel() {
 
+    val battery: SharedFlow<BatteryInfo> = batteryObserver.observe()
+
+    val wifi: SharedFlow<WiFiInfo> = wiFiObserver.observe()
+
+    // CallController
+    val volume = callController.volume
+
+    val micPermission = callController.micPermission
+
+    val camPermission = callController.camPermission
+
+    // CallDelegate
     val call: SharedFlow<CallUI> = callDelegate.call
 
-    val hasSwitchCamera: StateFlow<Boolean> = MutableStateFlow(false).apply {
+    val usersDescription: UsersDescription = callDelegate.usersDescription
+
+    val preferredCallType: StateFlow<Call.PreferredType?> = call.map { it.extras.preferredType }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+
+    val actions: StateFlow<Set<CallUI.Action>> = call.flatMapLatest { it.actions }.stateIn(viewModelScope, SharingStarted.Eagerly, setOf())
+
+    val callState: SharedFlow<Call.State> = call.flatMapLatest { it.state }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+
+    val whiteboard: SharedFlow<Whiteboard> = call.mapLatest { it.whiteboard }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+
+    val duration: SharedFlow<Long> = call.flatMapLatest { it.extras.duration }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+
+    val timeToLive: SharedFlow<Long?> = call.flatMapLatest { it.constraints.timeToLive }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+
+    val participants: SharedFlow<CallParticipants> = call.flatMapLatest { it.participants }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+
+    val hasSwitchCamera: StateFlow<Boolean> =
         call
             .flatMapLatest { it.inputs.allowList }
             .map { it.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() }
             .map { c -> c?.lenses?.firstOrNull { it.isRear } != null && c.lenses.firstOrNull { !it.isRear } != null }
-            .onEach { value = it }
-            .launchIn(viewModelScope)
-    }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     val zoom: StateFlow<Input.Video.Camera.Internal.Zoom?> = call
         .flatMapLatest { it.inputs.allowList }
@@ -108,25 +134,86 @@ internal class CallViewModel(
         .flatMapLatest { it.flashLight }
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
-    val preferredCallType get() = call.replayCache.first().extras.preferredType
+    val streams: SharedFlow<List<StreamParticipant>> =
+        MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
+            val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
+            participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
+                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
+                    val newStreams = streams.map {
+                        StreamParticipant(
+                            participant,
+                            itsMe,
+                            it,
+                            usersDescription.name(listOf(participant.userId)),
+                            usersDescription.image(listOf(participant.userId))
+                        )
+                    }
+                    val currentStreams = uiStreams.filter { it.participant == participant }
+                    val addedStreams = newStreams - currentStreams.toSet()
+                    val removedStreams = currentStreams - newStreams.toSet()
+                    uiStreams += addedStreams
+                    uiStreams -= removedStreams.toSet()
 
-    val whiteboard = call.mapLatest { it.whiteboard }
+                    removedStreams.map { it.stream.id }.forEach { _removedStreams.emit(it) }
+                } else {
+                    uiStreams
+                        .filter { it.participant == participant }
+                        .map { it.stream.id }
+                        .forEach { _removedStreams.emit(it) }
+                    uiStreams.removeAll { it.participant == participant }
+                }
+                emit(uiStreams.toList())
+            }.launchIn(viewModelScope)
+        }
 
-    val callState = call.flatMapLatest { it.state }
+    private val myStreams: Flow<List<Stream>> = participants.map { it.me }.flatMapLatest { it.streams }
 
-    val participants = call.flatMapLatest { it.participants }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+    private val otherStreams: Flow<List<Stream>> =
+        streams.transform { value -> emit(value.filter { !it.itsMe }.map { it.stream }) }
 
-    val battery: SharedFlow<BatteryInfo> = deviceStatusDelegate.battery
+    private val myLiveStreams: StateFlow<List<Stream>> =
+        MutableStateFlow<List<Stream>>(listOf()).apply {
+            val liveStreams = ConcurrentLinkedQueue<Stream>()
+            val jobs = mutableListOf<Job>()
+            myStreams.onEach { streams ->
+                jobs.forEach {
+                    it.cancel()
+                    it.join()
+                }
+                jobs.clear()
+                liveStreams.clear()
+                streams.forEach { stream ->
+                    jobs += stream.state.onEach {
+                        if (it is Stream.State.Live) liveStreams.add(stream)
+                        else liveStreams.remove(stream)
 
-    val wifi: SharedFlow<WiFiInfo> = deviceStatusDelegate.wifi
+                        emit(liveStreams.toList())
+                    }.launchIn(viewModelScope)
+                }
+            }.launchIn(viewModelScope)
+        }
 
-    val usersDescription: UsersDescription = callDelegate.callUsersDescription
+    private val cameraStream: Flow<Stream?> = myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it is Input.Video.Camera } != null } }
 
-    val volume: Volume get() = callController.onGetVolume()
+    private val audioStream: Flow<Stream?> = myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }
 
-    val callDuration = call.flatMapLatest { it.extras.duration }
+    val cameraEnabled: StateFlow<Boolean> =
+            cameraStream
+                .filter { it != null }
+                .flatMapLatest { it!!.video }
+                .filter { it != null }
+                .flatMapLatest { it!!.enabled }
+                .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    val callTimeToLive = call.flatMapLatest { it.constraints.timeToLive }
+    val micEnabled: StateFlow<Boolean> =
+            audioStream
+                .filter { it != null }
+                .flatMapLatest { it!!.audio }
+                .filter { it != null }
+                .flatMapLatest { it!!.enabled }
+                .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
+    val amIAlone: SharedFlow<Boolean> = combine(otherStreams, myLiveStreams, camPermission) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
@@ -166,122 +253,6 @@ internal class CallViewModel(
     private val _removedStreams: MutableSharedFlow<String> =
         MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
     val removedStreams: SharedFlow<String> = _removedStreams.asSharedFlow()
-
-    val streams: SharedFlow<List<StreamParticipant>> =
-        MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
-            val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
-            participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
-                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
-                    val newStreams = streams.map {
-                        StreamParticipant(
-                            participant,
-                            itsMe,
-                            it,
-                            usersDescription.name(listOf(participant.userId)),
-                            usersDescription.image(listOf(participant.userId))
-                        )
-                    }
-                    val currentStreams = uiStreams.filter { it.participant == participant }
-                    val addedStreams = newStreams - currentStreams.toSet()
-                    val removedStreams = currentStreams - newStreams.toSet()
-                    uiStreams += addedStreams
-                    uiStreams -= removedStreams.toSet()
-
-                    removedStreams.map { it.stream.id }.forEach { _removedStreams.emit(it) }
-                } else {
-                    uiStreams
-                        .filter { it.participant == participant }
-                        .map { it.stream.id }
-                        .forEach { _removedStreams.emit(it) }
-                    uiStreams.removeAll { it.participant == participant }
-                }
-                emit(uiStreams.toList())
-            }.launchIn(viewModelScope)
-        }
-
-    private val myStreams: Flow<List<Stream>> =
-        participants.map { it.me }.flatMapLatest { it.streams }
-
-    private val otherStreams: Flow<List<Stream>> =
-        streams.transform { value -> emit(value.filter { !it.itsMe }.map { it.stream }) }
-
-    private val cameraStream: Flow<Stream?> =
-        myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it is Input.Video.Camera } != null } }
-
-    private val audioStream: Flow<Stream?> =
-        myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }
-
-    private val myLiveStreams: StateFlow<List<Stream>> =
-        MutableStateFlow<List<Stream>>(listOf()).apply {
-            val liveStreams = ConcurrentLinkedQueue<Stream>()
-            val jobs = mutableListOf<Job>()
-            myStreams.onEach { streams ->
-                jobs.forEach {
-                    it.cancel()
-                    it.join()
-                }
-                jobs.clear()
-                liveStreams.clear()
-                streams.forEach { stream ->
-                    jobs += stream.state.onEach {
-                        if (it is Stream.State.Live) liveStreams.add(stream)
-                        else liveStreams.remove(stream)
-
-                        emit(liveStreams.toList())
-                    }.launchIn(viewModelScope)
-                }
-            }.launchIn(viewModelScope)
-        }
-
-    val cameraEnabled: StateFlow<Boolean> =
-        MutableStateFlow(false).apply {
-            cameraStream
-                .filter { it != null }
-                .flatMapLatest { it!!.video }
-                .filter { it != null }
-                .flatMapLatest { it!!.enabled }
-                .onEach { value = it }
-                .launchIn(viewModelScope)
-        }
-
-    val actions: StateFlow<Set<CallUI.Action>> = call.replayCache.first().actions
-
-    val micEnabled: StateFlow<Boolean> =
-        MutableStateFlow(false).apply {
-            audioStream
-                .filter { it != null }
-                .flatMapLatest { it!!.audio }
-                .filter { it != null }
-                .flatMapLatest { it!!.enabled }
-                .onEach { value = it }
-                .launchIn(viewModelScope)
-        }
-
-    private val _micPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(
-            Permission(
-                isAllowed = call.replayCache.first().inputs.allowList.value.filterIsInstance<Input.Audio>()
-                    .firstOrNull() != null,
-                neverAskAgain = false
-            )
-        )
-    val micPermission: StateFlow<Permission> = _micPermission.asStateFlow()
-
-    private val _camPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(
-            Permission(
-                isAllowed = call.replayCache.first().inputs.allowList.value.filterIsInstance<Input.Video.Camera.Internal>()
-                    .firstOrNull() != null,
-                neverAskAgain = false
-            )
-        )
-    val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
-
-    val amIAlone: Flow<Boolean> = combine(
-        otherStreams,
-        myLiveStreams,
-        camPermission
-    ) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }
 
     val livePointerEvents: SharedFlow<Pair<String, Input.Video.Event.Pointer>> =
         MutableSharedFlow<Pair<String, Input.Video.Event.Pointer>>(
@@ -328,27 +299,19 @@ internal class CallViewModel(
         }
     }
 
-    fun onRequestMicPermission(context: FragmentActivity) {
-        viewModelScope.launch {
-            callController.onRequestMicPermission(context).also { _micPermission.value = it }
-        }
-    }
+    fun onRequestMicPermission(context: FragmentActivity) = callController.onRequestMicPermission(context)
 
-    fun onRequestCameraPermission(context: FragmentActivity) {
-        viewModelScope.launch {
-            callController.onRequestCameraPermission(context).also { _camPermission.value = it }
-        }
-    }
+    fun onRequestCameraPermission(context: FragmentActivity) = callController.onRequestCameraPermission(context)
+
+    fun onAnswer() = callController.onAnswer()
+
+    fun onHangup() = callController.onHangup()
 
     fun onEnableCamera(enable: Boolean) = callController.onEnableCamera(enable)
 
     fun onEnableMic(enable: Boolean) = callController.onEnableMic(enable)
 
     fun onSwitchCamera() = callController.onSwitchCamera()
-
-    fun onAnswer() = callController.onAnswer()
-
-    fun onHangup() = callController.onHangup()
 
     fun onSetVolume(value: Int) = callController.onSetVolume(value)
 

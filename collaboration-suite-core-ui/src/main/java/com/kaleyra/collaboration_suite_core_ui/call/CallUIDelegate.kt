@@ -32,5 +32,10 @@ interface CallUIDelegate {
     /**
      * Users description
      */
-    val callUsersDescription: UsersDescription
+    val usersDescription: UsersDescription
 }
+
+class CallDelegate(
+    override val call: SharedFlow<CallUI>,
+    override val usersDescription: UsersDescription
+) : CallUIDelegate

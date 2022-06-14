@@ -19,6 +19,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.kaleyra.collaboration_suite_glass_ui">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <application>
         <activity
             android:name=".call.GlassCallActivity"

@@ -55,7 +55,7 @@ import kotlinx.coroutines.launch
 /**
  * ChatFragment
  */
-internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
+internal class ChatFragment : BaseFragment(), TiltListener {
 
     private var _binding: KaleyraGlassFragmentChatBinding? = null
     override val binding: KaleyraGlassFragmentChatBinding get() = _binding!!
@@ -144,10 +144,11 @@ internal class ChatFragment : BaseFragment<GlassChatActivity>(), TiltListener {
             }
         }
 
+        bindUI()
         return binding.root
     }
 
-    override fun onServiceBound() {
+    fun bindUI() {
         var noMessages = true
         repeatOnStarted {
             viewModel.chat.onEach { chat ->

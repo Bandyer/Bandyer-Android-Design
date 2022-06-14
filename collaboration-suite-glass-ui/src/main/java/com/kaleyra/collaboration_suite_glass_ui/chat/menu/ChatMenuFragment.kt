@@ -45,7 +45,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 /**
  * ChatMenuFragment
  */
-internal class ChatMenuFragment : BaseFragment<GlassChatActivity>(), TiltListener {
+internal class ChatMenuFragment : BaseFragment(), TiltListener {
 
     private var _binding: KaleyraGlassFragmentChatMenuBinding? = null
     override val binding: KaleyraGlassFragmentChatMenuBinding get() = _binding!!
@@ -122,8 +122,6 @@ internal class ChatMenuFragment : BaseFragment<GlassChatActivity>(), TiltListene
 
         return binding.root
     }
-
-    override fun onServiceBound() = Unit
 
     /**
      * @suppress

@@ -6,11 +6,10 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import com.kaleyra.collaboration_suite_core_ui.CollaborationService
-import com.kaleyra.collaboration_suite_core_ui.chat.ChatActivity
-import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
+import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
@@ -22,22 +21,14 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensi
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
-internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener, GlassTouchEventManager.Listener {
+internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedListener, GlassTouchEventManager.Listener {
 
     private lateinit var binding: KaleyraChatActivityGlassBinding
 
-    private var service: CollaborationService? = null
-
-    private val viewModel: ChatViewModel by viewModels {
-        ChatViewModelFactory(
-            service as DeviceStatusDelegate
-        )
-    }
+    private val viewModel: ChatViewModel by viewModels()
 
     private var glassTouchEventManager: GlassTouchEventManager? = null
 
@@ -46,25 +37,8 @@ internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener,
         binding = KaleyraChatActivityGlassBinding.inflate(layoutInflater)
         setContentView(binding.root)
         glassTouchEventManager = GlassTouchEventManager(this, this)
-        turnScreenOn()
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
-    }
-
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        onNewChatIntent(intent)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        turnScreenOff()
-        service = null
-        glassTouchEventManager = null
-    }
-
-    override fun onServiceBound(service: CollaborationService) {
-        this.service = service
-
+        turnScreenOn()
         onNewChatIntent(intent)
 
         repeatOnStarted {
@@ -92,6 +66,17 @@ internal class GlassChatActivity : ChatActivity(), OnDestinationChangedListener,
                 }
                 .launchIn(this)
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        onNewChatIntent(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        turnScreenOff()
+        glassTouchEventManager = null
     }
 
     override fun onDestinationChanged(destinationId: Int) = Unit

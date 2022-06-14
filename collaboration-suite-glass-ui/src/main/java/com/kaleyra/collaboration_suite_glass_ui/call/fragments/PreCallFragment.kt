@@ -17,7 +17,10 @@
 package com.kaleyra.collaboration_suite_glass_ui.call.fragments
 
 import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
@@ -29,8 +32,8 @@ internal abstract class PreCallFragment : ConnectingFragment(),
     HorizontalAutoScrollView.OnScrollListener {
 
     @SuppressLint("ClickableViewAccessibility")
-    override fun onServiceBound() {
-        super.onServiceBound()
+    override fun bindUI() {
+        super.bindUI()
 
         with(binding) {
             kaleyraParticipantsScrollView.onScrollListener = this@PreCallFragment

@@ -35,7 +35,7 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensio
 /**
  * EndCallFragment
  */
-internal class EndCallFragment : BaseFragment<GlassCallActivity>() {
+internal class EndCallFragment : BaseFragment() {
 
     private var _binding: KaleyraGlassFragmentFullScreenDialogBinding? = null
     override val binding: KaleyraGlassFragmentFullScreenDialogBinding get() = _binding!!
@@ -68,8 +68,6 @@ internal class EndCallFragment : BaseFragment<GlassCallActivity>() {
 
         return binding.root
     }
-
-    override fun onServiceBound() = Unit
 
     /**
      * @suppress

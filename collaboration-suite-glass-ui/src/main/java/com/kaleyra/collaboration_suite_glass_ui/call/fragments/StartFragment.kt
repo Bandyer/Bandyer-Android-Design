@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.takeWhile
 /**
  * StartFragment, used as start destination in the nav graph
  */
-internal class StartFragment : BaseFragment<GlassCallActivity>() {
+internal class StartFragment : BaseFragment() {
 
     private var _binding: KaleyraGlassFragmentStartBinding? = null
     override val binding: KaleyraGlassFragmentStartBinding get() = _binding!!
@@ -58,10 +58,11 @@ internal class StartFragment : BaseFragment<GlassCallActivity>() {
         }
 
         _binding = KaleyraGlassFragmentStartBinding.inflate(inflater, container, false)
+        bindUI()
         return binding.root
     }
 
-    override fun onServiceBound() {
+    fun bindUI() {
         repeatOnStarted {
             viewModel.callState
                 .combine(viewModel.participants) { state, participants ->

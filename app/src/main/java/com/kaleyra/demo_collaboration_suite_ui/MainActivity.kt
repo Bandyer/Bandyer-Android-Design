@@ -21,6 +21,8 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -28,9 +30,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMessage
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.feedback.FeedbackDialog
@@ -47,7 +52,7 @@ import com.kaleyra.demo_collaboration_suite_ui.databinding.ActivityMainBinding
 import java.util.concurrent.ConcurrentHashMap
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ChatNotificationManager {
 
     var mText: String? = null
 
@@ -66,18 +71,74 @@ class MainActivity : AppCompatActivity() {
 
     private fun initializeListeners() = with(binding) {
         btnKaleyraSnackbar.setOnClickListener {
-            KaleyraRecordingSnackbar.make(binding.root, KaleyraRecordingSnackbar.Type.TYPE_ENDED, LENGTH_LONG).show()
+            KaleyraRecordingSnackbar.make(
+                binding.root,
+                KaleyraRecordingSnackbar.Type.TYPE_ENDED,
+                LENGTH_LONG
+            ).show()
         }
 
-        btnChat.setOnClickListener { startActivity(Intent(this@MainActivity, ChatActivity::class.java)) }
+        btnChat.setOnClickListener {
+            Handler(Looper.getMainLooper()).postDelayed({
+                val notification = buildChatNotification(
+                    "Stefano",
+                    "Stefano",
+                    Uri.EMPTY,
+                    "chatId",
+                    listOf(
+                        ChatNotificationMessage(
+                            "Mario",
+                            "Mario",
+                            Uri.EMPTY,
+                            "Ciao belli",
+                            1
+                        ),
+                        ChatNotificationMessage (
+                            "Gioele",
+                            "Gioele",
+                            Uri.EMPTY,
+                            "Andiamo in montagna",
+                            2
+                        ),
+                        ChatNotificationMessage(
+                            "Omar",
+                            "Omar",
+                            Uri.EMPTY,
+                            "La pizza è buona?",
+                            3
+                        )
+                    ),
+                    ChatActivity::class.java,
+                    false
+                )
 
-        btnCall.setOnClickListener { startActivity(Intent(this@MainActivity, CallActivity::class.java)) }
+                NotificationManagerCompat.from(this@MainActivity).notify(67, notification)
+            }, 3000)
+
+//            startActivity(Intent(this@MainActivity, ChatActivity::class.java))
+        }
+
+        btnCall.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    CallActivity::class.java
+                )
+            )
+        }
 
         btnSmartglassesMenu.setOnClickListener { showSmartGlassAction() }
 
         btnWhiteboard.setOnClickListener { WhiteBoardDialog().show(this@MainActivity) }
 
-        btnRinging.setOnClickListener { startActivity(Intent(this@MainActivity, RingingActivity::class.java)) }
+        btnRinging.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    RingingActivity::class.java
+                )
+            )
+        }
 
         btnSwitchNightMode.setOnClickListener {
             val isNightTheme = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -86,7 +147,7 @@ class MainActivity : AppCompatActivity() {
                     window.setWindowAnimations(R.style.Kaleyra_ThemeTransitionAnimation)
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
                 }
-                Configuration.UI_MODE_NIGHT_NO  -> {
+                Configuration.UI_MODE_NIGHT_NO -> {
                     window.setWindowAnimations(R.style.Kaleyra_ThemeTransitionAnimation)
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                 }
@@ -102,25 +163,97 @@ class MainActivity : AppCompatActivity() {
             })
         }
 
-        btnLivePointer.setOnClickListener { startActivity(Intent(this@MainActivity, PointerActivity::class.java)) }
+        btnLivePointer.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    PointerActivity::class.java
+                )
+            )
+        }
 
-        btnBluetoothAudioroute.setOnClickListener { startActivity(Intent(this@MainActivity, BluetoothAudioRouteActivity::class.java)) }
+        btnBluetoothAudioroute.setOnClickListener {
+            startActivity(
+                Intent(
+                    this@MainActivity,
+                    BluetoothAudioRouteActivity::class.java
+                )
+            )
+        }
 
         btnFileShare.setOnClickListener {
             val fileShareDialog = KaleyraFileShareDialog()
             fileShareDialog.show(this@MainActivity, viewModel) {}
-            fileShareDialog.dialog?.view?.findViewById<View>(R.id.kaleyra_upload_file_fab)?.setOnClickListener {
-                viewModel.itemsData["id_1"] = TransferData(this@MainActivity,"1", "".toUri(), "razer.jpg", "image/jpeg","Gianluigi", size = 100L, state = TransferData.State.Available, type = TransferData.Type.Download)
-                viewModel.itemsData["id_2"] = TransferData(this@MainActivity,"2", "".toUri(), "identity_card.pdf", "","Mario", bytesTransferred = 100L, size = 100L, state = TransferData.State.Success, type = TransferData.Type.Download)
-                viewModel.itemsData["id_3"] = TransferData(this@MainActivity,"3", "".toUri(), "car.zip", "application/zip","Luigi", bytesTransferred = 600L, size = 1000L, state = TransferData.State.OnProgress, type = TransferData.Type.Download)
-                viewModel.itemsData["id_4"] = TransferData(this@MainActivity,"4", "".toUri(), "phone.doc", "","Gianni", size = 23000000L, state = TransferData.State.Error, type = TransferData.Type.Upload)
-                viewModel.itemsData["id_5"] = TransferData(this@MainActivity,"5", "".toUri(), "address.jpg", "image/jpeg","Marco", size = 1000L, state = TransferData.State.Pending, type = TransferData.Type.Upload)
-                fileShareDialog.notifyDataSetChanged()
-            }
+            fileShareDialog.dialog?.view?.findViewById<View>(R.id.kaleyra_upload_file_fab)
+                ?.setOnClickListener {
+                    viewModel.itemsData["id_1"] = TransferData(
+                        this@MainActivity,
+                        "1",
+                        "".toUri(),
+                        "razer.jpg",
+                        "image/jpeg",
+                        "Gianluigi",
+                        size = 100L,
+                        state = TransferData.State.Available,
+                        type = TransferData.Type.Download
+                    )
+                    viewModel.itemsData["id_2"] = TransferData(
+                        this@MainActivity,
+                        "2",
+                        "".toUri(),
+                        "identity_card.pdf",
+                        "",
+                        "Mario",
+                        bytesTransferred = 100L,
+                        size = 100L,
+                        state = TransferData.State.Success,
+                        type = TransferData.Type.Download
+                    )
+                    viewModel.itemsData["id_3"] = TransferData(
+                        this@MainActivity,
+                        "3",
+                        "".toUri(),
+                        "car.zip",
+                        "application/zip",
+                        "Luigi",
+                        bytesTransferred = 600L,
+                        size = 1000L,
+                        state = TransferData.State.OnProgress,
+                        type = TransferData.Type.Download
+                    )
+                    viewModel.itemsData["id_4"] = TransferData(
+                        this@MainActivity,
+                        "4",
+                        "".toUri(),
+                        "phone.doc",
+                        "",
+                        "Gianni",
+                        size = 23000000L,
+                        state = TransferData.State.Error,
+                        type = TransferData.Type.Upload
+                    )
+                    viewModel.itemsData["id_5"] = TransferData(
+                        this@MainActivity,
+                        "5",
+                        "".toUri(),
+                        "address.jpg",
+                        "image/jpeg",
+                        "Marco",
+                        size = 1000L,
+                        state = TransferData.State.Pending,
+                        type = TransferData.Type.Upload
+                    )
+                    fileShareDialog.notifyDataSetChanged()
+                }
             fileShareDialog.setOnDismissListener { viewModel.itemsData.clear() }
         }
 
-        btnFeedback.setOnClickListener { FeedbackDialog().show(supportFragmentManager, FeedbackDialog.TAG) }
+        btnFeedback.setOnClickListener {
+            FeedbackDialog().show(
+                supportFragmentManager,
+                FeedbackDialog.TAG
+            )
+        }
 
     }
 
@@ -135,7 +268,11 @@ class MainActivity : AppCompatActivity() {
         .apply {
             selectionListener = object : SmartGlassMenuLayout.OnSmartglassMenuSelectionListener {
                 override fun onSelected(item: ActionItem) {
-                    Toast.makeText(applicationContext, item::class.java.simpleName, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        applicationContext,
+                        item::class.java.simpleName,
+                        Toast.LENGTH_SHORT
+                    ).show()
                     dismiss()
                     selectionListener = null
                 }

@@ -19,6 +19,7 @@ package com.kaleyra.collaboration_suite_core_ui.call
 import androidx.fragment.app.FragmentActivity
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
+import kotlinx.coroutines.flow.StateFlow
 
 /**
  * Call UI controller. It contains methods called when the user interacts with the ui.
@@ -26,12 +27,27 @@ import com.kaleyra.collaboration_suite_core_ui.model.Volume
 interface CallUIController {
 
     /**
+     * The mic permission flow
+     */
+    val micPermission: StateFlow<Permission>
+
+    /**
+     * The cam permission flow
+     */
+    val camPermission: StateFlow<Permission>
+
+    /**
+     * The volume
+     */
+    val volume: Volume
+
+    /**
      * On request mic permission
      *
      * @param context activity
      * @return [Permission]
      */
-    suspend fun onRequestMicPermission(context: FragmentActivity): Permission
+    fun onRequestMicPermission(context: FragmentActivity)
 
     /**
      * On request camera permission
@@ -39,7 +55,7 @@ interface CallUIController {
      * @param context activity
      * @return [Permission]
      */
-    suspend fun onRequestCameraPermission(context: FragmentActivity): Permission
+    fun onRequestCameraPermission(context: FragmentActivity)
 
 
     /**
@@ -73,13 +89,6 @@ interface CallUIController {
      *
      */
     fun onSwitchCamera()
-
-    /**
-     * On get volume
-     *
-     * @return [Volume] volume
-     */
-    fun onGetVolume(): Volume
 
     /**
      * On set volume

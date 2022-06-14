@@ -35,7 +35,7 @@ import kotlin.math.roundToInt
 /**
  * ZoomFragment
  */
-internal class ZoomFragment : BaseFragment<GlassCallActivity>() {
+internal class ZoomFragment : BaseFragment() {
 
     private var _binding: KaleyraGlassFragmentZoomBinding? = null
     override val binding: KaleyraGlassFragmentZoomBinding get() = _binding!!
@@ -65,10 +65,11 @@ internal class ZoomFragment : BaseFragment<GlassCallActivity>() {
                 root.setOnTouchListener { _, _ -> true }
             }
 
+        bindUI()
         return binding.root
     }
 
-    override fun onServiceBound() {
+    fun bindUI() {
         with(binding.kaleyraSlider) {
             val zoom = viewModel.zoom.value ?: return@with
             val currentValue = zoom.value.value

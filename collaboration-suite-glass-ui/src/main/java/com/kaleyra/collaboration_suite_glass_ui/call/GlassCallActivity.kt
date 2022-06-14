@@ -24,6 +24,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.annotation.ColorRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.lifecycleScope
@@ -38,16 +39,15 @@ import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard.LoadOptions
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.CollaborationService
-import com.kaleyra.collaboration_suite_core_ui.call.CallActivity
-import com.kaleyra.collaboration_suite_core_ui.call.CallUIController
-import com.kaleyra.collaboration_suite_core_ui.call.CallUIDelegate
+import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.call.CallController
+import com.kaleyra.collaboration_suite_core_ui.call.CallDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
-import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
+import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
@@ -68,7 +68,9 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerE
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
+import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
+import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
@@ -92,23 +94,26 @@ import java.util.concurrent.ConcurrentMap
  * GlassCallActivity
  */
 internal class GlassCallActivity :
-    CallActivity(),
+    GlassBaseActivity(),
     OnDestinationChangedListener,
     TouchEventListener,
     GlassTouchEventManager.Listener {
 
     private lateinit var binding: KaleyraCallActivityGlassBinding
 
+    private val batteryObserver = BatteryObserver()
+
+    private val wiFiObserver = WiFiObserver()
+
     private val viewModel: CallViewModel by viewModels {
         CallViewModelFactory(
-            service as CallUIDelegate,
-            service as DeviceStatusDelegate,
-            service as CallUIController
-        )
+            CallDelegate(CollaborationUI.phoneBox.call, CollaborationUI.usersDescription),
+            CallController(CollaborationUI.phoneBox.call),
+            batteryObserver,
+            wiFiObserver)
     }
 
     private var isActivityInForeground = false
-    private var service: CollaborationService? = null
     private var fastAdapter: FastAdapter<AbstractItem<*>>? = null
     private var streamsItemAdapter: ItemAdapter<StreamItem<*>>? = null
     private var whiteboardItemAdapter: ItemAdapter<WhiteboardItem>? = null
@@ -152,7 +157,10 @@ internal class GlassCallActivity :
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
         turnScreenOn()
 
+        batteryObserver.start()
+        wiFiObserver.start()
         handleIntentAction(intent)
+        bindUI()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -160,13 +168,12 @@ internal class GlassCallActivity :
         handleIntentAction(intent)
     }
 
-    override fun onServiceBound(service: CollaborationService) {
-        this.service = service
-
-        if (!viewModel.micPermission.value.isAllowed && viewModel.preferredCallType.hasAudio() && viewModel.preferredCallType.isAudioEnabled())
+    private fun bindUI() {
+        val preferredCallType = viewModel.preferredCallType.value
+        if (!viewModel.micPermission.value.isAllowed && preferredCallType?.hasAudio() == true && preferredCallType.isAudioEnabled())
             viewModel.onRequestMicPermission(this)
 
-        if (!viewModel.camPermission.value.isAllowed && viewModel.preferredCallType.hasVideo() && viewModel.preferredCallType.isVideoEnabled())
+        if (!viewModel.camPermission.value.isAllowed && preferredCallType?.hasVideo() == true && preferredCallType.isVideoEnabled())
             viewModel.onRequestCameraPermission(this)
 
         // Add a scroll listener to the recycler view to show mic/cam blocked/disabled toasts
@@ -361,11 +368,11 @@ internal class GlassCallActivity :
                 binding.kaleyraStatusBar.showCamMutedIcon(true)
             }.launchIn(this)
 
-            combine(viewModel.callTimeToLive, viewModel.callDuration) { ttl, duration ->
+            combine(viewModel.timeToLive, viewModel.duration) { ttl, duration ->
                 binding.kaleyraStatusBar.setTimer(ttl ?: duration)
             }.launchIn(this)
 
-            viewModel.callTimeToLive
+            viewModel.timeToLive
                 .filter { it != null }
                 .onEach {
                     val minutes = (it!! / 60).toInt()
@@ -619,7 +626,6 @@ internal class GlassCallActivity :
 
     override fun onTopResumedActivityChanged(isTopResumedActivity: Boolean) {
         super.onTopResumedActivityChanged(isTopResumedActivity)
-        if (!isServiceBound) return
 
         if (!isTopResumedActivity) wasPausedForBackground = viewModel.cameraEnabled.value
         else if (wasPausedForBackground) {
@@ -631,9 +637,10 @@ internal class GlassCallActivity :
     override fun onDestroy() {
         super.onDestroy()
         turnScreenOff()
+        batteryObserver.stop()
+        wiFiObserver.stop()
         streamsItemAdapter!!.clear()
         whiteboardItemAdapter!!.clear()
-        service = null
         streamsItemAdapter = null
         whiteboardItemAdapter = null
         navController = null

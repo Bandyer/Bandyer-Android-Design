@@ -41,7 +41,7 @@ import kotlinx.coroutines.flow.onEach
 /**
  * EmptyFragment
  */
-internal class EmptyFragment : BaseFragment<GlassCallActivity>() {
+internal class EmptyFragment : BaseFragment() {
 
     private var _binding: KaleyraGlassFragmentEmptyBinding? = null
     override val binding: KaleyraGlassFragmentEmptyBinding get() = _binding!!
@@ -75,8 +75,6 @@ internal class EmptyFragment : BaseFragment<GlassCallActivity>() {
 
         return binding.root
     }
-
-    override fun onServiceBound() = Unit
 
     /**
      * @suppress

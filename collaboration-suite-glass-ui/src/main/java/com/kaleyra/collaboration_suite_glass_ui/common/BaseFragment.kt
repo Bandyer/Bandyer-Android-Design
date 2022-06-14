@@ -17,12 +17,10 @@
 package com.kaleyra.collaboration_suite_glass_ui.common
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
-import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceActivity
+import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
@@ -31,15 +29,14 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.TiltFragment
 /**
  * BaseFragment. A base class for all the smart glass fragments
  */
-internal abstract class BaseFragment<T> : TiltFragment(), TouchEventListener,
-    BoundServiceActivity.Observer where T : BoundServiceActivity<*>, T : OnDestinationChangedListener {
+internal abstract class BaseFragment : TiltFragment(), TouchEventListener {
 
     /**
      * The activity
      */
     @Suppress("UNCHECKED_CAST")
     private val activity
-        get() = requireActivity() as T
+        get() = requireActivity() as GlassBaseActivity
 
     /**
      * The fragment's view binding
@@ -79,34 +76,11 @@ internal abstract class BaseFragment<T> : TiltFragment(), TouchEventListener,
     /**
      * @suppress
      */
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        activity.addServiceBoundObserver(this)
-
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    /**
-     * @suppress
-     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         NavHostFragment.findNavController(this).currentDestination?.id?.also {
             activity.onDestinationChanged(it)
         }
-        if (!activity.isServiceBound) return
-        onServiceBound()
-    }
-
-    /**
-     * @suppress
-     */
-    override fun onDestroyView() {
-        super.onDestroyView()
-        activity.removeServiceBoundObserver(this)
     }
 
     /**

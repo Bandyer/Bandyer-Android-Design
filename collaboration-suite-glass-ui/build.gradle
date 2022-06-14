@@ -55,5 +55,5 @@ dependencies {
 //    compileOnly kaleyra.collaboration
     api project(":collaboration-suite")
     api project(':collaboration-suite-extension-audio')
-    compileOnly kaleyra.utils
+//    compileOnly kaleyra.utils
 }

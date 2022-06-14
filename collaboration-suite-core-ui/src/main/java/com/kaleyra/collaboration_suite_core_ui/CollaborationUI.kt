@@ -152,11 +152,11 @@ object CollaborationUI {
      * @param callActivityClazz class of the activity
      * @return
      */
-    fun <T : CallActivity, S : ChatActivity> setUp(
+    fun setUp(
         credentials: Credentials,
         configuration: Configuration,
-        callActivityClazz: Class<T>,
-        chatActivityClazz: Class<S>,
+        callActivityClazz: Class<*>,
+        chatActivityClazz: Class<*>,
         chatNotificationActivityClazz: Class<*>? = null
     ): Boolean {
         if (collaboration != null) return false

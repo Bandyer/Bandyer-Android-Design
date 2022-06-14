@@ -34,7 +34,7 @@ import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragment
 /**
  * VolumeFragment
  */
-internal class VolumeFragment : BaseFragment<GlassCallActivity>() {
+internal class VolumeFragment : BaseFragment() {
 
     private var _binding: KaleyraGlassFragmentVolumeBinding? = null
     override val binding: KaleyraGlassFragmentVolumeBinding get() = _binding!!
@@ -63,10 +63,11 @@ internal class VolumeFragment : BaseFragment<GlassCallActivity>() {
                 root.setOnTouchListener { _, _ -> true }
             }
 
+        bindUI()
         return binding.root
     }
 
-    override fun onServiceBound() {
+    fun bindUI() {
         binding.kaleyraSlider.apply {
             val volume = viewModel.volume
             maxProgress = volume.max

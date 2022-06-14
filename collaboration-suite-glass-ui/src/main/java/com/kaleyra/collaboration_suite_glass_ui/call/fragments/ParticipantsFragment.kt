@@ -54,7 +54,7 @@ import kotlinx.coroutines.launch
 /**
  * ParticipantsFragment
  */
-internal class ParticipantsFragment : BaseFragment<GlassCallActivity>(), TiltListener {
+internal class ParticipantsFragment : BaseFragment(), TiltListener {
 
     private var _binding: KaleyraGlassFragmentParticipantsBinding? = null
     override val binding: KaleyraGlassFragmentParticipantsBinding get() = _binding!!
@@ -114,11 +114,12 @@ internal class ParticipantsFragment : BaseFragment<GlassCallActivity>(), TiltLis
                     root.setOnTouchListener { _, event -> onTouchEvent(event) }
                 }
             }
+        bindUI()
 
         return binding.root
     }
 
-    override fun onServiceBound() {
+    fun bindUI() {
         with(binding.kaleyraParticipants) {
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
