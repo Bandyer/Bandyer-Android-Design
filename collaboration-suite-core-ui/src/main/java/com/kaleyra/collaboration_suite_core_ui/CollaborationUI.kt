@@ -229,8 +229,9 @@ class PhoneBoxUI(
     private val phoneBox: PhoneBox,
     private val callActivityClazz: Class<*>,
     private val logger: PriorityLogger? = null,
-    private val scope: CoroutineScope = MainScope()
 ) : PhoneBox by phoneBox {
+
+    private var mainScope: CoroutineScope? = null
 
     var withUI = true
 
@@ -241,13 +242,15 @@ class PhoneBoxUI(
     override fun connect() {
         if (phoneBox.state.value is PhoneBox.State.Connected) return
         phoneBox.connect()
-        call.filter { withUI }.onEach {
-            CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = withUI, logger = logger, coroutineScope = scope)
+        mainScope = MainScope()
+        call.onEach {
+            if (it.state is Call.State.Disconnected.Ended || !withUI) return@onEach
+            CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = mainScope!!)
             show(it)
-        }.launchIn(scope)
+        }.launchIn(mainScope!!)
         phoneBox.state
             .takeWhile { it !is PhoneBox.State.Disconnecting }
-            .onCompletion { scope.cancel() }
+            .onCompletion { mainScope!!.cancel() }
             .launchIn(MainScope())
     }
 
