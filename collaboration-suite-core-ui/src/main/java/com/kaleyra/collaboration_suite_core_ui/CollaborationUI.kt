@@ -55,6 +55,7 @@ import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMess
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.cached
@@ -70,7 +71,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
@@ -243,6 +243,7 @@ class PhoneBoxUI(
         if (phoneBox.state.value is PhoneBox.State.Connected || phoneBox.state.value is PhoneBox.State.Connecting) return
         phoneBox.connect()
         mainScope = MainScope()
+        disableAudioRouting(logger)
         call.onEach {
             if (it.state is Call.State.Disconnected.Ended || !withUI) return@onEach
             CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = mainScope!!)
@@ -250,8 +251,10 @@ class PhoneBoxUI(
         }.launchIn(mainScope!!)
         phoneBox.state
             .takeWhile { it !is PhoneBox.State.Disconnecting }
-            .onCompletion { mainScope!!.cancel() }
-            .launchIn(MainScope())
+            .onCompletion {
+                mainScope!!.cancel()
+                disableAudioRouting(logger)
+            }.launchIn(MainScope())
     }
 
     override fun disconnect() = phoneBox.disconnect()
