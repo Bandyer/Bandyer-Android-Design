@@ -24,6 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.activityViewModels
+import com.kaleyra.collaboration_suite.phonebox.Call
 
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
@@ -32,6 +33,7 @@ import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenLogoDialogBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
@@ -76,9 +78,8 @@ internal abstract class ConnectingFragment : BaseFragment<GlassCallActivity>() {
         }
 
         repeatOnStarted {
-            viewModel.amIAlone
-                .dropWhile { !it }
-                .takeWhile { it }
+            combine(viewModel.callState, viewModel.amIAlone.dropWhile {!it }) { state, alone -> Pair(state, alone) }
+                .takeWhile { it.first !is Call.State.Connected && it.second }
                 .onCompletion { onConnected() }
                 .launchIn(this@repeatOnStarted)
 
