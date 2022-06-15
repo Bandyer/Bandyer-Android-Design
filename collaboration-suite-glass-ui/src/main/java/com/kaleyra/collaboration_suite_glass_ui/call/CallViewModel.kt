@@ -279,9 +279,8 @@ internal class CallViewModel(
 
     val amIAlone: Flow<Boolean> = combine(
         otherStreams,
-        myLiveStreams,
-        camPermission
-    ) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }
+        myLiveStreams
+    ) { otherStreams, myLiveStreams -> otherStreams.isEmpty() || myLiveStreams.isEmpty() }
 
     val livePointerEvents: SharedFlow<Pair<String, Input.Video.Event.Pointer>> =
         MutableSharedFlow<Pair<String, Input.Video.Event.Pointer>>(
