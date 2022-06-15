@@ -24,8 +24,6 @@ import android.view.View
 import android.text.format.Formatter
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-
-
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraFileShareItemBinding
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getFileTypeFromMimeType
@@ -53,7 +51,14 @@ class KaleyraFileTransferItem(val data: TransferData) : AbstractItem<KaleyraFile
     /**
      * @suppress
      */
-    override var identifier: Long = data.hashCode().toLong()
+
+    override var identifier: Long = data.id.hashCode().toLong()
+
+    override fun equals(other: Any?): Boolean =
+        if (other !is KaleyraFileTransferItem) false
+        else this.identifier == other.identifier && this.data.state == other.data.state && this.data.bytesTransferred == other.data.bytesTransferred
+
+    override fun hashCode() = data.id.hashCode()
 
     /**
      * @suppress
@@ -96,7 +101,7 @@ class KaleyraFileTransferItem(val data: TransferData) : AbstractItem<KaleyraFile
 
         private fun updateItemByStatus(item: KaleyraFileTransferItem) = with(binding) {
             root.isEnabled = item.data.state is TransferData.State.Success
-            val progress = item.data.size.let { if(it > 0) (item.data.bytesTransferred * 100f / it).roundToInt() else 0 }
+            val progress = item.data.size.let { if (it > 0) (item.data.bytesTransferred * 100f / it).roundToInt() else 0 }
             kaleyraProgressBar.progress = progress
             kaleyraProgressText.text = itemView.context.resources.getString(
                 R.string.kaleyra_fileshare_progress,
