@@ -115,9 +115,6 @@ class CollaborationService : BoundService(),
         }
     }
 
-    fun canShowCallActivity(call: Call): Boolean =
-        isAppInForeground && (!this@CollaborationService.isSilent() || call.participants.value.let { it.me == it.creator() })
-
     ////////////////////////////////////////////
     // Application.ActivityLifecycleCallbacks //
     ////////////////////////////////////////////

@@ -53,6 +53,7 @@ import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMess
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.cached
@@ -286,7 +287,7 @@ class PhoneBoxUI(
             override fun onServiceConnected(name: ComponentName?, binder: IBinder?) {
                 val service = (binder as BoundServiceBinder).getService<CollaborationService>()
                 service.bindCall(call, usersDescription, callActivityClazz)
-                if (!service.canShowCallActivity(call)) return
+                if (!canShowCallActivity(service, call)) return
                 UIProvider.showCall(callActivityClazz)
             }
 
@@ -299,6 +300,8 @@ class PhoneBoxUI(
         }
     }
 
+    private fun canShowCallActivity(context: Context, call: Call): Boolean =
+        AppLifecycle.isInForeground.value && (!context.isSilent() || call.participants.value.let { it.me == it.creator() })
 }
 
 private fun Call.getDefaultActions() = mutableSetOf<Action>().apply {
