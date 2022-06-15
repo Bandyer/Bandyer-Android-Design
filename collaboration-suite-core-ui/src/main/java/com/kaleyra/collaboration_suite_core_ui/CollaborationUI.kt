@@ -240,7 +240,7 @@ class PhoneBoxUI(
     override val callHistory: SharedFlow<List<CallUI>> = phoneBox.callHistory.map { it.map { CallUI(it) } }.shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
 
     override fun connect() {
-        if (phoneBox.state.value is PhoneBox.State.Connected) return
+        if (phoneBox.state.value is PhoneBox.State.Connected || phoneBox.state.value is PhoneBox.State.Connecting) return
         phoneBox.connect()
         mainScope = MainScope()
         call.onEach {
@@ -406,7 +406,7 @@ class ChatBoxUI(
     }
 
     override fun connect() {
-        if (chatBox.state is ChatBox.State.Disconnected) return
+        if (chatBox.state.value is ChatBox.State.Disconnected || chatBox.state.value is ChatBox.State.Disconnecting) return
         chatBox.connect()
         chatBox.fetch(10)
         if (withUI) enableNotifications()
