@@ -451,8 +451,8 @@ class ChatBoxUI(
 
     private fun disableNotifications() = mainScope?.cancel()
 
-    override fun create(users: List<User>) = ChatUI(
-        chatBox.create(users),
+    override fun create(user: User) = ChatUI(
+        chatBox.create(user),
         chatActivityClazz = chatActivityClazz,
         chatNotificationActivityClazz = chatCustomNotificationActivity
     )
@@ -462,8 +462,7 @@ class ChatBoxUI(
      * @param context launching context of the chat ui
      * @param user The user with whom you want to chat.
      */
-    fun chat(context: Context, user: User): ChatUI =
-        create(listOf(user)).apply { show(context, this) }
+    fun chat(context: Context, user: User): ChatUI = create(user).apply { show(context, this) }
 }
 
 class ChatUI(

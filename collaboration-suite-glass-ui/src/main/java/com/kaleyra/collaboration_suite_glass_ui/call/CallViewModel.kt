@@ -222,13 +222,8 @@ internal class CallViewModel(
 
     val amIAlone: SharedFlow<Boolean> = combine(
         otherStreams,
-        myLiveStreams,
-        camPermission
-    ) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }.shareIn(
-        viewModelScope,
-        SharingStarted.Eagerly,
-        1
-    )
+        myLiveStreams
+    ) { otherStreams, myLiveStreams -> otherStreams.isEmpty() || myLiveStreams.isEmpty() }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
