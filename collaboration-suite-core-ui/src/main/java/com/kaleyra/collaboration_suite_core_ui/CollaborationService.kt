@@ -43,7 +43,7 @@ class CollaborationService : BoundService(),
 
     private var isServiceInForeground: Boolean = false
 
-    var currentCall: CallUI? = null
+    private var currentCall: CallUI? = null
 
     override val isAppInForeground: Boolean get() = AppLifecycle.isInForeground.value
 

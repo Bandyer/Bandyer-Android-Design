@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
 import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
@@ -19,25 +20,23 @@ import kotlinx.coroutines.launch
 @Suppress("UNCHECKED_CAST")
 internal class ChatViewModelFactory(
     private val chats: StateFlow<List<Chat>>,
-    private val batteryObserver: BatteryObserver,
-    private val wiFiObserver: WiFiObserver
+    private val deviceStatusObserver: DeviceStatusObserver,
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        ChatViewModel(chats, batteryObserver, wiFiObserver) as T
+        ChatViewModel(chats, deviceStatusObserver) as T
 }
 
 class ChatViewModel(
     private val chats: StateFlow<List<Chat>>,
-    batteryObserver: BatteryObserver,
-    wiFiObserver: WiFiObserver,
+    deviceStatusObserver: DeviceStatusObserver,
 ) : ViewModel() {
 
     private val _chat: MutableSharedFlow<Chat> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
     val chat: SharedFlow<Chat> = _chat.asSharedFlow()
 
-    val battery: SharedFlow<BatteryInfo> = batteryObserver.observe()
+    val battery: SharedFlow<BatteryInfo> = deviceStatusObserver.battery
 
-    val wifi: SharedFlow<WiFiInfo> = wiFiObserver.observe()
+    val wifi: SharedFlow<WiFiInfo> = deviceStatusObserver.wifi
 
     fun setChat(chatId: String) = viewModelScope.launch {
         val chat = chats.value.first { it.id == chatId }

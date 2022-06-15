@@ -39,6 +39,7 @@ import com.kaleyra.collaboration_suite.phonebox.Whiteboard
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard.LoadOptions
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
@@ -67,9 +68,7 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerE
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
-import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
-import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
@@ -100,16 +99,14 @@ internal class GlassCallActivity :
 
     private lateinit var binding: KaleyraCallActivityGlassBinding
 
-    private val batteryObserver = BatteryObserver()
-
-    private val wiFiObserver = WiFiObserver()
+    private val deviceStatusObserver = DeviceStatusObserver()
 
     private val viewModel: CallViewModel by viewModels {
         CallViewModelFactory(
             CallDelegate(CollaborationUI.phoneBox.call, CollaborationUI.usersDescription),
             CallController(CollaborationUI.phoneBox.call),
-            batteryObserver,
-            wiFiObserver)
+            deviceStatusObserver
+        )
     }
 
     private var isActivityInForeground = false
@@ -156,8 +153,7 @@ internal class GlassCallActivity :
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
         turnScreenOn()
 
-        batteryObserver.start()
-        wiFiObserver.start()
+        deviceStatusObserver.start()
         handleIntentAction(intent)
         bindUI()
     }
@@ -636,8 +632,7 @@ internal class GlassCallActivity :
     override fun onDestroy() {
         super.onDestroy()
         turnScreenOff()
-        batteryObserver.stop()
-        wiFiObserver.stop()
+        deviceStatusObserver.stop()
         streamsItemAdapter!!.clear()
         whiteboardItemAdapter!!.clear()
         streamsItemAdapter = null

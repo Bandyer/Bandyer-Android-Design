@@ -28,14 +28,13 @@ import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
-import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
-import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -66,24 +65,22 @@ import java.util.concurrent.ConcurrentLinkedQueue
 internal class CallViewModelFactory(
     private val callDelegate: CallDelegate,
     private val callController: CallController,
-    private val batteryObserver: BatteryObserver,
-    private val wiFiObserver: WiFiObserver
+    private val deviceStatusObserver: DeviceStatusObserver
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        CallViewModel(callDelegate, callController, batteryObserver, wiFiObserver) as T
+        CallViewModel(callDelegate, callController, deviceStatusObserver) as T
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class CallViewModel(
     callDelegate: CallDelegate,
     private val callController: CallController,
-    batteryObserver: BatteryObserver,
-    wiFiObserver: WiFiObserver,
+    deviceStatusObserver: DeviceStatusObserver,
 ) : ViewModel() {
 
-    val battery: SharedFlow<BatteryInfo> = batteryObserver.observe()
+    val battery: SharedFlow<BatteryInfo> = deviceStatusObserver.battery
 
-    val wifi: SharedFlow<WiFiInfo> = wiFiObserver.observe()
+    val wifi: SharedFlow<WiFiInfo> = deviceStatusObserver.wifi
 
     // CallController
     val volume = callController.volume
@@ -97,19 +94,26 @@ internal class CallViewModel(
 
     val usersDescription: UsersDescription = callDelegate.usersDescription
 
-    val preferredCallType: StateFlow<Call.PreferredType?> = call.map { it.extras.preferredType }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
+    val preferredCallType: StateFlow<Call.PreferredType?> =
+        call.map { it.extras.preferredType }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
-    val actions: StateFlow<Set<CallUI.Action>> = call.flatMapLatest { it.actions }.stateIn(viewModelScope, SharingStarted.Eagerly, setOf())
+    val actions: StateFlow<Set<CallUI.Action>> =
+        call.flatMapLatest { it.actions }.stateIn(viewModelScope, SharingStarted.Eagerly, setOf())
 
-    val callState: SharedFlow<Call.State> = call.flatMapLatest { it.state }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+    val callState: SharedFlow<Call.State> =
+        call.flatMapLatest { it.state }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
-    val whiteboard: SharedFlow<Whiteboard> = call.mapLatest { it.whiteboard }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+    val whiteboard: SharedFlow<Whiteboard> =
+        call.mapLatest { it.whiteboard }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
-    val duration: SharedFlow<Long> = call.flatMapLatest { it.extras.duration }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+    val duration: SharedFlow<Long> =
+        call.flatMapLatest { it.extras.duration }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
-    val timeToLive: SharedFlow<Long?> = call.flatMapLatest { it.constraints.timeToLive }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+    val timeToLive: SharedFlow<Long?> = call.flatMapLatest { it.constraints.timeToLive }
+        .shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
-    val participants: SharedFlow<CallParticipants> = call.flatMapLatest { it.participants }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+    val participants: SharedFlow<CallParticipants> =
+        call.flatMapLatest { it.participants }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
 
     val hasSwitchCamera: StateFlow<Boolean> =
         call
@@ -166,7 +170,8 @@ internal class CallViewModel(
             }.launchIn(viewModelScope)
         }
 
-    private val myStreams: Flow<List<Stream>> = participants.map { it.me }.flatMapLatest { it.streams }
+    private val myStreams: Flow<List<Stream>> =
+        participants.map { it.me }.flatMapLatest { it.streams }
 
     private val otherStreams: Flow<List<Stream>> =
         streams.transform { value -> emit(value.filter { !it.itsMe }.map { it.stream }) }
@@ -193,27 +198,37 @@ internal class CallViewModel(
             }.launchIn(viewModelScope)
         }
 
-    private val cameraStream: Flow<Stream?> = myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it is Input.Video.Camera } != null } }
+    private val cameraStream: Flow<Stream?> =
+        myStreams.map { streams -> streams.firstOrNull { stream -> stream.video.firstOrNull { it is Input.Video.Camera } != null } }
 
-    private val audioStream: Flow<Stream?> = myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }
+    private val audioStream: Flow<Stream?> =
+        myStreams.map { streams -> streams.firstOrNull { stream -> stream.audio.firstOrNull { it != null } != null } }
 
     val cameraEnabled: StateFlow<Boolean> =
-            cameraStream
-                .filter { it != null }
-                .flatMapLatest { it!!.video }
-                .filter { it != null }
-                .flatMapLatest { it!!.enabled }
-                .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+        cameraStream
+            .filter { it != null }
+            .flatMapLatest { it!!.video }
+            .filter { it != null }
+            .flatMapLatest { it!!.enabled }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     val micEnabled: StateFlow<Boolean> =
-            audioStream
-                .filter { it != null }
-                .flatMapLatest { it!!.audio }
-                .filter { it != null }
-                .flatMapLatest { it!!.enabled }
-                .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+        audioStream
+            .filter { it != null }
+            .flatMapLatest { it!!.audio }
+            .filter { it != null }
+            .flatMapLatest { it!!.enabled }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    val amIAlone: SharedFlow<Boolean> = combine(otherStreams, myLiveStreams, camPermission) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+    val amIAlone: SharedFlow<Boolean> = combine(
+        otherStreams,
+        myLiveStreams,
+        camPermission
+    ) { otherStreams, myLiveStreams, camPermission -> !(otherStreams.isNotEmpty() && (myLiveStreams.isNotEmpty() || !camPermission.isAllowed)) }.shareIn(
+        viewModelScope,
+        SharingStarted.Eagerly,
+        1
+    )
 
     val inCallParticipants: SharedFlow<List<CallParticipant>> =
         MutableSharedFlow<List<CallParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
@@ -299,9 +314,11 @@ internal class CallViewModel(
         }
     }
 
-    fun onRequestMicPermission(context: FragmentActivity) = callController.onRequestMicPermission(context)
+    fun onRequestMicPermission(context: FragmentActivity) =
+        callController.onRequestMicPermission(context)
 
-    fun onRequestCameraPermission(context: FragmentActivity) = callController.onRequestCameraPermission(context)
+    fun onRequestCameraPermission(context: FragmentActivity) =
+        callController.onRequestCameraPermission(context)
 
     fun onAnswer() = callController.onAnswer()
 
