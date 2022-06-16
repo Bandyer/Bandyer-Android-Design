@@ -409,7 +409,7 @@ class ChatBoxUI(
     }
 
     override fun connect() {
-        if (chatBox.state.value is ChatBox.State.Disconnected || chatBox.state.value is ChatBox.State.Disconnecting) return
+        if (chatBox.state.value is ChatBox.State.Connected || chatBox.state.value is ChatBox.State.Connecting) return
         chatBox.connect()
         chatBox.fetch(10)
         if (withUI) enableNotifications()
