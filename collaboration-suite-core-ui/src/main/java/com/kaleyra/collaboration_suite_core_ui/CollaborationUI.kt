@@ -53,18 +53,18 @@ import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMess
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
-import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
+import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.cached
 import com.kaleyra.collaboration_suite_utils.getValue
 import com.kaleyra.collaboration_suite_utils.logging.PriorityLogger
 import com.kaleyra.collaboration_suite_utils.setValue
-import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -72,12 +72,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -229,7 +226,7 @@ class PhoneBoxUI(
     private val logger: PriorityLogger? = null,
 ) : PhoneBox by phoneBox {
 
-    private var mainScope: CoroutineScope? = null
+    private var callScope: CoroutineScope? = null
 
     var withUI = true
 
@@ -240,21 +237,21 @@ class PhoneBoxUI(
     override fun connect() {
         phoneBox.connect()
 
-        mainScope?.cancel()
-        mainScope = MainScope()
+        callScope?.cancel()
+        callScope = MainScope()
 
         disableAudioRouting(logger)
         call.onEach {
             if (it.state is Call.State.Disconnected.Ended || !withUI) return@onEach
-            CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = mainScope!!)
+            CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope!!)
             show(it)
-        }.launchIn(mainScope!!)
+        }.launchIn(callScope!!)
     }
 
     override fun disconnect() {
         phoneBox.disconnect()
         disableAudioRouting(logger)
-        mainScope?.cancel()
+        callScope?.cancel()
     }
 
     /**
@@ -389,8 +386,7 @@ class ChatBoxUI(
 //    private val logger: PriorityLogger? = null
 ) : ChatBox by chatBox {
 
-    private var mainScope: CoroutineScope? = null
-    private val jobs = mutableListOf<Job>()
+    private var chatScope: CoroutineScope? = null
 
     var withUI: Boolean = true
         set(value) {
@@ -431,30 +427,25 @@ class ChatBoxUI(
     private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
 
     private fun enableNotifications() {
-        mainScope?.cancel()
-        jobs.forEach { it.cancel() }
-        jobs.clear()
-
-        mainScope = MainScope() + CoroutineName("enableNotifications")
+        chatScope?.cancel()
+        chatScope = MainScope()
+        var msgsScope: CoroutineScope? = null
         chats.onEach { chats ->
-            jobs.forEach {
-                it.cancel()
-                it.join()
-            }
-            jobs.clear()
+            msgsScope?.cancel()
+            msgsScope = CoroutineScope(SupervisorJob(chatScope!!.coroutineContext[Job]))
             chats.forEach { chat ->
-                jobs += chat.messages.onEach messagesUI@{
+                chat.messages.onEach messagesUI@{
                     val lastMessage =
                         it.other.firstOrNull { it.state.value is Message.State.Received }
                     if (lastMessage == null || lastMessagePerChat[chat.id] == lastMessage.id) return@messagesUI
                     lastMessagePerChat[chat.id] = lastMessage.id
                     it.showUnreadMsgs(chat.id, userId)
-                }.launchIn(mainScope!!)
+                }.launchIn(msgsScope!!)
             }
-        }.launchIn(mainScope!!)
+        }.launchIn(chatScope!!)
     }
 
-    private fun disableNotifications() = mainScope?.cancel()
+    private fun disableNotifications() = chatScope?.cancel()
 
     override fun create(user: User) = ChatUI(
         chatBox.create(user),
