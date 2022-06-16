@@ -79,7 +79,9 @@
     <color name="kaleyra_screen_share_color_night">#FF5131</color>
 
     <!-- recording color -->
-    <color name="kaleyra_recording_color">#D50000</color>
+    <color name="kaleyra_recording_color">#E11900</color>
+    <color name="kaleyra_recording_background_color">#B3121212</color>
+
 
     <!-- API 21 colors -->
     <color name="kaleyra_api21_color_on_surface_12">#FFE0E0E0</color>

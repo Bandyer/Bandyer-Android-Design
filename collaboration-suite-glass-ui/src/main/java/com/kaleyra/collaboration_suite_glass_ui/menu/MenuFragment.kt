@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_glass_ui.menu
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ import com.kaleyra.collaboration_suite_core_ui.model.Option
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
+import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.call.CallAction
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
@@ -132,7 +134,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
 
         repeatOnStarted {
             cameraAction?.also { action ->
-                viewModel.cameraEnabled.onEach { action.toggle(it) }.launchIn(this)
+               viewModel.cameraEnabled.onEach { action.toggle(it) }.launchIn(this)
                 viewModel.camPermission.onEach { action.disable(!it.isAllowed && it.neverAskAgain) }.launchIn(this)
             }
             micAction?.also { action ->
@@ -141,12 +143,12 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             }
             zoomAction?.also { action ->
                 combine(viewModel.cameraEnabled, viewModel.zoom) { cameraEnabled, zoom ->
-                    action.disable(!cameraEnabled || zoom?.isSupported != true)
+                    action.disable(!cameraEnabled || zoom == null)
                 }.launchIn(this)
             }
             flashAction?.also { action ->
                 combine(viewModel.cameraEnabled, viewModel.flashLight) { cameraEnabled, flashLight ->
-                    action.disable(!cameraEnabled || flashLight?.isSupported != true)
+                    action.disable(!cameraEnabled || flashLight == null)
                 }.launchIn(this)
                 viewModel.cameraEnabled
                     .onEach {
@@ -159,6 +161,12 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                     .flatMapLatest { it!!.enabled }
                     .onEach { action.toggle(!it) }
                     .launchIn(this)
+//                viewModel.hasFlashLight
+//                    .onEach {
+//                        Log.e("MenuFragment", "$it")
+//                        action.binding?.root?.visibility = if (!it) View.GONE else View.VISIBLE
+//                    }
+//                    .launchIn(this)
             }
             switchCameraAction?.also { action ->
                 combine(viewModel.cameraEnabled, viewModel.hasSwitchCamera) { cameraEnabled, hasSwitchCamera ->
@@ -226,4 +234,9 @@ internal class MenuFragment : BaseFragment(), TiltListener {
 
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
         binding.kaleyraMenu.scrollBy((deltaAzimuth * requireContext().tiltScrollFactor()).toInt(), 0)
+
+    override fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
+        super.setListenersForRealWear(bottomNavView)
+        bottomNavView.setFirstItemListeners({ onSwipeForward(true) }, { onSwipeBackward(true)  })
+    }
 }

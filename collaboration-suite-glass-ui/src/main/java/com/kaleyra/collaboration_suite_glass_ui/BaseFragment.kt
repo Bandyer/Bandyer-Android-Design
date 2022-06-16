@@ -140,7 +140,7 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener,
      * @receiver BottomNavigationView
      */
     protected open fun setListenersForRealWear(bottomNavView: BottomNavigationView) {
-        bottomNavView.setFirstItemListener { onSwipeForward(true) }
+        bottomNavView.setFirstItemListeners({ onSwipeForward(true) }, null)
         bottomNavView.setSecondItemListener { onTap() }
         bottomNavView.setThirdItemListener { onSwipeDown() }
     }

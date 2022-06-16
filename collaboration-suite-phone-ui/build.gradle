@@ -25,6 +25,7 @@ plugins {
 apply from: '../versions.gradle'
 apply from: '../android.gradle'
 apply from: '../publish.gradle'
+apply from: '../moveIcons.gradle'
 
 dependencies {
     api fileTree(include: ['*.jar'], dir: 'libs')

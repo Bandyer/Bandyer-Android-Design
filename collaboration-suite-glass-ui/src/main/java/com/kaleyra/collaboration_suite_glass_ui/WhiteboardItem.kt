@@ -7,16 +7,34 @@ import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassWhiteboa
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
+/**
+ * WhiteboardItem
+ *
+ * @param whiteboard Whiteboard
+ * @constructor
+ */
 class WhiteboardItem(val whiteboard: Whiteboard) : AbstractItem<WhiteboardItem.ViewHolder>() {
 
+    /**
+     * @suppress
+     */
     override var identifier: Long = whiteboard.hashCode().toLong()
 
+    /**
+     * @suppress
+     */
     override val type: Int
         get() = R.id.id_glass_whiteboard_item
 
+    /**
+     * @suppress
+     */
     override val layoutRes: Int
         get() = R.layout.kaleyra_glass_whiteboard_item_layout
 
+    /**
+     * @suppress
+     */
     override fun getViewHolder(v: View) = ViewHolder(v)
 
     /**

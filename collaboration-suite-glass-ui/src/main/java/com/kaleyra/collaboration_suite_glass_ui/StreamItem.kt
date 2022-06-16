@@ -276,6 +276,7 @@ internal class MyStreamItem(
         override fun bindView(item: MyStreamItem, payloads: List<Any>) {
             super.bindView(item, payloads)
             binding.root.isFocusable = false
+            binding.root.isClickable = false
 
             jobs += item.micPermission.onEach {
                 binding.kaleyraMicMutedIcon.isActivated = !it.isAllowed && it.neverAskAgain
@@ -371,6 +372,7 @@ internal class OtherStreamItem(
         override fun bindView(item: OtherStreamItem, payloads: List<Any>) = with(binding) {
             super.bindView(item, payloads)
             binding.root.isFocusable = false
+            binding.root.isClickable = false
 
             val userDesc = item.streamParticipant.userDescription
             kaleyraSubtitleLayout.kaleyraSubtitle.text = userDesc

@@ -83,6 +83,7 @@
         <item quantity="one">L\'utente chiamato non ha risposto.</item>
         <item quantity="other">Nessun utente ha risposto.</item>
     </plurals>
+    <string name="kaleyra_call_info_rec">Rec</string>
     <string name="kaleyra_call_info_recording">Questa chiamata verrà registrata</string>
     <string name="kaleyra_call_info_ongoing_recording">Registrazione chiamata in corso</string>
     <string name="kaleyra_action_dismiss">Chiudi</string>
@@ -179,5 +180,21 @@
     <string name="kaleyra_feedback_see_you_soon">Speriamo di rivederti presto</string>
     <string name="kaleyra_feedback_thank_you">Ti ringraziamo per aver contribuito a migliorare il nostro servizio!</string>
     <string name="kaleyra_call_action_ar">AR</string>
+
+    <!-- RECORDING -->
+    <string name="kaleyra_recording_started">Registrazione avviata</string>
+    <string name="kaleyra_recording_started_message">La registrazione della chiamata è stata avviata.</string>
+    <string name="kaleyra_recording_stopped">Registrazione terminata</string>
+    <string name="kaleyra_recording_stopped_message">La registrazione della chiamata è stata interrotta.</string>
+    <string name="kaleyra_recording_failed">Errore di registrazione</string>
+    <string name="kaleyra_recording_failed_message">Si è verificato un problema con la registrazione. Per favore chiudi la chiamata e riprova.</string>
+    <string name="kaleyra_automatic_recording_disclaimer">Questa chiamata sarà registrata</string>
+    <string name="kaleyra_manual_recording_disclaimer">Questa chiamata potrebbe essere registrata</string>
+
+    <string name="kaleyra_utterance_recording_call_will_be_recorded">Questa chiamata verrà registrata</string>
+    <string name="kaleyra_utterance_recording_call_may_be_recorded">Questa chiamata potrebbe essere registrata</string>
+    <string name="kaleyra_utterance_recording_started">Registrazione avviata</string>
+    <string name="kaleyra_utterance_recording_stopped">Registrazione interrotta</string>
+    <string name="kaleyra_utterance_recording_failed">Registrazione fallita. Chiudi la chiamata e riprova</string>
 
 </resources>

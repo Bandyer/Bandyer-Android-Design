@@ -29,6 +29,9 @@ interface HideableWidget {
 
     var hidingTimer: CountDownTimer?
 
+    /**
+     * Milliseconds remaining until the end of the timer
+     */
     var millisUntilTimerFinish: Long
 
     /**

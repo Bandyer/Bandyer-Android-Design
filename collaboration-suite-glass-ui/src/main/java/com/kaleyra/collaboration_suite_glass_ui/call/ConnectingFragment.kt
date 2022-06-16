@@ -30,6 +30,7 @@ import com.kaleyra.collaboration_suite_glass_ui.GlassViewModel
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentFullScreenLogoDialogBinding
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
@@ -74,8 +75,9 @@ internal abstract class ConnectingFragment : BaseFragment() {
 
         repeatOnStarted {
             viewModel.amIAlone
-                .onEach { if (!it) onConnected() }
+                .dropWhile { !it }
                 .takeWhile { it }
+                .onCompletion { onConnected() }
                 .launchIn(this@repeatOnStarted)
 
             viewModel.inCallParticipants

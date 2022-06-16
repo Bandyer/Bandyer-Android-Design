@@ -71,12 +71,6 @@
         <activity
             android:name=".PointerActivity"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call" />
-        <activity
-            android:name=".NotificationActivity"
-            android:exported="true"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call" />
-
-        <service android:name=".NotificationServiceApi31" />
     </application>
 
 </manifest>

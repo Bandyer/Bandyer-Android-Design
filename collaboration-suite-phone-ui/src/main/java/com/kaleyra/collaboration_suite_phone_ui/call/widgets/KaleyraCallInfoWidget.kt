@@ -39,6 +39,7 @@ import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayo
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
 import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
 import com.google.android.material.textview.MaterialTextView
+import com.kaleyra.collaboration_suite_phone_ui.recording.RecordingWidget
 
 /**
  * This class represent a widget used to display in-call informations.
@@ -72,8 +73,14 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
         RECORDING
     }
 
+    /**
+     * @suppress
+     */
     override var hidingTimer: CountDownTimer? = null
 
+    /**
+     * @suppress
+     */
     override var millisUntilTimerFinish: Long = 0
 
     /**
@@ -126,7 +133,7 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
     /**
      * Recording view
      */
-    var recordingView: MaterialTextView? = null
+    var recordingView: RecordingWidget? = null
         private set
 
 
@@ -177,6 +184,9 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
         SystemViewLayoutOffsetListener.removeObserver(context.getActivity()!!, this)
     }
 
+    /**
+     * @suppress
+     */
     override fun onHidingTimerFinished() = animateHide()
 
     private fun animateHide(onHidden: (() -> Unit)? = null) {
@@ -288,25 +298,10 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
     }
 
     /**
-     * Display recording text
-     * @param recordingText title
-     */
-    fun setRecordingText(recordingText: String) {
-        recordingView?.text = recordingText
-    }
-
-    /**
      * Hide title view
      */
     fun hideTitle() {
         titleView?.visibility = View.GONE
-    }
-
-    /**
-     * Hide recording view
-     */
-    fun hideRecording() {
-        recordingView?.visibility = View.GONE
     }
 
     /**

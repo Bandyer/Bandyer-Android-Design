@@ -21,6 +21,7 @@
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
         <attr name="bottomNavigationStyle" />
+        <attr name="kaleyra_bottomNavigationVoiceStyle" />
     </declare-styleable>
 
     <!-- FULL SCREEN DIALOG FRAGMENT -->
@@ -28,6 +29,7 @@
         <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.FullScreenDialog</item>
         <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.FullScreenDialog</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog</item>
+        <item name="kaleyra_bottomNavigationVoiceStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.VoiceCommand</item>
     </style>
 
     <!-- TITLE -->
@@ -56,6 +58,15 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.FullScreenDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem">
+        <item name="android:visibility">gone</item>
+    </style>
+
+    <!-- VOICE COMMANDS -->
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog.VoiceCommand" parent="KaleyraCollaborationSuiteUI.Glass.BottomNavigation.FullScreenDialog">
+        <item name="kaleyra_firstItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.FullScreenDialog</item>
+    </style>
+
+    <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand.FullScreenDialog" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.FirstItem.VoiceCommand">
         <item name="android:visibility">gone</item>
     </style>
 

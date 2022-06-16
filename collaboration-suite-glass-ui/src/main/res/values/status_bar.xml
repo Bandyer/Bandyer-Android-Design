@@ -23,7 +23,7 @@
         <attr name="kaleyra_cellIconStyle" format="reference"/>
         <attr name="kaleyra_wifiIconStyle" format="reference"/>
         <attr name="kaleyra_batteryStyle" format="reference"/>
-        <attr name="kaleyra_recordingStyle" format="reference"/>
+        <attr name="kaleyra_recordingStyle" />
         <attr name="kaleyra_timerStyle" format="reference"/>
     </declare-styleable>
 

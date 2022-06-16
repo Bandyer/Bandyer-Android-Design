@@ -21,7 +21,11 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
+import androidx.appcompat.view.ContextThemeWrapper
+import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
+import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassBottomNavigationLayoutBinding
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getAttributeResourceId
 
 /**
  * Bottom action bar view, it describes the actions the user performs
@@ -35,21 +39,38 @@ internal class BottomNavigationView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : LinearLayout(context, attrs, defStyleAttr) {
 
-    private var binding: KaleyraGlassBottomNavigationLayoutBinding =
-        KaleyraGlassBottomNavigationLayoutBinding.inflate(LayoutInflater.from(context), this, true)
+    private var binding: KaleyraGlassBottomNavigationLayoutBinding
+
+    init {
+        val themeResId = context.theme.getAttributeResourceId(
+            if (DeviceUtils.isRealWear) R.attr.kaleyra_bottomNavigationVoiceStyle else R.attr.bottomNavigationStyle
+        )
+        binding = KaleyraGlassBottomNavigationLayoutBinding.inflate(
+            LayoutInflater.from(context).cloneInContext(ContextThemeWrapper(context, themeResId)),
+            this,
+            true
+        ).apply {
+            if (!DeviceUtils.isRealWear) return@apply
+            kaleyraFirstItem.capitalizeActionText()
+            kaleyraSecondItem.capitalizeActionText()
+            kaleyraThirdItem.capitalizeActionText()
+        }
+    }
 
     /**
-     * Set an on click listener on the swipe element. Needed for realwear glasses.
+     * Set on click listeners on the first element. It also has an optional secondary callback for a secondary command. Needed for realwear glasses.
      *
      * @param callback function
      */
-    fun setFirstItemListener(callback: () -> Unit) =
-        binding.kaleyraFirstItem.setOnClickListener {
-            callback.invoke()
+    fun setFirstItemListeners(callback: () -> Unit, secondaryCallBack: (() -> Unit)? = null) =
+        with(binding.kaleyraFirstItem) {
+            setOnClickListener { callback.invoke() }
+            secondaryCallBack?.also { cb -> setSecondaryOnClickListener { cb.invoke() } }
         }
 
+
     /**
-     * Set an on click listener on the tap element. Needed for realwear glasses.
+     * Set an on click listener on the second element. Needed for realwear glasses.
      *
      * @param callback function
      */
@@ -59,7 +80,7 @@ internal class BottomNavigationView @JvmOverloads constructor(
         }
 
     /**
-     * Set an on click listener on the swipe down element. Needed for realwear glasses.
+     * Set an on click listener on the third element. Needed for realwear glasses.
      *
      * @param callback function
      */

@@ -24,6 +24,8 @@
     <item name="ic_kaleyra_glass_cell_full" type="drawable">@drawable/kaleyra_glass_cell_full_icon</item>
     <item name="ic_kaleyra_glass_badge_new_mess" type="drawable">@drawable/kaleyra_glass_badge_new_mess_icon</item>
     <item name="ic_kaleyra_glass_close_arrow" type="drawable">@drawable/kaleyra_glass_close_arrow_icon</item>
+    <item name="ic_kaleyra_glass_arrow_right" type="drawable">@drawable/kaleyra_glass_arrow_right_icon</item>
+    <item name="ic_kaleyra_glass_arrow_left" type="drawable">@drawable/kaleyra_glass_arrow_left_icon</item>
     <item name="ic_kaleyra_glass_mic_off" type="drawable">@drawable/kaleyra_glass_mic_off_icon</item>
     <item name="ic_kaleyra_glass_cam_off" type="drawable">@drawable/kaleyra_glass_cam_off_icon</item>
     <item name="ic_kaleyra_glass_select" type="drawable">@drawable/kaleyra_glass_select_icon</item>
@@ -34,4 +36,5 @@
     <item name="ic_kaleyra_glass_wifi_full" type="drawable">@drawable/kaleyra_glass_wifi_full_icon</item>
     <item name="ic_kaleyra_glass_rec" type="drawable">@drawable/kaleyra_rec_icon</item>
     <item name="ic_kaleyra_glass_alert" type="drawable">@drawable/kaleyra_alert_icon</item>
+    <item name="ic_kaleyra_glass_voice_command" type="drawable">@drawable/kaleyra_voice_command</item>
 </resources>
