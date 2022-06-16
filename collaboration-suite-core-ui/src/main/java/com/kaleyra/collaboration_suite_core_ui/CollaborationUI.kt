@@ -74,6 +74,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
@@ -389,11 +390,6 @@ class ChatBoxUI(
     private var chatScope: CoroutineScope? = null
 
     var withUI: Boolean = true
-        set(value) {
-            if (value) enableNotifications()
-            else disableNotifications()
-            field = value
-        }
 
     override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(MainScope()) {
         it.map {
@@ -405,15 +401,36 @@ class ChatBoxUI(
         }
     }
 
+    private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
+
     override fun connect() {
         chatBox.connect()
         chatBox.fetch(10)
-        if (withUI) enableNotifications()
+        if (chatScope?.isActive == true) return
+        listenToMessages()
     }
 
     override fun disconnect() {
-        disableNotifications()
         chatBox.disconnect()
+        chatScope?.cancel()
+    }
+
+    private fun listenToMessages() {
+        chatScope = MainScope()
+        var msgsScope: CoroutineScope? = null
+        chats.onEach { chats ->
+            msgsScope?.cancel()
+            msgsScope = CoroutineScope(SupervisorJob(chatScope!!.coroutineContext[Job]))
+            chats.forEach { chat ->
+                chat.messages.onEach messagesUI@{
+                    if (!withUI) return@messagesUI
+                    val lastMessage = it.other.firstOrNull { it.state.value is Message.State.Received }
+                    if (lastMessage == null || lastMessagePerChat[chat.id] == lastMessage.id) return@messagesUI
+                    lastMessagePerChat[chat.id] = lastMessage.id
+                    it.showUnreadMsgs(chat.id, userId)
+                }.launchIn(msgsScope!!)
+            }
+        }.launchIn(chatScope!!)
     }
 
     /**
@@ -423,29 +440,6 @@ class ChatBoxUI(
      */
     fun show(context: Context, chat: ChatUI) =
         UIProvider.showChat(context, chatActivityClazz, chat.id)
-
-    private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
-
-    private fun enableNotifications() {
-        chatScope?.cancel()
-        chatScope = MainScope()
-        var msgsScope: CoroutineScope? = null
-        chats.onEach { chats ->
-            msgsScope?.cancel()
-            msgsScope = CoroutineScope(SupervisorJob(chatScope!!.coroutineContext[Job]))
-            chats.forEach { chat ->
-                chat.messages.onEach messagesUI@{
-                    val lastMessage =
-                        it.other.firstOrNull { it.state.value is Message.State.Received }
-                    if (lastMessage == null || lastMessagePerChat[chat.id] == lastMessage.id) return@messagesUI
-                    lastMessagePerChat[chat.id] = lastMessage.id
-                    it.showUnreadMsgs(chat.id, userId)
-                }.launchIn(msgsScope!!)
-            }
-        }.launchIn(chatScope!!)
-    }
-
-    private fun disableNotifications() = chatScope?.cancel()
 
     override fun create(user: User) = ChatUI(
         chatBox.create(user),
