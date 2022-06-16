@@ -22,6 +22,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.Parcelable
+import android.util.Log
 import androidx.annotation.Keep
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -72,6 +73,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.isActive
@@ -237,22 +239,26 @@ class PhoneBoxUI(
 
     override fun connect() {
         phoneBox.connect()
-
-        callScope?.cancel()
-        callScope = MainScope()
-
         disableAudioRouting(logger)
-        call.onEach {
-            if (it.state is Call.State.Disconnected.Ended || !withUI) return@onEach
-            CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope!!)
-            show(it)
-        }.launchIn(callScope!!)
+        if (callScope?.isActive == true) return
+        listenToCalls()
     }
 
     override fun disconnect() {
         phoneBox.disconnect()
         disableAudioRouting(logger)
         callScope?.cancel()
+    }
+
+    private fun listenToCalls() {
+        callScope = MainScope()
+        call.onEach {
+            if (it.state is Call.State.Disconnected.Ended || !withUI) return@onEach
+            CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope!!)
+            show(it)
+        }.onCompletion {
+            Log.e("CollaborationUI", "completed")
+        }.launchIn(callScope!!)
     }
 
     /**
