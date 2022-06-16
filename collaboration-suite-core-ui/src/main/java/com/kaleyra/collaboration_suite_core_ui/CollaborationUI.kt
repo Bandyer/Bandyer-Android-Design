@@ -53,6 +53,7 @@ import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMess
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
@@ -237,9 +238,10 @@ class PhoneBoxUI(
     override val callHistory: SharedFlow<List<CallUI>> = phoneBox.callHistory.map { it.map { CallUI(it) } }.shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
 
     override fun connect() {
-        if (phoneBox.state.value is PhoneBox.State.Connected) return
+        if (phoneBox.state.value is PhoneBox.State.Connected || phoneBox.state.value is PhoneBox.State.Connecting) return
         phoneBox.connect()
         mainScope = MainScope()
+        disableAudioRouting(logger)
         call.onEach {
             if (it.state is Call.State.Disconnected.Ended || !withUI) return@onEach
             CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = mainScope!!)
@@ -247,8 +249,10 @@ class PhoneBoxUI(
         }.launchIn(mainScope!!)
         phoneBox.state
             .takeWhile { it !is PhoneBox.State.Disconnecting }
-            .onCompletion { mainScope!!.cancel() }
-            .launchIn(MainScope())
+            .onCompletion {
+                mainScope!!.cancel()
+                disableAudioRouting(logger)
+            }.launchIn(MainScope())
     }
 
     override fun disconnect() = phoneBox.disconnect()
@@ -405,7 +409,7 @@ class ChatBoxUI(
     }
 
     override fun connect() {
-        if (chatBox.state is ChatBox.State.Disconnected) return
+        if (chatBox.state.value is ChatBox.State.Disconnected || chatBox.state.value is ChatBox.State.Disconnecting) return
         chatBox.connect()
         chatBox.fetch(10)
         if (withUI) enableNotifications()
