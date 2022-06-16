@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 /**
  * CallController. It implements the CallUIController methods.
  */
-class CallController(private val call: SharedFlow<CallUI>) : CallUIController {
+class CallController(private val call: SharedFlow<CallUI>, private val callAudioManager: CallAudioManager) : CallUIController {
 
     private val currentCall: Call
         get() = call.replayCache.first()
@@ -43,7 +43,7 @@ class CallController(private val call: SharedFlow<CallUI>) : CallUIController {
 
     override val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
 
-    override val volume: Volume get() = CallAudioManager.let { Volume(it.currentVolume, it.minVolume, it.maxVolume) }
+    override val volume: Volume get() = callAudioManager.let { Volume(it.currentVolume, it.minVolume, it.maxVolume) }
 
     override fun onRequestMicPermission(context: FragmentActivity) {
         MainScope().launch {
@@ -109,7 +109,7 @@ class CallController(private val call: SharedFlow<CallUI>) : CallUIController {
         camera.setLens(newLens)
     }
 
-    override fun onSetVolume(value: Int) = CallAudioManager.setVolume(value)
+    override fun onSetVolume(value: Int) = callAudioManager.setVolume(value)
 
     override fun onSetZoom(value: Float) {
         val camera =

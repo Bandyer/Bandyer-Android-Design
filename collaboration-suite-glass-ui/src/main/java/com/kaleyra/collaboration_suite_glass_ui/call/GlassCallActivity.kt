@@ -67,6 +67,8 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensio
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import com.mikepenz.fastadapter.FastAdapter
@@ -104,7 +106,7 @@ internal class GlassCallActivity :
     private val viewModel: CallViewModel by viewModels {
         CallViewModelFactory(
             CallDelegate(CollaborationUI.phoneBox.call, CollaborationUI.usersDescription),
-            CallController(CollaborationUI.phoneBox.call),
+            CallController(CollaborationUI.phoneBox.call, CallAudioManager(ContextRetainer.context)),
             deviceStatusObserver
         )
     }
