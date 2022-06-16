@@ -238,24 +238,24 @@ class PhoneBoxUI(
     override val callHistory: SharedFlow<List<CallUI>> = phoneBox.callHistory.map { it.map { CallUI(it) } }.shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
 
     override fun connect() {
-        if (phoneBox.state.value is PhoneBox.State.Connected || phoneBox.state.value is PhoneBox.State.Connecting) return
         phoneBox.connect()
+
+        mainScope?.cancel()
         mainScope = MainScope()
+
         disableAudioRouting(logger)
         call.onEach {
             if (it.state is Call.State.Disconnected.Ended || !withUI) return@onEach
             CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = mainScope!!)
             show(it)
         }.launchIn(mainScope!!)
-        phoneBox.state
-            .takeWhile { it !is PhoneBox.State.Disconnecting }
-            .onCompletion {
-                mainScope!!.cancel()
-                disableAudioRouting(logger)
-            }.launchIn(MainScope())
     }
 
-    override fun disconnect() = phoneBox.disconnect()
+    override fun disconnect() {
+        phoneBox.disconnect()
+        disableAudioRouting(logger)
+        mainScope?.cancel()
+    }
 
     /**
      * Call
@@ -390,6 +390,7 @@ class ChatBoxUI(
 ) : ChatBox by chatBox {
 
     private var mainScope: CoroutineScope? = null
+    private val jobs = mutableListOf<Job>()
 
     var withUI: Boolean = true
         set(value) {
@@ -409,13 +410,15 @@ class ChatBoxUI(
     }
 
     override fun connect() {
-        if (chatBox.state.value is ChatBox.State.Connected || chatBox.state.value is ChatBox.State.Connecting) return
         chatBox.connect()
         chatBox.fetch(10)
         if (withUI) enableNotifications()
     }
 
-    override fun disconnect() = chatBox.disconnect()
+    override fun disconnect() {
+        disableNotifications()
+        chatBox.disconnect()
+    }
 
     /**
      * Show the chat ui
@@ -428,7 +431,10 @@ class ChatBoxUI(
     private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
 
     private fun enableNotifications() {
-        val jobs = mutableListOf<Job>()
+        mainScope?.cancel()
+        jobs.forEach { it.cancel() }
+        jobs.clear()
+
         mainScope = MainScope() + CoroutineName("enableNotifications")
         chats.onEach { chats ->
             jobs.forEach {
@@ -446,11 +452,6 @@ class ChatBoxUI(
                 }.launchIn(mainScope!!)
             }
         }.launchIn(mainScope!!)
-
-        chatBox.state
-            .takeWhile { it !is ChatBox.State.Disconnecting }
-            .onCompletion { disableNotifications() }
-            .launchIn(MainScope())
     }
 
     private fun disableNotifications() = mainScope?.cancel()
