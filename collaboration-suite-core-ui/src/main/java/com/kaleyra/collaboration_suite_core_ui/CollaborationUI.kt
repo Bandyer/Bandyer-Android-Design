@@ -423,7 +423,7 @@ class ChatBoxUI(
      * @param chat The chat object that should be shown.
      */
     fun show(context: Context, chat: ChatUI) =
-        UIProvider.showChat(context, chatActivityClazz, chat.id, usersDescription)
+        UIProvider.showChat(context, chatActivityClazz, chat.id)
 
     private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
 

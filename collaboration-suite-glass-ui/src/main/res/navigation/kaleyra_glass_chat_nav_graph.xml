@@ -35,11 +35,6 @@
             android:name="chatId"
             app:argType="string"
             android:defaultValue="" />
-        <argument
-            android:name="usersDescription"
-            app:nullable="true"
-            app:argType="com.kaleyra.collaboration_suite_core_ui.model.UsersDescription"
-            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/chatMenuFragment"

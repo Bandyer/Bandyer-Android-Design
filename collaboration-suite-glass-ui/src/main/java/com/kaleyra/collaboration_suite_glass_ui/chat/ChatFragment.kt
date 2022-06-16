@@ -215,7 +215,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
         messages: List<Message>,
         callback: (List<ChatMessagePage>) -> Unit
     ) {
-        val usersDescription = args.usersDescription ?: UsersDescription()
+        val usersDescription = viewModel.usersDescription
         binding.kaleyraChatMessage.root.doOnLayout {
             scope.launch {
                 val allPages = mutableListOf<ChatMessagePage>()

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.activity.viewModels
+import com.kaleyra.collaboration_suite_core_ui.ChatDelegate
 import com.kaleyra.collaboration_suite_core_ui.CollaborationService
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
@@ -33,14 +34,19 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedListener, GlassTouchEventManager.Listener {
+internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedListener,
+    GlassTouchEventManager.Listener {
 
     private lateinit var binding: KaleyraChatActivityGlassBinding
 
     private val deviceStatusObserver = DeviceStatusObserver()
 
     private val viewModel: ChatViewModel by viewModels {
-        ChatViewModelFactory(CollaborationUI.chatBox.chats, deviceStatusObserver)
+        ChatViewModelFactory(
+            ChatDelegate(CollaborationUI.chatBox.chats, CollaborationUI.usersDescription),
+//            CollaborationUI.phoneBox.call,
+            deviceStatusObserver
+        )
     }
 
     private var glassTouchEventManager: GlassTouchEventManager? = null

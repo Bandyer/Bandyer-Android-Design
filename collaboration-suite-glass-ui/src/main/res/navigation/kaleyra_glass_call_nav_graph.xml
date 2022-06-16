@@ -34,14 +34,6 @@
         <action
             android:id="@+id/action_menuFragment_to_participantsFragment"
             app:destination="@id/participantsFragment" />
-        <action
-            android:id="@+id/action_menuFragment_to_smartglass_nav_graph_chat"
-            app:destination="@id/smartglass_nav_graph_chat">
-            <argument
-                android:name="enableTilt"
-                android:defaultValue="false"
-                app:argType="boolean" />
-        </action>
         <argument
             android:name="enableTilt"
             android:defaultValue="false"
@@ -126,7 +118,6 @@
             android:defaultValue="false"
             app:argType="boolean" />
     </fragment>
-    <include app:graph="@navigation/kaleyra_glass_chat_nav_graph" />
     <fragment
         android:id="@+id/startFragment"
         android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.StartFragment"
