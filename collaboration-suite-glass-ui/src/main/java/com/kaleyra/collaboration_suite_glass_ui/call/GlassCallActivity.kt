@@ -191,60 +191,59 @@ internal class GlassCallActivity :
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val foundView = snapHelper.findSnapView(layoutManager) ?: return
                     val position = layoutManager!!.getPosition(foundView)
-                    val isSameView = lastView == foundView
-                    if (!isSameView) lastView = foundView
-                    if (isSameView || currentStreamItemIndex == position) return
+                    if (lastView != foundView && currentStreamItemIndex != position) {
+                        val currentItem = fastAdapter!!.getItem(position) ?: return
 
-                    val currentItem = fastAdapter!!.getItem(position) ?: return
+                        if ((currentItem as? StreamItem?)?.streamParticipant?.itsMe == true) {
+                            val isMicBlocked = viewModel.micPermission.value.let {
+                                !it.isAllowed && it.neverAskAgain
+                            }
+                            val isCamBlocked = viewModel.camPermission.value.let {
+                                !it.isAllowed && it.neverAskAgain
+                            }
+                            val isMicEnabled = viewModel.micEnabled.value
+                            val isCameraEnabled = viewModel.cameraEnabled.value
 
-                    if ((currentItem as? StreamItem?)?.streamParticipant?.itsMe == true) {
-                        val isMicBlocked = viewModel.micPermission.value.let {
-                            !it.isAllowed && it.neverAskAgain
+                            when {
+                                isMicBlocked && isCamBlocked -> resources.getString(R.string.kaleyra_glass_mic_and_cam_blocked)
+                                isMicBlocked                 -> resources.getString(R.string.kaleyra_glass_mic_blocked)
+                                isCamBlocked                 -> resources.getString(R.string.kaleyra_glass_cam_blocked)
+                                else                         -> null
+                            }?.also { binding.kaleyraToastContainer.show(BLOCKED_TOAST_ID, it) }
+
+                            when {
+                                !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled ->
+                                    resources.getString(R.string.kaleyra_glass_mic_and_cam_not_active)
+                                !isMicBlocked && !isMicEnabled                                      ->
+                                    resources.getString(R.string.kaleyra_glass_mic_not_active)
+                                !isCamBlocked && !isCameraEnabled                                   ->
+                                    resources.getString(R.string.kaleyra_glass_cam_not_active)
+                                else                                                                -> null
+                            }?.also { binding.kaleyraToastContainer.show(DISABLED_TOAST_ID, it) }
                         }
-                        val isCamBlocked = viewModel.camPermission.value.let {
-                            !it.isAllowed && it.neverAskAgain
+
+                        val previousItem = fastAdapter!!.getItem(currentStreamItemIndex)
+                        previousItem?.also { item ->
+                            val currentVideoPosition = fastAdapter!!.getPosition(currentItem.identifier)
+                            val previousVideoPosition = fastAdapter!!.getPosition(item.identifier)
+
+                            livePointers.filterValues { it.second == item.identifier }.keys.forEach {
+                                it.updateLivePointerHorizontalPosition(
+                                    if (currentVideoPosition > previousVideoPosition) 0f else 100f,
+                                    enableAutoHide = false,
+                                    adjustTextOnEdge = true
+                                )
+                            }
                         }
-                        val isMicEnabled = viewModel.micEnabled.value
-                        val isCameraEnabled = viewModel.cameraEnabled.value
 
-                        when {
-                            isMicBlocked && isCamBlocked -> resources.getString(R.string.kaleyra_glass_mic_and_cam_blocked)
-                            isMicBlocked                 -> resources.getString(R.string.kaleyra_glass_mic_blocked)
-                            isCamBlocked                 -> resources.getString(R.string.kaleyra_glass_cam_blocked)
-                            else                         -> null
-                        }?.also { binding.kaleyraToastContainer.show(BLOCKED_TOAST_ID, it) }
-
-                        when {
-                            !isMicBlocked && !isMicEnabled && !isCamBlocked && !isCameraEnabled ->
-                                resources.getString(R.string.kaleyra_glass_mic_and_cam_not_active)
-                            !isMicBlocked && !isMicEnabled                                      ->
-                                resources.getString(R.string.kaleyra_glass_mic_not_active)
-                            !isCamBlocked && !isCameraEnabled                                   ->
-                                resources.getString(R.string.kaleyra_glass_cam_not_active)
-                            else                                                                -> null
-                        }?.also { binding.kaleyraToastContainer.show(DISABLED_TOAST_ID, it) }
+                        val streamLivePointers =
+                            livePointers.filterValues { it.second == currentItem.identifier }.keys
+                        streamLivePointers.forEach { it.visibility = View.GONE }
+                        val otherStreamsLivePointers = livePointers.keys - streamLivePointers
+                        otherStreamsLivePointers.forEach { it.visibility = View.VISIBLE }
                     }
 
-                    val previousItem = fastAdapter!!.getItem(currentStreamItemIndex)
-                    previousItem?.also { item ->
-                        val currentVideoPosition = fastAdapter!!.getPosition(currentItem.identifier)
-                        val previousVideoPosition = fastAdapter!!.getPosition(item.identifier)
-
-                        livePointers.filterValues { it.second == item.identifier }.keys.forEach {
-                            it.updateLivePointerHorizontalPosition(
-                                if (currentVideoPosition > previousVideoPosition) 0f else 100f,
-                                enableAutoHide = false,
-                                adjustTextOnEdge = true
-                            )
-                        }
-                    }
-
-                    val streamLivePointers =
-                        livePointers.filterValues { it.second == currentItem.identifier }.keys
-                    streamLivePointers.forEach { it.visibility = View.GONE }
-                    val otherStreamsLivePointers = livePointers.keys - streamLivePointers
-                    otherStreamsLivePointers.forEach { it.visibility = View.VISIBLE }
-
+                    lastView = foundView
                     currentStreamItemIndex = position
                 }
             })
