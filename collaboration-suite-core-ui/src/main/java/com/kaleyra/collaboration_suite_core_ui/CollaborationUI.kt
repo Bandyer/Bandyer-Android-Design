@@ -256,8 +256,6 @@ class PhoneBoxUI(
             if (it.state is Call.State.Disconnected.Ended || !withUI) return@onEach
             CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope!!)
             show(it)
-        }.onCompletion {
-            Log.e("CollaborationUI", "completed")
         }.launchIn(callScope!!)
     }
 
