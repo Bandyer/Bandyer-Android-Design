@@ -33,6 +33,7 @@ import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.chatbox.Message.Content.Text
 import com.kaleyra.collaboration_suite.chatbox.Messages
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
@@ -398,11 +399,7 @@ class ChatBoxUI(
 
     override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(MainScope()) {
         it.map {
-            ChatUI(
-                it,
-                chatActivityClazz = chatActivityClazz,
-                chatNotificationActivityClazz = chatCustomNotificationActivity
-            )
+            ChatUI(it, chatActivityClazz = chatActivityClazz, chatNotificationActivityClazz = chatCustomNotificationActivity)
         }
     }
 
@@ -461,18 +458,14 @@ class ChatBoxUI(
 }
 
 class ChatUI(
-    private val chat: Chat,
+    chat: Chat,
     val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(setOf()),
     private val chatActivityClazz: Class<*>,
     private val chatNotificationActivityClazz: Class<*>? = null
 ) : Chat by chat {
 
     override val messages: StateFlow<MessagesUI> = chat.messages.mapToStateFlow(MainScope()) {
-        MessagesUI(
-            it,
-            chatActivityClazz,
-            chatNotificationActivityClazz
-        )
+        MessagesUI(it, chatActivityClazz, chatNotificationActivityClazz)
     }
 
     @Keep
@@ -499,12 +492,12 @@ class ChatUI(
 }
 
 class MessagesUI(
-    private val messages: Messages,
+    messages: Messages,
     private val chatActivityClazz: Class<*>,
     private val chatCustomNotificationActivity: Class<*>? = null
 ) : Messages by messages {
 
-    fun showUnreadMsgs(chatId: String, loggedUserId: String) {
+    suspend fun showUnreadMsgs(chatId: String, loggedUserId: String) {
         chatCustomNotificationActivity?.let {
             showCustomInAppNotification(
                 chatId,
@@ -515,7 +508,7 @@ class MessagesUI(
     }
 
     private fun showNotification(chatId: String, loggedUserId: String) = MainScope().launch {
-        val messages = messages.other.filter { it.state.value is Message.State.Received }
+        val messages = other.filter { it.state.value is Message.State.Received }
             .map { it.toChatNotificationMessage() }.sortedBy { it.timestamp }
         val notification = NotificationManager.buildChatNotification(
             loggedUserId,
@@ -532,21 +525,20 @@ class MessagesUI(
         creator.userId,
         usersDescription.name(listOf(creator.userId)),
         usersDescription.image(listOf(creator.userId)),
-        (content as? Message.Content.Text)?.message ?: "",
+        (content as? Text)?.message ?: "",
         creationDate.time
     )
 
-    private fun showCustomInAppNotification(
+    private suspend fun showCustomInAppNotification(
         chatId: String,
         loggedUserId: String,
         chatCustomNotificationActivity: Class<*>,
-    ) = MainScope().launch {
-        val message = messages.other.firstOrNull { it.state.value is Message.State.Received }
-            ?.toChatNotificationMessage() ?: return@launch
+    ) {
+        val message = other.firstOrNull { it.state.value is Message.State.Received } ?: return
 
         if (AppLifecycle.isInForeground.value) {
             CustomChatNotificationManager.notify(chatId, chatCustomNotificationActivity)
-            return@launch
+            return
         }
 
         val notification = NotificationManager.buildChatNotification(
@@ -554,7 +546,7 @@ class MessagesUI(
             usersDescription.name(listOf(loggedUserId)),
             usersDescription.image(listOf(loggedUserId)),
             chatId,
-            listOf(message),
+            listOf(message.toChatNotificationMessage()),
             chatActivityClazz,
             chatCustomNotificationActivity
         )
@@ -565,6 +557,7 @@ class MessagesUI(
             FULLSCREEN_NOTIFICATION_ID,
             notification
         )
+
     }
 
     private companion object {

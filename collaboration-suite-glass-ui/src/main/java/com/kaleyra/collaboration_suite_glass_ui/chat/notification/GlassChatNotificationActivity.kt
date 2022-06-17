@@ -48,12 +48,9 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         turnScreenOn()
-        binding =
-            KaleyraChatNotificationActivityGlassBinding.inflate(layoutInflater)
-                .apply {
-                    setListenersForRealWear(kaleyraBottomNavigation)
-                }
-
+        binding = KaleyraChatNotificationActivityGlassBinding.inflate(layoutInflater).apply {
+            setListenersForRealWear(kaleyraBottomNavigation)
+        }
         updateUI(intent)
         setContentView(binding.root)
         glassTouchEventManager = GlassTouchEventManager(this, this)
@@ -78,7 +75,6 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
         val chat = getChat(intent) ?: return@launch
         val nOfMessages = getNOfUnreadMessages(chat)
         msgsPerChat[chat.id] = nOfMessages
-
         val usersDescription = CollaborationUI.usersDescription
         val message = getLastReceivedMessage(chat) ?: return@launch
         val userId = message.creator.userId
@@ -156,13 +152,13 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
      */
     override fun onGlassTouchEvent(glassEvent: TouchEvent): Boolean =
         when (glassEvent.type) {
-            TouchEvent.Type.TAP -> {
+            TouchEvent.Type.TAP        -> {
                 onTap(); true
             }
             TouchEvent.Type.SWIPE_DOWN -> {
                 onSwipeDown(); true
             }
-            else -> false
+            else                       -> false
         }
 
     private fun AvatarGroupView.addAvatar(userId: String, username: String, avatar: Uri) {
@@ -203,9 +199,9 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
         ) { onExpanded?.invoke(it) }
     }
 
-    private fun getNOfUnreadMessages(chat: Chat): Int = chat.messages.replayCache.firstOrNull()?.other?.count { it.state.value is Message.State.Received } ?: 0
+    private fun getNOfUnreadMessages(chat: Chat): Int = chat.messages.value.other.count { it.state.value is Message.State.Received }
 
-    private fun getLastReceivedMessage(chat: Chat): OtherMessage? = chat.messages.replayCache.firstOrNull()?.other?.firstOrNull { it.state.value is Message.State.Received }
+    private fun getLastReceivedMessage(chat: Chat): OtherMessage? = chat.messages.value.other.firstOrNull { it.state.value is Message.State.Received }
 
     private fun getChat(intent: Intent): Chat? {
         val chatId = intent.extras?.getString("chatId") ?: ""
