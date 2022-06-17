@@ -19,6 +19,7 @@ package com.kaleyra.collaboration_suite_glass_ui.call
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -78,12 +79,14 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -177,6 +180,8 @@ internal class GlassCallActivity :
         with(binding.kaleyraStreams) {
             val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
             addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                private var lastView: View? = null
+
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
                     binding.kaleyraOuterPointers.visibility =
@@ -186,7 +191,9 @@ internal class GlassCallActivity :
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     val foundView = snapHelper.findSnapView(layoutManager) ?: return
                     val position = layoutManager!!.getPosition(foundView)
-                    if (currentStreamItemIndex == position) return
+                    val isSameView = lastView == foundView
+                    if (!isSameView) lastView = foundView
+                    if (isSameView || currentStreamItemIndex == position) return
 
                     val currentItem = fastAdapter!!.getItem(position) ?: return
 
@@ -317,7 +324,7 @@ internal class GlassCallActivity :
                         navController!!.navigate(R.id.callEndedFragment, navArgs)
                     }
                 }.launchIn(this)
-
+            
             viewModel.amIAlone
                 .takeWhile { it }
                 .onCompletion { binding.kaleyraStatusBar.showTimer() }
@@ -329,6 +336,7 @@ internal class GlassCallActivity :
                 .launchIn(this)
 
             viewModel.amIAlone
+                .dropWhile { it }
                 .onEach {
                     with(binding.kaleyraToastContainer) {
                         if (it) show(
