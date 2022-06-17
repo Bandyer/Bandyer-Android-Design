@@ -22,7 +22,6 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.Parcelable
-import android.util.Log
 import androidx.annotation.Keep
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -73,7 +72,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.isActive
@@ -177,20 +175,23 @@ object CollaborationUI {
     /**
      * Disconnect
      */
-    fun disconnect() {
+    fun disconnect() = disconnectCollaboration(false)
+
+    private fun disconnectCollaboration(clearSavedData: Boolean = false) {
         collaboration ?: return
         phoneBox.disconnect()
-        chatBox.disconnect()
+        chatBox.disconnect(clearSavedData)
         stopCollaborationService()
     }
 
     /**
-     * Dispose the collaboration UI
+     * Dispose the collaboration UI and optionally clear saved data.
+     * @param clearSavedData If true, the saved data on DB and SharedPrefs will be cleared.
      */
-    fun dispose() {
+    fun dispose(clearSavedData: Boolean = true) {
         collaboration ?: return
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
-        disconnect()
+        disconnectCollaboration(clearSavedData)
         collaboration = null
         _phoneBox = null
         _chatBox = null
@@ -414,8 +415,8 @@ class ChatBoxUI(
         listenToMessages()
     }
 
-    override fun disconnect() {
-        chatBox.disconnect()
+    override fun disconnect(clearSavedData: Boolean) {
+        chatBox.disconnect(clearSavedData)
         chatScope?.cancel()
     }
 
