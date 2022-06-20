@@ -177,4 +177,18 @@
         <item name="android:elevation" tools:targetApi="lollipop">@dimen/kaleyra_dimen_space4</item>
         <item name="android:contentDescription">@string/kaleyra_chat_scroll_to_last_message</item>
     </style>
+
+    <style name="KaleyraCollaborationSuiteUI.ImageButton.BackButton" parent="KaleyraCollaborationSuiteUI.ImageButton">
+        <item name="android:minWidth">@dimen/kaleyra_dimen_space56</item>
+        <item name="android:minHeight">@dimen/kaleyra_dimen_space56</item>
+        <item name="android:layout_width">@dimen/kaleyra_dimen_space56</item>
+        <item name="android:layout_height">@dimen/kaleyra_dimen_space56</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="iconTint">@android:color/white</item>
+        <item name="android:visibility">visible</item>
+        <item name="rippleColor">@android:color/white</item>
+        <item name="icon">@drawable/ic_kaleyra_back_down</item>
+        <item name="android:contentDescription">@string/kaleyra_back</item>
+    </style>
 </resources>

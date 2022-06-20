@@ -22,6 +22,7 @@
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_subtitleStyle" />
         <attr name="kaleyra_recordingStyle" />
+        <attr name="kaleyra_backButtonStyle" />
     </declare-styleable>
 
     <style name="KaleyraCollaborationSuiteUI.CallInfo" parent="">
@@ -30,6 +31,7 @@
         <item name="kaleyra_subtitleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Subtitle.CallInfo</item>
         <item name="kaleyra_recordingStyle">@style/KaleyraCollaborationSuiteUI.RecordingWidget</item>
         <item name="kaleyra_iconStyle">@style/KaleyraCollaborationSuiteUI.CallWatermark</item>
+        <item name="kaleyra_backButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.BackButton</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.CallInfo.RootLayout">

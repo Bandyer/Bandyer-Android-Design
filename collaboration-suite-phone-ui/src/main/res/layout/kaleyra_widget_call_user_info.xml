@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,23 +14,30 @@
   ~ limitations under the License.
   -->
 
-
-<merge
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/kaleyra_back_button"
+        style="?attr/kaleyra_backButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/kaleyra_display_name"
+        style="?attr/kaleyra_titleStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="?attr/kaleyra_titleStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/kaleyra_fullscreen_action_button"
         app:layout_constraintRight_toLeftOf="@id/kaleyra_fullscreen_action_button"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/kaleyra_back_button"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.button.MaterialButton
