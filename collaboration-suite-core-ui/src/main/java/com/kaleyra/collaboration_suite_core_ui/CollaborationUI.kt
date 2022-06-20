@@ -308,8 +308,15 @@ class PhoneBoxUI(
         }
     }
 
-    private fun canShowCallActivity(context: Context, call: Call): Boolean =
-        AppLifecycle.isInForeground.value && (!context.isSilent() || call.participants.value.let { it.me == it.creator() })
+    private fun canShowCallActivity(context: Context, call: Call): Boolean {
+        val participants = call.participants.value
+        val creator = participants.creator()
+        val isOutgoing = creator == participants.me
+        val isLink = creator == null
+        return AppLifecycle.isInForeground.value &&
+                (!context.isDND() || (context.isDND() && isOutgoing)) &&
+                (!context.isSilent() || (context.isSilent() && (isOutgoing || isLink)))
+    }
 }
 
 private fun Call.getDefaultActions() = mutableSetOf<Action>().apply {

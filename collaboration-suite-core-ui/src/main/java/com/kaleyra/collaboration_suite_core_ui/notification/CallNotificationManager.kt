@@ -112,6 +112,7 @@ internal interface CallNotificationManager {
      */
     fun buildOngoingCallNotification(
         username: String,
+        isLink: Boolean,
         isGroupCall: Boolean,
         isCallRecorded: Boolean,
         isSharingScreen: Boolean,
@@ -120,7 +121,7 @@ internal interface CallNotificationManager {
     ): Notification {
         val context = ContextRetainer.context
         val userText =
-            if (isGroupCall) context.resources.getString(R.string.kaleyra_notification_ongoing_call) else username
+            if (isGroupCall || isLink) context.resources.getString(R.string.kaleyra_notification_ongoing_call) else username
         val contentText = context.resources.getString(
             when {
                 isConnecting -> R.string.kaleyra_notification_connecting_call

@@ -24,6 +24,7 @@ import android.hardware.display.DisplayManager
 import android.media.AudioManager
 import android.os.Build
 import android.os.PowerManager
+import android.provider.Settings
 import android.util.DisplayMetrics
 import android.view.Display
 import android.view.View
@@ -166,6 +167,21 @@ object ContextExtensions {
     internal fun Context.isSilent(): Boolean {
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager?
         return audioManager?.ringerMode == AudioManager.RINGER_MODE_SILENT
+    }
+
+    /**
+     * Check if the device is in the dnd mode
+     *
+     * @receiver Context
+     * @return Boolean
+     */
+    internal fun Context.isDND(): Boolean {
+        return try {
+            val zenValue = Settings.Global.getInt(contentResolver, "zen_mode")
+            zenValue == 1 || zenValue == 2
+        } catch (e: Exception) {
+            false
+        }
     }
 }
 

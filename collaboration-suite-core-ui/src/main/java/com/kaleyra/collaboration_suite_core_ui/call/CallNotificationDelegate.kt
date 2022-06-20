@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.takeWhile
  *
  * @property isAppInForeground Boolean
  */
-interface CallNotificationDelegate: LifecycleOwner {
+interface CallNotificationDelegate : LifecycleOwner {
 
     /**
      * Flag which tells if the app is in foreground
@@ -58,15 +58,13 @@ interface CallNotificationDelegate: LifecycleOwner {
 
         when {
             call.isIncoming() -> {
-                if (call.state.value is Call.State.Disconnected && participants.me != participants.creator()) {
-                    val notification = NotificationManager.buildIncomingCallNotification(
-                        callerDescription,
-                        participants.others.count() > 1,
-                        activityClazz,
-                        false
-                    )
-                    showNotification(notification, true)
-                }
+                val notification = NotificationManager.buildIncomingCallNotification(
+                    callerDescription,
+                    participants.others.count() > 1,
+                    activityClazz,
+                    false
+                )
+                showNotification(notification, true)
             }
             call.isOutgoing() -> {
                 val notification = NotificationManager.buildOutgoingCallNotification(
@@ -79,6 +77,7 @@ interface CallNotificationDelegate: LifecycleOwner {
             call.isOngoing() -> {
                 val notification = NotificationManager.buildOngoingCallNotification(
                     calleeDescription,
+                    participants.creator() == null,
                     isGroupCall,
                     call.extras.recording is Call.Recording.OnConnect,
                     isSharingScreen = false,
@@ -133,6 +132,7 @@ interface CallNotificationDelegate: LifecycleOwner {
                     call.isOngoing() -> {
                         val notification = NotificationManager.buildOngoingCallNotification(
                             calleeDescription,
+                            participants.creator() == null,
                             isGroupCall,
                             call.extras.recording is Call.Recording.OnConnect,
                             isSharingScreen = false,
@@ -149,11 +149,11 @@ interface CallNotificationDelegate: LifecycleOwner {
     }
 
     private fun Call.isIncoming() =
-        state.value is Call.State.Disconnected && participants.value.me != participants.value.creator()
+        state.value is Call.State.Disconnected && participants.value.let { it.creator() != it.me && it.creator() != null }
 
     private fun Call.isOutgoing() =
-        state.value is Call.State.Connecting && participants.value.me == participants.value.creator()
+        state.value is Call.State.Connecting && participants.value.let { it.creator() == it.me }
 
     private fun Call.isOngoing() =
-        state.value is Call.State.Connecting || state.value is Call.State.Connected
+        (state.value is Call.State.Connecting || state.value is Call.State.Connected) && participants.value.let { it.creator() == null }
 }
