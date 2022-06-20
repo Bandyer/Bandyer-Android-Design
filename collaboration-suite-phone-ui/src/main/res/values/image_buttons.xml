@@ -188,7 +188,7 @@
         <item name="iconTint">@android:color/white</item>
         <item name="android:visibility">visible</item>
         <item name="rippleColor">@android:color/white</item>
-        <item name="icon">@drawable/ic_kaleyra_back_down</item>
+        <item name="icon">@drawable/kaleyra_z_arrow_left</item>
         <item name="android:contentDescription">@string/kaleyra_back</item>
     </style>
 </resources>
