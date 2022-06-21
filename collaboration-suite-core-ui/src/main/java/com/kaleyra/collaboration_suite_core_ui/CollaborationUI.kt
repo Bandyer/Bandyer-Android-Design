@@ -54,6 +54,7 @@ import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMess
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isDND
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.disableAudioRouting
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.enableAudioRouting
@@ -176,13 +177,9 @@ object CollaborationUI {
     /**
      * Disconnect
      */
-    fun disconnect() = disconnectCollaboration(false)
-
-    private fun disconnectCollaboration(clearSavedData: Boolean = false) {
+    fun disconnect() {
         collaboration ?: return
-        phoneBox.disconnect()
-        chatBox.disconnect(clearSavedData)
-        stopCollaborationService()
+        stopCollaborationService(false)
     }
 
     /**
@@ -192,31 +189,27 @@ object CollaborationUI {
     fun dispose(clearSavedData: Boolean = true) {
         collaboration ?: return
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
-        disconnectCollaboration(clearSavedData)
+        stopCollaborationService(clearSavedData)
         collaboration = null
         _phoneBox = null
         _chatBox = null
     }
 
-    private fun startCollaborationService(startPhoneBox: Boolean, startChatBox: Boolean) {
-        val serviceConnection = object : ServiceConnection {
-            override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
-                if (startPhoneBox) phoneBox.connect()
-                if (startChatBox) chatBox.connect()
-            }
-
-            override fun onServiceDisconnected(componentName: ComponentName) = Unit
-        }
-
-        with(ContextRetainer.context) {
-            val intent = Intent(this, CollaborationService::class.java)
-            startService(intent)
-            bindService(intent, serviceConnection, 0)
-        }
+    private fun startCollaborationService(startPhoneBox: Boolean, startChatBox: Boolean) = with(ContextRetainer.context) {
+        val intent = Intent(this, CollaborationService::class.java)
+        intent.putExtra(CollaborationService.CONNECT_PHONE, startPhoneBox)
+        intent.putExtra(CollaborationService.CONNECT_CHAT, startChatBox)
+        startService(intent)
     }
 
-    private fun stopCollaborationService() = with(ContextRetainer.context) {
-        stopService(Intent(this, CollaborationService::class.java))
+    private fun stopCollaborationService(clearSavedData: Boolean) {
+        if (!CollaborationService.isActive) return
+        with(ContextRetainer.context) {
+            val intent = Intent(this, CollaborationService::class.java)
+            intent.putExtra(CollaborationService.DISCONNECT, true)
+            intent.putExtra(CollaborationService.CLEAR_DATA, clearSavedData)
+            startService(intent)
+        }
     }
 }
 

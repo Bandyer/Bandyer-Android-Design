@@ -6,12 +6,8 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import com.kaleyra.collaboration_suite_core_ui.ChatDelegate
-import com.kaleyra.collaboration_suite_core_ui.CollaborationService
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
-import com.kaleyra.collaboration_suite_core_ui.call.CallController
-import com.kaleyra.collaboration_suite_core_ui.call.CallDelegate
-import com.kaleyra.collaboration_suite_core_ui.common.DeviceStatusDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
@@ -19,7 +15,6 @@ import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
-import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModelFactory
 import com.kaleyra.collaboration_suite_glass_ui.common.OnDestinationChangedListener
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatActivityGlassBinding
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
@@ -27,10 +22,7 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.enableImmersiveMode
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
-import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryObserver
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
-import com.kaleyra.collaboration_suite_utils.network_observer.WiFiObserver
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 

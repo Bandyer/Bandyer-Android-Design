@@ -15,7 +15,6 @@ import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
@@ -27,14 +26,20 @@ import kotlinx.coroutines.launch
 /**
  * The CollaborationService
  */
-class CollaborationService : BoundService(),
-                             CallStreamDelegate,
-                             CallNotificationDelegate,
-                             Application.ActivityLifecycleCallbacks,
-                             CallNotificationActionReceiver.ActionDelegate {
+internal class CollaborationService : BoundService(),
+                                      CallStreamDelegate,
+                                      CallNotificationDelegate,
+                                      Application.ActivityLifecycleCallbacks,
+                                      CallNotificationActionReceiver.ActionDelegate {
 
-    private companion object {
-        const val CALL_NOTIFICATION_ID = 22
+    companion object {
+        private const val CALL_NOTIFICATION_ID = 22
+        const val CONNECT_PHONE = "connect_phone"
+        const val CONNECT_CHAT = "connect_chat"
+        const val DISCONNECT = "disconnect"
+        const val CLEAR_DATA = "clear_data"
+        var isActive = false
+            private set
     }
 
     private var usersDescription: UsersDescription = UsersDescription()
@@ -47,6 +52,8 @@ class CollaborationService : BoundService(),
 
     override val isAppInForeground: Boolean get() = AppLifecycle.isInForeground.value
 
+    private var clearData = false
+
     /**
      * @suppress
      */
@@ -57,6 +64,7 @@ class CollaborationService : BoundService(),
         AppLifecycle.isInForeground.dropWhile { !it }.filterNot { it }.onEach {
             if (currentCall == null || currentCall!!.state.value is Call.State.Disconnected.Ended) stopSelf()
         }.launchIn(lifecycleScope)
+        isActive = true
     }
 
     /**
@@ -64,6 +72,17 @@ class CollaborationService : BoundService(),
      */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
+        intent ?: return START_NOT_STICKY
+        val disconnect = intent.getBooleanExtra(DISCONNECT, false)
+        clearData = intent.getBooleanExtra(CLEAR_DATA, false)
+        if (disconnect) {
+            stopSelf()
+            return START_NOT_STICKY
+        }
+        val connectPhone = intent.getBooleanExtra(CONNECT_PHONE, false)
+        val connectChat = intent.getBooleanExtra(CONNECT_CHAT, false)
+        if (connectPhone) CollaborationUI.phoneBox.connect()
+        if (connectChat) CollaborationUI.chatBox.connect()
         return START_NOT_STICKY
     }
 
@@ -74,11 +93,13 @@ class CollaborationService : BoundService(),
         super.onDestroy()
         application.unregisterActivityLifecycleCallbacks(this)
         clearNotification()
+        CollaborationUI.phoneBox.disconnect()
+        CollaborationUI.chatBox.disconnect(clearData)
         currentCall?.end()
-        CollaborationUI.disconnect()
         CallNotificationActionReceiver.actionDelegate = null
         currentCall = null
         callActivityClazz = null
+        isActive = false
     }
 
     /**
