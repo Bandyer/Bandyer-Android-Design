@@ -56,26 +56,24 @@ interface CallNotificationDelegate : LifecycleOwner {
         val callerDescription = usersDescription.name(listOf(participants.creator()?.userId ?: ""))
         val calleeDescription = usersDescription.name(participants.others.map { it.userId })
 
-        when {
+        val notification = when {
             call.isIncoming() -> {
-                val notification = NotificationManager.buildIncomingCallNotification(
+                NotificationManager.buildIncomingCallNotification(
                     callerDescription,
                     participants.others.count() > 1,
                     activityClazz,
                     false
                 )
-                showNotification(notification, true)
             }
             call.isOutgoing() -> {
-                val notification = NotificationManager.buildOutgoingCallNotification(
+                NotificationManager.buildOutgoingCallNotification(
                     calleeDescription,
                     isGroupCall,
                     activityClazz
                 )
-                showNotification(notification, true)
             }
             call.isOngoing() -> {
-                val notification = NotificationManager.buildOngoingCallNotification(
+                NotificationManager.buildOngoingCallNotification(
                     calleeDescription,
                     participants.creator() == null,
                     isGroupCall,
@@ -84,9 +82,11 @@ interface CallNotificationDelegate : LifecycleOwner {
                     call.state.value is Call.State.Connecting,
                     activityClazz
                 )
-                showNotification(notification, true)
             }
-        }
+            else -> null
+        } ?: return
+
+        showNotification(notification, true)
     }
 
     /**

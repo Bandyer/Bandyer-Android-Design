@@ -7,49 +7,33 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
 /**
  * The CollaborationService
  */
 class CollaborationService : BoundService(),
-                             CallStreamDelegate,
-                             CallNotificationDelegate,
-                             Application.ActivityLifecycleCallbacks,
-                             CallNotificationActionReceiver.ActionDelegate {
-
-    enum class State {
-        STARTED,
-        DESTROYED
-    }
+    CallStreamDelegate,
+    CallNotificationDelegate,
+    Application.ActivityLifecycleCallbacks,
+    CallNotificationActionReceiver.ActionDelegate {
 
     companion object {
         private const val CALL_NOTIFICATION_ID = 22
-        private val _state: MutableStateFlow<State> = MutableStateFlow(State.DESTROYED)
-        val state: StateFlow<State> = _state.asStateFlow()
+        const val CALL_ACTIVITY_CLASS = "call_activity_class"
     }
 
-    private var usersDescription: UsersDescription = UsersDescription()
+    private var currentCall: CallUI? = null
 
     private var callActivityClazz: Class<*>? = null
 
     private var isServiceInForeground: Boolean = false
-
-    private var currentCall: CallUI? = null
 
     override val isAppInForeground: Boolean get() = AppLifecycle.isInForeground.value
 
@@ -67,6 +51,15 @@ class CollaborationService : BoundService(),
      */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
+        val call = CollaborationUI.phoneBox.call.replayCache.firstOrNull()
+        val callActivityClass = intent?.extras?.getSerializable(CALL_ACTIVITY_CLASS) as? Class<*>
+        call ?: callActivityClass ?: kotlin.run {
+            stopSelf()
+            return START_NOT_STICKY
+        }
+        currentCall = call
+        callActivityClazz = callActivityClass
+        bindCall(currentCall!!, callActivityClazz!!)
         return START_NOT_STICKY
     }
 
@@ -75,9 +68,8 @@ class CollaborationService : BoundService(),
      */
     override fun onDestroy() {
         super.onDestroy()
-        application.unregisterActivityLifecycleCallbacks(this)
         clearNotification()
-        currentCall?.end()
+        application.unregisterActivityLifecycleCallbacks(this)
         CallNotificationActionReceiver.actionDelegate = null
         currentCall = null
         callActivityClazz = null
@@ -86,32 +78,19 @@ class CollaborationService : BoundService(),
     /**
      * Bind the service to a phone box
      *
-     * @param usersDescription The user description. Optional.
      * @param callActivityClazz The call activity class
      */
-    fun bindCall(
+    private fun bindCall(
         call: CallUI,
-        usersDescription: UsersDescription,
         callActivityClazz: Class<*>
-    ) {
-        if (currentCall != null || call.state.value is Call.State.Disconnected.Ended) return
-        this.usersDescription = usersDescription
-        this.callActivityClazz = callActivityClazz
-        lifecycleScope.launch {
-            currentCall = call
-            call.state.takeWhile { it !is Call.State.Disconnected.Ended }
-                .onCompletion { currentCall = null }
-                .launchIn(lifecycleScope)
-
-            setUpCallStreams(this@CollaborationService, call)
-
-            syncNotificationWithCallState(
-                this@CollaborationService,
-                call,
-                this@CollaborationService.usersDescription,
-                callActivityClazz
-            )
-        }
+    ) = lifecycleScope.launch {
+        setUpCallStreams(this@CollaborationService, call)
+        syncNotificationWithCallState(
+            this@CollaborationService,
+            call,
+            CollaborationUI.usersDescription,
+            callActivityClazz
+        )
     }
 
     ////////////////////////////////////////////
@@ -135,7 +114,7 @@ class CollaborationService : BoundService(),
             if (!isAppInForeground) return@launch
             moveNotificationToForeground(
                 currentCall!!,
-                usersDescription,
+                CollaborationUI.usersDescription,
                 callActivityClazz!!
             )
         }

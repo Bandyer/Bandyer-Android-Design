@@ -17,8 +17,6 @@
 package com.kaleyra.collaboration_suite_core_ui.model
 
 import android.net.Uri
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 
 /**
  * Users description
@@ -26,8 +24,7 @@ import kotlinx.parcelize.Parcelize
  * @property name suspend function to implement which will be used to display user display name
  * @property image suspend function to implement which will be used to display user image
  */
-@Parcelize
 class UsersDescription(
     val name: suspend (userIds: List<String>) -> String = { it.joinToString() },
     val image: suspend (userIds: List<String>) -> Uri = { Uri.EMPTY }
-) : Parcelable
+)
