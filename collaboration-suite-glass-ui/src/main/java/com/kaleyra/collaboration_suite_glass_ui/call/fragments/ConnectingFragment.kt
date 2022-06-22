@@ -79,10 +79,10 @@ internal abstract class ConnectingFragment : BaseFragment() {
         }
 
         repeatOnStarted {
-            combine(viewModel.callState, viewModel.amIAlone.dropWhile {!it }) { state, alone -> Pair(state, alone) }
-                .takeWhile { it.first !is Call.State.Connected && it.second }
-                .onCompletion { onConnected() }
-                .launchIn(this@repeatOnStarted)
+            combine(viewModel.callState, viewModel.amIAlone) { state, alone ->
+                if (state !is Call.State.Connected || alone) return@combine
+                onConnected()
+            }.launchIn(this@repeatOnStarted)
 
             viewModel.inCallParticipants
                 .takeWhile { it.count() < 2 }
