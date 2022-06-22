@@ -6,6 +6,7 @@ import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -20,7 +21,7 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, val scope: Co
             if (isInForeground) resume()
             else if (collaboration.phoneBox.call.replayCache.isEmpty()) disconnect()
             disconnectJob?.cancel()
-            disconnectJob = disconnectOnCallEndedInBackground(isInForeground)
+            disconnectJob = disconnectOnCallEndedInBackground()
         }.launchIn(scope)
     }
 
@@ -46,8 +47,8 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, val scope: Co
         if (wasChatBoxConnected) collaboration.chatBox.connect()
     }
 
-    private fun disconnectOnCallEndedInBackground(isInForeground: Boolean) = collaboration.phoneBox.call.onEach calls@{ call ->
-        if (call.state.value !is Call.State.Disconnected.Ended || isInForeground) return@calls
+    private fun disconnectOnCallEndedInBackground() = collaboration.phoneBox.call.flatMapLatest { it.state }.onEach {
+        if (it !is Call.State.Disconnected.Ended || AppLifecycle.isInForeground.value) return@onEach
         disconnect()
     }.launchIn(scope)
 }
