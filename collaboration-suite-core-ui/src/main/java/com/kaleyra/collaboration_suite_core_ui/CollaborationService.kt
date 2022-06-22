@@ -5,7 +5,6 @@ import android.app.Application
 import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
@@ -19,11 +18,8 @@ import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.dropWhile
-import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
@@ -64,9 +60,6 @@ class CollaborationService : BoundService(),
         super.onCreate()
         application.registerActivityLifecycleCallbacks(this)
         CallNotificationActionReceiver.actionDelegate = this
-        AppLifecycle.isInForeground.dropWhile { !it }.filterNot { it }.onEach {
-            if (currentCall == null || currentCall!!.state.value is Call.State.Disconnected.Ended) stopSelf()
-        }.launchIn(lifecycleScope)
     }
 
     /**
@@ -74,8 +67,6 @@ class CollaborationService : BoundService(),
      */
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-//        Log.e("CollaborationUI", "service start command")
-        emitState(State.STARTED)
         return START_NOT_STICKY
     }
 
@@ -87,17 +78,10 @@ class CollaborationService : BoundService(),
         application.unregisterActivityLifecycleCallbacks(this)
         clearNotification()
         currentCall?.end()
-//        Log.e("CollaborationUI", "service disconnect")
-        CollaborationUI.phoneBox.disconnect()
-        CollaborationUI.chatBox.disconnect()
-//        CollaborationUI.internalDisconnect()
         CallNotificationActionReceiver.actionDelegate = null
         currentCall = null
         callActivityClazz = null
-        emitState(State.DESTROYED)
     }
-
-    private fun emitState(state: State) = lifecycleScope.launch { _state.emit(state) }
 
     /**
      * Bind the service to a phone box
@@ -116,11 +100,8 @@ class CollaborationService : BoundService(),
         lifecycleScope.launch {
             currentCall = call
             call.state.takeWhile { it !is Call.State.Disconnected.Ended }
-                .onCompletion {
-                    currentCall = null
-                    if (isAppInForeground) return@onCompletion
-                    stopSelf()
-                }.launchIn(lifecycleScope)
+                .onCompletion { currentCall = null }
+                .launchIn(lifecycleScope)
 
             setUpCallStreams(this@CollaborationService, call)
 
@@ -151,6 +132,7 @@ class CollaborationService : BoundService(),
         if (activity.javaClass != callActivityClazz || isServiceInForeground) return
         lifecycleScope.launch {
             currentCall ?: return@launch
+            if (!isAppInForeground) return@launch
             moveNotificationToForeground(
                 currentCall!!,
                 usersDescription,

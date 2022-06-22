@@ -16,17 +16,14 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
+//import android.util.Log
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.os.Parcelable
-//import android.util.Log
 import androidx.annotation.Keep
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ProcessLifecycleOwner
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite.Collaboration.Credentials
@@ -73,17 +70,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
-import java.util.concurrent.ConcurrentLinkedQueue
-import kotlin.collections.HashMap
 
 /**
  * Collaboration UI
@@ -91,9 +85,6 @@ import kotlin.collections.HashMap
  * This object allows the usage of a Collaboration UI
  */
 object CollaborationUI {
-
-    private const val CONNECT_COMMAND = 1
-    private const val DISCONNECT_COMMAND = 2
 
     private var collaboration: Collaboration? = null
 
@@ -103,34 +94,7 @@ object CollaborationUI {
     private lateinit var chatActivityClazz: Class<*>
     private var chatNotificationActivityClazz: Class<*>? = null
 
-    private var wasPhoneBoxConnected = false
-    private var wasChatBoxConnected = false
-
-    private var commandQueue = ConcurrentLinkedQueue<Int>()
-    private var currentCommand = -1
-
-    private val isConnected: Boolean
-        get() = CollaborationService.state.value == CollaborationService.State.STARTED &&
-                phoneBox.state.value is PhoneBox.State.Connected &&
-                chatBox.state.value is ChatBox.State.Connected
-
-    private val isDisconnected: Boolean
-        get() = CollaborationService.state.value == CollaborationService.State.DESTROYED &&
-                phoneBox.state.value is PhoneBox.State.Disconnected &&
-                chatBox.state.value is ChatBox.State.Disconnected
-
-    private var lifecycleObserver = object : DefaultLifecycleObserver {
-        override fun onStart(owner: LifecycleOwner) {
-            super.onStart(owner)
-            startCollaborationService(wasPhoneBoxConnected, wasChatBoxConnected)
-        }
-
-        override fun onStop(owner: LifecycleOwner) {
-            super.onStop(owner)
-            wasPhoneBoxConnected = phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
-            wasChatBoxConnected = chatBox.state.value.let { it !is ChatBox.State.Disconnected && it !is ChatBox.State.Disconnecting }
-        }
-    }
+    private var collaborationUIConnector: CollaborationUIConnector? = null
 
     /**
      * Users description to be used for the UI
@@ -179,65 +143,29 @@ object CollaborationUI {
         chatNotificationActivityClazz: Class<*>? = null
     ): Boolean {
         if (collaboration != null) return false
-        Collaboration.create(credentials, configuration).apply { collaboration = this }
+        Collaboration.create(credentials, configuration).apply {
+            collaboration = this
+        }
         this.chatActivityClazz = chatActivityClazz
         this.callActivityClazz = callActivityClazz
         this.chatNotificationActivityClazz = chatNotificationActivityClazz
-        ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
         mainScope = MainScope()
+        collaborationUIConnector = CollaborationUIConnector(this, mainScope!!)
         return true
     }
 
     /**
      * Connect
      */
-    fun connect() = addToQueue(CONNECT_COMMAND)
+    fun connect() {
+        collaborationUIConnector?.connect()
+    }
 
     /**
      * Disconnect
      */
-    fun disconnect() = addToQueue(DISCONNECT_COMMAND)
-
-    private fun internalConnect() {
-//        Log.e("CollaborationUI", "connect")
-        collaboration ?: return
-        startCollaborationService(true, true)
-    }
-
-    private fun internalDisconnect(clearSavedData: Boolean = false) {
-//        Log.e("CollaborationUI", "disconnect")
-        collaboration ?: return
-        phoneBox.disconnect()
-        chatBox.disconnect(clearSavedData)
-        stopCollaborationService()
-    }
-
-    private fun addToQueue(cmd: Int) {
-        if (cmd != CONNECT_COMMAND && cmd != DISCONNECT_COMMAND) return
-        commandQueue.add(cmd)
-        if (currentCommand == -1) playQueue()
-    }
-
-    private fun playQueue() {
-        currentCommand = commandQueue.poll() ?: return
-//        Log.e("CollaborationUI", "command: $currentCommand")
-
-        combine(CollaborationService.state, phoneBox.state, chatBox.state) { _, _, _ ->
-            val playNext = (currentCommand == CONNECT_COMMAND && isConnected) || (currentCommand == DISCONNECT_COMMAND && isDisconnected)
-            if (playNext) {
-//                Log.e("CollaborationUI", "command: ${CollaborationService.state.value}")
-                currentCommand = -1
-                playQueue()
-            }
-            playNext
-        }.takeWhile { !it }.launchIn(mainScope!!)
-
-        if ((currentCommand == CONNECT_COMMAND && isConnected) || (currentCommand == DISCONNECT_COMMAND && isDisconnected)) return
-
-        when (currentCommand) {
-            CONNECT_COMMAND -> internalConnect()
-            DISCONNECT_COMMAND -> internalDisconnect()
-        }
+    fun disconnect() {
+        collaborationUIConnector?.disconnect()
     }
 
     /**
@@ -246,35 +174,12 @@ object CollaborationUI {
      */
     fun dispose(clearSavedData: Boolean = true) {
         collaboration ?: return
-        ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
-        internalDisconnect(clearSavedData)
         mainScope?.cancel()
+        collaborationUIConnector?.dispose(clearSavedData)
         collaboration = null
         _phoneBox = null
         _chatBox = null
         mainScope = null
-    }
-
-    private fun startCollaborationService(startPhoneBox: Boolean, startChatBox: Boolean) {
-        val serviceConnection = object : ServiceConnection {
-            override fun onServiceConnected(componentName: ComponentName, binder: IBinder) {
-                if (startPhoneBox) phoneBox.connect()
-                if (startChatBox) chatBox.connect()
-//                Log.e("CollaborationUI", "service connected")
-            }
-
-            override fun onServiceDisconnected(componentName: ComponentName) = Unit
-        }
-
-        with(ContextRetainer.context) {
-            val intent = Intent(this, CollaborationService::class.java)
-            startService(intent)
-            bindService(intent, serviceConnection, 0)
-        }
-    }
-
-    private fun stopCollaborationService() = with(ContextRetainer.context) {
-        stopService(Intent(this, CollaborationService::class.java))
     }
 }
 
@@ -312,12 +217,26 @@ class PhoneBoxUI(
 
     private fun listenToCalls() {
         callScope = MainScope()
+        var stopServiceJob: Job? = null
         call.onEach {
+            stopServiceJob?.cancel()
+            stopServiceJob = callServiceJob(it, callScope!!)
             if (it.state is Call.State.Disconnected.Ended || !withUI) return@onEach
             CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope!!)
             show(it)
         }.launchIn(callScope!!)
     }
+
+    private fun callServiceJob(call: CallUI, scope: CoroutineScope) = with(ContextRetainer.context) {
+        call.state
+            .onEach {
+                if (it is Call.State.Disconnected.Ended) stopService(Intent(this, CollaborationService::class.java))
+                else if (it is Call.State.Disconnected) startService(Intent(this, CollaborationService::class.java))
+            }
+            .onCompletion { stopService(Intent(this@with, CollaborationService::class.java)) }
+            .launchIn(callScope!!)
+    }
+
 
     /**
      * Call
