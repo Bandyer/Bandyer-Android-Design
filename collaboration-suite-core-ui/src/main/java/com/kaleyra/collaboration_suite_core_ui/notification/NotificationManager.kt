@@ -19,8 +19,6 @@ package com.kaleyra.collaboration_suite_core_ui.notification
 import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
 /**
@@ -61,14 +59,4 @@ internal object NotificationManager : CallNotificationManager, ChatNotificationM
      * @param notificationId Int
      */
     fun cancel(notificationTag: String, notificationId: Int) = notificationManager.cancel(notificationTag, notificationId)
-
-    /**
-     * Clear the notification channels
-     */
-    fun clearNotificationChannels() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
-        notificationManager.deleteNotificationChannel(CallNotificationManager.DEFAULT_CHANNEL_ID)
-        notificationManager.deleteNotificationChannel(CallNotificationManager.IMPORTANT_CHANNEL_ID)
-        notificationManager.deleteNotificationChannel(ChatNotificationManager.DEFAULT_CHANNEL_ID)
-    }
 }
