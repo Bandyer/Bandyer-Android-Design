@@ -20,6 +20,7 @@ import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite.Collaboration.Credentials
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_utils.cached
 import com.kaleyra.collaboration_suite_utils.getValue
 import com.kaleyra.collaboration_suite_utils.setValue
@@ -124,6 +125,7 @@ object CollaborationUI {
         collaboration ?: return
         mainScope?.cancel()
         collaborationUIConnector?.dispose(clearSavedData)
+        NotificationManager.clearNotificationChannels()
         collaboration = null
         _phoneBox = null
         _chatBox = null

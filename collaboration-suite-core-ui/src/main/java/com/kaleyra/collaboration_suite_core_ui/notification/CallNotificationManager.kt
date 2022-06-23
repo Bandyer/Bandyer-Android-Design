@@ -17,9 +17,9 @@ import com.kaleyra.collaboration_suite_utils.ContextRetainer
 internal interface CallNotificationManager {
 
     companion object {
-        private const val DEFAULT_CHANNEL_ID =
+        const val DEFAULT_CHANNEL_ID =
             "com.kaleyra.collaboration_suite_core_ui.call_notification_channel_default"
-        private const val IMPORTANT_CHANNEL_ID =
+        const val IMPORTANT_CHANNEL_ID =
             "com.kaleyra.collaboration_suite_core_ui.call_notification_channel_important"
 
         private const val FULL_SCREEN_REQUEST_CODE = 123
