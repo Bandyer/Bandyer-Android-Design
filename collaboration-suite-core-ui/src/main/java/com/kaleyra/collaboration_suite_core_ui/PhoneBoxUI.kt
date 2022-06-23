@@ -52,7 +52,6 @@ class PhoneBoxUI(
 
     override fun connect() {
         phoneBox.connect()
-        disableAudioRouting(logger)
         if (callScope?.isActive == true) return
         listenToCalls()
     }
@@ -83,6 +82,7 @@ class PhoneBoxUI(
     override fun create(users: List<User>, conf: (PhoneBox.CreationOptions.() -> Unit)?) = CallUI(phoneBox.create(users, conf))
 
     private fun listenToCalls() {
+        disableAudioRouting(logger)
         callScope = MainScope()
         var stopServiceJob: Job? = null
         call.onEach {
