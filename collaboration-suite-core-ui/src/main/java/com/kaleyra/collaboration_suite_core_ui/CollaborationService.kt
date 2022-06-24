@@ -5,6 +5,7 @@ import android.app.Application
 import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
@@ -13,6 +14,9 @@ import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
 /**
@@ -60,6 +64,7 @@ class CollaborationService : BoundService(),
         currentCall = call
         callActivityClazz = callActivityClass
         bindCall(currentCall!!, callActivityClazz!!)
+        observeAppLifecycle()
         return START_NOT_STICKY
     }
 
@@ -93,6 +98,20 @@ class CollaborationService : BoundService(),
         )
     }
 
+    private fun observeAppLifecycle() {
+        AppLifecycle.isInForegroundFlow
+            .onEach {
+                if (!it) return@onEach
+                moveNotificationToForeground(
+                    currentCall!!,
+                    CollaborationUI.usersDescription,
+                    callActivityClazz!!
+                )
+            }
+            .takeWhile { !it }
+            .launchIn(lifecycleScope)
+    }
+
     ////////////////////////////////////////////
     // Application.ActivityLifecycleCallbacks //
     ////////////////////////////////////////////
@@ -107,18 +126,7 @@ class CollaborationService : BoundService(),
     /**
      * @suppress
      */
-    override fun onActivityStarted(activity: Activity) {
-        if (activity.javaClass != callActivityClazz || isServiceInForeground) return
-        lifecycleScope.launch {
-            currentCall ?: return@launch
-            if (!isAppInForeground) return@launch
-            moveNotificationToForeground(
-                currentCall!!,
-                CollaborationUI.usersDescription,
-                callActivityClazz!!
-            )
-        }
-    }
+    override fun onActivityStarted(activity: Activity) = Unit
 
     /**
      * @suppress
