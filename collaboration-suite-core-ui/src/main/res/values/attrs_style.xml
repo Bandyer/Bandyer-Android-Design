@@ -22,6 +22,8 @@
 
     <attr name="kaleyra_backButtonStyle" format="reference" />
 
+    <attr name="kaleyra_fullscreenButtonStyle" format="reference" />
+
     <attr name="kaleyra_subtitleStyle" format="reference" />
 
     <attr name="kaleyra_iconStyle" format="reference" />

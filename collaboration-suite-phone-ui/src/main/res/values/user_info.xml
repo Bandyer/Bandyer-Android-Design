@@ -18,14 +18,14 @@
 <resources>
     <declare-styleable name="KaleyraCollaborationSuiteUI.UserInfo">
         <attr name="kaleyra_rootLayoutStyle" />
-        <attr name="materialButtonStyle" />
+        <attr name="kaleyra_fullscreenButtonStyle" />
         <attr name="kaleyra_titleStyle" />
         <attr name="kaleyra_backButtonStyle" />
     </declare-styleable>
 
     <style name="KaleyraCollaborationSuiteUI.UserInfo" parent="">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.UserInfo.RootLayout</item>
-        <item name="materialButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.FullScreen</item>
+        <item name="kaleyra_fullscreenButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.FullScreen</item>
         <item name="kaleyra_titleStyle">@style/KaleyraCollaborationSuiteUI.TextView.Title.UserInfo</item>
         <item name="kaleyra_backButtonStyle">@style/KaleyraCollaborationSuiteUI.ImageButton.BackButton</item>
     </style>
