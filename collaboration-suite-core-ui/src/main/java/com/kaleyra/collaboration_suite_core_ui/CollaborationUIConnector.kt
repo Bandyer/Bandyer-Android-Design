@@ -5,24 +5,24 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-class CollaborationUIConnector(val collaboration: CollaborationUI, val scope: CoroutineScope) {
+class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: CoroutineScope) {
 
     private var wasPhoneBoxConnected = false
     private var wasChatBoxConnected = false
 
+    private var scope = CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.Main)
+
     init {
-        var disconnectJob: Job? = null
-        AppLifecycle.isInForeground.onEach { isInForeground ->
-            if (isInForeground) resume()
-            else if (collaboration.phoneBox.call.replayCache.isEmpty()) disconnect()
-            disconnectJob?.cancel()
-            disconnectJob = disconnectOnCallEndedInBackground()
-        }.launchIn(scope)
+        syncWithAppLifecycle(scope)
+        syncWithCallState(scope)
     }
 
     fun connect() {
@@ -40,6 +40,7 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, val scope: Co
     fun dispose(clearSavedData: Boolean = true) {
         collaboration.phoneBox.disconnect()
         collaboration.chatBox.disconnect(clearSavedData)
+        scope.cancel()
     }
 
     private fun resume() {
@@ -47,8 +48,19 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, val scope: Co
         if (wasChatBoxConnected) collaboration.chatBox.connect()
     }
 
-    private fun disconnectOnCallEndedInBackground() = collaboration.phoneBox.call.flatMapLatest { it.state }.onEach {
-        if (it !is Call.State.Disconnected.Ended || AppLifecycle.isInForeground()) return@onEach
-        disconnect()
-    }.launchIn(scope)
+    private fun syncWithAppLifecycle(scope: CoroutineScope) {
+        AppLifecycle.isInForeground.onEach { isInForeground ->
+            if (isInForeground) resume()
+            else if (collaboration.phoneBox.call.replayCache.isEmpty()) disconnect()
+        }.launchIn(scope)
+    }
+
+    private fun syncWithCallState(scope: CoroutineScope) {
+        collaboration.phoneBox.call
+            .flatMapLatest { it.state }
+            .onEach {
+                if (it !is Call.State.Disconnected.Ended || AppLifecycle.isInForeground()) return@onEach
+                disconnect()
+            }.launchIn(scope)
+    }
 }
