@@ -5,19 +5,12 @@ import android.app.Application
 import android.app.Notification
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
-import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.takeWhile
-import kotlinx.coroutines.launch
 
 /**
  * The CollaborationService
@@ -38,8 +31,6 @@ class CollaborationService : BoundService(),
     private var callActivityClazz: Class<*>? = null
 
     private var isServiceInForeground: Boolean = false
-
-    override val isAppInForeground: Boolean get() = AppLifecycle.isInForeground
 
     /**
      * @suppress
@@ -64,7 +55,6 @@ class CollaborationService : BoundService(),
         currentCall = call
         callActivityClazz = callActivityClass
         bindCall(currentCall!!, callActivityClazz!!)
-        observeAppLifecycle()
         return START_NOT_STICKY
     }
 
@@ -88,28 +78,9 @@ class CollaborationService : BoundService(),
     private fun bindCall(
         call: CallUI,
         callActivityClazz: Class<*>
-    ) = lifecycleScope.launch {
+    ) {
         setUpCallStreams(this@CollaborationService, call)
-        syncNotificationWithCallState(
-            this@CollaborationService,
-            call,
-            CollaborationUI.usersDescription,
-            callActivityClazz
-        )
-    }
-
-    private fun observeAppLifecycle() {
-        AppLifecycle.isInForegroundFlow
-            .onEach {
-                if (!it) return@onEach
-                moveNotificationToForeground(
-                    currentCall!!,
-                    CollaborationUI.usersDescription,
-                    callActivityClazz!!
-                )
-            }
-            .takeWhile { !it }
-            .launchIn(lifecycleScope)
+        syncCallNotification(call, CollaborationUI.usersDescription, callActivityClazz)
     }
 
     ////////////////////////////////////////////

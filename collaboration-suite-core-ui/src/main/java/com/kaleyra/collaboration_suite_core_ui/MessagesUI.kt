@@ -55,7 +55,7 @@ class MessagesUI(
     ) {
         val message = other.firstOrNull { it.state.value is Message.State.Received } ?: return
 
-        if (AppLifecycle.isInForeground) {
+        if (AppLifecycle.isInForeground()) {
             CustomChatNotificationManager.notify(chatId, chatCustomNotificationActivity)
             return
         }

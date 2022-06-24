@@ -17,7 +17,7 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, val scope: Co
 
     init {
         var disconnectJob: Job? = null
-        AppLifecycle.isInForegroundFlow.onEach { isInForeground ->
+        AppLifecycle.isInForeground.onEach { isInForeground ->
             if (isInForeground) resume()
             else if (collaboration.phoneBox.call.replayCache.isEmpty()) disconnect()
             disconnectJob?.cancel()
@@ -48,7 +48,7 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, val scope: Co
     }
 
     private fun disconnectOnCallEndedInBackground() = collaboration.phoneBox.call.flatMapLatest { it.state }.onEach {
-        if (it !is Call.State.Disconnected.Ended || AppLifecycle.isInForeground) return@onEach
+        if (it !is Call.State.Disconnected.Ended || AppLifecycle.isInForeground()) return@onEach
         disconnect()
     }.launchIn(scope)
 }

@@ -12,9 +12,17 @@ internal object AppLifecycle {
 
     private val _isAppInForeground = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
 
-    val isInForegroundFlow: SharedFlow<Boolean> = _isAppInForeground
+    /**
+     * A flow which notify if the application goes to foreground/background
+     */
+    val isInForeground: SharedFlow<Boolean> = _isAppInForeground
 
-    val isInForeground get() = isInForegroundFlow.replayCache.firstOrNull() ?: false
+    /**
+     * True if the app is in foreground, false otherwise
+     *
+     * @return Boolean
+     */
+    fun isInForeground(): Boolean = isInForeground.replayCache.firstOrNull() ?: false
 
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
