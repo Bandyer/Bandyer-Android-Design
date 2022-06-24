@@ -35,7 +35,7 @@ class CollaborationService : BoundService(),
 
     private var isServiceInForeground: Boolean = false
 
-    override val isAppInForeground: Boolean get() = AppLifecycle.isInForeground.value
+    override val isAppInForeground: Boolean get() = AppLifecycle.isInForeground
 
     /**
      * @suppress

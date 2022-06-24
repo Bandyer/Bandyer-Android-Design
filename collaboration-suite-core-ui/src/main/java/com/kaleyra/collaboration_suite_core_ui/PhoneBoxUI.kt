@@ -86,9 +86,9 @@ class PhoneBoxUI(
         callScope = MainScope()
         var stopServiceJob: Job? = null
         call.onEach {
+            if (it.state.value is Call.State.Disconnected.Ended || !withUI) return@onEach
             stopServiceJob?.cancel()
             stopServiceJob = callServiceJob(it, callScope!!)
-            if (it.state is Call.State.Disconnected.Ended || !withUI) return@onEach
             CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope!!)
             show(it)
         }.launchIn(callScope!!)
@@ -125,7 +125,7 @@ class PhoneBoxUI(
         val creator = participants.creator()
         val isOutgoing = creator == participants.me
         val isLink = creator == null
-        return AppLifecycle.isInForeground.value &&
+        return AppLifecycle.isInForeground &&
                 (!context.isDND() || (context.isDND() && isOutgoing)) &&
                 (!context.isSilent() || (context.isSilent() && (isOutgoing || isLink)))
     }
