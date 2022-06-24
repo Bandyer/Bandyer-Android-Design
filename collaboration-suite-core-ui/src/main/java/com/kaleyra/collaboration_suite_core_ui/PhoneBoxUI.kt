@@ -1,15 +1,10 @@
 package com.kaleyra.collaboration_suite_core_ui
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
-import android.os.IBinder
 import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
-import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isDND
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
@@ -84,17 +79,17 @@ class PhoneBoxUI(
     private fun listenToCalls() {
         disableAudioRouting(logger)
         callScope = MainScope()
-        var stopServiceJob: Job? = null
+        var serviceJob: Job? = null
         call.onEach {
             if (it.state.value is Call.State.Disconnected.Ended || !withUI) return@onEach
-            stopServiceJob?.cancel()
-            stopServiceJob = callServiceJob(it, callScope!!)
+            serviceJob?.cancel()
+            serviceJob = callService(it, callScope!!)
             CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope!!)
             show(it)
         }.launchIn(callScope!!)
     }
 
-    private fun callServiceJob(call: CallUI, scope: CoroutineScope): Job = with(ContextRetainer.context) {
+    private fun callService(call: CallUI, scope: CoroutineScope): Job = with(ContextRetainer.context) {
         call.state
             .onEach {
                 when (it) {
