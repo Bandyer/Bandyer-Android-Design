@@ -49,6 +49,11 @@ class KaleyraCallUserInfoWidget @JvmOverloads constructor(context: Context, attr
     var fullscreenActionButton: MaterialButton? = null
 
     /**
+     * Back button
+     */
+    var backButton: MaterialButton? = null
+
+    /**
      * Display name label
      */
     var displayName: MaterialTextView? = null
@@ -82,6 +87,7 @@ class KaleyraCallUserInfoWidget @JvmOverloads constructor(context: Context, attr
     init {
         fullscreenActionButton = binding.kaleyraFullscreenActionButton
         displayName = binding.kaleyraDisplayName
+        backButton = binding.kaleyraBackButton
 
         this.attrs = attrs
 

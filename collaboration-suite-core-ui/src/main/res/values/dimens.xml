@@ -31,6 +31,7 @@
     <dimen name="kaleyra_dimen_space13">13dp</dimen>
     <dimen name="kaleyra_dimen_space16">16dp</dimen>
     <dimen name="kaleyra_dimen_space18">18dp</dimen>
+    <dimen name="kaleyra_dimen_space19">19dp</dimen>
     <dimen name="kaleyra_dimen_space20">20dp</dimen>
     <dimen name="kaleyra_dimen_space24">24dp</dimen>
     <dimen name="kaleyra_dimen_space26">26dp</dimen>

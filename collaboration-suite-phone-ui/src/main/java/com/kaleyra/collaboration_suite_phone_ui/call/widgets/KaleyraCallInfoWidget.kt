@@ -19,34 +19,31 @@ package com.kaleyra.collaboration_suite_phone_ui.call.widgets
 
 import android.animation.Animator
 import android.content.Context
-import android.os.Build
 import android.os.CountDownTimer
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
-
-
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.textview.MaterialTextView
+import com.kaleyra.collaboration_suite_core_ui.layout.KaleyraCallWatermarkLayout
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingLeft
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingRight
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.setPaddingTop
-import com.kaleyra.collaboration_suite_core_ui.layout.KaleyraCallWatermarkLayout
+import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraWidgetCallInfoBinding
 import com.kaleyra.collaboration_suite_phone_ui.extensions.*
+import com.kaleyra.collaboration_suite_phone_ui.recording.RecordingWidget
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
-import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
-import com.google.android.material.textview.MaterialTextView
-import com.kaleyra.collaboration_suite_phone_ui.recording.RecordingWidget
 
 /**
  * This class represent a widget used to display in-call informations.
  * It has a tile, a subtitle and an icon that can be used to display the recording state of the video/audio call.
  */
-class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.kaleyra_rootLayoutStyle)
-    : ConstraintLayout(context, attrs, defStyleAttr), SystemViewLayoutObserver, HideableWidget {
+class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = R.attr.kaleyra_rootLayoutStyle) : ConstraintLayout(context, attrs, defStyleAttr), SystemViewLayoutObserver, HideableWidget {
 
     /**
      * Representation of call info ui components
@@ -70,7 +67,13 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
         /**
          * Recording ui component
          */
-        RECORDING
+        RECORDING,
+
+
+        /**
+         * Back button ui component
+         */
+        BACK_BUTTON
     }
 
     /**
@@ -136,6 +139,11 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
     var recordingView: RecordingWidget? = null
         private set
 
+    /**
+     * Back button view
+     */
+    var backButton: MaterialButton? = null
+        private set
 
     /**
      * Recording view
@@ -156,6 +164,7 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
         titleView = binding.kaleyraTitle
         subtitleView = binding.kaleyraSubtitle
         recordingView = binding.kaleyraRecording
+        backButton = binding.kaleyraBackButton
 
         titleView?.isSelected = true // activate marquee
         watermarkView = binding.kaleyraWatermark
@@ -164,8 +173,8 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
         initialPaddingTop = paddingTop
         initialPaddingRight = paddingRight
         initialPaddingBottom = paddingBottom
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) initialPaddingEnd = paddingEnd
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) initialPaddingStart = paddingStart
+        initialPaddingStart = paddingStart
+        initialPaddingEnd = paddingEnd
     }
 
     /**
@@ -314,6 +323,7 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
         titleView?.visibility = if (components.contains(CallInfoComponents.TITLE)) View.VISIBLE else View.GONE
         recordingView?.visibility = if (components.contains(CallInfoComponents.RECORDING)) View.VISIBLE else View.GONE
         subtitleView?.visibility = if (components.contains(CallInfoComponents.SUBTITLE)) View.VISIBLE else View.GONE
+        backButton?.visibility = if (components.contains(CallInfoComponents.BACK_BUTTON)) View.VISIBLE else View.GONE
         if (components.isEmpty()) {
             animateHide(onShown)
         } else show(onShown)
@@ -368,7 +378,7 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
             currentTopPixels = pixels
             val pixelToBeSet = when {
                 customTopPadding != 0 && customTopPadding != currentTopPixels -> customTopPadding
-                else -> currentTopPixels
+                else                                                          -> currentTopPixels
             }
             binding.root.setPaddingTop(pixelToBeSet)
         }
@@ -389,7 +399,7 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
             currentRightPixels = pixels
             val pixelToBeSet = when {
                 customRightPadding != 0 && customRightPadding != currentRightPixels -> customRightPadding
-                else -> currentRightPixels
+                else                                                                -> currentRightPixels
             }
             binding.root.setPaddingRight(pixelToBeSet)
         }
@@ -405,7 +415,7 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
             currentLeftPixels = pixels
             val pixelToBeSet = when {
                 customLeftPadding != 0 && customLeftPadding != currentLeftPixels -> customLeftPadding
-                else -> currentLeftPixels
+                else                                                             -> currentLeftPixels
             }
             binding.root.setPaddingLeft(pixelToBeSet)
         }
