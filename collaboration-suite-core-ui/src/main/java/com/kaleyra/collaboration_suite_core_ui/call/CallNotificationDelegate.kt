@@ -9,10 +9,9 @@ import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
 /**
@@ -45,38 +44,22 @@ interface CallNotificationDelegate : LifecycleOwner {
         usersDescription: UsersDescription,
         activityClazz: Class<*>
     ) {
-        syncWithCallState(call, usersDescription, activityClazz)
-        syncWithAppLifecycle(call, usersDescription, activityClazz)
-    }
-
-    private fun syncWithCallState(call: Call, usersDescription: UsersDescription, activityClazz: Class<*>): Job =
-        call.state
-            .onEach {
-                val notification = buildNotification(call, usersDescription, activityClazz) ?: return@onEach
-                showNotification(notification, AppLifecycle.isInForeground())
-            }
+        combine(call.state, AppLifecycle.isInForeground) { state, isInForeground ->
+            val notification =
+                buildNotification(call, usersDescription, activityClazz, isInForeground) ?: return@combine state
+            showNotification(notification, isInForeground)
+            state
+        }
             .takeWhile { it !is Call.State.Disconnected.Ended }
             .onCompletion { clearNotification() }
             .launchIn(lifecycleScope)
-
-    private fun syncWithAppLifecycle(call: Call, usersDescription: UsersDescription, activityClazz: Class<*>): Job =
-        AppLifecycle.isInForeground
-            .onEach {
-                if (!it) return@onEach
-                val notification = buildNotification(
-                    call,
-                    usersDescription,
-                    activityClazz
-                ) ?: return@onEach
-                showNotification(notification, it)
-            }
-            .takeWhile { !it }
-            .launchIn(lifecycleScope)
+    }
 
     private suspend fun buildNotification(
         call: Call,
         usersDescription: UsersDescription,
-        activityClazz: Class<*>
+        activityClazz: Class<*>,
+        isAppInForeground: Boolean
     ): Notification? {
         val context = ContextRetainer.context
         val participants = call.participants.value
@@ -90,7 +73,7 @@ interface CallNotificationDelegate : LifecycleOwner {
                     callerDescription,
                     isGroupCall,
                     activityClazz,
-                    !AppLifecycle.isInForeground() || context.isSilent()
+                    !isAppInForeground || context.isSilent()
                 )
             }
             call.isOutgoing() -> {
