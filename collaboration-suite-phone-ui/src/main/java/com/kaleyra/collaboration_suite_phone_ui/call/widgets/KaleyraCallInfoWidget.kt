@@ -173,6 +173,8 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
         initialPaddingTop = paddingTop
         initialPaddingRight = paddingRight
         initialPaddingBottom = paddingBottom
+        initialPaddingStart = paddingStart
+        initialPaddingEnd = paddingEnd
     }
 
     /**
