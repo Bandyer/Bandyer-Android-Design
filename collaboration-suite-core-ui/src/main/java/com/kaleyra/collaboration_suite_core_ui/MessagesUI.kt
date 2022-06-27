@@ -53,35 +53,25 @@ class MessagesUI(
         loggedUserId: String,
         chatCustomNotificationActivity: Class<*>,
     ) {
-        val message = other.firstOrNull { it.state.value is Message.State.Received } ?: return
 
         if (AppLifecycle.isInForeground()) {
             CustomChatNotificationManager.notify(chatId, chatCustomNotificationActivity)
             return
         }
 
+        val messages = other.filter { it.state.value is Message.State.Received }
+            .map { it.toChatNotificationMessage() }.sortedBy { it.timestamp }
+
         val notification = NotificationManager.buildChatNotification(
             loggedUserId,
             CollaborationUI.usersDescription.name(listOf(loggedUserId)),
             CollaborationUI.usersDescription.image(listOf(loggedUserId)),
             chatId,
-            listOf(message.toChatNotificationMessage()),
+            messages,
             chatActivityClazz,
             chatCustomNotificationActivity
         )
 
-        NotificationManager.cancel(FULLSCREEN_NOTIFICATION_TAG, FULLSCREEN_NOTIFICATION_ID)
-        NotificationManager.notify(
-            FULLSCREEN_NOTIFICATION_TAG,
-            FULLSCREEN_NOTIFICATION_ID,
-            notification
-        )
-
+        NotificationManager.notify(chatId.hashCode(), notification)
     }
-
-    private companion object {
-        const val FULLSCREEN_NOTIFICATION_TAG = "customFullScreenNotification"
-        const val FULLSCREEN_NOTIFICATION_ID = 999
-    }
-
 }
