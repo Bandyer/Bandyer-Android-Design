@@ -122,5 +122,5 @@ interface CallNotificationDelegate : LifecycleOwner {
         state.value is Call.State.Connecting && participants.value.let { it.creator() == it.me }
 
     private fun Call.isOngoing() =
-        (state.value is Call.State.Connecting || state.value is Call.State.Connected) && participants.value.let { it.creator() == null }
+        state.value is Call.State.Connecting || state.value is Call.State.Connected || participants.value.creator() == null
 }
