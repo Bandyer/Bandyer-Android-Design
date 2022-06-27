@@ -91,10 +91,10 @@ class PhoneBoxUI(
 
     private fun callService(call: CallUI, scope: CoroutineScope): Job = with(ContextRetainer.context) {
         call.state
-            .onEach {
-                when (it) {
-                    is Call.State.Disconnected.Ended -> stopService(Intent(this, CollaborationService::class.java))
-                    is Call.State.Disconnected -> {
+            .onEach { state ->
+                when {
+                    state is Call.State.Disconnected.Ended -> stopService(Intent(this, CollaborationService::class.java))
+                    state is Call.State.Disconnected || (state is Call.State.Connecting && call.participants.value.let { it.creator() == it.me }) -> {
                         val intent = Intent(this, CollaborationService::class.java)
                         intent.putExtra(CollaborationService.CALL_ACTIVITY_CLASS, callActivityClazz)
                         startService(intent)
