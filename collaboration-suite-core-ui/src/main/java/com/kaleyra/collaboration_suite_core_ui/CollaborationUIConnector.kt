@@ -51,9 +51,10 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: 
 
     private fun syncWithAppLifecycle(scope: CoroutineScope) {
         AppLifecycle.isInForeground
-            .onEach { isInForeground -> if (isInForeground) resume() }
             .dropWhile { !it }
-            .onEach { if (collaboration.phoneBox.call.replayCache.isEmpty()) disconnect() }
+            .onEach { isInForeground ->
+                if (isInForeground) resume()
+                else if (collaboration.phoneBox.call.replayCache.isEmpty()) disconnect() }
             .launchIn(scope)
     }
 
