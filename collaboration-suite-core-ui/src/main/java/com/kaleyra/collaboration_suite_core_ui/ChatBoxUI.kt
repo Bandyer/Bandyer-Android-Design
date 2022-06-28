@@ -37,7 +37,6 @@ class ChatBoxUI(
 
     override fun connect() {
         chatBox.connect()
-        chatBox.fetch(10)
         if (chatScope?.isActive == true) return
         listenToMessages()
     }
