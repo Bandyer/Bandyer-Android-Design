@@ -5,24 +5,20 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 internal object AppLifecycle {
 
-    private val _isAppInForeground = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
+    private val _isAppInForeground = MutableStateFlow(false)
 
     /**
      * A flow which notify if the application goes to foreground/background
      */
-    val isInForeground: SharedFlow<Boolean> = _isAppInForeground
-
-    /**
-     * True if the app is in foreground, false otherwise
-     *
-     * @return Boolean
-     */
-    fun isInForeground(): Boolean = isInForeground.replayCache.firstOrNull() ?: false
+    val isInForeground: StateFlow<Boolean> = _isAppInForeground
 
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {

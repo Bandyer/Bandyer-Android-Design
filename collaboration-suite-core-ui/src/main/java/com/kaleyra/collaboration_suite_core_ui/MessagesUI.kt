@@ -54,7 +54,7 @@ class MessagesUI(
         chatCustomNotificationActivity: Class<*>,
     ) {
 
-        if (AppLifecycle.isInForeground()) {
+        if (AppLifecycle.isInForeground.value) {
             CustomChatNotificationManager.notify(chatId, chatCustomNotificationActivity)
             return
         }

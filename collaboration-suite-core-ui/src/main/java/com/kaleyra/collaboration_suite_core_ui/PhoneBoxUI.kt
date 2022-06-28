@@ -120,7 +120,7 @@ class PhoneBoxUI(
         val creator = participants.creator()
         val isOutgoing = creator == participants.me
         val isLink = creator == null
-        return AppLifecycle.isInForeground() &&
+        return AppLifecycle.isInForeground.value &&
                 (!context.isDND() || (context.isDND() && isOutgoing)) &&
                 (!context.isSilent() || (context.isSilent() && (isOutgoing || isLink)))
     }
