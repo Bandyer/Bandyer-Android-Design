@@ -303,7 +303,7 @@ internal class CallViewModel(
             .map { it is Message.State.Received }
             .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    fun showChat(context: Context) = CollaborationUI.chatBox.show(context, chat, false)
+    fun showChat(context: Context) = CollaborationUI.chatBox.show(context, chat)
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,
