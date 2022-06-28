@@ -4,11 +4,8 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 internal object AppLifecycle {
@@ -22,8 +19,8 @@ internal object AppLifecycle {
 
     init {
         ProcessLifecycleOwner.get().lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onStart(owner: LifecycleOwner): Unit = let { MainScope().launch { _isAppInForeground.emit(true) } }
-            override fun onStop(owner: LifecycleOwner): Unit = let {  MainScope().launch { _isAppInForeground.emit(false) } }
+            override fun onStart(owner: LifecycleOwner): Unit = let { MainScope().launch { _isAppInForeground.value = true} }
+            override fun onStop(owner: LifecycleOwner): Unit = let {  MainScope().launch { _isAppInForeground.value = false } }
         })
     }
 }
