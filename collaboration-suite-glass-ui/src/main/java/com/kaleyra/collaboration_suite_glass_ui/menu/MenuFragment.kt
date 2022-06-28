@@ -88,8 +88,6 @@ internal class MenuFragment : BaseFragment(), TiltListener {
 
     private val viewModel: CallViewModel by activityViewModels()
 
-    private var chatUI: ChatUI? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (args.enableTilt) tiltListener = this
@@ -270,10 +268,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                 MenuFragmentDirections.actionMenuFragmentToParticipantsFragment()
             )
         }
-        is CallAction.CHAT -> true.also {
-            chatUI = chatUI ?: CollaborationUI.chatBox.create(viewModel.participants.replayCache.first().others.first())
-            CollaborationUI.chatBox.show(requireActivity(), chatUI!!)
-        }
+        is CallAction.CHAT -> true.also { viewModel.showChat(requireActivity()) }
         is CallAction.WHITEBOARD -> true.also {
             onSwipeDown()
             (requireActivity() as GlassCallActivity).rvStreams.smoothScrollToPosition(0)

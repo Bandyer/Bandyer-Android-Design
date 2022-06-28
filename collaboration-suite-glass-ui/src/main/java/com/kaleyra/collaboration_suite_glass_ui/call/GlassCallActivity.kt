@@ -269,6 +269,10 @@ internal class GlassCallActivity :
                 .launchIn(lifecycleScope)
 
         repeatOnStarted {
+            viewModel.areThereNewMessages
+                .onEach { binding.kaleyraStatusBar.apply { if (it) showChatIcon() else hideChatIcon() } }
+                .launchIn(this)
+
             viewModel.whiteboard
                 .flatMapLatest { it.events }
                 .onEach {

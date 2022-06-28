@@ -16,11 +16,13 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.call
 
+import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.Participant
+import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
@@ -28,6 +30,8 @@ import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_core_ui.ChatUI
+import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallDelegate
@@ -289,6 +293,17 @@ internal class CallViewModel(
                 }
             }.launchIn(viewModelScope)
         }
+
+    private val chat: ChatUI = CollaborationUI.chatBox.create(participants.replayCache.first().others.first())
+
+    val areThereNewMessages = chat.messages
+            .map { it.other }
+            .filter { it.isNotEmpty() }
+            .flatMapLatest { it.first().state }
+            .map { it is Message.State.Received }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
+    fun showChat(context: Context) = CollaborationUI.chatBox.show(context, chat, false)
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,
