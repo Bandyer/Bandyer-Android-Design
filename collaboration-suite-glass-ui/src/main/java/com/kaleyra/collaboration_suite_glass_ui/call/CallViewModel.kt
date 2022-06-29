@@ -294,16 +294,22 @@ internal class CallViewModel(
             }.launchIn(viewModelScope)
         }
 
-    private val chat: ChatUI = CollaborationUI.chatBox.create(participants.replayCache.first().others.first())
+    private val chat: StateFlow<ChatUI?> =
+        participants
+            .filter { it.others.isNotEmpty() }
+            .map { CollaborationUI.chatBox.create(it.others.first())  }
+            .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
-    val areThereNewMessages = chat.messages
+    val areThereNewMessages = chat
+            .filter { it != null }
+            .flatMapLatest { it!!.messages }
             .map { it.other }
             .filter { it.isNotEmpty() }
             .flatMapLatest { it.first().state }
             .map { it is Message.State.Received }
             .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    fun showChat(context: Context) = CollaborationUI.chatBox.show(context, chat)
+    fun showChat(context: Context) = chat.value?.let { CollaborationUI.chatBox.show(context, it) }
 
     private inline fun Flow<CallParticipants>.forEachParticipant(
         scope: CoroutineScope,
