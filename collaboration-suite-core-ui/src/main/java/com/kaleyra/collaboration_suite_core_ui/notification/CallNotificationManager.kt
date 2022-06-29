@@ -96,6 +96,7 @@ internal interface CallNotificationManager {
             .user(userText)
             .contentText(tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
+            .fullscreenIntent(fullScreenPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
 
         return builder.build()
@@ -139,6 +140,7 @@ internal interface CallNotificationManager {
             .user(userText)
             .contentText(contentText)
             .contentIntent(contentPendingIntent(context, activityClazz))
+            .fullscreenIntent(fullScreenPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
             .timer(!isConnecting)
             .apply { if (isSharingScreen) screenShareIntent(screenSharePendingIntent(context)) }
