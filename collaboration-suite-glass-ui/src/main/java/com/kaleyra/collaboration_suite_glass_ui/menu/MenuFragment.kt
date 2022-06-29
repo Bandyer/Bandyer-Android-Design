@@ -223,8 +223,8 @@ internal class MenuFragment : BaseFragment(), TiltListener {
 
     private fun getActions(actions: Set<Action>): List<CallAction> = CallAction.getActions(
         requireContext(),
-        withMicrophone = actions.any { it is ToggleMicrophone },
-        withCamera = actions.any { it is ToggleCamera },
+        withMicrophone = actions.any { it is ToggleMicrophone && viewModel.preferredCallType.value?.hasAudio() == true },
+        withCamera = actions.any { it is ToggleCamera && viewModel.preferredCallType.value?.hasVideo() == true },
         withSwitchCamera = actions.any { it is SwitchCamera },
         withFlashLight = actions.any { it is ToggleFlashlight },
         withVolume = actions.any { it is ChangeVolume },
