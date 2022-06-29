@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
@@ -59,11 +60,10 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: 
     }
 
     private fun syncWithCallState(scope: CoroutineScope) {
-        collaboration.phoneBox.call
-            .flatMapLatest { it.state }
-            .onEach {
-                if (it !is Call.State.Disconnected.Ended || AppLifecycle.isInForeground.value) return@onEach
-                disconnect()
-            }.launchIn(scope)
+        val callState = collaboration.phoneBox.call.flatMapLatest { it.state }
+        combine(callState, AppLifecycle.isInForeground) { state, isInForeground ->
+            if (state !is Call.State.Disconnected.Ended || isInForeground) return@combine
+            disconnect()
+        }.launchIn(scope)
     }
 }
