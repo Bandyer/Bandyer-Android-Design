@@ -44,10 +44,15 @@ interface CallNotificationDelegate : LifecycleOwner {
         usersDescription: UsersDescription,
         activityClazz: Class<*>
     ) {
+        var lastState: Call.State? = null
+        var isServiceInForeground = false
         combine(call.state, AppLifecycle.isInForeground) { state, isInForeground ->
+            if (lastState == state && isServiceInForeground) return@combine state
+            lastState = state
+            if (isInForeground) isServiceInForeground = true
             val notification =
-                buildNotification(call, usersDescription, activityClazz, isInForeground) ?: return@combine state
-            showNotification(notification, isInForeground)
+                buildNotification(call, usersDescription, activityClazz, isServiceInForeground) ?: return@combine state
+            showNotification(notification, isServiceInForeground)
             state
         }
             .takeWhile { it !is Call.State.Disconnected.Ended }
