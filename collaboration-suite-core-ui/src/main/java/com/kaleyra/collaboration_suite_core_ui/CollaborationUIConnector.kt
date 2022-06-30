@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.flatMapLatest
@@ -20,7 +21,7 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: 
     private var wasPhoneBoxConnected = false
     private var wasChatBoxConnected = false
 
-    private var scope = CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.Main)
+    private var scope = CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.IO)
 
     init {
         syncWithAppLifecycle(scope)
@@ -55,7 +56,8 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: 
             .dropWhile { !it }
             .onEach { isInForeground ->
                 if (isInForeground) resume()
-                else if (collaboration.phoneBox.call.replayCache.isEmpty()) disconnect() }
+                else if (collaboration.phoneBox.call.replayCache.isEmpty()) disconnect()
+            }
             .launchIn(scope)
     }
 
