@@ -19,6 +19,7 @@ package com.kaleyra.collaboration_suite_core_ui.utils.extensions
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.graphics.Point
 import android.hardware.display.DisplayManager
 import android.media.AudioManager
@@ -32,7 +33,6 @@ import android.view.WindowManager
 import androidx.annotation.StyleRes
 import androidx.annotation.StyleableRes
 import androidx.fragment.app.FragmentActivity
-import java.util.*
 
 
 /**
@@ -182,6 +182,13 @@ object ContextExtensions {
         } catch (e: Exception) {
             false
         }
+    }
+
+    internal fun Context.gotToLaunchingActivity() {
+        val intent = packageManager.getLaunchIntentForPackage(packageName)
+        val componentName = intent!!.component
+        val mainIntent = Intent.makeRestartActivityTask(componentName)
+        startActivity(mainIntent)
     }
 }
 

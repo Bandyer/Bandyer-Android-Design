@@ -19,7 +19,6 @@ package com.kaleyra.collaboration_suite_glass_ui.call
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -79,15 +78,14 @@ import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.takeWhile
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.util.concurrent.ConcurrentHashMap
@@ -129,7 +127,7 @@ internal class GlassCallActivity :
 
     val rvStreams: RecyclerView get() = binding.kaleyraStreams
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) = runBlocking {
         super.onCreate(savedInstanceState)
         binding = KaleyraCallActivityGlassBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -138,7 +136,6 @@ internal class GlassCallActivity :
             supportFragmentManager.findFragmentById(R.id.kaleyra_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
 
-        glassTouchEventManager = GlassTouchEventManager(this, this)
 
         // Set up the streams' recycler view
         with(binding.kaleyraStreams) {
@@ -151,16 +148,19 @@ internal class GlassCallActivity :
             this.layoutManager = layoutManager
             adapter = fastAdapter!!
             adapter!!.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
+
             isFocusable = false
             setHasFixedSize(true)
         }
 
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
         turnScreenOn()
+        glassTouchEventManager = GlassTouchEventManager(this@GlassCallActivity, this@GlassCallActivity)
 
         deviceStatusObserver.start()
         handleIntentAction(intent)
         bindUI()
+
     }
 
     override fun onNewIntent(intent: Intent) {

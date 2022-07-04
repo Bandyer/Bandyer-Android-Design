@@ -88,7 +88,7 @@ interface CallNotificationDelegate : LifecycleOwner {
                     activityClazz
                 )
             }
-            call.isOngoing() -> {
+            call.isOngoing()  -> {
                 NotificationManager.buildOngoingCallNotification(
                     calleeDescription,
                     participants.creator() == null,
@@ -99,7 +99,7 @@ interface CallNotificationDelegate : LifecycleOwner {
                     activityClazz
                 )
             }
-            else -> null
+            else              -> null
         }
     }
 

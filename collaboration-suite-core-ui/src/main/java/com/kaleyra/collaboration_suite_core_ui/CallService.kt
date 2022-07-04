@@ -21,8 +21,8 @@ class CallService : BoundService(),
                     Application.ActivityLifecycleCallbacks,
                     CallNotificationActionReceiver.ActionDelegate {
 
-    companion object {
-        private const val CALL_NOTIFICATION_ID = 22
+    internal companion object {
+        const val CALL_NOTIFICATION_ID = 22
         const val CALL_ACTIVITY_CLASS = "call_activity_class"
     }
 
