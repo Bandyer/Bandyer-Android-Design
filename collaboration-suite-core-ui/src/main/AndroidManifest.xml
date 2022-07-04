@@ -25,7 +25,7 @@
 
     <application>
         <service
-            android:name=".CollaborationService"
+            android:name=".CallService"
             android:foregroundServiceType="phoneCall|mediaProjection|camera|microphone" />
 
         <receiver android:name=".notification.CallNotificationActionReceiver"  android:exported="false">

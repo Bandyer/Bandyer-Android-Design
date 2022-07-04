@@ -13,13 +13,13 @@ import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActi
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 
 /**
- * The CollaborationService
+ * The CallService
  */
-class CollaborationService : BoundService(),
-    CallStreamDelegate,
-    CallNotificationDelegate,
-    Application.ActivityLifecycleCallbacks,
-    CallNotificationActionReceiver.ActionDelegate {
+class CallService : BoundService(),
+                    CallStreamDelegate,
+                    CallNotificationDelegate,
+                    Application.ActivityLifecycleCallbacks,
+                    CallNotificationActionReceiver.ActionDelegate {
 
     companion object {
         private const val CALL_NOTIFICATION_ID = 22
@@ -79,7 +79,7 @@ class CollaborationService : BoundService(),
         call: CallUI,
         callActivityClazz: Class<*>
     ) {
-        setUpCallStreams(this@CollaborationService, call)
+        setUpCallStreams(this@CallService, call)
         syncCallNotification(call, CollaborationUI.usersDescription, callActivityClazz)
     }
 
