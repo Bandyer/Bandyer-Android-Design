@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_core_ui.call
 
 import android.content.Context
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
@@ -36,6 +35,7 @@ interface CallStreamDelegate: LifecycleOwner {
      */
     fun setUpCallStreams(context: Context, call: Call) {
         val mainScope = MainScope() + CoroutineName("Call Scope: ${call.id}")
+        publishMyStream(call)
         setUpStreamsAndVideos(call, context, mainScope)
         updateStreamInputsOnPermissions(call, mainScope)
 
@@ -48,13 +48,12 @@ interface CallStreamDelegate: LifecycleOwner {
     /**
      * Publish my stream
      *
-     * @param fragmentActivity The fragment activity on which the stream will be added
      * @param call The call
      */
-    fun publishMyStream(fragmentActivity: FragmentActivity, call: Call) {
+    private fun publishMyStream(call: Call) {
         val me = call.participants.value.me
         if (me.streams.value.firstOrNull { it.id == MY_STREAM_ID } != null) return
-        me.addStream(fragmentActivity, MY_STREAM_ID).let {
+        me.addStream(MY_STREAM_ID).let {
             it.audio.value = null
             it.video.value = null
         }
