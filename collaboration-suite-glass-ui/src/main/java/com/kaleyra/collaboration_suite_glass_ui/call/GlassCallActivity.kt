@@ -39,7 +39,6 @@ import com.kaleyra.collaboration_suite.phonebox.Whiteboard
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard.LoadOptions
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.widget.LivePointerView
@@ -47,6 +46,7 @@ import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActi
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
+import com.kaleyra.collaboration_suite_core_ui.whenCollaborationConfigured
 import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -76,6 +76,7 @@ import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import com.mikepenz.fastadapter.items.AbstractItem
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.dropWhile
@@ -85,7 +86,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import java.util.concurrent.ConcurrentHashMap
@@ -102,15 +103,7 @@ internal class GlassCallActivity :
 
     private lateinit var binding: KaleyraCallActivityGlassBinding
 
-    private val deviceStatusObserver = DeviceStatusObserver()
-
-    private val viewModel: CallViewModel by viewModels {
-        CallViewModelFactory(
-            CallDelegate(CollaborationUI.phoneBox.call, CollaborationUI.usersDescription),
-            CallController(CollaborationUI.phoneBox.call, CallAudioManager(ContextRetainer.context)),
-            deviceStatusObserver
-        )
-    }
+    private val viewModel: CallViewModel by viewModels()
 
     private var isActivityInForeground = false
     private var fastAdapter: FastAdapter<AbstractItem<*>>? = null
@@ -127,15 +120,16 @@ internal class GlassCallActivity :
 
     val rvStreams: RecyclerView get() = binding.kaleyraStreams
 
-    override fun onCreate(savedInstanceState: Bundle?) = runBlocking {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = KaleyraCallActivityGlassBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        configureCollaboration()
+
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.kaleyra_nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-
 
         // Set up the streams' recycler view
         with(binding.kaleyraStreams) {
@@ -157,7 +151,6 @@ internal class GlassCallActivity :
         turnScreenOn()
         glassTouchEventManager = GlassTouchEventManager(this@GlassCallActivity, this@GlassCallActivity)
 
-        deviceStatusObserver.start()
         handleIntentAction(intent)
         bindUI()
 
@@ -549,6 +542,14 @@ internal class GlassCallActivity :
         }
     }
 
+    private fun configureCollaboration() = MainScope().launch {
+        whenCollaborationConfigured { isConfigured ->
+            if (!isConfigured) return@whenCollaborationConfigured finishAndRemoveTask()
+            viewModel.callDelegate = CallDelegate(CollaborationUI.phoneBox.call, CollaborationUI.usersDescription)
+            viewModel.callController = CallController(CollaborationUI.phoneBox.call, CallAudioManager(ContextRetainer.context))
+        }
+    }
+
     private fun handleIntentAction(intent: Intent) {
         val action = intent.extras?.getString("action") ?: return
         sendBroadcast(Intent(this, CallNotificationActionReceiver::class.java).apply {
@@ -645,7 +646,6 @@ internal class GlassCallActivity :
     override fun onDestroy() {
         super.onDestroy()
         turnScreenOff()
-        deviceStatusObserver.stop()
         streamsItemAdapter!!.clear()
         whiteboardItemAdapter!!.clear()
         streamsItemAdapter = null

@@ -20,24 +20,11 @@ import kotlinx.coroutines.launch
  */
 class CallController(private val call: SharedFlow<CallUI>, private val callAudioManager: CallAudioManager) : CallUIController {
 
-    private val currentCall: Call
-        get() = call.replayCache.first()
+    private val currentCall: Call get() = call.replayCache.first()
 
-    private val _micPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(
-            Permission(
-                isAllowed = currentCall.inputs.allowList.value.filterIsInstance<Input.Audio>().firstOrNull() != null,
-                neverAskAgain = false
-            )
-        )
+    private val _micPermission = MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
 
-    private val _camPermission: MutableStateFlow<Permission> =
-        MutableStateFlow(
-            Permission(
-                isAllowed = currentCall.inputs.allowList.value.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() != null,
-                neverAskAgain = false
-            )
-        )
+    private val _camPermission = MutableStateFlow(Permission(isAllowed = false, neverAskAgain = false))
 
     override val micPermission: StateFlow<Permission> = _micPermission.asStateFlow()
 

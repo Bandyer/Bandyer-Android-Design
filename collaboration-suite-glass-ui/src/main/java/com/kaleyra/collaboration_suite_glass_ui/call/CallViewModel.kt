@@ -19,7 +19,6 @@ package com.kaleyra.collaboration_suite_glass_ui.call
 import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.Participant
 import com.kaleyra.collaboration_suite.chatbox.Message
@@ -35,7 +34,9 @@ import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallDelegate
+import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
@@ -43,6 +44,8 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,6 +53,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.firstOrNull
@@ -65,39 +69,82 @@ import kotlinx.coroutines.plus
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
-@Suppress("UNCHECKED_CAST")
-internal class CallViewModelFactory(
-    private val callDelegate: CallDelegate,
-    private val callController: CallController,
-    private val deviceStatusObserver: DeviceStatusObserver
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T =
-        CallViewModel(callDelegate, callController, deviceStatusObserver) as T
-}
-
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class CallViewModel(
-    callDelegate: CallDelegate,
-    private val callController: CallController,
-    deviceStatusObserver: DeviceStatusObserver,
-) : ViewModel() {
+internal class CallViewModel : ViewModel() {
+
+    //////////////////////////
+    // DeviceStatusObserver //
+    //////////////////////////
+    private var deviceStatusObserver = DeviceStatusObserver().apply { start() }
 
     val battery: SharedFlow<BatteryInfo> = deviceStatusObserver.battery
 
     val wifi: SharedFlow<WiFiInfo> = deviceStatusObserver.wifi
 
-    // CallController
-    val volume = callController.volume
+    override fun onCleared() {
+        super.onCleared()
+        deviceStatusObserver.stop()
+    }
 
-    val micPermission = callController.micPermission
+    //////////////////
+    // CallDelegate //
+    //////////////////
+    private var callDelegateScope: CoroutineScope? = null
+    var callDelegate: CallDelegate? = null
+        set(value) {
+            callDelegateScope?.cancel()
+            callDelegateScope = CoroutineScope(SupervisorJob(viewModelScope.coroutineContext[Job]))
+            value?.call?.onEach { _call.emit(it) }?.launchIn(callDelegateScope!!)
+            field = value
+        }
 
-    val camPermission = callController.camPermission
+    private val _call: MutableSharedFlow<CallUI> = MutableSharedFlow()
+    val call: SharedFlow<CallUI> = _call.asSharedFlow()
 
-    // CallDelegate
-    val call: SharedFlow<CallUI> = callDelegate.call
+    val usersDescription: UsersDescription get() = callDelegate?.usersDescription ?: UsersDescription()
 
-    val usersDescription: UsersDescription = callDelegate.usersDescription
+    ////////////////////
+    // CallController //
+    ////////////////////
+    private var callControllerScope: CoroutineScope? = null
+    var callController: CallController? = null
+        set(value) {
+            callControllerScope?.cancel()
+            callControllerScope = CoroutineScope(SupervisorJob(viewModelScope.coroutineContext[Job]))
+            value?.micPermission?.onEach { _micPermission.emit(it) }?.launchIn(callControllerScope!!)
+            value?.camPermission?.onEach { _camPermission.emit(it) }?.launchIn(callControllerScope!!)
+            field = value
+        }
 
+    val volume: Volume get() = callController?.volume ?: Volume(0, 0, 0)
+
+    private val _micPermission: MutableStateFlow<Permission>  = MutableStateFlow(Permission(false, false))
+    val micPermission: StateFlow<Permission>  = _micPermission.asStateFlow()
+
+    private val _camPermission: MutableStateFlow<Permission> = MutableStateFlow(Permission(false, false))
+    val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
+
+    fun onRequestMicPermission(context: FragmentActivity) = callController?.onRequestMicPermission(context)
+
+    fun onRequestCameraPermission(context: FragmentActivity) = callController?.onRequestCameraPermission(context)
+
+    fun onAnswer() = callController?.onAnswer()
+
+    fun onHangup() = callController?.onHangup()
+
+    fun onEnableCamera(enable: Boolean) = callController?.onEnableCamera(enable)
+
+    fun onEnableMic(enable: Boolean) = callController?.onEnableMic(enable)
+
+    fun onSwitchCamera() = callController?.onSwitchCamera()
+
+    fun onSetVolume(value: Int) = callController?.onSetVolume(value)
+
+    fun onSetZoom(value: Float) = callController?.onSetZoom(value)
+
+    ///////////////
+    // ViewModel //
+    ///////////////
     val preferredCallType: StateFlow<Call.PreferredType?> =
         call.map { it.extras.preferredType }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
@@ -329,26 +376,6 @@ internal class CallViewModel(
             }
         }
     }
-
-    fun onRequestMicPermission(context: FragmentActivity) =
-        callController.onRequestMicPermission(context)
-
-    fun onRequestCameraPermission(context: FragmentActivity) =
-        callController.onRequestCameraPermission(context)
-
-    fun onAnswer() = callController.onAnswer()
-
-    fun onHangup() = callController.onHangup()
-
-    fun onEnableCamera(enable: Boolean) = callController.onEnableCamera(enable)
-
-    fun onEnableMic(enable: Boolean) = callController.onEnableMic(enable)
-
-    fun onSwitchCamera() = callController.onSwitchCamera()
-
-    fun onSetVolume(value: Int) = callController.onSetVolume(value)
-
-    fun onSetZoom(value: Float) = callController.onSetZoom(value)
 }
 
 

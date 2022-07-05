@@ -56,7 +56,7 @@ private suspend fun getCollaborationService(): CollaborationService? = with(Cont
     }
 }
 
-internal suspend fun whenCollaborationConfigured(block: (Boolean) -> Unit) {
+suspend fun whenCollaborationConfigured(block: (Boolean) -> Unit) {
     if (!CollaborationUI.isConfigured) getCollaborationService()?.onRequestNewCollaborationSetUp() ?: run {
         block(false)
         return ContextRetainer.context.gotToLaunchingActivity()
