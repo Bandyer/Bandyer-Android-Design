@@ -87,7 +87,8 @@ object CollaborationUI {
     /**
      * Is configured
      */
-    val isConfigured = collaboration != null
+    val isConfigured
+        get() = collaboration != null
 
     /**
      * Chat box
