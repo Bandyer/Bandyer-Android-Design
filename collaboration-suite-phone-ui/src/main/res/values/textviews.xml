@@ -144,8 +144,8 @@
         <item name="android:text">@string/kaleyra_call_hangup</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_marginTop">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space16</item>
+        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space19</item>
+        <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space19</item>
         <item name="android:layout_marginBottom">@dimen/kaleyra_dimen_space16</item>
     </style>
 

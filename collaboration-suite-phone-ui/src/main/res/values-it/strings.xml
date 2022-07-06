@@ -109,6 +109,8 @@
     <string name="kaleyra_ringing_answer">Rispondi</string>
     <string name="kaleyra_ringing_decline">Rifiuta</string>
 
+    <string name="kaleyra_back">Indietro</string>
+
     <!-- WHITEBOARD -->
     <string name="kaleyra_collaborate_button">Collabora</string>
 

@@ -15,6 +15,8 @@
 
     <style name="KaleyraCollaborationSuiteUI.SnackBarStyle.RootLayout" parent="">
         <item name="android:padding">@dimen/kaleyra_dimen_space8</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.TextView.Title.SnackBarStyle" parent="KaleyraCollaborationSuiteUI.TextView.Title">
