@@ -11,8 +11,11 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.sample
 
@@ -26,6 +29,7 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: 
     init {
         syncWithAppLifecycle(scope)
         syncWithCallState(scope)
+        syncWithChatMessages(scope)
     }
 
     fun connect() {
@@ -67,5 +71,17 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: 
             if (state !is Call.State.Disconnected.Ended || isInForeground) return@combine
             disconnect()
         }.launchIn(scope)
+    }
+
+    private fun syncWithChatMessages(scope: CoroutineScope) {
+        collaboration.chatBox.chats
+            .flatMapLatest { chats -> chats.map { it.messages }.merge() }
+            .sample(3000)
+            .onEach {
+                val call = collaboration.phoneBox.call.replayCache.firstOrNull()
+                if (AppLifecycle.isInForeground.value || (call != null && call.state.value !is Call.State.Disconnected.Ended)) return@onEach
+                disconnect()
+            }
+            .launchIn(scope)
     }
 }
