@@ -26,12 +26,14 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
+import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.call.CallController
 import com.kaleyra.collaboration_suite_core_ui.call.CallDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
@@ -75,7 +77,7 @@ internal class CallViewModel : ViewModel() {
     //////////////////////////
     // DeviceStatusObserver //
     //////////////////////////
-    private var deviceStatusObserver = DeviceStatusObserver().apply { start() }
+    private val deviceStatusObserver = DeviceStatusObserver().apply { start() }
 
     val battery: SharedFlow<BatteryInfo> = deviceStatusObserver.battery
 
@@ -145,6 +147,18 @@ internal class CallViewModel : ViewModel() {
     ///////////////
     // ViewModel //
     ///////////////
+    private var phoneBoxScope: CoroutineScope? = null
+    var phoneBox: PhoneBoxUI? = null
+        set(value) {
+            phoneBoxScope?.cancel()
+            phoneBoxScope = CoroutineScope(SupervisorJob(viewModelScope.coroutineContext[Job]))
+            value?.state?.onEach { _phoneBoxState.value = it }?.launchIn(phoneBoxScope!!)
+            field = value
+        }
+
+    private val _phoneBoxState: MutableStateFlow<PhoneBox.State> = MutableStateFlow(PhoneBox.State.Disconnected)
+    val phoneBoxState: StateFlow<PhoneBox.State> = _phoneBoxState.asStateFlow()
+
     val preferredCallType: StateFlow<Call.PreferredType?> =
         call.map { it.extras.preferredType }.stateIn(viewModelScope, SharingStarted.Eagerly, null)
 

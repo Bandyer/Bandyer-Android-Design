@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_IDLE
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
+import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard
 import com.kaleyra.collaboration_suite.phonebox.Whiteboard.LoadOptions
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -241,6 +242,12 @@ internal class GlassCallActivity :
                 }
             })
         }
+
+        viewModel.phoneBoxState
+            .dropWhile { it is PhoneBox.State.Disconnected }
+            .takeWhile { it !is PhoneBox.State.Disconnected }
+            .onCompletion { finishAndRemoveTask() }
+            .launchIn(lifecycleScope)
 
         viewModel.callState
             .dropWhile { it == Call.State.Disconnected }
@@ -547,6 +554,7 @@ internal class GlassCallActivity :
             if (!isConfigured) return@whenCollaborationConfigured finishAndRemoveTask()
             viewModel.callDelegate = CallDelegate(CollaborationUI.phoneBox.call, CollaborationUI.usersDescription)
             viewModel.callController = CallController(CollaborationUI.phoneBox.call, CallAudioManager(ContextRetainer.context))
+            viewModel.phoneBox = CollaborationUI.phoneBox
         }
     }
 
