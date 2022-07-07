@@ -74,4 +74,7 @@ class ChatViewModel : ViewModel() {
             field = value
         }
 
+    private val _chatBoxState: MutableStateFlow<ChatBox.State> =
+        MutableStateFlow(ChatBox.State.Disconnected)
+    val chatBoxState: StateFlow<ChatBox.State> = _chatBoxState.asStateFlow()
 }

@@ -60,6 +60,12 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
             onNewChatIntent(intent)
         }
 
+        viewModel.chatBoxState
+            .dropWhile { it is ChatBox.State.Disconnected }
+            .takeWhile { it !is ChatBox.State.Disconnected }
+            .onCompletion { finishAndRemoveTask() }
+            .launchIn(lifecycleScope)
+
         repeatOnStarted {
             viewModel
                 .battery
