@@ -27,10 +27,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.Message
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -264,6 +261,6 @@ internal class ChatFragment : BaseFragment(), TiltListener {
 
     private companion object {
         const val LOAD_MORE_THRESHOLD = 3
-        const val NO_MESSAGES_TIMEOUT = 3000L
+        const val NO_MESSAGES_TIMEOUT = 5000L
     }
 }
