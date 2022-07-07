@@ -16,31 +16,16 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
-import android.annotation.SuppressLint
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
-import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
-import android.os.IBinder
-import android.util.Log
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite.Collaboration.Credentials
-import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.gotToLaunchingActivity
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
-import com.kaleyra.collaboration_suite_utils.ContextRetainer.Companion.context
 import com.kaleyra.collaboration_suite_utils.cached
 import com.kaleyra.collaboration_suite_utils.getValue
 import com.kaleyra.collaboration_suite_utils.setValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withTimeoutOrNull
 
 /**
  * Collaboration UI
