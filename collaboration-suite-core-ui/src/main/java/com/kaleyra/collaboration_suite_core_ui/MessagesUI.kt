@@ -18,15 +18,27 @@ class MessagesUI(
 
     suspend fun showUnreadMsgs(chatId: String, loggedUserId: String) {
         chatCustomNotificationActivity?.let {
-            showCustomInAppNotification(
-                chatId,
-                loggedUserId,
-                it
-            )
+            showCustomInAppNotification(chatId, loggedUserId, it)
         } ?: showNotification(chatId, loggedUserId)
     }
 
-    private fun showNotification(chatId: String, loggedUserId: String) = MainScope().launch {
+    private suspend fun showCustomInAppNotification(
+        chatId: String,
+        loggedUserId: String,
+        chatCustomNotificationActivity: Class<*>
+    ) {
+        if (AppLifecycle.isInForeground.value) CustomChatNotificationManager.notify(
+            chatId,
+            chatCustomNotificationActivity
+        )
+        else showNotification(chatId, loggedUserId, chatCustomNotificationActivity)
+    }
+
+    private suspend fun showNotification(
+        chatId: String,
+        loggedUserId: String,
+        chatCustomNotificationActivity: Class<*>? = null
+    ) {
         val messages = other.filter { it.state.value is Message.State.Received }
             .map { it.toChatNotificationMessage() }.sortedBy { it.timestamp }
         val notification = NotificationManager.buildChatNotification(
@@ -35,7 +47,8 @@ class MessagesUI(
             CollaborationUI.usersDescription.image(listOf(loggedUserId)),
 //            chatId,
             messages,
-            chatActivityClazz
+            chatActivityClazz,
+            chatCustomNotificationActivity
         )
         NotificationManager.notify(chatId.hashCode(), notification)
     }
@@ -47,31 +60,4 @@ class MessagesUI(
         (content as? Message.Content.Text)?.message ?: "",
         creationDate.time
     )
-
-    private suspend fun showCustomInAppNotification(
-        chatId: String,
-        loggedUserId: String,
-        chatCustomNotificationActivity: Class<*>,
-    ) {
-
-        if (AppLifecycle.isInForeground.value) {
-            CustomChatNotificationManager.notify(chatId, chatCustomNotificationActivity)
-            return
-        }
-
-        val messages = other.filter { it.state.value is Message.State.Received }
-            .map { it.toChatNotificationMessage() }.sortedBy { it.timestamp }
-
-        val notification = NotificationManager.buildChatNotification(
-            loggedUserId,
-            CollaborationUI.usersDescription.name(listOf(loggedUserId)),
-            CollaborationUI.usersDescription.image(listOf(loggedUserId)),
-//            chatId,
-            messages,
-            chatActivityClazz,
-            chatCustomNotificationActivity
-        )
-
-        NotificationManager.notify(chatId.hashCode(), notification)
-    }
 }
