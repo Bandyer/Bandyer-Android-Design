@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_core_ui
 import android.os.Parcelable
 import androidx.annotation.Keep
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotification
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.parcelize.Parcelize
 
@@ -28,6 +29,7 @@ class CallUI(
                     ToggleCamera,
                     SwitchCamera,
                     ChangeZoom,
+                    ChangeVolume,
                     ToggleFlashlight,
                     OpenChat.ViewOnly,
                     ShowParticipants,
