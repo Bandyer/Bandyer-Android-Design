@@ -33,7 +33,7 @@ class MessagesUI(
             loggedUserId,
             CollaborationUI.usersDescription.name(listOf(loggedUserId)),
             CollaborationUI.usersDescription.image(listOf(loggedUserId)),
-            chatId,
+//            chatId,
             messages,
             chatActivityClazz
         )
@@ -66,7 +66,7 @@ class MessagesUI(
             loggedUserId,
             CollaborationUI.usersDescription.name(listOf(loggedUserId)),
             CollaborationUI.usersDescription.image(listOf(loggedUserId)),
-            chatId,
+//            chatId,
             messages,
             chatActivityClazz,
             chatCustomNotificationActivity

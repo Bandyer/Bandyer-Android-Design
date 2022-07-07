@@ -32,12 +32,13 @@ internal object UIProvider {
             startActivity(intent)
         }
 
-    fun showChat(context: Context, activityClazz: Class<*>, chatId: String) =
+    fun showChat(context: Context, activityClazz: Class<*>, userId: String) =
         with(context) {
             val intent = Intent(this, activityClazz).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 putExtra("enableTilt", isSmartGlass)
-                putExtra("chatId", chatId)
+//                putExtra("chatId", chatId)
+                putExtra("userId", userId)
             }
             startActivity(intent)
         }

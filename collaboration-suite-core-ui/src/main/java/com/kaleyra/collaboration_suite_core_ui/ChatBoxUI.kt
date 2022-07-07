@@ -70,7 +70,7 @@ class ChatBoxUI(
      * @param chat The chat object that should be shown.
      */
     fun show(context: Context, chat: ChatUI) =
-        UIProvider.showChat(context, chatActivityClazz, chat.id)
+        UIProvider.showChat(context, chatActivityClazz, chat.participants.value.others.first().userId)
 
     override fun create(user: User) = ChatUI(
         chatBox.create(user),
