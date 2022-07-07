@@ -13,7 +13,6 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.isActive
 
 class ChatBoxUI(
     private val chatBox: ChatBox,
@@ -23,9 +22,9 @@ class ChatBoxUI(
 //    private val logger: PriorityLogger? = null
 ) : ChatBox by chatBox {
 
-    private var chatScope: CoroutineScope? = null
+    private var chatScope = MainScope()
 
-    var withUI: Boolean = true
+    private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
 
     override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(MainScope()) {
         it.map {
@@ -33,25 +32,26 @@ class ChatBoxUI(
         }
     }
 
-    private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
+    var withUI: Boolean = true
 
-    override fun connect() {
-        chatBox.connect()
-        if (chatScope?.isActive == true) return
+    init {
         listenToMessages()
     }
 
-    override fun disconnect(clearSavedData: Boolean) {
-        chatBox.disconnect(clearSavedData)
-        chatScope?.cancel()
+    override fun connect() = chatBox.connect()
+
+    override fun disconnect(clearSavedData: Boolean) = chatBox.disconnect(clearSavedData)
+
+    internal fun dispose(clearSavedData: Boolean) {
+        disconnect(clearSavedData)
+        chatScope.cancel()
     }
 
     private fun listenToMessages() {
-        chatScope = MainScope()
         var msgsScope: CoroutineScope? = null
         chats.onEach { chats ->
             msgsScope?.cancel()
-            msgsScope = CoroutineScope(SupervisorJob(chatScope!!.coroutineContext[Job]))
+            msgsScope = CoroutineScope(SupervisorJob(chatScope.coroutineContext[Job]))
             chats.forEach { chat ->
                 chat.messages.onEach messagesUI@{
                     if (!withUI) return@messagesUI
@@ -61,7 +61,7 @@ class ChatBoxUI(
                     it.showUnreadMsgs(chat.id, userId)
                 }.launchIn(msgsScope!!)
             }
-        }.launchIn(chatScope!!)
+        }.launchIn(chatScope)
     }
 
     /**

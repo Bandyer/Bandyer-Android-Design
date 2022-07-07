@@ -45,8 +45,8 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: 
     }
 
     fun dispose(clearSavedData: Boolean = true) {
-        collaboration.phoneBox.disconnect()
-        collaboration.chatBox.disconnect(clearSavedData)
+        collaboration.phoneBox.dispose()
+        collaboration.chatBox.dispose(clearSavedData)
         scope.cancel()
     }
 

@@ -18,12 +18,14 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.isActive
+import kotlin.math.log
 
 /**
  * Phone box UI
@@ -36,25 +38,27 @@ class PhoneBoxUI(
     private val logger: PriorityLogger? = null,
 ) : PhoneBox by phoneBox {
 
-    private var callScope: CoroutineScope? = null
-
-    var withUI = true
+    private var callScope = MainScope()
 
     override val call: SharedFlow<CallUI> = phoneBox.call.map { CallUI(it) }.shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
 
     override val callHistory: SharedFlow<List<CallUI>> = phoneBox.callHistory.map { it.map { CallUI(it) } }.shareIn(
         MainScope(), SharingStarted.Eagerly, replay = 1)
 
-    override fun connect() {
-        phoneBox.connect()
-        if (callScope?.isActive == true) return
+    var withUI = true
+
+    init {
         listenToCalls()
     }
 
-    override fun disconnect() {
-        phoneBox.disconnect()
+    override fun connect() = phoneBox.connect()
+
+    override fun disconnect() = phoneBox.disconnect()
+
+    internal fun dispose() {
+        disconnect()
         disableAudioRouting(logger)
-        callScope?.cancel()
+        callScope.cancel()
     }
 
     /**
@@ -77,16 +81,14 @@ class PhoneBoxUI(
     override fun create(users: List<User>, conf: (PhoneBox.CreationOptions.() -> Unit)?) = CallUI(phoneBox.create(users, conf))
 
     private fun listenToCalls() {
-        disableAudioRouting(logger)
-        callScope = MainScope()
         var serviceJob: Job? = null
         call.onEach {
             if (it.state.value is Call.State.Disconnected.Ended || !withUI) return@onEach
             serviceJob?.cancel()
-            serviceJob = callService(it, callScope!!)
-            CollaborationUI.phoneBox.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope!!)
+            serviceJob = callService(it, callScope)
+            it.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope)
             show(it)
-        }.launchIn(callScope!!)
+        }.launchIn(callScope)
     }
 
     private fun callService(call: CallUI, scope: CoroutineScope): Job = with(ContextRetainer.context) {
