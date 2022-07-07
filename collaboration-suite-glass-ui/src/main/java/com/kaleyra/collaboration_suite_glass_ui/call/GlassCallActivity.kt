@@ -244,8 +244,7 @@ internal class GlassCallActivity :
         }
 
         viewModel.phoneBoxState
-            .dropWhile { it is PhoneBox.State.Disconnected }
-            .takeWhile { it !is PhoneBox.State.Disconnected }
+            .takeWhile { it !is PhoneBox.State.Disconnecting }
             .onCompletion { finishAndRemoveTask() }
             .launchIn(lifecycleScope)
 
