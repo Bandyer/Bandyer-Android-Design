@@ -27,10 +27,7 @@ class MessagesUI(
         loggedUserId: String,
         chatCustomNotificationActivity: Class<*>
     ) {
-        if (AppLifecycle.isInForeground.value) CustomChatNotificationManager.notify(
-            chatId,
-            chatCustomNotificationActivity
-        )
+        if (AppLifecycle.isInForeground.value) CustomChatNotificationManager.notify(chatId, chatCustomNotificationActivity)
         else showNotification(chatId, loggedUserId, chatCustomNotificationActivity)
     }
 

@@ -8,6 +8,7 @@ import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite_core_ui.ChatBoxUI
 import com.kaleyra.collaboration_suite_core_ui.ChatDelegate
+import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.DeviceStatusObserver
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
@@ -56,10 +57,11 @@ class ChatViewModel : ViewModel() {
     val usersDescription: UsersDescription
         get() = chatDelegate?.usersDescription ?: UsersDescription()
 
-    fun setChat(userId: String) = viewModelScope.launch {
-        chatBox ?: chatDelegate ?: return@launch
+    fun setChat(userId: String): ChatUI? {
+        chatBox ?: chatDelegate ?: return null
         val chat = chatBox!!.create(object : User { override val userId = userId })
-        _chat.emit(chat)
+        viewModelScope.launch { _chat.emit(chat) }
+        return chat
     }
 
     ///////////////

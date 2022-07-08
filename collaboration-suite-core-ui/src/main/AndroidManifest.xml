@@ -43,5 +43,12 @@
                 <action android:name="com.kaleyra.collaboration_suite_core_ui.ACTION_DELETE"/>
             </intent-filter>
         </receiver>
+
+        <receiver android:name=".notification.CustomChatNotificationManager"  android:exported="false">
+            <intent-filter>
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.CHAT_OPEN"/>
+                <action android:name="com.kaleyra.collaboration_suite_core_ui.CHAT_CLOSE"/>
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

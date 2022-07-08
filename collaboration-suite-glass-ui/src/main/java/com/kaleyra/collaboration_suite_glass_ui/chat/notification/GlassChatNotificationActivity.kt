@@ -16,7 +16,6 @@ import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
@@ -118,7 +117,7 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
                                      overridePendingTransition(0, 0)
                                  }
                                  finishAndRemoveTask()
-                             }, CustomChatNotificationManager.AUTO_DISMISS_TIME)
+                             }, AUTO_DISMISS_TIME)
     }
 
     /**
@@ -210,5 +209,6 @@ class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManage
 
     private companion object {
         const val ANIMATION_DURATION = 300L
+        const val AUTO_DISMISS_TIME = 3000L
     }
 }
