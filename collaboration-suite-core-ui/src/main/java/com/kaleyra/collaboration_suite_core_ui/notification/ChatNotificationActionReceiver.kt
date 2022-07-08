@@ -24,7 +24,10 @@ import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.UUID
 
-class ChatNotificationActionReceiver : BroadcastReceiver() {
+/**
+ * ChatNotificationActionReceiver
+ */
+internal class ChatNotificationActionReceiver : BroadcastReceiver() {
 
     /**
      * @suppress
@@ -35,6 +38,9 @@ class ChatNotificationActionReceiver : BroadcastReceiver() {
         const val ACTION_DELETE = "com.kaleyra.collaboration_suite_core_ui.ACTION_DELETE"
     }
 
+    /**
+     * @suppress
+     */
     override fun onReceive(context: Context, intent: Intent) {
         val pendingResult = goAsync()
         val chat = getChat(intent) ?: return

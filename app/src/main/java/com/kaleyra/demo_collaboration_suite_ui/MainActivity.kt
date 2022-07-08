@@ -21,8 +21,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -30,12 +28,9 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationManager
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMessage
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.feedback.FeedbackDialog
@@ -52,7 +47,7 @@ import com.kaleyra.demo_collaboration_suite_ui.databinding.ActivityMainBinding
 import java.util.concurrent.ConcurrentHashMap
 
 
-class MainActivity : AppCompatActivity(), ChatNotificationManager {
+class MainActivity : AppCompatActivity() {
 
     var mText: String? = null
 
@@ -78,45 +73,7 @@ class MainActivity : AppCompatActivity(), ChatNotificationManager {
             ).show()
         }
 
-        btnChat.setOnClickListener {
-            Handler(Looper.getMainLooper()).postDelayed({
-                val notification = buildChatNotification(
-                    "Stefano",
-                    "Stefano",
-                    Uri.EMPTY,
-                    "chatId",
-                    listOf(
-                        ChatNotificationMessage(
-                            "Mario",
-                            "Mario",
-                            Uri.EMPTY,
-                            "Ciao belli",
-                            1
-                        ),
-                        ChatNotificationMessage (
-                            "Gioele",
-                            "Gioele",
-                            Uri.EMPTY,
-                            "Andiamo in montagna",
-                            2
-                        ),
-                        ChatNotificationMessage(
-                            "Omar",
-                            "Omar",
-                            Uri.EMPTY,
-                            "La pizza è buona?",
-                            3
-                        )
-                    ),
-                    ChatActivity::class.java,
-                    false
-                )
-
-                NotificationManagerCompat.from(this@MainActivity).notify(67, notification)
-            }, 3000)
-
-//            startActivity(Intent(this@MainActivity, ChatActivity::class.java))
-        }
+        btnChat.setOnClickListener { startActivity(Intent(this@MainActivity, ChatActivity::class.java)) }
 
         btnCall.setOnClickListener {
             startActivity(

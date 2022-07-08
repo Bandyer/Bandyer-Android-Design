@@ -18,12 +18,39 @@ import com.google.android.material.color.MaterialColors
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_utils.HostAppInfo
 
-class ChatNotification {
+/**
+ * ChatNotification
+ */
+internal class ChatNotification {
 
+    /**
+     * @suppress
+     */
     companion object {
+        /**
+         * The reply action extra
+         */
         const val EXTRA_REPLY = "com.kaleyra.collaboration_suite_core_ui.EXTRA_REPLY"
     }
 
+    /**
+     * Builder
+     *
+     * @property context The context used to construct the notification
+     * @property channelId The notification channel id
+     * @property channelName The notification channel name showed to the users
+     * @property username The local user name
+     * @property userId The local user id
+     * @property avatar The local user avatar
+     * @property contentTitle The notification title
+     * @property messages The message list
+     * @property isGroupChat True if it's a group chat notification. False otherwise
+     * @property contentIntent The pending intent to be executed when the user tap on the notification
+     * @property replyIntent The pending intent to be executed when the user taps the reply button
+     * @property markAsReadIntent The pending intent to be executed when the user taps the mark as read button
+     * @property fullscreenIntent The pending intent to be executed when notification is in the lock screen
+     * @constructor
+     */
     data class Builder(
         val context: Context,
         val channelId: String,
@@ -40,32 +67,97 @@ class ChatNotification {
 //        var deleteIntent: PendingIntent? = null,
         var fullscreenIntent: PendingIntent? = null,
     ) {
+        /**
+         * Set the username
+         *
+         * @param text The user name
+         * @return Builder
+         */
         fun username(text: String) = apply { this.username = text }
 
+        /**
+         * Set the user id
+         *
+         * @param text The user id
+         * @return Builder
+         */
         fun userId(text: String) = apply { this.userId = text }
 
+        /**
+         * Set the user avatar
+         *
+         * @param uri The avatar Uri
+         * @return Builder
+         */
         fun avatar(uri: Uri) = apply { this.avatar = uri }
 
+        /**
+         * Set notification title
+         *
+         * @param text The title
+         * @return Builder
+         */
         fun contentTitle(text: String) = apply { this.contentTitle = text }
 
+        /**
+         * Set notification messages
+         *
+         * @param list The notification message list
+         * @return Builder
+         */
         fun messages(list: List<ChatNotificationMessage>) = apply { this.messages = list }
 
+        /**
+         * Set the group chat flag
+         *
+         * @param value True to set the notification as a group chat notification, false otherwise
+         * @return Builder
+         */
         fun isGroupChat(value: Boolean) = apply { this.isGroupChat = value }
 
+        /**
+         * The pending intent to be executed when the user tap on the notification
+         *
+         * @param pendingIntent PendingIntent
+         * @return Builder
+         */
         fun contentIntent(pendingIntent: PendingIntent) =
             apply { this.contentIntent = pendingIntent }
 
+        /**
+         * The pending intent to be executed when the user taps the reply button
+         *
+         * @param pendingIntent PendingIntent
+         * @return Builder
+         */
         fun replyIntent(pendingIntent: PendingIntent) =
             apply { this.replyIntent = pendingIntent }
 
+        /**
+         * The pending intent to be executed when the user taps the mark as read button
+         *
+         * @param pendingIntent PendingIntent
+         * @return Builder
+         */
         fun markAsReadIntent(pendingIntent: PendingIntent) =
             apply { this.markAsReadIntent = pendingIntent }
 
 //        fun deleteIntent(pendingIntent: PendingIntent) = apply { this.deleteIntent = pendingIntent }
 
+        /**
+         * The pending intent to be executed when notification is in the lock screen
+         *
+         * @param pendingIntent PendingIntent
+         * @return Builder
+         */
         fun fullscreenIntent(pendingIntent: PendingIntent) =
             apply { this.fullscreenIntent = pendingIntent }
 
+        /**
+         * Build the chat notification
+         *
+         * @return Notification
+         */
         fun build(): Notification {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
                 createNotificationChannel(context, channelId, channelName)

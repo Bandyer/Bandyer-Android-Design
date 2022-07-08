@@ -18,6 +18,11 @@ interface ChatUIDelegate {
     val usersDescription: UsersDescription
 }
 
+/**
+ * The chat delegate
+ *
+ * @constructor
+ */
 class ChatDelegate(
     override val chats: StateFlow<List<ChatUI>>,
     override val usersDescription: UsersDescription

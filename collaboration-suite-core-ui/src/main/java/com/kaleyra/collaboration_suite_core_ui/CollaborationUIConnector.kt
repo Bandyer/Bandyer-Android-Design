@@ -11,20 +11,23 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.conflate
-import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.sample
-import kotlinx.coroutines.flow.transformLatest
 
-class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: CoroutineScope) {
+/**
+ * THe collaboration UI connector
+ *
+ * @property collaboration The collaboration UI
+ * @property scope The coroutine scope
+ * @constructor
+ */
+internal class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: CoroutineScope) {
 
     private var wasPhoneBoxConnected = false
     private var wasChatBoxConnected = false
@@ -37,11 +40,17 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: 
         syncWithChatMessages(scope)
     }
 
+    /**
+     * Connect the collaboration
+     */
     fun connect() {
         collaboration.phoneBox.connect()
         collaboration.chatBox.connect()
     }
 
+    /**
+     * Disconnect the collaboration
+     */
     fun disconnect() {
         wasPhoneBoxConnected = collaboration.phoneBox.state.value.let { it !is PhoneBox.State.Disconnected && it !is PhoneBox.State.Disconnecting }
         wasChatBoxConnected = collaboration.chatBox.state.value.let { it !is ChatBox.State.Disconnected && it !is ChatBox.State.Disconnecting }
@@ -49,6 +58,9 @@ class CollaborationUIConnector(val collaboration: CollaborationUI, parentScope: 
         collaboration.chatBox.disconnect()
     }
 
+    /**
+     * Dispose the collaboration
+     */
     fun dispose(clearSavedData: Boolean = true) {
         collaboration.phoneBox.dispose()
         collaboration.chatBox.dispose(clearSavedData)

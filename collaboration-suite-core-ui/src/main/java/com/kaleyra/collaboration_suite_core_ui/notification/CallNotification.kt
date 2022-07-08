@@ -43,19 +43,19 @@ internal class CallNotification {
     }
 
     /**
-     * Constructor
+     * Builder
      *
-     * @property context The context used to construct the notification. Mandatory.
-     * @property channelId The notification channel id. Mandatory.
-     * @property channelName The notification channel name showed to the users. Mandatory.
-     * @property type The notification type. Mandatory.
-     * @property isHighImportance True to set the notification with high importance/priority. Optional.
-     * @property user The user to be show in the notification. Optional.
-     * @property contentText The text to be shown inside the notification. Optional.
-     * @property contentIntent The pending intent to be executed when the user tap on the notification. Optional.
-     * @property fullscreenIntent The pending intent to be executed when notification is in the lock screen. Optional.
-     * @property answerIntent The pending intent to be executed when the user taps the answer button. Optional.
-     * @property declineIntent The pending intent to be executed when the user taps the decline button. Optional.
+     * @property context The context used to construct the notification
+     * @property channelId The notification channel id
+     * @property channelName The notification channel name showed to the users
+     * @property type The notification type
+     * @property isHighImportance True to set the notification with high importance/priority
+     * @property user The user to be show in the notification
+     * @property contentText The text to be shown inside the notification
+     * @property contentIntent The pending intent to be executed when the user tap on the notification
+     * @property fullscreenIntent The pending intent to be executed when notification is in the lock screen
+     * @property answerIntent The pending intent to be executed when the user taps the answer button
+     * @property declineIntent The pending intent to be executed when the user taps the decline button
      * @property screenShareIntent The pending intent to be executed when the user taps the stop screen share button
      * @constructor
      */

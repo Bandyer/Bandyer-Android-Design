@@ -5,7 +5,10 @@ import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-class CustomChatNotificationManager: BroadcastReceiver() {
+/**
+ * The custom chat notification manager
+ */
+class CustomChatNotificationManager internal constructor(): BroadcastReceiver() {
 
     /**
      * @suppress
@@ -19,7 +22,13 @@ class CustomChatNotificationManager: BroadcastReceiver() {
 
         private var chatActivityChatId = ""
 
-        fun notify(chatId: String, chatNotificationActivityClazz: Class<*>) {
+        /**
+         * Send a custom notification
+         *
+         * @param chatId The chat id
+         * @param chatNotificationActivityClazz The chat notification activity Class<*>
+         */
+        internal fun notify(chatId: String, chatNotificationActivityClazz: Class<*>) {
             if (chatId == chatActivityChatId) return
             startNotificationActivity(chatId, chatNotificationActivityClazz)
         }
@@ -33,6 +42,9 @@ class CustomChatNotificationManager: BroadcastReceiver() {
         }
     }
 
+    /**
+     * @suppress
+     */
     override fun onReceive(context: Context, intent: Intent) {
         when(intent.action) {
             ACTION_CHAT_OPEN -> chatActivityChatId = intent.extras?.getString(EXTRA_CHAT_ID, "") ?: ""

@@ -31,7 +31,10 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentLinkedQueue
 
-class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Listener {
+/**
+ * The glass chat custom notification activity
+ */
+internal class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEventManager.Listener {
 
     private lateinit var binding: KaleyraChatNotificationActivityGlassBinding
 

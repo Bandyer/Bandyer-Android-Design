@@ -3,15 +3,23 @@ package com.kaleyra.collaboration_suite_core_ui
 import android.os.Parcelable
 import androidx.annotation.Keep
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotification
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.parcelize.Parcelize
 
+/**
+ * The Call UI
+ *
+ * @property actions The MutableStateFlow containing the set of actions
+ * @constructor
+ */
 class CallUI(
     call: Call,
     val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(call.getDefaultActions())
 ) : Call by call {
 
+    /**
+     * The call action sealed class
+     */
     @Keep
     sealed class Action : Parcelable {
 
@@ -38,33 +46,66 @@ class CallUI(
             }
         }
 
+        /**
+         * Change volume action
+         */
         @Parcelize
         object ChangeVolume : Action()
 
+        /**
+         * Toggle camera action
+         */
         @Parcelize
         object ToggleCamera : Action()
 
+        /**
+         * Toggle microphone action
+         */
         @Parcelize
         object ToggleMicrophone : Action()
 
+        /**
+         * Switch camera action
+         */
         @Parcelize
         object SwitchCamera : Action()
 
+        /**
+         * Change zoom action
+         */
         @Parcelize
         object ChangeZoom : Action()
 
+        /**
+         * Toggle flashlight action
+         */
         @Parcelize
         object ToggleFlashlight : Action()
 
+        /**
+         * Show participants action
+         */
         @Parcelize
         object ShowParticipants : Action()
 
+        /**
+         * Open chat action
+         */
         sealed class OpenChat : Action() {
+            /**
+             * Open chat action with view only
+             */
             @Parcelize
             object ViewOnly : OpenChat()
         }
 
+        /**
+         * Open whiteboard action
+         */
         sealed class OpenWhiteboard : Action() {
+            /**
+             * Open whiteboard action with view only
+             */
             @Parcelize
             object ViewOnly : OpenWhiteboard()
         }

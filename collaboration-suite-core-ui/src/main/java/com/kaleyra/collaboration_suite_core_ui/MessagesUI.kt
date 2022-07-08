@@ -7,17 +7,28 @@ import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMess
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
+/**
+ * The messages UI
+ *
+ * @property chatActivityClazz Class<*>
+ * @property chatCustomNotificationActivityClazz Class<*>?
+ * @constructor
+ */
 class MessagesUI(
     messages: Messages,
     private val chatActivityClazz: Class<*>,
-    private val chatCustomNotificationActivity: Class<*>? = null
+    private val chatCustomNotificationActivityClazz: Class<*>? = null
 ) : Messages by messages {
 
+    /**
+     * Shows the notification of the unread messages
+     *
+     * @param chatId The Chat id
+     * @param loggedUserId The logged user id
+     */
     suspend fun showUnreadMsgs(chatId: String, loggedUserId: String) {
-        chatCustomNotificationActivity?.let {
+        chatCustomNotificationActivityClazz?.let {
             showCustomInAppNotification(chatId, loggedUserId, it)
         } ?: showNotification(chatId, loggedUserId)
     }

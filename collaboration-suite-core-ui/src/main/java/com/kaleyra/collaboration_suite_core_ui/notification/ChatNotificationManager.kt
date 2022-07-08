@@ -10,8 +10,14 @@ import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 
-interface ChatNotificationManager {
+/**
+ * The chat notification manager
+ */
+internal interface ChatNotificationManager {
 
+    /**
+     * @suppress
+     */
     companion object {
         private const val DEFAULT_CHANNEL_ID =
             "com.kaleyra.collaboration_suite_core_ui.chat_notification_channel_default"

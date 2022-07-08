@@ -30,7 +30,10 @@ import kotlin.math.log
 /**
  * Phone box UI
  *
- * @param phoneBox delegated property
+ * @property phoneBox The PhoneBox delegate
+ * @property callActivityClazz The call activity Class<*>
+ * @property logger The PriorityLogger
+ * @constructor
  */
 class PhoneBoxUI(
     private val phoneBox: PhoneBox,
@@ -40,19 +43,34 @@ class PhoneBoxUI(
 
     private var callScope = MainScope()
 
+    /**
+     * @suppress
+     */
     override val call: SharedFlow<CallUI> = phoneBox.call.map { CallUI(it) }.shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
 
+    /**
+     * @suppress
+     */
     override val callHistory: SharedFlow<List<CallUI>> = phoneBox.callHistory.map { it.map { CallUI(it) } }.shareIn(
         MainScope(), SharingStarted.Eagerly, replay = 1)
 
+    /**
+     * WithUI flag, set to true to automatically show the call ui on a new call, false otherwise
+     */
     var withUI = true
 
     init {
         listenToCalls()
     }
 
+    /**
+     * @suppress
+     */
     override fun connect() = phoneBox.connect()
 
+    /**
+     * @suppress
+     */
     override fun disconnect() = phoneBox.disconnect()
 
     internal fun dispose() {
@@ -76,8 +94,14 @@ class PhoneBoxUI(
      */
     fun join(url: String): CallUI = create(url).apply { connect() }
 
+    /**
+     * @suppress
+     */
     override fun create(url: String) = CallUI(phoneBox.create(url))
 
+    /**
+     * @suppress
+     */
     override fun create(users: List<User>, conf: (PhoneBox.CreationOptions.() -> Unit)?) = CallUI(phoneBox.create(users, conf))
 
     private fun listenToCalls() {

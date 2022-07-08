@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_glass_ui.chat
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.User
@@ -23,13 +22,11 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 
-class ChatViewModel : ViewModel() {
+internal class ChatViewModel : ViewModel() {
 
     //////////////////////////
     // DeviceStatusObserver //
