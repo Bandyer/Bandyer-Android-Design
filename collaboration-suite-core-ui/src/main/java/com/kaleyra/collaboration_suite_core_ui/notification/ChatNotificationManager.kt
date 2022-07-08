@@ -29,6 +29,17 @@ internal interface ChatNotificationManager {
         private const val MARK_AS_READ_REQUEST_CODE = 1312
     }
 
+    /**
+     * Build the chat notification
+     *
+     * @param userId The user id
+     * @param username The user name
+     * @param avatar The user avatar
+     * @param messages The list of messages
+     * @param activityClazz The chat activity Class<*>
+     * @param fullScreenIntentClazz The fullscreen intent activity Class<*>?
+     * @return Notification
+     */
     fun buildChatNotification(
         userId: String,
         username: String,
