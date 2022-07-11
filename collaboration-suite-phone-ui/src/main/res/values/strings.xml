@@ -115,6 +115,8 @@
     <string name="kaleyra_ringing_answer">Answer</string>
     <string name="kaleyra_ringing_decline">Decline</string>
 
+    <string name="kaleyra_back">Back</string>
+
     <!-- WHITEBOARD -->
     <string name="kaleyra_collaborate_button">Collaborate</string>
 

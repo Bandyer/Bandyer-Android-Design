@@ -31,3 +31,5 @@ and [Kaleyra Android Collaboration Suite](https://github.com/Bandyer/Kaleyra-And
 🎑  &nbsp; [Customize Colors & Themes](https://github.com/Bandyer/Bandyer-Android-Design/wiki/Customize-Colors-&-Themes)
 
 🆎  &nbsp; [Customize Font](https://github.com/Bandyer/Bandyer-Android-Design/wiki/Customize-Font)
+
+🎭  &nbsp; [Brand Identity Watermark](https://github.com/Bandyer/Bandyer-Android-Design/wiki/Brand-Identity-Watermark)
