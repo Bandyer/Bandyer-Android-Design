@@ -85,14 +85,16 @@ object CollaborationUI {
         }
 
     /**
-     * Set up
+     * Configure
      *
      * @param credentials to use when Collaboration tools need to be connected
      * @param configuration representing a set of info necessary to instantiate the communication
-     * @param callActivityClazz class of the activity
+     * @param callActivityClazz class of the call activity
+     * @param chatActivityClazz class of the chat activity
+     * @param chatNotificationActivityClazz class of the chat notification fullscreen activity
      * @return
      */
-    fun setUp(
+    fun configure(
         credentials: Credentials,
         configuration: Configuration,
         callActivityClazz: Class<*>,
