@@ -133,6 +133,7 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
             if (!isConfigured) return@whenCollaborationConfigured finishAndRemoveTask()
             viewModel.chatDelegate = ChatDelegate(CollaborationUI.chatBox.chats, CollaborationUI.usersDescription)
             viewModel.chatBox = CollaborationUI.chatBox
+            viewModel.phoneBox = CollaborationUI.phoneBox
         }
     }
 

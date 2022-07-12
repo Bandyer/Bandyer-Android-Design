@@ -24,16 +24,19 @@ import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatBinding
+import com.kaleyra.collaboration_suite_glass_ui.participants.ChatParticipant
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
@@ -68,10 +71,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
 
     private val viewModel: ChatViewModel by activityViewModels()
 
-    private val args: ChatFragmentArgs by lazy {
-        requireActivity().intent?.extras?.let { ChatFragmentArgs.fromBundle(it) }
-            ?: ChatFragmentArgs()
-    }
+    private val args: ChatFragmentArgs by lazy { ChatFragmentArgs.fromBundle(requireActivity().intent?.extras!!) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -192,9 +192,13 @@ internal class ChatFragment : BaseFragment(), TiltListener {
         )
 
     override fun onTap() = true.also {
-//        val username = itemAdapter!!.adapterItems[currentMsgItemIndex].page.userId
-//        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt)
-//        findNavController().navigate(action)
+        val currentCall = viewModel.call.replayCache.firstOrNull()
+        if (currentCall != null && currentCall.state.value !is Call.State.Disconnected) return@also
+        val userId = itemAdapter?.adapterItems?.getOrNull(currentMsgItemIndex)?.page?.userId ?: return@also
+        val me = viewModel.chat.replayCache.first().participants.value.me
+        if (userId == me.userId) return@also
+        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt, userId)
+        findNavController().navigate(action)
     }
 
     override fun onSwipeDown() = true.also { requireActivity().finishAndRemoveTask() }
@@ -232,7 +236,6 @@ internal class ChatFragment : BaseFragment(), TiltListener {
                                 i == 0
                             )
                         )
-//                    pagesIds.add(id)
                     }
                 }
                 callback.invoke(allPages)

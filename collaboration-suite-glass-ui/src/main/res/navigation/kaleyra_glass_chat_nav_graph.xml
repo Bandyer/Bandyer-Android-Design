@@ -31,10 +31,6 @@
             android:name="enableTilt"
             app:argType="boolean"
             android:defaultValue="false" />
-        <argument
-            android:name="chatId"
-            app:argType="string"
-            android:defaultValue="" />
     </fragment>
     <fragment
         android:id="@+id/chatMenuFragment"
@@ -44,10 +40,8 @@
             android:name="enableTilt"
             app:argType="boolean"
             android:defaultValue="false" />
-<!--        <argument-->
-<!--            android:name="participantData"-->
-<!--            android:defaultValue="@null"-->
-<!--            app:argType="com.kaleyra.collaboration_suite_glass_uiass_ui.participants.ParticipantData"-->
-<!--            app:nullable="true" />-->
+        <argument
+            android:name="userId"
+            app:argType="string" />
     </fragment>
 </navigation>

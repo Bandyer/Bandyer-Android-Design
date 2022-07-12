@@ -17,23 +17,35 @@
 package com.kaleyra.collaboration_suite_glass_ui.chat.menu
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.kaleyra.collaboration_suite.User
+import com.kaleyra.collaboration_suite.chatbox.Chat
+import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.PhoneBox
+import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.*
-import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity
+import com.kaleyra.collaboration_suite_glass_ui.call.CallAction
+import com.kaleyra.collaboration_suite_glass_ui.chat.ChatAction
+import com.kaleyra.collaboration_suite_glass_ui.chat.ChatViewModel
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatMenuBinding
+import com.kaleyra.collaboration_suite_glass_ui.menu.MenuItem
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
@@ -41,6 +53,8 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoot
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 /**
  * ChatMenuFragment
@@ -51,6 +65,8 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
     override val binding: KaleyraGlassFragmentChatMenuBinding get() = _binding!!
 
     private var itemAdapter: ItemAdapter<ChatMenuItem>? = null
+
+    private val viewModel: ChatViewModel by activityViewModels()
 
     private val args: ChatMenuFragmentArgs by navArgs()
 
@@ -70,9 +86,6 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
         savedInstanceState: Bundle?
     ): View {
         super.onCreateView(inflater, container, savedInstanceState)
-
-        // Args
-//        val data = args.participantData!!
 
         // Apply theme wrapper and add view binding
         val themeResId = requireContext().getChatThemeAttribute(R.styleable.KaleyraCollaborationSuiteUI_Theme_Glass_Chat_kaleyra_chatMenuStyle)
@@ -110,18 +123,37 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
                 // Forward the root view's touch event to the recycler view
                 root.setOnTouchListener { _, event -> onTouchEvent(event) }
             }
-
-            // TODO ricordarsi di settare nel data binding i dati degli utenti
-            // TODO Mettere modello User con name, avatar, state
         }
 
-        with(itemAdapter!!) {
-            add(ChatMenuItem(resources.getString(R.string.kaleyra_glass_videocall)))
-            add(ChatMenuItem(resources.getString(R.string.kaleyra_glass_call)))
-        }
-
+        bindUI()
         return binding.root
     }
+
+    fun bindUI() {
+        getActions(viewModel.actions.value).map { ChatMenuItem(it) }.also { itemAdapter!!.add(it) }
+
+        MainScope().launch {
+            val userId = args.userId
+            with(binding.kaleyraUserInfo) {
+                val name = viewModel.usersDescription.name(listOf(userId))
+                setName(name)
+                val image = viewModel.usersDescription.image(listOf(userId))
+
+                if (image != Uri.EMPTY) {
+                    setAvatar(image)
+                    return@launch
+                }
+
+                setAvatar(null)
+                setAvatarBackgroundAndLetter(name)
+            }
+        }
+    }
+
+    private fun getActions(actions: Set<ChatUI.Action>): List<ChatAction> = ChatAction.getActions(
+        withVideoCall = actions.any { it is ChatUI.Action.CreateCall && it.preferredType.isVideoEnabled() },
+        withCall = actions.any { it is ChatUI.Action.CreateCall  && !it.preferredType.isVideoEnabled() },
+    )
 
     /**
      * @suppress
@@ -135,7 +167,18 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
     override fun onTilt(deltaAzimuth: Float, deltaPitch: Float, deltaRoll: Float) =
         binding.kaleyraActions.scrollBy((deltaAzimuth * requireContext().tiltScrollFactor()).toInt(), 0)
 
-    override fun onTap() = false
+    override fun onTap() = onTap(itemAdapter!!.getAdapterItem(actionIndex).action)
+
+    private fun onTap(action: ChatAction) = when (action) {
+        is ChatAction.VIDEOCALL, is ChatAction.CALL -> true.also {
+            val userId = viewModel.chat.replayCache.first().participants.value.others.first().userId
+            viewModel.phoneBox?.call(listOf(object : User { override val userId = userId })) {
+                if (action is ChatAction.CALL) preferredType = Call.PreferredType(video = Call.Video.Disabled)
+            }
+            findNavController().popBackStack()
+        }
+        else -> false
+    }
 
     override fun onSwipeDown() = true.also { findNavController().popBackStack() }
 

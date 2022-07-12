@@ -37,8 +37,6 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.SwitchCamera
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleCamera
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleFlashlight
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action.ToggleMicrophone
-import com.kaleyra.collaboration_suite_core_ui.ChatUI
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.call.CallAction
