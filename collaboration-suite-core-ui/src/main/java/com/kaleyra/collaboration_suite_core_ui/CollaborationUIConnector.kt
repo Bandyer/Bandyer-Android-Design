@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_core_ui
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
+import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +22,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.sample
 
 /**
- * THe collaboration UI connector
+ * The collaboration UI connector
  *
  * @property collaboration The collaboration UI
  * @property scope The coroutine scope
@@ -64,6 +65,7 @@ internal class CollaborationUIConnector(val collaboration: CollaborationUI, pare
     fun dispose(clearSavedData: Boolean = true) {
         collaboration.phoneBox.dispose()
         collaboration.chatBox.dispose(clearSavedData)
+        NotificationManager.cancelAll()
         scope.cancel()
     }
 

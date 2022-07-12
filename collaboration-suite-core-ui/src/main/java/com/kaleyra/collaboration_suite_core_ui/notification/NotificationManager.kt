@@ -24,7 +24,7 @@ import com.kaleyra.collaboration_suite_utils.ContextRetainer
 /**
  * NotificationManager
  */
-internal object NotificationManager : CallNotificationManager, ChatNotificationManager {
+object NotificationManager : CallNotificationManager, ChatNotificationManager {
 
     private val notificationManager by lazy { ContextRetainer.context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
 
@@ -59,4 +59,9 @@ internal object NotificationManager : CallNotificationManager, ChatNotificationM
      * @param notificationId Int
      */
     fun cancel(notificationTag: String, notificationId: Int) = notificationManager.cancel(notificationTag, notificationId)
+
+    /**
+     * Cancel all notifications
+     */
+    fun cancelAll() = notificationManager.cancelAll()
 }
