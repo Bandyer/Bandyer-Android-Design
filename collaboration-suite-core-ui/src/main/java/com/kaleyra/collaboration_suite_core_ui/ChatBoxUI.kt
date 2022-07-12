@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import android.content.Context
 import com.kaleyra.collaboration_suite.User
+import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.utils.extensions.mapToStateFlow
@@ -35,14 +36,12 @@ class ChatBoxUI(
 
     private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
 
+    private var mappedChats: List<ChatUI> = listOf()
+
     /**
      * @suppress
      */
-    override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(chatScope) {
-        it.map {
-            ChatUI(it, chatActivityClazz = chatActivityClazz, chatCustomNotificationActivityClazz = chatCustomNotificationActivityClazz)
-        }
-    }
+    override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(chatScope) { chats -> chats.map { chatUI(it) } }
 
     /**
      * WithUI flag, set to true to show the chat notifications, false otherwise
@@ -67,6 +66,25 @@ class ChatBoxUI(
         disconnect(clearSavedData)
         chatScope.cancel()
     }
+    /**
+     * Show the chat ui
+     * @param context context to bind the chat ui
+     * @param chat The chat object that should be shown.
+     */
+    fun show(context: Context, chat: ChatUI) =
+        UIProvider.showChat(context, chatActivityClazz, chat.participants.value.others.first().userId)
+
+    /**
+     * @suppress
+     */
+    override fun create(user: User): ChatUI = chatUI(user)
+
+    /**
+     * Given a user, open a chat ui.
+     * @param context launching context of the chat ui
+     * @param user The user with whom you want to chat.
+     */
+    fun chat(context: Context, user: User): ChatUI = create(user).apply { show(context, this) }
 
     private fun listenToMessages() {
         var msgsScope: CoroutineScope? = null
@@ -85,27 +103,10 @@ class ChatBoxUI(
         }.launchIn(chatScope)
     }
 
-    /**
-     * Show the chat ui
-     * @param context context to bind the chat ui
-     * @param chat The chat object that should be shown.
-     */
-    fun show(context: Context, chat: ChatUI) =
-        UIProvider.showChat(context, chatActivityClazz, chat.participants.value.others.first().userId)
+    private fun chatUI(user: User): ChatUI = synchronized(this) { mappedChats.firstOrNull { chat -> chat.participants.value.others.all { it.userId == user.userId }} ?: createChatUI(chatBox.create(user)) }
 
-    /**
-     * @suppress
-     */
-    override fun create(user: User) = ChatUI(
-        chatBox.create(user),
-        chatActivityClazz = chatActivityClazz,
-        chatCustomNotificationActivityClazz = chatCustomNotificationActivityClazz
-    )
+    private fun chatUI(chat: Chat): ChatUI = synchronized(this) { mappedChats.firstOrNull { it.id == chat.id } ?: createChatUI(chat) }
 
-    /**
-     * Given a user, open a chat ui.
-     * @param context launching context of the chat ui
-     * @param user The user with whom you want to chat.
-     */
-    fun chat(context: Context, user: User): ChatUI = create(user).apply { show(context, this) }
+    private fun createChatUI(chat: Chat): ChatUI = ChatUI(chat, chatActivityClazz = chatActivityClazz, chatCustomNotificationActivityClazz = chatCustomNotificationActivityClazz).apply { mappedChats = mappedChats + this }
 }
+
