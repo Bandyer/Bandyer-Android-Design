@@ -6,8 +6,8 @@ import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.utils.extensions.mapToStateFlow
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.StateFlow
@@ -31,14 +31,14 @@ class ChatBoxUI(
 //    private val logger: PriorityLogger? = null
 ) : ChatBox by chatBox {
 
-    private var chatScope = MainScope()
+    private var chatScope = CoroutineScope(Dispatchers.IO)
 
     private var lastMessagePerChat: HashMap<String, String> = hashMapOf()
 
     /**
      * @suppress
      */
-    override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(MainScope()) {
+    override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(chatScope) {
         it.map {
             ChatUI(it, chatActivityClazz = chatActivityClazz, chatCustomNotificationActivityClazz = chatCustomNotificationActivityClazz)
         }

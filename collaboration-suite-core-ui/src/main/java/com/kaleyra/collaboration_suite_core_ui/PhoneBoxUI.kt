@@ -13,19 +13,17 @@ import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationA
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.logging.PriorityLogger
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.isActive
-import kotlin.math.log
 
 /**
  * Phone box UI
@@ -41,18 +39,18 @@ class PhoneBoxUI(
     private val logger: PriorityLogger? = null,
 ) : PhoneBox by phoneBox {
 
-    private var callScope = MainScope()
+    private val callScope = CoroutineScope(Dispatchers.IO)
 
     /**
      * @suppress
      */
-    override val call: SharedFlow<CallUI> = phoneBox.call.map { CallUI(it) }.shareIn(MainScope(), SharingStarted.Eagerly, replay = 1)
+    override val call: SharedFlow<CallUI> = phoneBox.call.map { CallUI(it) }.shareIn(callScope, SharingStarted.Eagerly, replay = 1)
 
     /**
      * @suppress
      */
     override val callHistory: SharedFlow<List<CallUI>> = phoneBox.callHistory.map { it.map { CallUI(it) } }.shareIn(
-        MainScope(), SharingStarted.Eagerly, replay = 1)
+        callScope, SharingStarted.Eagerly, replay = 1)
 
     /**
      * WithUI flag, set to true to automatically show the call ui on a new call, false otherwise
