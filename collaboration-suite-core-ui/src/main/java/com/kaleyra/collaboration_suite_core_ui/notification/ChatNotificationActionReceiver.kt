@@ -5,24 +5,13 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.RemoteInput
 import com.kaleyra.collaboration_suite.chatbox.Chat
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipant.Event
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipant.Event.Typing.Idle
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipant.State
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipant.State.Joined.Online
-import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.Message.Content.Text
-import com.kaleyra.collaboration_suite.chatbox.Message.State.Created
 import com.kaleyra.collaboration_suite.chatbox.Message.State.Received
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.whenCollaborationConfigured
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.Date
-import java.util.UUID
 
 /**
  * ChatNotificationActionReceiver
@@ -50,18 +39,7 @@ internal class ChatNotificationActionReceiver : BroadcastReceiver() {
                 when (intent.action) {
                     ACTION_REPLY        -> {
                         val reply = getReply(intent)
-                        val participant = object : ChatParticipant {
-                            override val state: StateFlow<State> = MutableStateFlow(Online)
-                            override val events: StateFlow<Event> = MutableStateFlow(Idle)
-                            override val userId: String = ""
-                        }
-                        val message = object : Message {
-                            override val id = UUID.randomUUID().toString()
-                            override val creator: ChatParticipant = participant
-                            override val creationDate = Date()
-                            override val content = Text(reply.toString())
-                            override val state: StateFlow<Message.State> = MutableStateFlow(Created())
-                        }
+                        val message = chat.create(Text(reply.toString()))
                         chat.messages.value.other.filter { it.state.value is Received }.forEach { it.markAsRead() }
                         chat.add(message)
                         NotificationManager.cancel(chat.id.hashCode())
