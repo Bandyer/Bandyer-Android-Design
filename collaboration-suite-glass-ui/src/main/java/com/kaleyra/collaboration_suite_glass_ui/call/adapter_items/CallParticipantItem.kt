@@ -22,7 +22,7 @@ import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassParticip
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
-internal data class ParticipantItemData(
+internal data class CallParticipant(
     val userId: String,
     val userDescription: String
 )
@@ -33,7 +33,7 @@ internal data class ParticipantItemData(
  * @property data The call participant's data
  * @constructor
  */
-internal class CallParticipantItem(val data: ParticipantItemData): AbstractItem<CallParticipantItem.ViewHolder>() {
+internal class CallParticipantItem(val data: CallParticipant): AbstractItem<CallParticipantItem.ViewHolder>() {
 
     /**
      * Set an unique identifier for the identifiable which do not have one set already

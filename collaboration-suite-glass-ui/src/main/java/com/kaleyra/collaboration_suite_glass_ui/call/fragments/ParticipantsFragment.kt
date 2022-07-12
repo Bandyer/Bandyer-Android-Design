@@ -30,9 +30,8 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.call.CallViewModel
-import com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.CallParticipantItem
-import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItemData
+import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.CallParticipant
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
@@ -109,7 +108,6 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                     addItemDecoration(HorizontalCenterItemDecoration())
                     addItemDecoration(MenuProgressIndicator(requireContext(), snapHelper!!))
 
-
                     // Forward the root view's touch event to the recycler view
                     root.setOnTouchListener { _, event -> onTouchEvent(event) }
                 }
@@ -159,7 +157,7 @@ internal class ParticipantsFragment : BaseFragment(), TiltListener {
                         pair.first.sortedBy { pair.second.me.userId != it.userId }
                     val items = sortedList.map { part ->
                         val data = part.userId.let {
-                            ParticipantItemData(
+                            CallParticipant(
                                 it,
                                 viewModel.usersDescription.name(listOf(it))
                             )

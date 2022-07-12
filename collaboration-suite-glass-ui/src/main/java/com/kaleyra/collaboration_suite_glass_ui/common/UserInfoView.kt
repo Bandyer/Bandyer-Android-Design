@@ -42,8 +42,6 @@ internal class UserInfoView @JvmOverloads constructor(
         kaleyraAvatar.setBackground(name.parseToColor())
     }
 
-//    fun setAvatar(url: String) = binding.kaleyraAvatar.setImage(url)
-
     fun setAvatar(uri: Uri) = binding.kaleyraAvatar.setImage(uri)
 
     fun setAvatar(@DrawableRes resId: Int?) = binding.kaleyraAvatar.setImage(resId)

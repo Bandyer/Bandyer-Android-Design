@@ -29,6 +29,8 @@ import com.mikepenz.fastadapter.items.AbstractItem
 
 /**
  * A menu item. If the active text is null, isActivated will always be false.
+ *
+ * @property action The action call action
  * @constructor
  */
 internal class MenuItem(val action: CallAction) : AbstractItem<MenuItem.ViewHolder>() {
