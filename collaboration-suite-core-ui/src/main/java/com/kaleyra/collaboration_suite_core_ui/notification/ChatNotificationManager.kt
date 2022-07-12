@@ -80,10 +80,10 @@ internal interface ChatNotificationManager {
     }
 
     private fun contentPendingIntent(context: Context, activityClazz: Class<*>, userId: String) =
-        createChatActivityPendingIntent(context, CONTENT_REQUEST_CODE, activityClazz, userId)
+        createChatActivityPendingIntent(context, CONTENT_REQUEST_CODE + userId.hashCode(), activityClazz, userId)
 
     private fun fullScreenPendingIntent(context: Context, activityClazz: Class<*>, userId: String) =
-        createChatActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE, activityClazz, userId)
+        createChatActivityPendingIntent(context, FULL_SCREEN_REQUEST_CODE + userId.hashCode(), activityClazz, userId)
 
     private fun <T> createChatActivityPendingIntent(
         context: Context,
@@ -115,7 +115,7 @@ internal interface ChatNotificationManager {
             }
             PendingIntent.getBroadcast(
                 context.applicationContext,
-                REPLY_REQUEST_CODE,
+                REPLY_REQUEST_CODE + userId.hashCode(),
                 intent,
                 PendingIntentExtensions.mutableFlags
             )
@@ -126,7 +126,7 @@ internal interface ChatNotificationManager {
             action = ChatNotificationActionReceiver.ACTION_MARK_AS_READ
             putExtra("userId", userId)
         }
-        return createBroadcastPendingIntent(context, MARK_AS_READ_REQUEST_CODE, intent)
+        return createBroadcastPendingIntent(context, MARK_AS_READ_REQUEST_CODE + userId.hashCode(), intent)
     }
 
     private fun deletePendingIntent(context: Context): PendingIntent {
