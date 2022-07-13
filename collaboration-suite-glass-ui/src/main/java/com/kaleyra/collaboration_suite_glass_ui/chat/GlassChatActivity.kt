@@ -10,6 +10,7 @@ import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite_core_ui.ChatDelegate
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
+import com.kaleyra.collaboration_suite_core_ui.notification.DisplayedChatActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
@@ -96,7 +97,7 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
         super.onDestroy()
         turnScreenOff()
         glassTouchEventManager = null
-        sendCustomNotificationBroadcast(CustomChatNotificationManager.ACTION_CHAT_CLOSE)
+        sendCustomNotificationBroadcast(DisplayedChatActivity.ACTION_CHAT_CLOSE)
     }
 
     override fun onDestinationChanged(destinationId: Int) = Unit
@@ -125,7 +126,7 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
     private fun onNewChatIntent(intent: Intent) {
         val userId = intent.extras?.getString("userId") ?: return
         val chat = viewModel.setChat(userId) ?: return
-        sendCustomNotificationBroadcast(CustomChatNotificationManager.ACTION_CHAT_OPEN, chat.id)
+        sendCustomNotificationBroadcast(DisplayedChatActivity.ACTION_CHAT_OPEN, chat.id)
     }
 
     private suspend fun configureCollaboration() {
@@ -138,9 +139,9 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
     }
 
     private fun sendCustomNotificationBroadcast(action: String, chatId: String? = null) {
-        sendBroadcast(Intent(this, CustomChatNotificationManager::class.java).apply {
+        sendBroadcast(Intent(this, DisplayedChatActivity::class.java).apply {
             this.action = action
-            chatId?.let { putExtra(CustomChatNotificationManager.EXTRA_CHAT_ID, it) }
+            chatId?.let { putExtra(DisplayedChatActivity.EXTRA_CHAT_ID, it) }
         })
     }
 }

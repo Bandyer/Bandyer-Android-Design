@@ -20,13 +20,18 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import kotlinx.coroutines.MainScope
 
 /**
  * NotificationManager
  */
-object NotificationManager : CallNotificationManager, ChatNotificationManager {
+internal object NotificationManager : CallNotificationManager, ChatNotificationManager {
 
     private val notificationManager by lazy { ContextRetainer.context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager }
+
+    init {
+        cancelChatNotificationOnShow(MainScope())
+    }
 
     /**
      * Notify the system to add a notification

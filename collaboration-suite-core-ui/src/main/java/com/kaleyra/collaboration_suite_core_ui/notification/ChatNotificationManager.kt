@@ -9,6 +9,10 @@ import android.os.Build
 import com.kaleyra.collaboration_suite_core_ui.R
 import com.kaleyra.collaboration_suite_core_ui.utils.PendingIntentExtensions
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 /**
  * The chat notification manager
@@ -27,6 +31,13 @@ internal interface ChatNotificationManager {
         private const val REPLY_REQUEST_CODE = 987
         private const val DELETE_REQUEST_CODE = 1110
         private const val MARK_AS_READ_REQUEST_CODE = 1312
+    }
+
+    fun cancelChatNotificationOnShow(scope: CoroutineScope) {
+        DisplayedChatActivity.chatId
+            .filter { it != null }
+            .onEach { NotificationManager.cancel(it!!.hashCode()) }
+            .launchIn(scope)
     }
 
     /**

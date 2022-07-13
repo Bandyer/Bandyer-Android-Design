@@ -43,7 +43,7 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".notification.CustomChatNotificationManager"  android:exported="false">
+        <receiver android:name=".notification.DisplayedChatActivity"  android:exported="false">
             <intent-filter>
                 <action android:name="com.kaleyra.collaboration_suite_core_ui.CHAT_OPEN"/>
                 <action android:name="com.kaleyra.collaboration_suite_core_ui.CHAT_CLOSE"/>

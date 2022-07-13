@@ -3,13 +3,10 @@ package com.kaleyra.collaboration_suite_core_ui
 import android.os.Parcelable
 import androidx.annotation.Keep
 import com.kaleyra.collaboration_suite.chatbox.Chat
-import com.kaleyra.collaboration_suite.chatbox.Message
-import com.kaleyra.collaboration_suite.chatbox.Message.Content
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.utils.extensions.mapToStateFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.parcelize.Parcelize
