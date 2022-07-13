@@ -60,7 +60,7 @@ import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.StreamItem
 import com.kaleyra.collaboration_suite_glass_ui.call.fragments.CallEndedFragmentArgs
 import com.kaleyra.collaboration_suite_glass_ui.common.OnDestinationChangedListener
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraCallActivityGlassBinding
-import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
+import com.kaleyra.collaboration_suite_glass_ui.call.model.StreamParticipant
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.enableImmersiveMode

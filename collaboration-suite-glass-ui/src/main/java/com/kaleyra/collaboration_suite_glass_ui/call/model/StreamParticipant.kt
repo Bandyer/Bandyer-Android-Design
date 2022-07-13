@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.model.internal
+package com.kaleyra.collaboration_suite_glass_ui.call.model
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant

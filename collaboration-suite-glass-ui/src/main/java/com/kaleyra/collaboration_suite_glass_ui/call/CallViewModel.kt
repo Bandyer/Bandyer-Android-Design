@@ -39,7 +39,7 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallDelegate
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
-import com.kaleyra.collaboration_suite_glass_ui.model.internal.StreamParticipant
+import com.kaleyra.collaboration_suite_glass_ui.call.model.StreamParticipant
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.CoroutineName
