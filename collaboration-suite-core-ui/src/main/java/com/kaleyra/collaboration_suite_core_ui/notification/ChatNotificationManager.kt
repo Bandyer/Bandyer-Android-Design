@@ -72,7 +72,6 @@ internal interface ChatNotificationManager {
             .contentIntent(contentIntent)
 //            .replyIntent(replyIntent)
 //            .markAsReadIntent(markAsReadIntent(context, otherUserId))
-//            .deleteIntent(deletePendingIntent(context))
             .messages(messages)
 
         fullScreenIntentClazz?.let { builder.fullscreenIntent(fullScreenPendingIntent(context, it, otherUserId)) }
@@ -127,13 +126,6 @@ internal interface ChatNotificationManager {
             putExtra("userId", userId)
         }
         return createBroadcastPendingIntent(context, MARK_AS_READ_REQUEST_CODE + userId.hashCode(), intent)
-    }
-
-    private fun deletePendingIntent(context: Context): PendingIntent {
-        val intent = Intent(context, ChatNotificationActionReceiver::class.java).apply {
-            action = ChatNotificationActionReceiver.ACTION_DELETE
-        }
-        return createBroadcastPendingIntent(context, DELETE_REQUEST_CODE, intent)
     }
 
     private fun createBroadcastPendingIntent(context: Context, requestCode: Int, intent: Intent) =

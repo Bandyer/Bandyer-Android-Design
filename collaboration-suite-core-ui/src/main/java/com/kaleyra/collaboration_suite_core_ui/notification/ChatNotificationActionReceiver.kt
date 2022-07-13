@@ -22,9 +22,8 @@ internal class ChatNotificationActionReceiver : BroadcastReceiver() {
      * @suppress
      */
     companion object {
-        const val ACTION_REPLY = "com.kaleyra.collaboration_suite_core_ui.ACTION_REPLY"
-        const val ACTION_MARK_AS_READ = "com.kaleyra.collaboration_suite_core_ui.ACTION_MARK_AS_READ"
-        const val ACTION_DELETE = "com.kaleyra.collaboration_suite_core_ui.ACTION_DELETE"
+        const val ACTION_REPLY = "com.kaleyra.collaboration_suite_core_ui.REPLY"
+        const val ACTION_MARK_AS_READ = "com.kaleyra.collaboration_suite_core_ui.MARK_AS_READ"
     }
 
     /**
