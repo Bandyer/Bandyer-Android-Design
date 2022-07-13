@@ -13,9 +13,11 @@ import kotlinx.parcelize.Parcelize
  * @constructor
  */
 class CallUI(
-    call: Call,
+    private val call: Call,
     val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(call.getDefaultActions())
 ) : Call by call {
+
+    val isLink: Boolean get() = call is Call.Link
 
     /**
      * The call action sealed class

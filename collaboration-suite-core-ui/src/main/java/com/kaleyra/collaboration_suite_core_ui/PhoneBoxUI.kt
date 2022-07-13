@@ -129,7 +129,10 @@ class PhoneBoxUI(
             .onEach { state ->
                 when {
                     state is Call.State.Disconnected.Ended -> stopService(Intent(this, CallService::class.java))
-                    state is Call.State.Disconnected || (state is Call.State.Connecting && call.participants.value.let { it.creator() == it.me }) -> {
+                    state is Call.State.Disconnected
+                            || (state is Call.State.Connecting && call.participants.value.let { it.creator() == it.me })
+                            || state is Call.State.Connected && call.isLink
+                    -> {
                         val intent = Intent(this, CallService::class.java)
                         intent.putExtra(CallService.CALL_ACTIVITY_CLASS, callActivityClazz)
                         startService(intent)
@@ -141,14 +144,13 @@ class PhoneBoxUI(
             .launchIn(scope)
     }
 
-    private fun canShowCallActivity(context: Context, call: Call): Boolean {
+    private fun canShowCallActivity(context: Context, call: CallUI): Boolean {
         val participants = call.participants.value
         val creator = participants.creator()
         val isOutgoing = creator == participants.me
-        val isLink = creator == null
         return AppLifecycle.isInForeground.value &&
                 (!context.isDND() || (context.isDND() && isOutgoing)) &&
-                (!context.isSilent() || (context.isSilent() && (isOutgoing || isLink)))
+                (!context.isSilent() || (context.isSilent() && (isOutgoing || call.isLink)))
     }
 
     private fun getOrCreateCallUI(call: Call): CallUI = synchronized(this) { mappedCalls.firstOrNull { it.id == call.id } ?: createCallUI(call) }
