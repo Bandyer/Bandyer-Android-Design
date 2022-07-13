@@ -41,7 +41,7 @@ class ChatBoxUI(
     /**
      * @suppress
      */
-    override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(chatScope) { chats -> chats.map { chatUI(it) } }
+    override val chats: StateFlow<List<ChatUI>> = chatBox.chats.mapToStateFlow(chatScope) { chats -> chats.map { getOrCreateChatUI(it) } }
 
     /**
      * WithUI flag, set to true to show the chat notifications, false otherwise
@@ -77,7 +77,7 @@ class ChatBoxUI(
     /**
      * @suppress
      */
-    override fun create(user: User): ChatUI = chatUI(user)
+    override fun create(user: User): ChatUI = getOrCreateChatUI(user)
 
     /**
      * Given a user, open a chat ui.
@@ -103,9 +103,9 @@ class ChatBoxUI(
         }.launchIn(chatScope)
     }
 
-    private fun chatUI(user: User): ChatUI = synchronized(this) { mappedChats.firstOrNull { chat -> chat.participants.value.others.all { it.userId == user.userId }} ?: createChatUI(chatBox.create(user)) }
+    private fun getOrCreateChatUI(user: User): ChatUI = synchronized(this) { mappedChats.firstOrNull { chat -> chat.participants.value.others.all { it.userId == user.userId }} ?: createChatUI(chatBox.create(user)) }
 
-    private fun chatUI(chat: Chat): ChatUI = synchronized(this) { mappedChats.firstOrNull { it.id == chat.id } ?: createChatUI(chat) }
+    private fun getOrCreateChatUI(chat: Chat): ChatUI = synchronized(this) { mappedChats.firstOrNull { it.id == chat.id } ?: createChatUI(chat) }
 
     private fun createChatUI(chat: Chat): ChatUI = ChatUI(chat, chatActivityClazz = chatActivityClazz, chatCustomNotificationActivityClazz = chatCustomNotificationActivityClazz).apply { mappedChats = mappedChats + this }
 }
