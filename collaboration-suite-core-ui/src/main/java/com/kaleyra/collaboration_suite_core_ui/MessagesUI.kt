@@ -5,6 +5,7 @@ import com.kaleyra.collaboration_suite.chatbox.Messages
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.notification.ChatNotificationMessage
 import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
+import com.kaleyra.collaboration_suite_core_ui.notification.DisplayedChatActivity
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 
@@ -28,6 +29,7 @@ class MessagesUI(
      * @param loggedUserId The logged user id
      */
     suspend fun showUnreadMsgs(chatId: String, loggedUserId: String) {
+        if (DisplayedChatActivity.chatId.value == chatId) return
         chatCustomNotificationActivityClazz?.let {
             showCustomInAppNotification(chatId, loggedUserId, it)
         } ?: showNotification(chatId, loggedUserId)
