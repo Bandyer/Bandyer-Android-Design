@@ -15,7 +15,6 @@ import com.kaleyra.collaboration_suite_utils.logging.PriorityLogger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -41,16 +40,19 @@ class PhoneBoxUI(
 
     private val callScope = CoroutineScope(Dispatchers.IO)
 
-    /**
-     * @suppress
-     */
-    override val call: SharedFlow<CallUI> = phoneBox.call.map { CallUI(it) }.shareIn(callScope, SharingStarted.Eagerly, replay = 1)
+    private var mappedCalls: List<CallUI> = listOf()
 
     /**
      * @suppress
      */
-    override val callHistory: SharedFlow<List<CallUI>> = phoneBox.callHistory.map { it.map { CallUI(it) } }.shareIn(
-        callScope, SharingStarted.Eagerly, replay = 1)
+     
+    override val call: SharedFlow<CallUI> = phoneBox.call.map { getOrCreateCallUI(it) }.shareIn(callScope, SharingStarted.Eagerly, replay = 1)
+
+    /**
+     * @suppress
+     */
+    override val callHistory: SharedFlow<List<CallUI>> = phoneBox.callHistory.map { it.map { getOrCreateCallUI(it) } }.shareIn(callScope, SharingStarted.Eagerly, replay = 1)
+
 
     /**
      * WithUI flag, set to true to automatically show the call ui on a new call, false otherwise
@@ -95,12 +97,21 @@ class PhoneBoxUI(
     /**
      * @suppress
      */
-    override fun create(url: String) = CallUI(phoneBox.create(url))
+    override fun create(url: String) = synchronized(this) { createCallUI(phoneBox.create(url)) }
 
     /**
      * @suppress
      */
-    override fun create(users: List<User>, conf: (PhoneBox.CreationOptions.() -> Unit)?) = CallUI(phoneBox.create(users, conf))
+    override fun create(users: List<User>, conf: (PhoneBox.CreationOptions.() -> Unit)?) = synchronized(this) { createCallUI(phoneBox.create(users, conf)) }
+
+    /**
+     * Show the call ui
+     * @param call The call object that should be shown.
+     */
+    fun show(call: CallUI) {
+        if (!canShowCallActivity(ContextRetainer.context, call)) return
+        UIProvider.showCall(callActivityClazz)
+    }
 
     private fun listenToCalls() {
         var serviceJob: Job? = null
@@ -130,15 +141,6 @@ class PhoneBoxUI(
             .launchIn(scope)
     }
 
-    /**
-     * Show the call ui
-     * @param call The call object that should be shown.
-     */
-    fun show(call: CallUI) {
-        if (!canShowCallActivity(ContextRetainer.context, call)) return
-        UIProvider.showCall(callActivityClazz)
-    }
-
     private fun canShowCallActivity(context: Context, call: Call): Boolean {
         val participants = call.participants.value
         val creator = participants.creator()
@@ -148,4 +150,8 @@ class PhoneBoxUI(
                 (!context.isDND() || (context.isDND() && isOutgoing)) &&
                 (!context.isSilent() || (context.isSilent() && (isOutgoing || isLink)))
     }
+
+    private fun getOrCreateCallUI(call: Call): CallUI = synchronized(this) { mappedCalls.firstOrNull { it.id == call.id } ?: createCallUI(call) }
+
+    private fun createCallUI(call: Call): CallUI = CallUI(call).apply { mappedCalls = mappedCalls + this }
 }
