@@ -32,7 +32,6 @@
 
     <!-- CONTACT STATE DOT -->
     <style name="KaleyraCollaborationSuiteUI.RoundedImageGlass.StateUserInfo" parent="KaleyraCollaborationSuiteUI.RoundedImageGlass.Bordered">
-        <item name="android:visibility">gone</item>
         <item name="android:layout_width">@dimen/kaleyra_dimen_space28</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_space28</item>
         <item name="android:background">@android:color/white</item>

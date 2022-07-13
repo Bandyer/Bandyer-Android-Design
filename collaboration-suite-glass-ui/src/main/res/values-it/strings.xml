@@ -40,6 +40,7 @@
     <string name="kaleyra_glass_online">Online</string>
     <string name="kaleyra_glass_invited">Invitato</string>
     <string name="kaleyra_glass_last_seen_pattern">Ultimo accesso: %1$s</string>
+    <string name="kaleyra_glass_last_seen_never">Ultimo accesso: mai</string>
     <string name="kaleyra_glass_call">Chiama</string>
     <string name="kaleyra_glass_videocall">Videochiama</string>
     <string name="kaleyra_glass_camera_off">La tua camera è spenta</string>

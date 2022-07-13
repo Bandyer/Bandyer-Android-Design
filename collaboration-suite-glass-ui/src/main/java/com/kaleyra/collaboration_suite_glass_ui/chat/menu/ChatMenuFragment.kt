@@ -25,6 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.Chat
+import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -49,11 +51,16 @@ import com.kaleyra.collaboration_suite_glass_ui.menu.MenuItem
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
+import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 /**
@@ -132,21 +139,28 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
     fun bindUI() {
         getActions(viewModel.actions.value).map { ChatMenuItem(it) }.also { itemAdapter!!.add(it) }
 
-        MainScope().launch {
-            val userId = args.userId
+        val userId = args.userId
+
+        lifecycleScope.launch {
             with(binding.kaleyraUserInfo) {
                 val name = viewModel.usersDescription.name(listOf(userId))
                 setName(name)
+
                 val image = viewModel.usersDescription.image(listOf(userId))
-
-                if (image != Uri.EMPTY) {
-                    setAvatar(image)
-                    return@launch
+                if (image != Uri.EMPTY) setAvatar(image)
+                else {
+                    setAvatar(null)
+                    setAvatarBackgroundAndLetter(name)
                 }
-
-                setAvatar(null)
-                setAvatarBackgroundAndLetter(name)
             }
+        }
+
+        repeatOnStarted {
+            viewModel.participants
+                .map { it.others.first { it.userId == userId } }
+                .flatMapLatest { it.state }
+                .onEach { binding.kaleyraUserInfo.setState(it) }
+                .launchIn(lifecycleScope)
         }
     }
 

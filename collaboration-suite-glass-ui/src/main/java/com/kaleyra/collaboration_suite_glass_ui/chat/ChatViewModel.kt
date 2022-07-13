@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
+import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.ChatBoxUI
 import com.kaleyra.collaboration_suite_core_ui.ChatDelegate
@@ -27,6 +28,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
@@ -60,8 +62,11 @@ internal class ChatViewModel : ViewModel() {
     val usersDescription: UsersDescription
         get() = chatDelegate?.usersDescription ?: UsersDescription()
 
+    val participants: SharedFlow<ChatParticipants> =
+        chat.flatMapLatest { it.participants }.shareIn(viewModelScope, SharingStarted.Eagerly, 1)
+
     fun setChat(userId: String): ChatUI? {
-        chatBox ?: chatDelegate ?: return null
+        chatBox ?: return null
         val chat = chatBox!!.create(object : User { override val userId = userId })
         viewModelScope.launch { _chat.emit(chat) }
         return chat
