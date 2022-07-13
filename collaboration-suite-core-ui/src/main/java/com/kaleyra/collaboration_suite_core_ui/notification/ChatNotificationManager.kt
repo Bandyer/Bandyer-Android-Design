@@ -29,8 +29,7 @@ internal interface ChatNotificationManager {
         private const val FULL_SCREEN_REQUEST_CODE = 321
         private const val CONTENT_REQUEST_CODE = 654
         private const val REPLY_REQUEST_CODE = 987
-        private const val DELETE_REQUEST_CODE = 1110
-        private const val MARK_AS_READ_REQUEST_CODE = 1312
+        private const val MARK_AS_READ_REQUEST_CODE = 1110
     }
 
     fun cancelChatNotificationOnShow(scope: CoroutineScope) {
