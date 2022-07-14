@@ -7,36 +7,19 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
-import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActionReceiver
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.take
 
 /**
  * The CallService
  */
-class CallService : LifecycleService(),
-    CallStreamDelegate,
-    CallNotificationDelegate,
-    CallNotificationActionReceiver.ActionDelegate {
+class CallService : LifecycleService(), CallStreamDelegate, CallNotificationDelegate {
 
     internal companion object {
         const val CALL_NOTIFICATION_ID = 22
         const val CALL_ACTIVITY_CLASS = "call_activity_class"
     }
 
-    private var call: CallUI? = null
-
     private var isServiceInForeground: Boolean = false
-
-    /**
-     * @suppress
-     */
-    override fun onCreate() {
-        super.onCreate()
-        CallNotificationActionReceiver.actionDelegate = this
-    }
 
     /**
      * @suppress
@@ -49,7 +32,7 @@ class CallService : LifecycleService(),
             Log.e("CallService", "Unable to get the call activity class")
             return START_NOT_STICKY
         }
-        bindCall(callActivityClazz)
+        setUpCall(callActivityClazz)
         return START_NOT_STICKY
     }
 
@@ -59,42 +42,19 @@ class CallService : LifecycleService(),
     override fun onDestroy() {
         super.onDestroy()
         clearNotification()
-        CallNotificationActionReceiver.actionDelegate = null
     }
 
     /**
-     * Bind the service to a phone box
+     * Set up the call streams and notifications
      *
      * @param callActivityClazz The call activity class
      */
-    private fun bindCall(callActivityClazz: Class<*>) {
-        CollaborationUI.phoneBox.call
-            .take(1)
-            .onEach {
-                call = it
-                setUpCallStreams(this@CallService, it)
-                syncCallNotification(it, CollaborationUI.usersDescription, callActivityClazz)
-            }.launchIn(lifecycleScope)
+    private fun setUpCall(callActivityClazz: Class<*>) {
+        CollaborationUI.onCallReady(lifecycleScope) {
+            setUpCallStreams(this@CallService, it)
+            syncCallNotification(it, CollaborationUI.usersDescription, callActivityClazz)
+        }
     }
-
-    ///////////////////////////////////////////////////
-    // CallNotificationActionReceiver.ActionDelegate //
-    ///////////////////////////////////////////////////
-    /**
-     * @suppress
-     */
-    override fun onAnswerAction(): Unit = let { call?.connect() }
-
-    /**
-     * @suppress
-     */
-    override fun onHangUpAction(): Unit = let { call?.end() }
-
-    /**
-     * @suppress
-     */
-    override fun onScreenShareAction() = Unit
-
 
     //////////////////////////////
     // CallNotificationDelegate //

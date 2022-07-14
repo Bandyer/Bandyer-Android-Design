@@ -20,6 +20,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.kaleyra.collaboration_suite_core_ui.CallService
+import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.onCallReady
 import com.kaleyra.collaboration_suite_core_ui.whenCollaborationConfigured
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,26 +31,6 @@ import kotlinx.coroutines.launch
  * The call notification broadcast receiver, it handles the answer and hang up events
  */
 class CallNotificationActionReceiver : BroadcastReceiver() {
-
-    /**
-     * ActionDelegate. Responsible to handle the behaviour on notification action tap
-     */
-    interface ActionDelegate {
-        /**
-         * Invoked when the user clicks on the notification's answer action
-         */
-        fun onAnswerAction()
-
-        /**
-         * Invoked when the user clicks on the notification's hang up action
-         */
-        fun onHangUpAction()
-
-        /**
-         * Invoked when the user clicks on the notification's screen share action
-         */
-        fun onScreenShareAction()
-    }
 
     /**
      * @suppress
@@ -68,11 +50,6 @@ class CallNotificationActionReceiver : BroadcastReceiver() {
          * ActionStopScreenShare
          */
         const val ACTION_STOP_SCREEN_SHARE = "com.kaleyra.collaboration_suite_core_ui.STOP_SCREEN_SHARE"
-
-        /**
-         * The call action notification delegate
-         */
-        var actionDelegate: ActionDelegate? = null
     }
 
     /**
@@ -83,15 +60,16 @@ class CallNotificationActionReceiver : BroadcastReceiver() {
         CoroutineScope(Dispatchers.IO).launch {
             whenCollaborationConfigured {
                 if (!it) return@whenCollaborationConfigured NotificationManager.cancel(CallService.CALL_NOTIFICATION_ID)
-                when (intent.action) {
-                    ACTION_ANSWER            -> actionDelegate?.onAnswerAction()
-                    ACTION_HANGUP            -> actionDelegate?.onHangUpAction()
-                    ACTION_STOP_SCREEN_SHARE -> actionDelegate?.onScreenShareAction()
-                    else                     -> Unit
+                CollaborationUI.onCallReady(this) { call ->
+                    when (intent.action) {
+                        ACTION_ANSWER            -> call.connect()
+                        ACTION_HANGUP            -> call.end()
+                        ACTION_STOP_SCREEN_SHARE -> TODO()
+                        else                     -> Unit
+                    }
                 }
             }
             pendingResult.finish()
         }
     }
-
 }

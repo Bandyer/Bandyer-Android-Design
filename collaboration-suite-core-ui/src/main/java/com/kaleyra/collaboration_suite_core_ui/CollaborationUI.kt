@@ -26,6 +26,9 @@ import com.kaleyra.collaboration_suite_utils.setValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 
 /**
  * Collaboration UI
@@ -140,5 +143,12 @@ object CollaborationUI {
         _chatBox = null
         mainScope = null
     }
+}
+
+internal fun CollaborationUI.onCallReady(scope: CoroutineScope, block: (call: CallUI) -> Unit) {
+    phoneBox.call
+        .take(1)
+        .onEach { block.invoke(it) }
+        .launchIn(scope)
 }
 
