@@ -164,6 +164,13 @@ internal class ChatFragment : BaseFragment(), TiltListener {
                             FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                     }
                 }.launchIn(this@repeatOnStarted)
+
+            viewModel.call
+                .flatMapLatest { it.state }
+                .onEach {
+                    if (it is Call.State.Connecting) binding.kaleyraBottomNavigation.hideSecondItem()
+                    else if(it is Call.State.Disconnected.Ended) binding.kaleyraBottomNavigation.showSecondItem()
+                }.launchIn(this@repeatOnStarted)
         }
 
         with(binding.kaleyraTitle) {

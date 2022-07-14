@@ -97,7 +97,6 @@
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem.Chat" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.SecondItem">
         <item name="kaleyra_rootLayoutStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.Chat</item>
         <item name="kaleyra_labelStyle">@style/KaleyraCollaborationSuiteUI.TextView.GlassLabel.SecondItemChat</item>
-        <item name="android:visibility">gone</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem.Chat" parent="KaleyraCollaborationSuiteUI.Glass.BottomActionItem.RootLayout.SecondItem">
