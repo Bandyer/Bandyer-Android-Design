@@ -18,11 +18,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.dropWhile
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.take
 
 /**
  * Phone box UI
@@ -120,7 +122,7 @@ class PhoneBoxUI(
             serviceJob?.cancel()
             serviceJob = callService(it, callScope)
             it.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope)
-            show(it)
+            if (it.isLink) showOnAppResumed(it) else show(it)
         }.launchIn(callScope)
     }
 
@@ -152,6 +154,8 @@ class PhoneBoxUI(
                 (!context.isDND() || (context.isDND() && isOutgoing)) &&
                 (!context.isSilent() || (context.isSilent() && (isOutgoing || call.isLink)))
     }
+
+    private fun showOnAppResumed(call: CallUI): Unit = let { AppLifecycle.isInForeground.dropWhile { !it }.take(1).onEach { show(call) }.launchIn(callScope) }
 
     private fun getOrCreateCallUI(call: Call): CallUI = synchronized(this) { mappedCalls.firstOrNull { it.id == call.id } ?: createCallUI(call) }
 
