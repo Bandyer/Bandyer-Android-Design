@@ -127,19 +127,17 @@ class PhoneBoxUI(
     }
 
     private fun callService(call: CallUI, scope: CoroutineScope): Job = with(ContextRetainer.context) {
+        var isCallServiceStarted = false
         call.state
             .onEach { state ->
                 when {
                     state is Call.State.Disconnected.Ended -> stopService(Intent(this, CallService::class.java))
-                    state is Call.State.Disconnected
-                            || (state is Call.State.Connecting && call.participants.value.let { it.creator() == it.me })
-                            || ((state is Call.State.Connected || state is Call.State.Connecting) && call.isLink)
-                    -> {
+                    !isCallServiceStarted -> {
                         val intent = Intent(this, CallService::class.java)
                         intent.putExtra(CallService.CALL_ACTIVITY_CLASS, callActivityClazz)
                         startService(intent)
+                        isCallServiceStarted = true
                     }
-                    else -> Unit
                 }
             }
             .onCompletion { stopService(Intent(this@with, CallService::class.java)) }
