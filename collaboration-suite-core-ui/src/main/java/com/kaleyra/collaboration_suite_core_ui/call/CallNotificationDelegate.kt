@@ -1,36 +1,40 @@
 package com.kaleyra.collaboration_suite_core_ui.call
 
 import android.app.Notification
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite_core_ui.CallService
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.isSilent
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
-import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.takeWhile
 
 /**
  * CallNotificationDelegate. It is responsible of syncing the call's notifications with the call
  */
-interface CallNotificationDelegate : LifecycleOwner {
+interface CallNotificationDelegate {
+
+    companion object {
+        const val CALL_NOTIFICATION_ID = 22
+    }
 
     /**
      * Show the notification
      *
      * @param notification The notification
-     * @param showInForeground True of the notification should be coupled to a foreground service, false otherwise
      */
-    fun showNotification(notification: Notification, showInForeground: Boolean)
+    fun showNotification(notification: Notification) =
+        NotificationManager.notify(CALL_NOTIFICATION_ID, notification)
 
     /**
      * Clear the notification
      */
-    fun clearNotification()
+    fun clearNotification() = NotificationManager.cancel(CALL_NOTIFICATION_ID)
 
     /**
      * Sync the notifications with the call
@@ -38,33 +42,28 @@ interface CallNotificationDelegate : LifecycleOwner {
      * @param call The call
      * @param usersDescription The usersDescription
      * @param activityClazz The call activity class
+     * @param scope The coroutine scope
      */
     fun syncCallNotification(
         call: Call,
         usersDescription: UsersDescription,
-        activityClazz: Class<*>
+        activityClazz: Class<*>,
+        scope: CoroutineScope
     ) {
-        var lastState: Call.State? = null
-        var isServiceInForeground = false
-        combine(call.state, AppLifecycle.isInForeground) { state, isInForeground ->
-            if (lastState == state && isServiceInForeground) return@combine state
-            lastState = state
-            if (isInForeground) isServiceInForeground = true
+        call.state.onEach {
             val notification =
-                buildNotification(call, usersDescription, activityClazz, isServiceInForeground) ?: return@combine state
-            showNotification(notification, isServiceInForeground)
-            state
+                buildNotification(call, usersDescription, activityClazz) ?: return@onEach
+            showNotification(notification)
         }
             .takeWhile { it !is Call.State.Disconnected.Ended }
             .onCompletion { clearNotification() }
-            .launchIn(lifecycleScope)
+            .launchIn(scope)
     }
 
     private suspend fun buildNotification(
         call: Call,
         usersDescription: UsersDescription,
-        activityClazz: Class<*>,
-        isAppInForeground: Boolean
+        activityClazz: Class<*>
     ): Notification? {
         val context = ContextRetainer.context
         val participants = call.participants.value
@@ -78,7 +77,7 @@ interface CallNotificationDelegate : LifecycleOwner {
                     callerDescription,
                     isGroupCall,
                     activityClazz,
-                    !isAppInForeground || context.isSilent()
+                    !AppLifecycle.isInForeground.value || context.isSilent()
                 )
             }
             call.isOutgoing() -> {
@@ -88,7 +87,7 @@ interface CallNotificationDelegate : LifecycleOwner {
                     activityClazz
                 )
             }
-            call.isOngoing()  -> {
+            call.isOngoing() -> {
                 NotificationManager.buildOngoingCallNotification(
                     calleeDescription,
                     participants.creator() == null,
@@ -99,7 +98,7 @@ interface CallNotificationDelegate : LifecycleOwner {
                     activityClazz
                 )
             }
-            else              -> null
+            else -> null
         }
     }
 

@@ -6,8 +6,14 @@ import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
+import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate.Companion.CALL_NOTIFICATION_ID
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
-import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
+import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 
 /**
  * The CallService
@@ -15,11 +21,15 @@ import com.kaleyra.collaboration_suite_core_ui.notification.NotificationManager
 class CallService : LifecycleService(), CallStreamDelegate, CallNotificationDelegate {
 
     internal companion object {
-        const val CALL_NOTIFICATION_ID = 22
         const val CALL_ACTIVITY_CLASS = "call_activity_class"
+        private val TAG = this::class.java.name
     }
 
-    private var isServiceInForeground: Boolean = false
+    private var notification: Notification? = null
+        @Synchronized get
+        @Synchronized set
+
+    private var foregroundJob: Job? = null
 
     /**
      * @suppress
@@ -29,7 +39,7 @@ class CallService : LifecycleService(), CallStreamDelegate, CallNotificationDele
         val callActivityClazz = intent?.extras?.getSerializable(CALL_ACTIVITY_CLASS) as? Class<*>
         callActivityClazz ?: kotlin.run {
             stopSelf()
-            Log.e("CallService", "Unable to get the call activity class")
+            Log.e(TAG, "Call Activity Class not provided!")
             return START_NOT_STICKY
         }
         setUpCall(callActivityClazz)
@@ -52,7 +62,12 @@ class CallService : LifecycleService(), CallStreamDelegate, CallNotificationDele
     private fun setUpCall(callActivityClazz: Class<*>) {
         CollaborationUI.onCallReady(lifecycleScope) {
             setUpCallStreams(this@CallService, it)
-            syncCallNotification(it, CollaborationUI.usersDescription, callActivityClazz)
+            syncCallNotification(
+                it,
+                CollaborationUI.usersDescription,
+                callActivityClazz,
+                lifecycleScope
+            )
         }
     }
 
@@ -62,19 +77,26 @@ class CallService : LifecycleService(), CallStreamDelegate, CallNotificationDele
     /**
      * @suppress
      */
-    override fun showNotification(notification: Notification, showInForeground: Boolean) {
-        if (showInForeground) {
-            startForeground(CALL_NOTIFICATION_ID, notification).also {
-                isServiceInForeground = true
-            }
-        } else NotificationManager.notify(CALL_NOTIFICATION_ID, notification)
+    override fun showNotification(notification: Notification) {
+        super.showNotification(notification)
+        this.notification = notification
+        moveToForegroundWhenPossible()
     }
 
     /**
      * @suppress
      */
     override fun clearNotification() {
-        stopForeground(true).also { isServiceInForeground = false }
-        NotificationManager.cancel(CALL_NOTIFICATION_ID)
+        super.clearNotification()
+        stopForeground(true)
+    }
+
+    private fun moveToForegroundWhenPossible() {
+        if (foregroundJob != null) return
+        foregroundJob = AppLifecycle.isInForeground
+            .dropWhile { !it }
+            .take(1)
+            .onEach { startForeground(CALL_NOTIFICATION_ID, notification!!) }
+            .launchIn(lifecycleScope)
     }
 }
