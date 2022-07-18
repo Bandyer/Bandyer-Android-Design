@@ -86,6 +86,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
@@ -153,8 +154,6 @@ internal class GlassCallActivity :
         glassTouchEventManager = GlassTouchEventManager(this@GlassCallActivity, this@GlassCallActivity)
 
         handleIntentAction(intent)
-        bindUI()
-
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -163,13 +162,6 @@ internal class GlassCallActivity :
     }
 
     private fun bindUI() {
-        val preferredCallType = viewModel.preferredCallType.value
-        if (!viewModel.micPermission.value.isAllowed && preferredCallType?.hasAudio() == true && preferredCallType.isAudioEnabled())
-            viewModel.onRequestMicPermission(this)
-
-        if (!viewModel.camPermission.value.isAllowed && preferredCallType?.hasVideo() == true && preferredCallType.isVideoEnabled())
-            viewModel.onRequestCameraPermission(this)
-
         // Add a scroll listener to the recycler view to show mic/cam blocked/disabled toasts
         with(binding.kaleyraStreams) {
             val snapHelper = LinearSnapHelper().also { it.attachToRecyclerView(this) }
@@ -242,6 +234,15 @@ internal class GlassCallActivity :
                 }
             })
         }
+
+        viewModel.preferredCallType
+            .filter { it != null }
+            .take(1)
+            .onEach {
+                if (!viewModel.micPermission.value.isAllowed && it!!.hasAudio()) viewModel.onRequestMicPermission(this)
+                if (!viewModel.camPermission.value.isAllowed && it!!.hasVideo()) viewModel.onRequestCameraPermission(this)
+            }
+            .launchIn(lifecycleScope)
 
         viewModel.phoneBoxState
             .takeWhile { it !is PhoneBox.State.Disconnecting }
@@ -554,6 +555,8 @@ internal class GlassCallActivity :
             viewModel.callDelegate = CallDelegate(CollaborationUI.phoneBox.call, CollaborationUI.usersDescription)
             viewModel.callController = CallController(CollaborationUI.phoneBox.call, CallAudioManager(ContextRetainer.context))
             viewModel.phoneBox = CollaborationUI.phoneBox
+            bindUI()
+            
         }
     }
 
