@@ -68,7 +68,7 @@ object CollaborationUI {
      */
     val phoneBox: PhoneBoxUI
         get() {
-            require(collaboration != null) { "setUp the CollaborationUI to use the phoneBox" }
+            require(collaboration != null) { "configure the CollaborationUI to use the phoneBox" }
             return _phoneBox!!
         }
 
@@ -83,7 +83,7 @@ object CollaborationUI {
      */
     val chatBox: ChatBoxUI
         get() {
-            require(collaboration != null) { "setUp the CollaborationUI to use the chatBox" }
+            require(collaboration != null) { "configure the CollaborationUI to use the chatBox" }
             return _chatBox!!
         }
 
