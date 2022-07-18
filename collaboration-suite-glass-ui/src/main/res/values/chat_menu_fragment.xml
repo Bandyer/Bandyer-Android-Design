@@ -20,6 +20,7 @@
         <attr name="kaleyra_rootLayoutStyle" />
         <attr name="kaleyra_userInfoStyle" />
         <attr name="recyclerViewStyle" />
+        <attr name="kaleyra_recyclerViewParticipantsItemStyle" />
         <attr name="kaleyra_recyclerViewVideoCallItemStyle" format="reference" />
         <attr name="kaleyra_recyclerViewCallItemStyle" format="reference" />
         <attr name="bottomNavigationStyle" />
@@ -29,6 +30,7 @@
     <style name="KaleyraCollaborationSuiteUI.Glass.DarkBackground.ChatMenu" parent="KaleyraCollaborationSuiteUI.Glass">
         <item name="kaleyra_userInfoStyle">@style/KaleyraCollaborationSuiteUI.Glass.UserInfo</item>
         <item name="recyclerViewStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerView</item>
+        <item name="kaleyra_recyclerViewParticipantsItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.Participants</item>
         <item name="kaleyra_recyclerViewVideoCallItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.VideoCall</item>
         <item name="kaleyra_recyclerViewCallItemStyle">@style/KaleyraCollaborationSuiteUI.Glass.RecyclerViewItem.Call</item>
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.ChatMenu</item>

@@ -24,6 +24,7 @@ import android.view.View
 import android.widget.LinearLayout
 import androidx.annotation.DrawableRes
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
+import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassUserInfoLayoutBinding
 
@@ -52,4 +53,10 @@ internal class UserInfoView @JvmOverloads constructor(
     }
 
     fun hideName(value: Boolean) { binding.kaleyraName.visibility = if (value) View.GONE else View.VISIBLE }
+
+    fun hideState(value: Boolean) {
+        val visibility = if (value) View.GONE else View.VISIBLE
+        binding.kaleyraUserStateText.visibility = visibility
+        binding.kaleyraUserStateDot.visibility = visibility
+    }
 }

@@ -22,7 +22,7 @@
 
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.chat.ChatFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.chat.fragments.ChatFragment"
         android:label="ChatFragment">
         <action
             android:id="@+id/action_chatFragment_to_chatMenuFragment"
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatMenuFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.chat.menu.ChatMenuFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.chat.fragments.ChatMenuFragment"
         android:label="ChatMenuFragment">
         <argument
             android:name="enableTilt"
@@ -43,5 +43,18 @@
         <argument
             android:name="userId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_chatMenuFragment_to_chatParticipantsFragment"
+            app:destination="@id/chatParticipantsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/chatParticipantsFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.ChatParticipantsFragment"
+        android:label="ChatParticipantsFragment">
+        <argument
+            android:name="enableTilt"
+            android:defaultValue="false"
+            app:argType="boolean" />
+    </fragment>
+
 </navigation>

@@ -19,6 +19,7 @@
         <attr name="kaleyra_statusBarStyle" />
         <attr name="kaleyra_chatStyle" format="reference" />
         <attr name="kaleyra_chatMenuStyle" format="reference" />
+        <attr name="kaleyra_participantsStyle" />
     </declare-styleable>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.DayNight.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.DayNight">
@@ -27,6 +28,7 @@
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Chat</item>
         <item name="kaleyra_chatStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat</item>
         <item name="kaleyra_chatMenuStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.ChatMenu</item>
+        <item name="kaleyra_participantsStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.Participants</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Day.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.Day">
@@ -35,6 +37,7 @@
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Chat</item>
         <item name="kaleyra_chatStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat</item>
         <item name="kaleyra_chatMenuStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.ChatMenu</item>
+        <item name="kaleyra_participantsStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.Participants</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Night.GlassChat" parent="KaleyraCollaborationSuiteUI.Theme.Night">
@@ -43,6 +46,7 @@
         <item name="bottomNavigationStyle">@style/KaleyraCollaborationSuiteUI.Glass.BottomNavigation.Chat</item>
         <item name="kaleyra_chatStyle">@style/KaleyraCollaborationSuiteUI.Glass.Chat</item>
         <item name="kaleyra_chatMenuStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.ChatMenu</item>
+        <item name="kaleyra_participantsStyle">@style/KaleyraCollaborationSuiteUI.Glass.DarkBackground.Participants</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.GlassChat.RootLayout" parent="">

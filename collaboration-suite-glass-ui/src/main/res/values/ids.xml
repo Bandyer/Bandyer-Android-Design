@@ -28,6 +28,7 @@
     <item name="id_glass_menu_chat_item" type="id" />
     <item name="id_glass_menu_whiteboard_item" type="id" />
 
+    <item name="id_glass_chat_menu_participants_item" type="id" />
     <item name="id_glass_chat_menu_videocall_item" type="id" />
     <item name="id_glass_chat_menu_call_item" type="id" />
 

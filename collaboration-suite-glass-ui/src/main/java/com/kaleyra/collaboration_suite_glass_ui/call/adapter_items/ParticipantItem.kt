@@ -22,7 +22,7 @@ import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassParticip
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.items.AbstractItem
 
-internal data class CallParticipant(
+internal data class ParticipantItemData(
     val userId: String,
     val userDescription: String
 )
@@ -33,7 +33,7 @@ internal data class CallParticipant(
  * @property data The call participant's data
  * @constructor
  */
-internal class CallParticipantItem(val data: CallParticipant): AbstractItem<CallParticipantItem.ViewHolder>() {
+internal class ParticipantItem(val data: ParticipantItemData): AbstractItem<ParticipantItem.ViewHolder>() {
 
     /**
      * Set an unique identifier for the identifiable which do not have one set already
@@ -64,21 +64,21 @@ internal class CallParticipantItem(val data: CallParticipant): AbstractItem<Call
      *
      * @constructor
      */
-    class ViewHolder(view: View): FastAdapter.ViewHolder<CallParticipantItem>(view) {
+    class ViewHolder(view: View): FastAdapter.ViewHolder<ParticipantItem>(view) {
 
         private val binding: KaleyraGlassParticipantItemLayoutBinding = KaleyraGlassParticipantItemLayoutBinding.bind(view)
 
         /**
          * Binds the data of this item onto the viewHolder
          */
-        override fun bindView(item: CallParticipantItem, payloads: List<Any>) {
+        override fun bindView(item: ParticipantItem, payloads: List<Any>) {
             binding.kaleyraText.text = item.data.userDescription
         }
 
         /**
          * View needs to release resources when its recycled
          */
-        override fun unbindView(item: CallParticipantItem) {
+        override fun unbindView(item: ParticipantItem) {
             binding.kaleyraText.text = null
         }
     }

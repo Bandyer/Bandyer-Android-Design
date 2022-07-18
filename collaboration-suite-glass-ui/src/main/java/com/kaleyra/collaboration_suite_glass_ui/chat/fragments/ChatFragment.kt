@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.chat
+package com.kaleyra.collaboration_suite_glass_ui.chat.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -22,7 +22,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.view.doOnLayout
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +32,9 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.R
+import com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessageItem
+import com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessagePage
+import com.kaleyra.collaboration_suite_glass_ui.chat.ChatViewModel
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatBinding
@@ -104,8 +106,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
                 val snapHelper = PagerSnapHelper().also { it.attachToRecyclerView(this) }
                 itemAdapter = ItemAdapter()
                 val fastAdapter = FastAdapter.with(itemAdapter!!)
-                val layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     private var isLoading = false
@@ -201,8 +202,6 @@ internal class ChatFragment : BaseFragment(), TiltListener {
         val currentCall = viewModel.call.replayCache.firstOrNull()
         if (currentCall != null && currentCall.state.value !is Call.State.Disconnected) return@also
         val userId = itemAdapter?.adapterItems?.getOrNull(currentMsgItemIndex)?.page?.userId ?: return@also
-        val me = viewModel.chat.replayCache.first().participants.value.me
-        if (userId == me.userId) return@also
         val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt, userId)
         findNavController().navigate(action)
     }

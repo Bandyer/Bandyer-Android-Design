@@ -4,7 +4,6 @@ import androidx.annotation.AttrRes
 import androidx.annotation.IdRes
 import androidx.annotation.LayoutRes
 import com.kaleyra.collaboration_suite_glass_ui.R
-import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassMenuItemLayoutBinding
 
 /**
  * Class representing a Chat Menu Action
@@ -22,16 +21,20 @@ internal abstract class ChatAction(
      */
     companion object Items {
         /**
-         * Get all actions for an audio&Video call
+         * Get all actions for a chat
+         *
+         * @param withParticipants True to add the participants action, false otherwise
          * @param withVideoCall True to add the video call action, false otherwise
          * @param withCall True to add the call action, false otherwise
          *
          * @return List<ChatAction>
          */
         fun getActions(
+            withParticipants: Boolean,
             withVideoCall: Boolean,
             withCall: Boolean,
         ): List<ChatAction> = mutableListOf<ChatAction>().apply {
+            if (withParticipants) add(PARTICIPANTS())
             if (withVideoCall) add(VIDEOCALL())
             if (withCall) add(CALL())
         }
@@ -50,7 +53,17 @@ internal abstract class ChatAction(
     override fun hashCode(): Int = viewId
 
     /**
-     * Switch camera menu action item
+     * Participants menu action item
+     * @constructor
+     */
+    class PARTICIPANTS : ChatAction(
+        R.id.id_glass_chat_menu_participants_item,
+        R.layout.kaleyra_glass_chat_menu_item_layout,
+        R.attr.kaleyra_recyclerViewParticipantsItemStyle
+    )
+
+    /**
+     * Video call camera menu action item
      * @constructor
      */
     class VIDEOCALL : ChatAction(
@@ -60,7 +73,7 @@ internal abstract class ChatAction(
     )
 
     /**
-     * Zoom menu action item
+     * Call menu action item
      * @constructor
      */
     class CALL : ChatAction(

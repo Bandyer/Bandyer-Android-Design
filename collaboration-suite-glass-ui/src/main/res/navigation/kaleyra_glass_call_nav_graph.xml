@@ -33,7 +33,7 @@
             app:destination="@id/zoomFragment" />
         <action
             android:id="@+id/action_menuFragment_to_participantsFragment"
-            app:destination="@id/participantsFragment" />
+            app:destination="@id/callParticipantsFragment" />
         <argument
             android:name="enableTilt"
             android:defaultValue="false"
@@ -110,9 +110,9 @@
             app:argType="boolean" />
     </fragment>
     <fragment
-        android:id="@+id/participantsFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.ParticipantsFragment"
-        android:label="ParticipantsFragment">
+        android:id="@+id/callParticipantsFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.CallParticipantsFragment"
+        android:label="CallParticipantsFragment">
         <argument
             android:name="enableTilt"
             android:defaultValue="false"

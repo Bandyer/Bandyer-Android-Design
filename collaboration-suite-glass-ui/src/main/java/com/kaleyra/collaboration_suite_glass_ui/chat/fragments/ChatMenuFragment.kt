@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.kaleyra.collaboration_suite_glass_ui.chat.menu
+package com.kaleyra.collaboration_suite_glass_ui.chat.fragments
 
 import android.annotation.SuppressLint
-import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -32,31 +31,26 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.User
-import com.kaleyra.collaboration_suite.chatbox.Chat
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox
-import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_glass_ui.*
-import com.kaleyra.collaboration_suite_glass_ui.call.CallAction
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatAction
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatViewModel
+import com.kaleyra.collaboration_suite_glass_ui.chat.menu.ChatMenuItem
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.MenuProgressIndicator
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatMenuBinding
-import com.kaleyra.collaboration_suite_glass_ui.menu.MenuItem
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
+import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -165,6 +159,7 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
     }
 
     private fun getActions(actions: Set<ChatUI.Action>): List<ChatAction> = ChatAction.getActions(
+        withParticipants = actions.any { it is ChatUI.Action.ShowParticipants },
         withVideoCall = actions.any { it is ChatUI.Action.CreateCall && it.preferredType.isVideoEnabled() },
         withCall = actions.any { it is ChatUI.Action.CreateCall  && !it.preferredType.isVideoEnabled() },
     )
@@ -184,6 +179,11 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
     override fun onTap() = onTap(itemAdapter!!.getAdapterItem(actionIndex).action)
 
     private fun onTap(action: ChatAction) = when (action) {
+        is ChatAction.PARTICIPANTS -> true.also {
+            findNavController().safeNavigate(
+                ChatMenuFragmentDirections.actionChatMenuFragmentToChatParticipantsFragment()
+            )
+        }
         is ChatAction.VIDEOCALL, is ChatAction.CALL -> true.also {
             val userId = viewModel.chat.replayCache.first().participants.value.others.first().userId
             viewModel.phoneBox?.call(listOf(object : User { override val userId = userId })) {

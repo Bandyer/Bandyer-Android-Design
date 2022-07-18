@@ -677,7 +677,7 @@ internal class GlassCallActivity :
         with(binding.kaleyraStatusBar) {
             setBackgroundColor(
                 when {
-                    destinationId == R.id.participantsFragment           -> getResourceColor(R.color.kaleyra_glass_background_color)
+                    destinationId == R.id.callParticipantsFragment           -> getResourceColor(R.color.kaleyra_glass_background_color)
                     fragmentsWithDimmedStatusBar.contains(destinationId) -> getResourceColor(R.color.kaleyra_glass_dimmed_background_color)
                     else                                                 -> Color.TRANSPARENT
                 }
@@ -745,7 +745,7 @@ internal class GlassCallActivity :
         val fragmentsWithParticipantsNumber = setOf(
             R.id.emptyFragment,
             R.id.menuFragment,
-            R.id.participantsFragment,
+            R.id.callParticipantsFragment,
             R.id.zoomFragment,
             R.id.volumeFragment
         )
