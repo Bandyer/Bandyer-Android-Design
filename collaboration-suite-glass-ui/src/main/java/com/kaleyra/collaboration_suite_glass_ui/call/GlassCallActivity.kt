@@ -309,9 +309,9 @@ internal class GlassCallActivity :
                 .onEach {
                     if (it is Call.State.Reconnecting) navController!!.navigate(R.id.reconnectingFragment)
                     if (it is Call.State.Disconnected.Ended) {
-                        val title = resources.getString(R.string.kaleyra_glass_call_ended)
+                        val subtitle = if(it != Call.State.Disconnected.Ended) resources.getString(R.string.kaleyra_glass_call_ended) else null
 
-                        val subtitle = when (it) {
+                        val title = when (it) {
                             is Call.State.Disconnected.Ended.Declined                -> resources.getString(R.string.kaleyra_glass_call_declined)
                             is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> resources.getString(
                                 R.string.kaleyra_glass_answered_on_another_device
@@ -320,7 +320,7 @@ internal class GlassCallActivity :
                             is Call.State.Disconnected.Ended.HangUp                  -> resources.getString(R.string.kaleyra_glass_call_hung_up)
                             is Call.State.Disconnected.Ended.Error                   -> resources.getString(R.string.kaleyra_glass_call_error_occurred)
                             is Call.State.Disconnected.Ended.Timeout                 -> resources.getString(R.string.kaleyra_glass_call_timeout)
-                            else                                                     -> null
+                            else                                                     -> resources.getString(R.string.kaleyra_glass_call_ended)
                         }
 
                         val navArgs = CallEndedFragmentArgs(title, subtitle).toBundle()
