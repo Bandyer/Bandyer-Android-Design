@@ -33,6 +33,7 @@
             tools:targetApi="m" />
         <activity
             android:name=".chat.GlassChatActivity"
+            android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity"
             android:launchMode="singleTop"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChat"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation" />
