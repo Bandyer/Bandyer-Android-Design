@@ -5,6 +5,7 @@ import androidx.annotation.Keep
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.utils.extensions.mapToStateFlow
+import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -50,6 +51,7 @@ class ChatUI(
              */
             val all by lazy {
                 setOf(
+                    ShowParticipants,
                     CreateCall(preferredType = Call.PreferredType(video = Call.Video.Disabled)),
                     CreateCall()
                 )
@@ -64,5 +66,11 @@ class ChatUI(
          */
         @Parcelize
         data class CreateCall(val preferredType: Call.PreferredType = Call.PreferredType()) : Action()
+
+        /**
+         * Show participants action
+         */
+        @Parcelize
+        object ShowParticipants : Action()
     }
 }
