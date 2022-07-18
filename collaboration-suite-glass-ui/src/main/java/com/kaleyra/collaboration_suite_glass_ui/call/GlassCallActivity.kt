@@ -239,8 +239,8 @@ internal class GlassCallActivity :
             .filter { it != null }
             .take(1)
             .onEach {
-                if (!viewModel.micPermission.value.isAllowed && it!!.hasAudio()) viewModel.onRequestMicPermission(this)
-                if (!viewModel.camPermission.value.isAllowed && it!!.hasVideo()) viewModel.onRequestCameraPermission(this)
+                if (!viewModel.micPermission.value.isAllowed && it!!.hasAudio() && it.isAudioEnabled()) viewModel.onRequestMicPermission(this)
+                if (!viewModel.camPermission.value.isAllowed && it!!.hasVideo() && it.isVideoEnabled()) viewModel.onRequestCameraPermission(this)
             }
             .launchIn(lifecycleScope)
 
