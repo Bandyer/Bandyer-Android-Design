@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/chatParticipantsFragment"
-        android:name="com.kaleyra.collaboration_suite_glass_ui.call.fragments.ChatParticipantsFragment"
+        android:name="com.kaleyra.collaboration_suite_glass_ui.chat.fragments.ChatParticipantsFragment"
         android:label="ChatParticipantsFragment">
         <argument
             android:name="enableTilt"
