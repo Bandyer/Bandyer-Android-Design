@@ -1,8 +1,6 @@
 package com.kaleyra.collaboration_suite_core_ui.call
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.VideoStreamView
@@ -21,7 +19,7 @@ import kotlinx.coroutines.plus
 /**
  * CallStreamDelegate. It is responsible of setting up the call's streams and videos.
  */
-interface CallStreamDelegate: LifecycleOwner {
+interface CallStreamDelegate {
 
     private companion object {
         const val MY_STREAM_ID = "main"
@@ -33,7 +31,7 @@ interface CallStreamDelegate: LifecycleOwner {
      * @param context A context
      * @param call The call
      */
-    fun setUpCallStreams(context: Context, call: Call) {
+    fun setUpCallStreams(context: Context, call: Call, coroutineScope: CoroutineScope) {
         val mainScope = MainScope() + CoroutineName("Call Scope: ${call.id}")
         publishMyStream(call)
         setUpStreamsAndVideos(call, context, mainScope)
@@ -42,7 +40,7 @@ interface CallStreamDelegate: LifecycleOwner {
         call.state
             .takeWhile { it !is Call.State.Disconnected.Ended }
             .onCompletion { mainScope.cancel() }
-            .launchIn(lifecycleScope)
+            .launchIn(coroutineScope)
     }
 
     /**
