@@ -123,6 +123,8 @@ class PhoneBoxUI(
             serviceJob = callService(it, callScope)
             it.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope)
             if (it.isLink) showOnAppResumed(it) else show(it)
+        }.onCompletion {
+            with(ContextRetainer.context) { stopService(Intent(this, CallService::class.java)) }
         }.launchIn(callScope)
     }
 
@@ -140,7 +142,6 @@ class PhoneBoxUI(
                     }
                 }
             }
-            .onCompletion { stopService(Intent(this@with, CallService::class.java)) }
             .launchIn(scope)
     }
 
