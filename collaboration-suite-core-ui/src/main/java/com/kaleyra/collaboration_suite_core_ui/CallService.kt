@@ -61,7 +61,6 @@ class CallService : LifecycleService(), CallStreamDelegate, CallNotificationDele
      */
     private fun setUpCall(callActivityClazz: Class<*>) {
         CollaborationUI.onCallReady(lifecycleScope) {
-            setUpCallStreams(this@CallService, it)
             setUpCallStreams(this@CallService, it, lifecycleScope)
             syncCallNotification(
                 it,
