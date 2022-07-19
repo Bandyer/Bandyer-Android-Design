@@ -64,7 +64,10 @@ class CallNotificationActionReceiver : BroadcastReceiver() {
                 CollaborationUI.onCallReady(this) { call ->
                     when (intent.action) {
                         ACTION_ANSWER            -> call.connect()
-                        ACTION_HANGUP            -> call.end()
+                        ACTION_HANGUP            -> {
+                            call.end()
+                            NotificationManager.cancel(CALL_NOTIFICATION_ID)
+                        }
                         ACTION_STOP_SCREEN_SHARE -> TODO()
                         else                     -> Unit
                     }
