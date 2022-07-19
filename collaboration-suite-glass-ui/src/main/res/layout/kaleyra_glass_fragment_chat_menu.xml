@@ -21,16 +21,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.kaleyra.collaboration_suite_glass_ui.common.UserInfoView
-        android:id="@+id/kaleyra_user_info"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:theme="?attr/kaleyra_userInfoStyle"
-        app:layout_constraintBottom_toTopOf="@id/kaleyra_actions"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/kaleyra_actions"
         android:layout_width="match_parent"

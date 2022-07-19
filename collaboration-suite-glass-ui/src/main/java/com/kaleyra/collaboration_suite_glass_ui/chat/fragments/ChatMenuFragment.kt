@@ -17,14 +17,12 @@
 package com.kaleyra.collaboration_suite_glass_ui.chat.fragments
 
 import android.annotation.SuppressLint
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,17 +43,11 @@ import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.TiltListener
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.getChatThemeAttribute
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ContextExtensions.tiltScrollFactor
-import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToNext
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.horizontalSmoothScrollToPrevious
 import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 /**
  * ChatMenuFragment
@@ -126,36 +118,8 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
             }
         }
 
-        bindUI()
-        return binding.root
-    }
-
-    fun bindUI() {
         getActions(viewModel.actions.value).map { ChatMenuItem(it) }.also { itemAdapter!!.add(it) }
-
-        val userId = args.userId
-
-        lifecycleScope.launch {
-            with(binding.kaleyraUserInfo) {
-                val name = viewModel.usersDescription.name(listOf(userId))
-                setName(name)
-
-                val image = viewModel.usersDescription.image(listOf(userId))
-                if (image != Uri.EMPTY) setAvatar(image)
-                else {
-                    setAvatar(null)
-                    setAvatarBackgroundAndLetter(name)
-                }
-            }
-        }
-
-        repeatOnStarted {
-            viewModel.participants
-                .map { it.others.first { it.userId == userId } }
-                .flatMapLatest { it.state }
-                .onEach { binding.kaleyraUserInfo.setState(it) }
-                .launchIn(lifecycleScope)
-        }
+        return binding.root
     }
 
     private fun getActions(actions: Set<ChatUI.Action>): List<ChatAction> = ChatAction.getActions(
