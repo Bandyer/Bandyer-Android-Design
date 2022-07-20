@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_core_ui.call
 
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Inputs
@@ -8,12 +9,10 @@ import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.model.Permission
 import com.kaleyra.collaboration_suite_core_ui.model.Volume
 import com.kaleyra.collaboration_suite_utils.audio.CallAudioManager
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
 /**
  * CallController. It implements the CallUIController methods.
@@ -33,7 +32,7 @@ class CallController(private val call: SharedFlow<CallUI>, private val callAudio
     override val volume: Volume get() = callAudioManager.let { Volume(it.currentVolume, it.minVolume, it.maxVolume) }
 
     override fun onRequestMicPermission(context: FragmentActivity) {
-        MainScope().launch {
+        context.lifecycleScope.launchWhenResumed {
             val permission = if (currentCall.inputs.allowList.value.firstOrNull { it is Input.Audio } != null) Permission(
                 isAllowed = true,
                 neverAskAgain = false
@@ -51,7 +50,7 @@ class CallController(private val call: SharedFlow<CallUI>, private val callAudio
 
 
     override fun onRequestCameraPermission(context: FragmentActivity) {
-        MainScope().launch {
+        context.lifecycleScope.launchWhenResumed {
             val permission = if (currentCall.inputs.allowList.value.firstOrNull { it is Input.Video.Camera.Internal } != null) Permission(
                 isAllowed = true,
                 neverAskAgain = false
