@@ -11,7 +11,7 @@ import android.os.IBinder
 import android.util.Log
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.gotToLaunchingActivity
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeoutOrNull
@@ -59,7 +59,7 @@ private suspend fun getCollaborationService(): CollaborationService? = with(Cont
 suspend fun whenCollaborationConfigured(block: (Boolean) -> Unit) {
     if (!CollaborationUI.isConfigured) getCollaborationService()?.onRequestNewCollaborationSetUp() ?: run {
         block(false)
-        return ContextRetainer.context.gotToLaunchingActivity()
+        return ContextRetainer.context.goToLaunchingActivity()
     }
     block(true)
 }

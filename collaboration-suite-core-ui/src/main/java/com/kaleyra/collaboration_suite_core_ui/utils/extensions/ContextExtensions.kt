@@ -184,7 +184,7 @@ object ContextExtensions {
         }
     }
 
-    internal fun Context.gotToLaunchingActivity() {
+    internal fun Context.goToLaunchingActivity() {
         val intent = packageManager.getLaunchIntentForPackage(packageName)
         val componentName = intent!!.component
         val mainIntent = Intent.makeRestartActivityTask(componentName)
