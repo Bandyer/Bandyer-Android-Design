@@ -86,6 +86,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.sample
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
@@ -499,6 +500,7 @@ internal class GlassCallActivity :
             var currentWhiteboard: Whiteboard? = null
             var wbJob: Job? = null
             viewModel.callState
+                .sample(1000)
                 .takeWhile { it !is Call.State.Connected }
                 .onCompletion {
                     combine(viewModel.whiteboard, viewModel.actions) { wb, actions ->
