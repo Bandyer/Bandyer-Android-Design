@@ -60,9 +60,9 @@ object ContextExtensions {
     fun <T : Activity> Context.getActivity(): T? {
         return when (this) {
             is FragmentActivity -> this as T?
-            is Activity -> this as T?
-            is ContextWrapper -> this.baseContext.getActivity() as T?
-            else -> null
+            is Activity         -> this as T?
+            is ContextWrapper   -> this.baseContext.getActivity() as T?
+            else                -> null
         }
     }
 
@@ -161,10 +161,10 @@ object ContextExtensions {
     /**
      * Check if the device is in silent mode
      *
-     * @receiver Context
-     * @return Boolean
+     * @receiver Context context
+     * @return Boolean true if is silent, false otherwise
      */
-    internal fun Context.isSilent(): Boolean {
+    fun Context.isSilent(): Boolean {
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager?
         return audioManager?.ringerMode == AudioManager.RINGER_MODE_SILENT
     }
@@ -172,10 +172,10 @@ object ContextExtensions {
     /**
      * Check if the device is in the dnd mode
      *
-     * @receiver Context
-     * @return Boolean
+     * @receiver Context context
+     * @return Boolean true if is in dnd, false otherwise
      */
-    internal fun Context.isDND(): Boolean {
+    fun Context.isDND(): Boolean {
         return try {
             val zenValue = Settings.Global.getInt(contentResolver, "zen_mode")
             zenValue == 1 || zenValue == 2
@@ -184,7 +184,10 @@ object ContextExtensions {
         }
     }
 
-    internal fun Context.goToLaunchingActivity() {
+    /**
+     * Used to restart the app.
+     **/
+    fun Context.goToLaunchingActivity() {
         val intent = packageManager.getLaunchIntentForPackage(packageName)
         val componentName = intent!!.component
         val mainIntent = Intent.makeRestartActivityTask(componentName)

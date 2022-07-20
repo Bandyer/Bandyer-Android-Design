@@ -1,14 +1,15 @@
 package com.kaleyra.collaboration_suite_core_ui.notification
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.RemoteInput
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.Message.Content.Text
 import com.kaleyra.collaboration_suite.chatbox.Message.State.Received
+import com.kaleyra.collaboration_suite_core_ui.CollaborationBroadcastReceiver
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.whenCollaborationConfigured
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
 /**
  * ChatNotificationActionReceiver
  */
-internal class ChatNotificationActionReceiver : BroadcastReceiver() {
+class ChatNotificationActionReceiver : CollaborationBroadcastReceiver() {
 
     /**
      * @suppress
@@ -33,8 +34,11 @@ internal class ChatNotificationActionReceiver : BroadcastReceiver() {
         val pendingResult = goAsync()
         val chat = getChat(intent) ?: return
         CoroutineScope(Dispatchers.IO).launch {
-            whenCollaborationConfigured {
-                if (!it) return@whenCollaborationConfigured NotificationManager.cancel(chat.id.hashCode())
+            requestConfigure().let {
+                if (!it) {
+                    NotificationManager.cancel(chat.id.hashCode())
+                    return@let ContextRetainer.context.goToLaunchingActivity()
+                }
                 when (intent.action) {
                     ACTION_REPLY        -> {
                         val reply = getReply(intent)

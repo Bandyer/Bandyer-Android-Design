@@ -16,14 +16,14 @@
 
 package com.kaleyra.collaboration_suite_core_ui.notification
 
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.kaleyra.collaboration_suite_core_ui.CollaborationBroadcastReceiver
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate
 import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate.Companion.CALL_NOTIFICATION_ID
 import com.kaleyra.collaboration_suite_core_ui.onCallReady
-import com.kaleyra.collaboration_suite_core_ui.whenCollaborationConfigured
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
 /**
  * The call notification broadcast receiver, it handles the answer and hang up events
  */
-class CallNotificationActionReceiver : BroadcastReceiver() {
+class CallNotificationActionReceiver : CollaborationBroadcastReceiver() {
 
     /**
      * @suppress
@@ -59,8 +59,11 @@ class CallNotificationActionReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val pendingResult = goAsync()
         CoroutineScope(Dispatchers.IO).launch {
-            whenCollaborationConfigured {
-                if (!it) return@whenCollaborationConfigured NotificationManager.cancel(CALL_NOTIFICATION_ID)
+            requestConfigure().let {
+                if (!it) {
+                    NotificationManager.cancel(CALL_NOTIFICATION_ID)
+                    return@let ContextRetainer.context.goToLaunchingActivity()
+                }
                 CollaborationUI.onCallReady(this) { call ->
                     when (intent.action) {
                         ACTION_ANSWER            -> call.connect()

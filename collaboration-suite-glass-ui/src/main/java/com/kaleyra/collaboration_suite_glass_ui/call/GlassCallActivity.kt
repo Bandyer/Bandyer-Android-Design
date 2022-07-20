@@ -47,7 +47,7 @@ import com.kaleyra.collaboration_suite_core_ui.notification.CallNotificationActi
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
-import com.kaleyra.collaboration_suite_core_ui.whenCollaborationConfigured
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
 import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -58,9 +58,9 @@ import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.MyStreamItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.OtherStreamItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.StreamItem
 import com.kaleyra.collaboration_suite_glass_ui.call.fragments.CallEndedFragmentArgs
+import com.kaleyra.collaboration_suite_glass_ui.call.model.StreamParticipant
 import com.kaleyra.collaboration_suite_glass_ui.common.OnDestinationChangedListener
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraCallActivityGlassBinding
-import com.kaleyra.collaboration_suite_glass_ui.call.model.StreamParticipant
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.enableImmersiveMode
@@ -312,7 +312,7 @@ internal class GlassCallActivity :
                 .onEach {
                     if (it is Call.State.Reconnecting) navController!!.navigate(R.id.reconnectingFragment)
                     if (it is Call.State.Disconnected.Ended) {
-                        val subtitle = if(it != Call.State.Disconnected.Ended) resources.getString(R.string.kaleyra_glass_call_ended) else null
+                        val subtitle = if (it != Call.State.Disconnected.Ended) resources.getString(R.string.kaleyra_glass_call_ended) else null
 
                         val title = when (it) {
                             is Call.State.Disconnected.Ended.Declined                -> resources.getString(R.string.kaleyra_glass_call_declined)
@@ -330,7 +330,7 @@ internal class GlassCallActivity :
                         navController!!.navigate(R.id.callEndedFragment, navArgs)
                     }
                 }.launchIn(this)
-            
+
             viewModel.amIAlone
                 .takeWhile { it }
                 .onCompletion { binding.kaleyraStatusBar.showTimer() }
@@ -554,13 +554,16 @@ internal class GlassCallActivity :
     }
 
     private fun configureCollaboration() = MainScope().launch {
-        whenCollaborationConfigured { isConfigured ->
-            if (!isConfigured) return@whenCollaborationConfigured finishAndRemoveTask()
+        requestConfigure().let { isConfigured ->
+            if (!isConfigured) {
+                finishAndRemoveTask()
+                return@let ContextRetainer.context.goToLaunchingActivity()
+            }
             viewModel.callDelegate = CallDelegate(CollaborationUI.phoneBox.call, CollaborationUI.usersDescription)
             viewModel.callController = CallController(CollaborationUI.phoneBox.call, CallAudioManager(ContextRetainer.context))
             viewModel.phoneBox = CollaborationUI.phoneBox
             bindUI()
-            
+
         }
     }
 
@@ -681,7 +684,7 @@ internal class GlassCallActivity :
         with(binding.kaleyraStatusBar) {
             setBackgroundColor(
                 when {
-                    destinationId == R.id.callParticipantsFragment           -> getResourceColor(R.color.kaleyra_glass_background_color)
+                    destinationId == R.id.callParticipantsFragment       -> getResourceColor(R.color.kaleyra_glass_background_color)
                     fragmentsWithDimmedStatusBar.contains(destinationId) -> getResourceColor(R.color.kaleyra_glass_dimmed_background_color)
                     else                                                 -> Color.TRANSPARENT
                 }
@@ -720,7 +723,7 @@ internal class GlassCallActivity :
 
     override fun onTouch(event: TouchEvent): Boolean =
         when {
-            event.type == TouchEvent.Type.SWIPE_FORWARD && event.source == TouchEvent.Source.KEY -> true.also {
+            event.type == TouchEvent.Type.SWIPE_FORWARD && event.source == TouchEvent.Source.KEY  -> true.also {
                 binding.kaleyraStreams.horizontalSmoothScrollToNext(currentStreamItemIndex)
             }
             event.type == TouchEvent.Type.SWIPE_BACKWARD && event.source == TouchEvent.Source.KEY -> true.also {

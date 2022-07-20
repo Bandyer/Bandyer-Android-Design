@@ -11,7 +11,6 @@ import android.os.IBinder
 import android.util.Log
 import com.kaleyra.collaboration_suite_core_ui.common.BoundService
 import com.kaleyra.collaboration_suite_core_ui.common.BoundServiceBinder
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeoutOrNull
@@ -22,9 +21,20 @@ import kotlinx.coroutines.withTimeoutOrNull
 abstract class CollaborationService : BoundService() {
 
     /**
+     * Companion
+     **/
+    companion object {
+
+        /**
+         *  A service that is used to configure collaboration.
+         **/
+        suspend fun get(): CollaborationService? = getCollaborationService()
+    }
+
+    /**
      * On request new collaboration set up
      */
-    abstract suspend fun onRequestNewCollaborationSetUp()
+    abstract suspend fun onRequestNewCollaborationConfigure()
 }
 
 @SuppressLint("QueryPermissionsNeeded")
@@ -54,12 +64,4 @@ private suspend fun getCollaborationService(): CollaborationService? = with(Cont
             }
         }
     }
-}
-
-suspend fun whenCollaborationConfigured(block: (Boolean) -> Unit) {
-    if (!CollaborationUI.isConfigured) getCollaborationService()?.onRequestNewCollaborationSetUp() ?: run {
-        block(false)
-        return ContextRetainer.context.goToLaunchingActivity()
-    }
-    block(true)
 }

@@ -9,12 +9,11 @@ import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite_core_ui.ChatDelegate
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.notification.CustomChatNotificationManager
 import com.kaleyra.collaboration_suite_core_ui.notification.DisplayedChatActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
-import com.kaleyra.collaboration_suite_core_ui.whenCollaborationConfigured
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
 import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
@@ -25,17 +24,16 @@ import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.enableImmersiveMode
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
 internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedListener,
-    GlassTouchEventManager.Listener {
+                                   GlassTouchEventManager.Listener {
 
     private lateinit var binding: KaleyraChatActivityGlassBinding
 
@@ -79,10 +77,10 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
                 .onEach {
                     binding.kaleyraStatusBar.setWiFiSignalState(
                         when {
-                            it.state == WiFiInfo.State.DISABLED -> StatusBarView.WiFiSignalState.DISABLED
+                            it.state == WiFiInfo.State.DISABLED                                     -> StatusBarView.WiFiSignalState.DISABLED
                             it.level == WiFiInfo.Level.NO_SIGNAL || it.level == WiFiInfo.Level.POOR -> StatusBarView.WiFiSignalState.LOW
-                            it.level == WiFiInfo.Level.FAIR || it.level == WiFiInfo.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
-                            else -> StatusBarView.WiFiSignalState.FULL
+                            it.level == WiFiInfo.Level.FAIR || it.level == WiFiInfo.Level.GOOD      -> StatusBarView.WiFiSignalState.MODERATE
+                            else                                                                    -> StatusBarView.WiFiSignalState.FULL
                         }
                     )
                 }
@@ -132,8 +130,11 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
     }
 
     private suspend fun configureCollaboration() {
-        whenCollaborationConfigured { isConfigured ->
-            if (!isConfigured) return@whenCollaborationConfigured finishAndRemoveTask()
+        requestConfigure().let { isConfigured ->
+            if (!isConfigured) {
+                finishAndRemoveTask()
+                return@let ContextRetainer.context.goToLaunchingActivity()
+            }
             viewModel.chatDelegate = ChatDelegate(CollaborationUI.chatBox.chats, CollaborationUI.usersDescription)
             viewModel.chatBox = CollaborationUI.chatBox
             viewModel.phoneBox = CollaborationUI.phoneBox
