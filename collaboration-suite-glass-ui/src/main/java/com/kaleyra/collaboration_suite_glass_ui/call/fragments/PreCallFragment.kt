@@ -21,11 +21,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.common.HorizontalAutoScrollView
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.take
 import kotlin.math.roundToInt
 
 internal abstract class PreCallFragment : ConnectingFragment(),
@@ -52,7 +54,7 @@ internal abstract class PreCallFragment : ConnectingFragment(),
                     kaleyraParticipants.text = viewModel.usersDescription.name(userIds)
                     updateUIOnParticipantsViewChange()
 
-                    setSubtitle(nParticipants > 2)
+                    setSubtitle(nParticipants > 2, viewModel.call.replayCache.first().isLink)
                 }.launchIn(this@repeatOnStarted)
             }
         }

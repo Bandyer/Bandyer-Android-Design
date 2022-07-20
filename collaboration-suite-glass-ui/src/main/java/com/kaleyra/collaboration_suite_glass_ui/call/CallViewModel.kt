@@ -100,7 +100,7 @@ internal class CallViewModel : ViewModel() {
             field = value
         }
 
-    private val _call: MutableSharedFlow<CallUI> = MutableSharedFlow()
+    private val _call: MutableSharedFlow<CallUI> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
     val call: SharedFlow<CallUI> = _call.asSharedFlow()
 
     val usersDescription: UsersDescription get() = callDelegate?.usersDescription ?: UsersDescription()

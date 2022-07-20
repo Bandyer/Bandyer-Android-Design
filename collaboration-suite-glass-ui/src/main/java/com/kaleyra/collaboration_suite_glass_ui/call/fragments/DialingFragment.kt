@@ -43,7 +43,15 @@ internal class DialingFragment : PreCallFragment() {
 
     override fun onConnected() { findNavController().safeNavigate(DialingFragmentDirections.actionDialingFragmentToEmptyFragment()) }
 
-    override fun setSubtitle(isGroupCall: Boolean) { binding.kaleyraSubtitle.text = resources.getString(if (isGroupCall) R.string.kaleyra_glass_dialing_group else R.string.kaleyra_glass_dialing) }
+    override fun setSubtitle(isGroupCall: Boolean, isLink: Boolean) {
+        binding.kaleyraSubtitle.text = resources.getString(
+            when {
+                isLink -> R.string.kaleyra_glass_connecting
+                isGroupCall -> R.string.kaleyra_glass_dialing_group
+                else -> R.string.kaleyra_glass_dialing
+            }
+        )
+    }
 
     override fun onTap() = false
 

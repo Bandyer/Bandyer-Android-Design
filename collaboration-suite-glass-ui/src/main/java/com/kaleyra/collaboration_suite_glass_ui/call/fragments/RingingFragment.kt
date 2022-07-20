@@ -62,7 +62,14 @@ internal class RingingFragment : PreCallFragment() {
 
     override fun onConnected() { findNavController().safeNavigate(RingingFragmentDirections.actionRingingFragmentToEmptyFragment()) }
 
-    override fun setSubtitle(isGroupCall: Boolean) { binding.kaleyraSubtitle.text =  resources.getString(if(isGroupCall) R.string.kaleyra_glass_ringing_group else R.string.kaleyra_glass_ringing) }
+    override fun setSubtitle(isGroupCall: Boolean, isLink: Boolean) {
+        binding.kaleyraSubtitle.text = resources.getString(
+            when {
+                isLink -> R.string.kaleyra_glass_connecting
+                isGroupCall -> R.string.kaleyra_glass_ringing_group
+                else -> R.string.kaleyra_glass_ringing
+            }
+    ) }
 
     override fun onTap() = true.also { viewModel.onAnswer() }
 

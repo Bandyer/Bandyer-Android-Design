@@ -43,7 +43,7 @@ internal class ReconnectingFragment : ConnectingFragment() {
 
     override fun onConnected() { findNavController().safeNavigate(ReconnectingFragmentDirections.actionReconnectingFragmentToEmptyFragment()) }
 
-    override fun setSubtitle(isGroupCall: Boolean) { binding.kaleyraSubtitle.text = resources.getString(R.string.kaleyra_glass_connecting) }
+    override fun setSubtitle(isGroupCall: Boolean, isLink: Boolean) { binding.kaleyraSubtitle.text = resources.getString(R.string.kaleyra_glass_connecting) }
 
     override fun onTap() = false
 
