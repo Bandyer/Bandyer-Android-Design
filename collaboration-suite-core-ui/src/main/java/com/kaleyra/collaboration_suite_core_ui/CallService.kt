@@ -10,10 +10,9 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallNotificationDelegate.Com
 import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
 import com.kaleyra.collaboration_suite_core_ui.utils.AppLifecycle
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.dropWhile
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.take
 
 /**
  * The CallService
@@ -78,8 +77,8 @@ class CallService : LifecycleService(), CallStreamDelegate, CallNotificationDele
      * @suppress
      */
     override fun showNotification(notification: Notification) {
-        super.showNotification(notification)
         this.notification = notification
+        super.showNotification(notification)
         moveToForegroundWhenPossible()
     }
 
@@ -93,10 +92,15 @@ class CallService : LifecycleService(), CallStreamDelegate, CallNotificationDele
 
     private fun moveToForegroundWhenPossible() {
         if (foregroundJob != null) return
+        // Every time the app goes in foreground, try to promote the service in foreground.
+        // The runCatching is needed because the startForeground may fails when the app is in background but
+        // the isInForeground flag is still true. This happens because the onStop of the application lifecycle is
+        // dispatched 700ms after the last activity's onStop
         foregroundJob = AppLifecycle.isInForeground
-            .dropWhile { !it }
-            .take(1)
-            .onEach { startForeground(CALL_NOTIFICATION_ID, notification!!) }
+            .filter { it }
+            .onEach {
+                kotlin.runCatching { startForeground(CALL_NOTIFICATION_ID, notification!!) }
+            }
             .launchIn(lifecycleScope)
     }
 }
