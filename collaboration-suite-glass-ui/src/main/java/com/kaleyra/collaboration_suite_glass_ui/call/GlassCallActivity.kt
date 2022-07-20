@@ -245,15 +245,17 @@ internal class GlassCallActivity :
             .launchIn(lifecycleScope)
 
         viewModel.phoneBoxState
-            .takeWhile { it !is PhoneBox.State.Disconnecting }
-            .onCompletion { finishAndRemoveTask() }
+            .onEach {
+                if (it !is PhoneBox.State.Disconnecting) return@onEach
+                finishAndRemoveTask()
+            }
             .launchIn(lifecycleScope)
 
         viewModel.callState
             .dropWhile { it == Call.State.Disconnected }
-            .takeWhile { it !is Call.State.Disconnected }
-            .onCompletion {
-                if (!isActivityInForeground) finishAndRemoveTask()
+            .onEach {
+                if (it !is Call.State.Disconnected || isActivityInForeground) return@onEach
+                finishAndRemoveTask()
             }.launchIn(lifecycleScope)
 
         if (!viewModel.micPermission.value.isAllowed)
