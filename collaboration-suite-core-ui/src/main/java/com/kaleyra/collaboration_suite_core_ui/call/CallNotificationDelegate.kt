@@ -19,7 +19,13 @@ import kotlinx.coroutines.flow.takeWhile
  */
 interface CallNotificationDelegate {
 
+    /**
+     * @suppress
+     */
     companion object {
+        /**
+         * The global call notification id
+         */
         const val CALL_NOTIFICATION_ID = 22
     }
 

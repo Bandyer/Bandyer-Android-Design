@@ -6,6 +6,9 @@ import android.content.Intent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+/**
+ * Utility class to know the chat's id of the chat displayed in the chat activity
+ */
 class DisplayedChatActivity internal constructor(): BroadcastReceiver() {
     /**
      * @suppress
