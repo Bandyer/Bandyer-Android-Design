@@ -25,7 +25,6 @@
             android:name=".call.GlassCallActivity"
             android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.call.GlassCallActivity"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassCall"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
             android:launchMode="singleTask"
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
@@ -35,8 +34,7 @@
             android:name=".chat.GlassChatActivity"
             android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity"
             android:launchMode="singleTop"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChat"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation" />
+            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.GlassChat" />
         <activity
             android:name=".chat.notification.GlassChatNotificationActivity"
             android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.chat.notification.GlassChatNotificationActivity"
