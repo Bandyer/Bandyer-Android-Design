@@ -5,7 +5,7 @@ import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.Message
-import com.kaleyra.collaboration_suite.utils.extensions.mapToStateFlow
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.mapToStateFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

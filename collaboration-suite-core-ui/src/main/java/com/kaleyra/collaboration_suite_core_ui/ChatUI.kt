@@ -4,8 +4,8 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.utils.extensions.mapToStateFlow
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.mapToStateFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

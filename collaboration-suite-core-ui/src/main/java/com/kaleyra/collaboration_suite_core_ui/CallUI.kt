@@ -17,6 +17,9 @@ class CallUI(
     val actions: MutableStateFlow<Set<Action>> = MutableStateFlow(call.getDefaultActions())
 ) : Call by call {
 
+    /**
+     * A property that returns true if the call is a link call.
+     **/
     val isLink: Boolean get() = call is Call.Link
 
     /**
