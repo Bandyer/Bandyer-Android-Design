@@ -16,11 +16,4 @@
 include ':app',
         ':collaboration-suite-core-ui',
         ':collaboration-suite-phone-ui',
-        ':collaboration-suite-glass-ui',
-        ':collaboration-suite',
-        ":collaboration-suite-extension-audio",
-        ':collaboration-suite-utils'
-
-project(':collaboration-suite').projectDir = file('../bandyer-android-collaborationcenter/collaboration-suite/')
-project(':collaboration-suite-extension-audio').projectDir = file('../bandyer-android-collaborationcenter/collaboration-suite-extension-audio/')
-project(':collaboration-suite-utils').projectDir = file('../Collaboration-Suite-Utils/collaboration-suite-utils')
+        ':collaboration-suite-glass-ui'

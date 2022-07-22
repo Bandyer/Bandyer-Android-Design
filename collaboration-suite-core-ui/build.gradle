@@ -33,7 +33,6 @@ dependencies {
     coreLibraryDesugaring androidX.desugar
 
     testImplementation test.jUnit
-    testImplementation kaleyra.utils
     androidTestImplementation test.espresso
 
     api jetbrains.stdlib
