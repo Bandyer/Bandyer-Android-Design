@@ -32,8 +32,8 @@ ext {
 
     def kotlinCoroutinesVersion = "1.5.2"
 
-    def collaborationSuiteUtilsVersion = "2.0.1"
-    def collaborationSuiteVersion = "1.0.0-alpha6"
+    def collaborationSuiteVersion = "1.0.0-alpha7"
+    def collaborationSuiteExtensionAudioVersion = collaborationSuiteVersion
 
     def junitVersion = "4.13.2"
     def testRunnerVersion = "1.4.0"
@@ -97,8 +97,8 @@ ext {
     ]
 
     kaleyra = [
-           utils: "com.kaleyra:collaboration-suite-utils:$collaborationSuiteUtilsVersion",
-           collaboration: "com.kaleyra:collaboration-suite:$collaborationSuiteVersion"
+           collaboration: "com.kaleyra:collaboration-suite:$collaborationSuiteVersion",
+           collaboration_extension_audio:"com.kaleyra:collaboration-suite-extension-audio:$collaborationSuiteExtensionAudioVersion"
     ]
 
     test = [

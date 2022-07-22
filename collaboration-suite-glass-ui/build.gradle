@@ -52,8 +52,9 @@ dependencies {
     api project(':collaboration-suite-core-ui')
 
     /** Kaleyra **/
-    api kaleyra.collaboration
-//    api project(":collaboration-suite")
-//    api project(':collaboration-suite-extension-audio')
-    compileOnly kaleyra.utils
+    implementation kaleyra.collaboration
+    implementation kaleyra.collaboration_extension_audio
+
+//    implementation project(":collaboration-suite")
+//    implementation project(":collaboration-suite-extension-audio")
 }

@@ -32,7 +32,7 @@ task invalidateCache(type: Exec) {
     workingDir '../scripts'
     def publishPath = "releases"
     def packageName = moduleGroupId + "." + project.getName()
-    commandLine 'python', './invalidate_s3_cache.py', properties.getProperty("maven.accessKey") ?: "", properties.getProperty("maven.secretKey") ?: "", properties.getProperty("maven.distributionId") ?: "", publishPath, packageName, moduleVersion
+    commandLine 'python3', './invalidate_s3_cache.py', properties.getProperty("maven.accessKey") ?: "", properties.getProperty("maven.secretKey") ?: "", properties.getProperty("maven.distributionId") ?: "", publishPath, packageName, moduleVersion
 }
 
 task publishUpload {
