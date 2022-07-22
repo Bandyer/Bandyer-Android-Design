@@ -28,7 +28,7 @@ internal class ChatParticipantsFragment : ParticipantsFragment() {
     override val usersDescription: UsersDescription
         get() = viewModel.usersDescription
 
-    private val usersStates: HashMap<String, ChatParticipant.State> = hashMapOf()
+    private var participantJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,25 +55,12 @@ internal class ChatParticipantsFragment : ParticipantsFragment() {
                     FastAdapterDiffUtil[itemAdapter!!] =
                         FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                 }.launchIn(lifecycleScope)
-
-            val stateJobs: MutableList<Job> = mutableListOf()
-            viewModel.participants
-                .onEach { parts ->
-                    stateJobs.forEach {
-                        it.cancel()
-                        it.join()
-                    }
-                    stateJobs.clear()
-                    parts.list.forEach { part ->
-                        val job = part.state.onEach {usersStates[part.userId] = it }.launchIn(lifecycleScope)
-                        stateJobs.add(job)
-                    }
-                }
-                .launchIn(lifecycleScope)
         }
     }
 
     override fun onParticipantScrolled(userId: String) {
-        usersStates[userId]?.let { binding.kaleyraUserInfo.setState(it) }
+        val participant: ChatParticipant = viewModel.participants.replayCache.first().list.firstOrNull { it.userId == userId } ?: return
+        participantJob?.cancel()
+        participantJob = participant.state.onEach { binding.kaleyraUserInfo.setState(it) }.launchIn(lifecycleScope)
     }
 }
