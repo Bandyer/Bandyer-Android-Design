@@ -110,12 +110,14 @@ internal class ChatFragment : BaseFragment(), TiltListener {
 
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     private var isLoading = false
+                    private var lastView: View? = null
 
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         val foundView = snapHelper.findSnapView(layoutManager) ?: return
                         val position = layoutManager.getPosition(foundView)
-                        if (currentMsgItemIndex == position) return
+                        if (currentMsgItemIndex == position && lastView == foundView) return
                         currentMsgItemIndex = position
+                        lastView = foundView
 
                         val chat = viewModel.chat.replayCache.firstOrNull() ?: return
                         if (!isLoading && fastAdapter.itemCount <= (currentMsgItemIndex + LOAD_MORE_THRESHOLD)) {
