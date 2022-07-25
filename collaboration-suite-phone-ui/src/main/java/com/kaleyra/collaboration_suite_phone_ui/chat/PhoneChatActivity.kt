@@ -4,12 +4,18 @@ import android.os.Bundle
 import android.view.ContextThemeWrapper
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.ContentAlpha
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
@@ -21,13 +27,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
+import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatUnreadMessagesWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
 
 class PhoneChatActivity : AppCompatActivity() {
@@ -48,17 +57,37 @@ fun ChatScreen(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
         topBar = { ChatTopAppBar(navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) }) },
         modifier = modifier
     ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            AndroidView(
-                factory = {
-                    val themeResId =
-                        it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
-                    KaleyraChatInputLayoutWidget(ContextThemeWrapper(it, themeResId))
-                },
+        ConstraintLayout(Modifier.fillMaxSize()) {
+            val (fab, input) = createRefs()
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .align(Alignment.BottomCenter)
-            )
+                    .constrainAs(fab) {
+                        bottom.linkTo(input.top, margin = 16.dp)
+                        end.linkTo(parent.end, margin = 16.dp)
+                    },
+                horizontalArrangement = Arrangement.End,
+            ) {
+                AndroidView(
+                    factory = { KaleyraChatUnreadMessagesWidget(it) },
+                )
+            }
+
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .constrainAs(input) {
+                    bottom.linkTo(parent.bottom)
+                }) {
+                AndroidView(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    factory = {
+                        val themeResId =
+                            it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
+                        KaleyraChatInputLayoutWidget(ContextThemeWrapper(it, themeResId))
+                    }
+                )
+            }
         }
     }
 }
