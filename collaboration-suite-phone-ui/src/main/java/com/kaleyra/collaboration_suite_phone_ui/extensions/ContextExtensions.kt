@@ -22,9 +22,12 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.provider.Settings
+import android.util.TypedValue
+import androidx.annotation.AttrRes
 import androidx.annotation.StyleableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -34,6 +37,21 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtension
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.google.android.material.textview.MaterialTextView
 import kotlin.math.min
+
+/**
+ * Retrieve a theme attribute value's resource id
+ *
+ * @receiver Resources.Theme
+ * @param attr Int the theme attribute
+ * @return Int the resource id
+ */
+internal fun Resources.Theme.getAttributeResourceId(
+    @AttrRes attr: Int
+): Int =
+    TypedValue()
+        .also {
+            resolveAttribute(attr, it, true)
+        }.resourceId
 
 /**
  * Extension function used to retrieve an attribute resource from context.
