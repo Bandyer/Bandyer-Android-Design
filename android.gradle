@@ -43,8 +43,14 @@ android {
     }
 
     buildFeatures {
+        compose true
+
         viewBinding true
         dataBinding true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.0.5'
     }
 
     aaptOptions.cruncherEnabled = false
