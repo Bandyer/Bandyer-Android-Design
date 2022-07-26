@@ -21,22 +21,17 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.compose.Dimension
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
 import com.kaleyra.collaboration_suite.chatbox.Message
@@ -44,7 +39,6 @@ import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.imageviews.KaleyraChatMessageStatusImageView
 import com.kaleyra.collaboration_suite_phone_ui.chat.layout.KaleyraChatTextMessageLayout
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
@@ -52,7 +46,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatUnreadMe
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -159,56 +152,25 @@ fun ChatScreen(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
         topBar = { ChatTopAppBar(navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) }) },
         modifier = modifier
     ) {
-        val scope = rememberCoroutineScope()
         val scrollState = rememberLazyListState()
 
-        ConstraintLayout(Modifier.fillMaxSize()) {
-            val (messages, fab, input) = createRefs()
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(Modifier.fillMaxSize()) {
+                Messages(
+                    messages = mockMessages,
+                    scrollState = scrollState,
+                    modifier = Modifier.weight(1f),
+                )
 
-            Messages(
-                modifier = Modifier
-                    .constrainAs(messages) {
-                        top.linkTo(parent.top)
-                        bottom.linkTo(input.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                        width = Dimension.fillToConstraints
-                        height = Dimension.fillToConstraints
-                    },
-                scrollState = scrollState,
-                messages = mockMessages
-            )
-
-            AndroidView(
-                modifier = Modifier
-                    .constrainAs(fab) {
-                        bottom.linkTo(input.top, margin = 16.dp)
-                        end.linkTo(parent.end, margin = 16.dp)
-                    },
-                factory = { KaleyraChatUnreadMessagesWidget(it) },
-                update = { view ->
-                    view.setOnClickListener {
-                        scope.launch {
-                            scrollState.animateScrollToItem(0)
-                            view.hide()
-                        }
+                AndroidView(
+                    modifier = Modifier.fillMaxWidth(),
+                    factory = {
+                        val themeResId =
+                            it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
+                        KaleyraChatInputLayoutWidget(ContextThemeWrapper(it, themeResId))
                     }
-                }
-            )
-
-            AndroidView(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .constrainAs(input) {
-                        bottom.linkTo(parent.bottom)
-                    },
-                factory = {
-                    val themeResId =
-                        it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
-                    KaleyraChatInputLayoutWidget(ContextThemeWrapper(it, themeResId))
-                }
-            )
-
+                )
+            }
         }
     }
 }
@@ -217,8 +179,11 @@ fun ChatScreen(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
 fun Messages(
     messages: List<Message>,
     scrollState: LazyListState,
-    modifier: Modifier = Modifier) {
+    modifier: Modifier = Modifier
+) {
     Box(modifier = modifier) {
+        val scope = rememberCoroutineScope()
+
         LazyColumn(
             reverseLayout = true,
             state = scrollState,
@@ -236,9 +201,12 @@ fun Messages(
                             KaleyraChatTextMessageLayout(ContextThemeWrapper(it, style))
                         },
                         update = { binding ->
-                            binding.messageTextView!!.text = (item.content as? Message.Content.Text)?.message
-                            binding.messageTextView!!.maxWidth = binding.context.getScreenSize().x / 2
-                            binding.timestampTextView!!.text = Iso8601.parseTime(item.creationDate.time)
+                            binding.messageTextView!!.text =
+                                (item.content as? Message.Content.Text)?.message
+                            binding.messageTextView!!.maxWidth =
+                                binding.context.getScreenSize().x / 2
+                            binding.timestampTextView!!.text =
+                                Iso8601.parseTime(item.creationDate.time)
 //                            item.state.onEach {
 //                                binding.statusView!!.state =
 //                                    KaleyraChatMessageStatusImageView.State.SEEN
@@ -254,6 +222,20 @@ fun Messages(
                     )
                 }
             }
+        }
+
+        Box(modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp)) {
+            AndroidView(
+                factory = { KaleyraChatUnreadMessagesWidget(it) },
+                update = { view ->
+                    view.setOnClickListener {
+                        scope.launch {
+                            scrollState.animateScrollToItem(0)
+                            view.hide()
+                        }
+                    }
+                }
+            )
         }
     }
 }
