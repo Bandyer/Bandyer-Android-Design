@@ -8,13 +8,17 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -24,6 +28,7 @@ import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
@@ -36,6 +41,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -156,7 +162,11 @@ class PhoneChatActivity : AppCompatActivity() {
 @Composable
 fun ChatScreen(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
     Scaffold(
-        topBar = { ChatTopAppBar(navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) }) },
+        topBar = {
+            ChatTopAppBar(
+                navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
+                actions = { Actions({}, {}, {}) })
+        },
         modifier = modifier
     ) {
         val scrollState = rememberLazyListState()
@@ -237,7 +247,6 @@ fun Messages(
             }
         }
 
-
         Box(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -268,10 +277,11 @@ fun Messages(
 @Composable
 fun ChatTopAppBar(
     modifier: Modifier = Modifier,
-    navigationIcon: @Composable (() -> Unit)
+    navigationIcon: @Composable (() -> Unit),
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
-        modifier = modifier
+        modifier = modifier,
     ) {
         Row(Modifier.padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
             CompositionLocalProvider(
@@ -280,15 +290,32 @@ fun ChatTopAppBar(
             )
         }
 
-        AndroidView(
-            factory = {
-                val themeResId = it.theme.getAttributeResourceId(R.attr.kaleyra_chatInfoWidgetStyle)
-                KaleyraChatInfoWidget(ContextThemeWrapper(it, themeResId))
-            },
-            update = {
+        Row(
+            Modifier
+                .fillMaxHeight()
+                .weight(1f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AndroidView(
+                factory = {
+                    val themeResId =
+                        it.theme.getAttributeResourceId(R.attr.kaleyra_chatInfoWidgetStyle)
+                    KaleyraChatInfoWidget(ContextThemeWrapper(it, themeResId))
+                },
+                update = {
 
-            }
-        )
+                }
+            )
+        }
+
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+            Row(
+                Modifier.fillMaxHeight(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+                content = actions
+            )
+        }
     }
 }
 
@@ -300,4 +327,37 @@ fun NavigationIcon(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
             contentDescription = stringResource(id = R.string.kaleyra_back)
         )
     }
+}
+
+@Composable
+fun Actions(onAudioClick: () -> Unit, onAudioUpgradableClick: () -> Unit, onVideoClick: () -> Unit) {
+    Icon(
+        painter = painterResource(R.drawable.ic_kaleyra_audio_call),
+        tint = MaterialTheme.colors.onPrimary,
+        modifier = Modifier
+            .clickable(onClick = onAudioClick)
+            .padding(horizontal = 12.dp, vertical = 16.dp)
+            .height(24.dp),
+        contentDescription = stringResource(id = R.string.kaleyra_start_audio_call)
+    )
+
+    Icon(
+        painter = painterResource(R.drawable.ic_kaleyra_audio_upgradable_call),
+        tint = MaterialTheme.colors.onPrimary,
+        modifier = Modifier
+            .clickable(onClick = onAudioUpgradableClick)
+            .padding(horizontal = 12.dp, vertical = 16.dp)
+            .height(24.dp),
+        contentDescription = stringResource(id = R.string.kaleyra_start_audio_upgradable_call)
+    )
+
+    Icon(
+        painter = painterResource(R.drawable.ic_kaleyra_video_call),
+        tint = MaterialTheme.colors.onPrimary,
+        modifier = Modifier
+            .clickable(onClick = onVideoClick)
+            .padding(horizontal = 12.dp, vertical = 16.dp)
+            .height(24.dp),
+        contentDescription = stringResource(id = R.string.kaleyra_start_video_call)
+    )
 }

@@ -206,4 +206,9 @@
     <string name="kaleyra_utterance_recording_stopped">Recording stopped</string>
     <string name="kaleyra_utterance_recording_failed">Recording failed. Hang up and retry</string>
 
+    <!-- TOP APP BAR -->
+    <string name="kaleyra_start_audio_call">Start call</string>
+    <string name="kaleyra_start_audio_upgradable_call">Start call</string>
+    <string name="kaleyra_start_video_call">Start video call</string>
+
 </resources>

@@ -198,4 +198,9 @@
     <string name="kaleyra_utterance_recording_stopped">Registrazione interrotta</string>
     <string name="kaleyra_utterance_recording_failed">Registrazione fallita. Chiudi la chiamata e riprova</string>
 
+    <!-- TOP APP BAR -->
+    <string name="kaleyra_start_audio_call">Avvia chiamata</string>
+    <string name="kaleyra_start_audio_upgradable_call">Avvia chiamata</string>
+    <string name="kaleyra_start_video_call">Avvia videochiamata</string>
+
 </resources>
