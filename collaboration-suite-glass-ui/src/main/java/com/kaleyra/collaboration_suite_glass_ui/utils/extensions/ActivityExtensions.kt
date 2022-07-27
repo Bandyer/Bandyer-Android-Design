@@ -19,13 +19,13 @@ package com.kaleyra.collaboration_suite_glass_ui.utils.extensions
 import android.os.Build
 import android.view.View
 import android.view.WindowInsetsController
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.ComponentActivity
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
 internal object ActivityExtensions {
-    fun AppCompatActivity.enableImmersiveMode() {
+    fun ComponentActivity.enableImmersiveMode() {
         lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onCreate(owner: LifecycleOwner) {
                 super.onCreate(owner)
@@ -45,8 +45,8 @@ internal object ActivityExtensions {
     }
 
     @Suppress("DEPRECATION")
-    private fun AppCompatActivity.enterImmersiveMode() {
-        supportActionBar?.hide()
+    private fun ComponentActivity.enterImmersiveMode() {
+        actionBar?.hide()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) return
         // ATM there is no way of doing this on api > 30
@@ -59,7 +59,7 @@ internal object ActivityExtensions {
     }
 
     @Suppress("DEPRECATION")
-    private fun AppCompatActivity.hideSystemUI() {
+    private fun ComponentActivity.hideSystemUI() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.setDecorFitsSystemWindows(false)
             window.insetsController?.apply {
