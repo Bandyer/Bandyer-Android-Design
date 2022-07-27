@@ -2,8 +2,8 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite_core_ui.notification.DisplayedChatActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
@@ -12,9 +12,9 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 
-abstract class ChatActivity : ComponentActivity() {
+abstract class ChatActivity : FragmentActivity() {
 
-    protected val viewModel: ChatViewModel by viewModels()
+    protected open val viewModel: ChatViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
