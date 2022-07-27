@@ -4,6 +4,10 @@ import android.os.Bundle
 import android.view.ContextThemeWrapper
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +30,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -175,6 +182,7 @@ fun ChatScreen(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Messages(
     messages: List<Message>,
@@ -183,6 +191,11 @@ fun Messages(
 ) {
     Box(modifier = modifier) {
         val scope = rememberCoroutineScope()
+        val showFab by remember {
+            derivedStateOf {
+                scrollState.firstVisibleItemIndex > 0
+            }
+        }
 
         LazyColumn(
             reverseLayout = true,
@@ -224,19 +237,31 @@ fun Messages(
             }
         }
 
-        Box(modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp)) {
-            AndroidView(
-                factory = { KaleyraChatUnreadMessagesWidget(it) },
-                update = { view ->
-                    view.setOnClickListener {
-                        scope.launch {
-                            scrollState.animateScrollToItem(0)
-                            view.hide()
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        ) {
+
+            AnimatedVisibility(
+                visible = showFab,
+                enter = scaleIn(),
+                exit = scaleOut()
+            ) {
+                AndroidView(
+                    factory = { KaleyraChatUnreadMessagesWidget(it) },
+                    update = { view ->
+                        view.setOnClickListener {
+                            scope.launch {
+                                scrollState.animateScrollToItem(0)
+                            }
                         }
                     }
-                }
-            )
+                )
+            }
         }
+
     }
 }
 
