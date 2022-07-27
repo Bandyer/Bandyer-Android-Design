@@ -37,7 +37,7 @@ internal class GlassChatActivity : ChatActivity(), GlassTouchEventManager.Listen
         binding = KaleyraChatActivityGlassBinding.inflate(layoutInflater)
         setContentView(binding.root)
         glassTouchEventManager = GlassTouchEventManager(this, this)
-        enableImmersiveMode()
+        if (DeviceUtils.isSmartGlass) enableImmersiveMode()
         turnScreenOn()
 
         viewModel.chatBoxState
