@@ -84,9 +84,9 @@ fun ChatScreen(
                 navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
                 actions = {
                     Actions(
-                        onAudioClick = { },
-                        onAudioUpgradableClick = { },
-                        onVideoClick = { })
+                        onAudioClick = { viewModel.call(Call.PreferredType(audio = Call.Audio.Enabled, video = null)) },
+                        onAudioUpgradableClick = { viewModel.call(Call.PreferredType(audio = Call.Audio.Enabled, video = Call.Video.Disabled)) },
+                        onVideoClick = { viewModel.call(Call.PreferredType(audio = Call.Audio.Enabled, video = Call.Video.Enabled)) })
                 })
         },
         modifier = modifier

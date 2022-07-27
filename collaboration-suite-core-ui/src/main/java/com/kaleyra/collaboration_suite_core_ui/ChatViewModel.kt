@@ -59,4 +59,13 @@ open class ChatViewModel: CollaborationViewModel() {
         viewModelScope.launch { _chat.emit(chat) }
         return chat
     }
+
+    fun call(preferredType: Call.PreferredType) {
+        val phoneBox = phoneBox.replayCache.firstOrNull() ?: return
+        val chat = chat.replayCache.firstOrNull() ?: return
+        val userId = chat.participants.value.others.first().userId
+        phoneBox.call(listOf(object : User { override val userId = userId })) {
+           this.preferredType = preferredType
+        }
+    }
 }
