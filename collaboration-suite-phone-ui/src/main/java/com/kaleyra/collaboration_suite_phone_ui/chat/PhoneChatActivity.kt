@@ -96,7 +96,7 @@ fun ChatScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             Column(Modifier.fillMaxSize()) {
                 Messages(
-                    messages = listOf(),
+                    messages = viewModel.messages.collectAsState(initial = listOf()).value,
                     scrollState = scrollState,
                     modifier = Modifier.weight(1f),
                 )
