@@ -3,7 +3,6 @@ package com.kaleyra.collaboration_suite_phone_ui.chat
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
@@ -35,6 +34,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -46,9 +46,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
+import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite_core_ui.ChatActivity
+import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -57,115 +59,35 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidg
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatUnreadMessagesWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.*
 
-private fun mockMessage() = object : Message {
-    override val content: Message.Content = Message.Content.Text("Ciao")
-    override val creationDate: Date = Date()
-    override val creator: ChatParticipant = object : ChatParticipant {
-        override val events: StateFlow<ChatParticipant.Event> =
-            MutableStateFlow(ChatParticipant.Event.Typing.Idle)
-        override val state: StateFlow<ChatParticipant.State> =
-            MutableStateFlow(ChatParticipant.State.Invited)
-        override val userId: String = UUID.randomUUID().toString()
-    }
-    override val id: String = UUID.randomUUID().toString()
-    override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Received())
-}
-
-private var mockMessages =
-    listOf(
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage(),
-        mockMessage()
-    )
-
-class PhoneChatActivity : AppCompatActivity() {
+class PhoneChatActivity : ChatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MdcTheme {
-                ChatScreen(onBackPressed = { onBackPressed() })
+                ChatScreen(onBackPressed = { onBackPressed() }, viewModel = viewModel)
             }
         }
     }
 }
 
 @Composable
-fun ChatScreen(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
+fun ChatScreen(
+    modifier: Modifier = Modifier,
+    onBackPressed: () -> Unit,
+    viewModel: ChatViewModel
+) {
     Scaffold(
         topBar = {
             ChatTopAppBar(
                 navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
-                actions = { Actions({}, {}, {}) })
+                actions = {
+                    Actions(
+                        onAudioClick = { },
+                        onAudioUpgradableClick = { },
+                        onVideoClick = { })
+                })
         },
         modifier = modifier
     ) {
@@ -174,7 +96,7 @@ fun ChatScreen(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(Modifier.fillMaxSize()) {
                 Messages(
-                    messages = mockMessages,
+                    messages = listOf(),
                     scrollState = scrollState,
                     modifier = Modifier.weight(1f),
                 )
@@ -330,7 +252,11 @@ fun NavigationIcon(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
 }
 
 @Composable
-fun Actions(onAudioClick: () -> Unit, onAudioUpgradableClick: () -> Unit, onVideoClick: () -> Unit) {
+fun Actions(
+    onAudioClick: () -> Unit,
+    onAudioUpgradableClick: () -> Unit,
+    onVideoClick: () -> Unit
+) {
     Icon(
         painter = painterResource(R.drawable.ic_kaleyra_audio_call),
         tint = MaterialTheme.colors.onPrimary,
