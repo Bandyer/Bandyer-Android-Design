@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.kaleyra.collaboration_suite_phone_ui">
 
-<!--    <application>-->
-<!--        <activity-->
-<!--            android:name=".chat.PhoneChatActivity"-->
-<!--            android:exported="false" />-->
-<!--    </application>-->
+    <application>
+        <activity
+            android:name=".call.PhoneCallActivity"
+            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.PhoneCallActivity"
+            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call"
+            android:launchMode="singleTask"
+            android:showOnLockScreen="true"
+            android:showWhenLocked="true"
+            android:showForAllUsers="true"
+            tools:targetApi="o_mr1" />
+        <activity
+            android:name=".chat.PhoneChatActivity"
+            android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.chat.PhoneChatActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Chat" />
+    </application>
 
 </manifest>
