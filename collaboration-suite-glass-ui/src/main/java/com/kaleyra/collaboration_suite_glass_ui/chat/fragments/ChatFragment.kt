@@ -34,7 +34,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessageItem
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessagePage
-import com.kaleyra.collaboration_suite_glass_ui.chat.ChatViewModel
+import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatViewModel
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatBinding
@@ -70,7 +70,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
             updateCounter(value.count())
         }
 
-    private val viewModel: ChatViewModel by activityViewModels()
+    private val viewModel: GlassChatViewModel by activityViewModels()
 
     private val args: ChatFragmentArgs by lazy { ChatFragmentArgs.fromBundle(requireActivity().intent?.extras!!) }
 

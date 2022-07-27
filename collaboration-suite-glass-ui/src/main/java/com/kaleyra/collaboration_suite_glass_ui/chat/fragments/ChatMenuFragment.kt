@@ -32,9 +32,9 @@ import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
-import com.kaleyra.collaboration_suite_glass_ui.*
+import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatAction
-import com.kaleyra.collaboration_suite_glass_ui.chat.ChatViewModel
+import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatViewModel
 import com.kaleyra.collaboration_suite_glass_ui.chat.menu.ChatMenuItem
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
@@ -59,7 +59,7 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
 
     private var itemAdapter: ItemAdapter<ChatMenuItem>? = null
 
-    private val viewModel: ChatViewModel by activityViewModels()
+    private val viewModel: GlassChatViewModel by activityViewModels()
 
     private val args: ChatMenuFragmentArgs by navArgs()
 
@@ -150,7 +150,8 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
         }
         is ChatAction.VIDEOCALL, is ChatAction.CALL -> true.also {
             val userId = viewModel.chat.replayCache.first().participants.value.others.first().userId
-            viewModel.phoneBox?.call(listOf(object : User { override val userId = userId })) {
+            val phoneBox = viewModel.phoneBox.replayCache.firstOrNull() ?: return@also
+            phoneBox.call(listOf(object : User { override val userId = userId })) {
                 if (action is ChatAction.CALL) preferredType = Call.PreferredType(video = Call.Video.Disabled)
             }
             findNavController().popBackStack()

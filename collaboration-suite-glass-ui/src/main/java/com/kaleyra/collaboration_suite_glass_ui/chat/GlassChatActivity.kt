@@ -7,8 +7,6 @@ import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
-import com.kaleyra.collaboration_suite_core_ui.ChatDelegate
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
 import com.kaleyra.collaboration_suite_core_ui.notification.DisplayedChatActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
@@ -27,17 +25,16 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerE
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.take
 
 internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedListener,
-                                   GlassTouchEventManager.Listener {
+    GlassTouchEventManager.Listener {
 
     private lateinit var binding: KaleyraChatActivityGlassBinding
 
-    private val viewModel: ChatViewModel by viewModels()
+    private val viewModel: GlassChatViewModel by viewModels()
 
     private var glassTouchEventManager: GlassTouchEventManager? = null
 
@@ -49,10 +46,15 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
         turnScreenOn()
 
-        MainScope().launch {
-            configureCollaboration()
-            onNewChatIntent(intent)
-        }
+        viewModel.isCollaborationConfigured
+            .take(1)
+            .onEach {
+                if (it) onNewChatIntent(intent)
+                else {
+                    finishAndRemoveTask()
+                    ContextRetainer.context.goToLaunchingActivity()
+                }
+            }.launchIn(lifecycleScope)
 
         viewModel.chatBoxState
             .onEach {
@@ -77,10 +79,10 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
                 .onEach {
                     binding.kaleyraStatusBar.setWiFiSignalState(
                         when {
-                            it.state == WiFiInfo.State.DISABLED                                     -> StatusBarView.WiFiSignalState.DISABLED
+                            it.state == WiFiInfo.State.DISABLED -> StatusBarView.WiFiSignalState.DISABLED
                             it.level == WiFiInfo.Level.NO_SIGNAL || it.level == WiFiInfo.Level.POOR -> StatusBarView.WiFiSignalState.LOW
-                            it.level == WiFiInfo.Level.FAIR || it.level == WiFiInfo.Level.GOOD      -> StatusBarView.WiFiSignalState.MODERATE
-                            else                                                                    -> StatusBarView.WiFiSignalState.FULL
+                            it.level == WiFiInfo.Level.FAIR || it.level == WiFiInfo.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
+                            else -> StatusBarView.WiFiSignalState.FULL
                         }
                     )
                 }
@@ -127,18 +129,6 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
         val userId = intent.extras?.getString("userId") ?: return
         val chat = viewModel.setChat(userId) ?: return
         sendCustomNotificationBroadcast(DisplayedChatActivity.ACTION_CHAT_OPEN, chat.id)
-    }
-
-    private suspend fun configureCollaboration() {
-        requestConfigure().let { isConfigured ->
-            if (!isConfigured) {
-                finishAndRemoveTask()
-                return@let ContextRetainer.context.goToLaunchingActivity()
-            }
-            viewModel.chatDelegate = ChatDelegate(CollaborationUI.chatBox.chats, CollaborationUI.usersDescription)
-            viewModel.chatBox = CollaborationUI.chatBox
-            viewModel.phoneBox = CollaborationUI.phoneBox
-        }
     }
 
     private fun sendCustomNotificationBroadcast(action: String, chatId: String? = null) {
