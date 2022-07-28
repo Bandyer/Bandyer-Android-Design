@@ -1,7 +1,9 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.ContextThemeWrapper
+import android.view.View
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -51,14 +53,20 @@ import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
+import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
+import com.kaleyra.collaboration_suite_core_ui.utils.KotlinConstraintSet.Companion.changeConstraints
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.imageviews.KaleyraChatMessageStatusImageView
 import com.kaleyra.collaboration_suite_phone_ui.chat.layout.KaleyraChatTextMessageLayout
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
+import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatUnreadMessagesWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class PhoneChatActivity : ChatActivity() {
@@ -93,6 +101,7 @@ fun ChatScreen(
         },
         modifier = modifier
     ) {
+        val scope = rememberCoroutineScope()
         val scrollState = rememberLazyListState()
 
         Box(modifier = Modifier.fillMaxSize()) {
@@ -143,37 +152,38 @@ fun Messages(
         LazyColumn(
             reverseLayout = true,
             state = scrollState,
-            contentPadding = PaddingValues(16.dp),
+            contentPadding = PaddingValues(vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxSize()
         ) {
             items(messages, key = { it.id }) { item ->
                 Row {
                     AndroidView(
-                        modifier = modifier,
                         factory = {
-                            val style =
-                                if (item is OtherMessage) R.style.KaleyraCollaborationSuiteUI_ChatMessage_OtherUser else R.style.KaleyraCollaborationSuiteUI_ChatMessage_LoggedUser
+                            val style = if (item is OtherMessage) R.style.KaleyraCollaborationSuiteUI_ChatMessage_OtherUser else R.style.KaleyraCollaborationSuiteUI_ChatMessage_LoggedUser
                             KaleyraChatTextMessageLayout(ContextThemeWrapper(it, style))
                         },
                         update = { binding ->
-                            binding.messageTextView!!.text =
-                                (item.content as? Message.Content.Text)?.message
-                            binding.messageTextView!!.maxWidth =
-                                binding.context.getScreenSize().x / 2
-                            binding.timestampTextView!!.text =
-                                Iso8601.parseTime(item.creationDate.time)
-//                            item.state.onEach {
-//                                binding.statusView!!.state =
-//                                    KaleyraChatMessageStatusImageView.State.SEEN
-//                            }.launchIn(coroutineScope)
-//                            when (item.state.value) {
-//                                is Message.State.Received(
-//                                    )
-//                                -> {
-//
-//                                }
-//                            }
+                            binding.messageTextView!!.text = (item.content as? Message.Content.Text)?.message
+                            binding.messageTextView!!.maxWidth = binding.context.getScreenSize().x / 2
+                            binding.timestampTextView!!.text = Iso8601.parseTime(item.creationDate.time)
+
+                            binding.changeConstraints {
+                                if (item is OtherMessage) binding.dataViewContainer!!.id startToStartOf binding.id
+                                else binding.dataViewContainer!!.id endToEndOf binding.id
+                            }
+
+                            if (item is OtherMessage) return@AndroidView
+
+                            item.state.onEach {
+                                binding.statusView!!.state = when (it) {
+                                    is Message.State.Sending -> KaleyraChatMessageStatusImageView.State.PENDING
+                                    is Message.State.Sent -> KaleyraChatMessageStatusImageView.State.SENT
+                                    is Message.State.Read -> KaleyraChatMessageStatusImageView.State.SEEN
+                                    else -> return@onEach
+                                }
+                            }.launchIn(scope)
+
                         }
                     )
                 }
