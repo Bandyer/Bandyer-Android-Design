@@ -36,20 +36,19 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
@@ -68,9 +67,12 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLay
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatUnreadMessagesWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+
+private const val FETCH_THRESHOLD = 20
 
 class PhoneChatActivity : ChatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -97,9 +99,30 @@ fun ChatScreen(
                 navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
                 actions = {
                     Actions(
-                        onAudioClick = { viewModel.call(Call.PreferredType(audio = Call.Audio.Enabled, video = null)) },
-                        onAudioUpgradableClick = { viewModel.call(Call.PreferredType(audio = Call.Audio.Enabled, video = Call.Video.Disabled)) },
-                        onVideoClick = { viewModel.call(Call.PreferredType(audio = Call.Audio.Enabled, video = Call.Video.Enabled)) })
+                        onAudioClick = {
+                            viewModel.call(
+                                Call.PreferredType(
+                                    audio = Call.Audio.Enabled,
+                                    video = null
+                                )
+                            )
+                        },
+                        onAudioUpgradableClick = {
+                            viewModel.call(
+                                Call.PreferredType(
+                                    audio = Call.Audio.Enabled,
+                                    video = Call.Video.Disabled
+                                )
+                            )
+                        },
+                        onVideoClick = {
+                            viewModel.call(
+                                Call.PreferredType(
+                                    audio = Call.Audio.Enabled,
+                                    video = Call.Video.Enabled
+                                )
+                            )
+                        })
                 })
         },
         modifier = modifier
@@ -111,7 +134,6 @@ fun ChatScreen(
             Column(Modifier.fillMaxSize()) {
                 Messages(
                     messages = viewModel.messages.collectAsState(initial = listOf()).value,
-                    isFetching = viewModel.isFetching.collectAsState().value,
                     onFetch = { viewModel.fetchMessages() },
                     scrollState = scrollState,
                     modifier = Modifier.weight(1f),
@@ -120,7 +142,8 @@ fun ChatScreen(
                 AndroidView(
                     modifier = Modifier.fillMaxWidth(),
                     factory = {
-                        val themeResId = it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
+                        val themeResId =
+                            it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
                         KaleyraChatInputLayoutWidget(ContextThemeWrapper(it, themeResId))
                     },
                     update = {
@@ -143,7 +166,6 @@ fun ChatScreen(
 @Composable
 fun Messages(
     messages: List<Message>,
-    isFetching: Boolean,
     onFetch: () -> Unit,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
@@ -156,50 +178,60 @@ fun Messages(
             }
         }
 
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(isFetching),
-            onRefresh = onFetch,
-            refreshTriggerDistance = 0.dp,
-            indicator = { s, _ -> SwipeRefreshIndicator(s, 1.dp) }
+        val shouldFetch by remember {
+            derivedStateOf {
+                scrollState.layoutInfo.totalItemsCount.let { it != 0 && it <= (scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + FETCH_THRESHOLD }
+            }
+        }
+
+        LaunchedEffect(scrollState) {
+            snapshotFlow { shouldFetch }
+                .filter { it }
+                .onEach { onFetch.invoke() }
+                .launchIn(this)
+        }
+
+        LazyColumn(
+            reverseLayout = true,
+            state = scrollState,
+            contentPadding = PaddingValues(vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxSize()
         ) {
-            LazyColumn(
-                reverseLayout = true,
-                state = scrollState,
-                contentPadding = PaddingValues(vertical = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxSize()
-            ) {
-                items(messages, key = { it.id }) { item ->
-                    Row {
-                        AndroidView(
-                            factory = {
-                                val style = if (item is OtherMessage) R.style.KaleyraCollaborationSuiteUI_ChatMessage_OtherUser else R.style.KaleyraCollaborationSuiteUI_ChatMessage_LoggedUser
-                                KaleyraChatTextMessageLayout(ContextThemeWrapper(it, style))
-                            },
-                            update = { binding ->
-                                binding.messageTextView!!.text = (item.content as? Message.Content.Text)?.message
-                                binding.messageTextView!!.maxWidth = binding.context.getScreenSize().x / 2
-                                binding.timestampTextView!!.text = Iso8601.parseTime(item.creationDate.time)
+            items(messages, key = { it.id }) { item ->
+                Row {
+                    AndroidView(
+                        factory = {
+                            val style =
+                                if (item is OtherMessage) R.style.KaleyraCollaborationSuiteUI_ChatMessage_OtherUser else R.style.KaleyraCollaborationSuiteUI_ChatMessage_LoggedUser
+                            KaleyraChatTextMessageLayout(ContextThemeWrapper(it, style))
+                        },
+                        update = { binding ->
+                            binding.messageTextView!!.text =
+                                (item.content as? Message.Content.Text)?.message
+                            binding.messageTextView!!.maxWidth =
+                                binding.context.getScreenSize().x / 2
+                            binding.timestampTextView!!.text =
+                                Iso8601.parseTime(item.creationDate.time)
 
-                                binding.changeConstraints {
-                                    if (item is OtherMessage) binding.dataViewContainer!!.id startToStartOf binding.id
-                                    else binding.dataViewContainer!!.id endToEndOf binding.id
-                                }
-
-                                if (item is OtherMessage) return@AndroidView
-
-                                item.state.onEach {
-                                    binding.statusView!!.state = when (it) {
-                                        is Message.State.Sending -> KaleyraChatMessageStatusImageView.State.PENDING
-                                        is Message.State.Sent -> KaleyraChatMessageStatusImageView.State.SENT
-                                        is Message.State.Read -> KaleyraChatMessageStatusImageView.State.SEEN
-                                        else -> return@onEach
-                                    }
-                                }.launchIn(scope)
-
+                            binding.changeConstraints {
+                                if (item is OtherMessage) binding.dataViewContainer!!.id startToStartOf binding.id
+                                else binding.dataViewContainer!!.id endToEndOf binding.id
                             }
-                        )
-                    }
+
+                            if (item is OtherMessage) return@AndroidView
+
+                            item.state.onEach {
+                                binding.statusView!!.state = when (it) {
+                                    is Message.State.Sending -> KaleyraChatMessageStatusImageView.State.PENDING
+                                    is Message.State.Sent -> KaleyraChatMessageStatusImageView.State.SENT
+                                    is Message.State.Read -> KaleyraChatMessageStatusImageView.State.SEEN
+                                    else -> return@onEach
+                                }
+                            }.launchIn(scope)
+
+                        }
+                    )
                 }
             }
         }
