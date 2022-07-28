@@ -104,9 +104,18 @@ fun ChatScreen(
                 AndroidView(
                     modifier = Modifier.fillMaxWidth(),
                     factory = {
-                        val themeResId =
-                            it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
+                        val themeResId = it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
                         KaleyraChatInputLayoutWidget(ContextThemeWrapper(it, themeResId))
+                    },
+                    update = {
+                        it.callback = object : KaleyraChatInputLayoutEventListener {
+                            override fun onTextChanged(text: String) = Unit
+
+                            override fun onSendClicked(text: String) {
+                                viewModel.sendMessage(text)
+                                scope.launch { scrollState.animateScrollToItem(0) }
+                            }
+                        }
                     }
                 )
             }

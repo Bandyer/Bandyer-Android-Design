@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.User
+import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -62,6 +63,12 @@ open class ChatViewModel: CollaborationViewModel() {
         val chat = chatBox.create(object : User { override val userId = userId })
         viewModelScope.launch { _chat.emit(chat) }
         return chat
+    }
+
+    fun sendMessage(text: String) {
+        val chat = chat.replayCache.firstOrNull() ?: return
+        val message = chat.create(Message.Content.Text(text))
+        chat.add(message)
     }
 
     fun call(preferredType: Call.PreferredType) {
