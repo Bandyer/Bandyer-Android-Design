@@ -54,10 +54,10 @@
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call"
             tools:targetApi="n" />
         <activity
-            android:name="com.kaleyra.collaboration_suite_phone_ui.chat.PhoneChatActivity"
+            android:name=".MainActivity"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
             android:exported="true"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Chat">
+            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
