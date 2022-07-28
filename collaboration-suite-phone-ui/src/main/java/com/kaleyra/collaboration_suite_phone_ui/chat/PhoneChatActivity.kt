@@ -81,6 +81,8 @@ fun ChatScreen(
     Scaffold(
         topBar = {
             ChatTopAppBar(
+                viewModel.participants.replayCache.first().others.first().userId,
+                viewModel.usersDescription,
                 navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
                 actions = {
                     Actions(
@@ -207,6 +209,8 @@ fun Messages(
 
 @Composable
 fun ChatTopAppBar(
+    userId: String,
+    usersDescription: UsersDescription,
     modifier: Modifier = Modifier,
     navigationIcon: @Composable (() -> Unit),
     actions: @Composable RowScope.() -> Unit = {}
@@ -214,6 +218,8 @@ fun ChatTopAppBar(
     TopAppBar(
         modifier = modifier,
     ) {
+        val scope = rememberCoroutineScope()
+
         Row(Modifier.padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
             CompositionLocalProvider(
                 LocalContentAlpha provides ContentAlpha.high,
@@ -228,13 +234,19 @@ fun ChatTopAppBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AndroidView(
+                modifier = Modifier.fillMaxWidth(),
                 factory = {
                     val themeResId =
                         it.theme.getAttributeResourceId(R.attr.kaleyra_chatInfoWidgetStyle)
                     KaleyraChatInfoWidget(ContextThemeWrapper(it, themeResId))
                 },
                 update = {
-
+                    scope.launch {
+                        it.contactNameView!!.text = usersDescription.name(listOf(userId))
+                        it.contactNameView!!.visibility = View.VISIBLE
+                        val uri = usersDescription.image(listOf(userId))
+                        if (uri != Uri.EMPTY) it.contactImageView!!.setImageUri(uri)
+                    }
                 }
             )
         }
