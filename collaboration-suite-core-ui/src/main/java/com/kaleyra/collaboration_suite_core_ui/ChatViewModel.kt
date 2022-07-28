@@ -31,8 +31,6 @@ open class ChatViewModel: CollaborationViewModel() {
 
     private val _chat = MutableSharedFlow<ChatUI>(replay = 1, extraBufferCapacity = 1)
 
-    private val _isFetching = MutableStateFlow(false)
-
     var usersDescription = UsersDescription()
         private set
 
@@ -56,8 +54,6 @@ open class ChatViewModel: CollaborationViewModel() {
     val chatBox = _chatBox.asSharedFlow()
 
     val chat = _chat.asSharedFlow()
-
-    val isFetching = _isFetching.asStateFlow()
 
     val chatBoxState = chatBox.flatMapLatest { it.state }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
@@ -83,8 +79,7 @@ open class ChatViewModel: CollaborationViewModel() {
 
     fun fetchMessages() {
         val chat = chat.replayCache.firstOrNull() ?: return
-        _isFetching.value = true
-        chat.fetch(FETCH_COUNT) { _isFetching.value = false }
+        chat.fetch(FETCH_COUNT)
     }
 
     fun call(preferredType: Call.PreferredType) {
