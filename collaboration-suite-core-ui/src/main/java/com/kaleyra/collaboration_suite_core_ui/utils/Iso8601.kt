@@ -97,14 +97,14 @@ object Iso8601 {
      * @param timestamp The timestamp in millis
      * @return String A human readable date day string
      */
-    fun parseDay(context: Context, timestamp: Long): String {
+    fun parseDay(context: Context? = null, timestamp: Long): String {
         val zonedDateTime = Instant
             .ofEpochMilli(timestamp)
             .atZone(ZoneId.systemDefault())
 
         return when {
-            zonedDateTime.isToday() -> context.resources.getString(R.string.kaleyra_today)
-            zonedDateTime.isYesterday() -> context.resources.getString(R.string.kaleyra_yesterday)
+            context != null && zonedDateTime.isToday() -> context.resources.getString(R.string.kaleyra_today)
+            context != null && zonedDateTime.isYesterday() -> context.resources.getString(R.string.kaleyra_yesterday)
             else -> DateTimeFormatter
                 .ofLocalizedDate(FormatStyle.LONG)
                 .withLocale(Locale.getDefault())

@@ -9,6 +9,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,7 +24,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Icon
@@ -50,6 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.material.composethemeadapter.MdcTheme
+import com.google.android.material.textview.MaterialTextView
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
@@ -162,7 +163,7 @@ fun ChatScreen(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun Messages(
     messages: List<Message>,
@@ -184,7 +185,7 @@ fun Messages(
             }
         }
 
-        LaunchedEffect(scrollState) {
+        LaunchedEffect(shouldFetch) {
             snapshotFlow { shouldFetch }
                 .filter { it }
                 .onEach { onFetch.invoke() }
@@ -198,41 +199,22 @@ fun Messages(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxSize()
         ) {
-            items(messages, key = { it.id }) { item ->
-                Row {
-                    AndroidView(
-                        factory = {
-                            val style =
-                                if (item is OtherMessage) R.style.KaleyraCollaborationSuiteUI_ChatMessage_OtherUser else R.style.KaleyraCollaborationSuiteUI_ChatMessage_LoggedUser
-                            KaleyraChatTextMessageLayout(ContextThemeWrapper(it, style))
-                        },
-                        update = { binding ->
-                            binding.messageTextView!!.text =
-                                (item.content as? Message.Content.Text)?.message
-                            binding.messageTextView!!.maxWidth =
-                                binding.context.getScreenSize().x / 2
-                            binding.timestampTextView!!.text =
-                                Iso8601.parseTime(item.creationDate.time)
+            for(index in messages.indices) {
+                val message = messages[index]
+                val previousMessage = messages.getOrNull(index - 1)
 
-                            binding.changeConstraints {
-                                if (item is OtherMessage) binding.dataViewContainer!!.id startToStartOf binding.id
-                                else binding.dataViewContainer!!.id endToEndOf binding.id
-                            }
+                if (previousMessage != null) {
+                    val day = Iso8601.parseDay(timestamp = message.creationDate.time)
+                    val previousMessageDay = Iso8601.parseDay(timestamp = previousMessage.creationDate.time)
 
-                            if (item is OtherMessage) return@AndroidView
-
-                            item.state.onEach {
-                                binding.statusView!!.state = when (it) {
-                                    is Message.State.Sending -> KaleyraChatMessageStatusImageView.State.PENDING
-                                    is Message.State.Sent -> KaleyraChatMessageStatusImageView.State.SENT
-                                    is Message.State.Read -> KaleyraChatMessageStatusImageView.State.SEEN
-                                    else -> return@onEach
-                                }
-                            }.launchIn(scope)
-
+                    if (previousMessageDay != day) {
+                        item(key = previousMessageDay.hashCode()) {
+                            Header(previousMessage.creationDate.time, Modifier.fillMaxWidth())
                         }
-                    )
+                    }
                 }
+
+                item(key = message.id) { Message(message) }
             }
         }
 
@@ -262,6 +244,54 @@ fun Messages(
 
     }
 }
+
+@Composable
+fun Header(timestamp: Long, modifier: Modifier = Modifier) {
+    Row(modifier = modifier) {
+        AndroidView(
+            modifier = Modifier.fillMaxWidth(),
+            factory = { MaterialTextView(ContextThemeWrapper(it, it.theme.getAttributeResourceId(R.attr.kaleyra_chatTimestampStyle))) },
+            update = { it.text = Iso8601.parseDay(it.context, timestamp) }
+        )
+    }
+}
+
+@Composable
+fun Message(message: Message) {
+    val scope = rememberCoroutineScope()
+
+    Row {
+        AndroidView(
+            factory = {
+                val style =
+                    if (message is OtherMessage) R.style.KaleyraCollaborationSuiteUI_ChatMessage_OtherUser else R.style.KaleyraCollaborationSuiteUI_ChatMessage_LoggedUser
+                KaleyraChatTextMessageLayout(ContextThemeWrapper(it, style))
+            },
+            update = { binding ->
+                binding.messageTextView!!.text = (message.content as? Message.Content.Text)?.message
+                binding.messageTextView!!.maxWidth = binding.context.getScreenSize().x / 2
+                binding.timestampTextView!!.text = Iso8601.parseTime(message.creationDate.time)
+
+                binding.changeConstraints {
+                    if (message is OtherMessage) binding.dataViewContainer!!.id startToStartOf binding.id
+                    else binding.dataViewContainer!!.id endToEndOf binding.id
+                }
+
+                if (message is OtherMessage) return@AndroidView
+
+                message.state.onEach {
+                    binding.statusView!!.state = when (it) {
+                        is Message.State.Sending -> KaleyraChatMessageStatusImageView.State.PENDING
+                        is Message.State.Sent -> KaleyraChatMessageStatusImageView.State.SENT
+                        is Message.State.Read -> KaleyraChatMessageStatusImageView.State.SEEN
+                        else -> return@onEach
+                    }
+                }.launchIn(scope)
+            }
+        )
+    }
+}
+
 
 @Composable
 fun ChatTopAppBar(
