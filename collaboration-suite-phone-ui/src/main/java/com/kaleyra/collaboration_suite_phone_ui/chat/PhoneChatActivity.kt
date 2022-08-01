@@ -10,6 +10,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,15 +23,21 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -45,12 +52,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.google.android.material.textview.MaterialTextView
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
@@ -58,11 +69,7 @@ import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
-import com.kaleyra.collaboration_suite_core_ui.utils.KotlinConstraintSet.Companion.changeConstraints
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getScreenSize
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.imageviews.KaleyraChatMessageStatusImageView
-import com.kaleyra.collaboration_suite_phone_ui.chat.layout.KaleyraChatTextMessageLayout
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
@@ -79,7 +86,7 @@ class PhoneChatActivity : ChatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MdcTheme {
+            MdcTheme(setDefaultFontFamily = true) {
                 ChatScreen(onBackPressed = { onBackPressed() }, viewModel = viewModel)
             }
         }
@@ -163,7 +170,7 @@ fun ChatScreen(
     }
 }
 
-@OptIn(ExperimentalAnimationApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun Messages(
     messages: List<Message>,
@@ -181,7 +188,10 @@ fun Messages(
 
         val shouldFetch by remember {
             derivedStateOf {
-                scrollState.layoutInfo.totalItemsCount.let { it != 0 && it <= (scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0) + FETCH_THRESHOLD }
+                scrollState.layoutInfo.totalItemsCount.let {
+                    it != 0 && it <= (scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
+                        ?: 0) + FETCH_THRESHOLD
+                }
             }
         }
 
@@ -195,26 +205,29 @@ fun Messages(
         LazyColumn(
             reverseLayout = true,
             state = scrollState,
-            contentPadding = PaddingValues(vertical = 16.dp),
+            contentPadding = PaddingValues(all =  16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
             modifier = Modifier.fillMaxSize()
         ) {
-            for(index in messages.indices) {
+            for (index in messages.indices) {
                 val message = messages[index]
-                val previousMessage = messages.getOrNull(index - 1)
+//                val previousMessage = messages.getOrNull(index - 1)
+//
+//                if (previousMessage != null) {
+//                    val day = Iso8601.parseDay(timestamp = message.creationDate.time)
+//                    val previousMessageDay =
+//                        Iso8601.parseDay(timestamp = previousMessage.creationDate.time)
+//
+//                    if (previousMessageDay != day) {
+//                        item(key = previousMessageDay.hashCode()) {
+//                            Header(previousMessage.creationDate.time, Modifier.fillMaxWidth().padding(vertical = 8.dp))
+//                        }
+//                    }
+//                }
 
-                if (previousMessage != null) {
-                    val day = Iso8601.parseDay(timestamp = message.creationDate.time)
-                    val previousMessageDay = Iso8601.parseDay(timestamp = previousMessage.creationDate.time)
-
-                    if (previousMessageDay != day) {
-                        item(key = previousMessageDay.hashCode()) {
-                            Header(previousMessage.creationDate.time, Modifier.fillMaxWidth())
-                        }
-                    }
+                item(key = message.id) {
+                    Message(message, modifier = Modifier.fillMaxWidth())
                 }
-
-                item(key = message.id) { Message(message) }
             }
         }
 
@@ -229,16 +242,16 @@ fun Messages(
                 enter = scaleIn(),
                 exit = scaleOut()
             ) {
-                AndroidView(
-                    factory = { KaleyraChatUnreadMessagesWidget(it) },
-                    update = { view ->
-                        view.setOnClickListener {
-                            scope.launch {
-                                scrollState.animateScrollToItem(0)
-                            }
-                        }
-                    }
-                )
+//                AndroidView(
+//                    factory = { KaleyraChatUnreadMessagesWidget(it) },
+//                    update = { view ->
+//                        view.setOnClickListener {
+//                            scope.launch {
+//                                scrollState.animateScrollToItem(0)
+//                            }
+//                        }
+//                    }
+//                )
             }
         }
 
@@ -247,48 +260,107 @@ fun Messages(
 
 @Composable
 fun Header(timestamp: Long, modifier: Modifier = Modifier) {
-    Row(modifier = modifier) {
-        AndroidView(
-            modifier = Modifier.fillMaxWidth(),
-            factory = { MaterialTextView(ContextThemeWrapper(it, it.theme.getAttributeResourceId(R.attr.kaleyra_chatTimestampStyle))) },
-            update = { it.text = Iso8601.parseDay(it.context, timestamp) }
-        )
+    Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
+//        kaleyra_chatTimestampStyle
+        Text(text = Iso8601.parseDay(timestamp = timestamp), fontSize = 12.sp, style = MaterialTheme.typography.body2)
     }
 }
 
 @Composable
-fun Message(message: Message) {
-    val scope = rememberCoroutineScope()
-
-    Row {
-        AndroidView(
-            factory = {
-                val style =
-                    if (message is OtherMessage) R.style.KaleyraCollaborationSuiteUI_ChatMessage_OtherUser else R.style.KaleyraCollaborationSuiteUI_ChatMessage_LoggedUser
-                KaleyraChatTextMessageLayout(ContextThemeWrapper(it, style))
-            },
-            update = { binding ->
-                binding.messageTextView!!.text = (message.content as? Message.Content.Text)?.message
-                binding.messageTextView!!.maxWidth = binding.context.getScreenSize().x / 2
-                binding.timestampTextView!!.text = Iso8601.parseTime(message.creationDate.time)
-
-                binding.changeConstraints {
-                    if (message is OtherMessage) binding.dataViewContainer!!.id startToStartOf binding.id
-                    else binding.dataViewContainer!!.id endToEndOf binding.id
-                }
-
-                if (message is OtherMessage) return@AndroidView
-
-                message.state.onEach {
-                    binding.statusView!!.state = when (it) {
-                        is Message.State.Sending -> KaleyraChatMessageStatusImageView.State.PENDING
-                        is Message.State.Sent -> KaleyraChatMessageStatusImageView.State.SENT
-                        is Message.State.Read -> KaleyraChatMessageStatusImageView.State.SEEN
-                        else -> return@onEach
-                    }
-                }.launchIn(scope)
-            }
+fun Message(message: Message, modifier: Modifier = Modifier) {
+    val isMyMessage = message !is OtherMessage
+    Row(
+        horizontalArrangement = if (isMyMessage) Arrangement.End else Arrangement.Start,
+        modifier = modifier
+        ) {
+        Bubble(
+            isMyMessage = isMyMessage,
+            content = (message.content as? Message.Content.Text)?.message ?: "",
+            time = Iso8601.parseTime(message.creationDate.time),
+            state = message.state.collectAsState().value
         )
+    }
+}
+
+@Preview("Chat bubble")
+@Composable
+fun ChatBubble() {
+    MaterialTheme {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+        ) {
+            Bubble(
+                true,
+                content = "Hello there!",
+                time = "11:40",
+                state = Message.State.Read(),
+            )
+
+            Divider(color = Color.White, thickness = 16.dp)
+
+            Bubble(
+                false,
+                content = "How is going? I like trains, cars and dogs. But I hate mosquitos.",
+                time = "13:45",
+                state = Message.State.Received(),
+            )
+        }
+    }
+}
+
+
+@Composable
+fun Bubble(
+    isMyMessage: Boolean,
+    content: String,
+    time: String,
+    state: Message.State
+) {
+    val configuration = LocalConfiguration.current
+    val halfScreenDp = remember {
+        configuration.screenWidthDp / 2
+    }
+
+    Card(
+        shape = RoundedCornerShape(
+            topStart = if (isMyMessage) 24.dp else 0.dp,
+            topEnd = if (isMyMessage) 12.dp else 24.dp,
+            bottomEnd = if (isMyMessage) 0.dp else 24.dp,
+            bottomStart = if (isMyMessage) 24.dp else 12.dp,
+        ),
+        backgroundColor = if (isMyMessage) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant,
+        elevation = 0.dp,
+        modifier = Modifier.widthIn(min = 0.dp, max = halfScreenDp.dp)
+    ) {
+        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+            Text(text = content, style = MaterialTheme.typography.body2)
+
+            Row(
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.align(Alignment.End)
+            ) {
+                Text(text = time, fontSize = 12.sp, style = MaterialTheme.typography.body2)
+
+                if (isMyMessage) {
+                    Icon(
+                        painter = when (state) {
+                            is Message.State.Sending -> painterResource(id = R.drawable.ic_kaleyra_clock)
+                            is Message.State.Sent -> painterResource(id = R.drawable.ic_kaleyra_single_tick)
+                            else -> painterResource(id = R.drawable.ic_kaleyra_double_tick)
+                        },
+                        contentDescription = when (state) {
+                            is Message.State.Sending -> stringResource(id = R.string.kaleyra_chat_msg_status_pending)
+                            is Message.State.Sent -> stringResource(id = R.string.kaleyra_chat_msg_status_sent)
+                            else -> stringResource(id = R.string.kaleyra_chat_msg_status_seen)
+                        },
+                        modifier = Modifier.padding(2.dp).size(16.dp)
+                    )
+                }
+            }
+        }
     }
 }
 
