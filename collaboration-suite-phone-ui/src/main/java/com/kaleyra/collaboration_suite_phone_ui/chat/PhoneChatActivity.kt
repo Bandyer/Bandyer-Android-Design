@@ -365,33 +365,34 @@ fun Actions(
     onAudioUpgradableClick: () -> Unit,
     onVideoClick: () -> Unit
 ) {
-    Icon(
+    MenuIcon(
         painter = painterResource(R.drawable.ic_kaleyra_audio_call),
-        tint = MaterialTheme.colors.onPrimary,
-        modifier = Modifier
-            .clickable(onClick = onAudioClick)
-            .padding(horizontal = 12.dp, vertical = 16.dp)
-            .height(24.dp),
+        onClick = onAudioClick,
         contentDescription = stringResource(id = R.string.kaleyra_start_audio_call)
     )
 
-    Icon(
+    MenuIcon(
         painter = painterResource(R.drawable.ic_kaleyra_audio_upgradable_call),
-        tint = MaterialTheme.colors.onPrimary,
-        modifier = Modifier
-            .clickable(onClick = onAudioUpgradableClick)
-            .padding(horizontal = 12.dp, vertical = 16.dp)
-            .height(24.dp),
+        onClick = onAudioUpgradableClick,
         contentDescription = stringResource(id = R.string.kaleyra_start_audio_upgradable_call)
     )
 
-    Icon(
+    MenuIcon(
         painter = painterResource(R.drawable.ic_kaleyra_video_call),
+        onClick = onVideoClick,
+        contentDescription = stringResource(id = R.string.kaleyra_start_video_call)
+    )
+}
+
+@Composable
+fun MenuIcon(painter: Painter, onClick: () -> Unit, contentDescription: String) {
+    Icon(
+        painter = painter,
         tint = MaterialTheme.colors.onPrimary,
         modifier = Modifier
-            .clickable(onClick = onVideoClick)
+            .clickable(onClick = onClick)
             .padding(horizontal = 12.dp, vertical = 16.dp)
             .height(24.dp),
-        contentDescription = stringResource(id = R.string.kaleyra_start_video_call)
+        contentDescription = contentDescription
     )
 }
