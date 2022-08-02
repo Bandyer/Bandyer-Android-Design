@@ -58,6 +58,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -99,6 +100,9 @@ fun ChatScreen(
     onBackPressed: () -> Unit,
     viewModel: ChatViewModel
 ) {
+    val scope = rememberCoroutineScope()
+    val scrollState = rememberLazyListState()
+
     Scaffold(
         topBar = {
             ChatTopAppBar(
@@ -135,9 +139,6 @@ fun ChatScreen(
         },
         modifier = modifier
     ) {
-        val scope = rememberCoroutineScope()
-        val scrollState = rememberLazyListState()
-
         Box(modifier = Modifier.fillMaxSize()) {
             Column(Modifier.fillMaxSize()) {
                 Messages(
@@ -178,30 +179,35 @@ fun Messages(
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
+    val scope = rememberCoroutineScope()
+    val showFab by remember {
+        derivedStateOf {
+            scrollState.firstVisibleItemIndex > 0
+        }
+    }
+
+    val shouldFetch by remember {
+        derivedStateOf {
+            val layoutInfo = scrollState.layoutInfo
+            val totalItemsCount = layoutInfo.totalItemsCount
+            val visibleItemsInfo = layoutInfo.visibleItemsInfo
+            totalItemsCount.let { it != 0 && it <= (visibleItemsInfo.lastOrNull()?.index ?: 0) + FETCH_THRESHOLD }
+        }
+    }
+
+    val configuration = LocalConfiguration.current
+    val halfScreenDp = remember {
+        configuration.screenWidthDp / 2
+    }
+
+    LaunchedEffect(shouldFetch) {
+        snapshotFlow { shouldFetch }
+            .filter { it }
+            .onEach { onFetch.invoke() }
+            .launchIn(this)
+    }
+
     Box(modifier = modifier) {
-        val scope = rememberCoroutineScope()
-        val showFab by remember {
-            derivedStateOf {
-                scrollState.firstVisibleItemIndex > 0
-            }
-        }
-
-        val shouldFetch by remember {
-            derivedStateOf {
-                scrollState.layoutInfo.totalItemsCount.let {
-                    it != 0 && it <= (scrollState.layoutInfo.visibleItemsInfo.lastOrNull()?.index
-                        ?: 0) + FETCH_THRESHOLD
-                }
-            }
-        }
-
-        LaunchedEffect(shouldFetch) {
-            snapshotFlow { shouldFetch }
-                .filter { it }
-                .onEach { onFetch.invoke() }
-                .launchIn(this)
-        }
-
         LazyColumn(
             reverseLayout = true,
             state = scrollState,
@@ -226,22 +232,22 @@ fun Messages(
 //                }
 
                 item(key = message.id) {
-                    Message(message, modifier = Modifier.fillMaxWidth())
+                    Message(message, modifier = Modifier.fillMaxWidth(), halfScreenDp = halfScreenDp)
                 }
             }
         }
 
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp)
-        ) {
-
-            AnimatedVisibility(
-                visible = showFab,
-                enter = scaleIn(),
-                exit = scaleOut()
-            ) {
+//        Box(
+//            modifier = Modifier
+//                .align(Alignment.BottomEnd)
+//                .padding(16.dp)
+//        ) {
+//
+//            AnimatedVisibility(
+//                visible = showFab,
+//                enter = scaleIn(),
+//                exit = scaleOut()
+//            ) {
 //                AndroidView(
 //                    factory = { KaleyraChatUnreadMessagesWidget(it) },
 //                    update = { view ->
@@ -252,8 +258,8 @@ fun Messages(
 //                        }
 //                    }
 //                )
-            }
-        }
+//            }
+//        }
 
     }
 }
@@ -267,17 +273,18 @@ fun Header(timestamp: Long, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Message(message: Message, modifier: Modifier = Modifier) {
+fun Message(message: Message, halfScreenDp: Int, modifier: Modifier = Modifier) {
     val isMyMessage = message !is OtherMessage
     Row(
-        horizontalArrangement = if (isMyMessage) Arrangement.End else Arrangement.Start,
-        modifier = modifier
-        ) {
+        modifier = modifier,
+        horizontalArrangement = if (isMyMessage) Arrangement.End else Arrangement.Start
+    ) {
         Bubble(
             isMyMessage = isMyMessage,
             content = (message.content as? Message.Content.Text)?.message ?: "",
             time = Iso8601.parseTime(message.creationDate.time),
-            state = message.state.collectAsState().value
+            state = message.state.collectAsState().value,
+            halfScreenDp = halfScreenDp
         )
     }
 }
@@ -296,6 +303,7 @@ fun ChatBubble() {
                 content = "Hello there!",
                 time = "11:40",
                 state = Message.State.Read(),
+                200
             )
 
             Divider(color = Color.White, thickness = 16.dp)
@@ -305,6 +313,7 @@ fun ChatBubble() {
                 content = "How is going? I like trains, cars and dogs. But I hate mosquitos.",
                 time = "13:45",
                 state = Message.State.Received(),
+                200
             )
         }
     }
@@ -316,13 +325,9 @@ fun Bubble(
     isMyMessage: Boolean,
     content: String,
     time: String,
-    state: Message.State
+    state: Message.State,
+    halfScreenDp: Int
 ) {
-    val configuration = LocalConfiguration.current
-    val halfScreenDp = remember {
-        configuration.screenWidthDp / 2
-    }
-
     Card(
         shape = RoundedCornerShape(
             topStart = if (isMyMessage) 24.dp else 0.dp,
@@ -356,7 +361,9 @@ fun Bubble(
                             is Message.State.Sent -> stringResource(id = R.string.kaleyra_chat_msg_status_sent)
                             else -> stringResource(id = R.string.kaleyra_chat_msg_status_seen)
                         },
-                        modifier = Modifier.padding(2.dp).size(16.dp)
+                        modifier = Modifier
+                            .padding(2.dp)
+                            .size(16.dp)
                     )
                 }
             }
