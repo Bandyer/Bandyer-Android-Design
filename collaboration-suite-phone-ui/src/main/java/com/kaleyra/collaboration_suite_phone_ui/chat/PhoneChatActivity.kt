@@ -51,12 +51,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -95,6 +99,7 @@ class PhoneChatActivity : ChatActivity() {
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun ChatScreen(
     modifier: Modifier = Modifier,
@@ -138,7 +143,9 @@ fun ChatScreen(
                         })
                 })
         },
-        modifier = modifier
+        modifier = modifier.semantics {
+            testTagsAsResourceId = true
+        }
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column(Modifier.fillMaxSize()) {
@@ -214,7 +221,7 @@ fun Messages(
             state = scrollState,
             contentPadding = PaddingValues(all =  16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize().testTag("lazyColumnMessages")
         ) {
             for (index in messages.indices) {
                 val message = messages[index]

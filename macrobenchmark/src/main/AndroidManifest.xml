@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.kaleyra.macrobenchmark">
+
+    <queries>
+        <package android:name="com.kaleyra.demo_collaboration_suite_ui" />
+    </queries>
+</manifest>
