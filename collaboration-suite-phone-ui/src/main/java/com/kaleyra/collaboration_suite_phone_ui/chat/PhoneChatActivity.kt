@@ -68,6 +68,7 @@ import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
+import com.kaleyra.collaboration_suite_core_ui.IChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -98,7 +99,7 @@ class PhoneChatActivity : ChatActivity() {
 fun ChatScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
-    viewModel: ChatViewModel
+    viewModel: IChatViewModel
 ) {
     val scope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()

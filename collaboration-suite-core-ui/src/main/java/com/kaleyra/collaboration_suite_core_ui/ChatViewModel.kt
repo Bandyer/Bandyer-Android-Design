@@ -2,11 +2,15 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.User
+import com.kaleyra.collaboration_suite.chatbox.ChatBox
+import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,7 +23,7 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-open class ChatViewModel: CollaborationViewModel() {
+open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
 
     companion object {
         private val FETCH_COUNT = 50
@@ -31,7 +35,7 @@ open class ChatViewModel: CollaborationViewModel() {
 
     private val _chat = MutableSharedFlow<ChatUI>(replay = 1, extraBufferCapacity = 1)
 
-    var usersDescription = UsersDescription()
+    final override var usersDescription = UsersDescription()
         private set
 
     init {
@@ -46,43 +50,43 @@ open class ChatViewModel: CollaborationViewModel() {
     }
 
     // Call
-    val phoneBox = _phoneBox.asSharedFlow()
+    override val phoneBox = _phoneBox.asSharedFlow()
 
-    val call = phoneBox.flatMapLatest { it.call }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    override val call = phoneBox.flatMapLatest { it.call }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     // Chat
-    val chatBox = _chatBox.asSharedFlow()
+    override val chatBox = _chatBox.asSharedFlow()
 
-    val chat = _chat.asSharedFlow()
+    override val chat = _chat.asSharedFlow()
 
-    val chatBoxState = chatBox.flatMapLatest { it.state }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    override val chatBoxState = chatBox.flatMapLatest { it.state }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
-    val messages = chat.flatMapLatest { it.messages }.map { it.list }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    override val messages = chat.flatMapLatest { it.messages }.map { it.list }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
-    val actions = chat.flatMapLatest { it.actions }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = setOf())
+    override val actions = chat.flatMapLatest { it.actions }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = setOf())
 
-    val participants = chat.flatMapLatest { it.participants }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    override val participants = chat.flatMapLatest { it.participants }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
 
-    fun setChat(userId: String): ChatUI? {
+    override fun setChat(userId: String): ChatUI? {
         val chatBox = chatBox.replayCache.firstOrNull() ?: return null
         val chat = chatBox.create(object : User { override val userId = userId })
         viewModelScope.launch { _chat.emit(chat) }
         return chat
     }
 
-    fun sendMessage(text: String) {
+    override fun sendMessage(text: String) {
         val chat = chat.replayCache.firstOrNull() ?: return
         val message = chat.create(Message.Content.Text(text))
         chat.add(message)
     }
 
-    fun fetchMessages() {
+    override fun fetchMessages() {
         val chat = chat.replayCache.firstOrNull() ?: return
         chat.fetch(FETCH_COUNT)
     }
 
-    fun call(preferredType: Call.PreferredType) {
+    override fun call(preferredType: Call.PreferredType) {
         val phoneBox = phoneBox.replayCache.firstOrNull() ?: return
         val chat = chat.replayCache.firstOrNull() ?: return
         val userId = chat.participants.value.others.first().userId
@@ -90,4 +94,33 @@ open class ChatViewModel: CollaborationViewModel() {
            this.preferredType = preferredType
         }
     }
+}
+
+interface IChatViewModel {
+
+    val usersDescription: UsersDescription
+
+    val phoneBox: SharedFlow<PhoneBoxUI>
+
+    val call: SharedFlow<CallUI>
+
+    val chatBox: SharedFlow<ChatBoxUI>
+
+    val chat: SharedFlow<ChatUI>
+
+    val chatBoxState: SharedFlow<ChatBox.State>
+
+    val messages: SharedFlow<List<Message>>
+
+    val actions: SharedFlow<Set<ChatUI.Action>>
+
+    val participants: SharedFlow<ChatParticipants>
+
+    fun setChat(userId: String): ChatUI?
+
+    fun sendMessage(text: String)
+
+    fun fetchMessages()
+
+    fun call(preferredType: Call.PreferredType)
 }
