@@ -240,7 +240,7 @@ fun Messages(
 //                }
 
                 item(key = message.id) {
-                    Message(message, modifier = Modifier.fillMaxWidth(), halfScreenDp = halfScreenDp)
+                    Message(message, modifier = Modifier.fillMaxWidth().testTag("message"), halfScreenDp = halfScreenDp)
                 }
             }
         }
