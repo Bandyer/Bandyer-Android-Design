@@ -5,13 +5,17 @@ import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
 import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
+import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.filter
@@ -61,7 +65,17 @@ open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
 
     override val chatBoxState = chatBox.flatMapLatest { it.state }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
-    override val messages = chat.flatMapLatest { it.messages }.map { it.list }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    override val messages = chat.flatMapLatest { it.messages }.map { it.list }.map { messages ->
+        messages.map {
+            MessageCompose(
+                it.id,
+                it !is OtherMessage,
+                it.content,
+                Iso8601.parseDay(ContextRetainer.context, it.creationDate.time),
+                it.state
+            )
+        }
+    }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     override val actions = chat.flatMapLatest { it.actions }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = setOf())
 
@@ -96,6 +110,14 @@ open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
     }
 }
 
+data class MessageCompose(
+    val id: String,
+    val my: Boolean,
+    val content: Message.Content,
+    val time: String,
+    val state: StateFlow<Message.State>
+)
+
 interface IChatViewModel {
 
     val usersDescription: UsersDescription
@@ -110,7 +132,7 @@ interface IChatViewModel {
 
     val chatBoxState: SharedFlow<ChatBox.State>
 
-    val messages: SharedFlow<List<Message>>
+    val messages: SharedFlow<List<MessageCompose>>
 
     val actions: SharedFlow<Set<ChatUI.Action>>
 
