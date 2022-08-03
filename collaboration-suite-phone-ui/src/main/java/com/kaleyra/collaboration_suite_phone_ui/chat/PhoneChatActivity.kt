@@ -32,6 +32,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
+import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
@@ -41,6 +42,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -73,6 +76,7 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.IChatViewModel
+import com.kaleyra.collaboration_suite_core_ui.MessageCompose
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -86,7 +90,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-private const val FETCH_THRESHOLD = 20
+private const val FETCH_THRESHOLD = 5
 
 class PhoneChatActivity : ChatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,107 +103,126 @@ class PhoneChatActivity : ChatActivity() {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun ChatScreen(
-    modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
     viewModel: IChatViewModel
 ) {
     val scope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
-
-    Scaffold(
-        topBar = {
-            ChatTopAppBar(
-                viewModel.participants.replayCache.first().others.first().userId,
-                viewModel.usersDescription,
-                navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
-                actions = {
-                    Actions(
-                        onAudioClick = {
-                            viewModel.call(
-                                Call.PreferredType(
-                                    audio = Call.Audio.Enabled,
-                                    video = null
-                                )
-                            )
-                        },
-                        onAudioUpgradableClick = {
-                            viewModel.call(
-                                Call.PreferredType(
-                                    audio = Call.Audio.Enabled,
-                                    video = Call.Video.Disabled
-                                )
-                            )
-                        },
-                        onVideoClick = {
-                            viewModel.call(
-                                Call.PreferredType(
-                                    audio = Call.Audio.Enabled,
-                                    video = Call.Video.Enabled
-                                )
-                            )
-                        })
-                })
-        },
-        modifier = modifier.semantics {
-            testTagsAsResourceId = true
-        }
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Column(Modifier.fillMaxSize()) {
-                Messages(
-                    messages = viewModel.messages.collectAsState(initial = listOf()).value,
-                    onFetch = { viewModel.fetchMessages() },
-                    scrollState = scrollState,
-                    modifier = Modifier.weight(1f),
-                )
-
-                AndroidView(
-                    modifier = Modifier.fillMaxWidth(),
-                    factory = {
-                        val themeResId =
-                            it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
-                        KaleyraChatInputLayoutWidget(ContextThemeWrapper(it, themeResId))
-                    },
-                    update = {
-                        it.callback = object : KaleyraChatInputLayoutEventListener {
-                            override fun onTextChanged(text: String) = Unit
-
-                            override fun onSendClicked(text: String) {
-                                viewModel.sendMessage(text)
-                                scope.launch { scrollState.animateScrollToItem(0) }
-                            }
-                        }
-                    }
-                )
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun Messages(
-    messages: List<Message>,
-    onFetch: () -> Unit,
-    scrollState: LazyListState,
-    modifier: Modifier = Modifier
-) {
-    val scope = rememberCoroutineScope()
     val showFab by remember {
         derivedStateOf {
             scrollState.firstVisibleItemIndex > 0
         }
     }
 
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .semantics {
+                testTagsAsResourceId = true
+            }) {
+        ChatTopAppBar(
+            viewModel.participants.replayCache.first().others.first().userId,
+            viewModel.usersDescription,
+            navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
+            actions = {
+                Actions(
+                    onAudioClick = {
+                        viewModel.call(
+                            Call.PreferredType(
+                                audio = Call.Audio.Enabled,
+                                video = null
+                            )
+                        )
+                    },
+                    onAudioUpgradableClick = {
+                        viewModel.call(
+                            Call.PreferredType(
+                                audio = Call.Audio.Enabled,
+                                video = Call.Video.Disabled
+                            )
+                        )
+                    },
+                    onVideoClick = {
+                        viewModel.call(
+                            Call.PreferredType(
+                                audio = Call.Audio.Enabled,
+                                video = Call.Video.Enabled
+                            )
+                        )
+                    })
+            })
+
+        Box(Modifier.weight(1f)) {
+            Messages(
+                messages = viewModel.messages.collectAsState(initial = listOf()).value,
+                onFetch = { viewModel.fetchMessages() },
+                scrollState = scrollState,
+                modifier = Modifier.fillMaxSize(),
+            )
+
+//            this@Column.AnimatedVisibility(
+//                visible = showFab,
+//                modifier = Modifier
+//                    .align(Alignment.BottomEnd)
+//                    .padding(16.dp),
+//                enter = scaleIn(),
+//                exit = scaleOut()
+//            ) {
+//                FloatingActionButton(
+//                    modifier = Modifier.size(40.dp),
+//                    onClick = {
+//                        scope.launch {
+//                            scrollState.scrollToItem(0)
+//                        }
+//                    }
+//                ) {
+//                    Icon(
+//                        imageVector = Icons.Filled.ArrowDropDown,
+//                        contentDescription = null
+//                    )
+//                }
+//            }
+        }
+
+        AndroidView(
+            modifier = Modifier.fillMaxWidth(),
+            factory = {
+                val themeResId =
+                    it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
+                KaleyraChatInputLayoutWidget(ContextThemeWrapper(it, themeResId))
+            },
+            update = {
+                it.callback = object : KaleyraChatInputLayoutEventListener {
+                    override fun onTextChanged(text: String) = Unit
+
+                    override fun onSendClicked(text: String) {
+                        viewModel.sendMessage(text)
+                        scope.launch { scrollState.scrollToItem(0) }
+                    }
+                }
+            }
+        )
+    }
+}
+
+@Composable
+fun Messages(
+    messages: List<MessageCompose>,
+    onFetch: () -> Unit,
+    scrollState: LazyListState,
+    modifier: Modifier = Modifier
+) {
     val shouldFetch by remember {
         derivedStateOf {
             val layoutInfo = scrollState.layoutInfo
             val totalItemsCount = layoutInfo.totalItemsCount
             val visibleItemsInfo = layoutInfo.visibleItemsInfo
-            totalItemsCount.let { it != 0 && it <= (visibleItemsInfo.lastOrNull()?.index ?: 0) + FETCH_THRESHOLD }
+            totalItemsCount.let {
+                it != 0 && it <= (visibleItemsInfo.lastOrNull()?.index ?: 0) + FETCH_THRESHOLD
+            }
         }
     }
 
@@ -215,82 +238,62 @@ fun Messages(
             .launchIn(this)
     }
 
-    Box(modifier = modifier) {
-        LazyColumn(
-            reverseLayout = true,
-            state = scrollState,
-            contentPadding = PaddingValues(all =  16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxSize().testTag("lazyColumnMessages")
-        ) {
-            for (index in messages.indices) {
-                val message = messages[index]
-//                val previousMessage = messages.getOrNull(index - 1)
-//
-//                if (previousMessage != null) {
-//                    val day = Iso8601.parseDay(timestamp = message.creationDate.time)
-//                    val previousMessageDay =
-//                        Iso8601.parseDay(timestamp = previousMessage.creationDate.time)
-//
-//                    if (previousMessageDay != day) {
-//                        item(key = previousMessageDay.hashCode()) {
-//                            Header(previousMessage.creationDate.time, Modifier.fillMaxWidth().padding(vertical = 8.dp))
-//                        }
-//                    }
-//                }
+    LazyColumn(
+        reverseLayout = true,
+        state = scrollState,
+        contentPadding = PaddingValues(all = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier.testTag("lazyColumnMessages")
+    ) {
+        for (index in messages.indices) {
+            val message = messages[index]
+            val previousMessage = messages.getOrNull(index - 1)
 
-                item(key = message.id) {
-                    Message(message, modifier = Modifier.fillMaxWidth().testTag("message"), halfScreenDp = halfScreenDp)
+            if (previousMessage != null) {
+                val previousTimeHash = previousMessage.time.hashCode()
+                if (previousTimeHash != message.time.hashCode()) {
+                    item(key = previousTimeHash) {
+                        Header(
+                            previousMessage.time,
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                        )
+                    }
                 }
             }
+
+            item(key = message.id) {
+                Message(
+                    message,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag("message"),
+                    halfScreenDp = halfScreenDp
+                )
+            }
         }
-
-//        Box(
-//            modifier = Modifier
-//                .align(Alignment.BottomEnd)
-//                .padding(16.dp)
-//        ) {
-//
-//            AnimatedVisibility(
-//                visible = showFab,
-//                enter = scaleIn(),
-//                exit = scaleOut()
-//            ) {
-//                AndroidView(
-//                    factory = { KaleyraChatUnreadMessagesWidget(it) },
-//                    update = { view ->
-//                        view.setOnClickListener {
-//                            scope.launch {
-//                                scrollState.animateScrollToItem(0)
-//                            }
-//                        }
-//                    }
-//                )
-//            }
-//        }
-
     }
 }
 
 @Composable
-fun Header(timestamp: Long, modifier: Modifier = Modifier) {
+fun Header(timestamp: String, modifier: Modifier = Modifier) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
 //        kaleyra_chatTimestampStyle
-        Text(text = Iso8601.parseDay(timestamp = timestamp), fontSize = 12.sp, style = MaterialTheme.typography.body2)
+        Text(text = timestamp, fontSize = 12.sp, style = MaterialTheme.typography.body2)
     }
 }
 
 @Composable
-fun Message(message: Message, halfScreenDp: Int, modifier: Modifier = Modifier) {
-    val isMyMessage = message !is OtherMessage
+fun Message(message: MessageCompose, halfScreenDp: Int, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier,
-        horizontalArrangement = if (isMyMessage) Arrangement.End else Arrangement.Start
+        horizontalArrangement = if (message.my) Arrangement.End else Arrangement.Start
     ) {
         Bubble(
-            isMyMessage = isMyMessage,
+            isMyMessage = message.my,
             content = (message.content as? Message.Content.Text)?.message ?: "",
-            time = Iso8601.parseTime(message.creationDate.time),
+            time = message.time,
             state = message.state.collectAsState().value,
             halfScreenDp = halfScreenDp
         )
