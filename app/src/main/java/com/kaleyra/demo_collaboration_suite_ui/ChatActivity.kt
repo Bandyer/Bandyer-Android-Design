@@ -108,11 +108,8 @@ class MockChatViewModel : ViewModel(), IChatViewModel {
     override val messages: SharedFlow<List<MessageCompose>> = _messages.map { messages ->
         messages.map {
             MessageCompose(
-                it.id,
-                it !is OtherMessage,
-                it.content,
-                Iso8601.parseDay(ContextRetainer.context, it.creationDate.time),
-                it.state
+                it,
+                Iso8601.parseDay(ContextRetainer.context, it.creationDate.time)
             )
         }
     }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
