@@ -250,11 +250,11 @@ fun Messages(
             val previousMessage = messages.getOrNull(index - 1)
 
             if (previousMessage != null) {
-                val previousTimeHash = previousMessage.time.hashCode()
-                if (previousTimeHash != message.time.hashCode()) {
+                val previousTimeHash = previousMessage.parsedDay.hashCode()
+                if (previousTimeHash != message.parsedDay.hashCode()) {
                     item(key = previousTimeHash) {
                         Header(
-                            previousMessage.time,
+                            previousMessage.parsedDay,
                             Modifier
                                 .fillMaxWidth()
                                 .padding(vertical = 8.dp)
@@ -263,7 +263,7 @@ fun Messages(
                 }
             }
 
-            item(key = message.id) {
+            item(key = message.message.id) {
                 Message(
                     message,
                     modifier = Modifier
@@ -286,15 +286,16 @@ fun Header(timestamp: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun Message(message: MessageCompose, halfScreenDp: Int, modifier: Modifier = Modifier) {
+    val msg = message.message
     Row(
         modifier = modifier,
-        horizontalArrangement = if (message.my) Arrangement.End else Arrangement.Start
+        horizontalArrangement = if (msg !is OtherMessage) Arrangement.End else Arrangement.Start
     ) {
         Bubble(
-            isMyMessage = message.my,
-            content = (message.content as? Message.Content.Text)?.message ?: "",
-            time = message.time,
-            state = message.state.collectAsState().value,
+            isMyMessage = msg !is OtherMessage,
+            content = (msg.content as? Message.Content.Text)?.message ?: "",
+            time = message.parsedDay,
+            state = msg.state.collectAsState().value,
             halfScreenDp = halfScreenDp
         )
     }
@@ -340,6 +341,7 @@ fun Bubble(
     halfScreenDp: Int
 ) {
     Card(
+        // Do function to get the right style base on the message type
         shape = RoundedCornerShape(
             topStart = if (isMyMessage) 24.dp else 0.dp,
             topEnd = if (isMyMessage) 12.dp else 24.dp,

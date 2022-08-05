@@ -67,13 +67,7 @@ open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
 
     override val messages = chat.flatMapLatest { it.messages }.map { it.list }.map { messages ->
         messages.map {
-            MessageCompose(
-                it.id,
-                it !is OtherMessage,
-                it.content,
-                Iso8601.parseDay(ContextRetainer.context, it.creationDate.time),
-                it.state
-            )
+            MessageCompose(it, Iso8601.parseDay(ContextRetainer.context, it.creationDate.time))
         }
     }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
@@ -111,11 +105,8 @@ open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
 }
 
 data class MessageCompose(
-    val id: String,
-    val my: Boolean,
-    val content: Message.Content,
-    val time: String,
-    val state: StateFlow<Message.State>
+    val message: Message,
+    val parsedDay: String
 )
 
 interface IChatViewModel {
