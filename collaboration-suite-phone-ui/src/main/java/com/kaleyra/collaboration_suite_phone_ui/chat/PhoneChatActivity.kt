@@ -37,21 +37,21 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -65,7 +65,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -74,16 +73,13 @@ import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
-import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.IChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.MessageCompose
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
-import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatUnreadMessagesWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -161,31 +157,19 @@ fun ChatScreen(
                 onFetch = { viewModel.fetchMessages() },
                 onMessageScrolled = { viewModel.markAsRead(it) },
                 scrollState = scrollState,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize()
             )
 
-//            this@Column.AnimatedVisibility(
-//                visible = showFab,
-//                modifier = Modifier
-//                    .align(Alignment.BottomEnd)
-//                    .padding(16.dp),
-//                enter = scaleIn(),
-//                exit = scaleOut()
-//            ) {
-//                FloatingActionButton(
-//                    modifier = Modifier.size(40.dp),
-//                    onClick = {
-//                        scope.launch {
-//                            scrollState.scrollToItem(0)
-//                        }
-//                    }
-//                ) {
-//                    Icon(
-//                        imageVector = Icons.Filled.ArrowDropDown,
-//                        contentDescription = null
-//                    )
-//                }
-//            }
+            this@Column.AnimatedVisibility(
+                visible = showFab,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp),
+                enter = scaleIn(),
+                exit = scaleOut()
+            ) {
+//                ScrollToBottomFab(, scrollState)
+            }
         }
 
         AndroidView(
@@ -210,6 +194,42 @@ fun ChatScreen(
 }
 
 @Composable
+fun ScrollToBottomFab(unreadMessagesCounter: Int, scrollState: LazyListState) {
+    val scope = rememberCoroutineScope()
+
+//    LaunchedEffect(scrollState.firstVisibleItemIndex, unreadMessagesCounter) {
+//        var counter = 0
+//        snapshotFlow { scrollState.firstVisibleItemIndex }.combine(snapshotFlow { unreadMessagesCounter }) { firstVisibleItemIndex, unreadMessagesCounter ->
+//            if (unreadMessagesCounter != -1 && firstVisibleItemIndex > unreadMessagesCounter) counter = unreadMessagesCounter
+//            else {
+//                if (counter > 0) counter -= 1
+//            }
+//            counter
+//        }.onEach {
+//            Log.e("PhoneChatActivity", "$it")
+//        }.launchIn(this)
+//    }
+
+    FloatingActionButton(
+        modifier = Modifier.size(40.dp),
+        onClick = {
+            scope.launch {
+                scrollState.scrollToItem(0)
+            }
+        }
+    ) {
+        Row {
+//            Text(if(scrollState.firstVisibleItemIndex > unreadMessagesCounter) "$unreadMessagesCounter" else "${scrollState.firstVisibleItemIndex}")
+            Icon(
+                imageVector = Icons.Filled.ArrowDropDown,
+                contentDescription = null
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
 fun Messages(
     messages: List<MessageCompose>,
     onFetch: () -> Unit,
@@ -217,6 +237,7 @@ fun Messages(
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
+    // Do extensions functions on scrollState
     val shouldFetch by remember {
         derivedStateOf {
             val layoutInfo = scrollState.layoutInfo
@@ -392,7 +413,6 @@ fun Bubble(
         }
     }
 }
-
 
 @Composable
 fun ChatTopAppBar(
