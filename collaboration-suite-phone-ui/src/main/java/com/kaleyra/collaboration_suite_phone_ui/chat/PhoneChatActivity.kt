@@ -257,6 +257,7 @@ fun Messages(
                             previousMessage.parsedDay,
                             Modifier
                                 .fillMaxWidth()
+                                .animateItemPlacement()
                                 .padding(vertical = 8.dp)
                         )
                     }
@@ -268,6 +269,7 @@ fun Messages(
                     message,
                     modifier = Modifier
                         .fillMaxWidth()
+                        .animateItemPlacement()
                         .testTag("message"),
                     halfScreenDp = halfScreenDp
                 )
