@@ -237,6 +237,7 @@ fun Messages(
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
+    val isItemInserted = scrollState.isItemInserted()
     // Do extensions functions on scrollState
     val shouldFetch by remember {
         derivedStateOf {
@@ -248,15 +249,15 @@ fun Messages(
             }
         }
     }
-
     val configuration = LocalConfiguration.current
     val halfScreenDp = remember {
         configuration.screenWidthDp / 2
     }
 
-    scrollState.firstVisibleItemIndex.let {
-        if (messages.isEmpty()) return@let
-        onMessageScrolled(messages[it])
+    LaunchedEffect(isItemInserted) {
+        snapshotFlow { isItemInserted }
+            .onEach { scrollState.animateScrollToItem(0) }
+            .launchIn(this)
     }
 
     LaunchedEffect(shouldFetch) {
@@ -264,6 +265,11 @@ fun Messages(
             .filter { it }
             .onEach { onFetch.invoke() }
             .launchIn(this)
+    }
+
+    scrollState.firstVisibleItemIndex.let {
+        if (messages.isEmpty()) return@let
+        onMessageScrolled(messages[it])
     }
 
     LazyColumn(
@@ -304,6 +310,19 @@ fun Messages(
             }
         }
     }
+}
+
+@Composable
+private fun LazyListState.isItemInserted(): Boolean {
+    var previousItemCount by remember(this) { mutableStateOf(layoutInfo.totalItemsCount) }
+    return remember(this) {
+        derivedStateOf {
+            val totalItemCount = layoutInfo.totalItemsCount
+            (firstVisibleItemIndex < 2 && (totalItemCount - previousItemCount) == 1).also {
+                previousItemCount = totalItemCount
+            }
+        }
+    }.value
 }
 
 @Composable
