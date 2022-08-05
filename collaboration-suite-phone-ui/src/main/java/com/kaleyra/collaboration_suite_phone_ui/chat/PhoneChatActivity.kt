@@ -159,6 +159,7 @@ fun ChatScreen(
             Messages(
                 messages = viewModel.messages.collectAsState(initial = listOf()).value,
                 onFetch = { viewModel.fetchMessages() },
+                onMessageScrolled = { viewModel.markAsRead(it) },
                 scrollState = scrollState,
                 modifier = Modifier.fillMaxSize(),
             )
@@ -212,6 +213,7 @@ fun ChatScreen(
 fun Messages(
     messages: List<MessageCompose>,
     onFetch: () -> Unit,
+    onMessageScrolled: (MessageCompose) -> Unit,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
@@ -229,6 +231,11 @@ fun Messages(
     val configuration = LocalConfiguration.current
     val halfScreenDp = remember {
         configuration.screenWidthDp / 2
+    }
+
+    scrollState.firstVisibleItemIndex.let {
+        if (messages.isEmpty()) return@let
+        onMessageScrolled(messages[it])
     }
 
     LaunchedEffect(shouldFetch) {

@@ -76,6 +76,12 @@ open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
     override val participants = chat.flatMapLatest { it.participants }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
 
+    override fun markAsRead(message: MessageCompose) {
+        val msg = message.message
+        if (msg as? OtherMessage == null || msg.state.value is Message.State.Read) return
+        msg.markAsRead()
+    }
+
     override fun setChat(userId: String): ChatUI? {
         val chatBox = chatBox.replayCache.firstOrNull() ?: return null
         val chat = chatBox.create(object : User { override val userId = userId })
@@ -130,6 +136,8 @@ interface IChatViewModel {
     val participants: SharedFlow<ChatParticipants>
 
     fun setChat(userId: String): ChatUI?
+
+    fun markAsRead(message: MessageCompose)
 
     fun sendMessage(text: String)
 
