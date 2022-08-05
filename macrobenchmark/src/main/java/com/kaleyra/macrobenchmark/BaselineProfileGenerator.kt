@@ -12,13 +12,11 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-
+@ExperimentalBaselineProfilesApi
 class BaselineProfileGenerator {
-    @OptIn(ExperimentalBaselineProfilesApi::class)
     @get:Rule
     val rule = BaselineProfileRule()
 
-    @OptIn(ExperimentalBaselineProfilesApi::class)
     @Test
     fun scrollLazyColumn() {
         rule.collectBaselineProfile("com.kaleyra.demo_collaboration_suite_ui") {
