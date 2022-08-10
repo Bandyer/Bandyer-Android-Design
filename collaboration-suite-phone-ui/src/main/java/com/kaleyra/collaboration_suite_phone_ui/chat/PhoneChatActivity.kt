@@ -155,7 +155,6 @@ fun ChatScreen(
             Messages(
                 messages = viewModel.messages.collectAsState(initial = listOf()).value,
                 onFetch = { viewModel.fetchMessages() },
-                onMessageScrolled = { viewModel.markAsRead(it) },
                 scrollState = scrollState,
                 modifier = Modifier.fillMaxSize()
             )
@@ -228,12 +227,10 @@ fun ScrollToBottomFab(unreadMessagesCounter: Int, scrollState: LazyListState) {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun Messages(
     messages: List<MessageCompose>,
     onFetch: () -> Unit,
-    onMessageScrolled: (MessageCompose) -> Unit,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
@@ -267,9 +264,15 @@ fun Messages(
             .launchIn(this)
     }
 
-    scrollState.firstVisibleItemIndex.let {
-        if (messages.isEmpty()) return@let
-        onMessageScrolled(messages[it])
+    LaunchedEffect(messages) {
+        snapshotFlow { messages }
+            .onEach {
+                it
+                    .filter { it.message is OtherMessage && it.message.state.value is Message.State.Received }
+                    .forEach {
+                        (it.message as OtherMessage).markAsRead()
+                    }
+            }.launchIn(this)
     }
 
     LazyColumn(
