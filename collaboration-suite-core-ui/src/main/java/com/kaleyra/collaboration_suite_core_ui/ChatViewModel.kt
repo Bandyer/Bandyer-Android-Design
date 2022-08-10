@@ -54,20 +54,20 @@ open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
     }
 
     // Call
-    override val phoneBox = _phoneBox.asSharedFlow()
+    final override val phoneBox = _phoneBox.asSharedFlow()
 
     override val call = phoneBox.flatMapLatest { it.call }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     // Chat
-    override val chatBox = _chatBox.asSharedFlow()
+    final override val chatBox = _chatBox.asSharedFlow()
 
-    override val chat = _chat.asSharedFlow()
+    final override val chat = _chat.asSharedFlow()
 
     override val chatBoxState = chatBox.flatMapLatest { it.state }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     override val messages = chat.flatMapLatest { it.messages }.map { it.list }.map { messages ->
         messages.map {
-            MessageCompose(it, Iso8601.parseDay(ContextRetainer.context, it.creationDate.time))
+            MessageCompose(it, Iso8601.parseDay(ContextRetainer.context, it.creationDate.time), Iso8601.parseTime(it.creationDate.time))
         }
     }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
@@ -112,7 +112,8 @@ open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
 
 data class MessageCompose(
     val message: Message,
-    val parsedDay: String
+    val parsedDay: String,
+    val parsedTime: String
 )
 
 interface IChatViewModel {

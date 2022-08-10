@@ -291,7 +291,7 @@ fun Messages(
                             previousMessage.parsedDay,
                             Modifier
                                 .fillMaxWidth()
-                                .animateItemPlacement()
+//                                .animateItemPlacement()
                                 .padding(vertical = 8.dp)
                         )
                     }
@@ -303,7 +303,7 @@ fun Messages(
                     message,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .animateItemPlacement()
+//                        .animateItemPlacement()
                         .testTag("message"),
                     halfScreenDp = halfScreenDp
                 )
@@ -343,7 +343,7 @@ fun Message(message: MessageCompose, halfScreenDp: Int, modifier: Modifier = Mod
         Bubble(
             isMyMessage = msg !is OtherMessage,
             content = (msg.content as? Message.Content.Text)?.message ?: "",
-            time = message.parsedDay,
+            time = message.parsedTime,
             state = msg.state.collectAsState().value,
             halfScreenDp = halfScreenDp
         )
