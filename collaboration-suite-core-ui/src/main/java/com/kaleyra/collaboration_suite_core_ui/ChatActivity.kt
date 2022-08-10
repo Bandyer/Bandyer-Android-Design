@@ -26,9 +26,9 @@ abstract class ChatActivity : FragmentActivity() {
         setChatOrCloseActivity(intent)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        sendChatAction(DisplayedChatActivity.ACTION_CHAT_CLOSE)
+    override fun onStop() {
+        super.onStop()
+        sendChatAction(DisplayedChatActivity.ACTION_CHAT_NOT_VISIBLE)
     }
 
     private fun setChatOrCloseActivity(intent: Intent) {
@@ -46,7 +46,7 @@ abstract class ChatActivity : FragmentActivity() {
     private fun setChat(intent: Intent) {
         val userId = intent.extras?.getString("userId") ?: return
         val chat = viewModel.setChat(userId) ?: return
-        sendChatAction(DisplayedChatActivity.ACTION_CHAT_OPEN, chat.id)
+        sendChatAction(DisplayedChatActivity.ACTION_CHAT_VISIBLE, chat.id)
     }
 
     private fun sendChatAction(action: String, chatId: String? = null) {

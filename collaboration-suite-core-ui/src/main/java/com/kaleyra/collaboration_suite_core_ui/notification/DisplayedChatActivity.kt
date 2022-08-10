@@ -14,9 +14,9 @@ class DisplayedChatActivity internal constructor(): BroadcastReceiver() {
      * @suppress
      */
     companion object {
-        const val ACTION_CHAT_OPEN = "com.kaleyra.collaboration_suite_core_ui.CHAT_OPEN"
+        const val ACTION_CHAT_VISIBLE = "com.kaleyra.collaboration_suite_core_ui.CHAT_OPEN"
 
-        const val ACTION_CHAT_CLOSE = "com.kaleyra.collaboration_suite_core_ui.CHAT_CLOSE"
+        const val ACTION_CHAT_NOT_VISIBLE = "com.kaleyra.collaboration_suite_core_ui.CHAT_CLOSE"
 
         const val EXTRA_CHAT_ID = "chatId"
 
@@ -29,8 +29,8 @@ class DisplayedChatActivity internal constructor(): BroadcastReceiver() {
      */
     override fun onReceive(context: Context, intent: Intent) {
         when (intent.action) {
-            ACTION_CHAT_OPEN -> _chatId.value = intent.extras?.getString(EXTRA_CHAT_ID, null)
-            ACTION_CHAT_CLOSE -> _chatId.value = null
+            ACTION_CHAT_VISIBLE -> _chatId.value = intent.extras?.getString(EXTRA_CHAT_ID, null)
+            ACTION_CHAT_NOT_VISIBLE -> _chatId.value = null
             else -> Unit
         }
     }
