@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.util.*
 
 open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
 
@@ -66,20 +67,27 @@ open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
     override val chatBoxState = chatBox.flatMapLatest { it.state }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     override val messages = chat.flatMapLatest { it.messages }.map { it.list }.map { messages ->
-        messages.map {
-            MessageCompose(it, Iso8601.parseDay(ContextRetainer.context, it.creationDate.time), Iso8601.parseTime(it.creationDate.time))
+        val items = mutableListOf<LazyColumnItem>()
+        messages.forEachIndexed { index, message ->
+            val previousMessage = messages.getOrNull(index - 1)
+            if (previousMessage != null && Iso8601.parseDay(timestamp = message.creationDate.time) != Iso8601.parseDay(timestamp = previousMessage.creationDate.time)) {
+                items.add(LazyColumnItem.DayHeader(Iso8601.parseDay(ContextRetainer.context, timestamp = previousMessage.creationDate.time)))
+            }
+            items.add(LazyColumnItem.Message(message, Iso8601.parseTime(message.creationDate.time)))
         }
+        items
     }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     override val actions = chat.flatMapLatest { it.actions }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = setOf())
 
     override val participants = chat.flatMapLatest { it.participants }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
-
-    override fun markAsRead(message: MessageCompose) {
-        val msg = message.message
-        if (msg as? OtherMessage == null || msg.state.value is Message.State.Read) return
-        msg.markAsRead()
+    override fun markAsRead(message: OtherMessage) {
+        if (message.state.value is Message.State.Read) return
+        message.markAsRead()
+        viewModelScope.launch {
+            _readMessages.value = _readMessages.value + message
+        }
     }
 
     override fun setChat(userId: String): ChatUI? {
@@ -110,11 +118,11 @@ open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
     }
 }
 
-data class MessageCompose(
-    val message: Message,
-    val parsedDay: String,
-    val parsedTime: String
-)
+sealed class LazyColumnItem(val id: String) {
+    data class DayHeader(val timestamp: String): LazyColumnItem(timestamp.hashCode().toString())
+    data class UnreadHeader(val unreadCount: Int): LazyColumnItem(UUID.randomUUID().toString())
+    data class Message(val message: com.kaleyra.collaboration_suite.chatbox.Message, val time: String): LazyColumnItem(message.id)
+}
 
 interface IChatViewModel {
 
@@ -130,7 +138,7 @@ interface IChatViewModel {
 
     val chatBoxState: SharedFlow<ChatBox.State>
 
-    val messages: SharedFlow<List<MessageCompose>>
+    val messages: SharedFlow<List<LazyColumnItem>>
 
     val actions: SharedFlow<Set<ChatUI.Action>>
 
@@ -138,7 +146,7 @@ interface IChatViewModel {
 
     fun setChat(userId: String): ChatUI?
 
-    fun markAsRead(message: MessageCompose)
+    fun markAsRead(message: OtherMessage)
 
     fun sendMessage(text: String)
 

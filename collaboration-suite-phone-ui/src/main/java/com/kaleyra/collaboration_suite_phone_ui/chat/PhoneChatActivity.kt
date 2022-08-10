@@ -27,7 +27,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -75,7 +74,7 @@ import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.IChatViewModel
-import com.kaleyra.collaboration_suite_core_ui.MessageCompose
+import com.kaleyra.collaboration_suite_core_ui.LazyColumnItem
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
@@ -154,7 +153,7 @@ fun ChatScreen(
 
         Box(Modifier.weight(1f)) {
             Messages(
-                messages = viewModel.messages.collectAsState(initial = listOf()).value,
+                items = viewModel.messages.collectAsState(initial = listOf()).value,
                 onFetch = { viewModel.fetchMessages() },
                 scrollState = scrollState,
                 modifier = Modifier.fillMaxSize()
@@ -220,7 +219,7 @@ fun ScrollToBottomFab(unreadMessagesCounter: Int, scrollState: LazyListState) {
 
 @Composable
 fun Messages(
-    messages: List<MessageCompose>,
+    items: List<LazyColumnItem>,
     onFetch: () -> Unit,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
@@ -255,10 +254,11 @@ fun Messages(
             .launchIn(this)
     }
 
-    LaunchedEffect(messages) {
-        snapshotFlow { messages }
-            .onEach {
-                it
+    LaunchedEffect(items) {
+        snapshotFlow { items }
+            .onEach { items ->
+                items
+                    .filterIsInstance<LazyColumnItem.Message>()
                     .filter { it.message is OtherMessage && it.message.state.value is Message.State.Received }
                     .forEach {
                         (it.message as OtherMessage).markAsRead()
@@ -273,26 +273,28 @@ fun Messages(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier.testTag("lazyColumnMessages")
     ) {
-        itemsIndexed(messages, key = { _, msg -> msg.message.id }) { index, msg ->
-            Message(
-                msg,
-                modifier = Modifier
-                    .fillMaxWidth()
+        items(items, key = { it.id }, contentType = { it::class.java }) { item ->
+            when (item) {
+                is LazyColumnItem.Message -> Message(
+                    item,
+                    modifier = Modifier
+                        .fillMaxWidth()
 //                        .animateItemPlacement()
-                    .testTag("message"),
-                halfScreenDp = halfScreenDp
-            )
-
-            val nextMessage = messages.getOrNull(index + 1)
-            if (nextMessage != null && nextMessage.parsedDay.hashCode() != msg.parsedDay.hashCode()) {
-                Header(
-                    msg.parsedDay,
+                        .testTag("message"),
+                    halfScreenDp = halfScreenDp
+                )
+                is LazyColumnItem.DayHeader -> Header(
+                    item.timestamp,
                     Modifier
                         .fillMaxWidth()
 //                                .animateItemPlacement()
                         .padding(bottom = 8.dp)
                 )
+                is LazyColumnItem.UnreadHeader -> Unit
             }
+
+//            if (nextMessage != null && message.message.state.value is Message.State.Received && nextMessage.message.state.value is Message.State.Read)
+//                Text("$index messaggi non letti")
         }
     }
 }
@@ -319,17 +321,17 @@ fun Header(timestamp: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Message(message: MessageCompose, halfScreenDp: Int, modifier: Modifier = Modifier) {
-    val msg = message.message
+fun Message(messageItem: LazyColumnItem.Message, halfScreenDp: Int, modifier: Modifier = Modifier) {
+    val message = messageItem.message
     Row(
         modifier = modifier,
-        horizontalArrangement = if (msg !is OtherMessage) Arrangement.End else Arrangement.Start
+        horizontalArrangement = if (message !is OtherMessage) Arrangement.End else Arrangement.Start
     ) {
         Bubble(
-            isMyMessage = msg !is OtherMessage,
-            content = (msg.content as? Message.Content.Text)?.message ?: "",
-            time = message.parsedTime,
-            state = msg.state.collectAsState().value,
+            isMyMessage = message !is OtherMessage,
+            content = (message.content as? Message.Content.Text)?.message ?: "",
+            time = messageItem.time,
+            state = message.state.collectAsState().value,
             halfScreenDp = halfScreenDp
         )
     }
