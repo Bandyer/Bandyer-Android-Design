@@ -9,7 +9,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +26,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -167,7 +168,10 @@ fun ChatScreen(
                 enter = scaleIn(),
                 exit = scaleOut()
             ) {
-//                ScrollToBottomFab(, scrollState)
+                ScrollToBottomFab(
+                    viewModel.unreadMessagesCounter.collectAsState(0).value,
+                    scrollState
+                )
             }
         }
 
@@ -196,19 +200,6 @@ fun ChatScreen(
 fun ScrollToBottomFab(unreadMessagesCounter: Int, scrollState: LazyListState) {
     val scope = rememberCoroutineScope()
 
-//    LaunchedEffect(scrollState.firstVisibleItemIndex, unreadMessagesCounter) {
-//        var counter = 0
-//        snapshotFlow { scrollState.firstVisibleItemIndex }.combine(snapshotFlow { unreadMessagesCounter }) { firstVisibleItemIndex, unreadMessagesCounter ->
-//            if (unreadMessagesCounter != -1 && firstVisibleItemIndex > unreadMessagesCounter) counter = unreadMessagesCounter
-//            else {
-//                if (counter > 0) counter -= 1
-//            }
-//            counter
-//        }.onEach {
-//            Log.e("PhoneChatActivity", "$it")
-//        }.launchIn(this)
-//    }
-
     FloatingActionButton(
         modifier = Modifier.size(40.dp),
         onClick = {
@@ -218,7 +209,7 @@ fun ScrollToBottomFab(unreadMessagesCounter: Int, scrollState: LazyListState) {
         }
     ) {
         Row {
-//            Text(if(scrollState.firstVisibleItemIndex > unreadMessagesCounter) "$unreadMessagesCounter" else "${scrollState.firstVisibleItemIndex}")
+            if (unreadMessagesCounter > 0) Text("$unreadMessagesCounter")
             Icon(
                 imageVector = Icons.Filled.ArrowDropDown,
                 contentDescription = null
@@ -282,33 +273,24 @@ fun Messages(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier.testTag("lazyColumnMessages")
     ) {
-        for (index in messages.indices) {
-            val message = messages[index]
-            val previousMessage = messages.getOrNull(index - 1)
-
-            if (previousMessage != null) {
-                val previousTimeHash = previousMessage.parsedDay.hashCode()
-                if (previousTimeHash != message.parsedDay.hashCode()) {
-                    item(key = previousTimeHash) {
-                        Header(
-                            previousMessage.parsedDay,
-                            Modifier
-                                .fillMaxWidth()
-//                                .animateItemPlacement()
-                                .padding(vertical = 8.dp)
-                        )
-                    }
-                }
-            }
-
-            item(key = message.message.id) {
-                Message(
-                    message,
-                    modifier = Modifier
-                        .fillMaxWidth()
+        itemsIndexed(messages, key = { _, msg -> msg.message.id }) { index, msg ->
+            Message(
+                msg,
+                modifier = Modifier
+                    .fillMaxWidth()
 //                        .animateItemPlacement()
-                        .testTag("message"),
-                    halfScreenDp = halfScreenDp
+                    .testTag("message"),
+                halfScreenDp = halfScreenDp
+            )
+
+            val nextMessage = messages.getOrNull(index + 1)
+            if (nextMessage != null && nextMessage.parsedDay.hashCode() != msg.parsedDay.hashCode()) {
+                Header(
+                    msg.parsedDay,
+                    Modifier
+                        .fillMaxWidth()
+//                                .animateItemPlacement()
+                        .padding(bottom = 8.dp)
                 )
             }
         }
