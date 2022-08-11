@@ -7,7 +7,6 @@ import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.PhoneBox
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
@@ -15,20 +14,22 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.launch
 import java.util.*
 
-open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
+open class ChatViewModel : CollaborationViewModel(), IChatViewModel {
 
     companion object {
         private val FETCH_COUNT = 50
@@ -66,17 +67,60 @@ open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
 
     override val chatBoxState = chatBox.flatMapLatest { it.state }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
-    override val messages = chat.flatMapLatest { it.messages }.map { it.list }.map { messages ->
-        val items = mutableListOf<LazyColumnItem>()
-        messages.forEachIndexed { index, message ->
-            val previousMessage = messages.getOrNull(index - 1)
-            if (previousMessage != null && Iso8601.parseDay(timestamp = message.creationDate.time) != Iso8601.parseDay(timestamp = previousMessage.creationDate.time)) {
-                items.add(LazyColumnItem.DayHeader(Iso8601.parseDay(ContextRetainer.context, timestamp = previousMessage.creationDate.time)))
+    val unreadMessageId =
+        chat.flatMapLatest { it.messages }.map { it.other }.take(1).map { messages ->
+            messages.forEachIndexed { index, message ->
+                val previousMessage = messages.getOrNull(index - 1) ?: return@forEachIndexed
+                if (previousMessage.state.value is Message.State.Received && message.state.value is Message.State.Read)
+                    return@map previousMessage.id
             }
-            items.add(LazyColumnItem.Message(message, Iso8601.parseTime(message.creationDate.time)))
+            return@map null
         }
-        items
-    }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+
+    val messageList = chat.flatMapLatest { it.messages }.map { it.list }
+
+    val messageSent = MutableStateFlow(false)
+
+    // TODO Fare stato della ui in cui metto questo in uno stato
+    override val lazyColumnItems =
+        combine(messageList, unreadMessageId) { messages, unreadMessageId ->
+            val items = mutableListOf<LazyColumnItem>()
+            messages.forEachIndexed { index, message ->
+                val previousMessage = messages.getOrNull(index - 1) ?: kotlin.run {
+                    items.add(
+                        LazyColumnItem.Message(
+                            message,
+                            Iso8601.parseTime(message.creationDate.time)
+                        )
+                    )
+                    return@forEachIndexed
+                }
+
+                if (!messageSent.value && previousMessage.id == unreadMessageId)
+                    items.add(LazyColumnItem.UnreadHeader(index))
+
+                if (Iso8601.parseDay(timestamp = message.creationDate.time) != Iso8601.parseDay(
+                        timestamp = previousMessage.creationDate.time
+                    )
+                )
+                    items.add(
+                        LazyColumnItem.DayHeader(
+                            Iso8601.parseDay(
+                                ContextRetainer.context,
+                                timestamp = previousMessage.creationDate.time
+                            )
+                        )
+                    )
+
+                items.add(
+                    LazyColumnItem.Message(
+                        message,
+                        Iso8601.parseTime(message.creationDate.time)
+                    )
+                )
+            }
+            items
+        }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     override val actions = chat.flatMapLatest { it.actions }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = setOf())
 
@@ -101,6 +145,7 @@ open class ChatViewModel: CollaborationViewModel(), IChatViewModel {
         val chat = chat.replayCache.firstOrNull() ?: return
         val message = chat.create(Message.Content.Text(text))
         chat.add(message)
+        messageSent.value = true
     }
 
     override fun fetchMessages() {
@@ -138,7 +183,7 @@ interface IChatViewModel {
 
     val chatBoxState: SharedFlow<ChatBox.State>
 
-    val messages: SharedFlow<List<LazyColumnItem>>
+    val lazyColumnItems: SharedFlow<List<LazyColumnItem>>
 
     val actions: SharedFlow<Set<ChatUI.Action>>
 

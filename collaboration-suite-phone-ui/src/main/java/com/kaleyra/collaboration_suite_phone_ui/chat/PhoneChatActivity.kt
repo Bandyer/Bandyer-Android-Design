@@ -153,7 +153,7 @@ fun ChatScreen(
 
         Box(Modifier.weight(1f)) {
             Messages(
-                items = viewModel.messages.collectAsState(initial = listOf()).value,
+                items = viewModel.lazyColumnItems.collectAsState(initial = listOf()).value,
                 onFetch = { viewModel.fetchMessages() },
                 scrollState = scrollState,
                 modifier = Modifier.fillMaxSize()
@@ -291,13 +291,8 @@ fun Messages(
 //                                .animateItemPlacement()
                         .padding(bottom = 8.dp)
                 )
-                is LazyColumnItem.UnreadHeader -> Unit
+                is LazyColumnItem.UnreadHeader -> Text("${item.unreadCount} messaggi non letti")
             }
-
-//            if (nextMessage != null && message.message.state.value is Message.State.Received && nextMessage.message.state.value is Message.State.Read)
-//                Text("$index messaggi non letti")
-        }
-    }
         }
     }
 }
