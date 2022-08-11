@@ -155,7 +155,8 @@ fun ChatScreen(
                 items = viewModel.lazyColumnItems.collectAsState(initial = listOf()).value,
                 onFetch = { viewModel.fetchMessages() },
                 scrollState = scrollState,
-                removeMessage = { viewModel.removeUnreadMessage(it) },
+                onMessageItemScrolled = { viewModel.removeUnreadMessage(it) },
+                onNewMessageItems = { viewModel.markAsRead(it) },
                 modifier = Modifier.fillMaxSize()
             )
 
@@ -222,10 +223,15 @@ fun Messages(
     items: List<LazyColumnItem>,
     onFetch: () -> Unit,
     scrollState: LazyListState,
-    removeMessage: (String) -> Unit,
+    onMessageItemScrolled: (LazyColumnItem.Message) -> Unit,
+    onNewMessageItems: (List<LazyColumnItem.Message>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-//    val isItemInserted = scrollState.isItemInserted(lastItemId)
+    val firstVisibleItemIndex by remember {
+        derivedStateOf {
+            scrollState.firstVisibleItemIndex
+        }
+    }
     // Do extensions functions on scrollState
     val shouldFetch by remember {
         derivedStateOf {
@@ -242,12 +248,11 @@ fun Messages(
         configuration.screenWidthDp / 2
     }
 
-    LaunchedEffect(scrollState.firstVisibleItemIndex) {
-        snapshotFlow { scrollState.firstVisibleItemIndex }
+    LaunchedEffect(firstVisibleItemIndex) {
+        snapshotFlow { firstVisibleItemIndex }
             .onEach {
-                val item = items.getOrNull(it)
-                if (item is LazyColumnItem.Message)
-                    removeMessage(item.id)
+                val item = items.getOrNull(it) as? LazyColumnItem.Message ?: return@onEach
+                onMessageItemScrolled(item)
             }.launchIn(this)
     }
 
@@ -262,13 +267,8 @@ fun Messages(
     LaunchedEffect(items) {
         snapshotFlow { items }
             .onEach { items ->
-                items
-                    .filterIsInstance<LazyColumnItem.Message>()
-                    .filter { it.message is OtherMessage && it.message.state.value is Message.State.Received }
-                    .forEach {
-                        (it.message as OtherMessage).markAsRead()
-                    }
-                if (scrollState.firstVisibleItemIndex < 2) scrollState.animateScrollToItem(0)
+                onNewMessageItems(items.filterIsInstance<LazyColumnItem.Message>())
+                if (firstVisibleItemIndex < 2) scrollState.animateScrollToItem(0)
             }.launchIn(this)
     }
 
