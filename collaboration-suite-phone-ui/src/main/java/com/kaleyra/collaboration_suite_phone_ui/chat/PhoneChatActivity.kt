@@ -155,7 +155,7 @@ fun ChatScreen(
                 items = viewModel.lazyColumnItems.collectAsState(initial = listOf()).value,
                 onFetch = { viewModel.fetchMessages() },
                 scrollState = scrollState,
-                onMessageItemScrolled = { viewModel.removeUnreadMessage(it) },
+                onMessageItemScrolled = { viewModel.onMessageScrolled(it) },
                 onNewMessageItems = { viewModel.markAsRead(it) },
                 modifier = Modifier.fillMaxSize()
             )
@@ -169,7 +169,7 @@ fun ChatScreen(
                 exit = scaleOut()
             ) {
                 ScrollToBottomFab(
-                    viewModel.unreadMessagesCounter.collectAsState(0).value,
+                    viewModel.unseenMessagesCount.collectAsState(0).value,
                     scrollState
                 )
             }

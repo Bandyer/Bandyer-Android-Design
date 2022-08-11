@@ -105,32 +105,18 @@ open class ChatViewModel : CollaborationViewModel(), IChatViewModel {
             items
         }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
-    private val _unreadMessages = MutableStateFlow<Set<String>>(setOf()).also { flow ->
-        val unreadSet = mutableSetOf<String>()
+    private val _unseenMessages = MutableStateFlow<Set<String>>(setOf()).also { flow ->
         chat
             .flatMapLatest { it.messages }
             .map { it.other }
             .drop(1)
-            .onEach {
-                unreadSet.addAll(it.filter { it.state.value is Message.State.Received }
-                    .map { it.id }.toSet())
-                flow.value = unreadSet.toSet()
+            .onEach { messages ->
+                val receivedMessages = messages.filter { it.state.value is Message.State.Received }.map { it.id }
+                flow.value = flow.value + receivedMessages.toSet()
             }.launchIn(viewModelScope)
     }
 
-    private val _readMessages = MutableStateFlow<Set<String>>(setOf())
-
-    private val _unreadMessagesCounter =
-        MutableSharedFlow<Int>(replay = 1, extraBufferCapacity = 1).also { flow ->
-            combine(_unreadMessages, _readMessages) { unreadMsgs, readMsgs ->
-                val diff = unreadMsgs - readMsgs
-                diff.size
-            }
-                .onEach { flow.emit(it) }
-                .launchIn(viewModelScope)
-        }
-
-    override val unreadMessagesCounter = _unreadMessagesCounter.asSharedFlow()
+    override val unseenMessagesCount = _unseenMessages.map { it.count() }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     override fun markAsRead(items: List<LazyColumnItem.Message>) =
         items.forEach {
@@ -156,10 +142,8 @@ open class ChatViewModel : CollaborationViewModel(), IChatViewModel {
         chat.replayCache.firstOrNull()?.fetch(FETCH_COUNT)
     }
 
-    override fun removeUnreadMessage(messageItem: LazyColumnItem.Message) {
-        viewModelScope.launch {
-            _readMessages.value = _readMessages.value + messageItem.id
-        }
+    override fun onMessageScrolled(messageItem: LazyColumnItem.Message) {
+        _unseenMessages.value = _unseenMessages.value - messageItem.id
     }
 
     override fun call(preferredType: Call.PreferredType) {
@@ -200,7 +184,7 @@ interface IChatViewModel {
 
     val participants: SharedFlow<ChatParticipants>
 
-    val unreadMessagesCounter: SharedFlow<Int>
+    val unseenMessagesCount: SharedFlow<Int>
 
     fun setChat(userId: String): ChatUI?
 
@@ -210,7 +194,7 @@ interface IChatViewModel {
 
     fun fetchMessages()
 
-    fun removeUnreadMessage(messageItem: LazyColumnItem.Message)
+    fun onMessageScrolled(messageItem: LazyColumnItem.Message)
 
     fun call(preferredType: Call.PreferredType)
 }
