@@ -224,7 +224,7 @@ fun Messages(
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
-    val isItemInserted = scrollState.isItemInserted()
+//    val isItemInserted = scrollState.isItemInserted(lastItemId)
     // Do extensions functions on scrollState
     val shouldFetch by remember {
         derivedStateOf {
@@ -263,6 +263,7 @@ fun Messages(
                     .forEach {
                         (it.message as OtherMessage).markAsRead()
                     }
+                if (scrollState.firstVisibleItemIndex < 2) scrollState.animateScrollToItem(0)
             }.launchIn(this)
     }
 
@@ -297,19 +298,8 @@ fun Messages(
 //                Text("$index messaggi non letti")
         }
     }
-}
-
-@Composable
-private fun LazyListState.isItemInserted(): Boolean {
-    var previousItemCount by remember(this) { mutableStateOf(layoutInfo.totalItemsCount) }
-    return remember(this) {
-        derivedStateOf {
-            val totalItemCount = layoutInfo.totalItemsCount
-            (firstVisibleItemIndex < 2 && (totalItemCount - previousItemCount) == 1).also {
-                previousItemCount = totalItemCount
-            }
         }
-    }.value
+    }
 }
 
 @Composable
