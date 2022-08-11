@@ -122,15 +122,47 @@ open class ChatViewModel : CollaborationViewModel(), IChatViewModel {
             items
         }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
-    override val actions = chat.flatMapLatest { it.actions }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = setOf())
+    private val unreadMessages = MutableStateFlow<Set<String>>(setOf()).also { flow ->
+        val unreadSet = mutableSetOf<String>()
+        chat
+            .flatMapLatest { it.messages }
+            .map { it.other }
+            .drop(1)
+            .onEach {
+                unreadSet.addAll(it.filter { it.state.value is Message.State.Received }
+                    .map { it.id }.toSet())
+                flow.value = unreadSet.toSet()
+            }.launchIn(viewModelScope)
+    }
 
-    override val participants = chat.flatMapLatest { it.participants }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    private val _readMessages = MutableStateFlow<Set<String>>(setOf())
+
+    private val _unreadMessagesCounter =
+        MutableSharedFlow<Int>(replay = 1, extraBufferCapacity = 1).also { flow ->
+            combine(unreadMessages, _readMessages) { unreadMsgs, readMsgs ->
+                val diff = unreadMsgs - readMsgs
+                diff.size
+            }
+                .onEach { flow.emit(it) }
+                .launchIn(viewModelScope)
+        }
+
+    override val unreadMessagesCounter = _unreadMessagesCounter.asSharedFlow()
+
+    override val actions = chat.flatMapLatest { it.actions }
+        .stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = setOf())
+
+    override val participants = chat.flatMapLatest { it.participants }
+        .shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     override fun markAsRead(message: OtherMessage) {
         if (message.state.value is Message.State.Read) return
         message.markAsRead()
+    }
+
+    override fun removeUnreadMessage(messageId: String) {
         viewModelScope.launch {
-            _readMessages.value = _readMessages.value + message
+            _readMessages.value = _readMessages.value + messageId
         }
     }
 
@@ -189,6 +221,8 @@ interface IChatViewModel {
 
     val participants: SharedFlow<ChatParticipants>
 
+    val unreadMessagesCounter: SharedFlow<Int>
+
     fun setChat(userId: String): ChatUI?
 
     fun markAsRead(message: OtherMessage)
@@ -198,4 +232,5 @@ interface IChatViewModel {
     fun fetchMessages()
 
     fun call(preferredType: Call.PreferredType)
+    fun removeUnreadMessage(messageId: String)
 }

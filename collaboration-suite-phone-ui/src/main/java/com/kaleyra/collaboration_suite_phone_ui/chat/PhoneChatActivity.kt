@@ -156,6 +156,7 @@ fun ChatScreen(
                 items = viewModel.lazyColumnItems.collectAsState(initial = listOf()).value,
                 onFetch = { viewModel.fetchMessages() },
                 scrollState = scrollState,
+                removeMessage = { viewModel.removeUnreadMessage(it) },
                 modifier = Modifier.fillMaxSize()
             )
 
@@ -222,6 +223,7 @@ fun Messages(
     items: List<LazyColumnItem>,
     onFetch: () -> Unit,
     scrollState: LazyListState,
+    removeMessage: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
 //    val isItemInserted = scrollState.isItemInserted(lastItemId)
@@ -241,11 +243,15 @@ fun Messages(
         configuration.screenWidthDp / 2
     }
 
-    LaunchedEffect(isItemInserted) {
-        snapshotFlow { isItemInserted }
-            .onEach { scrollState.animateScrollToItem(0) }
-            .launchIn(this)
+    LaunchedEffect(scrollState.firstVisibleItemIndex) {
+        snapshotFlow { scrollState.firstVisibleItemIndex }
+            .onEach {
+                val item = items.getOrNull(it)
+                if (item is LazyColumnItem.Message)
+                    removeMessage(item.id)
+            }.launchIn(this)
     }
+
 
     LaunchedEffect(shouldFetch) {
         snapshotFlow { shouldFetch }
