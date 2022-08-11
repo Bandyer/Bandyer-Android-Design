@@ -48,10 +48,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -61,6 +59,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
@@ -290,23 +289,36 @@ fun Messages(
                         .testTag("message"),
                     halfScreenDp = halfScreenDp
                 )
-                is LazyColumnItem.DayHeader -> Header(
+                is LazyColumnItem.DayHeader -> DayHeader(
                     item.timestamp,
                     Modifier
                         .fillMaxWidth()
 //                                .animateItemPlacement()
                         .padding(bottom = 8.dp)
                 )
-                is LazyColumnItem.UnreadHeader -> Text("${item.unreadCount} messaggi non letti")
+                is LazyColumnItem.UnreadHeader -> UnreadHeader(
+                    item.unreadCount,
+                    Modifier
+                        .fillMaxWidth()
+//                                .animateItemPlacement()
+                        .padding(bottom = 8.dp)
+                )
             }
         }
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun Header(timestamp: String, modifier: Modifier = Modifier) {
+fun UnreadHeader(count: Int, modifier: Modifier = Modifier) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
-//        kaleyra_chatTimestampStyle
+        Text(text = pluralStringResource(id = R.plurals.kaleyra_chat_unread_messages, count, count), fontSize = 12.sp, style = MaterialTheme.typography.body2)
+    }
+}
+
+@Composable
+fun DayHeader(timestamp: String, modifier: Modifier = Modifier) {
+    Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
         Text(text = timestamp, fontSize = 12.sp, style = MaterialTheme.typography.body2)
     }
 }

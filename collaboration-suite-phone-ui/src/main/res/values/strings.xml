@@ -63,6 +63,10 @@
     <string name="kaleyra_chat_msg_status_pending">Message pending</string>
     <string name="kaleyra_chat_msg_status_sent">Message sent</string>
     <string name="kaleyra_chat_msg_status_seen">Message seen</string>
+    <plurals name="kaleyra_chat_unread_messages">
+        <item quantity="one">%d unread message</item>
+        <item quantity="other">%d unread messages</item>
+    </plurals>
 
     <!-- Call -->
     <string name="kaleyra_call_status_dialing">Dialing &#8230;</string>
