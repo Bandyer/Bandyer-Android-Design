@@ -428,47 +428,48 @@ fun Bubble(
 fun ChatTopAppBar(
     info: ChatInfo,
     modifier: Modifier = Modifier,
-    navigationIcon: @Composable (() -> Unit),
+    navigationIcon: @Composable RowScope.() -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
         modifier = modifier,
         backgroundColor = MaterialTheme.colors.primary,
     ) {
-        Row(Modifier.padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
-            CompositionLocalProvider(
-                LocalContentAlpha provides ContentAlpha.high,
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
+            Row(
+                Modifier.padding(4.dp),
+                verticalAlignment = Alignment.CenterVertically,
                 content = navigationIcon
             )
-        }
 
-        Row(
-            Modifier
-                .fillMaxHeight()
-                .weight(1f),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AndroidView(
-                modifier = Modifier.fillMaxWidth(),
-                factory = {
-                    val themeResId =
-                        it.theme.getAttributeResourceId(R.attr.kaleyra_chatInfoWidgetStyle)
-                    KaleyraChatInfoWidget(ContextThemeWrapper(it, themeResId))
-                },
-                update = {
-                    it.contactNameView!!.text = info.title
-                    it.contactNameView!!.visibility = View.VISIBLE
-                    if (info.image != Uri.EMPTY) it.contactImageView!!.setImageUri(info.image)
-                }
+            Row(
+                Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AndroidView(
+                    modifier = Modifier.fillMaxWidth(),
+                    factory = {
+                        val themeResId =
+                            it.theme.getAttributeResourceId(R.attr.kaleyra_chatInfoWidgetStyle)
+                        KaleyraChatInfoWidget(ContextThemeWrapper(it, themeResId))
+                    },
+                    update = {
+                        it.contactNameView!!.text = info.title
+                        it.contactNameView!!.visibility = View.VISIBLE
+                        if (info.image != Uri.EMPTY) it.contactImageView!!.setImageUri(info.image)
+                    }
+                )
+            }
+
+            Row(
+                Modifier.fillMaxHeight(),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+                content = actions
             )
         }
-
-        Row(
-            Modifier.fillMaxHeight(),
-            horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.CenterVertically,
-            content = actions
-        )
     }
 }
 
