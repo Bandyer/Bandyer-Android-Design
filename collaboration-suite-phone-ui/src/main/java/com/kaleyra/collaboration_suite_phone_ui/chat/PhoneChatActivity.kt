@@ -11,7 +11,21 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.paddingFromBaseline
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -30,7 +44,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -52,10 +65,7 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -183,7 +193,6 @@ fun ChatScreen(
 
                     override fun onSendClicked(text: String) {
                         viewModel.sendMessage(text)
-                        scope.launch { scrollState.scrollToItem(0) }
                     }
                 }
             }
@@ -273,8 +282,12 @@ fun Messages(
     LaunchedEffect(items) {
         snapshotFlow { items }
             .onEach { items ->
-                onNewMessageItems(items.filterIsInstance<LazyColumnItem.Message>())
-                if (firstVisibleItemIndex < 2) scrollState.animateScrollToItem(0)
+                val messageItems = items.filterIsInstance<LazyColumnItem.Message>()
+                onNewMessageItems(messageItems)
+                when {
+                    firstVisibleItemIndex < 3 -> scrollState.animateScrollToItem(0)
+                    messageItems.firstOrNull()?.message !is OtherMessage -> scrollState.scrollToItem(0)
+                }
             }.launchIn(this)
     }
 
@@ -318,7 +331,11 @@ fun Messages(
 @Composable
 fun UnreadHeader(count: Int, modifier: Modifier = Modifier) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
-        Text(text = pluralStringResource(id = R.plurals.kaleyra_chat_unread_messages, count, count), fontSize = 12.sp, style = MaterialTheme.typography.body2)
+        Text(
+            text = pluralStringResource(id = R.plurals.kaleyra_chat_unread_messages, count, count),
+            fontSize = 12.sp,
+            style = MaterialTheme.typography.body2
+        )
     }
 }
 
