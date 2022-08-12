@@ -72,11 +72,11 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
-import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallType
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
-import com.kaleyra.collaboration_suite_core_ui.IChatViewModel
+import com.kaleyra.collaboration_suite_core_ui.ComposeChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.LazyColumnItem
+import com.kaleyra.collaboration_suite_core_ui.TopBarAction
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
@@ -105,7 +105,7 @@ class PhoneChatActivity : ChatActivity() {
 @Composable
 fun ChatScreen(
     onBackPressed: () -> Unit,
-    viewModel: IChatViewModel
+    viewModel: ComposeChatViewModel
 ) {
     val scope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
@@ -127,6 +127,7 @@ fun ChatScreen(
             navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
             actions = {
                 Actions(
+                    viewModel.topBarActions.collectAsState(initial = setOf()).value,
                     onAudioClick = { viewModel.call(CallType.Audio) },
                     onAudioUpgradableClick = { viewModel.call(CallType.AudioUpgradable) },
                     onVideoClick = { viewModel.call(CallType.Video) })
@@ -493,25 +494,42 @@ fun NavigationIcon(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
 
 @Composable
 fun Actions(
+    actions: Set<TopBarAction>,
     onAudioClick: () -> Unit,
     onAudioUpgradableClick: () -> Unit,
     onVideoClick: () -> Unit
 ) {
+    if (actions.any { it is TopBarAction.AudioCall })
+        AudioCallAction(onClick = onAudioClick)
+    if (actions.any { it is TopBarAction.AudioUpgradableCall })
+        AudioUpgradableCallAction(onClick = onAudioUpgradableClick)
+    if (actions.any { it is TopBarAction.VideoCall })
+        VideoCallAction(onClick = onVideoClick)
+}
+
+@Composable
+fun AudioCallAction(onClick: () -> Unit) {
     MenuIcon(
         painter = painterResource(R.drawable.ic_kaleyra_audio_call),
-        onClick = onAudioClick,
+        onClick = onClick,
         contentDescription = stringResource(id = R.string.kaleyra_start_audio_call)
     )
+}
 
+@Composable
+fun AudioUpgradableCallAction(onClick: () -> Unit) {
     MenuIcon(
         painter = painterResource(R.drawable.ic_kaleyra_audio_upgradable_call),
-        onClick = onAudioUpgradableClick,
+        onClick = onClick,
         contentDescription = stringResource(id = R.string.kaleyra_start_audio_upgradable_call)
     )
+}
 
+@Composable
+fun VideoCallAction(onClick: () -> Unit) {
     MenuIcon(
         painter = painterResource(R.drawable.ic_kaleyra_video_call),
-        onClick = onVideoClick,
+        onClick = onClick,
         contentDescription = stringResource(id = R.string.kaleyra_start_video_call)
     )
 }

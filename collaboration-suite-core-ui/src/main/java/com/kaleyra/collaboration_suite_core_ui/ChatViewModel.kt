@@ -2,7 +2,6 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.User
-import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
@@ -30,7 +29,7 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
-open class ChatViewModel : CollaborationViewModel(), IChatViewModel {
+open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
 
     companion object {
         private const val FETCH_COUNT = 50
@@ -57,20 +56,20 @@ open class ChatViewModel : CollaborationViewModel(), IChatViewModel {
     }
 
     // Call
-    final override val phoneBox = _phoneBox.asSharedFlow()
+    val phoneBox = _phoneBox.asSharedFlow()
 
-    final override val call = phoneBox.flatMapLatest { it.call }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    val call = phoneBox.flatMapLatest { it.call }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     // Chat
-    final override val chatBox = _chatBox.asSharedFlow()
+    val chatBox = _chatBox.asSharedFlow()
 
-    final override val chat = _chat.asSharedFlow()
+    val chat = _chat.asSharedFlow()
 
-    final override val chatBoxState = chatBox.flatMapLatest { it.state }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    val chatBoxState = chatBox.flatMapLatest { it.state }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
-    final override val messages = chat.flatMapLatest { it.messages }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    val messages = chat.flatMapLatest { it.messages }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
-    final override val actions = chat.flatMapLatest { it.actions }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = setOf())
+    val actions = chat.flatMapLatest { it.actions }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = setOf())
 
     final override val participants = chat.flatMapLatest { it.participants }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
@@ -117,6 +116,17 @@ open class ChatViewModel : CollaborationViewModel(), IChatViewModel {
 
     override val unseenMessagesCount = _unseenMessages.map { it.count() }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
+    override val topBarActions = actions.map { actions ->
+        mutableSetOf<TopBarAction>().apply {
+            if (actions.any { it is ChatUI.Action.CreateCall && !it.preferredType.hasVideo() })
+                add(TopBarAction.AudioCall)
+            if (actions.any { it is ChatUI.Action.CreateCall && !it.preferredType.isVideoEnabled() })
+                add(TopBarAction.AudioUpgradableCall)
+            if (actions.any { it is ChatUI.Action.CreateCall && it.preferredType.isVideoEnabled() })
+                add(TopBarAction.VideoCall)
+        }
+    }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+
     override fun markAsRead(items: List<LazyColumnItem.Message>) =
         items.forEach {
             val otherMsg = it.message as? OtherMessage ?: return@forEach
@@ -160,36 +170,30 @@ open class ChatViewModel : CollaborationViewModel(), IChatViewModel {
 }
 
 sealed class LazyColumnItem(val id: String) {
-    data class DayHeader(val timestamp: String): LazyColumnItem(timestamp.hashCode().toString())
-    data class UnreadHeader(val unreadCount: Int): LazyColumnItem(UUID.randomUUID().toString())
-    data class Message(val message: com.kaleyra.collaboration_suite.chatbox.Message, val time: String): LazyColumnItem(message.id)
+    data class DayHeader(val timestamp: String) : LazyColumnItem(timestamp.hashCode().toString())
+    data class UnreadHeader(val unreadCount: Int) : LazyColumnItem(UUID.randomUUID().toString())
+    data class Message(val message: com.kaleyra.collaboration_suite.chatbox.Message, val time: String) : LazyColumnItem(message.id)
 }
 
 sealed class CallType(val preferredType: Call.PreferredType) {
-    object Audio: CallType(Call.PreferredType(video = null))
-    object AudioUpgradable: CallType(Call.PreferredType(video = Call.Video.Disabled))
-    object Video: CallType(Call.PreferredType())
+    object Audio : CallType(Call.PreferredType(video = null))
+    object AudioUpgradable : CallType(Call.PreferredType(video = Call.Video.Disabled))
+    object Video : CallType(Call.PreferredType())
 }
 
-interface IChatViewModel {
+sealed class TopBarAction {
+    object AudioCall : TopBarAction()
+    object AudioUpgradableCall: TopBarAction()
+    object VideoCall : TopBarAction()
+}
+
+interface ComposeChatViewModel {
 
     val usersDescription: UsersDescription
 
-    val phoneBox: SharedFlow<PhoneBoxUI>
-
-    val call: SharedFlow<CallUI>
-
-    val chatBox: SharedFlow<ChatBoxUI>
-
-    val chat: SharedFlow<ChatUI>
-
-    val chatBoxState: SharedFlow<ChatBox.State>
-
-    val messages: SharedFlow<MessagesUI>
-
     val lazyColumnItems: SharedFlow<List<LazyColumnItem>>
 
-    val actions: SharedFlow<Set<ChatUI.Action>>
+    val topBarActions: SharedFlow<Set<TopBarAction>>
 
     val participants: SharedFlow<ChatParticipants>
 
