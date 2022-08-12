@@ -161,8 +161,11 @@ fun ChatScreen(
                 exit = scaleOut()
             ) {
                 ScrollToBottomFab(
-                    viewModel.unseenMessagesCount.collectAsState(0).value,
-                    scrollState
+                    unseenMessagesCounter = viewModel.unseenMessagesCount.collectAsState(0).value,
+                    onClick = {
+                        scope.launch { scrollState.scrollToItem(0) }
+                        viewModel.onAllMessagesScrolled()
+                    }
                 )
             }
         }
@@ -191,19 +194,13 @@ fun ChatScreen(
 @Preview
 @Composable
 fun FabPreview() {
-    ScrollToBottomFab(unreadMessagesCounter = 5, scrollState = LazyListState())
+    ScrollToBottomFab(unseenMessagesCounter = 5, onClick = { })
 }
 
 @Composable
-fun ScrollToBottomFab(unreadMessagesCounter: Int, scrollState: LazyListState) {
-    val scope = rememberCoroutineScope()
-
+fun ScrollToBottomFab(unseenMessagesCounter: Int, onClick: () -> Unit) {
     FloatingActionButton(
-        onClick = {
-            scope.launch {
-                scrollState.scrollToItem(0)
-            }
-        },
+        onClick = onClick,
         backgroundColor = MaterialTheme.colors.primary,
         modifier = Modifier.defaultMinSize(32.dp, 32.dp)
     ) {
@@ -211,10 +208,12 @@ fun ScrollToBottomFab(unreadMessagesCounter: Int, scrollState: LazyListState) {
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            if (unreadMessagesCounter > 0)
+            if (unseenMessagesCounter > 0)
                 Text(
-                    text = "$unreadMessagesCounter",
-                    modifier = Modifier.paddingFromBaseline(bottom = 6.dp).padding(end = 4.dp)
+                    text = "$unseenMessagesCounter",
+                    modifier = Modifier
+                        .paddingFromBaseline(bottom = 6.dp)
+                        .padding(end = 4.dp)
                 )
             Icon(
                 painter = painterResource(id = R.drawable.ic_kaleyra_double_arrow_down),

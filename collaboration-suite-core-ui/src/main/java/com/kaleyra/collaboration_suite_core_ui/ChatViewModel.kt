@@ -146,6 +146,10 @@ open class ChatViewModel : CollaborationViewModel(), IChatViewModel {
         _unseenMessages.value = _unseenMessages.value - messageItem.id
     }
 
+    override fun onAllMessagesScrolled() {
+        _unseenMessages.value = setOf()
+    }
+
     override fun call(preferredType: Call.PreferredType) {
         val phoneBox = phoneBox.replayCache.firstOrNull() ?: return
         val chat = chat.replayCache.firstOrNull() ?: return
@@ -195,6 +199,8 @@ interface IChatViewModel {
     fun fetchMessages()
 
     fun onMessageScrolled(messageItem: LazyColumnItem.Message)
+
+    fun onAllMessagesScrolled()
 
     fun call(preferredType: Call.PreferredType)
 }
