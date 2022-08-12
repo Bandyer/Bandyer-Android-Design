@@ -27,18 +27,19 @@ import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
 import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.chatbox.Messages
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.ChatBoxUI
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.IChatViewModel
-import com.kaleyra.collaboration_suite_core_ui.MessageCompose
+import com.kaleyra.collaboration_suite_core_ui.LazyColumnItem
+import com.kaleyra.collaboration_suite_core_ui.MessagesUI
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_phone_ui.chat.ChatScreen
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -104,13 +105,12 @@ class MockChatViewModel : ViewModel(), IChatViewModel {
 
     override val chatBoxState: SharedFlow<ChatBox.State> = MutableSharedFlow()
 
-    private val _messages: MutableSharedFlow<List<Message>> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
-    override val messages: SharedFlow<List<MessageCompose>> = _messages.map { messages ->
-        messages.map {
-            MessageCompose(
-                it,
-                Iso8601.parseDay(ContextRetainer.context, it.creationDate.time)
-            )
+    private val _messages: MutableSharedFlow<MessagesUI> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
+    override val messages: SharedFlow<MessagesUI> = _messages
+
+    override val lazyColumnItems: SharedFlow<List<LazyColumnItem>> = messages.map { it.list }.map {
+        it.map {
+            LazyColumnItem.Message(it, Iso8601.parseTime(it.creationDate.time))
         }
     }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
@@ -125,17 +125,28 @@ class MockChatViewModel : ViewModel(), IChatViewModel {
                 override fun creator(): ChatParticipant? = null
             })
         }
+    override val unseenMessagesCount: SharedFlow<Int> = MutableSharedFlow()
 
     override fun setChat(userId: String): ChatUI? = null
+
+    override fun markAsRead(items: List<LazyColumnItem.Message>) = Unit
 
     override fun sendMessage(text: String) = Unit
 
     override fun fetchMessages() {
         viewModelScope.launch {
-            val currentMessages = _messages.replayCache.firstOrNull() ?: listOf()
-            _messages.emit(currentMessages + (0..50).map { if (it % 2 == 0) newMessage() else newOtherMessage() })
+            val currentMessages = _messages.replayCache.firstOrNull()?.list ?: listOf()
+            val newMessages = currentMessages + (0..50).map { if (it % 2 == 0) newMessage() else newOtherMessage() }
+            val messages = object : Messages {
+                override val list: List<Message> = newMessages
+                override val my: List<Message> = newMessages.filter { it !is OtherMessage }
+                override val other: List<OtherMessage> = newMessages.filterIsInstance<OtherMessage>()
+            }
+            _messages.emit(MessagesUI(messages, ChatActivity::class.java))
         }
     }
+
+    override fun onMessageScrolled(messageItem: LazyColumnItem.Message) = Unit
 
     override fun call(preferredType: Call.PreferredType) = Unit
 
