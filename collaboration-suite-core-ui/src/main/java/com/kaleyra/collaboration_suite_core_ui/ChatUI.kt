@@ -53,6 +53,7 @@ class ChatUI(
                 setOf(
                     ShowParticipants,
                     CreateCall(preferredType = Call.PreferredType(video = Call.Video.Disabled)),
+                    CreateCall(preferredType = Call.PreferredType(video = null)),
                     CreateCall()
                 )
             }
