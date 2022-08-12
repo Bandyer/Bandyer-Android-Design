@@ -74,6 +74,7 @@ import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.CallType
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.ChatInfo
+import com.kaleyra.collaboration_suite_core_ui.ChatSubtitle
 import com.kaleyra.collaboration_suite_core_ui.ComposeChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.LazyColumnItem
 import com.kaleyra.collaboration_suite_core_ui.TopBarAction
@@ -122,10 +123,11 @@ fun ChatScreen(
             }) {
         ChatTopAppBar(
             info = viewModel.chatInfo.collectAsState(initial = ChatInfo.Empty).value,
+            subtitle = viewModel.chatSubtitle.collectAsState(initial = ChatSubtitle.ChatState.Offline).value,
             navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
             actions = {
                 Actions(
-                    viewModel.topBarActions.collectAsState(initial = setOf()).value,
+                    actions = viewModel.topBarActions.collectAsState(initial = setOf()).value,
                     onAudioClick = { viewModel.call(CallType.Audio) },
                     onAudioUpgradableClick = { viewModel.call(CallType.AudioUpgradable) },
                     onVideoClick = { viewModel.call(CallType.Video) })
@@ -427,6 +429,7 @@ fun Bubble(
 @Composable
 fun ChatTopAppBar(
     info: ChatInfo,
+    subtitle: ChatSubtitle,
     modifier: Modifier = Modifier,
     navigationIcon: @Composable RowScope.() -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {}
@@ -458,6 +461,16 @@ fun ChatTopAppBar(
                     update = {
                         it.contactNameView!!.text = info.title
                         it.contactNameView!!.visibility = View.VISIBLE
+                        val resources = it.context.resources
+                        it.state = when {
+                            subtitle is ChatSubtitle.ChatState.Offline -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.WAITING_FOR_NETWORK()
+                            subtitle is ChatSubtitle.ChatState.Connecting -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.CONNECTING()
+                            subtitle is ChatSubtitle.ParticipantState.Online -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.ONLINE()
+                            subtitle is ChatSubtitle.ParticipantState.Offline && subtitle.timestamp != null -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.OFFLINE(subtitle.timestamp)
+                            subtitle is ChatSubtitle.ParticipantState.Typing -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.TYPING()
+                            else -> null
+                        }
+                        it.contactStatusView!!.visibility = View.VISIBLE
                         if (info.image != Uri.EMPTY) it.contactImageView!!.setImageUri(info.image)
                     }
                 )

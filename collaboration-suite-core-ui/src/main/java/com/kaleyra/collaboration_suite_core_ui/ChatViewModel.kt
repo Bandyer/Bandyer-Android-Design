@@ -1,8 +1,12 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.kaleyra.collaboration_suite.Participant
 import com.kaleyra.collaboration_suite.User
+import com.kaleyra.collaboration_suite.chatbox.ChatBox
+import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
@@ -18,6 +22,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -97,6 +102,30 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
                 flow.value = flow.value + receivedMessages.toSet()
             }.launchIn(viewModelScope)
     }
+
+    private val _otherParticipant = participants.map { it.others.first() }
+
+    private val _typingEvents = _otherParticipant.flatMapLatest { it.events.filterIsInstance<ChatParticipant.Event.Typing>() }
+
+    private val _otherParticipantState = _otherParticipant.flatMapLatest { it.state }
+
+    override val chatSubtitle = combine(_typingEvents, chatBoxState, _otherParticipantState)  { event, chatBoxState, participantState ->
+        Log.e("ChatViewModel", "$chatBoxState")
+        when {
+            chatBoxState is ChatBox.State.Connecting -> ChatSubtitle.ChatState.Connecting
+            event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Online -> ChatSubtitle.ParticipantState.Online
+            event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Offline -> {
+                val lastLogin = participantState.lastLogin
+                ChatSubtitle.ParticipantState.Offline(
+                    if (lastLogin is ChatParticipant.State.Joined.Offline.LastLogin.At)
+                        Iso8601.parseTimestamp(ContextRetainer.context, lastLogin.date.time)
+                    else null
+                )
+            }
+            event is ChatParticipant.Event.Typing.Started -> ChatSubtitle.ParticipantState.Typing
+            else -> ChatSubtitle.ChatState.Offline
+        }
+    }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     override val chatInfo = combine(participants, _usersDescription) { participants, usersDescription ->
         val otherUserId = participants.others.first().userId
@@ -198,6 +227,18 @@ sealed class TopBarAction {
     object VideoCall : TopBarAction()
 }
 
+sealed class ChatSubtitle {
+    sealed class ChatState : ChatSubtitle() {
+        object Connecting : ChatState()
+        object Offline : ChatState()
+    }
+    sealed class ParticipantState : ChatSubtitle() {
+        object Online : ParticipantState()
+        data class Offline(val timestamp: String?) : ParticipantState()
+        object Typing : ParticipantState()
+    }
+}
+
 data class ChatInfo(
     val title: String,
     val image: Uri
@@ -210,6 +251,8 @@ data class ChatInfo(
 interface ComposeChatViewModel {
 
     val chatInfo: SharedFlow<ChatInfo>
+
+    val chatSubtitle: SharedFlow<ChatSubtitle>
 
     val topBarActions: SharedFlow<Set<TopBarAction>>
 
