@@ -518,11 +518,11 @@ fun Actions(
 fun MenuIcon(painter: Painter, onClick: () -> Unit, contentDescription: String) {
     Icon(
         painter = painter,
-        tint = MaterialTheme.colors.onPrimary,
         modifier = Modifier
             .clickable(onClick = onClick)
             .padding(horizontal = 12.dp, vertical = 16.dp)
             .height(24.dp),
+        tint = LocalContentColor.current,
         contentDescription = contentDescription
     )
 }
