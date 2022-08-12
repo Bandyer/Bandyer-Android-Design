@@ -471,14 +471,12 @@ fun ChatTopAppBar(
             )
         }
 
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-            Row(
-                Modifier.fillMaxHeight(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically,
-                content = actions
-            )
-        }
+        Row(
+            Modifier.fillMaxHeight(),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.CenterVertically,
+            content = actions
+        )
     }
 }
 
@@ -542,7 +540,6 @@ fun MenuIcon(painter: Painter, onClick: () -> Unit, contentDescription: String) 
             .clickable(onClick = onClick)
             .padding(horizontal = 12.dp, vertical = 16.dp)
             .height(24.dp),
-        tint = LocalContentColor.current,
         contentDescription = contentDescription
     )
 }
