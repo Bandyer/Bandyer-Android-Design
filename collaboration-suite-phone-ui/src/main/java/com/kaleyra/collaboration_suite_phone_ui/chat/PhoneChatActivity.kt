@@ -38,7 +38,6 @@ import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -74,10 +73,10 @@ import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.CallType
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
+import com.kaleyra.collaboration_suite_core_ui.ChatInfo
 import com.kaleyra.collaboration_suite_core_ui.ComposeChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.LazyColumnItem
 import com.kaleyra.collaboration_suite_core_ui.TopBarAction
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
@@ -122,8 +121,7 @@ fun ChatScreen(
                 testTagsAsResourceId = true
             }) {
         ChatTopAppBar(
-            viewModel.participants.replayCache.first().others.first().userId,
-            viewModel.usersDescription,
+            info = viewModel.chatInfo.collectAsState(initial = ChatInfo.Empty).value,
             navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
             actions = {
                 Actions(
@@ -428,8 +426,7 @@ fun Bubble(
 
 @Composable
 fun ChatTopAppBar(
-    userId: String,
-    usersDescription: UsersDescription,
+    info: ChatInfo,
     modifier: Modifier = Modifier,
     navigationIcon: @Composable (() -> Unit),
     actions: @Composable RowScope.() -> Unit = {}
@@ -438,8 +435,6 @@ fun ChatTopAppBar(
         modifier = modifier,
         backgroundColor = MaterialTheme.colors.primary,
     ) {
-        val scope = rememberCoroutineScope()
-
         Row(Modifier.padding(4.dp), verticalAlignment = Alignment.CenterVertically) {
             CompositionLocalProvider(
                 LocalContentAlpha provides ContentAlpha.high,
@@ -461,12 +456,9 @@ fun ChatTopAppBar(
                     KaleyraChatInfoWidget(ContextThemeWrapper(it, themeResId))
                 },
                 update = {
-                    scope.launch {
-                        it.contactNameView!!.text = usersDescription.name(listOf(userId))
-                        it.contactNameView!!.visibility = View.VISIBLE
-                        val uri = usersDescription.image(listOf(userId))
-                        if (uri != Uri.EMPTY) it.contactImageView!!.setImageUri(uri)
-                    }
+                    it.contactNameView!!.text = info.title
+                    it.contactNameView!!.visibility = View.VISIBLE
+                    if (info.image != Uri.EMPTY) it.contactImageView!!.setImageUri(info.image)
                 }
             )
         }

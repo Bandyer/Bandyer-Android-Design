@@ -1,8 +1,8 @@
 package com.kaleyra.collaboration_suite_core_ui
 
+import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.User
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
@@ -41,7 +41,9 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
 
     private val _chat = MutableSharedFlow<ChatUI>(replay = 1, extraBufferCapacity = 1)
 
-    final override var usersDescription = UsersDescription()
+    private val _usersDescription = MutableSharedFlow<UsersDescription>(replay = 1, extraBufferCapacity = 1)
+
+    var usersDescription = UsersDescription()
         private set
 
     init {
@@ -50,6 +52,7 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
             .onEach {
                 _phoneBox.emit(CollaborationUI.phoneBox)
                 _chatBox.emit(CollaborationUI.chatBox)
+                _usersDescription.emit(CollaborationUI.usersDescription)
                 usersDescription = CollaborationUI.usersDescription
             }
             .launchIn(viewModelScope)
@@ -71,7 +74,7 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
 
     val actions = chat.flatMapLatest { it.actions }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = setOf())
 
-    final override val participants = chat.flatMapLatest { it.participants }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    val participants = chat.flatMapLatest { it.participants }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     private val _firstUnreadMessageId = messages.map { it.other }.take(1).map { messages ->
         messages.forEachIndexed { index, message ->
@@ -84,25 +87,6 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
 
     private val _showUnreadHeader = MutableStateFlow(true)
 
-    override val lazyColumnItems = combine(messages.map { it.list }, _firstUnreadMessageId) { messages, firstUnreadMessageId ->
-            val items = mutableListOf<LazyColumnItem>()
-            messages.forEachIndexed { index, message ->
-                val previousMessage = messages.getOrNull(index - 1) ?: kotlin.run {
-                    items.add(LazyColumnItem.Message(message, Iso8601.parseTime(message.creationDate.time)))
-                    return@forEachIndexed
-                }
-
-                if (_showUnreadHeader.value && previousMessage.id == firstUnreadMessageId)
-                    items.add(LazyColumnItem.UnreadHeader(index))
-
-                if (Iso8601.parseDay(timestamp = message.creationDate.time) != Iso8601.parseDay(timestamp = previousMessage.creationDate.time))
-                    items.add(LazyColumnItem.DayHeader(Iso8601.parseDay(ContextRetainer.context, timestamp = previousMessage.creationDate.time)))
-
-                items.add(LazyColumnItem.Message(message, Iso8601.parseTime(message.creationDate.time)))
-            }
-            items
-        }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
-
     private val _unseenMessages = MutableStateFlow<Set<String>>(setOf()).also { flow ->
         chat
             .flatMapLatest { it.messages }
@@ -114,7 +98,13 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
             }.launchIn(viewModelScope)
     }
 
-    override val unseenMessagesCount = _unseenMessages.map { it.count() }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    override val chatInfo = combine(participants, _usersDescription) { participants, usersDescription ->
+        val otherUserId = participants.others.first().userId
+        ChatInfo(
+            title = usersDescription.name(listOf(otherUserId)),
+            image = usersDescription.image(listOf(otherUserId))
+        )
+    }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     override val topBarActions = actions.map { actions ->
         mutableSetOf<TopBarAction>().apply {
@@ -126,6 +116,27 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
                 add(TopBarAction.VideoCall)
         }
     }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+
+    override val lazyColumnItems = combine(messages.map { it.list }, _firstUnreadMessageId) { messages, firstUnreadMessageId ->
+        val items = mutableListOf<LazyColumnItem>()
+        messages.forEachIndexed { index, message ->
+            val previousMessage = messages.getOrNull(index - 1) ?: kotlin.run {
+                items.add(LazyColumnItem.Message(message, Iso8601.parseTime(message.creationDate.time)))
+                return@forEachIndexed
+            }
+
+            if (_showUnreadHeader.value && previousMessage.id == firstUnreadMessageId)
+                items.add(LazyColumnItem.UnreadHeader(index))
+
+            if (Iso8601.parseDay(timestamp = message.creationDate.time) != Iso8601.parseDay(timestamp = previousMessage.creationDate.time))
+                items.add(LazyColumnItem.DayHeader(Iso8601.parseDay(ContextRetainer.context, timestamp = previousMessage.creationDate.time)))
+
+            items.add(LazyColumnItem.Message(message, Iso8601.parseTime(message.creationDate.time)))
+        }
+        items
+    }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+
+    override val unseenMessagesCount = _unseenMessages.map { it.count() }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     override fun markAsRead(items: List<LazyColumnItem.Message>) =
         items.forEach {
@@ -187,15 +198,22 @@ sealed class TopBarAction {
     object VideoCall : TopBarAction()
 }
 
+data class ChatInfo(
+    val title: String,
+    val image: Uri
+) {
+    companion object {
+        val Empty = ChatInfo("", Uri.EMPTY)
+    }
+}
+
 interface ComposeChatViewModel {
 
-    val usersDescription: UsersDescription
-
-    val lazyColumnItems: SharedFlow<List<LazyColumnItem>>
+    val chatInfo: SharedFlow<ChatInfo>
 
     val topBarActions: SharedFlow<Set<TopBarAction>>
 
-    val participants: SharedFlow<ChatParticipants>
+    val lazyColumnItems: SharedFlow<List<LazyColumnItem>>
 
     val unseenMessagesCount: SharedFlow<Int>
 
