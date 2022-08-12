@@ -95,7 +95,7 @@ class PhoneChatActivity : ChatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MdcTheme(setDefaultFontFamily = true) {
-                ChatScreen(onBackPressed = { onBackPressed() }, viewModel = viewModel)
+                ChatScreen(onBackPressed = { finishAndRemoveTask() }, viewModel = viewModel)
             }
         }
     }
