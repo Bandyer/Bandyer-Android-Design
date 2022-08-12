@@ -73,6 +73,7 @@ import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite_core_ui.CallType
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.IChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.LazyColumnItem
@@ -126,30 +127,9 @@ fun ChatScreen(
             navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
             actions = {
                 Actions(
-                    onAudioClick = {
-                        viewModel.call(
-                            Call.PreferredType(
-                                audio = Call.Audio.Enabled,
-                                video = null
-                            )
-                        )
-                    },
-                    onAudioUpgradableClick = {
-                        viewModel.call(
-                            Call.PreferredType(
-                                audio = Call.Audio.Enabled,
-                                video = Call.Video.Disabled
-                            )
-                        )
-                    },
-                    onVideoClick = {
-                        viewModel.call(
-                            Call.PreferredType(
-                                audio = Call.Audio.Enabled,
-                                video = Call.Video.Enabled
-                            )
-                        )
-                    })
+                    onAudioClick = { viewModel.call(CallType.Audio) },
+                    onAudioUpgradableClick = { viewModel.call(CallType.AudioUpgradable) },
+                    onVideoClick = { viewModel.call(CallType.Video) })
             })
 
         Box(Modifier.weight(1f)) {
@@ -392,7 +372,6 @@ fun ChatBubble() {
         }
     }
 }
-
 
 @Composable
 fun Bubble(

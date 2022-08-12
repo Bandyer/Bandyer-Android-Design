@@ -85,7 +85,6 @@ open class ChatViewModel : CollaborationViewModel(), IChatViewModel {
 
     private val _showUnreadHeader = MutableStateFlow(true)
 
-    // TODO Fare stato della ui in cui metto questo in uno stato
     override val lazyColumnItems = combine(messages.map { it.list }, _firstUnreadMessageId) { messages, firstUnreadMessageId ->
             val items = mutableListOf<LazyColumnItem>()
             messages.forEachIndexed { index, message ->
@@ -150,12 +149,12 @@ open class ChatViewModel : CollaborationViewModel(), IChatViewModel {
         _unseenMessages.value = setOf()
     }
 
-    override fun call(preferredType: Call.PreferredType) {
+    override fun call(callType: CallType) {
         val phoneBox = phoneBox.replayCache.firstOrNull() ?: return
         val chat = chat.replayCache.firstOrNull() ?: return
         val userId = chat.participants.value.others.first().userId
         phoneBox.call(listOf(object : User { override val userId = userId })) {
-           this.preferredType = preferredType
+            preferredType = callType.preferredType
         }
     }
 }
@@ -164,6 +163,12 @@ sealed class LazyColumnItem(val id: String) {
     data class DayHeader(val timestamp: String): LazyColumnItem(timestamp.hashCode().toString())
     data class UnreadHeader(val unreadCount: Int): LazyColumnItem(UUID.randomUUID().toString())
     data class Message(val message: com.kaleyra.collaboration_suite.chatbox.Message, val time: String): LazyColumnItem(message.id)
+}
+
+sealed class CallType(val preferredType: Call.PreferredType) {
+    object Audio: CallType(Call.PreferredType(video = null))
+    object AudioUpgradable: CallType(Call.PreferredType(video = Call.Video.Disabled))
+    object Video: CallType(Call.PreferredType())
 }
 
 interface IChatViewModel {
@@ -202,5 +207,5 @@ interface IChatViewModel {
 
     fun onAllMessagesScrolled()
 
-    fun call(preferredType: Call.PreferredType)
+    fun call(callType: CallType)
 }
