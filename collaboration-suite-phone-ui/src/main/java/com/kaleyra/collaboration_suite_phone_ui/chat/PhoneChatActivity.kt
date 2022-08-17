@@ -277,7 +277,7 @@ fun ScrollToBottomFab(unseenMessagesCounter: Int, onClick: () -> Unit) {
                 )
             Icon(
                 painter = painterResource(id = R.drawable.ic_kaleyra_double_arrow_down),
-                contentDescription = null,
+                contentDescription = stringResource(id = R.string.kaleyra_chat_scroll_to_last_message),
                 modifier = Modifier.size(16.dp)
             )
         }
