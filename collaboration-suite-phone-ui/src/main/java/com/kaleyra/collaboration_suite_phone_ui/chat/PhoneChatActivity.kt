@@ -56,12 +56,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
@@ -88,7 +91,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-private const val FETCH_THRESHOLD = 5
+private const val FETCH_THRESHOLD = 15
 
 class PhoneChatActivity : ChatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -159,6 +162,9 @@ fun ChatScreen(
                     }
                 )
             }
+
+            if (viewModel.isCallActive.collectAsState(initial = false).value)
+                OngoingCallLabel(onClick = { viewModel.showCall() })
         }
 
         AndroidView(
@@ -179,6 +185,23 @@ fun ChatScreen(
             }
         )
     }
+}
+
+@Composable
+fun OngoingCallLabel(onClick: () -> Unit) {
+    Text(
+        text = stringResource(id = R.string.kaleyra_ongoing_call_label),
+        color = Color.White,
+        style = MaterialTheme.typography.body2,
+        modifier = Modifier
+            .clickable(onClick = onClick, role = Role.Button)
+            .fillMaxWidth()
+            .background(
+                shape = RectangleShape,
+                color = colorResource(id = R.color.kaleyra_color_answer_button)
+            )
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+    )
 }
 
 @Preview

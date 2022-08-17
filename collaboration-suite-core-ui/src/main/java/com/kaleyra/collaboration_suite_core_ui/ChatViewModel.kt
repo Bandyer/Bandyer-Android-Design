@@ -1,9 +1,7 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite.Participant
 import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
@@ -110,7 +108,6 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
     private val _otherParticipantState = _otherParticipant.flatMapLatest { it.state }
 
     override val chatSubtitle = combine(_typingEvents, chatBoxState, _otherParticipantState)  { event, chatBoxState, participantState ->
-        Log.e("ChatViewModel", "$chatBoxState")
         when {
             chatBoxState is ChatBox.State.Connecting -> ChatSubtitle.ChatState.Connecting
             event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Online -> ChatSubtitle.ParticipantState.Online
@@ -167,6 +164,12 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
 
     override val unseenMessagesCount = _unseenMessages.map { it.count() }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
+    override val isCallActive = phoneBox
+        .flatMapLatest { it.call }
+        .flatMapLatest { it.state }
+        .map { it !is Call.State.Disconnected.Ended }
+        .shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+
     override fun markAsRead(items: List<LazyColumnItem.Message>) =
         items.forEach {
             val otherMsg = it.message as? OtherMessage ?: return@forEach
@@ -206,6 +209,11 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
         phoneBox.call(listOf(object : User { override val userId = userId })) {
             preferredType = callType.preferredType
         }
+    }
+
+    override fun showCall() {
+        val call = phoneBox.replayCache.firstOrNull()?.call?.replayCache?.firstOrNull() ?: return
+        CollaborationUI.phoneBox.show(call)
     }
 }
 
@@ -260,6 +268,8 @@ interface ComposeChatViewModel {
 
     val unseenMessagesCount: SharedFlow<Int>
 
+    val isCallActive: SharedFlow<Boolean>
+
     fun setChat(userId: String): ChatUI?
 
     fun markAsRead(items: List<LazyColumnItem.Message>)
@@ -273,4 +283,6 @@ interface ComposeChatViewModel {
     fun onAllMessagesScrolled()
 
     fun call(callType: CallType)
+
+    fun showCall()
 }
