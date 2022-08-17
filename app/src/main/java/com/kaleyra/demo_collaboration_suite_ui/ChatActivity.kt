@@ -30,13 +30,7 @@ import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.Messages
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.ChatBoxUI
-import com.kaleyra.collaboration_suite_core_ui.ChatUI
-import com.kaleyra.collaboration_suite_core_ui.IChatViewModel
-import com.kaleyra.collaboration_suite_core_ui.LazyColumnItem
-import com.kaleyra.collaboration_suite_core_ui.MessagesUI
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.*
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_phone_ui.chat.ChatScreen
@@ -50,7 +44,7 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 import java.util.*
 
-class MockChatViewModel : ViewModel(), IChatViewModel {
+class MockChatViewModel : ViewModel(), ComposeChatViewModel {
 
     val participant1 = object : ChatParticipant {
         override val state: StateFlow<ChatParticipant.State> =
@@ -92,21 +86,27 @@ class MockChatViewModel : ViewModel(), IChatViewModel {
         }
     }
 
-    override val usersDescription: UsersDescription
+    val usersDescription: UsersDescription
         get() = UsersDescription()
 
-    override val phoneBox: SharedFlow<PhoneBoxUI> = MutableSharedFlow()
+    val phoneBox: SharedFlow<PhoneBoxUI> = MutableSharedFlow()
 
-    override val call: SharedFlow<CallUI> = MutableSharedFlow()
+    val call: SharedFlow<CallUI> = MutableSharedFlow()
 
-    override val chatBox: SharedFlow<ChatBoxUI> = MutableSharedFlow()
+    val chatBox: SharedFlow<ChatBoxUI> = MutableSharedFlow()
 
-    override val chat: SharedFlow<ChatUI> = MutableSharedFlow()
+    val chat: SharedFlow<ChatUI> = MutableSharedFlow()
 
-    override val chatBoxState: SharedFlow<ChatBox.State> = MutableSharedFlow()
+    val chatBoxState: SharedFlow<ChatBox.State> = MutableSharedFlow()
 
     private val _messages: MutableSharedFlow<MessagesUI> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
-    override val messages: SharedFlow<MessagesUI> = _messages
+    val messages: SharedFlow<MessagesUI> = _messages
+    override val chatInfo: SharedFlow<ChatInfo>
+        get() = TODO("Not yet implemented")
+    override val chatSubtitle: SharedFlow<ChatSubtitle>
+        get() = TODO("Not yet implemented")
+    override val topBarActions: SharedFlow<Set<TopBarAction>>
+        get() = TODO("Not yet implemented")
 
     override val lazyColumnItems: SharedFlow<List<LazyColumnItem>> = messages.map { it.list }.map {
         it.map {
@@ -114,9 +114,9 @@ class MockChatViewModel : ViewModel(), IChatViewModel {
         }
     }.shareIn(viewModelScope, SharingStarted.Eagerly, replay = 1)
 
-    override val actions: SharedFlow<Set<ChatUI.Action>> = MutableSharedFlow()
+    val actions: SharedFlow<Set<ChatUI.Action>> = MutableSharedFlow()
 
-    override val participants: SharedFlow<ChatParticipants> =
+    val participants: SharedFlow<ChatParticipants> =
         MutableSharedFlow<ChatParticipants>(replay = 1, extraBufferCapacity = 1).also {
             it.tryEmit(object : ChatParticipants {
                 override val me: ChatParticipant = participant1
@@ -147,8 +147,15 @@ class MockChatViewModel : ViewModel(), IChatViewModel {
     }
 
     override fun onMessageScrolled(messageItem: LazyColumnItem.Message) = Unit
+    override fun onAllMessagesScrolled() {
+        TODO("Not yet implemented")
+    }
 
-    override fun call(preferredType: Call.PreferredType) = Unit
+    override fun call(callType: CallType) {
+        TODO("Not yet implemented")
+    }
+
+    fun call(preferredType: Call.PreferredType) = Unit
 
     init {
         fetchMessages()

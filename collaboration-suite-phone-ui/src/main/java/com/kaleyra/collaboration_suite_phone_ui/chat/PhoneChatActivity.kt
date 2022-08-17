@@ -49,8 +49,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -86,12 +88,14 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidg
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 private const val FETCH_THRESHOLD = 15
+private const val NO_MESSAGES_TIMEOUT = 5000L
 
 class PhoneChatActivity : ChatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,6 +121,13 @@ fun ChatScreen(
             scrollState.firstVisibleItemIndex > 0
         }
     }
+    var isLoadingMessages by remember { mutableStateOf(true) }
+    val lazyColumnItems = viewModel.lazyColumnItems.collectAsState(initial = emptyList()).value
+
+    LaunchedEffect(Unit) {
+        delay(NO_MESSAGES_TIMEOUT)
+        isLoadingMessages = false
+    }
 
     Column(
         modifier = Modifier
@@ -137,17 +148,20 @@ fun ChatScreen(
             })
 
         Box(Modifier.weight(1f)) {
-            if (viewModel.lazyColumnItems.collectAsState(initial = listOf()).value.isEmpty())
+            if (isLoadingMessages && lazyColumnItems.isEmpty()) {
+                LoadingMessagesLabel()
+            } else if (!isLoadingMessages) {
                 NoMessagesLabel()
-            else
+            } else
                 Messages(
-                    items = viewModel.lazyColumnItems.collectAsState(initial = listOf()).value,
+                    items = lazyColumnItems,
                     onFetch = { viewModel.fetchMessages() },
                     scrollState = scrollState,
                     onMessageItemScrolled = { viewModel.onMessageScrolled(it) },
                     onNewMessageItems = { viewModel.markAsRead(it) },
                     modifier = Modifier.fillMaxSize()
                 )
+
 
             this@Column.AnimatedVisibility(
                 visible = showFab,
@@ -201,6 +215,21 @@ fun NoMessagesLabel() {
         Text(
             text = stringResource(id = R.string.kaleyra_chat_no_messages),
             style = MaterialTheme.typography.body2,
+        )
+    }
+}
+
+@Preview
+@Composable
+fun LoadingMessagesLabel() {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text(
+            text = stringResource(id = R.string.kaleyra_chat_channel_loading),
+            style = MaterialTheme.typography.body2
         )
     }
 }
