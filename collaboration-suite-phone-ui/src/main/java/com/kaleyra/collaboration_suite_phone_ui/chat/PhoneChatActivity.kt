@@ -137,14 +137,17 @@ fun ChatScreen(
             })
 
         Box(Modifier.weight(1f)) {
-            Messages(
-                items = viewModel.lazyColumnItems.collectAsState(initial = listOf()).value,
-                onFetch = { viewModel.fetchMessages() },
-                scrollState = scrollState,
-                onMessageItemScrolled = { viewModel.onMessageScrolled(it) },
-                onNewMessageItems = { viewModel.markAsRead(it) },
-                modifier = Modifier.fillMaxSize()
-            )
+            if (viewModel.lazyColumnItems.collectAsState(initial = listOf()).value.isEmpty())
+                NoMessagesLabel()
+            else
+                Messages(
+                    items = viewModel.lazyColumnItems.collectAsState(initial = listOf()).value,
+                    onFetch = { viewModel.fetchMessages() },
+                    scrollState = scrollState,
+                    onMessageItemScrolled = { viewModel.onMessageScrolled(it) },
+                    onNewMessageItems = { viewModel.markAsRead(it) },
+                    modifier = Modifier.fillMaxSize()
+                )
 
             this@Column.AnimatedVisibility(
                 visible = showFab,
@@ -183,6 +186,21 @@ fun ChatScreen(
                     }
                 }
             }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun NoMessagesLabel() {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Text(
+            text = stringResource(id = R.string.kaleyra_chat_no_messages),
+            style = MaterialTheme.typography.body2,
         )
     }
 }
