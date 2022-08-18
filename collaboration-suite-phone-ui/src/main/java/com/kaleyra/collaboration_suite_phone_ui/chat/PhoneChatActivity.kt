@@ -31,6 +31,8 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Card
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
@@ -38,6 +40,7 @@ import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
@@ -59,6 +62,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -80,7 +84,9 @@ import com.kaleyra.collaboration_suite_core_ui.ChatInfo
 import com.kaleyra.collaboration_suite_core_ui.ChatSubtitle
 import com.kaleyra.collaboration_suite_core_ui.ComposeChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.LazyColumnItem
+import com.kaleyra.collaboration_suite_core_ui.SymbolAnnotationType
 import com.kaleyra.collaboration_suite_core_ui.TopBarAction
+import com.kaleyra.collaboration_suite_core_ui.messageFormatter
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
@@ -455,7 +461,8 @@ fun Bubble(
         modifier = Modifier.widthIn(min = 0.dp, max = halfScreenDp.dp)
     ) {
         Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
-            Text(text = content, style = MaterialTheme.typography.body2)
+
+            ClickableMessage(message = content, isMyMessage = isMyMessage)
 
             Row(
                 horizontalArrangement = Arrangement.End,
@@ -484,6 +491,35 @@ fun Bubble(
             }
         }
     }
+}
+
+@Composable
+fun ClickableMessage(
+    message: String,
+    isMyMessage: Boolean
+) {
+    val uriHandler = LocalUriHandler.current
+
+    val styledMessage = messageFormatter(
+        text = message,
+        primary = !isMyMessage
+    )
+
+    ClickableText(
+        text = styledMessage,
+        style = MaterialTheme.typography.body2.copy(color = LocalContentColor.current),
+        onClick = {
+            styledMessage
+                .getStringAnnotations(start = it, end = it)
+                .firstOrNull()
+                ?.let { annotation ->
+                    when (annotation.tag) {
+                        SymbolAnnotationType.LINK.name -> uriHandler.openUri(annotation.item)
+                        else -> Unit
+                    }
+                }
+        }
+    )
 }
 
 @Composable
