@@ -121,7 +121,7 @@ fun ChatScreen(
     val scrollState = rememberLazyListState()
     val showFab by remember {
         derivedStateOf {
-            scrollState.firstVisibleItemIndex > 0
+            scrollState.firstVisibleItemIndex > 0 && scrollState.firstVisibleItemScrollOffset > 0
         }
     }
 
