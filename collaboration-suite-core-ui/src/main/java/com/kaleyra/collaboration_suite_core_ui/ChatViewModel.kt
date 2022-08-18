@@ -108,8 +108,10 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
 
     private val _otherParticipantState = _otherParticipant.flatMapLatest { it.state }
 
+    private var previousChatBoxState: ChatBox.State? = null
     override val chatSubtitle = combine(_typingEvents, chatBoxState, _otherParticipantState)  { event, chatBoxState, participantState ->
         when {
+            chatBoxState is ChatBox.State.Connecting && previousChatBoxState is ChatBox.State.Connected -> ChatSubtitle.ChatState.Offline
             chatBoxState is ChatBox.State.Connecting -> ChatSubtitle.ChatState.Connecting
             event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Online -> ChatSubtitle.ParticipantState.Online
             event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Offline -> {
@@ -121,7 +123,9 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
                 )
             }
             event is ChatParticipant.Event.Typing.Started -> ChatSubtitle.ParticipantState.Typing
-            else -> ChatSubtitle.ChatState.Offline
+            else -> null
+        }.also {
+            previousChatBoxState = chatBoxState
         }
     }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
@@ -260,7 +264,7 @@ interface ComposeChatViewModel {
 
     val chatInfo: SharedFlow<ChatInfo>
 
-    val chatSubtitle: SharedFlow<ChatSubtitle>
+    val chatSubtitle: SharedFlow<ChatSubtitle?>
 
     val topBarActions: SharedFlow<Set<TopBarAction>>
 

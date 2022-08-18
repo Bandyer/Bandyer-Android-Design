@@ -495,7 +495,7 @@ fun Bubble(
 @Composable
 fun ChatTopAppBar(
     info: ChatInfo,
-    subtitle: ChatSubtitle,
+    subtitle: ChatSubtitle?,
     modifier: Modifier = Modifier,
     navigationIcon: @Composable RowScope.() -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {}
@@ -527,7 +527,6 @@ fun ChatTopAppBar(
                     update = {
                         it.contactNameView!!.text = info.title
                         it.contactNameView!!.visibility = View.VISIBLE
-                        val resources = it.context.resources
                         it.state = when {
                             subtitle is ChatSubtitle.ChatState.Offline -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.WAITING_FOR_NETWORK()
                             subtitle is ChatSubtitle.ChatState.Connecting -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.CONNECTING()
