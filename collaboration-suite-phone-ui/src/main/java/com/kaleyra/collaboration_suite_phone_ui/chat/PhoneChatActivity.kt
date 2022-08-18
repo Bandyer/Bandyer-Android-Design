@@ -49,10 +49,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -88,7 +86,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidg
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -121,12 +118,15 @@ fun ChatScreen(
             scrollState.firstVisibleItemIndex > 0
         }
     }
-    var isLoadingMessages by remember { mutableStateOf(true) }
-    val lazyColumnItems = viewModel.lazyColumnItems.collectAsState(initial = emptyList()).value
 
-    LaunchedEffect(Unit) {
-        delay(NO_MESSAGES_TIMEOUT)
-        isLoadingMessages = false
+    val lazyColumnItems = viewModel.lazyColumnItems.collectAsState(initial = emptyList()).value
+    val areMessagesFetched = viewModel.areMessagesFetched.collectAsState(initial = false)
+    val chatSubtitle = viewModel.chatSubtitle.collectAsState(initial = ChatSubtitle.ChatState.Offline)
+
+    val showLoadingLabel by remember {
+        derivedStateOf {
+            !areMessagesFetched.value || chatSubtitle.value is ChatSubtitle.ChatState.Connecting || chatSubtitle.value is ChatSubtitle.ChatState.Offline
+        }
     }
 
     Column(
@@ -137,7 +137,7 @@ fun ChatScreen(
             }) {
         ChatTopAppBar(
             info = viewModel.chatInfo.collectAsState(initial = ChatInfo.Empty).value,
-            subtitle = viewModel.chatSubtitle.collectAsState(initial = ChatSubtitle.ChatState.Offline).value,
+            subtitle = chatSubtitle.value,
             navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
             actions = {
                 Actions(
@@ -148,12 +148,9 @@ fun ChatScreen(
             })
 
         Box(Modifier.weight(1f)) {
-            if (isLoadingMessages && lazyColumnItems.isEmpty()) {
-                LoadingMessagesLabel()
-            } else if (!isLoadingMessages) {
-                NoMessagesLabel()
-            } else
-                Messages(
+            if (showLoadingLabel) LoadingMessagesLabel()
+            else if (lazyColumnItems.isEmpty()) NoMessagesLabel()
+            else Messages(
                     items = lazyColumnItems,
                     onFetch = { viewModel.fetchMessages() },
                     scrollState = scrollState,
@@ -161,7 +158,6 @@ fun ChatScreen(
                     onNewMessageItems = { viewModel.markAsRead(it) },
                     modifier = Modifier.fillMaxSize()
                 )
-
 
             this@Column.AnimatedVisibility(
                 visible = showFab,

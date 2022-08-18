@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.drop
@@ -170,6 +171,8 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
         .map { it !is Call.State.Disconnected.Ended }
         .shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
+    override val areMessagesFetched = messages.take(1).map { true }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, false)
+
     override fun markAsRead(items: List<LazyColumnItem.Message>) =
         items.forEach {
             val otherMsg = it.message as? OtherMessage ?: return@forEach
@@ -269,6 +272,8 @@ interface ComposeChatViewModel {
     val unseenMessagesCount: SharedFlow<Int>
 
     val isCallActive: SharedFlow<Boolean>
+
+    val areMessagesFetched: StateFlow<Boolean>
 
     fun setChat(userId: String): ChatUI?
 
