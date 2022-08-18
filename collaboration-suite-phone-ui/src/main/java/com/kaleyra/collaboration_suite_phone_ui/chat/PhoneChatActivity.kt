@@ -120,14 +120,8 @@ fun ChatScreen(
     }
 
     val lazyColumnItems = viewModel.lazyColumnItems.collectAsState(initial = emptyList()).value
-    val areMessagesFetched = viewModel.areMessagesFetched.collectAsState(initial = false)
-    val chatSubtitle = viewModel.chatSubtitle.collectAsState(initial = ChatSubtitle.ChatState.Offline)
-
-    val showLoadingLabel by remember {
-        derivedStateOf {
-            !areMessagesFetched.value || chatSubtitle.value is ChatSubtitle.ChatState.Connecting || chatSubtitle.value is ChatSubtitle.ChatState.Offline
-        }
-    }
+    val areMessagesFetched = viewModel.areMessagesFetched.collectAsState(initial = false).value
+    val chatSubtitle = viewModel.chatSubtitle.collectAsState(initial = ChatSubtitle.ChatState.Offline).value
 
     Column(
         modifier = Modifier
@@ -137,7 +131,7 @@ fun ChatScreen(
             }) {
         ChatTopAppBar(
             info = viewModel.chatInfo.collectAsState(initial = ChatInfo.Empty).value,
-            subtitle = chatSubtitle.value,
+            subtitle = chatSubtitle,
             navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
             actions = {
                 Actions(
@@ -148,7 +142,7 @@ fun ChatScreen(
             })
 
         Box(Modifier.weight(1f)) {
-            if (showLoadingLabel) LoadingMessagesLabel()
+            if (!areMessagesFetched) LoadingMessagesLabel()
             else if (lazyColumnItems.isEmpty()) NoMessagesLabel()
             else Messages(
                     items = lazyColumnItems,
