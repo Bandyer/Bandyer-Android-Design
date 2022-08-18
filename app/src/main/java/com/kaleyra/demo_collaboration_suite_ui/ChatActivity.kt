@@ -101,11 +101,10 @@ class MockChatViewModel : ViewModel(), ComposeChatViewModel {
 
     private val _messages: MutableSharedFlow<MessagesUI> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
     val messages: SharedFlow<MessagesUI> = _messages
-    override val chatInfo: SharedFlow<ChatInfo>
+
+    override val stateInfo: SharedFlow<StateInfo>
         get() = TODO("Not yet implemented")
-    override val chatSubtitle: SharedFlow<ChatSubtitle>
-        get() = TODO("Not yet implemented")
-    override val topBarActions: SharedFlow<Set<TopBarAction>>
+    override val chatActions: SharedFlow<Set<Action>>
         get() = TODO("Not yet implemented")
 
     override val lazyColumnItems: SharedFlow<List<LazyColumnItem>> = messages.map { it.list }.map {

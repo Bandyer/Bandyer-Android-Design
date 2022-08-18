@@ -109,42 +109,45 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
     private val _otherParticipantState = _otherParticipant.flatMapLatest { it.state }
 
     private var previousChatBoxState: ChatBox.State? = null
-    override val chatSubtitle = combine(_typingEvents, chatBoxState, _otherParticipantState)  { event, chatBoxState, participantState ->
+
+    private val state = combine(_typingEvents, chatBoxState, _otherParticipantState)  { event, chatBoxState, participantState ->
         when {
-            chatBoxState is ChatBox.State.Connecting && previousChatBoxState is ChatBox.State.Connected -> ChatSubtitle.ChatState.Offline
-            chatBoxState is ChatBox.State.Connecting -> ChatSubtitle.ChatState.Connecting
-            event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Online -> ChatSubtitle.ParticipantState.Online
+            chatBoxState is ChatBox.State.Connecting && previousChatBoxState is ChatBox.State.Connected -> State.NetworkState.Offline
+            chatBoxState is ChatBox.State.Connecting -> State.NetworkState.Connecting
+            event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Online -> State.UserState.Online
             event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Offline -> {
                 val lastLogin = participantState.lastLogin
-                ChatSubtitle.ParticipantState.Offline(
+                State.UserState.Offline(
                     if (lastLogin is ChatParticipant.State.Joined.Offline.LastLogin.At)
                         Iso8601.parseTimestamp(ContextRetainer.context, lastLogin.date.time)
                     else null
                 )
             }
-            event is ChatParticipant.Event.Typing.Started -> ChatSubtitle.ParticipantState.Typing
-            else -> null
+            event is ChatParticipant.Event.Typing.Started -> State.UserState.Typing
+            else -> State.None
         }.also {
             previousChatBoxState = chatBoxState
         }
-    }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    }
 
-    override val chatInfo = combine(participants, _usersDescription) { participants, usersDescription ->
+    private val info = combine(participants, _usersDescription) { participants, usersDescription ->
         val otherUserId = participants.others.first().userId
-        ChatInfo(
+        Info(
             title = usersDescription.name(listOf(otherUserId)),
             image = usersDescription.image(listOf(otherUserId))
         )
-    }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    }
 
-    override val topBarActions = actions.map { actions ->
-        mutableSetOf<TopBarAction>().apply {
+    override val stateInfo = combine(state, info) { state, info -> StateInfo(state, info) }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+
+    override val chatActions = actions.map { actions ->
+        mutableSetOf<Action>().apply {
             if (actions.any { it is ChatUI.Action.CreateCall && !it.preferredType.hasVideo() })
-                add(TopBarAction.AudioCall)
+                add(Action.AudioCall)
             if (actions.any { it is ChatUI.Action.CreateCall && !it.preferredType.isVideoEnabled() })
-                add(TopBarAction.AudioUpgradableCall)
+                add(Action.AudioUpgradableCall)
             if (actions.any { it is ChatUI.Action.CreateCall && it.preferredType.isVideoEnabled() })
-                add(TopBarAction.VideoCall)
+                add(Action.VideoCall)
         }
     }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
@@ -233,40 +236,41 @@ sealed class CallType(val preferredType: Call.PreferredType) {
     object Video : CallType(Call.PreferredType())
 }
 
-sealed class TopBarAction {
-    object AudioCall : TopBarAction()
-    object AudioUpgradableCall: TopBarAction()
-    object VideoCall : TopBarAction()
+sealed class Action {
+    object AudioCall : Action()
+    object AudioUpgradableCall: Action()
+    object VideoCall : Action()
 }
 
-sealed class ChatSubtitle {
-    sealed class ChatState : ChatSubtitle() {
-        object Connecting : ChatState()
-        object Offline : ChatState()
+sealed class State {
+    sealed class NetworkState : State() {
+        object Connecting : NetworkState()
+        object Offline : NetworkState()
     }
-    sealed class ParticipantState : ChatSubtitle() {
-        object Online : ParticipantState()
-        data class Offline(val timestamp: String?) : ParticipantState()
-        object Typing : ParticipantState()
+    sealed class UserState : State() {
+        object Online : UserState()
+        data class Offline(val timestamp: String?) : UserState()
+        object Typing : UserState()
     }
+    object None: State()
 }
 
-data class ChatInfo(
+data class Info(
     val title: String,
     val image: Uri
 ) {
     companion object {
-        val Empty = ChatInfo("", Uri.EMPTY)
+        val Empty = Info("", Uri.EMPTY)
     }
 }
 
+typealias StateInfo = Pair<State, Info>
+
 interface ComposeChatViewModel {
 
-    val chatInfo: SharedFlow<ChatInfo>
+    val stateInfo: SharedFlow<StateInfo>
 
-    val chatSubtitle: SharedFlow<ChatSubtitle?>
-
-    val topBarActions: SharedFlow<Set<TopBarAction>>
+    val chatActions: SharedFlow<Set<Action>>
 
     val lazyColumnItems: SharedFlow<List<LazyColumnItem>>
 

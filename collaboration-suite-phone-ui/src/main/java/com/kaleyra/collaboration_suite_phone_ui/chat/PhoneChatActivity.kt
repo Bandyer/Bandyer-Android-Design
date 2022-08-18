@@ -1,9 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat
 
-import android.net.Uri
 import android.os.Bundle
 import android.view.ContextThemeWrapper
-import android.view.View
 import androidx.activity.compose.setContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -16,12 +14,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
@@ -33,20 +28,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Card
-import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
@@ -59,7 +47,6 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
@@ -77,15 +64,15 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.chatbox.OtherMessage
+import com.kaleyra.collaboration_suite_core_ui.Action
 import com.kaleyra.collaboration_suite_core_ui.CallType
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
-import com.kaleyra.collaboration_suite_core_ui.ChatInfo
-import com.kaleyra.collaboration_suite_core_ui.ChatSubtitle
+import com.kaleyra.collaboration_suite_core_ui.Info
+import com.kaleyra.collaboration_suite_core_ui.State
 import com.kaleyra.collaboration_suite_core_ui.ComposeChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.LazyColumnItem
-import com.kaleyra.collaboration_suite_core_ui.TopBarAction
+import com.kaleyra.collaboration_suite_core_ui.StateInfo
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
@@ -123,7 +110,8 @@ fun ChatScreen(
 
     val lazyColumnItems = viewModel.lazyColumnItems.collectAsState(initial = emptyList()).value
     val areMessagesFetched = viewModel.areMessagesFetched.collectAsState(initial = false).value
-    val chatSubtitle = viewModel.chatSubtitle.collectAsState(initial = ChatSubtitle.ChatState.Offline).value
+    val stateInfo = viewModel.stateInfo.collectAsState(initial = StateInfo(State.None, Info.Empty)).value
+    val chatActions = viewModel.chatActions.collectAsState(initial = setOf()).value
 
     Column(
         modifier = Modifier
@@ -131,29 +119,23 @@ fun ChatScreen(
             .semantics {
                 testTagsAsResourceId = true
             }) {
-        ChatTopAppBar(
-            info = viewModel.chatInfo.collectAsState(initial = ChatInfo.Empty).value,
-            subtitle = chatSubtitle,
-            navigationIcon = { NavigationIcon(onBackPressed = onBackPressed) },
-            actions = {
-                Actions(
-                    actions = viewModel.topBarActions.collectAsState(initial = setOf()).value,
-                    onAudioClick = { viewModel.call(CallType.Audio) },
-                    onAudioUpgradableClick = { viewModel.call(CallType.AudioUpgradable) },
-                    onVideoClick = { viewModel.call(CallType.Video) })
-            })
+        TopAppBar(
+            stateInfo = stateInfo,
+            onBackPressed = onBackPressed,
+            actions = chatActions.mapToClickableAction(makeCall = { viewModel.call(it) })
+        )
 
         Box(Modifier.weight(1f)) {
             if (!areMessagesFetched) LoadingMessagesLabel()
             else if (lazyColumnItems.isEmpty()) NoMessagesLabel()
             else Messages(
-                    items = lazyColumnItems,
-                    onFetch = { viewModel.fetchMessages() },
-                    scrollState = scrollState,
-                    onMessageItemScrolled = { viewModel.onMessageScrolled(it) },
-                    onNewMessageItems = { viewModel.markAsRead(it) },
-                    modifier = Modifier.fillMaxSize()
-                )
+                items = lazyColumnItems,
+                onFetch = { viewModel.fetchMessages() },
+                scrollState = scrollState,
+                onMessageItemScrolled = { viewModel.onMessageScrolled(it) },
+                onNewMessageItems = { viewModel.markAsRead(it) },
+                modifier = Modifier.fillMaxSize()
+            )
 
             this@Column.AnimatedVisibility(
                 visible = showFab,
@@ -194,6 +176,16 @@ fun ChatScreen(
             }
         )
     }
+}
+
+private fun Set<Action>.mapToClickableAction(makeCall: (CallType) -> Unit): Set<ClickableAction> {
+    return map {
+        when (it) {
+            is Action.AudioCall -> ClickableAction(it) { makeCall(CallType.Audio) }
+            is Action.AudioUpgradableCall -> ClickableAction(it) { makeCall(CallType.AudioUpgradable) }
+            else -> ClickableAction(it) { makeCall(CallType.Video) }
+        }
+    }.toSet()
 }
 
 @Preview
@@ -329,7 +321,9 @@ fun Messages(
                 onNewMessageItems(messageItems)
                 when {
                     firstVisibleItemIndex < 3 -> scrollState.animateScrollToItem(0)
-                    messageItems.firstOrNull()?.message !is OtherMessage -> scrollState.scrollToItem(0)
+                    messageItems.firstOrNull()?.message !is OtherMessage -> scrollState.scrollToItem(
+                        0
+                    )
                 }
             }.launchIn(this)
     }
@@ -406,7 +400,7 @@ fun Message(messageItem: LazyColumnItem.Message, halfScreenDp: Int, modifier: Mo
     }
 }
 
-@Preview("Chat bubble")
+@Preview("Action bubble")
 @Composable
 fun ChatBubble() {
     MaterialTheme {
@@ -518,125 +512,4 @@ fun ClickableMessage(
     )
 }
 
-@Composable
-fun ChatTopAppBar(
-    info: ChatInfo,
-    subtitle: ChatSubtitle?,
-    modifier: Modifier = Modifier,
-    navigationIcon: @Composable RowScope.() -> Unit = {},
-    actions: @Composable RowScope.() -> Unit = {}
-) {
-    TopAppBar(
-        modifier = modifier,
-        backgroundColor = MaterialTheme.colors.primary,
-    ) {
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-            Row(
-                Modifier.padding(4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                content = navigationIcon
-            )
 
-            Row(
-                Modifier
-                    .fillMaxHeight()
-                    .weight(1f),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AndroidView(
-                    modifier = Modifier.fillMaxWidth(),
-                    factory = {
-                        val themeResId =
-                            it.theme.getAttributeResourceId(R.attr.kaleyra_chatInfoWidgetStyle)
-                        KaleyraChatInfoWidget(ContextThemeWrapper(it, themeResId))
-                    },
-                    update = {
-                        it.contactNameView!!.text = info.title
-                        it.contactNameView!!.visibility = View.VISIBLE
-                        it.state = when {
-                            subtitle is ChatSubtitle.ChatState.Offline -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.WAITING_FOR_NETWORK()
-                            subtitle is ChatSubtitle.ChatState.Connecting -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.CONNECTING()
-                            subtitle is ChatSubtitle.ParticipantState.Online -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.ONLINE()
-                            subtitle is ChatSubtitle.ParticipantState.Offline && subtitle.timestamp != null -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.OFFLINE(subtitle.timestamp)
-                            subtitle is ChatSubtitle.ParticipantState.Typing -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.TYPING()
-                            else -> null
-                        }
-                        it.contactStatusView!!.visibility = View.VISIBLE
-                        if (info.image != Uri.EMPTY) it.contactImageView!!.setImageUri(info.image)
-                    }
-                )
-            }
-
-            Row(
-                Modifier.fillMaxHeight(),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically,
-                content = actions
-            )
-        }
-    }
-}
-
-@Composable
-fun NavigationIcon(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
-    IconButton(modifier = modifier, onClick = onBackPressed) {
-        Icon(
-            imageVector = Icons.Filled.ArrowBack,
-            contentDescription = stringResource(id = R.string.kaleyra_back)
-        )
-    }
-}
-
-@Composable
-fun Actions(
-    actions: Set<TopBarAction>,
-    onAudioClick: () -> Unit,
-    onAudioUpgradableClick: () -> Unit,
-    onVideoClick: () -> Unit
-) {
-    if (actions.any { it is TopBarAction.AudioCall })
-        AudioCallAction(onClick = onAudioClick)
-    if (actions.any { it is TopBarAction.AudioUpgradableCall })
-        AudioUpgradableCallAction(onClick = onAudioUpgradableClick)
-    if (actions.any { it is TopBarAction.VideoCall })
-        VideoCallAction(onClick = onVideoClick)
-}
-
-@Composable
-fun AudioCallAction(onClick: () -> Unit) {
-    MenuIcon(
-        painter = painterResource(R.drawable.ic_kaleyra_audio_call),
-        onClick = onClick,
-        contentDescription = stringResource(id = R.string.kaleyra_start_audio_call)
-    )
-}
-
-@Composable
-fun AudioUpgradableCallAction(onClick: () -> Unit) {
-    MenuIcon(
-        painter = painterResource(R.drawable.ic_kaleyra_audio_upgradable_call),
-        onClick = onClick,
-        contentDescription = stringResource(id = R.string.kaleyra_start_audio_upgradable_call)
-    )
-}
-
-@Composable
-fun VideoCallAction(onClick: () -> Unit) {
-    MenuIcon(
-        painter = painterResource(R.drawable.ic_kaleyra_video_call),
-        onClick = onClick,
-        contentDescription = stringResource(id = R.string.kaleyra_start_video_call)
-    )
-}
-
-@Composable
-fun MenuIcon(painter: Painter, onClick: () -> Unit, contentDescription: String) {
-    Icon(
-        painter = painter,
-        modifier = Modifier
-            .clickable(onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 16.dp)
-            .height(24.dp),
-        contentDescription = contentDescription
-    )
-}
