@@ -214,10 +214,7 @@ open class ChatViewModel : CollaborationViewModel(), ComposeChatViewModel {
         }
     }
 
-    override fun showCall() {
-        val call = phoneBox.replayCache.firstOrNull()?.call?.replayCache?.firstOrNull() ?: return
-        CollaborationUI.phoneBox.show(call)
-    }
+    override fun showCall() = CollaborationUI.phoneBox.showCall()
 }
 
 sealed class LazyColumnItem(val id: String) {
