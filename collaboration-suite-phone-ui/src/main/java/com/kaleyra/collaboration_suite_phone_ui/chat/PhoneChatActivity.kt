@@ -98,7 +98,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 private const val FETCH_THRESHOLD = 15
-private const val NO_MESSAGES_TIMEOUT = 5000L
 
 class PhoneChatActivity : ChatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
