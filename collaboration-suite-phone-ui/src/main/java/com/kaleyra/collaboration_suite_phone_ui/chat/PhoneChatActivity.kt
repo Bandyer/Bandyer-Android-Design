@@ -32,7 +32,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Card
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.Divider
@@ -84,9 +83,7 @@ import com.kaleyra.collaboration_suite_core_ui.ChatInfo
 import com.kaleyra.collaboration_suite_core_ui.ChatSubtitle
 import com.kaleyra.collaboration_suite_core_ui.ComposeChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.LazyColumnItem
-import com.kaleyra.collaboration_suite_core_ui.SymbolAnnotationType
 import com.kaleyra.collaboration_suite_core_ui.TopBarAction
-import com.kaleyra.collaboration_suite_core_ui.messageFormatter
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener

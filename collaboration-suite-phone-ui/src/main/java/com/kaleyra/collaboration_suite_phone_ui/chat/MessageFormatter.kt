@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_core_ui
+package com.kaleyra.collaboration_suite_phone_ui.chat
 
 import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
@@ -6,8 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 
 val symbolPattern by lazy {

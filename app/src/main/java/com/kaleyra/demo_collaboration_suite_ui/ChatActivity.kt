@@ -126,6 +126,10 @@ class MockChatViewModel : ViewModel(), ComposeChatViewModel {
             })
         }
     override val unseenMessagesCount: SharedFlow<Int> = MutableSharedFlow()
+    override val isCallActive: SharedFlow<Boolean>
+        get() = TODO("Not yet implemented")
+    override val areMessagesFetched: StateFlow<Boolean>
+        get() = TODO("Not yet implemented")
 
     override fun setChat(userId: String): ChatUI? = null
 
@@ -152,6 +156,10 @@ class MockChatViewModel : ViewModel(), ComposeChatViewModel {
     }
 
     override fun call(callType: CallType) {
+        TODO("Not yet implemented")
+    }
+
+    override fun showCall() {
         TODO("Not yet implemented")
     }
 
