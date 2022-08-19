@@ -65,7 +65,7 @@ internal fun Messages(
     val firstVisibleItemIndex by scrollState.firstVisibleItemIndex()
     val shouldFetch by scrollState.shouldFetch()
 
-    LaunchedEffect(scrollState) {
+    LaunchedEffect(firstVisibleItemIndex) {
         snapshotFlow { firstVisibleItemIndex }
             .onEach {
                 val item = items.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
@@ -73,7 +73,7 @@ internal fun Messages(
             }.launchIn(this)
     }
 
-    LaunchedEffect(scrollState) {
+    LaunchedEffect(shouldFetch) {
         snapshotFlow { shouldFetch }
             .filter { it }
             .onEach { onFetch.invoke() }
