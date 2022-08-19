@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_glass_ui.R
@@ -223,7 +224,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
         messages: List<Message>,
         callback: (List<ChatMessagePage>) -> Unit
     ) {
-        val usersDescription = viewModel.usersDescription
+        val usersDescription = viewModel.usersDescription.replayCache.firstOrNull() ?: UsersDescription()
         binding.kaleyraChatMessage.root.post {
             scope.launch {
                 val allPages = mutableListOf<ChatMessagePage>()

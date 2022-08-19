@@ -20,9 +20,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.kaleyra.collaboration_suite_core_ui.Action
-import com.kaleyra.collaboration_suite_core_ui.State
-import com.kaleyra.collaboration_suite_core_ui.StateInfo
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId

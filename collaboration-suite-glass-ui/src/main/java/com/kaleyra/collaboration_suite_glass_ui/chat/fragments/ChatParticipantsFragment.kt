@@ -26,7 +26,7 @@ internal class ChatParticipantsFragment : ParticipantsFragment() {
     }
 
     override val usersDescription: UsersDescription
-        get() = viewModel.usersDescription
+        get() = viewModel.usersDescription.replayCache.firstOrNull() ?: UsersDescription()
 
     private var participantJob: Job? = null
 
@@ -38,16 +38,16 @@ internal class ChatParticipantsFragment : ParticipantsFragment() {
     override fun bindUI() {
         super.bindUI()
         repeatOnStarted {
-            val myUserId = viewModel.participants.replayCache.firstOrNull()?.me?.userId
-                ?: return@repeatOnStarted
+            val myUserId = viewModel.participants.replayCache.firstOrNull()?.me?.userId ?: return@repeatOnStarted
+            val usersDescription = viewModel.usersDescription.replayCache.firstOrNull() ?: return@repeatOnStarted
             viewModel.participants
-                .onEach {
+                .onEach { it ->
                     val sortedList = it.list.sortedBy { myUserId != it.userId }
                     val items = sortedList.map { part ->
                         val data = part.userId.let {
                             ParticipantItemData(
                                 it,
-                                viewModel.usersDescription.name(listOf(it))
+                                usersDescription.name(listOf(it))
                             )
                         }
                         ParticipantItem(data)

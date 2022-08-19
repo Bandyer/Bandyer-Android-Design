@@ -39,8 +39,6 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kaleyra.collaboration_suite_core_ui.ConversationItem
-import com.kaleyra.collaboration_suite_core_ui.Message
 import com.kaleyra.collaboration_suite_phone_ui.R
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -55,7 +53,7 @@ const val MessageTag = "MessageTag"
 const val MessagesLazyColumnTag = "MessagesLazyColumnTag"
 
 @Composable
-fun Messages(
+internal fun Messages(
     items: List<ConversationItem>,
     onFetch: () -> Unit,
     scrollState: LazyListState,
@@ -141,7 +139,7 @@ fun Messages(
 }
 
 @Composable
-fun NewMessagesHeader(count: Int, modifier: Modifier = Modifier) {
+internal fun NewMessagesHeader(count: Int, modifier: Modifier = Modifier) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
         Text(
             text = pluralStringResource(id = R.plurals.kaleyra_chat_unread_messages, count, count),
@@ -152,14 +150,14 @@ fun NewMessagesHeader(count: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun DayHeader(timestamp: String, modifier: Modifier = Modifier) {
+internal fun DayHeader(timestamp: String, modifier: Modifier = Modifier) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
         Text(text = timestamp, fontSize = 12.sp, style = MaterialTheme.typography.body2)
     }
 }
 
 @Composable
-fun Message(messageItem: ConversationItem.MessageItem, modifier: Modifier = Modifier) {
+internal fun Message(messageItem: ConversationItem.MessageItem, modifier: Modifier = Modifier) {
     val horizontalArrangement = if (messageItem.isMine) Arrangement.End else Arrangement.Start
 
     Row(
@@ -170,7 +168,7 @@ fun Message(messageItem: ConversationItem.MessageItem, modifier: Modifier = Modi
 }
 
 @Composable
-fun Bubble(messageItem: ConversationItem.MessageItem) {
+internal fun Bubble(messageItem: ConversationItem.MessageItem) {
     val configuration = LocalConfiguration.current
 
     Card(
@@ -228,7 +226,7 @@ private fun contentDescriptionFor(state: Message.State): String =
     )
 
 @Composable
-fun ClickableMessage(item: ConversationItem.MessageItem) {
+internal fun ClickableMessage(item: ConversationItem.MessageItem) {
     val uriHandler = LocalUriHandler.current
 
     val styledMessage = messageFormatter(

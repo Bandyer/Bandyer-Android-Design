@@ -5,6 +5,7 @@ package com.kaleyra.collaboration_suite_phone_ui.chat
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
@@ -41,13 +42,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.kaleyra.collaboration_suite_core_ui.Action
-import com.kaleyra.collaboration_suite_core_ui.CallType
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
-import com.kaleyra.collaboration_suite_core_ui.Info
-import com.kaleyra.collaboration_suite_core_ui.State
-import com.kaleyra.collaboration_suite_core_ui.ComposeChatViewModel
-import com.kaleyra.collaboration_suite_core_ui.StateInfo
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
@@ -55,7 +50,10 @@ import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceI
 import kotlinx.coroutines.launch
 
 
-class PhoneChatActivity : ChatActivity() {
+internal class PhoneChatActivity : ChatActivity() {
+
+    override val viewModel: PhoneChatViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -67,9 +65,9 @@ class PhoneChatActivity : ChatActivity() {
 }
 
 @Composable
-fun ChatScreen(
+internal fun ChatScreen(
     onBackPressed: () -> Unit,
-    viewModel: ComposeChatViewModel
+    viewModel: ChatComposeViewModel
 ) {
     val scope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
@@ -161,7 +159,7 @@ private fun Set<Action>.mapToClickableAction(makeCall: (CallType) -> Unit): Set<
 
 @Preview
 @Composable
-fun NoMessagesLabel() {
+internal fun NoMessagesLabel() {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -176,7 +174,7 @@ fun NoMessagesLabel() {
 
 @Preview
 @Composable
-fun LoadingMessagesLabel() {
+internal fun LoadingMessagesLabel() {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -190,7 +188,7 @@ fun LoadingMessagesLabel() {
 }
 
 @Composable
-fun OngoingCallLabel(onClick: () -> Unit) {
+internal fun OngoingCallLabel(onClick: () -> Unit) {
     Text(
         text = stringResource(id = R.string.kaleyra_ongoing_call_label),
         color = Color.White,
