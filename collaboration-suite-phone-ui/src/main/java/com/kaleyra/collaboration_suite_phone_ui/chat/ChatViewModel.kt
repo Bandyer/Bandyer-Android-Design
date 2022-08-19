@@ -122,14 +122,11 @@ internal class PhoneChatViewModel: ChatViewModel(), ChatComposeViewModel {
                     return@forEachIndexed
                 }
 
-                if (_showUnreadHeader.value && previousMessageItem.id == firstUnreadMessageId)
+                if (_showUnreadHeader.value && previousMessageItem.id == firstUnreadMessageId) {
                     items.add(ConversationItem.NewMessagesItem(index))
+                }
 
-                if (!Iso8601.isSameDay(
-                        message.creationDate.time,
-                        previousMessageItem.creationDate.time
-                    )
-                )
+                if (!Iso8601.isSameDay(message.creationDate.time, previousMessageItem.creationDate.time)) {
                     items.add(
                         ConversationItem.DayItem(
                             Iso8601.parseDay(
@@ -138,6 +135,7 @@ internal class PhoneChatViewModel: ChatViewModel(), ChatComposeViewModel {
                             )
                         )
                     )
+                }
 
                 items.add(ConversationItem.MessageItem(toUiMessage(viewModelScope, message), message !is OtherMessage))
             }

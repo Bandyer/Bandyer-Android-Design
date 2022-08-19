@@ -49,7 +49,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLay
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
 import kotlinx.coroutines.launch
 
-
 internal class PhoneChatActivity : ChatActivity() {
 
     override val viewModel: PhoneChatViewModel by viewModels()

@@ -22,6 +22,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -61,24 +62,10 @@ internal fun Messages(
     onNewMessageItems: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val firstVisibleItemIndex by remember {
-        derivedStateOf {
-            scrollState.firstVisibleItemIndex
-        }
-    }
-    // Do extensions functions on scrollState
-    val shouldFetch by remember {
-        derivedStateOf {
-            val layoutInfo = scrollState.layoutInfo
-            val totalItemsCount = layoutInfo.totalItemsCount
-            val visibleItemsInfo = layoutInfo.visibleItemsInfo
-            totalItemsCount.let {
-                it != 0 && it <= (visibleItemsInfo.lastOrNull()?.index ?: 0) + FETCH_THRESHOLD
-            }
-        }
-    }
+    val firstVisibleItemIndex by scrollState.firstVisibleItemIndex()
+    val shouldFetch by scrollState.shouldFetch()
 
-    LaunchedEffect(firstVisibleItemIndex) {
+    LaunchedEffect(scrollState) {
         snapshotFlow { firstVisibleItemIndex }
             .onEach {
                 val item = items.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
@@ -86,15 +73,14 @@ internal fun Messages(
             }.launchIn(this)
     }
 
-
-    LaunchedEffect(shouldFetch) {
+    LaunchedEffect(scrollState) {
         snapshotFlow { shouldFetch }
             .filter { it }
             .onEach { onFetch.invoke() }
             .launchIn(this)
     }
 
-    LaunchedEffect(items) {
+    LaunchedEffect(Unit) {
         snapshotFlow { items }
             .onEach { items ->
                 val messageItems = items.filterIsInstance<ConversationItem.MessageItem>()
@@ -134,6 +120,21 @@ internal fun Messages(
                         .padding(bottom = 8.dp)
                 )
             }
+        }
+    }
+}
+
+@Composable
+internal fun LazyListState.firstVisibleItemIndex(): State<Int> =
+    remember(this) { derivedStateOf { firstVisibleItemIndex } }
+
+@Composable
+internal fun LazyListState.shouldFetch(): State<Boolean> {
+    return remember(this) {
+        derivedStateOf {
+            val totalItemsCount = layoutInfo.totalItemsCount
+            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            totalItemsCount != 0 && totalItemsCount <= lastVisibleItemIndex + FETCH_THRESHOLD
         }
     }
 }
