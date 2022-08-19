@@ -80,7 +80,7 @@ internal fun Messages(
             .launchIn(this)
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(items) {
         snapshotFlow { items }
             .onEach { items ->
                 val messageItems = items.filterIsInstance<ConversationItem.MessageItem>()
