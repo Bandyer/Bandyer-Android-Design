@@ -8,15 +8,17 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 
-val symbolPattern by lazy {
+private val symbolPattern by lazy {
     Regex("""(https?://[^\s\t\n]+)|(\*[\w]+\*)|(_[\w]+_)|(~[\w]+~)""")
 }
 
-enum class SymbolAnnotationType {
+private typealias StringAnnotation = AnnotatedString.Range<String>
+
+private typealias SymbolAnnotation = Pair<AnnotatedString, StringAnnotation?>
+
+internal enum class SymbolAnnotationType {
     LINK
 }
-typealias StringAnnotation = AnnotatedString.Range<String>
-typealias SymbolAnnotation = Pair<AnnotatedString, StringAnnotation?>
 
 /**
  * Format a message following Markdown-lite syntax
@@ -25,7 +27,7 @@ typealias SymbolAnnotation = Pair<AnnotatedString, StringAnnotation?>
  * @return AnnotatedString with annotations used inside the ClickableText wrapper
  */
 @Composable
-fun messageFormatter(
+internal fun messageFormatter(
     text: String,
     primary: Boolean
 ): AnnotatedString {
