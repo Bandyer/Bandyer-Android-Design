@@ -39,9 +39,8 @@ import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.kaleyra.collaboration_suite.chatbox.Message
-import com.kaleyra.collaboration_suite.chatbox.OtherMessage
-import com.kaleyra.collaboration_suite_core_ui.LazyColumnItem
+import com.kaleyra.collaboration_suite_core_ui.ConversationItem
+import com.kaleyra.collaboration_suite_core_ui.Message
 import com.kaleyra.collaboration_suite_phone_ui.R
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -52,46 +51,16 @@ private const val FETCH_THRESHOLD = 15
 private val OtherBubbleShape = RoundedCornerShape(0.dp, 24.dp, 24.dp, 12.dp)
 private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
 
-const val MessageTestTag = "MessageTestTag"
-
-
-//@Preview("Action bubble")
-//@Composable
-//fun ChatBubble() {
-//    MaterialTheme {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .background(Color.White)
-//        ) {
-//            Bubble(
-//                true,
-//                content = "Hello there!",
-//                time = "11:40",
-//                state = Message.State.Read(),
-//                200
-//            )
-//
-//            Divider(color = Color.White, thickness = 16.dp)
-//
-//            Bubble(
-//                false,
-//                content = "How is going? I like trains, cars and dogs. But I hate mosquitos.",
-//                time = "13:45",
-//                state = Message.State.Received(),
-//                200
-//            )
-//        }
-//    }
-//}
+const val MessageTag = "MessageTag"
+const val MessagesLazyColumnTag = "MessagesLazyColumnTag"
 
 @Composable
 fun Messages(
-    items: List<LazyColumnItem>,
+    items: List<ConversationItem>,
     onFetch: () -> Unit,
     scrollState: LazyListState,
-    onMessageItemScrolled: (LazyColumnItem.Message) -> Unit,
-    onNewMessageItems: (List<LazyColumnItem.Message>) -> Unit,
+    onMessageItemScrolled: (ConversationItem.MessageItem) -> Unit,
+    onNewMessageItems: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val firstVisibleItemIndex by remember {
@@ -114,7 +83,7 @@ fun Messages(
     LaunchedEffect(firstVisibleItemIndex) {
         snapshotFlow { firstVisibleItemIndex }
             .onEach {
-                val item = items.getOrNull(it) as? LazyColumnItem.Message ?: return@onEach
+                val item = items.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
                 onMessageItemScrolled(item)
             }.launchIn(this)
     }
@@ -130,13 +99,11 @@ fun Messages(
     LaunchedEffect(items) {
         snapshotFlow { items }
             .onEach { items ->
-                val messageItems = items.filterIsInstance<LazyColumnItem.Message>()
-                onNewMessageItems(messageItems)
+                val messageItems = items.filterIsInstance<ConversationItem.MessageItem>()
+                onNewMessageItems()
                 when {
                     firstVisibleItemIndex < 3 -> scrollState.animateScrollToItem(0)
-                    messageItems.firstOrNull()?.message !is OtherMessage -> scrollState.scrollToItem(
-                        0
-                    )
+                    messageItems.firstOrNull()?.isMine == true -> scrollState.scrollToItem(0)
                 }
             }.launchIn(this)
     }
@@ -146,24 +113,24 @@ fun Messages(
         state = scrollState,
         contentPadding = PaddingValues(all = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier.testTag("lazyColumnMessages")
+        modifier = modifier.testTag(MessagesLazyColumnTag)
     ) {
         items(items, key = { it.id }, contentType = { it::class.java }) { item ->
             when (item) {
-                is LazyColumnItem.Message -> Message(
+                is ConversationItem.MessageItem -> Message(
                     item,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .testTag(MessageTestTag)
+                        .testTag(MessageTag)
                 )
-                is LazyColumnItem.DayHeader -> DayHeader(
+                is ConversationItem.DayItem -> DayHeader(
                     item.timestamp,
                     Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
                 )
-                is LazyColumnItem.UnreadHeader -> UnreadHeader(
-                    item.unreadCount,
+                is ConversationItem.NewMessagesItem -> NewMessagesHeader(
+                    item.count,
                     Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
@@ -174,7 +141,7 @@ fun Messages(
 }
 
 @Composable
-fun UnreadHeader(count: Int, modifier: Modifier = Modifier) {
+fun NewMessagesHeader(count: Int, modifier: Modifier = Modifier) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
         Text(
             text = pluralStringResource(id = R.plurals.kaleyra_chat_unread_messages, count, count),
@@ -192,8 +159,8 @@ fun DayHeader(timestamp: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun Message(messageItem: LazyColumnItem.Message, modifier: Modifier = Modifier) {
-    val horizontalArrangement = if (messageItem.message !is OtherMessage) Arrangement.End else Arrangement.Start
+fun Message(messageItem: ConversationItem.MessageItem, modifier: Modifier = Modifier) {
+    val horizontalArrangement = if (messageItem.isMine) Arrangement.End else Arrangement.Start
 
     Row(
         modifier = modifier,
@@ -203,16 +170,12 @@ fun Message(messageItem: LazyColumnItem.Message, modifier: Modifier = Modifier) 
 }
 
 @Composable
-fun Bubble(messageItem: LazyColumnItem.Message) {
+fun Bubble(messageItem: ConversationItem.MessageItem) {
     val configuration = LocalConfiguration.current
 
-    val isMyMessage = messageItem.message !is OtherMessage
-
-    val messageState = messageItem.message.state.collectAsState().value
-
     Card(
-        shape = if (isMyMessage) MyBubbleShape else OtherBubbleShape,
-        backgroundColor = if (isMyMessage) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant,
+        shape = if (messageItem.isMine) MyBubbleShape else OtherBubbleShape,
+        backgroundColor = if (messageItem.isMine) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant,
         elevation = 0.dp,
         modifier = Modifier.widthIn(min = 0.dp, max = configuration.screenWidthDp.div(2).dp)
     ) {
@@ -225,15 +188,15 @@ fun Bubble(messageItem: LazyColumnItem.Message) {
                 modifier = Modifier.align(Alignment.End)
             ) {
                 Text(
-                    text = messageItem.time,
+                    text = messageItem.message.time,
                     fontSize = 12.sp,
                     style = MaterialTheme.typography.body2
                 )
 
-                if (isMyMessage) {
+                if (messageItem.isMine) {
                     Icon(
-                        painter = painterFor(messageState),
-                        contentDescription = contentDescriptionFor(messageState),
+                        painter = painterFor(messageItem.message.state.collectAsState().value),
+                        contentDescription = contentDescriptionFor(messageItem.message.state.collectAsState().value),
                         modifier = Modifier
                             .padding(2.dp)
                             .size(16.dp)
@@ -265,12 +228,12 @@ private fun contentDescriptionFor(state: Message.State): String =
     )
 
 @Composable
-fun ClickableMessage(item: LazyColumnItem.Message) {
+fun ClickableMessage(item: ConversationItem.MessageItem) {
     val uriHandler = LocalUriHandler.current
 
     val styledMessage = messageFormatter(
-        text = (item.message.content as? Message.Content.Text)?.message ?: "",
-        primary = item.message !is OtherMessage
+        text = item.message.text,
+        primary = item.isMine
     )
 
     ClickableText(

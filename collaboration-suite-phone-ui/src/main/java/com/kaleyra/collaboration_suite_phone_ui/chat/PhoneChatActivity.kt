@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
+
 package com.kaleyra.collaboration_suite_phone_ui.chat
 
 import android.os.Bundle
@@ -12,70 +14,44 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
-import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.kaleyra.collaboration_suite.chatbox.Message
-import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite_core_ui.Action
 import com.kaleyra.collaboration_suite_core_ui.CallType
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.Info
 import com.kaleyra.collaboration_suite_core_ui.State
 import com.kaleyra.collaboration_suite_core_ui.ComposeChatViewModel
-import com.kaleyra.collaboration_suite_core_ui.LazyColumnItem
 import com.kaleyra.collaboration_suite_core_ui.StateInfo
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 
@@ -90,7 +66,6 @@ class PhoneChatActivity : ChatActivity() {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalAnimationApi::class)
 @Composable
 fun ChatScreen(
     onBackPressed: () -> Unit,
@@ -104,7 +79,7 @@ fun ChatScreen(
         }
     }
 
-    val lazyColumnItems = viewModel.lazyColumnItems.collectAsState(initial = emptyList()).value
+    val lazyColumnItems = viewModel.conversationItems.collectAsState(initial = emptyList()).value
     val areMessagesFetched = viewModel.areMessagesFetched.collectAsState(initial = false).value
     val stateInfo = viewModel.stateInfo.collectAsState(initial = StateInfo(State.None, Info.Empty)).value
     val chatActions = viewModel.chatActions.collectAsState(initial = setOf()).value
@@ -129,7 +104,7 @@ fun ChatScreen(
                 onFetch = { viewModel.fetchMessages() },
                 scrollState = scrollState,
                 onMessageItemScrolled = { viewModel.onMessageScrolled(it) },
-                onNewMessageItems = { viewModel.markAsRead(it) },
+                onNewMessageItems = { viewModel.readAllMessages() },
                 modifier = Modifier.fillMaxSize()
             )
 
