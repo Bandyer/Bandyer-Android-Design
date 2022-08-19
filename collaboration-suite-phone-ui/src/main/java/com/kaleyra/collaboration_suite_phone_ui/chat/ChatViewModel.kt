@@ -17,7 +17,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.Message.Companion.toUiMessa
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filterIsInstance
@@ -25,8 +24,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.shareIn
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.take
 
 internal class PhoneChatViewModel: ChatViewModel(), ChatComposeViewModel {
@@ -103,7 +100,7 @@ internal class PhoneChatViewModel: ChatViewModel(), ChatComposeViewModel {
             state,
             info
         )
-    }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    }
 
     override val chatActions = actions.map { actions ->
         mutableSetOf<Action>().apply {
@@ -114,7 +111,7 @@ internal class PhoneChatViewModel: ChatViewModel(), ChatComposeViewModel {
             if (actions.any { it is ChatUI.Action.CreateCall && it.preferredType.isVideoEnabled() })
                 add(Action.VideoCall)
         }
-    }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    }
 
     override val conversationItems =
         combine(messages.map { it.list }, _firstUnreadMessageId) { messages, firstUnreadMessageId ->
@@ -145,19 +142,16 @@ internal class PhoneChatViewModel: ChatViewModel(), ChatComposeViewModel {
                 items.add(ConversationItem.MessageItem(toUiMessage(viewModelScope, message), message !is OtherMessage))
             }
             items
-        }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+        }
 
     override val unseenMessagesCount = _unseenMessages.map { it.count() }
-        .shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     override val isCallActive = phoneBox
         .flatMapLatest { it.call }
         .flatMapLatest { it.state }
         .map { it !is Call.State.Disconnected.Ended }
-        .shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
 
     override val areMessagesFetched = messages.take(1).map { true }
-        .stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, false)
 
     override fun readAllMessages() {
         val messages = messages.replayCache.firstOrNull() ?: return

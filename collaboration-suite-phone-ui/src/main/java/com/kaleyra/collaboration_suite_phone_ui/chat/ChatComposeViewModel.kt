@@ -1,21 +1,20 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat
 
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 
 internal interface ChatComposeViewModel {
 
-    val stateInfo: SharedFlow<StateInfo>
+    val stateInfo: Flow<StateInfo>
 
-    val chatActions: SharedFlow<Set<Action>>
+    val chatActions: Flow<Set<Action>>
 
-    val conversationItems: SharedFlow<List<ConversationItem>>
+    val conversationItems: Flow<List<ConversationItem>>
 
-    val unseenMessagesCount: SharedFlow<Int>
+    val unseenMessagesCount: Flow<Int>
 
-    val isCallActive: SharedFlow<Boolean>
+    val isCallActive: Flow<Boolean>
 
-    val areMessagesFetched: StateFlow<Boolean>
+    val areMessagesFetched: Flow<Boolean>
 
     fun readAllMessages()
 
