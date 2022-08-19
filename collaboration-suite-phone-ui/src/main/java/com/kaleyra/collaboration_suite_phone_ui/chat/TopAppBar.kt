@@ -3,7 +3,11 @@ package com.kaleyra.collaboration_suite_phone_ui.chat
 import android.net.Uri
 import android.view.ContextThemeWrapper
 import android.view.View
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
@@ -12,10 +16,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.kaleyra.collaboration_suite_core_ui.Info
+import com.kaleyra.collaboration_suite_core_ui.Action
 import com.kaleyra.collaboration_suite_core_ui.State
 import com.kaleyra.collaboration_suite_core_ui.StateInfo
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -35,6 +40,8 @@ import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceI
 //        }
 //    }
 //}
+
+internal typealias ClickableAction = Pair<Action, () -> Unit>
 
 @Composable
 internal fun TopAppBar(
@@ -96,3 +103,32 @@ internal fun TopAppBar(
         }
     }
 }
+
+@Composable
+internal fun Actions(actions: Set<ClickableAction>) {
+    actions.getClickableAction<Action.AudioCall>()?.let { (_, onClick) ->
+        MenuIcon(
+            painter = painterResource(R.drawable.ic_kaleyra_audio_call),
+            onClick = onClick,
+            contentDescription = stringResource(id = R.string.kaleyra_start_audio_call)
+        )
+    }
+
+    actions.getClickableAction<Action.AudioUpgradableCall>()?.let { (_, onClick) ->
+        MenuIcon(
+            painter = painterResource(R.drawable.ic_kaleyra_audio_upgradable_call),
+            onClick = onClick,
+            contentDescription = stringResource(id = R.string.kaleyra_start_audio_upgradable_call)
+        )
+    }
+
+    actions.getClickableAction<Action.VideoCall>()?.let { (_, onClick) ->
+        MenuIcon(
+            painter = painterResource(R.drawable.ic_kaleyra_video_call),
+            onClick = onClick,
+            contentDescription = stringResource(id = R.string.kaleyra_start_video_call)
+        )
+    }
+}
+
+private inline fun <reified T : Action> Set<ClickableAction>.getClickableAction(): ClickableAction? = firstOrNull { (act, _) -> act is T }
