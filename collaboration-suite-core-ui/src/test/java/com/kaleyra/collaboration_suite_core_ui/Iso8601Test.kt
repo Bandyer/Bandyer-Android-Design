@@ -108,4 +108,16 @@ class Iso8601Test {
         val result = Iso8601.parseMillisToIso8601(millis)
         assertIsTrue(expected == result)
     }
+
+    @Test
+    fun testIsSameDay() {
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        calendar.set(2021, 8, 3, 16, 24, 0)
+        val timestamp1 = calendar.timeInMillis
+        val timestamp2 = timestamp1 - 3600
+        val timestamp3 = timestamp1 - 86400000
+
+        assertIsTrue(Iso8601.isSameDay(timestamp1, timestamp2))
+        assertIsTrue(!Iso8601.isSameDay(timestamp1, timestamp3))
+    }
 }

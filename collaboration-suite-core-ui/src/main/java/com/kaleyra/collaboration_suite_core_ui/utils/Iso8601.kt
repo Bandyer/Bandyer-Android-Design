@@ -168,6 +168,23 @@ object Iso8601 {
                 .setMidnight()
         )
 
+    /**
+     * Check if two timestamps lie in the same day
+     *
+     * @param timestamp1 Long The first timestamp
+     * @param timestamp2 Long The second timestamp
+     * @return Boolean True if the two timestamps lie in the same day, false otherwise
+     */
+    fun isSameDay(timestamp1: Long, timestamp2: Long): Boolean =
+        parseDayShort(timestamp1).equals(parseDayShort(timestamp2))
+
+    private fun parseDayShort(timestamp: Long) =
+        DateTimeFormatter
+            .ofLocalizedDate(FormatStyle.SHORT)
+            .withLocale(Locale.getDefault())
+            .withZone(ZoneId.systemDefault())
+            .format(Instant.ofEpochMilli(timestamp))
+
     private fun ZonedDateTime.setMidnight() =
         this.withHour(0)
             .withMinute(0)
