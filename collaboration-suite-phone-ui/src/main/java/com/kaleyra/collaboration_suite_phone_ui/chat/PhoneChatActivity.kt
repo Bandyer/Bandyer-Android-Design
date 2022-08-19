@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -70,16 +71,9 @@ internal fun ChatScreen(
 ) {
     val scope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
-    val showFab by remember {
-        derivedStateOf {
-            scrollState.firstVisibleItemIndex > 0 && scrollState.firstVisibleItemScrollOffset > 0
-        }
-    }
+    val showFab by scrollState.shouldShowFab()
 
     val lazyColumnItems = viewModel.conversationItems.collectAsState(initial = emptyList()).value
-    val areMessagesFetched = viewModel.areMessagesFetched.collectAsState(initial = false).value
-    val stateInfo = viewModel.stateInfo.collectAsState(initial = StateInfo(State.None, Info.Empty)).value
-    val chatActions = viewModel.chatActions.collectAsState(initial = setOf()).value
 
     Column(
         modifier = Modifier
@@ -88,13 +82,18 @@ internal fun ChatScreen(
                 testTagsAsResourceId = true
             }) {
         TopAppBar(
-            stateInfo = stateInfo,
+            stateInfo = viewModel.stateInfo.collectAsState(
+                initial = StateInfo(
+                    State.None,
+                    Info.Empty
+                )
+            ).value,
             onBackPressed = onBackPressed,
-            actions = chatActions.mapToClickableAction(makeCall = { viewModel.call(it) })
+            actions = viewModel.chatActions.collectAsState(initial = setOf()).value.mapToClickableAction(makeCall = { viewModel.call(it) })
         )
 
         Box(Modifier.weight(1f)) {
-            if (!areMessagesFetched) LoadingMessagesLabel()
+            if (!viewModel.areMessagesFetched.collectAsState(initial = false).value) LoadingMessagesLabel()
             else if (lazyColumnItems.isEmpty()) NoMessagesLabel()
             else Messages(
                 items = lazyColumnItems,
@@ -146,6 +145,10 @@ internal fun ChatScreen(
     }
 }
 
+@Composable
+private fun LazyListState.shouldShowFab(): androidx.compose.runtime.State<Boolean> =
+    remember { derivedStateOf { firstVisibleItemIndex > 0 && firstVisibleItemScrollOffset > 0 } }
+
 private fun Set<Action>.mapToClickableAction(makeCall: (CallType) -> Unit): Set<ClickableAction> {
     return map {
         when (it) {
@@ -158,7 +161,7 @@ private fun Set<Action>.mapToClickableAction(makeCall: (CallType) -> Unit): Set<
 
 @Preview
 @Composable
-internal fun NoMessagesLabel() {
+private fun NoMessagesLabel() {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -173,7 +176,7 @@ internal fun NoMessagesLabel() {
 
 @Preview
 @Composable
-internal fun LoadingMessagesLabel() {
+private fun LoadingMessagesLabel() {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -187,7 +190,7 @@ internal fun LoadingMessagesLabel() {
 }
 
 @Composable
-internal fun OngoingCallLabel(onClick: () -> Unit) {
+private fun OngoingCallLabel(onClick: () -> Unit) {
     Text(
         text = stringResource(id = R.string.kaleyra_ongoing_call_label),
         color = Color.White,

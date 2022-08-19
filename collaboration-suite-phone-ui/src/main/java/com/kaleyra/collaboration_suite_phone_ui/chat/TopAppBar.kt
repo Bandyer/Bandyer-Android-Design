@@ -102,7 +102,7 @@ internal fun TopAppBar(
 }
 
 @Composable
-internal fun Actions(actions: Set<ClickableAction>) {
+private fun Actions(actions: Set<ClickableAction>) {
     actions.getClickableAction<Action.AudioCall>()?.let { (_, onClick) ->
         MenuIcon(
             painter = painterResource(R.drawable.ic_kaleyra_audio_call),
