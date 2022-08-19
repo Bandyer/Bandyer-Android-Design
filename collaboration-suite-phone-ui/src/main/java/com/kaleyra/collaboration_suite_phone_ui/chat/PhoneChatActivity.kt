@@ -14,11 +14,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,7 +27,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
@@ -146,7 +143,7 @@ fun ChatScreen(
                 exit = scaleOut()
             ) {
                 ScrollToBottomFab(
-                    unseenMessagesCounter = viewModel.unseenMessagesCount.collectAsState(0).value,
+                    counter = viewModel.unseenMessagesCount.collectAsState(0).value,
                     onClick = {
                         scope.launch { scrollState.scrollToItem(0) }
                         viewModel.onAllMessagesScrolled()
@@ -233,39 +230,6 @@ fun OngoingCallLabel(onClick: () -> Unit) {
             )
             .padding(horizontal = 16.dp, vertical = 8.dp)
     )
-}
-
-@Preview
-@Composable
-fun FabPreview() {
-    ScrollToBottomFab(unseenMessagesCounter = 5, onClick = { })
-}
-
-@Composable
-fun ScrollToBottomFab(unseenMessagesCounter: Int, onClick: () -> Unit) {
-    FloatingActionButton(
-        onClick = onClick,
-        backgroundColor = MaterialTheme.colors.primary,
-        modifier = Modifier.defaultMinSize(32.dp, 32.dp)
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            if (unseenMessagesCounter > 0)
-                Text(
-                    text = "$unseenMessagesCounter",
-                    modifier = Modifier
-                        .paddingFromBaseline(bottom = 6.dp)
-                        .padding(end = 4.dp)
-                )
-            Icon(
-                painter = painterResource(id = R.drawable.ic_kaleyra_double_arrow_down),
-                contentDescription = stringResource(id = R.string.kaleyra_chat_scroll_to_last_message),
-                modifier = Modifier.size(16.dp)
-            )
-        }
-    }
 }
 
 @Composable
