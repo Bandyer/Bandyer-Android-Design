@@ -9,18 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 
-private val Height = 24.dp
-private val HorizontalPadding = 12.dp
-private val VerticalPadding = 16.dp
-
 @Composable
 internal fun MenuIcon(painter: Painter, onClick: () -> Unit, contentDescription: String) {
     Icon(
         painter = painter,
         modifier = Modifier
             .clickable(onClick = onClick)
-            .padding(HorizontalPadding, VerticalPadding)
-            .height(Height),
+            .padding(horizontal = 12.dp, vertical = 16.dp)
+            .height(24.dp),
         contentDescription = contentDescription
     )
 }
