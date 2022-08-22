@@ -61,15 +61,15 @@ internal class PhoneChatViewModel: ChatViewModel(), ChatComposeViewModel {
 
     private val _otherParticipantState = _otherParticipant.flatMapLatest { it.state }
 
-    private var previousChatBoxState: ChatBox.State? = null
+    private var _previousChatBoxState: ChatBox.State? = null
 
-    private val state = combine(
+    private val _state = combine(
         _typingEvents,
         chatBoxState,
         _otherParticipantState
     ) { event, chatBoxState, participantState ->
         when {
-            chatBoxState is ChatBox.State.Connecting && previousChatBoxState is ChatBox.State.Connected -> State.NetworkState.Offline
+            chatBoxState is ChatBox.State.Connecting && _previousChatBoxState is ChatBox.State.Connected -> State.NetworkState.Offline
             chatBoxState is ChatBox.State.Connecting -> State.NetworkState.Connecting
             event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Online -> State.UserState.Online
             event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Offline -> {
@@ -83,11 +83,11 @@ internal class PhoneChatViewModel: ChatViewModel(), ChatComposeViewModel {
             event is ChatParticipant.Event.Typing.Started -> State.UserState.Typing
             else -> State.None
         }.also {
-            previousChatBoxState = chatBoxState
+            _previousChatBoxState = chatBoxState
         }
     }
 
-    private val info = combine(participants, usersDescription) { participants, usersDescription ->
+    private val _info = combine(participants, usersDescription) { participants, usersDescription ->
         val otherUserId = participants.others.first().userId
         Info(
             title = usersDescription.name(listOf(otherUserId)),
@@ -95,12 +95,7 @@ internal class PhoneChatViewModel: ChatViewModel(), ChatComposeViewModel {
         )
     }
 
-    override val stateInfo = combine(state, info) { state, info ->
-        StateInfo(
-            state,
-            info
-        )
-    }
+    override val stateInfo = combine(_state, _info) { state, info -> StateInfo(state, info) }
 
     override val chatActions = actions.map { actions ->
         mutableSetOf<Action>().apply {
