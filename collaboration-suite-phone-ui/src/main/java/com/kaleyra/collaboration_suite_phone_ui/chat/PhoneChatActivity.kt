@@ -126,7 +126,7 @@ internal fun ChatScreen(
             .launchIn(this)
     }
 
-    LaunchedEffect(uiState.conversationItems) {
+    LaunchedEffect(uiState) {
         snapshotFlow { uiState.conversationItems }
             .onEach { items ->
                 val messageItems = items.filterIsInstance<ConversationItem.MessageItem>()
