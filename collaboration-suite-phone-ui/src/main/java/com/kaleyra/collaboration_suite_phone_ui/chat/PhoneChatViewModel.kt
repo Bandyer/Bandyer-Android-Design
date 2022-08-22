@@ -138,9 +138,9 @@ private fun Flow<PhoneBoxUI>.hasActiveCall(): Flow<Boolean> =
 private fun Flow<MessagesUI>.firstUnreadMessageId(): Flow<String?> {
     return map { it.other }.take(1).map { messages ->
         messages.forEachIndexed { index, message ->
-            val previousMessage = messages.getOrNull(index - 1) ?: return@forEachIndexed
-            if (previousMessage.state.value is Message.State.Received && message.state.value is Message.State.Read)
-                return@map previousMessage.id
+            val previousMessage = messages.getOrNull(index + 1)
+            if (previousMessage == null || (message.state.value is Message.State.Received && previousMessage.state.value is Message.State.Read))
+                return@map message.id
         }
         return@map null
     }
@@ -200,20 +200,17 @@ private fun Flow<MessagesUI>.mapToConversationItems(coroutineScope: CoroutineSco
     return combine(this.map { it.list }, this.firstUnreadMessageId()) { messages, firstUnreadMessageId ->
         val items = mutableListOf<ConversationItem>()
         messages.forEachIndexed { index, message ->
-            val previousMessageItem = messages.getOrNull(index - 1) ?: kotlin.run {
-                items.add(ConversationItem.MessageItem(message.toUiMessage(coroutineScope), message !is OtherMessage))
-                return@forEachIndexed
-            }
-
-            if (showUnreadHeader.value && previousMessageItem.id == firstUnreadMessageId) {
-                items.add(ConversationItem.NewMessagesItem(index))
-            }
-
-            if (!Iso8601.isSameDay(message.creationDate.time, previousMessageItem.creationDate.time)) {
-                items.add(ConversationItem.DayItem(Iso8601.parseDay(ContextRetainer.context, timestamp = previousMessageItem.creationDate.time)))
-            }
+            val previousMessage = messages.getOrNull(index + 1)
 
             items.add(ConversationItem.MessageItem(message.toUiMessage(coroutineScope), message !is OtherMessage))
+
+            if (showUnreadHeader.value && message.id == firstUnreadMessageId) {
+                items.add(ConversationItem.NewMessagesItem(index + 1))
+            }
+
+            if (previousMessage == null || !Iso8601.isSameDay(message.creationDate.time, previousMessage.creationDate.time)) {
+                items.add(ConversationItem.DayItem(Iso8601.parseDay(ContextRetainer.context, timestamp = message.creationDate.time)))
+            }
         }
         items
     }
