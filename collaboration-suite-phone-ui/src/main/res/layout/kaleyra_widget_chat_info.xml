@@ -25,6 +25,8 @@
     <com.kaleyra.collaboration_suite_phone_ui.call.imageviews.KaleyraAvatarImageView
         android:id="@+id/kaleyra_avatar"
         style="?attr/kaleyra_iconStyle"
+        android:layout_width="@dimen/kaleyra_dimen_chat_avatar_size"
+        android:layout_height="@dimen/kaleyra_dimen_chat_avatar_size"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +35,8 @@
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/kaleyra_title"
         style="?attr/kaleyra_titleStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/kaleyra_subtitle_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toRightOf="@id/kaleyra_avatar"
@@ -44,6 +48,7 @@
         android:id="@+id/kaleyra_subtitle_text"
         style="?attr/kaleyra_subtitleStyle"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/kaleyra_subtitle_bouncing_dots"
         app:layout_constraintHorizontal_bias="0.0"
@@ -60,6 +65,7 @@
         android:id="@+id/kaleyra_subtitle_bouncing_dots"
         style="?attr/kaleyra_bouncingDotsStyle"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/kaleyra_subtitle_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
