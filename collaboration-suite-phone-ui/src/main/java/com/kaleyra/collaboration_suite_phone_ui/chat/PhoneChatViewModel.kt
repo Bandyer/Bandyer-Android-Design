@@ -43,7 +43,7 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
 
     private val showUnreadHeader = MutableStateFlow(true)
 
-    private val unseenMessages = MutableStateFlow<Set<String>>(setOf()).also { flow ->
+    private val unseenMessagesIds = MutableStateFlow<Set<String>>(setOf()).also { flow ->
         chat.unreadMessagesIds()
             .onEach { messages -> flow.value += messages.toSet() }
             .launchIn(viewModelScope)
@@ -74,7 +74,7 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
             _uiState.update { it.copy(areMessagesFetched = areMessagesFetched) }
         }.launchIn(viewModelScope)
 
-        unseenMessages.onEach { messages ->
+        unseenMessagesIds.onEach { messages ->
             _uiState.update { it.copy(unseenMessagesCount = messages.count()) }
         }.launchIn(viewModelScope)
     }
@@ -96,11 +96,11 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
     }
 
     override fun onMessageScrolled(messageItem: ConversationItem.MessageItem) {
-        unseenMessages.value = unseenMessages.value - messageItem.id
+        unseenMessagesIds.value = unseenMessagesIds.value - messageItem.id
     }
 
     override fun onAllMessagesScrolled() {
-        unseenMessages.value = setOf()
+        unseenMessagesIds.value = setOf()
     }
 
     override fun call(callType: CallType) {
