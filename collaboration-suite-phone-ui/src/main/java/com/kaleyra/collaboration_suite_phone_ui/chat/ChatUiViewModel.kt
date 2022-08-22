@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.chat
 import android.net.Uri
 import kotlinx.coroutines.flow.StateFlow
 
-internal interface ChatUiViewModel {
+interface ChatUiViewModel {
 
     val uiState: StateFlow<ChatUiState>
 
@@ -22,7 +22,7 @@ internal interface ChatUiViewModel {
     fun showCall()
 }
 
-internal data class ChatUiState(
+data class ChatUiState(
     val info: ChatInfo = ChatInfo("", Uri.EMPTY),
     val state: ChatState = ChatState.None,
     val actions: Set<ChatAction> = setOf(),

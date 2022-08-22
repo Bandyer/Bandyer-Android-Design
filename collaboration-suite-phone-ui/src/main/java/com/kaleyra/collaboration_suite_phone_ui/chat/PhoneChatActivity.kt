@@ -72,7 +72,7 @@ internal class PhoneChatActivity : ChatActivity() {
 }
 
 @Composable
-internal fun ChatScreen(
+fun ChatScreen(
     onBackPressed: () -> Unit,
     viewModel: ChatUiViewModel
 ) {
@@ -222,7 +222,6 @@ private fun Set<ChatAction>.mapToClickableAction(makeCall: (CallType) -> Unit): 
     }.toSet()
 }
 
-@Preview
 @Composable
 private fun NoMessagesLabel() {
     Row(
@@ -237,7 +236,6 @@ private fun NoMessagesLabel() {
     }
 }
 
-@Preview
 @Composable
 private fun LoadingMessagesLabel() {
     Row(

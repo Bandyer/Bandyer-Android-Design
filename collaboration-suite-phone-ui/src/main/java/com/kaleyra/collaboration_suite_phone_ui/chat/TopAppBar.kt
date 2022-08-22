@@ -54,8 +54,7 @@ internal fun TopAppBar(
                 AndroidView(
                     modifier = Modifier.fillMaxWidth(),
                     factory = {
-                        val themeResId =
-                            it.theme.getAttributeResourceId(R.attr.kaleyra_chatInfoWidgetStyle)
+                        val themeResId = it.theme.getAttributeResourceId(R.attr.kaleyra_chatInfoWidgetStyle)
                         KaleyraChatInfoWidget(ContextThemeWrapper(it, themeResId))
                     },
                     update = {
