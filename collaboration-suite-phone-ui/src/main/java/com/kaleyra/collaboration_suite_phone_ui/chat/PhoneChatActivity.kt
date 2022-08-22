@@ -41,7 +41,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.material.composethemeadapter.MdcTheme
@@ -128,13 +127,9 @@ internal fun ChatScreen(
 
     LaunchedEffect(uiState) {
         snapshotFlow { uiState.conversationItems }
-            .onEach { items ->
-                val messageItems = items.filterIsInstance<ConversationItem.MessageItem>()
+            .onEach {
                 onReadAllMessages()
-                when {
-                    scrollState.firstVisibleItemIndex < 3 -> scrollState.animateScrollToItem(0)
-                    messageItems.firstOrNull()?.isMine == true -> scrollState.scrollToItem(0)
-                }
+                if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
             }.launchIn(this)
     }
 
@@ -183,14 +178,18 @@ internal fun ChatScreen(
         AndroidView(
             modifier = Modifier.fillMaxWidth(),
             factory = {
-                val themeResId =
-                    it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
+                val themeResId = it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
                 KaleyraChatInputLayoutWidget(ContextThemeWrapper(it, themeResId))
             },
             update = {
                 it.callback = object : KaleyraChatInputLayoutEventListener {
                     override fun onTextChanged(text: String) = Unit
-                    override fun onSendClicked(text: String) = onSendMessage(text)
+                    override fun onSendClicked(text: String) {
+                        scope.launch {
+                            onSendMessage(text)
+                            scrollState.scrollToItem(0)
+                        }
+                    }
                 }
             }
         )
