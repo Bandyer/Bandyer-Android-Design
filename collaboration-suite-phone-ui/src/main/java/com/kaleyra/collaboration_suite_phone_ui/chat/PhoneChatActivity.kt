@@ -24,11 +24,13 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -48,7 +50,12 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+
+private const val FETCH_THRESHOLD = 15
 
 internal class PhoneChatActivity : ChatActivity() {
 
@@ -75,6 +82,36 @@ internal fun ChatScreen(
 
     val lazyColumnItems = viewModel.conversationItems.collectAsState(initial = emptyList()).value
 
+    val firstVisibleItemIndex by scrollState.firstVisibleItemIndex()
+    val shouldFetch by scrollState.shouldFetch()
+
+    LaunchedEffect(firstVisibleItemIndex) {
+        snapshotFlow { firstVisibleItemIndex }
+            .onEach {
+                val item = lazyColumnItems.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
+                viewModel.onMessageScrolled(item)
+            }.launchIn(this)
+    }
+
+    LaunchedEffect(shouldFetch) {
+        snapshotFlow { shouldFetch }
+            .filter { it }
+            .onEach { viewModel.fetchMessages() }
+            .launchIn(this)
+    }
+
+    LaunchedEffect(lazyColumnItems) {
+        snapshotFlow { lazyColumnItems }
+            .onEach { items ->
+                val messageItems = items.filterIsInstance<ConversationItem.MessageItem>()
+                viewModel.readAllMessages()
+                when {
+                    firstVisibleItemIndex < 3 -> scrollState.animateScrollToItem(0)
+                    messageItems.firstOrNull()?.isMine == true -> scrollState.scrollToItem(0)
+                }
+            }.launchIn(this)
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -97,10 +134,7 @@ internal fun ChatScreen(
             else if (lazyColumnItems.isEmpty()) NoMessagesLabel()
             else Messages(
                 items = lazyColumnItems,
-                onFetch = { viewModel.fetchMessages() },
                 scrollState = scrollState,
-                onMessageItemScrolled = { viewModel.onMessageScrolled(it) },
-                onNewMessageItems = { viewModel.readAllMessages() },
                 modifier = Modifier.fillMaxSize()
             )
 
@@ -204,5 +238,20 @@ private fun OngoingCallLabel(onClick: () -> Unit) {
             )
             .padding(horizontal = 16.dp, vertical = 8.dp)
     )
+}
+
+@Composable
+fun LazyListState.firstVisibleItemIndex(): androidx.compose.runtime.State<Int> =
+    remember(this) { derivedStateOf { firstVisibleItemIndex } }
+
+@Composable
+fun LazyListState.shouldFetch(): androidx.compose.runtime.State<Boolean> {
+    return remember(this) {
+        derivedStateOf {
+            val totalItemsCount = layoutInfo.totalItemsCount
+            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            totalItemsCount != 0 && totalItemsCount <= lastVisibleItemIndex + FETCH_THRESHOLD
+        }
+    }
 }
 

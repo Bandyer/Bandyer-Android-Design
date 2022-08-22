@@ -21,13 +21,7 @@ import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -41,11 +35,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-
-private const val FETCH_THRESHOLD = 15
 
 private val OtherBubbleShape = RoundedCornerShape(0.dp, 24.dp, 24.dp, 12.dp)
 private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
@@ -56,42 +45,9 @@ const val MessagesLazyColumnTag = "MessagesLazyColumnTag"
 @Composable
 internal fun Messages(
     items: List<ConversationItem>,
-    onFetch: () -> Unit,
     scrollState: LazyListState,
-    onMessageItemScrolled: (ConversationItem.MessageItem) -> Unit,
-    onNewMessageItems: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val firstVisibleItemIndex by scrollState.firstVisibleItemIndex()
-    val shouldFetch by scrollState.shouldFetch()
-
-    LaunchedEffect(firstVisibleItemIndex) {
-        snapshotFlow { firstVisibleItemIndex }
-            .onEach {
-                val item = items.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
-                onMessageItemScrolled(item)
-            }.launchIn(this)
-    }
-
-    LaunchedEffect(shouldFetch) {
-        snapshotFlow { shouldFetch }
-            .filter { it }
-            .onEach { onFetch.invoke() }
-            .launchIn(this)
-    }
-
-    LaunchedEffect(items) {
-        snapshotFlow { items }
-            .onEach { items ->
-                val messageItems = items.filterIsInstance<ConversationItem.MessageItem>()
-                onNewMessageItems()
-                when {
-                    firstVisibleItemIndex < 3 -> scrollState.animateScrollToItem(0)
-                    messageItems.firstOrNull()?.isMine == true -> scrollState.scrollToItem(0)
-                }
-            }.launchIn(this)
-    }
-
     LazyColumn(
         reverseLayout = true,
         state = scrollState,
@@ -120,21 +76,6 @@ internal fun Messages(
                         .padding(bottom = 8.dp)
                 )
             }
-        }
-    }
-}
-
-@Composable
-private fun LazyListState.firstVisibleItemIndex(): State<Int> =
-    remember(this) { derivedStateOf { firstVisibleItemIndex } }
-
-@Composable
-private fun LazyListState.shouldFetch(): State<Boolean> {
-    return remember(this) {
-        derivedStateOf {
-            val totalItemsCount = layoutInfo.totalItemsCount
-            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            totalItemsCount != 0 && totalItemsCount <= lastVisibleItemIndex + FETCH_THRESHOLD
         }
     }
 }
