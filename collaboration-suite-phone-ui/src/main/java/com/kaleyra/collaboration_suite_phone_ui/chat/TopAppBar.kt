@@ -38,11 +38,12 @@ import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceI
 //    }
 //}
 
-internal typealias ClickableAction = Pair<Action, () -> Unit>
+internal typealias ClickableAction = Pair<ChatAction, () -> Unit>
 
 @Composable
 internal fun TopAppBar(
-    stateInfo: StateInfo,
+    state: ChatState,
+    info: ChatInfo,
     actions: Set<ClickableAction>,
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
@@ -72,18 +73,17 @@ internal fun TopAppBar(
                         KaleyraChatInfoWidget(ContextThemeWrapper(it, themeResId))
                     },
                     update = {
-                        val (state, info) = stateInfo
-                        it.contactNameView!!.text = info.title
+                        it.contactNameView!!.text = info.name
                         it.contactNameView!!.visibility = View.VISIBLE
                         it.contactStatusView!!.visibility = View.VISIBLE
                         it.state = when {
-                            state is State.NetworkState.Offline -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.WAITING_FOR_NETWORK()
-                            state is State.NetworkState.Connecting -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.CONNECTING()
-                            state is State.UserState.Online -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.ONLINE()
-                            state is State.UserState.Offline && state.timestamp != null -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.OFFLINE(
+                            state is ChatState.NetworkState.Offline -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.WAITING_FOR_NETWORK()
+                            state is ChatState.NetworkState.Connecting -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.CONNECTING()
+                            state is ChatState.UserState.Online -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.ONLINE()
+                            state is ChatState.UserState.Offline && state.timestamp != null -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.OFFLINE(
                                 state.timestamp
                             )
-                            state is State.UserState.Typing -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.TYPING()
+                            state is ChatState.UserState.Typing -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.TYPING()
                             else -> null
                         }
                         if (info.image != Uri.EMPTY) it.contactImageView!!.setImageUri(info.image)
@@ -103,7 +103,7 @@ internal fun TopAppBar(
 
 @Composable
 private fun Actions(actions: Set<ClickableAction>) {
-    actions.getClickableAction<Action.AudioCall>()?.let { (_, onClick) ->
+    actions.getClickableAction<ChatAction.AudioCall>()?.let { (_, onClick) ->
         MenuIcon(
             painter = painterResource(R.drawable.ic_kaleyra_audio_call),
             onClick = onClick,
@@ -111,7 +111,7 @@ private fun Actions(actions: Set<ClickableAction>) {
         )
     }
 
-    actions.getClickableAction<Action.AudioUpgradableCall>()?.let { (_, onClick) ->
+    actions.getClickableAction<ChatAction.AudioUpgradableCall>()?.let { (_, onClick) ->
         MenuIcon(
             painter = painterResource(R.drawable.ic_kaleyra_audio_upgradable_call),
             onClick = onClick,
@@ -119,7 +119,7 @@ private fun Actions(actions: Set<ClickableAction>) {
         )
     }
 
-    actions.getClickableAction<Action.VideoCall>()?.let { (_, onClick) ->
+    actions.getClickableAction<ChatAction.VideoCall>()?.let { (_, onClick) ->
         MenuIcon(
             painter = painterResource(R.drawable.ic_kaleyra_video_call),
             onClick = onClick,
@@ -128,4 +128,4 @@ private fun Actions(actions: Set<ClickableAction>) {
     }
 }
 
-private inline fun <reified T : Action> Set<ClickableAction>.getClickableAction(): ClickableAction? = firstOrNull { (act, _) -> act is T }
+private inline fun <reified T : ChatAction> Set<ClickableAction>.getClickableAction(): ClickableAction? = firstOrNull { (act, _) -> act is T }

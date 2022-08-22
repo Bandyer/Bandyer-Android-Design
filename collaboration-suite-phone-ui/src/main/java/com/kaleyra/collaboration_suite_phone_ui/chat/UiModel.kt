@@ -10,36 +10,30 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import java.util.*
 
-internal sealed class State {
-    sealed class NetworkState : State() {
+internal sealed class ChatState {
+    sealed class NetworkState : ChatState() {
         object Connecting : NetworkState()
         object Offline : NetworkState()
     }
 
-    sealed class UserState : State() {
+    sealed class UserState : ChatState() {
         object Online : UserState()
         data class Offline(val timestamp: String?) : UserState()
         object Typing : UserState()
     }
 
-    object None : State()
+    object None : ChatState()
 }
 
-internal data class Info(
-    val title: String,
+internal data class ChatInfo(
+    val name: String,
     val image: Uri
-) {
-    companion object {
-        val Empty = Info("", Uri.EMPTY)
-    }
-}
+)
 
-internal typealias StateInfo = Pair<State, Info>
-
-internal sealed class Action {
-    object AudioCall : Action()
-    object AudioUpgradableCall : Action()
-    object VideoCall : Action()
+internal sealed class ChatAction {
+    object AudioCall : ChatAction()
+    object AudioUpgradableCall : ChatAction()
+    object VideoCall : ChatAction()
 }
 
 internal sealed class CallType(val preferredType: Call.PreferredType) {

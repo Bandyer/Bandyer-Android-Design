@@ -74,13 +74,13 @@ internal class PhoneChatActivity : ChatActivity() {
 @Composable
 internal fun ChatScreen(
     onBackPressed: () -> Unit,
-    viewModel: ChatComposeViewModel
+    viewModel: ChatUiViewModel
 ) {
     val scope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
     val showFab by scrollState.shouldShowFab()
 
-    val lazyColumnItems = viewModel.conversationItems.collectAsState(initial = emptyList()).value
+    val uiState by viewModel.uiState.collectAsState()
 
     val firstVisibleItemIndex by scrollState.firstVisibleItemIndex()
     val shouldFetch by scrollState.shouldFetch()
@@ -88,7 +88,7 @@ internal fun ChatScreen(
     LaunchedEffect(firstVisibleItemIndex) {
         snapshotFlow { firstVisibleItemIndex }
             .onEach {
-                val item = lazyColumnItems.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
+                val item = uiState.conversationItems.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
                 viewModel.onMessageScrolled(item)
             }.launchIn(this)
     }
@@ -100,8 +100,8 @@ internal fun ChatScreen(
             .launchIn(this)
     }
 
-    LaunchedEffect(lazyColumnItems) {
-        snapshotFlow { lazyColumnItems }
+    LaunchedEffect(uiState.conversationItems) {
+        snapshotFlow { uiState.conversationItems }
             .onEach { items ->
                 val messageItems = items.filterIsInstance<ConversationItem.MessageItem>()
                 viewModel.readAllMessages()
@@ -119,21 +119,17 @@ internal fun ChatScreen(
                 testTagsAsResourceId = true
             }) {
         TopAppBar(
-            stateInfo = viewModel.stateInfo.collectAsState(
-                initial = StateInfo(
-                    State.None,
-                    Info.Empty
-                )
-            ).value,
+            state = uiState.state,
+            info = uiState.info,
             onBackPressed = onBackPressed,
-            actions = viewModel.chatActions.collectAsState(initial = setOf()).value.mapToClickableAction(makeCall = { viewModel.call(it) })
+            actions = uiState.actions.mapToClickableAction(makeCall = { viewModel.call(it) })
         )
 
         Box(Modifier.weight(1f)) {
-            if (!viewModel.areMessagesFetched.collectAsState(initial = false).value) LoadingMessagesLabel()
-            else if (lazyColumnItems.isEmpty()) NoMessagesLabel()
+            if (!uiState.areMessagesFetched) LoadingMessagesLabel()
+            else if (uiState.conversationItems.isEmpty()) NoMessagesLabel()
             else Messages(
-                items = lazyColumnItems,
+                items = uiState.conversationItems,
                 scrollState = scrollState,
                 modifier = Modifier.fillMaxSize()
             )
@@ -147,7 +143,7 @@ internal fun ChatScreen(
                 exit = scaleOut()
             ) {
                 ScrollToBottomFab(
-                    counter = viewModel.unseenMessagesCount.collectAsState(0).value,
+                    counter = uiState.unseenMessagesCount,
                     onClick = {
                         scope.launch { scrollState.scrollToItem(0) }
                         viewModel.onAllMessagesScrolled()
@@ -155,7 +151,7 @@ internal fun ChatScreen(
                 )
             }
 
-            if (viewModel.isCallActive.collectAsState(initial = false).value)
+            if (uiState.isInCall)
                 OngoingCallLabel(onClick = { viewModel.showCall() })
         }
 
@@ -183,11 +179,11 @@ internal fun ChatScreen(
 private fun LazyListState.shouldShowFab(): androidx.compose.runtime.State<Boolean> =
     remember { derivedStateOf { firstVisibleItemIndex > 0 && firstVisibleItemScrollOffset > 0 } }
 
-private fun Set<Action>.mapToClickableAction(makeCall: (CallType) -> Unit): Set<ClickableAction> {
+private fun Set<ChatAction>.mapToClickableAction(makeCall: (CallType) -> Unit): Set<ClickableAction> {
     return map {
         when (it) {
-            is Action.AudioCall -> ClickableAction(it) { makeCall(CallType.Audio) }
-            is Action.AudioUpgradableCall -> ClickableAction(it) { makeCall(CallType.AudioUpgradable) }
+            is ChatAction.AudioCall -> ClickableAction(it) { makeCall(CallType.Audio) }
+            is ChatAction.AudioUpgradableCall -> ClickableAction(it) { makeCall(CallType.AudioUpgradable) }
             else -> ClickableAction(it) { makeCall(CallType.Video) }
         }
     }.toSet()
