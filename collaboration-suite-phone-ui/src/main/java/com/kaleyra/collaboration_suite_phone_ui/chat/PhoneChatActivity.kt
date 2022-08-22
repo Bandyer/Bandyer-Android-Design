@@ -76,27 +76,53 @@ internal fun ChatScreen(
     onBackPressed: () -> Unit,
     viewModel: ChatUiViewModel
 ) {
-    val scope = rememberCoroutineScope()
+    val uiState by viewModel.uiState.collectAsState()
     val scrollState = rememberLazyListState()
+
+    ChatScreen(
+        uiState = uiState,
+        scrollState = scrollState,
+        onBackPressed = onBackPressed,
+        onMessageScrolled = { viewModel.onMessageScrolled(it) },
+        onFetchMessages = { viewModel.fetchMessages() },
+        onReadAllMessages = { viewModel.readAllMessages() },
+        onAllMessagesScrolled = { viewModel.onAllMessagesScrolled() },
+        onCall = { viewModel.call(it) },
+        onShowCall = { viewModel.showCall() },
+        onSendMessage = { viewModel.sendMessage(it) },
+    )
+}
+
+@Composable
+internal fun ChatScreen(
+    uiState: ChatUiState,
+    scrollState: LazyListState,
+    onBackPressed: () -> Unit,
+    onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
+    onFetchMessages: () -> Unit,
+    onReadAllMessages: () -> Unit,
+    onAllMessagesScrolled: () -> Unit,
+    onCall: (CallType) -> Unit,
+    onShowCall: () -> Unit,
+    onSendMessage: (String) -> Unit
+) {
+    val scope = rememberCoroutineScope()
+
+    val shouldFetch by scrollState.shouldFetch()
     val showFab by scrollState.shouldShowFab()
 
-    val uiState by viewModel.uiState.collectAsState()
-
-    val firstVisibleItemIndex by scrollState.firstVisibleItemIndex()
-    val shouldFetch by scrollState.shouldFetch()
-
-    LaunchedEffect(firstVisibleItemIndex) {
-        snapshotFlow { firstVisibleItemIndex }
+    LaunchedEffect(scrollState.firstVisibleItemIndex) {
+        snapshotFlow { scrollState.firstVisibleItemIndex }
             .onEach {
                 val item = uiState.conversationItems.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
-                viewModel.onMessageScrolled(item)
+                onMessageScrolled(item)
             }.launchIn(this)
     }
 
     LaunchedEffect(shouldFetch) {
         snapshotFlow { shouldFetch }
             .filter { it }
-            .onEach { viewModel.fetchMessages() }
+            .onEach { onFetchMessages() }
             .launchIn(this)
     }
 
@@ -104,9 +130,9 @@ internal fun ChatScreen(
         snapshotFlow { uiState.conversationItems }
             .onEach { items ->
                 val messageItems = items.filterIsInstance<ConversationItem.MessageItem>()
-                viewModel.readAllMessages()
+                onReadAllMessages()
                 when {
-                    firstVisibleItemIndex < 3 -> scrollState.animateScrollToItem(0)
+                    scrollState.firstVisibleItemIndex < 3 -> scrollState.animateScrollToItem(0)
                     messageItems.firstOrNull()?.isMine == true -> scrollState.scrollToItem(0)
                 }
             }.launchIn(this)
@@ -122,7 +148,7 @@ internal fun ChatScreen(
             state = uiState.state,
             info = uiState.info,
             onBackPressed = onBackPressed,
-            actions = uiState.actions.mapToClickableAction(makeCall = { viewModel.call(it) })
+            actions = uiState.actions.mapToClickableAction(makeCall = { onCall(it) })
         )
 
         Box(Modifier.weight(1f)) {
@@ -146,13 +172,12 @@ internal fun ChatScreen(
                     counter = uiState.unseenMessagesCount,
                     onClick = {
                         scope.launch { scrollState.scrollToItem(0) }
-                        viewModel.onAllMessagesScrolled()
+                        onAllMessagesScrolled()
                     }
                 )
             }
 
-            if (uiState.isInCall)
-                OngoingCallLabel(onClick = { viewModel.showCall() })
+            if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
         }
 
         AndroidView(
@@ -165,10 +190,7 @@ internal fun ChatScreen(
             update = {
                 it.callback = object : KaleyraChatInputLayoutEventListener {
                     override fun onTextChanged(text: String) = Unit
-
-                    override fun onSendClicked(text: String) {
-                        viewModel.sendMessage(text)
-                    }
+                    override fun onSendClicked(text: String) = onSendMessage(text)
                 }
             }
         )
@@ -176,8 +198,19 @@ internal fun ChatScreen(
 }
 
 @Composable
+private fun LazyListState.shouldFetch(): androidx.compose.runtime.State<Boolean> {
+    return remember(this) {
+        derivedStateOf {
+            val totalItemsCount = layoutInfo.totalItemsCount
+            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            totalItemsCount != 0 && totalItemsCount <= lastVisibleItemIndex + FETCH_THRESHOLD
+        }
+    }
+}
+
+@Composable
 private fun LazyListState.shouldShowFab(): androidx.compose.runtime.State<Boolean> =
-    remember { derivedStateOf { firstVisibleItemIndex > 0 && firstVisibleItemScrollOffset > 0 } }
+    remember(this) { derivedStateOf { firstVisibleItemIndex > 0 && firstVisibleItemScrollOffset > 0 } }
 
 private fun Set<ChatAction>.mapToClickableAction(makeCall: (CallType) -> Unit): Set<ClickableAction> {
     return map {
@@ -221,10 +254,9 @@ private fun LoadingMessagesLabel() {
 
 @Composable
 private fun OngoingCallLabel(onClick: () -> Unit) {
-    Text(
-        text = stringResource(id = R.string.kaleyra_ongoing_call_label),
-        color = Color.White,
-        style = MaterialTheme.typography.body2,
+    Row(
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .clickable(onClick = onClick, role = Role.Button)
             .fillMaxWidth()
@@ -233,21 +265,12 @@ private fun OngoingCallLabel(onClick: () -> Unit) {
                 color = colorResource(id = R.color.kaleyra_color_answer_button)
             )
             .padding(horizontal = 16.dp, vertical = 8.dp)
-    )
-}
-
-@Composable
-fun LazyListState.firstVisibleItemIndex(): androidx.compose.runtime.State<Int> =
-    remember(this) { derivedStateOf { firstVisibleItemIndex } }
-
-@Composable
-fun LazyListState.shouldFetch(): androidx.compose.runtime.State<Boolean> {
-    return remember(this) {
-        derivedStateOf {
-            val totalItemsCount = layoutInfo.totalItemsCount
-            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            totalItemsCount != 0 && totalItemsCount <= lastVisibleItemIndex + FETCH_THRESHOLD
-        }
+    ) {
+        Text(
+            text = stringResource(id = R.string.kaleyra_ongoing_call_label),
+            color = Color.White,
+            style = MaterialTheme.typography.body2,
+        )
     }
 }
 

@@ -24,20 +24,6 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
 
-//@Preview
-//@Composable
-//internal fun TopAppBarPreview() {
-//    MaterialTheme {
-//        Row(Modifier.fillMaxWidth()) {
-//            TopAppBar(
-//                stateInfo = StateInfo(State.UserState.Online, Info("John Smith", Uri.EMPTY)),
-//                actions = setOf(),
-//                onBackPressed = { }
-//            )
-//        }
-//    }
-//}
-
 internal typealias ClickableAction = Pair<ChatAction, () -> Unit>
 
 @Composable
