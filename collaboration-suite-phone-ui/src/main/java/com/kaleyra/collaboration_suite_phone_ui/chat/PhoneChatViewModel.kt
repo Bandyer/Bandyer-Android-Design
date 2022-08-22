@@ -138,8 +138,8 @@ private fun Flow<PhoneBoxUI>.hasActiveCall(): Flow<Boolean> =
 private fun Flow<MessagesUI>.firstUnreadMessageId(): Flow<String?> {
     return map { it.other }.take(1).map { messages ->
         messages.forEachIndexed { index, message ->
-            val previousMessage = messages.getOrNull(index + 1)
-            if (previousMessage == null || (message.state.value is Message.State.Received && previousMessage.state.value is Message.State.Read))
+            val previousMessage = messages.getOrNull(index + 1) ?: return@forEachIndexed
+            if (message.state.value is Message.State.Received && previousMessage.state.value is Message.State.Read)
                 return@map message.id
         }
         return@map null
