@@ -201,12 +201,7 @@ private fun Flow<MessagesUI>.mapToConversationItems(coroutineScope: CoroutineSco
         val items = mutableListOf<ConversationItem>()
         messages.forEachIndexed { index, message ->
             val previousMessageItem = messages.getOrNull(index - 1) ?: kotlin.run {
-                items.add(
-                    ConversationItem.MessageItem(
-                        toUiMessage(coroutineScope, message),
-                        message !is OtherMessage
-                    )
-                )
+                items.add(ConversationItem.MessageItem(message.toUiMessage(coroutineScope), message !is OtherMessage))
                 return@forEachIndexed
             }
 
@@ -218,7 +213,7 @@ private fun Flow<MessagesUI>.mapToConversationItems(coroutineScope: CoroutineSco
                 items.add(ConversationItem.DayItem(Iso8601.parseDay(ContextRetainer.context, timestamp = previousMessageItem.creationDate.time)))
             }
 
-            items.add(ConversationItem.MessageItem(toUiMessage(coroutineScope, message), message !is OtherMessage))
+            items.add(ConversationItem.MessageItem(message.toUiMessage(coroutineScope), message !is OtherMessage))
         }
         items
     }

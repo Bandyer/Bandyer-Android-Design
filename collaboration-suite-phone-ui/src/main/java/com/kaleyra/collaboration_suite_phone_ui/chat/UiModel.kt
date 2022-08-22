@@ -58,19 +58,16 @@ internal data class Message(
     val state: StateFlow<State>
 ) {
     companion object {
-        fun toUiMessage(
-            coroutineScope: CoroutineScope,
-            message: com.kaleyra.collaboration_suite.chatbox.Message
-        ) =
+        fun com.kaleyra.collaboration_suite.chatbox.Message.toUiMessage(coroutineScope: CoroutineScope) =
             Message(
-                id = message.id,
-                text = (message.content as? com.kaleyra.collaboration_suite.chatbox.Message.Content.Text)?.message
+                id = id,
+                text = (content as? com.kaleyra.collaboration_suite.chatbox.Message.Content.Text)?.message
                     ?: "",
-                time = Iso8601.parseTime(message.creationDate.time),
-                state = message.state.map { state -> mapToUiState(state) }.stateIn(
+                time = Iso8601.parseTime(creationDate.time),
+                state = state.map { state -> mapToUiState(state) }.stateIn(
                     coroutineScope,
                     SharingStarted.Eagerly,
-                    mapToUiState(message.state.value)
+                    mapToUiState(state.value)
                 )
             )
 
