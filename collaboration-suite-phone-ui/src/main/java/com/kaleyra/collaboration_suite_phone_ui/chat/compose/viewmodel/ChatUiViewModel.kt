@@ -1,6 +1,7 @@
-package com.kaleyra.collaboration_suite_phone_ui.chat
+package com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel
 
 import android.net.Uri
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
 import kotlinx.coroutines.flow.StateFlow
 
 interface ChatUiViewModel {

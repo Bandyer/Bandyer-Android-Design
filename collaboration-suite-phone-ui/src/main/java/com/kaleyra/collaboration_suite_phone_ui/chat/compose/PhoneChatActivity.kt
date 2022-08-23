@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalAnimationApi::class, ExperimentalComposeUiApi::class)
 
-package com.kaleyra.collaboration_suite_phone_ui.chat
+package com.kaleyra.collaboration_suite_phone_ui.chat.compose
 
 import android.os.Bundle
 import android.view.ContextThemeWrapper
@@ -37,6 +37,12 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.CallType
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiViewModel
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.PhoneChatViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId

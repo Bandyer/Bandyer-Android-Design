@@ -25,6 +25,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ConversationUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -311,7 +314,9 @@ internal fun EmptyMessagesPreview() {
 @Preview
 @Composable
 internal fun MessagesPreview() {
-    val messageItem1 = ConversationItem.MessageItem(Message.MyMessage("id1", "How is going?", "11:55", MutableStateFlow(Message.State.Read)))
+    val messageItem1 = ConversationItem.MessageItem(
+        Message.MyMessage("id1", "How is going?", "11:55", MutableStateFlow(
+            Message.State.Read)))
     val messageItem2 = ConversationItem.MessageItem(Message.OtherMessage("id2", "Hello there!", "11:45"))
     val dayItem = ConversationItem.DayItem("23 august 2022")
     val newMessagesItem = ConversationItem.NewMessagesItem(1)

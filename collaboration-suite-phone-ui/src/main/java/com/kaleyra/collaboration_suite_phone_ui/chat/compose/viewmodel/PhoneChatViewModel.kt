@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class)
 
-package com.kaleyra.collaboration_suite_phone_ui.chat
+package com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.User
@@ -12,7 +12,8 @@ import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.*
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
-import com.kaleyra.collaboration_suite_phone_ui.chat.Message.Companion.toUiMessage
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message.Companion.toUiMessage
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -201,7 +202,14 @@ private fun Flow<MessagesUI>.mapToConversationItems(coroutineScope: CoroutineSco
             }
 
             if (previousMessage == null || !Iso8601.isSameDay(message.creationDate.time, previousMessage.creationDate.time)) {
-                items.add(ConversationItem.DayItem(Iso8601.parseDay(ContextRetainer.context, timestamp = message.creationDate.time)))
+                items.add(
+                    ConversationItem.DayItem(
+                        Iso8601.parseDay(
+                            ContextRetainer.context,
+                            timestamp = message.creationDate.time
+                        )
+                    )
+                )
             }
         }
         items

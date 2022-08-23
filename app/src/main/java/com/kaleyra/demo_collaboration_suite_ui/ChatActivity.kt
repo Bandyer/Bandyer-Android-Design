@@ -23,8 +23,10 @@ import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.ChatScreen
-import com.kaleyra.collaboration_suite_phone_ui.chat.ChatUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.ChatUiViewModel
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.CallType
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiViewModel
 import kotlinx.coroutines.flow.StateFlow
 
 class MockChatViewModel : ViewModel(), ChatUiViewModel {
@@ -44,7 +46,7 @@ class MockChatViewModel : ViewModel(), ChatUiViewModel {
         TODO("Not yet implemented")
     }
 
-    override fun onMessageScrolled(messageItem: com.kaleyra.collaboration_suite_phone_ui.chat.ConversationItem.MessageItem) {
+    override fun onMessageScrolled(messageItem: ConversationItem.MessageItem) {
         TODO("Not yet implemented")
     }
 
@@ -52,7 +54,7 @@ class MockChatViewModel : ViewModel(), ChatUiViewModel {
         TODO("Not yet implemented")
     }
 
-    override fun call(callType: com.kaleyra.collaboration_suite_phone_ui.chat.CallType) {
+    override fun call(callType: CallType) {
         TODO("Not yet implemented")
     }
 
