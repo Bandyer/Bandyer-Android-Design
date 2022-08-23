@@ -25,6 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.SymbolAnnotationType
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.messageFormatter
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ConversationUiState

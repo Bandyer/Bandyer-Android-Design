@@ -22,7 +22,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.ChatScreen
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.ChatScreen
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.CallType
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiState
