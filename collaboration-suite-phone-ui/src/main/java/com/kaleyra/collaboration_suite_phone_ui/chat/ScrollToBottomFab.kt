@@ -15,11 +15,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 
 val LazyListState.scrollTopBottomFabEnabled: Boolean
     get() = firstVisibleItemIndex > 0 && firstVisibleItemScrollOffset > 0
+
+@Preview
+@Composable
+internal fun ScrollToBottomFabPreview() {
+    ScrollToBottomFab(counter = 5, onClick = { })
+}
 
 @Composable
 internal fun ScrollToBottomFab(counter: Int, onClick: () -> Unit) {

@@ -177,7 +177,7 @@ private fun Set<ChatAction>.mapToClickableAction(makeCall: (CallType) -> Unit): 
 }
 
 @Composable
-private fun NoMessagesLabel() {
+internal fun NoMessagesLabel() {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -191,7 +191,7 @@ private fun NoMessagesLabel() {
 }
 
 @Composable
-private fun LoadingMessagesLabel() {
+internal fun LoadingMessagesLabel() {
     Row(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
@@ -205,7 +205,7 @@ private fun LoadingMessagesLabel() {
 }
 
 @Composable
-private fun OngoingCallLabel(onClick: () -> Unit) {
+internal fun OngoingCallLabel(onClick: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,

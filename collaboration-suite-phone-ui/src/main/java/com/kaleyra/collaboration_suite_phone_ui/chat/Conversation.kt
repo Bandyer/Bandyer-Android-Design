@@ -13,13 +13,10 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.Card
-import androidx.compose.material.Icon
-import androidx.compose.material.LocalContentColor
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,9 +31,11 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import kotlinx.coroutines.flow.MutableStateFlow
 
 private val OtherBubbleShape = RoundedCornerShape(0.dp, 24.dp, 24.dp, 12.dp)
 private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
@@ -52,6 +51,27 @@ private val LazyListState.isReachingTop: Boolean
         val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
         totalItemsCount != 0 && totalItemsCount <= lastVisibleItemIndex + FETCH_THRESHOLD
     }.value
+
+@Preview
+@Composable
+internal fun MessagesPreview() {
+    val messageItem1 = ConversationItem.MessageItem(Message("id1", "How is going?", "11:55", MutableStateFlow(Message.State.Read)), false)
+    val messageItem2 = ConversationItem.MessageItem(Message("id2", "Hello there!", "11:45", MutableStateFlow(Message.State.Read)), true)
+    val dayItem = ConversationItem.DayItem("23 august 2022")
+    val newMessagesItem = ConversationItem.NewMessagesItem(3)
+
+    Surface {
+        Column {
+            Messages(
+                items = listOf(newMessagesItem, messageItem1, messageItem2, dayItem),
+                onMessageScrolled = { },
+                onReachingTop = { },
+                scrollState = rememberLazyListState()
+            )
+        }
+    }
+}
+
 
 @Composable
 internal fun Messages(
@@ -103,7 +123,7 @@ internal fun Messages(
 }
 
 @Composable
-private fun NewMessagesHeader(count: Int, modifier: Modifier = Modifier) {
+internal fun NewMessagesHeader(count: Int, modifier: Modifier = Modifier) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
         Text(
             text = pluralStringResource(id = R.plurals.kaleyra_chat_unread_messages, count, count),
@@ -114,14 +134,14 @@ private fun NewMessagesHeader(count: Int, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun DayHeader(timestamp: String, modifier: Modifier = Modifier) {
+internal fun DayHeader(timestamp: String, modifier: Modifier = Modifier) {
     Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
         Text(text = timestamp, fontSize = 12.sp, style = MaterialTheme.typography.body2)
     }
 }
 
 @Composable
-private fun Message(messageItem: ConversationItem.MessageItem, modifier: Modifier = Modifier) {
+internal fun Message(messageItem: ConversationItem.MessageItem, modifier: Modifier = Modifier) {
     val horizontalArrangement = if (messageItem.isMine) Arrangement.End else Arrangement.Start
 
     Row(
@@ -132,7 +152,7 @@ private fun Message(messageItem: ConversationItem.MessageItem, modifier: Modifie
 }
 
 @Composable
-private fun Bubble(messageItem: ConversationItem.MessageItem) {
+internal fun Bubble(messageItem: ConversationItem.MessageItem) {
     val configuration = LocalConfiguration.current
 
     Card(
@@ -190,7 +210,7 @@ private fun contentDescriptionFor(state: Message.State): String =
     )
 
 @Composable
-private fun ClickableMessage(item: ConversationItem.MessageItem) {
+internal fun ClickableMessage(item: ConversationItem.MessageItem) {
     val uriHandler = LocalUriHandler.current
 
     val styledMessage = messageFormatter(
