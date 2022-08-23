@@ -29,5 +29,5 @@ data class ChatUiState(
     val conversationItems: List<ConversationItem> = emptyList(),
     val unseenMessagesCount: Int = 0,
     val isInCall: Boolean = false,
-    val areMessagesFetched: Boolean = false,
+    val areMessagesInitialized: Boolean = false,
 )

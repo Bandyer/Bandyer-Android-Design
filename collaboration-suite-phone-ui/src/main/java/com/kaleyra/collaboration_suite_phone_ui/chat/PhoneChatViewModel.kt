@@ -70,8 +70,8 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
             _uiState.update { it.copy(conversationItems = items) }
         }.launchIn(viewModelScope)
 
-        messages.take(1).map { true }.onEach { areMessagesFetched ->
-            _uiState.update { it.copy(areMessagesFetched = areMessagesFetched) }
+        messages.take(1).map { true }.onEach { areMessagesInitialized ->
+            _uiState.update { it.copy(areMessagesInitialized = areMessagesInitialized) }
         }.launchIn(viewModelScope)
 
         unseenMessagesIds.onEach { messages ->

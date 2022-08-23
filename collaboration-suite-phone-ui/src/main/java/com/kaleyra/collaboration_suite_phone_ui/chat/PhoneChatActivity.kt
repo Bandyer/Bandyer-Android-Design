@@ -115,7 +115,7 @@ internal fun ChatScreen(
         )
 
         Box(Modifier.weight(1f)) {
-            if (!uiState.areMessagesFetched) LoadingMessagesLabel()
+            if (!uiState.areMessagesInitialized) LoadingMessagesLabel()
             else if (uiState.conversationItems.isEmpty()) NoMessagesLabel()
             else Messages(
                 items = uiState.conversationItems,
