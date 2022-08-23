@@ -19,18 +19,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -49,12 +45,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-
-private const val FETCH_THRESHOLD = 15
 
 internal class PhoneChatActivity : ChatActivity() {
 
@@ -76,11 +67,9 @@ fun ChatScreen(
     viewModel: ChatUiViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val scrollState = rememberLazyListState()
 
     ChatScreen(
         uiState = uiState,
-        scrollState = scrollState,
         onBackPressed = onBackPressed,
         onMessageScrolled = { viewModel.onMessageScrolled(it) },
         onFetchMessages = { viewModel.fetchMessages() },
@@ -95,7 +84,6 @@ fun ChatScreen(
 @Composable
 internal fun ChatScreen(
     uiState: ChatUiState,
-    scrollState: LazyListState,
     onBackPressed: () -> Unit,
     onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
     onFetchMessages: () -> Unit,
@@ -105,32 +93,12 @@ internal fun ChatScreen(
     onShowCall: () -> Unit,
     onSendMessage: (String) -> Unit
 ) {
+    val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
-    val shouldFetch by scrollState.shouldFetch()
-    val showFab by scrollState.shouldShowFab()
-
-    LaunchedEffect(scrollState.firstVisibleItemIndex) {
-        snapshotFlow { scrollState.firstVisibleItemIndex }
-            .onEach {
-                val item = uiState.conversationItems.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
-                onMessageScrolled(item)
-            }.launchIn(this)
-    }
-
-    LaunchedEffect(shouldFetch) {
-        snapshotFlow { shouldFetch }
-            .filter { it }
-            .onEach { onFetchMessages() }
-            .launchIn(this)
-    }
-
-    LaunchedEffect(uiState) {
-        snapshotFlow { uiState.conversationItems }
-            .onEach {
-                onReadAllMessages()
-                if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
-            }.launchIn(this)
+    LaunchedEffect(uiState.conversationItems) {
+        if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
+        onReadAllMessages()
     }
 
     Column(
@@ -151,12 +119,14 @@ internal fun ChatScreen(
             else if (uiState.conversationItems.isEmpty()) NoMessagesLabel()
             else Messages(
                 items = uiState.conversationItems,
+                onMessageScrolled = onMessageScrolled,
+                onReachingTop = onFetchMessages,
                 scrollState = scrollState,
                 modifier = Modifier.fillMaxSize()
             )
 
             this@Column.AnimatedVisibility(
-                visible = showFab,
+                visible = scrollState.scrollToBottomEnabled(),
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp),
@@ -195,21 +165,6 @@ internal fun ChatScreen(
         )
     }
 }
-
-@Composable
-private fun LazyListState.shouldFetch(): androidx.compose.runtime.State<Boolean> {
-    return remember(this) {
-        derivedStateOf {
-            val totalItemsCount = layoutInfo.totalItemsCount
-            val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-            totalItemsCount != 0 && totalItemsCount <= lastVisibleItemIndex + FETCH_THRESHOLD
-        }
-    }
-}
-
-@Composable
-private fun LazyListState.shouldShowFab(): androidx.compose.runtime.State<Boolean> =
-    remember(this) { derivedStateOf { firstVisibleItemIndex > 0 && firstVisibleItemScrollOffset > 0 } }
 
 private fun Set<ChatAction>.mapToClickableAction(makeCall: (CallType) -> Unit): Set<ClickableAction> {
     return map {

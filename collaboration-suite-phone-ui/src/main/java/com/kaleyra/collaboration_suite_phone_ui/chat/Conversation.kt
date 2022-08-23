@@ -21,7 +21,9 @@ import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -42,12 +44,32 @@ private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
 const val MessageTag = "MessageTag"
 const val MessagesLazyColumnTag = "MessagesLazyColumnTag"
 
+private const val FETCH_THRESHOLD = 15
+
+private val LazyListState.isReachingTop: Boolean
+    get() = derivedStateOf {
+        val totalItemsCount = layoutInfo.totalItemsCount
+        val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+        totalItemsCount != 0 && totalItemsCount <= lastVisibleItemIndex + FETCH_THRESHOLD
+    }.value
+
 @Composable
 internal fun Messages(
     items: List<ConversationItem>,
+    onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
+    onReachingTop: () -> Unit,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
+    LaunchedEffect(scrollState.firstVisibleItemIndex) {
+        val item = items.getOrNull(scrollState.firstVisibleItemIndex) as? ConversationItem.MessageItem ?: return@LaunchedEffect
+        onMessageScrolled(item)
+    }
+
+    LaunchedEffect(scrollState.isReachingTop) {
+        if (scrollState.isReachingTop) onReachingTop()
+    }
+
     LazyColumn(
         reverseLayout = true,
         state = scrollState,
