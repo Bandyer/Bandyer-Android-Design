@@ -39,21 +39,21 @@ class ConversationTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun emptyMessages_NoMessagesShown() {
+    fun emptyMessages_noMessagesShown() {
         val noMessages = composeTestRule.activity.getString(R.string.kaleyra_chat_no_messages)
         composeTestRule.launchMessagesUI(ConversationUiState(areMessagesInitialized = true))
         composeTestRule.onNodeWithText(noMessages).assertIsDisplayed()
     }
 
     @Test
-    fun messagesNotInitialized_LoadingMessagingShown() {
+    fun messagesNotInitialized_loadingMessagingShown() {
         val channelLoading = composeTestRule.activity.getString(R.string.kaleyra_chat_channel_loading)
         composeTestRule.launchMessagesUI(ConversationUiState(areMessagesInitialized = false))
         composeTestRule.onNodeWithText(channelLoading).assertIsDisplayed()
     }
 
     @Test
-    fun scrollUp_ScrollToBottomFabAppears() {
+    fun userScrollsUp_fabAppears() {
         composeTestRule.launchMessagesUI(
             ConversationUiState(
                 areMessagesInitialized = true,
@@ -66,7 +66,7 @@ class ConversationTest {
     }
 
     @Test
-    fun jumpToBottom_snapsToBottomAfterUserInteracted() {
+    fun userClicksFab_snapsToBottomAfterUserInteracted() {
         composeTestRule.launchMessagesUI(
             ConversationUiState(
                 areMessagesInitialized = true,
