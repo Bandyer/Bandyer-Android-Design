@@ -125,22 +125,18 @@ internal fun ChatScreen(
                 modifier = Modifier.fillMaxSize()
             )
 
-            this@Column.AnimatedVisibility(
-                visible = scrollState.scrollTopBottomFabEnabled,
+            ScrollToBottomFab(
+                counter = uiState.unseenMessagesCount,
+                onClick = {
+                    scope.launch { scrollState.scrollToItem(0) }
+                    onAllMessagesScrolled()
+                },
+                enabled = scrollState.scrollTopBottomFabEnabled,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(16.dp),
-                enter = scaleIn(),
-                exit = scaleOut()
-            ) {
-                ScrollToBottomFab(
-                    counter = uiState.unseenMessagesCount,
-                    onClick = {
-                        scope.launch { scrollState.scrollToItem(0) }
-                        onAllMessagesScrolled()
-                    }
-                )
-            }
+                    .padding(16.dp)
+            )
+
 
             if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
         }
@@ -148,7 +144,8 @@ internal fun ChatScreen(
         AndroidView(
             modifier = Modifier.fillMaxWidth(),
             factory = {
-                val themeResId = it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
+                val themeResId =
+                    it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
                 KaleyraChatInputLayoutWidget(ContextThemeWrapper(it, themeResId))
             },
             update = {

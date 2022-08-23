@@ -84,21 +84,6 @@ internal fun TopAppBar(
     }
 }
 
-@Preview
-@Composable
-internal fun ActionsPreview() {
-    Surface {
-        Row {
-            Actions(
-                setOf(
-                    ClickableAction(ChatAction.AudioCall) { },
-                    ClickableAction(ChatAction.AudioUpgradableCall) { },
-                    ClickableAction(ChatAction.VideoCall) { })
-            )
-        }
-    }
-}
-
 @Composable
 internal fun Actions(actions: Set<ClickableAction>) {
     actions.getClickableAction<ChatAction.AudioCall>()?.let { (_, onClick) ->
@@ -127,3 +112,18 @@ internal fun Actions(actions: Set<ClickableAction>) {
 }
 
 private inline fun <reified T : ChatAction> Set<ClickableAction>.getClickableAction(): ClickableAction? = firstOrNull { (act, _) -> act is T }
+
+@Preview
+@Composable
+internal fun ActionsPreview() {
+    Surface {
+        Row {
+            Actions(
+                setOf(
+                    ClickableAction(ChatAction.AudioCall) { },
+                    ClickableAction(ChatAction.AudioUpgradableCall) { },
+                    ClickableAction(ChatAction.VideoCall) { })
+            )
+        }
+    }
+}
