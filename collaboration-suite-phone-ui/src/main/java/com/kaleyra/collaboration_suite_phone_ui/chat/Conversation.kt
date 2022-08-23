@@ -2,14 +2,7 @@
 
 package com.kaleyra.collaboration_suite_phone_ui.chat
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
@@ -17,10 +10,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -36,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 private val OtherBubbleShape = RoundedCornerShape(0.dp, 24.dp, 24.dp, 12.dp)
 private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
@@ -52,44 +43,91 @@ private val LazyListState.isReachingTop: Boolean
         totalItemsCount != 0 && totalItemsCount <= lastVisibleItemIndex + FETCH_THRESHOLD
     }.value
 
-@Preview
-@Composable
-internal fun MessagesPreview() {
-    val messageItem1 = ConversationItem.MessageItem(Message.MyMessage("id1", "How is going?", "11:55", MutableStateFlow(Message.State.Read)))
-    val messageItem2 = ConversationItem.MessageItem(Message.OtherMessage("id2", "Hello there!", "11:45"))
-    val dayItem = ConversationItem.DayItem("23 august 2022")
-    val newMessagesItem = ConversationItem.NewMessagesItem(3)
-
-    Surface {
-        Column {
-            Messages(
-                items = listOf(newMessagesItem, messageItem1, messageItem2, dayItem),
-                onMessageScrolled = { },
-                onReachingTop = { },
-                scrollState = rememberLazyListState()
-            )
-        }
-    }
-}
-
-
 @Composable
 internal fun Messages(
-    items: List<ConversationItem>,
+    uiState: ConversationUiState,
     onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
-    onReachingTop: () -> Unit,
+    onFetchMessages: () -> Unit,
+    onAllMessagesScrolled: () -> Unit,
+    onReadAllMessages: () -> Unit,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(uiState.conversationItems) {
+        if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
+        onReadAllMessages()
+    }
+
     LaunchedEffect(scrollState.firstVisibleItemIndex) {
-        val item = items.getOrNull(scrollState.firstVisibleItemIndex) as? ConversationItem.MessageItem ?: return@LaunchedEffect
+        val item =
+            uiState.conversationItems.getOrNull(scrollState.firstVisibleItemIndex) as? ConversationItem.MessageItem
+                ?: return@LaunchedEffect
         onMessageScrolled(item)
     }
 
     LaunchedEffect(scrollState.isReachingTop) {
-        if (scrollState.isReachingTop) onReachingTop()
+        if (scrollState.isReachingTop) onFetchMessages()
     }
 
+    Box(modifier) {
+        if (!uiState.areMessagesInitialized) LoadingMessagesLabel(Modifier.align(Alignment.Center))
+        else if (uiState.conversationItems.isEmpty()) NoMessagesLabel(Modifier.align(Alignment.Center))
+        else Conversation(
+            items = uiState.conversationItems,
+            scrollState = scrollState,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        ScrollToBottomFab(
+            counter = uiState.unseenMessagesCount,
+            onClick = {
+                scope.launch { scrollState.scrollToItem(0) }
+                onAllMessagesScrolled()
+            },
+            enabled = scrollState.scrollTopBottomFabEnabled,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .padding(16.dp)
+        )
+    }
+}
+
+@Composable
+internal fun NoMessagesLabel(modifier: Modifier = Modifier) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
+        Text(
+            text = stringResource(id = R.string.kaleyra_chat_no_messages),
+            style = MaterialTheme.typography.body2,
+        )
+    }
+}
+
+@Composable
+internal fun LoadingMessagesLabel(modifier: Modifier = Modifier) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+    ) {
+        Text(
+            text = stringResource(id = R.string.kaleyra_chat_channel_loading),
+            style = MaterialTheme.typography.body2
+        )
+    }
+}
+
+@Composable
+internal fun Conversation(
+    items: List<ConversationItem>,
+    scrollState: LazyListState,
+    modifier: Modifier = Modifier
+) {
     LazyColumn(
         reverseLayout = true,
         state = scrollState,
@@ -142,7 +180,8 @@ internal fun DayHeader(timestamp: String, modifier: Modifier = Modifier) {
 
 @Composable
 internal fun Message(messageItem: ConversationItem.MessageItem, modifier: Modifier = Modifier) {
-    val horizontalArrangement = if (messageItem.message is Message.MyMessage) Arrangement.End else Arrangement.Start
+    val horizontalArrangement =
+        if (messageItem.message is Message.MyMessage) Arrangement.End else Arrangement.Start
 
     Row(
         modifier = modifier,
@@ -235,4 +274,65 @@ internal fun ClickableMessage(item: ConversationItem.MessageItem) {
                 }
         }
     )
+}
+
+@Preview
+@Composable
+internal fun LoadingMessagesPreview() {
+    Surface {
+        Messages(
+            uiState = ConversationUiState(),
+            onMessageScrolled = { },
+            onFetchMessages = { },
+            onAllMessagesScrolled = { },
+            onReadAllMessages = { },
+            scrollState = rememberLazyListState(),
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
+@Preview
+@Composable
+internal fun EmptyMessagesPreview() {
+    Surface {
+        Messages(
+            uiState = ConversationUiState(areMessagesInitialized = true),
+            onMessageScrolled = { },
+            onFetchMessages = { },
+            onAllMessagesScrolled = { },
+            onReadAllMessages = { },
+            scrollState = rememberLazyListState(),
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
+@Preview
+@Composable
+internal fun MessagesPreview() {
+    val messageItem1 = ConversationItem.MessageItem(Message.MyMessage("id1", "How is going?", "11:55", MutableStateFlow(Message.State.Read)))
+    val messageItem2 = ConversationItem.MessageItem(Message.OtherMessage("id2", "Hello there!", "11:45"))
+    val dayItem = ConversationItem.DayItem("23 august 2022")
+    val newMessagesItem = ConversationItem.NewMessagesItem(1)
+
+    Surface {
+        Messages(
+            uiState = ConversationUiState(
+                areMessagesInitialized = true,
+                conversationItems = listOf(
+                    messageItem1,
+                    messageItem2,
+                    newMessagesItem,
+                    dayItem
+                )
+            ),
+            onMessageScrolled = { },
+            onFetchMessages = { },
+            onAllMessagesScrolled = { },
+            onReadAllMessages = { },
+            scrollState = rememberLazyListState(),
+            modifier = Modifier.fillMaxSize()
+        )
+    }
 }

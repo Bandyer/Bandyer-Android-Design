@@ -6,14 +6,10 @@ import android.os.Bundle
 import android.view.ContextThemeWrapper
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.scaleIn
-import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,7 +19,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -96,11 +91,6 @@ internal fun ChatScreen(
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(uiState.conversationItems) {
-        if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
-        onReadAllMessages()
-    }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -114,38 +104,22 @@ internal fun ChatScreen(
             actions = uiState.actions.mapToClickableAction(makeCall = { onCall(it) })
         )
 
-        Box(Modifier.weight(1f)) {
-            if (!uiState.areMessagesInitialized) LoadingMessagesLabel()
-            else if (uiState.conversationItems.isEmpty()) NoMessagesLabel()
-            else Messages(
-                items = uiState.conversationItems,
-                onMessageScrolled = onMessageScrolled,
-                onReachingTop = onFetchMessages,
-                scrollState = scrollState,
-                modifier = Modifier.fillMaxSize()
-            )
+        Messages(
+            uiState = uiState.conversationState,
+            onMessageScrolled = onMessageScrolled,
+            onFetchMessages = onFetchMessages,
+            onAllMessagesScrolled = onAllMessagesScrolled,
+            onReadAllMessages = onReadAllMessages,
+            scrollState = scrollState,
+            modifier = Modifier.weight(1f).fillMaxWidth()
+        )
 
-            ScrollToBottomFab(
-                counter = uiState.unseenMessagesCount,
-                onClick = {
-                    scope.launch { scrollState.scrollToItem(0) }
-                    onAllMessagesScrolled()
-                },
-                enabled = scrollState.scrollTopBottomFabEnabled,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp)
-            )
-
-
-            if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
-        }
+        if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
 
         AndroidView(
             modifier = Modifier.fillMaxWidth(),
             factory = {
-                val themeResId =
-                    it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
+                val themeResId = it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
                 KaleyraChatInputLayoutWidget(ContextThemeWrapper(it, themeResId))
             },
             update = {
@@ -171,34 +145,6 @@ private fun Set<ChatAction>.mapToClickableAction(makeCall: (CallType) -> Unit): 
             else -> ClickableAction(it) { makeCall(CallType.Video) }
         }
     }.toSet()
-}
-
-@Composable
-internal fun NoMessagesLabel() {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Text(
-            text = stringResource(id = R.string.kaleyra_chat_no_messages),
-            style = MaterialTheme.typography.body2,
-        )
-    }
-}
-
-@Composable
-internal fun LoadingMessagesLabel() {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Text(
-            text = stringResource(id = R.string.kaleyra_chat_channel_loading),
-            style = MaterialTheme.typography.body2
-        )
-    }
 }
 
 @Composable

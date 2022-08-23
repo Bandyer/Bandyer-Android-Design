@@ -26,8 +26,12 @@ data class ChatUiState(
     val info: ChatInfo = ChatInfo("", Uri.EMPTY),
     val state: ChatState = ChatState.None,
     val actions: Set<ChatAction> = setOf(),
-    val conversationItems: List<ConversationItem> = emptyList(),
-    val unseenMessagesCount: Int = 0,
-    val isInCall: Boolean = false,
+    val conversationState: ConversationUiState = ConversationUiState(),
+    val isInCall: Boolean = false
+)
+
+data class ConversationUiState(
     val areMessagesInitialized: Boolean = false,
+    val conversationItems: List<ConversationItem> = emptyList(),
+    val unseenMessagesCount: Int = 0
 )
