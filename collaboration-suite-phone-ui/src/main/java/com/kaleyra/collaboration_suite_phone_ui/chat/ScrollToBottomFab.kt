@@ -11,30 +11,15 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 
-private val ScrollToBottomThreshold = 56.dp
-
-@Composable
-internal fun LazyListState.scrollToBottomEnabled(): Boolean {
-    val scrollThreshold = with(LocalDensity.current) {
-        ScrollToBottomThreshold.toPx()
-    }
-
-    return remember {
-        derivedStateOf {
-            firstVisibleItemIndex != 0 || firstVisibleItemScrollOffset > scrollThreshold
-        }
-    }.value
-}
+val LazyListState.scrollTopBottomFabEnabled: Boolean
+    get() = firstVisibleItemIndex > 0 && firstVisibleItemScrollOffset > 0
 
 @Composable
 internal fun ScrollToBottomFab(counter: Int, onClick: () -> Unit) {

@@ -126,7 +126,7 @@ internal fun ChatScreen(
             )
 
             this@Column.AnimatedVisibility(
-                visible = scrollState.scrollToBottomEnabled(),
+                visible = scrollState.scrollTopBottomFabEnabled,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(16.dp),
