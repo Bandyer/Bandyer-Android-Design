@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.chat
+package com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.height

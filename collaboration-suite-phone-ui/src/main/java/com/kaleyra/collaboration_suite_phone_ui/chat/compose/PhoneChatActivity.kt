@@ -31,9 +31,9 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.ClickableAction
-import com.kaleyra.collaboration_suite_phone_ui.chat.Messages
-import com.kaleyra.collaboration_suite_phone_ui.chat.TopAppBar
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.ClickableAction
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.Messages
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.TopAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.CallType
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem

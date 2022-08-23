@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalComposeUiApi::class)
 
-package com.kaleyra.collaboration_suite_phone_ui.chat
+package com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,19 +25,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.SymbolAnnotationType
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.messageFormatter
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ConversationUiState
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockConversationItems
 import kotlinx.coroutines.launch
 
 private val OtherBubbleShape = RoundedCornerShape(0.dp, 24.dp, 24.dp, 12.dp)
 private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
 
 const val MessageTag = "MessageTag"
-const val MessagesLazyColumnTag = "MessagesLazyColumnTag"
+const val ConversationTag = "ConversationTag"
 
 private const val FETCH_THRESHOLD = 15
 
@@ -138,7 +136,7 @@ internal fun Conversation(
         state = scrollState,
         contentPadding = PaddingValues(all = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = modifier.testTag(MessagesLazyColumnTag)
+        modifier = modifier.testTag(ConversationTag)
     ) {
         items(items, key = { it.id }, contentType = { it::class.java }) { item ->
             when (item) {
@@ -316,24 +314,9 @@ internal fun EmptyMessagesPreview() {
 @Preview
 @Composable
 internal fun MessagesPreview() {
-    val messageItem1 = ConversationItem.MessageItem(
-        Message.MyMessage("id1", "How is going?", "11:55", MutableStateFlow(
-            Message.State.Read)))
-    val messageItem2 = ConversationItem.MessageItem(Message.OtherMessage("id2", "Hello there!", "11:45"))
-    val dayItem = ConversationItem.DayItem("23 august 2022")
-    val newMessagesItem = ConversationItem.NewMessagesItem(1)
-
     Surface {
         Messages(
-            uiState = ConversationUiState(
-                areMessagesInitialized = true,
-                conversationItems = listOf(
-                    messageItem1,
-                    messageItem2,
-                    newMessagesItem,
-                    dayItem
-                )
-            ),
+            uiState = ConversationUiState(areMessagesInitialized = true, conversationItems = mockConversationItems),
             onMessageScrolled = { },
             onFetchMessages = { },
             onAllMessagesScrolled = { },
