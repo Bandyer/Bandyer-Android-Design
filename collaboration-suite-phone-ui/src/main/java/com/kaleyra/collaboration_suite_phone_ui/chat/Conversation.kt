@@ -55,8 +55,8 @@ private val LazyListState.isReachingTop: Boolean
 @Preview
 @Composable
 internal fun MessagesPreview() {
-    val messageItem1 = ConversationItem.MessageItem(Message("id1", "How is going?", "11:55", MutableStateFlow(Message.State.Read)), false)
-    val messageItem2 = ConversationItem.MessageItem(Message("id2", "Hello there!", "11:45", MutableStateFlow(Message.State.Read)), true)
+    val messageItem1 = ConversationItem.MessageItem(Message.MyMessage("id1", "How is going?", "11:55", MutableStateFlow(Message.State.Read)))
+    val messageItem2 = ConversationItem.MessageItem(Message.OtherMessage("id2", "Hello there!", "11:45"))
     val dayItem = ConversationItem.DayItem("23 august 2022")
     val newMessagesItem = ConversationItem.NewMessagesItem(3)
 
@@ -142,7 +142,7 @@ internal fun DayHeader(timestamp: String, modifier: Modifier = Modifier) {
 
 @Composable
 internal fun Message(messageItem: ConversationItem.MessageItem, modifier: Modifier = Modifier) {
-    val horizontalArrangement = if (messageItem.isMine) Arrangement.End else Arrangement.Start
+    val horizontalArrangement = if (messageItem.message is Message.MyMessage) Arrangement.End else Arrangement.Start
 
     Row(
         modifier = modifier,
@@ -156,8 +156,8 @@ internal fun Bubble(messageItem: ConversationItem.MessageItem) {
     val configuration = LocalConfiguration.current
 
     Card(
-        shape = if (messageItem.isMine) MyBubbleShape else OtherBubbleShape,
-        backgroundColor = if (messageItem.isMine) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant,
+        shape = if (messageItem.message is Message.MyMessage) MyBubbleShape else OtherBubbleShape,
+        backgroundColor = if (messageItem.message is Message.MyMessage) MaterialTheme.colors.secondary else MaterialTheme.colors.primaryVariant,
         elevation = 0.dp,
         modifier = Modifier.widthIn(min = 0.dp, max = configuration.screenWidthDp.div(2).dp)
     ) {
@@ -175,10 +175,12 @@ internal fun Bubble(messageItem: ConversationItem.MessageItem) {
                     style = MaterialTheme.typography.body2
                 )
 
-                if (messageItem.isMine) {
+                if (messageItem.message is Message.MyMessage) {
+                    val messageState = messageItem.message.state.collectAsState().value
+
                     Icon(
-                        painter = painterFor(messageItem.message.state.collectAsState().value),
-                        contentDescription = contentDescriptionFor(messageItem.message.state.collectAsState().value),
+                        painter = painterFor(messageState),
+                        contentDescription = contentDescriptionFor(messageState),
                         modifier = Modifier
                             .padding(2.dp)
                             .size(16.dp)
@@ -215,7 +217,7 @@ internal fun ClickableMessage(item: ConversationItem.MessageItem) {
 
     val styledMessage = messageFormatter(
         text = item.message.text,
-        primary = item.isMine
+        primary = item.message is Message.MyMessage
     )
 
     ClickableText(

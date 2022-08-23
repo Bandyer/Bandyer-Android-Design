@@ -8,31 +8,15 @@ import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
 import com.kaleyra.collaboration_suite.chatbox.Message
-import com.kaleyra.collaboration_suite.chatbox.OtherMessage
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_core_ui.ChatUI
-import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.MessagesUI
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
+import com.kaleyra.collaboration_suite_core_ui.*
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_phone_ui.chat.Message.Companion.toUiMessage
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.drop
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.*
 
 internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
 
@@ -202,7 +186,7 @@ private fun Flow<MessagesUI>.mapToConversationItems(coroutineScope: CoroutineSco
         messages.forEachIndexed { index, message ->
             val previousMessage = messages.getOrNull(index + 1)
 
-            items.add(ConversationItem.MessageItem(message.toUiMessage(coroutineScope), message !is OtherMessage))
+            items.add(ConversationItem.MessageItem(message.toUiMessage(coroutineScope)))
 
             if (showUnreadHeader.value && message.id == firstUnreadMessageId) {
                 items.add(ConversationItem.NewMessagesItem(index + 1))

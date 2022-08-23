@@ -47,29 +47,54 @@ sealed class ConversationItem(val id: String) {
         ConversationItem(id = timestamp.hashCode().toString())
 
     data class NewMessagesItem(val count: Int) : ConversationItem(id = UUID.randomUUID().toString())
-    data class MessageItem(val message: Message, val isMine: Boolean) :
-        ConversationItem(id = message.id)
+    data class MessageItem(val message: Message) : ConversationItem(id = message.id)
 }
 
-data class Message(
-    val id: String,
-    val text: String,
-    val time: String,
-    val state: StateFlow<State>
-) {
+sealed interface Message {
+
+    val id: String
+
+    val text: String
+
+    val time: String
+
+    data class OtherMessage(
+        override val id: String,
+        override val text: String,
+        override val time: String,
+    ) : Message
+
+    data class MyMessage(
+        override val id: String,
+        override val text: String,
+        override val time: String,
+        val state: StateFlow<State>
+    ) : Message
+
+    sealed class State {
+        object Sending : State()
+        object Sent : State()
+        object Read : State()
+    }
+
     companion object {
-        fun com.kaleyra.collaboration_suite.chatbox.Message.toUiMessage(coroutineScope: CoroutineScope) =
-            Message(
-                id = id,
-                text = (content as? com.kaleyra.collaboration_suite.chatbox.Message.Content.Text)?.message
-                    ?: "",
-                time = Iso8601.parseTime(creationDate.time),
-                state = state.map { state -> mapToUiState(state) }.stateIn(
-                    coroutineScope,
-                    SharingStarted.Eagerly,
-                    mapToUiState(state.value)
+        fun com.kaleyra.collaboration_suite.chatbox.Message.toUiMessage(coroutineScope: CoroutineScope): Message {
+            val text = (content as? com.kaleyra.collaboration_suite.chatbox.Message.Content.Text)?.message ?: ""
+            val time = Iso8601.parseTime(creationDate.time)
+
+            return if (this is com.kaleyra.collaboration_suite.chatbox.OtherMessage) {
+                OtherMessage(id, text, time)
+            } else {
+                MyMessage(
+                    id, text, time, state.map { state -> mapToUiState(state) }.stateIn(
+                        coroutineScope,
+                        SharingStarted.Eagerly,
+                        mapToUiState(state.value)
+                    )
                 )
-            )
+            }
+        }
+
 
         private fun mapToUiState(state: com.kaleyra.collaboration_suite.chatbox.Message.State): State =
             when (state) {
@@ -77,12 +102,6 @@ data class Message(
                 is com.kaleyra.collaboration_suite.chatbox.Message.State.Sent -> State.Sent
                 else -> State.Read
             }
-    }
-
-    sealed class State {
-        object Sending : State()
-        object Sent : State()
-        object Read : State()
     }
 }
 
