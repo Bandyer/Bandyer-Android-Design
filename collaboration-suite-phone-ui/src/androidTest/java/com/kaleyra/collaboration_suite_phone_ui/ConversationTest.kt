@@ -60,9 +60,9 @@ class ConversationTest {
                 conversationItems = mockConversationItems.plus(mockConversationItems)
             )
         )
-        composeTestRule.scrollToBottomFab.assertDoesNotExist()
+        composeTestRule.resetScrollFab.assertDoesNotExist()
         composeTestRule.conversation.performScrollUp()
-        composeTestRule.scrollToBottomFab.assertIsDisplayed()
+        composeTestRule.resetScrollFab.assertIsDisplayed()
     }
 
     @Test
@@ -74,8 +74,8 @@ class ConversationTest {
             )
         )
         composeTestRule.conversation.performScrollUp()
-        composeTestRule.scrollToBottomFab.performClick()
-        composeTestRule.scrollToBottomFab.assertDoesNotExist()
+        composeTestRule.resetScrollFab.performClick()
+        composeTestRule.resetScrollFab.assertDoesNotExist()
     }
 
     private fun ComposeContentTestRule.launchMessagesUI(conversationUiState: ConversationUiState) {
@@ -84,16 +84,15 @@ class ConversationTest {
                 Messages(
                     uiState = conversationUiState,
                     onMessageScrolled = { },
-                    onFetchMessages = { },
-                    onAllMessagesScrolled = { },
-                    onReadAllMessages = { },
+                    onApproachingTop = { },
+                    onResetScroll = { },
                     scrollState = LazyListState()
                 )
             }
         }
     }
 
-    private val ComposeContentTestRule.scrollToBottomFab: SemanticsNodeInteraction
+    private val ComposeContentTestRule.resetScrollFab: SemanticsNodeInteraction
         get() = onNodeWithContentDescription(composeTestRule.activity.getString(R.string.kaleyra_chat_scroll_to_last_message))
 
     private val ComposeContentTestRule.conversation: SemanticsNodeInteraction

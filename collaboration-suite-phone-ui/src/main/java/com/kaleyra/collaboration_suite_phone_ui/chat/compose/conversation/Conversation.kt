@@ -37,22 +37,21 @@ private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
 const val MessageTag = "MessageTag"
 const val ConversationTag = "ConversationTag"
 
-private const val FETCH_THRESHOLD = 15
+private const val TOP_THRESHOLD = 15
 
-private val LazyListState.isReachingTop: Boolean
+private val LazyListState.isApproachingTop: Boolean
     get() = derivedStateOf {
         val totalItemsCount = layoutInfo.totalItemsCount
         val lastVisibleItemIndex = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
-        totalItemsCount != 0 && totalItemsCount <= lastVisibleItemIndex + FETCH_THRESHOLD
+        totalItemsCount != 0 && totalItemsCount <= lastVisibleItemIndex + TOP_THRESHOLD
     }.value
 
 @Composable
 internal fun Messages(
     uiState: ConversationUiState,
     onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
-    onFetchMessages: () -> Unit,
-    onAllMessagesScrolled: () -> Unit,
-    onReadAllMessages: () -> Unit,
+    onApproachingTop: () -> Unit,
+    onResetScroll: () -> Unit,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
@@ -60,18 +59,15 @@ internal fun Messages(
 
     LaunchedEffect(uiState.conversationItems) {
         if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
-        onReadAllMessages()
     }
 
     LaunchedEffect(scrollState.firstVisibleItemIndex) {
-        val item =
-            uiState.conversationItems.getOrNull(scrollState.firstVisibleItemIndex) as? ConversationItem.MessageItem
-                ?: return@LaunchedEffect
+        val item = uiState.conversationItems.getOrNull(scrollState.firstVisibleItemIndex) as? ConversationItem.MessageItem ?: return@LaunchedEffect
         onMessageScrolled(item)
     }
 
-    LaunchedEffect(scrollState.isReachingTop) {
-        if (scrollState.isReachingTop) onFetchMessages()
+    LaunchedEffect(scrollState.isApproachingTop) {
+        if (scrollState.isApproachingTop) onApproachingTop()
     }
 
     Box(modifier) {
@@ -83,11 +79,11 @@ internal fun Messages(
             modifier = Modifier.fillMaxSize()
         )
 
-        ScrollToBottomFab(
+        ResetScrollFab(
             counter = uiState.unseenMessagesCount,
             onClick = {
                 scope.launch { scrollState.scrollToItem(0) }
-                onAllMessagesScrolled()
+                onResetScroll()
             },
             enabled = scrollState.scrollTopBottomFabEnabled,
             modifier = Modifier
@@ -286,9 +282,8 @@ internal fun LoadingMessagesPreview() {
         Messages(
             uiState = ConversationUiState(),
             onMessageScrolled = { },
-            onFetchMessages = { },
-            onAllMessagesScrolled = { },
-            onReadAllMessages = { },
+            onApproachingTop = { },
+            onResetScroll = { },
             scrollState = rememberLazyListState(),
             modifier = Modifier.fillMaxSize()
         )
@@ -302,9 +297,8 @@ internal fun EmptyMessagesPreview() {
         Messages(
             uiState = ConversationUiState(areMessagesInitialized = true),
             onMessageScrolled = { },
-            onFetchMessages = { },
-            onAllMessagesScrolled = { },
-            onReadAllMessages = { },
+            onApproachingTop = { },
+            onResetScroll = { },
             scrollState = rememberLazyListState(),
             modifier = Modifier.fillMaxSize()
         )
@@ -318,9 +312,8 @@ internal fun MessagesPreview() {
         Messages(
             uiState = ConversationUiState(areMessagesInitialized = true, conversationItems = mockConversationItems),
             onMessageScrolled = { },
-            onFetchMessages = { },
-            onAllMessagesScrolled = { },
-            onReadAllMessages = { },
+            onApproachingTop = { },
+            onResetScroll = { },
             scrollState = rememberLazyListState(),
             modifier = Modifier.fillMaxSize()
         )

@@ -12,10 +12,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -70,12 +67,12 @@ fun ChatScreen(
         uiState = uiState,
         onBackPressed = onBackPressed,
         onMessageScrolled = { viewModel.onMessageScrolled(it) },
-        onFetchMessages = { viewModel.fetchMessages() },
-        onReadAllMessages = { viewModel.readAllMessages() },
-        onAllMessagesScrolled = { viewModel.onAllMessagesScrolled() },
-        onCall = { viewModel.call(it) },
-        onShowCall = { viewModel.showCall() },
-        onSendMessage = { viewModel.sendMessage(it) },
+        onResetMessagesScroll = { viewModel.onAllMessagesScrolled() },
+        fetchMessages = { viewModel.fetchMessages() },
+        readAllMessages = { viewModel.readAllMessages() },
+        call = { viewModel.call(it) },
+        showCall = { viewModel.showCall() },
+        sendMessage = { viewModel.sendMessage(it) },
     )
 }
 
@@ -84,15 +81,19 @@ internal fun ChatScreen(
     uiState: ChatUiState,
     onBackPressed: () -> Unit,
     onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
-    onFetchMessages: () -> Unit,
-    onReadAllMessages: () -> Unit,
-    onAllMessagesScrolled: () -> Unit,
-    onCall: (CallType) -> Unit,
-    onShowCall: () -> Unit,
-    onSendMessage: (String) -> Unit
+    onResetMessagesScroll: () -> Unit,
+    fetchMessages: () -> Unit,
+    readAllMessages: () -> Unit,
+    call: (CallType) -> Unit,
+    showCall: () -> Unit,
+    sendMessage: (String) -> Unit
 ) {
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(uiState.conversationState.conversationItems) {
+        readAllMessages()
+    }
 
     Column(
         modifier = Modifier
@@ -104,20 +105,19 @@ internal fun ChatScreen(
             state = uiState.state,
             info = uiState.info,
             onBackPressed = onBackPressed,
-            actions = uiState.actions.mapToClickableAction(makeCall = { onCall(it) })
+            actions = uiState.actions.mapToClickableAction(makeCall = { call(it) })
         )
 
         Messages(
             uiState = uiState.conversationState,
             onMessageScrolled = onMessageScrolled,
-            onFetchMessages = onFetchMessages,
-            onAllMessagesScrolled = onAllMessagesScrolled,
-            onReadAllMessages = onReadAllMessages,
+            onApproachingTop = fetchMessages,
+            onResetScroll = onResetMessagesScroll,
             scrollState = scrollState,
             modifier = Modifier.weight(1f).fillMaxWidth()
         )
 
-        if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
+        if (uiState.isInCall) OngoingCallLabel(onClick = { showCall() })
 
         AndroidView(
             modifier = Modifier.fillMaxWidth(),
@@ -130,7 +130,7 @@ internal fun ChatScreen(
                     override fun onTextChanged(text: String) = Unit
                     override fun onSendClicked(text: String) {
                         scope.launch {
-                            onSendMessage(text)
+                            sendMessage(text)
                             scrollState.scrollToItem(0)
                         }
                     }

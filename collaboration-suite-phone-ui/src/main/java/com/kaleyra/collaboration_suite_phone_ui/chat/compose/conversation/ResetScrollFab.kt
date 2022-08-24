@@ -29,7 +29,7 @@ val LazyListState.scrollTopBottomFabEnabled: Boolean
     get() = firstVisibleItemIndex > 0 && firstVisibleItemScrollOffset > 0
 
 @Composable
-internal fun ScrollToBottomFab(
+internal fun ResetScrollFab(
     counter: Int,
     onClick: () -> Unit,
     enabled: Boolean,
@@ -70,6 +70,6 @@ internal fun ScrollToBottomFab(
 
 @Preview
 @Composable
-internal fun ScrollToBottomFabPreview() {
-    ScrollToBottomFab(counter = 5, onClick = { }, enabled = true)
+internal fun ResetScrollFabPreview() {
+    ResetScrollFab(counter = 5, onClick = { }, enabled = true)
 }
