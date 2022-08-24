@@ -3,7 +3,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose
 
 import android.os.Bundle
-import android.view.ContextThemeWrapper
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
@@ -24,7 +23,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -38,9 +36,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationI
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.PhoneChatViewModel
-import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutEventListener
-import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLayoutWidget
-import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
 import kotlinx.coroutines.launch
 
 internal class PhoneChatActivity : ChatActivity() {
@@ -69,11 +64,11 @@ fun ChatScreen(
         onBackPressed = onBackPressed,
         onMessageScrolled = { viewModel.onMessageScrolled(it) },
         onResetMessagesScroll = { viewModel.onAllMessagesScrolled() },
-        fetchMessages = { viewModel.fetchMessages() },
-        readAllMessages = { viewModel.readAllMessages() },
-        call = { viewModel.call(it) },
-        showCall = { viewModel.showCall() },
-        sendMessage = { viewModel.sendMessage(it) },
+        onFetchMessages = { viewModel.fetchMessages() },
+        onReadAllMessages = { viewModel.readAllMessages() },
+        onCall = { viewModel.call(it) },
+        onShowCall = { viewModel.showCall() },
+        onSendMessage = { viewModel.sendMessage(it) },
     )
 }
 
@@ -83,18 +78,18 @@ internal fun ChatScreen(
     onBackPressed: () -> Unit,
     onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
     onResetMessagesScroll: () -> Unit,
-    fetchMessages: () -> Unit,
-    readAllMessages: () -> Unit,
-    call: (CallType) -> Unit,
-    showCall: () -> Unit,
-    sendMessage: (String) -> Unit,
+    onFetchMessages: () -> Unit,
+    onReadAllMessages: () -> Unit,
+    onCall: (CallType) -> Unit,
+    onShowCall: () -> Unit,
+    onSendMessage: (String) -> Unit,
     isTesting: Boolean = false
 ) {
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(uiState.conversationState.conversationItems) {
-        readAllMessages()
+        onReadAllMessages()
     }
 
     Column(
@@ -107,13 +102,13 @@ internal fun ChatScreen(
             state = uiState.state,
             info = uiState.info,
             onBackPressed = onBackPressed,
-            actions = uiState.actions.mapToClickableAction(makeCall = { call(it) })
+            actions = uiState.actions.mapToClickableAction(makeCall = { onCall(it) })
         )
 
         Messages(
             uiState = uiState.conversationState,
             onMessageScrolled = onMessageScrolled,
-            onApproachingTop = fetchMessages,
+            onApproachingTop = onFetchMessages,
             onResetScroll = onResetMessagesScroll,
             scrollState = scrollState,
             modifier = Modifier
@@ -121,12 +116,12 @@ internal fun ChatScreen(
                 .fillMaxWidth()
         )
 
-        if (uiState.isInCall) OngoingCallLabel(onClick = { showCall() })
+        if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
 
         if (!isTesting) {
             UserInput { text ->
                 scope.launch {
-                    sendMessage(text)
+                    onSendMessage(text)
                     scrollState.scrollToItem(0)
                 }
             }
