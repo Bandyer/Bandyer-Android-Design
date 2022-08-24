@@ -44,7 +44,7 @@ class KaleyraChatInputLayoutWidget @JvmOverloads constructor(context: Context, a
 
     private var textWatcher: TextWatcher? = null
 
-    val binding: KaleyraWidgetChatInputLayoutBinding by lazy { KaleyraWidgetChatInputLayoutBinding.inflate(LayoutInflater.from(context), this) }
+    val binding: KaleyraWidgetChatInputLayoutBinding by lazy { KaleyraWidgetChatInputLayoutBinding.inflate(LayoutInflater.from(context), this, true) }
 
     init {
         input = binding.kaleyraMessageEditText

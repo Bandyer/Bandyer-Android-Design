@@ -13,7 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/kaleyra_input_layout"
     android:layout_width="match_parent"
@@ -36,10 +36,12 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/kaleyra_send_button"
         style="?attr/materialButtonStyle"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:nextFocusLeft="@id/kaleyra_text_field"
         app:layout_constraintTop_toTopOf="@id/kaleyra_text_field"
         app:layout_constraintBottom_toBottomOf="@id/kaleyra_text_field"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
-</merge>
+</androidx.constraintlayout.widget.ConstraintLayout>
