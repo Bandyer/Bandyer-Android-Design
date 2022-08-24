@@ -34,7 +34,7 @@ import kotlinx.coroutines.launch
 private val OtherBubbleShape = RoundedCornerShape(0.dp, 24.dp, 24.dp, 12.dp)
 private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
 
-const val MessageTag = "MessageTag"
+const val MessageStateTag = "MessageStateTag"
 const val ConversationTag = "ConversationTag"
 
 private const val TOP_THRESHOLD = 15
@@ -138,9 +138,7 @@ internal fun Conversation(
             when (item) {
                 is ConversationItem.MessageItem -> Message(
                     item,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .testTag(MessageTag)
+                    modifier = Modifier.fillMaxWidth()
                 )
                 is ConversationItem.DayItem -> DayHeader(
                     item.timestamp,
@@ -222,6 +220,7 @@ internal fun Bubble(messageItem: ConversationItem.MessageItem) {
                         modifier = Modifier
                             .padding(2.dp)
                             .size(16.dp)
+                            .testTag(MessageStateTag)
                     )
                 }
             }
