@@ -23,6 +23,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockClickableActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
 
@@ -81,7 +82,9 @@ internal fun TopAppBar(
             }
 
             Row(
-                modifier = Modifier.fillMaxHeight().testTag(ActionsTag),
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .testTag(ActionsTag),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically,
                 content = { Actions(actions = actions) }
@@ -121,14 +124,14 @@ private inline fun <reified T : ChatAction> Set<ClickableAction>.getClickableAct
 
 @Preview
 @Composable
-internal fun ActionsPreview() {
+internal fun TopAppBarPreview() {
     Surface {
         Row {
-            Actions(
-                setOf(
-                    ClickableAction(ChatAction.AudioCall) { },
-                    ClickableAction(ChatAction.AudioUpgradableCall) { },
-                    ClickableAction(ChatAction.VideoCall) { })
+            TopAppBar(
+                state = ChatState.UserState.Online,
+                info = ChatInfo("John Smith"),
+                actions = mockClickableActions,
+                onBackPressed = { }
             )
         }
     }

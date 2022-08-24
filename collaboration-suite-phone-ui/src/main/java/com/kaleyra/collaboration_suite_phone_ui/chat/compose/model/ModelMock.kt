@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose.model
 
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.ClickableAction
 import kotlinx.coroutines.flow.MutableStateFlow
 
 val mockConversationItems = listOf(
@@ -62,3 +63,8 @@ val mockConversationItems = listOf(
     ConversationItem.MessageItem(Message.OtherMessage("id1", "Hello there!", "11:45")),
     ConversationItem.DayItem("23 august 2022")
 )
+
+val mockClickableActions = setOf(
+    ClickableAction(ChatAction.AudioCall) { },
+    ClickableAction(ChatAction.AudioUpgradableCall) { },
+    ClickableAction(ChatAction.VideoCall) { })
