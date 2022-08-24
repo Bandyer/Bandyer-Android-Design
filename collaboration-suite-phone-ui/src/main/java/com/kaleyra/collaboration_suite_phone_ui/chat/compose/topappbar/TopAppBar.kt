@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,6 +25,8 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
+
+const val ActionsTag = "ActionsTag"
 
 internal typealias ClickableAction = Pair<ChatAction, () -> Unit>
 
@@ -78,7 +81,7 @@ internal fun TopAppBar(
             }
 
             Row(
-                modifier = Modifier.fillMaxHeight(),
+                modifier = Modifier.fillMaxHeight().testTag(ActionsTag),
                 horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically,
                 content = { Actions(actions = actions) }

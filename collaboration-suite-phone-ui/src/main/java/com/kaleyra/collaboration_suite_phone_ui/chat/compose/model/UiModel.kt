@@ -26,8 +26,8 @@ sealed class ChatState {
 }
 
 data class ChatInfo(
-    val name: String,
-    val image: Uri
+    val name: String = "",
+    val image: Uri = Uri.EMPTY
 )
 
 sealed class ChatAction {
