@@ -59,29 +59,28 @@ class ConversationTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            MaterialTheme {
-                Messages(
-                    uiState = uiState.collectAsState().value,
-                    onMessageScrolled = { },
-                    onApproachingTop = { isApproachingTop = true },
-                    onResetScroll = { scrollReset = true },
-                    scrollState = LazyListState()
-                )
-            }
+            Messages(
+                uiState = uiState.collectAsState().value,
+                onMessageScrolled = { /*TODO*/ },
+                onApproachingTop = { isApproachingTop = true },
+                onResetScroll = { scrollReset = true },
+                scrollState = LazyListState()
+            )
         }
     }
 
     @Test
-    fun emptyMessages_noMessagesShown() {
+    fun emptyMessages_noMessagesDisplayed() {
         uiState.update { it.copy(conversationItems = emptyList()) }
         val noMessages = composeTestRule.activity.getString(R.string.kaleyra_chat_no_messages)
         composeTestRule.onNodeWithText(noMessages).assertIsDisplayed()
     }
 
     @Test
-    fun messagesNotInitialized_loadingMessagingShown() {
+    fun messagesNotInitialized_loadingMessagingDisplayed() {
         uiState.update { it.copy(areMessagesInitialized = false) }
-        val channelLoading = composeTestRule.activity.getString(R.string.kaleyra_chat_channel_loading)
+        val channelLoading =
+            composeTestRule.activity.getString(R.string.kaleyra_chat_channel_loading)
         composeTestRule.onNodeWithText(channelLoading).assertIsDisplayed()
     }
 
@@ -108,25 +107,28 @@ class ConversationTest {
     }
 
     @Test
-    fun messageStateSending_pendingIconShowed() {
+    fun messageStateSending_pendingIconDisplayed() {
         uiState.update { it.copy(conversationItems = listOf(ConversationItem.MessageItem(message))) }
-        val pendingStatus = composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_pending)
+        val pendingStatus =
+            composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_pending)
         composeTestRule.onNodeWithTag(MessageStateTag).assert(hasContentDescription(pendingStatus))
     }
 
     @Test
-    fun messageStateSent_sentIconShowed() {
+    fun messageStateSent_sentIconDisplayed() {
         val message = message.copy(state = MutableStateFlow(Message.State.Sent))
-        uiState.update { it.copy(conversationItems =listOf(ConversationItem.MessageItem(message))) }
-        val pendingStatus = composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_sent)
+        uiState.update { it.copy(conversationItems = listOf(ConversationItem.MessageItem(message))) }
+        val pendingStatus =
+            composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_sent)
         composeTestRule.onNodeWithTag(MessageStateTag).assert(hasContentDescription(pendingStatus))
     }
 
     @Test
-    fun messageStateRead_seenIconShowed() {
+    fun messageStateRead_seenIconDisplayed() {
         val message = message.copy(state = MutableStateFlow(Message.State.Read))
         uiState.update { it.copy(conversationItems = listOf(ConversationItem.MessageItem(message))) }
-        val pendingStatus = composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_seen)
+        val pendingStatus =
+            composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_seen)
         composeTestRule.onNodeWithTag(MessageStateTag).assert(hasContentDescription(pendingStatus))
     }
 
