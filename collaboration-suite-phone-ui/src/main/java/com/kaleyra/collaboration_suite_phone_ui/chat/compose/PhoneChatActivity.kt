@@ -30,6 +30,7 @@ import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.ClickableAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.Messages
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.input.UserInput
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.TopAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.CallType
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
@@ -86,7 +87,8 @@ internal fun ChatScreen(
     readAllMessages: () -> Unit,
     call: (CallType) -> Unit,
     showCall: () -> Unit,
-    sendMessage: (String) -> Unit
+    sendMessage: (String) -> Unit,
+    isTesting: Boolean = false
 ) {
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -114,29 +116,21 @@ internal fun ChatScreen(
             onApproachingTop = fetchMessages,
             onResetScroll = onResetMessagesScroll,
             scrollState = scrollState,
-            modifier = Modifier.weight(1f).fillMaxWidth()
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
         )
 
         if (uiState.isInCall) OngoingCallLabel(onClick = { showCall() })
 
-        AndroidView(
-            modifier = Modifier.fillMaxWidth(),
-            factory = {
-                val themeResId = it.theme.getAttributeResourceId(R.attr.kaleyra_chatInputWidgetStyle)
-                KaleyraChatInputLayoutWidget(ContextThemeWrapper(it, themeResId))
-            },
-            update = {
-                it.callback = object : KaleyraChatInputLayoutEventListener {
-                    override fun onTextChanged(text: String) = Unit
-                    override fun onSendClicked(text: String) {
-                        scope.launch {
-                            sendMessage(text)
-                            scrollState.scrollToItem(0)
-                        }
-                    }
+        if (!isTesting) {
+            UserInput { text ->
+                scope.launch {
+                    sendMessage(text)
+                    scrollState.scrollToItem(0)
                 }
             }
-        )
+        }
     }
 }
 
