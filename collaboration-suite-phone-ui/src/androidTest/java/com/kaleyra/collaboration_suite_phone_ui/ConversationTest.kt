@@ -135,14 +135,4 @@ class ConversationTest {
     private val ComposeContentTestRule.resetScrollFab: SemanticsNodeInteraction
         get() = onNodeWithContentDescription(composeTestRule.activity.getString(R.string.kaleyra_chat_scroll_to_last_message))
 
-    private fun SemanticsNodeInteraction.performScrollUp() {
-        performTouchInput {
-            this.swipe(
-                start = this.center,
-                end = Offset(this.center.x, this.center.y + 500),
-                durationMillis = 200
-            )
-        }
-    }
-
 }

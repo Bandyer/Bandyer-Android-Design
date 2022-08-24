@@ -102,7 +102,7 @@ class TapAppBarTest {
     }
 
     @Test
-    fun userClickAction_onActionClickedInvoked() {
+    fun userClicksAction_onActionClickedInvoked() {
         composeTestRule.onNodeWithTag(ActionsTag).onChildren().onFirst().performClick()
         assert(isActionClicked)
     }
