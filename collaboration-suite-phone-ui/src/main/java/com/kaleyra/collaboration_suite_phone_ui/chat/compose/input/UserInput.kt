@@ -11,7 +11,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInputLay
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
 
 @Composable
-internal fun UserInput(onSendMessage: (String) -> Unit) {
+internal fun UserInput(onSendMessage: (String) -> Unit, onTyping: () -> Unit) {
     AndroidView(
         modifier = Modifier.fillMaxWidth(),
         factory = {
@@ -20,7 +20,7 @@ internal fun UserInput(onSendMessage: (String) -> Unit) {
         },
         update = {
             it.callback = object : KaleyraChatInputLayoutEventListener {
-                override fun onTextChanged(text: String) = Unit
+                override fun onTextChanged(text: String) = onTyping()
                 override fun onSendClicked(text: String) = onSendMessage(text)
             }
         }

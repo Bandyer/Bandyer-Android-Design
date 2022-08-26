@@ -84,6 +84,11 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
         showUnreadHeader.value = false
     }
 
+    override fun typing() {
+        val chat = chat.replayCache.firstOrNull() ?: return
+        chat.participants.value.me.typing()
+    }
+
     override fun fetchMessages() {
         chat.replayCache.firstOrNull()?.fetch(FETCH_COUNT)
     }

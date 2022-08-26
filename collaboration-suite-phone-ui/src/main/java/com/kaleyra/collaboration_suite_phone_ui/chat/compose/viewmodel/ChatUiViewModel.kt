@@ -12,6 +12,8 @@ interface ChatUiViewModel {
 
     fun sendMessage(text: String)
 
+    fun typing()
+
     fun fetchMessages()
 
     fun onMessageScrolled(messageItem: ConversationItem.MessageItem)
