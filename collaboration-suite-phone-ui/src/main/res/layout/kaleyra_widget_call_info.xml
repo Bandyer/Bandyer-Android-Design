@@ -31,6 +31,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/kaleyra_back_button"
             style="?attr/kaleyra_backButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/kaleyra_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
