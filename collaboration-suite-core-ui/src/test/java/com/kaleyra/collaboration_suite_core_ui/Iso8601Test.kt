@@ -16,7 +16,6 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
-import com.kaleyra.collaboration_suite_utils.assertIsTrue
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isLastWeek
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isToday
@@ -40,7 +39,7 @@ class Iso8601Test {
         // set milliseconds to 0
         expected -= expected % 1000
         val result = Iso8601.getISO8601TstampInMillis(timestamp)
-        assertIsTrue(result == expected)
+        assert(result == expected)
     }
 
     @Test
@@ -49,7 +48,7 @@ class Iso8601Test {
         df.timeZone = TimeZone.getTimeZone("UTC")
         val expected = df.format(Calendar.getInstance().time)
         val result = Iso8601.nowISO8601()
-        assertIsTrue(result.contains(expected))
+        assert(result.contains(expected))
     }
 
     @Test
@@ -59,7 +58,7 @@ class Iso8601Test {
 
         expected -= expected % 1000
         result -= result % 1000
-        assertIsTrue(expected == result)
+        assert(expected == result)
     }
 
     @Test
@@ -70,8 +69,8 @@ class Iso8601Test {
         val tenDaysAgo = ZonedDateTime
             .now(ZoneId.systemDefault())
             .minus(10, ChronoUnit.DAYS)
-        assertIsTrue(threeDaysAgo.isLastWeek())
-        assertIsTrue(!tenDaysAgo.isLastWeek())
+        assert(threeDaysAgo.isLastWeek())
+        assert(!tenDaysAgo.isLastWeek())
     }
 
     @Test
@@ -82,9 +81,9 @@ class Iso8601Test {
             .minus(1, ChronoUnit.DAYS)
         val threeDaysAgo = now
             .minus(3, ChronoUnit.DAYS)
-        assertIsTrue(!now.isYesterday())
-        assertIsTrue(yesterday.isYesterday())
-        assertIsTrue(!threeDaysAgo.isYesterday())
+        assert(!now.isYesterday())
+        assert(yesterday.isYesterday())
+        assert(!threeDaysAgo.isYesterday())
     }
 
     @Test
@@ -92,8 +91,8 @@ class Iso8601Test {
         val now = ZonedDateTime.now(ZoneId.systemDefault())
         val yesterday = now
             .minus(1, ChronoUnit.DAYS)
-        assertIsTrue(now.isToday())
-        assertIsTrue(
+        assert(now.isToday())
+        assert(
             !yesterday.isToday()
         )
     }
@@ -106,6 +105,6 @@ class Iso8601Test {
             .toEpochMilli()
         val expected = Instant.ofEpochMilli(millis).toString()
         val result = Iso8601.parseMillisToIso8601(millis)
-        assertIsTrue(expected == result)
+        assert(expected == result)
     }
 }
