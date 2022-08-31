@@ -20,7 +20,7 @@ import com.kaleyra.collaboration_suite_utils.HostAppInfo
 /**
  * CallNotification. Be aware: on api > 31, the notifications requires either to be linked to a foreground service or to have a fullscreen intent.
  */
-internal class CallNotification {
+class CallNotification {
 
     /**
      * Different type of call notifications
