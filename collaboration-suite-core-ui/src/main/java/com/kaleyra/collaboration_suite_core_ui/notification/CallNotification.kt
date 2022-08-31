@@ -219,30 +219,30 @@ internal class CallNotification {
 
             contentIntent?.also { builder.setContentIntent(it) }
             fullscreenIntent?.also { builder.setFullScreenIntent(it, true) }
+
+            var screenShareAction: NotificationCompat.Action? = null
             screenShareIntent?.also {
-                val screenShareAction = NotificationCompat.Action(
+                screenShareAction = NotificationCompat.Action(
                     R.drawable.ic_kaleyra_screen_share,
                     context.getString(R.string.kaleyra_notification_stop_screen_share),
-                    it
-                )
-                builder.addAction(screenShareAction)
+                    it)
             }
 
-            if (type == Type.INCOMING) {
-                val answerAction = NotificationCompat.Action(
+            var answerAction: NotificationCompat.Action? = null
+            if (type == Type.INCOMING)
+                answerAction = NotificationCompat.Action(
                     R.drawable.ic_kaleyra_answer,
                     context.getString(R.string.kaleyra_notification_answer),
-                    answerIntent
-                )
-                builder.addAction(answerAction)
-            }
+                    answerIntent)
 
             val declineAction = NotificationCompat.Action(
                 R.drawable.ic_kaleyra_decline,
                 context.getString(if (type == Type.INCOMING) R.string.kaleyra_notification_decline else R.string.kaleyra_notification_hangup),
-                declineIntent
-            )
+                declineIntent)
+
+            screenShareAction?.let { builder.addAction(it) }
             builder.addAction(declineAction)
+            answerAction?.let { builder.addAction(it) }
 
             return builder.build()
         }
