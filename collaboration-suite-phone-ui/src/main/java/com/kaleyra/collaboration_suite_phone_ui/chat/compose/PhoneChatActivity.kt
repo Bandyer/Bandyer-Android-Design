@@ -122,12 +122,15 @@ internal fun ChatScreen(
         if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
 
         if (!isTesting) {
-            UserInput({ text ->
-                scope.launch {
-                    onSendMessage(text)
-                    scrollState.scrollToItem(0)
-                }
-            }, { onTyping() })
+            UserInput(
+                onSendMessage = { text ->
+                    scope.launch {
+                        onSendMessage(text)
+                        scrollState.scrollToItem(0)
+                    }
+                },
+                onTyping = { onTyping() }
+            )
         }
     }
 }

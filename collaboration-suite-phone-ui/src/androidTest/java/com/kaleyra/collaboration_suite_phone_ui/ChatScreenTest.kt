@@ -40,6 +40,7 @@ class ChatScreenTest {
                 onCall = { /*TODO*/ },
                 onShowCall = { showCall = true },
                 onSendMessage = { },
+                onTyping = { },
                 isTesting = true
             )
         }
