@@ -6,7 +6,6 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.ChatScreen
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.ConversationTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -40,8 +39,7 @@ class ChatScreenTest {
                 onCall = { /*TODO*/ },
                 onShowCall = { showCall = true },
                 onSendMessage = { },
-                onTyping = { },
-                isTesting = true
+                onTyping = { }
             )
         }
     }

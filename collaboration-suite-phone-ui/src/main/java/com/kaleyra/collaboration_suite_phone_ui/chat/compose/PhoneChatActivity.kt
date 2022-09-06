@@ -23,7 +23,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -85,8 +84,7 @@ internal fun ChatScreen(
     onCall: (CallType) -> Unit,
     onShowCall: () -> Unit,
     onSendMessage: (String) -> Unit,
-    onTyping: () -> Unit,
-    isTesting: Boolean = false
+    onTyping: () -> Unit
 ) {
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
@@ -121,17 +119,15 @@ internal fun ChatScreen(
 
         if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
 
-        if (!isTesting) {
-            UserInput(
-                onSendMessage = { text ->
-                    scope.launch {
-                        onSendMessage(text)
-                        scrollState.scrollToItem(0)
-                    }
-                },
-                onTyping = { onTyping() }
-            )
-        }
+        UserInput(
+            onTextChanged = { onTyping() },
+            onMessageSent = { text ->
+                scope.launch {
+                    onSendMessage(text)
+                    scrollState.scrollToItem(0)
+                }
+            },
+        )
     }
 }
 
