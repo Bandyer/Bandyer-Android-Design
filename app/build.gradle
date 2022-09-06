@@ -103,8 +103,6 @@ dependencies {
     implementation project(':collaboration-suite-core-ui')
     implementation project(":collaboration-suite")
 
-    implementation("androidx.profileinstaller:profileinstaller:1.2.0")
-
     implementation "com.kaleyra:collaboration-suite-utils:2.0.1"
     implementation "com.bandyer:bandyer-android-audiosession:2.2.1"
 }

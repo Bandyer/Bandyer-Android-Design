@@ -42,10 +42,6 @@ class MockChatViewModel : ViewModel(), ChatUiViewModel {
         TODO("Not yet implemented")
     }
 
-    override fun typing() {
-        TODO("Not yet implemented")
-    }
-
     override fun fetchMessages() {
         TODO("Not yet implemented")
     }
