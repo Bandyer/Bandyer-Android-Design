@@ -69,6 +69,7 @@
         <item quantity="other">%d messaggi non letti</item>
     </plurals>
     <string name="kaleyra_chat_no_messages">Nessun messaggio&#8230;</string>
+    <string name="kaleyra_chat_textfield_desc">Inserimento di testo</string>
 
     <!-- Call -->
     <string name="kaleyra_call_status_connecting">Connessione in corso…</string>

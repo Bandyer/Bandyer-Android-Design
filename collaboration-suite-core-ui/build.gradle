@@ -41,28 +41,16 @@ dependencies {
     api google.material
     api picasso.picasso
 
-    def composeVersion = "1.2.0"
+    def composeVersion = "1.2.1"
     api 'androidx.activity:activity-compose:1.5.1'
-//    api 'androidx.compose.ui:ui:1.1.1'
-    api "androidx.compose.ui:ui-tooling:$composeVersion"
     api "androidx.compose.material:material:$composeVersion"
-//    api 'androidx.compose.material:material-icons-core:1.1.1'
     api "androidx.compose.foundation:foundation:$composeVersion"
     api "androidx.compose.runtime:runtime:$composeVersion"
     api 'com.google.android.material:compose-theme-adapter:1.1.10'
     api 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
 
-    // Animations
-//    implementation 'androidx.compose.animation:animation:1.1.1'
-    // Material Design
-    // Material design icons
-//    api 'androidx.compose.material:material-icons-extended:1.1.1'
-    // Integration with ViewModels
-    // Integration with observables
-//    implementation 'androidx.compose.runtime:runtime-livedata:1.1.1'
-//    implementation 'androidx.compose.runtime:runtime-rxjava2:1.1.1'
-    // UI Tests
-//    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.1.1'
+    debugImplementation "androidx.compose.ui:ui-tooling:$composeVersion"
+    api "androidx.compose.ui:ui-tooling-preview:$composeVersion"
 
     /** Kaleyra **/
 //    implementation kaleyra.collaboration

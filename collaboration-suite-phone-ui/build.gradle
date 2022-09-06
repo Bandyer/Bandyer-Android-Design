@@ -63,6 +63,15 @@ dependencies {
     api google.flexbox
     implementation project(':collaboration-suite-core-ui')
 
+    def composeVersion = "1.2.1"
+    debugImplementation("androidx.compose.ui:ui-tooling:$composeVersion")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:$composeVersion")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
+
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
+
     /** Kaleyra **/
 //    compileOnly kaleyra.collaboration
 //    compileOnly kaleyra.collaboration_extension_audio
