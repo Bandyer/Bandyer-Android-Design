@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
@@ -32,6 +33,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.input.UserInput
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.CallType
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.ClickableAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.TopAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiState
@@ -96,6 +98,7 @@ internal fun ChatScreen(
 
     Column(
         modifier = Modifier
+            .background(color = MaterialTheme.colors.background)
             .fillMaxSize()
             .semantics {
                 testTagsAsResourceId = true
@@ -108,6 +111,7 @@ internal fun ChatScreen(
         )
 
         if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
+
         Messages(
             uiState = uiState.conversationState,
             onMessageScrolled = onMessageScrolled,
@@ -166,4 +170,22 @@ internal fun OngoingCallLabel(onClick: () -> Unit) {
         )
     }
 }
+
+@Preview
+@Composable
+fun ChatScreenPreview() {
+    ChatScreen(
+        uiState = mockUiState,
+        onBackPressed = { },
+        onMessageScrolled = { },
+        onResetMessagesScroll = { },
+        onFetchMessages = { },
+        onReadAllMessages = { },
+        onCall = { },
+        onShowCall = { },
+        onSendMessage = { },
+        onTyping = { }
+    )
+}
+
 
