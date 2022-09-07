@@ -24,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 
 val LazyListState.scrollTopBottomFabEnabled: Boolean
     get() = firstVisibleItemIndex > 0 && firstVisibleItemScrollOffset > 0
@@ -71,5 +72,15 @@ internal fun ResetScrollFab(
 @Preview
 @Composable
 internal fun ResetScrollFabPreview() {
-    ResetScrollFab(counter = 5, onClick = { }, enabled = true)
+    KaleyraTheme {
+        ResetScrollFab(counter = 5, onClick = { }, enabled = true)
+    }
+}
+
+@Preview
+@Composable
+internal fun ResetScrollFabDarkPreview() {
+    KaleyraTheme(isDarkTheme = true) {
+        ResetScrollFab(counter = 5, onClick = { }, enabled = true)
+    }
 }

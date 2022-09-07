@@ -24,6 +24,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockClickableActions
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
 
@@ -59,7 +60,8 @@ internal fun TopAppBar(
                 AndroidView(
                     modifier = Modifier.fillMaxWidth(),
                     factory = {
-                        val themeResId = it.theme.getAttributeResourceId(R.attr.kaleyra_chatInfoWidgetStyle)
+                        val themeResId =
+                            it.theme.getAttributeResourceId(R.attr.kaleyra_chatInfoWidgetStyle)
                         KaleyraChatInfoWidget(ContextThemeWrapper(it, themeResId))
                     },
                     update = {
@@ -120,19 +122,31 @@ internal fun Actions(actions: Set<ClickableAction>) {
     }
 }
 
-private inline fun <reified T : ChatAction> Set<ClickableAction>.getClickableAction(): ClickableAction? = firstOrNull { (act, _) -> act is T }
+private inline fun <reified T : ChatAction> Set<ClickableAction>.getClickableAction(): ClickableAction? =
+    firstOrNull { (act, _) -> act is T }
 
 @Preview
 @Composable
 internal fun TopAppBarPreview() {
-    Surface {
-        Row {
-            TopAppBar(
-                state = ChatState.UserState.Online,
-                info = ChatInfo("John Smith"),
-                actions = mockClickableActions,
-                onBackPressed = { }
-            )
-        }
+    KaleyraTheme {
+        TopAppBar(
+            state = ChatState.UserState.Online,
+            info = ChatInfo("John Smith"),
+            actions = mockClickableActions,
+            onBackPressed = { }
+        )
+    }
+}
+
+@Preview
+@Composable
+internal fun TopAppBarDarkPreview() {
+    KaleyraTheme(isDarkTheme = true) {
+        TopAppBar(
+            state = ChatState.UserState.Online,
+            info = ChatInfo("John Smith"),
+            actions = mockClickableActions,
+            onBackPressed = { }
+        )
     }
 }

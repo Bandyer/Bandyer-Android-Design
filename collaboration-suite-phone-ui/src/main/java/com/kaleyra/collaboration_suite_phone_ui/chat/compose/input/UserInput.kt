@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.supportRtl
 
 @Composable
@@ -108,6 +109,16 @@ internal fun UserInputText(
 
 @Preview
 @Composable
-fun UserInputTextPreview() {
-    UserInput(onTextChanged = { }, onMessageSent = { })
+fun UserInputPreview() {
+    KaleyraTheme {
+        UserInput(onTextChanged = { }, onMessageSent = { })
+    }
+}
+
+@Preview
+@Composable
+fun UserInputDarkPreview() {
+    KaleyraTheme(isDarkTheme = true) {
+        UserInput(onTextChanged = { }, onMessageSent = { })
+    }
 }

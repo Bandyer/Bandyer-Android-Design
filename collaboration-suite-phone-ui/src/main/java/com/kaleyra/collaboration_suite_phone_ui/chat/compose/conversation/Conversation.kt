@@ -29,6 +29,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationI
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ConversationUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockConversationItems
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import kotlinx.coroutines.launch
 
 private val OtherBubbleShape = RoundedCornerShape(0.dp, 24.dp, 24.dp, 12.dp)
@@ -277,44 +278,107 @@ internal fun ClickableMessage(item: ConversationItem.MessageItem) {
 @Preview
 @Composable
 internal fun LoadingMessagesPreview() {
-    Surface {
-        Messages(
-            uiState = ConversationUiState(),
-            onMessageScrolled = { },
-            onApproachingTop = { },
-            onResetScroll = { },
-            scrollState = rememberLazyListState(),
-            modifier = Modifier.fillMaxSize()
-        )
+    KaleyraTheme {
+        Surface(color = MaterialTheme.colors.background) {
+            Messages(
+                uiState = ConversationUiState(),
+                onMessageScrolled = { },
+                onApproachingTop = { },
+                onResetScroll = { },
+                scrollState = rememberLazyListState(),
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+internal fun LoadingMessagesDarkPreview() {
+    KaleyraTheme(isDarkTheme = true) {
+        Surface(color = MaterialTheme.colors.background) {
+            Messages(
+                uiState = ConversationUiState(),
+                onMessageScrolled = { },
+                onApproachingTop = { },
+                onResetScroll = { },
+                scrollState = rememberLazyListState(),
+                modifier = Modifier.fillMaxSize()
+            )
+        }
     }
 }
 
 @Preview
 @Composable
 internal fun EmptyMessagesPreview() {
-    Surface {
-        Messages(
-            uiState = ConversationUiState(areMessagesInitialized = true),
-            onMessageScrolled = { },
-            onApproachingTop = { },
-            onResetScroll = { },
-            scrollState = rememberLazyListState(),
-            modifier = Modifier.fillMaxSize()
-        )
+    KaleyraTheme {
+        Surface(color = MaterialTheme.colors.background) {
+            Messages(
+                uiState = ConversationUiState(areMessagesInitialized = true),
+                onMessageScrolled = { },
+                onApproachingTop = { },
+                onResetScroll = { },
+                scrollState = rememberLazyListState(),
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+internal fun EmptyMessagesDarkPreview() {
+    KaleyraTheme(isDarkTheme = true) {
+        Surface(color = MaterialTheme.colors.background) {
+            Messages(
+                uiState = ConversationUiState(areMessagesInitialized = true),
+                onMessageScrolled = { },
+                onApproachingTop = { },
+                onResetScroll = { },
+                scrollState = rememberLazyListState(),
+                modifier = Modifier.fillMaxSize()
+            )
+        }
     }
 }
 
 @Preview
 @Composable
 internal fun MessagesPreview() {
-    Surface {
-        Messages(
-            uiState = ConversationUiState(areMessagesInitialized = true, conversationItems = mockConversationItems),
-            onMessageScrolled = { },
-            onApproachingTop = { },
-            onResetScroll = { },
-            scrollState = rememberLazyListState(),
-            modifier = Modifier.fillMaxSize()
-        )
+    KaleyraTheme {
+        Surface(color = MaterialTheme.colors.background) {
+            Messages(
+                uiState = ConversationUiState(
+                    areMessagesInitialized = true,
+                    conversationItems = mockConversationItems
+                ),
+                onMessageScrolled = { },
+                onApproachingTop = { },
+                onResetScroll = { },
+                scrollState = rememberLazyListState(),
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+internal fun MessagesDarkPreview() {
+    KaleyraTheme(isDarkTheme = true) {
+        Surface(color = MaterialTheme.colors.background) {
+            Messages(
+                uiState = ConversationUiState(
+                    areMessagesInitialized = true,
+                    conversationItems = mockConversationItems
+                ),
+                onMessageScrolled = { },
+                onApproachingTop = { },
+                onResetScroll = { },
+                scrollState = rememberLazyListState(),
+                modifier = Modifier.fillMaxSize()
+            )
+        }
     }
 }
