@@ -6,12 +6,9 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.SemanticsPropertyKey
-import androidx.compose.ui.semantics.SemanticsPropertyReceiver
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.TextFieldValue
@@ -26,7 +23,7 @@ internal fun UserInput(
 ) {
     var textState by remember { mutableStateOf(TextFieldValue()) }
 
-    Surface(elevation = 4.dp) {
+    Surface {
         Row(Modifier.padding(start = 16.dp, top = 4.dp, end = 12.dp, bottom = 4.dp)) {
             UserInputText(
                 textFieldValue = textState,
@@ -36,26 +33,31 @@ internal fun UserInput(
                 },
                 modifier = Modifier.weight(1.0f)
             )
-            IconButton(
-                modifier = Modifier.height(48.dp),
+            SendButton(
                 enabled = textState.text.isNotBlank(),
-                onClick = { onMessageSent(textState.text) },
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_kaleyra_send),
-                    tint = if (textState.text.isNotBlank()) MaterialTheme.colors.secondary else MaterialTheme.colors.onSurface.copy(
-                        alpha = 0.25f
-                    ),
-                    modifier = Modifier.size(42.dp),
-                    contentDescription = stringResource(id = R.string.kaleyra_back)
-                )
-            }
+                onClick = { onMessageSent(textState.text) }
+            )
         }
     }
 }
 
-val KeyboardShownKey = SemanticsPropertyKey<Boolean>("KeyboardShownKey")
-var SemanticsPropertyReceiver.keyboardShownProperty by KeyboardShownKey
+@Composable
+internal fun SendButton(enabled: Boolean, onClick: () -> Unit) {
+    IconButton(
+        modifier = Modifier.height(48.dp),
+        enabled = enabled,
+        onClick = onClick,
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_kaleyra_send),
+            tint = if (enabled) MaterialTheme.colors.secondary else MaterialTheme.colors.onSurface.copy(
+                alpha = 0.25f
+            ),
+            modifier = Modifier.size(42.dp),
+            contentDescription = stringResource(id = R.string.kaleyra_chat_send)
+        )
+    }
+}
 
 @Composable
 internal fun UserInputText(
@@ -63,16 +65,12 @@ internal fun UserInputText(
     onTextChanged: (TextFieldValue) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val contentDesc = stringResource(id = R.string.kaleyra_chat_textfield_desc)
+    val description = stringResource(id = R.string.kaleyra_chat_textfield_desc)
     Row(
         modifier = Modifier
             .height(48.dp)
-            .semantics {
-                contentDescription = contentDesc
-                keyboardShownProperty = true
-            }
-            .then(modifier),
-        horizontalArrangement = Arrangement.End
+            .semantics { contentDescription = description }
+            .then(modifier)
     ) {
         Surface {
             Box(
@@ -81,25 +79,23 @@ internal fun UserInputText(
                     .weight(1f)
                     .align(Alignment.Bottom)
             ) {
-                var focusState by remember { mutableStateOf(false) }
                 BasicTextField(
                     value = textFieldValue,
                     onValueChange = { onTextChanged(it) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .align(Alignment.CenterStart)
-                        .onFocusChanged { focusState = it.isFocused },
+                        .align(Alignment.CenterStart),
                     maxLines = 4,
                     cursorBrush = SolidColor(MaterialTheme.colors.secondary),
                     textStyle = LocalTextStyle.current.copy(color = LocalContentColor.current)
                 )
 
-                val disableContentColor = MaterialTheme.colors.onSurface.copy(alpha = 0.5f)
-                if (textFieldValue.text.isEmpty() && !focusState) {
+                val hintColor = MaterialTheme.colors.onSurface.copy(alpha = 0.5f)
+                if (textFieldValue.text.isEmpty()) {
                     Text(
                         modifier = Modifier.align(Alignment.CenterStart),
                         text = stringResource(id = R.string.kaleyra_edit_text_input_placeholder),
-                        style = MaterialTheme.typography.subtitle1.copy(color = disableContentColor)
+                        style = MaterialTheme.typography.subtitle1.copy(color = hintColor)
                     )
                 }
             }
@@ -110,5 +106,5 @@ internal fun UserInputText(
 @Preview
 @Composable
 fun UserInputTextPreview() {
-    UserInput({ }, { })
+    UserInput(onTextChanged = { }, onMessageSent = { })
 }
