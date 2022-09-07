@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.supportRtl
 
 @Composable
 internal fun UserInput(
@@ -53,7 +54,9 @@ internal fun SendButton(enabled: Boolean, onClick: () -> Unit) {
             tint = if (enabled) MaterialTheme.colors.secondary else MaterialTheme.colors.onSurface.copy(
                 alpha = 0.25f
             ),
-            modifier = Modifier.size(42.dp),
+            modifier = Modifier
+                .size(42.dp)
+                .supportRtl(),
             contentDescription = stringResource(id = R.string.kaleyra_chat_send)
         )
     }

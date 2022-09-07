@@ -8,13 +8,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.supportRtl
 
 @Composable
 internal fun NavigationIcon(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
     IconButton(modifier = modifier, onClick = onBackPressed) {
         Icon(
             imageVector = Icons.Filled.ArrowBack,
-            contentDescription = stringResource(id = R.string.kaleyra_back)
+            contentDescription = stringResource(id = R.string.kaleyra_back),
+            modifier = Modifier.supportRtl()
         )
     }
 }
