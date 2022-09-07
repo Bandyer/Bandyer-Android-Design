@@ -19,7 +19,7 @@ class UserInputTest {
     private var onTextChanged = false
 
     private var onSendMessage = false
-    
+
     @Before
     fun setUp() {
         composeTestRule.setContent {

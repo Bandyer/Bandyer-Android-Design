@@ -20,7 +20,6 @@ import androidx.activity.ComponentActivity
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.*
@@ -50,18 +49,20 @@ class ConversationTest {
         )
     )
 
-    private var scrollReset = false
+    private var onMessageScrolled = false
 
-    private var isApproachingTop = false
+    private var onResetScroll = false
+
+    private var onApproachingTop = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             Messages(
                 uiState = uiState.collectAsState().value,
-                onMessageScrolled = { /*TODO*/ },
-                onApproachingTop = { isApproachingTop = true },
-                onResetScroll = { scrollReset = true },
+                onMessageScrolled = { onMessageScrolled = true },
+                onApproachingTop = { onApproachingTop = true },
+                onResetScroll = { onResetScroll = true },
                 scrollState = LazyListState()
             )
         }
@@ -84,24 +85,30 @@ class ConversationTest {
 
     @Test
     fun userScrollsUp_fabAppears() {
-        composeTestRule.resetScrollFab.assertDoesNotExist()
-        composeTestRule.onNodeWithTag(ConversationTag).performScrollUp()
-        composeTestRule.resetScrollFab.assertIsDisplayed()
+        findResetScrollFab().assertDoesNotExist()
+        findConversation().performScrollUp()
+        findResetScrollFab().assertIsDisplayed()
     }
 
     @Test
     fun userClicksFab_snapsToBottomAfterUserInteracted() {
-        composeTestRule.onNodeWithTag(ConversationTag).performScrollUp()
-        composeTestRule.resetScrollFab.performClick()
-        composeTestRule.resetScrollFab.assertDoesNotExist()
-        assert(scrollReset)
+        findConversation().performScrollUp()
+        findResetScrollFab().performClick()
+        findResetScrollFab().assertDoesNotExist()
+        assert(onResetScroll)
     }
 
     @Test
     fun userScrollsUp_onApproachingTopInvoked() {
-        composeTestRule.onNodeWithTag(ConversationTag).performScrollUp()
-        composeTestRule.onNodeWithTag(ConversationTag).performScrollUp()
-        assert(isApproachingTop)
+        findConversation().performScrollUp()
+        findConversation().performScrollUp()
+        assert(onApproachingTop)
+    }
+
+    @Test
+    fun userScrollsUp_onMessageScrolledInvoked() {
+        findConversation().performScrollUp()
+        assert(onMessageScrolled)
     }
 
     @Test
@@ -109,7 +116,7 @@ class ConversationTest {
         uiState.update { it.copy(conversationItems = listOf(ConversationItem.MessageItem(message))) }
         val pendingStatus =
             composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_pending)
-        composeTestRule.onNodeWithTag(MessageStateTag).assert(hasContentDescription(pendingStatus))
+        findMessage().assert(hasContentDescription(pendingStatus))
     }
 
     @Test
@@ -118,7 +125,7 @@ class ConversationTest {
         uiState.update { it.copy(conversationItems = listOf(ConversationItem.MessageItem(message))) }
         val pendingStatus =
             composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_sent)
-        composeTestRule.onNodeWithTag(MessageStateTag).assert(hasContentDescription(pendingStatus))
+        findMessage().assert(hasContentDescription(pendingStatus))
     }
 
     @Test
@@ -127,10 +134,13 @@ class ConversationTest {
         uiState.update { it.copy(conversationItems = listOf(ConversationItem.MessageItem(message))) }
         val pendingStatus =
             composeTestRule.activity.getString(R.string.kaleyra_chat_msg_status_seen)
-        composeTestRule.onNodeWithTag(MessageStateTag).assert(hasContentDescription(pendingStatus))
+        findMessage().assert(hasContentDescription(pendingStatus))
     }
 
-    private val ComposeContentTestRule.resetScrollFab: SemanticsNodeInteraction
-        get() = onNodeWithContentDescription(composeTestRule.activity.getString(R.string.kaleyra_chat_scroll_to_last_message))
+    private fun findResetScrollFab() = composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.kaleyra_chat_scroll_to_last_message))
+
+    private fun findConversation() = composeTestRule.onNodeWithTag(ConversationTag)
+
+    private fun findMessage() = composeTestRule.onNodeWithTag(MessageStateTag)
 
 }
