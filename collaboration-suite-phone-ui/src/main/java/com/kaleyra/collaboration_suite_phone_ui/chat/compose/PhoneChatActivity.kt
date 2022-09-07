@@ -107,6 +107,7 @@ internal fun ChatScreen(
             actions = uiState.actions.mapToClickableAction(makeCall = { onCall(it) })
         )
 
+        if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
         Messages(
             uiState = uiState.conversationState,
             onMessageScrolled = onMessageScrolled,
@@ -117,8 +118,6 @@ internal fun ChatScreen(
                 .weight(1f)
                 .fillMaxWidth()
         )
-
-        if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
 
         Divider(
             color = colorResource(id = R.color.kaleyra_color_grey_light),
