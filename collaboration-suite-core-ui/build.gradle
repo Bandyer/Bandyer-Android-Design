@@ -42,7 +42,7 @@ dependencies {
     api picasso.picasso
 
     def composeVersion = "1.2.1"
-    api 'androidx.activity:activity-compose:1.5.1'
+    api 'androidx.activity:activity-compose:1.5.0'
     api "androidx.compose.material:material:$composeVersion"
     api "androidx.compose.foundation:foundation:$composeVersion"
     api "androidx.compose.runtime:runtime:$composeVersion"
