@@ -54,7 +54,7 @@
     <string name="kaleyra_edit_text_input_placeholder">Scrivi qui &#8230;</string>
     <string name="kaleyra_chat_channel_loading">Caricamento &#8230;</string>
     <string name="kaleyra_chat_user_status_online">in linea</string>
-    <string name="kaleyra_chat_user_status_last_login">ultimo accesso:</string>
+    <string name="kaleyra_chat_user_status_last_login">ultimo accesso: %1$s</string>
     <string name="kaleyra_chat_user_status_offline">visto di recente</string>
     <string name="kaleyra_chat_user_status_typing">sta scrivendo</string>
     <string name="kaleyra_chat_state_waiting_for_network">attendo la rete&#8230;</string>
@@ -70,6 +70,7 @@
     </plurals>
     <string name="kaleyra_chat_no_messages">Nessun messaggio&#8230;</string>
     <string name="kaleyra_chat_textfield_desc">Inserimento di testo</string>
+    <string name="kaleyra_chat_avatar_desc">Immagine della chat</string>
 
     <!-- Call -->
     <string name="kaleyra_call_status_connecting">Connessione in corso…</string>

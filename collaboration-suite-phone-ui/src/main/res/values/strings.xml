@@ -53,7 +53,7 @@
     <string name="kaleyra_edit_text_input_placeholder">Write here &#8230;</string>
     <string name="kaleyra_chat_channel_loading">Loading &#8230;</string>
     <string name="kaleyra_chat_user_status_online">online</string>
-    <string name="kaleyra_chat_user_status_last_login">last login:</string>
+    <string name="kaleyra_chat_user_status_last_login">last login: %1$s</string>
     <string name="kaleyra_chat_user_status_offline">seen recently</string>
     <string name="kaleyra_chat_user_status_typing">typing</string>
     <string name="kaleyra_chat_state_waiting_for_network">waiting for network&#8230;</string>
@@ -69,6 +69,7 @@
     </plurals>
     <string name="kaleyra_chat_no_messages">No message yet&#8230;</string>
     <string name="kaleyra_chat_textfield_desc">Text input</string>
+    <string name="kaleyra_chat_avatar_desc">Chat image</string>
 
     <!-- Call -->
     <string name="kaleyra_call_status_dialing">Dialing &#8230;</string>

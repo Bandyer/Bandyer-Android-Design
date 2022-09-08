@@ -1,32 +1,34 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar
 
-import android.net.Uri
-import android.view.ContextThemeWrapper
-import android.view.View
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.appcompat.view.ContextThemeWrapper
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import coil.compose.AsyncImage
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockClickableActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.widgets.KaleyraChatInfoWidget
-import com.kaleyra.collaboration_suite_phone_ui.extensions.getAttributeResourceId
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.MarqueeText
+import com.kaleyra.collaboration_suite_phone_ui.textviews.KaleyraTextViewBouncingDots
 
 const val ActionsTag = "ActionsTag"
 
@@ -55,33 +57,9 @@ internal fun TopAppBar(
                 modifier = Modifier
                     .fillMaxHeight()
                     .weight(1f),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AndroidView(
-                    modifier = Modifier.fillMaxWidth(),
-                    factory = {
-                        val themeResId =
-                            it.theme.getAttributeResourceId(R.attr.kaleyra_chatInfoWidgetStyle)
-                        KaleyraChatInfoWidget(ContextThemeWrapper(it, themeResId))
-                    },
-                    update = {
-                        it.contactNameView!!.text = info.name
-                        it.contactNameView!!.visibility = View.VISIBLE
-                        it.contactStatusView!!.visibility = View.VISIBLE
-                        it.state = when {
-                            state is ChatState.NetworkState.Offline -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.WAITING_FOR_NETWORK()
-                            state is ChatState.NetworkState.Connecting -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.CONNECTING()
-                            state is ChatState.UserState.Online -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.ONLINE()
-                            state is ChatState.UserState.Offline && state.timestamp != null -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.OFFLINE(
-                                state.timestamp
-                            )
-                            state is ChatState.UserState.Typing -> KaleyraChatInfoWidget.KaleyraChatInfoWidgetState.TYPING()
-                            else -> null
-                        }
-                        if (info.image != Uri.EMPTY) it.contactImageView!!.setImageUri(info.image)
-                    }
-                )
-            }
+                verticalAlignment = Alignment.CenterVertically,
+                content = { ChatDetails(info, state) }
+            )
 
             Row(
                 modifier = Modifier
@@ -94,6 +72,70 @@ internal fun TopAppBar(
         }
     }
 }
+
+@Composable
+internal fun ChatDetails(info: ChatInfo, state: ChatState) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        val placeholderFilter = ColorFilter.tint(color = MaterialTheme.colors.onPrimary)
+        var colorFilter by remember { mutableStateOf<ColorFilter?>(placeholderFilter) }
+        AsyncImage(
+            model = info.image,
+            contentDescription = stringResource(id = R.string.kaleyra_chat_avatar_desc),
+            modifier = Modifier
+                .clip(CircleShape)
+                .background(color = colorResource(R.color.kaleyra_color_grey_light))
+                .size(40.dp),
+            placeholder = painterResource(R.drawable.ic_kaleyra_avatar),
+            error = painterResource(R.drawable.ic_kaleyra_avatar),
+            contentScale = ContentScale.Crop,
+            onSuccess = { colorFilter = null },
+            colorFilter = colorFilter
+        )
+        Column(Modifier.padding(start = 12.dp)) {
+            MarqueeText(
+                text = info.name,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                gradientEdgeColor = MaterialTheme.colors.primary
+            )
+            Row {
+                MarqueeText(
+                    text = textFor(state),
+                    fontSize = 12.sp,
+                    gradientEdgeColor = MaterialTheme.colors.primary,
+                    color = LocalContentColor.current.copy(alpha = 0.5f)
+                )
+                if (state is ChatState.UserState.Typing) {
+                    AndroidView(
+                        factory = {
+                            val style =
+                                R.style.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots
+                            KaleyraTextViewBouncingDots(ContextThemeWrapper(it, style))
+                        },
+                        modifier = Modifier
+                            .align(Alignment.Bottom)
+                            .padding(start = 2.dp),
+                        update = { if (!it.isPlaying) it.showAndPlay() }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun textFor(state: ChatState): String =
+    when (state) {
+        is ChatState.NetworkState.Offline -> stringResource(R.string.kaleyra_chat_state_waiting_for_network)
+        is ChatState.NetworkState.Connecting -> stringResource(R.string.kaleyra_chat_state_connecting)
+        is ChatState.UserState.Online -> stringResource(R.string.kaleyra_chat_user_status_online)
+        is ChatState.UserState.Offline -> {
+            if (state.timestamp.isNullOrBlank()) stringResource(R.string.kaleyra_chat_user_status_offline)
+            else stringResource(R.string.kaleyra_chat_user_status_last_login, state.timestamp)
+        }
+        is ChatState.UserState.Typing -> stringResource(R.string.kaleyra_chat_user_status_typing)
+        else -> ""
+    }
 
 @Composable
 internal fun Actions(actions: Set<ClickableAction>) {
@@ -130,7 +172,7 @@ private inline fun <reified T : ChatAction> Set<ClickableAction>.getClickableAct
 internal fun TopAppBarPreview() {
     KaleyraTheme {
         TopAppBar(
-            state = ChatState.UserState.Online,
+            state = ChatState.UserState.Offline("asd"),
             info = ChatInfo("John Smith"),
             actions = mockClickableActions,
             onBackPressed = { }
@@ -143,7 +185,7 @@ internal fun TopAppBarPreview() {
 internal fun TopAppBarDarkPreview() {
     KaleyraTheme(isDarkTheme = true) {
         TopAppBar(
-            state = ChatState.UserState.Online,
+            state = ChatState.UserState.Offline("asd"),
             info = ChatInfo("John Smith"),
             actions = mockClickableActions,
             onBackPressed = { }
