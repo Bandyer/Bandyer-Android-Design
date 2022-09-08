@@ -91,7 +91,7 @@ class ConversationTest {
     }
 
     @Test
-    fun userClicksFab_snapsToBottomAfterUserInteracted() {
+    fun userClicksFab_resetScrollInvoked() {
         findConversation().performScrollUp()
         findResetScrollFab().performClick()
         findResetScrollFab().assertDoesNotExist()
@@ -99,7 +99,7 @@ class ConversationTest {
     }
 
     @Test
-    fun userScrollsUp_onApproachingTopInvoked() {
+    fun userScrollsToTop_onApproachingTopInvoked() {
         findConversation().performScrollUp()
         findConversation().performScrollUp()
         assert(onApproachingTop)
