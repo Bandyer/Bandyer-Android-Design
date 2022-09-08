@@ -30,6 +30,8 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.MarqueeText
 import com.kaleyra.collaboration_suite_phone_ui.textviews.KaleyraTextViewBouncingDots
 
+const val SubtitleTag = "SubtitleTag"
+const val BouncingDots = "BouncingDots"
 const val ActionsTag = "ActionsTag"
 
 internal typealias ClickableAction = Pair<ChatAction, () -> Unit>
@@ -103,18 +105,19 @@ internal fun ChatDetails(info: ChatInfo, state: ChatState) {
                     text = textFor(state),
                     fontSize = 12.sp,
                     gradientEdgeColor = MaterialTheme.colors.primary,
-                    color = LocalContentColor.current.copy(alpha = 0.5f)
+                    color = LocalContentColor.current.copy(alpha = 0.5f),
+                    textModifier = Modifier.testTag(SubtitleTag)
                 )
                 if (state is ChatState.UserState.Typing) {
                     AndroidView(
                         factory = {
-                            val style =
-                                R.style.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots
+                            val style = R.style.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots
                             KaleyraTextViewBouncingDots(ContextThemeWrapper(it, style))
                         },
                         modifier = Modifier
                             .align(Alignment.Bottom)
-                            .padding(start = 2.dp),
+                            .padding(start = 2.dp)
+                            .testTag(BouncingDots),
                         update = { if (!it.isPlaying) it.showAndPlay() }
                     )
                 }

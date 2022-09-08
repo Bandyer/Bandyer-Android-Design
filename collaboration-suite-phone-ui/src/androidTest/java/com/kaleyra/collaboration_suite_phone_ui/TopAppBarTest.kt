@@ -2,30 +2,21 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onChildren
-import androidx.compose.ui.test.onFirst
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performClick
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.ActionsTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.ClickableAction
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.TopAppBar
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.*
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class TapAppBarTest {
+class TopAppBarTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -55,50 +46,58 @@ class TapAppBarTest {
 
     @Test
     fun title_set() {
-        Espresso.onView(withText(chatInfo.value.name)).check(matches(isDisplayed()))
+        // Check all nodes with the given text and get the first one. This is done because of the MarqueeText implementation.
+        composeTestRule.onAllNodesWithText(chatInfo.value.name).onFirst().assertIsDisplayed()
     }
 
     @Test
     fun chatStateNone_subtitleNotDisplayed() {
-        Espresso.onView(withId(R.id.kaleyra_subtitle_text)).check(matches(withText("")))
+        getSubtitle().assertTextEquals("")
     }
 
     @Test
     fun chatStateNetworkConnecting_connectingDisplayed() {
         chatState.value = ChatState.NetworkState.Connecting
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_chat_state_connecting)
-        Espresso.onView(withId(R.id.kaleyra_subtitle_text)).check(matches(withText(connecting)))
+        getSubtitle().assertTextEquals(connecting)
     }
 
     @Test
     fun chatStateNetworkOffline_waitingForNetworkDisplayed() {
         chatState.value = ChatState.NetworkState.Offline
         val waitingForNetwork = composeTestRule.activity.getString(R.string.kaleyra_chat_state_waiting_for_network)
-        Espresso.onView(withId(R.id.kaleyra_subtitle_text)).check(matches(withText(waitingForNetwork)))
+        getSubtitle().assertTextEquals(waitingForNetwork)
     }
 
     @Test
     fun chatStateUserOnline_onlineDisplayed() {
         chatState.value = ChatState.UserState.Online
         val online = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_online)
-        Espresso.onView(withId(R.id.kaleyra_subtitle_text)).check(matches(withText(online)))
+        getSubtitle().assertTextEquals(online)
     }
 
     @Test
-    fun chatStateUserOffline_offlineDisplayed() {
+    fun chatStateUserOffline_lastLoginDisplayed() {
         val timestamp = "16:22"
         chatState.value = ChatState.UserState.Offline(timestamp)
-        val lastLogin = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_last_login)
-        Espresso.onView(withId(R.id.kaleyra_subtitle_text)).check(matches(withText("$lastLogin $timestamp")))
+        val offline = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_last_login, timestamp)
+        getSubtitle().assertTextEquals(offline)
+    }
+
+    @Test
+    fun chatStateUserNeverOnline_recentlySeenDisplayed() {
+        chatState.value = ChatState.UserState.Offline(null)
+        val offline = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_offline)
+        getSubtitle().assertTextEquals(offline)
     }
 
     @Test
     fun chatStateUserTyping_typingWithDotsDisplayed() {
-        Espresso.onView(withId(R.id.kaleyra_subtitle_bouncing_dots)).check(matches(not(isDisplayed())))
+        getBouncingDots().assertDoesNotExist()
         chatState.value = ChatState.UserState.Typing
         val typing = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_typing)
-        Espresso.onView(withId(R.id.kaleyra_subtitle_text)).check(matches(withText(typing)))
-        Espresso.onView(withId(R.id.kaleyra_subtitle_bouncing_dots)).check(matches(isDisplayed()))
+        getSubtitle().assertTextEquals(typing)
+        getBouncingDots().assertIsDisplayed()
     }
 
     @Test
@@ -106,4 +105,9 @@ class TapAppBarTest {
         composeTestRule.onNodeWithTag(ActionsTag).onChildren().onFirst().performClick()
         assert(isActionClicked)
     }
+
+    // Check all nodes with the given tag and get the first one. This is done because of the MarqueeText implementation.
+    private fun getSubtitle() = composeTestRule.onAllNodesWithTag(SubtitleTag).onFirst()
+
+    private fun getBouncingDots() = composeTestRule.onNodeWithTag(BouncingDots)
 }
