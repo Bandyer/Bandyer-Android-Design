@@ -97,7 +97,7 @@ internal fun ChatDetails(info: ChatInfo, state: ChatState) {
             MarqueeText(
                 text = info.name,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
+                fontWeight = FontWeight.SemiBold,
                 gradientEdgeColor = MaterialTheme.colors.primary
             )
             Row {
