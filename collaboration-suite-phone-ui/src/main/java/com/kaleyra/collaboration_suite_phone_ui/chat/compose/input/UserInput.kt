@@ -37,7 +37,10 @@ internal fun UserInput(
             )
             SendButton(
                 enabled = textState.text.isNotBlank(),
-                onClick = { onMessageSent(textState.text) }
+                onClick = {
+                    onMessageSent(textState.text)
+                    textState = TextFieldValue()
+                }
             )
         }
     }
