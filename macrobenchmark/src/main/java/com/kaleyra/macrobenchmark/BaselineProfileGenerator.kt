@@ -23,7 +23,7 @@ class BaselineProfileGenerator {
             val intent = Intent("$packageName.CHAT_ACTIVITY")
             startActivityAndWait(intent)
 
-            val column = device.findObject(By.res("lazyColumnMessages"))
+            val column = device.findObject(By.res("ConversationTag"))
 
             val searchCondition = Until.hasObject(By.res("message"))
 
