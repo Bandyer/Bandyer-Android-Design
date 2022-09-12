@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose.model
 
 import android.net.Uri
+import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import kotlinx.coroutines.CoroutineScope
@@ -10,6 +11,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import java.util.*
 
+@Immutable
 sealed class ChatState {
     sealed class NetworkState : ChatState() {
         object Connecting : NetworkState()
@@ -25,30 +27,34 @@ sealed class ChatState {
     object None : ChatState()
 }
 
+@Immutable
 data class ChatInfo(
     val name: String = "",
     val image: Uri = Uri.EMPTY
 )
 
+@Immutable
 sealed class ChatAction {
     object AudioCall : ChatAction()
     object AudioUpgradableCall : ChatAction()
     object VideoCall : ChatAction()
 }
 
+@Immutable
 sealed class CallType(val preferredType: Call.PreferredType) {
     object Audio : CallType(Call.PreferredType(video = null))
     object AudioUpgradable : CallType(Call.PreferredType(video = Call.Video.Disabled))
     object Video : CallType(Call.PreferredType())
 }
 
+@Immutable
 sealed class ConversationItem(val id: String) {
     data class DayItem(val timestamp: String) : ConversationItem(id = timestamp.hashCode().toString())
-
     data class NewMessagesItem(val count: Int) : ConversationItem(id = UUID.randomUUID().toString())
     data class MessageItem(val message: Message) : ConversationItem(id = message.id)
 }
 
+@Immutable
 sealed interface Message {
 
     val id: String
@@ -70,6 +76,7 @@ sealed interface Message {
         val state: StateFlow<State>
     ) : Message
 
+    @Immutable
     sealed class State {
         object Sending : State()
         object Sent : State()

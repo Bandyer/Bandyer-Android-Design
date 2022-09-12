@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel
 
 import android.net.Uri
+import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
 import kotlinx.coroutines.flow.StateFlow
 
@@ -25,6 +26,7 @@ interface ChatUiViewModel {
     fun showCall()
 }
 
+@Immutable
 data class ChatUiState(
     val info: ChatInfo = ChatInfo("", Uri.EMPTY),
     val state: ChatState = ChatState.None,
@@ -33,6 +35,7 @@ data class ChatUiState(
     val isInCall: Boolean = false
 )
 
+@Immutable
 data class ConversationUiState(
     val areMessagesInitialized: Boolean = false,
     val conversationItems: List<ConversationItem> = emptyList(),
