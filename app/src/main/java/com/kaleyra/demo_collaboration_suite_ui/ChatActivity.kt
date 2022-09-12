@@ -23,48 +23,31 @@ import androidx.activity.viewModels
 import androidx.lifecycle.ViewModel
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.ChatScreen
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.CallType
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class MockChatViewModel : ViewModel(), ChatUiViewModel {
 
-    override val uiState: StateFlow<ChatUiState>
-        get() = TODO("Not yet implemented")
+    override val uiState: StateFlow<ChatUiState> = MutableStateFlow(mockUiState)
 
-    override fun readAllMessages() {
-        TODO("Not yet implemented")
-    }
+    override fun readAllMessages() = Unit
 
-    override fun sendMessage(text: String) {
-        TODO("Not yet implemented")
-    }
+    override fun sendMessage(text: String) = Unit
 
-    override fun typing() {
-        TODO("Not yet implemented")
-    }
+    override fun typing() = Unit
 
-    override fun fetchMessages() {
-        TODO("Not yet implemented")
-    }
+    override fun fetchMessages() = Unit
 
-    override fun onMessageScrolled(messageItem: ConversationItem.MessageItem) {
-        TODO("Not yet implemented")
-    }
+    override fun onMessageScrolled(messageItem: ConversationItem.MessageItem) = Unit
 
-    override fun onAllMessagesScrolled() {
-        TODO("Not yet implemented")
-    }
+    override fun onAllMessagesScrolled() = Unit
 
-    override fun call(callType: CallType) {
-        TODO("Not yet implemented")
-    }
+    override fun call(callType: CallType) = Unit
 
-    override fun showCall() {
-        TODO("Not yet implemented")
-    }
+    override fun showCall() = Unit
 
     init {
         fetchMessages()
