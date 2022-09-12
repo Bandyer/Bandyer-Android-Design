@@ -27,9 +27,11 @@ import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ConversationUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockConversationItems
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ConversationUiState
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 private val OtherBubbleShape = RoundedCornerShape(0.dp, 24.dp, 24.dp, 12.dp)
@@ -62,13 +64,18 @@ internal fun Messages(
         if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
     }
 
-    LaunchedEffect(scrollState.firstVisibleItemIndex) {
-        val item = uiState.conversationItems.getOrNull(scrollState.firstVisibleItemIndex) as? ConversationItem.MessageItem ?: return@LaunchedEffect
-        onMessageScrolled(item)
+    LaunchedEffect(scrollState) {
+        snapshotFlow { scrollState.firstVisibleItemIndex }
+            .onEach {
+                val item = uiState.conversationItems.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
+                onMessageScrolled(item)
+            }.launchIn(this)
     }
 
-    LaunchedEffect(scrollState.isApproachingTop) {
-        if (scrollState.isApproachingTop) onApproachingTop()
+    LaunchedEffect(scrollState) {
+        snapshotFlow { scrollState.isApproachingTop }
+            .onEach { onApproachingTop() }
+            .launchIn(this)
     }
 
     Box(modifier) {
