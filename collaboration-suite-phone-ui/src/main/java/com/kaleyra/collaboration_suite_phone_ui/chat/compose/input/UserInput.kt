@@ -112,16 +112,12 @@ internal fun UserInputText(
 
 @Preview
 @Composable
-fun UserInputPreview() {
-    KaleyraTheme {
-        UserInput(onTextChanged = { }, onMessageSent = { })
-    }
+fun UserInputPreview() = KaleyraTheme {
+    UserInput(onTextChanged = { }, onMessageSent = { })
 }
 
 @Preview
 @Composable
-fun UserInputDarkPreview() {
-    KaleyraTheme(isDarkTheme = true) {
-        UserInput(onTextChanged = { }, onMessageSent = { })
-    }
+fun UserInputDarkPreview() = KaleyraTheme(isDarkTheme = true) {
+    UserInput(onTextChanged = { }, onMessageSent = { })
 }

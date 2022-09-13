@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -22,12 +23,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.custom.MarqueeText
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.custom.TypingDots
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockClickableActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.MarqueeText
 import com.kaleyra.collaboration_suite_phone_ui.textviews.KaleyraTextViewBouncingDots
 
 const val SubtitleTag = "SubtitleTag"
@@ -109,16 +111,12 @@ internal fun ChatDetails(info: ChatInfo, state: ChatState) {
                     textModifier = Modifier.testTag(SubtitleTag)
                 )
                 if (state is ChatState.UserState.Typing) {
-                    AndroidView(
-                        factory = {
-                            val style = R.style.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots
-                            KaleyraTextViewBouncingDots(ContextThemeWrapper(it, style))
-                        },
+                    TypingDots(
+                        color = LocalContentColor.current.copy(alpha = 0.5f),
                         modifier = Modifier
                             .align(Alignment.Bottom)
-                            .padding(start = 2.dp)
-                            .testTag(BouncingDots),
-                        update = { if (!it.isPlaying) it.showAndPlay() }
+                            .padding(start = 4.dp, bottom = 4.dp)
+                            .testTag(BouncingDots)
                     )
                 }
             }
@@ -172,26 +170,22 @@ private inline fun <reified T : ChatAction> Set<ClickableAction>.getClickableAct
 
 @Preview
 @Composable
-internal fun TopAppBarPreview() {
-    KaleyraTheme {
-        TopAppBar(
-            state = ChatState.UserState.Offline("asd"),
-            info = ChatInfo("John Smith"),
-            actions = mockClickableActions,
-            onBackPressed = { }
-        )
-    }
+internal fun TopAppBarPreview() = KaleyraTheme {
+    TopAppBar(
+        state = ChatState.UserState.Typing,
+        info = ChatInfo("John Smith"),
+        actions = mockClickableActions,
+        onBackPressed = { }
+    )
 }
 
 @Preview
 @Composable
-internal fun TopAppBarDarkPreview() {
-    KaleyraTheme(isDarkTheme = true) {
-        TopAppBar(
-            state = ChatState.UserState.Offline("asd"),
-            info = ChatInfo("John Smith"),
-            actions = mockClickableActions,
-            onBackPressed = { }
-        )
-    }
+internal fun TopAppBarDarkPreview() = KaleyraTheme(isDarkTheme = true) {
+    TopAppBar(
+        state = ChatState.UserState.Offline("15:00"),
+        info = ChatInfo("John Smith"),
+        actions = mockClickableActions,
+        onBackPressed = { }
+    )
 }

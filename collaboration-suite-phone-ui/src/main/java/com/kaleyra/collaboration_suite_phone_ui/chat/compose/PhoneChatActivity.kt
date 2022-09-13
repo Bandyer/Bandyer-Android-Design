@@ -178,40 +178,36 @@ internal fun OngoingCallLabel(onClick: () -> Unit) {
 
 @Preview
 @Composable
-fun ChatScreenPreview() {
-    KaleyraTheme {
-        ChatScreen(
-            uiState = mockUiState,
-            onBackPressed = { },
-            onMessageScrolled = { },
-            onResetMessagesScroll = { },
-            onFetchMessages = { },
-            onReadAllMessages = { },
-            onCall = { },
-            onShowCall = { },
-            onSendMessage = { },
-            onTyping = { }
-        )
-    }
+fun ChatScreenPreview() = KaleyraTheme {
+    ChatScreen(
+        uiState = mockUiState,
+        onBackPressed = { },
+        onMessageScrolled = { },
+        onResetMessagesScroll = { },
+        onFetchMessages = { },
+        onReadAllMessages = { },
+        onCall = { },
+        onShowCall = { },
+        onSendMessage = { },
+        onTyping = { }
+    )
 }
 
 @Preview
 @Composable
-fun ChatScreenDarkPreview() {
-    KaleyraTheme(isDarkTheme = true) {
-        ChatScreen(
-            uiState = mockUiState,
-            onBackPressed = { },
-            onMessageScrolled = { },
-            onResetMessagesScroll = { },
-            onFetchMessages = { },
-            onReadAllMessages = { },
-            onCall = { },
-            onShowCall = { },
-            onSendMessage = { },
-            onTyping = { }
-        )
-    }
+fun ChatScreenDarkPreview() = KaleyraTheme(isDarkTheme = true) {
+    ChatScreen(
+        uiState = mockUiState,
+        onBackPressed = { },
+        onMessageScrolled = { },
+        onResetMessagesScroll = { },
+        onFetchMessages = { },
+        onReadAllMessages = { },
+        onCall = { },
+        onShowCall = { },
+        onSendMessage = { },
+        onTyping = { }
+    )
 }
 
 
