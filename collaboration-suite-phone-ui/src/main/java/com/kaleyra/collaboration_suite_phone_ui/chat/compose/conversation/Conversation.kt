@@ -262,7 +262,7 @@ internal fun ClickableMessage(item: ConversationItem.MessageItem) {
 
     val styledMessage = messageFormatter(
         text = item.message.text,
-        primary = item.message is Message.MyMessage
+        primary = item.message !is Message.MyMessage
     )
 
     ClickableText(
