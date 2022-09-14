@@ -49,6 +49,10 @@ dependencies {
     api 'com.google.android.material:compose-theme-adapter:1.1.10'
     api 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
 
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+
+    testImplementation 'io.mockk:mockk:1.12.4'
+
     debugImplementation "androidx.compose.ui:ui-tooling:$composeVersion"
     api "androidx.compose.ui:ui-tooling-preview:$composeVersion"
 
