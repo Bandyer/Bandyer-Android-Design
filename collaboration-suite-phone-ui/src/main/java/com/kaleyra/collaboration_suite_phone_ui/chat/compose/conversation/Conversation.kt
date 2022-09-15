@@ -88,7 +88,10 @@ internal fun Messages(
         else Conversation(
             items = uiState.conversationItems,
             scrollState = scrollState,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .align(Alignment.BottomCenter)
         )
 
         ResetScrollFab(
