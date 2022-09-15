@@ -6,6 +6,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.FloatingActionButton
@@ -14,6 +15,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -22,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.highlightOnFocus
 
 val LazyListState.scrollTopBottomFabEnabled: Boolean
     get() = derivedStateOf { firstVisibleItemIndex > 1 }.value
@@ -33,6 +36,7 @@ internal fun ResetScrollFab(
     enabled: Boolean,
     modifier: Modifier = Modifier
 ) {
+    val interactionSource = remember { MutableInteractionSource() }
     AnimatedVisibility(
         visible = enabled,
         modifier = modifier,
@@ -42,7 +46,10 @@ internal fun ResetScrollFab(
         FloatingActionButton(
             onClick = onClick,
             backgroundColor = MaterialTheme.colors.primary,
-            modifier = Modifier.defaultMinSize(32.dp, 32.dp)
+            modifier = Modifier
+                .defaultMinSize(32.dp, 32.dp)
+                .highlightOnFocus(interactionSource),
+            interactionSource = interactionSource
         ) {
             Row(
                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),

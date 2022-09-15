@@ -2,6 +2,8 @@
 
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation
 
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -29,6 +31,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationI
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockConversationItems
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ConversationUiState
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -168,7 +171,14 @@ internal fun Conversation(
 
 @Composable
 internal fun NewMessagesHeader(count: Int, modifier: Modifier = Modifier) {
-    Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
+    val interactionSource = remember { MutableInteractionSource() }
+    Row(
+        modifier = Modifier
+            .focusable(true, interactionSource)
+            .highlightOnFocus(interactionSource)
+            .then(modifier),
+        horizontalArrangement = Arrangement.Center
+    ) {
         Text(
             text = pluralStringResource(id = R.plurals.kaleyra_chat_unread_messages, count, count),
             fontSize = 12.sp,
@@ -179,18 +189,29 @@ internal fun NewMessagesHeader(count: Int, modifier: Modifier = Modifier) {
 
 @Composable
 internal fun DayHeader(timestamp: String, modifier: Modifier = Modifier) {
-    Row(modifier = modifier, horizontalArrangement = Arrangement.Center) {
+    val interactionSource = remember { MutableInteractionSource() }
+    Row(
+        modifier = Modifier
+            .focusable(true, interactionSource)
+            .highlightOnFocus(interactionSource)
+            .then(modifier),
+        horizontalArrangement = Arrangement.Center
+    ) {
         Text(text = timestamp, fontSize = 12.sp, style = MaterialTheme.typography.body2)
     }
 }
 
 @Composable
 internal fun Message(messageItem: ConversationItem.MessageItem, modifier: Modifier = Modifier) {
+    val interactionSource = remember { MutableInteractionSource() }
     val horizontalArrangement =
         if (messageItem.message is Message.MyMessage) Arrangement.End else Arrangement.Start
 
     Row(
-        modifier = modifier,
+        modifier = Modifier
+            .focusable(true, interactionSource)
+            .highlightOnFocus(interactionSource)
+            .then(modifier),
         horizontalArrangement = horizontalArrangement,
         content = { Bubble(messageItem) }
     )

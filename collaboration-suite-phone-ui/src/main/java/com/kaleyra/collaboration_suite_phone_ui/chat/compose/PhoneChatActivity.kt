@@ -1,12 +1,12 @@
-@file:OptIn(ExperimentalComposeUiApi::class)
+@file:OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
 
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
@@ -16,8 +16,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusOrder
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.input.key.*
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -38,6 +44,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.ClickableAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.TopAppBar
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.PhoneChatViewModel
@@ -93,6 +100,7 @@ internal fun ChatScreen(
     onSendMessage: (String) -> Unit,
     onTyping: () -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
@@ -125,6 +133,15 @@ internal fun ChatScreen(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
+                .onPreviewKeyEvent {
+                    if (it.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+                    when (it.key) {
+                        Key.Tab -> {
+                            focusManager.moveFocus(FocusDirection.Down); true
+                        }
+                        else -> false
+                    }
+                }
                 .testTag(MessagesTag)
         )
 
@@ -156,16 +173,23 @@ private fun Set<ChatAction>.mapToClickableAction(makeCall: (CallType) -> Unit): 
 
 @Composable
 internal fun OngoingCallLabel(onClick: () -> Unit) {
+    val interactionSource = remember { MutableInteractionSource() }
     Row(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
-            .clickable(onClick = onClick, role = Role.Button)
+            .clickable(
+                onClick = onClick,
+                role = Role.Button,
+                interactionSource = interactionSource,
+                indication = LocalIndication.current
+            )
             .fillMaxWidth()
             .background(
                 shape = RectangleShape,
                 color = colorResource(id = R.color.kaleyra_color_answer_button)
             )
+            .highlightOnFocus(interactionSource)
             .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Text(

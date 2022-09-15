@@ -1,7 +1,10 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar
 
-import androidx.appcompat.view.ContextThemeWrapper
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -11,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.LastBaseline
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -20,7 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import coil.compose.AsyncImage
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.custom.MarqueeText
@@ -30,7 +31,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockClickableActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.textviews.KaleyraTextViewBouncingDots
 
 const val SubtitleTag = "SubtitleTag"
 const val BouncingDots = "BouncingDots"
@@ -47,7 +47,9 @@ internal fun TopAppBar(
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
-        modifier = modifier,
+        modifier = Modifier
+            .focusGroup()
+            .then(modifier),
         backgroundColor = MaterialTheme.colors.primary,
     ) {
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
