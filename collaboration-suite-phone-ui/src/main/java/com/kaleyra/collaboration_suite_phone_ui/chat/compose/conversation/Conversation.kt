@@ -33,6 +33,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockConversat
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ConversationUiState
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -78,6 +79,7 @@ internal fun Messages(
 
     LaunchedEffect(scrollState) {
         snapshotFlow { scrollState.isApproachingTop }
+            .filter { it }
             .onEach { onApproachingTop() }
             .launchIn(this)
     }
