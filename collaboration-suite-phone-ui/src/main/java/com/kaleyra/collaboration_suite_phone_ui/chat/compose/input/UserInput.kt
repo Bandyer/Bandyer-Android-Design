@@ -96,11 +96,9 @@ internal fun UserInputText(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
     val focusManager = LocalFocusManager.current
-    val description = stringResource(id = R.string.kaleyra_chat_textfield_desc)
     Row(
         modifier = Modifier
             .height(48.dp)
-            .semantics { contentDescription = description }
             .then(modifier)
     ) {
         Surface {

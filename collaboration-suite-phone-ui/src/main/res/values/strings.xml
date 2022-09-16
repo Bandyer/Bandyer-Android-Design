@@ -68,7 +68,6 @@
         <item quantity="other">%d unread messages</item>
     </plurals>
     <string name="kaleyra_chat_no_messages">No message yet&#8230;</string>
-    <string name="kaleyra_chat_textfield_desc">Text input</string>
     <string name="kaleyra_chat_avatar_desc">Chat image</string>
 
     <!-- Call -->
