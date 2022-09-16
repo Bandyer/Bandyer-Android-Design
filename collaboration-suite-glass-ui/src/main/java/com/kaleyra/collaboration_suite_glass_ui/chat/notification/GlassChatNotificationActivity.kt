@@ -201,9 +201,9 @@ internal class GlassChatNotificationActivity : AppCompatActivity(), GlassTouchEv
         ) { onExpanded?.invoke(it) }
     }
 
-    private fun getNOfUnreadMessages(chat: Chat): Int = chat.messages.value.other.count { it.state.value is Message.State.Received }
+    private fun getNOfUnreadMessages(chat: Chat): Int = chat.messages.replayCache[0].other.count { it.state.value is Message.State.Received }
 
-    private fun getLastReceivedMessage(chat: Chat): OtherMessage? = chat.messages.value.other.firstOrNull { it.state.value is Message.State.Received }
+    private fun getLastReceivedMessage(chat: Chat): OtherMessage? = chat.messages.replayCache[0].other.firstOrNull { it.state.value is Message.State.Received }
 
     private fun getChat(intent: Intent): Chat? {
         val chatId = intent.extras?.getString("chatId") ?: ""

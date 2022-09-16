@@ -43,12 +43,12 @@ class ChatNotificationActionReceiver : CollaborationBroadcastReceiver() {
                     ACTION_REPLY        -> {
                         val reply = getReply(intent)
                         val message = chat.create(Text(reply.toString()))
-                        chat.messages.value.other.filter { it.state.value is Received }.forEach { it.markAsRead() }
+                        chat.messages.replayCache[0].other.filter { it.state.value is Received }.forEach { it.markAsRead() }
                         chat.add(message)
                         NotificationManager.cancel(chat.id.hashCode())
                     }
                     ACTION_MARK_AS_READ -> {
-                        chat.messages.value.other.filter { it.state.value is Received }.forEach { it.markAsRead() }
+                        chat.messages.replayCache[0].other.filter { it.state.value is Received }.forEach { it.markAsRead() }
                         NotificationManager.cancel(chat.id.hashCode())
                     }
                     else                -> Unit
