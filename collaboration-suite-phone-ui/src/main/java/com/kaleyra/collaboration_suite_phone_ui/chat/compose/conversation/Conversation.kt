@@ -43,7 +43,7 @@ private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
 const val MessageStateTag = "MessageStateTag"
 const val ConversationTag = "ConversationTag"
 
-private const val TOP_THRESHOLD = 25
+private const val TOP_THRESHOLD = 15
 
 private val LazyListState.isApproachingTop: Boolean
     get() = derivedStateOf {
