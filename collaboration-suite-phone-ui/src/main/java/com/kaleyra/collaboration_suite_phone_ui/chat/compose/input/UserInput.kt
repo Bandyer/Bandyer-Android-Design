@@ -120,6 +120,8 @@ internal fun UserInputText(
                                 Key.Tab -> { focusManager.moveFocus(FocusDirection.Next); true }
                                 Key.DirectionUp -> { focusManager.moveFocus(FocusDirection.Up); true }
                                 Key.DirectionDown -> { focusManager.moveFocus(FocusDirection.Down); true }
+                                Key.DirectionRight -> { focusManager.moveFocus(FocusDirection.Right); true }
+                                Key.DirectionLeft -> { focusManager.moveFocus(FocusDirection.Left); true }
                                 else -> false
                             }
                         },
