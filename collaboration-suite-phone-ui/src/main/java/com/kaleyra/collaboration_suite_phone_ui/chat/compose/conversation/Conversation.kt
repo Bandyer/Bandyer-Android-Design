@@ -149,6 +149,7 @@ internal fun Conversation(
         state = scrollState,
         contentPadding = PaddingValues(all = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier.testTag(ConversationTag)
     ) {
         items(items, key = { it.id }, contentType = { it::class.java }) { item ->
@@ -170,6 +171,15 @@ internal fun Conversation(
                         .padding(bottom = 8.dp)
                 )
             }
+        }
+        item {
+            CircularProgressIndicator(
+                color = LocalContentColor.current,
+                strokeWidth = 3.dp,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .size(28.dp)
+            )
         }
     }
 }
