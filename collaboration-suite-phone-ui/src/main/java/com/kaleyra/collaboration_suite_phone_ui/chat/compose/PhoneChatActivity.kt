@@ -16,10 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusOrder
-import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.input.key.*
@@ -100,7 +97,6 @@ internal fun ChatScreen(
     onSendMessage: (String) -> Unit,
     onTyping: () -> Unit
 ) {
-    val focusManager = LocalFocusManager.current
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
@@ -133,15 +129,6 @@ internal fun ChatScreen(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-                .onPreviewKeyEvent {
-                    if (it.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
-                    when (it.key) {
-                        Key.Tab -> {
-                            focusManager.moveFocus(FocusDirection.Down); true
-                        }
-                        else -> false
-                    }
-                }
                 .testTag(MessagesTag)
         )
 
