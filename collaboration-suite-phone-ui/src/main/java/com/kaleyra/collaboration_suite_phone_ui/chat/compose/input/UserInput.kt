@@ -4,7 +4,6 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.compose.input
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.focusGroup
-import androidx.compose.foundation.focusable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
@@ -19,8 +18,6 @@ import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,7 +29,8 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.supportRtl
 @Composable
 internal fun UserInput(
     onTextChanged: (TextFieldValue) -> Unit,
-    onMessageSent: (String) -> Unit
+    onMessageSent: (String) -> Unit,
+    onDirectionLeft: (() -> Unit) = { }
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     var textState by remember { mutableStateOf(TextFieldValue()) }
@@ -50,6 +48,7 @@ internal fun UserInput(
                     textState = it
                     onTextChanged(it)
                 },
+                onDirectionLeft = onDirectionLeft,
                 modifier = Modifier.weight(1.0f),
                 interactionSource = interactionSource
             )
@@ -92,6 +91,7 @@ internal fun SendButton(enabled: Boolean, onClick: () -> Unit) {
 internal fun UserInputText(
     textFieldValue: TextFieldValue,
     onTextChanged: (TextFieldValue) -> Unit,
+    onDirectionLeft: () -> Unit,
     modifier: Modifier = Modifier,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
@@ -117,11 +117,21 @@ internal fun UserInputText(
                         .onPreviewKeyEvent {
                             if (it.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
                             when (it.key) {
-                                Key.Tab -> { focusManager.moveFocus(FocusDirection.Next); true }
-                                Key.DirectionUp -> { focusManager.moveFocus(FocusDirection.Up); true }
-                                Key.DirectionDown -> { focusManager.moveFocus(FocusDirection.Down); true }
-                                Key.DirectionRight -> { focusManager.moveFocus(FocusDirection.Right); true }
-                                Key.DirectionLeft -> { focusManager.moveFocus(FocusDirection.Left); true }
+                                Key.Tab -> {
+                                    focusManager.moveFocus(FocusDirection.Next); true
+                                }
+                                Key.DirectionUp -> {
+                                    focusManager.moveFocus(FocusDirection.Up); true
+                                }
+                                Key.DirectionDown -> {
+                                    focusManager.moveFocus(FocusDirection.Down); true
+                                }
+                                Key.DirectionRight -> {
+                                    focusManager.moveFocus(FocusDirection.Right); true
+                                }
+                                Key.DirectionLeft -> {
+                                    onDirectionLeft.invoke(); true
+                                }
                                 else -> false
                             }
                         },

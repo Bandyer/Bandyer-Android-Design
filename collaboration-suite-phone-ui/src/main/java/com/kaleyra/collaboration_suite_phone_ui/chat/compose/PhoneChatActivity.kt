@@ -5,7 +5,10 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.compose
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -16,11 +19,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.*
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.input.key.*
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -97,6 +99,7 @@ internal fun ChatScreen(
     onSendMessage: (String) -> Unit,
     onTyping: () -> Unit
 ) {
+    val topBarRef = remember { FocusRequester() }
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
 
@@ -115,13 +118,15 @@ internal fun ChatScreen(
             state = uiState.state,
             info = uiState.info,
             onBackPressed = onBackPressed,
-            actions = uiState.actions.mapToClickableAction(makeCall = { onCall(it) })
+            actions = uiState.actions.mapToClickableAction(makeCall = { onCall(it) }),
+            modifier = Modifier.focusRequester(topBarRef)
         )
 
         if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
 
         Messages(
             uiState = uiState.conversationState,
+            onDirectionLeft = { topBarRef.requestFocus() },
             onMessageScrolled = onMessageScrolled,
             onApproachingTop = onFetchMessages,
             onResetScroll = onResetMessagesScroll,
@@ -144,6 +149,7 @@ internal fun ChatScreen(
                     scrollState.scrollToItem(0)
                 }
             },
+            onDirectionLeft = { topBarRef.requestFocus() }
         )
     }
 }

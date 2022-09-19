@@ -16,7 +16,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
@@ -56,12 +59,14 @@ private val LazyListState.isApproachingTop: Boolean
 @Composable
 internal fun Messages(
     uiState: ConversationUiState,
+    onDirectionLeft: (() -> Unit) = { },
     onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
     onApproachingTop: () -> Unit,
     onResetScroll: () -> Unit,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
+    val fabRef = remember { FocusRequester() }
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(uiState.conversationItems) {
@@ -84,7 +89,21 @@ internal fun Messages(
             .launchIn(this)
     }
 
-    Box(modifier) {
+    Box(
+        modifier = Modifier
+            .onPreviewKeyEvent {
+                return@onPreviewKeyEvent when {
+                    it.type != KeyEventType.KeyDown && it.key == Key.DirectionLeft -> {
+                        onDirectionLeft.invoke(); true
+                    }
+                    scrollState.scrollTopBottomFabEnabled && it.type != KeyEventType.KeyDown && it.key == Key.DirectionRight -> {
+                        fabRef.requestFocus(); true
+                    }
+                    else -> false
+                }
+            }
+            .then(modifier)
+    ) {
         if (!uiState.areMessagesInitialized) LoadingMessagesLabel(Modifier.align(Alignment.Center))
         else if (uiState.conversationItems.isEmpty()) NoMessagesLabel(Modifier.align(Alignment.Center))
         else Conversation(
@@ -104,6 +123,7 @@ internal fun Messages(
             },
             enabled = scrollState.scrollTopBottomFabEnabled,
             modifier = Modifier
+                .focusRequester(fabRef)
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
         )
