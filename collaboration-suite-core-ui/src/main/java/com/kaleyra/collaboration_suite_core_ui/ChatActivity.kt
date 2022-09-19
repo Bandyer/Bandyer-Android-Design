@@ -16,6 +16,8 @@ abstract class ChatActivity : FragmentActivity() {
 
     protected open val viewModel: ChatViewModel by viewModels()
 
+    private var chatId: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setChatOrCloseActivity(intent)
@@ -24,6 +26,11 @@ abstract class ChatActivity : FragmentActivity() {
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setChatOrCloseActivity(intent)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        chatId?.let { sendChatAction(DisplayedChatActivity.ACTION_CHAT_VISIBLE, it) }
     }
 
     override fun onStop() {
@@ -46,6 +53,7 @@ abstract class ChatActivity : FragmentActivity() {
     private fun setChat(intent: Intent) {
         val userId = intent.extras?.getString("userId") ?: return
         val chat = viewModel.setChat(userId) ?: return
+        chatId = chat.id
         sendChatAction(DisplayedChatActivity.ACTION_CHAT_VISIBLE, chat.id)
     }
 
