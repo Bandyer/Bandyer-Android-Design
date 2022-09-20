@@ -83,11 +83,7 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
 
     override fun onMessageScrolled(messageItem: ConversationItem.MessageItem) {
         val messages = messages.replayCache.firstOrNull()?.other ?: return
-//        messages.firstOrNull { it.id == messageItem.id }?.markAsRead()
-        val index1 = messages.indexOfFirst { it.id == messageItem.id }
-        messages.forEachIndexed { index, otherMessage ->
-            if (index >= index1) otherMessage.markAsRead()
-        }
+        messages.firstOrNull { it.id == messageItem.id }?.markAsRead()
     }
 
     override fun onAllMessagesScrolled() {
