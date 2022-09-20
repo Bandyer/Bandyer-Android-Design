@@ -21,7 +21,7 @@ val mockConversationItems = listOf(
             "15:00"
         )
     ),
-    ConversationItem.NewMessagesItem(2),
+    ConversationItem.UnreadMessagesItem,
     ConversationItem.MessageItem(
         Message.MyMessage(
             "id6",
@@ -76,7 +76,7 @@ val mockClickableActions = setOf(
 
 val mockConversationUiState = ConversationUiState(
     conversationItems = mockConversationItems,
-    unseenMessagesCount = 5
+    unreadMessagesCount = 5
 )
 
 val mockUiState = ChatUiState(

@@ -50,7 +50,7 @@ sealed class CallType(val preferredType: Call.PreferredType) {
 @Immutable
 sealed class ConversationItem(val id: String) {
     data class DayItem(val timestamp: String) : ConversationItem(id = timestamp.hashCode().toString())
-    data class NewMessagesItem(val count: Int) : ConversationItem(id = UUID.randomUUID().toString())
+    object UnreadMessagesItem : ConversationItem(id = UUID.randomUUID().toString())
     data class MessageItem(val message: Message) : ConversationItem(id = message.id)
 }
 

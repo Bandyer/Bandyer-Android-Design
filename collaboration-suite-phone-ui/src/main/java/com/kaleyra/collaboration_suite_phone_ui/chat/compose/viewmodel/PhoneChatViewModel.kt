@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.Message
@@ -12,7 +13,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapp
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.hasActiveCall
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToConversationItems
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToUiActions
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.unreadMessagesIds
 import kotlinx.coroutines.flow.*
 
 internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
@@ -23,12 +23,6 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
         get() = _uiState
 
     private val showUnreadHeader = MutableStateFlow(true)
-
-    private val unseenMessagesIds = MutableStateFlow<Set<String>>(setOf()).also { flow ->
-        chat.unreadMessagesIds()
-            .onEach { messages -> flow.value += messages.toSet() }
-            .launchIn(viewModelScope)
-    }
 
     init {
         getChatState(participants, chatBox.replayCache.first()).onEach { state ->
@@ -54,17 +48,13 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
             }
         }.launchIn(viewModelScope)
 
-        unseenMessagesIds.onEach { messages ->
+        chat.flatMapLatest { it.unreadMessagesCount }.onEach { count ->
+            Log.e("PhoneChatViewModel", "KLR-$count")
             _uiState.update {
-                val conversationState = it.conversationState.copy(unseenMessagesCount = messages.count())
+                val conversationState = it.conversationState.copy(unreadMessagesCount = count)
                 it.copy(conversationState = conversationState)
             }
         }.launchIn(viewModelScope)
-    }
-
-    override fun readAllMessages() {
-        val messages = messages.replayCache.firstOrNull() ?: return
-        messages.other.forEach { it.markAsRead() }
     }
 
     override fun sendMessage(text: String) {
@@ -90,11 +80,15 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
     }
 
     override fun onMessageScrolled(messageItem: ConversationItem.MessageItem) {
-        unseenMessagesIds.value = unseenMessagesIds.value - messageItem.id
+        val messages = messages.replayCache.firstOrNull()?.other ?: return
+        messages.firstOrNull { it.id == messageItem.id }?.also {
+            Log.e("PhoneChatViewModel", "KLR-${it.id}")
+        }?.markAsRead()
     }
 
     override fun onAllMessagesScrolled() {
-        unseenMessagesIds.value = setOf()
+        val messages = messages.replayCache.firstOrNull()?.other ?: return
+        messages.first().markAsRead()
     }
 
     override fun call(callType: CallType) {

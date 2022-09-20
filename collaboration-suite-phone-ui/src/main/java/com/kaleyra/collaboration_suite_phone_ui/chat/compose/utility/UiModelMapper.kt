@@ -89,7 +89,7 @@ internal object UiModelMapper {
                 items.add(ConversationItem.MessageItem(message.toUiMessage(coroutineScope)))
 
                 if (showUnreadHeader.value && message.id == firstUnreadMessageId) {
-                    items.add(ConversationItem.NewMessagesItem(index + 1))
+                    items.add(ConversationItem.UnreadMessagesItem)
                 }
 
                 if (previousMessage == null || !Iso8601.isSameDay(message.creationDate.time, previousMessage.creationDate.time)) {

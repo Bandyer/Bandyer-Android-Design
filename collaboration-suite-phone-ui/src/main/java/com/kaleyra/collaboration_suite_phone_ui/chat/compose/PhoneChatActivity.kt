@@ -78,7 +78,6 @@ fun ChatScreen(
         onMessageScrolled = remember(viewModel) { { viewModel.onMessageScrolled(it) } },
         onResetMessagesScroll = viewModel::onAllMessagesScrolled,
         onFetchMessages = viewModel::fetchMessages,
-        onReadAllMessages = viewModel::readAllMessages,
         onCall = remember(viewModel) { { viewModel.call(it) } },
         onShowCall = viewModel::showCall,
         onSendMessage = remember(viewModel) { { viewModel.sendMessage(it) } },
@@ -93,7 +92,6 @@ internal fun ChatScreen(
     onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
     onResetMessagesScroll: () -> Unit,
     onFetchMessages: () -> Unit,
-    onReadAllMessages: () -> Unit,
     onCall: (CallType) -> Unit,
     onShowCall: () -> Unit,
     onSendMessage: (String) -> Unit,
@@ -102,10 +100,6 @@ internal fun ChatScreen(
     val topBarRef = remember { FocusRequester() }
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
-
-    LaunchedEffect(uiState.conversationState.conversationItems) {
-        onReadAllMessages()
-    }
 
     Column(
         modifier = Modifier
@@ -202,7 +196,6 @@ fun ChatScreenPreview() = KaleyraTheme {
         onMessageScrolled = { },
         onResetMessagesScroll = { },
         onFetchMessages = { },
-        onReadAllMessages = { },
         onCall = { },
         onShowCall = { },
         onSendMessage = { },
@@ -219,7 +212,6 @@ fun ChatScreenDarkPreview() = KaleyraTheme(isDarkTheme = true) {
         onMessageScrolled = { },
         onResetMessagesScroll = { },
         onFetchMessages = { },
-        onReadAllMessages = { },
         onCall = { },
         onShowCall = { },
         onSendMessage = { },

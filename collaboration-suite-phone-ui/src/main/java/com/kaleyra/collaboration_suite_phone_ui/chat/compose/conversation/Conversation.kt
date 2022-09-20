@@ -24,7 +24,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -116,7 +115,7 @@ internal fun Messages(
         )
 
         ResetScrollFab(
-            counter = uiState.unseenMessagesCount,
+            counter = uiState.unreadMessagesCount,
             onClick = {
                 scope.launch { scrollState.scrollToItem(0) }
                 onResetScroll()
@@ -176,18 +175,17 @@ internal fun Conversation(
         items(items, key = { it.id }, contentType = { it::class.java }) { item ->
             when (item) {
                 is ConversationItem.MessageItem -> Message(
-                    item,
+                    messageItem = item,
                     modifier = Modifier.fillMaxWidth()
                 )
                 is ConversationItem.DayItem -> DayHeader(
-                    item.timestamp,
-                    Modifier
+                    timestamp = item.timestamp,
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
                 )
-                is ConversationItem.NewMessagesItem -> NewMessagesHeader(
-                    item.count,
-                    Modifier
+                is ConversationItem.UnreadMessagesItem -> NewMessagesHeader(
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
                 )
@@ -208,7 +206,7 @@ internal fun Conversation(
 }
 
 @Composable
-internal fun NewMessagesHeader(count: Int, modifier: Modifier = Modifier) {
+internal fun NewMessagesHeader(modifier: Modifier = Modifier) {
     val interactionSource = remember { MutableInteractionSource() }
     Row(
         modifier = Modifier
@@ -218,7 +216,7 @@ internal fun NewMessagesHeader(count: Int, modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.Center
     ) {
         Text(
-            text = pluralStringResource(id = R.plurals.kaleyra_chat_unread_messages, count, count),
+            text = stringResource(id = R.string.kaleyra_chat_unread_messages),
             fontSize = 12.sp,
             style = MaterialTheme.typography.body2
         )

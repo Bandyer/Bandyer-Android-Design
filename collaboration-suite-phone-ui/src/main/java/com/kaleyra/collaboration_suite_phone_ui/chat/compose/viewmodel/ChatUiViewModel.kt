@@ -9,8 +9,6 @@ interface ChatUiViewModel {
 
     val uiState: StateFlow<ChatUiState>
 
-    fun readAllMessages()
-
     fun sendMessage(text: String)
 
     fun typing()
@@ -39,5 +37,5 @@ data class ChatUiState(
 data class ConversationUiState(
     val areAllMessagesFetched: Boolean = false,
     val conversationItems: List<ConversationItem>? = null,
-    val unseenMessagesCount: Int = 0
+    val unreadMessagesCount: Int = 0
 )
