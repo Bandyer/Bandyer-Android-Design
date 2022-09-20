@@ -86,7 +86,13 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
     }
 
     override fun fetchMessages() {
-        chat.replayCache.firstOrNull()?.fetch(FETCH_COUNT)
+        chat.replayCache.firstOrNull()?.fetch(FETCH_COUNT) { result ->
+            _uiState.update {
+                val areAllMessageFetched = result.getOrNull()?.list?.isEmpty()
+                val conversationState = it.conversationState.copy(areAllMessagesFetched = areAllMessageFetched ?: it.conversationState.areAllMessagesFetched)
+                it.copy(conversationState = conversationState)
+            }
+        }
     }
 
     override fun onMessageScrolled(messageItem: ConversationItem.MessageItem) {
