@@ -37,8 +37,7 @@ data class ChatUiState(
 
 @Immutable
 data class ConversationUiState(
-    val areMessagesInitialized: Boolean = false,
     val areAllMessagesFetched: Boolean = false,
-    val conversationItems: List<ConversationItem> = emptyList(),
+    val conversationItems: List<ConversationItem>? = null,
     val unseenMessagesCount: Int = 0
 )

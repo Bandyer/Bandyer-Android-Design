@@ -54,12 +54,6 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
             }
         }.launchIn(viewModelScope)
 
-        messages.take(1).map { true }.onEach { areMessagesInitialized ->
-            _uiState.update {
-                val conversationState = it.conversationState.copy(areMessagesInitialized = areMessagesInitialized)
-                it.copy(conversationState = conversationState) }
-        }.launchIn(viewModelScope)
-
         unseenMessagesIds.onEach { messages ->
             _uiState.update {
                 val conversationState = it.conversationState.copy(unseenMessagesCount = messages.count())

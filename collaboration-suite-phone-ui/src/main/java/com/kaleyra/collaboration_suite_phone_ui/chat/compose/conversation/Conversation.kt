@@ -76,8 +76,7 @@ internal fun Messages(
     LaunchedEffect(scrollState) {
         snapshotFlow { scrollState.firstVisibleItemIndex }
             .onEach {
-                val item = uiState.conversationItems.getOrNull(it) as? ConversationItem.MessageItem
-                    ?: return@onEach
+                val item = uiState.conversationItems?.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
                 onMessageScrolled(item)
             }.launchIn(this)
     }
@@ -104,7 +103,7 @@ internal fun Messages(
             }
             .then(modifier)
     ) {
-        if (!uiState.areMessagesInitialized) LoadingMessagesLabel(Modifier.align(Alignment.Center))
+        if (uiState.conversationItems == null) LoadingMessagesLabel(Modifier.align(Alignment.Center))
         else if (uiState.conversationItems.isEmpty()) NoMessagesLabel(Modifier.align(Alignment.Center))
         else Conversation(
             items = uiState.conversationItems,
@@ -378,7 +377,7 @@ internal fun LoadingMessagesDarkPreview() = KaleyraTheme(isDarkTheme = true) {
 internal fun EmptyMessagesPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         Messages(
-            uiState = ConversationUiState(areMessagesInitialized = true),
+            uiState = ConversationUiState(conversationItems = listOf()),
             onMessageScrolled = { },
             onApproachingTop = { },
             onResetScroll = { },
@@ -393,7 +392,7 @@ internal fun EmptyMessagesPreview() = KaleyraTheme {
 internal fun EmptyMessagesDarkPreview() = KaleyraTheme(isDarkTheme = true) {
     Surface(color = MaterialTheme.colors.background) {
         Messages(
-            uiState = ConversationUiState(areMessagesInitialized = true),
+            uiState = ConversationUiState(conversationItems = listOf()),
             onMessageScrolled = { },
             onApproachingTop = { },
             onResetScroll = { },
@@ -408,10 +407,7 @@ internal fun EmptyMessagesDarkPreview() = KaleyraTheme(isDarkTheme = true) {
 internal fun MessagesPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         Messages(
-            uiState = ConversationUiState(
-                areMessagesInitialized = true,
-                conversationItems = mockConversationItems
-            ),
+            uiState = ConversationUiState(conversationItems = mockConversationItems),
             onMessageScrolled = { },
             onApproachingTop = { },
             onResetScroll = { },
@@ -426,10 +422,7 @@ internal fun MessagesPreview() = KaleyraTheme {
 internal fun MessagesDarkPreview() = KaleyraTheme(isDarkTheme = true) {
     Surface(color = MaterialTheme.colors.background) {
         Messages(
-            uiState = ConversationUiState(
-                areMessagesInitialized = true,
-                conversationItems = mockConversationItems
-            ),
+            uiState = ConversationUiState(conversationItems = mockConversationItems),
             onMessageScrolled = { },
             onApproachingTop = { },
             onResetScroll = { },

@@ -75,7 +75,6 @@ val mockClickableActions = setOf(
     ClickableAction(ChatAction.VideoCall) { })
 
 val mockConversationUiState = ConversationUiState(
-    areMessagesInitialized = true,
     conversationItems = mockConversationItems,
     unseenMessagesCount = 5
 )
