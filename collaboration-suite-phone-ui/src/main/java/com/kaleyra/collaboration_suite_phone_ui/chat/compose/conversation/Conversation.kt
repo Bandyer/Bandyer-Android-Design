@@ -108,6 +108,7 @@ internal fun Messages(
         else if (uiState.conversationItems.isEmpty()) NoMessagesLabel(Modifier.align(Alignment.Center))
         else Conversation(
             items = uiState.conversationItems,
+            areAllMessagesFetched = uiState.areAllMessagesFetched,
             scrollState = scrollState,
             modifier = Modifier
                 .fillMaxWidth()
@@ -161,6 +162,7 @@ internal fun LoadingMessagesLabel(modifier: Modifier = Modifier) {
 @Composable
 internal fun Conversation(
     items: List<ConversationItem>,
+    areAllMessagesFetched: Boolean,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
@@ -192,14 +194,16 @@ internal fun Conversation(
                 )
             }
         }
-        item {
-            CircularProgressIndicator(
-                color = LocalContentColor.current,
-                strokeWidth = 3.dp,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .size(28.dp)
-            )
+        if (!areAllMessagesFetched) {
+            item {
+                CircularProgressIndicator(
+                    color = LocalContentColor.current,
+                    strokeWidth = 3.dp,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .size(28.dp)
+                )
+            }
         }
     }
 }
