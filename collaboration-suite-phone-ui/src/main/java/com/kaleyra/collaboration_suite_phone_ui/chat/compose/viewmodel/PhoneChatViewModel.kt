@@ -14,6 +14,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapp
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToConversationItems
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToUiActions
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
 
@@ -49,7 +50,6 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
         }.launchIn(viewModelScope)
 
         chat.flatMapLatest { it.unreadMessagesCount }.onEach { count ->
-            Log.e("PhoneChatViewModel", "KLR-$count")
             _uiState.update {
                 val conversationState = it.conversationState.copy(unreadMessagesCount = count)
                 it.copy(conversationState = conversationState)
@@ -81,9 +81,11 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
 
     override fun onMessageScrolled(messageItem: ConversationItem.MessageItem) {
         val messages = messages.replayCache.firstOrNull()?.other ?: return
-        messages.firstOrNull { it.id == messageItem.id }?.also {
-            Log.e("PhoneChatViewModel", "KLR-${it.id}")
-        }?.markAsRead()
+//        messages.firstOrNull { it.id == messageItem.id }?.markAsRead()
+        val index1 = messages.indexOfFirst { it.id == messageItem.id }
+        messages.forEachIndexed { index, otherMessage ->
+            if (index >= index1) otherMessage.markAsRead()
+        }
     }
 
     override fun onAllMessagesScrolled() {

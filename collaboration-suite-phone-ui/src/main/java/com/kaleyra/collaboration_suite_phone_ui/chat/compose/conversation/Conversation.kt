@@ -72,7 +72,7 @@ internal fun Messages(
         if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
     }
 
-    LaunchedEffect(scrollState) {
+    LaunchedEffect(scrollState, uiState.conversationItems) {
         snapshotFlow { scrollState.firstVisibleItemIndex }
             .onEach {
                 val item = uiState.conversationItems?.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
