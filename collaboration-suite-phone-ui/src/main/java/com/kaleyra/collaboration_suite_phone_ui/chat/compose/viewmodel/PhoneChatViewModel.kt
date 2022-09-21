@@ -26,7 +26,7 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
     private val showUnreadHeader = MutableStateFlow(true)
 
     init {
-        getChatState(participants, chatBox.replayCache.first()).onEach { state ->
+        getChatState(participants, chatBox).onEach { state ->
             _uiState.update { it.copy(state = state) }
         }.launchIn(viewModelScope)
 

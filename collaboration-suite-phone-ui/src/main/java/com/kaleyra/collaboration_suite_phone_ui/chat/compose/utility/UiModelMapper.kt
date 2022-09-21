@@ -36,12 +36,12 @@ internal object UiModelMapper {
     fun Flow<PhoneBoxUI>.hasActiveCall(): Flow<Boolean> =
         flatMapLatest { it.call }.flatMapLatest { it.state }.map { it !is Call.State.Disconnected.Ended }
 
-    fun getChatState(participants: Flow<ChatParticipants>, chatBox: ChatBox): Flow<ChatState> {
+    fun getChatState(participants: Flow<ChatParticipants>, chatBox: Flow<ChatBox>): Flow<ChatState> {
         var previousChatBoxState: ChatBox.State? = null
 
         return combine(
             participants.typingEvents(),
-            chatBox.state,
+            chatBox.flatMapLatest { it.state },
             participants.otherParticipantState()
         ) { event, chatBoxState, participantState ->
             when {
