@@ -31,6 +31,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -55,6 +56,7 @@ internal class PhoneChatActivity : ChatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             MdcTheme(setDefaultFontFamily = true) {
                 ChatScreen(onBackPressed = { finishAndRemoveTask() }, viewModel = viewModel)
@@ -105,6 +107,8 @@ internal fun ChatScreen(
         modifier = Modifier
             .background(color = MaterialTheme.colors.background)
             .fillMaxSize()
+            .systemBarsPadding()
+            .imePadding()
             .semantics {
                 testTagsAsResourceId = true
             }) {

@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.Message
