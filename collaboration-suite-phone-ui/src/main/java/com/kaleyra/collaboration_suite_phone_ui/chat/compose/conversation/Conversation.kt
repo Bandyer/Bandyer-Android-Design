@@ -3,12 +3,10 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation
 
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
@@ -16,13 +14,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.input.key.*
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.platform.*
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -65,11 +62,19 @@ internal fun Messages(
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
-    val fabRef = remember { FocusRequester() }
+    var scrollSet by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    val fabRef = remember { FocusRequester() }
+    val unreadItemOffset = with(LocalDensity.current) { 50.dp.toPx() }
 
-    LaunchedEffect(uiState.conversationItems) {
-        if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
+    LaunchedEffect(scrollState) {
+        val index = uiState.conversationItems?.indexOfFirst { it is ConversationItem.UnreadMessagesItem } ?: -1
+        if (index != -1) scrollState.scrollToBottomViewportItem(index, unreadItemOffset)
+        scrollSet = true
+    }
+
+    LaunchedEffect(uiState.conversationItems, scrollSet) {
+        if (scrollSet && scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
     }
 
     LaunchedEffect(scrollState, uiState.conversationItems) {
@@ -112,6 +117,7 @@ internal fun Messages(
                 .fillMaxWidth()
                 .wrapContentHeight()
                 .align(Alignment.BottomCenter)
+                .alpha(if (scrollSet) 1f else 0f)
         )
 
         ResetScrollFab(
@@ -127,6 +133,13 @@ internal fun Messages(
                 .padding(16.dp)
         )
     }
+}
+
+private suspend fun LazyListState.scrollToBottomViewportItem(index: Int, scrollOffset: Float = 0f) {
+    scrollToItem(index)
+    val firstItemSize = layoutInfo.visibleItemsInfo.first().size
+    val viewportSize = layoutInfo.viewportSize.height
+    scrollBy(-viewportSize + firstItemSize + scrollOffset)
 }
 
 @Composable
