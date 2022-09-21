@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalComposeUiApi::class)
+@file:OptIn(ExperimentalComposeUiApi::class, ExperimentalLayoutApi::class)
 
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation
 
@@ -6,7 +6,10 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.*
@@ -25,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message
@@ -33,6 +37,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ConversationUiState
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -62,27 +67,34 @@ internal fun Messages(
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
+    val isKeyboardOpen by isKeyboardOpen()
     var scrollSet by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val fabRef = remember { FocusRequester() }
     val unreadItemOffset = with(LocalDensity.current) { 50.dp.toPx() }
 
     LaunchedEffect(scrollState) {
-        val index = uiState.conversationItems?.indexOfFirst { it is ConversationItem.UnreadMessagesItem } ?: -1
-        if (index != -1) scrollState.scrollToBottomViewportItem(index, unreadItemOffset)
-        scrollSet = true
+        launch {
+            snapshotFlow { isKeyboardOpen }.first { !it }
+            val index = uiState.conversationItems?.indexOfFirst { it is ConversationItem.UnreadMessagesItem } ?: -1
+            if (index != -1) scrollState.scrollToBottomViewportItem(index, unreadItemOffset)
+            scrollSet = true
+        }
     }
 
     LaunchedEffect(uiState.conversationItems, scrollSet) {
         if (scrollSet && scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
     }
 
-    LaunchedEffect(scrollState, uiState.conversationItems) {
-        snapshotFlow { scrollState.firstVisibleItemIndex }
-            .onEach {
-                val item = uiState.conversationItems?.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
-                onMessageScrolled(item)
-            }.launchIn(this)
+    LaunchedEffect(scrollState, uiState.conversationItems, scrollSet) {
+        if (scrollSet) {
+            snapshotFlow { scrollState.firstVisibleItemIndex }
+                .onEach {
+
+                    val item = uiState.conversationItems?.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
+                    onMessageScrolled(item)
+                }.launchIn(this)
+        }
     }
 
     LaunchedEffect(scrollState) {
@@ -140,6 +152,13 @@ private suspend fun LazyListState.scrollToBottomViewportItem(index: Int, scrollO
     val firstItemSize = layoutInfo.visibleItemsInfo.first().size
     val viewportSize = layoutInfo.viewportSize.height
     scrollBy(-viewportSize + firstItemSize + scrollOffset)
+}
+
+@Composable
+internal fun isKeyboardOpen(): State<Boolean> {
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val isResumed = lifecycle.currentState == Lifecycle.State.RESUMED
+    return rememberUpdatedState(WindowInsets.isImeVisible && isResumed)
 }
 
 @Composable
