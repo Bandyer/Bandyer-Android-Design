@@ -320,7 +320,7 @@ internal class GlassCallActivity :
                                 R.string.kaleyra_glass_answered_on_another_device
                             )
                             is Call.State.Disconnected.Ended.LineBusy                -> resources.getString(R.string.kaleyra_glass_line_busy)
-                            is Call.State.Disconnected.Ended.HangUp                  -> resources.getString(R.string.kaleyra_glass_call_hung_up)
+                            is Call.State.Disconnected.Ended.HungUp                  -> resources.getString(R.string.kaleyra_glass_call_hung_up)
                             is Call.State.Disconnected.Ended.Error                   -> resources.getString(R.string.kaleyra_glass_call_error_occurred)
                             is Call.State.Disconnected.Ended.Timeout                 -> resources.getString(R.string.kaleyra_glass_call_timeout)
                             else                                                     -> resources.getString(R.string.kaleyra_glass_call_ended)
@@ -603,7 +603,7 @@ internal class GlassCallActivity :
         val userId = event.producer.userId
         val livePointer = livePointers.filterValues { it.first == userId }.keys.firstOrNull()
 
-        if (event.action is Input.Video.Event.Action.Idle) {
+        if (event.action is Input.Video.Event.Pointer.Action.Idle) {
             livePointer?.also {
                 binding.kaleyraOuterPointers.removeView(it)
                 livePointers.remove(it)

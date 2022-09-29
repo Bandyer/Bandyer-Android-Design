@@ -207,7 +207,7 @@ internal class CallViewModel : ViewModel() {
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
             participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
-                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
+                if (itsMe || (state == CallParticipant.State.InCall && streams.isNotEmpty())) {
                     val newStreams = streams.map {
                         StreamParticipant(
                             participant,
@@ -296,7 +296,7 @@ internal class CallViewModel : ViewModel() {
             this@CallViewModel.participants.forEachParticipant(
                 viewModelScope + CoroutineName("InCallParticipants")
             ) { participant, itsMe, streams, state ->
-                if (itsMe || state == CallParticipant.State.IN_CALL || streams.isNotEmpty()) participants[participant.userId] =
+                if (itsMe || state == CallParticipant.State.InCall || streams.isNotEmpty()) participants[participant.userId] =
                     participant
                 else participants.remove(participant.userId)
                 emit(participants.values.toList())
