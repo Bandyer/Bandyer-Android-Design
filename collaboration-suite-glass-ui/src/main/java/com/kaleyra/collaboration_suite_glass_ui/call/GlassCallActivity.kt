@@ -16,6 +16,7 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.call
 
+import android.app.ProgressDialog.show
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -309,16 +310,23 @@ internal class GlassCallActivity :
 
             viewModel.callState
                 .dropWhile { it == Call.State.Disconnected }
-                .onEach {
-                    if (it is Call.State.Reconnecting) navController!!.navigate(R.id.reconnectingFragment)
-                    if (it is Call.State.Disconnected.Ended) {
-                        val subtitle = if (it != Call.State.Disconnected.Ended) resources.getString(R.string.kaleyra_glass_call_ended) else null
+                .onEach { state ->
+                    if (state is Call.State.Reconnecting) navController!!.navigate(R.id.reconnectingFragment)
+                    if (state is Call.State.Disconnected.Ended) {
+                        val subtitle = if (state != Call.State.Disconnected.Ended) resources.getString(R.string.kaleyra_glass_call_ended) else null
 
-                        val title = when (it) {
+                        val title = when (state) {
                             is Call.State.Disconnected.Ended.Declined                -> resources.getString(R.string.kaleyra_glass_call_declined)
-                            is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> resources.getString(
-                                R.string.kaleyra_glass_answered_on_another_device
-                            )
+                            is Call.State.Disconnected.Ended.AnsweredOnAnotherDevice -> resources.getString(R.string.kaleyra_glass_answered_on_another_device)
+                            is Call.State.Disconnected.Ended.Kicked                  -> {
+                                val userDescription = viewModel.usersDescription.name(listOf(state.userId))
+                                val hasDescription = userDescription.isNotEmpty() && userDescription != state.userId
+                                resources.getQuantityString(
+                                    R.plurals.kaleyra_glass_removed_from_call,
+                                    if (hasDescription) 1 else 0,
+                                    userDescription
+                                )
+                            }
                             is Call.State.Disconnected.Ended.LineBusy                -> resources.getString(R.string.kaleyra_glass_line_busy)
                             is Call.State.Disconnected.Ended.HungUp                  -> resources.getString(R.string.kaleyra_glass_call_hung_up)
                             is Call.State.Disconnected.Ended.Error                   -> resources.getString(R.string.kaleyra_glass_call_error_occurred)
@@ -331,6 +339,9 @@ internal class GlassCallActivity :
                     }
                 }.launchIn(this)
 
+
+
+
             viewModel.amIAlone
                 .takeWhile { it }
                 .onCompletion { binding.kaleyraStatusBar.showTimer() }
@@ -340,6 +351,22 @@ internal class GlassCallActivity :
                 .takeWhile { it !is Call.State.Disconnected.Ended }
                 .onCompletion { binding.kaleyraStatusBar.hideTimer() }
                 .launchIn(this)
+
+            viewModel.requestMuteEvents.onEach {
+                with(binding.kaleyraToastContainer) {
+                    val userDescription = viewModel.usersDescription.name(listOf(it.producer.userId))
+                    val hasDescription = userDescription.isNotEmpty() && userDescription != it.producer.userId
+                    show(
+                        ADMIN_MUTED_TOAST_ID,
+                        resources.getQuantityString(
+                            R.plurals.kaleyra_glass_muted_by_admin,
+                            if (hasDescription) 1 else 0,
+                            userDescription
+                        ),
+                        R.drawable.ic_kaleyra_glass_alert
+                    )
+                }
+            }.launchIn(this)
 
             viewModel.amIAlone
                 .dropWhile { it }
@@ -736,6 +763,7 @@ internal class GlassCallActivity :
         const val BLOCKED_TOAST_ID = "blocked-input"
         const val DISABLED_TOAST_ID = "disabled-input"
         const val ALONE_TOAST_ID = "alone-in-call"
+        const val ADMIN_MUTED_TOAST_ID = "admin-muted-in-call"
         const val TTL_TOAST_ID = "time-to-live-call"
         const val TIMER_BLINK_COUNT = 3
         const val TIMER_BLINK_FOREVER_TH = 30L // seconds
