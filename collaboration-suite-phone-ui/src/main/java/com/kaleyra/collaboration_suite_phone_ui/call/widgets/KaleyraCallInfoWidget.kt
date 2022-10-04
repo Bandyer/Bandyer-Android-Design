@@ -35,7 +35,7 @@ import com.kaleyra.collaboration_suite_core_ui.widget.HideableWidget
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraWidgetCallInfoBinding
 import com.kaleyra.collaboration_suite_phone_ui.extensions.*
-import com.kaleyra.collaboration_suite_phone_ui.recording.RecordingWidget
+import com.kaleyra.collaboration_suite_phone_ui.call.widgets.recording.KaleyraRecordingWidget
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutObserver
 import com.kaleyra.collaboration_suite_phone_ui.utils.systemviews.SystemViewLayoutOffsetListener
 
@@ -136,7 +136,7 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
     /**
      * Recording view
      */
-    var recordingView: RecordingWidget? = null
+    var recordingView: KaleyraRecordingWidget? = null
         private set
 
     /**

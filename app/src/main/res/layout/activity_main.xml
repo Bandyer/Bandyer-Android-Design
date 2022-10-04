@@ -222,6 +222,32 @@
                 android:text="@string/feedback"
                 app:layout_constraintTop_toBottomOf="@id/btn_file_share" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_kick_participant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
+                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
+                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
+                android:layout_marginBottom="@dimen/kaleyra_dimen_space16"
+                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
+                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
+                android:text="@string/kick_participant"
+                app:layout_constraintTop_toBottomOf="@id/btn_feedback" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_mute_participant"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/kaleyra_dimen_space16"
+                android:layout_marginLeft="@dimen/kaleyra_dimen_space16"
+                android:layout_marginTop="@dimen/kaleyra_dimen_space16"
+                android:layout_marginBottom="@dimen/kaleyra_dimen_space16"
+                android:layout_marginEnd="@dimen/kaleyra_dimen_space16"
+                android:layout_marginRight="@dimen/kaleyra_dimen_space16"
+                android:text="@string/mute_participant"
+                app:layout_constraintTop_toBottomOf="@id/btn_kick_participant" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>

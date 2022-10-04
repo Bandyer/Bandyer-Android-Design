@@ -33,4 +33,21 @@
     <string name="kaleyra_notification_call_recorded">Registrazione chiamata in corso</string>
     <string name="kaleyra_notification_chat_reply">Rispondi</string>
     <string name="kaleyra_notification_chat_mark_as_read">Segna come letto</string>
+
+    <!-- KICK PARTICIPANT -->
+
+    <plurals name="kaleyra_call_participant_removed">
+        <item quantity="one">%s ti ha rimosso dalla chiamata</item>
+        <item quantity="other">L\'amministratore ti ha rimosso dalla chiamata</item>
+    </plurals>
+    <string name="kaleyra_call_participant_removed_understood_message">Chiudi</string>
+
+    <!-- MUTE PARTICIPANT -->
+
+    <plurals name="kaleyra_call_participant_muted_by_admin">
+        <item quantity="one">%s ha disabilitato il tuo microfono</item>
+        <item quantity="other">L\'amministratore ha disabilitato il tuo microfono</item>
+    </plurals>
+    <string name="kaleyra_call_participant_utterance_muted_by_admin">Microfono disabilitato</string>
+
 </resources>

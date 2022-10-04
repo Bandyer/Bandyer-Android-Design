@@ -33,11 +33,13 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.dialogs.KaleyraParicipantRemovedDialog
+import com.kaleyra.collaboration_suite_phone_ui.call.widgets.KaleyraCallParticipantMutedSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.feedback.FeedbackDialog
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.FileShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.KaleyraFileShareDialog
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.model.TransferData
-import com.kaleyra.collaboration_suite_phone_ui.recording.KaleyraRecordingSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.call.widgets.recording.KaleyraRecordingSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.SmartGlassActionItemMenu
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.SmartGlassMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.items.getSmartglassActions
@@ -210,6 +212,17 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager,
                 FeedbackDialog.TAG
             )
+        }
+
+        btnKickParticipant.setOnClickListener {
+            KaleyraParicipantRemovedDialog("Unknown guy").show(
+                supportFragmentManager,
+                FeedbackDialog.TAG
+            )
+        }
+
+        btnMuteParticipant.setOnClickListener {
+            KaleyraCallParticipantMutedSnackbar.make(binding.root, "Unknown guy", LENGTH_LONG).show()
         }
 
     }
