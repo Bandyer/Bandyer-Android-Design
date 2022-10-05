@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.postDelayed
 import androidx.fragment.app.DialogFragment
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraCallParticipantRemovedDialogLayoutBinding
@@ -46,7 +47,9 @@ class KaleyraParicipantRemovedDialog(private val adminDisplayName: String? = nul
         binding = KaleyraCallParticipantRemovedDialogLayoutBinding.inflate(inflater, container, false)
         binding.kaleyraTitle.text = ContextRetainer.context.resources.getQuantityString(R.plurals.kaleyra_call_participant_removed, if (adminDisplayName != null) 1 else 0, adminDisplayName)
         binding.kaleyraTitle.requestFocus()
-        binding.kaleyraConfirm.setOnClickListener { dismiss() }
+        binding.kaleyraTitle.setOnClickListener { dismiss() }
+        binding.root.setOnClickListener { dismiss() }
+        if(autoDismissTime != -1) binding.root.postDelayed(autoDismissTime.toLong()) { dismiss() }
         return binding.root
     }
 
