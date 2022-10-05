@@ -12,6 +12,22 @@ import kotlinx.coroutines.flow.stateIn
 import java.util.*
 
 @Immutable
+data class ChatUiState(
+    val info: ChatInfo = ChatInfo("", Uri.EMPTY),
+    val state: ChatState = ChatState.None,
+    val actions: ImmutableSet<ClickableAction> = ImmutableSet(setOf()),
+    val conversationState: ConversationUiState = ConversationUiState(),
+    val isInCall: Boolean = false
+)
+
+@Immutable
+data class ConversationUiState(
+    val areAllMessagesFetched: Boolean = false,
+    val conversationItems: ImmutableList<ConversationItem>? = null,
+    val unreadMessagesCount: Int = 0
+)
+
+@Immutable
 sealed class ChatState {
     sealed class NetworkState : ChatState() {
         object Connecting : NetworkState()
@@ -39,6 +55,8 @@ sealed class ChatAction {
     object AudioUpgradableCall : ChatAction()
     object VideoCall : ChatAction()
 }
+
+internal typealias ClickableAction = Pair<ChatAction, () -> Unit>
 
 @Immutable
 sealed class CallType(val preferredType: Call.PreferredType) {
@@ -111,3 +129,10 @@ sealed interface Message {
     }
 }
 
+// Needed for compose stability to avoid recomposition
+// Tried kotlinx-collections-immutable but they were not working properly
+@Immutable
+data class ImmutableList<T>(val value: List<T>)
+
+@Immutable
+data class ImmutableSet<T>(val value: Set<T>)

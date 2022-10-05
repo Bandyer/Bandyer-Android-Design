@@ -26,30 +26,23 @@ import coil.compose.AsyncImage
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.custom.MarqueeText
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.custom.TypingDots
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockClickableActions
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 
 const val SubtitleTag = "SubtitleTag"
 const val BouncingDots = "BouncingDots"
 const val ActionsTag = "ActionsTag"
 
-internal typealias ClickableAction = Pair<ChatAction, () -> Unit>
-
 @Composable
 internal fun TopAppBar(
     state: ChatState,
     info: ChatInfo,
-    actions: Set<ClickableAction>,
+    actions: ImmutableSet<ClickableAction>,
     onBackPressed: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     TopAppBar(
         modifier = Modifier
-            .focusGroup()
-            .then(modifier),
+            .focusGroup(),
         backgroundColor = MaterialTheme.colors.primary,
     ) {
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
@@ -141,8 +134,9 @@ private fun textFor(state: ChatState): String =
     }
 
 @Composable
-internal fun Actions(actions: Set<ClickableAction>) {
-    actions.getClickableAction<ChatAction.AudioCall>()?.let { (_, onClick) ->
+internal fun Actions(actions: ImmutableSet<ClickableAction>) {
+    val value = actions.value
+    value.getClickableAction<ChatAction.AudioCall>()?.let { (_, onClick) ->
         MenuIcon(
             painter = painterResource(R.drawable.ic_kaleyra_audio_call),
             onClick = onClick,
@@ -150,7 +144,7 @@ internal fun Actions(actions: Set<ClickableAction>) {
         )
     }
 
-    actions.getClickableAction<ChatAction.AudioUpgradableCall>()?.let { (_, onClick) ->
+    value.getClickableAction<ChatAction.AudioUpgradableCall>()?.let { (_, onClick) ->
         MenuIcon(
             painter = painterResource(R.drawable.ic_kaleyra_audio_upgradable_call),
             onClick = onClick,
@@ -158,7 +152,7 @@ internal fun Actions(actions: Set<ClickableAction>) {
         )
     }
 
-    actions.getClickableAction<ChatAction.VideoCall>()?.let { (_, onClick) ->
+    value.getClickableAction<ChatAction.VideoCall>()?.let { (_, onClick) ->
         MenuIcon(
             painter = painterResource(R.drawable.ic_kaleyra_video_call),
             onClick = onClick,

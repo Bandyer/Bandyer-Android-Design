@@ -28,7 +28,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.supportRtl
 
 @Composable
 internal fun UserInput(
-    onTextChanged: (TextFieldValue) -> Unit,
+    onTextChanged: () -> Unit,
     onMessageSent: (String) -> Unit,
     onDirectionLeft: (() -> Unit) = { }
 ) {
@@ -46,7 +46,7 @@ internal fun UserInput(
                 textFieldValue = textState,
                 onTextChanged = {
                     textState = it
-                    onTextChanged(it)
+                    onTextChanged()
                 },
                 onDirectionLeft = onDirectionLeft,
                 modifier = Modifier.weight(1.0f),

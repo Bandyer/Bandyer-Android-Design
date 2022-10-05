@@ -37,15 +37,13 @@ import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.Messages
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.input.UserInput
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.CallType
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.ClickableAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.TopAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.highlightOnFocus
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.PhoneChatViewModel
 import kotlinx.coroutines.launch
@@ -59,7 +57,7 @@ internal class PhoneChatActivity : ChatActivity() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             MdcTheme(setDefaultFontFamily = true) {
-                ChatScreen(onBackPressed = { finishAndRemoveTask() }, viewModel = viewModel)
+                ChatScreen(onBackPressed = this::finishAndRemoveTask, viewModel = viewModel)
             }
         }
     }
@@ -80,7 +78,6 @@ fun ChatScreen(
         onMessageScrolled = remember(viewModel) { { viewModel.onMessageScrolled(it) } },
         onResetMessagesScroll = viewModel::onAllMessagesScrolled,
         onFetchMessages = viewModel::fetchMessages,
-        onCall = remember(viewModel) { { viewModel.call(it) } },
         onShowCall = viewModel::showCall,
         onSendMessage = remember(viewModel) { { viewModel.sendMessage(it) } },
         onTyping = viewModel::typing
@@ -94,7 +91,6 @@ internal fun ChatScreen(
     onMessageScrolled: (ConversationItem.MessageItem) -> Unit,
     onResetMessagesScroll: () -> Unit,
     onFetchMessages: () -> Unit,
-    onCall: (CallType) -> Unit,
     onShowCall: () -> Unit,
     onSendMessage: (String) -> Unit,
     onTyping: () -> Unit
@@ -102,6 +98,14 @@ internal fun ChatScreen(
     val topBarRef = remember { FocusRequester() }
     val scrollState = rememberLazyListState()
     val scope = rememberCoroutineScope()
+    val onMessageSent: ((String) -> Unit) = remember(scope, scrollState) {
+        { text ->
+            scope.launch {
+                onSendMessage(text)
+                scrollState.scrollToItem(0)
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -112,27 +116,28 @@ internal fun ChatScreen(
             .semantics {
                 testTagsAsResourceId = true
             }) {
-        TopAppBar(
-            state = uiState.state,
-            info = uiState.info,
-            onBackPressed = onBackPressed,
-            actions = uiState.actions.mapToClickableAction(makeCall = { onCall(it) }),
-            modifier = Modifier.focusRequester(topBarRef)
-        )
+        Box(Modifier.focusRequester(topBarRef)){
+            TopAppBar(
+                state = uiState.state,
+                info = uiState.info,
+                onBackPressed = onBackPressed,
+                actions = uiState.actions
+            )
+        }
 
-        if (uiState.isInCall) OngoingCallLabel(onClick = { onShowCall() })
+        if (uiState.isInCall) OngoingCallLabel(onClick = onShowCall)
 
         Messages(
             uiState = uiState.conversationState,
-            onDirectionLeft = { topBarRef.requestFocus() },
+            onDirectionLeft = topBarRef::requestFocus,
             onMessageScrolled = onMessageScrolled,
             onApproachingTop = onFetchMessages,
             onResetScroll = onResetMessagesScroll,
             scrollState = scrollState,
             modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .testTag(MessagesTag)
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .testTag(MessagesTag)
         )
 
         Divider(
@@ -140,26 +145,11 @@ internal fun ChatScreen(
             modifier = Modifier.fillMaxWidth()
         )
         UserInput(
-            onTextChanged = { onTyping() },
-            onMessageSent = { text ->
-                scope.launch {
-                    onSendMessage(text)
-                    scrollState.scrollToItem(0)
-                }
-            },
-            onDirectionLeft = { topBarRef.requestFocus() }
+            onTextChanged = onTyping,
+            onMessageSent = onMessageSent,
+            onDirectionLeft = topBarRef::requestFocus
         )
     }
-}
-
-private fun Set<ChatAction>.mapToClickableAction(makeCall: (CallType) -> Unit): Set<ClickableAction> {
-    return map {
-        when (it) {
-            is ChatAction.AudioCall -> ClickableAction(it) { makeCall(CallType.Audio) }
-            is ChatAction.AudioUpgradableCall -> ClickableAction(it) { makeCall(CallType.AudioUpgradable) }
-            else -> ClickableAction(it) { makeCall(CallType.Video) }
-        }
-    }.toSet()
 }
 
 @Composable
@@ -200,7 +190,6 @@ fun ChatScreenPreview() = KaleyraTheme {
         onMessageScrolled = { },
         onResetMessagesScroll = { },
         onFetchMessages = { },
-        onCall = { },
         onShowCall = { },
         onSendMessage = { },
         onTyping = { }
@@ -216,7 +205,6 @@ fun ChatScreenDarkPreview() = KaleyraTheme(isDarkTheme = true) {
         onMessageScrolled = { },
         onResetMessagesScroll = { },
         onFetchMessages = { },
-        onCall = { },
         onShowCall = { },
         onSendMessage = { },
         onTyping = { }

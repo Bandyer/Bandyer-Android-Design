@@ -30,12 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockConversationItems
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.highlightOnFocus
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ConversationUiState
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
@@ -68,30 +65,36 @@ internal fun Messages(
     modifier: Modifier = Modifier
 ) {
     val isKeyboardOpen by isKeyboardOpen()
-    var scrollSet by remember { mutableStateOf(false) }
+    var isScrolledToUnreadItem by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val fabRef = remember { FocusRequester() }
+    val scrollTopBottomFabEnabled by remember {
+        derivedStateOf { scrollState.firstVisibleItemIndex > 1 }
+    }
+    val onFabClick = remember(scope, scrollState) {
+        {
+            scope.launch { scrollState.scrollToItem(0) }
+            onResetScroll()
+        }
+    }
     val unreadItemOffset = with(LocalDensity.current) { 50.dp.toPx() }
 
     LaunchedEffect(scrollState) {
-        launch {
-            snapshotFlow { isKeyboardOpen }.first { !it }
-            val index = uiState.conversationItems?.indexOfFirst { it is ConversationItem.UnreadMessagesItem } ?: -1
-            if (index != -1) scrollState.scrollToBottomViewportItem(index, unreadItemOffset)
-            scrollSet = true
-        }
+        snapshotFlow { isKeyboardOpen }.first { !it }
+        val index =
+            uiState.conversationItems?.value?.indexOfFirst { it is ConversationItem.UnreadMessagesItem }
+                ?: -1
+        if (index != -1) scrollState.scrollToBottomViewportItem(index, unreadItemOffset)
+        isScrolledToUnreadItem = true
     }
 
-    LaunchedEffect(uiState.conversationItems) {
-        if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
-    }
-
-    LaunchedEffect(scrollState, uiState.conversationItems, scrollSet) {
-        if (scrollSet) {
+    LaunchedEffect(scrollState, uiState.conversationItems, isScrolledToUnreadItem) {
+        if (isScrolledToUnreadItem) {
             snapshotFlow { scrollState.firstVisibleItemIndex }
                 .onEach {
-
-                    val item = uiState.conversationItems?.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
+                    val item =
+                        uiState.conversationItems?.value?.getOrNull(it) as? ConversationItem.MessageItem
+                            ?: return@onEach
                     onMessageScrolled(item)
                 }.launchIn(this)
         }
@@ -104,14 +107,18 @@ internal fun Messages(
             .launchIn(this)
     }
 
+    LaunchedEffect(uiState.conversationItems) {
+        if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
+    }
+
     Box(
         modifier = Modifier
             .onPreviewKeyEvent {
                 return@onPreviewKeyEvent when {
                     it.type != KeyEventType.KeyDown && it.key == Key.DirectionLeft -> {
-                        onDirectionLeft.invoke(); true
+                        onDirectionLeft(); true
                     }
-                    scrollState.scrollTopBottomFabEnabled && it.type != KeyEventType.KeyDown && it.key == Key.DirectionRight -> {
+                    scrollTopBottomFabEnabled && it.type != KeyEventType.KeyDown && it.key == Key.DirectionRight -> {
                         fabRef.requestFocus(); true
                     }
                     else -> false
@@ -120,30 +127,33 @@ internal fun Messages(
             .then(modifier)
     ) {
         if (uiState.conversationItems == null) LoadingMessagesLabel(Modifier.align(Alignment.Center))
-        else if (uiState.conversationItems.isEmpty()) NoMessagesLabel(Modifier.align(Alignment.Center))
-        else Conversation(
-            items = uiState.conversationItems,
-            areAllMessagesFetched = uiState.areAllMessagesFetched,
-            scrollState = scrollState,
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .align(Alignment.BottomCenter)
-                .alpha(if (scrollSet) 1f else 0f)
-        )
+        else if (uiState.conversationItems.value.isEmpty()) NoMessagesLabel(Modifier.align(Alignment.Center))
+        else {
+            Box(Modifier.alpha(if (isScrolledToUnreadItem) 1f else 0f)) {
+                Conversation(
+                    items = uiState.conversationItems,
+                    areAllMessagesFetched = uiState.areAllMessagesFetched,
+                    scrollState = scrollState,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .align(Alignment.BottomCenter)
+                )
+            }
+        }
 
-        ResetScrollFab(
-            counter = uiState.unreadMessagesCount,
-            onClick = {
-                scope.launch { scrollState.scrollToItem(0) }
-                onResetScroll()
-            },
-            enabled = scrollState.scrollTopBottomFabEnabled,
-            modifier = Modifier
+        Box(
+            Modifier
                 .focusRequester(fabRef)
                 .align(Alignment.BottomEnd)
                 .padding(16.dp)
-        )
+        ) {
+            ResetScrollFab(
+                counter = uiState.unreadMessagesCount,
+                onClick = onFabClick,
+                enabled = scrollTopBottomFabEnabled
+            )
+        }
     }
 }
 
@@ -191,7 +201,7 @@ internal fun LoadingMessagesLabel(modifier: Modifier = Modifier) {
 
 @Composable
 internal fun Conversation(
-    items: List<ConversationItem>,
+    items: ImmutableList<ConversationItem>,
     areAllMessagesFetched: Boolean,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
@@ -202,9 +212,11 @@ internal fun Conversation(
         contentPadding = PaddingValues(all = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier.testTag(ConversationTag)
+        modifier = Modifier
+            .testTag(ConversationTag)
+            .then(modifier)
     ) {
-        items(items, key = { it.id }, contentType = { it::class.java }) { item ->
+        items(items.value, key = { it.id }, contentType = { it::class.java }) { item ->
             when (item) {
                 is ConversationItem.MessageItem -> Message(
                     messageItem = item,
@@ -407,7 +419,8 @@ internal fun LoadingMessagesDarkPreview() = KaleyraTheme(isDarkTheme = true) {
 internal fun EmptyMessagesPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         Messages(
-            uiState = ConversationUiState(conversationItems = listOf()),
+//            uiState = ConversationUiState(conversationItems = listOf()),
+            uiState = ConversationUiState(),
             onMessageScrolled = { },
             onApproachingTop = { },
             onResetScroll = { },
@@ -422,7 +435,8 @@ internal fun EmptyMessagesPreview() = KaleyraTheme {
 internal fun EmptyMessagesDarkPreview() = KaleyraTheme(isDarkTheme = true) {
     Surface(color = MaterialTheme.colors.background) {
         Messages(
-            uiState = ConversationUiState(conversationItems = listOf()),
+            uiState = ConversationUiState(),
+//            uiState = ConversationUiState(conversationItems = listOf()),
             onMessageScrolled = { },
             onApproachingTop = { },
             onResetScroll = { },

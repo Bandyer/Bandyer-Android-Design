@@ -8,13 +8,11 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,20 +24,15 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.highlightOnFocus
 
-val LazyListState.scrollTopBottomFabEnabled: Boolean
-    get() = derivedStateOf { firstVisibleItemIndex > 1 }.value
-
 @Composable
 internal fun ResetScrollFab(
     counter: Int,
     onClick: () -> Unit,
-    enabled: Boolean,
-    modifier: Modifier = Modifier
+    enabled: Boolean
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     AnimatedVisibility(
         visible = enabled,
-        modifier = modifier,
         enter = scaleIn(),
         exit = scaleOut()
     ) {
@@ -77,7 +70,7 @@ internal fun ResetScrollFab(
 @Composable
 internal fun ResetScrollFabPreview() {
     KaleyraTheme {
-        ResetScrollFab(counter = 5, onClick = { }, enabled = true)
+//        ResetScrollFab(counter = 5, onClick = { }, enabled = true)
     }
 }
 
@@ -85,6 +78,6 @@ internal fun ResetScrollFabPreview() {
 @Composable
 internal fun ResetScrollFabDarkPreview() {
     KaleyraTheme(isDarkTheme = true) {
-        ResetScrollFab(counter = 5, onClick = { }, enabled = true)
+//        ResetScrollFab(counter = 5, onClick = { }, enabled = true)
     }
 }

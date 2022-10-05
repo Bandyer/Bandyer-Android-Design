@@ -1,12 +1,9 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose.model
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.ClickableAction
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ConversationUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 
-val mockConversationItems = listOf(
+val mockConversationItems = ImmutableList(listOf(
     ConversationItem.MessageItem(
         Message.OtherMessage(
             "id8",
@@ -65,14 +62,12 @@ val mockConversationItems = listOf(
     ),
     ConversationItem.MessageItem(Message.OtherMessage("id1", "Hello there!", "11:45")),
     ConversationItem.DayItem("23 august 2022")
-)
+))
 
-val mockActions = setOf(ChatAction.AudioCall, ChatAction.AudioUpgradableCall, ChatAction.VideoCall)
-
-val mockClickableActions = setOf(
+val mockClickableActions = ImmutableSet(setOf(
     ClickableAction(ChatAction.AudioCall) { },
     ClickableAction(ChatAction.AudioUpgradableCall) { },
-    ClickableAction(ChatAction.VideoCall) { })
+    ClickableAction(ChatAction.VideoCall) { }))
 
 val mockConversationUiState = ConversationUiState(
     conversationItems = mockConversationItems,
@@ -82,7 +77,7 @@ val mockConversationUiState = ConversationUiState(
 val mockUiState = ChatUiState(
     info = ChatInfo("John Smith", Uri.EMPTY),
     state = ChatState.NetworkState.Connecting,
-    actions = mockActions,
+    actions = mockClickableActions,
     conversationState = mockConversationUiState,
     isInCall = true
 )

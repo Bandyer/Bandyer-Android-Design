@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -17,11 +18,13 @@ import androidx.compose.ui.unit.dp
 private val FocusHighlightStroke = 2.dp
 private val FocusHighlightColor = Color.Red
 
+@Stable
 internal fun Modifier.supportRtl(): Modifier =
     composed {
         if (LocalLayoutDirection.current == LayoutDirection.Rtl) scale(-1f, -1f) else this
     }
 
+@Stable
 internal fun Modifier.highlightOnFocus(interactionSource: MutableInteractionSource): Modifier =
     composed {
         val inputModeManager = LocalInputModeManager.current

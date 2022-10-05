@@ -5,8 +5,7 @@ import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
 import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.CallType
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.getChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.getChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.hasActiveCall
@@ -34,7 +33,8 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
         }.launchIn(viewModelScope)
 
         actions.map { it.mapToUiActions() }.onEach { actions ->
-            _uiState.update { it.copy(actions = actions) }
+           val acrions =  actions.mapToClickableAction(call = { call(it) })
+            _uiState.update { it.copy(actions = ImmutableSet(acrions)) }
         }.launchIn(viewModelScope)
 
         phoneBox.hasActiveCall().onEach { hasActiveCall ->
@@ -43,7 +43,7 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
 
         messages.mapToConversationItems(viewModelScope, showUnreadHeader).onEach { items ->
             _uiState.update {
-                val conversationState = it.conversationState.copy(conversationItems = items)
+                val conversationState = it.conversationState.copy(conversationItems = ImmutableList(items))
                 it.copy(conversationState = conversationState)
             }
         }.launchIn(viewModelScope)
@@ -102,6 +102,16 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
     }
 
     override fun showCall() = CollaborationUI.phoneBox.showCall()
+
+    private fun Set<ChatAction>.mapToClickableAction(call: (CallType) -> Unit): Set<ClickableAction> {
+        return map {
+            when (it) {
+                is ChatAction.AudioCall -> ClickableAction(it) { call(CallType.Audio) }
+                is ChatAction.AudioUpgradableCall -> ClickableAction(it) { call(CallType.AudioUpgradable) }
+                else -> ClickableAction(it) { call(CallType.Video) }
+            }
+        }.toSet()
+    }
 
     companion object {
         private const val FETCH_COUNT = 50
