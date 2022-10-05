@@ -39,7 +39,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.Messag
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.input.UserInput
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.TopAppBar

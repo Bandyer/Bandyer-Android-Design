@@ -2,7 +2,6 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.compose.model
 
 import android.net.Uri
 import androidx.compose.runtime.Immutable
-import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
@@ -15,7 +14,7 @@ import java.util.*
 data class ChatUiState(
     val info: ChatInfo = ChatInfo("", Uri.EMPTY),
     val state: ChatState = ChatState.None,
-    val actions: ImmutableSet<ClickableAction> = ImmutableSet(setOf()),
+    val actions: ImmutableSet<ChatAction> = ImmutableSet(setOf()),
     val conversationState: ConversationUiState = ConversationUiState(),
     val isInCall: Boolean = false
 )
@@ -50,19 +49,10 @@ data class ChatInfo(
 )
 
 @Immutable
-sealed class ChatAction {
-    object AudioCall : ChatAction()
-    object AudioUpgradableCall : ChatAction()
-    object VideoCall : ChatAction()
-}
-
-internal typealias ClickableAction = Pair<ChatAction, () -> Unit>
-
-@Immutable
-sealed class CallType(val preferredType: Call.PreferredType) {
-    object Audio : CallType(Call.PreferredType(video = null))
-    object AudioUpgradable : CallType(Call.PreferredType(video = Call.Video.Disabled))
-    object Video : CallType(Call.PreferredType())
+sealed class ChatAction(open val onClick: () -> Unit) {
+    data class AudioCall(override val onClick: () -> Unit) : ChatAction(onClick)
+    data class AudioUpgradableCall(override val onClick: () -> Unit) : ChatAction(onClick)
+    data class VideoCall(override val onClick: () -> Unit) : ChatAction(onClick)
 }
 
 @Immutable

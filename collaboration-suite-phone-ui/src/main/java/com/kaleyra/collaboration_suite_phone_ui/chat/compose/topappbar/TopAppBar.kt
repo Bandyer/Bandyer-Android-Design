@@ -37,7 +37,7 @@ const val ActionsTag = "ActionsTag"
 internal fun TopAppBar(
     state: ChatState,
     info: ChatInfo,
-    actions: ImmutableSet<ClickableAction>,
+    actions: ImmutableSet<ChatAction>,
     onBackPressed: () -> Unit,
 ) {
     TopAppBar(
@@ -134,35 +134,32 @@ private fun textFor(state: ChatState): String =
     }
 
 @Composable
-internal fun Actions(actions: ImmutableSet<ClickableAction>) {
+internal fun Actions(actions: ImmutableSet<ChatAction>) {
     val value = actions.value
-    value.getClickableAction<ChatAction.AudioCall>()?.let { (_, onClick) ->
+    value.firstOrNull { it is ChatAction.AudioCall }?.let {
         MenuIcon(
             painter = painterResource(R.drawable.ic_kaleyra_audio_call),
-            onClick = onClick,
+            onClick = it.onClick,
             contentDescription = stringResource(id = R.string.kaleyra_start_audio_call)
         )
     }
 
-    value.getClickableAction<ChatAction.AudioUpgradableCall>()?.let { (_, onClick) ->
+    value.firstOrNull { it is ChatAction.AudioUpgradableCall }?.let {
         MenuIcon(
             painter = painterResource(R.drawable.ic_kaleyra_audio_upgradable_call),
-            onClick = onClick,
+            onClick = it.onClick,
             contentDescription = stringResource(id = R.string.kaleyra_start_audio_upgradable_call)
         )
     }
 
-    value.getClickableAction<ChatAction.VideoCall>()?.let { (_, onClick) ->
+    value.firstOrNull { it is ChatAction.VideoCall }?.let {
         MenuIcon(
             painter = painterResource(R.drawable.ic_kaleyra_video_call),
-            onClick = onClick,
+            onClick = it.onClick,
             contentDescription = stringResource(id = R.string.kaleyra_start_video_call)
         )
     }
 }
-
-private inline fun <reified T : ChatAction> Set<ClickableAction>.getClickableAction(): ClickableAction? =
-    firstOrNull { (act, _) -> act is T }
 
 @Preview
 @Composable
@@ -170,7 +167,7 @@ internal fun TopAppBarPreview() = KaleyraTheme {
     TopAppBar(
         state = ChatState.UserState.Typing,
         info = ChatInfo("John Smith"),
-        actions = mockClickableActions,
+        actions = mockActions,
         onBackPressed = { }
     )
 }
@@ -181,7 +178,7 @@ internal fun TopAppBarDarkPreview() = KaleyraTheme(isDarkTheme = true) {
     TopAppBar(
         state = ChatState.UserState.Offline("15:00"),
         info = ChatInfo("John Smith"),
-        actions = mockClickableActions,
+        actions = mockActions,
         onBackPressed = { }
     )
 }

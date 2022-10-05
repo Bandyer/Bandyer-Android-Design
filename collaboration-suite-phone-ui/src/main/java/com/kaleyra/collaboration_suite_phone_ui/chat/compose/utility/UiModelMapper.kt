@@ -10,10 +10,7 @@ import com.kaleyra.collaboration_suite_core_ui.MessagesUI
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message.Companion.toUiMessage
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import kotlinx.coroutines.CoroutineScope
@@ -22,21 +19,28 @@ import kotlinx.coroutines.flow.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal object UiModelMapper {
-    fun Set<ChatUI.Action>.mapToUiActions(): Set<ChatAction> {
+    fun Set<ChatUI.Action>.mapToChatActions(call: (Call.PreferredType) -> Unit): Set<ChatAction> {
         return mutableSetOf<ChatAction>().apply {
-            if (this@mapToUiActions.any { it is ChatUI.Action.CreateCall && !it.preferredType.hasVideo() })
-                add(ChatAction.AudioCall)
-            if (this@mapToUiActions.any { it is ChatUI.Action.CreateCall && !it.preferredType.isVideoEnabled() })
-                add(ChatAction.AudioUpgradableCall)
-            if (this@mapToUiActions.any { it is ChatUI.Action.CreateCall && it.preferredType.isVideoEnabled() })
-                add(ChatAction.VideoCall)
+            val actions = this@mapToChatActions.filterIsInstance<ChatUI.Action.CreateCall>()
+            actions.firstOrNull { !it.preferredType.hasVideo() }?.also { action ->
+                add(ChatAction.AudioCall { call(action.preferredType) })
+            }
+            actions.firstOrNull { !it.preferredType.isVideoEnabled() }?.also { action ->
+                add(ChatAction.AudioUpgradableCall { call(action.preferredType) })
+            }
+            actions.firstOrNull { it.preferredType.isVideoEnabled() }?.also { action ->
+                add(ChatAction.VideoCall { call(action.preferredType) })
+            }
         }
     }
 
     fun Flow<PhoneBoxUI>.hasActiveCall(): Flow<Boolean> =
         flatMapLatest { it.call }.flatMapLatest { it.state }.map { it !is Call.State.Disconnected.Ended }
 
-    fun getChatState(participants: Flow<ChatParticipants>, chatBox: Flow<ChatBox>): Flow<ChatState> {
+    fun getChatState(
+        participants: Flow<ChatParticipants>,
+        chatBox: Flow<ChatBox>
+    ): Flow<ChatState> {
         var previousChatBoxState: ChatBox.State? = null
 
         return combine(
@@ -64,8 +68,14 @@ internal object UiModelMapper {
         }
     }
 
-    fun getChatInfo(participants: Flow<ChatParticipants>, usersDescription: Flow<UsersDescription>): Flow<ChatInfo> {
-        return combine(participants.otherParticipant(), usersDescription) { participant, usersDesc ->
+    fun getChatInfo(
+        participants: Flow<ChatParticipants>,
+        usersDescription: Flow<UsersDescription>
+    ): Flow<ChatInfo> {
+        return combine(
+            participants.otherParticipant(),
+            usersDescription
+        ) { participant, usersDesc ->
             ChatInfo(
                 name = usersDesc.name(listOf(participant.userId)),
                 image = usersDesc.image(listOf(participant.userId))
@@ -77,11 +87,19 @@ internal object UiModelMapper {
         return flatMapLatest { it.messages }
             .map { it.other }
             .drop(1)
-            .map { messages -> messages.filter { it.state.value is Message.State.Received }.map { it.id }.toSet() }
+            .map { messages ->
+                messages.filter { it.state.value is Message.State.Received }.map { it.id }.toSet()
+            }
     }
 
-    fun Flow<MessagesUI>.mapToConversationItems(coroutineScope: CoroutineScope, showUnreadHeader: StateFlow<Boolean>): Flow<List<ConversationItem>> {
-        return combine(this.map { it.list }, this.firstUnreadMessageId()) { messages, firstUnreadMessageId ->
+    fun Flow<MessagesUI>.mapToConversationItems(
+        coroutineScope: CoroutineScope,
+        showUnreadHeader: StateFlow<Boolean>
+    ): Flow<List<ConversationItem>> {
+        return combine(
+            this.map { it.list },
+            this.firstUnreadMessageId()
+        ) { messages, firstUnreadMessageId ->
             val items = mutableListOf<ConversationItem>()
             messages.forEachIndexed { index, message ->
                 val previousMessage = messages.getOrNull(index + 1)
@@ -92,7 +110,11 @@ internal object UiModelMapper {
                     items.add(ConversationItem.UnreadMessagesItem)
                 }
 
-                if (previousMessage == null || !Iso8601.isSameDay(message.creationDate.time, previousMessage.creationDate.time)) {
+                if (previousMessage == null || !Iso8601.isSameDay(
+                        message.creationDate.time,
+                        previousMessage.creationDate.time
+                    )
+                ) {
                     items.add(
                         ConversationItem.DayItem(
                             Iso8601.parseDay(
@@ -118,10 +140,13 @@ internal object UiModelMapper {
         }
     }
 
-    private fun Flow<ChatParticipants>.otherParticipant(): Flow<ChatParticipant> = map { it.others.first() }
+    private fun Flow<ChatParticipants>.otherParticipant(): Flow<ChatParticipant> =
+        map { it.others.first() }
 
-    private fun Flow<ChatParticipants>.typingEvents(): Flow<ChatParticipant.Event> = otherParticipant().flatMapLatest { it.events.filterIsInstance<ChatParticipant.Event.Typing>() }
+    private fun Flow<ChatParticipants>.typingEvents(): Flow<ChatParticipant.Event> =
+        otherParticipant().flatMapLatest { it.events.filterIsInstance<ChatParticipant.Event.Typing>() }
 
-    private fun Flow<ChatParticipants>.otherParticipantState(): Flow<ChatParticipant.State> = otherParticipant().flatMapLatest { it.state }
+    private fun Flow<ChatParticipants>.otherParticipantState(): Flow<ChatParticipant.State> =
+        otherParticipant().flatMapLatest { it.state }
 }
 
