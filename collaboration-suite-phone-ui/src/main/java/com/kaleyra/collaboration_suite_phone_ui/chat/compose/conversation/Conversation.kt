@@ -47,6 +47,9 @@ const val ConversationTag = "ConversationTag"
 
 private const val TOP_THRESHOLD = 15
 
+private val UnreadItemOffset = 56.dp
+private val ScrollToBottomThreshold = 128.dp
+
 private val LazyListState.isApproachingTop: Boolean
     get() = derivedStateOf {
         val totalItemsCount = layoutInfo.totalItemsCount
@@ -65,11 +68,15 @@ internal fun Messages(
     modifier: Modifier = Modifier
 ) {
     val isKeyboardOpen by isKeyboardOpen()
-    var isScrolledToUnreadItem by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val fabRef = remember { FocusRequester() }
+    val unreadItemOffset = with(LocalDensity.current) { UnreadItemOffset.toPx() }
+    var isScrolledToUnreadItem by remember { mutableStateOf(false) }
+    val resetScrollThreshold = with(LocalDensity.current) { ScrollToBottomThreshold.toPx() }
     val scrollTopBottomFabEnabled by remember {
-        derivedStateOf { scrollState.firstVisibleItemIndex > 1 }
+        derivedStateOf {
+            scrollState.firstVisibleItemIndex > 1 || scrollState.firstVisibleItemScrollOffset > resetScrollThreshold
+        }
     }
     val onFabClick = remember(scope, scrollState) {
         {
@@ -77,7 +84,6 @@ internal fun Messages(
             onResetScroll()
         }
     }
-    val unreadItemOffset = with(LocalDensity.current) { 50.dp.toPx() }
 
     LaunchedEffect(scrollState) {
         snapshotFlow { isKeyboardOpen }.first { !it }
