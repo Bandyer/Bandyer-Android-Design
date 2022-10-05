@@ -22,6 +22,8 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
@@ -97,20 +99,6 @@ class MainActivity : AppCompatActivity() {
                     RingingActivity::class.java
                 )
             )
-        }
-
-        btnSwitchNightMode.setOnClickListener {
-            val isNightTheme = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            when (isNightTheme) {
-                Configuration.UI_MODE_NIGHT_YES -> {
-                    window.setWindowAnimations(R.style.Kaleyra_ThemeTransitionAnimation)
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
-                Configuration.UI_MODE_NIGHT_NO -> {
-                    window.setWindowAnimations(R.style.Kaleyra_ThemeTransitionAnimation)
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                }
-            }
         }
 
         btnWhiteboardEditor.setOnClickListener {
@@ -255,6 +243,34 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                menu.add("Day mode").apply {
+                    setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                    setOnMenuItemClickListener {
+                        window.setWindowAnimations(R.style.Kaleyra_ThemeTransitionAnimation)
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        invalidateOptionsMenu()
+                        true
+                    }
+                }
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                menu.add("Night mode").apply {
+                    setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                    setOnMenuItemClickListener {
+                        window.setWindowAnimations(R.style.Kaleyra_ThemeTransitionAnimation)
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        invalidateOptionsMenu()
+                        true
+                    }
+                }
+            }
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
 }
 
 class LocalFileShareViewModel : FileShareViewModel() {
