@@ -82,8 +82,8 @@ internal fun Messages(
         }
     }
 
-    LaunchedEffect(uiState.conversationItems, scrollSet) {
-        if (scrollSet && scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
+    LaunchedEffect(uiState.conversationItems) {
+        if (scrollState.firstVisibleItemIndex < 3) scrollState.animateScrollToItem(0)
     }
 
     LaunchedEffect(scrollState, uiState.conversationItems, scrollSet) {
