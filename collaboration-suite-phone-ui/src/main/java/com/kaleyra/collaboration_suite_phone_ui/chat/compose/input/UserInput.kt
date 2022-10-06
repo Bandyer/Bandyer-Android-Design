@@ -16,6 +16,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.input.key.*
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
@@ -25,6 +26,8 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.supportRtl
+
+const val TextFieldTag = "TextFieldTag"
 
 @Composable
 internal fun UserInput(
@@ -114,6 +117,7 @@ internal fun UserInputText(
                     modifier = Modifier
                         .fillMaxWidth()
                         .align(Alignment.CenterStart)
+                        .testTag(TextFieldTag)
                         .onPreviewKeyEvent {
                             if (it.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
                             when (it.key) {

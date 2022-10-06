@@ -7,11 +7,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.ChatScreen
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.MessagesTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockActions
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockConversationItems
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.ActionsTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ConversationUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.input.TextFieldTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Before
@@ -28,8 +25,7 @@ class ChatScreenTest {
     private val uiState = MutableStateFlow(
         ChatUiState(
             conversationState = ConversationUiState(
-                areMessagesInitialized = true,
-                conversationItems = mockConversationItems.plus(mockConversationItems)
+                conversationItems = ImmutableList(mockConversationItems.value.plus(mockConversationItems.value))
             ),
             actions = mockActions
         )
@@ -42,10 +38,6 @@ class ChatScreenTest {
     private var onResetMessagesScroll = false
 
     private var onFetchMessages = false
-
-    private var onReadAllMessages = false
-
-    private var onCall = false
 
     private var onShowCall = false
 
@@ -62,8 +54,6 @@ class ChatScreenTest {
                 onMessageScrolled = { onMessageScrolled = true },
                 onResetMessagesScroll = { onResetMessagesScroll = true },
                 onFetchMessages = { onFetchMessages = true },
-                onReadAllMessages = { onReadAllMessages = true },
-                onCall = { onCall = true },
                 onShowCall = { onShowCall = true },
                 onSendMessage = { onSendMessage = true },
                 onTyping = { onTyping = true }
@@ -71,20 +61,11 @@ class ChatScreenTest {
         }
     }
 
-    // Missing
-    // onReadAllMessages
-
     @Test
     fun userClicksBackButton_onBackPressedInvoked() {
         val back = composeTestRule.activity.getString(R.string.kaleyra_back)
         composeTestRule.onNodeWithContentDescription(back).performClick()
         assert(onBackPressed)
-    }
-
-    @Test
-    fun userScrollsUp_onMessageScrolledInvoked() {
-        findMessages().performScrollUp()
-        assert(onMessageScrolled)
     }
 
     @Test
@@ -108,12 +89,6 @@ class ChatScreenTest {
         composeTestRule.onNodeWithText(ongoingCall).assertDoesNotExist()
         uiState.update { it.copy(isInCall = true) }
         composeTestRule.onNodeWithText(ongoingCall).assertIsDisplayed()
-    }
-
-    @Test
-    fun userClicksAction_onCallInvoked() {
-        composeTestRule.onNodeWithTag(ActionsTag).onChildren().onFirst().performClick()
-        assert(onCall)
     }
 
     @Test
@@ -143,9 +118,6 @@ class ChatScreenTest {
 
     private fun findSendButton() = composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.kaleyra_chat_send))
 
-    private fun findTextInputField() = composeTestRule.onNode(
-        hasSetTextAction() and hasAnyAncestor(
-            hasContentDescription(composeTestRule.activity.getString(R.string.kaleyra_chat_textfield_desc))
-        )
-    )
+    private fun findTextInputField() = composeTestRule.onNode(hasTestTag(TextFieldTag))
+
 }

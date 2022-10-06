@@ -4,6 +4,7 @@ import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.input.TextFieldTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.input.UserInput
 import org.junit.Before
 import org.junit.Rule
@@ -74,10 +75,6 @@ class UserInputTest {
     private fun findHintText() =
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.kaleyra_edit_text_input_placeholder))
 
-    private fun findTextInputField() = composeTestRule.onNode(
-        hasSetTextAction() and hasAnyAncestor(
-            hasContentDescription(composeTestRule.activity.getString(R.string.kaleyra_chat_textfield_desc))
-        )
-    )
+    private fun findTextInputField() = composeTestRule.onNode(hasTestTag(TextFieldTag))
 
 }
