@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.widgets.recording
+package com.kaleyra.collaboration_suite_phone_ui.recording
 
 import android.graphics.Color
 import android.view.View
@@ -57,7 +57,7 @@ object KaleyraRecordingSnackbar {
             R.string.kaleyra_recording_started_message,
             duration
         )
-        Type.TYPE_ENDED -> KaleyraSnackbar.make(
+        Type.TYPE_ENDED   -> KaleyraSnackbar.make(
             view,
             R.string.kaleyra_recording_stopped,
             R.string.kaleyra_recording_stopped_message,
