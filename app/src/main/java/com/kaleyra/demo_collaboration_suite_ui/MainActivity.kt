@@ -41,7 +41,7 @@ import com.kaleyra.collaboration_suite_phone_ui.feedback.FeedbackDialog
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.FileShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.KaleyraFileShareDialog
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.model.TransferData
-import com.kaleyra.collaboration_suite_phone_ui.call.widgets.recording.KaleyraRecordingSnackbar
+import com.kaleyra.collaboration_suite_phone_ui.recording.KaleyraRecordingSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.SmartGlassActionItemMenu
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.SmartGlassMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.smartglass.call.menu.items.getSmartglassActions
