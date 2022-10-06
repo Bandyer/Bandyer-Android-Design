@@ -83,15 +83,6 @@ internal object UiModelMapper {
         }
     }
 
-    fun Flow<ChatUI>.unreadMessagesIds(): Flow<Set<String>> {
-        return flatMapLatest { it.messages }
-            .map { it.other }
-            .drop(1)
-            .map { messages ->
-                messages.filter { it.state.value is Message.State.Received }.map { it.id }.toSet()
-            }
-    }
-
     fun Flow<MessagesUI>.mapToConversationItems(
         coroutineScope: CoroutineScope,
         showUnreadHeader: StateFlow<Boolean>
