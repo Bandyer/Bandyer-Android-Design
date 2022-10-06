@@ -56,7 +56,7 @@ class KaleyraParicipantRemovedDialog(private val adminDisplayName: String? = nul
      * Set the callback invoked on fragment dialog dismiss
      *
      * @param function Function0<Unit>
-     * @return FeedbackDialog
+     * @return KaleyraParicipantRemovedDialog
      */
     fun onDismiss(function: () -> Unit): KaleyraParicipantRemovedDialog { onDismissCallback = function; return this }
 
@@ -70,12 +70,12 @@ class KaleyraParicipantRemovedDialog(private val adminDisplayName: String? = nul
     }
 
     /**
-     * Feedback dialog companion object
+     * KaleyraParicipantRemovedDialog companion object
      */
     companion object {
         /**
-         * Feedback dialog logging tag
+         * KaleyraParicipantRemovedDialog logging tag
          */
-        const val TAG = "FeedbackDialog"
+        const val TAG = "ParicipantRemovedDialog"
     }
 }
