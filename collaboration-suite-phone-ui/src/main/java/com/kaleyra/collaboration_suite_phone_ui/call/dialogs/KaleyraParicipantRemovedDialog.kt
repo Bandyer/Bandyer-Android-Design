@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.postDelayed
 import androidx.fragment.app.DialogFragment
 import com.kaleyra.collaboration_suite_phone_ui.R
