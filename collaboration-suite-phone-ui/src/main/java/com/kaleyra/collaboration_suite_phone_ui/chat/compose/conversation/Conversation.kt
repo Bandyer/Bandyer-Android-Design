@@ -72,12 +72,7 @@ internal fun Messages(
     val fabRef = remember { FocusRequester() }
     val unreadItemOffset = with(LocalDensity.current) { UnreadItemOffset.toPx() }
     var isScrolledToUnreadItem by remember { mutableStateOf(false) }
-    val resetScrollThreshold = with(LocalDensity.current) { ScrollToBottomThreshold.toPx() }
-    val scrollTopBottomFabEnabled by remember {
-        derivedStateOf {
-            scrollState.firstVisibleItemIndex > 1 || scrollState.firstVisibleItemScrollOffset > resetScrollThreshold
-        }
-    }
+    val scrollToBottomFabEnabled by scrollToBottomFabEnabled(scrollState)
     val onFabClick = remember(scope, scrollState) {
         {
             scope.launch { scrollState.scrollToItem(0) }
@@ -124,7 +119,7 @@ internal fun Messages(
                     it.type != KeyEventType.KeyDown && it.key == Key.DirectionLeft -> {
                         onDirectionLeft(); true
                     }
-                    scrollTopBottomFabEnabled && it.type != KeyEventType.KeyDown && it.key == Key.DirectionRight -> {
+                    scrollToBottomFabEnabled && it.type != KeyEventType.KeyDown && it.key == Key.DirectionRight -> {
                         fabRef.requestFocus(); true
                     }
                     else -> false
@@ -157,7 +152,7 @@ internal fun Messages(
             ResetScrollFab(
                 counter = uiState.unreadMessagesCount,
                 onClick = onFabClick,
-                enabled = scrollTopBottomFabEnabled
+                enabled = scrollToBottomFabEnabled
             )
         }
     }
@@ -168,6 +163,19 @@ private suspend fun LazyListState.scrollToBottomViewportItem(index: Int, scrollO
     val firstItemSize = layoutInfo.visibleItemsInfo.first().size
     val viewportSize = layoutInfo.viewportSize.height
     scrollBy(-viewportSize + firstItemSize + scrollOffset)
+}
+
+@Composable
+private fun scrollToBottomFabEnabled(listState: LazyListState): State<Boolean> {
+    val resetScrollThreshold = with(LocalDensity.current) { ScrollToBottomThreshold.toPx() }
+    return remember {
+        derivedStateOf {
+            val firstCompletelyVisibleItem = listState.layoutInfo.visibleItemsInfo.firstOrNull()
+            val firstCompletelyVisibleItemIndex = firstCompletelyVisibleItem?.index ?: 0
+            val firstCompletelyVisibleItemOffset = -(firstCompletelyVisibleItem?.offset ?: 0)
+            firstCompletelyVisibleItemIndex != 0 || firstCompletelyVisibleItemOffset > resetScrollThreshold
+        }
+    }
 }
 
 @Composable
