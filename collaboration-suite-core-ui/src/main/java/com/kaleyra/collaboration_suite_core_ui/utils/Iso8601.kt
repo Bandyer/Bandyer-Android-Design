@@ -18,6 +18,7 @@ package com.kaleyra.collaboration_suite_core_ui.utils
 
 import android.content.Context
 import com.kaleyra.collaboration_suite_core_ui.R
+import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isToday
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -114,6 +115,20 @@ object Iso8601 {
     }
 
     /**
+     * Parse a UTC millis timestamp into a human readable day. This function takes into account the current zone offset.
+     *
+     * @param timestamp The timestamp in millis
+     * @return String A human readable date day string
+     */
+    fun parseDay(timestamp: Long): String {
+        return DateTimeFormatter
+            .ofLocalizedDate(FormatStyle.LONG)
+            .withLocale(Locale.getDefault())
+            .withZone(ZoneId.systemDefault())
+            .format(Instant.ofEpochMilli(timestamp))
+    }
+
+    /**
      * Parse a UTC millis timestamp into a human readable time. This function takes into account the current zone offset.
      *
      * @param timestamp The timestamp in millis
@@ -154,6 +169,19 @@ object Iso8601 {
                 .setMidnight()
         ) && !this.isToday()
 
+    /**
+     * Long timestamp in millis extension function. Check if it resides in the yesterday time period.
+     *
+     * @receiver Long
+     * @return Boolean True is the timestamp resides in the yesterday time period, false otherwise
+     */
+    fun Long.isYesterday(): Boolean {
+        return Instant
+            .ofEpochMilli(this)
+            .atZone(ZoneId.systemDefault())
+            .isYesterday()
+    }
+
 
     /**
      * ZonedDateTime extension function. Check if the instant resides in the current day time period.
@@ -167,6 +195,19 @@ object Iso8601 {
                 .now(this.zone)
                 .setMidnight()
         )
+
+    /**
+     * Long timestamp in millis extension function. Check if it resides in the current day time period.
+     *
+     * @receiver Long
+     * @return Boolean True is the timestamp resides in the current day time period, false otherwise
+     */
+    fun Long.isToday(): Boolean {
+        return Instant
+            .ofEpochMilli(this)
+            .atZone(ZoneId.systemDefault())
+            .isToday()
+    }
 
     /**
      * Check if two timestamps lie in the same day

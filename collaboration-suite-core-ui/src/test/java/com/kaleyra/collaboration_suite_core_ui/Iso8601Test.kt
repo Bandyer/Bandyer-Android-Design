@@ -32,7 +32,7 @@ import java.util.*
 class Iso8601Test {
 
     @Test
-    fun testNowIso8601Tstamp() {
+    fun iso8601Timestamp_getISO8601TstampInMillis_timestampInMillis() {
         val timestamp = "2021-09-03T16:24:00.000000Z"
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
         calendar.set(2021, 8, 3, 16, 24, 0)
@@ -44,7 +44,7 @@ class Iso8601Test {
     }
 
     @Test
-    fun testNowISO8601() {
+    fun nowISO8601_nowInIso8601() {
         val df = SimpleDateFormat("yyyy-MM-dd'T'HH:mm")
         df.timeZone = TimeZone.getTimeZone("UTC")
         val expected = df.format(Calendar.getInstance().time)
@@ -53,7 +53,7 @@ class Iso8601Test {
     }
 
     @Test
-    fun testNowUTCMillis() {
+    fun nowUTCMillis_nowInMillis() {
         var expected = Instant.now().toEpochMilli()
         var result = Iso8601.nowUTCMillis()
 
@@ -63,7 +63,7 @@ class Iso8601Test {
     }
 
     @Test
-    fun testIsLastWeek() {
+    fun zonedDateTime_isLastWeek_true() {
         val threeDaysAgo = ZonedDateTime
             .now(ZoneId.systemDefault())
             .minus(3, ChronoUnit.DAYS)
@@ -75,31 +75,43 @@ class Iso8601Test {
     }
 
     @Test
-    fun testIsYesterday() {
-        val now = ZonedDateTime
-            .now(ZoneId.systemDefault())
-        val yesterday = now
-            .minus(1, ChronoUnit.DAYS)
-        val threeDaysAgo = now
-            .minus(3, ChronoUnit.DAYS)
+    fun zonedDateTime_isYesterday_true() {
+        val now = ZonedDateTime.now(ZoneId.systemDefault())
+        val yesterday = now.minus(1, ChronoUnit.DAYS)
+        val threeDaysAgo = now.minus(3, ChronoUnit.DAYS)
         assertIsTrue(!now.isYesterday())
         assertIsTrue(yesterday.isYesterday())
         assertIsTrue(!threeDaysAgo.isYesterday())
     }
 
     @Test
-    fun testIsToday() {
-        val now = ZonedDateTime.now(ZoneId.systemDefault())
-        val yesterday = now
-            .minus(1, ChronoUnit.DAYS)
-        assertIsTrue(now.isToday())
-        assertIsTrue(
-            !yesterday.isToday()
-        )
+    fun longTimestamp_isYesterday_true() {
+        val now = Instant.now()
+        val yesterday = now.minus(1, ChronoUnit.DAYS)
+        val threeDaysAgo = now.minus(3, ChronoUnit.DAYS)
+        assertIsTrue(!now.toEpochMilli().isYesterday())
+        assertIsTrue(yesterday.toEpochMilli().isYesterday())
+        assertIsTrue(!threeDaysAgo.toEpochMilli().isYesterday())
     }
 
     @Test
-    fun testParseMillisToIso8601() {
+    fun zonedDateTime_isToday_true() {
+        val now = ZonedDateTime.now(ZoneId.systemDefault())
+        val yesterday = now.minus(1, ChronoUnit.DAYS)
+        assertIsTrue(now.isToday())
+        assertIsTrue(!yesterday.isToday())
+    }
+
+    @Test
+    fun longTimestamp_isToday_true() {
+        val now = Instant.now()
+        val yesterday = now.minus(1, ChronoUnit.DAYS)
+        assertIsTrue(now.toEpochMilli().isToday())
+        assertIsTrue(!yesterday.toEpochMilli().isToday())
+    }
+
+    @Test
+    fun longTimestamp_parseMillisToIso8601_iso8601String() {
         val millis = Instant
             .now()
             .minus(3, ChronoUnit.DAYS)
@@ -110,7 +122,7 @@ class Iso8601Test {
     }
 
     @Test
-    fun testIsSameDay() {
+    fun twoTimestamps_isSameDay_true() {
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
         calendar.set(2021, 8, 3, 16, 24, 0)
         val timestamp1 = calendar.timeInMillis

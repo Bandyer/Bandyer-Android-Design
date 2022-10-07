@@ -51,6 +51,8 @@
     <string name="kaleyra_call_action_disable_camera_description">Disabilita camera</string>
 
     <!-- Chat -->
+    <string name="kaleyra_today">oggi</string>
+    <string name="kaleyra_yesterday">ieri</string>
     <string name="kaleyra_edit_text_input_placeholder">Scrivi qui &#8230;</string>
     <string name="kaleyra_chat_channel_loading">Caricamento &#8230;</string>
     <string name="kaleyra_chat_user_status_online">in linea</string>

@@ -57,7 +57,7 @@ sealed class ChatAction(open val onClick: () -> Unit) {
 
 @Immutable
 sealed class ConversationItem(val id: String) {
-    data class DayItem(val timestamp: String) : ConversationItem(id = timestamp.hashCode().toString())
+    data class DayItem(val timestamp: Long) : ConversationItem(id = timestamp.hashCode().toString())
     object UnreadMessagesItem : ConversationItem(id = UUID.randomUUID().toString())
     data class MessageItem(val message: Message) : ConversationItem(id = message.id)
 }
