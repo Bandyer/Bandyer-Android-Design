@@ -48,7 +48,7 @@
             android:theme="?attr/kaleyra_iconStyle"
             app:layout_constraintStart_toEndOf="@id/kaleyra_back_button" />
 
-        <com.kaleyra.collaboration_suite_phone_ui.recording.RecordingWidget
+        <com.kaleyra.collaboration_suite_phone_ui.call.widgets.recording.KaleyraRecordingWidget
             android:id="@+id/kaleyra_recording"
             android:theme="?attr/kaleyra_recordingStyle"
             android:layout_width="wrap_content"

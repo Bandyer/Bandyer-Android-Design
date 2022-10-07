@@ -54,6 +54,7 @@ class CallNotification {
      * @property smallIconResource The resource to be used as small icon of the notification
      * @property user The user to be show in the notification
      * @property contentText The text to be shown inside the notification
+     * @property enableTimer Enable the timer of the notification
      * @property contentIntent The pending intent to be executed when the user tap on the notification
      * @property fullscreenIntent The pending intent to be executed when notification is in the lock screen
      * @property answerIntent The pending intent to be executed when the user taps the answer button
