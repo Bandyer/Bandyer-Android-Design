@@ -153,12 +153,76 @@ class UiModelMapperTest {
         assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.UserState.Typing)
     }
 
-//    @Test
-//    fun _getChatInfo_() = runTest {
-//        val name = "name"
-//        val image = mockk<Uri>()
-//        coEvery { usersDescriptionMock.name(listOf(otherParticipantMock.userId)) } returns name
-//        coEvery { usersDescriptionMock.image(listOf(otherParticipantMock.userId)) } returns image
-//        assert(getChatInfo(flowOf(chatParticipantsMock), flowOf(usersDescriptionMock)).first() == ChatInfo(name, image))
-//    }
+    // Ha senso?
+    @Test
+    fun _getChatInfo_() = runTest {
+        val name = "name"
+        val image = mockk<Uri>()
+        coEvery { usersDescriptionMock.name(listOf(otherParticipantMock.userId)) } returns name
+        coEvery { usersDescriptionMock.image(listOf(otherParticipantMock.userId)) } returns image
+        assert(getChatInfo(flowOf(chatParticipantsMock), flowOf(usersDescriptionMock)).first() == ChatInfo(name, image))
+    }
+
+    @Test
+    fun emptyMessagesList_mapToConversationItems_emptyMessageItems() = runTest {
+        every { messagesUIMock.list } returns listOf()
+        val result = flowOf(messagesUIMock).mapToConversationItems(
+            firstUnreadMessageId = "",
+            shouldShowUnreadHeader = MutableStateFlow(false)
+        ).first()
+        assert(result.isEmpty())
+    }
+
+    @Test
+    fun oneMessage_mapToConversationItems_dayAndMessageItems() = runTest {
+        every { messagesUIMock.list } returns listOf(myMessage)
+        val result = flowOf(messagesUIMock).mapToConversationItems(
+            firstUnreadMessageId = "",
+            shouldShowUnreadHeader = MutableStateFlow(false)
+        ).first()
+        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(myMessage.toUiMessage())))
+        assert(result[1] == ConversationItem.DayItem(now.toEpochMilli()))
+    }
+
+    @Test
+    fun twoMessageOnDifferentDays_mapToConversationItems_twoDayAndMessageItems() = runTest {
+        val result = flowOf(messagesUIMock).mapToConversationItems(
+            firstUnreadMessageId = "",
+            shouldShowUnreadHeader = MutableStateFlow(false)
+        ).first()
+        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherMessage.toUiMessage())))
+        assert(result[1] == ConversationItem.DayItem(yesterday.toEpochMilli()))
+        assert(isSameMessageItem(result[2], ConversationItem.MessageItem(myMessage.toUiMessage())))
+        assert(result[3] == ConversationItem.DayItem(now.toEpochMilli()))
+    }
+
+    @Test
+    fun oneUnreadMessage_mapToConversationItems_unreadLabelShown() = runTest {
+        val result = flowOf(messagesUIMock).mapToConversationItems(
+            firstUnreadMessageId = otherMessage.id,
+            shouldShowUnreadHeader = MutableStateFlow(true)
+        ).first()
+        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherMessage.toUiMessage())))
+        assert(result[1] is ConversationItem.UnreadMessagesItem)
+        assert(result[2] == ConversationItem.DayItem(yesterday.toEpochMilli()))
+        assert(isSameMessageItem(result[3], ConversationItem.MessageItem(myMessage.toUiMessage())))
+        assert(result[4] == ConversationItem.DayItem(now.toEpochMilli()))
+    }
+    private suspend fun isSameMessageItem(item1: ConversationItem, item2: ConversationItem): Boolean {
+        if (item1 !is ConversationItem.MessageItem) return false
+        if (item2 !is ConversationItem.MessageItem) return false
+
+        if (item1 == item2) return true
+
+        val message1 = item1.message
+        val message2 = item2.message
+        if (message1 !is com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message.MyMessage) return false
+        if (message2 !is com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message.MyMessage) return false
+
+        if (message1.id != message2.id) return false
+        if (message1.text != message2.text) return false
+        if (message1.time != message2.time) return false
+        if (message1.state.first() != message2.state.first()) return false
+        return true
+    }
 }
