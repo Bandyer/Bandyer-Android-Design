@@ -441,8 +441,7 @@ internal fun LoadingMessagesDarkPreview() = KaleyraTheme(isDarkTheme = true) {
 internal fun EmptyMessagesPreview() = KaleyraTheme {
     Surface(color = MaterialTheme.colors.background) {
         Messages(
-//            uiState = ConversationUiState(conversationItems = listOf()),
-            uiState = ConversationUiState(),
+            uiState = ConversationUiState(conversationItems = ImmutableList(listOf())),
             onMessageScrolled = { },
             onApproachingTop = { },
             onResetScroll = { },
@@ -457,8 +456,7 @@ internal fun EmptyMessagesPreview() = KaleyraTheme {
 internal fun EmptyMessagesDarkPreview() = KaleyraTheme(isDarkTheme = true) {
     Surface(color = MaterialTheme.colors.background) {
         Messages(
-            uiState = ConversationUiState(),
-//            uiState = ConversationUiState(conversationItems = listOf()),
+            uiState = ConversationUiState(conversationItems = ImmutableList(listOf())),
             onMessageScrolled = { },
             onApproachingTop = { },
             onResetScroll = { },
