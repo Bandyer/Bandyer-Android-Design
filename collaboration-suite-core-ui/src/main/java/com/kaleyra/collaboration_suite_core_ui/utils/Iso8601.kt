@@ -94,29 +94,6 @@ object Iso8601 {
     /**
      * Parse a UTC millis timestamp into a human readable day. This function takes into account the current zone offset.
      *
-     * @param context The context
-     * @param timestamp The timestamp in millis
-     * @return String A human readable date day string
-     */
-    fun parseDay(context: Context? = null, timestamp: Long): String {
-        val zonedDateTime = Instant
-            .ofEpochMilli(timestamp)
-            .atZone(ZoneId.systemDefault())
-
-        return when {
-            context != null && zonedDateTime.isToday() -> context.resources.getString(R.string.kaleyra_today)
-            context != null && zonedDateTime.isYesterday() -> context.resources.getString(R.string.kaleyra_yesterday)
-            else -> DateTimeFormatter
-                .ofLocalizedDate(FormatStyle.LONG)
-                .withLocale(Locale.getDefault())
-                .withZone(ZoneId.systemDefault())
-                .format(Instant.ofEpochMilli(timestamp))
-        }
-    }
-
-    /**
-     * Parse a UTC millis timestamp into a human readable day. This function takes into account the current zone offset.
-     *
      * @param timestamp The timestamp in millis
      * @return String A human readable date day string
      */
