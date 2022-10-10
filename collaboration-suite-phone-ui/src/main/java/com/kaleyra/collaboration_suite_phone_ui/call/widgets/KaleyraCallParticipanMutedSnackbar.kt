@@ -33,7 +33,7 @@ object KaleyraCallParticipantMutedSnackbar {
             duration).apply {
             val title = view.context.resources.getQuantityString(
                 R.plurals.kaleyra_call_participant_muted_by_admin,
-                if (adminDisplayName.isNullOrBlank()) 1 else 0,
+                if (adminDisplayName.isNullOrBlank()) 0 else 1,
                 adminDisplayName)
             setTitle(title)
         }
