@@ -16,23 +16,21 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite.chatbox.ChatBox
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
+import com.kaleyra.collaboration_suite.chatbox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_core_ui.ChatBoxUI
-import com.kaleyra.collaboration_suite_core_ui.ChatUI
-import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import com.kaleyra.collaboration_suite_core_ui.*
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message.Companion.toUiMessage
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.findFirstUnreadMessageId
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.getChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.getChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.hasActiveCall
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToUiActions
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToChatActions
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToConversationItems
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -208,6 +206,50 @@ class UiModelMapperTest {
         assert(isSameMessageItem(result[3], ConversationItem.MessageItem(myMessage.toUiMessage())))
         assert(result[4] == ConversationItem.DayItem(now.toEpochMilli()))
     }
+
+    @Test
+    fun allMessagesRead_findFirstUnreadMessage_null() = runTest {
+        val messages = mockk<Messages>()
+        every { messages.other } returns listOf(readMessage, readMessage, readMessage)
+        val fetch = { _: Int, completion: (Result<Messages>) -> Unit ->
+            completion(Result.success(messages))
+        }
+        val result = findFirstUnreadMessageId(messages, fetch)
+        assert(result == null)
+    }
+
+    @Test
+    fun allMessagesUnread_findFirstUnreadMessage_lastUnreadMessageId() = runTest {
+        val initMessages = mockk<Messages>()
+        val messages = mockk<Messages>()
+        val emptyMessages = mockk<Messages>()
+        var fetched = false
+        every { initMessages.other } returns listOf(unreadMessage)
+        every { messages.other } returns listOf(unreadMessage, unreadMessage, lastUnreadMessage)
+        every { emptyMessages.other } returns listOf()
+        val fetch = { _: Int, completion: (Result<Messages>) -> Unit ->
+            if (!fetched) {
+                fetched = true
+                completion(Result.success(messages))
+            } else {
+                completion(Result.success(emptyMessages))
+            }
+        }
+        val result = findFirstUnreadMessageId(initMessages, fetch)
+        assert(result == lastUnreadMessage.id)
+    }
+
+    @Test
+    fun mixedMessageState_findFirstUnreadMessage_lastUnreadMessageId() = runTest {
+        val messages = mockk<Messages>()
+        every { messages.other } returns listOf(unreadMessage, lastUnreadMessage, readMessage)
+        val fetch = { _: Int, completion: (Result<Messages>) -> Unit ->
+            completion(Result.success(messages))
+        }
+        val result = findFirstUnreadMessageId(messages, fetch)
+        assert(result == lastUnreadMessage.id)
+    }
+
     private suspend fun isSameMessageItem(item1: ConversationItem, item2: ConversationItem): Boolean {
         if (item1 !is ConversationItem.MessageItem) return false
         if (item2 !is ConversationItem.MessageItem) return false
