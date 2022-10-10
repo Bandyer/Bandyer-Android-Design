@@ -18,7 +18,6 @@ package com.kaleyra.collaboration_suite_core_ui.utils
 
 import android.content.Context
 import com.kaleyra.collaboration_suite_core_ui.R
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isToday
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -131,6 +130,23 @@ object Iso8601 {
                 .minus(WEEK_MILLIS, ChronoUnit.MILLIS)
                 .setMidnight()
         )
+
+    /**
+     * Long timestamp extension function. Check if the instant resides in the last week time period.
+     *
+     * @receiver Instant
+     * @return Boolean True is the ZonedDateTime resides in the last week time period, false otherwise
+     */
+    fun Long.isLastWeek(): Boolean =
+        Instant
+            .ofEpochMilli(this)
+            .atZone(ZoneId.systemDefault())
+            .isAfter(
+                ZonedDateTime
+                    .now(ZoneId.systemDefault())
+                    .minus(WEEK_MILLIS, ChronoUnit.MILLIS)
+                    .setMidnight()
+            )
 
     /**
      * ZonedDateTime extension function. Check if the instant resides in the yesterday time period.

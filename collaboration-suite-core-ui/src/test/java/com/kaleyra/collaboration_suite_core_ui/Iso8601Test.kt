@@ -75,6 +75,18 @@ class Iso8601Test {
     }
 
     @Test
+    fun longTimestamp_isLastWeek_true() {
+        val threeDaysAgo = Instant
+            .now()
+            .minus(3, ChronoUnit.DAYS)
+        val tenDaysAgo = Instant
+            .now()
+            .minus(10, ChronoUnit.DAYS)
+        assertIsTrue(threeDaysAgo.toEpochMilli().isLastWeek())
+        assertIsTrue(!tenDaysAgo.toEpochMilli().isLastWeek())
+    }
+
+    @Test
     fun zonedDateTime_isYesterday_true() {
         val now = ZonedDateTime.now(ZoneId.systemDefault())
         val yesterday = now.minus(1, ChronoUnit.DAYS)
