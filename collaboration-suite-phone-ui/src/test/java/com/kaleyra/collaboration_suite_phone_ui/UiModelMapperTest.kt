@@ -48,23 +48,14 @@ import java.util.*
 @OptIn(ExperimentalCoroutinesApi::class)
 class UiModelMapperTest {
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>()
-    private val chatBoxMock = mockk<ChatBoxUI>()
-    private val usersDescriptionMock = mockk<UsersDescription>()
-    private val chatParticipantsMock = mockk<ChatParticipants>()
-    private val otherParticipantMock = mockk<ChatParticipant>()
-    private val callMock = mockk<CallUI>()
-
-    private val callState = MutableStateFlow<Call.State>(Call.State.Connected)
-    private val chatBoxState = MutableStateFlow<ChatBox.State>(ChatBox.State.Connected)
-    private val otherParticipantState = MutableStateFlow<ChatParticipant.State>(ChatParticipant.State.Invited)
-    private val otherParticipantEvents = MutableStateFlow<ChatParticipant.Event>(ChatParticipant.Event.Typing.Idle)
-
     @Before
     fun setUp() {
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.state } returns callState
         every { chatBoxMock.state } returns chatBoxState
+        every { messagesUIMock.my } returns listOf(myMessage)
+        every { messagesUIMock.other } returns listOf(otherMessage)
+        every { messagesUIMock.list } returns messagesUIMock.other + messagesUIMock.my
         every { chatParticipantsMock.others } returns listOf(otherParticipantMock)
         every { otherParticipantMock.userId } returns "userId"
         every { otherParticipantMock.state } returns otherParticipantState
@@ -121,12 +112,12 @@ class UiModelMapperTest {
     @Test
     fun chatBoxConnecting_getChatState_networkConnecting() = runTest {
         chatBoxState.value = ChatBox.State.Connecting
-        assert(getChatState(flowOf(chatParticipantsMock), chatBoxMock).first() == ChatState.NetworkState.Connecting)
+        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.NetworkState.Connecting)
     }
 
     @Test
     fun chatBoxDisconnected_getChatState_networkOffline() = runTest {
-        with(getChatState(flowOf(chatParticipantsMock), chatBoxMock)) {
+        with(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock))) {
             first()
             chatBoxState.value = ChatBox.State.Connecting
             assert(first() == ChatState.NetworkState.Offline)
@@ -136,7 +127,7 @@ class UiModelMapperTest {
     @Test
     fun participantOnline_getChatState_userOnline() = runTest {
         otherParticipantState.value = ChatParticipant.State.Joined.Online
-        assert(getChatState(flowOf(chatParticipantsMock), chatBoxMock).first() == ChatState.UserState.Online)
+        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.UserState.Online)
     }
 
     @Test
@@ -147,19 +138,19 @@ class UiModelMapperTest {
         every { Iso8601.parseTimestamp(any(), any()) } returns timestamp
         every { ContextRetainer.context } returns mockk()
         otherParticipantState.value = ChatParticipant.State.Joined.Offline(ChatParticipant.State.Joined.Offline.LastLogin.At(Date()))
-        assert(getChatState(flowOf(chatParticipantsMock), chatBoxMock).first() == ChatState.UserState.Offline(timestamp))
+        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.UserState.Offline(timestamp))
     }
 
     @Test
     fun participantOffline_getChatState_userOffline() = runTest {
         otherParticipantState.value = ChatParticipant.State.Joined.Offline(ChatParticipant.State.Joined.Offline.LastLogin.Never)
-        assert(getChatState(flowOf(chatParticipantsMock), chatBoxMock).first() == ChatState.UserState.Offline(null))
+        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.UserState.Offline(null))
     }
 
     @Test
     fun participantTyping_getChatState_userTyping() = runTest {
         otherParticipantEvents.value = ChatParticipant.Event.Typing.Started
-        assert(getChatState(flowOf(chatParticipantsMock), chatBoxMock).first() == ChatState.UserState.Typing)
+        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.UserState.Typing)
     }
 
 //    @Test
