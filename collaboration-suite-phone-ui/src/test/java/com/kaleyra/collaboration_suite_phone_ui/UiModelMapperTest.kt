@@ -67,14 +67,16 @@ class UiModelMapperTest {
 
     @Test
     fun emptyActions_mapToUiActions_emptyUiActions() {
-        assert(setOf<ChatUI.Action>().mapToUiActions() == setOf<ChatAction>())
+        assert(setOf<ChatUI.Action>().mapToChatActions {} == setOf<ChatAction>())
     }
 
     @Test
     fun allActions_mapToUiActions_allUiActions() {
         val actions = ChatUI.Action.all
-        val result = setOf(ChatAction.AudioCall, ChatAction.AudioUpgradableCall, ChatAction.VideoCall)
-        assert(actions.mapToUiActions() == result)
+        val result = actions.mapToChatActions { }
+        assert(result.filterIsInstance<ChatAction.AudioCall>().isNotEmpty())
+        assert(result.filterIsInstance<ChatAction.AudioUpgradableCall>().isNotEmpty())
+        assert(result.filterIsInstance<ChatAction.VideoCall>().isNotEmpty())
     }
 
     @Test
