@@ -10,11 +10,12 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ImmutableSet
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.findFirstUnreadMessageId
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.getChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.getChatState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.hasActiveCall
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToConversationItems
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToChatActions
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToConversationItems
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -44,12 +45,16 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
             _uiState.update { it.copy(isInCall = hasActiveCall) }
         }.launchIn(viewModelScope)
 
-        messages.mapToConversationItems(viewModelScope, showUnreadHeader).onEach { items ->
-            _uiState.update {
-                val conversationState = it.conversationState.copy(conversationItems = ImmutableList(items))
-                it.copy(conversationState = conversationState)
+        viewModelScope.launch {
+            val chat = chat.first()
+            val firstUnreadMessageId = findFirstUnreadMessageId(chat.messages.first(), chat::fetch)
+            messages.mapToConversationItems(firstUnreadMessageId, showUnreadHeader).collect { items ->
+                _uiState.update {
+                    val conversationState = it.conversationState.copy(conversationItems = ImmutableList(items))
+                    it.copy(conversationState = conversationState)
+                }
             }
-        }.launchIn(viewModelScope)
+        }
 
         chat.flatMapLatest { it.unreadMessagesCount }.onEach { count ->
             _uiState.update {
@@ -110,9 +115,3 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
         private const val FETCH_COUNT = 50
     }
 }
-
-
-
-
-
-

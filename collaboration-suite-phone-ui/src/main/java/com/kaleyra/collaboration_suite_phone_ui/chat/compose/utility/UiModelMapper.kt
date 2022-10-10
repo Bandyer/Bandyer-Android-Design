@@ -1,19 +1,18 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility
 
-import com.kaleyra.collaboration_suite.chatbox.ChatBox
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
-import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
-import com.kaleyra.collaboration_suite.chatbox.Message
+import com.kaleyra.collaboration_suite.chatbox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.MessagesUI
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message.Companion.toUiMessage
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 
@@ -84,51 +83,63 @@ internal object UiModelMapper {
     }
 
     fun Flow<MessagesUI>.mapToConversationItems(
-        coroutineScope: CoroutineScope,
-        showUnreadHeader: StateFlow<Boolean>
+        firstUnreadMessageId: String?,
+        shouldShowUnreadHeader: Flow<Boolean>
     ): Flow<List<ConversationItem>> {
-        return combine(
-            this.map { it.list },
-            this.firstUnreadMessageId()
-        ) { messages, firstUnreadMessageId ->
+        return combine(map { it.list }, shouldShowUnreadHeader) { messages, unreadHeader ->
             val items = mutableListOf<ConversationItem>()
             messages.forEachIndexed { index, message ->
                 val previousMessage = messages.getOrNull(index + 1)
 
-                items.add(ConversationItem.MessageItem(message.toUiMessage(coroutineScope)))
+                items.add(ConversationItem.MessageItem(message.toUiMessage()))
 
-                if (showUnreadHeader.value && message.id == firstUnreadMessageId) {
+                if (unreadHeader && message.id == firstUnreadMessageId) {
                     items.add(ConversationItem.UnreadMessagesItem)
                 }
 
-                if (previousMessage == null || !Iso8601.isSameDay(
-                        message.creationDate.time,
-                        previousMessage.creationDate.time
-                    )
-                ) {
-                    items.add(
-                        ConversationItem.DayItem(
-                            Iso8601.parseDay(
-                                ContextRetainer.context,
-                                timestamp = message.creationDate.time
-                            )
-                        )
-                    )
+                if (previousMessage == null || !Iso8601.isSameDay(message.creationDate.time, previousMessage.creationDate.time)) {
+                    items.add(ConversationItem.DayItem(message.creationDate.time))
                 }
             }
             items
         }
     }
 
-    private fun Flow<MessagesUI>.firstUnreadMessageId(): Flow<String?> {
-        return map { it.other }.take(1).map { messages ->
-            messages.forEachIndexed { index, message ->
-                val previousMessage = messages.getOrNull(index + 1) ?: return@forEachIndexed
-                if (message.state.value is Message.State.Received && previousMessage.state.value is Message.State.Read)
-                    return@map message.id
-            }
-            return@map null
+    suspend fun findFirstUnreadMessageId(
+        messages: Messages,
+        fetch: (Int, ((Result<Messages>) -> Unit)) -> Unit
+    ): String? {
+        val flow = MutableSharedFlow<String?>(replay = 1, extraBufferCapacity = 1)
+        findFirstUnreadMessageInternal(messages, fetch) {
+            flow.tryEmit(it)
         }
+        return flow.first()
+    }
+
+    private fun findFirstUnreadMessageInternal(
+        messages: Messages,
+        fetch: (Int, ((Result<Messages>) -> Unit)) -> Unit,
+        continuation: (String?) -> Unit
+    ) {
+        val list = messages.other
+        val message = list.lastOrNull { it.state.value is Message.State.Received } ?: kotlin.run {
+            continuation(null)
+            return
+        }
+        val index = list.indexOf(message)
+        val size = list.size
+
+        if (index == size - 1) {
+            fetch(5) {
+                val result = it.getOrNull() ?: kotlin.run {
+                    continuation(null)
+                    return@fetch
+                }
+                if (result.other.isEmpty()) continuation(message.id)
+                else findFirstUnreadMessageInternal(result, fetch, continuation)
+            }
+        }
+        else continuation(message.id)
     }
 
     private fun Flow<ChatParticipants>.otherParticipant(): Flow<ChatParticipant> =
