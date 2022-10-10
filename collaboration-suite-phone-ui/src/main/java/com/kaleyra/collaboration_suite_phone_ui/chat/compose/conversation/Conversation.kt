@@ -344,7 +344,7 @@ internal fun Bubble(messageItem: ConversationItem.MessageItem) {
                 )
 
                 if (messageItem.message is Message.MyMessage) {
-                    val messageState = messageItem.message.state.collectAsState().value
+                    val messageState = messageItem.message.state.collectAsState(Message.State.Sending).value
 
                     Icon(
                         painter = painterFor(messageState),

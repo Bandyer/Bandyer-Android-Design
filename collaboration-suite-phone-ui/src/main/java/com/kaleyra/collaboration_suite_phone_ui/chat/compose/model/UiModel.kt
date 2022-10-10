@@ -3,11 +3,8 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.compose.model
 import android.net.Uri
 import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import java.util.*
 
 @Immutable
@@ -81,7 +78,7 @@ sealed interface Message {
         override val id: String,
         override val text: String,
         override val time: String,
-        val state: StateFlow<State>
+        val state: Flow<State>
     ) : Message
 
     @Immutable
@@ -92,21 +89,14 @@ sealed interface Message {
     }
 
     companion object {
-        fun com.kaleyra.collaboration_suite.chatbox.Message.toUiMessage(coroutineScope: CoroutineScope): Message {
+        fun com.kaleyra.collaboration_suite.chatbox.Message.toUiMessage(): Message {
             val text = (content as? com.kaleyra.collaboration_suite.chatbox.Message.Content.Text)?.message ?: ""
             val time = Iso8601.parseTime(creationDate.time)
 
-            return if (this is com.kaleyra.collaboration_suite.chatbox.OtherMessage) {
+            return if (this is com.kaleyra.collaboration_suite.chatbox.OtherMessage)
                 OtherMessage(id, text, time)
-            } else {
-                MyMessage(
-                    id, text, time, state.map { state -> mapToUiState(state) }.stateIn(
-                        coroutineScope,
-                        SharingStarted.Eagerly,
-                        mapToUiState(state.value)
-                    )
-                )
-            }
+             else
+                MyMessage(id, text, time, state.map { state -> mapToUiState(state) })
         }
 
 
