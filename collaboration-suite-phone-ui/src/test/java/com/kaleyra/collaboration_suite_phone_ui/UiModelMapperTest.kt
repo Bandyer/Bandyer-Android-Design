@@ -52,10 +52,6 @@ class UiModelMapperTest {
         every { messagesUIMock.my } returns listOf(myMessageMock)
         every { messagesUIMock.other } returns listOf(otherMessageMock)
         every { messagesUIMock.list } returns messagesUIMock.other + messagesUIMock.my
-        every { chatParticipantsMock.others } returns listOf(otherParticipantMock)
-        every { otherParticipantMock.userId } returns "userId"
-        every { otherParticipantMock.state } returns otherParticipantState
-        every { otherParticipantMock.events } returns otherParticipantEvents
     }
 
     @After

@@ -18,8 +18,6 @@ val phoneBoxMock = mockk<PhoneBoxUI>()
 val chatBoxMock = mockk<ChatBoxUI>()
 val messagesUIMock = mockk<MessagesUI>()
 val usersDescriptionMock = mockk<UsersDescription>()
-val chatParticipantsMock = mockk<ChatParticipants>()
-val otherParticipantMock = mockk<ChatParticipant>()
 val callMock = mockk<CallUI>()
 
 val callState = MutableStateFlow<Call.State>(Call.State.Connected)
@@ -27,7 +25,21 @@ val chatBoxState = MutableStateFlow<ChatBox.State>(ChatBox.State.Connected)
 val otherParticipantState = MutableStateFlow<ChatParticipant.State>(ChatParticipant.State.Invited)
 val otherParticipantEvents = MutableStateFlow<ChatParticipant.Event>(ChatParticipant.Event.Typing.Idle)
 
-val now = Instant.now()
+val otherParticipantMock = object : ChatParticipant {
+    override val state: StateFlow<ChatParticipant.State> = otherParticipantState
+    override val events: StateFlow<ChatParticipant.Event> = otherParticipantEvents
+    override val userId: String = "userId"
+
+}
+
+val chatParticipantsMock = object : ChatParticipants {
+    override val me: ChatParticipant.Me = mockk()
+    override val others: List<ChatParticipant> = listOf(otherParticipantMock)
+    override val list: List<ChatParticipant> = others + me
+    override fun creator(): ChatParticipant? = null
+}
+
+val now: Instant = Instant.now()
 val myMessageMock = object : Message {
     override val id: String = "myId"
     override val creator: ChatParticipant = mockk()
@@ -36,7 +48,7 @@ val myMessageMock = object : Message {
     override val state: StateFlow<Message.State> = MutableStateFlow(Message.State.Read())
 }
 
-val yesterday = now.minus(1, ChronoUnit.DAYS)
+val yesterday: Instant = now.minus(1, ChronoUnit.DAYS)
 val otherMessageMock = object : OtherMessage {
     override val id: String = "otherId"
     override val creator: ChatParticipant = mockk()
