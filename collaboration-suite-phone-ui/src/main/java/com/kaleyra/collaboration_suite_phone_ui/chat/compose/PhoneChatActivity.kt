@@ -74,11 +74,11 @@ fun ChatScreen(
     ChatScreen(
         uiState = uiState,
         onBackPressed = onBackPressed,
-        onMessageScrolled = remember(viewModel) { { viewModel.onMessageScrolled(it) } },
+        onMessageScrolled = viewModel::onMessageScrolled,
         onResetMessagesScroll = viewModel::onAllMessagesScrolled,
         onFetchMessages = viewModel::fetchMessages,
         onShowCall = viewModel::showCall,
-        onSendMessage = remember(viewModel) { { viewModel.sendMessage(it) } },
+        onSendMessage = viewModel::sendMessage,
         onTyping = viewModel::typing
     )
 }
