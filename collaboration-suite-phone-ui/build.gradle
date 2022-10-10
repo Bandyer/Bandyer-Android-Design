@@ -74,6 +74,10 @@ dependencies {
     debugImplementation "androidx.customview:customview:1.2.0-alpha01"
     debugImplementation "androidx.customview:customview-poolingcontainer:1.0.0"
 
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+
+    testImplementation 'io.mockk:mockk:1.12.4'
+
     /** Kaleyra **/
 //    compileOnly kaleyra.collaboration
 //    compileOnly kaleyra.collaboration_extension_audio
