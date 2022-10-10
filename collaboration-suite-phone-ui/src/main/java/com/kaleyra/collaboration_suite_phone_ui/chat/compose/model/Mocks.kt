@@ -62,7 +62,7 @@ val mockConversationItems = ImmutableList(
             )
         ),
         ConversationItem.MessageItem(Message.OtherMessage("id1", "Hello there!", "11:45")),
-        ConversationItem.DayItem("23 august 2022")
+        ConversationItem.DayItem(92209343)
     )
 )
 
