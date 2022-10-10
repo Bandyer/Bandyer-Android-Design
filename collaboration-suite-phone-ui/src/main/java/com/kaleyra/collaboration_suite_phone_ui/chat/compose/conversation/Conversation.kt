@@ -85,9 +85,7 @@ internal fun Messages(
 
     LaunchedEffect(scrollState) {
         snapshotFlow { isKeyboardOpen }.first { !it }
-        val index =
-            uiState.conversationItems?.value?.indexOfFirst { it is ConversationItem.UnreadMessagesItem }
-                ?: -1
+        val index = uiState.conversationItems?.value?.indexOfFirst { it is ConversationItem.UnreadMessagesItem } ?: -1
         if (index != -1) scrollState.scrollToBottomViewportItem(index, unreadItemOffset)
         isScrolledToUnreadItem = true
     }

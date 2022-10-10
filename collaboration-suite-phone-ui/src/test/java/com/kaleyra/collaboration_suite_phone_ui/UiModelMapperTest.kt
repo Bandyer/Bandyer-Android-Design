@@ -63,6 +63,10 @@ class UiModelMapperTest {
     @After
     fun tearDown() {
         unmockkAll()
+        callState.value = Call.State.Connected
+        chatBoxState.value = ChatBox.State.Connected
+        otherParticipantState.value = ChatParticipant.State.Invited
+        otherParticipantEvents.value = ChatParticipant.Event.Typing.Idle
     }
 
     @Test
