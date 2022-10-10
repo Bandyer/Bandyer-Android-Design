@@ -19,6 +19,7 @@ import android.net.Uri
 import com.kaleyra.collaboration_suite.chatbox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.*
+import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
@@ -157,14 +158,13 @@ class UiModelMapperTest {
         assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.UserState.Typing)
     }
 
-    // Ha senso?
+    // Does it makes sense?
     @Test
-    fun _getChatInfo_() = runTest {
-        val name = "name"
-        val image = mockk<Uri>()
-        coEvery { usersDescriptionMock.name(listOf(otherParticipantMock.userId)) } returns name
-        coEvery { usersDescriptionMock.image(listOf(otherParticipantMock.userId)) } returns image
-        assert(getChatInfo(flowOf(chatParticipantsMock), flowOf(usersDescriptionMock)).first() == ChatInfo(name, image))
+    fun usersDescription_getChatInfo_userIdAndImageUri() = runTest {
+        val uriMock = mockk<Uri>()
+        coEvery { usersDescriptionMock.name(any()) } returns otherParticipantMock.userId
+        coEvery { usersDescriptionMock.image(any()) } returns uriMock
+        assert(getChatInfo(flowOf(chatParticipantsMock), flowOf(usersDescriptionMock)).first() == ChatInfo(otherParticipantMock.userId, uriMock))
     }
 
     @Test

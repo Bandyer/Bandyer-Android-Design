@@ -142,8 +142,7 @@ internal object UiModelMapper {
         else continuation(message.id)
     }
 
-    private fun Flow<ChatParticipants>.otherParticipant(): Flow<ChatParticipant> =
-        map { it.others.first() }
+    private fun Flow<ChatParticipants>.otherParticipant(): Flow<ChatParticipant> = map { it.others.first() }
 
     private fun Flow<ChatParticipants>.typingEvents(): Flow<ChatParticipant.Event> =
         otherParticipant().flatMapLatest { it.events.filterIsInstance<ChatParticipant.Event.Typing>() }
