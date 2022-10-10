@@ -54,8 +54,7 @@ internal object UiModelMapper {
                 event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Offline -> {
                     val lastLogin = participantState.lastLogin
                     ChatState.UserState.Offline(
-                        if (lastLogin is ChatParticipant.State.Joined.Offline.LastLogin.At)
-                            Iso8601.parseTimestamp(ContextRetainer.context, lastLogin.date.time)
+                        if (lastLogin is ChatParticipant.State.Joined.Offline.LastLogin.At) lastLogin.date.time
                         else null
                     )
                 }

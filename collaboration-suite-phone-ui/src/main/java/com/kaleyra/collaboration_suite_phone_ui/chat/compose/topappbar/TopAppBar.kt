@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
@@ -23,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.custom.MarqueeText
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.custom.TypingDots
@@ -126,8 +128,11 @@ private fun textFor(state: ChatState): String =
         is ChatState.NetworkState.Connecting -> stringResource(R.string.kaleyra_chat_state_connecting)
         is ChatState.UserState.Online -> stringResource(R.string.kaleyra_chat_user_status_online)
         is ChatState.UserState.Offline -> {
-            if (state.timestamp.isNullOrBlank()) stringResource(R.string.kaleyra_chat_user_status_offline)
-            else stringResource(R.string.kaleyra_chat_user_status_last_login, state.timestamp)
+            val timestamp = state.timestamp
+            if (timestamp == null) stringResource(R.string.kaleyra_chat_user_status_offline)
+            else {
+                stringResource(R.string.kaleyra_chat_user_status_last_login, Iso8601.parseTimestamp(LocalContext.current, timestamp))
+            }
         }
         is ChatState.UserState.Typing -> stringResource(R.string.kaleyra_chat_user_status_typing)
         else -> ""
@@ -176,7 +181,7 @@ internal fun TopAppBarPreview() = KaleyraTheme {
 @Composable
 internal fun TopAppBarDarkPreview() = KaleyraTheme(isDarkTheme = true) {
     TopAppBar(
-        state = ChatState.UserState.Offline("15:00"),
+        state = ChatState.UserState.Offline(5654635),
         info = ChatInfo("John Smith"),
         actions = mockActions,
         onBackPressed = { }

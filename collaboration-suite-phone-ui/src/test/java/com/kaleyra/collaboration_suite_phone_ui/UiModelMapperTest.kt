@@ -19,8 +19,6 @@ import android.net.Uri
 import com.kaleyra.collaboration_suite.chatbox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.*
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
@@ -32,7 +30,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapp
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.hasActiveCall
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToChatActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToConversationItems
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -52,8 +49,8 @@ class UiModelMapperTest {
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.state } returns callState
         every { chatBoxMock.state } returns chatBoxState
-        every { messagesUIMock.my } returns listOf(myMessage)
-        every { messagesUIMock.other } returns listOf(otherMessage)
+        every { messagesUIMock.my } returns listOf(myMessageMock)
+        every { messagesUIMock.other } returns listOf(otherMessageMock)
         every { messagesUIMock.list } returns messagesUIMock.other + messagesUIMock.my
         every { chatParticipantsMock.others } returns listOf(otherParticipantMock)
         every { otherParticipantMock.userId } returns "userId"
@@ -137,13 +134,9 @@ class UiModelMapperTest {
 
     @Test
     fun participantOfflineAt_getChatState_userOfflineTimestamp() = runTest {
-        val timestamp = "today"
-        mockkObject(Iso8601)
-        mockkObject(ContextRetainer)
-        every { Iso8601.parseTimestamp(any(), any()) } returns timestamp
-        every { ContextRetainer.context } returns mockk()
-        otherParticipantState.value = ChatParticipant.State.Joined.Offline(ChatParticipant.State.Joined.Offline.LastLogin.At(Date()))
-        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.UserState.Offline(timestamp))
+        val nowMillis = now.toEpochMilli()
+        otherParticipantState.value = ChatParticipant.State.Joined.Offline(ChatParticipant.State.Joined.Offline.LastLogin.At(Date(nowMillis)))
+        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.UserState.Offline(nowMillis))
     }
 
     @Test
@@ -179,12 +172,12 @@ class UiModelMapperTest {
 
     @Test
     fun oneMessage_mapToConversationItems_dayAndMessageItems() = runTest {
-        every { messagesUIMock.list } returns listOf(myMessage)
+        every { messagesUIMock.list } returns listOf(myMessageMock)
         val result = flowOf(messagesUIMock).mapToConversationItems(
             firstUnreadMessageId = "",
             shouldShowUnreadHeader = MutableStateFlow(false)
         ).first()
-        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(myMessage.toUiMessage())))
+        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(myMessageMock.toUiMessage())))
         assert(result[1] == ConversationItem.DayItem(now.toEpochMilli()))
     }
 
@@ -194,29 +187,29 @@ class UiModelMapperTest {
             firstUnreadMessageId = "",
             shouldShowUnreadHeader = MutableStateFlow(false)
         ).first()
-        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherMessage.toUiMessage())))
+        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherMessageMock.toUiMessage())))
         assert(result[1] == ConversationItem.DayItem(yesterday.toEpochMilli()))
-        assert(isSameMessageItem(result[2], ConversationItem.MessageItem(myMessage.toUiMessage())))
+        assert(isSameMessageItem(result[2], ConversationItem.MessageItem(myMessageMock.toUiMessage())))
         assert(result[3] == ConversationItem.DayItem(now.toEpochMilli()))
     }
 
     @Test
     fun oneUnreadMessage_mapToConversationItems_unreadLabelShown() = runTest {
         val result = flowOf(messagesUIMock).mapToConversationItems(
-            firstUnreadMessageId = otherMessage.id,
+            firstUnreadMessageId = otherMessageMock.id,
             shouldShowUnreadHeader = MutableStateFlow(true)
         ).first()
-        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherMessage.toUiMessage())))
+        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherMessageMock.toUiMessage())))
         assert(result[1] is ConversationItem.UnreadMessagesItem)
         assert(result[2] == ConversationItem.DayItem(yesterday.toEpochMilli()))
-        assert(isSameMessageItem(result[3], ConversationItem.MessageItem(myMessage.toUiMessage())))
+        assert(isSameMessageItem(result[3], ConversationItem.MessageItem(myMessageMock.toUiMessage())))
         assert(result[4] == ConversationItem.DayItem(now.toEpochMilli()))
     }
 
     @Test
     fun allMessagesRead_findFirstUnreadMessage_null() = runTest {
         val messages = mockk<Messages>()
-        every { messages.other } returns listOf(readMessage, readMessage, readMessage)
+        every { messages.other } returns listOf(readMessageMock, readMessageMock, readMessageMock)
         val fetch = { _: Int, completion: (Result<Messages>) -> Unit ->
             completion(Result.success(messages))
         }
@@ -230,8 +223,8 @@ class UiModelMapperTest {
         val messages = mockk<Messages>()
         val emptyMessages = mockk<Messages>()
         var fetched = false
-        every { initMessages.other } returns listOf(unreadMessage)
-        every { messages.other } returns listOf(unreadMessage, unreadMessage, lastUnreadMessage)
+        every { initMessages.other } returns listOf(unreadMessageMock)
+        every { messages.other } returns listOf(unreadMessageMock, unreadMessageMock, lastUnreadMessageMock)
         every { emptyMessages.other } returns listOf()
         val fetch = { _: Int, completion: (Result<Messages>) -> Unit ->
             if (!fetched) {
@@ -242,18 +235,18 @@ class UiModelMapperTest {
             }
         }
         val result = findFirstUnreadMessageId(initMessages, fetch)
-        assert(result == lastUnreadMessage.id)
+        assert(result == lastUnreadMessageMock.id)
     }
 
     @Test
     fun mixedMessageState_findFirstUnreadMessage_lastUnreadMessageId() = runTest {
         val messages = mockk<Messages>()
-        every { messages.other } returns listOf(unreadMessage, lastUnreadMessage, readMessage)
+        every { messages.other } returns listOf(unreadMessageMock, lastUnreadMessageMock, readMessageMock)
         val fetch = { _: Int, completion: (Result<Messages>) -> Unit ->
             completion(Result.success(messages))
         }
         val result = findFirstUnreadMessageId(messages, fetch)
-        assert(result == lastUnreadMessage.id)
+        assert(result == lastUnreadMessageMock.id)
     }
 
     private suspend fun isSameMessageItem(item1: ConversationItem, item2: ConversationItem): Boolean {

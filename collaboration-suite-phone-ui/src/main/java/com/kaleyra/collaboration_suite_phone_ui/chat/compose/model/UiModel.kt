@@ -5,6 +5,7 @@ import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import java.time.format.FormatStyle
 import java.util.*
 
 @Immutable
@@ -32,7 +33,7 @@ sealed class ChatState {
 
     sealed class UserState : ChatState() {
         object Online : UserState()
-        data class Offline(val timestamp: String?) : UserState()
+        data class Offline(val timestamp: Long?) : UserState()
         object Typing : UserState()
     }
 

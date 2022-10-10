@@ -28,7 +28,7 @@ val otherParticipantState = MutableStateFlow<ChatParticipant.State>(ChatParticip
 val otherParticipantEvents = MutableStateFlow<ChatParticipant.Event>(ChatParticipant.Event.Typing.Idle)
 
 val now = Instant.now()
-val myMessage = object : Message {
+val myMessageMock = object : Message {
     override val id: String = "myId"
     override val creator: ChatParticipant = mockk()
     override val creationDate: Date = Date(now.toEpochMilli())
@@ -37,7 +37,7 @@ val myMessage = object : Message {
 }
 
 val yesterday = now.minus(1, ChronoUnit.DAYS)
-val otherMessage = object : OtherMessage {
+val otherMessageMock = object : OtherMessage {
     override val id: String = "otherId"
     override val creator: ChatParticipant = mockk()
     override val creationDate: Date = Date(yesterday.toEpochMilli())
@@ -46,7 +46,7 @@ val otherMessage = object : OtherMessage {
     override fun markAsRead() = Unit
 }
 
-val readMessage = object : OtherMessage {
+val readMessageMock = object : OtherMessage {
     override val id: String = "id1"
     override val creator: ChatParticipant = mockk()
     override val creationDate: Date = Date()
@@ -55,7 +55,7 @@ val readMessage = object : OtherMessage {
     override fun markAsRead() = Unit
 }
 
-val unreadMessage = object : OtherMessage {
+val unreadMessageMock = object : OtherMessage {
     override val id: String = "id1"
     override val creator: ChatParticipant = mockk()
     override val creationDate: Date = Date()
@@ -64,7 +64,7 @@ val unreadMessage = object : OtherMessage {
     override fun markAsRead() = Unit
 }
 
-val lastUnreadMessage = object : OtherMessage {
+val lastUnreadMessageMock = object : OtherMessage {
     override val id: String = "lastId"
     override val creator: ChatParticipant = mockk()
     override val creationDate: Date = Date()
