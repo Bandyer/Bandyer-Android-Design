@@ -27,6 +27,7 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
         get() = _uiState
 
     private val showUnreadHeader = MutableStateFlow(true)
+    private val isFetching = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
 
     init {
         getChatState(participants, chatBox).onEach { state ->
@@ -62,6 +63,13 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
                 it.copy(conversationState = conversationState)
             }
         }.launchIn(viewModelScope)
+
+        isFetching.onEach { isFetching ->
+            _uiState.update {
+                val conversationState = it.conversationState.copy(isFetching = isFetching)
+                it.copy(conversationState = conversationState)
+            }
+        }.launchIn(viewModelScope)
     }
 
     override fun sendMessage(text: String) {
@@ -78,12 +86,9 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
 
     override fun fetchMessages() {
         viewModelScope.launch {
-            chat.first().fetch(FETCH_COUNT) { result ->
-                _uiState.update {
-                    val areAllMessageFetched = result.getOrNull()?.list?.isEmpty()
-                    val conversationState = it.conversationState.copy(areAllMessagesFetched = areAllMessageFetched ?: it.conversationState.areAllMessagesFetched)
-                    it.copy(conversationState = conversationState)
-                }
+            isFetching.emit(true)
+            chat.first().fetch(FETCH_COUNT) {
+                isFetching.tryEmit(false)
             }
         }
     }

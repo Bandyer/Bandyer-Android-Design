@@ -134,7 +134,7 @@ internal fun Messages(
             Box(Modifier.alpha(if (isScrolledToUnreadItem) 1f else 0f)) {
                 Conversation(
                     items = uiState.conversationItems,
-                    areAllMessagesFetched = uiState.areAllMessagesFetched,
+                    isFetching = uiState.isFetching,
                     scrollState = scrollState,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -217,7 +217,7 @@ internal fun LoadingMessagesLabel(modifier: Modifier = Modifier) {
 @Composable
 internal fun Conversation(
     items: ImmutableList<ConversationItem>,
-    areAllMessagesFetched: Boolean,
+    isFetching: Boolean,
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
@@ -250,7 +250,7 @@ internal fun Conversation(
                 )
             }
         }
-        if (!areAllMessagesFetched) {
+        if (isFetching) {
             item {
                 CircularProgressIndicator(
                     color = LocalContentColor.current,

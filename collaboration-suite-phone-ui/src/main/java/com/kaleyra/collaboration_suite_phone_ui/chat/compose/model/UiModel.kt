@@ -5,7 +5,6 @@ import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import java.time.format.FormatStyle
 import java.util.*
 
 @Immutable
@@ -19,7 +18,7 @@ data class ChatUiState(
 
 @Immutable
 data class ConversationUiState(
-    val areAllMessagesFetched: Boolean = false,
+    val isFetching: Boolean = false,
     val conversationItems: ImmutableList<ConversationItem>? = null,
     val unreadMessagesCount: Int = 0
 )
