@@ -21,7 +21,7 @@ plugins {
 }
 
 def kotlin_coroutines = "1.5.2"
-def kotlinVersion = "1.5.32"
+def kotlinVersion = "1.6.10"
 
 android {
     compileSdkVersion 31
@@ -58,12 +58,7 @@ android {
     }
 
     buildFeatures {
-        compose true
         viewBinding true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion '1.0.5'
     }
 
     kotlinOptions {

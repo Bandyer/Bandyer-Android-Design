@@ -5,7 +5,7 @@ ext {
     moduleGroupId = "com.kaleyra"
 
     // Versions
-    def kotlinVersion = '1.5.31'
+    def kotlinVersion = '1.6.10'
     def gradleVersion = "7.0.4"
     def androidAptVersion = "1.8"
     def benManesGradleVersion = "0.21.0"
