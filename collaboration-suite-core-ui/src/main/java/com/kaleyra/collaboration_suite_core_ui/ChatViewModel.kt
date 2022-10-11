@@ -42,19 +42,19 @@ open class ChatViewModel : CollaborationViewModel() {
 
     val phoneBox = _phoneBox.asSharedFlow()
 
-    val call = phoneBox.flatMapLatest { it.call }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    val call = phoneBox.flatMapLatest { it.call }.shareIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5_000), replay = 1)
 
     val chatBox = _chatBox.asSharedFlow()
 
     val chat = _chat.asSharedFlow()
 
-    val chatBoxState = chatBox.flatMapLatest { it.state }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    val chatBoxState = chatBox.flatMapLatest { it.state }.shareIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5_000), replay = 1)
 
-    val messages = chat.flatMapLatest { it.messages }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    val messages = chat.flatMapLatest { it.messages }.shareIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5_000), replay = 1)
 
-    val actions = chat.flatMapLatest { it.actions }.stateIn(scope = viewModelScope, started = SharingStarted.Eagerly, initialValue = setOf())
+    val actions = chat.flatMapLatest { it.actions }.stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5_000), initialValue = setOf())
 
-    val participants = chat.flatMapLatest { it.participants }.shareIn(scope = viewModelScope, started = SharingStarted.Eagerly, replay = 1)
+    val participants = chat.flatMapLatest { it.participants }.shareIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5_000), replay = 1)
 
     fun setChat(userId: String): ChatUI? {
         val chatBox = chatBox.replayCache.firstOrNull() ?: return null
