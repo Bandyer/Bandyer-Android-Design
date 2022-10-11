@@ -21,7 +21,7 @@ buildscript {
 
 
     ext.sdkVersion = 31
-    ext.buildToolsVersion = "30.0.2"
+    ext.buildToolsVersion = "31.0.0"
     ext.kotlin_version = '1.5.20'
     ext.bandyer_core_av = "10.0.0"
     ext.bandyer_comm_center = "5.1.3"

@@ -24,13 +24,13 @@ def kotlin_coroutines = "1.5.2"
 def kotlinVersion = "1.5.32"
 
 android {
-    compileSdkVersion 32
-    buildToolsVersion "30.0.3"
+    compileSdkVersion 31
+    buildToolsVersion "31.0.0"
 
     defaultConfig {
         applicationId "com.kaleyra.demo_collaboration_suite_ui"
         minSdkVersion 21
-        targetSdkVersion 32
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
