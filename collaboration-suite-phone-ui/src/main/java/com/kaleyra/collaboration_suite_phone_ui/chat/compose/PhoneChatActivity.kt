@@ -1,11 +1,10 @@
-@file:OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalComposeUiApi::class)
 
 package com.kaleyra.collaboration_suite_phone_ui.chat.compose
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,6 +41,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationI
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.mockUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.TopAppBar
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.PhoneChatViewModel
@@ -69,7 +69,7 @@ fun ChatScreen(
     onBackPressed: () -> Unit,
     viewModel: ChatUiViewModel
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     ChatScreen(
         uiState = uiState,

@@ -35,6 +35,7 @@ import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isYesterday
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.highlightOnFocus
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
@@ -342,7 +343,7 @@ internal fun Bubble(messageItem: ConversationItem.MessageItem) {
                 )
 
                 if (messageItem.message is Message.MyMessage) {
-                    val messageState = messageItem.message.state.collectAsState(Message.State.Sending).value
+                    val messageState = messageItem.message.state.collectAsStateWithLifecycle(Message.State.Sending).value
 
                     Icon(
                         painter = painterFor(messageState),
