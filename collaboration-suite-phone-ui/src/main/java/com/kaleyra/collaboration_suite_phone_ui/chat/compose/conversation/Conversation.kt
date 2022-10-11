@@ -17,7 +17,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.painter.Painter
@@ -28,7 +27,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.Lifecycle
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
@@ -36,7 +34,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.highlightOnFocus
 import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -69,11 +66,11 @@ internal fun Messages(
     scrollState: LazyListState,
     modifier: Modifier = Modifier
 ) {
-    val isKeyboardOpen by isKeyboardOpen()
+    val screenHeight = with(LocalDensity.current) {
+        LocalConfiguration.current.screenHeightDp.dp.toPx()
+    }
     val scope = rememberCoroutineScope()
     val fabRef = remember { FocusRequester() }
-    val unreadItemOffset = with(LocalDensity.current) { UnreadItemOffset.toPx() }
-    var isScrolledToUnreadItem by remember { mutableStateOf(false) }
     val scrollToBottomFabEnabled by scrollToBottomFabEnabled(scrollState)
     val onFabClick = remember(scope, scrollState) {
         {
@@ -83,22 +80,19 @@ internal fun Messages(
     }
 
     LaunchedEffect(scrollState) {
-        snapshotFlow { isKeyboardOpen }.first { !it }
         val index = uiState.conversationItems?.value?.indexOfFirst { it is ConversationItem.UnreadMessagesItem } ?: -1
-        if (index != -1) scrollState.scrollToBottomViewportItem(index, unreadItemOffset)
-        isScrolledToUnreadItem = true
+        if (index != -1) {
+            scrollState.scrollToItem(index)
+            scrollState.scrollBy(-screenHeight * 2 / 3f)
+        }
     }
 
-    LaunchedEffect(scrollState, uiState.conversationItems, isScrolledToUnreadItem) {
-        if (isScrolledToUnreadItem) {
-            snapshotFlow { scrollState.firstVisibleItemIndex }
-                .onEach {
-                    val item =
-                        uiState.conversationItems?.value?.getOrNull(it) as? ConversationItem.MessageItem
-                            ?: return@onEach
-                    onMessageScrolled(item)
-                }.launchIn(this)
-        }
+    LaunchedEffect(scrollState, uiState.conversationItems) {
+        snapshotFlow { scrollState.firstVisibleItemIndex }
+            .onEach {
+                val item = uiState.conversationItems?.value?.getOrNull(it) as? ConversationItem.MessageItem ?: return@onEach
+                onMessageScrolled(item)
+            }.launchIn(this)
     }
 
     LaunchedEffect(scrollState) {
@@ -130,17 +124,15 @@ internal fun Messages(
         if (uiState.conversationItems == null) LoadingMessagesLabel(Modifier.align(Alignment.Center))
         else if (uiState.conversationItems.value.isEmpty()) NoMessagesLabel(Modifier.align(Alignment.Center))
         else {
-            Box(Modifier.alpha(if (isScrolledToUnreadItem) 1f else 0f)) {
-                Conversation(
-                    items = uiState.conversationItems,
-                    isFetching = uiState.isFetching,
-                    scrollState = scrollState,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .align(Alignment.BottomCenter)
-                )
-            }
+            Conversation(
+                items = uiState.conversationItems,
+                isFetching = uiState.isFetching,
+                scrollState = scrollState,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .align(Alignment.BottomCenter)
+            )
         }
 
         Box(
@@ -158,13 +150,6 @@ internal fun Messages(
     }
 }
 
-private suspend fun LazyListState.scrollToBottomViewportItem(index: Int, scrollOffset: Float = 0f) {
-    scrollToItem(index)
-    val firstItemSize = layoutInfo.visibleItemsInfo.first().size
-    val viewportSize = layoutInfo.viewportSize.height
-    scrollBy(-viewportSize + firstItemSize + scrollOffset)
-}
-
 @Composable
 private fun scrollToBottomFabEnabled(listState: LazyListState): State<Boolean> {
     val resetScrollThreshold = with(LocalDensity.current) { ScrollToBottomThreshold.toPx() }
@@ -176,13 +161,6 @@ private fun scrollToBottomFabEnabled(listState: LazyListState): State<Boolean> {
             firstCompletelyVisibleItemIndex != 0 || firstCompletelyVisibleItemOffset > resetScrollThreshold
         }
     }
-}
-
-@Composable
-internal fun isKeyboardOpen(): State<Boolean> {
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
-    val isResumed = lifecycle.currentState == Lifecycle.State.RESUMED
-    return rememberUpdatedState(WindowInsets.isImeVisible && isResumed)
 }
 
 @Composable
