@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
+import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.custom.MarqueeText
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.custom.TypingDots
@@ -131,7 +132,7 @@ private fun textFor(state: ChatState): String =
             val timestamp = state.timestamp
             if (timestamp == null) stringResource(R.string.kaleyra_chat_user_status_offline)
             else {
-                stringResource(R.string.kaleyra_chat_user_status_last_login, Iso8601.parseTimestamp(LocalContext.current, timestamp))
+                stringResource(R.string.kaleyra_chat_user_status_last_login, TimestampUtils.parseTimestamp(LocalContext.current, timestamp))
             }
         }
         is ChatState.UserState.Typing -> stringResource(R.string.kaleyra_chat_user_status_typing)

@@ -29,9 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isToday
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isYesterday
+import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.theme.KaleyraTheme
@@ -293,11 +291,7 @@ internal fun DayHeader(timestamp: Long, modifier: Modifier = Modifier) {
             .then(modifier),
         horizontalArrangement = Arrangement.Center
     ) {
-        val text = when {
-            timestamp.isToday() -> stringResource(id = R.string.kaleyra_today)
-            timestamp.isYesterday() -> stringResource(id = R.string.kaleyra_yesterday)
-            else -> Iso8601.parseDay(timestamp)
-        }
+        val text = TimestampUtils.parseDay(LocalContext.current, timestamp)
         Text(text = text, fontSize = 12.sp, style = MaterialTheme.typography.body2)
     }
 }

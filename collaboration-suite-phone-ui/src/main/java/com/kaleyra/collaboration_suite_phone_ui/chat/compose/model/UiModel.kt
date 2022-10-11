@@ -3,6 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.compose.model
 import android.net.Uri
 import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
+import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.*
@@ -91,7 +92,7 @@ sealed interface Message {
     companion object {
         fun com.kaleyra.collaboration_suite.chatbox.Message.toUiMessage(): Message {
             val text = (content as? com.kaleyra.collaboration_suite.chatbox.Message.Content.Text)?.message ?: ""
-            val time = Iso8601.parseTime(creationDate.time)
+            val time = TimestampUtils.parseTime(creationDate.time)
 
             return if (this is com.kaleyra.collaboration_suite.chatbox.OtherMessage)
                 OtherMessage(id, text, time)

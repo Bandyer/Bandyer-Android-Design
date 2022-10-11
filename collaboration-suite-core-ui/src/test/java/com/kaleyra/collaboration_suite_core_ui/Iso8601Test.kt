@@ -16,16 +16,11 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
-import com.kaleyra.collaboration_suite_utils.assertIsTrue
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isLastWeek
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isToday
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601.isYesterday
+import com.kaleyra.collaboration_suite_utils.assertIsTrue
 import org.junit.Test
 import java.text.SimpleDateFormat
 import java.time.Instant
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
 import java.util.*
 
@@ -63,66 +58,6 @@ class Iso8601Test {
     }
 
     @Test
-    fun zonedDateTime_isLastWeek_true() {
-        val threeDaysAgo = ZonedDateTime
-            .now(ZoneId.systemDefault())
-            .minus(3, ChronoUnit.DAYS)
-        val tenDaysAgo = ZonedDateTime
-            .now(ZoneId.systemDefault())
-            .minus(10, ChronoUnit.DAYS)
-        assertIsTrue(threeDaysAgo.isLastWeek())
-        assertIsTrue(!tenDaysAgo.isLastWeek())
-    }
-
-    @Test
-    fun longTimestamp_isLastWeek_true() {
-        val threeDaysAgo = Instant
-            .now()
-            .minus(3, ChronoUnit.DAYS)
-        val tenDaysAgo = Instant
-            .now()
-            .minus(10, ChronoUnit.DAYS)
-        assertIsTrue(threeDaysAgo.toEpochMilli().isLastWeek())
-        assertIsTrue(!tenDaysAgo.toEpochMilli().isLastWeek())
-    }
-
-    @Test
-    fun zonedDateTime_isYesterday_true() {
-        val now = ZonedDateTime.now(ZoneId.systemDefault())
-        val yesterday = now.minus(1, ChronoUnit.DAYS)
-        val threeDaysAgo = now.minus(3, ChronoUnit.DAYS)
-        assertIsTrue(!now.isYesterday())
-        assertIsTrue(yesterday.isYesterday())
-        assertIsTrue(!threeDaysAgo.isYesterday())
-    }
-
-    @Test
-    fun longTimestamp_isYesterday_true() {
-        val now = Instant.now()
-        val yesterday = now.minus(1, ChronoUnit.DAYS)
-        val threeDaysAgo = now.minus(3, ChronoUnit.DAYS)
-        assertIsTrue(!now.toEpochMilli().isYesterday())
-        assertIsTrue(yesterday.toEpochMilli().isYesterday())
-        assertIsTrue(!threeDaysAgo.toEpochMilli().isYesterday())
-    }
-
-    @Test
-    fun zonedDateTime_isToday_true() {
-        val now = ZonedDateTime.now(ZoneId.systemDefault())
-        val yesterday = now.minus(1, ChronoUnit.DAYS)
-        assertIsTrue(now.isToday())
-        assertIsTrue(!yesterday.isToday())
-    }
-
-    @Test
-    fun longTimestamp_isToday_true() {
-        val now = Instant.now()
-        val yesterday = now.minus(1, ChronoUnit.DAYS)
-        assertIsTrue(now.toEpochMilli().isToday())
-        assertIsTrue(!yesterday.toEpochMilli().isToday())
-    }
-
-    @Test
     fun longTimestamp_parseMillisToIso8601_iso8601String() {
         val millis = Instant
             .now()
@@ -131,17 +66,5 @@ class Iso8601Test {
         val expected = Instant.ofEpochMilli(millis).toString()
         val result = Iso8601.parseMillisToIso8601(millis)
         assertIsTrue(expected == result)
-    }
-
-    @Test
-    fun twoTimestamps_isSameDay_true() {
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-        calendar.set(2021, 8, 3, 16, 24, 0)
-        val timestamp1 = calendar.timeInMillis
-        val timestamp2 = timestamp1 - 3600
-        val timestamp3 = timestamp1 - 86400000
-
-        assertIsTrue(Iso8601.isSameDay(timestamp1, timestamp2))
-        assertIsTrue(!Iso8601.isSameDay(timestamp1, timestamp3))
     }
 }
