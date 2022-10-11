@@ -6,7 +6,6 @@ import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.MessagesUI
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
-import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
