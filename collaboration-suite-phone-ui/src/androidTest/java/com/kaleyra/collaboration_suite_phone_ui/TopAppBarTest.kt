@@ -5,15 +5,23 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
+import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ImmutableSet
 import com.kaleyra.collaboration_suite_phone_ui.chat.compose.topappbar.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.internal.verification.Times
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
 
 @RunWith(AndroidJUnit4::class)
 class TopAppBarTest {
@@ -26,7 +34,7 @@ class TopAppBarTest {
     private val chatInfo = MutableStateFlow(ChatInfo(name = "chatName"))
 
     private val actions = MutableStateFlow(
-        setOf(ClickableAction(ChatAction.AudioCall) { isActionClicked = true })
+        ImmutableSet(setOf<ChatAction>(ChatAction.AudioCall { isActionClicked = true }))
     )
 
     private var isBackPressed = false
@@ -78,8 +86,12 @@ class TopAppBarTest {
 
     @Test
     fun chatStateUserOffline_lastLoginDisplayed() {
-        val timestamp = "16:22"
-        chatState.value = ChatState.UserState.Offline(timestamp)
+        chatState.value = ChatState.UserState.Offline(0)
+        val timestamp = DateTimeFormatter
+            .ofLocalizedDateTime(FormatStyle.SHORT)
+            .withLocale(Locale.getDefault())
+            .withZone(ZoneId.systemDefault())
+            .format(Instant.ofEpochMilli(0))
         val offline = composeTestRule.activity.getString(R.string.kaleyra_chat_user_status_last_login, timestamp)
         getSubtitle().assertTextEquals(offline)
     }
