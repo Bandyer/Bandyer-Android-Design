@@ -114,7 +114,25 @@ class UiModelMapperTest {
     }
 
     @Test
-    fun chatBoxDisconnected_getChatState_networkOffline() = runTest {
+    fun chatBoxDisconnecting_getChatState_none() = runTest {
+        chatBoxState.value = ChatBox.State.Disconnecting
+        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.None)
+    }
+
+    @Test
+    fun chatBoxDisconnected_getChatState_none() = runTest {
+        chatBoxState.value = ChatBox.State.Disconnected
+        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.None)
+    }
+
+    @Test
+    fun chatBoxInitialized_getChatState_none() = runTest {
+        chatBoxState.value = ChatBox.State.Initialized
+        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.None)
+    }
+
+    @Test
+    fun chatBoxReconnecting_getChatState_networkOffline() = runTest {
         with(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock))) {
             first()
             chatBoxState.value = ChatBox.State.Connecting

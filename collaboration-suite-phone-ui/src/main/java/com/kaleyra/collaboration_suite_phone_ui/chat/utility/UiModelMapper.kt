@@ -49,15 +49,15 @@ internal object UiModelMapper {
             when {
                 chatBoxState is ChatBox.State.Connecting && previousChatBoxState is ChatBox.State.Connected -> ChatState.NetworkState.Offline
                 chatBoxState is ChatBox.State.Connecting -> ChatState.NetworkState.Connecting
-                event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Online -> ChatState.UserState.Online
-                event is ChatParticipant.Event.Typing.Idle && participantState is ChatParticipant.State.Joined.Offline -> {
+                chatBoxState is ChatBox.State.Connected && participantState is ChatParticipant.State.Joined.Online && event is ChatParticipant.Event.Typing.Idle -> ChatState.UserState.Online
+                chatBoxState is ChatBox.State.Connected && participantState is ChatParticipant.State.Joined.Offline && event is ChatParticipant.Event.Typing.Idle -> {
                     val lastLogin = participantState.lastLogin
                     ChatState.UserState.Offline(
                         if (lastLogin is ChatParticipant.State.Joined.Offline.LastLogin.At) lastLogin.date.time
                         else null
                     )
                 }
-                event is ChatParticipant.Event.Typing.Started -> ChatState.UserState.Typing
+                chatBoxState is ChatBox.State.Connected && event is ChatParticipant.Event.Typing.Started -> ChatState.UserState.Typing
                 else -> ChatState.None
             }.also {
                 previousChatBoxState = chatBoxState
