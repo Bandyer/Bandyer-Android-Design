@@ -28,7 +28,7 @@ internal class CollaborationUIConnector(val collaboration: CollaborationUI, pare
         DISCONNECT
     }
 
-    private val action = MutableStateFlow<Action?>(null)
+    private var lastAction: Action? = null
 
     private var wasPhoneBoxConnected = false
     private var wasChatBoxConnected = false
@@ -36,7 +36,9 @@ internal class CollaborationUIConnector(val collaboration: CollaborationUI, pare
     private var scope = CoroutineScope(SupervisorJob(parentScope.coroutineContext[Job]) + Dispatchers.IO)
 
     init {
-        sync(scope)
+        syncWithAppLifecycle(scope)
+        syncWithCallState(scope)
+        syncWithChatMessages(scope)
     }
 
     /**
@@ -45,7 +47,6 @@ internal class CollaborationUIConnector(val collaboration: CollaborationUI, pare
     fun connect() {
         collaboration.phoneBox.connect()
         collaboration.chatBox.connect()
-
     }
 
     /**
@@ -73,27 +74,12 @@ internal class CollaborationUIConnector(val collaboration: CollaborationUI, pare
         if (wasChatBoxConnected) collaboration.chatBox.connect()
     }
 
-
-    private fun sync(scope: CoroutineScope) {
-        syncWithAppLifecycle(scope)
-        syncWithCallState(scope)
-        syncWithChatMessages(scope)
-
-        action.onEach {
-            it ?: return@onEach
-            when (it) {
-                Action.RESUME -> resume()
-                Action.DISCONNECT -> disconnect()
-            }
-        }.launchIn(scope)
-    }
-
     private fun syncWithAppLifecycle(scope: CoroutineScope) {
         AppLifecycle.isInForeground
             .dropWhile { !it }
             .onEach { isInForeground ->
-                if (isInForeground) action.value = Action.RESUME
-                else if (collaboration.phoneBox.call.replayCache.isEmpty()) action.value = Action.DISCONNECT
+                if (isInForeground) performAction(Action.RESUME)
+                else if (collaboration.phoneBox.call.replayCache.isEmpty()) performAction(Action.DISCONNECT)
             }
             .launchIn(scope)
     }
@@ -106,7 +92,7 @@ internal class CollaborationUIConnector(val collaboration: CollaborationUI, pare
             }.collectLatest {
                 if (!it) return@collectLatest
                 delay(300)
-                action.value = Action.DISCONNECT
+                performAction(Action.DISCONNECT)
             }
         }
     }
@@ -119,7 +105,18 @@ internal class CollaborationUIConnector(val collaboration: CollaborationUI, pare
             .onEach {
                 val call = collaboration.phoneBox.call.replayCache.firstOrNull()
                 if (AppLifecycle.isInForeground.value || (call != null && call.state.value !is Call.State.Disconnected.Ended)) return@onEach
-                action.value = Action.DISCONNECT
+                performAction(Action.DISCONNECT)
             }.launchIn(scope)
+    }
+
+    private fun performAction(action: Action) {
+        synchronized(this) {
+            if (action == lastAction) return
+            when (action) {
+                Action.RESUME -> resume()
+                Action.DISCONNECT -> disconnect()
+            }
+            lastAction = action
+        }
     }
 }
