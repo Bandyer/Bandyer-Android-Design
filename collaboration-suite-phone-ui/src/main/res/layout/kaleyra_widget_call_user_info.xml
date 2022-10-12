@@ -42,6 +42,8 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/kaleyra_fullscreen_action_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         style="?attr/kaleyra_fullscreenButtonStyle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

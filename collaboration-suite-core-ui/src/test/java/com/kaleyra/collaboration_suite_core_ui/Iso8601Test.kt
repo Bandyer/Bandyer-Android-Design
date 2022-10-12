@@ -17,7 +17,6 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
-import com.kaleyra.collaboration_suite_utils.assertIsTrue
 import org.junit.Test
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -35,7 +34,7 @@ class Iso8601Test {
         // set milliseconds to 0
         expected -= expected % 1000
         val result = Iso8601.getISO8601TstampInMillis(timestamp)
-        assertIsTrue(result == expected)
+        assert(result == expected)
     }
 
     @Test
@@ -44,7 +43,7 @@ class Iso8601Test {
         df.timeZone = TimeZone.getTimeZone("UTC")
         val expected = df.format(Calendar.getInstance().time)
         val result = Iso8601.nowISO8601()
-        assertIsTrue(result.contains(expected))
+        assert(result.contains(expected))
     }
 
     @Test
@@ -54,7 +53,7 @@ class Iso8601Test {
 
         expected -= expected % 1000
         result -= result % 1000
-        assertIsTrue(expected == result)
+        assert(expected == result)
     }
 
     @Test
@@ -65,6 +64,6 @@ class Iso8601Test {
             .toEpochMilli()
         val expected = Instant.ofEpochMilli(millis).toString()
         val result = Iso8601.parseMillisToIso8601(millis)
-        assertIsTrue(expected == result)
+        assert(expected == result)
     }
 }

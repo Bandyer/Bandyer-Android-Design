@@ -11,17 +11,17 @@
         android:id="@+id/kaleyra_icon"
         style="?attr/kaleyra_iconStyle"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/kaleyra_title"
+        app:layout_constraintBottom_toBottomOf="@id/kaleyra_title" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/kaleyra_title"
         style="?attr/kaleyra_titleStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@id/kaleyra_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/kaleyra_icon"
-        app:layout_constraintTop_toTopOf="@id/kaleyra_icon" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/kaleyra_barrier"

@@ -22,6 +22,8 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
@@ -33,6 +35,8 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
 import com.kaleyra.collaboration_suite_phone_ui.bottom_sheet.items.ActionItem
 import com.kaleyra.collaboration_suite_phone_ui.call.bottom_sheet.items.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.dialogs.KaleyraParicipantRemovedDialog
+import com.kaleyra.collaboration_suite_phone_ui.call.widgets.KaleyraCallParticipantMutedSnackbar
 import com.kaleyra.collaboration_suite_phone_ui.feedback.FeedbackDialog
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.FileShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.filesharing.KaleyraFileShareDialog
@@ -95,20 +99,6 @@ class MainActivity : AppCompatActivity() {
                     RingingActivity::class.java
                 )
             )
-        }
-
-        btnSwitchNightMode.setOnClickListener {
-            val isNightTheme = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
-            when (isNightTheme) {
-                Configuration.UI_MODE_NIGHT_YES -> {
-                    window.setWindowAnimations(R.style.Kaleyra_ThemeTransitionAnimation)
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                }
-                Configuration.UI_MODE_NIGHT_NO -> {
-                    window.setWindowAnimations(R.style.Kaleyra_ThemeTransitionAnimation)
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                }
-            }
         }
 
         btnWhiteboardEditor.setOnClickListener {
@@ -212,6 +202,17 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        btnKickParticipant.setOnClickListener {
+            KaleyraParicipantRemovedDialog("Unknown guy").show(
+                supportFragmentManager,
+                FeedbackDialog.TAG
+            )
+        }
+
+        btnMuteParticipant.setOnClickListener {
+            KaleyraCallParticipantMutedSnackbar.make(binding.root, "Unknown guy", LENGTH_LONG).show()
+        }
+
     }
 
     private fun showSmartGlassAction(): SmartGlassActionItemMenu = SmartGlassActionItemMenu.show(
@@ -242,6 +243,34 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                menu.add("Day mode").apply {
+                    setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                    setOnMenuItemClickListener {
+                        window.setWindowAnimations(R.style.Kaleyra_ThemeTransitionAnimation)
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                        invalidateOptionsMenu()
+                        true
+                    }
+                }
+            }
+            Configuration.UI_MODE_NIGHT_NO -> {
+                menu.add("Night mode").apply {
+                    setShowAsActionFlags(MenuItem.SHOW_AS_ACTION_ALWAYS)
+                    setOnMenuItemClickListener {
+                        window.setWindowAnimations(R.style.Kaleyra_ThemeTransitionAnimation)
+                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                        invalidateOptionsMenu()
+                        true
+                    }
+                }
+            }
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
 }
 
 class LocalFileShareViewModel : FileShareViewModel() {

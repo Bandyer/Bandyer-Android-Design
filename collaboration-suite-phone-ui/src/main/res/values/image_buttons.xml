@@ -82,10 +82,10 @@
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.ImageButton.FullScreen" parent="KaleyraCollaborationSuiteUI.ImageButton">
+        <item name="android:minWidth">@dimen/kaleyra_dimen_space56</item>
+        <item name="android:minHeight">@dimen/kaleyra_dimen_space56</item>
         <item name="android:layout_width">@dimen/kaleyra_dimen_space56</item>
         <item name="android:layout_height">@dimen/kaleyra_dimen_space56</item>
-        <item name="android:padding">0dp</item>
-        <item name="android:layout_margin">0dp</item>
         <item name="android:focusable">true</item>
         <item name="android:focusableInTouchMode">false</item>
         <item name="iconTint">@android:color/white</item>

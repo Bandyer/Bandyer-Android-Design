@@ -71,10 +71,22 @@ class KaleyraSnackbar private constructor(
             duration
         )
 
+        @JvmStatic
+        @JvmSynthetic
+        fun make(
+            view: View,
+            @Duration duration: Int
+        ): KaleyraSnackbar = makeInternal(
+            view,
+            null,
+            null,
+            duration
+        )
+
         private fun makeInternal(
             view: View,
-            title: CharSequence,
-            subtitle: CharSequence,
+            title: CharSequence?,
+            subtitle: CharSequence?,
             @Duration duration: Int
         ): KaleyraSnackbar {
             val parent = findSuitableParent(view)
@@ -167,9 +179,10 @@ class KaleyraSnackbar private constructor(
     }
 
     @JvmSynthetic
-    internal fun setTitle(text: CharSequence): KaleyraSnackbar {
+    internal fun setTitle(text: CharSequence?): KaleyraSnackbar {
         val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
         contentLayout.title?.text = text
+        contentLayout.title?.visibility = if (text.isNullOrBlank()) View.GONE else View.VISIBLE
         return this
     }
 
@@ -177,7 +190,7 @@ class KaleyraSnackbar private constructor(
     internal fun setSubTitle(text: CharSequence?): KaleyraSnackbar {
         val contentLayout = view.getChildAt(0) as KaleyraSnackbarLayout
         contentLayout.subTitle?.text = text
-        contentLayout.subTitle?.visibility = if (text == null) View.GONE else View.VISIBLE
+        contentLayout.subTitle?.visibility = if (text.isNullOrBlank()) View.GONE else View.VISIBLE
         return this
     }
 

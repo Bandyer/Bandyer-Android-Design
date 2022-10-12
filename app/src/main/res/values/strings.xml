@@ -37,6 +37,8 @@
     <string name="screen_share_picker">Screen share picker</string>
     <string name="file_share">File share</string>
     <string name="feedback">Feedback</string>
+    <string name="kick_participant">Call participant removed dialog</string>
+    <string name="mute_participant">Call participant muted snackbar</string>
     <string name="notification">Call notification</string>
     <string name="add_upload">Add upload</string>
     <string name="add_download">Add download</string>

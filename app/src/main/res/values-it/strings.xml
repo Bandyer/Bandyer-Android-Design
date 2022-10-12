@@ -36,6 +36,8 @@
     <string name="smart_glass_menu">Smartglass menu</string>
     <string name="file_share">File share</string>
     <string name="feedback">Feedback</string>
+    <string name="kick_participant">Dialog rimozione partecipante</string>
+    <string name="mute_participant">Call participant muted snackbar</string>
     <string name="add_upload">Aggiungi upload</string>
     <string name="add_download">Aggiungi download</string>
     <string name="add_download_available">Aggiungi download disp.</string>

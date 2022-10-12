@@ -34,4 +34,21 @@
     <string name="kaleyra_notification_call_recorded">This call is being recorded</string>
     <string name="kaleyra_notification_chat_reply">Reply</string>
     <string name="kaleyra_notification_chat_mark_as_read">Mark as read</string>
+
+    <!-- CALL PARTICIPANT REMOVED -->
+
+    <plurals name="kaleyra_call_participant_removed">
+        <item quantity="one">%s has removed you from the call</item>
+        <item quantity="other">The admin has removed you from the call</item>
+    </plurals>
+    <string name="kaleyra_call_participant_removed_understood_message">Close</string>
+
+    <!-- MUTE PARTICIPANT -->
+
+    <plurals name="kaleyra_call_participant_muted_by_admin">
+        <item quantity="one">%s has muted you</item>
+        <item quantity="other">The admin has muted you</item>
+    </plurals>
+    <string name="kaleyra_call_participant_utterance_muted_by_admin">Muted</string>
+
 </resources>

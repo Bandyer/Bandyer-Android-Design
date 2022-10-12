@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.recording
+package com.kaleyra.collaboration_suite_phone_ui.call.widgets.recording
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,11 +8,11 @@ import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ViewExtensions.b
 import com.kaleyra.collaboration_suite_phone_ui.databinding.KaleyraRecordingWidgetBinding
 
 /**
- * RecordingWidget. It has a blinking red dot and a REC text.
+ * KaleyraRecordingWidget. It has a blinking red dot and a REC text.
  *
  * @constructor
  */
-class RecordingWidget @JvmOverloads constructor(
+class KaleyraRecordingWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0,

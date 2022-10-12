@@ -31,6 +31,8 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/kaleyra_back_button"
             style="?attr/kaleyra_backButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@string/kaleyra_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -46,7 +48,7 @@
             android:theme="?attr/kaleyra_iconStyle"
             app:layout_constraintStart_toEndOf="@id/kaleyra_back_button" />
 
-        <com.kaleyra.collaboration_suite_phone_ui.recording.RecordingWidget
+        <com.kaleyra.collaboration_suite_phone_ui.call.widgets.recording.KaleyraRecordingWidget
             android:id="@+id/kaleyra_recording"
             android:theme="?attr/kaleyra_recordingStyle"
             android:layout_width="wrap_content"
