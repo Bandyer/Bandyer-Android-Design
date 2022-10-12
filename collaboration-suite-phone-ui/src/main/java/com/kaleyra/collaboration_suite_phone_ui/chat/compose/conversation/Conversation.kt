@@ -43,10 +43,10 @@ private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
 
 const val MessageStateTag = "MessageStateTag"
 const val ConversationTag = "ConversationTag"
+const val ProgressIndicatorTag = "ProgressIndicatorTag"
 
 private const val TOP_THRESHOLD = 15
 
-private val UnreadItemOffset = 56.dp
 private val ScrollToBottomThreshold = 128.dp
 
 private val LazyListState.isApproachingTop: Boolean
@@ -235,6 +235,7 @@ internal fun Conversation(
                     modifier = Modifier
                         .padding(16.dp)
                         .size(28.dp)
+                        .testTag(ProgressIndicatorTag)
                 )
             }
         }

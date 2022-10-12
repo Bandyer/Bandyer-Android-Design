@@ -31,11 +31,9 @@ class TopAppBarTest {
 
     private val chatState = MutableStateFlow<ChatState>(ChatState.None)
 
-    private val chatInfo = MutableStateFlow(ChatInfo(name = "chatName"))
+    private val chatInfo = ChatInfo(name = "chatName")
 
-    private val actions = MutableStateFlow(
-        ImmutableSet(setOf<ChatAction>(ChatAction.AudioCall { isActionClicked = true }))
-    )
+    private val chatActions = ImmutableSet(setOf<ChatAction>(ChatAction.AudioCall { isActionClicked = true }))
 
     private var isBackPressed = false
 
@@ -46,8 +44,8 @@ class TopAppBarTest {
         composeTestRule.setContent {
             TopAppBar(
                 state = chatState.collectAsState().value,
-                info = chatInfo.collectAsState().value,
-                actions = actions.collectAsState().value,
+                info = chatInfo,
+                actions = chatActions,
                 onBackPressed = { isBackPressed = true })
         }
     }
@@ -55,7 +53,7 @@ class TopAppBarTest {
     @Test
     fun title_set() {
         // Check all nodes with the given text and get the first one. This is done because of the MarqueeText implementation.
-        composeTestRule.onAllNodesWithText(chatInfo.value.name).onFirst().assertIsDisplayed()
+        composeTestRule.onAllNodesWithText(chatInfo.name).onFirst().assertIsDisplayed()
     }
 
     @Test
