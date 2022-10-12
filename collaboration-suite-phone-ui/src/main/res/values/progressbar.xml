@@ -17,15 +17,6 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="KaleyraCollaborationSuiteUI.ChatNetworkProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:layout_margin">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:indeterminate">true</item>
-        <item name="trackColor">?attr/colorOnBackground</item>
-    </style>
-
     <style name="KaleyraCollaborationSuiteUI.UploadProgressIndicator" parent="KaleyraCollaborationSuiteUI.UploadProgressIndicator.V21"/>
 
     <style name="KaleyraCollaborationSuiteUI.UploadProgressIndicator.V21" parent="Widget.MaterialComponents.CircularProgressIndicator">

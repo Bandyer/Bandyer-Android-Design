@@ -25,24 +25,6 @@
         <item name="android:focusableInTouchMode">false</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.ImageButton.Send" parent="KaleyraCollaborationSuiteUI.ImageButton">
-        <item name="android:paddingTop">@dimen/kaleyra_dimen_space4</item>
-        <item name="android:paddingRight">@dimen/kaleyra_dimen_space4</item>
-        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space4</item>
-        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space4</item>
-        <item name="android:paddingLeft">@dimen/kaleyra_dimen_space4</item>
-        <item name="android:paddingStart">@dimen/kaleyra_dimen_space4</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginRight">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:layout_marginEnd">@dimen/kaleyra_dimen_space8</item>
-        <item name="icon">@drawable/ic_kaleyra_send</item>
-        <item name="iconTint">@color/kaleyra_input_layout_widget_send_color</item>
-        <item name="iconSize">@dimen/kaleyra_dimen_send_image_button</item>
-        <item name="android:rotation">@integer/auto_mirror</item>
-        <item name="android:contentDescription">@string/kaleyra_chat_send</item>
-    </style>
-
     <style name="KaleyraCollaborationSuiteUI.ImageButton.Confirm" parent="KaleyraCollaborationSuiteUI.ImageButton">
         <item name="icon">@drawable/ic_kaleyra_confirm</item>
         <item name="android:contentDescription">@string/kaleyra_action_confirm</item>
@@ -144,32 +126,6 @@
         <item name="android:visibility">invisible</item>
         <item name="rippleColor">@android:color/transparent</item>
         <item name="android:contentDescription">@string/kaleyra_upload_file_error</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.ImageButton.ChatUnreadMessages" parent="KaleyraCollaborationSuiteUI.ImageButton">
-        <item name="android:minWidth">@dimen/kaleyra_dimen_space32</item>
-        <item name="android:minHeight">@dimen/kaleyra_dimen_space32</item>
-        <item name="android:paddingTop">@dimen/kaleyra_dimen_space4</item>
-        <item name="android:paddingRight">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space4</item>
-        <item name="android:paddingLeft">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:paddingStart">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:gravity">end|center_vertical</item>
-        <item name="android:focusable">true</item>
-        <item name="android:focusableInTouchMode">false</item>
-        <item name="backgroundTint">?attr/colorPrimary</item>m>
-        <item name="icon">@drawable/ic_kaleyra_double_arrow_down</item>
-        <item name="iconGravity">textEnd</item>
-        <item name="iconPadding">@dimen/kaleyra_dimen_space4</item>
-        <item name="iconSize">@dimen/kaleyra_dimen_space16</item>
-        <item name="iconTint">?attr/colorOnPrimary</item>
-        <item name="android:textSize">@dimen/kaleyra_dimen_text_normal</item>
-        <item name="android:textColor">?attr/colorOnPrimary</item>
-        <item name="rippleColor">@color/mtrl_fab_ripple_color</item>
-        <item name="elevation">@dimen/kaleyra_dimen_space4</item>
-        <item name="android:elevation" tools:targetApi="lollipop">@dimen/kaleyra_dimen_space4</item>
-        <item name="android:contentDescription">@string/kaleyra_chat_scroll_to_last_message</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.ImageButton.BackButton" parent="KaleyraCollaborationSuiteUI.ImageButton">

@@ -5,10 +5,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.ChatScreen
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.MessagesTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.input.TextFieldTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
+import com.kaleyra.collaboration_suite_phone_ui.chat.ChatScreen
+import com.kaleyra.collaboration_suite_phone_ui.chat.MessagesTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.input.TextFieldTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Before

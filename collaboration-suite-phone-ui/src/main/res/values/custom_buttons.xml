@@ -16,24 +16,6 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Ongoing call button -->
-    <style name="KaleyraCollaborationSuiteUI.OngoingCallButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
-        <item name="android:text">@string/kaleyra_ongoing_call_label</item>
-        <item name="backgroundTint">@color/kaleyra_color_answer_button</item>
-        <item name="cornerRadius">@dimen/kaleyra_dimen_space0</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:insetTop">@dimen/kaleyra_dimen_space0</item>
-        <item name="android:insetBottom">@dimen/kaleyra_dimen_space0</item>
-        <item name="android:letterSpacing" tools:targetApi="lollipop">0</item>
-        <item name="android:paddingTop">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:paddingBottom">@dimen/kaleyra_dimen_space8</item>
-        <item name="android:minHeight">@dimen/kaleyra_dimen_space0</item>
-        <item name="android:gravity">start</item>
-        <item name="android:textAlignment" tools:targetApi="jelly_bean_mr1">viewStart</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:focusableInTouchMode">false</item>
-    </style>
-
     <!-- Fullscreen info -->
     <style name="KaleyraCollaborationSuiteUI.FullscreenToastButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="backgroundTint">@color/kaleyra_color_surface_40</item>

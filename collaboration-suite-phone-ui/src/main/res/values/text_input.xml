@@ -57,21 +57,4 @@
         <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
-    <style name="KaleyraCollaborationSuiteUI.TextInputLayout.Chat" parent="KaleyraCollaborationSuiteUI.TextInputLayout">
-        <item name="materialThemeOverlay">@style/KaleyraCollaborationSuiteUI.TextInputLayout.Chat.MaterialThemeOverlay</item>
-        <item name="boxBackgroundColor">?attr/colorSurface</item>
-        <item name="boxBackgroundMode">filled</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.TextInputLayout.Chat.MaterialThemeOverlay" parent="">
-        <item name="editTextStyle">@style/KaleyraCollaborationSuiteUI.TextInputEditText.Chat</item>
-    </style>
-
-    <style name="KaleyraCollaborationSuiteUI.TextInputEditText.Chat" parent="KaleyraCollaborationSuiteUI.TextInputEditText">
-        <item name="android:paddingTop">@dimen/kaleyra_dimen_space16</item>
-        <item name="android:paddingRight">@dimen/kaleyra_dimen_space64</item>
-        <item name="android:paddingEnd">@dimen/kaleyra_dimen_space64</item>
-        <item name="android:maxLines">4</item>
-    </style>
-
 </resources>

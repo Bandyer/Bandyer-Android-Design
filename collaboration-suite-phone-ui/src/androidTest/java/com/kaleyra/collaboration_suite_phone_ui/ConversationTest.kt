@@ -21,11 +21,11 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.ConversationTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.MessageStateTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.Messages
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.conversation.ProgressIndicatorTag
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.ConversationTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.MessageStateTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.Messages
+import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.ProgressIndicatorTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Rule
 import org.junit.Test

@@ -19,17 +19,17 @@ import android.net.Uri
 import com.kaleyra.collaboration_suite.chatbox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.*
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatAction
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatInfo
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ChatState
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.ConversationItem
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message.Companion.toUiMessage
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.findFirstUnreadMessageId
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.getChatInfo
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.getChatState
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.hasActiveCall
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToChatActions
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.utility.UiModelMapper.mapToConversationItems
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatAction
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.Message.Companion.toUiMessage
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.findFirstUnreadMessageId
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.getChatInfo
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.getChatState
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.hasActiveCall
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.mapToChatActions
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.mapToConversationItems
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -253,8 +253,8 @@ class UiModelMapperTest {
 
         val message1 = item1.message
         val message2 = item2.message
-        if (message1 !is com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message.MyMessage) return false
-        if (message2 !is com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.Message.MyMessage) return false
+        if (message1 !is com.kaleyra.collaboration_suite_phone_ui.chat.model.Message.MyMessage) return false
+        if (message2 !is com.kaleyra.collaboration_suite_phone_ui.chat.model.Message.MyMessage) return false
 
         if (message1.id != message2.id) return false
         if (message1.text != message2.text) return false
