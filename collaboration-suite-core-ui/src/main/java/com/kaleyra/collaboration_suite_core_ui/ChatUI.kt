@@ -5,11 +5,11 @@ import androidx.annotation.Keep
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.mapToStateFlow
+import com.kaleyra.collaboration_suite_core_ui.utils.extensions.mapToSharedFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -32,9 +32,7 @@ class ChatUI(
     /**
      * @suppress
      */
-    override val messages: StateFlow<MessagesUI> = chat.messages.mapToStateFlow(chatScope) {
-        MessagesUI(it, chatActivityClazz, chatCustomNotificationActivityClazz)
-    }
+    override val messages: SharedFlow<MessagesUI> = chat.messages.mapToSharedFlow(chatScope) { MessagesUI(it, chatActivityClazz, chatCustomNotificationActivityClazz) }
 
     /**
      * The chat action sealed class

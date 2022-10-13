@@ -54,7 +54,4 @@ dependencies {
     /** Kaleyra **/
     implementation kaleyra.collaboration
     implementation kaleyra.collaboration_extension_audio
-
-//    implementation project(":collaboration-suite")
-//    implementation project(":collaboration-suite-extension-audio")
 }

@@ -58,6 +58,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
@@ -120,8 +121,8 @@ internal class CallViewModel : ViewModel() {
 
     val volume: Volume get() = callController?.volume ?: Volume(0, 0, 0)
 
-    private val _micPermission: MutableStateFlow<Permission>  = MutableStateFlow(Permission(false, false))
-    val micPermission: StateFlow<Permission>  = _micPermission.asStateFlow()
+    private val _micPermission: MutableStateFlow<Permission> = MutableStateFlow(Permission(false, false))
+    val micPermission: StateFlow<Permission> = _micPermission.asStateFlow()
 
     private val _camPermission: MutableStateFlow<Permission> = MutableStateFlow(Permission(false, false))
     val camPermission: StateFlow<Permission> = _camPermission.asStateFlow()
@@ -207,7 +208,7 @@ internal class CallViewModel : ViewModel() {
         MutableSharedFlow<List<StreamParticipant>>(replay = 1, extraBufferCapacity = 1).apply {
             val uiStreams = ConcurrentLinkedQueue<StreamParticipant>()
             participants.forEachParticipant(viewModelScope + CoroutineName("StreamParticipant")) { participant, itsMe, streams, state ->
-                if (itsMe || (state == CallParticipant.State.IN_CALL && streams.isNotEmpty())) {
+                if (itsMe || (state == CallParticipant.State.InCall && streams.isNotEmpty())) {
                     val newStreams = streams.map {
                         StreamParticipant(
                             participant,
@@ -296,7 +297,7 @@ internal class CallViewModel : ViewModel() {
             this@CallViewModel.participants.forEachParticipant(
                 viewModelScope + CoroutineName("InCallParticipants")
             ) { participant, itsMe, streams, state ->
-                if (itsMe || state == CallParticipant.State.IN_CALL || streams.isNotEmpty()) participants[participant.userId] =
+                if (itsMe || state == CallParticipant.State.InCall || streams.isNotEmpty()) participants[participant.userId] =
                     participant
                 else participants.remove(participant.userId)
                 emit(participants.values.toList())
@@ -347,28 +348,35 @@ internal class CallViewModel : ViewModel() {
                     participantJobs += stream.video
                         .filter { it != null }
                         .flatMapLatest { it!!.events }
-                        .filter { it is Input.Video.Event.Pointer }
-                        .onEach { emit(Pair(streamId, it as Input.Video.Event.Pointer)) }
+                        .filterIsInstance<Input.Video.Event.Pointer>()
+                        .onEach { emit(Pair(streamId, it)) }
                         .launchIn(viewModelScope)
                     jobs[participant.userId] = participantJobs
                 }
             }.launchIn(viewModelScope)
         }
 
+    val requestMuteEvents: Flow<Input.Audio.Event.Request.Mute> = audioStream
+        .filter { it != null }
+        .flatMapLatest { it!!.audio }
+        .filter { it != null }
+        .flatMapLatest { it!!.events }
+        .filterIsInstance()
+
     private val chat: StateFlow<ChatUI?> =
         participants
             .filter { it.others.isNotEmpty() }
-            .map { CollaborationUI.chatBox.create(it.others.first())  }
+            .map { CollaborationUI.chatBox.create(it.others.first()) }
             .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val areThereNewMessages = chat
-            .filter { it != null }
-            .flatMapLatest { it!!.messages }
-            .map { it.other }
-            .filter { it.isNotEmpty() }
-            .flatMapLatest { it.first().state }
-            .map { it is Message.State.Received }
-            .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+        .filter { it != null }
+        .flatMapLatest { it!!.messages }
+        .map { it.other }
+        .filter { it.isNotEmpty() }
+        .flatMapLatest { it.first().state }
+        .map { it is Message.State.Received }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     fun showChat(context: Context) = chat.value?.let { CollaborationUI.chatBox.show(context, it) }
 

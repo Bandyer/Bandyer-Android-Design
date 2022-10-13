@@ -204,7 +204,7 @@ internal abstract class StreamItem<T : RecyclerView.ViewHolder>(
         ) {
             val userId = event.producer.userId
 
-            if (event.action is Input.Video.Event.Action.Idle) {
+            if (event.action is Input.Video.Event.Pointer.Action.Idle) {
                 parent.removeView(livePointerViews[userId])
                 livePointerViews.remove(userId)
                 return
