@@ -36,6 +36,8 @@
 
         <attr name="kaleyra_feedbackDialogStyle" format="reference" />
 
+        <attr name="kaleyra_callParticipantRemovedStyle" format="reference" />
+
         <attr name="kaleyra_smartGlassDialogMenuStyle" format="reference" />
     </declare-styleable>
 
@@ -55,6 +57,7 @@
         <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
         <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare</item>
         <item name="kaleyra_feedbackDialogStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Feedback</item>
+        <item name="kaleyra_callParticipantRemovedStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.CallParticipantRemoved</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Call.Day.V16" parent="KaleyraCollaborationSuiteUI.Theme.Day">
@@ -73,6 +76,7 @@
         <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
         <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare</item>
         <item name="kaleyra_feedbackDialogStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Feedback</item>
+        <item name="kaleyra_callParticipantRemovedStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.CallParticipantRemoved</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Call.Night.V16" parent="KaleyraCollaborationSuiteUI.Theme.Night">
@@ -91,6 +95,7 @@
         <item name="kaleyra_screenShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.ScreenSharePicker</item>
         <item name="kaleyra_fileShareDialogStyle">@style/KaleyraCollaborationSuiteUI.BottomSheetDialog.FileShare</item>
         <item name="kaleyra_feedbackDialogStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.Feedback</item>
+        <item name="kaleyra_callParticipantRemovedStyle">@style/KaleyraCollaborationSuiteUI.FragmentDialog.CallParticipantRemoved</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Call.DayNight" parent="KaleyraCollaborationSuiteUI.Theme.Call.DayNight.V16"/>
