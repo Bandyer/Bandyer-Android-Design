@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2022 Kaleyra @ https://www.kaleyra.com
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -92,6 +91,16 @@
     <string name="kaleyra_glass_scroll_right">scorri a destra</string>
     <string name="kaleyra_glass_no_messages">Nessun messaggio</string>
     <string name="kaleyra_glass_loading_messages">Caricamento messaggi</string>
+
+    <plurals name="kaleyra_glass_muted_by_admin">
+        <item quantity="one">%s ha disabilitato il tuo microfono</item>
+        <item quantity="other">L\'amministratore ha disabilitato il tuo microfono</item>
+    </plurals>
+
+    <plurals name="kaleyra_glass_removed_from_call">
+        <item quantity="one">%s ti ha rimosso dalla chiamata</item>
+        <item quantity="other">L\'amministratore ti ha rimosso dalla chiamata</item>
+    </plurals>
 
     <!-- PLURALS -->
     <plurals name="kaleyra_glass_users_in_call_pattern">
