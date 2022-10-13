@@ -603,7 +603,7 @@ internal class GlassCallActivity :
         val userId = event.producer.userId
         val livePointer = livePointers.filterValues { it.first == userId }.keys.firstOrNull()
 
-        if (event.action is Input.Video.Event.Action.Idle) {
+        if (event.action is Input.Video.Event.Pointer.Action.Idle) {
             livePointer?.also {
                 binding.kaleyraOuterPointers.removeView(it)
                 livePointers.remove(it)
