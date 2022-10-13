@@ -69,6 +69,13 @@ class UserInputTest {
         assert(onSendMessage)
     }
 
+    @Test
+    fun userClicksButton_inputFieldCleaned() {
+        findTextInputField().performTextInput("Text")
+        findSendButton().performClick()
+        composeTestRule.onNode(hasText("Text")).assertDoesNotExist()
+    }
+
     private fun findSendButton() =
         composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.kaleyra_chat_send))
 
