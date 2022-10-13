@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 
 private val symbolPattern by lazy {
@@ -72,28 +74,27 @@ private fun getSymbolAnnotation(
     primary: Boolean
 ): SymbolAnnotation {
     return when (matchResult.value.first()) {
-// De-comment to enable string formatting using some special symbols (*bold*, _italic_, ~strikethrough~)
-//        '*' -> SymbolAnnotation(
-//            AnnotatedString(
-//                text = matchResult.value.trim('*'),
-//                spanStyle = SpanStyle(fontWeight = FontWeight.Bold)
-//            ),
-//            null
-//        )
-//        '_' -> SymbolAnnotation(
-//            AnnotatedString(
-//                text = matchResult.value.trim('_'),
-//                spanStyle = SpanStyle(fontStyle = FontStyle.Italic)
-//            ),
-//            null
-//        )
-//        '~' -> SymbolAnnotation(
-//            AnnotatedString(
-//                text = matchResult.value.trim('~'),
-//                spanStyle = SpanStyle(textDecoration = TextDecoration.LineThrough)
-//            ),
-//            null
-//        )
+        '*' -> SymbolAnnotation(
+            AnnotatedString(
+                text = matchResult.value.trim('*'),
+                spanStyle = SpanStyle(fontWeight = FontWeight.Bold)
+            ),
+            null
+        )
+        '_' -> SymbolAnnotation(
+            AnnotatedString(
+                text = matchResult.value.trim('_'),
+                spanStyle = SpanStyle(fontStyle = FontStyle.Italic)
+            ),
+            null
+        )
+        '~' -> SymbolAnnotation(
+            AnnotatedString(
+                text = matchResult.value.trim('~'),
+                spanStyle = SpanStyle(textDecoration = TextDecoration.LineThrough)
+            ),
+            null
+        )
         'h' -> SymbolAnnotation(
             AnnotatedString(
                 text = matchResult.value,
