@@ -2,19 +2,17 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite_core_ui.notification.DisplayedChatActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
 import com.kaleyra.collaboration_suite_utils.ContextRetainer
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.take
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 abstract class ChatActivity : FragmentActivity() {
 
-    protected open val viewModel: ChatViewModel by viewModels()
+    protected abstract val viewModel: ChatViewModel
 
     private var chatId: String? = null
 
@@ -38,16 +36,13 @@ abstract class ChatActivity : FragmentActivity() {
         sendChatAction(DisplayedChatActivity.ACTION_CHAT_NOT_VISIBLE)
     }
 
-    private fun setChatOrCloseActivity(intent: Intent) {
-        viewModel.isCollaborationConfigured
-            .take(1)
-            .onEach {
-                if (it) setChat(intent)
-                else {
-                    finishAndRemoveTask()
-                    ContextRetainer.context.goToLaunchingActivity()
-                }
-            }.launchIn(lifecycleScope)
+    private fun setChatOrCloseActivity(intent: Intent) = lifecycleScope.launch {
+        val isCollaborationConfigured = viewModel.isCollaborationConfigured.first()
+        if (isCollaborationConfigured) setChat(intent)
+        else {
+            finishAndRemoveTask()
+            ContextRetainer.context.goToLaunchingActivity()
+        }
     }
 
     private fun setChat(intent: Intent) {

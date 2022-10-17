@@ -2,28 +2,43 @@ package com.kaleyra.collaboration_suite_core_ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
+import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-abstract class CollaborationViewModel: ViewModel() {
+abstract class CollaborationViewModel(configure: suspend () -> Configuration) : ViewModel() {
 
-    private val _isCollaborationConfigured = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
+    private val _configuration = MutableSharedFlow<Configuration>(replay = 1, extraBufferCapacity = 1)
+
+    val isCollaborationConfigured = _configuration.map { it is Configuration.Success }.shareWhileSubscribed(viewModelScope)
+
+    val phoneBox = _configuration.mapSuccess { it.phoneBox }.shareWhileSubscribed(viewModelScope)
+
+    val chatBox = _configuration.mapSuccess { it.chatBoxUI }.shareWhileSubscribed(viewModelScope)
+
+    val usersDescription = _configuration.mapSuccess { it.usersDescription }.shareWhileSubscribed(viewModelScope)
 
     init {
         viewModelScope.launch {
-            _isCollaborationConfigured.emit(requestConfigure())
+            _configuration.emit(configure())
         }
     }
 
-    val isCollaborationConfigured = _isCollaborationConfigured.asSharedFlow()
+    private inline fun <T> Flow<Configuration>.mapSuccess(crossinline block: (Configuration.Success) -> T): Flow<T> =
+        filterIsInstance<Configuration.Success>().map { block(it) }
 
-    /**
-     * Checking if the CollaborationUI is configured. If it is not, it is requesting a new configuration.
-     * @return true if is configured, false otherwise
-     **/
-    private suspend fun requestConfigure(): Boolean {
-        if (!CollaborationUI.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
-        return CollaborationUI.isConfigured
-    }
+    protected fun <T> Flow<T>.shareWhileSubscribed(scope: CoroutineScope): SharedFlow<T> =
+        shareIn(scope, SharingStarted.Eagerly, 1)
+}
+
+sealed class Configuration {
+    data class Success(val phoneBox: PhoneBoxUI, val chatBoxUI: ChatBoxUI, val usersDescription: UsersDescription) : Configuration()
+    object Failure : Configuration()
+}
+
+suspend fun requestConfigure(): Configuration {
+    if (!CollaborationUI.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
+    return if (CollaborationUI.isConfigured) Configuration.Success(CollaborationUI.phoneBox, CollaborationUI.chatBox, CollaborationUI.usersDescription)
+    else Configuration.Failure
 }

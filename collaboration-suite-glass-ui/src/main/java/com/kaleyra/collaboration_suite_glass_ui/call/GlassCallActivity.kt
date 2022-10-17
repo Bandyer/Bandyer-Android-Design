@@ -16,7 +16,6 @@
 
 package com.kaleyra.collaboration_suite_glass_ui.call
 
-import android.app.ProgressDialog.show
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle

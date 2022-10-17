@@ -1,11 +1,13 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.User
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatViewModel
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
+import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -19,15 +21,20 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.mapTo
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
+internal class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure), ChatUiViewModel {
+
+    internal class Factory(val configure: suspend () -> Configuration) : ViewModelProvider.NewInstanceFactory() {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = PhoneChatViewModel(configure) as T
+    }
+
+    private val showUnreadHeader = MutableStateFlow(true)
+
+    private val isFetching = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
 
     private val _uiState = MutableStateFlow(ChatUiState())
 
-    override val uiState: StateFlow<ChatUiState>
-        get() = _uiState
-
-    private val showUnreadHeader = MutableStateFlow(true)
-    private val isFetching = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
+    override val uiState = _uiState.asStateFlow()
 
     init {
         getChatState(participants, chatBox).onEach { state ->
@@ -103,7 +110,10 @@ internal class PhoneChatViewModel : ChatViewModel(), ChatUiViewModel {
         messages.first().markAsRead()
     }
 
-    override fun showCall() = CollaborationUI.phoneBox.showCall()
+    override fun showCall() {
+        val phoneBox = phoneBox.replayCache.firstOrNull() ?: return
+        phoneBox.showCall()
+    }
 
     private fun call(preferredType: Call.PreferredType) {
         val phoneBox = phoneBox.replayCache.firstOrNull() ?: return

@@ -9,7 +9,7 @@ abstract class CollaborationActivity : AppCompatActivity() {
 
     /**
      * Checking if the CollaborationUI is configured. If it is not, it is requesting a new configuration.
-     * @return true if is configured, false otherwise
+     * @return Configuration.Success if it is configured, Configuration.Failure otherwise
      **/
     protected suspend fun requestConfigure(): Boolean {
         if (!CollaborationUI.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()

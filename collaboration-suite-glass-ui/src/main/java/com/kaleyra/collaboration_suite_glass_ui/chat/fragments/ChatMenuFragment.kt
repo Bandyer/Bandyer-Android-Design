@@ -118,7 +118,7 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
             }
         }
 
-        getActions(viewModel.actions.value).map { ChatMenuItem(it) }.also { itemAdapter!!.add(it) }
+        getActions(viewModel.actions.replayCache[0]).map { ChatMenuItem(it) }.also { itemAdapter!!.add(it) }
         return binding.root
     }
 

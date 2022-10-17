@@ -2,15 +2,14 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
-import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
-import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.spyk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.test.*
-import org.junit.After
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -20,91 +19,56 @@ class ChatViewModelTest {
     @get:Rule
     var mainDispatcherRule = MainDispatcherRule()
 
-    lateinit var viewModel: ChatViewModel
+    private lateinit var viewModel: ChatViewModel
 
-    private val phoneBoxMock = mockk<PhoneBoxUI>(relaxed = true)
-    private val callMock = mockk<CallUI>()
+    private val phoneBox = mockk<PhoneBoxUI>()
 
-    private val chatBoxMock = mockk<ChatBoxUI>(relaxed = true)
-    private val chatBoxStateMock = mockk<ChatBox.State>()
+    private val chatBox = mockk<ChatBoxUI>()
 
-    private val chatMock = mockk<ChatUI>()
+    private val call = mockk<CallUI>()
 
-    private val userDescriptionMock = mockk<UsersDescription>()
+    private val chat = mockk<ChatUI>()
 
     @Before
     fun setUp() {
-        mockkObject(CollaborationService)
-        mockkObject(CollaborationUI)
-        coEvery { CollaborationService.get() } returns null
-        coEvery { CollaborationUI.isConfigured } returns true
-        coEvery { CollaborationUI.phoneBox } returns phoneBoxMock
-        coEvery { CollaborationUI.chatBox } returns chatBoxMock
-        coEvery { CollaborationUI.usersDescription } returns userDescriptionMock
-        every { phoneBoxMock.call } returns MutableStateFlow(callMock)
-        every { chatBoxMock.state } returns MutableStateFlow(chatBoxStateMock)
-        every { chatBoxMock.create(any()) } returns chatMock
-        viewModel = ChatViewModel()
-    }
-
-    @After
-    fun tearDown() {
-        unmockkAll()
+        viewModel = spyk(ChatViewModel { Configuration.Success(phoneBox, chatBox, mockk()) })
+        every { viewModel.chatBox } returns MutableStateFlow(chatBox)
+        every { chatBox.create(any()) } returns chat
+        every { phoneBox.call } returns MutableStateFlow(call)
     }
 
     @Test
-    fun getUsersDescription() = runTest {
-        assert(viewModel.usersDescription.first() == userDescriptionMock)
+    fun getCall_getCallInstance() = runTest {
+        assert(viewModel.call.first() == call)
     }
 
     @Test
-    fun getPhoneBox() = runTest {
-        assert(viewModel.phoneBox.first() == phoneBoxMock)
+    fun setChatUser_getChatInstance() = runTest {
+        assert(viewModel.setChat("") == viewModel.chat.first())
     }
 
     @Test
-    fun getCall() = runTest {
-        assert(viewModel.call.first() == callMock)
+    fun getMessages_getMessagesInstance() = runTest {
+        val messages = mockk<MessagesUI>()
+        every { chat.messages } returns MutableStateFlow(messages)
+        viewModel.setChat("")
+        assert(viewModel.messages.first() == messages)
     }
 
     @Test
-    fun getChatBox() = runTest {
-        assert(viewModel.chatBox.first() == chatBoxMock)
-    }
-
-    @Test
-    fun getChatBoxState() = runTest {
-        assert(viewModel.chatBoxState.first() == chatBoxStateMock)
-    }
-
-    @Test
-    fun setChat() = runTest {
-        val chat = viewModel.setChat(userId = "")
-        assert(viewModel.chat.first() == chat)
-    }
-
-    @Test
-    fun getMessages() = runTest {
-        val messagesMock = mockk<MessagesUI>()
-        every { chatMock.messages } returns MutableStateFlow(messagesMock)
-        viewModel.setChat(userId = "")
-        assert(viewModel.messages.first() == messagesMock)
-    }
-
-    @Test
-    fun getActions() = runTest {
+    fun getActions_getActionsInstance() = runTest {
         val actions = setOf(ChatUI.Action.ShowParticipants)
-        every { chatMock.actions } returns MutableStateFlow(actions)
-        viewModel.setChat(userId = "")
-        assert(viewModel.actions.first { it.isNotEmpty() } == actions)
+        every { chat.actions } returns MutableStateFlow(actions)
+        viewModel.setChat("")
+        assert(viewModel.actions.first() == actions)
     }
 
     @Test
-    fun getParticipants() = runTest {
-        val participantsMock = mockk<ChatParticipants>()
-        every { chatMock.participants } returns MutableStateFlow(participantsMock)
-        viewModel.setChat(userId = "")
-        assert(viewModel.participants.first() == participantsMock)
+    fun getParticipants_getParticipantsInstance() = runTest {
+        val participants = mockk<ChatParticipants>()
+        every { chat.participants } returns MutableStateFlow(participants)
+        viewModel.setChat("")
+        assert(viewModel.participants.first() == participants)
     }
 
 }
