@@ -20,20 +20,24 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.core.view.WindowCompat
 import androidx.lifecycle.ViewModel
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.ChatScreen
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.model.*
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiState
-import com.kaleyra.collaboration_suite_phone_ui.chat.compose.viewmodel.ChatUiViewModel
+import com.kaleyra.collaboration_suite_phone_ui.chat.ChatScreen
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockUiState
+import com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel.ChatUiViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class MockChatViewModel : ViewModel(), ChatUiViewModel {
 
     override val uiState: StateFlow<ChatUiState> = MutableStateFlow(mockUiState)
-
-    override fun readAllMessages() = Unit
 
     override fun sendMessage(text: String) = Unit
 
@@ -45,13 +49,7 @@ class MockChatViewModel : ViewModel(), ChatUiViewModel {
 
     override fun onAllMessagesScrolled() = Unit
 
-    override fun call(callType: CallType) = Unit
-
     override fun showCall() = Unit
-
-    init {
-        fetchMessages()
-    }
 }
 
 class ChatActivity : ComponentActivity() {
@@ -60,9 +58,16 @@ class ChatActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             MdcTheme(setDefaultFontFamily = true) {
-                ChatScreen(onBackPressed = { onBackPressed() }, viewModel = viewModel)
+                ChatScreen(onBackPressed = this::onBackPressed, viewModel = viewModel)
+
+                val isSystemInDarkTheme = isSystemInDarkTheme()
+                SideEffect {
+                    window.navigationBarColor = if (isSystemInDarkTheme) Color.Black.toArgb() else Color.White.toArgb()
+                    WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightNavigationBars = !isSystemInDarkTheme
+                }
             }
         }
     }

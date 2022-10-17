@@ -25,7 +25,6 @@
         <item name="fontFamily">@font/kaleyra_font</item>
         <item name="android:fontFamily">@font/kaleyra_font</item>
         <item name="elevationOverlayEnabled">false</item>
-        <item name="toolbarStyle">@style/KaleyraCollaborationSuiteUI.ToolBarStyle</item>
     </style>
 
     <style name="BaseDesignDemoApp" parent="BaseDesignDemoApp.V21"/>
