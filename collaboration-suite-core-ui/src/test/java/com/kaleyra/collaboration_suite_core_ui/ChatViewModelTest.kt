@@ -9,6 +9,7 @@ import io.mockk.spyk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
@@ -31,8 +32,7 @@ class ChatViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = spyk(ChatViewModel { Configuration.Success(phoneBox, chatBox, mockk()) })
-        every { viewModel.chatBox } returns MutableStateFlow(chatBox)
+        viewModel = ChatViewModel { Configuration.Success(phoneBox, chatBox, mockk()) }
         every { chatBox.create(any()) } returns chat
         every { phoneBox.call } returns MutableStateFlow(call)
     }
@@ -44,11 +44,13 @@ class ChatViewModelTest {
 
     @Test
     fun setChatUser_getChatInstance() = runTest {
+        advanceUntilIdle()
         assert(viewModel.setChat("") == viewModel.chat.first())
     }
 
     @Test
     fun getMessages_getMessagesInstance() = runTest {
+        advanceUntilIdle()
         val messages = mockk<MessagesUI>()
         every { chat.messages } returns MutableStateFlow(messages)
         viewModel.setChat("")
@@ -57,6 +59,7 @@ class ChatViewModelTest {
 
     @Test
     fun getActions_getActionsInstance() = runTest {
+        advanceUntilIdle()
         val actions = setOf(ChatUI.Action.ShowParticipants)
         every { chat.actions } returns MutableStateFlow(actions)
         viewModel.setChat("")
@@ -65,6 +68,7 @@ class ChatViewModelTest {
 
     @Test
     fun getParticipants_getParticipantsInstance() = runTest {
+        advanceUntilIdle()
         val participants = mockk<ChatParticipants>()
         every { chat.participants } returns MutableStateFlow(participants)
         viewModel.setChat("")
