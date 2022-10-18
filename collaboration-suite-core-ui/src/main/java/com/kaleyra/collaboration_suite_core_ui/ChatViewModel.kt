@@ -11,16 +11,16 @@ open class ChatViewModel(configure: suspend () -> Configuration) : Collaboration
     private val _chat = MutableSharedFlow<ChatUI>(replay = 1, extraBufferCapacity = 1)
     val chat = _chat.asSharedFlow()
 
-    val call = phoneBox.flatMapLatest { it.call }.shareWhileSubscribed(viewModelScope)
+    val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
 
-    val messages = chat.flatMapLatest { it.messages }.shareWhileSubscribed(viewModelScope)
+    val messages = chat.flatMapLatest { it.messages }.shareInEagerly(viewModelScope)
 
-    val actions = chat.flatMapLatest { it.actions }.shareWhileSubscribed(viewModelScope)
+    val actions = chat.flatMapLatest { it.actions }.shareInEagerly(viewModelScope)
 
-    val participants = chat.flatMapLatest { it.participants }.shareWhileSubscribed(viewModelScope)
+    val participants = chat.flatMapLatest { it.participants }.shareInEagerly(viewModelScope)
 
     fun setChat(userId: String): ChatUI? {
-        val chatBox = chatBox.replayCache.firstOrNull() ?: return null
+        val chatBox = chatBox.getValue() ?: return null
         val chat = chatBox.create(object : User {
             override val userId = userId
         })

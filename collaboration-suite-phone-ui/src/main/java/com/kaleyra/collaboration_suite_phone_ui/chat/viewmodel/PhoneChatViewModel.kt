@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 internal class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure), ChatUiViewModel {
 
-    internal class Factory(val configure: suspend () -> Configuration) : ViewModelProvider.NewInstanceFactory() {
+    internal class Factory(private val configure: suspend () -> Configuration) : ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T = PhoneChatViewModel(configure) as T
     }
@@ -80,14 +80,14 @@ internal class PhoneChatViewModel(configure: suspend () -> Configuration) : Chat
     }
 
     override fun sendMessage(text: String) {
-        val chat = chat.replayCache.firstOrNull() ?: return
+        val chat = chat.getValue() ?: return
         val message = chat.create(Message.Content.Text(text))
         chat.add(message)
         showUnreadHeader.value = false
     }
 
     override fun typing() {
-        val chat = chat.replayCache.firstOrNull() ?: return
+        val chat = chat.getValue() ?: return
         chat.participants.value.me.typing()
     }
 
@@ -101,23 +101,23 @@ internal class PhoneChatViewModel(configure: suspend () -> Configuration) : Chat
     }
 
     override fun onMessageScrolled(messageItem: ConversationItem.MessageItem) {
-        val messages = messages.replayCache.firstOrNull()?.other ?: return
+        val messages = messages.getValue()?.other ?: return
         messages.firstOrNull { it.id == messageItem.id }?.markAsRead()
     }
 
     override fun onAllMessagesScrolled() {
-        val messages = messages.replayCache.firstOrNull()?.other ?: return
+        val messages = messages.getValue()?.other ?: return
         messages.first().markAsRead()
     }
 
     override fun showCall() {
-        val phoneBox = phoneBox.replayCache.firstOrNull() ?: return
+        val phoneBox = phoneBox.getValue() ?: return
         phoneBox.showCall()
     }
 
     private fun call(preferredType: Call.PreferredType) {
-        val phoneBox = phoneBox.replayCache.firstOrNull() ?: return
-        val chat = chat.replayCache.firstOrNull() ?: return
+        val phoneBox = phoneBox.getValue() ?: return
+        val chat = chat.getValue() ?: return
         val userId = chat.participants.value.others.first().userId
         phoneBox.call(listOf(object : User {
             override val userId = userId
