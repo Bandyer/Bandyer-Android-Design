@@ -50,7 +50,7 @@ class UiModelMapperTest {
         every { callMock.state } returns callState
         every { chatBoxMock.state } returns chatBoxState
         every { messagesUIMock.my } returns listOf(myMessageMock)
-        every { messagesUIMock.other } returns listOf(otherMessageMock)
+        every { messagesUIMock.other } returns listOf(otherUnreadMessageMock1)
         every { messagesUIMock.list } returns messagesUIMock.other + messagesUIMock.my
     }
 
@@ -201,7 +201,7 @@ class UiModelMapperTest {
             firstUnreadMessageId = "",
             shouldShowUnreadHeader = MutableStateFlow(false)
         ).first()
-        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherMessageMock.toUiMessage())))
+        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherUnreadMessageMock1.toUiMessage())))
         assert(result[1] == ConversationItem.DayItem(yesterday.toEpochMilli()))
         assert(isSameMessageItem(result[2], ConversationItem.MessageItem(myMessageMock.toUiMessage())))
         assert(result[3] == ConversationItem.DayItem(now.toEpochMilli()))
@@ -210,10 +210,10 @@ class UiModelMapperTest {
     @Test
     fun oneUnreadMessage_mapToConversationItems_unreadLabelShown() = runTest {
         val result = flowOf(messagesUIMock).mapToConversationItems(
-            firstUnreadMessageId = otherMessageMock.id,
+            firstUnreadMessageId = otherUnreadMessageMock1.id,
             shouldShowUnreadHeader = MutableStateFlow(true)
         ).first()
-        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherMessageMock.toUiMessage())))
+        assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherUnreadMessageMock1.toUiMessage())))
         assert(result[1] is ConversationItem.UnreadMessagesItem)
         assert(result[2] == ConversationItem.DayItem(yesterday.toEpochMilli()))
         assert(isSameMessageItem(result[3], ConversationItem.MessageItem(myMessageMock.toUiMessage())))
@@ -223,7 +223,7 @@ class UiModelMapperTest {
     @Test
     fun allMessagesRead_findFirstUnreadMessage_null() = runTest {
         val messages = mockk<Messages>()
-        every { messages.other } returns listOf(readMessageMock, readMessageMock, readMessageMock)
+        every { messages.other } returns listOf(otherReadMessageMock, otherReadMessageMock, otherReadMessageMock)
         val fetch = { _: Int, completion: (Result<Messages>) -> Unit ->
             completion(Result.success(messages))
         }
@@ -237,8 +237,8 @@ class UiModelMapperTest {
         val messages = mockk<Messages>()
         val emptyMessages = mockk<Messages>()
         var fetched = false
-        every { initMessages.other } returns listOf(unreadMessageMock)
-        every { messages.other } returns listOf(unreadMessageMock, unreadMessageMock, lastUnreadMessageMock)
+        every { initMessages.other } returns listOf(otherUnreadMessageMock1)
+        every { messages.other } returns listOf(otherUnreadMessageMock1, otherUnreadMessageMock1, otherUnreadMessageMock2)
         every { emptyMessages.other } returns listOf()
         val fetch = { _: Int, completion: (Result<Messages>) -> Unit ->
             if (!fetched) {
@@ -249,18 +249,18 @@ class UiModelMapperTest {
             }
         }
         val result = findFirstUnreadMessageId(initMessages, fetch)
-        assert(result == lastUnreadMessageMock.id)
+        assert(result == otherUnreadMessageMock2.id)
     }
 
     @Test
     fun mixedMessageState_findFirstUnreadMessage_lastUnreadMessageId() = runTest {
         val messages = mockk<Messages>()
-        every { messages.other } returns listOf(unreadMessageMock, lastUnreadMessageMock, readMessageMock)
+        every { messages.other } returns listOf(otherUnreadMessageMock1, otherUnreadMessageMock2, otherReadMessageMock)
         val fetch = { _: Int, completion: (Result<Messages>) -> Unit ->
             completion(Result.success(messages))
         }
         val result = findFirstUnreadMessageId(messages, fetch)
-        assert(result == lastUnreadMessageMock.id)
+        assert(result == otherUnreadMessageMock2.id)
     }
 
     private suspend fun isSameMessageItem(item1: ConversationItem, item2: ConversationItem): Boolean {

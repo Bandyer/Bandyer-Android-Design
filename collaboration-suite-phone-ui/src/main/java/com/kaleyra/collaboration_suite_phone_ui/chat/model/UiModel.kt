@@ -39,10 +39,12 @@ sealed class ChatState {
     object None : ChatState()
 }
 
+// Image is nullable for testing purpose. It is not possible
+// to mock a static field, since it has no getter.
 @Immutable
 data class ChatInfo(
     val name: String = "",
-    val image: Uri = Uri.EMPTY
+    val image: Uri? = Uri.EMPTY
 )
 
 @Immutable
