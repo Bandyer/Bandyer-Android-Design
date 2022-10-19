@@ -33,9 +33,10 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
-import com.kaleyra.collaboration_suite_core_ui.requestConfigure
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.conversation.Messages
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.UserInput
@@ -52,7 +53,9 @@ import kotlinx.coroutines.launch
 
 internal class PhoneChatActivity : ChatActivity() {
 
-    override val viewModel: PhoneChatViewModel by viewModels { PhoneChatViewModel.Factory(::requestConfigure) }
+    override val viewModel: PhoneChatViewModel by viewModels {
+        PhoneChatViewModel.provideFactory(::requestConfiguration)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

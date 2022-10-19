@@ -23,11 +23,6 @@ import kotlinx.coroutines.launch
 
 internal class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure), ChatUiViewModel {
 
-    internal class Factory(private val configure: suspend () -> Configuration) : ViewModelProvider.NewInstanceFactory() {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = PhoneChatViewModel(configure) as T
-    }
-
     private val showUnreadHeader = MutableStateFlow(true)
 
     private val isFetching = MutableSharedFlow<Boolean>(replay = 1, extraBufferCapacity = 1)
@@ -128,5 +123,12 @@ internal class PhoneChatViewModel(configure: suspend () -> Configuration) : Chat
 
     companion object {
         private const val FETCH_COUNT = 50
+
+        fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.NewInstanceFactory() {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return PhoneChatViewModel(configure) as T
+            }
+        }
     }
 }

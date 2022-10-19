@@ -11,11 +11,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 
 class GlassChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure) {
 
-    class Factory(private val configure: suspend () -> Configuration) : ViewModelProvider.NewInstanceFactory() {
-        @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = GlassChatViewModel(configure) as T
-    }
-
     private val deviceStatusObserver = DeviceStatusObserver().apply { start() }
 
     val chatBoxState = chatBox.flatMapLatest { it.state }.shareInEagerly(viewModelScope)
@@ -27,5 +22,14 @@ class GlassChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
     override fun onCleared() {
         super.onCleared()
         deviceStatusObserver.stop()
+    }
+
+    companion object {
+        fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.NewInstanceFactory() {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return GlassChatViewModel(configure) as T
+            }
+        }
     }
 }

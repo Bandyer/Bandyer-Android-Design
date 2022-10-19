@@ -40,7 +40,7 @@ sealed class Configuration {
     object Failure : Configuration()
 }
 
-suspend fun requestConfigure(): Configuration {
+suspend fun requestConfiguration(): Configuration {
     if (!CollaborationUI.isConfigured) CollaborationService.get()?.onRequestNewCollaborationConfigure()
     return if (CollaborationUI.isConfigured) Configuration.Success(CollaborationUI.phoneBox, CollaborationUI.chatBox, CollaborationUI.usersDescription)
     else Configuration.Failure

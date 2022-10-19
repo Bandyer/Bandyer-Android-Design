@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
-import com.kaleyra.collaboration_suite_core_ui.requestConfigure
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
@@ -28,7 +28,9 @@ internal class GlassChatActivity : ChatActivity(), GlassTouchEventManager.Listen
 
     private lateinit var binding: KaleyraChatActivityGlassBinding
 
-    override val viewModel: GlassChatViewModel by viewModels { GlassChatViewModel.Factory(::requestConfigure) }
+    override val viewModel: GlassChatViewModel by viewModels {
+        GlassChatViewModel.provideFactory(::requestConfiguration)
+    }
     private var glassTouchEventManager: GlassTouchEventManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
