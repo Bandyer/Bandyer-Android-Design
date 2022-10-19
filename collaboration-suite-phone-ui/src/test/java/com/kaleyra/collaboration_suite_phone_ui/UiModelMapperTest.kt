@@ -37,6 +37,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -65,7 +66,7 @@ class UiModelMapperTest {
 
     @Test
     fun emptyActions_mapToUiActions_emptyUiActions() {
-        assert(setOf<ChatUI.Action>().mapToChatActions {} == setOf<ChatAction>())
+        assertEquals(setOf<ChatUI.Action>().mapToChatActions {}, setOf<ChatAction>())
     }
 
     @Test
@@ -110,25 +111,25 @@ class UiModelMapperTest {
     @Test
     fun chatBoxConnecting_getChatState_networkConnecting() = runTest {
         chatBoxState.value = ChatBox.State.Connecting
-        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.NetworkState.Connecting)
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.NetworkState.Connecting)
     }
 
     @Test
     fun chatBoxDisconnecting_getChatState_none() = runTest {
         chatBoxState.value = ChatBox.State.Disconnecting
-        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.None)
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.None)
     }
 
     @Test
     fun chatBoxDisconnected_getChatState_none() = runTest {
         chatBoxState.value = ChatBox.State.Disconnected
-        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.None)
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.None)
     }
 
     @Test
     fun chatBoxInitialized_getChatState_none() = runTest {
         chatBoxState.value = ChatBox.State.Initialized
-        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.None)
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.None)
     }
 
     @Test
@@ -136,33 +137,33 @@ class UiModelMapperTest {
         with(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock))) {
             first()
             chatBoxState.value = ChatBox.State.Connecting
-            assert(first() == ChatState.NetworkState.Offline)
+            assertEquals(first(), ChatState.NetworkState.Offline)
         }
     }
 
     @Test
     fun participantOnline_getChatState_userOnline() = runTest {
         otherParticipantState.value = ChatParticipant.State.Joined.Online
-        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.UserState.Online)
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.UserState.Online)
     }
 
     @Test
     fun participantOfflineAt_getChatState_userOfflineTimestamp() = runTest {
         val nowMillis = now.toEpochMilli()
         otherParticipantState.value = ChatParticipant.State.Joined.Offline(ChatParticipant.State.Joined.Offline.LastLogin.At(Date(nowMillis)))
-        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.UserState.Offline(nowMillis))
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.UserState.Offline(nowMillis))
     }
 
     @Test
     fun participantOffline_getChatState_userOffline() = runTest {
         otherParticipantState.value = ChatParticipant.State.Joined.Offline(ChatParticipant.State.Joined.Offline.LastLogin.Never)
-        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.UserState.Offline(null))
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.UserState.Offline(null))
     }
 
     @Test
     fun participantTyping_getChatState_userTyping() = runTest {
         otherParticipantEvents.value = ChatParticipant.Event.Typing.Started
-        assert(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first() == ChatState.UserState.Typing)
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.UserState.Typing)
     }
 
     // Does it makes sense?
@@ -171,7 +172,7 @@ class UiModelMapperTest {
         val uriMock = mockk<Uri>()
         coEvery { usersDescriptionMock.name(any()) } returns otherParticipantMock.userId
         coEvery { usersDescriptionMock.image(any()) } returns uriMock
-        assert(getChatInfo(flowOf(chatParticipantsMock), flowOf(usersDescriptionMock)).first() == ChatInfo(otherParticipantMock.userId, uriMock))
+        assertEquals(getChatInfo(flowOf(chatParticipantsMock), flowOf(usersDescriptionMock)).first(), ChatInfo(otherParticipantMock.userId, uriMock))
     }
 
     @Test
@@ -192,7 +193,7 @@ class UiModelMapperTest {
             shouldShowUnreadHeader = MutableStateFlow(false)
         ).first()
         assert(isSameMessageItem(result[0], ConversationItem.MessageItem(myMessageMock.toUiMessage())))
-        assert(result[1] == ConversationItem.DayItem(now.toEpochMilli()))
+        assertEquals(result[1], ConversationItem.DayItem(now.toEpochMilli()))
     }
 
     @Test
@@ -202,9 +203,9 @@ class UiModelMapperTest {
             shouldShowUnreadHeader = MutableStateFlow(false)
         ).first()
         assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherUnreadMessageMock1.toUiMessage())))
-        assert(result[1] == ConversationItem.DayItem(yesterday.toEpochMilli()))
+        assertEquals(result[1], ConversationItem.DayItem(yesterday.toEpochMilli()))
         assert(isSameMessageItem(result[2], ConversationItem.MessageItem(myMessageMock.toUiMessage())))
-        assert(result[3] == ConversationItem.DayItem(now.toEpochMilli()))
+        assertEquals(result[3], ConversationItem.DayItem(now.toEpochMilli()))
     }
 
     @Test
@@ -214,10 +215,10 @@ class UiModelMapperTest {
             shouldShowUnreadHeader = MutableStateFlow(true)
         ).first()
         assert(isSameMessageItem(result[0], ConversationItem.MessageItem(otherUnreadMessageMock1.toUiMessage())))
-        assert(result[1] is ConversationItem.UnreadMessagesItem)
-        assert(result[2] == ConversationItem.DayItem(yesterday.toEpochMilli()))
+        assertEquals(result[1].javaClass, ConversationItem.UnreadMessagesItem.javaClass)
+        assertEquals(result[2], ConversationItem.DayItem(yesterday.toEpochMilli()))
         assert(isSameMessageItem(result[3], ConversationItem.MessageItem(myMessageMock.toUiMessage())))
-        assert(result[4] == ConversationItem.DayItem(now.toEpochMilli()))
+        assertEquals(result[4], ConversationItem.DayItem(now.toEpochMilli()))
     }
 
     @Test
@@ -228,7 +229,7 @@ class UiModelMapperTest {
             completion(Result.success(messages))
         }
         val result = findFirstUnreadMessageId(messages, fetch)
-        assert(result == null)
+        assertEquals(result, null)
     }
 
     @Test
@@ -249,7 +250,7 @@ class UiModelMapperTest {
             }
         }
         val result = findFirstUnreadMessageId(initMessages, fetch)
-        assert(result == otherUnreadMessageMock2.id)
+        assertEquals(result, otherUnreadMessageMock2.id)
     }
 
     @Test
@@ -260,7 +261,7 @@ class UiModelMapperTest {
             completion(Result.success(messages))
         }
         val result = findFirstUnreadMessageId(messages, fetch)
-        assert(result == otherUnreadMessageMock2.id)
+        assertEquals(result, otherUnreadMessageMock2.id)
     }
 
     private suspend fun isSameMessageItem(item1: ConversationItem, item2: ConversationItem): Boolean {

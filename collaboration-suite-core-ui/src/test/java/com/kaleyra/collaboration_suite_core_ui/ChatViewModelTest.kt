@@ -5,12 +5,12 @@ package com.kaleyra.collaboration_suite_core_ui
 import com.kaleyra.collaboration_suite.chatbox.ChatParticipants
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.spyk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -39,13 +39,13 @@ class ChatViewModelTest {
 
     @Test
     fun getCall_getCallInstance() = runTest {
-        assert(viewModel.call.first() == call)
+        assertEquals(viewModel.call.first(), call)
     }
 
     @Test
     fun setChatUser_getChatInstance() = runTest {
         advanceUntilIdle()
-        assert(viewModel.setChat("") == viewModel.chat.first())
+        assertEquals(viewModel.setChat(""), viewModel.chat.first())
     }
 
     @Test
@@ -54,7 +54,7 @@ class ChatViewModelTest {
         val messages = mockk<MessagesUI>()
         every { chat.messages } returns MutableStateFlow(messages)
         viewModel.setChat("")
-        assert(viewModel.messages.first() == messages)
+        assertEquals(viewModel.messages.first(), messages)
     }
 
     @Test
@@ -63,7 +63,7 @@ class ChatViewModelTest {
         val actions = setOf(ChatUI.Action.ShowParticipants)
         every { chat.actions } returns MutableStateFlow(actions)
         viewModel.setChat("")
-        assert(viewModel.actions.first() == actions)
+        assertEquals(viewModel.actions.first(), actions)
     }
 
     @Test
@@ -72,7 +72,7 @@ class ChatViewModelTest {
         val participants = mockk<ChatParticipants>()
         every { chat.participants } returns MutableStateFlow(participants)
         viewModel.setChat("")
-        assert(viewModel.participants.first() == participants)
+        assertEquals(viewModel.participants.first(), participants)
     }
 
 }

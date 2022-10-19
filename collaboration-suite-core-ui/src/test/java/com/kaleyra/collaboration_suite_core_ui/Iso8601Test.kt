@@ -17,6 +17,8 @@
 package com.kaleyra.collaboration_suite_core_ui
 
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
+import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import java.text.SimpleDateFormat
 import java.time.Instant
@@ -34,7 +36,7 @@ class Iso8601Test {
         // set milliseconds to 0
         expected -= expected % 1000
         val result = Iso8601.getISO8601TstampInMillis(timestamp)
-        assert(result == expected)
+        assertEquals(result, expected)
     }
 
     @Test
@@ -53,7 +55,7 @@ class Iso8601Test {
 
         expected -= expected % 1000
         result -= result % 1000
-        assert(expected == result)
+        assertEquals(expected, result)
     }
 
     @Test
@@ -64,6 +66,6 @@ class Iso8601Test {
             .toEpochMilli()
         val expected = Instant.ofEpochMilli(millis).toString()
         val result = Iso8601.parseMillisToIso8601(millis)
-        assert(expected == result)
+        assertEquals(expected, result)
     }
 }

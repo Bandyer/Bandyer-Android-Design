@@ -5,6 +5,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
@@ -30,20 +32,20 @@ class CollaborationViewModelTest {
     fun configurationSuccessful_getPhoneBox_getPhoneBoxInstance() = runTest {
         val phoneBox = mockk<PhoneBoxUI>()
         val viewModel = object : CollaborationViewModel({Configuration.Success(phoneBox, mockk(), mockk())}) {}
-        assert(viewModel.phoneBox.first() == phoneBox)
+        assertEquals(viewModel.phoneBox.first(), phoneBox)
     }
 
     @Test
     fun configurationSuccessful_getChatBox_getChatBoxInstance() = runTest {
         val chatBox = mockk<ChatBoxUI>()
         val viewModel = object : CollaborationViewModel({Configuration.Success(mockk(), chatBox, mockk())}) {}
-        assert(viewModel.chatBox.first() == chatBox)
+        assertEquals(viewModel.chatBox.first(), chatBox)
     }
 
     @Test
     fun configurationSuccessful_getUsersDescription_getUsersDescriptionInstance() = runTest {
         val usersDescription = mockk<UsersDescription>()
         val viewModel = object : CollaborationViewModel({Configuration.Success(mockk(), mockk(), usersDescription)}) {}
-        assert(viewModel.usersDescription.first() == usersDescription)
+        assertEquals(viewModel.usersDescription.first(), usersDescription)
     }
 }
