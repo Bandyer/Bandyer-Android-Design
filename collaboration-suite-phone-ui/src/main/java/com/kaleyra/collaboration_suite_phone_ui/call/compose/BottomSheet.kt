@@ -16,9 +16,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.semantics.collapse
-import androidx.compose.ui.semantics.expand
-import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.*
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.utils.PreUpPostDownNestedScrollConnection
@@ -36,7 +35,7 @@ enum class BottomSheetValue {
 }
 
 @Stable
-class BottomSheetState(
+class BottomSheetScaffoldState(
     initialValue: BottomSheetValue,
     val animationSpec: AnimationSpec<Float> = SwipeableDefaults.AnimationSpec,
     val confirmStateChange: (BottomSheetValue) -> Boolean = { true }
@@ -45,7 +44,6 @@ class BottomSheetState(
     animationSpec = animationSpec,
     confirmStateChange = confirmStateChange
 ) {
-
     val isExpanded: Boolean
         get() = currentValue == BottomSheetValue.Expanded
 
@@ -70,10 +68,10 @@ class BottomSheetState(
         fun Saver(
             animationSpec: AnimationSpec<Float>,
             confirmStateChange: (BottomSheetValue) -> Boolean
-        ): Saver<BottomSheetState, *> = Saver(
+        ): Saver<BottomSheetScaffoldState, *> = Saver(
             save = { it.currentValue },
             restore = {
-                BottomSheetState(
+                BottomSheetScaffoldState(
                     initialValue = it,
                     animationSpec = animationSpec,
                     confirmStateChange = confirmStateChange
@@ -86,19 +84,19 @@ class BottomSheetState(
 }
 
 @Composable
-fun rememberBottomSheetState(
+fun rememberBottomSheetScaffoldState(
     initialValue: BottomSheetValue,
     animationSpec: AnimationSpec<Float> = SwipeableDefaults.AnimationSpec,
     confirmStateChange: (BottomSheetValue) -> Boolean = { true }
-): BottomSheetState {
+): BottomSheetScaffoldState {
     return rememberSaveable(
         animationSpec,
-        saver = BottomSheetState.Saver(
+        saver = BottomSheetScaffoldState.Saver(
             animationSpec = animationSpec,
             confirmStateChange = confirmStateChange
         )
     ) {
-        BottomSheetState(
+        BottomSheetScaffoldState(
             initialValue = initialValue,
             animationSpec = animationSpec,
             confirmStateChange = confirmStateChange
@@ -106,11 +104,14 @@ fun rememberBottomSheetState(
     }
 }
 
+const val BottomSheetScaffoldTag = "BottomSheetScaffoldTag"
+const val BottomSheetTag = "BottomSheetTag"
+
 @Composable
-fun BottomSheet(
+fun BottomSheetScaffold(
     sheetContent: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
-    sheetState: BottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed),
+    sheetState: BottomSheetScaffoldState = rememberBottomSheetScaffoldState(BottomSheetValue.Collapsed),
     anchor: (@Composable () -> Unit)? = null,
     sheetGesturesEnabled: Boolean = true,
     sheetShape: Shape = MaterialTheme.shapes.large,
@@ -124,7 +125,12 @@ fun BottomSheet(
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    BoxWithConstraints(modifier) {
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag(BottomSheetScaffoldTag)
+            .then(modifier)
+    ) {
         val fullHeight = constraints.maxHeight.toFloat()
         val peekHeightPx = with(LocalDensity.current) { sheetPeekHeight.toPx() }
         val halfExpandedPx = with(LocalDensity.current) { sheetHalfExpandedHeight.toPx() }
@@ -164,9 +170,10 @@ fun BottomSheet(
                 }
             }
 
-        BottomSheetLayout(
+        BottomSheetScaffoldLayout(
             body = {
                 Surface(
+                    modifier = Modifier.padding(),
                     color = backgroundColor,
                     contentColor = contentColor,
                     content = { content(PaddingValues(bottom = sheetPeekHeight)) }
@@ -177,6 +184,7 @@ fun BottomSheet(
                     swipeable
                         .fillMaxWidth()
                         .requiredHeightIn(min = sheetPeekHeight)
+                        .testTag(BottomSheetTag)
                         .onGloballyPositioned {
                             bottomSheetHeight = it.size.height.toFloat()
                         },
@@ -188,9 +196,7 @@ fun BottomSheet(
                 )
             },
             anchor = {
-                Box {
-                    anchor?.invoke()
-                }
+                Box { anchor?.invoke() }
             },
             bottomSheetOffset = sheetState.offset
         )
@@ -199,7 +205,7 @@ fun BottomSheet(
 }
 
 @Composable
-private fun BottomSheetLayout(
+private fun BottomSheetScaffoldLayout(
     body: @Composable () -> Unit,
     bottomSheet: @Composable () -> Unit,
     anchor: @Composable () -> Unit,
@@ -217,7 +223,7 @@ private fun BottomSheetLayout(
         layout(placeable.width, placeable.height) {
             placeable.placeRelative(0, 0)
 
-            val (sheetPlaceable, fabPlaceable) =
+            val (sheetPlaceable, anchorPlaceable) =
                 measurables.drop(1).map {
                     it.measure(constraints.copy(minWidth = 0, minHeight = 0))
                 }
@@ -226,10 +232,10 @@ private fun BottomSheetLayout(
 
             sheetPlaceable.placeRelative(0, sheetOffsetY)
 
-            val fabOffsetX = placeable.width - fabPlaceable.width - AnchorEndSpacing.roundToPx()
-            val fabOffsetY = sheetOffsetY - fabPlaceable.height - AnchorBottomSpacing.roundToPx()
+            val anchorOffsetX = placeable.width - anchorPlaceable.width - AnchorEndSpacing.roundToPx()
+            val anchorOffsetY = sheetOffsetY - anchorPlaceable.height - AnchorBottomSpacing.roundToPx()
 
-            fabPlaceable.placeRelative(fabOffsetX, fabOffsetY)
+            anchorPlaceable.placeRelative(anchorOffsetX, anchorOffsetY)
         }
     }
 }
