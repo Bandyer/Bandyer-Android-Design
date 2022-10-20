@@ -462,9 +462,9 @@ internal class GlassCallActivity :
                     )
                 }.launchIn(this)
 
-            viewModel.call.onEach {
+            viewModel.call.flatMapLatest { it.extras.recording.state }.onEach {
                 with(binding.kaleyraStatusBar) {
-                    if (it.extras.recording is Call.Recording.OnConnect) showRec() else hideRec()
+                    if (it is Call.Recording.State.Started) showRec() else hideRec()
                 }
             }.launchIn(this)
 
