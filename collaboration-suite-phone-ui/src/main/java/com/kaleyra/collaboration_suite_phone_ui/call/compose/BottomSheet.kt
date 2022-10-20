@@ -233,16 +233,13 @@ private fun BottomSheetScaffoldLayout(
 
             sheetPlaceable.placeRelative(0, sheetOffsetY)
 
-            val anchorOffsetX = placeable.width - anchorPlaceable.width - AnchorEndSpacing.roundToPx()
-            val anchorOffsetY = sheetOffsetY - anchorPlaceable.height - AnchorBottomSpacing.roundToPx()
+            val anchorOffsetX = placeable.width - anchorPlaceable.width
+            val anchorOffsetY = sheetOffsetY - anchorPlaceable.height
 
             anchorPlaceable.placeRelative(anchorOffsetX, anchorOffsetY)
         }
     }
 }
-
-private val AnchorBottomSpacing = 16.dp
-private val AnchorEndSpacing = 16.dp
 
 object BottomSheetDefaults {
 
