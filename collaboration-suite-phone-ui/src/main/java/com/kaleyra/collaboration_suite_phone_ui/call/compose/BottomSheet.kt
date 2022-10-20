@@ -131,6 +131,7 @@ fun BottomSheetScaffold(
             .testTag(BottomSheetScaffoldTag)
             .then(modifier)
     ) {
+    BoxWithConstraints(modifier.fillMaxSize()) {
         val fullHeight = constraints.maxHeight.toFloat()
         val peekHeightPx = with(LocalDensity.current) { sheetPeekHeight.toPx() }
         val halfExpandedPx = with(LocalDensity.current) { sheetHalfExpandedHeight.toPx() }

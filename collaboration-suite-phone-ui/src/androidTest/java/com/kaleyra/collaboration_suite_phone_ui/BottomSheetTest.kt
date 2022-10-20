@@ -70,7 +70,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Collapsed,
             targetState = BottomSheetValue.HalfExpanded,
-            swipeAmount = 200
+            swipeAmount = 0.1f
         )
     }
 
@@ -79,7 +79,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Collapsed,
             targetState = BottomSheetValue.Expanded,
-            swipeAmount = 600
+            swipeAmount = 0.5f
         )
     }
 
@@ -88,7 +88,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.HalfExpanded,
             targetState = BottomSheetValue.Expanded,
-            swipeAmount = 600
+            swipeAmount = 0.5f
         )
     }
 
@@ -97,7 +97,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.HalfExpanded,
             targetState = BottomSheetValue.Collapsed,
-            swipeAmount = -200
+            swipeAmount = -0.1f
         )
     }
 
@@ -106,7 +106,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Expanded,
             targetState = BottomSheetValue.HalfExpanded,
-            swipeAmount = -200
+            swipeAmount = -0.1f
         )
     }
 
@@ -115,7 +115,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Expanded,
             targetState = BottomSheetValue.Collapsed,
-            swipeAmount = -600
+            swipeAmount = -0.5f
         )
     }
 
@@ -124,7 +124,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Collapsed,
             targetState = BottomSheetValue.Collapsed,
-            swipeAmount = 600,
+            swipeAmount = 0.5f,
             sheetGesturesEnabled = false
         )
     }
@@ -132,7 +132,7 @@ class BottomSheetTest {
     private fun checkStateAfterSwipe(
         initialState: BottomSheetValue,
         targetState: BottomSheetValue,
-        swipeAmount: Int,
+        swipeAmount: Float,
         sheetGesturesEnabled: Boolean = true
     ) {
         val sheetState = BottomSheetScaffoldState(initialValue = initialState)
@@ -140,7 +140,7 @@ class BottomSheetTest {
             sheetState = sheetState,
             sheetGesturesEnabled = sheetGesturesEnabled
         )
-        composeTestRule.onNode(hasTestTag(BottomSheetScaffoldTag)).performSwipe(swipeAmount)
+        composeTestRule.onRoot().performSwipe(swipeAmount)
         composeTestRule.waitForIdle()
         runBlocking {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
@@ -167,7 +167,7 @@ class BottomSheetTest {
         composeTestRule.setBottomSheetScaffold(sheetState = BottomSheetScaffoldState(initialValue = sheetState))
         val bottomSheet = composeTestRule.onNode(hasTestTag(BottomSheetTag))
         val parentBottom = bottomSheet.onParent().getBoundsInRoot().bottom
-        val sheetBottom = composeTestRule.onNode(hasTestTag(BottomSheetTag)).getBoundsInRoot().top
+        val sheetBottom = bottomSheet.getBoundsInRoot().top
         val height = parentBottom - sheetBottom
         height.assertIsEqualTo(expectedHeight, "sheet height")
     }
@@ -199,7 +199,7 @@ class BottomSheetTest {
         }
         restorationTester.setContent { content.invoke() }
 
-        composeTestRule.onNode(hasTestTag(BottomSheetScaffoldTag)).performSwipe(-600)
+        composeTestRule.onRoot().performSwipe(-0.5f)
         composeTestRule.waitForIdle()
 
         restorationTester.emulateSavedInstanceStateRestore()
@@ -210,10 +210,6 @@ class BottomSheetTest {
         val height = parentBottom - sheetBottom
         height.assertIsEqualTo(peekHeight, "sheet height")
     }
-
-
-
-
 
     private fun ComposeContentTestRule.setBottomSheetScaffold(
         sheetState: BottomSheetScaffoldState,
@@ -237,16 +233,17 @@ class BottomSheetTest {
                 Box(
                     modifier = Modifier
                         .height(200.dp)
+                        .fillMaxWidth()
                         .background(Color.Cyan)
                 )
             }
         }
     }
 
-    private fun SemanticsNodeInteraction.performSwipe(amount: Int) {
+    private fun SemanticsNodeInteraction.performSwipe(amount: Float) {
         performTouchInput {
-            val startHeight = if (amount.sign == 1) height else height + amount
-            val endHeight = if (amount.sign == 1) height - amount else height
+            val startHeight = if (amount.sign == 1f) height else height + height * amount
+            val endHeight = if (amount.sign == 1f) height - height * amount else height
             swipe(
                 start = Offset(center.x, startHeight.toFloat()),
                 end = Offset(center.x, endHeight.toFloat()),
