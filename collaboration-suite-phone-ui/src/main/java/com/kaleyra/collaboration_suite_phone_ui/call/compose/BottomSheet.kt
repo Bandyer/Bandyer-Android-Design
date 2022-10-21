@@ -125,12 +125,6 @@ fun BottomSheetScaffold(
     content: @Composable (PaddingValues) -> Unit
 ) {
     val scope = rememberCoroutineScope()
-    BoxWithConstraints(
-        modifier = Modifier
-            .fillMaxSize()
-            .testTag(BottomSheetScaffoldTag)
-            .then(modifier)
-    ) {
     BoxWithConstraints(modifier.fillMaxSize()) {
         val fullHeight = constraints.maxHeight.toFloat()
         val peekHeightPx = with(LocalDensity.current) { sheetPeekHeight.toPx() }
@@ -174,7 +168,6 @@ fun BottomSheetScaffold(
         BottomSheetScaffoldLayout(
             body = {
                 Surface(
-                    modifier = Modifier.padding(),
                     color = backgroundColor,
                     contentColor = contentColor,
                     content = { content(PaddingValues(bottom = sheetPeekHeight)) }
