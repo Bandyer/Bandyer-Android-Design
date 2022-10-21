@@ -33,7 +33,7 @@ enum class BottomSheetValue {
 
     Expanded,
 
-    Hidden,
+//    Hidden,
 
     HalfExpanded
 }
@@ -54,8 +54,8 @@ class BottomSheetScaffoldState(
     val isCollapsed: Boolean
         get() = currentValue == BottomSheetValue.Collapsed
 
-    val isHidden: Boolean
-        get() = currentValue == BottomSheetValue.Hidden
+//    val isHidden: Boolean
+//        get() = currentValue == BottomSheetValue.Hidden
 
     val isHalfExpanded: Boolean
         get() = currentValue == BottomSheetValue.HalfExpanded
@@ -64,7 +64,7 @@ class BottomSheetScaffoldState(
 
     suspend fun collapse() = animateTo(BottomSheetValue.Collapsed)
 
-    suspend fun hide() = animateTo(BottomSheetValue.Hidden)
+//    suspend fun hide() = animateTo(BottomSheetValue.Hidden)
 
     suspend fun halfExpand() = animateTo(BottomSheetValue.HalfExpanded)
 
