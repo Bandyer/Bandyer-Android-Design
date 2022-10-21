@@ -1,8 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -34,20 +33,35 @@ class BottomSheetTest {
     private val contentHeight = 400.dp
 
     @Test
-    fun initialStateCollapsed_sheetCollapsed() = checkInitialState(initialState = BottomSheetValue.Collapsed)
-
-    @Test
-    fun initialStateHalfExpanded_sheetHalfExpanded() = checkInitialState(initialState = BottomSheetValue.HalfExpanded)
-
-    @Test
-    fun initialStateExpanded_sheetExpanded() = checkInitialState(initialState = BottomSheetValue.Expanded)
-
-    private fun checkInitialState(initialState: BottomSheetValue) {
-        val sheetState = BottomSheetScaffoldState(initialValue = initialState)
+    fun initialStateCollapsed_sheetCollapsed() {
+        val sheetState = BottomSheetScaffoldState(initialValue = BottomSheetValue.Collapsed)
         composeTestRule.setBottomSheetScaffold(sheetState = sheetState)
         runBlocking {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
-            assertEquals(currentValue, initialState)
+            assertEquals(currentValue, BottomSheetValue.Collapsed)
+            assert(sheetState.isCollapsed)
+        }
+    }
+
+    @Test
+    fun initialStateHalfExpanded_sheetHalfExpanded() {
+        val sheetState = BottomSheetScaffoldState(initialValue = BottomSheetValue.HalfExpanded)
+        composeTestRule.setBottomSheetScaffold(sheetState = sheetState)
+        runBlocking {
+            val currentValue = snapshotFlow { sheetState.currentValue }.first()
+            assertEquals(currentValue, BottomSheetValue.HalfExpanded)
+            assert(sheetState.isHalfExpanded)
+        }
+    }
+
+    @Test
+    fun initialStateExpanded_sheetExpanded() {
+        val sheetState = BottomSheetScaffoldState(initialValue = BottomSheetValue.Expanded)
+        composeTestRule.setBottomSheetScaffold(sheetState = sheetState)
+        runBlocking {
+            val currentValue = snapshotFlow { sheetState.currentValue }.first()
+            assertEquals(currentValue, BottomSheetValue.Expanded)
+            assert(sheetState.isExpanded)
         }
     }
 
@@ -128,13 +142,16 @@ class BottomSheetTest {
     }
 
     @Test
-    fun sheetCollapsed_sheetHeightIsPeekHeight() = checkSheetHeight(BottomSheetValue.Collapsed, peekHeight)
+    fun sheetCollapsed_sheetHeightIsPeekHeight() =
+        checkSheetHeight(BottomSheetValue.Collapsed, peekHeight)
 
     @Test
-    fun sheetHalfExpanded_sheetHeightIsHalfExpandedHeight() = checkSheetHeight(BottomSheetValue.HalfExpanded, halfExpandedHeight)
+    fun sheetHalfExpanded_sheetHeightIsHalfExpandedHeight() =
+        checkSheetHeight(BottomSheetValue.HalfExpanded, halfExpandedHeight)
 
     @Test
-    fun sheetExpanded_sheetHeightIsContentHeight() = checkSheetHeight(BottomSheetValue.Expanded, contentHeight)
+    fun sheetExpanded_sheetHeightIsContentHeight() =
+        checkSheetHeight(BottomSheetValue.Expanded, contentHeight)
 
     private fun checkSheetHeight(sheetState: BottomSheetValue, expectedHeight: Dp) {
         composeTestRule.setBottomSheetScaffold(sheetState = BottomSheetScaffoldState(initialValue = sheetState))
@@ -146,13 +163,16 @@ class BottomSheetTest {
     }
 
     @Test
-    fun sheetCollapsed_anchorPositionIsRight() = checkAnchorPosition(sheetValue = BottomSheetValue.Collapsed)
+    fun sheetCollapsed_anchorPositionIsRight() =
+        checkAnchorPosition(sheetValue = BottomSheetValue.Collapsed)
 
     @Test
-    fun sheetHalfExpanded_anchorPositionIsRight() = checkAnchorPosition(sheetValue = BottomSheetValue.HalfExpanded)
+    fun sheetHalfExpanded_anchorPositionIsRight() =
+        checkAnchorPosition(sheetValue = BottomSheetValue.HalfExpanded)
 
     @Test
-    fun sheetExpanded_anchorPositionIsRight() = checkAnchorPosition(sheetValue = BottomSheetValue.Expanded)
+    fun sheetExpanded_anchorPositionIsRight() =
+        checkAnchorPosition(sheetValue = BottomSheetValue.Expanded)
 
     private fun checkAnchorPosition(sheetValue: BottomSheetValue) {
         composeTestRule.setBottomSheetScaffold(sheetState = BottomSheetScaffoldState(initialValue = sheetValue))
@@ -165,9 +185,6 @@ class BottomSheetTest {
         anchorBottom.assertIsEqualTo(bottomSheetTop, "anchor bottom position")
         anchorRight.assertIsEqualTo(bottomSheetRight, "anchor right position")
     }
-
-    // test flag isCollapsed, ecc per lo stato
-    // tests per il content color sia per sheet che per il contenuto della pagina
 
     @Test
     fun sheetCollapsed_insetsAreCorrect() = checkBottomSheetInsets(BottomSheetValue.Collapsed)
@@ -182,72 +199,104 @@ class BottomSheetTest {
         composeTestRule.setBottomSheetScaffold(sheetState = BottomSheetScaffoldState(initialValue = sheetValue))
         val parentHeight = composeTestRule.onRoot().getBoundsInRoot().height
         val bottomSheetTop = composeTestRule.onNode(hasTestTag(BottomSheetTag)).getBoundsInRoot().top
-        val expected = parentHeight -  bottomSheetTop
-        composeTestRule.onNode(hasText("$expected"))
+        val expected = parentHeight - bottomSheetTop
+        composeTestRule.onRoot().onChildren().onFirst().assertHeightIsEqualTo(expected)
     }
 
     @Test
-    fun sheetStateCollapsed_isCollapsed_true() {
+    fun sheetCollapsed_halfExpand_sheetHalfExpanded() {
         val sheetState = BottomSheetScaffoldState(initialValue = BottomSheetValue.Collapsed)
-        assert(sheetState.isCollapsed)
+        composeTestRule.setBottomSheetScaffold(
+            sheetState = sheetState,
+            launchedEffect = sheetState::halfExpand
+        )
+        assertEquals(sheetState.currentValue, BottomSheetValue.HalfExpanded)
     }
 
     @Test
-    fun sheetStateHalfExpanded_isHalfExpanded_true() {
-        val sheetState = BottomSheetScaffoldState(initialValue = BottomSheetValue.HalfExpanded)
-        assert(sheetState.isHalfExpanded)
-    }
-
-    @Test
-    fun sheetStateExpanded_isExpanded_true() {
+    fun sheetExpanded_halfExpand_sheetHalfExpanded() {
         val sheetState = BottomSheetScaffoldState(initialValue = BottomSheetValue.Expanded)
-        assert(sheetState.isExpanded)
+        composeTestRule.setBottomSheetScaffold(
+            sheetState = sheetState,
+            launchedEffect = sheetState::halfExpand
+        )
+        assertEquals(sheetState.currentValue, BottomSheetValue.HalfExpanded)
     }
 
+    @Test
+    fun sheetCollapsed_expand_sheetExpanded() {
+        val sheetState = BottomSheetScaffoldState(initialValue = BottomSheetValue.Collapsed)
+        composeTestRule.setBottomSheetScaffold(
+            sheetState = sheetState,
+            launchedEffect = sheetState::expand
+        )
+        assertEquals(sheetState.currentValue, BottomSheetValue.Expanded)
+    }
+
+    @Test
+    fun sheetHalfExpanded_expand_sheetExpanded() {
+        val sheetState = BottomSheetScaffoldState(initialValue = BottomSheetValue.HalfExpanded)
+        composeTestRule.setBottomSheetScaffold(
+            sheetState = sheetState,
+            launchedEffect = sheetState::expand
+        )
+        assertEquals(sheetState.currentValue, BottomSheetValue.Expanded)
+    }
+
+    @Test
+    fun sheetExpanded_collapse_sheetCollapsed() {
+        val sheetState = BottomSheetScaffoldState(initialValue = BottomSheetValue.Expanded)
+        composeTestRule.setBottomSheetScaffold(
+            sheetState = sheetState,
+            launchedEffect = sheetState::collapse
+        )
+        assertEquals(sheetState.currentValue, BottomSheetValue.Collapsed)
+    }
+
+    @Test
+    fun sheetHalfExpanded_collapse_sheetCollapsed() {
+        val sheetState = BottomSheetScaffoldState(initialValue = BottomSheetValue.HalfExpanded)
+        composeTestRule.setBottomSheetScaffold(
+            sheetState = sheetState,
+            launchedEffect = sheetState::collapse
+        )
+        assertEquals(sheetState.currentValue, BottomSheetValue.Collapsed)
+    }
 
     @Test
     fun onRecreation_stateIsRestored() {
         val restorationTester = StateRestorationTester(composeTestRule)
-        val content = @Composable {
-            val sheetState =
-                rememberBottomSheetScaffoldState(initialValue = BottomSheetValue.Expanded)
+        restorationTester.setContent {
+             val sheetState = rememberBottomSheetScaffoldState(initialValue = BottomSheetValue.Collapsed)
             BottomSheetScaffold(
                 sheetState = sheetState,
-                sheetContent = {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(contentHeight)
-                    )
-                },
+                sheetContent = { Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(contentHeight) )},
                 sheetPeekHeight = peekHeight,
                 sheetHalfExpandedHeight = halfExpandedHeight,
-            ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                )
-            }
+                content = { }
+            )
         }
-        restorationTester.setContent { content.invoke() }
 
-        composeTestRule.onRoot().performSwipe(-0.5f)
+        composeTestRule.onRoot().performSwipe(0.5f)
         composeTestRule.waitForIdle()
 
         restorationTester.emulateSavedInstanceStateRestore()
 
-        val bottomSheet = composeTestRule.onNode(hasTestTag(BottomSheetTag))
-        val parentBottom = bottomSheet.onParent().getBoundsInRoot().bottom
-        val sheetBottom = composeTestRule.onNode(hasTestTag(BottomSheetTag)).getBoundsInRoot().top
-        val height = parentBottom - sheetBottom
-        height.assertIsEqualTo(peekHeight, "sheet height")
+        composeTestRule.onNode(hasTestTag(BottomSheetTag)).assertHeightIsEqualTo(contentHeight)
     }
 
     private fun ComposeContentTestRule.setBottomSheetScaffold(
         sheetState: BottomSheetScaffoldState,
-        sheetGesturesEnabled: Boolean = true
+        sheetGesturesEnabled: Boolean = true,
+        launchedEffect: suspend () -> Unit = { }
     ) {
         setContent {
+            LaunchedEffect(Unit) {
+                launchedEffect.invoke()
+            }
             BottomSheetScaffold(
                 sheetState = sheetState,
                 sheetContent = {
@@ -267,9 +316,8 @@ class BottomSheetTest {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp)
+                        .windowInsetsPadding(it)
                 )
-                Text("${it.asPaddingValues().calculateBottomPadding()}")
             }
         }
     }
