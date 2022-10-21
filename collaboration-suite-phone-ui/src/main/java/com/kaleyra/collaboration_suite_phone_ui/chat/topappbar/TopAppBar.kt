@@ -43,8 +43,7 @@ internal fun TopAppBar(
     onBackPressed: () -> Unit,
 ) {
     TopAppBar(
-        modifier = Modifier
-            .focusGroup(),
+        modifier = Modifier.focusGroup(),
         backgroundColor = MaterialTheme.colors.primary,
     ) {
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {

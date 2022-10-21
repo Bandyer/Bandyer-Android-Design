@@ -39,7 +39,7 @@ enum class BottomSheetValue {
 }
 
 @Stable
-class BottomSheetScaffoldState(
+class BottomSheetState(
     initialValue: BottomSheetValue,
     val animationSpec: AnimationSpec<Float> = SwipeableDefaults.AnimationSpec,
     val confirmStateChange: (BottomSheetValue) -> Boolean = { true }
@@ -72,10 +72,10 @@ class BottomSheetScaffoldState(
         fun Saver(
             animationSpec: AnimationSpec<Float>,
             confirmStateChange: (BottomSheetValue) -> Boolean
-        ): Saver<BottomSheetScaffoldState, *> = Saver(
+        ): Saver<BottomSheetState, *> = Saver(
             save = { it.currentValue },
             restore = {
-                BottomSheetScaffoldState(
+                BottomSheetState(
                     initialValue = it,
                     animationSpec = animationSpec,
                     confirmStateChange = confirmStateChange
@@ -88,19 +88,19 @@ class BottomSheetScaffoldState(
 }
 
 @Composable
-fun rememberBottomSheetScaffoldState(
+fun rememberBottomSheetState(
     initialValue: BottomSheetValue,
     animationSpec: AnimationSpec<Float> = SwipeableDefaults.AnimationSpec,
     confirmStateChange: (BottomSheetValue) -> Boolean = { true }
-): BottomSheetScaffoldState {
+): BottomSheetState {
     return rememberSaveable(
         animationSpec,
-        saver = BottomSheetScaffoldState.Saver(
+        saver = BottomSheetState.Saver(
             animationSpec = animationSpec,
             confirmStateChange = confirmStateChange
         )
     ) {
-        BottomSheetScaffoldState(
+        BottomSheetState(
             initialValue = initialValue,
             animationSpec = animationSpec,
             confirmStateChange = confirmStateChange
@@ -115,7 +115,7 @@ const val AnchorTag = "AnchorTag"
 fun BottomSheetScaffold(
     sheetContent: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
-    sheetState: BottomSheetScaffoldState = rememberBottomSheetScaffoldState(BottomSheetValue.Collapsed),
+    sheetState: BottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed),
     anchor: (@Composable () -> Unit)? = null,
     sheetGesturesEnabled: Boolean = true,
     sheetShape: Shape = MaterialTheme.shapes.large,
