@@ -17,8 +17,12 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.semantics.*
+import androidx.compose.ui.semantics.collapse
+import androidx.compose.ui.semantics.expand
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.utils.PreUpPostDownNestedScrollConnection
 import kotlinx.coroutines.launch
@@ -104,8 +108,8 @@ fun rememberBottomSheetScaffoldState(
     }
 }
 
-const val BottomSheetScaffoldTag = "BottomSheetScaffoldTag"
 const val BottomSheetTag = "BottomSheetTag"
+const val AnchorTag = "AnchorTag"
 
 @Composable
 fun BottomSheetScaffold(
@@ -122,7 +126,7 @@ fun BottomSheetScaffold(
     sheetHalfExpandedHeight: Dp = BottomSheetDefaults.SheetHalfHeight,
     backgroundColor: Color = MaterialTheme.colors.background,
     contentColor: Color = contentColorFor(backgroundColor),
-    content: @Composable (PaddingValues) -> Unit
+    content: @Composable (WindowInsets) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     BoxWithConstraints(modifier.fillMaxSize()) {
@@ -170,7 +174,7 @@ fun BottomSheetScaffold(
                 Surface(
                     color = backgroundColor,
                     contentColor = contentColor,
-                    content = { content(PaddingValues(bottom = sheetPeekHeight)) }
+                    content = { content(sheetPadding(fullHeight, sheetState.offset.value)) }
                 )
             },
             bottomSheet = {
@@ -190,12 +194,19 @@ fun BottomSheetScaffold(
                 )
             },
             anchor = {
-                Box { anchor?.invoke() }
+                Box(modifier.testTag(AnchorTag)) { anchor?.invoke() }
             },
             bottomSheetOffset = sheetState.offset
         )
 
     }
+}
+
+private fun sheetPadding(fullHeight: Float, sheetOffset: Float) = object : WindowInsets {
+    override fun getBottom(density: Density) = (fullHeight - sheetOffset).roundToInt()
+    override fun getLeft(density: Density, layoutDirection: LayoutDirection) = 0
+    override fun getRight(density: Density, layoutDirection: LayoutDirection) = 0
+    override fun getTop(density: Density) = 0
 }
 
 @Composable
