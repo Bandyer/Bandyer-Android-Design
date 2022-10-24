@@ -70,7 +70,7 @@ internal fun ResetScrollFab(
 @Composable
 internal fun ResetScrollFabPreview() {
     KaleyraTheme {
-//        ResetScrollFab(counter = 5, onClick = { }, enabled = true)
+        ResetScrollFab(counter = 5, onClick = { }, enabled = true)
     }
 }
 
@@ -78,6 +78,6 @@ internal fun ResetScrollFabPreview() {
 @Composable
 internal fun ResetScrollFabDarkPreview() {
     KaleyraTheme(isDarkTheme = true) {
-//        ResetScrollFab(counter = 5, onClick = { }, enabled = true)
+        ResetScrollFab(counter = 5, onClick = { }, enabled = true)
     }
 }
