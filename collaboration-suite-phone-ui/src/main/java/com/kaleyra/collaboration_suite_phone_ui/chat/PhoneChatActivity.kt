@@ -33,7 +33,6 @@ import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_core_ui.ChatActivity
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
@@ -74,7 +73,7 @@ internal class PhoneChatActivity : ChatActivity() {
     }
 }
 
-const val MessagesTag = "MessagesTag"
+internal const val MessagesTag = "MessagesTag"
 
 @Composable
 fun ChatScreen(
@@ -194,7 +193,7 @@ internal fun OngoingCallLabel(onClick: () -> Unit) {
 
 @Preview
 @Composable
-fun ChatScreenPreview() = KaleyraTheme {
+internal fun ChatScreenPreview() = KaleyraTheme {
     ChatScreen(
         uiState = mockUiState,
         onBackPressed = { },
@@ -209,7 +208,7 @@ fun ChatScreenPreview() = KaleyraTheme {
 
 @Preview
 @Composable
-fun ChatScreenDarkPreview() = KaleyraTheme(isDarkTheme = true) {
+internal fun ChatScreenDarkPreview() = KaleyraTheme(isDarkTheme = true) {
     ChatScreen(
         uiState = mockUiState,
         onBackPressed = { },

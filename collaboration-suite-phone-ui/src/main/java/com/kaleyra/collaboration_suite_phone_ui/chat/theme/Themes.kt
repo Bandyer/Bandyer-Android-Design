@@ -43,7 +43,7 @@ private val KaleyraLightColorTheme = lightColors(
 
 // Theme currently used only for previews.
 @Composable
-fun KaleyraTheme(
+internal fun KaleyraTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {

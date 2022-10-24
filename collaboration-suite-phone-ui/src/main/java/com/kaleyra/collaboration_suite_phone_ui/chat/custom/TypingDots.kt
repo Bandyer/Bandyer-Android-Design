@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
-val defaultDotSize = 4.dp
-const val defaultDelay = 300
+internal val defaultDotSize = 4.dp
+internal const val defaultDelay = 300
 
 @Composable
 internal fun TypingDots(
@@ -74,6 +74,6 @@ internal fun TypingDots(
 
 @Preview
 @Composable
-fun DotsPreview() = KaleyraTheme {
+internal fun DotsPreview() = KaleyraTheme {
     TypingDots()
 }

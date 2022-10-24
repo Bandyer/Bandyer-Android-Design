@@ -16,7 +16,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 // These function were copied from androidx.lifecycle:lifecycle-runtime-compose
 // because it needed kotlin version 1.7.1
 @Composable
-fun <T> StateFlow<T>.collectAsStateWithLifecycle(
+internal fun <T> StateFlow<T>.collectAsStateWithLifecycle(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
     context: CoroutineContext = EmptyCoroutineContext
@@ -28,7 +28,7 @@ fun <T> StateFlow<T>.collectAsStateWithLifecycle(
 )
 
 @Composable
-fun <T> Flow<T>.collectAsStateWithLifecycle(
+internal fun <T> Flow<T>.collectAsStateWithLifecycle(
     initialValue: T,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
@@ -41,7 +41,7 @@ fun <T> Flow<T>.collectAsStateWithLifecycle(
 )
 
 @Composable
-fun <T> Flow<T>.collectAsStateWithLifecycle(
+internal fun <T> Flow<T>.collectAsStateWithLifecycle(
     initialValue: T,
     lifecycle: Lifecycle,
     minActiveState: Lifecycle.State = Lifecycle.State.STARTED,

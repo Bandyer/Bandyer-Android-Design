@@ -41,9 +41,9 @@ import kotlinx.coroutines.launch
 private val OtherBubbleShape = RoundedCornerShape(0.dp, 24.dp, 24.dp, 12.dp)
 private val MyBubbleShape = RoundedCornerShape(24.dp, 12.dp, 0.dp, 24.dp)
 
-const val MessageStateTag = "MessageStateTag"
-const val ConversationTag = "ConversationTag"
-const val ProgressIndicatorTag = "ProgressIndicatorTag"
+internal const val MessageStateTag = "MessageStateTag"
+internal const val ConversationTag = "ConversationTag"
+internal const val ProgressIndicatorTag = "ProgressIndicatorTag"
 
 private const val TOP_THRESHOLD = 15
 

@@ -21,7 +21,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.UiModelMapper.mapTo
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-internal class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure), ChatUiViewModel {
+class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel(configure), ChatUiViewModel {
 
     private val showUnreadHeader = MutableStateFlow(true)
 

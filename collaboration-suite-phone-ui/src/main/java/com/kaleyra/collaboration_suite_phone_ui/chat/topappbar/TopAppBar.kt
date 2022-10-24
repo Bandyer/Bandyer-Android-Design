@@ -31,9 +31,9 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.custom.TypingDots
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
-const val SubtitleTag = "SubtitleTag"
-const val BouncingDots = "BouncingDots"
-const val ActionsTag = "ActionsTag"
+internal const val SubtitleTag = "SubtitleTag"
+internal const val BouncingDots = "BouncingDots"
+internal const val ActionsTag = "ActionsTag"
 
 @Composable
 internal fun TopAppBar(

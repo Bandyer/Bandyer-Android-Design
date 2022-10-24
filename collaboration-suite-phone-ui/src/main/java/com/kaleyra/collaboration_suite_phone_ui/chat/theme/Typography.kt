@@ -28,4 +28,4 @@ private val fontFamily = FontFamily(
 )
 
 // Typography currently used only for previews.
-val kaleyraTypography = Typography(defaultFontFamily = fontFamily)
+internal val kaleyraTypography = Typography(defaultFontFamily = fontFamily)

@@ -27,7 +27,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.supportRtl
 
-const val TextFieldTag = "TextFieldTag"
+internal const val TextFieldTag = "TextFieldTag"
 
 @Composable
 internal fun UserInput(
@@ -160,12 +160,12 @@ internal fun UserInputText(
 
 @Preview
 @Composable
-fun UserInputPreview() = KaleyraTheme {
+internal fun UserInputPreview() = KaleyraTheme {
     UserInput(onTextChanged = { }, onMessageSent = { })
 }
 
 @Preview
 @Composable
-fun UserInputDarkPreview() = KaleyraTheme(isDarkTheme = true) {
+internal fun UserInputDarkPreview() = KaleyraTheme(isDarkTheme = true) {
     UserInput(onTextChanged = { }, onMessageSent = { })
 }
