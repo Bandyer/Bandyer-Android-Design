@@ -114,7 +114,11 @@ sealed interface Message {
 // Needed for compose stability to avoid recomposition
 // Tried kotlinx-collections-immutable but they were not working properly
 @Immutable
-data class ImmutableList<T>(val value: List<T>)
+data class ImmutableList<T>(val value: List<T>) {
+    val count get() = value.count()
+}
 
 @Immutable
-data class ImmutableSet<T>(val value: Set<T>)
+data class ImmutableSet<T>(val value: Set<T>) {
+    val count get() = value.count()
+}
