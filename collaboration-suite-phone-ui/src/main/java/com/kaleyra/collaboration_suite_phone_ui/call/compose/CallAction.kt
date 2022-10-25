@@ -1,7 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
@@ -14,6 +14,7 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -34,6 +35,7 @@ internal fun CallAction(
     icon: Painter,
     enabled: Boolean,
     iconDescription: String = text,
+    iconRotation: Float = 0f,
     colors: CallActionColors = CallActionDefaults.colors()
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -43,6 +45,7 @@ internal fun CallAction(
         val iconTint by animateColorAsState(
             colors.iconColor(toggled = toggled, enabled = enabled).value
         )
+        val rotation by animateFloatAsState(iconRotation)
         Box(
             modifier = Modifier
                 .background(
@@ -67,7 +70,9 @@ internal fun CallAction(
                 painter = icon,
                 contentDescription = iconDescription,
                 tint = iconTint,
-                modifier = Modifier.size(CallActionDefaults.IconSize)
+                modifier = Modifier
+                    .size(CallActionDefaults.IconSize)
+                    .rotate(rotation)
             )
         }
         Text(
@@ -220,6 +225,7 @@ private fun PreviewLayout(toggled: Boolean, enabled: Boolean) {
             toggled = toggled,
             onToggled = { },
             icon = painterResource(id = R.drawable.ic_kaleyra_mic_off),
+            iconRotation = 0f,
             text = stringResource(id = R.string.kaleyra_call_action_mic_mute),
             enabled = enabled
         )
