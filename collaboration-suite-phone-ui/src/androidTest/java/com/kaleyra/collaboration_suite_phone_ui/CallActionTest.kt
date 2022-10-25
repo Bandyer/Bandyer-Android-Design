@@ -37,15 +37,15 @@ class CallActionTest {
     }
 
     @Test
-    fun notToggled_userPerformsClick_onToggledInvoked() {
+    fun userPerformsClick_onToggledInvoked() {
         composeTestRule.onRoot().performClick()
         assert(toggled)
     }
 
     @Test
-    fun disabled_userPerformsClick_buttonDisabled() {
+    fun enabledFalse_actionDisabled() {
+        composeTestRule.onRoot().onChildAt(0).assertIsEnabled()
         enabled = false
-        composeTestRule.onRoot().performClick()
         composeTestRule.onRoot().onChildAt(0).assertIsNotEnabled()
     }
 }
