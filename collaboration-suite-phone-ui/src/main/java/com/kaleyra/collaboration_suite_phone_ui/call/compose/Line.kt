@@ -26,7 +26,7 @@ internal val CollapsedLineWidth = 4.dp
 private val LineHeight = 4.dp
 
 @Composable
-fun Line(
+internal fun Line(
     collapsed: Boolean,
     color: Color,
     onClickLabel: String,

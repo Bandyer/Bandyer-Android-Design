@@ -28,7 +28,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.utils.PreUpPostDown
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-enum class BottomSheetValue {
+internal enum class BottomSheetValue {
     Collapsed,
 
     Expanded,
@@ -37,7 +37,7 @@ enum class BottomSheetValue {
 }
 
 @Stable
-class BottomSheetState(
+internal class BottomSheetState(
     initialValue: BottomSheetValue,
     val animationSpec: AnimationSpec<Float> = SwipeableDefaults.AnimationSpec,
     val confirmStateChange: (BottomSheetValue) -> Boolean = { true }
@@ -81,7 +81,7 @@ class BottomSheetState(
 }
 
 @Composable
-fun rememberBottomSheetState(
+internal fun rememberBottomSheetState(
     initialValue: BottomSheetValue,
     animationSpec: AnimationSpec<Float> = SwipeableDefaults.AnimationSpec,
     confirmStateChange: (BottomSheetValue) -> Boolean = { true }
@@ -101,11 +101,11 @@ fun rememberBottomSheetState(
     }
 }
 
-const val BottomSheetTag = "BottomSheetTag"
-const val AnchorTag = "AnchorTag"
+internal const val BottomSheetTag = "BottomSheetTag"
+internal const val AnchorTag = "AnchorTag"
 
 @Composable
-fun BottomSheetScaffold(
+internal fun BottomSheetScaffold(
     sheetContent: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
     sheetState: BottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed),
@@ -237,7 +237,7 @@ private fun BottomSheetScaffoldLayout(
     }
 }
 
-object BottomSheetDefaults {
+internal object BottomSheetDefaults {
 
     val SheetElevation = 8.dp
 
