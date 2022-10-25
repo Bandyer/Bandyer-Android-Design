@@ -80,6 +80,7 @@ internal fun CallAction(
     }
 }
 
+@Stable
 internal interface CallActionColors {
     @Composable
     fun backgroundColor(toggled: Boolean, enabled: Boolean): State<Color>
