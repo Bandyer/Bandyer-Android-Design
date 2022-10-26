@@ -40,12 +40,22 @@ internal enum class BottomSheetValue {
 internal class BottomSheetState(
     initialValue: BottomSheetValue,
     val animationSpec: AnimationSpec<Float> = SwipeableDefaults.AnimationSpec,
+    val collapsable: Boolean = true,
     val confirmStateChange: (BottomSheetValue) -> Boolean = { true }
 ) : SwipeableState<BottomSheetValue>(
     initialValue = initialValue,
     animationSpec = animationSpec,
     confirmStateChange = confirmStateChange
 ) {
+
+    init {
+        if (!collapsable) {
+            require(initialValue != BottomSheetValue.Collapsed) {
+                "The initial value must not be set to Collapsed if collapsable is set to true."
+            }
+        }
+    }
+
     val isExpanded: Boolean
         get() = currentValue == BottomSheetValue.Expanded
 
@@ -57,13 +67,17 @@ internal class BottomSheetState(
 
     suspend fun expand() = animateTo(BottomSheetValue.Expanded)
 
-    suspend fun collapse() = animateTo(BottomSheetValue.Collapsed)
+    suspend fun collapse() {
+        if (!collapsable) return
+        animateTo(BottomSheetValue.Collapsed)
+    }
 
     suspend fun halfExpand() = animateTo(BottomSheetValue.HalfExpanded)
 
     companion object {
         fun Saver(
             animationSpec: AnimationSpec<Float>,
+            collapsable: Boolean,
             confirmStateChange: (BottomSheetValue) -> Boolean
         ): Saver<BottomSheetState, *> = Saver(
             save = { it.currentValue },
@@ -71,31 +85,35 @@ internal class BottomSheetState(
                 BottomSheetState(
                     initialValue = it,
                     animationSpec = animationSpec,
+                    collapsable = collapsable,
                     confirmStateChange = confirmStateChange
                 )
             }
         )
     }
 
-    internal val nestedScrollConnection = this.PreUpPostDownNestedScrollConnection
+    val nestedScrollConnection = this.PreUpPostDownNestedScrollConnection
 }
 
 @Composable
 internal fun rememberBottomSheetState(
     initialValue: BottomSheetValue,
     animationSpec: AnimationSpec<Float> = SwipeableDefaults.AnimationSpec,
+    collapsable: Boolean = true,
     confirmStateChange: (BottomSheetValue) -> Boolean = { true }
 ): BottomSheetState {
     return rememberSaveable(
         animationSpec,
         saver = BottomSheetState.Saver(
             animationSpec = animationSpec,
+            collapsable = collapsable,
             confirmStateChange = confirmStateChange
         )
     ) {
         BottomSheetState(
             initialValue = initialValue,
             animationSpec = animationSpec,
+            collapsable = collapsable,
             confirmStateChange = confirmStateChange
         )
     }
@@ -116,27 +134,30 @@ internal fun BottomSheetScaffold(
     sheetBackgroundColor: Color = MaterialTheme.colors.surface,
     sheetContentColor: Color = contentColorFor(sheetBackgroundColor),
     sheetPeekHeight: Dp = BottomSheetDefaults.SheetPeekHeight,
-    sheetHalfExpandedHeight: Dp = BottomSheetDefaults.SheetHalfHeight,
+    sheetHalfExpandedHeight: Dp = 0.dp,
     backgroundColor: Color = MaterialTheme.colors.background,
     contentColor: Color = contentColorFor(backgroundColor),
+    insets: WindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp),
     content: @Composable (WindowInsets) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     BoxWithConstraints(modifier.fillMaxSize()) {
+        val bottomPadding = insets.asPaddingValues().calculateBottomPadding()
         val fullHeight = constraints.maxHeight.toFloat()
-        val peekHeightPx = with(LocalDensity.current) { sheetPeekHeight.toPx() }
-        val halfExpandedPx = with(LocalDensity.current) { sheetHalfExpandedHeight.toPx() }
+        val peekHeightPx = with(LocalDensity.current) { sheetPeekHeight.toPx() + bottomPadding.toPx() }
+        val halfExpandedPx = with(LocalDensity.current) { sheetHalfExpandedHeight.toPx() + bottomPadding.toPx() }
         var bottomSheetHeight by remember { mutableStateOf(fullHeight) }
+        val anchors = mutableMapOf(
+            fullHeight - halfExpandedPx to BottomSheetValue.HalfExpanded,
+            fullHeight - bottomSheetHeight to BottomSheetValue.Expanded
+        )
+        if (sheetState.collapsable) anchors[fullHeight - peekHeightPx] = BottomSheetValue.Collapsed
 
         val swipeable = Modifier
             .nestedScroll(sheetState.nestedScrollConnection)
             .swipeable(
                 state = sheetState,
-                anchors = mapOf(
-                    fullHeight - peekHeightPx to BottomSheetValue.Collapsed,
-                    fullHeight - halfExpandedPx to BottomSheetValue.HalfExpanded,
-                    fullHeight - bottomSheetHeight to BottomSheetValue.Expanded
-                ),
+                anchors = anchors,
                 orientation = Orientation.Vertical,
                 enabled = sheetGesturesEnabled,
                 resistance = null
@@ -174,6 +195,7 @@ internal fun BottomSheetScaffold(
                     swipeable
                         .fillMaxWidth()
                         .requiredHeightIn(min = sheetPeekHeight)
+                        .padding(bottom = bottomPadding)
                         .testTag(BottomSheetTag)
                         .onGloballyPositioned {
                             bottomSheetHeight = it.size.height.toFloat()
@@ -238,10 +260,6 @@ private fun BottomSheetScaffoldLayout(
 }
 
 internal object BottomSheetDefaults {
-
     val SheetElevation = 8.dp
-
     val SheetPeekHeight = 56.dp
-
-    val SheetHalfHeight = 128.dp
 }
