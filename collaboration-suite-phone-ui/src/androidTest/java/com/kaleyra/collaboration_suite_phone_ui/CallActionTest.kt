@@ -28,7 +28,7 @@ class CallActionTest {
         composeTestRule.setContent {
             CallAction(
                 toggled = toggled,
-                onToggled = { toggled = it },
+                onToggle = { toggled = it },
                 text = "",
                 icon = painterResource(id = R.drawable.ic_kaleyra_mic_off),
                 enabled = enabled

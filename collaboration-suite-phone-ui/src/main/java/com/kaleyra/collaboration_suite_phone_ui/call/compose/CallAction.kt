@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
@@ -30,11 +31,10 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 @Composable
 internal fun CallAction(
     toggled: Boolean,
-    onToggled: (Boolean) -> Unit,
+    onToggle: (Boolean) -> Unit,
     text: String,
     icon: Painter,
     enabled: Boolean,
-    iconDescription: String = text,
     iconRotation: Float = 0f,
     colors: CallActionColors = CallActionDefaults.colors()
 ) {
@@ -55,7 +55,7 @@ internal fun CallAction(
                 .size(CallActionDefaults.Size)
                 .toggleable(
                     value = toggled,
-                    onValueChange = onToggled,
+                    onValueChange = onToggle,
                     enabled = enabled,
                     role = Role.Checkbox,
                     interactionSource = remember { MutableInteractionSource() },
@@ -68,7 +68,7 @@ internal fun CallAction(
         ) {
             Icon(
                 painter = icon,
-                contentDescription = iconDescription,
+                contentDescription = text,
                 tint = iconTint,
                 modifier = Modifier
                     .size(CallActionDefaults.IconSize)
@@ -80,7 +80,8 @@ internal fun CallAction(
             color = colors.textColor(enabled = enabled).value,
             fontSize = 12.sp,
             textAlign = TextAlign.Center,
-            maxLines = 2
+            maxLines = 2,
+            modifier = Modifier.padding(6.dp)
         )
     }
 }
@@ -220,14 +221,12 @@ internal fun CallActionDisabledPreview() {
 
 @Composable
 private fun PreviewLayout(toggled: Boolean, enabled: Boolean) {
-    Surface {
-        CallAction(
-            toggled = toggled,
-            onToggled = { },
-            icon = painterResource(id = R.drawable.ic_kaleyra_mic_off),
-            iconRotation = 0f,
-            text = stringResource(id = R.string.kaleyra_call_action_mic_mute),
-            enabled = enabled
-        )
-    }
+    CallAction(
+        toggled = toggled,
+        onToggle = { },
+        icon = painterResource(id = R.drawable.ic_kaleyra_mic_off),
+        iconRotation = 0f,
+        text = stringResource(id = R.string.kaleyra_call_action_mic_mute),
+        enabled = enabled
+    )
 }
