@@ -68,6 +68,7 @@
     <string name="kaleyra_chat_avatar_desc">Chat image</string>
 
     <!-- Call -->
+    <string name="kaleyra_call_show_actions">Show call buttons</string>
     <string name="kaleyra_call_status_dialing">Dialing &#8230;</string>
 
     <plurals name="kaleyra_call_status_ringing">

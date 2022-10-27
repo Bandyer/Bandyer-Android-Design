@@ -69,6 +69,8 @@
     <string name="kaleyra_chat_avatar_desc">Immagine della chat</string>
 
     <!-- Call -->
+    <string name="kaleyra_call_show_actions">Mostra tasti della chiamata</string>
+
     <string name="kaleyra_call_status_connecting">Connessione in corso…</string>
     <string name="kaleyra_call_status_dialing">Sta squillando &#8230;</string>
     <plurals name="kaleyra_call_status_ringing">
