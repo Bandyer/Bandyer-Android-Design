@@ -3,7 +3,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.os.Bundle
-import android.telecom.Call
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.animateFloatAsState
@@ -20,17 +19,40 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import com.google.android.material.composethemeadapter.MdcTheme
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.utils.OrientationListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class PhoneCallActivity : ComponentActivity() {
+
+    private lateinit var orientationListener: OrientationListener
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
+        orientationListener = OrientationListener(this)
+
         setContent {
             MdcTheme(setDefaultFontFamily = true) {
-                CallScreen()
+                CallScreen(
+                    orientation = orientationListener.orientation
+                )
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        orientationListener.enable()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        orientationListener.disable()
     }
 }
 
@@ -49,7 +71,7 @@ val callActions = ImmutableList(
 )
 
 @Composable
-fun CallScreen() {
+fun CallScreen(orientation: StateFlow<Int>) {
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.Collapsed,
         collapsable = true
@@ -73,6 +95,7 @@ fun CallScreen() {
             BottomSheetContent(
                 sheetState = sheetState,
                 callActions = callActions,
+                orientation = orientation,
                 modifier = Modifier.padding(navigationInsets.asPaddingValues())
             )
         }
@@ -122,5 +145,7 @@ internal fun Anchor() {
 @Preview
 @Composable
 fun CallScreenPreview() {
-    CallScreen()
+    CallScreen(
+        orientation = MutableStateFlow(0)
+    )
 }

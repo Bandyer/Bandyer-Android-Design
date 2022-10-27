@@ -1,9 +1,14 @@
-@file:OptIn(ExperimentalMaterialApi::class)
+@file:OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.util.Log
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -12,11 +17,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.*
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,35 +27,20 @@ import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.fadeBelowOfRootBottomBound
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-
-// TODO
-// rotate icons
-
-//@Composable
-//fun displayRotation(): Float {
-//    val context = LocalContext.current
-//    val configuration = LocalConfiguration.current
-//
-//    return derivedStateOf {
-//        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 90f else 0f
-//        when (context.display?.rotation) {
-//            Surface.ROTATION_90 -> 90f
-//            Surface.ROTATION_270 -> -90f
-//            else -> 0f
-//        }
-//    }.value
-//}
 
 @Composable
 internal fun BottomSheetContent(
     sheetState: BottomSheetState,
     callActions: ImmutableList<CallAction>,
+    orientation: StateFlow<Int>,
     modifier: Modifier = Modifier
 ) {
-//    val navigationBarsPadding =  WindowInsets.navigationBars.asPaddingValues()
-//    val navigationBottomInsets = navigationBarsPadding.calculateBottomPadding()
+    val rotation by mapToRotationState(orientation)
     val scope = rememberCoroutineScope()
     val columnCount = remember(callActions) {
         callActions.count.coerceAtMost(4)
@@ -70,41 +57,58 @@ internal fun BottomSheetContent(
 
     Log.e("BottomSheetContent", "KRL-recomposed")
 
-    Column(modifier = modifier) {
-        Line(
-            sheetState = sheetState,
-            onClickLabel = stringResource(id = R.string.kaleyra_call_show_actions),
-            onClick = halfExpand
-        )
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(count = columnCount),
-            contentPadding = PaddingValues(bottom = 8.dp),
-        ) {
-            items(items = callActions.value) { action ->
-                Box(
-                    modifier = Modifier.padding(top = 20.dp, bottom = 8.dp),
-                    contentAlignment = Alignment.Center
-                ) {
-                    var toggled by remember { mutableStateOf(action is CallAction.Toggleable && action.isToggled) }
-                    CallAction(
-                        toggled = toggled,
-                        onToggle = {
-                            when (action) {
-                                is CallAction.Clickable -> action.onClick()
-                                is CallAction.Toggleable -> {
-                                    action.onToggle(it)
-                                    toggled = it
+    CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
+        Column(modifier = modifier) {
+            Line(
+                sheetState = sheetState,
+                onClickLabel = stringResource(id = R.string.kaleyra_call_show_actions),
+                onClick = halfExpand
+            )
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(count = columnCount),
+                contentPadding = PaddingValues(bottom = 8.dp),
+            ) {
+                items(items = callActions.value) { action ->
+                    Box(
+                        modifier = Modifier.padding(top = 20.dp, bottom = 8.dp),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        var toggled by remember { mutableStateOf(action is CallAction.Toggleable && action.isToggled) }
+                        CallAction(
+                            toggled = toggled,
+                            onToggle = {
+                                when (action) {
+                                    is CallAction.Clickable -> action.onClick()
+                                    is CallAction.Toggleable -> {
+                                        action.onToggle(it)
+                                        toggled = it
+                                    }
                                 }
-                            }
-                        },
-                        text = textFor(action),
-                        icon = painterFor(action),
-                        enabled = action.isEnabled,
-                        iconRotation = 0f,
-                        colors = colorsFor(action),
-                        modifier = Modifier.fadeBelowOfRootBottomBound()
-                    )
+                            },
+                            text = textFor(action),
+                            icon = painterFor(action),
+                            enabled = action.isEnabled,
+                            rotation = rotation,
+                            colors = colorsFor(action),
+                            modifier = Modifier.fadeBelowOfRootBottomBound()
+                        )
+                    }
                 }
+            }
+        }
+    }
+
+}
+
+@Composable
+private fun mapToRotationState(orientation: StateFlow<Int>): State<Float> {
+    val orientationValue by orientation.collectAsStateWithLifecycle()
+    return remember {
+        derivedStateOf {
+            when (orientationValue) {
+                90 -> -90f
+                270 -> 90f
+                else -> 0f
             }
         }
     }
@@ -174,9 +178,9 @@ fun BottomSheetContentPreview() {
                     CallAction.FileSharing(true) {},
                     CallAction.ScreenSharing(true) {}
                 )
-            )
+            ),
+            orientation = MutableStateFlow(0)
         )
     }
-
 }
 

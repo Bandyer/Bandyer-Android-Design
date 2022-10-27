@@ -5,13 +5,14 @@
 
     <application>
         <activity
-            android:name=".call.PhoneCallActivity"
+            android:name=".call.compose.PhoneCallActivity"
             android:taskAffinity="com.kaleyra.collaboration_suite_phone_ui.call.PhoneCallActivity"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call"
             android:launchMode="singleTask"
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
             android:showForAllUsers="true"
+            android:screenOrientation="portrait"
             tools:targetApi="o_mr1" />
         <activity
             android:name=".chat.PhoneChatActivity"
