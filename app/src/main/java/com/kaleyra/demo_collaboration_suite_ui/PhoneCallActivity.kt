@@ -14,7 +14,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreen
 class PhoneCallActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             MdcTheme(setDefaultFontFamily = true) {
                 CallScreen()

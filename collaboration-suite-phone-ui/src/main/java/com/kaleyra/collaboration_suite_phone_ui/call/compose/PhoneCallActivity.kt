@@ -3,6 +3,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.os.Bundle
+import android.telecom.Call
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.animateFloatAsState
@@ -20,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.material.composethemeadapter.MdcTheme
-import kotlinx.coroutines.launch
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 class PhoneCallActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,66 +34,53 @@ class PhoneCallActivity : ComponentActivity() {
     }
 }
 
+val callActions = ImmutableList(
+    listOf<CallAction>(
+        CallAction.Microphone(false, true, {}),
+        CallAction.Camera(false, true, {}),
+        CallAction.SwitchCamera(true, {}),
+        CallAction.HangUp(true, {}),
+        CallAction.Chat(true, {}),
+        CallAction.Whiteboard(true, {}),
+        CallAction.Audio(true, {}),
+        CallAction.FileSharing(true, {}),
+        CallAction.ScreenSharing(true, {})
+    )
+)
+
 @Composable
 fun CallScreen() {
     val sheetState = rememberBottomSheetState(
-        initialValue = BottomSheetValue.Collapsed
+        initialValue = BottomSheetValue.Collapsed,
+        collapsable = true
     )
     val isCollapsed by remember(sheetState) {
         derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction == 1f }
     }
     val alpha by animateFloatAsState(if (isCollapsed) 0f else 1f)
-    val navigationBottomInsets =
-        WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-    BottomSheetScaffold(sheetState = sheetState,
-        sheetPeekHeight = 48.dp + navigationBottomInsets,
-        sheetHalfExpandedHeight = 150.dp + navigationBottomInsets,
+    val navigationInsets = WindowInsets.navigationBars
+    BottomSheetScaffold(
+        sheetState = sheetState,
+        sheetPeekHeight = 48.dp,
+        sheetHalfExpandedHeight = 166.dp,
         anchor = { Anchor() },
         sheetBackgroundColor = MaterialTheme.colors.surface.copy(alpha = alpha),
         sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
         backgroundColor = Color.Black,
         contentColor = Color.White,
-        sheetContent = { BottomSheetContent(sheetState) }
+        insets = navigationInsets,
+        sheetContent = {
+            BottomSheetContent(
+                sheetState = sheetState,
+                callActions = callActions,
+                modifier = Modifier.padding(navigationInsets.asPaddingValues())
+            )
+        }
     ) { sheetPadding -> ScreenContent(sheetState, sheetPadding) }
 }
 
 @Composable
-fun BottomSheetContent(sheetState: BottomSheetState) {
-    val collapsed by remember(sheetState) {
-        derivedStateOf {
-            sheetState.targetValue == BottomSheetValue.Collapsed
-        }
-    }
-    val contentColor = LocalContentColor.current
-    val color by remember(sheetState) {
-        derivedStateOf {
-            if (sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction == 1f) Color.White
-            else contentColor.copy(alpha = 0.8f)
-        }
-    }
-    val scope = rememberCoroutineScope()
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(400.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Line(
-            collapsed = collapsed,
-            onClickLabel = "clickLabel",
-            color = color,
-            onClick = {
-                if (sheetState.targetValue == BottomSheetValue.Collapsed) {
-                    scope.launch {
-                        sheetState.halfExpand()
-                    }
-                }
-            })
-    }
-}
-
-@Composable
-fun ScreenContent(sheetState: BottomSheetState, sheetPadding: WindowInsets) {
+internal fun ScreenContent(sheetState: BottomSheetState, sheetPadding: WindowInsets) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -111,7 +99,7 @@ fun ScreenContent(sheetState: BottomSheetState, sheetPadding: WindowInsets) {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Anchor() {
+internal fun Anchor() {
     Box {
         CompositionLocalProvider(
             LocalOverScrollConfiguration provides null
