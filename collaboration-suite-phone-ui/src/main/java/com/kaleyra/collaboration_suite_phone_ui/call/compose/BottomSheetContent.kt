@@ -2,38 +2,62 @@
 
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
+import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material.Button
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.*
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.fadeBelowOfRootBottomBound
 import kotlinx.coroutines.launch
 
-// I bottoni di mostrano con una trasparenza che l'alto
-// Deve essere possibile togliere il background? Fare qui o altrove?
-// Se ho meno di 5 elementi, il bottom sheet è fisso in modalità half expanded e la linea deve essere un puntino
-// Rendere icone ruotabili
+// TODO
+// rotate icons
+
+//@Composable
+//fun displayRotation(): Float {
+//    val context = LocalContext.current
+//    val configuration = LocalConfiguration.current
+//
+//    return derivedStateOf {
+//        if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) 90f else 0f
+//        when (context.display?.rotation) {
+//            Surface.ROTATION_90 -> 90f
+//            Surface.ROTATION_270 -> -90f
+//            else -> 0f
+//        }
+//    }.value
+//}
 
 @Composable
 internal fun BottomSheetContent(
     sheetState: BottomSheetState,
-    callActions: ImmutableList<CallAction>
+    callActions: ImmutableList<CallAction>,
+    modifier: Modifier = Modifier
 ) {
-    val contentColor = LocalContentColor.current
+//    val navigationBarsPadding =  WindowInsets.navigationBars.asPaddingValues()
+//    val navigationBottomInsets = navigationBarsPadding.calculateBottomPadding()
     val scope = rememberCoroutineScope()
-    val sheetCollapsing by sheetCollapsing(sheetState)
-    val sheetCollapsed by sheetCollapsed(sheetState)
-    val columnCount = columnCount(callActions)
+    val columnCount = remember(callActions) {
+        callActions.count.coerceAtMost(4)
+    }
     val halfExpand = remember {
         {
             if (sheetState.isCollapsed) {
@@ -44,59 +68,64 @@ internal fun BottomSheetContent(
         }
     }
 
-    Line(
-        collapsed = sheetCollapsing,
-        onClickLabel = "clickLabel",
-        color = if (sheetCollapsed) Color.White else contentColor.copy(alpha = 0.8f),
-        onClick = halfExpand
-    )
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(count = columnCount),
-        contentPadding = PaddingValues(bottom = 8.dp)
-    ) {
-        items(items = callActions.value) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(top = 20.dp, bottom = 8.dp)
-            ) {
-                CallAction(
-                    toggled =,
-                    onToggled = ,
-                    text =,
-                    icon =,
-                    enabled = it.enabled
-                )
+    Log.e("BottomSheetContent", "KRL-recomposed")
+
+    Column(modifier = modifier) {
+        Line(
+            sheetState = sheetState,
+            onClickLabel = stringResource(id = R.string.kaleyra_call_show_actions),
+            onClick = halfExpand
+        )
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(count = columnCount),
+            contentPadding = PaddingValues(bottom = 8.dp),
+        ) {
+            items(items = callActions.value) { action ->
+                Box(
+                    modifier = Modifier.padding(top = 20.dp, bottom = 8.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    var toggled by remember { mutableStateOf(action is CallAction.Toggleable && action.isToggled) }
+                    CallAction(
+                        toggled = toggled,
+                        onToggle = {
+                            when (action) {
+                                is CallAction.Clickable -> action.onClick()
+                                is CallAction.Toggleable -> {
+                                    action.onToggle(it)
+                                    toggled = it
+                                }
+                            }
+                        },
+                        text = textFor(action),
+                        icon = painterFor(action),
+                        enabled = action.isEnabled,
+                        iconRotation = 0f,
+                        colors = colorsFor(action),
+                        modifier = Modifier.fadeBelowOfRootBottomBound()
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun sheetCollapsing(sheetState: BottomSheetState): State<Boolean> {
-    return remember(sheetState) {
-        derivedStateOf {
-            sheetState.targetValue == BottomSheetValue.Collapsed
+private fun textFor(action: CallAction): String =
+    stringResource(
+        id = when (action) {
+            is CallAction.Camera -> R.string.kaleyra_call_action_video_disable
+            is CallAction.Microphone -> R.string.kaleyra_call_action_mic_mute
+            is CallAction.SwitchCamera -> R.string.kaleyra_call_action_switch_camera
+            is CallAction.HangUp -> R.string.kaleyra_call_hangup
+            is CallAction.Chat -> R.string.kaleyra_call_action_chat
+            is CallAction.Whiteboard -> R.string.kaleyra_call_action_whiteboard
+            is CallAction.FileSharing -> R.string.kaleyra_call_action_file_share
+            is CallAction.Audio -> R.string.kaleyra_call_action_audio_route
+            is CallAction.ScreenSharing -> R.string.kaleyra_call_action_screen_share
         }
-    }
-}
+    )
 
-@Composable
-private fun sheetCollapsed(sheetState: BottomSheetState): State<Boolean> {
-    return remember(sheetState) {
-        derivedStateOf {
-            sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction == 1f
-        }
-    }
-}
-
-@Composable
-private fun columnCount(callActions: ImmutableList<CallAction>): Int {
-    return remember(callActions) {
-        callActions.count.coerceAtMost(4)
-    }
-}
 
 @Composable
 private fun painterFor(action: CallAction): Painter =
@@ -105,8 +134,8 @@ private fun painterFor(action: CallAction): Painter =
             is CallAction.Camera -> R.drawable.ic_kaleyra_camera_off
             is CallAction.Microphone -> R.drawable.ic_kaleyra_mic_off
             is CallAction.SwitchCamera -> R.drawable.ic_kaleyra_switch_camera
-            is CallAction.HungUp -> R.drawable.ic_kaleyra_hangup
-            is CallAction.Chat -> R.drawable.ic_kaleyra_camera_off
+            is CallAction.HangUp -> R.drawable.ic_kaleyra_hangup
+            is CallAction.Chat -> R.drawable.ic_kaleyra_chat
             is CallAction.Whiteboard -> R.drawable.ic_kaleyra_whiteboard
             is CallAction.FileSharing -> R.drawable.ic_kaleyra_file_share
             is CallAction.Audio -> R.drawable.ic_kaleyra_earpiece
@@ -114,4 +143,40 @@ private fun painterFor(action: CallAction): Painter =
         }
     )
 
+@Composable
+private fun colorsFor(action: CallAction): CallActionColors {
+    return if (action is CallAction.HangUp) {
+        val backgroundColor = colorResource(id = R.color.kaleyra_color_hang_up_button)
+        CallActionDefaults.colors(
+            backgroundColor = backgroundColor,
+            iconColor = Color.White,
+            disabledBackgroundColor = backgroundColor.copy(alpha = .12f),
+            disabledIconColor = Color.White.copy(alpha = ContentAlpha.disabled)
+        )
+    } else CallActionDefaults.colors()
+}
+
+@Preview
+@Composable
+fun BottomSheetContentPreview() {
+    KaleyraTheme {
+        BottomSheetContent(
+            sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.HalfExpanded),
+            callActions = ImmutableList(
+                listOf(
+                    CallAction.Microphone(isToggled = true, isEnabled = true) {},
+                    CallAction.Camera(isToggled = false, isEnabled = true) {},
+                    CallAction.SwitchCamera(true) {},
+                    CallAction.HangUp(true) {},
+                    CallAction.Chat(true) {},
+                    CallAction.Whiteboard(true) {},
+                    CallAction.Audio(true) {},
+                    CallAction.FileSharing(true) {},
+                    CallAction.ScreenSharing(true) {}
+                )
+            )
+        )
+    }
+
+}
 
