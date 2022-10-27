@@ -36,7 +36,7 @@ internal fun CallAction(
     icon: Painter,
     enabled: Boolean,
     modifier: Modifier = Modifier,
-    iconRotation: Float = 0f,
+    rotation: Float = 0f,
     colors: CallActionColors = CallActionDefaults.colors()
 ) {
     Column(
@@ -49,7 +49,7 @@ internal fun CallAction(
         val iconTint by animateColorAsState(
             colors.iconColor(toggled = toggled, enabled = enabled).value
         )
-        val rotation by animateFloatAsState(iconRotation)
+        val rotation by animateFloatAsState(rotation)
         Box(
             modifier = Modifier
                 .background(
@@ -229,7 +229,7 @@ private fun PreviewLayout(toggled: Boolean, enabled: Boolean) {
         toggled = toggled,
         onToggle = { },
         icon = painterResource(id = R.drawable.ic_kaleyra_mic_off),
-        iconRotation = 0f,
+        rotation = 0f,
         text = stringResource(id = R.string.kaleyra_call_action_mic_mute),
         enabled = enabled
     )
