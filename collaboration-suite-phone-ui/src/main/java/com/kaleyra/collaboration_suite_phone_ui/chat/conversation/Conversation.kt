@@ -316,7 +316,7 @@ internal fun Bubble(messageItem: ConversationItem.MessageItem) {
                 )
 
                 if (messageItem.message is Message.MyMessage) {
-                    val messageState = messageItem.message.state.collectAsStateWithLifecycle(Message.State.Sending).value
+                    val messageState by messageItem.message.state.collectAsStateWithLifecycle(Message.State.Sending)
 
                     Icon(
                         painter = painterFor(messageState),

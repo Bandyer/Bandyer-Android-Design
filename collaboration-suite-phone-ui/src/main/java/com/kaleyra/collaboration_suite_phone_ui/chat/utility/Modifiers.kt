@@ -55,9 +55,9 @@ internal fun Modifier.fadeBelowOfRootBottomBound(): Modifier =
         this
             .onGloballyPositioned { layoutCoordinates ->
                 val rootHeight = layoutCoordinates.findRoot().size.height
-                val boundInRoot = layoutCoordinates.boundsInRoot()
+                val boundsInRoot = layoutCoordinates.boundsInRoot()
                 val height = layoutCoordinates.size.height.toFloat()
-                val out = (boundInRoot.bottom - rootHeight + navigationBarsPadding).coerceIn(0f, height)
+                val out = (boundsInRoot.bottom - rootHeight + navigationBarsPadding).coerceIn(0f, height)
                 alpha = (1 - out / height).takeIf { it > FadeVisibilityThreshold } ?: 0f
             }
             .alpha(alpha)
