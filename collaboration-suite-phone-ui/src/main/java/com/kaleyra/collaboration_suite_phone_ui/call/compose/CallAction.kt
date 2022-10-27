@@ -35,10 +35,14 @@ internal fun CallAction(
     text: String,
     icon: Painter,
     enabled: Boolean,
+    modifier: Modifier = Modifier,
     iconRotation: Float = 0f,
     colors: CallActionColors = CallActionDefaults.colors()
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         val backgroundColor by animateColorAsState(
             colors.backgroundColor(toggled = toggled, enabled = enabled).value
         )
