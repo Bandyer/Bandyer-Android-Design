@@ -37,6 +37,11 @@ class CallActionTest {
     }
 
     @Test
+    fun buttonIsToggleable() {
+        composeTestRule.onRoot().onChildAt(0).assertIsToggleable()
+    }
+
+    @Test
     fun userPerformsClick_onToggledInvoked() {
         composeTestRule.onRoot().performClick()
         assert(toggled)
