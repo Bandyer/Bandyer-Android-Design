@@ -49,7 +49,7 @@ internal fun CallAction(
         val iconTint by animateColorAsState(
             colors.iconColor(toggled = toggled, enabled = enabled).value
         )
-        val rotation by animateFloatAsState(rotation)
+        val rotationValue by animateFloatAsState(rotation)
         Box(
             modifier = Modifier
                 .background(
@@ -76,7 +76,7 @@ internal fun CallAction(
                 tint = iconTint,
                 modifier = Modifier
                     .size(CallActionDefaults.IconSize)
-                    .rotate(rotation)
+                    .rotate(rotationValue)
             )
         }
         Text(

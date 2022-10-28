@@ -137,12 +137,12 @@ internal fun BottomSheetScaffold(
     sheetHalfExpandedHeight: Dp = 0.dp,
     backgroundColor: Color = MaterialTheme.colors.background,
     contentColor: Color = contentColorFor(backgroundColor),
-    insets: WindowInsets = WindowInsets(0.dp, 0.dp, 0.dp, 0.dp),
     content: @Composable (WindowInsets) -> Unit
 ) {
+    val navigationBarsInsets = WindowInsets.navigationBars
     val scope = rememberCoroutineScope()
     BoxWithConstraints(modifier.fillMaxSize()) {
-        val bottomPadding = insets.asPaddingValues().calculateBottomPadding()
+        val bottomPadding = navigationBarsInsets.asPaddingValues().calculateBottomPadding()
         val fullHeight = constraints.maxHeight.toFloat()
         val peekHeightPx = with(LocalDensity.current) { sheetPeekHeight.toPx() + bottomPadding.toPx() }
         val halfExpandedPx = with(LocalDensity.current) { sheetHalfExpandedHeight.toPx() + bottomPadding.toPx() }
@@ -204,11 +204,20 @@ internal fun BottomSheetScaffold(
                     elevation = sheetElevation,
                     color = sheetBackgroundColor,
                     contentColor = sheetContentColor,
-                    content = { Column(content = sheetContent) }
+                    content = {
+                        Column(
+                            modifier = Modifier.windowInsetsPadding(navigationBarsInsets),
+                            content = sheetContent
+                        )
+                    }
                 )
             },
             anchor = {
-                Box(modifier.testTag(AnchorTag)) { anchor?.invoke() }
+                Box(
+                    modifier = modifier
+                        .windowInsetsPadding(navigationBarsInsets.only(WindowInsetsSides.Horizontal))
+                        .testTag(AnchorTag)
+                ) { anchor?.invoke() }
             },
             bottomSheetOffset = sheetState.offset
         )

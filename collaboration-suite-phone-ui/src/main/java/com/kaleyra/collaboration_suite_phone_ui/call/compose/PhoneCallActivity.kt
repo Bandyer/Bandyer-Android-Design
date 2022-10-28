@@ -73,14 +73,13 @@ val callActions = ImmutableList(
 @Composable
 fun CallScreen(orientation: StateFlow<Int>) {
     val sheetState = rememberBottomSheetState(
-        initialValue = BottomSheetValue.Collapsed,
+        initialValue = BottomSheetValue.HalfExpanded,
         collapsable = true
     )
     val isCollapsed by remember(sheetState) {
         derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction == 1f }
     }
     val alpha by animateFloatAsState(if (isCollapsed) 0f else 1f)
-    val navigationInsets = WindowInsets.navigationBars
     BottomSheetScaffold(
         sheetState = sheetState,
         sheetPeekHeight = 48.dp,
@@ -90,13 +89,11 @@ fun CallScreen(orientation: StateFlow<Int>) {
         sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
         backgroundColor = Color.Black,
         contentColor = Color.White,
-        insets = navigationInsets,
         sheetContent = {
             BottomSheetContent(
                 sheetState = sheetState,
                 callActions = callActions,
-                orientation = orientation,
-                modifier = Modifier.padding(navigationInsets.asPaddingValues())
+                orientation = orientation
             )
         }
     ) { sheetPadding -> ScreenContent(sheetState, sheetPadding) }
