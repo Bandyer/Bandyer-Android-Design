@@ -40,11 +40,20 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call"
             tools:targetApi="n" />
+<!--        <activity-->
+<!--            android:name=".MainActivity"-->
+<!--            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"-->
+<!--            android:exported="true"-->
+<!--            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
         <activity
-            android:name=".MainActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:exported="true"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call">
+            android:name="com.kaleyra.collaboration_suite_phone_ui.call.compose.PhoneCallActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
