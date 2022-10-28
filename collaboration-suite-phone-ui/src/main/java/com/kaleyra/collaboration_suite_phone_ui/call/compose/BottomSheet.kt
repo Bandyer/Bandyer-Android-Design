@@ -140,6 +140,7 @@ internal fun BottomSheetScaffold(
     content: @Composable (WindowInsets) -> Unit
 ) {
     val navigationBarsInsets = WindowInsets.navigationBars
+    val cutOutInsets = WindowInsets.displayCutout
     val scope = rememberCoroutineScope()
     BoxWithConstraints(modifier.fillMaxSize()) {
         val bottomPadding = navigationBarsInsets.asPaddingValues().calculateBottomPadding()
@@ -185,6 +186,7 @@ internal fun BottomSheetScaffold(
         BottomSheetScaffoldLayout(
             body = {
                 Surface(
+                    modifier = Modifier.fillMaxWidth(),
                     color = backgroundColor,
                     contentColor = contentColor,
                     content = { content(sheetPadding(fullHeight, sheetState.offset.value)) }
@@ -206,7 +208,9 @@ internal fun BottomSheetScaffold(
                     contentColor = sheetContentColor,
                     content = {
                         Column(
-                            modifier = Modifier.windowInsetsPadding(navigationBarsInsets),
+                            modifier = Modifier
+                                .windowInsetsPadding(navigationBarsInsets)
+                                .windowInsetsPadding(cutOutInsets.only(WindowInsetsSides.Horizontal)),
                             content = sheetContent
                         )
                     }
@@ -216,6 +220,7 @@ internal fun BottomSheetScaffold(
                 Box(
                     modifier = modifier
                         .windowInsetsPadding(navigationBarsInsets.only(WindowInsetsSides.Horizontal))
+                        .windowInsetsPadding(cutOutInsets)
                         .testTag(AnchorTag)
                 ) { anchor?.invoke() }
             },

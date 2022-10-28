@@ -1,8 +1,7 @@
-@file:OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class)
 
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.foundation.layout.Box
@@ -13,7 +12,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.ContentAlpha
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,8 +35,7 @@ import kotlinx.coroutines.launch
 internal fun BottomSheetContent(
     sheetState: BottomSheetState,
     callActions: ImmutableList<CallAction>,
-    orientation: StateFlow<Int>,
-    modifier: Modifier = Modifier
+    orientation: StateFlow<Int>
 ) {
     val rotation by mapToRotationState(orientation)
     val scope = rememberCoroutineScope()
@@ -55,10 +52,8 @@ internal fun BottomSheetContent(
         }
     }
 
-    Log.e("BottomSheetContent", "KRL-recomposed")
-
     CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
-        Column(modifier = modifier) {
+        Column {
             Line(
                 sheetState = sheetState,
                 onClickLabel = stringResource(id = R.string.kaleyra_call_show_actions),

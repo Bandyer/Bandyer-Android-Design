@@ -1,17 +1,19 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.StateRestorationTester
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
+import androidx.compose.ui.unit.min
+import androidx.core.view.WindowInsetsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import kotlinx.coroutines.flow.first
@@ -26,11 +28,13 @@ import kotlin.math.sign
 class BottomSheetTest {
 
     @get:Rule
-    val composeTestRule = createComposeRule()
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private val peekHeight = 100.dp
     private val halfExpandedHeight = 200.dp
     private val contentHeight = 400.dp
+
+    private var sheetInsets by mutableStateOf(WindowInsets(0.dp, 0.dp, 0.dp, 0.dp))
 
     @Test
     fun initialStateCollapsed_sheetCollapsed() {
@@ -169,7 +173,7 @@ class BottomSheetTest {
         val parentHeight = bottomSheet.onParent().getBoundsInRoot().height
         val sheetTop = bottomSheet.getBoundsInRoot().top
         val height = parentHeight - sheetTop
-        height.assertIsEqualTo(expectedHeight, "sheet height")
+        height.assertIsEqualTo(min(parentHeight, expectedHeight + getInsets().bottom), "sheet height")
     }
 
     @Test
@@ -193,7 +197,7 @@ class BottomSheetTest {
         val bottomSheetRight = bottomSheet.getBoundsInRoot().right
         val anchorRight = anchor.getBoundsInRoot().right
         anchorBottom.assertIsEqualTo(bottomSheetTop, "anchor bottom position")
-        anchorRight.assertIsEqualTo(bottomSheetRight, "anchor right position")
+        anchorRight.assertIsEqualTo(bottomSheetRight - getInsets().right, "anchor right position")
     }
 
     @Test
@@ -207,11 +211,12 @@ class BottomSheetTest {
 
     private fun checkBottomSheetInsets(sheetValue: BottomSheetValue) {
         composeTestRule.setBottomSheetScaffold(sheetState = BottomSheetState(initialValue = sheetValue))
-        val parentHeight = composeTestRule.onRoot().getBoundsInRoot().height
-        val bottomSheetTop =
-            composeTestRule.onNode(hasTestTag(BottomSheetTag)).getBoundsInRoot().top
-        val expected = parentHeight - bottomSheetTop
-        composeTestRule.onRoot().onChildren().onFirst().assertHeightIsEqualTo(expected)
+        val density = composeTestRule.density
+        val bottomSheet = composeTestRule.onNode(hasTestTag(BottomSheetTag))
+        val parentHeight = bottomSheet.onParent().getBoundsInRoot().height
+        val expected = parentHeight - bottomSheet.getBoundsInRoot().top
+        val result = (sheetInsets.getBottom(density) / density.density).dp
+        result.assertIsEqualTo(expected, "bottom sheet insets")
     }
 
     @Test
@@ -312,7 +317,30 @@ class BottomSheetTest {
 
         restorationTester.emulateSavedInstanceStateRestore()
 
-        composeTestRule.onNode(hasTestTag(BottomSheetTag)).assertHeightIsEqualTo(contentHeight)
+        val bottomSheet = composeTestRule.onNode(hasTestTag(BottomSheetTag))
+        val parentHeight = bottomSheet.onParent().getBoundsInRoot().height
+        val sheetTop = bottomSheet.getBoundsInRoot().top
+        val height = parentHeight - sheetTop
+        val expected = min(parentHeight, contentHeight + getInsets().bottom)
+
+        height.assertIsEqualTo(expected, "sheet height")
+    }
+
+    private data class Insets(val left: Dp, val top: Dp, val right: Dp, val bottom: Dp)
+
+    private fun getInsets(): Insets {
+        val navigationInsets = composeTestRule.activity.window.decorView.rootWindowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
+        val displayDensity = composeTestRule.activity.resources.displayMetrics.density
+        val left = navigationInsets.left / displayDensity
+        val top = navigationInsets.top / displayDensity
+        val right = navigationInsets.right / displayDensity
+        val bottom = navigationInsets.bottom / displayDensity
+        return Insets(
+            left = left.dp,
+            top = top.dp,
+            right = right.dp,
+            bottom = bottom.dp
+        )
     }
 
     private fun ComposeContentTestRule.setBottomSheetScaffold(
@@ -340,11 +368,7 @@ class BottomSheetTest {
                 sheetHalfExpandedHeight = halfExpandedHeight,
                 sheetGesturesEnabled = sheetGesturesEnabled
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .windowInsetsPadding(it)
-                )
+                sheetInsets = it
             }
         }
     }
