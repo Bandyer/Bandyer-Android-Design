@@ -21,7 +21,7 @@ import kotlinx.coroutines.plus
  */
 interface CallStreamDelegate {
 
-    private companion object {
+    companion object {
         const val MY_STREAM_ID = "main"
     }
 
@@ -60,7 +60,7 @@ interface CallStreamDelegate {
     private fun updateStreamInputsOnPermissions(call: Call, coroutineScope: CoroutineScope) {
         val hasVideo = call.extras.preferredType.hasVideo()
 
-        call.inputs.allowList.onEach { inputs ->
+        call.inputs.availableInputs.onEach { inputs ->
             if (inputs.isEmpty()) return@onEach
 
             val videoInput = inputs.lastOrNull { it is Input.Video.My } as? Input.Video.My

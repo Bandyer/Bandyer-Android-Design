@@ -42,6 +42,9 @@ dependencies {
     api picasso.picasso
 
     /** Kaleyra **/
-    compileOnly kaleyra.collaboration
-    compileOnly kaleyra.collaboration_extension_audio
+//    compileOnly kaleyra.collaboration
+//    compileOnly kaleyra.collaboration_extension_audio
+
+    compileOnly project(":collaboration-suite")
+    compileOnly project(":collaboration-suite-extension-audio")
 }
