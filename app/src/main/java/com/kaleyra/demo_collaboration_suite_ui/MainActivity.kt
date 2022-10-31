@@ -77,6 +77,10 @@ class MainActivity : AppCompatActivity() {
             ).show()
         }
 
+        btnCallNotification.setOnClickListener {
+            startActivity(Intent(this@MainActivity, CallNotificationActivity::class.java))
+        }
+
         btnChat.setOnClickListener { startActivity(Intent(this@MainActivity, ChatActivity::class.java)) }
 
         btnCall.setOnClickListener {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.kaleyra.demo_collaboration_suite_ui">
+    package="com.kaleyra.demo_collaboration_suite_ui" >
 
     <uses-feature
         android:name="android.hardware.bluetooth"
@@ -25,6 +25,12 @@
         <profileable
             android:shell="true"
             tools:targetApi="q" />
+
+        <activity
+            android:name=".CallNotificationActivity"
+            android:exported="false"
+            android:launchMode="singleInstance" >
+        </activity>
 
         <meta-data
             android:name="com.google.android.glass.TouchEnabledApplication"
@@ -54,6 +60,7 @@
         <activity
             android:name="com.kaleyra.collaboration_suite_phone_ui.call.compose.PhoneCallActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

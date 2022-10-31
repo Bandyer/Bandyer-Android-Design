@@ -258,11 +258,13 @@ class CallNotification {
             }
 
             var answerAction: NotificationCompat.Action? = null
-            if (type == Type.INCOMING)
+            if (type == Type.INCOMING) {
                 answerAction = NotificationCompat.Action(
                     R.drawable.ic_kaleyra_answer,
                     context.getString(R.string.kaleyra_notification_answer),
-                    answerIntent)
+                    answerIntent
+                )
+            }
 
             val declineAction = NotificationCompat.Action(
                 R.drawable.ic_kaleyra_decline,

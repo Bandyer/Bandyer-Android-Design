@@ -17,6 +17,7 @@
 
 <resources>
     <string name="app_name">Demo SDK Design</string>
+    <string name="call_notifications">Notifiche call</string>
     <string name="chat">Chat</string>
     <string name="call">Call</string>
     <string name="whiteboard_editor">Text editor lavagna</string>
