@@ -27,15 +27,18 @@ internal val CollapsedLineWidth = 4.dp
 
 private val LineHeight = 4.dp
 
+internal sealed class LineState {
+    object Expanded : LineState()
+    data class Collapsed(val hasBackground: Boolean) : LineState()
+}
+
 @Composable
 internal fun Line(
-    sheetState: BottomSheetState,
+    state: LineState,
     onClickLabel: String,
     onClick: () -> Unit
 ) {
     val contentColor = LocalContentColor.current
-    val isSheetDraggableDown by isSheetDraggableDown(sheetState)
-    val isSheetCollapsed by isSheetCollapsed(sheetState)
 
     Box(
         modifier = Modifier
@@ -50,8 +53,8 @@ internal fun Line(
             ),
         contentAlignment = Alignment.Center
     ) {
-        val width by animateDpAsState(targetValue = if (isSheetDraggableDown) CollapsedLineWidth else ExpandedLineWidth)
-        val color = if (isSheetCollapsed) Color.White else contentColor.copy(alpha = 0.8f)
+        val width by animateDpAsState(targetValue = if (state is LineState.Collapsed) CollapsedLineWidth else ExpandedLineWidth)
+        val color = if (state is LineState.Collapsed && !state.hasBackground) Color.White else contentColor.copy(alpha = 0.8f)
 
         Spacer(
             modifier = Modifier
@@ -66,27 +69,42 @@ internal fun Line(
 }
 
 @Composable
-private fun isSheetDraggableDown(sheetState: BottomSheetState): State<Boolean> {
+internal fun lineState(sheetState: BottomSheetState): State<LineState> {
     return remember(sheetState) {
         derivedStateOf {
-            sheetState.targetValue == BottomSheetValue.Collapsed || (sheetState.targetValue == BottomSheetValue.HalfExpanded && !sheetState.collapsable)
+            when {
+                isSheetCollapsed(sheetState).value -> LineState.Collapsed(hasBackground = false)
+                isSheetNotDraggableDown(sheetState).value -> LineState.Collapsed(hasBackground = true)
+                else -> LineState.Expanded
+            }
         }
     }
 }
 
-@Composable
-private fun isSheetCollapsed(sheetState: BottomSheetState): State<Boolean> {
-    return remember(sheetState) {
-        derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction == 1f }
-    }
-}
+private fun isSheetNotDraggableDown(sheetState: BottomSheetState): State<Boolean> =
+    derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed || (sheetState.targetValue == BottomSheetValue.HalfExpanded && !sheetState.collapsable) }
+
+private fun isSheetCollapsed(sheetState: BottomSheetState): State<Boolean> =
+    derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction == 1f }
 
 @Preview
 @Composable
 internal fun CollapsedLinePreview() {
     KaleyraTheme {
         Line(
-            sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed),
+            state = LineState.Collapsed(hasBackground = true),
+            onClickLabel = "onClickLabel",
+            onClick = { }
+        )
+    }
+}
+
+@Preview
+@Composable
+internal fun CollapsedLineNoBackgroundPreview() {
+    KaleyraTheme {
+        Line(
+            state = LineState.Collapsed(hasBackground = false),
             onClickLabel = "onClickLabel",
             onClick = { }
         )
@@ -98,7 +116,7 @@ internal fun CollapsedLinePreview() {
 internal fun ExpandedLinePreview() {
     KaleyraTheme {
         Line(
-            sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.HalfExpanded),
+            state = LineState.Expanded,
             onClickLabel = "onClickLabel",
             onClick = { }
         )

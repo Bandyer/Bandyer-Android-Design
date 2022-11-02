@@ -18,7 +18,7 @@ class LineTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private var sheetState by mutableStateOf(BottomSheetState(BottomSheetValue.Collapsed))
+    private var state by mutableStateOf<LineState>(LineState.Collapsed(hasBackground = true))
 
     private var clicked = false
 
@@ -26,7 +26,7 @@ class LineTest {
     fun setUp() {
         composeTestRule.setContent {
             Line(
-                sheetState = sheetState,
+                state = state,
                 onClickLabel = "",
                 onClick = { clicked = true }
             )
@@ -34,20 +34,14 @@ class LineTest {
     }
 
     @Test
-    fun sheetCollapsed_lineIsCollapsed() {
+    fun lineStateCollapsed_lineIsCollapsed() {
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
     }
 
     @Test
-    fun sheetExpanded_lineIsExpanded() {
-        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+    fun lineStateExpanded_lineIsExpanded() {
+        state = LineState.Expanded
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
-    }
-
-    @Test
-    fun sheetNotCollapsableAndHalfExpanded_lineIsCollapsed() {
-        sheetState = BottomSheetState(initialValue = BottomSheetValue.HalfExpanded, collapsable = false)
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
     }
 
     @Test
