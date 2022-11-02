@@ -2,14 +2,14 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.utils
 
 import android.content.Context
 import android.view.OrientationEventListener
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 internal class OrientationListener(context: Context) : OrientationEventListener(context) {
 
-    private val _orientation: MutableStateFlow<Int> = MutableStateFlow(0)
+    private val _orientation: MutableSharedFlow<Int> = MutableSharedFlow(replay = 1, extraBufferCapacity = 1)
 
-    val orientation: StateFlow<Int>
+    val orientation: Flow<Int>
         get() = _orientation
 
     override fun onOrientationChanged(orientation: Int) {
