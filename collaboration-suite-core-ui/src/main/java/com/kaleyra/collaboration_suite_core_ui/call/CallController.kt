@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 /**
  * CallController. It implements the CallUIController methods.
@@ -33,26 +36,40 @@ class CallController(private val call: SharedFlow<CallUI>, private val callAudio
 
     override fun onRequestMicPermission(context: FragmentActivity) {
         context.lifecycleScope.launchWhenResumed {
-            val permission = currentCall.inputs.request(context, Inputs.Type.Microphone).let {
-                Permission(
-                    it is Inputs.RequestResult.Success,
-                    it is Inputs.RequestResult.Error.PermissionDenied.Forever
-                )
-            }
-            _micPermission.value = permission
+            val inputRequest = currentCall.inputs.request(context, Inputs.Type.Microphone)
+
+            _micPermission.value = Permission(
+                inputRequest is Inputs.RequestResult.Success,
+                inputRequest is Inputs.RequestResult.Error.PermissionDenied.Forever
+            )
+
+            val input = inputRequest.getOrNull<Input.Audio>() ?: return@launchWhenResumed
+
+            input.state.filter { it is Input.State.Closed }.onEach {
+                _micPermission.value = Permission(false, false)
+            }.launchIn(this)
+
+            currentCall.participants.value.me.streams.value.firstOrNull { it.id == CallStreamDelegate.MY_STREAM_ID }?.audio?.value = input
         }
     }
 
 
     override fun onRequestCameraPermission(context: FragmentActivity) {
         context.lifecycleScope.launchWhenResumed {
-            val permission = currentCall.inputs.request(context, Inputs.Type.Camera.Internal).let {
-                Permission(
-                    it is Inputs.RequestResult.Success,
-                    it is Inputs.RequestResult.Error.PermissionDenied.Forever
-                )
-            }
-            _camPermission.value = permission
+            val inputRequest = currentCall.inputs.request(context, Inputs.Type.Camera.Internal)
+
+            _camPermission.value = Permission(
+                inputRequest is Inputs.RequestResult.Success,
+                inputRequest is Inputs.RequestResult.Error.PermissionDenied.Forever
+            )
+
+            val input = inputRequest.getOrNull<Input.Video.Camera.Internal>() ?: return@launchWhenResumed
+
+            currentCall.participants.value.me.streams.value.firstOrNull { it.id == CallStreamDelegate.MY_STREAM_ID }?.video?.value = input
+
+            input.state.filter { it is Input.State.Closed }.onEach {
+                _camPermission.value = Permission(false, false)
+            }.launchIn(this)
         }
     }
 
@@ -65,14 +82,12 @@ class CallController(private val call: SharedFlow<CallUI>, private val callAudio
     }
 
     override suspend fun onEnableCamera(context: FragmentActivity, enable: Boolean) {
-        val input: Input.Video.Camera.Internal = currentCall.inputs.request(context, Inputs.Type.Camera.Internal).getOrNull() ?: return
-        currentCall.participants.value.me.streams.value.firstOrNull { it.id == CallStreamDelegate.MY_STREAM_ID }?.video?.value = input
+        val input = currentCall.inputs.availableInputs.value.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() ?: return
         if (enable) input.tryEnable() else input.tryDisable()
     }
 
     override suspend fun onEnableMic(context: FragmentActivity, enable: Boolean) {
-        val input: Input.Audio = currentCall.inputs.request(context, Inputs.Type.Microphone).getOrNull() ?: return
-        currentCall.participants.value.me.streams.value.firstOrNull { it.id == CallStreamDelegate.MY_STREAM_ID }?.audio?.value = input
+        val input = currentCall.inputs.availableInputs.value.filterIsInstance<Input.Audio>().firstOrNull() ?: return
         if (enable) input.tryEnable() else input.tryDisable()
     }
 
