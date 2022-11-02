@@ -90,6 +90,19 @@ internal fun CallAction(
     }
 }
 
+@Composable
+internal fun mapToRotation(orientation: State<Int>): State<Float> {
+    return remember {
+        derivedStateOf {
+            when (orientation.value) {
+                90 -> -90f
+                270 -> 90f
+                else -> 0f
+            }
+        }
+    }
+}
+
 @Stable
 internal interface CallActionColors {
     @Composable

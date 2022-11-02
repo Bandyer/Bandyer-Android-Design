@@ -72,7 +72,7 @@ class PhoneCallActivity : ComponentActivity() {
 }
 
 val callActions = ImmutableList(
-    listOf<CallAction>(
+    listOf(
         CallAction.Microphone(false, true, {}),
         CallAction.Camera(false, true, {}),
         CallAction.SwitchCamera(true, {}),
@@ -87,12 +87,22 @@ val callActions = ImmutableList(
 
 @Composable
 fun CallScreen(orientation: StateFlow<Int>) {
+    val scope = rememberCoroutineScope()
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.HalfExpanded,
         collapsable = true
     )
     val isCollapsed by remember(sheetState) {
         derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction == 1f }
+    }
+    val halfExpand = remember {
+        {
+            if (sheetState.isCollapsed) {
+                scope.launch {
+                    sheetState.halfExpand()
+                }
+            }
+        }
     }
     val alpha by animateFloatAsState(if (isCollapsed) 0f else 1f)
     BottomSheetScaffold(
@@ -106,8 +116,10 @@ fun CallScreen(orientation: StateFlow<Int>) {
         contentColor = Color.White,
         sheetContent = {
             BottomSheetContent(
-                sheetState = sheetState,
-                callActions = callActions,
+                actions = callActions,
+                lineState = lineState(sheetState).value,
+                onLineClick = halfExpand,
+                itemsPerRow = callActions.count.coerceIn(minimumValue = 1, maximumValue = 4),
                 orientation = orientation
             )
         }
@@ -132,7 +144,6 @@ internal fun ScreenContent(sheetState: BottomSheetState, sheetPadding: WindowIns
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun Anchor() {
     Box {

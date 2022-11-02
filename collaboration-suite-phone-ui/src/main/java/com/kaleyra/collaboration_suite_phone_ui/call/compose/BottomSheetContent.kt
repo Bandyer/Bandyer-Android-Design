@@ -25,45 +25,30 @@ import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.fadeBelowOfRootBottomBound
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 @Composable
 internal fun BottomSheetContent(
-    sheetState: BottomSheetState,
-    callActions: ImmutableList<CallAction>,
+    actions: ImmutableList<CallAction>,
+    lineState: LineState,
+    onLineClick: () -> Unit,
+    itemsPerRow: Int,
     orientation: StateFlow<Int>
 ) {
-    val rotation by mapToRotationState(orientation)
-    val scope = rememberCoroutineScope()
-    val columnCount = remember(callActions) {
-        callActions.count.coerceAtMost(4)
-    }
-    val halfExpand = remember {
-        {
-            if (sheetState.isCollapsed) {
-                scope.launch {
-                    sheetState.halfExpand()
-                }
-            }
-        }
-    }
-
     CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
         Column {
             Line(
-                sheetState = sheetState,
+                state = lineState,
                 onClickLabel = stringResource(id = R.string.kaleyra_call_show_actions),
-                onClick = halfExpand
+                onClick = onLineClick
             )
             LazyVerticalGrid(
-                columns = GridCells.Fixed(count = columnCount),
+                columns = GridCells.Fixed(count = itemsPerRow),
                 contentPadding = PaddingValues(bottom = 8.dp),
             ) {
-                items(items = callActions.value) { action ->
+                items(items = actions.value) { action ->
                     Box(
                         modifier = Modifier.padding(top = 20.dp, bottom = 8.dp),
                         contentAlignment = Alignment.Center
@@ -83,27 +68,12 @@ internal fun BottomSheetContent(
                             text = textFor(action),
                             icon = painterFor(action),
                             enabled = action.isEnabled,
-                            rotation = rotation,
+                            rotation = mapToRotation(orientation = orientation.collectAsState()).value,
                             colors = colorsFor(action),
                             modifier = Modifier.fadeBelowOfRootBottomBound()
                         )
                     }
                 }
-            }
-        }
-    }
-
-}
-
-@Composable
-private fun mapToRotationState(orientation: StateFlow<Int>): State<Float> {
-    val orientationValue by orientation.collectAsStateWithLifecycle()
-    return remember {
-        derivedStateOf {
-            when (orientationValue) {
-                90 -> -90f
-                270 -> 90f
-                else -> 0f
             }
         }
     }
@@ -159,23 +129,27 @@ private fun colorsFor(action: CallAction): CallActionColors {
 @Composable
 fun BottomSheetContentPreview() {
     KaleyraTheme {
+
         BottomSheetContent(
-            sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.HalfExpanded),
-            callActions = ImmutableList(
-                listOf(
-                    CallAction.Microphone(isToggled = true, isEnabled = true) {},
-                    CallAction.Camera(isToggled = false, isEnabled = true) {},
-                    CallAction.SwitchCamera(true) {},
-                    CallAction.HangUp(true) {},
-                    CallAction.Chat(true) {},
-                    CallAction.Whiteboard(true) {},
-                    CallAction.Audio(true) {},
-                    CallAction.FileSharing(true) {},
-                    CallAction.ScreenSharing(true) {}
-                )
-            ),
+            actions = actions,
+            lineState = LineState.Expanded,
+            onLineClick = { },
+            itemsPerRow = 4,
             orientation = MutableStateFlow(0)
         )
     }
 }
 
+private val actions = ImmutableList(
+    listOf(
+        CallAction.Microphone(isToggled = true, isEnabled = true) {},
+        CallAction.Camera(isToggled = false, isEnabled = true) {},
+        CallAction.SwitchCamera(true) {},
+        CallAction.HangUp(true) {},
+        CallAction.Chat(true) {},
+        CallAction.Whiteboard(true) {},
+        CallAction.Audio(true) {},
+        CallAction.FileSharing(true) {},
+        CallAction.ScreenSharing(true) {}
+    )
+)
