@@ -57,9 +57,9 @@ dependencies {
     api "androidx.compose.ui:ui-tooling-preview:1.1.1"
 
     /** Kaleyra **/
-//    implementation kaleyra.collaboration
-//    implementation kaleyra.collaboration_extension_audio
+    implementation kaleyra.collaboration
+    implementation kaleyra.collaboration_extension_audio
 
-    implementation project(":collaboration-suite")
-    implementation project(":collaboration-suite-extension-audio")
+//    implementation project(":collaboration-suite")
+//    implementation project(":collaboration-suite-extension-audio")
 }

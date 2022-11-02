@@ -79,9 +79,9 @@ dependencies {
     testImplementation 'io.mockk:mockk:1.12.4'
 
     /** Kaleyra **/
-//    compileOnly kaleyra.collaboration
-//    compileOnly kaleyra.collaboration_extension_audio
+    compileOnly kaleyra.collaboration
+    compileOnly kaleyra.collaboration_extension_audio
 
-    implementation project(":collaboration-suite")
-    implementation project(":collaboration-suite-extension-audio")
+//    implementation project(":collaboration-suite")
+//    implementation project(":collaboration-suite-extension-audio")
 }

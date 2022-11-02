@@ -101,7 +101,7 @@ dependencies {
     implementation project(':collaboration-suite-phone-ui')
     implementation project(':collaboration-suite-glass-ui')
     implementation project(':collaboration-suite-core-ui')
-    implementation project(":collaboration-suite")
+//    implementation project(":collaboration-suite")
 
     implementation("androidx.profileinstaller:profileinstaller:1.1.1")
 
