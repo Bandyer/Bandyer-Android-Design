@@ -114,7 +114,11 @@ fun CallScreen(orientation: StateFlow<Int>) {
         sheetState = sheetState,
         sheetPeekHeight = 48.dp,
         sheetHalfExpandedHeight = 166.dp,
-        anchor = { Anchor() },
+        anchor = {
+            DraggableThumbnail {
+
+            }
+        },
         sheetBackgroundColor = MaterialTheme.colors.surface.copy(alpha = alpha),
         sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
         backgroundColor = Color.Black,
@@ -128,7 +132,9 @@ fun CallScreen(orientation: StateFlow<Int>) {
                 orientation = orientation
             )
         }
-    ) { sheetPadding -> ScreenContent(sheetState, sheetPadding) }
+    ) { sheetPadding ->
+        ScreenContent(sheetState, sheetPadding)
+    }
 }
 
 @Composable
@@ -151,23 +157,21 @@ internal fun ScreenContent(sheetState: BottomSheetState, sheetPadding: WindowIns
 
 @Composable
 internal fun Anchor() {
-    Box {
-        CompositionLocalProvider(
-            LocalOverScrollConfiguration provides null
-        ) {
-            LazyRow(reverseLayout = true) {
-                items(8) {
-                    Text(
-                        text = "Anchor",
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .size(56.dp)
-                            .background(Color.Red)
-                    )
-                }
-            }
-        }
-    }
+//    Box {
+//        CompositionLocalProvider(
+//            LocalOverScrollConfiguration provides null
+//        ) {
+//            LazyRow(
+//                reverseLayout = true,
+//                contentPadding = PaddingValues(16.dp),
+//                horizontalArrangement = Arrangement.spacedBy(16.dp),
+//            ) {
+//                items(8) {
+//                    Thumbnail({})
+//                }
+//            }
+//        }
+//    }
 }
 
 @Preview
