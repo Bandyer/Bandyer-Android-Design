@@ -93,8 +93,4 @@ class CallActionTest {
             )
         }
     }
-
-    private fun ComposeContentTestRule.setUpRotationState() {
-
-    }
 }
