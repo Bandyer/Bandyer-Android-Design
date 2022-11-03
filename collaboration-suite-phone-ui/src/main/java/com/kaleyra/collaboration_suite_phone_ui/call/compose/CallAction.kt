@@ -91,7 +91,7 @@ internal fun CallAction(
 }
 
 @Composable
-internal fun mapToRotation(orientation: State<Int>): State<Float> {
+internal fun mapToRotationState(orientation: State<Int>): Float {
     return remember {
         derivedStateOf {
             when (orientation.value) {
@@ -100,7 +100,7 @@ internal fun mapToRotation(orientation: State<Int>): State<Float> {
                 else -> 0f
             }
         }
-    }
+    }.value
 }
 
 @Stable

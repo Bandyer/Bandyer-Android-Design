@@ -68,7 +68,7 @@ internal fun BottomSheetContent(
                             text = textFor(action),
                             icon = painterFor(action),
                             enabled = action.isEnabled,
-                            rotation = mapToRotation(orientation = orientation.collectAsState()).value,
+                            rotation = mapToRotationState(orientation = orientation.collectAsState()),
                             colors = colorsFor(action),
                             modifier = Modifier.fadeBelowOfRootBottomBound()
                         )

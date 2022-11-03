@@ -28,19 +28,19 @@ class LineTest {
 
     @Test
     fun lineStateCollapsed_lineIsCollapsed() {
-        composeTestRule.setUpLineScreen(LineState.Collapsed(hasBackground = true))
+        composeTestRule.setUpLineTest(LineState.Collapsed(hasBackground = true))
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
     }
 
     @Test
     fun lineStateExpanded_lineIsExpanded() {
-        composeTestRule.setUpLineScreen(LineState.Expanded)
+        composeTestRule.setUpLineTest(LineState.Expanded)
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
     }
 
     @Test
     fun userClicksLine_onClickInvoked() {
-        composeTestRule.setUpLineScreen(LineState.Collapsed(hasBackground = true))
+        composeTestRule.setUpLineTest(LineState.Collapsed(hasBackground = true))
         composeTestRule.onRoot().performClick()
         assert(clicked)
     }
@@ -128,7 +128,7 @@ class LineTest {
         assertEquals(LineState.Expanded, lineState)
     }
 
-    private fun ComposeContentTestRule.setUpLineScreen(state: LineState) {
+    private fun ComposeContentTestRule.setUpLineTest(state: LineState) {
         setContent {
             Line(
                 state = state,

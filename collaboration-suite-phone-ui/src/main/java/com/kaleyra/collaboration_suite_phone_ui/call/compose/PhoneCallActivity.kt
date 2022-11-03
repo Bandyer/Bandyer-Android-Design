@@ -104,6 +104,11 @@ fun CallScreen(orientation: StateFlow<Int>) {
             }
         }
     }
+    val itemsPerRow by remember {
+        derivedStateOf {
+            callActions.count.coerceIn(minimumValue = 1, maximumValue = 4)
+        }
+    }
     val alpha by animateFloatAsState(if (isCollapsed) 0f else 1f)
     BottomSheetScaffold(
         sheetState = sheetState,
@@ -119,7 +124,7 @@ fun CallScreen(orientation: StateFlow<Int>) {
                 actions = callActions,
                 lineState = mapToLineState(sheetState),
                 onLineClick = halfExpand,
-                itemsPerRow = callActions.count.coerceIn(minimumValue = 1, maximumValue = 4),
+                itemsPerRow = itemsPerRow,
                 orientation = orientation
             )
         }
