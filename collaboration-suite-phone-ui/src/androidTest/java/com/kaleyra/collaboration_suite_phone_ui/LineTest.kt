@@ -1,13 +1,19 @@
+@file:OptIn(ExperimentalMaterialApi::class)
+
 package com.kaleyra.collaboration_suite_phone_ui
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import org.junit.Before
+import io.mockk.every
+import io.mockk.spyk
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -18,35 +24,117 @@ class LineTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private var state by mutableStateOf<LineState>(LineState.Collapsed(hasBackground = true))
-
     private var clicked = false
 
-    @Before
-    fun setUp() {
+    @Test
+    fun lineStateCollapsed_lineIsCollapsed() {
+        composeTestRule.setUpLineScreen(LineState.Collapsed(hasBackground = true))
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
+    }
+
+    @Test
+    fun lineStateExpanded_lineIsExpanded() {
+        composeTestRule.setUpLineScreen(LineState.Expanded)
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
+    }
+
+    @Test
+    fun userClicksLine_onClickInvoked() {
+        composeTestRule.setUpLineScreen(LineState.Collapsed(hasBackground = true))
+        composeTestRule.onRoot().performClick()
+        assert(clicked)
+    }
+
+    @Test
+    fun sheetCollapsing_mapToLineState_lineCollapsedWithBackground() {
+        val sheetState = spyk(BottomSheetState(BottomSheetValue.Collapsed))
+        var lineState by mutableStateOf<LineState>(LineState.Expanded)
+        every { sheetState.targetValue } returns BottomSheetValue.Collapsed
+        every { sheetState.progress.fraction } returns 0.8f
         composeTestRule.setContent {
+            lineState = mapToLineState(sheetState = sheetState)
+        }
+        assertEquals(LineState.Collapsed(hasBackground = true), lineState)
+    }
+
+    @Test
+    fun sheetCollapsed_mapToLineState_lineCollapsedWithNoBackground() {
+        val sheetState = spyk(BottomSheetState(BottomSheetValue.Collapsed))
+        var lineState by mutableStateOf<LineState>(LineState.Expanded)
+        every { sheetState.targetValue } returns BottomSheetValue.Collapsed
+        every { sheetState.progress.fraction } returns 1f
+        composeTestRule.setContent {
+            lineState = mapToLineState(sheetState = sheetState)
+        }
+        assertEquals(LineState.Collapsed(hasBackground = false), lineState)
+    }
+
+    @Test
+    fun sheetHalfExpandingAndNotCollapsable_mapToLineState_lineCollapsedWithBackground() {
+        val sheetState = spyk(BottomSheetState(BottomSheetValue.Expanded, collapsable = false))
+        var lineState by mutableStateOf<LineState>(LineState.Expanded)
+        every { sheetState.targetValue } returns BottomSheetValue.HalfExpanded
+        composeTestRule.setContent {
+            lineState = mapToLineState(sheetState = sheetState)
+        }
+        assertEquals(LineState.Collapsed(hasBackground = true), lineState)
+    }
+
+    @Test
+    fun sheetHalfExpanding_mapToLineState_lineExpanded() {
+        val sheetState = spyk(BottomSheetState(BottomSheetValue.Collapsed))
+        var lineState by mutableStateOf<LineState>(LineState.Collapsed(hasBackground = false))
+        every { sheetState.targetValue } returns BottomSheetValue.HalfExpanded
+        every { sheetState.progress.fraction } returns 0.8f
+        composeTestRule.setContent {
+            lineState = mapToLineState(sheetState = sheetState)
+        }
+        assertEquals(LineState.Expanded, lineState)
+    }
+
+    @Test
+    fun sheetHalfExpanded_mapToLineState_lineExpanded() {
+        val sheetState = spyk(BottomSheetState(BottomSheetValue.Collapsed))
+        var lineState by mutableStateOf<LineState>(LineState.Collapsed(hasBackground = false))
+        every { sheetState.targetValue } returns BottomSheetValue.HalfExpanded
+        every { sheetState.progress.fraction } returns 1f
+        composeTestRule.setContent {
+            lineState = mapToLineState(sheetState = sheetState)
+        }
+        assertEquals(LineState.Expanded, lineState)
+    }
+
+    @Test
+    fun sheetExpanding_mapToLineState_lineExpanded() {
+        val sheetState = spyk(BottomSheetState(BottomSheetValue.Collapsed))
+        var lineState by mutableStateOf<LineState>(LineState.Collapsed(hasBackground = false))
+        every { sheetState.targetValue } returns BottomSheetValue.Expanded
+        every { sheetState.progress.fraction } returns 0.8f
+        composeTestRule.setContent {
+            lineState = mapToLineState(sheetState = sheetState)
+        }
+        assertEquals(LineState.Expanded, lineState)
+    }
+
+    @Test
+    fun sheetExpanded_mapToLineState_lineExpanded() {
+        val sheetState = spyk(BottomSheetState(BottomSheetValue.Collapsed))
+        var lineState by mutableStateOf<LineState>(LineState.Collapsed(hasBackground = false))
+        every { sheetState.targetValue } returns BottomSheetValue.Expanded
+        every { sheetState.progress.fraction } returns 1f
+        composeTestRule.setContent {
+            lineState = mapToLineState(sheetState = sheetState)
+        }
+        assertEquals(LineState.Expanded, lineState)
+    }
+
+    private fun ComposeContentTestRule.setUpLineScreen(state: LineState) {
+        setContent {
             Line(
                 state = state,
                 onClickLabel = "",
                 onClick = { clicked = true }
             )
         }
-    }
-
-    @Test
-    fun lineStateCollapsed_lineIsCollapsed() {
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
-    }
-
-    @Test
-    fun lineStateExpanded_lineIsExpanded() {
-        state = LineState.Expanded
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
-    }
-
-    @Test
-    fun userClicksLine_onClickInvoked() {
-        composeTestRule.onRoot().performClick()
-        assert(clicked)
     }
 }

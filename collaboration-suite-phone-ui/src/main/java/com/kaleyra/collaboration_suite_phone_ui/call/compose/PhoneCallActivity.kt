@@ -117,7 +117,7 @@ fun CallScreen(orientation: StateFlow<Int>) {
         sheetContent = {
             BottomSheetContent(
                 actions = callActions,
-                lineState = lineState(sheetState).value,
+                lineState = mapToLineState(sheetState),
                 onLineClick = halfExpand,
                 itemsPerRow = callActions.count.coerceIn(minimumValue = 1, maximumValue = 4),
                 orientation = orientation

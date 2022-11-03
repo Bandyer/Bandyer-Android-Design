@@ -69,23 +69,23 @@ internal fun Line(
 }
 
 @Composable
-internal fun lineState(sheetState: BottomSheetState): State<LineState> {
+internal fun mapToLineState(sheetState: BottomSheetState): LineState {
     return remember(sheetState) {
         derivedStateOf {
             when {
-                isSheetCollapsed(sheetState).value -> LineState.Collapsed(hasBackground = false)
-                isSheetNotDraggableDown(sheetState).value -> LineState.Collapsed(hasBackground = true)
+                isSheetCollapsed(sheetState) -> LineState.Collapsed(hasBackground = false)
+                isSheetNotDraggableDown(sheetState) -> LineState.Collapsed(hasBackground = true)
                 else -> LineState.Expanded
             }
         }
-    }
+    }.value
 }
 
-private fun isSheetNotDraggableDown(sheetState: BottomSheetState): State<Boolean> =
-    derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed || (sheetState.targetValue == BottomSheetValue.HalfExpanded && !sheetState.collapsable) }
+private fun isSheetNotDraggableDown(sheetState: BottomSheetState): Boolean =
+    derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed || (sheetState.targetValue == BottomSheetValue.HalfExpanded && !sheetState.collapsable) }.value
 
-private fun isSheetCollapsed(sheetState: BottomSheetState): State<Boolean> =
-    derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction == 1f }
+private fun isSheetCollapsed(sheetState: BottomSheetState): Boolean =
+    derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction == 1f }.value
 
 @Preview
 @Composable
