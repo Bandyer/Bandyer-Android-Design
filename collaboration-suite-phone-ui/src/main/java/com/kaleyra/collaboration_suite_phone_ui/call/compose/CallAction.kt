@@ -1,13 +1,9 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -15,7 +11,6 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
@@ -36,11 +31,11 @@ internal fun CallAction(
     icon: Painter,
     enabled: Boolean,
     modifier: Modifier = Modifier,
-    rotation: Float = 0f,
     colors: CallActionColors = CallActionDefaults.colors()
 ) {
     Column(
         modifier = modifier,
+        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val backgroundColor by animateColorAsState(
@@ -49,7 +44,6 @@ internal fun CallAction(
         val iconTint by animateColorAsState(
             colors.iconColor(toggled = toggled, enabled = enabled).value
         )
-        val rotationValue by animateFloatAsState(rotation)
         Box(
             modifier = Modifier
                 .background(
@@ -74,9 +68,7 @@ internal fun CallAction(
                 painter = icon,
                 contentDescription = text,
                 tint = iconTint,
-                modifier = Modifier
-                    .size(CallActionDefaults.IconSize)
-                    .rotate(rotationValue)
+                modifier = Modifier.size(CallActionDefaults.IconSize)
             )
         }
         Text(
@@ -242,7 +234,6 @@ private fun PreviewLayout(toggled: Boolean, enabled: Boolean) {
         toggled = toggled,
         onToggle = { },
         icon = painterResource(id = R.drawable.ic_kaleyra_mic_off),
-        rotation = 0f,
         text = stringResource(id = R.string.kaleyra_call_action_mic_mute),
         enabled = enabled
     )

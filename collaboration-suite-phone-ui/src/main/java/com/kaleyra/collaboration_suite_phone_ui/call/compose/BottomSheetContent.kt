@@ -2,19 +2,18 @@
 
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.ContentAlpha
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
@@ -37,6 +36,7 @@ internal fun BottomSheetContent(
     itemsPerRow: Int,
     orientation: StateFlow<Int>
 ) {
+    val orientationState = orientation.collectAsState()
     CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
         Column {
             Line(
@@ -46,37 +46,49 @@ internal fun BottomSheetContent(
             )
             LazyVerticalGrid(
                 columns = GridCells.Fixed(count = itemsPerRow),
-                contentPadding = PaddingValues(bottom = 8.dp),
+                contentPadding = gridPaddingFor(orientationState)
             ) {
                 items(items = actions.value) { action ->
-                    Box(
-                        modifier = Modifier.padding(top = 20.dp, bottom = 8.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        var toggled by remember { mutableStateOf(action is CallAction.Toggleable && action.isToggled) }
-                        CallAction(
-                            toggled = toggled,
-                            onToggle = {
-                                when (action) {
-                                    is CallAction.Clickable -> action.onClick()
-                                    is CallAction.Toggleable -> {
-                                        action.onToggle(it)
-                                        toggled = it
-                                    }
+                    var toggled by remember { mutableStateOf(action is CallAction.Toggleable && action.isToggled) }
+                    val rotation by animateFloatAsState(
+                        targetValue = mapToRotationState(orientation = orientationState),
+                        animationSpec = tween()
+                    )
+                    CallAction(
+                        toggled = toggled,
+                        onToggle = {
+                            when (action) {
+                                is CallAction.Clickable -> action.onClick()
+                                is CallAction.Toggleable -> {
+                                    action.onToggle(it)
+                                    toggled = it
                                 }
-                            },
-                            text = textFor(action),
-                            icon = painterFor(action),
-                            enabled = action.isEnabled,
-                            rotation = mapToRotationState(orientation = orientation.collectAsState()),
-                            colors = colorsFor(action),
-                            modifier = Modifier.fadeBelowOfRootBottomBound()
-                        )
-                    }
+                            }
+                        },
+                        text = textFor(action),
+                        icon = painterFor(action),
+                        enabled = action.isEnabled,
+                        colors = colorsFor(action),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = 20.dp, bottom = 8.dp)
+                            .fadeBelowOfRootBottomBound()
+                            .rotate(rotation)
+                    )
                 }
+
             }
         }
     }
+}
+
+@Composable
+private fun gridPaddingFor(orientation: State<Int>): PaddingValues {
+    return remember {
+        derivedStateOf {
+            PaddingValues(horizontal = if (orientation.value == 0 || orientation.value == 180) 0.dp else 10.dp)
+        }
+    }.value
 }
 
 @Composable
@@ -129,7 +141,6 @@ private fun colorsFor(action: CallAction): CallActionColors {
 @Composable
 fun BottomSheetContentPreview() {
     KaleyraTheme {
-
         BottomSheetContent(
             actions = actions,
             lineState = LineState.Expanded,
