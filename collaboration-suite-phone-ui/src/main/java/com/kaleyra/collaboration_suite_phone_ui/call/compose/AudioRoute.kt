@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -27,7 +26,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 @Composable
 internal fun AudioRoute(
     items: ImmutableList<AudioDevice>,
-    onItemClick: (String) -> Unit
+    onItemClick: (AudioDevice) -> Unit
 ) {
     LazyColumn {
         items(items = items.value, key = { it.id }) {
@@ -41,7 +40,7 @@ internal fun AudioRoute(
                     .clickable(
                         onClickLabel = title,
                         role = Role.Button,
-                        onClick = { onItemClick(it.id) }
+                        onClick = { onItemClick(it) }
                     )
                     .fillMaxWidth()
                     .padding(horizontal = 20.dp, vertical = 16.dp)
