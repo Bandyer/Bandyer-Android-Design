@@ -1,4 +1,5 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class,
+@file:OptIn(
+    ExperimentalFoundationApi::class, ExperimentalMaterialApi::class,
     ExperimentalAnimationApi::class, ExperimentalAnimationApi::class
 )
 
@@ -119,7 +120,7 @@ fun CallScreen(orientation: StateFlow<Int>) {
         }
     }
     val targetState by produceState(false) {
-        while(true) {
+        while (true) {
             delay(5000)
             value = !value
         }
@@ -135,23 +136,31 @@ fun CallScreen(orientation: StateFlow<Int>) {
         backgroundColor = Color.Black,
         contentColor = Color.White,
         sheetContent = {
-            BottomSheetContent(lineState = mapToLineState(sheetState), onLineClick = halfExpand) {
-                AnimatedContent(
-                    targetState = targetState
-                ) { targetState ->
-                    if (!targetState) {
+
+            AnimatedContent(
+                targetState = targetState
+            ) { targetState ->
+                if (!targetState) {
+                    BottomSheetContent(lineState = mapToLineState(sheetState), onLineClick = halfExpand) {
                         CallActions(
                             items = callActions,
                             itemsPerRow = itemsPerRow,
                             orientation = orientation
                         )
-                    } else {
-                        scope.launch {
-                            delay(300)
-                            sheetState.expand()
-                        }
-                        AudioRoute(items = audioDevices, onItemClick = {})
                     }
+                } else {
+//                        scope.launch {
+//                            delay(300)
+//                            sheetState.expand()
+//                        }
+//                        AudioRoute(items = audioDevices, onItemClick = {})
+                    ScreenShare(
+                        items = ImmutableList(
+                            listOf(
+                                ScreenShare.DEVICE,
+                                ScreenShare.APPLICATION
+                            )
+                        ), onItemClick = {})
                 }
             }
 

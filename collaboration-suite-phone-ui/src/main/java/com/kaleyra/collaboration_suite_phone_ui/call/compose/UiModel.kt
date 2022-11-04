@@ -2,6 +2,12 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import androidx.compose.runtime.Immutable
 
+@Immutable
+enum class ScreenShare {
+    DEVICE,
+    APPLICATION
+}
+
 enum class BluetoothDeviceState {
     AVAILABLE,
     CONNECTING,
