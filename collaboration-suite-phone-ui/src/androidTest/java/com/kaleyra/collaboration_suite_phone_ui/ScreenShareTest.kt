@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -27,11 +28,26 @@ class ScreenShareTest {
 
     private var screenShare: ScreenShare? = null
 
+    private var onBackPressed = false
+
     @Before
     fun setUp() {
         composeTestRule.setContent { 
-            ScreenShare(items = items, onItemClick = { screenShare = it })
+            ScreenShare(items = items, onItemClick = { screenShare = it }, onBackPressed = { onBackPressed = true })
         }
+    }
+
+    @Test
+    fun screenShareTitleDisplayed() {
+        val title = composeTestRule.activity.getString(R.string.kaleyra_screenshare_picker_title)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+    }
+
+    @Test
+    fun userClicksBack_onBackPressedInvoked() {
+        val back = composeTestRule.activity.getString(R.string.kaleyra_back)
+        composeTestRule.onNodeWithContentDescription(back).performClick()
+        assert(onBackPressed)
     }
 
     @Test

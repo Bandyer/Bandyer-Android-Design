@@ -15,47 +15,54 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.R
 
 @Composable
 internal fun ScreenShare(
     items: ImmutableList<ScreenShare>,
-    onItemClick: (ScreenShare) -> Unit
+    onItemClick: (ScreenShare) -> Unit,
+    onBackPressed: () -> Unit
 ) {
-    LazyColumn(contentPadding = PaddingValues(vertical = 24.dp)) {
-        item {
+    Column(modifier = Modifier.padding(top = 12.dp, bottom = 24.dp)) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 8.dp)
+        ) {
             Text(
                 text = stringResource(R.string.kaleyra_screenshare_picker_title),
                 color = MaterialTheme.colors.onSurface,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f)
             )
-            Spacer(
-                modifier = Modifier
-                    .height(16.dp)
-                    .fillMaxWidth()
-            )
+            NavigationIcon(onBackPressed = onBackPressed)
         }
-        items(items = items.value) {
-            val title = titleFor(it)
-            ScreenShareItem(
-                title = title,
-                icon = painterFor(it),
-                modifier = Modifier
-                    .clickable(
-                        onClickLabel = title,
-                        role = Role.Button,
-                        onClick = { onItemClick(it) }
-                    )
-                    .fillMaxWidth()
-                    .padding(vertical = 12.dp, horizontal = 16.dp)
-            )
+        LazyColumn {
+            items(items = items.value) {
+                val title = titleFor(it)
+                ScreenShareItem(
+                    title = title,
+                    icon = painterFor(it),
+                    modifier = Modifier
+                        .clickable(
+                            onClickLabel = title,
+                            role = Role.Button,
+                            onClick = { onItemClick(it) }
+                        )
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 16.dp)
+                )
+            }
         }
     }
+
 }
 
 @Composable
@@ -103,7 +110,8 @@ internal fun ScreenSharePreview() {
     KaleyraTheme {
         ScreenShare(
             items = ImmutableList(listOf(ScreenShare.DEVICE, ScreenShare.APPLICATION)),
-            onItemClick = { }
+            onItemClick = { },
+            onBackPressed = { }
         )
     }
 }
