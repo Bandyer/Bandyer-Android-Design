@@ -37,7 +37,7 @@ internal fun CallActions(
         columns = GridCells.Fixed(count = itemsPerRow),
         contentPadding = gridPaddingFor(orientationState)
     ) {
-        items(items = actions.value) { action ->
+        items(items = items.value) { action ->
             var toggled by remember { mutableStateOf(action is CallAction.Toggleable && action.isToggled) }
             val rotation by animateFloatAsState(
                 targetValue = mapToRotationState(orientation = orientationState),
