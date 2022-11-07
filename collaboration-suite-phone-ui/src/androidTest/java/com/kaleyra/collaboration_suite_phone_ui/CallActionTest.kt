@@ -89,6 +89,7 @@ class CallActionTest {
                 onToggle = { toggled = it },
                 text = "",
                 icon = painterResource(id = R.drawable.ic_kaleyra_mic_off),
+                iconDescription = "",
                 enabled = enabled
             )
         }

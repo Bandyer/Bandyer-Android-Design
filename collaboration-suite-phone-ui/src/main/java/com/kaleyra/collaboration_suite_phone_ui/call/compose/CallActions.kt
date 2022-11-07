@@ -56,6 +56,7 @@ internal fun CallActions(
                 },
                 text = textFor(action),
                 icon = painterFor(action),
+                iconDescription = descriptionFor(action),
                 enabled = action.isEnabled,
                 colors = colorsFor(action),
                 modifier = Modifier
@@ -87,12 +88,26 @@ private fun textFor(action: CallAction): String = stringResource(
         is CallAction.HangUp -> R.string.kaleyra_call_hangup
         is CallAction.Chat -> R.string.kaleyra_call_action_chat
         is CallAction.Whiteboard -> R.string.kaleyra_call_action_whiteboard
-        is CallAction.FileSharing -> R.string.kaleyra_call_action_file_share
+        is CallAction.FileShare -> R.string.kaleyra_call_action_file_share
         is CallAction.Audio -> R.string.kaleyra_call_action_audio_route
-        is CallAction.ScreenSharing -> R.string.kaleyra_call_action_screen_share
+        is CallAction.ScreenShare -> R.string.kaleyra_call_action_screen_share
     }
 )
 
+@Composable
+private fun descriptionFor(action: CallAction) = stringResource(
+    id = when (action) {
+        is CallAction.Camera -> R.string.kaleyra_call_action_disable_camera_description
+        is CallAction.Microphone -> R.string.kaleyra_call_action_disable_mic_description
+        is CallAction.SwitchCamera -> R.string.kaleyra_call_action_switch_camera_description
+        is CallAction.HangUp -> R.string.kaleyra_call_hangup
+        is CallAction.Chat -> R.string.kaleyra_call_action_chat
+        is CallAction.Whiteboard -> R.string.kaleyra_call_action_whiteboard
+        is CallAction.FileShare -> R.string.kaleyra_call_action_file_share
+        is CallAction.Audio -> R.string.kaleyra_call_action_audio_route
+        is CallAction.ScreenShare -> R.string.kaleyra_call_action_screen_share
+    }
+)
 
 @Composable
 private fun painterFor(action: CallAction): Painter = painterResource(
@@ -103,9 +118,9 @@ private fun painterFor(action: CallAction): Painter = painterResource(
         is CallAction.HangUp -> R.drawable.ic_kaleyra_hangup
         is CallAction.Chat -> R.drawable.ic_kaleyra_chat
         is CallAction.Whiteboard -> R.drawable.ic_kaleyra_whiteboard
-        is CallAction.FileSharing -> R.drawable.ic_kaleyra_file_share
+        is CallAction.FileShare -> R.drawable.ic_kaleyra_file_share
         is CallAction.Audio -> R.drawable.ic_kaleyra_earpiece
-        is CallAction.ScreenSharing -> R.drawable.ic_kaleyra_screen_share
+        is CallAction.ScreenShare -> R.drawable.ic_kaleyra_screen_share
     }
 )
 
@@ -140,7 +155,7 @@ private val actions = ImmutableList(
         CallAction.Chat(true) {},
         CallAction.Whiteboard(true) {},
         CallAction.Audio(true) {},
-        CallAction.FileSharing(true) {},
-        CallAction.ScreenSharing(true) {}
+        CallAction.FileShare(true) {},
+        CallAction.ScreenShare(true) {}
     )
 )

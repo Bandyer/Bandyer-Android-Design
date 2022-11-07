@@ -108,7 +108,7 @@ sealed interface CallAction {
         override val onClick: () -> Unit
     ) : Clickable
 
-    data class FileSharing(
+    data class FileShare(
         override val isEnabled: Boolean,
         override val onClick: () -> Unit
     ) : Clickable
@@ -118,7 +118,7 @@ sealed interface CallAction {
         override val onClick: () -> Unit
     ) : Clickable
 
-    data class ScreenSharing(
+    data class ScreenShare(
         override val isEnabled: Boolean,
         override val onClick: () -> Unit
     ) : Clickable

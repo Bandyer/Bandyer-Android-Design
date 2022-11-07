@@ -29,6 +29,7 @@ internal fun CallAction(
     onToggle: (Boolean) -> Unit,
     text: String,
     icon: Painter,
+    iconDescription: String,
     enabled: Boolean,
     modifier: Modifier = Modifier,
     colors: CallActionColors = CallActionDefaults.colors()
@@ -66,7 +67,7 @@ internal fun CallAction(
         ) {
             Icon(
                 painter = icon,
-                contentDescription = text,
+                contentDescription = iconDescription,
                 tint = iconTint,
                 modifier = Modifier.size(CallActionDefaults.IconSize)
             )
@@ -234,6 +235,7 @@ private fun PreviewLayout(toggled: Boolean, enabled: Boolean) {
         toggled = toggled,
         onToggle = { },
         icon = painterResource(id = R.drawable.ic_kaleyra_mic_off),
+        iconDescription = "",
         text = stringResource(id = R.string.kaleyra_call_action_mic_mute),
         enabled = enabled
     )
