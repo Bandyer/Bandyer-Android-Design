@@ -73,19 +73,26 @@ class PhoneCallActivity : ComponentActivity() {
     }
 }
 
+var targetState by mutableStateOf(BottomSheetContent.CallActions)
 val callActions = ImmutableList(
     listOf(
-        CallAction.Microphone(false, true, {}),
-        CallAction.Camera(false, true, {}),
-        CallAction.SwitchCamera(true, {}),
-        CallAction.HangUp(true, {}),
-        CallAction.Chat(true, {}),
-        CallAction.Whiteboard(true, {}),
-        CallAction.Audio(true, {}),
-        CallAction.FileShare(true, {}),
-        CallAction.ScreenShare(true, {})
+        CallAction.Microphone(isToggled = false, isEnabled = true) {},
+        CallAction.Camera(isToggled = false, isEnabled = false) {},
+        CallAction.SwitchCamera(true) {},
+        CallAction.HangUp(true) {},
+        CallAction.Chat(true) {},
+        CallAction.Whiteboard(true) {},
+        CallAction.Audio(true) {
+            targetState = BottomSheetContent.AudioRoute
+        },
+        CallAction.FileShare(true) {},
+        CallAction.ScreenShare(true) { targetState = BottomSheetContent.ScreenShare }
     )
 )
+
+enum class BottomSheetContent {
+    CallActions, AudioRoute, ScreenShare
+}
 
 @Composable
 fun CallScreen(orientation: StateFlow<Int>) {
@@ -95,7 +102,7 @@ fun CallScreen(orientation: StateFlow<Int>) {
         collapsable = true
     )
     val isCollapsed by remember(sheetState) {
-        derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction == 1f }
+        derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction >= .9f }
     }
     val halfExpand = remember {
         {
@@ -111,13 +118,12 @@ fun CallScreen(orientation: StateFlow<Int>) {
             callActions.count.coerceIn(minimumValue = 1, maximumValue = 4)
         }
     }
-    val targetState by produceState(false) {
-        while (true) {
-            delay(5000)
-            value = !value
+    val alpha by animateFloatAsState(if (isCollapsed) 0f else 1f)
+    LaunchedEffect(sheetState.targetValue) {
+        if (sheetState.targetValue == BottomSheetValue.HalfExpanded && targetState != BottomSheetContent.CallActions) {
+            targetState = BottomSheetContent.CallActions
         }
     }
-    val alpha by animateFloatAsState(if (isCollapsed) 0f else 1f)
     BottomSheetScaffold(
         sheetState = sheetState,
         sheetPeekHeight = 48.dp,
@@ -128,34 +134,54 @@ fun CallScreen(orientation: StateFlow<Int>) {
         backgroundColor = Color.Black,
         contentColor = Color.White,
         sheetContent = {
-
             AnimatedContent(
                 targetState = targetState
-            ) { targetState ->
-                if (!targetState) {
-                    BottomSheetContent(lineState = mapToLineState(sheetState), onLineClick = halfExpand) {
-                        CallActions(
-                            items = callActions,
-                            itemsPerRow = itemsPerRow,
-                            orientation = orientation
-                        )
-                    }
-                } else {
-//                        scope.launch {
-//                            delay(300)
-//                            sheetState.expand()
-//                        }
-//                        AudioRoute(items = audioDevices, onItemClick = {})
-                    ScreenShare(
-                        items = ImmutableList(
-                            listOf(
-                                ScreenShare.DEVICE,
-                                ScreenShare.APPLICATION
+            ) { target ->
+                when (target) {
+                    BottomSheetContent.CallActions -> {
+                        BottomSheetContent(
+                            lineState = mapToLineState(sheetState),
+                            onLineClick = halfExpand
+                        ) {
+                            CallActions(
+                                items = callActions,
+                                itemsPerRow = itemsPerRow,
+                                orientation = orientation
                             )
-                        ), onItemClick = {})
+                        }
+                    }
+                    BottomSheetContent.AudioRoute -> {
+                        AudioOutput(items = audioDevices, onItemClick = {
+                            scope.launch {
+                                sheetState.halfExpand()
+                            }
+                        }, onBackPressed = {
+                            scope.launch {
+                                sheetState.halfExpand()
+                            }
+                        })
+                    }
+                    BottomSheetContent.ScreenShare -> {
+                        ScreenShare(
+                            items = ImmutableList(
+                                listOf(
+                                    ScreenShare.DEVICE,
+                                    ScreenShare.APPLICATION
+                                )
+                            ),
+                            onItemClick = {
+                                scope.launch {
+                                    sheetState.halfExpand()
+                                }
+                            },
+                            onBackPressed = {
+                                scope.launch {
+                                    sheetState.halfExpand()
+                                }
+                            })
+                    }
                 }
             }
-
         }
     ) { sheetPadding ->
         ScreenContent(sheetState, sheetPadding)
