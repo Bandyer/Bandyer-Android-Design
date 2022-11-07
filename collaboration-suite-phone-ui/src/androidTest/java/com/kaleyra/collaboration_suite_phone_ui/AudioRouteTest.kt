@@ -47,7 +47,7 @@ class AudioRouteTest {
         )
         val loudspeaker = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route_loudspeaker)
         composeTestRule.onNodeWithText(loudspeaker).performClick()
-        assertEquals(audioDevice!!.javaClass, AudioDevice.LoudSpeaker::class.java)
+        assertEquals(AudioDevice.LoudSpeaker::class.java, audioDevice!!.javaClass)
     }
 
     @Test
