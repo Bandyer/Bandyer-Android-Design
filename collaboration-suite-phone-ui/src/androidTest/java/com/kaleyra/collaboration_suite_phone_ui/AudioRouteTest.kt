@@ -4,14 +4,11 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.AudioDevice
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.AudioRoute
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.AudioOutput
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.BluetoothDeviceState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.Assert.assertEquals
@@ -30,11 +27,26 @@ class AudioRouteTest {
 
     private var audioDevice: AudioDevice? = null
 
+    private var onBackPressed = false
+
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            AudioRoute(items = items, onItemClick = { audioDevice = it })
+            AudioOutput(items = items, onItemClick = { audioDevice = it }, onBackPressed = { onBackPressed = true })
         }
+    }
+
+    @Test
+    fun audioRouteTitleDisplayed() {
+        val title = composeTestRule.activity.getString(R.string.kaleyra_audio_route_title)
+        composeTestRule.onNodeWithText(title).assertIsDisplayed()
+    }
+
+    @Test
+    fun userClicksBack_onBackPressedInvoked() {
+        val back = composeTestRule.activity.getString(R.string.kaleyra_back)
+        composeTestRule.onNodeWithContentDescription(back).performClick()
+        assert(onBackPressed)
     }
 
     @Test

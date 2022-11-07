@@ -24,27 +24,44 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 @Composable
-internal fun AudioRoute(
+internal fun AudioOutput(
     items: ImmutableList<AudioDevice>,
-    onItemClick: (AudioDevice) -> Unit
+    onItemClick: (AudioDevice) -> Unit,
+    onBackPressed: () -> Unit
 ) {
-    LazyColumn {
-        items(items = items.value, key = { it.id }) {
-            val title = titleFor(it)
-            AudioItem(
-                title = title,
-                subtitle = subtitleFor(it),
-                icon = painterFor(it),
-                selected = it.isPlaying,
-                modifier = Modifier
-                    .clickable(
-                        onClickLabel = title,
-                        role = Role.Button,
-                        onClick = { onItemClick(it) }
-                    )
-                    .fillMaxWidth()
-                    .padding(horizontal = 20.dp, vertical = 16.dp)
+    Column(modifier = Modifier.padding(top = 12.dp, bottom = 24.dp)) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 20.dp, end = 8.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.kaleyra_audio_route_title),
+                color = MaterialTheme.colors.onSurface,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1f)
             )
+            NavigationIcon(onBackPressed = onBackPressed)
+        }
+        LazyColumn {
+            items(items = items.value, key = { it.id }) {
+                val title = titleFor(it)
+                AudioItem(
+                    title = title,
+                    subtitle = subtitleFor(it),
+                    icon = painterFor(it),
+                    selected = it.isPlaying,
+                    modifier = Modifier
+                        .clickable(
+                            onClickLabel = title,
+                            role = Role.Button,
+                            onClick = { onItemClick(it) }
+                        )
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 16.dp)
+                )
+            }
         }
     }
 }
@@ -56,7 +73,8 @@ private fun titleFor(device: AudioDevice): String =
         is AudioDevice.EarPiece -> stringResource(R.string.kaleyra_call_action_audio_route_earpiece)
         is AudioDevice.WiredHeadset -> stringResource(R.string.kaleyra_call_action_audio_route_wired_headset)
         is AudioDevice.Muted -> stringResource(R.string.kaleyra_call_action_audio_route_muted)
-        is AudioDevice.Bluetooth -> device.name ?: stringResource(R.string.kaleyra_call_action_audio_route_bluetooth)
+        is AudioDevice.Bluetooth -> device.name
+            ?: stringResource(R.string.kaleyra_call_action_audio_route_bluetooth)
     }
 
 @Composable
@@ -146,7 +164,11 @@ internal fun AudioItem(
 @Composable
 internal fun AudioRoutePreview() {
     KaleyraTheme {
-        AudioRoute(items = audioDevices, onItemClick = {})
+        AudioOutput(
+            items = audioDevices,
+            onItemClick = { },
+            onBackPressed = { }
+        )
     }
 }
 

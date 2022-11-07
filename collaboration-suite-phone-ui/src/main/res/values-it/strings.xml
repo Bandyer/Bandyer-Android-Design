@@ -17,6 +17,7 @@
 <resources>
 
     <!-- Audio route labels -->
+    <string name="kaleyra_audio_route_title">Scegli un\'uscita audio</string>
     <string name="kaleyra_call_action_audio_route_bluetooth">Bluetooth</string>
     <string name="kaleyra_call_action_audio_route_wired_headset">Cuffie con cavo</string>
     <string name="kaleyra_call_action_audio_route_loudspeaker">Speaker</string>
