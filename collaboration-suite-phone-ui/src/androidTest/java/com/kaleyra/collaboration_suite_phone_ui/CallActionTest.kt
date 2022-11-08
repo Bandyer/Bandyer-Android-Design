@@ -8,7 +8,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapToRotationState
 import org.junit.Assert.assertEquals
 import org.junit.Rule

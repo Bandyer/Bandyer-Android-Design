@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.utils
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.utility
 
 import android.content.Context
 import android.view.OrientationEventListener

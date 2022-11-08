@@ -69,7 +69,7 @@
     <string name="kaleyra_chat_avatar_desc">Chat image</string>
 
     <!-- Call -->
-    <string name="kaleyra_call_show_actions">Show call buttons</string>
+    <string name="kaleyra_call_show_buttons">Show buttons</string>
     <string name="kaleyra_call_status_dialing">Dialing &#8230;</string>
     <string name="kaleyra_close">Close</string>
 

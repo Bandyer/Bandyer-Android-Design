@@ -10,7 +10,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ScreenShare
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.ScreenShare
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.Assert.assertEquals
 import org.junit.Before

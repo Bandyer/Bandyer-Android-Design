@@ -70,7 +70,7 @@
     <string name="kaleyra_chat_avatar_desc">Immagine della chat</string>
 
     <!-- Call -->
-    <string name="kaleyra_call_show_actions">Mostra tasti della chiamata</string>
+    <string name="kaleyra_call_show_buttons">Mostra tasti</string>
     <string name="kaleyra_close">Chiudi</string>
 
     <string name="kaleyra_call_status_connecting">Connessione in corso…</string>

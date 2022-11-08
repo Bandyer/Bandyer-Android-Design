@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.kaleyra.collaboration_suite_phone_ui.call.compose
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
@@ -21,7 +21,7 @@ internal fun BottomSheetContent(
         Column {
             Line(
                 state = lineState,
-                onClickLabel = stringResource(id = R.string.kaleyra_call_show_actions),
+                onClickLabel = stringResource(id = R.string.kaleyra_call_show_buttons),
                 onClick = onLineClick
             )
             content()

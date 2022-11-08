@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterialApi::class)
 
-package com.kaleyra.collaboration_suite_phone_ui.call.compose
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
@@ -18,6 +18,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 internal const val LineTag = "LineTag"

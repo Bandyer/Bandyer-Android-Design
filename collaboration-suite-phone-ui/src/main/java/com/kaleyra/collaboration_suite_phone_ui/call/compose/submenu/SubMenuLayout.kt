@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CloseIcon
 
 @Composable
 internal fun SubMenuLayout(

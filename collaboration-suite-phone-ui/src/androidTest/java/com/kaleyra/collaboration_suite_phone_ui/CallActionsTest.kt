@@ -9,8 +9,8 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.CallActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before

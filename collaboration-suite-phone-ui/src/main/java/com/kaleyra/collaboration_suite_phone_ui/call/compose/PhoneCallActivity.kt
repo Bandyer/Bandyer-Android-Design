@@ -26,7 +26,19 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.utils.OrientationListener
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetContent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetScaffold
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.mapToLineState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.rememberBottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.ScreenShare
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockAudioDevices
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockCallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.AudioOutput
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.ScreenShare
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.utility.OrientationListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -73,21 +85,6 @@ class PhoneCallActivity : ComponentActivity() {
 }
 
 var targetState by mutableStateOf(BottomSheetContent.CallActions)
-val callActions = ImmutableList(
-    listOf(
-        CallAction.Microphone(isToggled = false, isEnabled = true) {},
-        CallAction.Camera(isToggled = false, isEnabled = false) {},
-        CallAction.SwitchCamera(true) {},
-        CallAction.HangUp(true) {},
-        CallAction.Chat(true) {},
-        CallAction.Whiteboard(true) {},
-        CallAction.Audio(true) {
-            targetState = BottomSheetContent.AudioRoute
-        },
-        CallAction.FileShare(true) {},
-        CallAction.ScreenShare(true) { targetState = BottomSheetContent.ScreenShare }
-    )
-)
 
 enum class BottomSheetContent {
     CallActions, AudioRoute, ScreenShare
@@ -114,7 +111,7 @@ fun CallScreen(orientation: StateFlow<Int>) {
     }
     val itemsPerRow by remember {
         derivedStateOf {
-            callActions.count.coerceIn(minimumValue = 1, maximumValue = 4)
+            mockCallActions.count.coerceIn(minimumValue = 1, maximumValue = 4)
         }
     }
     val alpha by animateFloatAsState(if (isCollapsed) 0f else 1f)
@@ -143,13 +140,13 @@ fun CallScreen(orientation: StateFlow<Int>) {
                     when (target) {
                         BottomSheetContent.CallActions -> {
                             CallActions(
-                                items = callActions,
+                                items = mockCallActions,
                                 itemsPerRow = itemsPerRow,
                                 orientation = orientation
                             )
                         }
                         BottomSheetContent.AudioRoute -> {
-                            AudioOutput(items = audioDevices, onItemClick = {
+                            AudioOutput(items = mockAudioDevices, onItemClick = {
                                 scope.launch {
                                     sheetState.halfExpand()
                                 }

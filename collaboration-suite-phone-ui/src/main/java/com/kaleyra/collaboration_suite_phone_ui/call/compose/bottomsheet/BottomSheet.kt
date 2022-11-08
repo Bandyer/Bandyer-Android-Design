@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterialApi::class)
 
-package com.kaleyra.collaboration_suite_phone_ui.call.compose
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.gestures.Orientation
@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.utils.PreUpPostDownNestedScrollConnection
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.utility.PreUpPostDownNestedScrollConnection
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 

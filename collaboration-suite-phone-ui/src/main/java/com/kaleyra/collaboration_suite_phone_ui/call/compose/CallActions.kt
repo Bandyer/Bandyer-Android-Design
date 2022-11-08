@@ -20,6 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallActionColors
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallActionDefaults
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapToRotationState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockCallActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.fadeBelowOfRootBottomBound
@@ -141,21 +147,6 @@ private fun colorsFor(action: CallAction): CallActionColors {
 @Composable
 internal fun CallActionsPreview() {
     KaleyraTheme {
-        CallActions(items = actions, itemsPerRow = 4, orientation = MutableStateFlow(0))
+        CallActions(items = mockCallActions, itemsPerRow = 4, orientation = MutableStateFlow(0))
     }
 }
-
-
-private val actions = ImmutableList(
-    listOf(
-        CallAction.Microphone(isToggled = true, isEnabled = true) {},
-        CallAction.Camera(isToggled = false, isEnabled = true) {},
-        CallAction.SwitchCamera(true) {},
-        CallAction.HangUp(true) {},
-        CallAction.Chat(true) {},
-        CallAction.Whiteboard(true) {},
-        CallAction.Audio(true) {},
-        CallAction.FileShare(true) {},
-        CallAction.ScreenShare(true) {}
-    )
-)

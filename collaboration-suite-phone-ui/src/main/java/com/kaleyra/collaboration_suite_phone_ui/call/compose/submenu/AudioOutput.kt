@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -20,6 +20,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.isConnected
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.isConnecting
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
@@ -154,25 +157,9 @@ internal fun AudioItem(
 internal fun AudioRoutePreview() {
     KaleyraTheme {
         AudioOutput(
-            items = audioDevices,
+            items = mockAudioDevices,
             onItemClick = { },
             onClosePressed = { }
         )
     }
 }
-
-val audioDevices = ImmutableList(
-    listOf(
-        AudioDevice.Bluetooth(
-            id = "id",
-            isPlaying = true,
-            name = "Custom device",
-            connectionState = BluetoothDeviceState.ACTIVE,
-            batteryLevel = 75
-        ),
-        AudioDevice.LoudSpeaker(id = "id2", isPlaying = false),
-        AudioDevice.EarPiece(id = "id3", isPlaying = false),
-        AudioDevice.WiredHeadset(id = "id4", isPlaying = false),
-        AudioDevice.Muted(id = "id5", isPlaying = false)
-    )
-)

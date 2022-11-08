@@ -7,6 +7,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetContent
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
