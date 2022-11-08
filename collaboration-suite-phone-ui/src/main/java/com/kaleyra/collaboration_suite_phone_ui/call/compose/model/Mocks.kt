@@ -15,7 +15,9 @@ val mockCallActions = ImmutableList(
         CallAction.Audio(true) {
             targetState = BottomSheetContent.AudioRoute
         },
-        CallAction.FileShare(true) {},
+        CallAction.FileShare(true) {
+            targetState = BottomSheetContent.FileShare
+        },
         CallAction.ScreenShare(true) { targetState = BottomSheetContent.ScreenShare }
     )
 )

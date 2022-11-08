@@ -26,7 +26,6 @@ import androidx.core.view.WindowCompat
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetScaffold
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
@@ -37,6 +36,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.ScreenShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockAudioDevices
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.AudioOutput
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.FileShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.ScreenShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.utility.OrientationListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -87,7 +87,7 @@ class PhoneCallActivity : ComponentActivity() {
 var targetState by mutableStateOf(BottomSheetContent.CallActions)
 
 enum class BottomSheetContent {
-    CallActions, AudioRoute, ScreenShare
+    CallActions, AudioRoute, FileShare, ScreenShare
 }
 
 @Composable
@@ -160,8 +160,8 @@ fun CallScreen(orientation: StateFlow<Int>) {
                             ScreenShare(
                                 items = ImmutableList(
                                     listOf(
-                                        ScreenShare.DEVICE,
-                                        ScreenShare.APPLICATION
+                                        ScreenShare.Device,
+                                        ScreenShare.Application
                                     )
                                 ),
                                 onItemClick = {
@@ -174,6 +174,21 @@ fun CallScreen(orientation: StateFlow<Int>) {
                                         sheetState.halfExpand()
                                     }
                                 })
+                        }
+                        BottomSheetContent.FileShare -> {
+                            val list = produceState(ImmutableList(listOf())) {
+                                kotlinx.coroutines.delay(3000)
+                                value = ImmutableList(listOf(0))
+                            }
+                            FileShare(
+                                items = list.value,
+                                onClick = {},
+                                onClosePressed = {
+                                    scope.launch {
+                                        sheetState.halfExpand()
+                                    }
+                                }
+                            )
                         }
                     }
                 }

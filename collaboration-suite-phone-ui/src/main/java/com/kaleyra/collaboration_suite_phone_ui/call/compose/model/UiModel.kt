@@ -31,7 +31,7 @@ sealed interface Transfer {
 
     val fileName: String
 
-    val fileType: Type
+    val fileType: FileType
 
     val fileSize: Long
 
@@ -47,7 +47,7 @@ sealed interface Transfer {
 
     data class Upload(
         override val fileName: String,
-        override val fileType: Type,
+        override val fileType: FileType,
         override val fileSize: Long,
         override val transferredSize: Long,
         override val sender: String,
@@ -58,7 +58,7 @@ sealed interface Transfer {
 
     data class Download(
         override val fileName: String,
-        override val fileType: Type,
+        override val fileType: FileType,
         override val fileSize: Long,
         override val transferredSize: Long,
         override val sender: String,
@@ -76,7 +76,7 @@ sealed interface Transfer {
         Cancelled
     }
 
-    enum class Type {
+    enum class FileType {
         Image,
         Archive,
         File
