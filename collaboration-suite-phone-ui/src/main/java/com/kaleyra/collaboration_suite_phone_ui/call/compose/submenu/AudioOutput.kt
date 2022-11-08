@@ -1,16 +1,15 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -21,8 +20,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.isConnected
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.isConnecting
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
@@ -128,10 +125,10 @@ internal fun AudioItem(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(
+        Icon(
             painter = icon,
             contentDescription = null,
-            colorFilter = ColorFilter.tint(color = if (selected) MaterialTheme.colors.secondary else MaterialTheme.colors.onSurface)
+            tint = if (selected) MaterialTheme.colors.secondary else MaterialTheme.colors.onSurface
         )
         Spacer(modifier = Modifier.width(16.dp))
         Column(verticalArrangement = Arrangement.Center) {
