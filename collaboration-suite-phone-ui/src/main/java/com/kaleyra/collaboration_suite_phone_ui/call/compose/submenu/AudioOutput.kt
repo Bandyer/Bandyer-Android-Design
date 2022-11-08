@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -128,21 +129,21 @@ internal fun AudioItem(
         Icon(
             painter = icon,
             contentDescription = null,
-            tint = if (selected) MaterialTheme.colors.secondary else MaterialTheme.colors.onSurface
+            tint = if (selected) MaterialTheme.colors.secondary else LocalContentColor.current
         )
         Spacer(modifier = Modifier.width(16.dp))
         Column(verticalArrangement = Arrangement.Center) {
             Text(
                 text = title,
                 fontSize = 14.sp,
-                color = if (selected) MaterialTheme.colors.secondary else MaterialTheme.colors.onSurface,
+                color = if (selected) MaterialTheme.colors.secondary else LocalContentColor.current,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
             )
             if (subtitle != null) {
                 Text(
                     text = subtitle,
                     fontSize = 12.sp,
-                    color = MaterialTheme.colors.onSurface.copy(alpha = .5f)
+                    color = LocalContentColor.current.copy(alpha = .5f)
                 )
             }
         }

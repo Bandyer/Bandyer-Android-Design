@@ -29,7 +29,6 @@ internal fun SubMenuLayout(
         ) {
             Text(
                 text = title,
-                color = MaterialTheme.colors.onSurface,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1f)
             )

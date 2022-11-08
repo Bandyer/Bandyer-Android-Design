@@ -79,9 +79,7 @@ internal fun SendButton(enabled: Boolean, onClick: () -> Unit) {
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_kaleyra_send),
-            tint = if (enabled) MaterialTheme.colors.secondary else MaterialTheme.colors.onSurface.copy(
-                alpha = 0.25f
-            ),
+            tint = if (enabled) MaterialTheme.colors.secondary else LocalContentColor.current.copy(alpha = 0.25f),
             modifier = Modifier
                 .size(42.dp)
                 .supportRtl(),
@@ -145,7 +143,7 @@ internal fun UserInputText(
                     textStyle = LocalTextStyle.current.copy(color = LocalContentColor.current)
                 )
 
-                val hintColor = MaterialTheme.colors.onSurface.copy(alpha = 0.5f)
+                val hintColor = LocalContentColor.current.copy(alpha = 0.5f)
                 if (textFieldValue.text.isEmpty()) {
                     Text(
                         modifier = Modifier.align(Alignment.CenterStart),

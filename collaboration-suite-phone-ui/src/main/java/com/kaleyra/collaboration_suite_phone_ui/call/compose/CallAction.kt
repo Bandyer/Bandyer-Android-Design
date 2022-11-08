@@ -118,11 +118,11 @@ internal object CallActionDefaults {
 
     @Composable
     fun colors(
-        backgroundColor: Color = MaterialTheme.colors.onSurface.copy(alpha = .12f),
+        backgroundColor: Color = LocalContentColor.current.copy(alpha = .12f),
         iconColor: Color = contentColorFor(backgroundColor),
         textColor: Color = LocalContentColor.current,
-        disabledBackgroundColor: Color = MaterialTheme.colors.onSurface.copy(alpha = .12f),
-        disabledIconColor: Color = MaterialTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled),
+        disabledBackgroundColor: Color = LocalContentColor.current.copy(alpha = .12f),
+        disabledIconColor: Color = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
         disabledTextColor: Color = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
         toggledBackgroundColor: Color = MaterialTheme.colors.secondaryVariant,
         toggledIconColor: Color = contentColorFor(toggledBackgroundColor)
