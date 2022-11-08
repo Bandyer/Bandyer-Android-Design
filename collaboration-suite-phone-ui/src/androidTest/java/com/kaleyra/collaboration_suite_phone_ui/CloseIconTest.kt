@@ -5,31 +5,31 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationIcon
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CloseIcon
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class CallNavigationIconTest {
+class CloseIconTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var onBackPressed = false
+    private var onClosePressed = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            NavigationIcon(onBackPressed = { onBackPressed = true })
+            CloseIcon(onClosePressed = { onClosePressed = true })
         }
     }
 
     @Test
-    fun userClicksBack_onBackPressedInvoked() {
-        val back = composeTestRule.activity.getString(R.string.kaleyra_back)
-        composeTestRule.onNodeWithContentDescription(back).performClick()
-        assert(onBackPressed)
+    fun userClicksIcon_onClosePressedInvoked() {
+        val close = composeTestRule.activity.getString(R.string.kaleyra_close)
+        composeTestRule.onNodeWithContentDescription(close).performClick()
+        assert(onClosePressed)
     }
 }

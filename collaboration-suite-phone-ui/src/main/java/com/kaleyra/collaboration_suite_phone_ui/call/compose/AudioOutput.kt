@@ -27,23 +27,12 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 internal fun AudioOutput(
     items: ImmutableList<AudioDevice>,
     onItemClick: (AudioDevice) -> Unit,
-    onBackPressed: () -> Unit
+    onClosePressed: () -> Unit
 ) {
-    Column(modifier = Modifier.padding(top = 12.dp, bottom = 24.dp)) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, end = 8.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.kaleyra_audio_route_title),
-                color = MaterialTheme.colors.onSurface,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.weight(1f)
-            )
-            NavigationIcon(onBackPressed = onBackPressed)
-        }
+    SubMenuLayout(
+        title = stringResource(id = R.string.kaleyra_audio_route_title),
+        onClosePressed = onClosePressed
+    ) {
         LazyColumn {
             items(items = items.value, key = { it.id }) {
                 val title = titleFor(it)
@@ -167,7 +156,7 @@ internal fun AudioRoutePreview() {
         AudioOutput(
             items = audioDevices,
             onItemClick = { },
-            onBackPressed = { }
+            onClosePressed = { }
         )
     }
 }

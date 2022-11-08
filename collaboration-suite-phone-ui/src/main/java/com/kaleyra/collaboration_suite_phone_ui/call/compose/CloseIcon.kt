@@ -13,16 +13,16 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.supportRtl
 
 @Composable
-internal fun NavigationIcon(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
+internal fun CloseIcon(modifier: Modifier = Modifier, onClosePressed: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     IconButton(
-        onClick = onBackPressed,
+        onClick = onClosePressed,
         modifier = modifier.highlightOnFocus(interactionSource),
         interactionSource = interactionSource
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_kaleyra_back_down),
-            contentDescription = stringResource(id = R.string.kaleyra_back),
+            painter = painterResource(id = R.drawable.ic_kaleyra_close),
+            contentDescription = stringResource(id = R.string.kaleyra_close),
             modifier = Modifier.supportRtl()
         )
     }

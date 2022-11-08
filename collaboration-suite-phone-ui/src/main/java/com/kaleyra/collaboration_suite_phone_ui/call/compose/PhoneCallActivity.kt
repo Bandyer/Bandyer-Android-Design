@@ -28,7 +28,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.utils.OrientationListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -134,51 +133,51 @@ fun CallScreen(orientation: StateFlow<Int>) {
         backgroundColor = Color.Black,
         contentColor = Color.White,
         sheetContent = {
-            AnimatedContent(
-                targetState = targetState
-            ) { target ->
-                when (target) {
-                    BottomSheetContent.CallActions -> {
-                        BottomSheetContent(
-                            lineState = mapToLineState(sheetState),
-                            onLineClick = halfExpand
-                        ) {
+            BottomSheetContent(
+                lineState = mapToLineState(sheetState),
+                onLineClick = halfExpand
+            ) {
+                AnimatedContent(
+                    targetState = targetState
+                ) { target ->
+                    when (target) {
+                        BottomSheetContent.CallActions -> {
                             CallActions(
                                 items = callActions,
                                 itemsPerRow = itemsPerRow,
                                 orientation = orientation
                             )
                         }
-                    }
-                    BottomSheetContent.AudioRoute -> {
-                        AudioOutput(items = audioDevices, onItemClick = {
-                            scope.launch {
-                                sheetState.halfExpand()
-                            }
-                        }, onBackPressed = {
-                            scope.launch {
-                                sheetState.halfExpand()
-                            }
-                        })
-                    }
-                    BottomSheetContent.ScreenShare -> {
-                        ScreenShare(
-                            items = ImmutableList(
-                                listOf(
-                                    ScreenShare.DEVICE,
-                                    ScreenShare.APPLICATION
-                                )
-                            ),
-                            onItemClick = {
+                        BottomSheetContent.AudioRoute -> {
+                            AudioOutput(items = audioDevices, onItemClick = {
                                 scope.launch {
                                     sheetState.halfExpand()
                                 }
-                            },
-                            onBackPressed = {
+                            }, onClosePressed = {
                                 scope.launch {
                                     sheetState.halfExpand()
                                 }
                             })
+                        }
+                        BottomSheetContent.ScreenShare -> {
+                            ScreenShare(
+                                items = ImmutableList(
+                                    listOf(
+                                        ScreenShare.DEVICE,
+                                        ScreenShare.APPLICATION
+                                    )
+                                ),
+                                onItemClick = {
+                                    scope.launch {
+                                        sheetState.halfExpand()
+                                    }
+                                },
+                                onClosePressed = {
+                                    scope.launch {
+                                        sheetState.halfExpand()
+                                    }
+                                })
+                        }
                     }
                 }
             }

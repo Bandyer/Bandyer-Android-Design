@@ -28,12 +28,12 @@ class ScreenShareTest {
 
     private var screenShare: ScreenShare? = null
 
-    private var onBackPressed = false
+    private var onClosePressed = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent { 
-            ScreenShare(items = items, onItemClick = { screenShare = it }, onBackPressed = { onBackPressed = true })
+            ScreenShare(items = items, onItemClick = { screenShare = it }, onClosePressed = { onClosePressed = true })
         }
     }
 
@@ -44,10 +44,10 @@ class ScreenShareTest {
     }
 
     @Test
-    fun userClicksBack_onBackPressedInvoked() {
-        val back = composeTestRule.activity.getString(R.string.kaleyra_back)
-        composeTestRule.onNodeWithContentDescription(back).performClick()
-        assert(onBackPressed)
+    fun userClicksClose_onClosePressedInvoked() {
+        val close = composeTestRule.activity.getString(R.string.kaleyra_close)
+        composeTestRule.onNodeWithContentDescription(close).performClick()
+        assert(onClosePressed)
     }
 
     @Test

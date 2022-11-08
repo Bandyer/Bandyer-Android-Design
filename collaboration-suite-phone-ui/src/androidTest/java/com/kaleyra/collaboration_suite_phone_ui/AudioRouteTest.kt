@@ -27,12 +27,12 @@ class AudioRouteTest {
 
     private var audioDevice: AudioDevice? = null
 
-    private var onBackPressed = false
+    private var onClosePressed = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            AudioOutput(items = items, onItemClick = { audioDevice = it }, onBackPressed = { onBackPressed = true })
+            AudioOutput(items = items, onItemClick = { audioDevice = it }, onClosePressed = { onClosePressed = true })
         }
     }
 
@@ -43,10 +43,10 @@ class AudioRouteTest {
     }
 
     @Test
-    fun userClicksBack_onBackPressedInvoked() {
-        val back = composeTestRule.activity.getString(R.string.kaleyra_back)
-        composeTestRule.onNodeWithContentDescription(back).performClick()
-        assert(onBackPressed)
+    fun userClicksClose_onClosePressedInvoked() {
+        val close = composeTestRule.activity.getString(R.string.kaleyra_close)
+        composeTestRule.onNodeWithContentDescription(close).performClick()
+        assert(onClosePressed)
     }
 
     @Test

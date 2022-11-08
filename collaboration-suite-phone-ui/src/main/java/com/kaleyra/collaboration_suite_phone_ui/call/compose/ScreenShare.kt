@@ -27,23 +27,12 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 internal fun ScreenShare(
     items: ImmutableList<ScreenShare>,
     onItemClick: (ScreenShare) -> Unit,
-    onBackPressed: () -> Unit
+    onClosePressed: () -> Unit
 ) {
-    Column(modifier = Modifier.padding(top = 12.dp, bottom = 24.dp)) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 20.dp, end = 8.dp)
-        ) {
-            Text(
-                text = stringResource(R.string.kaleyra_screenshare_picker_title),
-                color = MaterialTheme.colors.onSurface,
-                fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.weight(1f)
-            )
-            NavigationIcon(onBackPressed = onBackPressed)
-        }
+    SubMenuLayout(
+        title = stringResource(id = R.string.kaleyra_screenshare_picker_title),
+        onClosePressed = onClosePressed
+    ) {
         LazyColumn {
             items(items = items.value) {
                 val title = titleFor(it)
@@ -111,7 +100,7 @@ internal fun ScreenSharePreview() {
         ScreenShare(
             items = ImmutableList(listOf(ScreenShare.DEVICE, ScreenShare.APPLICATION)),
             onItemClick = { },
-            onBackPressed = { }
+            onClosePressed = { }
         )
     }
 }
