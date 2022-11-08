@@ -74,11 +74,11 @@ private fun subtitleFor(device: AudioDevice): String? =
             val batteryLevel = device.batteryLevel
 
             val deviceState = when {
-                connectionState == BluetoothDeviceState.DISCONNECTED -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_disconnected)
-                connectionState == BluetoothDeviceState.FAILED -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_failed)
-                connectionState == BluetoothDeviceState.AVAILABLE -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_available)
+                connectionState == BluetoothDeviceState.Disconnected -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_disconnected)
+                connectionState == BluetoothDeviceState.Failed -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_failed)
+                connectionState == BluetoothDeviceState.Available -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_available)
                 connectionState.isConnected() -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_connected)
-                connectionState == BluetoothDeviceState.DEACTIVATING -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_deactivating)
+                connectionState == BluetoothDeviceState.Deactivating -> stringResource(R.string.kaleyra_call_action_audio_route_bluetooth_deactivating)
                 else -> ""
             }
 

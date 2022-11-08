@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -57,15 +56,15 @@ internal fun ScreenShare(
 @Composable
 private fun titleFor(screenShare: ScreenShare): String =
     when (screenShare) {
-        ScreenShare.DEVICE -> stringResource(R.string.kaleyra_screenshare_full_device)
-        ScreenShare.APPLICATION -> stringResource(R.string.kaleyra_screenshare_app_only)
+        ScreenShare.Device -> stringResource(R.string.kaleyra_screenshare_full_device)
+        ScreenShare.Application -> stringResource(R.string.kaleyra_screenshare_app_only)
     }
 
 @Composable
 private fun painterFor(screenShare: ScreenShare): Painter = painterResource(
     id = when (screenShare) {
-        ScreenShare.DEVICE -> R.drawable.ic_kaleyra_screen_share_device
-        ScreenShare.APPLICATION -> R.drawable.ic_kaleyra_screen_share_app
+        ScreenShare.Device -> R.drawable.ic_kaleyra_screen_share_device
+        ScreenShare.Application -> R.drawable.ic_kaleyra_screen_share_app
     }
 )
 
@@ -97,7 +96,7 @@ internal fun ScreenShareItem(
 internal fun ScreenSharePreview() {
     KaleyraTheme {
         ScreenShare(
-            items = ImmutableList(listOf(ScreenShare.DEVICE, ScreenShare.APPLICATION)),
+            items = ImmutableList(listOf(ScreenShare.Device, ScreenShare.Application)),
             onItemClick = { },
             onClosePressed = { }
         )

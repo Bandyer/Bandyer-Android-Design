@@ -1,29 +1,87 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.model
 
+import android.net.Uri
 import androidx.compose.runtime.Immutable
 
 @Immutable
 enum class ScreenShare {
-    DEVICE,
-    APPLICATION
+    Device,
+    Application
 }
 
 enum class BluetoothDeviceState {
-    AVAILABLE,
-    CONNECTING,
-    CONNECTED,
-    ACTIVATING,
-    ACTIVE,
-    DEACTIVATING,
-    DISCONNECTED,
-    FAILED
+    Available,
+    Connecting,
+    Connected,
+    Activating,
+    Active,
+    Deactivating,
+    Disconnected,
+    Failed
 }
 
 internal fun BluetoothDeviceState.isConnecting() =
-    this == BluetoothDeviceState.ACTIVE || this == BluetoothDeviceState.CONNECTING || this == BluetoothDeviceState.ACTIVATING
+    this == BluetoothDeviceState.Active || this == BluetoothDeviceState.Connecting || this == BluetoothDeviceState.Activating
 
 internal fun BluetoothDeviceState.isConnected() =
-    this == BluetoothDeviceState.ACTIVE || this == BluetoothDeviceState.CONNECTED || this == BluetoothDeviceState.ACTIVATING
+    this == BluetoothDeviceState.Active || this == BluetoothDeviceState.Connected || this == BluetoothDeviceState.Activating
+
+@Immutable
+sealed interface Transfer {
+
+    val fileName: String
+
+    val fileType: Type
+
+    val fileSize: Long
+
+    val transferredSize: Long
+
+    val sender: String
+
+    val time: Long
+
+    val uri: Uri
+
+    val state: State
+
+    data class Upload(
+        override val fileName: String,
+        override val fileType: Type,
+        override val fileSize: Long,
+        override val transferredSize: Long,
+        override val sender: String,
+        override val time: Long,
+        override val uri: Uri,
+        override val state: State
+    ) : Transfer
+
+    data class Download(
+        override val fileName: String,
+        override val fileType: Type,
+        override val fileSize: Long,
+        override val transferredSize: Long,
+        override val sender: String,
+        override val time: Long,
+        override val uri: Uri,
+        override val state: State
+    ) : Transfer
+
+    enum class State {
+        Available,
+        Pending,
+        InProgress,
+        Success,
+        Error,
+        Cancelled
+    }
+
+    enum class Type {
+        Image,
+        Archive,
+        File
+    }
+}
 
 @Immutable
 sealed interface AudioDevice {

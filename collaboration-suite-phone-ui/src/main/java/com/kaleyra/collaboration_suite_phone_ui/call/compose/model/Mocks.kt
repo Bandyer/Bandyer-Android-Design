@@ -26,7 +26,7 @@ val mockAudioDevices = ImmutableList(
             id = "id",
             isPlaying = true,
             name = "Custom device",
-            connectionState = BluetoothDeviceState.ACTIVE,
+            connectionState = BluetoothDeviceState.Active,
             batteryLevel = 75
         ),
         AudioDevice.LoudSpeaker(id = "id2", isPlaying = false),

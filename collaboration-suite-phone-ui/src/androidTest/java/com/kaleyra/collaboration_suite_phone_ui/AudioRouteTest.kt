@@ -101,7 +101,7 @@ class AudioRouteTest {
                     "",
                     false,
                     null,
-                    BluetoothDeviceState.ACTIVE,
+                    BluetoothDeviceState.Active,
                     30
                 )
             )
@@ -119,7 +119,7 @@ class AudioRouteTest {
                     "",
                     false,
                     "customBluetooth",
-                    BluetoothDeviceState.ACTIVE,
+                    BluetoothDeviceState.Active,
                     30
                 )
             )
@@ -135,7 +135,7 @@ class AudioRouteTest {
                     "",
                     false,
                     "customBluetooth",
-                    BluetoothDeviceState.ACTIVE,
+                    BluetoothDeviceState.Active,
                     30
                 )
             )
@@ -158,7 +158,7 @@ class AudioRouteTest {
                     "",
                     false,
                     "customBluetooth",
-                    BluetoothDeviceState.DISCONNECTED,
+                    BluetoothDeviceState.Disconnected,
                     30
                 )
             )
@@ -176,7 +176,7 @@ class AudioRouteTest {
                     "",
                     false,
                     "customBluetooth",
-                    BluetoothDeviceState.FAILED,
+                    BluetoothDeviceState.Failed,
                     30
                 )
             )
@@ -194,7 +194,7 @@ class AudioRouteTest {
                     "",
                     false,
                     "customBluetooth",
-                    BluetoothDeviceState.AVAILABLE,
+                    BluetoothDeviceState.Available,
                     30
                 )
             )
@@ -212,7 +212,7 @@ class AudioRouteTest {
                     "",
                     false,
                     "customBluetooth",
-                    BluetoothDeviceState.DEACTIVATING,
+                    BluetoothDeviceState.Deactivating,
                     30
                 )
             )
@@ -230,7 +230,7 @@ class AudioRouteTest {
                     "",
                     false,
                     "customBluetooth",
-                    BluetoothDeviceState.ACTIVE,
+                    BluetoothDeviceState.Active,
                     30
                 )
             )
@@ -248,7 +248,7 @@ class AudioRouteTest {
                     "",
                     false,
                     "customBluetooth",
-                    BluetoothDeviceState.CONNECTED,
+                    BluetoothDeviceState.Connected,
                     30
                 )
             )
@@ -266,7 +266,7 @@ class AudioRouteTest {
                     "",
                     false,
                     "customBluetooth",
-                    BluetoothDeviceState.ACTIVATING,
+                    BluetoothDeviceState.Activating,
                     30
                 )
             )
@@ -284,7 +284,7 @@ class AudioRouteTest {
                     "",
                     false,
                     "customBluetooth",
-                    BluetoothDeviceState.ACTIVATING,
+                    BluetoothDeviceState.Activating,
                     30
                 )
             )
@@ -306,7 +306,7 @@ class AudioRouteTest {
                     "",
                     false,
                     "customBluetooth",
-                    BluetoothDeviceState.CONNECTING,
+                    BluetoothDeviceState.Connecting,
                     30
                 )
             )
