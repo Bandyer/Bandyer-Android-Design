@@ -44,28 +44,35 @@ private val FabIconPadding = 16.dp
 private val FabPadding = 20.dp
 
 @Composable
-internal fun FileShare(items: ImmutableList<Int>, onClick: () -> Unit, onClosePressed: () -> Unit) {
-    SubMenuLayout(
-        title = "File share", onClosePressed = onClosePressed
-    ) {
+internal fun FileShare(
+    items: ImmutableList<Transfer>,
+    onFabClick: () -> Unit,
+    onCloseClick: () -> Unit
+) {
+    SubMenuLayout(title = "File share", onCloseClick = onCloseClick) {
         Box(Modifier.fillMaxSize()) {
             if (items.count < 1) EmptyList()
             else {
                 LazyColumn(contentPadding = PaddingValues(bottom = 72.dp)) {
                     items(items = items.value) {
-                        FileShareItem(mockUploadTransfer.copy(state = Transfer.State.Error), {}, {})
+                        FileShareItem(
+                            transfer = it,
+                            onActionClick = it.onActionClick,
+                            onClick = it.onClick
+                        )
                     }
                 }
             }
-            ExtendedFloatingActionButton(text = if (items.count < 1) {
-                {
-                    Text(
-                        text = stringResource(id = R.string.kaleyra_fileshare_add).uppercase(),
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            } else null,
-                onClick = onClick,
+            ExtendedFloatingActionButton(
+                text = if (items.count < 1) {
+                    {
+                        Text(
+                            text = stringResource(id = R.string.kaleyra_fileshare_add).uppercase(),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                } else null,
+                onClick = onFabClick,
                 icon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_kaleyra_add),

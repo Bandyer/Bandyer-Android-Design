@@ -45,6 +45,10 @@ sealed interface Transfer {
 
     val state: State
 
+    val onActionClick: () -> Unit
+
+    val onClick: () -> Unit
+
     data class Upload(
         override val fileName: String,
         override val fileType: FileType,
@@ -53,7 +57,9 @@ sealed interface Transfer {
         override val progress: Float,
         override val time: Long,
         override val uri: Uri,
-        override val state: State
+        override val state: State,
+        override val onActionClick: () -> Unit,
+        override val onClick: () -> Unit
     ) : Transfer
 
     data class Download(
@@ -64,7 +70,9 @@ sealed interface Transfer {
         override val progress: Float,
         override val time: Long,
         override val uri: Uri,
-        override val state: State
+        override val state: State,
+        override val onActionClick: () -> Unit,
+        override val onClick: () -> Unit
     ) : Transfer
 
     enum class State {

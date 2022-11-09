@@ -32,9 +32,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomS
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.mapToLineState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.rememberBottomSheetState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.ScreenShare
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockAudioDevices
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockCallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.AudioOutput
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.FileShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.ScreenShare
@@ -176,14 +174,14 @@ fun CallScreen(orientation: StateFlow<Int>) {
                                 })
                         }
                         BottomSheetContent.FileShare -> {
-                            val list = produceState(ImmutableList(listOf())) {
+                            val list = produceState(ImmutableList(listOf<Transfer>())) {
                                 kotlinx.coroutines.delay(3000)
-                                value = ImmutableList(listOf(0))
+                                value = ImmutableList(listOf(mockDownloadTransfer, mockUploadTransfer))
                             }
                             FileShare(
                                 items = list.value,
-                                onClick = {},
-                                onClosePressed = {
+                                onFabClick = {},
+                                onCloseClick = {
                                     scope.launch {
                                         sheetState.halfExpand()
                                     }

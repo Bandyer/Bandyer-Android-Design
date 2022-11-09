@@ -47,7 +47,9 @@ val mockUploadTransfer = Transfer.Upload(
     .7f,
     324234L,
     Uri.EMPTY,
-    Transfer.State.InProgress
+    Transfer.State.InProgress,
+    {},
+    {}
 )
 
 val mockDownloadTransfer = Transfer.Download(
@@ -58,5 +60,7 @@ val mockDownloadTransfer = Transfer.Download(
     .4f,
     3254234L,
     Uri.EMPTY,
-    Transfer.State.InProgress
+    Transfer.State.InProgress,
+    {},
+    {}
 )
