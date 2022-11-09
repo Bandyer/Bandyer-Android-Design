@@ -181,6 +181,7 @@
     <string name="kaleyra_fileshare_file_cancelled">File cancelled</string>
     <string name="kaleyra_max_bytes_dialog_descr">It is allowed to share files up to 150 MB</string>
     <string name="kaleyra_max_bytes_dialog_title">File share limit</string>
+    <string name="kaleyra_open_file">Open file</string>
 
     <!-- FEEDBACK -->
     <string name="kaleyra_feedback_vote">Vote</string>

@@ -35,9 +35,9 @@ sealed interface Transfer {
 
     val fileSize: Long
 
-    val transferredSize: Long
-
     val sender: String
+
+    val progress: Float
 
     val time: Long
 
@@ -49,8 +49,8 @@ sealed interface Transfer {
         override val fileName: String,
         override val fileType: FileType,
         override val fileSize: Long,
-        override val transferredSize: Long,
         override val sender: String,
+        override val progress: Float,
         override val time: Long,
         override val uri: Uri,
         override val state: State
@@ -60,8 +60,8 @@ sealed interface Transfer {
         override val fileName: String,
         override val fileType: FileType,
         override val fileSize: Long,
-        override val transferredSize: Long,
         override val sender: String,
+        override val progress: Float,
         override val time: Long,
         override val uri: Uri,
         override val state: State

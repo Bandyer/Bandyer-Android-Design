@@ -1,9 +1,10 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu
 
-import android.net.Uri
+import android.text.format.Formatter
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,25 +13,31 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.Transfer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockDownloadTransfer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockUploadTransfer
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import kotlin.math.roundToInt
 
 private val FabSize = 56.dp
 private val FabIconPadding = 16.dp
@@ -46,16 +53,7 @@ internal fun FileShare(items: ImmutableList<Int>, onClick: () -> Unit, onClosePr
             else {
                 LazyColumn(contentPadding = PaddingValues(bottom = 72.dp)) {
                     items(items = items.value) {
-                        FileShareItem(Transfer.Upload(
-                            "fileName",
-                            Transfer.FileType.Image,
-                            23333L,
-                            2323L,
-                            "Mario",
-                            324234L,
-                            Uri.EMPTY,
-                            Transfer.State.Error
-                        ), {})
+                        FileShareItem(mockUploadTransfer.copy(state = Transfer.State.Error), {}, {})
                     }
                 }
             }
@@ -153,10 +151,16 @@ private fun EmptyList() {
 }
 
 @Composable
-internal fun FileShareItem(transfer: Transfer, onButtonClick: () -> Unit) {
+internal fun FileShareItem(transfer: Transfer, onActionClick: () -> Unit, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable(
+                enabled = transfer.state == Transfer.State.Success,
+                onClickLabel = stringResource(R.string.kaleyra_open_file),
+                role = Role.Button,
+                onClick = onClick
+            )
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -171,7 +175,7 @@ internal fun FileShareItem(transfer: Transfer, onButtonClick: () -> Unit) {
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = "${transfer.fileSize}",
+                text = formattedFileSize(transfer),
                 color = LocalContentColor.current.copy(alpha = .5f),
                 fontSize = 12.sp
             )
@@ -182,7 +186,7 @@ internal fun FileShareItem(transfer: Transfer, onButtonClick: () -> Unit) {
                 Column(Modifier.weight(1f)) {
                     Text(text = transfer.fileName, fontSize = 14.sp, fontWeight = FontWeight.Bold)
                     LinearProgressIndicator(
-                        progress = .74f,
+                        progress = transfer.progress,
                         modifier = Modifier
                             .padding(vertical = 2.dp)
                             .clip(RoundedCornerShape(percent = 50)),
@@ -197,13 +201,13 @@ internal fun FileShareItem(transfer: Transfer, onButtonClick: () -> Unit) {
                         )
                         Spacer(Modifier.width(8.dp))
                         Text(
-                            text = transfer.sender,
+                            text = if (transfer is Transfer.Download) transfer.sender else stringResource(id = R.string.kaleyra_fileshare_you),
                             color = LocalContentColor.current.copy(alpha = .5f),
                             fontSize = 12.sp,
                             modifier = Modifier.weight(1f)
                         )
                         Text(
-                            text = textFor(transfer.state),
+                            text = progressTextFor(transfer),
                             color = LocalContentColor.current.copy(alpha = .5f),
                             fontSize = 12.sp
                         )
@@ -211,7 +215,7 @@ internal fun FileShareItem(transfer: Transfer, onButtonClick: () -> Unit) {
                 }
                 Spacer(Modifier.width(16.dp))
                 IconButton(
-                    onClick = onButtonClick, modifier = Modifier
+                    onClick = onActionClick, modifier = Modifier
                 ) {
                     Icon(
                         painter = iconFor(transfer.state),
@@ -233,13 +237,19 @@ internal fun FileShareItem(transfer: Transfer, onButtonClick: () -> Unit) {
             }
             if (transfer.state == Transfer.State.Error) {
                 Text(
-                    text = stringResource(id = R.string.kaleyra_fileshare_upload_error),
+                    text = stringResource(id = if (transfer is Transfer.Upload) R.string.kaleyra_fileshare_upload_error else R.string.kaleyra_fileshare_download_error),
                     color = MaterialTheme.colors.error,
                     fontSize = 12.sp
                 )
             }
         }
     }
+}
+
+@Composable
+private fun formattedFileSize(transfer: Transfer) = when {
+    transfer is Transfer.Download && transfer.state != Transfer.State.InProgress && transfer.state != Transfer.State.Success -> stringResource(R.string.kaleyra_fileshare_na)
+    else -> Formatter.formatShortFileSize(LocalContext.current, transfer.fileSize)
 }
 
 @Composable
@@ -262,9 +272,10 @@ private fun borderColorFor(state: Transfer.State) = when (state) {
     else -> LocalContentColor.current.copy(alpha = .3f)
 }
 
-private fun textFor(state: Transfer.State) = when (state) {
-    Transfer.State.Available, Transfer.State.Success -> "HH:mm"
-    else -> "progress %%"
+@Composable
+private fun progressTextFor(transfer: Transfer) = when (transfer.state) {
+    Transfer.State.Available, Transfer.State.Success -> TimestampUtils.parseTime(transfer.time)
+    else -> stringResource(id = R.string.kaleyra_fileshare_progress, (transfer.progress * 100).roundToInt())
 }
 
 @Composable
@@ -298,7 +309,7 @@ private fun iconFor(state: Transfer.State) = painterResource(
 @Composable
 internal fun FileShareItemInProgressPreview() {
     KaleyraTheme {
-        FileShareItem(mockUploadTransfer) {}
+        FileShareItem(mockUploadTransfer, {}, {})
     }
 }
 
@@ -306,7 +317,7 @@ internal fun FileShareItemInProgressPreview() {
 @Composable
 internal fun FileShareItemCancelledPreview() {
     KaleyraTheme {
-        FileShareItem(mockDownloadTransfer.copy(state = Transfer.State.Cancelled)) {}
+        FileShareItem(mockDownloadTransfer.copy(state = Transfer.State.Cancelled), {}, {})
     }
 }
 
@@ -314,7 +325,7 @@ internal fun FileShareItemCancelledPreview() {
 @Composable
 internal fun FileShareItemErrorPreview() {
     KaleyraTheme {
-        FileShareItem(mockUploadTransfer.copy(state = Transfer.State.Error)) {}
+        FileShareItem(mockUploadTransfer.copy(state = Transfer.State.Error), {}, {})
     }
 }
 
@@ -322,7 +333,7 @@ internal fun FileShareItemErrorPreview() {
 @Composable
 internal fun FileShareItemAvailablePreview() {
     KaleyraTheme {
-        FileShareItem(mockDownloadTransfer.copy(state = Transfer.State.Available)) {}
+        FileShareItem(mockDownloadTransfer.copy(state = Transfer.State.Available), {}, {})
     }
 }
 
@@ -330,7 +341,7 @@ internal fun FileShareItemAvailablePreview() {
 @Composable
 internal fun FileSharePendingPreview() {
     KaleyraTheme {
-        FileShareItem(mockUploadTransfer.copy(state = Transfer.State.Pending)) {}
+        FileShareItem(mockUploadTransfer.copy(state = Transfer.State.Pending), {}, {})
     }
 }
 
@@ -338,6 +349,6 @@ internal fun FileSharePendingPreview() {
 @Composable
 internal fun FileShareSuccessPreview() {
     KaleyraTheme {
-        FileShareItem(mockDownloadTransfer.copy(state = Transfer.State.Success)) {}
+        FileShareItem(mockDownloadTransfer.copy(state = Transfer.State.Success), {}, {})
     }
 }

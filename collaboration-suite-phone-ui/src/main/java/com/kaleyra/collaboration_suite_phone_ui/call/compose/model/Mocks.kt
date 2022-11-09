@@ -43,19 +43,19 @@ val mockUploadTransfer = Transfer.Upload(
     "upload.txt",
     Transfer.FileType.Image,
     23333L,
-    6000L,
     "Mario",
+    .7f,
     324234L,
     Uri.EMPTY,
     Transfer.State.InProgress
 )
 
-val mockDownloadTransfer = Transfer.Upload(
+val mockDownloadTransfer = Transfer.Download(
     "download.txt",
     Transfer.FileType.File,
     40000L,
-    14000L,
     "Keanu",
+    .4f,
     3254234L,
     Uri.EMPTY,
     Transfer.State.InProgress
