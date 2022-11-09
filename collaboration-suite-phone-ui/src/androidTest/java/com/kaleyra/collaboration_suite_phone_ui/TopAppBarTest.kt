@@ -40,7 +40,7 @@ class TopAppBarTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            TopAppBar(
+            ChatAppBar(
                 state = chatState.collectAsState().value,
                 info = chatInfo,
                 actions = chatActions,

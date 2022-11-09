@@ -43,7 +43,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.mockUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.TopAppBar
+import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.ChatAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel.ChatUiViewModel
@@ -127,7 +127,7 @@ internal fun ChatScreen(
                 testTagsAsResourceId = true
             }) {
         Box(Modifier.focusRequester(topBarRef)){
-            TopAppBar(
+            ChatAppBar(
                 state = uiState.state,
                 info = uiState.info,
                 onBackPressed = onBackPressed,

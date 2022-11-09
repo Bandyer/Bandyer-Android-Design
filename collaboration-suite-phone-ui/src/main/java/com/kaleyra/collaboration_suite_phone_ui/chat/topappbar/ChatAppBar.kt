@@ -36,7 +36,7 @@ internal const val BouncingDots = "BouncingDots"
 internal const val ActionsTag = "ActionsTag"
 
 @Composable
-internal fun TopAppBar(
+internal fun ChatAppBar(
     state: ChatState,
     info: ChatInfo,
     actions: ImmutableSet<ChatAction>,
@@ -168,7 +168,7 @@ internal fun Actions(actions: ImmutableSet<ChatAction>) {
 @Preview
 @Composable
 internal fun TopAppBarPreview() = KaleyraTheme {
-    TopAppBar(
+    ChatAppBar(
         state = ChatState.UserState.Typing,
         info = ChatInfo("John Smith"),
         actions = mockActions,
@@ -179,7 +179,7 @@ internal fun TopAppBarPreview() = KaleyraTheme {
 @Preview
 @Composable
 internal fun TopAppBarDarkPreview() = KaleyraTheme(isDarkTheme = true) {
-    TopAppBar(
+    ChatAppBar(
         state = ChatState.UserState.Offline(5654635),
         info = ChatInfo("John Smith"),
         actions = mockActions,
