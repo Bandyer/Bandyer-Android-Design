@@ -19,12 +19,12 @@ class SubMenuLayoutTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var onClosePressed = false
+    private var closeClicked = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            SubMenuLayout(title = "title", onClosePressed = { onClosePressed = true }, content = { })
+            SubMenuLayout(title = "title", onCloseClick = { closeClicked = true }, content = { })
         }
     }
 
@@ -34,9 +34,9 @@ class SubMenuLayoutTest {
     }
 
     @Test
-    fun userClicksClose_onClosePressedInvoked() {
+    fun userClicksClose_onCloseClickInvoked() {
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).performClick()
-        assert(onClosePressed)
+        assert(closeClicked)
     }
 }

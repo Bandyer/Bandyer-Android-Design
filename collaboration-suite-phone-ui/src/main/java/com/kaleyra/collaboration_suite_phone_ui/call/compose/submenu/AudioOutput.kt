@@ -28,11 +28,11 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 internal fun AudioOutput(
     items: ImmutableList<AudioDevice>,
     onItemClick: (AudioDevice) -> Unit,
-    onClosePressed: () -> Unit
+    onCloseClick: () -> Unit
 ) {
     SubMenuLayout(
         title = stringResource(id = R.string.kaleyra_audio_route_title),
-        onClosePressed = onClosePressed
+        onCloseClick = onCloseClick
     ) {
         LazyColumn {
             items(items = items.value, key = { it.id }) {
@@ -157,7 +157,7 @@ internal fun AudioRoutePreview() {
         AudioOutput(
             items = mockAudioDevices,
             onItemClick = { },
-            onClosePressed = { }
+            onCloseClick = { }
         )
     }
 }

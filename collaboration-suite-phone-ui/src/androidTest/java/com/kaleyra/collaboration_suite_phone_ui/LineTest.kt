@@ -11,8 +11,7 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
 import io.mockk.every
 import io.mockk.spyk
 import org.junit.Assert.assertEquals

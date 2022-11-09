@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -26,11 +25,11 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 internal fun ScreenShare(
     items: ImmutableList<ScreenShare>,
     onItemClick: (ScreenShare) -> Unit,
-    onClosePressed: () -> Unit
+    onCloseClick: () -> Unit
 ) {
     SubMenuLayout(
         title = stringResource(id = R.string.kaleyra_screenshare_picker_title),
-        onClosePressed = onClosePressed
+        onCloseClick = onCloseClick
     ) {
         LazyColumn {
             items(items = items.value) {
@@ -97,7 +96,7 @@ internal fun ScreenSharePreview() {
         ScreenShare(
             items = ImmutableList(listOf(ScreenShare.Device, ScreenShare.Application)),
             onItemClick = { },
-            onClosePressed = { }
+            onCloseClick = { }
         )
     }
 }

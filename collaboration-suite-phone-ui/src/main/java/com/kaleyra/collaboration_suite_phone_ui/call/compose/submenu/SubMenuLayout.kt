@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,7 +12,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.CloseIcon
 @Composable
 internal fun SubMenuLayout(
     title: String,
-    onClosePressed: () -> Unit,
+    onCloseClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
     Column(
@@ -32,7 +31,7 @@ internal fun SubMenuLayout(
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1f)
             )
-            CloseIcon(onClosePressed = onClosePressed)
+            CloseIcon(onClosePressed = onCloseClick)
         }
         content()
     }

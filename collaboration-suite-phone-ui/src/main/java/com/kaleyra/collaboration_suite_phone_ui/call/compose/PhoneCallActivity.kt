@@ -150,7 +150,7 @@ fun CallScreen(orientation: StateFlow<Int>) {
                                 scope.launch {
                                     sheetState.halfExpand()
                                 }
-                            }, onClosePressed = {
+                            }, onCloseClick = {
                                 scope.launch {
                                     sheetState.halfExpand()
                                 }
@@ -169,7 +169,7 @@ fun CallScreen(orientation: StateFlow<Int>) {
                                         sheetState.halfExpand()
                                     }
                                 },
-                                onClosePressed = {
+                                onCloseClick = {
                                     scope.launch {
                                         sheetState.halfExpand()
                                     }

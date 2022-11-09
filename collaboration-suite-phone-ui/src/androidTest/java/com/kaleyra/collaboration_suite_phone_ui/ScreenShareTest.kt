@@ -11,6 +11,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.ScreenShare
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.ScreenShare
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -28,12 +29,12 @@ class ScreenShareTest {
 
     private var screenShare: ScreenShare? = null
 
-    private var onClosePressed = false
+    private var closeClicked = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent { 
-            ScreenShare(items = items, onItemClick = { screenShare = it }, onClosePressed = { onClosePressed = true })
+            ScreenShare(items = items, onItemClick = { screenShare = it }, onCloseClick = { closeClicked = true })
         }
     }
 
@@ -44,10 +45,10 @@ class ScreenShareTest {
     }
 
     @Test
-    fun userClicksClose_onClosePressedInvoked() {
+    fun userClicksClose_onCloseClickInvoked() {
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).performClick()
-        assert(onClosePressed)
+        assert(closeClicked)
     }
 
     @Test

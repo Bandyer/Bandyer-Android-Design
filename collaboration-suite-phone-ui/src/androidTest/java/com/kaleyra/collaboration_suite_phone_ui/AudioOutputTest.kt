@@ -8,8 +8,8 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.AudioDevice
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.AudioOutput
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.BluetoothDeviceState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.AudioOutput
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -18,7 +18,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class AudioRouteTest {
+class AudioOutputTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -27,12 +27,12 @@ class AudioRouteTest {
 
     private var audioDevice: AudioDevice? = null
 
-    private var onClosePressed = false
+    private var closeClicked = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            AudioOutput(items = items, onItemClick = { audioDevice = it }, onClosePressed = { onClosePressed = true })
+            AudioOutput(items = items, onItemClick = { audioDevice = it }, onCloseClick = { closeClicked = true })
         }
     }
 
@@ -43,10 +43,10 @@ class AudioRouteTest {
     }
 
     @Test
-    fun userClicksClose_onClosePressedInvoked() {
+    fun userClicksClose_onCloseClickInvoked() {
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).performClick()
-        assert(onClosePressed)
+        assert(closeClicked)
     }
 
     @Test
