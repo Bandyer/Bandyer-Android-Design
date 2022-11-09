@@ -164,7 +164,7 @@
     <string name="kaleyra_fileshare_progress">%1$d %%</string>
     <string name="kaleyra_fileshare_upload">Upload</string>
     <string name="kaleyra_fileshare_download">Download</string>
-    <string name="kaleyra_fileshare_file">Generic file</string>
+    <string name="kaleyra_fileshare_miscellaneous">Generic file</string>
     <string name="kaleyra_fileshare_media">Media file</string>
     <string name="kaleyra_fileshare_archive">Archive file</string>
     <string name="kaleyra_fileshare_cancel">Cancel</string>

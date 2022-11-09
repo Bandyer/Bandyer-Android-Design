@@ -1,7 +1,10 @@
+@file:OptIn(ExperimentalFoundationApi::class)
+
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu
 
 import android.text.format.Formatter
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -43,6 +47,9 @@ private val FabSize = 56.dp
 private val FabIconPadding = 16.dp
 private val FabPadding = 20.dp
 
+const val FileShareItemTag = "FileShareItemTag"
+const val ProgressIndicatorTag = "ProgressIndicatorTag"
+
 @Composable
 internal fun FileShare(
     items: ImmutableList<Transfer>,
@@ -58,7 +65,10 @@ internal fun FileShare(
                         FileShareItem(
                             transfer = it,
                             onActionClick = it.onActionClick,
-                            onClick = it.onClick
+                            onClick = it.onClick,
+                            modifier = Modifier
+                                .animateItemPlacement()
+                                .testTag(FileShareItemTag)
                         )
                     }
                 }
@@ -76,7 +86,7 @@ internal fun FileShare(
                 icon = {
                     Icon(
                         painter = painterResource(id = R.drawable.ic_kaleyra_add),
-                        contentDescription = null
+                        contentDescription = stringResource(id = R.string.kaleyra_fileshare_add_description)
                     )
                 },
                 contentColor = MaterialTheme.colors.surface,
@@ -158,9 +168,14 @@ private fun EmptyList() {
 }
 
 @Composable
-internal fun FileShareItem(transfer: Transfer, onActionClick: () -> Unit, onClick: () -> Unit) {
+internal fun FileShareItem(
+    transfer: Transfer,
+    onActionClick: () -> Unit,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .clickable(
                 enabled = transfer.state == Transfer.State.Success,
@@ -196,19 +211,22 @@ internal fun FileShareItem(transfer: Transfer, onActionClick: () -> Unit, onClic
                         progress = transfer.progress,
                         modifier = Modifier
                             .padding(vertical = 2.dp)
-                            .clip(RoundedCornerShape(percent = 50)),
+                            .clip(RoundedCornerShape(percent = 50))
+                            .testTag(ProgressIndicatorTag),
                         color = MaterialTheme.colors.secondaryVariant,
                     )
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             painter = iconFor(transfer),
-                            contentDescription = null,
+                            contentDescription = descriptionFor(transfer),
                             tint = LocalContentColor.current.copy(alpha = .8f),
                             modifier = Modifier.size(12.dp)
                         )
                         Spacer(Modifier.width(8.dp))
                         Text(
-                            text = if (transfer is Transfer.Download) transfer.sender else stringResource(id = R.string.kaleyra_fileshare_you),
+                            text = if (transfer is Transfer.Download) transfer.sender else stringResource(
+                                id = R.string.kaleyra_fileshare_you
+                            ),
                             color = LocalContentColor.current.copy(alpha = .5f),
                             fontSize = 12.sp,
                             modifier = Modifier.weight(1f)
@@ -254,6 +272,14 @@ internal fun FileShareItem(transfer: Transfer, onActionClick: () -> Unit, onClic
 }
 
 @Composable
+private fun descriptionFor(transfer: Transfer) = stringResource(
+    id = when (transfer) {
+        is Transfer.Upload -> R.string.kaleyra_fileshare_upload
+        is Transfer.Download -> R.string.kaleyra_fileshare_download
+    }
+)
+
+@Composable
 private fun formattedFileSize(transfer: Transfer) = when {
     transfer is Transfer.Download && transfer.state != Transfer.State.InProgress && transfer.state != Transfer.State.Success -> stringResource(R.string.kaleyra_fileshare_na)
     else -> Formatter.formatShortFileSize(LocalContext.current, transfer.fileSize)
@@ -292,7 +318,10 @@ private fun descriptionFor(state: Transfer.State) = stringResource(
 @Composable
 private fun progressTextFor(transfer: Transfer) = when (transfer.state) {
     Transfer.State.Available, Transfer.State.Success -> TimestampUtils.parseTime(transfer.time)
-    else -> stringResource(id = R.string.kaleyra_fileshare_progress, (transfer.progress * 100).roundToInt())
+    else -> stringResource(
+        id = R.string.kaleyra_fileshare_progress,
+        (transfer.progress * 100).roundToInt()
+    )
 }
 
 @Composable
@@ -309,7 +338,7 @@ private fun descriptionFor(fileType: Transfer.FileType) = stringResource(
     id = when (fileType) {
         Transfer.FileType.Media -> R.string.kaleyra_fileshare_media
         Transfer.FileType.Archive -> R.string.kaleyra_fileshare_archive
-        Transfer.FileType.Miscellaneous -> R.string.kaleyra_fileshare_file
+        Transfer.FileType.Miscellaneous -> R.string.kaleyra_fileshare_miscellaneous
     }
 )
 
@@ -330,6 +359,17 @@ private fun iconFor(state: Transfer.State) = painterResource(
         else -> R.drawable.ic_kaleyra_fileshare_cancel
     }
 )
+
+@Preview
+@Composable
+internal fun FileShareEmptyItemsPreview() {
+    KaleyraTheme {
+        FileShare(
+            items = ImmutableList(listOf ()),
+            onFabClick = { }) {
+        }
+    }
+}
 
 @Preview
 @Composable

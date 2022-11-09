@@ -174,7 +174,7 @@ fun CallScreen(orientation: StateFlow<Int>) {
                                 })
                         }
                         BottomSheetContent.FileShare -> {
-                            val list = produceState(ImmutableList(listOf<Transfer>())) {
+                            val list = produceState(ImmutableList(listOf())) {
                                 kotlinx.coroutines.delay(3000)
                                 value = ImmutableList(listOf(mockDownloadTransfer, mockUploadTransfer))
                             }
