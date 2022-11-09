@@ -17,12 +17,12 @@ class CloseIconTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var onClosePressed = false
+    private var clicked = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            CloseIcon(onClosePressed = { onClosePressed = true })
+            CloseIcon(onClick = { clicked = true })
         }
     }
 
@@ -30,6 +30,6 @@ class CloseIconTest {
     fun userClicksIcon_onClosePressedInvoked() {
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).performClick()
-        assert(onClosePressed)
+        assert(clicked)
     }
 }

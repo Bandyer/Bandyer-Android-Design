@@ -14,10 +14,10 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.supportRtl
 
 @Composable
-internal fun NavigationIcon(modifier: Modifier = Modifier, onBackPressed: () -> Unit) {
+internal fun NavigationIcon(modifier: Modifier = Modifier, onClick: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     IconButton(
-        onClick = onBackPressed,
+        onClick = onClick,
         modifier = modifier.highlightOnFocus(interactionSource),
         interactionSource = interactionSource
     ) {

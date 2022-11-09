@@ -50,7 +50,7 @@ internal fun ChatAppBar(
             Row(
                 modifier = Modifier.padding(4.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                content = { NavigationIcon(onBackPressed = onBackPressed) }
+                content = { NavigationIcon(onClick = onBackPressed) }
             )
 
             Row(

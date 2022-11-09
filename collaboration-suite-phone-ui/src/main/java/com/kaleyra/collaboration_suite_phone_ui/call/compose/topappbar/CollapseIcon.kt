@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.topappbar
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.Icon
@@ -13,7 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.supportRtl
 
 @Composable
-internal fun CloseIcon(modifier: Modifier = Modifier, onClick: () -> Unit) {
+internal fun CollapseIcon(modifier: Modifier = Modifier, onClick: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     IconButton(
         onClick = onClick,
@@ -21,7 +21,7 @@ internal fun CloseIcon(modifier: Modifier = Modifier, onClick: () -> Unit) {
         interactionSource = interactionSource
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_kaleyra_close),
+            painter = painterResource(id = R.drawable.ic_kaleyra_back_down),
             contentDescription = stringResource(id = R.string.kaleyra_close),
             modifier = Modifier.supportRtl()
         )

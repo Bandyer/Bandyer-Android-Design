@@ -31,7 +31,7 @@ internal fun SubMenuLayout(
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1f)
             )
-            CloseIcon(onClosePressed = onCloseClick)
+            CloseIcon(onClick = onCloseClick)
         }
         content()
     }
