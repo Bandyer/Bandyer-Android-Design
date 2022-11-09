@@ -157,7 +157,7 @@ internal fun FileShareItem(transfer: Transfer, onActionClick: () -> Unit, onClic
             .fillMaxWidth()
             .clickable(
                 enabled = transfer.state == Transfer.State.Success,
-                onClickLabel = stringResource(R.string.kaleyra_open_file),
+                onClickLabel = stringResource(R.string.kaleyra_fileshare_open_file),
                 role = Role.Button,
                 onClick = onClick
             )
@@ -170,7 +170,7 @@ internal fun FileShareItem(transfer: Transfer, onActionClick: () -> Unit, onClic
         ) {
             Icon(
                 painter = iconFor(transfer.fileType),
-                contentDescription = null,
+                contentDescription = descriptionFor(transfer.fileType),
                 modifier = Modifier.size(28.dp)
             )
             Spacer(modifier = Modifier.height(4.dp))
@@ -219,7 +219,7 @@ internal fun FileShareItem(transfer: Transfer, onActionClick: () -> Unit, onClic
                 ) {
                     Icon(
                         painter = iconFor(transfer.state),
-                        contentDescription = "",
+                        contentDescription = descriptionFor(transfer.state),
                         tint = iconTintFor(transfer.state),
                         modifier = Modifier
                             .size(32.dp)
@@ -273,6 +273,16 @@ private fun borderColorFor(state: Transfer.State) = when (state) {
 }
 
 @Composable
+private fun descriptionFor(state: Transfer.State) = stringResource(
+    id = when (state) {
+        Transfer.State.Available -> R.string.kaleyra_fileshare_download_descr
+        Transfer.State.Success -> R.string.kaleyra_fileshare_open_file
+        Transfer.State.Error -> R.string.kaleyra_fileshare_retry
+        else -> R.string.kaleyra_fileshare_cancel
+    }
+)
+
+@Composable
 private fun progressTextFor(transfer: Transfer) = when (transfer.state) {
     Transfer.State.Available, Transfer.State.Success -> TimestampUtils.parseTime(transfer.time)
     else -> stringResource(id = R.string.kaleyra_fileshare_progress, (transfer.progress * 100).roundToInt())
@@ -281,9 +291,18 @@ private fun progressTextFor(transfer: Transfer) = when (transfer.state) {
 @Composable
 private fun iconFor(fileType: Transfer.FileType) = painterResource(
     id = when (fileType) {
-        Transfer.FileType.Image -> R.drawable.ic_kaleyra_image
+        Transfer.FileType.Media -> R.drawable.ic_kaleyra_image
         Transfer.FileType.Archive -> R.drawable.ic_kaleyra_zip
-        Transfer.FileType.File -> R.drawable.ic_kaleyra_file
+        Transfer.FileType.Miscellaneous -> R.drawable.ic_kaleyra_file
+    }
+)
+
+@Composable
+private fun descriptionFor(fileType: Transfer.FileType) = stringResource(
+    id = when (fileType) {
+        Transfer.FileType.Media -> R.string.kaleyra_fileshare_media
+        Transfer.FileType.Archive -> R.string.kaleyra_fileshare_archive
+        Transfer.FileType.Miscellaneous -> R.string.kaleyra_fileshare_file
     }
 )
 

@@ -77,9 +77,9 @@ sealed interface Transfer {
     }
 
     enum class FileType {
-        Image,
+        Media,
         Archive,
-        File
+        Miscellaneous
     }
 }
 

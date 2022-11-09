@@ -41,7 +41,7 @@ val mockAudioDevices = ImmutableList(
 
 val mockUploadTransfer = Transfer.Upload(
     "upload.txt",
-    Transfer.FileType.Image,
+    Transfer.FileType.Media,
     23333L,
     "Mario",
     .7f,
@@ -52,7 +52,7 @@ val mockUploadTransfer = Transfer.Upload(
 
 val mockDownloadTransfer = Transfer.Download(
     "download.txt",
-    Transfer.FileType.File,
+    Transfer.FileType.Miscellaneous,
     40000L,
     "Keanu",
     .4f,
