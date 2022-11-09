@@ -34,6 +34,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.AudioOutput
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.FileShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.ScreenShare
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.topappbar.FileShareAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.utility.OrientationListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -83,7 +84,7 @@ class PhoneCallActivity : ComponentActivity() {
 var targetState by mutableStateOf(BottomSheetContent.CallActions)
 
 enum class BottomSheetContent {
-    CallActions, AudioRoute, FileShare, ScreenShare
+    CallActions, AudioRoute, FileShare, ScreenShare, Whiteboard
 }
 
 @Composable
@@ -223,11 +224,17 @@ fun CallScreen(orientation: StateFlow<Int>) {
                             .fillMaxWidth()
                             .windowInsetsTopHeight(WindowInsets.statusBars)
                     )
-                    TopAppBar(
-                        backgroundColor = MaterialTheme.colors.primary,
-                        elevation = 0.dp
-                    ) {
-                        Text("Top bar")
+                    when (targetState) {
+                        BottomSheetContent.FileShare -> {
+                            FileShareAppBar(
+                                backgroundColor = MaterialTheme.colors.primary,
+                                elevation = 0.dp,
+                                onBackPressed = {}
+                            )
+                        }
+                        BottomSheetContent.Whiteboard -> {
+
+                        }
                     }
                 }
             }
