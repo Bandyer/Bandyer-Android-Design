@@ -11,11 +11,11 @@ import androidx.activity.compose.setContent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,13 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetContent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetScaffold
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.mapToLineState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.rememberBottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.AudioOutput
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.FileShare
@@ -118,82 +116,122 @@ fun CallScreen(orientation: StateFlow<Int>) {
             targetState = BottomSheetContent.CallActions
         }
     }
-    BottomSheetScaffold(
-        sheetState = sheetState,
-        sheetPeekHeight = 48.dp,
-        sheetHalfExpandedHeight = 166.dp,
-        anchor = { },
-        sheetBackgroundColor = MaterialTheme.colors.surface.copy(alpha = alpha),
-        sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-        backgroundColor = Color.Black,
-        contentColor = Color.White,
-        sheetContent = {
-            BottomSheetContent(
-                lineState = mapToLineState(sheetState),
-                onLineClick = halfExpand
-            ) {
-                AnimatedContent(
-                    targetState = targetState
-                ) { target ->
-                    when (target) {
-                        BottomSheetContent.CallActions -> {
-                            CallActions(
-                                items = mockCallActions,
-                                itemsPerRow = itemsPerRow,
-                                orientation = orientation
-                            )
-                        }
-                        BottomSheetContent.AudioRoute -> {
-                            AudioOutput(items = mockAudioDevices, onItemClick = {
-                                scope.launch {
-                                    sheetState.halfExpand()
-                                }
-                            }, onCloseClick = {
-                                scope.launch {
-                                    sheetState.halfExpand()
-                                }
-                            })
-                        }
-                        BottomSheetContent.ScreenShare -> {
-                            ScreenShare(
-                                items = ImmutableList(
-                                    listOf(
-                                        ScreenShare.Device,
-                                        ScreenShare.Application
-                                    )
-                                ),
-                                onItemClick = {
+
+    Box {
+        BottomSheetScaffold(
+            modifier = Modifier.fillMaxSize(),
+            sheetState = sheetState,
+            sheetPeekHeight = 48.dp,
+            sheetHalfExpandedHeight = 166.dp,
+            anchor = { },
+            sheetBackgroundColor = MaterialTheme.colors.surface.copy(alpha = alpha),
+            sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+            backgroundColor = Color.Black,
+            contentColor = Color.White,
+            sheetContent = {
+                BottomSheetContent(
+                    lineState = mapToLineState(sheetState),
+                    onLineClick = halfExpand
+                ) {
+                    AnimatedContent(
+                        targetState = targetState
+                    ) { target ->
+                        when (target) {
+                            BottomSheetContent.CallActions -> {
+                                CallActions(
+                                    items = mockCallActions,
+                                    itemsPerRow = itemsPerRow,
+                                    orientation = orientation
+                                )
+                            }
+                            BottomSheetContent.AudioRoute -> {
+                                AudioOutput(items = mockAudioDevices, onItemClick = {
                                     scope.launch {
                                         sheetState.halfExpand()
                                     }
-                                },
-                                onCloseClick = {
+                                }, onCloseClick = {
                                     scope.launch {
                                         sheetState.halfExpand()
                                     }
                                 })
-                        }
-                        BottomSheetContent.FileShare -> {
-                            val list = produceState(ImmutableList(listOf())) {
-                                kotlinx.coroutines.delay(3000)
-                                value = ImmutableList(listOf(mockDownloadTransfer, mockUploadTransfer))
                             }
-                            FileShare(
-                                items = list.value,
-                                onFabClick = {},
-                                onCloseClick = {
-                                    scope.launch {
-                                        sheetState.halfExpand()
-                                    }
+                            BottomSheetContent.ScreenShare -> {
+                                ScreenShare(
+                                    items = ImmutableList(
+                                        listOf(
+                                            ScreenShare.Device,
+                                            ScreenShare.Application
+                                        )
+                                    ),
+                                    onItemClick = {
+                                        scope.launch {
+                                            sheetState.halfExpand()
+                                        }
+                                    },
+                                    onCloseClick = {
+                                        scope.launch {
+                                            sheetState.halfExpand()
+                                        }
+                                    })
+                            }
+                            BottomSheetContent.FileShare -> {
+                                val list = produceState(ImmutableList(listOf())) {
+                                    kotlinx.coroutines.delay(3000)
+                                    value = ImmutableList(
+                                        listOf(
+                                            mockDownloadTransfer,
+                                            mockUploadTransfer
+                                        )
+                                    )
                                 }
-                            )
+                                FileShare(
+                                    items = list.value,
+                                    onFabClick = {},
+                                    onCloseClick = {
+                                        scope.launch {
+                                            sheetState.halfExpand()
+                                        }
+                                    }
+                                )
+                            }
                         }
                     }
                 }
             }
+        ) { sheetPadding ->
+            ScreenContent(sheetState, sheetPadding)
         }
-    ) { sheetPadding ->
-        ScreenContent(sheetState, sheetPadding)
+
+        val isDarkTheme = isSystemInDarkTheme()
+        val primaryColor = MaterialTheme.colors.primary
+        val systemUiController = rememberSystemUiController()
+        LaunchedEffect(sheetState.offset.value) {
+            systemUiController.statusBarDarkContentEnabled =
+                if (sheetState.offset.value < 300f) !isDarkTheme else false
+        }
+
+        AnimatedVisibility(
+            visible = sheetState.offset.value < 300f,
+            enter = fadeIn() + slideInVertically(),
+            exit = fadeOut() + slideOutVertically()
+        ) {
+            Surface(elevation = AppBarDefaults.TopAppBarElevation) {
+                Column {
+                    Spacer(
+                        Modifier
+                            .background(MaterialTheme.colors.primary)
+                            .fillMaxWidth()
+                            .windowInsetsTopHeight(WindowInsets.statusBars)
+                    )
+                    TopAppBar(
+                        backgroundColor = MaterialTheme.colors.primary,
+                        elevation = 0.dp
+                    ) {
+                        Text("Top bar")
+                    }
+                }
+            }
+        }
     }
 }
 

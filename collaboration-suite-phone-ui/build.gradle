@@ -69,6 +69,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.1.1")
 
     implementation("io.coil-kt:coil-compose:2.0.0")
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.23.1"
 
     // Needed to fix compose previews https://issuetracker.google.com/issues/227767363
     debugImplementation "androidx.customview:customview:1.2.0-alpha01"
