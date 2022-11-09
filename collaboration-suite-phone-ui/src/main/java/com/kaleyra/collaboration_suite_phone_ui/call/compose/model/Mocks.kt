@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.model
 
+import android.net.Uri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.BottomSheetContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.targetState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -36,4 +37,26 @@ val mockAudioDevices = ImmutableList(
         AudioDevice.WiredHeadset(id = "id4", isPlaying = false),
         AudioDevice.Muted(id = "id5", isPlaying = false)
     )
+)
+
+val mockUploadTransfer = Transfer.Upload(
+    "upload.txt",
+    Transfer.FileType.Image,
+    23333L,
+    6000L,
+    "Mario",
+    324234L,
+    Uri.EMPTY,
+    Transfer.State.InProgress
+)
+
+val mockDownloadTransfer = Transfer.Upload(
+    "download.txt",
+    Transfer.FileType.File,
+    40000L,
+    14000L,
+    "Keanu",
+    3254234L,
+    Uri.EMPTY,
+    Transfer.State.InProgress
 )
