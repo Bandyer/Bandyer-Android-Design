@@ -16,25 +16,30 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import com.kaleyra.collaboration_suite_phone_ui.R
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.WhiteboardUpload
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlin.math.roundToInt
 
+const val CircularProgressIndicatorTag = "CircularProgressIndicatorTag"
+
 @Composable
 internal fun Whiteboard(
     loading: Boolean,
-    upload: WhiteboardUpload? = null,
-    onCloseClick: () -> Unit
+    offline: Boolean,
+    onCloseClick: () -> Unit,
+    onReloadClick: () -> Unit,
+    fileUpload: WhiteboardUpload? = null
 ) {
     SubMenuLayout(
         title = stringResource(id = R.string.kaleyra_whiteboard),
@@ -46,6 +51,12 @@ internal fun Whiteboard(
                 .background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))
         ) {
             // TODO place web view
+            if (offline) {
+                Offline(
+                    loading = loading,
+                    onReloadClick = onReloadClick
+                )
+            }
             if (loading) {
                 LinearProgressIndicator(
                     modifier = Modifier
@@ -54,10 +65,10 @@ internal fun Whiteboard(
                     color = MaterialTheme.colors.secondary
                 )
             }
-            if (upload != null) {
+            if (fileUpload != null) {
                 UploadCard(
-                    progress = (upload as? WhiteboardUpload.Uploading)?.progress ?: 0f,
-                    error = upload is WhiteboardUpload.Error
+                    progress = (fileUpload as? WhiteboardUpload.Uploading)?.progress ?: 0f,
+                    error = fileUpload is WhiteboardUpload.Error
                 )
             }
         }
@@ -129,7 +140,9 @@ internal fun CircularProgressIndicator(progress: Float, color: Color, size: Dp, 
         progress = progress,
         color = color,
         strokeWidth = strokeWidth,
-        modifier = Modifier.size(size)
+        modifier = Modifier
+            .size(size)
+            .testTag(CircularProgressIndicatorTag)
     )
 }
 
@@ -150,7 +163,7 @@ private fun DrawScope.drawCircularBackground(
 }
 
 @Composable
-internal fun LoadingError(loading: Boolean, onReloadClick: () -> Unit) {
+internal fun Offline(loading: Boolean, onReloadClick: () -> Unit) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -204,7 +217,7 @@ internal fun UploadCardErrorPreview() {
 @Composable
 internal fun LoadingErrorPreview() {
     KaleyraTheme {
-        LoadingError(loading = false, onReloadClick = {})
+        Offline(loading = false, onReloadClick = {})
     }
 }
 
@@ -212,6 +225,12 @@ internal fun LoadingErrorPreview() {
 @Composable
 internal fun WhiteboardPreview() {
     KaleyraTheme {
-        Whiteboard(loading = true, upload = WhiteboardUpload.Uploading(.7f), onCloseClick = {})
+        Whiteboard(
+            loading = true,
+            offline = false,
+            fileUpload = WhiteboardUpload.Uploading(.7f),
+            onCloseClick = {},
+            onReloadClick = {}
+        )
     }
 }
