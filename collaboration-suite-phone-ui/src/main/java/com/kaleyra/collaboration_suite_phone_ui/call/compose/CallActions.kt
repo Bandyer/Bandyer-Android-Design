@@ -1,7 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -11,7 +9,6 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.ContentAlpha
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
@@ -20,35 +17,29 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallActionColors
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallActionDefaults
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapToRotationState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockCallActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.fadeBelowOfRootBottomBound
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 internal fun CallActions(
     items: ImmutableList<CallAction>,
-    itemsPerRow: Int,
-    orientation: StateFlow<Int>
+    itemsPerRow: Int
+//    orientation: StateFlow<Int>
 ) {
-    val orientationState = orientation.collectAsState()
+//    val orientationState = orientation.collectAsState()
     LazyVerticalGrid(
-        columns = GridCells.Fixed(count = itemsPerRow),
-        contentPadding = gridPaddingFor(orientationState)
+        columns = GridCells.Fixed(count = itemsPerRow)
+//        contentPadding = gridPaddingFor(orientationState)
     ) {
         items(items = items.value) { action ->
             var toggled by remember { mutableStateOf(action is CallAction.Toggleable && action.isToggled) }
-            val rotation by animateFloatAsState(
-                targetValue = mapToRotationState(orientation = orientationState),
-                animationSpec = tween()
-            )
+//            val rotation by animateFloatAsState(
+//                targetValue = mapToRotationState(orientation = orientationState),
+//                animationSpec = tween()
+//            )
             CallAction(
                 toggled = toggled,
                 onToggle = {
@@ -69,7 +60,7 @@ internal fun CallActions(
                     .fillMaxSize()
                     .padding(top = 20.dp, bottom = 8.dp)
                     .fadeBelowOfRootBottomBound()
-                    .rotate(rotation)
+//                    .rotate(rotation)
             )
         }
 
@@ -147,6 +138,6 @@ private fun colorsFor(action: CallAction): CallActionColors {
 @Composable
 internal fun CallActionsPreview() {
     KaleyraTheme {
-        CallActions(items = mockCallActions, itemsPerRow = 4, orientation = MutableStateFlow(0))
+        CallActions(items = mockCallActions, itemsPerRow = 4)
     }
 }

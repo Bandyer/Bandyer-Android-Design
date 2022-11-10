@@ -1,7 +1,4 @@
-@file:OptIn(
-    ExperimentalFoundationApi::class, ExperimentalMaterialApi::class,
-    ExperimentalAnimationApi::class, ExperimentalAnimationApi::class
-)
+@file:OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class, ExperimentalAnimationApi::class)
 
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
@@ -10,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
@@ -23,63 +19,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.material.composethemeadapter.MdcTheme
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutput
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutput
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShare
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareAppBar
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.utility.OrientationListener
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class PhoneCallActivity : ComponentActivity() {
 
-    private lateinit var orientationListener: OrientationListener
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
-
-        orientationListener = OrientationListener(this)
-
-        val orientation = orientationListener.orientation
-            .flowWithLifecycle(lifecycle)
-            .stateIn(
-                scope = lifecycleScope,
-                started = SharingStarted.Eagerly,
-                initialValue = 0
-            )
-
         setContent {
             MdcTheme(setDefaultFontFamily = true) {
-                CallScreen(
-                    orientation = orientation
-                )
+                CallScreen()
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        orientationListener.enable()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        orientationListener.disable()
     }
 }
 
@@ -90,7 +56,9 @@ enum class BottomSheetContent {
 }
 
 @Composable
-fun CallScreen(orientation: StateFlow<Int>) {
+fun CallScreen(
+//    orientation: StateFlow<Int>
+) {
     val scope = rememberCoroutineScope()
     val sheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.HalfExpanded,
@@ -144,7 +112,7 @@ fun CallScreen(orientation: StateFlow<Int>) {
                                 CallActions(
                                     items = mockCallActions,
                                     itemsPerRow = itemsPerRow,
-                                    orientation = orientation
+//                                    orientation = orientation
                                 )
                             }
                             BottomSheetContent.AudioRoute -> {
@@ -198,7 +166,13 @@ fun CallScreen(orientation: StateFlow<Int>) {
                                 )
                             }
                             BottomSheetContent.Whiteboard -> {
-                                Whiteboard(loading = true, upload = WhiteboardUpload.Uploading(.6f), onCloseClick = {})
+                                Whiteboard(
+                                    loading = true,
+                                    offline = true,
+                                    fileUpload = WhiteboardUpload.Uploading(.6f),
+                                    onCloseClick = {},
+                                    onReloadClick = {}
+                                )
                             }
                         }
                     }
@@ -272,7 +246,5 @@ internal fun ScreenContent(sheetState: BottomSheetState, sheetPadding: WindowIns
 @Preview
 @Composable
 fun CallScreenPreview() {
-    CallScreen(
-        orientation = MutableStateFlow(0)
-    )
+    CallScreen()
 }
