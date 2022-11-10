@@ -155,6 +155,7 @@
     <string name="kaleyra_screenshare_full_device">Whole device screen</string>
 
     <!-- FILE SHARE -->
+    <string name="kaleyra_fileshare">File Share</string>
     <string name="kaleyra_fileshare_add">Upload</string>
     <string name="kaleyra_fileshare_add_description">Upload a new file</string>
     <string name="kaleyra_fileshare_upload_error">Upload failed - Retry</string>

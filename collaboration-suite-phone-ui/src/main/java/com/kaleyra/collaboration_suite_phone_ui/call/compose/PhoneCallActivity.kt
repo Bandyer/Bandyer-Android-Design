@@ -34,7 +34,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutput
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShare
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.FileShareAppBar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.utility.OrientationListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow

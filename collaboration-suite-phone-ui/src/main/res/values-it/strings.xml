@@ -148,6 +148,7 @@
     <string name="kaleyra_screenshare_app_only">Schermo app</string>
     <string name="kaleyra_screenshare_full_device">Schermo intero</string>
     <!-- FILE SHARE -->
+    <string name="kaleyra_fileshare">Condividi File</string>
     <string name="kaleyra_fileshare_add">Carica</string>
     <string name="kaleyra_fileshare_add_description">Carica nuovo file</string>
     <string name="kaleyra_fileshare_upload_error">Upload fallito - Riprova</string>
