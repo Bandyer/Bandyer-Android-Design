@@ -14,11 +14,7 @@ internal fun SubMenuLayout(
     onCloseClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .padding(bottom = 24.dp)
-            .offset(y = (-8).dp)
-    ) {
+    Column(Modifier.offset(y = (-8).dp)) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
