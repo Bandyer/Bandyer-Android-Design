@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 

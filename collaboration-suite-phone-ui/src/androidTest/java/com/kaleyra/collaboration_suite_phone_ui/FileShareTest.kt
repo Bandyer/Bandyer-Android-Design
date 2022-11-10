@@ -11,10 +11,10 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShare
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareItemTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.ProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.Transfer
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.FileShare
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.FileShareItemTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.ProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.Before
 import org.junit.Rule

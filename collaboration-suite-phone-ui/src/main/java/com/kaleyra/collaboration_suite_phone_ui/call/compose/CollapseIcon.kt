@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.topappbar
+package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.material.Icon

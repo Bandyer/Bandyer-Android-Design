@@ -31,10 +31,10 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.AudioOutput
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.FileShare
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.ScreenShare
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.topappbar.FileShareAppBar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutput
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShare
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShare
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.FileShareAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.utility.OrientationListener
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -180,7 +180,7 @@ fun CallScreen(orientation: StateFlow<Int>) {
                                     kotlinx.coroutines.delay(3000)
                                     value = ImmutableList(
                                         listOf(
-                                            mockDownloadTransfer,
+                                            mockDownloadTransfer.copy(state = Transfer.State.Success),
                                             mockUploadTransfer
                                         )
                                     )
@@ -204,7 +204,6 @@ fun CallScreen(orientation: StateFlow<Int>) {
         }
 
         val isDarkTheme = isSystemInDarkTheme()
-        val primaryColor = MaterialTheme.colors.primary
         val systemUiController = rememberSystemUiController()
         LaunchedEffect(sheetState.offset.value) {
             systemUiController.statusBarDarkContentEnabled =

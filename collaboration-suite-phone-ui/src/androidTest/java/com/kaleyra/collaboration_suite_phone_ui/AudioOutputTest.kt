@@ -9,7 +9,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.AudioDevice
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.BluetoothDeviceState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu.AudioOutput
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutput
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.Assert.assertEquals
 import org.junit.Before

@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu
+package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text

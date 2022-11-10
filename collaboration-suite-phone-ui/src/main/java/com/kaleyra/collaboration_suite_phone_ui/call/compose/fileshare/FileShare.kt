@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalFoundationApi::class)
 
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.submenu
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare
 
 import android.text.format.Formatter
 import androidx.compose.animation.animateContentSize
@@ -39,6 +39,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.Transfer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockDownloadTransfer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockUploadTransfer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlin.math.roundToInt
