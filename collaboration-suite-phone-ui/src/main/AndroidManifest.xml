@@ -12,7 +12,6 @@
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
             android:showForAllUsers="true"
-            android:screenOrientation="portrait"
             tools:targetApi="o_mr1" />
         <activity
             android:name=".chat.PhoneChatActivity"
