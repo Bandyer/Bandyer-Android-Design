@@ -13,6 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.CloseIcon
 internal fun SubMenuLayout(
     title: String,
     onCloseClick: () -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     Column(

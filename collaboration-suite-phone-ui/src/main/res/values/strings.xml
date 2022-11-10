@@ -140,6 +140,12 @@
     <string name="kaleyra_file_upload_percentage">%1$d %%</string>
     <string name="kaleyra_upload_file">Upload file</string>
 
+    <string name="kaleyra_whiteboard_uploading_file">Uploading file</string>
+    <string name="kaleyra_whiteboard_compressing">compressing…</string>
+    <string name="kaleyra_whiteboard_error_title">Error</string>
+    <string name="kaleyra_whiteboard_error_subtitle">Something went wrong</string>
+
+
     <!-- TEMPLATES -->
     <string name="kaleyra_bluetooth_info">%1$s%2$s%3$s</string>
     <string name="kaleyra_bluetooth_battery_info">&#160;| %1$s %2$d %%</string>
