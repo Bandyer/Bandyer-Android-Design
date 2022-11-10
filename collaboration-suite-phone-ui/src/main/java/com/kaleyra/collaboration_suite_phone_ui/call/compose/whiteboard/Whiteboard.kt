@@ -26,22 +26,41 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.WhiteboardUpload
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlin.math.roundToInt
 
 @Composable
 internal fun Whiteboard(
-    uploading: Boolean,
-    uploadProgress: Float,
-    error: Boolean,
+    loading: Boolean,
+    upload: WhiteboardUpload? = null,
     onCloseClick: () -> Unit
 ) {
     SubMenuLayout(
         title = stringResource(id = R.string.kaleyra_whiteboard),
-        onCloseClick = onCloseClick,
-        modifier = Modifier.background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))
+        onCloseClick = onCloseClick
     ) {
-
+        Box(
+            Modifier
+                .fillMaxSize()
+                .background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))
+        ) {
+            // TODO place web view
+            if (loading) {
+                LinearProgressIndicator(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(2.dp),
+                    color = MaterialTheme.colors.secondary
+                )
+            }
+            if (upload != null) {
+                UploadCard(
+                    progress = (upload as? WhiteboardUpload.Uploading)?.progress ?: 0f,
+                    error = upload is WhiteboardUpload.Error
+                )
+            }
+        }
     }
 }
 
@@ -68,7 +87,7 @@ internal fun UploadCard(progress: Float, error: Boolean) {
                     CircularProgressIndicator(
                         progress = progress,
                         color = MaterialTheme.colors.secondaryVariant,
-                        size = 64.dp,
+                        size = 56.dp,
                         strokeWidth = ProgressIndicatorDefaults.StrokeWidth
                     )
                     Text(
@@ -167,7 +186,7 @@ internal fun LoadingError(loading: Boolean, onReloadClick: () -> Unit) {
 
 @Preview
 @Composable
-internal fun UploadingWindowPreview() {
+internal fun UploadCardPreview() {
     KaleyraTheme {
         UploadCard(.8f, error = false)
     }
@@ -175,7 +194,7 @@ internal fun UploadingWindowPreview() {
 
 @Preview
 @Composable
-internal fun UploadingWindowPreview2() {
+internal fun UploadCardErrorPreview() {
     KaleyraTheme {
         UploadCard(.8f, error = true)
     }
@@ -186,5 +205,13 @@ internal fun UploadingWindowPreview2() {
 internal fun LoadingErrorPreview() {
     KaleyraTheme {
         LoadingError(loading = false, onReloadClick = {})
+    }
+}
+
+@Preview
+@Composable
+internal fun WhiteboardPreview() {
+    KaleyraTheme {
+        Whiteboard(loading = true, upload = WhiteboardUpload.Uploading(.7f), onCloseClick = {})
     }
 }

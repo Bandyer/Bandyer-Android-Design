@@ -3,6 +3,11 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.model
 import android.net.Uri
 import androidx.compose.runtime.Immutable
 
+sealed interface WhiteboardUpload {
+    data class Uploading(val progress: Float): WhiteboardUpload
+    object Error: WhiteboardUpload
+}
+
 @Immutable
 enum class ScreenShare {
     Device,

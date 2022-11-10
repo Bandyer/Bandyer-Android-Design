@@ -12,7 +12,9 @@ val mockCallActions = ImmutableList(
         CallAction.SwitchCamera(true) {},
         CallAction.HangUp(true) {},
         CallAction.Chat(true) {},
-        CallAction.Whiteboard(true) {},
+        CallAction.Whiteboard(true) {
+            targetState = BottomSheetContent.Whiteboard
+        },
         CallAction.Audio(true) {
             targetState = BottomSheetContent.AudioRoute
         },

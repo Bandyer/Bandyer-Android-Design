@@ -36,6 +36,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.utility.OrientationListener
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.Whiteboard
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -195,6 +197,9 @@ fun CallScreen(orientation: StateFlow<Int>) {
                                     }
                                 )
                             }
+                            BottomSheetContent.Whiteboard -> {
+                                Whiteboard(loading = true, upload = WhiteboardUpload.Uploading(.6f), onCloseClick = {})
+                            }
                         }
                     }
                 }
@@ -232,7 +237,12 @@ fun CallScreen(orientation: StateFlow<Int>) {
                             )
                         }
                         BottomSheetContent.Whiteboard -> {
-
+                            WhiteboardAppBar(
+                                backgroundColor = MaterialTheme.colors.primary,
+                                elevation = 0.dp,
+                                onBackPressed = {},
+                                onUploadClick = {}
+                            )
                         }
                     }
                 }
