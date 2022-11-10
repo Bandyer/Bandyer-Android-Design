@@ -74,6 +74,10 @@ class FileShareTest {
     fun emptyItems_noItemsUIDisplayed() {
         val title = composeTestRule.activity.getString(R.string.kaleyra_no_file_shared)
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_click_to_share_file)
+        items = ImmutableList(listOf(upload))
+        composeTestRule.onNodeWithText(title).assertDoesNotExist()
+        composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
+        items = ImmutableList(listOf())
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
     }

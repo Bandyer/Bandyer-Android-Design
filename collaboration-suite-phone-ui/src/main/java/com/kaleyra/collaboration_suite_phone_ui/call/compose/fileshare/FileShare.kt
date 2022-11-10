@@ -91,9 +91,7 @@ internal fun FileShare(
                     )
                 },
                 contentColor = MaterialTheme.colors.surface,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(32.dp)
+                modifier = Modifier.align(Alignment.BottomCenter)
             )
         }
     }
@@ -143,7 +141,7 @@ private fun EmptyList() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 48.dp),
+            .padding(start = 48.dp, bottom = 56.dp, end = 48.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
