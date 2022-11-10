@@ -57,7 +57,7 @@ internal fun FileShare(
     onFabClick: () -> Unit,
     onCloseClick: () -> Unit
 ) {
-    SubMenuLayout(title = "File share", onCloseClick = onCloseClick) {
+    SubMenuLayout(title = stringResource(id = R.string.kaleyra_fileshare), onCloseClick = onCloseClick) {
         Box(Modifier.fillMaxSize()) {
             if (items.count < 1) EmptyList()
             else {
