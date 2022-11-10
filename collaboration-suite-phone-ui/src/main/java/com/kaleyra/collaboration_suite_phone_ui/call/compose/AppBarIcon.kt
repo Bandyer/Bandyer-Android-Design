@@ -27,3 +27,35 @@ internal fun CloseIcon(modifier: Modifier = Modifier, onClick: () -> Unit) {
         )
     }
 }
+
+@Composable
+internal fun CollapseIcon(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    val interactionSource = remember { MutableInteractionSource() }
+    IconButton(
+        onClick = onClick,
+        modifier = modifier.highlightOnFocus(interactionSource),
+        interactionSource = interactionSource
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_kaleyra_back_down),
+            contentDescription = stringResource(id = R.string.kaleyra_close),
+            modifier = Modifier.supportRtl()
+        )
+    }
+}
+
+@Composable
+internal fun ImageIcon(modifier: Modifier = Modifier, onClick: () -> Unit) {
+    val interactionSource = remember { MutableInteractionSource() }
+    IconButton(
+        onClick = onClick,
+        modifier = modifier.highlightOnFocus(interactionSource),
+        interactionSource = interactionSource
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.ic_kaleyra_image),
+            contentDescription = stringResource(id = R.string.kaleyra_upload_file),
+            modifier = Modifier.supportRtl()
+        )
+    }
+}

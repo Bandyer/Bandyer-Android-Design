@@ -119,6 +119,7 @@
     <string name="kaleyra_back">Indietro</string>
 
     <!-- WHITEBOARD -->
+    <string name="kaleyra_whiteboard">Lavagna</string>
     <string name="kaleyra_collaborate_button">Collabora</string>
 
     <string name="kaleyra_confirm_message">Sì</string>

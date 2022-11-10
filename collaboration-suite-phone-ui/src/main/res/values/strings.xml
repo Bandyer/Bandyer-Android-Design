@@ -125,6 +125,7 @@
 
     <!-- WHITEBOARD -->
     <string name="kaleyra_collaborate_button">Collaborate</string>
+    <string name="kaleyra_whiteboard">Whiteboard</string>
 
     <string name="kaleyra_confirm_message">Yes</string>
     <string name="kaleyra_cancel_message">No</string>

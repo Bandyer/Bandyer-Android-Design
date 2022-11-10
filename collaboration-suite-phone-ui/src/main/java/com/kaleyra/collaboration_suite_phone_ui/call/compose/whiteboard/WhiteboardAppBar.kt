@@ -1,7 +1,6 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ContentAlpha
@@ -18,15 +17,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CollapseIcon
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CollapseIcon
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImageIcon
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 @Composable
-fun FileShareAppBar(
+fun WhiteboardAppBar(
     backgroundColor: Color,
     elevation: Dp,
     onBackPressed: () -> Unit,
+    onUploadClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     TopAppBar(
@@ -38,10 +39,11 @@ fun FileShareAppBar(
             Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
                 CollapseIcon(onClick = onBackPressed, modifier = Modifier.padding(4.dp))
                 Text(
-                    text = stringResource(id = R.string.kaleyra_fileshare),
+                    text = stringResource(id = R.string.kaleyra_whiteboard),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
+                ImageIcon(onClick = onUploadClick, modifier = Modifier.padding(4.dp).align(Alignment.CenterEnd))
             }
         }
     }
@@ -49,8 +51,8 @@ fun FileShareAppBar(
 
 @Preview
 @Composable
-fun FileShareAppBarTest() {
+fun WhiteboardAppBarTest() {
     KaleyraTheme {
-        FileShareAppBar(backgroundColor = Color.White, elevation = 0.dp, onBackPressed = { })
+        WhiteboardAppBar(backgroundColor = Color.White, elevation = 0.dp, onBackPressed = { }, onUploadClick = {})
     }
 }
