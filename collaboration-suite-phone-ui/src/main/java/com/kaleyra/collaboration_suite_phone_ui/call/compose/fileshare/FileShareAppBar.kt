@@ -23,7 +23,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 @Composable
-fun FileShareAppBar(
+internal fun FileShareAppBar(
     backgroundColor: Color,
     elevation: Dp,
     onBackPressed: () -> Unit,
@@ -49,7 +49,7 @@ fun FileShareAppBar(
 
 @Preview
 @Composable
-fun FileShareAppBarTest() {
+internal fun FileShareAppBarTest() {
     KaleyraTheme {
         FileShareAppBar(backgroundColor = Color.White, elevation = 0.dp, onBackPressed = { })
     }

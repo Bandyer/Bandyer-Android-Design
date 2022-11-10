@@ -23,7 +23,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImageIcon
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 @Composable
-fun WhiteboardAppBar(
+internal fun WhiteboardAppBar(
     backgroundColor: Color,
     elevation: Dp,
     onBackPressed: () -> Unit,
@@ -51,7 +51,7 @@ fun WhiteboardAppBar(
 
 @Preview
 @Composable
-fun WhiteboardAppBarTest() {
+internal fun WhiteboardAppBarTest() {
     KaleyraTheme {
         WhiteboardAppBar(backgroundColor = Color.White, elevation = 0.dp, onBackPressed = { }, onUploadClick = {})
     }
