@@ -7,7 +7,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.LocalContentAlpha
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +32,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.chat.custom.MarqueeText
 import com.kaleyra.collaboration_suite_phone_ui.chat.custom.TypingDots
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
@@ -50,7 +57,13 @@ internal fun ChatAppBar(
             Row(
                 modifier = Modifier.padding(4.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                content = { NavigationIcon(onClick = onBackPressed) }
+                content = {
+                    IconButton(
+                        icon = Icons.Filled.ArrowBack,
+                        iconDescription = stringResource(id = R.string.kaleyra_back),
+                        onClick = onBackPressed
+                    )
+                }
             )
 
             Row(
@@ -130,7 +143,10 @@ private fun textFor(state: ChatState): String =
             val timestamp = state.timestamp
             if (timestamp == null) stringResource(R.string.kaleyra_chat_user_status_offline)
             else {
-                stringResource(R.string.kaleyra_chat_user_status_last_login, TimestampUtils.parseTimestamp(LocalContext.current, timestamp))
+                stringResource(
+                    R.string.kaleyra_chat_user_status_last_login,
+                    TimestampUtils.parseTimestamp(LocalContext.current, timestamp)
+                )
             }
         }
         is ChatState.UserState.Typing -> stringResource(R.string.kaleyra_chat_user_status_typing)
@@ -141,26 +157,26 @@ private fun textFor(state: ChatState): String =
 internal fun Actions(actions: ImmutableSet<ChatAction>) {
     val value = actions.value
     value.firstOrNull { it is ChatAction.AudioCall }?.let {
-        MenuIcon(
-            painter = painterResource(R.drawable.ic_kaleyra_audio_call),
-            onClick = it.onClick,
-            contentDescription = stringResource(id = R.string.kaleyra_start_audio_call)
+        IconButton(
+            icon = painterResource(R.drawable.ic_kaleyra_audio_call),
+            iconDescription = stringResource(id = R.string.kaleyra_start_audio_call),
+            onClick = it.onClick
         )
     }
 
     value.firstOrNull { it is ChatAction.AudioUpgradableCall }?.let {
-        MenuIcon(
-            painter = painterResource(R.drawable.ic_kaleyra_audio_upgradable_call),
-            onClick = it.onClick,
-            contentDescription = stringResource(id = R.string.kaleyra_start_audio_upgradable_call)
+        IconButton(
+            icon = painterResource(R.drawable.ic_kaleyra_audio_upgradable_call),
+            iconDescription = stringResource(id = R.string.kaleyra_start_audio_upgradable_call),
+            onClick = it.onClick
         )
     }
 
     value.firstOrNull { it is ChatAction.VideoCall }?.let {
-        MenuIcon(
-            painter = painterResource(R.drawable.ic_kaleyra_video_call),
-            onClick = it.onClick,
-            contentDescription = stringResource(id = R.string.kaleyra_start_video_call)
+        IconButton(
+            icon = painterResource(R.drawable.ic_kaleyra_video_call),
+            iconDescription = stringResource(id = R.string.kaleyra_start_video_call),
+            onClick = it.onClick
         )
     }
 }

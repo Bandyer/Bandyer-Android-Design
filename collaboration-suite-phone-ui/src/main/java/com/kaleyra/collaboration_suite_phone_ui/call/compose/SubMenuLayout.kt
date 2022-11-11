@@ -5,8 +5,11 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_phone_ui.R
 
 @Composable
 internal fun SubMenuLayout(
@@ -26,7 +29,11 @@ internal fun SubMenuLayout(
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1f)
             )
-            CloseIcon(onClick = onCloseClick)
+            IconButton(
+                icon = painterResource(id = R.drawable.ic_kaleyra_close),
+                iconDescription = stringResource(id = R.string.kaleyra_close),
+                onClick = onCloseClick
+            )
         }
         content()
     }

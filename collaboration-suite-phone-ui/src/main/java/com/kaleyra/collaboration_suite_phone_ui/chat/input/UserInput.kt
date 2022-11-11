@@ -7,7 +7,10 @@ import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.*
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -23,9 +26,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.supportRtl
 
 internal const val TextFieldTag = "TextFieldTag"
 
@@ -55,36 +58,19 @@ internal fun UserInput(
                 modifier = Modifier.weight(1.0f),
                 interactionSource = interactionSource
             )
-            SendButton(
+            IconButton(
+                icon = painterResource(id = R.drawable.ic_kaleyra_send),
+                iconDescription = stringResource(id = R.string.kaleyra_chat_send),
+                iconTint = MaterialTheme.colors.secondary,
+                iconSize = 42.dp,
                 enabled = textState.text.isNotBlank(),
+                supportRtl = true,
                 onClick = {
                     onMessageSent(textState.text)
                     textState = TextFieldValue()
                 }
             )
         }
-    }
-}
-
-@Composable
-internal fun SendButton(enabled: Boolean, onClick: () -> Unit) {
-    val interactionSource = remember { MutableInteractionSource() }
-    IconButton(
-        onClick = onClick,
-        modifier = Modifier
-            .height(48.dp)
-            .highlightOnFocus(interactionSource),
-        enabled = enabled,
-        interactionSource = interactionSource
-    ) {
-        Icon(
-            painter = painterResource(id = R.drawable.ic_kaleyra_send),
-            tint = if (enabled) MaterialTheme.colors.secondary else LocalContentColor.current.copy(alpha = 0.25f),
-            modifier = Modifier
-                .size(42.dp)
-                .supportRtl(),
-            contentDescription = stringResource(id = R.string.kaleyra_chat_send)
-        )
     }
 }
 
