@@ -5,6 +5,8 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -15,6 +17,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
@@ -29,10 +32,14 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.WhiteboardUpload
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.supportRtl
+import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
 const val CircularProgressIndicatorTag = "CircularProgressIndicatorTag"
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun Whiteboard(
     loading: Boolean,
@@ -41,35 +48,51 @@ internal fun Whiteboard(
     onReloadClick: () -> Unit,
     fileUpload: WhiteboardUpload? = null
 ) {
-    SubMenuLayout(
-        title = stringResource(id = R.string.kaleyra_whiteboard),
-        onCloseClick = onCloseClick
+    val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
+
+    LaunchedEffect(Unit) {
+        delay(5000)
+        sheetState.show()
+    }
+
+    ModalBottomSheetLayout(
+        sheetState = sheetState,
+        sheetContent = { TextEditor(sheetState,{}) },
+        modifier = Modifier.fillMaxSize()
     ) {
-        Box(
-            Modifier
-                .fillMaxSize()
-                .background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))
+        SubMenuLayout(
+            title = stringResource(id = R.string.kaleyra_whiteboard),
+            onCloseClick = onCloseClick
         ) {
-            // TODO place web view
-            if (offline) {
-                Offline(
-                    loading = loading,
-                    onReloadClick = onReloadClick
-                )
-            }
-            if (loading) {
-                LinearProgressIndicator(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(2.dp),
-                    color = MaterialTheme.colors.secondary
-                )
-            }
-            if (fileUpload != null) {
-                UploadCard(
-                    progress = (fileUpload as? WhiteboardUpload.Uploading)?.progress ?: 0f,
-                    error = fileUpload is WhiteboardUpload.Error
-                )
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))
+            ) {
+                // TODO place web view
+                if (offline) {
+                    Offline(
+                        loading = loading,
+                        onReloadClick = onReloadClick
+                    )
+                }
+                if (loading) {
+                    LinearProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(2.dp),
+                        color = MaterialTheme.colors.secondary
+                    )
+                }
+                if (fileUpload != null) {
+                    UploadCard(
+                        progress = (fileUpload as? WhiteboardUpload.Uploading)?.progress ?: 0f,
+                        error = fileUpload is WhiteboardUpload.Error
+                    )
+                }
             }
         }
     }
