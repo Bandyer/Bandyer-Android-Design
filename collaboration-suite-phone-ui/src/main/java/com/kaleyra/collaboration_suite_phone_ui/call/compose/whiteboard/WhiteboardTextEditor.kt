@@ -6,8 +6,6 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +31,7 @@ private enum class TextEditorState {
 
 // TODO Add test to check the keyboard is no more shown on dismiss when it was previously opened
 @Composable
-internal fun TextEditor(
+internal fun WhiteboardTextEditor(
     modalSheetState: ModalBottomSheetState,
     onConfirmClick: (TextFieldValue) -> Unit
 ) {
@@ -145,7 +143,7 @@ private fun EditorButton(
 @Composable
 internal fun TextEditorPreview() {
     KaleyraTheme {
-        TextEditor(
+        WhiteboardTextEditor(
             modalSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Expanded),
             onConfirmClick = {}
         )

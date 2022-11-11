@@ -5,8 +5,6 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,7 +15,6 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
@@ -32,8 +29,6 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.WhiteboardUpload
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.supportRtl
 import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
@@ -60,7 +55,7 @@ internal fun Whiteboard(
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
-        sheetContent = { TextEditor(sheetState,{}) },
+        sheetContent = { WhiteboardTextEditor(sheetState,{}) },
         modifier = Modifier.fillMaxSize()
     ) {
         SubMenuLayout(
