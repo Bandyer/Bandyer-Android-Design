@@ -54,6 +54,7 @@ internal fun UserInput(
                     textState = it
                     onTextChanged()
                 },
+                maxLines = 4,
                 onDirectionLeft = onDirectionLeft,
                 modifier = Modifier.weight(1.0f),
                 interactionSource = interactionSource
@@ -79,6 +80,7 @@ internal fun UserInput(
 internal fun UserInputText(
     textFieldValue: TextFieldValue,
     onTextChanged: (TextFieldValue) -> Unit,
+    maxLines: Int = Int.MAX_VALUE,
     onDirectionLeft: () -> Unit,
     modifier: Modifier = Modifier,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
@@ -118,7 +120,7 @@ internal fun UserInputText(
                     }
                 },
             interactionSource = interactionSource,
-            maxLines = 4,
+            maxLines = maxLines,
             cursorBrush = SolidColor(MaterialTheme.colors.secondary)
         )
 
