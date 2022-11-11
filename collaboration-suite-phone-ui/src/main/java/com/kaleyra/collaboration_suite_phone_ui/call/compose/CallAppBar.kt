@@ -88,6 +88,7 @@ internal fun CallAppBar(
             if (actions != null) {
                 actions()
             }
-        }
+        },
+        elevation = 0.dp
     )
 }
