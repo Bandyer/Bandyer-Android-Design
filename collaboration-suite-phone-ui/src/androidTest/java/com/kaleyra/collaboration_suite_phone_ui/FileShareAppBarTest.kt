@@ -1,15 +1,13 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareAppBar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.FileShareAppBar
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -26,11 +24,7 @@ class FileShareAppBarTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            FileShareAppBar(
-                backgroundColor = Color.White,
-                elevation = 1.dp,
-                onBackPressed = { backPressed = true }
-            )
+            FileShareAppBar(onBackPressed = { backPressed = true })
         }
     }
 

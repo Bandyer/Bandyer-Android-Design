@@ -74,6 +74,7 @@ internal fun UserInput(
     }
 }
 
+// TODO move in a common package for call and chat
 @Composable
 internal fun UserInputText(
     textFieldValue: TextFieldValue,

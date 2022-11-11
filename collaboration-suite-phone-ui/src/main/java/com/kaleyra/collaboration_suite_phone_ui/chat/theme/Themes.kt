@@ -8,6 +8,7 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
+// TODO move in a common package for call and chat
 private val KaleyraDarkColorTheme = darkColors(
     primary = Color(0xFF303030),
     primaryVariant = Color(0xFF1E1E1E),

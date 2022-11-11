@@ -7,6 +7,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import com.kaleyra.collaboration_suite_phone_ui.R
 
+// TODO move in a common package for call and chat
 private val fontFamily = FontFamily(
     fonts = listOf(
         Font(

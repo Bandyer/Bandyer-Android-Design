@@ -16,6 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.supportRtl
 
 private const val DisabledAlpha = 0.25f
 
+// TODO move in a common package for call and chat
 @Composable
 internal fun IconButton(
     icon: Painter,

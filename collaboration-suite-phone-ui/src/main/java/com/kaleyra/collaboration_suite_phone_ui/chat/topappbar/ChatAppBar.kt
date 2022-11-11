@@ -4,14 +4,10 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.topappbar
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentColor
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
@@ -40,7 +36,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 internal const val SubtitleTag = "SubtitleTag"
 internal const val BouncingDots = "BouncingDots"
-internal const val ActionsTag = "ActionsTag"
 
 @Composable
 internal fun ChatAppBar(
@@ -50,40 +45,16 @@ internal fun ChatAppBar(
     onBackPressed: () -> Unit,
 ) {
     TopAppBar(
-        modifier = Modifier.focusGroup(),
-        backgroundColor = MaterialTheme.colors.primary,
-    ) {
-        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-            Row(
-                modifier = Modifier.padding(4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                content = {
-                    IconButton(
-                        icon = Icons.Filled.ArrowBack,
-                        iconDescription = stringResource(id = R.string.kaleyra_back),
-                        onClick = onBackPressed
-                    )
-                }
+        navigationIcon = {
+            IconButton(
+                icon = Icons.Filled.ArrowBack,
+                iconDescription = stringResource(id = R.string.kaleyra_back),
+                onClick = onBackPressed
             )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .weight(1f),
-                verticalAlignment = Alignment.CenterVertically,
-                content = { ChatDetails(info, state) }
-            )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .testTag(ActionsTag),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically,
-                content = { Actions(actions = actions) }
-            )
-        }
-    }
+        },
+        content = { ChatDetails(info, state) },
+        actions = { Actions(actions = actions) }
+    )
 }
 
 @Composable
@@ -155,29 +126,30 @@ private fun textFor(state: ChatState): String =
 
 @Composable
 internal fun Actions(actions: ImmutableSet<ChatAction>) {
-    val value = actions.value
-    value.firstOrNull { it is ChatAction.AudioCall }?.let {
-        IconButton(
-            icon = painterResource(R.drawable.ic_kaleyra_audio_call),
-            iconDescription = stringResource(id = R.string.kaleyra_start_audio_call),
-            onClick = it.onClick
-        )
-    }
-
-    value.firstOrNull { it is ChatAction.AudioUpgradableCall }?.let {
-        IconButton(
-            icon = painterResource(R.drawable.ic_kaleyra_audio_upgradable_call),
-            iconDescription = stringResource(id = R.string.kaleyra_start_audio_upgradable_call),
-            onClick = it.onClick
-        )
-    }
-
-    value.firstOrNull { it is ChatAction.VideoCall }?.let {
-        IconButton(
-            icon = painterResource(R.drawable.ic_kaleyra_video_call),
-            iconDescription = stringResource(id = R.string.kaleyra_start_video_call),
-            onClick = it.onClick
-        )
+    actions.value.forEach {
+        when (it) {
+            is ChatAction.AudioCall -> {
+                IconButton(
+                    icon = painterResource(R.drawable.ic_kaleyra_audio_call),
+                    iconDescription = stringResource(id = R.string.kaleyra_start_audio_call),
+                    onClick = it.onClick
+                )
+            }
+            is ChatAction.AudioUpgradableCall -> {
+                IconButton(
+                    icon = painterResource(R.drawable.ic_kaleyra_audio_upgradable_call),
+                    iconDescription = stringResource(id = R.string.kaleyra_start_audio_upgradable_call),
+                    onClick = it.onClick
+                )
+            }
+            is ChatAction.VideoCall -> {
+                IconButton(
+                    icon = painterResource(R.drawable.ic_kaleyra_video_call),
+                    iconDescription = stringResource(id = R.string.kaleyra_start_video_call),
+                    onClick = it.onClick
+                )
+            }
+        }
     }
 }
 
