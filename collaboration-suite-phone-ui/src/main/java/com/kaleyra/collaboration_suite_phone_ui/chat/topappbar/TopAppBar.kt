@@ -7,7 +7,6 @@ import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.LocalContentAlpha
@@ -18,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 
 internal const val ActionsTag = "ActionsTag"
 
@@ -36,11 +34,7 @@ internal fun TopAppBar(
         backgroundColor = MaterialTheme.colors.primary,
     ) {
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.high) {
-            Row(
-                modifier = Modifier.padding(4.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                content = navigationIcon
-            )
+            Row(verticalAlignment = Alignment.CenterVertically, content = navigationIcon)
 
             if (content != null) {
                 Row(
