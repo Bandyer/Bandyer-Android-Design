@@ -19,7 +19,7 @@ private const val DisabledAlpha = 0.25f
 // TODO move in a common package for call and chat
 @Composable
 internal fun IconButton(
-    icon: Painter,
+    icon: Any,
     iconDescription: String,
     iconTint: Color = LocalContentColor.current,
     iconSize: Dp = 24.dp,
@@ -27,61 +27,6 @@ internal fun IconButton(
     supportRtl: Boolean = false,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
-) {
-    IconButton(
-        iconTint = iconTint,
-        iconSize = iconSize,
-        enabled = enabled,
-        supportRtl = supportRtl,
-        onClick = onClick,
-        modifier = modifier
-    ) { tint, mod ->
-        Icon(
-            painter = icon,
-            tint = tint,
-            contentDescription = iconDescription,
-            modifier = mod
-        )
-    }
-}
-
-@Composable
-internal fun IconButton(
-    icon: ImageVector,
-    iconDescription: String,
-    iconTint: Color = LocalContentColor.current,
-    iconSize: Dp = 24.dp,
-    enabled: Boolean = true,
-    supportRtl: Boolean = false,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    IconButton(
-        iconTint = iconTint,
-        iconSize = iconSize,
-        enabled = enabled,
-        supportRtl = supportRtl,
-        onClick = onClick,
-        modifier = modifier
-    ) { tint, mod ->
-        Icon(
-            imageVector = icon,
-            tint = tint,
-            contentDescription = iconDescription,
-            modifier = mod
-        )
-    }
-}
-
-@Composable
-private fun IconButton(
-    iconTint: Color = LocalContentColor.current,
-    iconSize: Dp = 24.dp,
-    enabled: Boolean = true,
-    supportRtl: Boolean = false,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    icon: @Composable (Color, Modifier) -> Unit
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     IconButton(
@@ -94,6 +39,23 @@ private fun IconButton(
         val mod = Modifier
             .size(iconSize)
             .then(if (supportRtl) Modifier.supportRtl() else Modifier)
-        icon(tint, mod)
+        when (icon) {
+            is Painter -> {
+                Icon(
+                    painter = icon,
+                    tint = tint,
+                    contentDescription = iconDescription,
+                    modifier = mod
+                )
+            }
+            is ImageVector -> {
+                Icon(
+                    imageVector = icon,
+                    tint = tint,
+                    contentDescription = iconDescription,
+                    modifier = mod
+                )
+            }
+        }
     }
 }
