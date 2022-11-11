@@ -97,61 +97,50 @@ internal fun UserInputText(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
 ) {
     val focusManager = LocalFocusManager.current
-    Row(
+    Box(
         modifier = Modifier
             .height(48.dp)
-            .then(modifier)
+            .then(modifier),
+        contentAlignment = Alignment.CenterStart
     ) {
-        Surface {
-            Box(
-                modifier = Modifier
-                    .height(48.dp)
-                    .weight(1f)
-                    .align(Alignment.Bottom)
-            ) {
-                BasicTextField(
-                    value = textFieldValue,
-                    onValueChange = { onTextChanged(it) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.CenterStart)
-                        .testTag(TextFieldTag)
-                        .onPreviewKeyEvent {
-                            if (it.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
-                            when (it.key) {
-                                Key.Tab -> {
-                                    focusManager.moveFocus(FocusDirection.Next); true
-                                }
-                                Key.DirectionUp -> {
-                                    focusManager.moveFocus(FocusDirection.Up); true
-                                }
-                                Key.DirectionDown -> {
-                                    focusManager.moveFocus(FocusDirection.Down); true
-                                }
-                                Key.DirectionRight -> {
-                                    focusManager.moveFocus(FocusDirection.Right); true
-                                }
-                                Key.DirectionLeft -> {
-                                    onDirectionLeft.invoke(); true
-                                }
-                                else -> false
-                            }
-                        },
-                    interactionSource = interactionSource,
-                    maxLines = 4,
-                    cursorBrush = SolidColor(MaterialTheme.colors.secondary),
-                    textStyle = LocalTextStyle.current.copy(color = LocalContentColor.current)
-                )
+        BasicTextField(
+            value = textFieldValue,
+            onValueChange = { onTextChanged(it) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .testTag(TextFieldTag)
+                .onPreviewKeyEvent {
+                    if (it.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+                    when (it.key) {
+                        Key.Tab -> {
+                            focusManager.moveFocus(FocusDirection.Next); true
+                        }
+                        Key.DirectionUp -> {
+                            focusManager.moveFocus(FocusDirection.Up); true
+                        }
+                        Key.DirectionDown -> {
+                            focusManager.moveFocus(FocusDirection.Down); true
+                        }
+                        Key.DirectionRight -> {
+                            focusManager.moveFocus(FocusDirection.Right); true
+                        }
+                        Key.DirectionLeft -> {
+                            onDirectionLeft.invoke(); true
+                        }
+                        else -> false
+                    }
+                },
+            interactionSource = interactionSource,
+            maxLines = 4,
+            cursorBrush = SolidColor(MaterialTheme.colors.secondary)
+        )
 
-                val hintColor = LocalContentColor.current.copy(alpha = 0.5f)
-                if (textFieldValue.text.isEmpty()) {
-                    Text(
-                        modifier = Modifier.align(Alignment.CenterStart),
-                        text = stringResource(id = R.string.kaleyra_edit_text_input_placeholder),
-                        style = MaterialTheme.typography.subtitle1.copy(color = hintColor)
-                    )
-                }
-            }
+        val hintColor = LocalContentColor.current.copy(alpha = 0.5f)
+        if (textFieldValue.text.isEmpty()) {
+            Text(
+                text = stringResource(id = R.string.kaleyra_edit_text_input_placeholder),
+                style = MaterialTheme.typography.subtitle1.copy(color = hintColor)
+            )
         }
     }
 }
