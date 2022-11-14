@@ -43,7 +43,7 @@ class BottomSheetTest {
         composeTestRule.setBottomSheetScaffold(sheetState = sheetState)
         runBlocking {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
-            assertEquals(currentValue, BottomSheetValue.Collapsed)
+            assertEquals(BottomSheetValue.Collapsed, currentValue)
             assert(sheetState.isCollapsed)
         }
     }
@@ -54,7 +54,7 @@ class BottomSheetTest {
         composeTestRule.setBottomSheetScaffold(sheetState = sheetState)
         runBlocking {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
-            assertEquals(currentValue, BottomSheetValue.HalfExpanded)
+            assertEquals(BottomSheetValue.HalfExpanded, currentValue)
             assert(sheetState.isHalfExpanded)
         }
     }
@@ -65,7 +65,7 @@ class BottomSheetTest {
         composeTestRule.setBottomSheetScaffold(sheetState = sheetState)
         runBlocking {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
-            assertEquals(currentValue, BottomSheetValue.Expanded)
+            assertEquals(BottomSheetValue.Expanded, currentValue)
             assert(sheetState.isExpanded)
         }
     }
@@ -152,7 +152,7 @@ class BottomSheetTest {
         composeTestRule.waitForIdle()
         runBlocking {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
-            assertEquals(currentValue, targetState)
+            assertEquals(targetState, currentValue)
         }
     }
 
@@ -227,7 +227,7 @@ class BottomSheetTest {
             sheetState = sheetState,
             launchedEffect = sheetState::halfExpand
         )
-        assertEquals(sheetState.currentValue, BottomSheetValue.HalfExpanded)
+        assertEquals(BottomSheetValue.HalfExpanded, sheetState.currentValue)
     }
 
     @Test
@@ -237,7 +237,7 @@ class BottomSheetTest {
             sheetState = sheetState,
             launchedEffect = sheetState::halfExpand
         )
-        assertEquals(sheetState.currentValue, BottomSheetValue.HalfExpanded)
+        assertEquals(BottomSheetValue.HalfExpanded, sheetState.currentValue)
     }
 
     @Test
@@ -247,7 +247,7 @@ class BottomSheetTest {
             sheetState = sheetState,
             launchedEffect = sheetState::expand
         )
-        assertEquals(sheetState.currentValue, BottomSheetValue.Expanded)
+        assertEquals(BottomSheetValue.Expanded, sheetState.currentValue)
     }
 
     @Test
@@ -257,7 +257,7 @@ class BottomSheetTest {
             sheetState = sheetState,
             launchedEffect = sheetState::expand
         )
-        assertEquals(sheetState.currentValue, BottomSheetValue.Expanded)
+        assertEquals(BottomSheetValue.Expanded, sheetState.currentValue)
     }
 
     @Test
@@ -267,7 +267,7 @@ class BottomSheetTest {
             sheetState = sheetState,
             launchedEffect = sheetState::collapse
         )
-        assertEquals(sheetState.currentValue, BottomSheetValue.Collapsed)
+        assertEquals(BottomSheetValue.Collapsed, sheetState.currentValue)
     }
 
     @Test
@@ -277,7 +277,7 @@ class BottomSheetTest {
             sheetState = sheetState,
             launchedEffect = sheetState::collapse
         )
-        assertEquals(sheetState.currentValue, BottomSheetValue.Collapsed)
+        assertEquals(BottomSheetValue.Collapsed, sheetState.currentValue)
     }
 
     @Test
@@ -290,7 +290,7 @@ class BottomSheetTest {
             sheetState = sheetState,
             launchedEffect = sheetState::collapse
         )
-        assertEquals(sheetState.currentValue, BottomSheetValue.HalfExpanded)
+        assertEquals(BottomSheetValue.HalfExpanded, sheetState.currentValue)
     }
 
     @Test
