@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterialApi::class)
+
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard
 
 import androidx.compose.animation.core.*
@@ -16,11 +18,13 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -30,6 +34,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.WhiteboardUpload
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 const val CircularProgressIndicatorTag = "CircularProgressIndicatorTag"
@@ -49,13 +54,15 @@ internal fun Whiteboard(
     )
 
     LaunchedEffect(Unit) {
-        delay(5000)
+        delay(3000)
         sheetState.show()
     }
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
-        sheetContent = { WhiteboardTextEditor(sheetState,{}) },
+        sheetContent = {
+            ModalTextEditor(sheetState = sheetState, onText = {})
+        },
         modifier = Modifier.fillMaxSize()
     ) {
         SubMenuLayout(
@@ -91,6 +98,64 @@ internal fun Whiteboard(
             }
         }
     }
+}
+
+// TODO create a TextEditorState (with initial value)
+@Composable
+internal fun ModalTextEditor(
+    sheetState: ModalBottomSheetState,
+    onText: (TextFieldValue) -> Unit
+) {
+    val focusManager = LocalFocusManager.current
+    var textEditorState by remember { mutableStateOf(TextEditorState.Empty) }
+    var textState by remember { mutableStateOf(TextFieldValue()) }
+    val scope = rememberCoroutineScope()
+    val isTextBlank by remember {
+        derivedStateOf {
+            textState.text.isBlank()
+        }
+    }
+    val closeModal = remember {
+        {
+            scope.launch {
+                sheetState.hide()
+                focusManager.clearFocus()
+            }
+        }
+    }
+
+    LaunchedEffect(isTextBlank) {
+        textEditorState = when {
+            textEditorState == TextEditorState.Editing && isTextBlank -> TextEditorState.Empty
+            textEditorState == TextEditorState.Empty && !isTextBlank -> TextEditorState.Editing
+            else -> textEditorState
+        }
+    }
+
+    WhiteboardTextEditor(
+        state = textEditorState,
+        textFieldValue = textState,
+        onTextChanged = {
+            textState = it
+        },
+        onDismissClick = {
+            when (textEditorState) {
+                TextEditorState.Empty -> closeModal()
+                TextEditorState.Editing -> {
+                    textEditorState = TextEditorState.Discard
+                }
+                TextEditorState.Discard -> {
+                    textEditorState = TextEditorState.Editing
+                }
+            }
+        },
+        onConfirmClick = {
+            if (textEditorState == TextEditorState.Editing) {
+                onText(textState)
+            }
+            closeModal()
+        }
+    )
 }
 
 @Composable

@@ -31,24 +31,6 @@ internal fun WhiteboardTextEditor(
     onDismissClick: () -> Unit,
     onConfirmClick: () -> Unit
 ) {
-//    val focusManager = LocalFocusManager.current
-//    var textState by remember { mutableStateOf(TextFieldValue()) }
-//    val isTextBlank by remember {
-//        derivedStateOf {
-//            textState.text.isBlank()
-//        }
-//    }
-//    var editorState by remember { mutableStateOf(TextEditorState.Empty) }
-//    val scope = rememberCoroutineScope()
-
-//    LaunchedEffect(isTextBlank) {
-//        editorState = when {
-//            editorState == TextEditorState.Editing && isTextBlank -> TextEditorState.Empty
-//            editorState == TextEditorState.Empty && !isTextBlank -> TextEditorState.Editing
-//            else -> editorState
-//        }
-//    }
-
     Column(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 48.dp)) {
         if (state != TextEditorState.Discard) {
             Box(Modifier.weight(1f)) {
