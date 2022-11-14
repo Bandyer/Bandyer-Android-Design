@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.Indication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
@@ -36,7 +37,6 @@ internal fun CallAction(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         val backgroundColor by animateColorAsState(
@@ -45,25 +45,17 @@ internal fun CallAction(
         val iconTint by animateColorAsState(
             colors.iconColor(toggled = toggled, enabled = enabled).value
         )
-        Box(
+        IconToggleButton(
+            checked = toggled,
+            onCheckedChange = onToggle,
+            enabled = enabled,
+            indication = rememberRipple(bounded = false, radius = CallActionDefaults.RippleRadius),
             modifier = Modifier
+                .size(CallActionDefaults.Size)
                 .background(
                     color = backgroundColor,
                     shape = CircleShape
                 )
-                .size(CallActionDefaults.Size)
-                .toggleable(
-                    value = toggled,
-                    onValueChange = onToggle,
-                    enabled = enabled,
-                    role = Role.Checkbox,
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = rememberRipple(
-                        bounded = false,
-                        radius = CallActionDefaults.RippleRadius
-                    )
-                ),
-            contentAlignment = Alignment.Center
         ) {
             Icon(
                 painter = icon,
@@ -76,10 +68,36 @@ internal fun CallAction(
             text = text,
             color = colors.textColor(enabled = enabled).value,
             fontSize = 12.sp,
-            textAlign = TextAlign.Center,
             maxLines = 2,
             modifier = Modifier.padding(6.dp)
         )
+    }
+}
+
+@Composable
+internal fun IconToggleButton(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    indication: Indication,
+    content: @Composable () -> Unit
+) {
+    Box(
+        modifier = modifier
+            .toggleable(
+                value = checked,
+                onValueChange = onCheckedChange,
+                enabled = enabled,
+                role = Role.Checkbox,
+                interactionSource = interactionSource,
+                indication = indication
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        val contentAlpha = if (enabled) LocalContentAlpha.current else ContentAlpha.disabled
+        CompositionLocalProvider(LocalContentAlpha provides contentAlpha, content = content)
     }
 }
 
