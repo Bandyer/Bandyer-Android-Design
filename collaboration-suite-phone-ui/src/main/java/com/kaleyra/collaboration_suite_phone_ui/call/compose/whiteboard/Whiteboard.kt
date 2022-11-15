@@ -114,8 +114,6 @@ internal fun Whiteboard(
     }
 }
 
-// TODO create a TextEditorState (with initial value)
-
 @Composable
 internal fun UploadCard(progress: Float, error: Boolean) {
     Card(

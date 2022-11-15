@@ -17,15 +17,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.ScreenShare
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.ScreenShareTarget
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 @Composable
 internal fun ScreenShare(
-    items: ImmutableList<ScreenShare>,
-    onItemClick: (ScreenShare) -> Unit,
+    items: ImmutableList<ScreenShareTarget>,
+    onItemClick: (ScreenShareTarget) -> Unit,
     onCloseClick: () -> Unit
 ) {
     SubMenuLayout(
@@ -54,17 +54,17 @@ internal fun ScreenShare(
 }
 
 @Composable
-private fun titleFor(screenShare: ScreenShare): String =
-    when (screenShare) {
-        ScreenShare.Device -> stringResource(R.string.kaleyra_screenshare_full_device)
-        ScreenShare.Application -> stringResource(R.string.kaleyra_screenshare_app_only)
+private fun titleFor(screenShareTarget: ScreenShareTarget): String =
+    when (screenShareTarget) {
+        ScreenShareTarget.Device -> stringResource(R.string.kaleyra_screenshare_full_device)
+        ScreenShareTarget.Application -> stringResource(R.string.kaleyra_screenshare_app_only)
     }
 
 @Composable
-private fun painterFor(screenShare: ScreenShare): Painter = painterResource(
-    id = when (screenShare) {
-        ScreenShare.Device -> R.drawable.ic_kaleyra_screen_share_device
-        ScreenShare.Application -> R.drawable.ic_kaleyra_screen_share_app
+private fun painterFor(screenShareTarget: ScreenShareTarget): Painter = painterResource(
+    id = when (screenShareTarget) {
+        ScreenShareTarget.Device -> R.drawable.ic_kaleyra_screen_share_device
+        ScreenShareTarget.Application -> R.drawable.ic_kaleyra_screen_share_app
     }
 )
 
@@ -95,7 +95,7 @@ internal fun ScreenShareItem(
 internal fun ScreenSharePreview() {
     KaleyraTheme {
         ScreenShare(
-            items = ImmutableList(listOf(ScreenShare.Device, ScreenShare.Application)),
+            items = ImmutableList(listOf(ScreenShareTarget.Device, ScreenShareTarget.Application)),
             onItemClick = { },
             onCloseClick = { }
         )

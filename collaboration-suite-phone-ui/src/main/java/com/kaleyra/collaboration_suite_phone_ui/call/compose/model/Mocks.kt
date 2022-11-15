@@ -1,8 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.model
 
 import android.net.Uri
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.BottomSheetContent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.targetState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 val mockCallActions = ImmutableList(
@@ -12,16 +10,10 @@ val mockCallActions = ImmutableList(
         CallAction.SwitchCamera(true) {},
         CallAction.HangUp(true) {},
         CallAction.Chat(true) {},
-        CallAction.Whiteboard(true) {
-            targetState = BottomSheetContent.Whiteboard
-        },
-        CallAction.Audio(true) {
-            targetState = BottomSheetContent.AudioRoute
-        },
-        CallAction.FileShare(true) {
-            targetState = BottomSheetContent.FileShare
-        },
-        CallAction.ScreenShare(true) { targetState = BottomSheetContent.ScreenShare }
+        CallAction.Whiteboard(true) {},
+        CallAction.Audio(true) {},
+        CallAction.FileShare(true) {},
+        CallAction.ScreenShare(true) {}
     )
 )
 

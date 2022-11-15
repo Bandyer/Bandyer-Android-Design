@@ -9,7 +9,7 @@ sealed interface WhiteboardUpload {
 }
 
 @Immutable
-enum class ScreenShare {
+enum class ScreenShareTarget {
     Device,
     Application
 }

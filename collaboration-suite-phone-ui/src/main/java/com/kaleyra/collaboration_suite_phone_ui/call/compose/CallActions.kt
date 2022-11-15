@@ -26,23 +26,19 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.fadeBelowOfRootBott
 @Composable
 internal fun CallActions(
     items: ImmutableList<CallAction>,
-    itemsPerRow: Int
-//    orientation: StateFlow<Int>
+    itemsPerRow: Int,
+    onItemClick: (CallAction) -> Unit
 ) {
-//    val orientationState = orientation.collectAsState()
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = itemsPerRow)
-//        contentPadding = gridPaddingFor(orientationState)
     ) {
         items(items = items.value) { action ->
             var toggled by remember { mutableStateOf(action is CallAction.Toggleable && action.isToggled) }
-//            val rotation by animateFloatAsState(
-//                targetValue = mapToRotationState(orientation = orientationState),
-//                animationSpec = tween()
-//            )
+
             CallAction(
                 toggled = toggled,
                 onToggle = {
+                    onItemClick (action)
                     when (action) {
                         is CallAction.Clickable -> action.onClick()
                         is CallAction.Toggleable -> {
@@ -138,6 +134,6 @@ private fun colorsFor(action: CallAction): CallActionColors {
 @Composable
 internal fun CallActionsPreview() {
     KaleyraTheme {
-        CallActions(items = mockCallActions, itemsPerRow = 4)
+        CallActions(items = mockCallActions, itemsPerRow = 4, {})
     }
 }

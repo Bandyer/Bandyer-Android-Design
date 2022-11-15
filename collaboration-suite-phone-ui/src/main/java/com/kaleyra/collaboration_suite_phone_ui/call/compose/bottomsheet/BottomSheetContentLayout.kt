@@ -12,7 +12,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 @Composable
-internal fun BottomSheetContent(
+internal fun BottomSheetContentLayout(
     lineState: LineState,
     onLineClick: () -> Unit,
     content: @Composable () -> Unit
@@ -33,7 +33,7 @@ internal fun BottomSheetContent(
 @Composable
 fun BottomSheetContentPreview() {
     KaleyraTheme {
-        BottomSheetContent(
+        BottomSheetContentLayout(
             lineState = LineState.Expanded,
             onLineClick = { },
             content = { }
