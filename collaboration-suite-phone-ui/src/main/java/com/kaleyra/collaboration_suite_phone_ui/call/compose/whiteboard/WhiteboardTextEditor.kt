@@ -17,26 +17,20 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.UserInputText
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
-internal enum class TextEditorState {
+internal enum class TextEditorValue {
     Empty,
     Editing,
     Discard
 }
 
 @Composable
-internal fun WhiteboardTextEditor(
-    state: TextEditorState,
-    textFieldValue: TextFieldValue,
-    onTextChanged: (TextFieldValue) -> Unit,
-    onDismissClick: () -> Unit,
-    onConfirmClick: () -> Unit
-) {
+internal fun WhiteboardTextEditor(state: TextEditorState) {
     Column(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 48.dp)) {
-        if (state != TextEditorState.Discard) {
+        if (state.currentValue != TextEditorValue.Discard) {
             Box(Modifier.weight(1f)) {
                 UserInputText(
-                    textFieldValue = textFieldValue,
-                    onTextChanged = onTextChanged,
+                    textFieldValue = state.textFieldValue,
+                    onTextChanged = { state.textFieldValue(it) },
                     onDirectionLeft = { /**TODO**/ }
                 )
             }
@@ -53,15 +47,15 @@ internal fun WhiteboardTextEditor(
                 .imePadding()
         ) {
             IconTextButton(
-                icon = iconFor(state),
-                text = textFor(state),
-                onClick = onDismissClick,
+                icon = iconFor(state.currentValue),
+                text = textFor(state.currentValue),
+                onClick = state::dismiss,
                 modifier = Modifier.weight(1f)
             )
             IconTextButton(
                 icon = painterResource(id = R.drawable.ic_kaleyra_confirm),
                 text = stringResource(id = R.string.kaleyra_action_confirm),
-                onClick = onConfirmClick,
+                onClick = state::confirm,
                 modifier = Modifier.weight(1f)
             )
         }
@@ -69,19 +63,19 @@ internal fun WhiteboardTextEditor(
 }
 
 @Composable
-private fun iconFor(state: TextEditorState) = painterResource(
+private fun iconFor(state: TextEditorValue) = painterResource(
     id = when (state) {
-        TextEditorState.Empty -> R.drawable.ic_kaleyra_close
+        TextEditorValue.Empty -> R.drawable.ic_kaleyra_close
         else -> R.drawable.ic_kaleyra_cancel
     }
 )
 
 @Composable
-private fun textFor(state: TextEditorState) = stringResource(
+private fun textFor(state: TextEditorValue) = stringResource(
     id = when (state) {
-        TextEditorState.Empty -> R.string.kaleyra_action_dismiss
-        TextEditorState.Editing -> R.string.kaleyra_action_discard_changes
-        TextEditorState.Discard -> R.string.kaleyra_action_cancel
+        TextEditorValue.Empty -> R.string.kaleyra_action_dismiss
+        TextEditorValue.Editing -> R.string.kaleyra_action_discard_changes
+        TextEditorValue.Discard -> R.string.kaleyra_action_cancel
     }
 )
 
@@ -109,13 +103,13 @@ internal fun IconTextButton(
 @Composable
 internal fun EmptyTextEditorPreview() {
     KaleyraTheme {
-        WhiteboardTextEditor(
-            state = TextEditorState.Empty,
-            textFieldValue = TextFieldValue(),
-            onTextChanged = {},
-            onDismissClick = {},
-            onConfirmClick = {}
-        )
+//        WhiteboardTextEditor(
+//            state = TextEditorValue.Empty,
+//            textFieldValue = TextFieldValue(),
+//            onTextChanged = {},
+//            onDismissClick = {},
+//            onConfirmClick = {}
+//        )
     }
 }
 
@@ -123,13 +117,13 @@ internal fun EmptyTextEditorPreview() {
 @Composable
 internal fun EditingTextEditorPreview() {
     KaleyraTheme {
-        WhiteboardTextEditor(
-            state = TextEditorState.Editing,
-            textFieldValue = TextFieldValue(),
-            onTextChanged = {},
-            onDismissClick = {},
-            onConfirmClick = {}
-        )
+//        WhiteboardTextEditor(
+//            state = TextEditorValue.Editing,
+//            textFieldValue = TextFieldValue(),
+//            onTextChanged = {},
+//            onDismissClick = {},
+//            onConfirmClick = {}
+//        )
     }
 }
 
@@ -137,12 +131,12 @@ internal fun EditingTextEditorPreview() {
 @Composable
 internal fun DiscardTextEditorPreview() {
     KaleyraTheme {
-        WhiteboardTextEditor(
-            state = TextEditorState.Discard,
-            textFieldValue = TextFieldValue(),
-            onTextChanged = {},
-            onDismissClick = {},
-            onConfirmClick = {}
-        )
+//        WhiteboardTextEditor(
+//            state = TextEditorValue.Discard,
+//            textFieldValue = TextFieldValue(),
+//            onTextChanged = {},
+//            onDismissClick = {},
+//            onConfirmClick = {}
+//        )
     }
 }

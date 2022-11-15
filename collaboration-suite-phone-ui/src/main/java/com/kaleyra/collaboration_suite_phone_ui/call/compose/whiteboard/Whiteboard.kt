@@ -10,6 +10,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -33,6 +34,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.WhiteboardUpload
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -61,7 +63,7 @@ internal fun Whiteboard(
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
-            ModalTextEditor(sheetState = sheetState, onText = {})
+            ModalTextEditor(sheetState = sheetState)
         },
         modifier = Modifier.fillMaxSize()
     ) {
@@ -100,62 +102,77 @@ internal fun Whiteboard(
     }
 }
 
+internal class TextEditorState(
+    initialValue: TextEditorValue,
+    private val sheetState: ModalBottomSheetState,
+    private val scope: CoroutineScope,
+    private val focusManager: FocusManager
+) {
+    var currentValue: TextEditorValue by mutableStateOf(initialValue)
+        private set
+
+    var textFieldValue: TextFieldValue by mutableStateOf(TextFieldValue())
+        private set
+
+    fun textFieldValue(textFieldValue: TextFieldValue) {
+        this.textFieldValue = textFieldValue
+        if (currentValue == TextEditorValue.Discard) return
+        currentValue =
+            if (textFieldValue.text.isBlank()) TextEditorValue.Empty else TextEditorValue.Editing
+    }
+
+    fun dismiss() {
+        when (currentValue) {
+            TextEditorValue.Empty -> close()
+            TextEditorValue.Editing -> currentValue = TextEditorValue.Discard
+            TextEditorValue.Discard -> currentValue = TextEditorValue.Editing
+        }
+    }
+
+    fun confirm(): String? {
+        close()
+        return if (currentValue == TextEditorValue.Editing) textFieldValue.text else null
+    }
+
+    private fun close() {
+        scope.launch {
+            sheetState.hide()
+            focusManager.clearFocus()
+        }
+    }
+
+}
+
+@Composable
+internal fun rememberTextEditorState(
+    initialValue: TextEditorValue,
+    sheetState: ModalBottomSheetState,
+    scope: CoroutineScope,
+    focusManager: FocusManager
+) = remember(initialValue, sheetState, scope, focusManager) {
+    TextEditorState(
+        initialValue = initialValue,
+        sheetState = sheetState,
+        scope = scope,
+        focusManager = focusManager
+    )
+}
+
 // TODO create a TextEditorState (with initial value)
 @Composable
 internal fun ModalTextEditor(
-    sheetState: ModalBottomSheetState,
-    onText: (TextFieldValue) -> Unit
+    sheetState: ModalBottomSheetState
 ) {
     val focusManager = LocalFocusManager.current
-    var textEditorState by remember { mutableStateOf(TextEditorState.Empty) }
-    var textState by remember { mutableStateOf(TextFieldValue()) }
     val scope = rememberCoroutineScope()
-    val isTextBlank by remember {
-        derivedStateOf {
-            textState.text.isBlank()
-        }
-    }
-    val closeModal = remember {
-        {
-            scope.launch {
-                sheetState.hide()
-                focusManager.clearFocus()
-            }
-        }
-    }
-
-    LaunchedEffect(isTextBlank) {
-        textEditorState = when {
-            textEditorState == TextEditorState.Editing && isTextBlank -> TextEditorState.Empty
-            textEditorState == TextEditorState.Empty && !isTextBlank -> TextEditorState.Editing
-            else -> textEditorState
-        }
-    }
-
-    WhiteboardTextEditor(
-        state = textEditorState,
-        textFieldValue = textState,
-        onTextChanged = {
-            textState = it
-        },
-        onDismissClick = {
-            when (textEditorState) {
-                TextEditorState.Empty -> closeModal()
-                TextEditorState.Editing -> {
-                    textEditorState = TextEditorState.Discard
-                }
-                TextEditorState.Discard -> {
-                    textEditorState = TextEditorState.Editing
-                }
-            }
-        },
-        onConfirmClick = {
-            if (textEditorState == TextEditorState.Editing) {
-                onText(textState)
-            }
-            closeModal()
-        }
+    val textEditorState = rememberTextEditorState(
+        initialValue = TextEditorValue.Empty,
+        sheetState = sheetState,
+        scope = scope,
+        focusManager = focusManager
     )
+
+    WhiteboardTextEditor(textEditorState)
 }
 
 @Composable
