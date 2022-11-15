@@ -10,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -25,7 +24,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -34,7 +32,6 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.WhiteboardUpload
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -54,6 +51,8 @@ internal fun Whiteboard(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true
     )
+    val focusManager = LocalFocusManager.current
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         delay(3000)
@@ -63,7 +62,20 @@ internal fun Whiteboard(
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = {
-            ModalTextEditor(sheetState = sheetState)
+            WhiteboardTextEditor(
+                onDismissClick = {
+                    scope.launch {
+                        sheetState.hide()
+                        focusManager.clearFocus()
+                    }
+                },
+                onConfirmClick = {
+                    scope.launch {
+                        sheetState.hide()
+                        focusManager.clearFocus()
+                    }
+                }
+            )
         },
         modifier = Modifier.fillMaxSize()
     ) {
@@ -102,78 +114,7 @@ internal fun Whiteboard(
     }
 }
 
-internal class TextEditorState(
-    initialValue: TextEditorValue,
-    private val sheetState: ModalBottomSheetState,
-    private val scope: CoroutineScope,
-    private val focusManager: FocusManager
-) {
-    var currentValue: TextEditorValue by mutableStateOf(initialValue)
-        private set
-
-    var textFieldValue: TextFieldValue by mutableStateOf(TextFieldValue())
-        private set
-
-    fun textFieldValue(textFieldValue: TextFieldValue) {
-        this.textFieldValue = textFieldValue
-        if (currentValue == TextEditorValue.Discard) return
-        currentValue =
-            if (textFieldValue.text.isBlank()) TextEditorValue.Empty else TextEditorValue.Editing
-    }
-
-    fun dismiss() {
-        when (currentValue) {
-            TextEditorValue.Empty -> close()
-            TextEditorValue.Editing -> currentValue = TextEditorValue.Discard
-            TextEditorValue.Discard -> currentValue = TextEditorValue.Editing
-        }
-    }
-
-    fun confirm(): String? {
-        close()
-        return if (currentValue == TextEditorValue.Editing) textFieldValue.text else null
-    }
-
-    private fun close() {
-        scope.launch {
-            sheetState.hide()
-            focusManager.clearFocus()
-        }
-    }
-
-}
-
-@Composable
-internal fun rememberTextEditorState(
-    initialValue: TextEditorValue,
-    sheetState: ModalBottomSheetState,
-    scope: CoroutineScope,
-    focusManager: FocusManager
-) = remember(initialValue, sheetState, scope, focusManager) {
-    TextEditorState(
-        initialValue = initialValue,
-        sheetState = sheetState,
-        scope = scope,
-        focusManager = focusManager
-    )
-}
-
 // TODO create a TextEditorState (with initial value)
-@Composable
-internal fun ModalTextEditor(
-    sheetState: ModalBottomSheetState
-) {
-    val focusManager = LocalFocusManager.current
-    val scope = rememberCoroutineScope()
-    val textEditorState = rememberTextEditorState(
-        initialValue = TextEditorValue.Empty,
-        sheetState = sheetState,
-        scope = scope,
-        focusManager = focusManager
-    )
-
-    WhiteboardTextEditor(textEditorState)
-}
 
 @Composable
 internal fun UploadCard(progress: Float, error: Boolean) {
