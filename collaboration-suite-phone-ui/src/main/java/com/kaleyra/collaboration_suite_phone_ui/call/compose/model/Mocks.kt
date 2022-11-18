@@ -1,6 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.model
 
 import android.net.Uri
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 val mockCallActions = ImmutableList(
@@ -33,28 +35,28 @@ val mockAudioDevices = ImmutableList(
     )
 )
 
-val mockUploadTransfer = Transfer.Upload(
-    "upload.txt",
-    Transfer.FileType.Media,
-    23333L,
-    "Mario",
-    .7f,
-    324234L,
-    Uri.EMPTY,
-    Transfer.State.InProgress,
-    {},
-    {}
+val mockUploadTransfer = TransferUi(
+    id = "1",
+    file = FileUi(
+        name = "upload.txt",
+        type = FileUi.Type.Media,
+        size = 23333L
+    ),
+    sender = "Mario",
+    time = 324234L,
+    state = TransferUi.State.InProgress(progress = .7f),
+    type = TransferUi.Type.Upload
 )
 
-val mockDownloadTransfer = Transfer.Download(
-    "download.txt",
-    Transfer.FileType.Miscellaneous,
-    40000L,
-    "Keanu",
-    .4f,
-    3254234L,
-    Uri.EMPTY,
-    Transfer.State.InProgress,
-    {},
-    {}
+val mockDownloadTransfer = TransferUi(
+    id = "2",
+    file = FileUi(
+        name = "download.txt",
+        type = FileUi.Type.Miscellaneous,
+        size = 40000L
+    ),
+    sender = "Keanu",
+    time = 3254234L,
+    state = TransferUi.State.InProgress(progress = .4f),
+    type = TransferUi.Type.Download
 )

@@ -29,7 +29,7 @@ class CallActionsTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            CallActions(items = items, 4)
+            CallActions(items = items, 4, {})
         }
     }
 

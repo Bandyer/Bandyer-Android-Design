@@ -27,7 +27,7 @@ class BottomSheetContentTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            BottomSheetContent(
+            BottomSheetContentLayout(
                 lineState = lineState,
                 onLineClick = { isLineClicked = true },
                 content = { }

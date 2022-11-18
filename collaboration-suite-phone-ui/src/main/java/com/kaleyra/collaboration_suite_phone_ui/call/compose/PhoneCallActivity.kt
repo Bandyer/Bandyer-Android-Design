@@ -1,5 +1,7 @@
 @file:OptIn(
-    ExperimentalMaterialApi::class, ExperimentalAnimationApi::class, ExperimentalAnimationApi::class
+    ExperimentalMaterialApi::class,
+    ExperimentalAnimationApi::class,
+    ExperimentalAnimationApi::class
 )
 
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
@@ -29,7 +31,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOu
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.Whiteboard
@@ -53,12 +54,11 @@ class PhoneCallActivity : ComponentActivity() {
                         )
                     ),
                     audioDevices = mockAudioDevices,
-                    transfers = ImmutableList(
-                        listOf(
-                            mockDownloadTransfer.copy(state = Transfer.State.Success),
-                            mockUploadTransfer
-                        )
-                    )
+//                    transfers = ImmutableList(
+//                        listOf(
+//                            mockDownloadTransfer.copy(state = Transfer.State.Success),
+//                            mockUploadTransfer
+//                        )
                 )
             }
         }
@@ -82,7 +82,8 @@ internal class CallScreenState(
     density: Density
 ) {
 
-    private val appBarThresholdPx = with(density) { CallScreenDefaults.AppBarVisibilityThreshold.toPx() }
+    private val appBarThresholdPx =
+        with(density) { CallScreenDefaults.AppBarVisibilityThreshold.toPx() }
 
     var currentScreen: BottomSheetScreen by mutableStateOf(initialSheetScreen)
         private set
@@ -144,7 +145,7 @@ fun CallScreen(
     callActions: ImmutableList<CallAction>,
     screenShareTargets: ImmutableList<ScreenShareTarget>,
     audioDevices: ImmutableList<AudioDevice>,
-    transfers: ImmutableList<Transfer>
+//    transfers: ImmutableList<TransferUi>
 ) {
     val isDarkTheme = isSystemInDarkTheme()
     val systemUiController = rememberSystemUiController()
@@ -188,7 +189,7 @@ fun CallScreen(
                     callActions = {
                         CallActions(
                             items = callActions,
-                            itemsPerRow = callActions.count.coerceIn(
+                            itemsPerRow = callActions.count().coerceIn(
                                 minimumValue = 1,
                                 maximumValue = 4
                             ),
@@ -220,11 +221,11 @@ fun CallScreen(
                         )
                     },
                     fileShare = {
-                        FileShare(
-                            items = transfers,
-                            onFabClick = { },
-                            onCloseClick = { callScreenState.halfExpandBottomSheet() }
-                        )
+//                        FileShare(
+//                            items = transfers,
+//                            onFabClick = { },
+//                            onCloseClick = { callScreenState.halfExpandBottomSheet() }
+//                        )
                     },
                     whiteboard = {
                         Whiteboard(

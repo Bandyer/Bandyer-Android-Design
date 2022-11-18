@@ -10,7 +10,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.ScreenShare
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.ScreenShareTarget
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShare
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.Assert.assertEquals
@@ -25,16 +25,16 @@ class ScreenShareTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var items by mutableStateOf(ImmutableList(listOf<ScreenShare>()))
+    private var items by mutableStateOf(ImmutableList(listOf<ScreenShareTarget>()))
 
-    private var screenShare: ScreenShare? = null
+    private var screenShareTarget: ScreenShareTarget? = null
 
     private var closeClicked = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent { 
-            ScreenShare(items = items, onItemClick = { screenShare = it }, onCloseClick = { closeClicked = true })
+            ScreenShare(items = items, onItemClick = { screenShareTarget = it }, onCloseClick = { closeClicked = true })
         }
     }
 
@@ -55,25 +55,25 @@ class ScreenShareTest {
     fun userClicksOnItem_onItemClickInvoked() {
         items = ImmutableList(
             listOf(
-                ScreenShare.Device,
-                ScreenShare.Application
+                ScreenShareTarget.Device,
+                ScreenShareTarget.Application
             )
         )
         val appOnly = composeTestRule.activity.getString(R.string.kaleyra_screenshare_app_only)
         composeTestRule.onNodeWithText(appOnly).performClick()
-        assertEquals(ScreenShare.Application, screenShare)
+        assertEquals(ScreenShareTarget.Application, screenShareTarget)
     }
 
     @Test
     fun deviceScreenShare_deviceScreenShareItemDisplayed() {
-        items = ImmutableList(listOf(ScreenShare.Device))
+        items = ImmutableList(listOf(ScreenShareTarget.Device))
         val fullDevice = composeTestRule.activity.getString(R.string.kaleyra_screenshare_full_device)
         composeTestRule.onNodeWithText(fullDevice).assertIsDisplayed()
     }
 
     @Test
     fun appScreenShare_appScreenShareItemDisplayed() {
-        items = ImmutableList(listOf(ScreenShare.Application))
+        items = ImmutableList(listOf(ScreenShareTarget.Application))
         val appOnly = composeTestRule.activity.getString(R.string.kaleyra_screenshare_app_only)
         composeTestRule.onNodeWithText(appOnly).assertIsDisplayed()
     }
