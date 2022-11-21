@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.utility
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions
 
 import androidx.compose.ui.layout.LayoutCoordinates
 

@@ -16,7 +16,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUpload
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 const val LinearProgressIndicatorTag = "LinearProgressIndicatorTag"
@@ -24,7 +24,7 @@ const val LinearProgressIndicatorTag = "LinearProgressIndicatorTag"
 @Composable
 internal fun WhiteboardContent(
     loading: Boolean,
-    upload: WhiteboardUpload?
+    upload: WhiteboardUploadUi?
 ) {
     Box(
         Modifier
@@ -52,7 +52,7 @@ internal fun WhiteboardContent(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun WhiteboardContentUploadingPreview() {
-    WhiteboardContentPreview(upload = WhiteboardUpload.Uploading(.7f))
+    WhiteboardContentPreview(upload = WhiteboardUploadUi.Uploading(.7f))
 }
 
 @Preview
@@ -64,7 +64,7 @@ internal fun WhiteboardContentLoadingPreview() {
 @Composable
 private fun WhiteboardContentPreview(
     loading: Boolean = false,
-    upload: WhiteboardUpload? = null
+    upload: WhiteboardUploadUi? = null
 ) {
     KaleyraTheme {
         Surface {

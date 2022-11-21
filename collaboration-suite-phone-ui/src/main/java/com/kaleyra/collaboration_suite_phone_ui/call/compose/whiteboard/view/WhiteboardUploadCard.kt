@@ -13,18 +13,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUpload
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlin.math.roundToInt
 
 @Composable
-internal fun WhiteboardUploadCard(upload: WhiteboardUpload) {
+internal fun WhiteboardUploadCard(upload: WhiteboardUploadUi) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        val error = upload is WhiteboardUpload.Error
+        val error = upload is WhiteboardUploadUi.Error
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -38,7 +38,7 @@ internal fun WhiteboardUploadCard(upload: WhiteboardUpload) {
                         modifier = Modifier.size(64.dp)
                     )
                 } else {
-                    val progress = (upload as? WhiteboardUpload.Uploading)?.progress ?: 0f
+                    val progress = (upload as? WhiteboardUploadUi.Uploading)?.progress ?: 0f
                     CircularProgressIndicator(
                         progress = progress,
                         color = MaterialTheme.colors.secondaryVariant,
@@ -70,18 +70,18 @@ internal fun WhiteboardUploadCard(upload: WhiteboardUpload) {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun UploadCardUploadingPreview() {
-    UploadCardPreview(WhiteboardUpload.Uploading(.7f))
+    UploadCardPreview(WhiteboardUploadUi.Uploading(.7f))
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun UploadCardErrorPreview() {
-    UploadCardPreview(WhiteboardUpload.Error)
+    UploadCardPreview(WhiteboardUploadUi.Error)
 }
 
 @Composable
-private fun UploadCardPreview(upload: WhiteboardUpload) {
+private fun UploadCardPreview(upload: WhiteboardUploadUi) {
     KaleyraTheme {
         WhiteboardUploadCard(upload = upload)
     }

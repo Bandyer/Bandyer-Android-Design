@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view
 
 import android.content.res.Configuration
-import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -15,8 +14,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockDownloadTransfer
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 @Composable

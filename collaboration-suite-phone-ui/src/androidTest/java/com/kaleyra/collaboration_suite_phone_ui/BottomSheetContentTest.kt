@@ -8,6 +8,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -37,13 +39,17 @@ class BottomSheetContentTest {
 
     @Test
     fun lineStateCollapsed_lineIsCollapsed() {
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(
+            CollapsedLineWidth
+        )
     }
 
     @Test
     fun lineStateExpanded_lineIsExpanded() {
         lineState = LineState.Expanded
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(
+            ExpandedLineWidth
+        )
     }
 
     @Test

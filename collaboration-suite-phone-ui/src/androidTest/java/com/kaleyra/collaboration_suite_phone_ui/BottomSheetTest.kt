@@ -17,6 +17,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals

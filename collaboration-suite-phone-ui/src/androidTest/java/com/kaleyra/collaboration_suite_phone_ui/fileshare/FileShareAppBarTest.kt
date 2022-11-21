@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui
+package com.kaleyra.collaboration_suite_phone_ui.fileshare
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
@@ -7,29 +7,25 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.WhiteboardAppBar
+import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBar
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class WhiteboardAppBarTest {
+class FileShareAppBarTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private var backPressed = false
 
-    private var uploadClicked = false
-
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            WhiteboardAppBar(
-                onBackPressed = { backPressed = true },
-                onUploadClick = { uploadClicked = true }
-            )
+            FileShareAppBar(onBackPressed = { backPressed = true })
         }
     }
 
@@ -42,16 +38,8 @@ class WhiteboardAppBarTest {
     }
 
     @Test
-    fun userClicksUpload_uploadClickInvoked() {
-        val upload = composeTestRule.activity.getString(R.string.kaleyra_upload_file)
-        composeTestRule.onNodeWithContentDescription(upload).assertIsDisplayed()
-        composeTestRule.onNodeWithContentDescription(upload).performClick()
-        assert(uploadClicked)
-    }
-
-    @Test
     fun fileShareTextDisplayed() {
-        val whiteboard = composeTestRule.activity.getString(R.string.kaleyra_whiteboard)
-        composeTestRule.onNodeWithText(whiteboard).assertIsDisplayed()
+        val fileShare = composeTestRule.activity.getString(R.string.kaleyra_fileshare)
+        composeTestRule.onNodeWithText(fileShare).assertIsDisplayed()
     }
 }

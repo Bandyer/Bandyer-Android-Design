@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.model
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.model
 
 import androidx.compose.runtime.Immutable
 

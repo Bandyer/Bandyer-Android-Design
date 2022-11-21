@@ -12,7 +12,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUpload
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.CircularProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardUploadCard
 import org.junit.Before
@@ -26,7 +26,7 @@ class WhiteboardUploadCardTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var upload by mutableStateOf<WhiteboardUpload>(WhiteboardUpload.Error)
+    private var upload by mutableStateOf<WhiteboardUploadUi>(WhiteboardUploadUi.Error)
 
     @Before
     fun setUp() {
@@ -43,7 +43,7 @@ class WhiteboardUploadCardTest {
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
         composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
         composeTestRule.onNodeWithText(percentage).assertDoesNotExist()
-        upload = WhiteboardUpload.Uploading(.7f)
+        upload = WhiteboardUploadUi.Uploading(.7f)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
         composeTestRule.onNodeWithText(percentage).assertIsDisplayed()
@@ -51,7 +51,7 @@ class WhiteboardUploadCardTest {
 
     @Test
     fun whiteboardUploadUploading_progressIndicatorShowsUploadPercentage() {
-        upload = WhiteboardUpload.Uploading(.7f)
+        upload = WhiteboardUploadUi.Uploading(.7f)
         composeTestRule
             .onNodeWithTag(CircularProgressIndicatorTag)
             .assertIsDisplayed()
@@ -60,12 +60,12 @@ class WhiteboardUploadCardTest {
 
     @Test
     fun whiteboardUploadError_errorUiDisplayed() {
-        upload = WhiteboardUpload.Uploading(.7f)
+        upload = WhiteboardUploadUi.Uploading(.7f)
         val title = composeTestRule.activity.getString(R.string.kaleyra_whiteboard_error_title)
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_whiteboard_error_subtitle)
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
         composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
-        upload = WhiteboardUpload.Error
+        upload = WhiteboardUploadUi.Error
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
     }

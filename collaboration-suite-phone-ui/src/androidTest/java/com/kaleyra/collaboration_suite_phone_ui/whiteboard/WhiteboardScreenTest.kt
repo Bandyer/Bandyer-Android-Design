@@ -15,7 +15,7 @@ import org.junit.runner.RunWith
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUpload
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.LinearProgressIndicatorTag
 
 @RunWith(AndroidJUnit4::class)
@@ -76,7 +76,7 @@ class WhiteboardTest {
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_whiteboard_error_subtitle)
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
         composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
-        uiState = WhiteboardUiState(upload = WhiteboardUpload.Error)
+        uiState = WhiteboardUiState(upload = WhiteboardUploadUi.Error)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
     }
@@ -89,7 +89,7 @@ class WhiteboardTest {
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
         composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
         composeTestRule.onNodeWithText(percentage).assertDoesNotExist()
-        uiState = WhiteboardUiState(upload = WhiteboardUpload.Uploading(.7f))
+        uiState = WhiteboardUiState(upload = WhiteboardUploadUi.Uploading(.7f))
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
         composeTestRule.onNodeWithText(percentage).assertIsDisplayed()

@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.gestures.Orientation
@@ -24,7 +22,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.utility.PreUpPostDownNestedScrollConnection
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.PreUpPostDownNestedScrollConnection
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -36,6 +34,7 @@ internal enum class BottomSheetValue {
     HalfExpanded
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Stable
 internal class BottomSheetState(
     initialValue: BottomSheetValue,
@@ -122,6 +121,7 @@ internal fun rememberBottomSheetState(
 internal const val BottomSheetTag = "BottomSheetTag"
 internal const val AnchorTag = "AnchorTag"
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun BottomSheetScaffold(
     sheetContent: @Composable ColumnScope.() -> Unit,

@@ -15,9 +15,9 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.ProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadTransfer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadTransfer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItem
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockDownloadTransfer
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockUploadTransfer
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

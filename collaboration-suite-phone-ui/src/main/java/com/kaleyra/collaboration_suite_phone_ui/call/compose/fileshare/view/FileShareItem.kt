@@ -27,8 +27,8 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.ProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockDownloadTransfer
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockUploadTransfer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadTransfer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadTransfer
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlin.math.roundToInt
 

@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
@@ -18,8 +16,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 internal const val LineTag = "LineTag"
@@ -83,9 +79,11 @@ internal fun mapToLineState(sheetState: BottomSheetState): LineState {
     }.value
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 private fun isSheetNotDraggableDown(sheetState: BottomSheetState): Boolean =
     derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed || (sheetState.targetValue == BottomSheetValue.HalfExpanded && !sheetState.collapsable) }.value
 
+@OptIn(ExperimentalMaterialApi::class)
 private fun isSheetCollapsed(sheetState: BottomSheetState): Boolean =
     derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction == 1f }.value
 

@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
-
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.os.Bundle
@@ -23,12 +21,15 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUpload
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.model.mockCallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.view.CallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContentLayout
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetValue
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.mapToLineState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardAppBar
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -70,6 +71,7 @@ internal object CallScreenDefaults {
     const val TargetStateFractionThreshold = .9f
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 internal class CallScreenState(
     initialSheetScreen: BottomSheetScreen,
     val sheetState: BottomSheetState,
@@ -106,6 +108,7 @@ internal class CallScreenState(
     }
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun BottomSheetContent(
     callScreenState: CallScreenState,
@@ -147,7 +150,7 @@ fun CallScreen(
 
     val callScreenState = CallScreenState(
         initialSheetScreen = BottomSheetScreen.CallActions,
-        sheetState = rememberBottomSheetState(
+        sheetState = com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.rememberBottomSheetState(
             initialValue = BottomSheetValue.HalfExpanded,
             collapsable = true
         ),
@@ -168,7 +171,7 @@ fun CallScreen(
     }
 
     Box {
-        BottomSheetScaffold(
+        com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetScaffold(
             modifier = Modifier.fillMaxSize(),
             sheetState = callScreenState.sheetState,
             sheetPeekHeight = 48.dp,
@@ -268,6 +271,7 @@ internal fun CallScreenAppBar(callScreenState: CallScreenState) {
     }
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun ScreenContent(sheetState: BottomSheetState, sheetPadding: WindowInsets) {
     Column(

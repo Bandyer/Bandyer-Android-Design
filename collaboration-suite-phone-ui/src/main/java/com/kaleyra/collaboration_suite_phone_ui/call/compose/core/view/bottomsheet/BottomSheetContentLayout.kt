@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
-
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
@@ -11,6 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun BottomSheetContentLayout(
     lineState: LineState,

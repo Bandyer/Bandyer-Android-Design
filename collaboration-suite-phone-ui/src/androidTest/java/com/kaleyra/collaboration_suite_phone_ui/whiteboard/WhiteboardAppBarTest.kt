@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui
+package com.kaleyra.collaboration_suite_phone_ui.whiteboard
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
@@ -7,24 +7,30 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.FileShareAppBar
+import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardAppBar
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class FileShareAppBarTest {
+class WhiteboardAppBarTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private var backPressed = false
 
+    private var uploadClicked = false
+
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            FileShareAppBar(onBackPressed = { backPressed = true })
+            WhiteboardAppBar(
+                onBackPressed = { backPressed = true },
+                onUploadClick = { uploadClicked = true }
+            )
         }
     }
 
@@ -37,8 +43,16 @@ class FileShareAppBarTest {
     }
 
     @Test
+    fun userClicksUpload_uploadClickInvoked() {
+        val upload = composeTestRule.activity.getString(R.string.kaleyra_upload_file)
+        composeTestRule.onNodeWithContentDescription(upload).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(upload).performClick()
+        assert(uploadClicked)
+    }
+
+    @Test
     fun fileShareTextDisplayed() {
-        val fileShare = composeTestRule.activity.getString(R.string.kaleyra_fileshare)
-        composeTestRule.onNodeWithText(fileShare).assertIsDisplayed()
+        val whiteboard = composeTestRule.activity.getString(R.string.kaleyra_whiteboard)
+        composeTestRule.onNodeWithText(whiteboard).assertIsDisplayed()
     }
 }

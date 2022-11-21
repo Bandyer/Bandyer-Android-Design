@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.submenulayout.SubMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareContent
