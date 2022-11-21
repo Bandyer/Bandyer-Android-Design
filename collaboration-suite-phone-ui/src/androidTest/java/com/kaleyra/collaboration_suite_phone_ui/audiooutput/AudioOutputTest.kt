@@ -9,7 +9,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutputScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDevice
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.Assert.assertEquals
@@ -24,9 +24,9 @@ class AudioOutputTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var items by mutableStateOf(ImmutableList(listOf<AudioDevice>()))
+    private var items by mutableStateOf(ImmutableList(listOf<AudioDeviceUi>()))
 
-    private var audioDevice: AudioDevice? = null
+    private var audioDevice: AudioDeviceUi? = null
 
     private var backPressed = false
 
@@ -57,9 +57,9 @@ class AudioOutputTest {
 
     @Test
     fun userClicksOnItem_onItemClickInvoked() {
-        items = ImmutableList(listOf(AudioDevice.LoudSpeaker, AudioDevice.Muted))
+        items = ImmutableList(listOf(AudioDeviceUi.LoudSpeaker, AudioDeviceUi.Muted))
         val loudspeaker = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route_loudspeaker)
         composeTestRule.onNodeWithText(loudspeaker).performClick()
-        assertEquals(AudioDevice.LoudSpeaker::class.java, audioDevice!!.javaClass)
+        assertEquals(AudioDeviceUi.LoudSpeaker::class.java, audioDevice!!.javaClass)
     }
 }

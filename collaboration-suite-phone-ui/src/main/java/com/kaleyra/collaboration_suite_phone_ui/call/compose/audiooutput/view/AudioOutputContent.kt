@@ -12,16 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDevice
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.mockAudioDevices
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 @Composable
 internal fun AudioOutputContent(
-    items: ImmutableList<AudioDevice>,
+    items: ImmutableList<AudioDeviceUi>,
     playingDeviceId: String?,
-    onItemClick: (AudioDevice) -> Unit,
+    onItemClick: (AudioDeviceUi) -> Unit,
 ) {
     LazyColumn {
         items(items = items.value.distinctBy { it.id }, key = { it.id }) {

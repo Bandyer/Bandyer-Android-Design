@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDevice
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.BluetoothDeviceState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.isConnected
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.isConnecting
@@ -22,7 +22,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 @Composable
 internal fun AudioOutputItem(
-    audioDevice: AudioDevice,
+    audioDevice: AudioDeviceUi,
     selected: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -56,22 +56,22 @@ internal fun AudioOutputItem(
 }
 
 @Composable
-internal fun clickLabelFor(device: AudioDevice) = titleFor(device = device)
+internal fun clickLabelFor(device: AudioDeviceUi) = titleFor(device = device)
 
 @Composable
-private fun titleFor(device: AudioDevice): String =
+private fun titleFor(device: AudioDeviceUi): String =
     when (device) {
-        is AudioDevice.LoudSpeaker -> stringResource(R.string.kaleyra_call_action_audio_route_loudspeaker)
-        is AudioDevice.EarPiece -> stringResource(R.string.kaleyra_call_action_audio_route_earpiece)
-        is AudioDevice.WiredHeadset -> stringResource(R.string.kaleyra_call_action_audio_route_wired_headset)
-        is AudioDevice.Muted -> stringResource(R.string.kaleyra_call_action_audio_route_muted)
-        is AudioDevice.Bluetooth -> device.name ?: stringResource(R.string.kaleyra_call_action_audio_route_bluetooth)
+        is AudioDeviceUi.LoudSpeaker -> stringResource(R.string.kaleyra_call_action_audio_route_loudspeaker)
+        is AudioDeviceUi.EarPiece -> stringResource(R.string.kaleyra_call_action_audio_route_earpiece)
+        is AudioDeviceUi.WiredHeadset -> stringResource(R.string.kaleyra_call_action_audio_route_wired_headset)
+        is AudioDeviceUi.Muted -> stringResource(R.string.kaleyra_call_action_audio_route_muted)
+        is AudioDeviceUi.Bluetooth -> device.name ?: stringResource(R.string.kaleyra_call_action_audio_route_bluetooth)
     }
 
 @Composable
-private fun subtitleFor(device: AudioDevice): String? =
+private fun subtitleFor(device: AudioDeviceUi): String? =
     when (device) {
-        is AudioDevice.Bluetooth -> {
+        is AudioDeviceUi.Bluetooth -> {
             val connectionState = device.connectionState
             val batteryLevel = device.batteryLevel
 
@@ -105,13 +105,13 @@ private fun subtitleFor(device: AudioDevice): String? =
     }
 
 @Composable
-private fun painterFor(device: AudioDevice): Painter = painterResource(
+private fun painterFor(device: AudioDeviceUi): Painter = painterResource(
     id = when (device) {
-        is AudioDevice.LoudSpeaker -> R.drawable.ic_kaleyra_loud_speaker
-        is AudioDevice.EarPiece -> R.drawable.ic_kaleyra_earpiece
-        is AudioDevice.WiredHeadset -> R.drawable.ic_kaleyra_wired_headset
-        is AudioDevice.Muted -> R.drawable.ic_kaleyra_muted
-        is AudioDevice.Bluetooth -> R.drawable.ic_kaleyra_bluetooth_headset
+        is AudioDeviceUi.LoudSpeaker -> R.drawable.ic_kaleyra_loud_speaker
+        is AudioDeviceUi.EarPiece -> R.drawable.ic_kaleyra_earpiece
+        is AudioDeviceUi.WiredHeadset -> R.drawable.ic_kaleyra_wired_headset
+        is AudioDeviceUi.Muted -> R.drawable.ic_kaleyra_muted
+        is AudioDeviceUi.Bluetooth -> R.drawable.ic_kaleyra_bluetooth_headset
     }
 )
 
@@ -119,46 +119,46 @@ private fun painterFor(device: AudioDevice): Painter = painterResource(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun AudioOutputLoudSpeakerItemPreview() {
-    AudioOutputItemPreview(AudioDevice.LoudSpeaker)
+    AudioOutputItemPreview(AudioDeviceUi.LoudSpeaker)
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun AudioOutputEarpieceItemPreview() {
-    AudioOutputItemPreview(AudioDevice.EarPiece)
+    AudioOutputItemPreview(AudioDeviceUi.EarPiece)
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun AudioOutputWiredHeadsetItemPreview() {
-    AudioOutputItemPreview(AudioDevice.WiredHeadset)
+    AudioOutputItemPreview(AudioDeviceUi.WiredHeadset)
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun AudioOutputMutedItemPreview() {
-    AudioOutputItemPreview(AudioDevice.Muted)
+    AudioOutputItemPreview(AudioDeviceUi.Muted)
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun AudioOutputBluetoothItemPreview() {
-    AudioOutputItemPreview(AudioDevice.Bluetooth(id = "", name = null, connectionState = BluetoothDeviceState.Activating, batteryLevel = 50))
+    AudioOutputItemPreview(AudioDeviceUi.Bluetooth(id = "", name = null, connectionState = BluetoothDeviceState.Activating, batteryLevel = 50))
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun AudioOutputSelectedItemPreview() {
-    AudioOutputItemPreview(AudioDevice.LoudSpeaker, selected = true)
+    AudioOutputItemPreview(AudioDeviceUi.LoudSpeaker, selected = true)
 }
 
 @Composable
-private fun AudioOutputItemPreview(audioDevice: AudioDevice, selected: Boolean = false) {
+private fun AudioOutputItemPreview(audioDevice: AudioDeviceUi, selected: Boolean = false) {
     KaleyraTheme {
         Surface {
             AudioOutputItem(

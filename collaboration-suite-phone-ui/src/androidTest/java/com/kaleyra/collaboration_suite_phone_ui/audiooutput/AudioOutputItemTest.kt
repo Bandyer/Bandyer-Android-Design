@@ -10,7 +10,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDevice
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.BluetoothDeviceState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.view.AudioOutputItem
 import org.junit.Before
@@ -24,7 +24,7 @@ class AudioOutputItemTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var audioDevice by mutableStateOf<AudioDevice>(AudioDevice.LoudSpeaker)
+    private var audioDevice by mutableStateOf<AudioDeviceUi>(AudioDeviceUi.LoudSpeaker)
 
     @Before
     fun setUp() {
@@ -38,35 +38,35 @@ class AudioOutputItemTest {
 
     @Test
     fun loudSpeakerDevice_loudSpeakerTextDisplayed() {
-        audioDevice = AudioDevice.LoudSpeaker
+        audioDevice = AudioDeviceUi.LoudSpeaker
         val loudspeaker = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route_loudspeaker)
         composeTestRule.onNodeWithText(loudspeaker).assertIsDisplayed()
     }
 
     @Test
     fun earpieceDevice_earpieceTextDisplayed() {
-        audioDevice = AudioDevice.EarPiece
+        audioDevice = AudioDeviceUi.EarPiece
         val earpiece = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route_earpiece)
         composeTestRule.onNodeWithText(earpiece).assertIsDisplayed()
     }
 
     @Test
     fun wiredHeadsetDevice_wiredHeadsetTextDisplayed() {
-        audioDevice = AudioDevice.WiredHeadset
+        audioDevice = AudioDeviceUi.WiredHeadset
         val wiredHeadset = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route_wired_headset)
         composeTestRule.onNodeWithText(wiredHeadset).assertIsDisplayed()
     }
 
     @Test
     fun mutedDevice_mutedItemTextDisplayed() {
-        audioDevice = AudioDevice.Muted
+        audioDevice = AudioDeviceUi.Muted
         val muted = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route_muted)
         composeTestRule.onNodeWithText(muted).assertIsDisplayed()
     }
 
     @Test
     fun bluetoothDeviceWithNoName_genericBluetoothNameTextDisplayed() {
-        audioDevice = AudioDevice.Bluetooth(
+        audioDevice = AudioDeviceUi.Bluetooth(
                     id = "id",
                     name = null,
                     connectionState = BluetoothDeviceState.Active,
@@ -78,7 +78,7 @@ class AudioOutputItemTest {
 
     @Test
     fun bluetoothDeviceWithName_bluetoothCustomNameDisplayed() {
-        audioDevice = AudioDevice.Bluetooth(
+        audioDevice = AudioDeviceUi.Bluetooth(
             id = "id",
             name = "customBluetooth",
             connectionState = BluetoothDeviceState.Active,
@@ -89,7 +89,7 @@ class AudioOutputItemTest {
 
     @Test
     fun bluetoothDeviceBatteryLevel_bluetoothBatteryPercentageDisplayed() {
-        audioDevice = AudioDevice.Bluetooth(
+        audioDevice = AudioDeviceUi.Bluetooth(
             id = "id",
             name = "customBluetooth",
             connectionState = BluetoothDeviceState.Active,
@@ -106,7 +106,7 @@ class AudioOutputItemTest {
 
     @Test
     fun bluetoothDeviceDisconnected_deviceStateDisconnectedTextDisplayed() {
-        audioDevice = AudioDevice.Bluetooth(
+        audioDevice = AudioDeviceUi.Bluetooth(
             id = "id",
             name = "customBluetooth",
             connectionState = BluetoothDeviceState.Disconnected,
@@ -118,7 +118,7 @@ class AudioOutputItemTest {
 
     @Test
     fun bluetoothDeviceFailed_deviceStateFailedTextDisplayed() {
-        audioDevice = AudioDevice.Bluetooth(
+        audioDevice = AudioDeviceUi.Bluetooth(
             id = "id",
             name = "customBluetooth",
             connectionState = BluetoothDeviceState.Failed,
@@ -130,7 +130,7 @@ class AudioOutputItemTest {
 
     @Test
     fun bluetoothDeviceAvailable_deviceStateAvailableTextDisplayed() {
-        audioDevice = AudioDevice.Bluetooth(
+        audioDevice = AudioDeviceUi.Bluetooth(
             id = "id",
             name = "customBluetooth",
             connectionState = BluetoothDeviceState.Available,
@@ -142,7 +142,7 @@ class AudioOutputItemTest {
 
     @Test
     fun bluetoothDeviceDeactivating_deviceStateDeactivatingTextDisplayed() {
-        audioDevice = AudioDevice.Bluetooth(
+        audioDevice = AudioDeviceUi.Bluetooth(
             id = "id",
             name = "customBluetooth",
             connectionState = BluetoothDeviceState.Deactivating,
@@ -154,7 +154,7 @@ class AudioOutputItemTest {
 
     @Test
     fun bluetoothDeviceActive_deviceStateConnectedTextDisplayed() {
-        audioDevice = AudioDevice.Bluetooth(
+        audioDevice = AudioDeviceUi.Bluetooth(
             id = "id",
             name = "customBluetooth",
             connectionState = BluetoothDeviceState.Active,
@@ -166,7 +166,7 @@ class AudioOutputItemTest {
 
     @Test
     fun bluetoothDeviceConnected_deviceStateConnectedTextDisplayed() {
-        audioDevice = AudioDevice.Bluetooth(
+        audioDevice = AudioDeviceUi.Bluetooth(
             id = "id",
             name = "customBluetooth",
             connectionState = BluetoothDeviceState.Connected,
@@ -178,7 +178,7 @@ class AudioOutputItemTest {
 
     @Test
     fun bluetoothDeviceActivating_deviceStateConnectedTextDisplayed() {
-        audioDevice = AudioDevice.Bluetooth(
+        audioDevice = AudioDeviceUi.Bluetooth(
             id = "id",
             name = "customBluetooth",
             connectionState = BluetoothDeviceState.Activating,
@@ -190,7 +190,7 @@ class AudioOutputItemTest {
 
     @Test
     fun bluetoothDeviceActivating_connectingStateActivatingTextDisplayed() {
-        audioDevice = AudioDevice.Bluetooth(
+        audioDevice = AudioDeviceUi.Bluetooth(
             id = "id",
             name = "customBluetooth",
             connectionState = BluetoothDeviceState.Activating,
@@ -206,7 +206,7 @@ class AudioOutputItemTest {
 
     @Test
     fun bluetoothDeviceConnecting_connectingStateActivatingTextDisplayed() {
-        audioDevice = AudioDevice.Bluetooth(
+        audioDevice = AudioDeviceUi.Bluetooth(
             id = "id",
             name = "customBluetooth",
             connectionState = BluetoothDeviceState.Connecting,

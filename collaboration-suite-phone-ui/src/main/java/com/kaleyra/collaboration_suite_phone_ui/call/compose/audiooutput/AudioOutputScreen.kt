@@ -7,7 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDevice
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.mockAudioDevices
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.view.AudioOutputContent
@@ -19,7 +19,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 @Composable
 internal fun AudioOutputScreen(
     viewModel: AudioOutputViewModel,
-    onItemClick: (AudioDevice) -> Unit,
+    onItemClick: (AudioDeviceUi) -> Unit,
     onBackPressed: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -33,7 +33,7 @@ internal fun AudioOutputScreen(
 @Composable
 internal fun AudioOutputScreen(
     uiState: AudioOutputUiState,
-    onItemClick: (AudioDevice) -> Unit,
+    onItemClick: (AudioDeviceUi) -> Unit,
     onBackPressed: () -> Unit
 ) {
     SubMenuLayout(

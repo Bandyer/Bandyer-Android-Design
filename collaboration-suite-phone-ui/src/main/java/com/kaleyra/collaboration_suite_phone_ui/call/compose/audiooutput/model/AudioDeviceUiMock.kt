@@ -4,15 +4,15 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 val mockAudioDevices = ImmutableList(
     listOf(
-        AudioDevice.Bluetooth(
+        AudioDeviceUi.Bluetooth(
             id = "id",
             name = "Custom device",
             connectionState = BluetoothDeviceState.Active,
             batteryLevel = 75
         ),
-        AudioDevice.LoudSpeaker,
-        AudioDevice.EarPiece,
-        AudioDevice.WiredHeadset,
-        AudioDevice.Muted
+        AudioDeviceUi.LoudSpeaker,
+        AudioDeviceUi.EarPiece,
+        AudioDeviceUi.WiredHeadset,
+        AudioDeviceUi.Muted
     )
 )
