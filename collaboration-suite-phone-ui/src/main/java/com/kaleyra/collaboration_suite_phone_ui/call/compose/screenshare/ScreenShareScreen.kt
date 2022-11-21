@@ -8,7 +8,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.view.ScreenShareContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
@@ -32,7 +32,7 @@ internal fun ScreenShareScreen(
 
 @Composable
 internal fun ScreenShareScreen(
-    uiState: ScreenShareState,
+    uiState: ScreenShareUiState,
     onItemClick: (ScreenShareTargetUi) -> Unit,
     onBackPressed: () -> Unit
 ) {
@@ -54,7 +54,7 @@ internal fun ScreenShareScreenPreview() {
     KaleyraTheme {
         Surface {
             ScreenShareScreen(
-                uiState = ScreenShareState(targetList = ImmutableList(listOf(ScreenShareTargetUi.Device, ScreenShareTargetUi.Application))),
+                uiState = ScreenShareUiState(targetList = ImmutableList(listOf(ScreenShareTargetUi.Device, ScreenShareTargetUi.Application))),
                 onItemClick = { },
                 onBackPressed = { }
             )

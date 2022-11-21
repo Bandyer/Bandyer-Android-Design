@@ -10,7 +10,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutputScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDevice
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -34,7 +34,7 @@ class AudioOutputTest {
     fun setUp() {
         composeTestRule.setContent {
             AudioOutputScreen(
-                uiState = AudioOutputState(audioDeviceList = items),
+                uiState = AudioOutputUiState(audioDeviceList = items),
                 onItemClick = { audioDevice = it },
                 onBackPressed = { backPressed = true }
             )

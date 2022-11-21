@@ -10,7 +10,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareItemTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockDownloadTransfer
@@ -40,7 +40,7 @@ class FileShareScreenTest {
     fun setUp() {
         composeTestRule.setContent {
             FileShareScreen(
-                uiState = FileShareState(transferList = items),
+                uiState = FileShareUiState(transferList = items),
                 onFabClick = { fabClicked = true },
                 onBackPressed = { backClicked = true },
                 onItemClick = { actualTransfer = it },

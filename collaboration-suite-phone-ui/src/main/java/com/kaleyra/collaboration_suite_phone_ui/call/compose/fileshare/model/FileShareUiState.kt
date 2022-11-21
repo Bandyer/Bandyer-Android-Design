@@ -3,7 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.UiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
-internal data class FileShareState(
+internal data class FileShareUiState(
     val transferList: ImmutableList<TransferUi> = ImmutableList(emptyList()),
     override val userMessage: String? = null
 ) : UiState {

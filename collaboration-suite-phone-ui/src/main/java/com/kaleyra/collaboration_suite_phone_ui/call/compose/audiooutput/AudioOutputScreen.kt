@@ -9,7 +9,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDevice
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.view.AudioOutputContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.viewmodel.AudioOutputViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.mockAudioDevices
@@ -32,7 +32,7 @@ internal fun AudioOutputScreen(
 
 @Composable
 internal fun AudioOutputScreen(
-    uiState: AudioOutputState,
+    uiState: AudioOutputUiState,
     onItemClick: (AudioDevice) -> Unit,
     onBackPressed: () -> Unit
 ) {
@@ -55,7 +55,7 @@ internal fun AudioOutputScreenPreview() {
     KaleyraTheme {
         Surface {
             AudioOutputScreen(
-                uiState = AudioOutputState(audioDeviceList = mockAudioDevices, playingDeviceId = mockAudioDevices.value[0].id),
+                uiState = AudioOutputUiState(audioDeviceList = mockAudioDevices, playingDeviceId = mockAudioDevices.value[0].id),
                 onItemClick = { },
                 onBackPressed = { }
             )

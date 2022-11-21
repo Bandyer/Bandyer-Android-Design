@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareEmptyContent
@@ -43,7 +43,7 @@ internal fun FileShareScreen(
 
 @Composable
 internal fun FileShareScreen(
-    uiState: FileShareState,
+    uiState: FileShareUiState,
     onFabClick: () -> Unit,
     onItemClick: (TransferUi) -> Unit,
     onItemActionClick: (TransferUi) -> Unit,
@@ -81,7 +81,7 @@ internal fun FileShareScreenPreview() {
     KaleyraTheme {
         Surface {
             FileShareScreen(
-                uiState = FileShareState(),
+                uiState = FileShareUiState(),
                 onFabClick = {},
                 onBackPressed = {},
                 onItemClick = {},
