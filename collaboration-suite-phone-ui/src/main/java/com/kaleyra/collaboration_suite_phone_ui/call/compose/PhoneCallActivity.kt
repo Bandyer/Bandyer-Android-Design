@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.material.composethemeadapter.MdcTheme
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutput
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
@@ -48,7 +47,7 @@ class PhoneCallActivity : ComponentActivity() {
 //                            ScreenShareTarget.Application
 //                        )
 //                    ),
-                    audioDevices = mockAudioDevices,
+//                    audioDevices = mockAudioDevices,
 //                    transfers = ImmutableList(
 //                        listOf(
 //                            mockDownloadTransfer.copy(state = Transfer.State.Success),
@@ -139,7 +138,7 @@ internal fun BottomSheetContent(
 fun CallScreen(
     callActions: ImmutableList<CallAction>,
 //    screenShareTargets: ImmutableList<ScreenShareTarget>,
-    audioDevices: ImmutableList<AudioDevice>,
+//    audioDevices: ImmutableList<AudioDevice>,
 //    transfers: ImmutableList<TransferUi>
 ) {
     val isDarkTheme = isSystemInDarkTheme()
@@ -202,11 +201,11 @@ fun CallScreen(
                         )
                     },
                     audioOutput = {
-                        AudioOutput(
-                            items = audioDevices,
-                            onItemClick = { callScreenState.halfExpandBottomSheet() },
-                            onCloseClick = { callScreenState.halfExpandBottomSheet() }
-                        )
+//                        AudioOutput(
+//                            items = audioDevices,
+//                            onItemClick = { callScreenState.halfExpandBottomSheet() },
+//                            onCloseClick = { callScreenState.halfExpandBottomSheet() }
+//                        )
                     },
                     screenShare = {
 //                        ScreenShare(

@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.model
 
-import android.net.Uri
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDevice
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.BluetoothDeviceState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -23,15 +24,14 @@ val mockAudioDevices = ImmutableList(
     listOf(
         AudioDevice.Bluetooth(
             id = "id",
-            isPlaying = true,
             name = "Custom device",
             connectionState = BluetoothDeviceState.Active,
             batteryLevel = 75
         ),
-        AudioDevice.LoudSpeaker(id = "id2", isPlaying = false),
-        AudioDevice.EarPiece(id = "id3", isPlaying = false),
-        AudioDevice.WiredHeadset(id = "id4", isPlaying = false),
-        AudioDevice.Muted(id = "id5", isPlaying = false)
+        AudioDevice.LoudSpeaker,
+        AudioDevice.EarPiece,
+        AudioDevice.WiredHeadset,
+        AudioDevice.Muted
     )
 )
 

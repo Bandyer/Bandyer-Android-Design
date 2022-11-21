@@ -7,59 +7,6 @@ sealed interface WhiteboardUpload {
     object Error: WhiteboardUpload
 }
 
-enum class BluetoothDeviceState {
-    Available,
-    Connecting,
-    Connected,
-    Activating,
-    Active,
-    Deactivating,
-    Disconnected,
-    Failed
-}
-
-internal fun BluetoothDeviceState.isConnecting() =
-    this == BluetoothDeviceState.Active || this == BluetoothDeviceState.Connecting || this == BluetoothDeviceState.Activating
-
-internal fun BluetoothDeviceState.isConnected() =
-    this == BluetoothDeviceState.Active || this == BluetoothDeviceState.Connected || this == BluetoothDeviceState.Activating
-
-@Immutable
-sealed interface AudioDevice {
-
-    val id: String
-
-    val isPlaying: Boolean
-
-    data class Bluetooth(
-        override val id: String,
-        override val isPlaying: Boolean,
-        val name: String?,
-        val connectionState: BluetoothDeviceState,
-        val batteryLevel: Int?
-    ) : AudioDevice
-
-    data class LoudSpeaker(
-        override val id: String,
-        override val isPlaying: Boolean
-    ) : AudioDevice
-
-    data class EarPiece(
-        override val id: String,
-        override val isPlaying: Boolean
-    ) : AudioDevice
-
-    data class WiredHeadset(
-        override val id: String,
-        override val isPlaying: Boolean
-    ) : AudioDevice
-
-    data class Muted(
-        override val id: String,
-        override val isPlaying: Boolean
-    ) : AudioDevice
-}
-
 @Immutable
 sealed interface CallAction {
 
