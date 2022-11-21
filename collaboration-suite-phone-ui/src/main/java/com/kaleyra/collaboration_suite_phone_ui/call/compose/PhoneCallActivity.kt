@@ -1,8 +1,4 @@
-@file:OptIn(
-    ExperimentalMaterialApi::class,
-    ExperimentalAnimationApi::class,
-    ExperimentalAnimationApi::class
-)
+@file:OptIn(ExperimentalMaterialApi::class, ExperimentalAnimationApi::class)
 
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
@@ -32,7 +28,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.Whiteboard
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.CoroutineScope
@@ -47,12 +42,12 @@ class PhoneCallActivity : ComponentActivity() {
             MdcTheme(setDefaultFontFamily = true) {
                 CallScreen(
                     callActions = mockCallActions,
-                    screenShareTargets = ImmutableList(
-                        listOf(
-                            ScreenShareTarget.Device,
-                            ScreenShareTarget.Application
-                        )
-                    ),
+//                    screenShareTargets = ImmutableList(
+//                        listOf(
+//                            ScreenShareTargetUi.Device,
+//                            ScreenShareTarget.Application
+//                        )
+//                    ),
                     audioDevices = mockAudioDevices,
 //                    transfers = ImmutableList(
 //                        listOf(
@@ -143,7 +138,7 @@ internal fun BottomSheetContent(
 @Composable
 fun CallScreen(
     callActions: ImmutableList<CallAction>,
-    screenShareTargets: ImmutableList<ScreenShareTarget>,
+//    screenShareTargets: ImmutableList<ScreenShareTarget>,
     audioDevices: ImmutableList<AudioDevice>,
 //    transfers: ImmutableList<TransferUi>
 ) {
@@ -214,11 +209,11 @@ fun CallScreen(
                         )
                     },
                     screenShare = {
-                        ScreenShare(
-                            items = screenShareTargets,
-                            onItemClick = { callScreenState.halfExpandBottomSheet() },
-                            onCloseClick = { callScreenState.halfExpandBottomSheet() }
-                        )
+//                        ScreenShare(
+//                            items = screenShareTargets,
+//                            onItemClick = { callScreenState.halfExpandBottomSheet() },
+//                            onCloseClick = { callScreenState.halfExpandBottomSheet() }
+//                        )
                     },
                     fileShare = {
 //                        FileShare(
