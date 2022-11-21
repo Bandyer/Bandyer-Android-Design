@@ -27,7 +27,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.BottomSheetValue
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.Whiteboard
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUpload
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -222,13 +223,13 @@ fun CallScreen(
 //                        )
                     },
                     whiteboard = {
-                        Whiteboard(
-                            loading = true,
-                            offline = true,
-                            fileUpload = WhiteboardUpload.Uploading(.6f),
-                            onCloseClick = {},
-                            onReloadClick = {}
-                        )
+//                        WhiteboardScreen(
+//                            loading = true,
+//                            offline = true,
+//                            fileUpload = WhiteboardUpload.Uploading(.6f),
+//                            onCloseClick = {},
+//                            onReloadClick = {}
+//                        )
                     })
             },
             content = {
