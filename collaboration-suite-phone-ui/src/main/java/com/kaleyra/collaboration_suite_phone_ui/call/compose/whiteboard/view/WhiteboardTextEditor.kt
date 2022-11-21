@@ -1,7 +1,8 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -37,7 +38,9 @@ internal class TextEditorState(initialValue: TextEditorValue) {
 
     fun type(textFieldValue: TextFieldValue) {
         if (currentValue == TextEditorValue.Discard) return
-        currentValue = if (textFieldValue.text.isBlank()) TextEditorValue.Empty else TextEditorValue.Editing(textFieldValue)
+        currentValue = if (textFieldValue.text.isBlank()) TextEditorValue.Empty else TextEditorValue.Editing(
+            textFieldValue
+        )
         this.textFieldValue = textFieldValue
     }
 
@@ -118,7 +121,7 @@ internal fun WhiteboardTextEditor(
 @Composable
 private fun iconFor(state: TextEditorValue) = painterResource(
     id = when (state) {
-        TextEditorValue.Empty -> R.drawable.ic_kaleyra_close
+        is TextEditorValue.Empty -> R.drawable.ic_kaleyra_close
         else -> R.drawable.ic_kaleyra_cancel
     }
 )
@@ -126,9 +129,9 @@ private fun iconFor(state: TextEditorValue) = painterResource(
 @Composable
 private fun textFor(state: TextEditorValue) = stringResource(
     id = when (state) {
-        TextEditorValue.Empty -> R.string.kaleyra_action_dismiss
+        is TextEditorValue.Empty -> R.string.kaleyra_action_dismiss
         is TextEditorValue.Editing -> R.string.kaleyra_action_discard_changes
-        TextEditorValue.Discard -> R.string.kaleyra_action_cancel
+        is TextEditorValue.Discard -> R.string.kaleyra_action_cancel
     }
 )
 
@@ -146,40 +149,36 @@ internal fun IconTextButton(icon: Any, text: String, onClick: () -> Unit, modifi
     }
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun EmptyTextEditorPreview() {
-    KaleyraTheme {
-        WhiteboardTextEditor(
-            textEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty),
-            onDismissClick = {},
-            onConfirmClick = {}
-        )
-    }
+    TextEditorPreview(TextEditorValue.Empty)
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun EditingTextEditorPreview() {
-    KaleyraTheme {
-        WhiteboardTextEditor(
-            textEditorState = rememberTextEditorState(
-                initialValue = TextEditorValue.Editing(TextFieldValue(text = "Texting..."))
-            ),
-            onDismissClick = {},
-            onConfirmClick = {}
-        )
-    }
+    TextEditorPreview(TextEditorValue.Editing(TextFieldValue(text = "Texting...")))
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun DiscardTextEditorPreview() {
+    TextEditorPreview(TextEditorValue.Discard)
+}
+
+@Composable
+private fun TextEditorPreview(textEditorInitialValue: TextEditorValue) {
     KaleyraTheme {
-        WhiteboardTextEditor(
-            textEditorState = rememberTextEditorState(initialValue = TextEditorValue.Discard),
-            onDismissClick = {},
-            onConfirmClick = {}
-        )
+        Surface {
+            WhiteboardTextEditor(
+                textEditorState = rememberTextEditorState(initialValue = textEditorInitialValue),
+                onDismissClick = {},
+                onConfirmClick = {}
+            )
+        }
     }
 }
