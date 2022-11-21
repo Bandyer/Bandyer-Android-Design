@@ -94,10 +94,10 @@ internal interface CallNotificationManager {
                 type = CallNotification.Type.OUTGOING
             )
             .user(userText)
+            .apply { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) fullscreenIntent(fullScreenPendingIntent(context, activityClazz)) }
             .contentText(tapToReturnText)
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
-
         return builder.build()
     }
 
@@ -124,9 +124,9 @@ internal interface CallNotificationManager {
             if (isGroupCall || isLink) context.resources.getString(R.string.kaleyra_notification_ongoing_call) else username
         val contentText = context.resources.getString(
             when {
-                isConnecting -> R.string.kaleyra_notification_connecting_call
+                isConnecting   -> R.string.kaleyra_notification_connecting_call
                 isCallRecorded -> R.string.kaleyra_notification_call_recorded
-                else -> R.string.kaleyra_notification_tap_to_return
+                else           -> R.string.kaleyra_notification_tap_to_return
             }
         )
         val builder = CallNotification
@@ -138,6 +138,7 @@ internal interface CallNotificationManager {
             )
             .user(userText)
             .contentText(contentText)
+            .apply { if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) fullscreenIntent(fullScreenPendingIntent(context, activityClazz)) }
             .contentIntent(contentPendingIntent(context, activityClazz))
             .declineIntent(declinePendingIntent(context))
             .timer(!isConnecting)
