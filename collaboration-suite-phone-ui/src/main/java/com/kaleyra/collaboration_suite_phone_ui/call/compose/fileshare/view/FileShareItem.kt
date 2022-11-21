@@ -243,78 +243,51 @@ private fun ErrorMessage(transferType: TransferUi.Type) {
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun FileShareRowInProgressPreview() {
-    KaleyraTheme {
-        Surface {
-            FileShareItem(transfer = mockUploadTransfer, onActionClick = {})
-        }
-    }
+internal fun FileShareItemInProgressPreview() {
+    FileShareItemPreview(transfer = mockUploadTransfer)
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun FileShareRowCancelledPreview() {
-    KaleyraTheme {
-        Surface {
-            FileShareItem(
-                transfer = mockDownloadTransfer.copy(state = TransferUi.State.Cancelled),
-                onActionClick = {}
-            )
-        }
-    }
+internal fun FileShareItemCancelledPreview() {
+    FileShareItemPreview(transfer = mockUploadTransfer.copy(state = TransferUi.State.Cancelled))
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun FileShareRowErrorPreview() {
-    KaleyraTheme {
-        Surface {
-            FileShareItem(
-                transfer = mockUploadTransfer.copy(state = TransferUi.State.Error),
-                onActionClick = {}
-            )
-        }
-    }
+internal fun FileShareItemErrorPreview() {
+    FileShareItemPreview(transfer = mockUploadTransfer.copy(state = TransferUi.State.Error))
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun FileShareRowAvailablePreview() {
-    KaleyraTheme {
-        Surface {
-            FileShareItem(
-                transfer = mockDownloadTransfer.copy(state = TransferUi.State.Available),
-                onActionClick = {}
-            )
-        }
-    }
+internal fun FileShareItemAvailablePreview() {
+    FileShareItemPreview(transfer = mockUploadTransfer.copy(state = TransferUi.State.Available))
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun FileShareRowPendingPreview() {
-    KaleyraTheme {
-        Surface {
-            FileShareItem(
-                transfer = mockUploadTransfer.copy(state = TransferUi.State.Pending),
-                onActionClick = {}
-            )
-        }
-    }
+internal fun FileShareItemPendingPreview() {
+    FileShareItemPreview(transfer = mockUploadTransfer.copy(state = TransferUi.State.Pending))
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun FileShareRowSuccessPreview() {
+internal fun FileShareItemSuccessPreview() {
+    FileShareItemPreview(transfer = mockDownloadTransfer.copy(state = TransferUi.State.Success(Uri.EMPTY)))
+}
+
+@Composable
+private fun FileShareItemPreview(transfer: TransferUi) {
     KaleyraTheme {
         Surface {
             FileShareItem(
-                transfer = mockDownloadTransfer.copy(state = TransferUi.State.Success(Uri.EMPTY)),
+                transfer = transfer,
                 onActionClick = {}
             )
         }

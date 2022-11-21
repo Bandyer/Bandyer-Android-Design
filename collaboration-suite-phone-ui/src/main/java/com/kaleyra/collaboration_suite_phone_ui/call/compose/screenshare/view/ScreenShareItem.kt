@@ -46,7 +46,8 @@ internal fun ScreenShareItem(
 }
 
 @Composable
-internal fun clickLabelFor(screenShareTarget: ScreenShareTargetUi) = textFor(screenShareTarget = screenShareTarget)
+internal fun clickLabelFor(screenShareTarget: ScreenShareTargetUi) =
+    textFor(screenShareTarget = screenShareTarget)
 
 @Composable
 private fun textFor(screenShareTarget: ScreenShareTargetUi) =
@@ -61,20 +62,21 @@ private fun textFor(screenShareTarget: ScreenShareTargetUi) =
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun ScreenShareDeviceItemPreview() {
-    KaleyraTheme {
-        Surface {
-            ScreenShareItem(screenShareTarget = ScreenShareTargetUi.Device)
-        }
-    }
+    ScreenShareItemPreview(screenShareTarget = ScreenShareTargetUi.Device)
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun ScreenShareAppItemPreview() {
+    ScreenShareItemPreview(screenShareTarget = ScreenShareTargetUi.Application)
+}
+
+@Composable
+private fun ScreenShareItemPreview(screenShareTarget: ScreenShareTargetUi) {
     KaleyraTheme {
         Surface {
-            ScreenShareItem(screenShareTarget = ScreenShareTargetUi.Application)
+            ScreenShareItem(screenShareTarget = screenShareTarget)
         }
     }
 }
