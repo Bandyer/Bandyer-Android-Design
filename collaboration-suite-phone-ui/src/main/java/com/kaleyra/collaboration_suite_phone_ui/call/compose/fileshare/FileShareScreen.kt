@@ -3,17 +3,12 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
@@ -60,18 +55,18 @@ internal fun FileShareScreen(
     ) {
         Box(Modifier.fillMaxSize()) {
 
-            if (uiState.transfersList.count() < 1) {
+            if (uiState.transferList.count() < 1) {
                 FileShareEmptyContent()
             } else {
                 FileShareContent(
-                    items = uiState.transfersList,
+                    items = uiState.transferList,
                     onItemClick = onItemClick,
                     onItemActionClick = onItemActionClick
                 )
             }
 
             FileShareFab(
-                collapsed = uiState.transfersList.count() > 0,
+                collapsed = uiState.transferList.count() > 0,
                 onClick = onFabClick,
                 modifier = Modifier.align(Alignment.BottomCenter)
             )

@@ -23,7 +23,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class FileShareTest {
+class FileShareScreenTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -40,7 +40,7 @@ class FileShareTest {
     fun setUp() {
         composeTestRule.setContent {
             FileShareScreen(
-                uiState = FileShareState(transfersList = items),
+                uiState = FileShareState(transferList = items),
                 onFabClick = { fabClicked = true },
                 onBackPressed = { backClicked = true },
                 onItemClick = { actualTransfer = it },

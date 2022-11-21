@@ -5,7 +5,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.Fil
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 internal class FileShareViewModel : BaseViewModel<FileShareState>() {
-    override fun initialState() = FileShareState(transfersList = ImmutableList(listOf()), userMessage = null)
+    override fun initialState() = FileShareState(transferList = ImmutableList(listOf()), userMessage = null)
 }
 
 
