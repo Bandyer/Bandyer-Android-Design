@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui
+package com.kaleyra.collaboration_suite_phone_ui.whiteboard
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
@@ -8,6 +8,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.TextEditorState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.TextEditorValue
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardTextEditor
@@ -119,7 +120,7 @@ class WhiteboardTextEditorTest {
     }
 
     @Test
-    fun userTypesText_textEditorEntersEditingState() {
+    fun userTypesText_textEditorIsInEditingState() {
         composeTestRule.onNode(hasSetTextAction()).performTextInput("Text")
         val textFieldValue = (textEditorState.currentValue as? TextEditorValue.Editing)?.textFieldValue
         assertEquals("Text", textFieldValue!!.text)

@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui
+package com.kaleyra.collaboration_suite_phone_ui.whiteboard
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
@@ -8,13 +8,15 @@ import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.model.WhiteboardUpload
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.CircularProgressIndicatorTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardScreen
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUpload
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.LinearProgressIndicatorTag
 
 @RunWith(AndroidJUnit4::class)
 class WhiteboardTest {
@@ -22,13 +24,9 @@ class WhiteboardTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var loading by mutableStateOf(false)
+    private var uiState by mutableStateOf(WhiteboardUiState())
 
-    private var offline by mutableStateOf(false)
-
-    private var upload by mutableStateOf<WhiteboardUpload?>(null)
-
-    private var closeClicked = false
+    private var backPressed = false
 
     private var reloadClicked = false
 
@@ -36,20 +34,18 @@ class WhiteboardTest {
     fun setUp() {
         composeTestRule.setContent {
             WhiteboardScreen(
-                loading = loading,
-                offline = offline,
-                onCloseClick = { closeClicked = true },
-                onReloadClick = { reloadClicked = true },
-                fileUpload = upload
+                uiState = uiState,
+                onBackPressed = { backPressed = true },
+                onReloadClick = { reloadClicked = true }
             )
         }
     }
 
     @Test
-    fun userClicksClose_onCloseClickInvoked() {
+    fun userClicksClose_onBackPressedInvoked() {
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).performClick()
-        assert(closeClicked)
+        assert(backPressed)
     }
 
     @Test
@@ -60,7 +56,7 @@ class WhiteboardTest {
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
         composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
         composeTestRule.onNodeWithContentDescription(reload).assertDoesNotExist()
-        offline = true
+        uiState = WhiteboardUiState(isOffline = true)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(reload).assertIsDisplayed()
@@ -68,43 +64,43 @@ class WhiteboardTest {
 
     @Test
     fun userClicksReload_onReloadClickInvoked() {
-        offline = true
+        uiState = WhiteboardUiState(isOffline = true)
         val reload = composeTestRule.activity.getString(R.string.kaleyra_error_button_reload)
         composeTestRule.onNodeWithContentDescription(reload).performClick()
         assert(reloadClicked)
     }
 
     @Test
-    fun fileUploadError_errorCardDisplayed() {
+    fun whiteboardUploadError_errorCardDisplayed() {
         val title = composeTestRule.activity.getString(R.string.kaleyra_whiteboard_error_title)
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_whiteboard_error_subtitle)
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
         composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
-        upload = WhiteboardUpload.Error
+        uiState = WhiteboardUiState(upload = WhiteboardUpload.Error)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
     }
 
     @Test
-    fun fileUploadUploading_uploadingCardDisplayed() {
+    fun whiteboardUploadUploading_uploadingCardDisplayed() {
         val title = composeTestRule.activity.getString(R.string.kaleyra_whiteboard_uploading_file)
         val subtitle = composeTestRule.activity.getString(R.string.kaleyra_whiteboard_compressing)
         val percentage = composeTestRule.activity.getString(R.string.kaleyra_file_upload_percentage, 70)
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
         composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
         composeTestRule.onNodeWithText(percentage).assertDoesNotExist()
-        upload = WhiteboardUpload.Uploading(.7f)
+        uiState = WhiteboardUiState(upload = WhiteboardUpload.Uploading(.7f))
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
         composeTestRule.onNodeWithText(percentage).assertIsDisplayed()
     }
 
     @Test
-    fun uploadingFileProgress_progressIndicatorUpdated() {
-        upload = WhiteboardUpload.Uploading(.7f)
+    fun isLoadingTrue_indeterminateProgressIndicatorDisplayed() {
+        uiState = WhiteboardUiState(isLoading = true, isOffline = false)
         composeTestRule
-            .onNodeWithTag(CircularProgressIndicatorTag)
+            .onNodeWithTag(LinearProgressIndicatorTag)
             .assertIsDisplayed()
-            .assertRangeInfoEquals(ProgressBarRangeInfo(current =.7f, range = 0f..1f))
+            .assertRangeInfoEquals(ProgressBarRangeInfo.Indeterminate)
     }
 }

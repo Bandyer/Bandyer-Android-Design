@@ -11,6 +11,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,12 +19,12 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUpload
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
+const val LinearProgressIndicatorTag = "LinearProgressIndicatorTag"
+
 @Composable
 internal fun WhiteboardContent(
-    offline: Boolean,
     loading: Boolean,
-    upload: WhiteboardUpload?,
-    onReloadClick: () -> Unit
+    upload: WhiteboardUpload?
 ) {
     Box(
         Modifier
@@ -31,25 +32,17 @@ internal fun WhiteboardContent(
             .background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))
     ) {
         // TODO place web view
-        if (offline) {
-            WhiteboardOfflineContent(
-                loading = loading,
-                onReloadClick = onReloadClick
-            )
-        }
         if (loading) {
             LinearProgressIndicator(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(2.dp),
+                    .height(2.dp)
+                    .testTag(LinearProgressIndicatorTag),
                 color = MaterialTheme.colors.secondary
             )
         }
         if (upload != null) {
-            WhiteboardUploadCard(
-                progress = (upload as? WhiteboardUpload.Uploading)?.progress ?: 0f,
-                error = upload is WhiteboardUpload.Error
-            )
+            WhiteboardUploadCard(upload = upload)
         }
     }
 }
@@ -64,29 +57,20 @@ internal fun WhiteboardContentUploadingPreview() {
 
 @Preview
 @Composable
-internal fun WhiteboardContentOfflinePreview() {
-    WhiteboardContentPreview(offline = true)
-}
-
-@Preview
-@Composable
 internal fun WhiteboardContentLoadingPreview() {
     WhiteboardContentPreview(loading = true)
 }
 
 @Composable
 private fun WhiteboardContentPreview(
-    offline: Boolean = false,
     loading: Boolean = false,
     upload: WhiteboardUpload? = null
 ) {
     KaleyraTheme {
         Surface {
             WhiteboardContent(
-                offline = offline,
                 loading = loading,
-                upload = upload,
-                onReloadClick = {}
+                upload = upload
             )
         }
     }

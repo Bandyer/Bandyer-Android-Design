@@ -13,16 +13,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUpload
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlin.math.roundToInt
 
 @Composable
-internal fun WhiteboardUploadCard(progress: Float, error: Boolean) {
+internal fun WhiteboardUploadCard(upload: WhiteboardUpload) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
+        val error = upload is WhiteboardUpload.Error
         Row(
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically
@@ -36,6 +38,7 @@ internal fun WhiteboardUploadCard(progress: Float, error: Boolean) {
                         modifier = Modifier.size(64.dp)
                     )
                 } else {
+                    val progress = (upload as? WhiteboardUpload.Uploading)?.progress ?: 0f
                     CircularProgressIndicator(
                         progress = progress,
                         color = MaterialTheme.colors.secondaryVariant,
@@ -67,19 +70,19 @@ internal fun WhiteboardUploadCard(progress: Float, error: Boolean) {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun UploadCardUploadingPreview() {
-    UploadCardPreview(error = false)
+    UploadCardPreview(WhiteboardUpload.Uploading(.7f))
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun UploadCardErrorPreview() {
-    UploadCardPreview(error = true)
+    UploadCardPreview(WhiteboardUpload.Error)
 }
 
 @Composable
-private fun UploadCardPreview(error: Boolean) {
+private fun UploadCardPreview(upload: WhiteboardUpload) {
     KaleyraTheme {
-        WhiteboardUploadCard(progress = .8f, error = error)
+        WhiteboardUploadCard(upload = upload)
     }
 }

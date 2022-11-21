@@ -26,7 +26,7 @@ internal fun WhiteboardScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     WhiteboardScreen(
         uiState = uiState,
-        onCloseClick = onBackPressed,
+        onBackPressed = onBackPressed,
         onReloadClick = onReloadClick
     )
 }
@@ -35,7 +35,7 @@ internal fun WhiteboardScreen(
 @Composable
 internal fun WhiteboardScreen(
     uiState: WhiteboardUiState,
-    onCloseClick: () -> Unit,
+    onBackPressed: () -> Unit,
     onReloadClick: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState(
@@ -46,31 +46,51 @@ internal fun WhiteboardScreen(
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = { WhiteboardModalBottomSheetContent(sheetState = sheetState) },
-        modifier = Modifier.fillMaxSize()
-    ) {
-        SubMenuLayout(
-            title = stringResource(id = R.string.kaleyra_whiteboard),
-            onCloseClick = onCloseClick
-        ) {
-            WhiteboardContent(
-                offline = uiState.isOffline,
-                loading = uiState.isLoading,
-                upload = uiState.upload,
-                onReloadClick = onReloadClick
-            )
+        modifier = Modifier.fillMaxSize(),
+        content = {
+            SubMenuLayout(
+                title = stringResource(id = R.string.kaleyra_whiteboard),
+                onCloseClick = onBackPressed
+            ) {
+                if (uiState.isOffline) {
+                    WhiteboardOfflineContent(
+                        loading = uiState.isLoading,
+                        onReloadClick = onReloadClick
+                    )
+                } else {
+                    WhiteboardContent(loading = uiState.isLoading, upload = uiState.upload)
+                }
+            }
         }
-    }
+    )
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun WhiteboardScreenPreview() {
+    WhiteboardScreenPreview(
+        uiState = WhiteboardUiState(
+            isLoading = true,
+            upload = WhiteboardUpload.Uploading(.7f)
+        )
+    )
+}
+
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+internal fun WhiteboardScreenOfflinePreview() {
+    WhiteboardScreenPreview(uiState = WhiteboardUiState(isOffline = true))
+}
+
+@Composable
+private fun WhiteboardScreenPreview(uiState: WhiteboardUiState) {
     KaleyraTheme {
         Surface {
             WhiteboardScreen(
-                uiState = WhiteboardUiState(isLoading = true, upload = WhiteboardUpload.Uploading(.7f)),
-                onCloseClick = {},
+                uiState = uiState,
+                onBackPressed = {},
                 onReloadClick = {}
             )
         }
