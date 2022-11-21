@@ -9,11 +9,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
@@ -29,12 +27,7 @@ internal fun ScreenShareContent(
                 screenShareTarget = it,
                 modifier = Modifier
                     .clickable(
-                        onClickLabel = stringResource(
-                            id = when (it) {
-                                ScreenShareTargetUi.Device -> R.string.kaleyra_screenshare_full_device
-                                ScreenShareTargetUi.Application -> R.string.kaleyra_screenshare_app_only
-                            }
-                        ),
+                        onClickLabel = clickLabelFor(it),
                         role = Role.Button,
                         onClick = { onItemClick(it) }
                     )

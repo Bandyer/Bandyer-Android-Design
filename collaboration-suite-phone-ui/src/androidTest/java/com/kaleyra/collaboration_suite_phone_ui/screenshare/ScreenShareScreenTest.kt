@@ -12,6 +12,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShareScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import org.junit.Assert.assertEquals
@@ -34,8 +35,12 @@ class ScreenShareScreenTest {
 
     @Before
     fun setUp() {
-        composeTestRule.setContent { 
-            ScreenShareScreen(items = items, onItemClick = { screenShareTarget = it }, onBackPressed = { backPressed = true })
+        composeTestRule.setContent {
+            ScreenShareScreen(
+                uiState = ScreenShareState(targetList = items),
+                onItemClick = { screenShareTarget = it },
+                onBackPressed = { backPressed = true }
+            )
         }
         screenShareTarget = null
     }

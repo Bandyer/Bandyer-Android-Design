@@ -3,19 +3,37 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare
 import android.content.res.Configuration
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.SubMenuLayout
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.view.ScreenShareContent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 @Composable
 internal fun ScreenShareScreen(
-    items: ImmutableList<ScreenShareTargetUi>,
-    onItemClick : (ScreenShareTargetUi) -> Unit,
+    viewModel: ScreenShareViewModel,
+    onItemClick: (ScreenShareTargetUi) -> Unit,
+    onBackPressed: () -> Unit
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    ScreenShareScreen(
+        uiState = uiState,
+        onItemClick = onItemClick,
+        onBackPressed = onBackPressed
+    )
+}
+
+@Composable
+internal fun ScreenShareScreen(
+    uiState: ScreenShareState,
+    onItemClick: (ScreenShareTargetUi) -> Unit,
     onBackPressed: () -> Unit
 ) {
     SubMenuLayout(
@@ -23,7 +41,7 @@ internal fun ScreenShareScreen(
         onCloseClick = onBackPressed
     ) {
         ScreenShareContent(
-            items = items,
+            items = uiState.targetList,
             onItemClick = onItemClick
         )
     }
@@ -32,11 +50,11 @@ internal fun ScreenShareScreen(
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun ScreenSharePreview() {
+internal fun ScreenShareScreenPreview() {
     KaleyraTheme {
         Surface {
             ScreenShareScreen(
-                items = ImmutableList(listOf(ScreenShareTargetUi.Device, ScreenShareTargetUi.Application)),
+                uiState = ScreenShareState(targetList = ImmutableList(listOf(ScreenShareTargetUi.Device, ScreenShareTargetUi.Application))),
                 onItemClick = { },
                 onBackPressed = { }
             )

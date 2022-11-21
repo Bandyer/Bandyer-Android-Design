@@ -39,16 +39,23 @@ internal fun ScreenShareItem(
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
-            text = stringResource(
-                id = when (screenShareTarget) {
-                    ScreenShareTargetUi.Device -> R.string.kaleyra_screenshare_full_device
-                    ScreenShareTargetUi.Application -> R.string.kaleyra_screenshare_app_only
-                }
-            ),
+            text = textFor(screenShareTarget),
             fontSize = 14.sp
         )
     }
 }
+
+@Composable
+internal fun clickLabelFor(screenShareTarget: ScreenShareTargetUi) = textFor(screenShareTarget = screenShareTarget)
+
+@Composable
+private fun textFor(screenShareTarget: ScreenShareTargetUi) =
+    stringResource(
+        id = when (screenShareTarget) {
+            ScreenShareTargetUi.Device -> R.string.kaleyra_screenshare_full_device
+            ScreenShareTargetUi.Application -> R.string.kaleyra_screenshare_app_only
+        }
+    )
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
