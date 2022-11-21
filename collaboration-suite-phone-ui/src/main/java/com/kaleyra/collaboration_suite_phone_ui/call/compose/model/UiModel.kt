@@ -2,11 +2,6 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.model
 
 import androidx.compose.runtime.Immutable
 
-sealed interface WhiteboardUpload {
-    data class Uploading(val progress: Float): WhiteboardUpload
-    object Error: WhiteboardUpload
-}
-
 @Immutable
 sealed interface CallAction {
 
