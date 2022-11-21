@@ -24,7 +24,7 @@ internal fun AudioOutputContent(
     onItemClick: (AudioDevice) -> Unit,
 ) {
     LazyColumn {
-        items(items = items.value, key = { it.id }) {
+        items(items = items.value.distinctBy { it.id }, key = { it.id }) {
             AudioOutputItem(
                 audioDevice = it,
                 selected = it.id == playingDeviceId,
