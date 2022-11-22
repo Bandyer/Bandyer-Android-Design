@@ -1,6 +1,4 @@
-@file:OptIn(ExperimentalMaterialApi::class)
-
-package com.kaleyra.collaboration_suite_phone_ui
+package com.kaleyra.collaboration_suite_phone_ui.bottomsheet
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.getValue
@@ -11,8 +9,6 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import io.mockk.every
 import io.mockk.spyk
@@ -21,8 +17,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
+@OptIn(ExperimentalMaterialApi::class)
 @RunWith(AndroidJUnit4::class)
-class LineTest {
+class BottomSheetLineTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
