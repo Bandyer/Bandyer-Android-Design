@@ -136,25 +136,31 @@ private class DefaultColors(
 @Composable
 internal fun CallAction(
     action: CallAction,
-    enabled: Boolean,
-    toggled: Boolean,
     onToggle: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val enabled = action.isEnabled
+    val initialToggledValue = (action as? CallAction.Toggleable)?.isToggled ?: false
+    var toggled by remember { mutableStateOf(initialToggledValue) }
+
+    val colors = colorsFor(action)
+    val backgroundColor by animateColorAsState(
+        colors.backgroundColor(toggled = toggled, enabled = enabled).value
+    )
+    val iconTint by animateColorAsState(
+        colors.iconColor(toggled = toggled, enabled = enabled).value
+    )
+
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        val colors = colorsFor(action)
-        val backgroundColor by animateColorAsState(
-            colors.backgroundColor(toggled = toggled, enabled = enabled).value
-        )
-        val iconTint by animateColorAsState(
-            colors.iconColor(toggled = toggled, enabled = enabled).value
-        )
         IconToggleButton(
             checked = toggled,
-            onCheckedChange = onToggle,
+            onCheckedChange = {
+                toggled = action is CallAction.Toggleable && it
+                onToggle(it)
+            },
             enabled = enabled,
             indication = rememberRipple(bounded = false, radius = CallActionDefaults.RippleRadius),
             modifier = Modifier
@@ -243,32 +249,30 @@ private fun colorsFor(action: CallAction): CallActionColors {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun CallActionPreview() {
-    CallActionPreview(toggled = false, enabled = true)
+    CallActionPreview(CallAction.Microphone(isToggled = false, isEnabled = true))
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun CallActionToggledPreview() {
-    CallActionPreview(toggled = true, enabled = true)
+    CallActionPreview(CallAction.Microphone(isToggled = true, isEnabled = true))
 }
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun CallActionDisabledPreview() {
-    CallActionPreview(toggled = true, enabled = false)
+    CallActionPreview(CallAction.Microphone(isToggled = true, isEnabled = false))
 }
 
 @Composable
-private fun CallActionPreview(toggled: Boolean, enabled: Boolean) {
+private fun CallActionPreview(action: CallAction) {
     KaleyraTheme {
         Surface {
             CallAction(
-                action = CallAction.Microphone(isEnabled = true, isToggled = false),
-                toggled = toggled,
-                onToggle = { },
-                enabled = enabled
+                action = action,
+                onToggle = { }
             )
         }
     }

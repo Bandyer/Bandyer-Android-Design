@@ -16,7 +16,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 @Composable
 internal fun CallActionsScreen(
     viewModel: CallActionsViewModel,
-    onItemClick: (CallAction) -> Unit
+    onItemClick: (action: CallAction, toggled: Boolean) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     CallActionsScreen(
@@ -28,7 +28,7 @@ internal fun CallActionsScreen(
 @Composable
 internal fun CallActionsScreen(
     uiState: CallActionsUiState,
-    onItemClick: (CallAction) -> Unit
+    onItemClick: (action: CallAction, toggled: Boolean) -> Unit
 ) {
     CallActionsContent(
         items = uiState.actionList,
@@ -45,7 +45,7 @@ internal fun CallActionsScreenPreview() {
         Surface {
             CallActionsScreen(
                 uiState = CallActionsUiState(actionList = mockCallActions),
-                onItemClick = {}
+                onItemClick = { _, _ -> }
             )
         }
     }

@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Surface
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,22 +21,14 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.fadeBelowOfRootBott
 internal fun CallActionsContent(
     items: ImmutableList<CallAction>,
     itemsPerRow: Int,
-    onItemClick: (CallAction) -> Unit,
+    onItemClick: (action: CallAction, toggled: Boolean) -> Unit,
     enableBottomFade: Boolean = true
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(count = itemsPerRow)
-    ) {
+    LazyVerticalGrid(columns = GridCells.Fixed(count = itemsPerRow)) {
         items(items = items.value) { action ->
-            var toggled by remember { mutableStateOf((action as? CallAction.Toggleable)?.isToggled ?: false) }
             CallAction(
                 action = action,
-                enabled = action.isEnabled,
-                toggled = toggled,
-                onToggle = {
-                    onItemClick(action)
-                    toggled = action is CallAction.Toggleable && it
-                },
+                onToggle = { onItemClick(action, it) },
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 20.dp, bottom = 8.dp)
@@ -55,7 +47,7 @@ internal fun CallActionsContentPreview() {
             CallActionsContent(
                 items = mockCallActions,
                 itemsPerRow = 4,
-                onItemClick = {},
+                onItemClick = { _, _ -> },
                 enableBottomFade = false
             )
         }

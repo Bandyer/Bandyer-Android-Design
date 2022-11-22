@@ -11,21 +11,27 @@ sealed interface CallAction {
         val isToggled: Boolean
     }
 
-    data class Camera(override val isEnabled: Boolean, override val isToggled: Boolean) : Toggleable
+    data class Camera(
+        override val isEnabled: Boolean = true,
+        override val isToggled: Boolean = false
+    ) : Toggleable
 
-    data class Microphone(override val isEnabled: Boolean, override val isToggled: Boolean) : Toggleable
+    data class Microphone(
+        override val isEnabled: Boolean = true,
+        override val isToggled: Boolean = false
+    ) : Toggleable
 
-    data class SwitchCamera(override val isEnabled: Boolean) : CallAction
+    data class SwitchCamera(override val isEnabled: Boolean = true) : CallAction
 
-    data class HangUp(override val isEnabled: Boolean) : CallAction
+    data class HangUp(override val isEnabled: Boolean = true) : CallAction
 
-    data class Chat(override val isEnabled: Boolean) : CallAction
+    data class Chat(override val isEnabled: Boolean = true) : CallAction
 
-    data class Whiteboard(override val isEnabled: Boolean) : CallAction
+    data class Whiteboard(override val isEnabled: Boolean = true) : CallAction
 
-    data class FileShare(override val isEnabled: Boolean) : CallAction
+    data class FileShare(override val isEnabled: Boolean = true) : CallAction
 
-    data class Audio(override val isEnabled: Boolean) : CallAction
+    data class Audio(override val isEnabled: Boolean = true) : CallAction
 
-    data class ScreenShare(override val isEnabled: Boolean) : CallAction
+    data class ScreenShare(override val isEnabled: Boolean = true) : CallAction
 }
