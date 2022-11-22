@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.model
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model
 
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.model.UiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList

@@ -1,15 +1,15 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions
 
 import android.content.res.Configuration
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.model.CallActionsUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.model.mockCallActions
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.view.CallActionsContent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.viewmodel.CallActionsViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.mockCallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.view.CallActionsContent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel.CallActionsViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 

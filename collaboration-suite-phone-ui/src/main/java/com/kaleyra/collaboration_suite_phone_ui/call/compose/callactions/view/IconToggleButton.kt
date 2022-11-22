@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.view
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.view
 
 import androidx.compose.foundation.Indication
 import androidx.compose.foundation.interaction.MutableInteractionSource

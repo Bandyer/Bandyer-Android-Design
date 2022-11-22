@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.utility
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.utility
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State

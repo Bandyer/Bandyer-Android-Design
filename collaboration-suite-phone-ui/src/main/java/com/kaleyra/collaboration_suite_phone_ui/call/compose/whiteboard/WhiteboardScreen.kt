@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.submenulayout.SubMenuLayout
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.subfeaturelayout.SubFeatureLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.*
@@ -48,7 +48,7 @@ internal fun WhiteboardScreen(
         sheetContent = { WhiteboardModalBottomSheetContent(sheetState = sheetState) },
         modifier = Modifier.fillMaxSize(),
         content = {
-            SubMenuLayout(
+            SubFeatureLayout(
                 title = stringResource(id = R.string.kaleyra_whiteboard),
                 onCloseClick = onBackPressed
             ) {

@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.view
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.view
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.model.mockCallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.mockCallActions
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.fadeBelowOfRootBottomBound

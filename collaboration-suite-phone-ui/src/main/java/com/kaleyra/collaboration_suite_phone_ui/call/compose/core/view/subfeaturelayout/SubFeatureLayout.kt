@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.submenulayout
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.subfeaturelayout
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
@@ -13,7 +13,7 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 
 @Composable
-internal fun SubMenuLayout(
+internal fun SubFeatureLayout(
     title: String,
     onCloseClick: () -> Unit,
     content: @Composable () -> Unit
