@@ -7,60 +7,25 @@ sealed interface CallAction {
 
     val isEnabled: Boolean
 
-    sealed interface Clickable : CallAction {
-        val onClick: () -> Unit
-    }
-
     sealed interface Toggleable : CallAction {
         val isToggled: Boolean
-
-        val onToggle: (Boolean) -> Unit
     }
 
-    data class Camera(
-        override val isToggled: Boolean,
-        override val isEnabled: Boolean,
-        override val onToggle: (Boolean) -> Unit
-    ) : Toggleable
+    data class Camera(override val isEnabled: Boolean, override val isToggled: Boolean) : Toggleable
 
-    data class Microphone(
-        override val isToggled: Boolean,
-        override val isEnabled: Boolean,
-        override val onToggle: (Boolean) -> Unit
-    ) : Toggleable
+    data class Microphone(override val isEnabled: Boolean, override val isToggled: Boolean) : Toggleable
 
-    data class SwitchCamera(
-        override val isEnabled: Boolean,
-        override val onClick: () -> Unit
-    ) : Clickable
+    data class SwitchCamera(override val isEnabled: Boolean) : CallAction
 
-    data class HangUp(
-        override val isEnabled: Boolean,
-        override val onClick: () -> Unit
-    ) : Clickable
+    data class HangUp(override val isEnabled: Boolean) : CallAction
 
-    data class Chat(
-        override val isEnabled: Boolean,
-        override val onClick: () -> Unit
-    ) : Clickable
+    data class Chat(override val isEnabled: Boolean) : CallAction
 
-    data class Whiteboard(
-        override val isEnabled: Boolean,
-        override val onClick: () -> Unit
-    ) : Clickable
+    data class Whiteboard(override val isEnabled: Boolean) : CallAction
 
-    data class FileShare(
-        override val isEnabled: Boolean,
-        override val onClick: () -> Unit
-    ) : Clickable
+    data class FileShare(override val isEnabled: Boolean) : CallAction
 
-    data class Audio(
-        override val isEnabled: Boolean,
-        override val onClick: () -> Unit
-    ) : Clickable
+    data class Audio(override val isEnabled: Boolean) : CallAction
 
-    data class ScreenShare(
-        override val isEnabled: Boolean,
-        override val onClick: () -> Unit
-    ) : Clickable
+    data class ScreenShare(override val isEnabled: Boolean) : CallAction
 }

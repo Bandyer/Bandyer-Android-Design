@@ -1,11 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.view
 
+import android.content.res.Configuration
 import androidx.compose.animation.animateColorAsState
-import androidx.compose.foundation.Indication
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.ripple.rememberRipple
@@ -14,104 +14,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
-
-@Composable
-internal fun CallAction(
-    toggled: Boolean,
-    onToggle: (Boolean) -> Unit,
-    text: String,
-    icon: Painter,
-    iconDescription: String,
-    enabled: Boolean,
-    modifier: Modifier = Modifier,
-    colors: CallActionColors = CallActionDefaults.colors()
-) {
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        val backgroundColor by animateColorAsState(
-            colors.backgroundColor(toggled = toggled, enabled = enabled).value
-        )
-        val iconTint by animateColorAsState(
-            colors.iconColor(toggled = toggled, enabled = enabled).value
-        )
-        IconToggleButton(
-            checked = toggled,
-            onCheckedChange = onToggle,
-            enabled = enabled,
-            indication = rememberRipple(bounded = false, radius = CallActionDefaults.RippleRadius),
-            modifier = Modifier
-                .size(CallActionDefaults.Size)
-                .background(
-                    color = backgroundColor,
-                    shape = CircleShape
-                )
-        ) {
-            Icon(
-                painter = icon,
-                contentDescription = iconDescription,
-                tint = iconTint,
-                modifier = Modifier.size(CallActionDefaults.IconSize)
-            )
-        }
-        Text(
-            text = text,
-            color = colors.textColor(enabled = enabled).value,
-            fontSize = 12.sp,
-            maxLines = 2,
-            modifier = Modifier.padding(6.dp)
-        )
-    }
-}
-
-@Composable
-internal fun IconToggleButton(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    indication: Indication,
-    content: @Composable () -> Unit
-) {
-    Box(
-        modifier = modifier
-            .toggleable(
-                value = checked,
-                onValueChange = onCheckedChange,
-                enabled = enabled,
-                role = Role.Checkbox,
-                interactionSource = interactionSource,
-                indication = indication
-            ),
-        contentAlignment = Alignment.Center
-    ) {
-        val contentAlpha = if (enabled) LocalContentAlpha.current else ContentAlpha.disabled
-        CompositionLocalProvider(LocalContentAlpha provides contentAlpha, content = content)
-    }
-}
-
-@Composable
-internal fun mapToRotationState(orientation: State<Int>): Float {
-    return remember {
-        derivedStateOf {
-            when (orientation.value) {
-                90 -> -90f
-                270 -> 90f
-                else -> 0f
-            }
-        }
-    }.value
-}
 
 @Stable
 internal interface CallActionColors {
@@ -222,38 +133,143 @@ private class DefaultColors(
     }
 }
 
-@Preview
+@Composable
+internal fun CallAction(
+    action: CallAction,
+    enabled: Boolean,
+    toggled: Boolean,
+    onToggle: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        val colors = colorsFor(action)
+        val backgroundColor by animateColorAsState(
+            colors.backgroundColor(toggled = toggled, enabled = enabled).value
+        )
+        val iconTint by animateColorAsState(
+            colors.iconColor(toggled = toggled, enabled = enabled).value
+        )
+        IconToggleButton(
+            checked = toggled,
+            onCheckedChange = onToggle,
+            enabled = enabled,
+            indication = rememberRipple(bounded = false, radius = CallActionDefaults.RippleRadius),
+            modifier = Modifier
+                .size(CallActionDefaults.Size)
+                .background(
+                    color = backgroundColor,
+                    shape = CircleShape
+                )
+        ) {
+            Icon(
+                painter = painterFor(action),
+                contentDescription = descriptionFor(action),
+                tint = iconTint,
+                modifier = Modifier.size(CallActionDefaults.IconSize)
+            )
+        }
+        Text(
+            text = textFor(action),
+            color = colors.textColor(enabled = enabled).value,
+            fontSize = 12.sp,
+            maxLines = 2,
+            modifier = Modifier.padding(6.dp)
+        )
+    }
+}
+
+@Composable
+private fun textFor(action: CallAction): String = stringResource(
+    id = when (action) {
+        is CallAction.Camera -> R.string.kaleyra_call_action_video_disable
+        is CallAction.Microphone -> R.string.kaleyra_call_action_mic_mute
+        is CallAction.SwitchCamera -> R.string.kaleyra_call_action_switch_camera
+        is CallAction.HangUp -> R.string.kaleyra_call_hangup
+        is CallAction.Chat -> R.string.kaleyra_call_action_chat
+        is CallAction.Whiteboard -> R.string.kaleyra_call_action_whiteboard
+        is CallAction.FileShare -> R.string.kaleyra_call_action_file_share
+        is CallAction.Audio -> R.string.kaleyra_call_action_audio_route
+        is CallAction.ScreenShare -> R.string.kaleyra_call_action_screen_share
+    }
+)
+
+@Composable
+private fun descriptionFor(action: CallAction) = stringResource(
+    id = when (action) {
+        is CallAction.Camera -> R.string.kaleyra_call_action_disable_camera_description
+        is CallAction.Microphone -> R.string.kaleyra_call_action_disable_mic_description
+        is CallAction.SwitchCamera -> R.string.kaleyra_call_action_switch_camera_description
+        is CallAction.HangUp -> R.string.kaleyra_call_hangup
+        is CallAction.Chat -> R.string.kaleyra_call_action_chat
+        is CallAction.Whiteboard -> R.string.kaleyra_call_action_whiteboard
+        is CallAction.FileShare -> R.string.kaleyra_call_action_file_share
+        is CallAction.Audio -> R.string.kaleyra_call_action_audio_route
+        is CallAction.ScreenShare -> R.string.kaleyra_call_action_screen_share
+    }
+)
+
+@Composable
+private fun painterFor(action: CallAction): Painter = painterResource(
+    id = when (action) {
+        is CallAction.Camera -> R.drawable.ic_kaleyra_camera_off
+        is CallAction.Microphone -> R.drawable.ic_kaleyra_mic_off
+        is CallAction.SwitchCamera -> R.drawable.ic_kaleyra_switch_camera
+        is CallAction.HangUp -> R.drawable.ic_kaleyra_hangup
+        is CallAction.Chat -> R.drawable.ic_kaleyra_chat
+        is CallAction.Whiteboard -> R.drawable.ic_kaleyra_whiteboard
+        is CallAction.FileShare -> R.drawable.ic_kaleyra_file_share
+        is CallAction.Audio -> R.drawable.ic_kaleyra_earpiece
+        is CallAction.ScreenShare -> R.drawable.ic_kaleyra_screen_share
+    }
+)
+
+@Composable
+private fun colorsFor(action: CallAction): CallActionColors {
+    return if (action is CallAction.HangUp) {
+        val backgroundColor = colorResource(id = R.color.kaleyra_color_hang_up_button)
+        CallActionDefaults.colors(
+            backgroundColor = backgroundColor,
+            iconColor = Color.White,
+            disabledBackgroundColor = backgroundColor.copy(alpha = .12f),
+            disabledIconColor = Color.White.copy(alpha = ContentAlpha.disabled)
+        )
+    } else CallActionDefaults.colors()
+}
+
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun CallActionPreview() {
-    KaleyraTheme {
-        PreviewLayout(toggled = false, enabled = true)
-    }
+    CallActionPreview(toggled = false, enabled = true)
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun CallActionToggledPreview() {
-    KaleyraTheme {
-        PreviewLayout(toggled = true, enabled = true)
-    }
+    CallActionPreview(toggled = true, enabled = true)
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun CallActionDisabledPreview() {
-    KaleyraTheme {
-        PreviewLayout(toggled = true, enabled = false)
-    }
+    CallActionPreview(toggled = true, enabled = false)
 }
 
 @Composable
-private fun PreviewLayout(toggled: Boolean, enabled: Boolean) {
-    CallAction(
-        toggled = toggled,
-        onToggle = { },
-        icon = painterResource(id = R.drawable.ic_kaleyra_mic_off),
-        iconDescription = "",
-        text = stringResource(id = R.string.kaleyra_call_action_mic_mute),
-        enabled = enabled
-    )
+private fun CallActionPreview(toggled: Boolean, enabled: Boolean) {
+    KaleyraTheme {
+        Surface {
+            CallAction(
+                action = CallAction.Microphone(isEnabled = true, isToggled = false),
+                toggled = toggled,
+                onToggle = { },
+                enabled = enabled
+            )
+        }
+    }
 }

@@ -23,7 +23,6 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.material.composethemeadapter.MdcTheme
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.model.mockCallActions
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callaction.view.CallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContentLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetValue
@@ -185,24 +184,24 @@ fun CallScreen(
                 BottomSheetContent(
                     callScreenState = callScreenState,
                     callActions = {
-                        CallActions(
-                            items = callActions,
-                            itemsPerRow = callActions.count().coerceIn(
-                                minimumValue = 1,
-                                maximumValue = 4
-                            ),
-                            onItemClick = {
-                                callScreenState.navigateToBottomSheetScreen(
-                                    screen = when (it) {
-                                        is CallAction.Audio -> BottomSheetScreen.AudioOutput
-                                        is CallAction.ScreenShare -> BottomSheetScreen.ScreenShare
-                                        is CallAction.FileShare -> BottomSheetScreen.FileShare
-                                        is CallAction.Whiteboard -> BottomSheetScreen.Whiteboard
-                                        else -> BottomSheetScreen.CallActions
-                                    }
-                                )
-                            }
-                        )
+//                        CallActions(
+//                            items = callActions,
+//                            itemsPerRow = callActions.count().coerceIn(
+//                                minimumValue = 1,
+//                                maximumValue = 4
+//                            ),
+//                            onItemClick = {
+//                                callScreenState.navigateToBottomSheetScreen(
+//                                    screen = when (it) {
+//                                        is CallAction.Audio -> BottomSheetScreen.AudioOutput
+//                                        is CallAction.ScreenShare -> BottomSheetScreen.ScreenShare
+//                                        is CallAction.FileShare -> BottomSheetScreen.FileShare
+//                                        is CallAction.Whiteboard -> BottomSheetScreen.Whiteboard
+//                                        else -> BottomSheetScreen.CallActions
+//                                    }
+//                                )
+//                            }
+//                        )
                     },
                     audioOutput = {
 //                        AudioOutput(
