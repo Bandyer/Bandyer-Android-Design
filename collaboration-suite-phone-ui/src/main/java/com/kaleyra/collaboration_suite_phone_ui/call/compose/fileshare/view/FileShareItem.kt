@@ -32,6 +32,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.moc
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlin.math.roundToInt
 
+private val LinearProgressIndicatorWidth = 3000.dp
+
 @Composable
 internal fun FileShareItem(
     transfer: TransferUi,
@@ -125,6 +127,7 @@ private fun FileNameAndTransferInfo(
             progress = if (transfer.state is TransferUi.State.InProgress) transfer.state.progress else 0f,
             modifier = Modifier
                 .padding(vertical = 2.dp)
+                .size(LinearProgressIndicatorWidth, ProgressIndicatorDefaults.StrokeWidth)
                 .clip(RoundedCornerShape(percent = 50))
                 .testTag(ProgressIndicatorTag),
             color = MaterialTheme.colors.secondaryVariant,
