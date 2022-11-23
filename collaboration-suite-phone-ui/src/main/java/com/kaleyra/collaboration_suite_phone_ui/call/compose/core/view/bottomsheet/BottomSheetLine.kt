@@ -6,9 +6,11 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalContentColor
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -16,6 +18,8 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isNotDraggableDown
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isCollapsed
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 internal const val LineTag = "LineTag"
@@ -71,21 +75,13 @@ internal fun mapToLineState(sheetState: BottomSheetState): LineState {
     return remember(sheetState) {
         derivedStateOf {
             when {
-                isSheetCollapsed(sheetState) -> LineState.Collapsed(hasBackground = false)
-                isSheetNotDraggableDown(sheetState) -> LineState.Collapsed(hasBackground = true)
+                sheetState.isCollapsed() -> LineState.Collapsed(hasBackground = false)
+                sheetState.isNotDraggableDown() -> LineState.Collapsed(hasBackground = true)
                 else -> LineState.Expanded
             }
         }
     }.value
 }
-
-@OptIn(ExperimentalMaterialApi::class)
-private fun isSheetNotDraggableDown(sheetState: BottomSheetState): Boolean =
-    derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed || (sheetState.targetValue == BottomSheetValue.HalfExpanded && !sheetState.collapsable) }.value
-
-@OptIn(ExperimentalMaterialApi::class)
-private fun isSheetCollapsed(sheetState: BottomSheetState): Boolean =
-    derivedStateOf { sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction == 1f }.value
 
 @Preview
 @Composable

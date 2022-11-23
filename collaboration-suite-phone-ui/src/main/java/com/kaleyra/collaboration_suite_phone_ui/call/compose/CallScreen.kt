@@ -6,7 +6,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -18,37 +17,13 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetScaffold
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetValue
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.rememberBottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isCollapsing
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isExpandingToFullScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isHalfExpanding
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlinx.coroutines.launch
-
-internal object CallScreenDefaults {
-    val AppBarVisibilityThreshold = 64.dp
-
-    const val TargetStateFractionThreshold = .9f
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-internal fun isCollapsing(sheetState: BottomSheetState) = derivedStateOf {
-    sheetState.targetValue == BottomSheetValue.Collapsed && sheetState.progress.fraction >= CallScreenDefaults.TargetStateFractionThreshold
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-internal fun isHalfExpanding(sheetState: BottomSheetState) = derivedStateOf {
-    sheetState.targetValue == BottomSheetValue.HalfExpanded && sheetState.progress.fraction >= .95f || sheetState.targetValue == BottomSheetValue.Collapsed
-}
-
-@Composable
-internal fun isFullScreen(sheetState: BottomSheetState): State<Boolean> {
-    val threshold = with(LocalDensity.current) {
-        CallScreenDefaults.AppBarVisibilityThreshold.toPx()
-    }
-    return derivedStateOf {
-        sheetState.offset.value < threshold
-    }
-}
 
 @Composable
 fun CallScreen() {
@@ -59,9 +34,9 @@ fun CallScreen() {
     val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.HalfExpanded, collapsable = true)
     val bottomSheetContentState = rememberBottomSheetContentState(BottomSheetSection.CallActions)
 
-    val isFullScreen by isFullScreen(sheetState)
-    val isCollapsing by isCollapsing(sheetState)
-    val isHalfExpanding by isHalfExpanding(sheetState)
+    val isFullScreen = sheetState.isExpandingToFullScreen(LocalDensity.current)
+    val isCollapsing = sheetState.isCollapsing()
+    val isHalfExpanding = sheetState.isHalfExpanding()
 
     val backgroundAlpha by animateFloatAsState(if (isCollapsing) 0f else 1f)
 
