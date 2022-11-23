@@ -1,10 +1,12 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet
 
+import android.content.res.Configuration
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -126,14 +128,16 @@ internal fun BottomSheetContent(
     }
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 fun BottomSheetContentPreview() {
     KaleyraTheme {
-//        BottomSheetContentLayout(
-//            lineState = LineState.Expanded,
-//            onLineClick = { },
-//            content = { }
-//        )
+        Surface {
+            BottomSheetContent(
+                contentState = rememberBottomSheetContentState(initialSheetSection = BottomSheetSection.CallActions),
+                sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
+            )
+        }
     }
 }
