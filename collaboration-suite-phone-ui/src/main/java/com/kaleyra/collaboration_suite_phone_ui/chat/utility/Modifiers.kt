@@ -25,7 +25,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.findRoot
 private val FocusHighlightStroke = 2.dp
 private val FocusHighlightColor = Color.Red
 
-private const val FadeVisibilityThreshold = 0.23
+private const val FadeVisibilityThreshold = 0.15
 
 @Stable
 internal fun Modifier.supportRtl(): Modifier =
