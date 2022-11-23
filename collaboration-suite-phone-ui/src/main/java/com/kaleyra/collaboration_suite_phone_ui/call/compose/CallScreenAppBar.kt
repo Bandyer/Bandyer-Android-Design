@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.appbar.CallAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContentState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetSection
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardAppBar
 
