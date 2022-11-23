@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -182,6 +183,7 @@ internal fun CallAction(
             color = colors.textColor(enabled = enabled).value,
             fontSize = 12.sp,
             maxLines = 2,
+            textAlign = TextAlign.Center,
             modifier = Modifier.padding(6.dp)
         )
     }
