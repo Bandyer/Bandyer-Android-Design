@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare
 
 import android.content.res.Configuration
 import androidx.compose.material.Surface
@@ -7,23 +7,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.mockAudioDevices
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.view.AudioOutputContent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.viewmodel.AudioOutputViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.subfeaturelayout.SubFeatureLayout
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.view.ScreenShareContent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 @Composable
-internal fun AudioOutputScreen(
-    viewModel: AudioOutputViewModel,
-    onItemClick: (AudioDeviceUi) -> Unit,
+internal fun ScreenShareSection(
+    viewModel: ScreenShareViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    onItemClick: (ScreenShareTargetUi) -> Unit,
     onBackPressed: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    AudioOutputScreen(
+    ScreenShareSection(
         uiState = uiState,
         onItemClick = onItemClick,
         onBackPressed = onBackPressed
@@ -31,18 +31,17 @@ internal fun AudioOutputScreen(
 }
 
 @Composable
-internal fun AudioOutputScreen(
-    uiState: AudioOutputUiState,
-    onItemClick: (AudioDeviceUi) -> Unit,
+internal fun ScreenShareSection(
+    uiState: ScreenShareUiState,
+    onItemClick: (ScreenShareTargetUi) -> Unit,
     onBackPressed: () -> Unit
 ) {
     SubFeatureLayout(
-        title = stringResource(id = R.string.kaleyra_audio_route_title),
+        title = stringResource(id = R.string.kaleyra_screenshare_picker_title),
         onCloseClick = onBackPressed
     ) {
-        AudioOutputContent(
-            items = uiState.audioDeviceList,
-            playingDeviceId = uiState.playingDeviceId,
+        ScreenShareContent(
+            items = uiState.targetList,
             onItemClick = onItemClick
         )
     }
@@ -51,11 +50,11 @@ internal fun AudioOutputScreen(
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun AudioOutputScreenPreview() {
+internal fun ScreenShareSectionPreview() {
     KaleyraTheme {
         Surface {
-            AudioOutputScreen(
-                uiState = AudioOutputUiState(audioDeviceList = mockAudioDevices, playingDeviceId = mockAudioDevices.value[0].id),
+            ScreenShareSection(
+                uiState = ScreenShareUiState(targetList = ImmutableList(listOf(ScreenShareTargetUi.Device, ScreenShareTargetUi.Application))),
                 onItemClick = { },
                 onBackPressed = { }
             )

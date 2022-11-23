@@ -18,25 +18,25 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 @Composable
-internal fun WhiteboardScreen(
-    viewModel: WhiteboardViewModel,
-    onBackPressed: () -> Unit,
-    onReloadClick: () -> Unit
+internal fun WhiteboardSection(
+    viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    onReloadClick: () -> Unit,
+    onBackPressed: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    WhiteboardScreen(
+    WhiteboardSection(
         uiState = uiState,
+        onReloadClick = onReloadClick,
         onBackPressed = onBackPressed,
-        onReloadClick = onReloadClick
     )
 }
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-internal fun WhiteboardScreen(
+internal fun WhiteboardSection(
     uiState: WhiteboardUiState,
-    onBackPressed: () -> Unit,
     onReloadClick: () -> Unit,
+    onBackPressed: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -68,8 +68,8 @@ internal fun WhiteboardScreen(
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun WhiteboardScreenPreview() {
-    WhiteboardScreenPreview(
+internal fun WhiteboardSectionPreview() {
+    WhiteboardSectionPreview(
         uiState = WhiteboardUiState(
             isLoading = true,
             upload = WhiteboardUploadUi.Uploading(.7f)
@@ -81,17 +81,17 @@ internal fun WhiteboardScreenPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun WhiteboardScreenOfflinePreview() {
-    WhiteboardScreenPreview(uiState = WhiteboardUiState(isOffline = true))
+    WhiteboardSectionPreview(uiState = WhiteboardUiState(isOffline = true))
 }
 
 @Composable
-private fun WhiteboardScreenPreview(uiState: WhiteboardUiState) {
+private fun WhiteboardSectionPreview(uiState: WhiteboardUiState) {
     KaleyraTheme {
         Surface {
-            WhiteboardScreen(
+            WhiteboardSection(
                 uiState = uiState,
-                onBackPressed = {},
-                onReloadClick = {}
+                onReloadClick = {},
+                onBackPressed = {}
             )
         }
     }

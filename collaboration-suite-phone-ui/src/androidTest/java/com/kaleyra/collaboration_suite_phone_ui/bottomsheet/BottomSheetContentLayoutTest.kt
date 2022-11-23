@@ -14,7 +14,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class BottomSheetContentTest {
+class BottomSheetContentLayoutTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()

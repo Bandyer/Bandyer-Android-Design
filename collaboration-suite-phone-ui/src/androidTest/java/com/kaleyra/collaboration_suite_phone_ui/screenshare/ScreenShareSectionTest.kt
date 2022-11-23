@@ -11,7 +11,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShareScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShareSection
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -22,7 +22,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class ScreenShareScreenTest {
+class ScreenShareSectionTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -36,7 +36,7 @@ class ScreenShareScreenTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            ScreenShareScreen(
+            ScreenShareSection(
                 uiState = ScreenShareUiState(targetList = items),
                 onItemClick = { screenShareTarget = it },
                 onBackPressed = { backPressed = true }
