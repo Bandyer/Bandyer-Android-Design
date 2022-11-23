@@ -41,7 +41,7 @@ internal fun Line(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 12.dp)
+            .padding(vertical = 16.dp)
             .clickable(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = null,
