@@ -66,7 +66,7 @@ internal fun BottomSheetContent(
     CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
         Column {
             Line(
-                state = mapToLineState(sheetState),
+                state = toLineState(sheetState),
                 onClickLabel = stringResource(id = R.string.kaleyra_call_show_buttons),
                 onClick = {
                     if (sheetState.isCollapsed) {

@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet
 
+import android.content.res.Configuration
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -7,6 +8,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.LocalContentColor
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -71,7 +73,7 @@ internal fun Line(
 }
 
 @Composable
-internal fun mapToLineState(sheetState: BottomSheetState): LineState {
+internal fun toLineState(sheetState: BottomSheetState): LineState {
     return remember(sheetState) {
         derivedStateOf {
             when {
@@ -85,36 +87,30 @@ internal fun mapToLineState(sheetState: BottomSheetState): LineState {
 
 @Preview
 @Composable
-internal fun CollapsedLinePreview() {
-    KaleyraTheme {
-        Line(
-            state = LineState.Collapsed(hasBackground = true),
-            onClickLabel = "onClickLabel",
-            onClick = { }
-        )
-    }
-}
-
-@Preview
-@Composable
 internal fun CollapsedLineNoBackgroundPreview() {
     KaleyraTheme {
-        Line(
-            state = LineState.Collapsed(hasBackground = false),
-            onClickLabel = "onClickLabel",
-            onClick = { }
-        )
+        Line(state = LineState.Collapsed(hasBackground = false), onClickLabel = "onClickLabel", onClick = { })
     }
 }
 
-@Preview
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
+@Composable
+internal fun CollapsedLinePreview() {
+    KaleyraTheme {
+        Surface {
+            Line(state = LineState.Collapsed(hasBackground = true), onClickLabel = "onClickLabel", onClick = { })
+        }
+    }
+}
+
+@Preview(name = "Light Mode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun ExpandedLinePreview() {
     KaleyraTheme {
-        Line(
-            state = LineState.Expanded,
-            onClickLabel = "onClickLabel",
-            onClick = { }
-        )
+        Surface {
+            Line(state = LineState.Expanded, onClickLabel = "onClickLabel", onClick = { })
+        }
     }
 }
