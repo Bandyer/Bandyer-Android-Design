@@ -17,10 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -121,14 +124,23 @@ private fun FileNameAndTransferInfo(
 ) {
     Column(modifier = modifier) {
 
+        val textColor = MaterialTheme.colors.onSurface.toArgb()
+        val fontFamily = LocalTextStyle.current.fontFamily
+
         // Replace this when compose Text will support overflow middle ellipsize
         AndroidView(
             factory = { context ->
+                val tf = createFontFamilyResolver(context).resolve(
+                    fontFamily = fontFamily,
+                    fontWeight = FontWeight.Bold
+                ).value as Typeface
+
                 TextView(context).apply {
                     maxLines = 1
                     ellipsize = TextUtils.TruncateAt.MIDDLE
                     textSize = 14f
-                    typeface = Typeface.DEFAULT_BOLD
+                    setTextColor(textColor)
+                    typeface = tf
                 }
             },
             update = { it.text = transfer.file.name }
