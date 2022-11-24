@@ -26,8 +26,6 @@ class WhiteboardSectionTest {
 
     private var uiState by mutableStateOf(WhiteboardUiState())
 
-    private var backPressed = false
-
     private var reloadClicked = false
 
     @Before
@@ -35,17 +33,9 @@ class WhiteboardSectionTest {
         composeTestRule.setContent {
             WhiteboardSection(
                 uiState = uiState,
-                onBackPressed = { backPressed = true },
                 onReloadClick = { reloadClicked = true }
             )
         }
-    }
-
-    @Test
-    fun userClicksClose_onBackPressedInvoked() {
-        val close = composeTestRule.activity.getString(R.string.kaleyra_close)
-        composeTestRule.onNodeWithContentDescription(close).performClick()
-        assert(backPressed)
     }
 
     @Test

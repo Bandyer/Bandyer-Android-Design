@@ -32,8 +32,6 @@ class FileShareSectionTest {
 
     private var fabClicked = false
 
-    private var backClicked = false
-
     private var actualTransfer: TransferUi? = null
 
     @Before
@@ -42,7 +40,6 @@ class FileShareSectionTest {
             FileShareSection(
                 uiState = FileShareUiState(transferList = items),
                 onFabClick = { fabClicked = true },
-                onBackPressed = { backClicked = true },
                 onItemClick = { actualTransfer = it },
                 onItemActionClick = { actualTransfer = it })
         }
@@ -89,13 +86,6 @@ class FileShareSectionTest {
         val add = composeTestRule.activity.getString(R.string.kaleyra_fileshare_add_description)
         composeTestRule.onNodeWithContentDescription(add).performClick()
         assert(fabClicked)
-    }
-
-    @Test
-    fun userClicksBack_onBackPressedInvoked() {
-        val close = composeTestRule.activity.getString(R.string.kaleyra_close)
-        composeTestRule.onNodeWithContentDescription(close).performClick()
-        assert(backClicked)
     }
 
     @Test

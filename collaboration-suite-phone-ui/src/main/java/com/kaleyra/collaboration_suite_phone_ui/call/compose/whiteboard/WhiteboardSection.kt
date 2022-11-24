@@ -6,28 +6,24 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.subfeaturelayout.SubFeatureLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmodel.WhiteboardViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import androidx.compose.ui.unit.dp
 
 @Composable
 internal fun WhiteboardSection(
     viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    onReloadClick: () -> Unit,
-    onBackPressed: () -> Unit
+    onReloadClick: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     WhiteboardSection(
         uiState = uiState,
         onReloadClick = onReloadClick,
-        onBackPressed = onBackPressed,
     )
 }
 
@@ -35,8 +31,7 @@ internal fun WhiteboardSection(
 @Composable
 internal fun WhiteboardSection(
     uiState: WhiteboardUiState,
-    onReloadClick: () -> Unit,
-    onBackPressed: () -> Unit
+    onReloadClick: () -> Unit
 ) {
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -46,20 +41,17 @@ internal fun WhiteboardSection(
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = { WhiteboardModalBottomSheetContent(sheetState = sheetState) },
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 20.dp),
         content = {
-            SubFeatureLayout(
-                title = stringResource(id = R.string.kaleyra_whiteboard),
-                onCloseClick = onBackPressed
-            ) {
-                if (uiState.isOffline) {
-                    WhiteboardOfflineContent(
-                        loading = uiState.isLoading,
-                        onReloadClick = onReloadClick
-                    )
-                } else {
-                    WhiteboardContent(loading = uiState.isLoading, upload = uiState.upload)
-                }
+            if (uiState.isOffline) {
+                WhiteboardOfflineContent(
+                    loading = uiState.isLoading,
+                    onReloadClick = onReloadClick
+                )
+            } else {
+                WhiteboardContent(loading = uiState.isLoading, upload = uiState.upload)
             }
         }
     )
@@ -90,8 +82,7 @@ private fun WhiteboardSectionPreview(uiState: WhiteboardUiState) {
         Surface {
             WhiteboardSection(
                 uiState = uiState,
-                onReloadClick = {},
-                onBackPressed = {}
+                onReloadClick = {}
             )
         }
     }

@@ -9,11 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.subfeaturelayout.SubFeatureLayout
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareContent
@@ -30,16 +27,14 @@ internal fun FileShareSection(
     viewModel: FileShareViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onFabClick: () -> Unit,
     onItemClick: (TransferUi) -> Unit,
-    onItemActionClick: (TransferUi) -> Unit,
-    onBackPressed: () -> Unit
+    onItemActionClick: (TransferUi) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     FileShareSection(
         uiState = uiState,
         onFabClick = onFabClick,
         onItemClick = onItemClick,
-        onItemActionClick = onItemActionClick,
-        onBackPressed = onBackPressed
+        onItemActionClick = onItemActionClick
     )
 }
 
@@ -48,33 +43,30 @@ internal fun FileShareSection(
     uiState: FileShareUiState,
     onFabClick: () -> Unit,
     onItemClick: (TransferUi) -> Unit,
-    onItemActionClick: (TransferUi) -> Unit,
-    onBackPressed: () -> Unit
+    onItemActionClick: (TransferUi) -> Unit
 ) {
-    SubFeatureLayout(
-        title = stringResource(id = R.string.kaleyra_fileshare),
-        onCloseClick = onBackPressed
+    Box(
+        Modifier
+            .fillMaxSize()
+            .padding(top = 20.dp)
     ) {
-        Box(Modifier.fillMaxSize()) {
-
-            if (uiState.transferList.count() < 1) {
-                FileShareEmptyContent()
-            } else {
-                FileShareContent(
-                    items = uiState.transferList,
-                    onItemClick = onItemClick,
-                    onItemActionClick = onItemActionClick
-                )
-            }
-
-            FileShareFab(
-                collapsed = uiState.transferList.count() > 0,
-                onClick = onFabClick,
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 8.dp)
+        if (uiState.transferList.count() < 1) {
+            FileShareEmptyContent()
+        } else {
+            FileShareContent(
+                items = uiState.transferList,
+                onItemClick = onItemClick,
+                onItemActionClick = onItemActionClick
             )
         }
+
+        FileShareFab(
+            collapsed = uiState.transferList.count() > 0,
+            onClick = onFabClick,
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 8.dp)
+        )
     }
 }
 
@@ -87,7 +79,6 @@ internal fun FileShareSectionPreview() {
             FileShareSection(
                 uiState = FileShareUiState(),
                 onFabClick = {},
-                onBackPressed = {},
                 onItemClick = {},
                 onItemActionClick = {}
             )
