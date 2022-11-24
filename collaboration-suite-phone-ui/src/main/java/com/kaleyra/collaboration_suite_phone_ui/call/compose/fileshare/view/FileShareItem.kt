@@ -1,8 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view
 
 import android.content.res.Configuration
+import android.graphics.Typeface
 import android.net.Uri
+import android.text.TextUtils
 import android.text.format.Formatter
+import android.widget.TextView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -18,11 +21,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.ProgressIndicatorTag
@@ -118,12 +121,17 @@ private fun FileNameAndTransferInfo(
 ) {
     Column(modifier = modifier) {
 
-        Text(
-            text = transfer.file.name,
-            fontSize = 14.sp,
-            maxLines = 1,
-            fontWeight = FontWeight.Bold,
-            overflow = TextOverflow.Ellipsis
+        // Replace this when compose Text will support overflow middle ellipsize
+        AndroidView(
+            factory = { context ->
+                TextView(context).apply {
+                    maxLines = 1
+                    ellipsize = TextUtils.TruncateAt.MIDDLE
+                    textSize = 14f
+                    typeface = Typeface.DEFAULT_BOLD
+                }
+            },
+            update = { it.text = transfer.file.name }
         )
 
         LinearProgressIndicator(

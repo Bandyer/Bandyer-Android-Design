@@ -9,6 +9,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.test.espresso.Espresso
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -82,7 +86,7 @@ class FileShareItemTest {
     fun fileNameDisplayed() {
         val file = mockUploadTransfer.file.copy(name = "fileName")
         transfer = mockUploadTransfer.copy(file = file)
-        composeTestRule.onNodeWithText("fileName").assertIsDisplayed()
+        Espresso.onView(withText("fileName")).check(matches(isDisplayed()))
     }
 
     @Test
