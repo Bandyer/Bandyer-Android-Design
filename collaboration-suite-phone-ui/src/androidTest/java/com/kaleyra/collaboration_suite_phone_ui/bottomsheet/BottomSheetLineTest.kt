@@ -56,7 +56,7 @@ class BottomSheetLineTest {
         every { sheetState.targetValue } returns BottomSheetValue.Collapsed
         every { sheetState.progress.fraction } returns 0.8f
         composeTestRule.setContent {
-            lineState = mapToLineState(sheetState = sheetState)
+            lineState = toLineState(sheetState = sheetState)
         }
         assertEquals(LineState.Collapsed(hasBackground = true), lineState)
     }
@@ -68,7 +68,7 @@ class BottomSheetLineTest {
         every { sheetState.targetValue } returns BottomSheetValue.Collapsed
         every { sheetState.progress.fraction } returns 1f
         composeTestRule.setContent {
-            lineState = mapToLineState(sheetState = sheetState)
+            lineState = toLineState(sheetState = sheetState)
         }
         assertEquals(LineState.Collapsed(hasBackground = false), lineState)
     }
@@ -79,7 +79,7 @@ class BottomSheetLineTest {
         var lineState by mutableStateOf<LineState>(LineState.Expanded)
         every { sheetState.targetValue } returns BottomSheetValue.HalfExpanded
         composeTestRule.setContent {
-            lineState = mapToLineState(sheetState = sheetState)
+            lineState = toLineState(sheetState = sheetState)
         }
         assertEquals(LineState.Collapsed(hasBackground = true), lineState)
     }
@@ -91,7 +91,7 @@ class BottomSheetLineTest {
         every { sheetState.targetValue } returns BottomSheetValue.HalfExpanded
         every { sheetState.progress.fraction } returns 0.8f
         composeTestRule.setContent {
-            lineState = mapToLineState(sheetState = sheetState)
+            lineState = toLineState(sheetState = sheetState)
         }
         assertEquals(LineState.Expanded, lineState)
     }
@@ -103,7 +103,7 @@ class BottomSheetLineTest {
         every { sheetState.targetValue } returns BottomSheetValue.HalfExpanded
         every { sheetState.progress.fraction } returns 1f
         composeTestRule.setContent {
-            lineState = mapToLineState(sheetState = sheetState)
+            lineState = toLineState(sheetState = sheetState)
         }
         assertEquals(LineState.Expanded, lineState)
     }
@@ -115,7 +115,7 @@ class BottomSheetLineTest {
         every { sheetState.targetValue } returns BottomSheetValue.Expanded
         every { sheetState.progress.fraction } returns 0.8f
         composeTestRule.setContent {
-            lineState = mapToLineState(sheetState = sheetState)
+            lineState = toLineState(sheetState = sheetState)
         }
         assertEquals(LineState.Expanded, lineState)
     }
@@ -127,7 +127,7 @@ class BottomSheetLineTest {
         every { sheetState.targetValue } returns BottomSheetValue.Expanded
         every { sheetState.progress.fraction } returns 1f
         composeTestRule.setContent {
-            lineState = mapToLineState(sheetState = sheetState)
+            lineState = toLineState(sheetState = sheetState)
         }
         assertEquals(LineState.Expanded, lineState)
     }
