@@ -19,6 +19,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -120,7 +121,9 @@ private fun FileNameAndTransferInfo(
         Text(
             text = transfer.file.name,
             fontSize = 14.sp,
-            fontWeight = FontWeight.Bold
+            maxLines = 1,
+            fontWeight = FontWeight.Bold,
+            overflow = TextOverflow.Ellipsis
         )
 
         LinearProgressIndicator(
@@ -155,8 +158,10 @@ private fun FileNameAndTransferInfo(
                 text = if (transfer.type == TransferUi.Type.Download) transfer.sender else stringResource(
                     id = R.string.kaleyra_fileshare_you
                 ),
+                maxLines = 1,
                 color = LocalContentColor.current.copy(alpha = .5f),
                 fontSize = 12.sp,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(1f)
             )
             Text(
