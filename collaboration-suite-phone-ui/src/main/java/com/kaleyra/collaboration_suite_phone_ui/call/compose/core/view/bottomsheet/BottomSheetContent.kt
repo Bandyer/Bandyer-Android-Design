@@ -13,6 +13,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.BackPressHandler
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutputSection
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.CallActionsSection
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
@@ -64,6 +65,19 @@ internal fun BottomSheetContent(
             }
         }
     }
+    val collapseBottomSheet = remember {
+        {
+            scope.launch {
+                sheetState.collapse()
+            }
+        }
+    }
+
+    when {
+        contentState.currentSection != BottomSheetSection.CallActions -> BackPressHandler(onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) })
+        sheetState.collapsable && !sheetState.isCollapsed -> BackPressHandler(onBackPressed = { collapseBottomSheet() })
+        !sheetState.collapsable && !sheetState.isHalfExpanded -> BackPressHandler(onBackPressed = { halfExpandBottomSheet() })
+    }
 
     CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
         Column {
@@ -112,15 +126,11 @@ internal fun BottomSheetContent(
                         FileShareSection(
                             onFabClick = { /*TODO*/ },
                             onItemClick = { /*TODO*/ },
-                            onItemActionClick = { /*TODO*/ },
-                            onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) }
+                            onItemActionClick = { /*TODO*/ }
                         )
                     }
                     BottomSheetSection.Whiteboard -> {
-                        WhiteboardSection(
-                            onReloadClick = { /*TODO*/ },
-                            onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) }
-                        )
+                        WhiteboardSection(onReloadClick = { /*TODO*/ })
                     }
                 }
             }
