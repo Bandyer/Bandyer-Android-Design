@@ -108,17 +108,20 @@ fun CallScreen() {
             content = { CallScreenContent(sheetState, it) }
         )
 
-//        CallScreenAppBar(
-//            bottomSheetContentState = bottomSheetContentState,
-//            visible = isFullScreen,
-//            onBackPressed = {
-//                scope.launch {
-//                    sheetState.halfExpand()
-//                }
-//            }
-//        )
+        CallScreenAppBar(
+            bottomSheetContentState = bottomSheetContentState,
+            visible = isFullScreen,
+            onBackPressed = {
+                scope.launch {
+                    sheetState.halfExpand()
+                }
+            }
+        )
     }
 }
+
+// TODO add these insets anchor's composable
+// val anchorInsets = navigationBarsInsets.only(WindowInsetsSides.Horizontal).add(cutOutInsets)
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")

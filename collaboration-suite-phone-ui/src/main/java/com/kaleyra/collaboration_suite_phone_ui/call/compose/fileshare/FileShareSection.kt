@@ -1,9 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.BottomInsetsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareContent
@@ -48,24 +47,32 @@ internal fun FileShareSection(
     onItemActionClick: (TransferUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier.fillMaxSize()) {
-        if (uiState.transferList.count() < 1) {
-            FileShareEmptyContent()
-        } else {
-            FileShareContent(
-                items = uiState.transferList,
-                onItemClick = onItemClick,
-                onItemActionClick = onItemActionClick
+    Column {
+        Box(
+            modifier = modifier
+                .statusBarsPadding()
+                .fillMaxWidth()
+                .weight(1f)
+        ) {
+            if (uiState.transferList.count() < 1) {
+                FileShareEmptyContent()
+            } else {
+                FileShareContent(
+                    items = uiState.transferList,
+                    onItemClick = onItemClick,
+                    onItemActionClick = onItemActionClick
+                )
+            }
+
+            FileShareFab(
+                collapsed = uiState.transferList.count() > 0,
+                onClick = onFabClick,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 8.dp)
             )
         }
-
-        FileShareFab(
-            collapsed = uiState.transferList.count() > 0,
-            onClick = onFabClick,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 8.dp)
-        )
+        BottomInsetsSpacer()
     }
 }
 

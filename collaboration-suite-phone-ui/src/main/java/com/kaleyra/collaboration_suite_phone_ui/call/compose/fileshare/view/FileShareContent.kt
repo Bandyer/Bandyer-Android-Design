@@ -31,10 +31,7 @@ internal fun FileShareContent(
     onItemClick: (TransferUi) -> Unit,
     onItemActionClick: (TransferUi) -> Unit
 ) {
-    LazyColumn(
-        contentPadding = PaddingValues(bottom = 72.dp),
-        modifier = Modifier.fillMaxSize()
-    ) {
+    LazyColumn(contentPadding = PaddingValues(bottom = 72.dp)) {
         items(items = items.value) {
             FileShareItem(
                 transfer = it,

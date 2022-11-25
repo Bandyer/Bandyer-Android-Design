@@ -2,10 +2,13 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard
 
 import android.content.res.Configuration
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
@@ -14,6 +17,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmode
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.BottomInsetsSpacer
 
 @Composable
 internal fun WhiteboardSection(
@@ -43,20 +48,30 @@ internal fun WhiteboardSection(
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
+        modifier = modifier.statusBarsPadding(),
         sheetContent = { WhiteboardModalBottomSheetContent(sheetState = sheetState) },
-        modifier = modifier.fillMaxSize(),
         content = {
-            if (uiState.isOffline) {
-                WhiteboardOfflineContent(
-                    loading = uiState.isLoading,
-                    onReloadClick = onReloadClick
-                )
-            } else {
-                WhiteboardContent(loading = uiState.isLoading, upload = uiState.upload)
+            Column(Modifier.background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))) {
+                if (uiState.isOffline) {
+                    WhiteboardOfflineContent(
+                        loading = uiState.isLoading,
+                        onReloadClick = onReloadClick,
+                        modifier = Modifier.weight(1f)
+                    )
+                } else {
+                    WhiteboardContent(
+                        loading = uiState.isLoading,
+                        upload = uiState.upload,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                BottomInsetsSpacer()
             }
         }
     )
 }
+
+
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")

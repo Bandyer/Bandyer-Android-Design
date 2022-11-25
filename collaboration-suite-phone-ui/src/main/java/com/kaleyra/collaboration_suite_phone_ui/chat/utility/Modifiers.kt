@@ -3,9 +3,7 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.utility
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -62,3 +60,14 @@ internal fun Modifier.fadeBelowOfRootBottomBound(): Modifier =
             }
             .alpha(alpha)
     }
+
+@Stable
+internal fun Modifier.horizontalInsetsPadding(): Modifier =
+    composed {
+        val systemBars = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
+        val cutout = WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal)
+
+        windowInsetsPadding(systemBars.add(cutout))
+    }
+
+

@@ -1,12 +1,13 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.BottomInsetsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.mockCallActions
@@ -35,12 +36,13 @@ internal fun CallActionsSection(
     onItemClick: (action: CallAction, toggled: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier) {
+    Column(modifier) {
         CallActionsContent(
             items = uiState.actionList,
             itemsPerRow = uiState.actionList.count().coerceIn(1, 4),
             onItemClick = onItemClick
         )
+        BottomInsetsSpacer()
     }
 }
 

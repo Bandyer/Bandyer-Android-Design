@@ -24,11 +24,13 @@ import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 @Composable
-internal fun WhiteboardOfflineContent(loading: Boolean, onReloadClick: () -> Unit) {
+internal fun WhiteboardOfflineContent(
+    loading: Boolean,
+    onReloadClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background)),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {

@@ -4,9 +4,9 @@ import android.content.res.Configuration
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
@@ -25,6 +25,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShareSection
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardSection
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalInsetsPadding
 
 const val CallActionsSection = "CallActionsSection"
 const val AudioOutputSection = "AudioOutputSection"
@@ -78,7 +79,7 @@ internal fun BottomSheetContent(
     onLineClick: () -> Unit
 ) {
     CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
-        Column {
+        Column(Modifier.horizontalInsetsPadding()) {
             Line(
                 state = contentState.currentLineState,
                 onClickLabel = stringResource(id = R.string.kaleyra_call_show_buttons),

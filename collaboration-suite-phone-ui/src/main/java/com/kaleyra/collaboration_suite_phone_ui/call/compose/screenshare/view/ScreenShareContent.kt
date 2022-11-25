@@ -19,7 +19,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 @Composable
 internal fun ScreenShareContent(
     items: ImmutableList<ScreenShareTargetUi>,
-    onItemClick: (ScreenShareTargetUi) -> Unit,
+    onItemClick: (ScreenShareTargetUi) -> Unit
 ) {
     LazyColumn {
         items(items = items.value) {

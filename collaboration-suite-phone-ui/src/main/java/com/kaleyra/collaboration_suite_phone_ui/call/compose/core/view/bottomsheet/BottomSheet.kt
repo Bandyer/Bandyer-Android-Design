@@ -136,11 +136,10 @@ internal fun BottomSheetScaffold(
     contentColor: Color = contentColorFor(backgroundColor),
     content: @Composable (WindowInsets) -> Unit
 ) {
-    val navigationBarsInsets = WindowInsets.navigationBars
-    val cutOutInsets = WindowInsets.displayCutout
     val scope = rememberCoroutineScope()
+
     BoxWithConstraints(modifier.fillMaxSize()) {
-        val bottomPadding = navigationBarsInsets.asPaddingValues().calculateBottomPadding()
+        val bottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         val fullHeight = constraints.maxHeight.toFloat()
         val peekHeightPx = with(LocalDensity.current) { sheetPeekHeight.toPx() + bottomPadding.toPx() }
         val halfExpandedPx = with(LocalDensity.current) { sheetHalfExpandedHeight.toPx() + bottomPadding.toPx() }
@@ -193,8 +192,7 @@ internal fun BottomSheetScaffold(
                 Surface(
                     swipeable
                         .fillMaxWidth()
-                        .requiredHeightIn(min = max(sheetHalfExpandedHeight, sheetPeekHeight) + bottomPadding)
-                        .padding(bottom = bottomPadding)
+                        .requiredHeightIn(min = max(sheetHalfExpandedHeight, sheetPeekHeight))
                         .testTag(BottomSheetTag)
                         .onGloballyPositioned {
                             bottomSheetHeight = it.size.height.toFloat()
@@ -203,23 +201,12 @@ internal fun BottomSheetScaffold(
                     elevation = sheetElevation,
                     color = sheetBackgroundColor,
                     contentColor = sheetContentColor,
-                    content = {
-                        val contentInsets = navigationBarsInsets.add(cutOutInsets.only(WindowInsetsSides.Horizontal))
-                        Column(
-                            modifier = Modifier.windowInsetsPadding(contentInsets),
-                            content = sheetContent
-                        )
-                    }
+                    content = { Column(content = sheetContent) }
                 )
                 
             },
             anchor = {
-                val anchorInsets = navigationBarsInsets.only(WindowInsetsSides.Horizontal).add(cutOutInsets)
-                Box(
-                    modifier = modifier
-                        .windowInsetsPadding(anchorInsets)
-                        .testTag(AnchorTag)
-                ) { anchor?.invoke() }
+                Box(modifier.testTag(AnchorTag)) { anchor?.invoke() }
             },
             bottomSheetOffset = sheetState.offset
         )

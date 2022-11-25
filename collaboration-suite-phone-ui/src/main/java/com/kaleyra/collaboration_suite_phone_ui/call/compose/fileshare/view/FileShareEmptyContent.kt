@@ -19,9 +19,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 @Composable
 fun FileShareEmptyContent() {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(start = 48.dp, bottom = 56.dp, end = 48.dp),
+        modifier = Modifier.padding(start = 48.dp, bottom = 56.dp, end = 48.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -1,9 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.LinearProgressIndicator
@@ -12,10 +10,8 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
@@ -24,13 +20,10 @@ const val LinearProgressIndicatorTag = "LinearProgressIndicatorTag"
 @Composable
 internal fun WhiteboardContent(
     loading: Boolean,
-    upload: WhiteboardUploadUi?
+    upload: WhiteboardUploadUi?,
+    modifier: Modifier = Modifier
 ) {
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))
-    ) {
+    Box(modifier = modifier.fillMaxWidth()) {
         // TODO place web view
         if (loading) {
             LinearProgressIndicator(

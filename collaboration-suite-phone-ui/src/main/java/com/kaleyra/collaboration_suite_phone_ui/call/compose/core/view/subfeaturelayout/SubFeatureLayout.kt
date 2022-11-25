@@ -16,14 +16,16 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 internal fun SubFeatureLayout(
     title: String,
     onCloseClick: () -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    Column(Modifier.offset(y = (-8).dp)) {
+    Column(modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 20.dp, end = 8.dp)
+                .offset(y = (-8).dp)
         ) {
             Text(
                 text = title,
