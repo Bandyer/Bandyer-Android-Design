@@ -48,7 +48,7 @@ class BottomSheetContentTest {
 
     @Test
     fun expandLineState_lineIsExpanded() {
-        contentState = BottomSheetContentState(initialSection = BottomSheetSection.CallActions, LineState.Collapsed(true))
+        contentState = BottomSheetContentState(initialSection = BottomSheetSection.CallActions, LineState.Collapsed())
         contentState.expandLine()
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
         assertEquals(LineState.Expanded, contentState.currentLineState)
@@ -57,7 +57,7 @@ class BottomSheetContentTest {
     @Test
     fun collapseLineState_lineIsCollapsed() {
         contentState = BottomSheetContentState(initialSection = BottomSheetSection.CallActions, LineState.Expanded)
-        contentState.collapseLine(true)
+        contentState.collapseLine()
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
         assertEquals(LineState.Collapsed::class.java, contentState.currentLineState::class.java)
     }
