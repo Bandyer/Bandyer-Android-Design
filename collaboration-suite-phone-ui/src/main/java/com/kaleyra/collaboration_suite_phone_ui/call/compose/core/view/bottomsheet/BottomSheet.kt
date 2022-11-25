@@ -18,10 +18,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.collapse
 import androidx.compose.ui.semantics.expand
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.PreUpPostDownNestedScrollConnection
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
@@ -196,7 +193,7 @@ internal fun BottomSheetScaffold(
                 Surface(
                     swipeable
                         .fillMaxWidth()
-                        .requiredHeightIn(min = sheetPeekHeight)
+                        .requiredHeightIn(min = max(sheetHalfExpandedHeight, sheetPeekHeight) + bottomPadding)
                         .padding(bottom = bottomPadding)
                         .testTag(BottomSheetTag)
                         .onGloballyPositioned {
@@ -215,12 +212,19 @@ internal fun BottomSheetScaffold(
                         )
                     }
                 )
+                        content = {
+                            val contentInsets = navigationBarsInsets.add(cutOutInsets.only(WindowInsetsSides.Horizontal))
+                            Column(
+                                modifier = Modifier.windowInsetsPadding(contentInsets),
+                                content = sheetContent
+                            )
+                        }
             },
             anchor = {
+                val anchorInsets = navigationBarsInsets.only(WindowInsetsSides.Horizontal).add(cutOutInsets)
                 Box(
                     modifier = modifier
-                        .windowInsetsPadding(navigationBarsInsets.only(WindowInsetsSides.Horizontal))
-                        .windowInsetsPadding(cutOutInsets)
+                        .windowInsetsPadding(anchorInsets)
                         .testTag(AnchorTag)
                 ) { anchor?.invoke() }
             },
