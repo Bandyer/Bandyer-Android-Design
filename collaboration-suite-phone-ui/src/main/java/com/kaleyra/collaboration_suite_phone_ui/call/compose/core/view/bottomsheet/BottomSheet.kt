@@ -204,21 +204,14 @@ internal fun BottomSheetScaffold(
                     color = sheetBackgroundColor,
                     contentColor = sheetContentColor,
                     content = {
+                        val contentInsets = navigationBarsInsets.add(cutOutInsets.only(WindowInsetsSides.Horizontal))
                         Column(
-                            modifier = Modifier
-                                .windowInsetsPadding(navigationBarsInsets)
-                                .windowInsetsPadding(cutOutInsets.only(WindowInsetsSides.Horizontal)),
+                            modifier = Modifier.windowInsetsPadding(contentInsets),
                             content = sheetContent
                         )
                     }
                 )
-                        content = {
-                            val contentInsets = navigationBarsInsets.add(cutOutInsets.only(WindowInsetsSides.Horizontal))
-                            Column(
-                                modifier = Modifier.windowInsetsPadding(contentInsets),
-                                content = sheetContent
-                            )
-                        }
+                
             },
             anchor = {
                 val anchorInsets = navigationBarsInsets.only(WindowInsetsSides.Horizontal).add(cutOutInsets)
