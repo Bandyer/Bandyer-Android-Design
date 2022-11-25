@@ -72,19 +72,6 @@ internal fun Line(
     }
 }
 
-@Composable
-internal fun toLineState(sheetState: BottomSheetState): LineState {
-    return remember(sheetState) {
-        derivedStateOf {
-            when {
-                sheetState.isCollapsed() -> LineState.Collapsed(hasBackground = false)
-                sheetState.isNotDraggableDown() -> LineState.Collapsed(hasBackground = true)
-                else -> LineState.Expanded
-            }
-        }
-    }.value
-}
-
 @Preview
 @Composable
 internal fun CollapsedLineNoBackgroundPreview() {
