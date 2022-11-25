@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -20,8 +19,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isNotDraggableDown
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isCollapsed
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 internal const val LineTag = "LineTag"
@@ -33,7 +30,7 @@ private val LineHeight = 4.dp
 
 internal sealed class LineState {
     object Expanded : LineState()
-    data class Collapsed(val hasBackground: Boolean) : LineState()
+    data class Collapsed(val color: Color? = null) : LineState()
 }
 
 @Composable
@@ -58,7 +55,7 @@ internal fun Line(
         contentAlignment = Alignment.Center
     ) {
         val width by animateDpAsState(targetValue = if (state is LineState.Collapsed) CollapsedLineWidth else ExpandedLineWidth)
-        val color = if (state is LineState.Collapsed && !state.hasBackground) Color.White else contentColor.copy(alpha = 0.8f)
+        val color = if (state is LineState.Collapsed && state.color != null) state.color else contentColor.copy(alpha = 0.8f)
 
         Spacer(
             modifier = Modifier
@@ -76,7 +73,7 @@ internal fun Line(
 @Composable
 internal fun CollapsedLineNoBackgroundPreview() {
     KaleyraTheme {
-        Line(state = LineState.Collapsed(hasBackground = false), onClickLabel = "onClickLabel", onClick = { })
+        Line(state = LineState.Collapsed(Color.White), onClickLabel = "onClickLabel", onClick = { })
     }
 }
 
@@ -86,7 +83,7 @@ internal fun CollapsedLineNoBackgroundPreview() {
 internal fun CollapsedLinePreview() {
     KaleyraTheme {
         Surface {
-            Line(state = LineState.Collapsed(hasBackground = true), onClickLabel = "onClickLabel", onClick = { })
+            Line(state = LineState.Collapsed(Color.White), onClickLabel = "onClickLabel", onClick = { })
         }
     }
 }

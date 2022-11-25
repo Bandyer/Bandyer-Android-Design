@@ -1,18 +1,12 @@
 package com.kaleyra.collaboration_suite_phone_ui.bottomsheet
 
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import io.mockk.every
-import io.mockk.spyk
-import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,7 +21,7 @@ class BottomSheetLineTest {
 
     @Test
     fun lineStateCollapsed_lineIsCollapsed() {
-        composeTestRule.setUpLineTest(LineState.Collapsed(hasBackground = true))
+        composeTestRule.setUpLineTest(LineState.Collapsed(Color.White))
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
     }
 
@@ -41,7 +35,7 @@ class BottomSheetLineTest {
 
     @Test
     fun userClicksLine_onClickInvoked() {
-        composeTestRule.setUpLineTest(LineState.Collapsed(hasBackground = true))
+        composeTestRule.setUpLineTest(LineState.Collapsed(Color.White))
         composeTestRule.onRoot().performClick()
         assert(clicked)
     }
