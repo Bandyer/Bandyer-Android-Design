@@ -27,14 +27,16 @@ internal fun FileShareSection(
     viewModel: FileShareViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onFabClick: () -> Unit,
     onItemClick: (TransferUi) -> Unit,
-    onItemActionClick: (TransferUi) -> Unit
+    onItemActionClick: (TransferUi) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     FileShareSection(
         uiState = uiState,
         onFabClick = onFabClick,
         onItemClick = onItemClick,
-        onItemActionClick = onItemActionClick
+        onItemActionClick = onItemActionClick,
+        modifier = modifier
     )
 }
 
@@ -43,13 +45,10 @@ internal fun FileShareSection(
     uiState: FileShareUiState,
     onFabClick: () -> Unit,
     onItemClick: (TransferUi) -> Unit,
-    onItemActionClick: (TransferUi) -> Unit
+    onItemActionClick: (TransferUi) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Box(
-        Modifier
-            .fillMaxSize()
-            .padding(top = 20.dp)
-    ) {
+    Box(modifier.fillMaxSize()) {
         if (uiState.transferList.count() < 1) {
             FileShareEmptyContent()
         } else {

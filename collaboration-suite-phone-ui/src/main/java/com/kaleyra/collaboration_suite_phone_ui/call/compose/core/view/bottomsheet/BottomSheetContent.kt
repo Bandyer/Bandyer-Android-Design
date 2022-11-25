@@ -6,14 +6,18 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.BackPressHandler
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutputSection
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.CallActionsSection
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
@@ -21,74 +25,64 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShareSection
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardSection
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
-import kotlinx.coroutines.launch
+
+const val CallActionsSection = "CallActionsSection"
+const val AudioOutputSection = "AudioOutputSection"
+const val ScreenShareSection = "ScreenShareSection"
+const val FileShareSection = "FileShareSection"
+const val WhiteboardSection = "WhiteboardSection"
 
 internal enum class BottomSheetSection {
     CallActions, AudioOutput, ScreenShare, FileShare, Whiteboard
 }
 
-internal class BottomSheetContentState(initialSheetSection: BottomSheetSection) {
+internal class BottomSheetContentState(
+    initialSection: BottomSheetSection,
+    initialLineState: LineState
+) {
 
-    var currentSection: BottomSheetSection by mutableStateOf(initialSheetSection)
+    var currentSection: BottomSheetSection by mutableStateOf(initialSection)
+        private set
+
+    var currentLineState: LineState by mutableStateOf(initialLineState)
         private set
 
     fun navigateToSection(section: BottomSheetSection) {
         currentSection = section
     }
 
+    fun expandLine() { currentLineState = LineState.Expanded }
+
+    fun collapseLine(color: Color? = null) { currentLineState = LineState.Collapsed(color = color) }
+
     companion object {
         fun Saver(): Saver<BottomSheetContentState, *> = Saver(
-            save = { it.currentSection },
-            restore = { BottomSheetContentState(it) }
+            save = { Pair(it.currentSection, it.currentLineState) },
+            restore = { BottomSheetContentState(it.first, it.second) }
         )
     }
 }
 
 @Composable
 internal fun rememberBottomSheetContentState(
-    initialSheetSection: BottomSheetSection
+    initialSheetSection: BottomSheetSection,
+    initialLineState: LineState
 ) = rememberSaveable(saver = BottomSheetContentState.Saver()) {
-    BottomSheetContentState(initialSheetSection)
+    BottomSheetContentState(initialSheetSection, initialLineState)
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 internal fun BottomSheetContent(
     contentState: BottomSheetContentState,
-    sheetState: BottomSheetState
+    onLineClick: () -> Unit
 ) {
-    val scope = rememberCoroutineScope()
-    val halfExpandBottomSheet = remember {
-        {
-            scope.launch {
-                sheetState.halfExpand()
-            }
-        }
-    }
-    val collapseBottomSheet = remember {
-        {
-            scope.launch {
-                sheetState.collapse()
-            }
-        }
-    }
-
-    when {
-        contentState.currentSection != BottomSheetSection.CallActions -> BackPressHandler(onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) })
-        sheetState.collapsable && !sheetState.isCollapsed -> BackPressHandler(onBackPressed = { collapseBottomSheet() })
-        !sheetState.collapsable && !sheetState.isHalfExpanded -> BackPressHandler(onBackPressed = { halfExpandBottomSheet() })
-    }
-
     CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
         Column {
             Line(
-                state = toLineState(sheetState),
+                state = contentState.currentLineState,
                 onClickLabel = stringResource(id = R.string.kaleyra_call_show_buttons),
-                onClick = {
-                    if (sheetState.isCollapsed) {
-                        halfExpandBottomSheet()
-                    }
-                }
+                onClick = onLineClick
             )
             AnimatedContent(
                 targetState = contentState.currentSection,
@@ -107,30 +101,41 @@ internal fun BottomSheetContent(
                                         else -> BottomSheetSection.CallActions
                                     }
                                 )
-                            }
+                            },
+                            modifier = Modifier.testTag(CallActionsSection)
                         )
                     }
                     BottomSheetSection.AudioOutput -> {
                         AudioOutputSection(
-                            onItemClick = { halfExpandBottomSheet() },
-                            onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) }
+                            onItemClick = { },
+                            onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) },
+                            modifier = Modifier.testTag(AudioOutputSection)
                         )
                     }
                     BottomSheetSection.ScreenShare -> {
                         ScreenShareSection(
-                            onItemClick = { halfExpandBottomSheet() },
-                            onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) }
+                            onItemClick = { },
+                            onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) },
+                            modifier = Modifier.testTag(ScreenShareSection)
                         )
                     }
                     BottomSheetSection.FileShare -> {
                         FileShareSection(
                             onFabClick = { /*TODO*/ },
                             onItemClick = { /*TODO*/ },
-                            onItemActionClick = { /*TODO*/ }
+                            onItemActionClick = { /*TODO*/ },
+                            modifier = Modifier
+                                .padding(top = 20.dp)
+                                .testTag(FileShareSection)
                         )
                     }
                     BottomSheetSection.Whiteboard -> {
-                        WhiteboardSection(onReloadClick = { /*TODO*/ })
+                        WhiteboardSection(
+                            onReloadClick = { /*TODO*/ },
+                            modifier = Modifier
+                                .padding(top = 20.dp)
+                                .testTag(WhiteboardSection)
+                        )
                     }
                 }
             }
@@ -145,8 +150,8 @@ fun BottomSheetContentPreview() {
     KaleyraTheme {
         Surface {
             BottomSheetContent(
-                contentState = rememberBottomSheetContentState(initialSheetSection = BottomSheetSection.CallActions),
-                sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
+                contentState = rememberBottomSheetContentState(initialSheetSection = BottomSheetSection.CallActions, initialLineState = LineState.Expanded),
+                onLineClick = { }
             )
         }
     }

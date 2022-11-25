@@ -1,9 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -20,13 +22,15 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 internal fun AudioOutputSection(
     viewModel: AudioOutputViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onItemClick: (AudioDeviceUi) -> Unit,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     AudioOutputSection(
         uiState = uiState,
         onItemClick = onItemClick,
-        onBackPressed = onBackPressed
+        onBackPressed = onBackPressed,
+        modifier = modifier
     )
 }
 
@@ -34,17 +38,20 @@ internal fun AudioOutputSection(
 internal fun AudioOutputSection(
     uiState: AudioOutputUiState,
     onItemClick: (AudioDeviceUi) -> Unit,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    SubFeatureLayout(
-        title = stringResource(id = R.string.kaleyra_audio_route_title),
-        onCloseClick = onBackPressed
-    ) {
-        AudioOutputContent(
-            items = uiState.audioDeviceList,
-            playingDeviceId = uiState.playingDeviceId,
-            onItemClick = onItemClick
-        )
+    Box(modifier) {
+        SubFeatureLayout(
+            title = stringResource(id = R.string.kaleyra_audio_route_title),
+            onCloseClick = onBackPressed
+        ) {
+            AudioOutputContent(
+                items = uiState.audioDeviceList,
+                playingDeviceId = uiState.playingDeviceId,
+                onItemClick = onItemClick
+            )
+        }
     }
 }
 

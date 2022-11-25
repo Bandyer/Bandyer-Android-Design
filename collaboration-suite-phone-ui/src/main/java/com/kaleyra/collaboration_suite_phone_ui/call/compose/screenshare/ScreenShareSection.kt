@@ -1,9 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Box
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -20,13 +22,15 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 internal fun ScreenShareSection(
     viewModel: ScreenShareViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onItemClick: (ScreenShareTargetUi) -> Unit,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     ScreenShareSection(
         uiState = uiState,
         onItemClick = onItemClick,
-        onBackPressed = onBackPressed
+        onBackPressed = onBackPressed,
+        modifier = modifier
     )
 }
 
@@ -34,16 +38,19 @@ internal fun ScreenShareSection(
 internal fun ScreenShareSection(
     uiState: ScreenShareUiState,
     onItemClick: (ScreenShareTargetUi) -> Unit,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    SubFeatureLayout(
-        title = stringResource(id = R.string.kaleyra_screenshare_picker_title),
-        onCloseClick = onBackPressed
-    ) {
-        ScreenShareContent(
-            items = uiState.targetList,
-            onItemClick = onItemClick
-        )
+    Box(modifier) {
+        SubFeatureLayout(
+            title = stringResource(id = R.string.kaleyra_screenshare_picker_title),
+            onCloseClick = onBackPressed
+        ) {
+            ScreenShareContent(
+                items = uiState.targetList,
+                onItemClick = onItemClick
+            )
+        }
     }
 }
 

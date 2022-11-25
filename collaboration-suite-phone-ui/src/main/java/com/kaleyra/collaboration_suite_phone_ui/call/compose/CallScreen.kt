@@ -6,6 +6,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -19,12 +20,15 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomshe
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetScaffold
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetValue
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.rememberBottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isCollapsed
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isCollapsing
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isExpandingToFullScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isHalfExpanding
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CallScreen() {
     val isDarkTheme = isSystemInDarkTheme()
@@ -32,7 +36,7 @@ fun CallScreen() {
     val scope = rememberCoroutineScope()
     val systemUiController = rememberSystemUiController()
     val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.HalfExpanded, collapsable = true)
-    val bottomSheetContentState = rememberBottomSheetContentState(BottomSheetSection.CallActions)
+    val bottomSheetContentState = rememberBottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
 
     val isFullScreen = sheetState.isExpandingToFullScreen(LocalDensity.current)
     val isCollapsing = sheetState.isCollapsing()
@@ -50,6 +54,36 @@ fun CallScreen() {
         }
     }
 
+    LaunchedEffect(sheetState.targetValue, sheetState.progress.fraction) {
+        when {
+            sheetState.isCollapsed() ->  bottomSheetContentState.collapseLine(color = Color.White)
+            sheetState.isNotDraggableDown() -> bottomSheetContentState.collapseLine()
+            else -> bottomSheetContentState.expandLine()
+        }
+    }
+
+    val halfExpandBottomSheet = remember {
+        {
+            scope.launch {
+                sheetState.halfExpand()
+            }
+        }
+    }
+
+    val collapseBottomSheet = remember {
+        {
+            scope.launch {
+                sheetState.collapse()
+            }
+        }
+    }
+
+    when {
+        bottomSheetContentState.currentSection != BottomSheetSection.CallActions -> BackPressHandler(onBackPressed = { bottomSheetContentState.navigateToSection(BottomSheetSection.CallActions) })
+        sheetState.collapsable && !sheetState.isCollapsed -> BackPressHandler(onBackPressed = { collapseBottomSheet() })
+        !sheetState.collapsable && !sheetState.isHalfExpanded -> BackPressHandler(onBackPressed = { halfExpandBottomSheet() })
+    }
+
     Box {
         BottomSheetScaffold(
             modifier = Modifier.fillMaxSize(),
@@ -61,19 +95,28 @@ fun CallScreen() {
             sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
             backgroundColor = Color.Black,
             contentColor = Color.White,
-            sheetContent = { BottomSheetContent(contentState = bottomSheetContentState, sheetState = sheetState) },
+            sheetContent = {
+                BottomSheetContent(
+                    contentState = bottomSheetContentState,
+                    onLineClick = {
+                        if (sheetState.isCollapsed) {
+                            halfExpandBottomSheet()
+                        }
+                    }
+                )
+                           },
             content = { CallScreenContent(sheetState, it) }
         )
 
-        CallScreenAppBar(
-            bottomSheetContentState = bottomSheetContentState,
-            visible = isFullScreen,
-            onBackPressed = {
-                scope.launch {
-                    sheetState.halfExpand()
-                }
-            }
-        )
+//        CallScreenAppBar(
+//            bottomSheetContentState = bottomSheetContentState,
+//            visible = isFullScreen,
+//            onBackPressed = {
+//                scope.launch {
+//                    sheetState.halfExpand()
+//                }
+//            }
+//        )
     }
 }
 

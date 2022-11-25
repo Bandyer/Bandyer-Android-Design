@@ -18,12 +18,14 @@ import androidx.compose.ui.unit.dp
 @Composable
 internal fun WhiteboardSection(
     viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    onReloadClick: () -> Unit
+    onReloadClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     WhiteboardSection(
         uiState = uiState,
         onReloadClick = onReloadClick,
+        modifier = modifier
     )
 }
 
@@ -31,7 +33,8 @@ internal fun WhiteboardSection(
 @Composable
 internal fun WhiteboardSection(
     uiState: WhiteboardUiState,
-    onReloadClick: () -> Unit
+    onReloadClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -41,9 +44,7 @@ internal fun WhiteboardSection(
     ModalBottomSheetLayout(
         sheetState = sheetState,
         sheetContent = { WhiteboardModalBottomSheetContent(sheetState = sheetState) },
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 20.dp),
+        modifier = modifier.fillMaxSize(),
         content = {
             if (uiState.isOffline) {
                 WhiteboardOfflineContent(
