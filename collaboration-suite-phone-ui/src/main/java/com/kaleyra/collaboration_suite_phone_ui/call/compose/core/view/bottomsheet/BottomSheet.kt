@@ -203,7 +203,6 @@ internal fun BottomSheetScaffold(
                     contentColor = sheetContentColor,
                     content = { Column(content = sheetContent) }
                 )
-                
             },
             anchor = {
                 Box(modifier.testTag(AnchorTag)) { anchor?.invoke() }

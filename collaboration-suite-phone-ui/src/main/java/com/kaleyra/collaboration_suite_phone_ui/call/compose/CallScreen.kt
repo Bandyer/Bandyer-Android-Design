@@ -28,15 +28,32 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isHalfEx
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun CallScreen() {
+    val sheetState = rememberBottomSheetState(
+        initialValue = BottomSheetValue.HalfExpanded,
+        collapsable = true
+    )
+    val bottomSheetContentState = rememberBottomSheetContentState(
+        initialSheetSection = BottomSheetSection.CallActions,
+        initialLineState = LineState.Expanded
+    )
+    CallScreen(
+        sheetState = sheetState,
+        bottomSheetContentState = bottomSheetContentState
+    )
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+internal fun CallScreen(
+    sheetState: BottomSheetState,
+    bottomSheetContentState: BottomSheetContentState
+) {
     val isDarkTheme = isSystemInDarkTheme()
 
     val scope = rememberCoroutineScope()
     val systemUiController = rememberSystemUiController()
-    val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.HalfExpanded, collapsable = true)
-    val bottomSheetContentState = rememberBottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
 
     val isFullScreen = sheetState.isExpandingToFullScreen(LocalDensity.current)
     val isCollapsing = sheetState.isCollapsing()
@@ -54,29 +71,21 @@ fun CallScreen() {
         }
     }
 
+    LaunchedEffect(bottomSheetContentState.currentSection) {
+        if (bottomSheetContentState.currentSection != BottomSheetSection.CallActions) sheetState.expand()
+    }
+
     LaunchedEffect(sheetState.targetValue, sheetState.progress.fraction) {
         when {
-            sheetState.isCollapsed() ->  bottomSheetContentState.collapseLine(color = Color.White)
+            sheetState.isCollapsed() -> bottomSheetContentState.collapseLine(color = Color.White)
             sheetState.isNotDraggableDown() -> bottomSheetContentState.collapseLine()
             else -> bottomSheetContentState.expandLine()
         }
     }
 
-    val halfExpandBottomSheet = remember {
-        {
-            scope.launch {
-                sheetState.halfExpand()
-            }
-        }
-    }
+    val halfExpandBottomSheet = remember { { scope.launch { sheetState.halfExpand() } } }
 
-    val collapseBottomSheet = remember {
-        {
-            scope.launch {
-                sheetState.collapse()
-            }
-        }
-    }
+    val collapseBottomSheet = remember { { scope.launch { sheetState.collapse() } } }
 
     when {
         bottomSheetContentState.currentSection != BottomSheetSection.CallActions -> BackPressHandler(onBackPressed = { bottomSheetContentState.navigateToSection(BottomSheetSection.CallActions) })
@@ -97,25 +106,22 @@ fun CallScreen() {
             contentColor = Color.White,
             sheetContent = {
                 BottomSheetContent(
+                    sheetState = sheetState,
                     contentState = bottomSheetContentState,
                     onLineClick = {
                         if (sheetState.isCollapsed) {
                             halfExpandBottomSheet()
                         }
-                    }
+                    },
                 )
-                           },
+            },
             content = { CallScreenContent(sheetState, it) }
         )
 
         CallScreenAppBar(
             bottomSheetContentState = bottomSheetContentState,
             visible = isFullScreen,
-            onBackPressed = {
-                scope.launch {
-                    sheetState.halfExpand()
-                }
-            }
+            onBackPressed = { halfExpandBottomSheet() }
         )
     }
 }

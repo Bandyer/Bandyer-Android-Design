@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
@@ -26,12 +25,13 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenS
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardSection
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalInsetsPadding
+import kotlinx.coroutines.launch
 
-const val CallActionsSection = "CallActionsSection"
-const val AudioOutputSection = "AudioOutputSection"
-const val ScreenShareSection = "ScreenShareSection"
-const val FileShareSection = "FileShareSection"
-const val WhiteboardSection = "WhiteboardSection"
+const val CallActionsSectionTag = "CallActionsSectionTag"
+const val AudioOutputSectionTag = "AudioOutputSectionTag"
+const val ScreenShareSectionTag = "ScreenShareSectionTag"
+const val FileShareSectionTag = "FileShareSectionTag"
+const val WhiteboardSectionTag = "WhiteboardSectionTag"
 
 internal enum class BottomSheetSection {
     CallActions, AudioOutput, ScreenShare, FileShare, Whiteboard
@@ -52,9 +52,13 @@ internal class BottomSheetContentState(
         currentSection = section
     }
 
-    fun expandLine() { currentLineState = LineState.Expanded }
+    fun expandLine() {
+        currentLineState = LineState.Expanded
+    }
 
-    fun collapseLine(color: Color? = null) { currentLineState = LineState.Collapsed(color = color) }
+    fun collapseLine(color: Color? = null) {
+        currentLineState = LineState.Collapsed(color = color)
+    }
 
     companion object {
         fun Saver(): Saver<BottomSheetContentState, *> = Saver(
@@ -75,9 +79,11 @@ internal fun rememberBottomSheetContentState(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 internal fun BottomSheetContent(
+    sheetState: BottomSheetState,
     contentState: BottomSheetContentState,
     onLineClick: () -> Unit
 ) {
+    val scope = rememberCoroutineScope()
     CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
         Column(Modifier.horizontalInsetsPadding()) {
             Line(
@@ -87,37 +93,58 @@ internal fun BottomSheetContent(
             )
             AnimatedContent(
                 targetState = contentState.currentSection,
-                transitionSpec = { fadeIn(animationSpec = tween(220, delayMillis = 90)) with fadeOut(animationSpec = tween(90)) }
+                transitionSpec = {
+                    fadeIn(
+                        animationSpec = tween(
+                            220,
+                            delayMillis = 90
+                        )
+                    ) with fadeOut(animationSpec = tween(90))
+                }
             ) { target ->
                 when (target) {
                     BottomSheetSection.CallActions -> {
                         CallActionsSection(
                             onItemClick = { action, toggled ->
-                                contentState.navigateToSection(
-                                    section = when (action) {
-                                        is CallAction.Audio -> BottomSheetSection.AudioOutput
-                                        is CallAction.ScreenShare -> BottomSheetSection.ScreenShare
-                                        is CallAction.FileShare -> BottomSheetSection.FileShare
-                                        is CallAction.Whiteboard -> BottomSheetSection.Whiteboard
-                                        else -> BottomSheetSection.CallActions
-                                    }
-                                )
+                                scope.launch {
+                                    contentState.navigateToSection(
+                                        section = when (action) {
+                                            is CallAction.Audio -> BottomSheetSection.AudioOutput
+                                            is CallAction.ScreenShare -> BottomSheetSection.ScreenShare
+                                            is CallAction.FileShare -> BottomSheetSection.FileShare
+                                            is CallAction.Whiteboard -> BottomSheetSection.Whiteboard
+                                            else -> BottomSheetSection.CallActions
+                                        }
+                                    )
+                                }
                             },
-                            modifier = Modifier.testTag(CallActionsSection)
+                            modifier = Modifier.testTag(CallActionsSectionTag)
                         )
                     }
                     BottomSheetSection.AudioOutput -> {
                         AudioOutputSection(
-                            onItemClick = { },
-                            onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) },
-                            modifier = Modifier.testTag(AudioOutputSection)
+                            onItemClick = {
+
+                            },
+                            onBackPressed = {
+                                scope.launch {
+                                    sheetState.halfExpand()
+                                    contentState.navigateToSection(BottomSheetSection.CallActions)
+                                }
+                            },
+                            modifier = Modifier.testTag(AudioOutputSectionTag)
                         )
                     }
                     BottomSheetSection.ScreenShare -> {
                         ScreenShareSection(
                             onItemClick = { },
-                            onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) },
-                            modifier = Modifier.testTag(ScreenShareSection)
+                            onBackPressed = {
+                                scope.launch {
+                                    sheetState.halfExpand()
+                                    contentState.navigateToSection(BottomSheetSection.CallActions)
+                                }
+                            },
+                            modifier = Modifier.testTag(ScreenShareSectionTag)
                         )
                     }
                     BottomSheetSection.FileShare -> {
@@ -127,7 +154,7 @@ internal fun BottomSheetContent(
                             onItemActionClick = { /*TODO*/ },
                             modifier = Modifier
                                 .padding(top = 20.dp)
-                                .testTag(FileShareSection)
+                                .testTag(FileShareSectionTag)
                         )
                     }
                     BottomSheetSection.Whiteboard -> {
@@ -135,7 +162,7 @@ internal fun BottomSheetContent(
                             onReloadClick = { /*TODO*/ },
                             modifier = Modifier
                                 .padding(top = 20.dp)
-                                .testTag(WhiteboardSection)
+                                .testTag(WhiteboardSectionTag)
                         )
                     }
                 }
@@ -150,10 +177,13 @@ internal fun BottomSheetContent(
 fun BottomSheetContentPreview() {
     KaleyraTheme {
         Surface {
-            BottomSheetContent(
-                contentState = rememberBottomSheetContentState(initialSheetSection = BottomSheetSection.CallActions, initialLineState = LineState.Expanded),
-                onLineClick = { }
-            )
+//            BottomSheetContent(
+//                contentState = rememberBottomSheetContentState(
+//                    initialSheetSection = BottomSheetSection.CallActions,
+//                    initialLineState = LineState.Expanded
+//                ),
+//                onLineClick = { }
+//            )
         }
     }
 }
