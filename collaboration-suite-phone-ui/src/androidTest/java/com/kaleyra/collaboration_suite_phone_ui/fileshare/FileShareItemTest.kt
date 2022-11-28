@@ -35,14 +35,14 @@ class FileShareItemTest {
 
     private var transfer by mutableStateOf(mockUploadTransfer)
 
-    private var actionClicked = false
+    private var isActionClicked = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             FileShareItem(
                 transfer = transfer,
-                onActionClick = { actionClicked = true }
+                onActionClick = { isActionClicked = true }
             )
         }
     }
@@ -52,7 +52,7 @@ class FileShareItemTest {
         val download = composeTestRule.activity.getString(R.string.kaleyra_fileshare_download_descr)
         transfer = mockDownloadTransfer.copy(state = TransferUi.State.Available)
         composeTestRule.onNodeWithContentDescription(download).performClick()
-        assert(actionClicked)
+        assert(isActionClicked)
     }
 
     @Test

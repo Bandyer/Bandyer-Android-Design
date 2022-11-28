@@ -30,7 +30,7 @@ class FileShareSectionTest {
 
     private var items by mutableStateOf(ImmutableList(emptyList<TransferUi>()))
 
-    private var fabClicked = false
+    private var isFabClicked = false
 
     private var actualTransfer: TransferUi? = null
 
@@ -39,7 +39,7 @@ class FileShareSectionTest {
         composeTestRule.setContent {
             FileShareSection(
                 uiState = FileShareUiState(transferList = items),
-                onFabClick = { fabClicked = true },
+                onFabClick = { isFabClicked = true },
                 onItemClick = { actualTransfer = it },
                 onItemActionClick = { actualTransfer = it })
         }
@@ -85,7 +85,7 @@ class FileShareSectionTest {
     fun userClicksFab_onFabClickInvoked() {
         val add = composeTestRule.activity.getString(R.string.kaleyra_fileshare_add_description)
         composeTestRule.onNodeWithContentDescription(add).performClick()
-        assert(fabClicked)
+        assert(isFabClicked)
     }
 
     @Test

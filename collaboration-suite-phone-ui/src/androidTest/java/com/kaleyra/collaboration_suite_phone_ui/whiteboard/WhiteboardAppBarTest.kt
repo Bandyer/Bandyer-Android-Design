@@ -20,16 +20,16 @@ class WhiteboardAppBarTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var backPressed = false
+    private var isBackPressed = false
 
-    private var uploadClicked = false
+    private var isUploadClicked = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             WhiteboardAppBar(
-                onBackPressed = { backPressed = true },
-                onUploadClick = { uploadClicked = true }
+                onBackPressed = { isBackPressed = true },
+                onUploadClick = { isUploadClicked = true }
             )
         }
     }
@@ -39,7 +39,7 @@ class WhiteboardAppBarTest {
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(close).performClick()
-        assert(backPressed)
+        assert(isBackPressed)
     }
 
     @Test
@@ -47,7 +47,7 @@ class WhiteboardAppBarTest {
         val upload = composeTestRule.activity.getString(R.string.kaleyra_upload_file)
         composeTestRule.onNodeWithContentDescription(upload).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(upload).performClick()
-        assert(uploadClicked)
+        assert(isUploadClicked)
     }
 
     @Test

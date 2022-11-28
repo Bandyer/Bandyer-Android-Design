@@ -26,14 +26,14 @@ class WhiteboardSectionTest {
 
     private var uiState by mutableStateOf(WhiteboardUiState())
 
-    private var reloadClicked = false
+    private var isReloadClicked = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             WhiteboardSection(
                 uiState = uiState,
-                onReloadClick = { reloadClicked = true }
+                onReloadClick = { isReloadClicked = true }
             )
         }
     }
@@ -57,7 +57,7 @@ class WhiteboardSectionTest {
         uiState = WhiteboardUiState(isOffline = true)
         val reload = composeTestRule.activity.getString(R.string.kaleyra_error_button_reload)
         composeTestRule.onNodeWithContentDescription(reload).performClick()
-        assert(reloadClicked)
+        assert(isReloadClicked)
     }
 
     @Test

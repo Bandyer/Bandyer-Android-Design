@@ -17,7 +17,7 @@ class BottomSheetLineTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private var clicked = false
+    private var isLineClicked = false
 
     @Test
     fun lineStateCollapsed_lineIsCollapsed() {
@@ -37,7 +37,7 @@ class BottomSheetLineTest {
     fun userClicksLine_onClickInvoked() {
         composeTestRule.setUpLineTest(LineState.Collapsed(Color.White))
         composeTestRule.onRoot().performClick()
-        assert(clicked)
+        assert(isLineClicked)
     }
 
     private fun ComposeContentTestRule.setUpLineTest(state: LineState) {
@@ -45,7 +45,7 @@ class BottomSheetLineTest {
             Line(
                 state = state,
                 onClickLabel = "",
-                onClick = { clicked = true }
+                onClick = { isLineClicked = true }
             )
         }
     }

@@ -20,12 +20,12 @@ class FileShareAppBarTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var backPressed = false
+    private var isBackPressed = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            FileShareAppBar(onBackPressed = { backPressed = true })
+            FileShareAppBar(onBackPressed = { isBackPressed = true })
         }
     }
 
@@ -34,7 +34,7 @@ class FileShareAppBarTest {
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(close).performClick()
-        assert(backPressed)
+        assert(isBackPressed)
     }
 
     @Test

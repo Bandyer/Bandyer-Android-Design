@@ -20,14 +20,14 @@ class WhiteboardOfflineContentTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var reloadClicked = false
+    private var isReloadClicked = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             WhiteboardOfflineContent(
                 loading = false,
-                onReloadClick = { reloadClicked = true }
+                onReloadClick = { isReloadClicked = true }
             )
         }
     }
@@ -46,6 +46,6 @@ class WhiteboardOfflineContentTest {
     fun userClicksReload_onReloadClickInvoked() {
         val reload = composeTestRule.activity.getString(R.string.kaleyra_error_button_reload)
         composeTestRule.onNodeWithContentDescription(reload).performClick()
-        assert(reloadClicked)
+        assert(isReloadClicked)
     }
 }

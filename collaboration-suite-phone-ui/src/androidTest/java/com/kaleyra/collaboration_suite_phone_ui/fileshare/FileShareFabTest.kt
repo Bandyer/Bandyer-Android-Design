@@ -24,14 +24,14 @@ class FileShareFabTest {
 
     private var collapsed by mutableStateOf(false)
 
-    private var clicked = false
+    private var isClicked = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             FileShareFab(
                 collapsed = collapsed,
-                onClick = { clicked = true }
+                onClick = { isClicked = true }
             )
         }
     }

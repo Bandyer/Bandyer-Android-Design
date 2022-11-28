@@ -23,17 +23,17 @@ class CallActionTest {
 
     private var action by mutableStateOf<CallAction>(CallAction.Audio())
 
-    private var toggled by mutableStateOf(false)
+    private var isToggled by mutableStateOf(false)
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             CallAction(
                 action = action,
-                onToggle = { toggled = it },
+                onToggle = { isToggled = it },
             )
         }
-        toggled = false
+        isToggled = false
     }
 
     @Test
@@ -119,7 +119,7 @@ class CallActionTest {
     @Test
     fun userPerformsClick_onToggledInvoked() {
         composeTestRule.onRoot().performClick()
-        assert(toggled)
+        assert(isToggled)
     }
 
     @Test

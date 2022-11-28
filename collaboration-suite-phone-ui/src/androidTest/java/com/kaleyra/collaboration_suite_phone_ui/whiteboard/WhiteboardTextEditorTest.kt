@@ -26,21 +26,21 @@ class WhiteboardTextEditorTest {
 
     private var textEditorState by mutableStateOf(TextEditorState(initialValue = TextEditorValue.Empty))
 
-    private var dismissClicked = false
+    private var isDismissClicked = false
 
-    private var confirmClicked = false
+    private var isConfirmClicked = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             WhiteboardTextEditor(
                 textEditorState = textEditorState,
-                onDismissClick = { dismissClicked = true },
-                onConfirmClick = { confirmClicked = true }
+                onDismissClick = { isDismissClicked = true },
+                onConfirmClick = { isConfirmClicked = true }
             )
         }
-        dismissClicked = false
-        confirmClicked = false
+        isDismissClicked = false
+        isConfirmClicked = false
     }
 
     @Test
@@ -85,7 +85,7 @@ class WhiteboardTextEditorTest {
         textEditorState = TextEditorState(initialValue = TextEditorValue.Empty)
         val dismiss = composeTestRule.activity.getString(R.string.kaleyra_action_dismiss)
         composeTestRule.onNodeWithContentDescription(dismiss).performClick()
-        assert(dismissClicked)
+        assert(isDismissClicked)
     }
 
     @Test
@@ -108,7 +108,7 @@ class WhiteboardTextEditorTest {
     fun emptyText_userClicksConfirm_onDismissClickInvoked() {
         val confirm = composeTestRule.activity.getString(R.string.kaleyra_action_confirm)
         composeTestRule.onNodeWithContentDescription(confirm).performClick()
-        assert(dismissClicked)
+        assert(isDismissClicked)
     }
 
     @Test
@@ -116,7 +116,7 @@ class WhiteboardTextEditorTest {
         composeTestRule.onNode(hasSetTextAction()).performTextInput("Text")
         val confirm = composeTestRule.activity.getString(R.string.kaleyra_action_confirm)
         composeTestRule.onNodeWithContentDescription(confirm).performClick()
-        assert(confirmClicked)
+        assert(isConfirmClicked)
     }
 
     @Test

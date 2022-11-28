@@ -20,12 +20,12 @@ class SubFeatureLayoutTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var closeClicked = false
+    private var isCloseClicked = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            SubFeatureLayout(title = "title", onCloseClick = { closeClicked = true }, content = { })
+            SubFeatureLayout(title = "title", onCloseClick = { isCloseClicked = true }, content = { })
         }
     }
 
@@ -38,6 +38,6 @@ class SubFeatureLayoutTest {
     fun userClicksClose_onCloseClickInvoked() {
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).performClick()
-        assert(closeClicked)
+        assert(isCloseClicked)
     }
 }
