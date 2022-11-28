@@ -19,7 +19,8 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.topappbar.TopAppBar
 internal fun CallAppBar(
     title: String,
     onBackPressed: () -> Unit,
-    actions: @Composable (RowScope.() -> Unit)? = null
+    actions: @Composable (RowScope.() -> Unit)? = null,
+    modifier: Modifier = Modifier
 ) {
     TopAppBar(
         navigationIcon = {
@@ -43,6 +44,7 @@ internal fun CallAppBar(
                 actions()
             }
         },
-        elevation = 0.dp
+        elevation = 0.dp,
+        modifier = modifier
     )
 }

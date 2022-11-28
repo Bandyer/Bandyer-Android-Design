@@ -26,10 +26,11 @@ internal fun TopAppBar(
     navigationIcon: @Composable RowScope.() -> Unit,
     content: @Composable (RowScope.() -> Unit)? = null,
     actions: @Composable (RowScope.() -> Unit)? = null,
-    elevation: Dp = AppBarDefaults.TopAppBarElevation
+    elevation: Dp = AppBarDefaults.TopAppBarElevation,
+    modifier: Modifier = Modifier
 ) {
     androidx.compose.material.TopAppBar(
-        modifier = Modifier.focusGroup(),
+        modifier = modifier.focusGroup(),
         elevation = elevation,
         backgroundColor = MaterialTheme.colors.primary,
     ) {

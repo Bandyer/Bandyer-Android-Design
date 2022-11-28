@@ -12,10 +12,13 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.appbar.Ca
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
+const val WhiteboardAppBarTag = "WhiteboardAppBarTag"
+
 @Composable
 internal fun WhiteboardAppBar(
     onBackPressed: () -> Unit,
-    onUploadClick: () -> Unit
+    onUploadClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     CallAppBar(
         onBackPressed = onBackPressed,
@@ -27,7 +30,8 @@ internal fun WhiteboardAppBar(
                 onClick = onUploadClick,
                 modifier = Modifier.padding(4.dp)
             )
-        }
+        },
+        modifier = modifier
     )
 }
 
