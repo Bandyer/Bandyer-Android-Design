@@ -55,7 +55,7 @@ internal fun Line(
         contentAlignment = Alignment.Center
     ) {
         val width by animateDpAsState(targetValue = if (state is LineState.Collapsed) CollapsedLineWidth else ExpandedLineWidth)
-        val color = if (state is LineState.Collapsed && state.color != null) state.color else contentColor.copy(alpha = 0.8f)
+        val color = if (state is LineState.Collapsed && state.color != null) state.color else contentColor.copy(alpha = 0.6f)
 
         Spacer(
             modifier = Modifier
