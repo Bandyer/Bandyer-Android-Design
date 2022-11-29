@@ -3,7 +3,6 @@ package com.kaleyra.collaboration_suite_phone_ui
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.*
 import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
@@ -15,90 +14,84 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 // TODO status bar icon must be dark if dark theme and on whiteboard and file sharing
-// TODO test state is kept on rotation
+// TODO test state is kept on rotation (1)
+// TODO test collapsable first true then false, and the other way (2)
+// TODO add call app bar tests (3)
+// TODO add nested scroll test for file share (2)
 @RunWith(AndroidJUnit4::class)
 class CallScreenTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    @Test
-    fun sheetCollapsed_lineIsCollapsed() {
-        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
-        val contentState =
-            BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState
-        )
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true)
-            .assertWidthIsEqualTo(CollapsedLineWidth)
-        assertEquals(LineState.Collapsed::class, contentState.currentLineState::class)
-    }
+    private var sheetState by mutableStateOf(BottomSheetState(BottomSheetValue.Expanded))
 
-    @Test
-    fun sheetNotCollapsed_lineIsExpanded() {
-        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        val contentState =
-            BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState
-        )
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true)
-            .assertWidthIsEqualTo(ExpandedLineWidth)
-        assertEquals(LineState.Expanded, contentState.currentLineState)
-    }
+    private var sheetContentState by mutableStateOf(BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded))
 
-    @Test
-    fun sheetNotCollapsableAndHalfExpanded_lineIsCollapsed() {
-        val sheetState =
-            BottomSheetState(initialValue = BottomSheetValue.HalfExpanded, collapsable = false)
-        val contentState =
-            BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState
-        )
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true)
-            .assertWidthIsEqualTo(CollapsedLineWidth)
-        runBlocking {
-            val lineState = snapshotFlow { contentState.currentLineState }.first()
-            assertEquals(LineState.Collapsed::class, lineState::class)
+    private var sideEffect by mutableStateOf(suspend { })
+
+    @Before
+    fun setUp() {
+        composeTestRule.setContent {
+            val onBackPressedDispatcher = composeTestRule.activity.onBackPressedDispatcher
+            CompositionLocalProvider(LocalBackPressedDispatcher provides onBackPressedDispatcher) {
+                CallScreen(
+                    sheetState = sheetState,
+                    bottomSheetContentState = sheetContentState,
+                )
+                LaunchedEffect(sideEffect) {
+                    sideEffect.invoke()
+                }
+            }
         }
     }
 
     @Test
-    fun sheetNotCollapsableAndExpanded_lineIsExpanded() {
-        val sheetState =
-            BottomSheetState(initialValue = BottomSheetValue.Expanded, collapsable = false)
-        val contentState =
-            BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState
-        )
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true)
-            .assertWidthIsEqualTo(ExpandedLineWidth)
-        assertEquals(LineState.Expanded, contentState.currentLineState)
+    fun sheetCollapsed_lineIsCollapsed() {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
+        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
+        assertEquals(LineState.Collapsed::class, sheetContentState.currentLineState::class)
     }
 
     @Test
+    fun sheetNotCollapsed_lineIsExpanded() {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
+        assertEquals(LineState.Expanded, sheetContentState.currentLineState)
+    }
+
+    @Test
+    fun sheetNotCollapsableAndHalfExpanded_lineIsCollapsed() {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.HalfExpanded, collapsable = false)
+        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
+        assertEquals(LineState.Collapsed::class, sheetContentState.currentLineState::class)
+    }
+
+    @Test
+    fun sheetNotCollapsableAndExpanded_lineIsExpanded() {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded, collapsable = false)
+        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
+        assertEquals(LineState.Expanded, sheetContentState.currentLineState)
+    }
+
+    // TODO fix
+    @Test
     fun userClicksLine_sheetHalfExpand() {
-        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
-        val contentState =
-            BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState
-        )
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
+        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).performClick()
         composeTestRule.waitForIdle()
+//        assertEquals(BottomSheetValue.HalfExpanded, sheetState.currentValue)
         runBlocking {
             val sheetStateValue = snapshotFlow { sheetState.currentValue }.first()
             assertEquals(BottomSheetValue.HalfExpanded, sheetStateValue)
@@ -107,97 +100,77 @@ class CallScreenTest {
 
     @Test
     fun audioOutputSection_userPerformsBack_callActionsDisplayed() {
-        userPerformsBack_callActionsDisplayed(initialSection = BottomSheetSection.AudioOutput)
+        expandedSection_userPerformsBack_callActionsDisplayed(initialSection = BottomSheetSection.AudioOutput)
     }
 
     @Test
     fun screenShareSection_userPerformsBack_callActionsDisplayed() {
-        userPerformsBack_callActionsDisplayed(initialSection = BottomSheetSection.ScreenShare)
+        expandedSection_userPerformsBack_callActionsDisplayed(initialSection = BottomSheetSection.ScreenShare)
     }
 
     @Test
     fun fileShareSection_userPerformsBack_callActionsDisplayed() {
-        userPerformsBack_callActionsDisplayed(initialSection = BottomSheetSection.FileShare)
+        expandedSection_userPerformsBack_callActionsDisplayed(initialSection = BottomSheetSection.FileShare)
     }
 
     @Test
     fun whiteboardSection_userPerformsBack_callActionsDisplayed() {
-        userPerformsBack_callActionsDisplayed(initialSection = BottomSheetSection.Whiteboard)
+        expandedSection_userPerformsBack_callActionsDisplayed(initialSection = BottomSheetSection.Whiteboard)
     }
 
-    private fun userPerformsBack_callActionsDisplayed(initialSection: BottomSheetSection) {
-        val sheetState =
-            BottomSheetState(initialValue = BottomSheetValue.Expanded, collapsable = false)
-        val contentState = BottomSheetContentState(initialSection, LineState.Expanded)
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState
-        )
-        assertEquals(initialSection, contentState.currentSection)
+    private fun expandedSection_userPerformsBack_callActionsDisplayed(initialSection: BottomSheetSection) {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(initialSection, LineState.Expanded)
+        assertEquals(initialSection, sheetContentState.currentSection)
         Espresso.pressBack()
         composeTestRule.onNodeWithTag(CallActionsSectionTag).assertIsDisplayed()
         assertEquals(BottomSheetValue.Expanded, sheetState.currentValue)
     }
 
+    // TODO fix
     @Test
     fun callActionsSectionExpanded_userPerformsBack_sheetIsCollapsed() {
-        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        val contentState =
-            BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState
-        )
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
         composeTestRule.onNodeWithTag(CallActionsSectionTag).assertIsDisplayed()
         Espresso.pressBack()
+        composeTestRule.waitForIdle()
         assertEquals(BottomSheetValue.Collapsed, sheetState.currentValue)
     }
 
     @Test
     fun callActionsSectionCollapsed_userPerformsBack_activityIsFinished() {
-        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
-        val contentState =
-            BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState
-        )
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
+        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
         Espresso.pressBackUnconditionally()
         assertEquals(Lifecycle.State.DESTROYED, composeTestRule.activityRule.scenario.state)
     }
 
     @Test
     fun whiteboardSection_sheetIsExpanded() {
-        sheetIsExpanded(BottomSheetSection.Whiteboard)
+        sheetIsExpandedOnSection(BottomSheetSection.Whiteboard)
     }
 
     @Test
     fun screenShareSection_sheetIsExpanded() {
-        sheetIsExpanded(BottomSheetSection.ScreenShare)
+        sheetIsExpandedOnSection(BottomSheetSection.ScreenShare)
     }
 
     @Test
     fun fileShareSection_sheetIsExpanded() {
-        sheetIsExpanded(BottomSheetSection.FileShare)
+        sheetIsExpandedOnSection(BottomSheetSection.FileShare)
     }
 
     @Test
     fun audioOutputSection_sheetIsExpanded() {
-        sheetIsExpanded(BottomSheetSection.AudioOutput)
+        sheetIsExpandedOnSection(BottomSheetSection.AudioOutput)
     }
 
-    private fun sheetIsExpanded(section: BottomSheetSection) {
-        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
-        val contentState = BottomSheetContentState(section, LineState.Collapsed())
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState
-        )
+    private fun sheetIsExpandedOnSection(section: BottomSheetSection) {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
+        sheetContentState = BottomSheetContentState(section, LineState.Collapsed())
         composeTestRule.waitForIdle()
-        runBlocking {
-            val sheetValue = snapshotFlow { sheetState.currentValue }.first()
-            assertEquals(BottomSheetValue.Expanded, sheetValue)
-        }
+        assertEquals(BottomSheetValue.Expanded, sheetState.currentValue)
     }
 
     @Test
@@ -221,14 +194,11 @@ class CallScreenTest {
     }
 
     private fun sheetHalfExpanding_callActionsSectionDisplayed(initialSection: BottomSheetSection) {
-        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        val contentState = BottomSheetContentState(initialSection, LineState.Collapsed())
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState,
-            effect = sheetState::halfExpand
-        )
-        assertEquals(BottomSheetSection.CallActions, contentState.currentSection)
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(initialSection, LineState.Collapsed())
+        sideEffect = sheetState::halfExpand
+        composeTestRule.waitForIdle()
+        assertEquals(BottomSheetSection.CallActions, sheetContentState.currentSection)
     }
 
     @Test
@@ -252,101 +222,65 @@ class CallScreenTest {
     }
 
     private fun sheetCollapsing_callActionsSectionDisplayed(initialSection: BottomSheetSection) {
-        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        val contentState = BottomSheetContentState(initialSection, LineState.Collapsed())
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState,
-            effect = sheetState::collapse
-        )
-        assertEquals(BottomSheetSection.CallActions, contentState.currentSection)
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(initialSection, LineState.Collapsed())
+        sideEffect = sheetState::collapse
+        composeTestRule.waitForIdle()
+        assertEquals(BottomSheetSection.CallActions, sheetContentState.currentSection)
     }
 
     @Test
-    fun userClicksOnAudioOutputButton_audioOutputIsDisplayed() {
-        val audioOutput =
-            composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route)
-        composeTestRule.assertSectionIsDisplayed(
-            contentDescription = audioOutput,
-            tag = AudioOutputSectionTag,
-            section = BottomSheetSection.AudioOutput
+    fun userClicksAudioOutputAction_audioOutputIsDisplayed() {
+        userClicksAction_sectionIsDisplayed(
+            actionContentDescription = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route),
+            targetSectionTag = AudioOutputSectionTag,
+            targetSection = BottomSheetSection.AudioOutput
         )
     }
 
     @Test
-    fun userClicksOnScreenShareButton_screenShareIsDisplayed() {
-        val screenShare =
-            composeTestRule.activity.getString(R.string.kaleyra_call_action_screen_share)
-        composeTestRule.assertSectionIsDisplayed(
-            contentDescription = screenShare,
-            tag = ScreenShareSectionTag,
-            section = BottomSheetSection.ScreenShare
+    fun userClicksScreenShareAction_screenShareIsDisplayed() {
+        userClicksAction_sectionIsDisplayed(
+            actionContentDescription = composeTestRule.activity.getString(R.string.kaleyra_call_action_screen_share),
+            targetSectionTag = ScreenShareSectionTag,
+            targetSection = BottomSheetSection.ScreenShare
         )
     }
 
     @Test
-    fun userClicksOnWhiteboardButton_whiteboardIsDisplayed() {
-        val whiteboard = composeTestRule.activity.getString(R.string.kaleyra_call_action_whiteboard)
-        composeTestRule.assertSectionIsDisplayed(
-            contentDescription = whiteboard,
-            tag = WhiteboardSectionTag,
-            section = BottomSheetSection.Whiteboard
+    fun userClicksWhiteboardAction_whiteboardIsDisplayed() {
+        userClicksAction_sectionIsDisplayed(
+            actionContentDescription = composeTestRule.activity.getString(R.string.kaleyra_call_action_whiteboard),
+            targetSectionTag = WhiteboardSectionTag,
+            targetSection = BottomSheetSection.Whiteboard
         )
     }
 
     @Test
-    fun userClicksOnFileShareButton_fileShareIsDisplayed() {
-        val fileShare = composeTestRule.activity.getString(R.string.kaleyra_call_action_file_share)
-        composeTestRule.assertSectionIsDisplayed(
-            contentDescription = fileShare,
-            tag = FileShareSectionTag,
-            section = BottomSheetSection.FileShare
+    fun userClicksFileShareAction_fileShareIsDisplayed() {
+        userClicksAction_sectionIsDisplayed(
+            actionContentDescription = composeTestRule.activity.getString(R.string.kaleyra_call_action_file_share),
+            targetSectionTag = FileShareSectionTag,
+            targetSection = BottomSheetSection.FileShare
         )
     }
 
-    private fun ComposeContentTestRule.assertSectionIsDisplayed(
-        contentDescription: String,
-        tag: String,
-        section: BottomSheetSection
+    private fun userClicksAction_sectionIsDisplayed(
+        actionContentDescription: String,
+        targetSectionTag: String,
+        targetSection: BottomSheetSection
     ) {
-        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        val contentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState
-        )
-        composeTestRule.onNodeWithContentDescription(contentDescription).performClick()
-        onNodeWithTag(tag).assertIsDisplayed()
-        assertEquals(section, contentState.currentSection)
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
+        composeTestRule.onNodeWithContentDescription(actionContentDescription).performClick()
+        composeTestRule.onNodeWithTag(targetSectionTag).assertIsDisplayed()
+        assertEquals(targetSection, sheetContentState.currentSection)
     }
 
     @Test
     fun sheetCollapsed_callActionsNotVisible() {
-        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
-        val contentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
-        composeTestRule.setCallScreenContent(
-            sheetState = sheetState,
-            contentState = contentState
-        )
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
+        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
         composeTestRule.onNodeWithTag(CallActionsSectionTag).assertDoesNotExist()
-    }
-
-    private fun ComposeContentTestRule.setCallScreenContent(
-        sheetState: BottomSheetState,
-        contentState: BottomSheetContentState,
-        effect: suspend () -> Unit = {}
-    ) {
-        setContent {
-            val onBackPressedDispatcher = composeTestRule.activity.onBackPressedDispatcher
-            CompositionLocalProvider(LocalBackPressedDispatcher provides onBackPressedDispatcher) {
-                CallScreen(
-                    sheetState = sheetState,
-                    bottomSheetContentState = contentState,
-                )
-                LaunchedEffect(Unit) {
-                    effect.invoke()
-                }
-            }
-        }
     }
 }

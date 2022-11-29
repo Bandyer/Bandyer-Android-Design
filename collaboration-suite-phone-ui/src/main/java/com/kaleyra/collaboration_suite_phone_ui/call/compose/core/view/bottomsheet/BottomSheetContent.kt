@@ -76,7 +76,7 @@ internal fun rememberBottomSheetContentState(
     BottomSheetContentState(initialSheetSection, initialLineState)
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun BottomSheetContent(
     contentState: BottomSheetContentState,

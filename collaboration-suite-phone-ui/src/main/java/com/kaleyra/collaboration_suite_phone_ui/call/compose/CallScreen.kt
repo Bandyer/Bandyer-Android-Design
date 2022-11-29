@@ -30,56 +30,47 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlinx.coroutines.launch
 
 @Composable
-fun CallScreen() {
-    val sheetState = rememberBottomSheetState(
+internal fun CallScreen(
+    sheetState: BottomSheetState = rememberBottomSheetState(
         initialValue = BottomSheetValue.HalfExpanded,
         collapsable = true
-    )
-    val bottomSheetContentState = rememberBottomSheetContentState(
+    ),
+    bottomSheetContentState: BottomSheetContentState = rememberBottomSheetContentState(
         initialSheetSection = BottomSheetSection.CallActions,
         initialLineState = LineState.Expanded
-    )
-    CallScreen(
-        sheetState = sheetState,
-        bottomSheetContentState = bottomSheetContentState
-    )
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-internal fun CallScreen(
-    sheetState: BottomSheetState,
-    bottomSheetContentState: BottomSheetContentState,
+    ),
     systemUiController: SystemUiController = rememberSystemUiController()
 ) {
     val isDarkTheme = isSystemInDarkTheme()
 
     val scope = rememberCoroutineScope()
 
+    val isCollapsed = sheetState.isCollapsed()
+    val isNotDraggableDown = sheetState.isNotDraggableDown()
     val isFullScreen = sheetState.isExpandingToFullScreen(LocalDensity.current)
     val isCollapsing = sheetState.isCollapsing()
     val isHalfExpanding = sheetState.isExitingExpandedState()
 
     val backgroundAlpha by animateFloatAsState(if (isCollapsing) 0f else 1f)
 
-    LaunchedEffect(isFullScreen) {
+    LaunchedEffect(sheetState, isFullScreen) {
         systemUiController.statusBarDarkContentEnabled = if (isFullScreen) !isDarkTheme else false
     }
 
-    LaunchedEffect(isHalfExpanding) {
+    LaunchedEffect(sheetState, isHalfExpanding) {
         if (isHalfExpanding) {
             bottomSheetContentState.navigateToSection(BottomSheetSection.CallActions)
         }
     }
 
-    LaunchedEffect(bottomSheetContentState.currentSection) {
+    LaunchedEffect(bottomSheetContentState, bottomSheetContentState.currentSection) {
         if (bottomSheetContentState.currentSection != BottomSheetSection.CallActions) sheetState.expand()
     }
 
-    LaunchedEffect(sheetState.targetValue, sheetState.progress.fraction) {
+    LaunchedEffect(sheetState, isCollapsed, isNotDraggableDown) {
         when {
-            sheetState.isCollapsed() -> bottomSheetContentState.collapseLine(color = Color.White)
-            sheetState.isNotDraggableDown() -> bottomSheetContentState.collapseLine()
+            isCollapsed -> bottomSheetContentState.collapseLine(color = Color.White)
+            isNotDraggableDown -> bottomSheetContentState.collapseLine()
             else -> bottomSheetContentState.expandLine()
         }
     }
