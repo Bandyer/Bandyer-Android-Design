@@ -1,9 +1,12 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions
 
 import android.content.res.Configuration
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,19 +33,22 @@ internal fun CallActionsSection(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun CallActionsSection(
     uiState: CallActionsUiState,
     onItemClick: (action: CallAction, toggled: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier) {
-        CallActionsContent(
-            items = uiState.actionList,
-            itemsPerRow = uiState.actionList.count().coerceIn(1, 4),
-            onItemClick = onItemClick
-        )
-        BottomInsetsSpacer()
+    CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
+        Column(modifier) {
+            CallActionsContent(
+                items = uiState.actionList,
+                itemsPerRow = uiState.actionList.count().coerceIn(1, 4),
+                onItemClick = onItemClick
+            )
+            BottomInsetsSpacer()
+        }
     }
 }
 
