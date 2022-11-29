@@ -65,7 +65,7 @@ internal fun WhiteboardSection(
                         modifier = Modifier.weight(1f)
                     )
                 }
-                BottomInsetsSpacer()
+                BottomInsetsSpacer(Modifier.background(color = MaterialTheme.colors.surface.copy(alpha = .8f)))
             }
         }
     )
