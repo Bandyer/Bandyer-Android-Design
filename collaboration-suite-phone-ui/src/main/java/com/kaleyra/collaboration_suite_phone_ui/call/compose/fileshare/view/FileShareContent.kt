@@ -32,7 +32,7 @@ internal fun FileShareContent(
     onItemActionClick: (TransferUi) -> Unit
 ) {
     LazyColumn(contentPadding = PaddingValues(bottom = 72.dp)) {
-        items(items = items.value) {
+        items(items = items.value, key = { it.id }) {
             FileShareItem(
                 transfer = it,
                 modifier = Modifier
