@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContent
@@ -24,7 +25,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isCollapsed
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isCollapsing
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isExpandingToFullScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isHalfExpanding
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isExitingExpandedState
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlinx.coroutines.launch
 
@@ -48,16 +49,16 @@ fun CallScreen() {
 @Composable
 internal fun CallScreen(
     sheetState: BottomSheetState,
-    bottomSheetContentState: BottomSheetContentState
+    bottomSheetContentState: BottomSheetContentState,
+    systemUiController: SystemUiController = rememberSystemUiController()
 ) {
     val isDarkTheme = isSystemInDarkTheme()
 
     val scope = rememberCoroutineScope()
-    val systemUiController = rememberSystemUiController()
 
     val isFullScreen = sheetState.isExpandingToFullScreen(LocalDensity.current)
     val isCollapsing = sheetState.isCollapsing()
-    val isHalfExpanding = sheetState.isHalfExpanding()
+    val isHalfExpanding = sheetState.isExitingExpandedState()
 
     val backgroundAlpha by animateFloatAsState(if (isCollapsing) 0f else 1f)
 
@@ -66,7 +67,7 @@ internal fun CallScreen(
     }
 
     LaunchedEffect(isHalfExpanding) {
-        if (bottomSheetContentState.currentSection != BottomSheetSection.CallActions && isHalfExpanding) {
+        if (isHalfExpanding) {
             bottomSheetContentState.navigateToSection(BottomSheetSection.CallActions)
         }
     }
@@ -106,13 +107,13 @@ internal fun CallScreen(
             contentColor = Color.White,
             sheetContent = {
                 BottomSheetContent(
-                    sheetState = sheetState,
                     contentState = bottomSheetContentState,
                     onLineClick = {
                         if (sheetState.isCollapsed) {
                             halfExpandBottomSheet()
                         }
                     },
+                    contentVisible = !sheetState.isCollapsed()
                 )
             },
             content = { CallScreenContent(sheetState, it) }

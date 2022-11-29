@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -25,7 +26,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenS
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardSection
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalInsetsPadding
-import kotlinx.coroutines.launch
 
 const val CallActionsSectionTag = "CallActionsSectionTag"
 const val AudioOutputSectionTag = "AudioOutputSectionTag"
@@ -79,34 +79,39 @@ internal fun rememberBottomSheetContentState(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 @Composable
 internal fun BottomSheetContent(
-    sheetState: BottomSheetState,
     contentState: BottomSheetContentState,
-    onLineClick: () -> Unit
+    onLineClick: () -> Unit,
+    contentVisible: Boolean = true,
+    modifier: Modifier = Modifier
 ) {
-    val scope = rememberCoroutineScope()
+
     CompositionLocalProvider(LocalOverScrollConfiguration provides null) {
-        Column(Modifier.horizontalInsetsPadding()) {
+        Column(modifier.horizontalInsetsPadding()) {
             Line(
                 state = contentState.currentLineState,
                 onClickLabel = stringResource(id = R.string.kaleyra_call_show_buttons),
                 onClick = onLineClick
             )
-            AnimatedContent(
-                targetState = contentState.currentSection,
-                transitionSpec = {
-                    fadeIn(
-                        animationSpec = tween(
-                            220,
-                            delayMillis = 90
-                        )
-                    ) with fadeOut(animationSpec = tween(90))
-                }
-            ) { target ->
-                when (target) {
-                    BottomSheetSection.CallActions -> {
-                        CallActionsSection(
-                            onItemClick = { action, toggled ->
-                                scope.launch {
+            AnimatedVisibility(
+                visible = contentVisible,
+                enter = fadeIn(),
+                exit = fadeOut()
+            ) {
+                AnimatedContent(
+                    targetState = contentState.currentSection,
+                    transitionSpec = {
+                        fadeIn(
+                            animationSpec = tween(
+                                220,
+                                delayMillis = 90
+                            )
+                        ) with fadeOut(animationSpec = tween(90))
+                    }
+                ) { target ->
+                    when (target) {
+                        BottomSheetSection.CallActions -> {
+                            CallActionsSection(
+                                onItemClick = { action, toggled ->
                                     contentState.navigateToSection(
                                         section = when (action) {
                                             is CallAction.Audio -> BottomSheetSection.AudioOutput
@@ -116,54 +121,44 @@ internal fun BottomSheetContent(
                                             else -> BottomSheetSection.CallActions
                                         }
                                     )
-                                }
-                            },
-                            modifier = Modifier.testTag(CallActionsSectionTag)
-                        )
-                    }
-                    BottomSheetSection.AudioOutput -> {
-                        AudioOutputSection(
-                            onItemClick = {
+                                },
+                                modifier = Modifier.testTag(CallActionsSectionTag)
+                            )
+                        }
+                        BottomSheetSection.AudioOutput -> {
+                            AudioOutputSection(
+                                onItemClick = {
 
-                            },
-                            onBackPressed = {
-                                scope.launch {
-                                    sheetState.halfExpand()
-                                    contentState.navigateToSection(BottomSheetSection.CallActions)
-                                }
-                            },
-                            modifier = Modifier.testTag(AudioOutputSectionTag)
-                        )
-                    }
-                    BottomSheetSection.ScreenShare -> {
-                        ScreenShareSection(
-                            onItemClick = { },
-                            onBackPressed = {
-                                scope.launch {
-                                    sheetState.halfExpand()
-                                    contentState.navigateToSection(BottomSheetSection.CallActions)
-                                }
-                            },
-                            modifier = Modifier.testTag(ScreenShareSectionTag)
-                        )
-                    }
-                    BottomSheetSection.FileShare -> {
-                        FileShareSection(
-                            onFabClick = { /*TODO*/ },
-                            onItemClick = { /*TODO*/ },
-                            onItemActionClick = { /*TODO*/ },
-                            modifier = Modifier
-                                .padding(top = 20.dp)
-                                .testTag(FileShareSectionTag)
-                        )
-                    }
-                    BottomSheetSection.Whiteboard -> {
-                        WhiteboardSection(
-                            onReloadClick = { /*TODO*/ },
-                            modifier = Modifier
-                                .padding(top = 20.dp)
-                                .testTag(WhiteboardSectionTag)
-                        )
+                                },
+                                onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) },
+                                modifier = Modifier.testTag(AudioOutputSectionTag)
+                            )
+                        }
+                        BottomSheetSection.ScreenShare -> {
+                            ScreenShareSection(
+                                onItemClick = { },
+                                onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) },
+                                modifier = Modifier.testTag(ScreenShareSectionTag)
+                            )
+                        }
+                        BottomSheetSection.FileShare -> {
+                            FileShareSection(
+                                onFabClick = { /*TODO*/ },
+                                onItemClick = { /*TODO*/ },
+                                onItemActionClick = { /*TODO*/ },
+                                modifier = Modifier
+                                    .padding(top = 20.dp)
+                                    .testTag(FileShareSectionTag)
+                            )
+                        }
+                        BottomSheetSection.Whiteboard -> {
+                            WhiteboardSection(
+                                onReloadClick = { /*TODO*/ },
+                                modifier = Modifier
+                                    .padding(top = 20.dp)
+                                    .testTag(WhiteboardSectionTag)
+                            )
+                        }
                     }
                 }
             }

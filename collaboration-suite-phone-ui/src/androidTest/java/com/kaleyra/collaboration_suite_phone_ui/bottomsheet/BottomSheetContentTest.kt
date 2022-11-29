@@ -122,7 +122,6 @@ class BottomSheetContentTest {
     fun userClicksOnWhiteboardButton_whiteboardIsDisplayed() {
         val whiteboard = composeTestRule.activity.getString(R.string.kaleyra_call_action_whiteboard)
         composeTestRule.onNodeWithContentDescription(whiteboard).performClick()
-
     }
 
     @Test

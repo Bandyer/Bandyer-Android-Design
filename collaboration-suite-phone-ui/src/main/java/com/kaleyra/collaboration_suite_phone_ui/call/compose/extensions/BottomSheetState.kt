@@ -23,8 +23,11 @@ internal fun BottomSheetState.isCollapsing(): Boolean =
     derivedStateOf { targetValue == BottomSheetValue.Collapsed && progress.fraction >= TargetStateFractionThreshold }.value
 
 @OptIn(ExperimentalMaterialApi::class)
-internal fun BottomSheetState.isHalfExpanding(): Boolean =
-    derivedStateOf { targetValue == BottomSheetValue.HalfExpanded && progress.fraction >= TargetStateFractionThreshold || targetValue == BottomSheetValue.Collapsed }.value
+internal fun BottomSheetState.isExitingExpandedState(): Boolean =
+    derivedStateOf {
+        (currentValue == BottomSheetValue.Expanded && targetValue == BottomSheetValue.HalfExpanded && progress.fraction >= TargetStateFractionThreshold) ||
+                (currentValue == BottomSheetValue.Expanded && targetValue == BottomSheetValue.Collapsed)
+    }.value
 
 internal fun BottomSheetState.isExpandingToFullScreen(density: Density): Boolean =
     derivedStateOf { offset.value < with(density) { FullScreenThreshold.toPx() } }.value
