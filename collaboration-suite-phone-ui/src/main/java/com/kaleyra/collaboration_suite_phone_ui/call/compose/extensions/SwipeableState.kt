@@ -1,17 +1,13 @@
 
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions
 
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.SwipeableState
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.unit.Velocity
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetState
 
-private var minBound = Float.NEGATIVE_INFINITY
-
-@OptIn(ExperimentalMaterialApi::class)
-internal val <T> SwipeableState<T>.PreUpPostDownNestedScrollConnection: NestedScrollConnection
+internal val BottomSheetState.PreUpPostDownNestedScrollConnection: NestedScrollConnection
     get() = object : NestedScrollConnection {
         override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
             val delta = available.toFloat()

@@ -52,6 +52,10 @@ internal class BottomSheetState(
         }
     }
 
+    var minBound = Float.NEGATIVE_INFINITY
+
+    val nestedScrollConnection = this.PreUpPostDownNestedScrollConnection
+
     val isExpanded: Boolean
         get() = currentValue == BottomSheetValue.Expanded
 
@@ -88,7 +92,6 @@ internal class BottomSheetState(
         )
     }
 
-    val nestedScrollConnection = this.PreUpPostDownNestedScrollConnection
 }
 
 @Composable
@@ -148,6 +151,8 @@ internal fun BottomSheetScaffold(
             fullHeight - halfExpandedPx to BottomSheetValue.HalfExpanded,
             fullHeight - bottomSheetHeight to BottomSheetValue.Expanded
         )
+        sheetState.minBound = anchors.keys.minOrNull()!!
+
         if (sheetState.collapsable) anchors[fullHeight - peekHeightPx] = BottomSheetValue.Collapsed
 
         val swipeable = Modifier
