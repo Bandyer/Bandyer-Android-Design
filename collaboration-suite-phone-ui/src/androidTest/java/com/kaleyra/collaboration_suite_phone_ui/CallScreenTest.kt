@@ -8,9 +8,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreenState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.LocalBackPressedDispatcher
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import kotlinx.coroutines.delay
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBarTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.rememberCallScreenState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardAppBarTag
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -20,8 +23,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 // TODO status bar icon must be dark if dark theme and on whiteboard and file sharing
-// TODO test state is kept on rotation (1)
-// TODO test collapsable first true then false, and the other way (2)
 // TODO add call app bar tests (3)
 // TODO add nested scroll test for file share (2)
 @RunWith(AndroidJUnit4::class)
@@ -42,8 +43,10 @@ class CallScreenTest {
             val onBackPressedDispatcher = composeTestRule.activity.onBackPressedDispatcher
             CompositionLocalProvider(LocalBackPressedDispatcher provides onBackPressedDispatcher) {
                 CallScreen(
-                    sheetState = sheetState,
-                    bottomSheetContentState = sheetContentState,
+                    callScreenState = rememberCallScreenState(
+                        sheetState = sheetState,
+                        sheetContentState = sheetContentState
+                    )
                 )
                 LaunchedEffect(sideEffect) {
                     sideEffect.invoke()
@@ -89,9 +92,8 @@ class CallScreenTest {
     fun userClicksLine_sheetHalfExpand() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
         sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
-        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).performClick()
+        composeTestRule.onNodeWithTag("Prova").performClick()
         composeTestRule.waitForIdle()
-//        assertEquals(BottomSheetValue.HalfExpanded, sheetState.currentValue)
         runBlocking {
             val sheetStateValue = snapshotFlow { sheetState.currentValue }.first()
             assertEquals(BottomSheetValue.HalfExpanded, sheetStateValue)
@@ -127,7 +129,6 @@ class CallScreenTest {
         assertEquals(BottomSheetValue.Expanded, sheetState.currentValue)
     }
 
-    // TODO fix
     @Test
     fun callActionsSectionExpanded_userPerformsBack_sheetIsCollapsed() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
@@ -283,4 +284,19 @@ class CallScreenTest {
         sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
         composeTestRule.onNodeWithTag(CallActionsSectionTag).assertDoesNotExist()
     }
+
+    @Test
+    fun fileShareSection_fileShareAppBarDisplayed() {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetSection.FileShare, LineState.Expanded)
+        composeTestRule.onNodeWithTag(FileShareAppBarTag).assertIsDisplayed()
+    }
+
+    @Test
+    fun whiteboardSection_whiteboardAppBarDisplayed() {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetSection.Whiteboard, LineState.Expanded)
+        composeTestRule.onNodeWithTag(WhiteboardAppBarTag).assertIsDisplayed()
+    }
+
 }
