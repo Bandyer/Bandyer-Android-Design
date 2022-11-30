@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
 
 @Composable
 internal fun SubFeatureLayout(
@@ -39,5 +40,6 @@ internal fun SubFeatureLayout(
             )
         }
         content()
+        NavigationBarsSpacer()
     }
 }

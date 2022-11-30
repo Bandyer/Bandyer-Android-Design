@@ -142,10 +142,9 @@ internal fun BottomSheetScaffold(
     val scope = rememberCoroutineScope()
 
     BoxWithConstraints(modifier.fillMaxSize()) {
-        val bottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         val fullHeight = constraints.maxHeight.toFloat()
-        val peekHeightPx = with(LocalDensity.current) { sheetPeekHeight.toPx() + bottomPadding.toPx() }
-        val halfExpandedPx = with(LocalDensity.current) { sheetHalfExpandedHeight.toPx() + bottomPadding.toPx() }
+        val peekHeightPx = with(LocalDensity.current) { sheetPeekHeight.toPx() }
+        val halfExpandedPx = with(LocalDensity.current) { sheetHalfExpandedHeight.toPx() }
         var bottomSheetHeight by remember { mutableStateOf(fullHeight) }
         val anchors = mutableMapOf(
             fullHeight - halfExpandedPx to BottomSheetValue.HalfExpanded,

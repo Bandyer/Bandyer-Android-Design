@@ -3,15 +3,12 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsh
 import android.content.res.Configuration
 import androidx.compose.animation.*
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.gestures.LocalOverScrollConfiguration
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Surface
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -25,7 +22,6 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShare
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShareSection
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardSection
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
-import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalInsetsPadding
 
 const val CallActionsSectionTag = "CallActionsSectionTag"
 const val AudioOutputSectionTag = "AudioOutputSectionTag"
@@ -84,7 +80,7 @@ internal fun BottomSheetContent(
     contentVisible: Boolean = true,
     modifier: Modifier = Modifier
 ) {
-    Column(modifier.horizontalInsetsPadding()) {
+    Column(modifier) {
         Line(
             state = contentState.currentLineState,
             onClickLabel = stringResource(id = R.string.kaleyra_call_show_buttons),

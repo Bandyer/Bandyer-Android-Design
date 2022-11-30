@@ -9,13 +9,14 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.appbar.CallAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContentState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetSection
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBarTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardAppBarTag
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
 
 @Composable
 internal fun CallScreenAppBar(
@@ -35,18 +36,18 @@ internal fun CallScreenAppBar(
                     .fillMaxWidth()
                     .windowInsetsTopHeight(WindowInsets.statusBars)
             )
-            Column(Modifier.statusBarsPadding()) {
+            Box(modifier = Modifier.statusBarsPadding()) {
+                val appBarsModifier = Modifier.horizontalCutoutPadding()
                 when (bottomSheetContentState.currentSection) {
                     BottomSheetSection.FileShare -> FileShareAppBar(
                         onBackPressed = onBackPressed,
-                        modifier = Modifier.testTag(FileShareAppBarTag)
+                        modifier = appBarsModifier.testTag(FileShareAppBarTag)
                     )
                     BottomSheetSection.Whiteboard -> WhiteboardAppBar(
                         onBackPressed = onBackPressed,
                         onUploadClick = { /*TODO*/ },
-                        modifier = Modifier.testTag(WhiteboardAppBarTag)
+                        modifier = appBarsModifier.testTag(WhiteboardAppBarTag)
                     )
-                    else -> CallAppBar(onBackPressed = onBackPressed, title = "")
                 }
             }
         }

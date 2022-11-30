@@ -60,11 +60,6 @@ internal class CallScreenAppBarTest {
     }
 
     @Test
-    fun callActionSection_closeIsDisplayed() {
-        closeIsDisplayed(BottomSheetContentState(initialSection = BottomSheetSection.CallActions, initialLineState = LineState.Expanded))
-    }
-
-    @Test
     fun screenShareSection_closeIsDisplayed() {
         closeIsDisplayed(BottomSheetContentState(initialSection = BottomSheetSection.ScreenShare, initialLineState = LineState.Expanded))
     }

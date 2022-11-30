@@ -5,14 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun BottomInsetsSpacer(
-    modifier: Modifier = Modifier
-) {
-    val navigationBarsInsets = WindowInsets.navigationBars
-
+internal fun NavigationBarsSpacer(modifier: Modifier = Modifier) {
     Spacer(
-        modifier
-            .windowInsetsBottomHeight(navigationBarsInsets)
+        modifier = modifier
             .fillMaxWidth()
+            .windowInsetsBottomHeight(WindowInsets.navigationBars)
     )
 }

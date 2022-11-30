@@ -10,7 +10,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.BottomInsetsSpacer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.mockCallActions
@@ -47,7 +47,7 @@ internal fun CallActionsSection(
                 itemsPerRow = uiState.actionList.count().coerceIn(1, 4),
                 onItemClick = onItemClick
             )
-            BottomInsetsSpacer()
+            NavigationBarsSpacer()
         }
     }
 }

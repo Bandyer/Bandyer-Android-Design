@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Box
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,10 +8,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.BottomInsetsSpacer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.subfeaturelayout.SubFeatureLayout
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.view.ScreenShareContent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -42,17 +41,15 @@ internal fun ScreenShareSection(
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier) {
-        SubFeatureLayout(
-            title = stringResource(id = R.string.kaleyra_screenshare_picker_title),
-            onCloseClick = onBackPressed
-        ) {
-            ScreenShareContent(
-                items = uiState.targetList,
-                onItemClick = onItemClick
-            )
-            BottomInsetsSpacer()
-        }
+    SubFeatureLayout(
+        title = stringResource(id = R.string.kaleyra_screenshare_picker_title),
+        onCloseClick = onBackPressed,
+        modifier = modifier
+    ) {
+        ScreenShareContent(
+            items = uiState.targetList,
+            onItemClick = onItemClick
+        )
     }
 }
 

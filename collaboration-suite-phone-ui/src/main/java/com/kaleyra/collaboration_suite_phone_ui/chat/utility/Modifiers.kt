@@ -62,12 +62,9 @@ internal fun Modifier.fadeBelowOfRootBottomBound(): Modifier =
     }
 
 @Stable
-internal fun Modifier.horizontalInsetsPadding(): Modifier =
-    composed {
-        val systemBars = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
-        val cutout = WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal)
+internal fun Modifier.horizontalSystemBarsPadding(): Modifier =
+    composed { windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)) }
 
-        windowInsetsPadding(systemBars.add(cutout))
-    }
-
-
+@Stable
+internal fun Modifier.horizontalCutoutPadding(): Modifier =
+    composed { windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal)) }

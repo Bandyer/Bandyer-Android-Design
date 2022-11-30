@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput
 
 import android.content.res.Configuration
-import androidx.compose.foundation.layout.Box
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -9,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.BottomInsetsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.mockAudioDevices
@@ -42,18 +40,16 @@ internal fun AudioOutputSection(
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier) {
-        SubFeatureLayout(
-            title = stringResource(id = R.string.kaleyra_audio_route_title),
-            onCloseClick = onBackPressed
-        ) {
-            AudioOutputContent(
-                items = uiState.audioDeviceList,
-                playingDeviceId = uiState.playingDeviceId,
-                onItemClick = onItemClick
-            )
-            BottomInsetsSpacer()
-        }
+    SubFeatureLayout(
+        title = stringResource(id = R.string.kaleyra_audio_route_title),
+        onCloseClick = onBackPressed,
+        modifier = modifier
+    ) {
+        AudioOutputContent(
+            items = uiState.audioDeviceList,
+            playingDeviceId = uiState.playingDeviceId,
+            onItemClick = onItemClick
+        )
     }
 }
 
@@ -64,7 +60,10 @@ internal fun AudioOutputSectionPreview() {
     KaleyraTheme {
         Surface {
             AudioOutputSection(
-                uiState = AudioOutputUiState(audioDeviceList = mockAudioDevices, playingDeviceId = mockAudioDevices.value[0].id),
+                uiState = AudioOutputUiState(
+                    audioDeviceList = mockAudioDevices,
+                    playingDeviceId = mockAudioDevices.value[0].id
+                ),
                 onItemClick = { },
                 onBackPressed = { }
             )

@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
@@ -23,6 +22,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 const val FileShareItemTag = "FileShareItemTag"
+private val ContentBottomPadding = 72.dp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -31,7 +31,7 @@ internal fun FileShareContent(
     onItemClick: (TransferUi) -> Unit,
     onItemActionClick: (TransferUi) -> Unit
 ) {
-    LazyColumn(contentPadding = PaddingValues(bottom = 72.dp)) {
+    LazyColumn(contentPadding = PaddingValues(bottom = ContentBottomPadding)) {
         items(items = items.value, key = { it.id }) {
             FileShareItem(
                 transfer = it,

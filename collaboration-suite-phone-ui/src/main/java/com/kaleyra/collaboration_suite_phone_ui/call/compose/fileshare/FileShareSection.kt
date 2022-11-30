@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.BottomInsetsSpacer
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareContent
@@ -49,35 +49,31 @@ internal fun FileShareSection(
     onItemActionClick: (TransferUi) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
+    Column(
         modifier = modifier
             .statusBarsPadding()
             .fillMaxSize()
     ) {
-        if (uiState.transferList.count() < 1) {
-            FileShareEmptyContent()
-        } else {
-            FileShareContent(
-                items = uiState.transferList,
-                onItemClick = onItemClick,
-                onItemActionClick = onItemActionClick
+        Box(modifier = Modifier.weight(1f)) {
+            if (uiState.transferList.count() < 1) {
+                FileShareEmptyContent()
+            } else {
+                FileShareContent(
+                    items = uiState.transferList,
+                    onItemClick = onItemClick,
+                    onItemActionClick = onItemActionClick
+                )
+            }
+
+            FileShareFab(
+                collapsed = uiState.transferList.count() > 0,
+                onClick = onFabClick,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(bottom = 16.dp)
             )
         }
-
-        FileShareFab(
-            collapsed = uiState.transferList.count() > 0,
-            onClick = onFabClick,
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(bottom = 8.dp)
-                .windowInsetsPadding(WindowInsets.navigationBars)
-        )
-
-        BottomInsetsSpacer(
-            Modifier
-                .align(Alignment.BottomCenter)
-                .background(color = MaterialTheme.colors.surface.copy(alpha = .8f))
-        )
+        NavigationBarsSpacer()
     }
 }
 

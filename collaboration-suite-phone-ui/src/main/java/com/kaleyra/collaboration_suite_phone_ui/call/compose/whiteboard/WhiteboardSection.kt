@@ -7,18 +7,16 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmodel.WhiteboardViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
-import androidx.compose.ui.unit.dp
-import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.BottomInsetsSpacer
 
 @Composable
 internal fun WhiteboardSection(
@@ -51,26 +49,28 @@ internal fun WhiteboardSection(
         modifier = modifier.statusBarsPadding(),
         sheetContent = { WhiteboardModalBottomSheetContent(sheetState = sheetState) },
         content = {
-            Column(Modifier.background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))) {
+            Column {
+                val contentModifier = Modifier
+                    .weight(1f)
+                    .background(color = colorResource(id = R.color.kaleyra_color_loading_whiteboard_background))
                 if (uiState.isOffline) {
                     WhiteboardOfflineContent(
                         loading = uiState.isLoading,
                         onReloadClick = onReloadClick,
-                        modifier = Modifier.weight(1f)
+                        modifier = contentModifier
                     )
                 } else {
                     WhiteboardContent(
                         loading = uiState.isLoading,
                         upload = uiState.upload,
-                        modifier = Modifier.weight(1f)
+                        modifier = contentModifier
                     )
                 }
-                BottomInsetsSpacer(Modifier.background(color = MaterialTheme.colors.surface.copy(alpha = .8f)))
+                NavigationBarsSpacer()
             }
         }
     )
 }
-
 
 
 @Preview(name = "Light Mode")

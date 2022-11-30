@@ -13,7 +13,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.height
 import androidx.compose.ui.unit.min
-import androidx.core.view.WindowInsetsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
@@ -174,7 +173,7 @@ class BottomSheetTest {
         val parentHeight = bottomSheet.onParent().getBoundsInRoot().height
         val sheetTop = bottomSheet.getBoundsInRoot().top
         val height = parentHeight - sheetTop
-        height.assertIsEqualTo(min(parentHeight, expectedHeight + getInsets().bottom), "sheet height")
+        height.assertIsEqualTo(min(parentHeight, expectedHeight), "sheet height")
     }
 
     @Test
@@ -198,7 +197,7 @@ class BottomSheetTest {
         val bottomSheetRight = bottomSheet.getBoundsInRoot().right
         val anchorRight = anchor.getBoundsInRoot().right
         anchorBottom.assertIsEqualTo(bottomSheetTop, "anchor bottom position")
-        anchorRight.assertIsEqualTo(bottomSheetRight - getInsets().right, "anchor right position")
+        anchorRight.assertIsEqualTo(bottomSheetRight, "anchor right position")
     }
 
     @Test
@@ -322,26 +321,9 @@ class BottomSheetTest {
         val parentHeight = bottomSheet.onParent().getBoundsInRoot().height
         val sheetTop = bottomSheet.getBoundsInRoot().top
         val height = parentHeight - sheetTop
-        val expected = min(parentHeight, contentHeight + getInsets().bottom)
+        val expected = min(parentHeight, contentHeight)
 
         height.assertIsEqualTo(expected, "sheet height")
-    }
-
-    private data class Insets(val left: Dp, val top: Dp, val right: Dp, val bottom: Dp)
-
-    private fun getInsets(): Insets {
-        val navigationInsets = composeTestRule.activity.window.decorView.rootWindowInsets.getInsets(WindowInsetsCompat.Type.navigationBars())
-        val displayDensity = composeTestRule.activity.resources.displayMetrics.density
-        val left = navigationInsets.left / displayDensity
-        val top = navigationInsets.top / displayDensity
-        val right = navigationInsets.right / displayDensity
-        val bottom = navigationInsets.bottom / displayDensity
-        return Insets(
-            left = left.dp,
-            top = top.dp,
-            right = right.dp,
-            bottom = bottom.dp
-        )
     }
 
     private fun ComposeContentTestRule.setBottomSheetScaffold(

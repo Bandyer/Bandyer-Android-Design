@@ -22,9 +22,10 @@ internal fun CallActionsContent(
     items: ImmutableList<CallAction>,
     itemsPerRow: Int,
     onItemClick: (action: CallAction, toggled: Boolean) -> Unit,
-    enableBottomFade: Boolean = true
+    enableBottomFade: Boolean = true,
+    modifier: Modifier = Modifier
 ) {
-    LazyVerticalGrid(columns = GridCells.Fixed(count = itemsPerRow)) {
+    LazyVerticalGrid(modifier = modifier, columns = GridCells.Fixed(count = itemsPerRow)) {
         items(items = items.value) { action ->
             CallAction(
                 action = action,

@@ -3,10 +3,8 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose
 import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -17,17 +15,13 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetScaffold
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetValue
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.rememberBottomSheetState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isCollapsed
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isCollapsing
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isExpandingToFullScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.isExitingExpandedState
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
 import kotlinx.coroutines.launch
+
+private val PeekHeight = 48.dp
+private val HalfExpandedHeight = 166.dp
 
 @Composable
 internal fun CallScreen(
@@ -85,12 +79,13 @@ internal fun CallScreen(
         !sheetState.collapsable && !sheetState.isHalfExpanded -> BackPressHandler(onBackPressed = { halfExpandBottomSheet() })
     }
 
-    Box {
+    Box(modifier = Modifier.horizontalSystemBarsPadding()) {
+        val navBarsBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         BottomSheetScaffold(
             modifier = Modifier.fillMaxSize(),
             sheetState = sheetState,
-            sheetPeekHeight = 48.dp,
-            sheetHalfExpandedHeight = 166.dp,
+            sheetPeekHeight = PeekHeight + navBarsBottomPadding,
+            sheetHalfExpandedHeight = HalfExpandedHeight + navBarsBottomPadding,
             anchor = { },
             sheetBackgroundColor = MaterialTheme.colors.surface.copy(alpha = backgroundAlpha),
             sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
@@ -104,10 +99,13 @@ internal fun CallScreen(
                             halfExpandBottomSheet()
                         }
                     },
-                    contentVisible = !sheetState.isCollapsed()
+                    contentVisible = !sheetState.isCollapsed(),
+                    modifier = Modifier.windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal))
                 )
             },
-            content = { CallScreenContent(sheetState, it) }
+            content = {
+                CallScreenContent(sheetState, it)
+            }
         )
 
         CallScreenAppBar(
