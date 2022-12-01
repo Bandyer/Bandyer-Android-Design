@@ -9,7 +9,6 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContentState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBarTag
@@ -19,7 +18,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPad
 
 @Composable
 internal fun CallScreenAppBar(
-    bottomSheetContentState: BottomSheetContentState,
+    currentSheetComponent: BottomSheetComponent,
     visible: Boolean,
     onBackPressed: () -> Unit
 ) {
@@ -37,7 +36,7 @@ internal fun CallScreenAppBar(
             )
             Box(modifier = Modifier.statusBarsPadding()) {
                 val appBarsModifier = Modifier.horizontalCutoutPadding()
-                when (bottomSheetContentState.currentComponent) {
+                when (currentSheetComponent) {
                     BottomSheetComponent.FileShare -> FileShareAppBar(
                         onBackPressed = onBackPressed,
                         modifier = appBarsModifier.testTag(FileShareAppBarTag)
@@ -52,3 +51,4 @@ internal fun CallScreenAppBar(
         }
     }
 }
+

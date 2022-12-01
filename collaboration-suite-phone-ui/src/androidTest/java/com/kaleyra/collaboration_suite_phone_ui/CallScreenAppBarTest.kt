@@ -11,9 +11,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreenAppBar
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContentState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.LineState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBarTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardAppBarTag
 import org.junit.Before
@@ -27,12 +25,7 @@ internal class CallScreenAppBarTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var bottomSheetContentState by mutableStateOf(
-        BottomSheetContentState(
-            initialComponent = BottomSheetComponent.CallActions,
-            initialLineState = LineState.Expanded
-        )
-    )
+    private var sheetComponent by mutableStateOf(BottomSheetComponent.CallActions)
 
     private var isBackPressed = false
 
@@ -40,7 +33,7 @@ internal class CallScreenAppBarTest {
     fun setUp() {
         composeTestRule.setContent {
             CallScreenAppBar(
-                bottomSheetContentState = bottomSheetContentState,
+                currentSheetComponent = sheetComponent,
                 visible = true,
                 onBackPressed = { isBackPressed = true }
             )
@@ -50,13 +43,13 @@ internal class CallScreenAppBarTest {
 
     @Test
     fun whiteboardComponent_whiteboardAppBarDisplayed() {
-        bottomSheetContentState = BottomSheetContentState(initialComponent = BottomSheetComponent.Whiteboard, initialLineState = LineState.Expanded)
+        sheetComponent = BottomSheetComponent.Whiteboard
         composeTestRule.onNodeWithTag(WhiteboardAppBarTag).assertIsDisplayed()
     }
 
     @Test
     fun fileShareComponent_fileShareAppBarDisplayed() {
-        bottomSheetContentState = BottomSheetContentState(initialComponent = BottomSheetComponent.FileShare, initialLineState = LineState.Expanded)
+        sheetComponent = BottomSheetComponent.FileShare
         composeTestRule.onNodeWithTag(FileShareAppBarTag).assertIsDisplayed()
     }
 
@@ -71,7 +64,7 @@ internal class CallScreenAppBarTest {
     }
 
     private fun userClicksClose_onBackPressedInvoked(component: BottomSheetComponent) {
-        bottomSheetContentState = BottomSheetContentState(initialComponent = component, initialLineState = LineState.Expanded)
+        sheetComponent = component
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).performClick()
         assert(isBackPressed)

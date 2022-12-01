@@ -21,6 +21,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -54,35 +56,90 @@ internal fun rememberCallScreenState(
 }
 
 @OptIn(ExperimentalMaterialApi::class)
+@Stable
 internal class CallScreenState(
     val sheetState: BottomSheetState,
     val sheetContentState: BottomSheetContentState,
-    val systemUiController: SystemUiController,
-    val isDarkMode: Boolean,
+    private val systemUiController: SystemUiController,
+    private val isDarkMode: Boolean,
     private val scope: CoroutineScope,
     private val density: Density
 ) {
+
+    val currentSheetComponent by derivedStateOf {
+        sheetContentState.currentComponent
+    }
+
+    val shouldShowAppBar by derivedStateOf {
+        isSheetFullScreen && hasCurrentSheetComponentAppBar
+    }
 
     val isSheetCollapsed by derivedStateOf {
         with(sheetState) { targetValue == BottomSheetValue.Collapsed && progress.fraction == 1f }
     }
 
     val isSheetNotDraggableDown by derivedStateOf {
-        with(sheetState) { targetValue == BottomSheetValue.Collapsed || (targetValue == BottomSheetValue.HalfExpanded && !collapsable) }
+        with(sheetState) { targetValue == BottomSheetValue.Collapsed || (targetValue == BottomSheetValue.HalfExpanded && !isCollapsable) }
     }
 
     val isSheetCollapsing by derivedStateOf {
         with(sheetState) { targetValue == BottomSheetValue.Collapsed && progress.fraction >= TargetStateFractionThreshold }
     }
 
-    val isApproachingFullScreen by derivedStateOf {
+    private val sheetLineColor by derivedStateOf {
+        if (isSheetCollapsed) Color.White else null
+    }
+
+    private val isSheetFullScreen by derivedStateOf {
         sheetState.offset.value < with(density) { FullScreenThreshold.toPx() }
     }
 
-    val isSheetLeavingExpandedState by derivedStateOf {
+    private val statusBarIconsUseSystemMode by derivedStateOf {
+        isSheetFullScreen && hasCurrentSheetComponentAppBar
+    }
+
+    private val hasCurrentSheetComponentAppBar by derivedStateOf {
+        currentSheetComponent == BottomSheetComponent.FileShare || currentSheetComponent == BottomSheetComponent.Whiteboard
+    }
+
+    private val isSheetLeavingExpanded by derivedStateOf {
         with(sheetState) {
             (currentValue == BottomSheetValue.Expanded && targetValue == BottomSheetValue.HalfExpanded && progress.fraction >= TargetStateFractionThreshold) ||
                     (currentValue == BottomSheetValue.Expanded && targetValue == BottomSheetValue.Collapsed)
+        }
+    }
+
+    init {
+        combine(
+            snapshotFlow { isSheetNotDraggableDown },
+            snapshotFlow { sheetLineColor }
+        ) { isSheetNotDraggableDown, sheetLineColor ->
+            if (isSheetNotDraggableDown) sheetContentState.collapseLine(color = sheetLineColor)
+            else sheetContentState.expandLine()
+        }.launchIn(scope)
+
+        snapshotFlow { isSheetLeavingExpanded }
+            .filter { it }
+            .onEach { navigateToCallActionsComponent() }
+            .launchIn(scope)
+
+        snapshotFlow { currentSheetComponent }
+            .filter { it != BottomSheetComponent.CallActions }
+            .onEach { sheetState.expand() }
+            .launchIn(scope)
+
+        snapshotFlow { statusBarIconsUseSystemMode }
+            .onEach { updateStatusBarIcons(useSystemMode = it) }
+            .launchIn(scope)
+    }
+
+    fun navigateToCallActionsComponent() {
+        sheetContentState.navigateToComponent(BottomSheetComponent.CallActions)
+    }
+
+    fun halfExpandSheetIfCollapsed() {
+        if (isSheetCollapsed) {
+            halfExpandSheet()
         }
     }
 
@@ -92,6 +149,10 @@ internal class CallScreenState(
 
     fun collapseSheet() {
         scope.launch { sheetState.collapse() }
+    }
+
+    private fun updateStatusBarIcons(useSystemMode: Boolean) {
+        systemUiController.statusBarDarkContentEnabled = if (useSystemMode) !isDarkMode else false
     }
 
     companion object {
@@ -104,40 +165,14 @@ internal class CallScreenState(
 internal fun CallScreen(callScreenState: CallScreenState = rememberCallScreenState()) {
     val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
 
-    LaunchedEffect(callScreenState) {
-        snapshotFlow { callScreenState.isApproachingFullScreen }
-            .onEach { callScreenState.systemUiController.statusBarDarkContentEnabled = if (it) !callScreenState.isDarkMode else false }
-            .launchIn(this)
-    }
-
-    LaunchedEffect(callScreenState) {
-        snapshotFlow { callScreenState.isSheetLeavingExpandedState }
-            .onEach { if (it) callScreenState.sheetContentState.navigateToComponent(BottomSheetComponent.CallActions) }
-            .launchIn(this)
-    }
-
-    LaunchedEffect(callScreenState) {
-        snapshotFlow { callScreenState.sheetContentState.currentComponent }
-            .onEach { if (it != BottomSheetComponent.CallActions) callScreenState.sheetState.expand() }
-            .launchIn(this)
-    }
-
-    LaunchedEffect(callScreenState.sheetState, callScreenState.isSheetCollapsed, callScreenState.isSheetNotDraggableDown) {
-        when {
-            callScreenState.isSheetCollapsed -> callScreenState.sheetContentState.collapseLine(color = Color.White)
-            callScreenState.isSheetNotDraggableDown -> callScreenState.sheetContentState.collapseLine()
-            else -> callScreenState.sheetContentState.expandLine()
-        }
-    }
-
     when {
-        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackPressHandler(onBackPressed = { callScreenState.sheetContentState.navigateToComponent(BottomSheetComponent.CallActions) })
-        callScreenState.sheetState.collapsable && !callScreenState.sheetState.isCollapsed -> BackPressHandler(onBackPressed = callScreenState::collapseSheet)
-        !callScreenState.sheetState.collapsable && !callScreenState.sheetState.isHalfExpanded -> BackPressHandler(onBackPressed = callScreenState::halfExpandSheet)
+        callScreenState.currentSheetComponent != BottomSheetComponent.CallActions -> BackPressHandler(onBackPressed = callScreenState::navigateToCallActionsComponent)
+        !callScreenState.isSheetNotDraggableDown -> BackPressHandler(onBackPressed = callScreenState::collapseSheet)
     }
 
     Box(modifier = Modifier.horizontalSystemBarsPadding()) {
-        val navBarsBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        val navBarsBottomPadding =
+            WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         BottomSheetScaffold(
             modifier = Modifier.fillMaxSize(),
             sheetState = callScreenState.sheetState,
@@ -151,22 +186,22 @@ internal fun CallScreen(callScreenState: CallScreenState = rememberCallScreenSta
             sheetContent = {
                 BottomSheetContent(
                     contentState = callScreenState.sheetContentState,
-                    onLineClick = {
-                        if (callScreenState.sheetState.isCollapsed) {
-                            callScreenState.halfExpandSheet()
-                        }
-                    },
+                    onLineClick = callScreenState::halfExpandSheetIfCollapsed,
                     contentVisible = !callScreenState.isSheetCollapsed,
-                    modifier = Modifier.windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal))
+                    modifier = Modifier.windowInsetsPadding(
+                        WindowInsets.displayCutout.only(
+                            WindowInsetsSides.Horizontal
+                        )
+                    )
                 )
             },
-            content = { CallScreenContent(callScreenState.sheetState, it) }
+            content = { CallScreenContent(callScreenState, it) }
         )
 
         CallScreenAppBar(
-            bottomSheetContentState = callScreenState.sheetContentState,
-            visible = callScreenState.isApproachingFullScreen,
-            onBackPressed = callScreenState::halfExpandSheet
+            currentSheetComponent = callScreenState.currentSheetComponent,
+            visible = callScreenState.shouldShowAppBar,
+            onBackPressed = callScreenState::halfExpandSheet,
         )
     }
 }

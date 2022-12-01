@@ -72,7 +72,7 @@ class CallScreenTest {
 
     @Test
     fun sheetNotCollapsableAndHalfExpanded_lineIsCollapsed() {
-        sheetState = BottomSheetState(initialValue = BottomSheetValue.HalfExpanded, collapsable = false)
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.HalfExpanded, isCollapsable = false)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded)
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
         assertEquals(LineState.Collapsed::class, sheetContentState.currentLineState::class)
@@ -80,18 +80,17 @@ class CallScreenTest {
 
     @Test
     fun sheetNotCollapsableAndExpanded_lineIsExpanded() {
-        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded, collapsable = false)
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded, isCollapsable = false)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
         assertEquals(LineState.Expanded, sheetContentState.currentLineState)
     }
 
-    // TODO fix
     @Test
     fun userClicksLine_sheetHalfExpand() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
-        composeTestRule.onNodeWithTag("Prova").performClick()
+        composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).performClick()
         composeTestRule.waitForIdle()
         runBlocking {
             val sheetStateValue = snapshotFlow { sheetState.currentValue }.first()
@@ -170,7 +169,10 @@ class CallScreenTest {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
         sheetContentState = BottomSheetContentState(component, LineState.Collapsed())
         composeTestRule.waitForIdle()
-        assertEquals(BottomSheetValue.Expanded, sheetState.currentValue)
+        runBlocking {
+            val value = snapshotFlow { sheetState.currentValue }.first()
+            assertEquals(BottomSheetValue.Expanded, value)
+        }
     }
 
     @Test
