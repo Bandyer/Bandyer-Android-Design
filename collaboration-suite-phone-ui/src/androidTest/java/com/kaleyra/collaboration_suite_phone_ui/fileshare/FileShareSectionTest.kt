@@ -9,7 +9,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareSection
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockDownloadTransfer
@@ -23,7 +23,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class FileShareSectionTest {
+class FileShareComponentTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -37,7 +37,7 @@ class FileShareSectionTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            FileShareSection(
+            FileShareComponent(
                 uiState = FileShareUiState(transferList = items),
                 onFabClick = { isFabClicked = true },
                 onItemClick = { actualTransfer = it },

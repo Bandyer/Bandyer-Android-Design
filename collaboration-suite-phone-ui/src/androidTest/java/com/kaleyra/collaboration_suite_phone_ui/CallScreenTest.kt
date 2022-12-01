@@ -8,7 +8,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreenState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.LocalBackPressedDispatcher
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBarTag
@@ -23,7 +22,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 // TODO status bar icon must be dark if dark theme and on whiteboard and file sharing
-// TODO add call app bar tests (3)
+// TODO add call app bar tests (1)
 // TODO add nested scroll test for file share (2)
 @RunWith(AndroidJUnit4::class)
 class CallScreenTest {
@@ -33,7 +32,7 @@ class CallScreenTest {
 
     private var sheetState by mutableStateOf(BottomSheetState(BottomSheetValue.Expanded))
 
-    private var sheetContentState by mutableStateOf(BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded))
+    private var sheetContentState by mutableStateOf(BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded))
 
     private var sideEffect by mutableStateOf(suspend { })
 
@@ -58,7 +57,7 @@ class CallScreenTest {
     @Test
     fun sheetCollapsed_lineIsCollapsed() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
-        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded)
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
         assertEquals(LineState.Collapsed::class, sheetContentState.currentLineState::class)
     }
@@ -66,7 +65,7 @@ class CallScreenTest {
     @Test
     fun sheetNotCollapsed_lineIsExpanded() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
         assertEquals(LineState.Expanded, sheetContentState.currentLineState)
     }
@@ -74,7 +73,7 @@ class CallScreenTest {
     @Test
     fun sheetNotCollapsableAndHalfExpanded_lineIsCollapsed() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.HalfExpanded, collapsable = false)
-        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded)
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
         assertEquals(LineState.Collapsed::class, sheetContentState.currentLineState::class)
     }
@@ -82,7 +81,7 @@ class CallScreenTest {
     @Test
     fun sheetNotCollapsableAndExpanded_lineIsExpanded() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded, collapsable = false)
-        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
         assertEquals(LineState.Expanded, sheetContentState.currentLineState)
     }
@@ -91,7 +90,7 @@ class CallScreenTest {
     @Test
     fun userClicksLine_sheetHalfExpand() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
-        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
         composeTestRule.onNodeWithTag("Prova").performClick()
         composeTestRule.waitForIdle()
         runBlocking {
@@ -101,202 +100,245 @@ class CallScreenTest {
     }
 
     @Test
-    fun audioOutputSection_userPerformsBack_callActionsDisplayed() {
-        expandedSection_userPerformsBack_callActionsDisplayed(initialSection = BottomSheetSection.AudioOutput)
+    fun audioOutputComponent_userPerformsBack_callActionsDisplayed() {
+        expandedComponent_userPerformsBack_callActionsDisplayed(initialComponent = BottomSheetComponent.AudioOutput)
     }
 
     @Test
-    fun screenShareSection_userPerformsBack_callActionsDisplayed() {
-        expandedSection_userPerformsBack_callActionsDisplayed(initialSection = BottomSheetSection.ScreenShare)
+    fun screenShareComponent_userPerformsBack_callActionsDisplayed() {
+        expandedComponent_userPerformsBack_callActionsDisplayed(initialComponent = BottomSheetComponent.ScreenShare)
     }
 
     @Test
-    fun fileShareSection_userPerformsBack_callActionsDisplayed() {
-        expandedSection_userPerformsBack_callActionsDisplayed(initialSection = BottomSheetSection.FileShare)
+    fun fileShareComponent_userPerformsBack_callActionsDisplayed() {
+        expandedComponent_userPerformsBack_callActionsDisplayed(initialComponent = BottomSheetComponent.FileShare)
     }
 
     @Test
-    fun whiteboardSection_userPerformsBack_callActionsDisplayed() {
-        expandedSection_userPerformsBack_callActionsDisplayed(initialSection = BottomSheetSection.Whiteboard)
+    fun whiteboardComponent_userPerformsBack_callActionsDisplayed() {
+        expandedComponent_userPerformsBack_callActionsDisplayed(initialComponent = BottomSheetComponent.Whiteboard)
     }
 
-    private fun expandedSection_userPerformsBack_callActionsDisplayed(initialSection: BottomSheetSection) {
+    private fun expandedComponent_userPerformsBack_callActionsDisplayed(initialComponent: BottomSheetComponent) {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        sheetContentState = BottomSheetContentState(initialSection, LineState.Expanded)
-        assertEquals(initialSection, sheetContentState.currentSection)
+        sheetContentState = BottomSheetContentState(initialComponent, LineState.Expanded)
+        assertEquals(initialComponent, sheetContentState.currentComponent)
         Espresso.pressBack()
-        composeTestRule.onNodeWithTag(CallActionsSectionTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallActionsComponentTag).assertIsDisplayed()
         assertEquals(BottomSheetValue.Expanded, sheetState.currentValue)
     }
 
     @Test
-    fun callActionsSectionExpanded_userPerformsBack_sheetIsCollapsed() {
+    fun callActionsComponentExpanded_userPerformsBack_sheetIsCollapsed() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Expanded)
-        composeTestRule.onNodeWithTag(CallActionsSectionTag).assertIsDisplayed()
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded)
+        composeTestRule.onNodeWithTag(CallActionsComponentTag).assertIsDisplayed()
         Espresso.pressBack()
         composeTestRule.waitForIdle()
         assertEquals(BottomSheetValue.Collapsed, sheetState.currentValue)
     }
 
     @Test
-    fun callActionsSectionCollapsed_userPerformsBack_activityIsFinished() {
+    fun callActionsComponentCollapsed_userPerformsBack_activityIsFinished() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
-        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
         Espresso.pressBackUnconditionally()
         assertEquals(Lifecycle.State.DESTROYED, composeTestRule.activityRule.scenario.state)
     }
 
     @Test
-    fun whiteboardSection_sheetIsExpanded() {
-        sheetIsExpandedOnSection(BottomSheetSection.Whiteboard)
+    fun whiteboardComponent_sheetIsExpanded() {
+        sheetIsExpandedOnComponent(BottomSheetComponent.Whiteboard)
     }
 
     @Test
-    fun screenShareSection_sheetIsExpanded() {
-        sheetIsExpandedOnSection(BottomSheetSection.ScreenShare)
+    fun screenShareComponent_sheetIsExpanded() {
+        sheetIsExpandedOnComponent(BottomSheetComponent.ScreenShare)
     }
 
     @Test
-    fun fileShareSection_sheetIsExpanded() {
-        sheetIsExpandedOnSection(BottomSheetSection.FileShare)
+    fun fileShareComponent_sheetIsExpanded() {
+        sheetIsExpandedOnComponent(BottomSheetComponent.FileShare)
     }
 
     @Test
-    fun audioOutputSection_sheetIsExpanded() {
-        sheetIsExpandedOnSection(BottomSheetSection.AudioOutput)
+    fun audioOutputComponent_sheetIsExpanded() {
+        sheetIsExpandedOnComponent(BottomSheetComponent.AudioOutput)
     }
 
-    private fun sheetIsExpandedOnSection(section: BottomSheetSection) {
+    private fun sheetIsExpandedOnComponent(component: BottomSheetComponent) {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
-        sheetContentState = BottomSheetContentState(section, LineState.Collapsed())
+        sheetContentState = BottomSheetContentState(component, LineState.Collapsed())
         composeTestRule.waitForIdle()
         assertEquals(BottomSheetValue.Expanded, sheetState.currentValue)
     }
 
     @Test
-    fun audioOutputSection_sheetHalfExpanding_callActionsSectionDisplayed() {
-        sheetHalfExpanding_callActionsSectionDisplayed(BottomSheetSection.AudioOutput)
+    fun audioOutputComponent_sheetHalfExpanding_callActionsComponentDisplayed() {
+        sheetHalfExpanding_callActionsComponentDisplayed(BottomSheetComponent.AudioOutput)
     }
 
     @Test
-    fun screenShareSection_sheetHalfExpanding_callActionsSectionDisplayed() {
-        sheetHalfExpanding_callActionsSectionDisplayed(BottomSheetSection.ScreenShare)
+    fun screenShareComponent_sheetHalfExpanding_callActionsComponentDisplayed() {
+        sheetHalfExpanding_callActionsComponentDisplayed(BottomSheetComponent.ScreenShare)
     }
 
     @Test
-    fun fileShareSection_sheetHalfExpanding_callActionsSectionDisplayed() {
-        sheetHalfExpanding_callActionsSectionDisplayed(BottomSheetSection.FileShare)
+    fun fileShareComponent_sheetHalfExpanding_callActionsComponentDisplayed() {
+        sheetHalfExpanding_callActionsComponentDisplayed(BottomSheetComponent.FileShare)
     }
 
     @Test
-    fun whiteboardSection_sheetHalfExpanding_callActionsSectionDisplayed() {
-        sheetHalfExpanding_callActionsSectionDisplayed(BottomSheetSection.Whiteboard)
+    fun whiteboardComponent_sheetHalfExpanding_callActionsComponentDisplayed() {
+        sheetHalfExpanding_callActionsComponentDisplayed(BottomSheetComponent.Whiteboard)
     }
 
-    private fun sheetHalfExpanding_callActionsSectionDisplayed(initialSection: BottomSheetSection) {
+    private fun sheetHalfExpanding_callActionsComponentDisplayed(initialComponent: BottomSheetComponent) {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        sheetContentState = BottomSheetContentState(initialSection, LineState.Collapsed())
+        sheetContentState = BottomSheetContentState(initialComponent, LineState.Collapsed())
         sideEffect = sheetState::halfExpand
         composeTestRule.waitForIdle()
-        assertEquals(BottomSheetSection.CallActions, sheetContentState.currentSection)
+        assertEquals(BottomSheetComponent.CallActions, sheetContentState.currentComponent)
     }
 
     @Test
-    fun audioOutputSection_sheetCollapsing_callActionsSectionDisplayed() {
-        sheetCollapsing_callActionsSectionDisplayed(BottomSheetSection.AudioOutput)
+    fun audioOutputComponent_sheetCollapsing_callActionsComponentDisplayed() {
+        sheetCollapsing_callActionsComponentDisplayed(BottomSheetComponent.AudioOutput)
     }
 
     @Test
-    fun screenShareSection_sheetCollapsing_callActionsSectionDisplayed() {
-        sheetCollapsing_callActionsSectionDisplayed(BottomSheetSection.ScreenShare)
+    fun screenShareComponent_sheetCollapsing_callActionsComponentDisplayed() {
+        sheetCollapsing_callActionsComponentDisplayed(BottomSheetComponent.ScreenShare)
     }
 
     @Test
-    fun fileShareSection_sheetCollapsing_callActionsSectionDisplayed() {
-        sheetCollapsing_callActionsSectionDisplayed(BottomSheetSection.FileShare)
+    fun fileShareComponent_sheetCollapsing_callActionsComponentDisplayed() {
+        sheetCollapsing_callActionsComponentDisplayed(BottomSheetComponent.FileShare)
     }
 
     @Test
-    fun whiteboardSection_sheetCollapsing_callActionsSectionDisplayed() {
-        sheetCollapsing_callActionsSectionDisplayed(BottomSheetSection.Whiteboard)
+    fun whiteboardComponent_sheetCollapsing_callActionsComponentDisplayed() {
+        sheetCollapsing_callActionsComponentDisplayed(BottomSheetComponent.Whiteboard)
     }
 
-    private fun sheetCollapsing_callActionsSectionDisplayed(initialSection: BottomSheetSection) {
+    private fun sheetCollapsing_callActionsComponentDisplayed(initialComponent: BottomSheetComponent) {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        sheetContentState = BottomSheetContentState(initialSection, LineState.Collapsed())
+        sheetContentState = BottomSheetContentState(initialComponent, LineState.Collapsed())
         sideEffect = sheetState::collapse
         composeTestRule.waitForIdle()
-        assertEquals(BottomSheetSection.CallActions, sheetContentState.currentSection)
+        assertEquals(BottomSheetComponent.CallActions, sheetContentState.currentComponent)
     }
 
     @Test
     fun userClicksAudioOutputAction_audioOutputIsDisplayed() {
-        userClicksAction_sectionIsDisplayed(
+        userClicksAction_componentIsDisplayed(
             actionContentDescription = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route),
-            targetSectionTag = AudioOutputSectionTag,
-            targetSection = BottomSheetSection.AudioOutput
+            targetComponentTag = AudioOutputComponentTag,
+            targetComponent = BottomSheetComponent.AudioOutput
         )
     }
 
     @Test
     fun userClicksScreenShareAction_screenShareIsDisplayed() {
-        userClicksAction_sectionIsDisplayed(
+        userClicksAction_componentIsDisplayed(
             actionContentDescription = composeTestRule.activity.getString(R.string.kaleyra_call_action_screen_share),
-            targetSectionTag = ScreenShareSectionTag,
-            targetSection = BottomSheetSection.ScreenShare
+            targetComponentTag = ScreenShareComponentTag,
+            targetComponent = BottomSheetComponent.ScreenShare
         )
     }
 
     @Test
     fun userClicksWhiteboardAction_whiteboardIsDisplayed() {
-        userClicksAction_sectionIsDisplayed(
+        userClicksAction_componentIsDisplayed(
             actionContentDescription = composeTestRule.activity.getString(R.string.kaleyra_call_action_whiteboard),
-            targetSectionTag = WhiteboardSectionTag,
-            targetSection = BottomSheetSection.Whiteboard
+            targetComponentTag = WhiteboardComponentTag,
+            targetComponent = BottomSheetComponent.Whiteboard
         )
     }
 
     @Test
     fun userClicksFileShareAction_fileShareIsDisplayed() {
-        userClicksAction_sectionIsDisplayed(
+        userClicksAction_componentIsDisplayed(
             actionContentDescription = composeTestRule.activity.getString(R.string.kaleyra_call_action_file_share),
-            targetSectionTag = FileShareSectionTag,
-            targetSection = BottomSheetSection.FileShare
+            targetComponentTag = FileShareComponentTag,
+            targetComponent = BottomSheetComponent.FileShare
         )
     }
 
-    private fun userClicksAction_sectionIsDisplayed(
+    private fun userClicksAction_componentIsDisplayed(
         actionContentDescription: String,
-        targetSectionTag: String,
-        targetSection: BottomSheetSection
+        targetComponentTag: String,
+        targetComponent: BottomSheetComponent
     ) {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
         composeTestRule.onNodeWithContentDescription(actionContentDescription).performClick()
-        composeTestRule.onNodeWithTag(targetSectionTag).assertIsDisplayed()
-        assertEquals(targetSection, sheetContentState.currentSection)
+        composeTestRule.onNodeWithTag(targetComponentTag).assertIsDisplayed()
+        assertEquals(targetComponent, sheetContentState.currentComponent)
     }
 
     @Test
     fun sheetCollapsed_callActionsNotVisible() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
-        sheetContentState = BottomSheetContentState(BottomSheetSection.CallActions, LineState.Collapsed())
-        composeTestRule.onNodeWithTag(CallActionsSectionTag).assertDoesNotExist()
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
+        composeTestRule.onNodeWithTag(CallActionsComponentTag).assertDoesNotExist()
     }
 
     @Test
-    fun fileShareSection_fileShareAppBarDisplayed() {
+    fun fileShareComponent_fileShareAppBarDisplayed() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        sheetContentState = BottomSheetContentState(BottomSheetSection.FileShare, LineState.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.FileShare, LineState.Expanded)
         composeTestRule.onNodeWithTag(FileShareAppBarTag).assertIsDisplayed()
     }
 
     @Test
-    fun whiteboardSection_whiteboardAppBarDisplayed() {
+    fun whiteboardComponent_whiteboardAppBarDisplayed() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-        sheetContentState = BottomSheetContentState(BottomSheetSection.Whiteboard, LineState.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.Whiteboard, LineState.Expanded)
         composeTestRule.onNodeWithTag(WhiteboardAppBarTag).assertIsDisplayed()
     }
 
+//    @Test
+//    fun fileShareComponent_scroll() {
+//        mockkConstructor(FileShareViewModel::class)
+//        every { anyConstructed<FileShareViewModel>().initialState() } returns
+//                FileShareUiState(
+//                    transferList = ImmutableList(listOf(
+//                        mockDownloadTransfer.copy(id = "0", state = TransferUi.State.Success(Uri.EMPTY)),
+//                        mockUploadTransfer.copy(id = "1"),
+//                        mockUploadTransfer.copy(id = "2"),
+//                        mockUploadTransfer.copy(id = "3"),
+//                        mockUploadTransfer.copy(id = "4"),
+//                        mockUploadTransfer.copy(id = "5"),
+//                        mockUploadTransfer.copy(id = "6"),
+//                        mockUploadTransfer.copy(id = "7"),
+//                        mockUploadTransfer.copy(id = "8"),
+//                        mockUploadTransfer.copy(id = "9"),
+//                        mockUploadTransfer.copy(id = "10"),
+//                        mockUploadTransfer.copy(id = "11"),
+//                        mockUploadTransfer.copy(id = "12"),
+//                        mockUploadTransfer.copy(id = "13"),
+//                        mockUploadTransfer.copy(id = "14"),
+//                        mockUploadTransfer.copy(id = "15"),
+//                        mockUploadTransfer.copy(id = "16"),
+//                        mockUploadTransfer.copy(id = "17"),
+//                        mockUploadTransfer.copy(id = "18"),
+//                        mockUploadTransfer.copy(id = "19"),
+//                        mockUploadTransfer.copy(id = "20"),
+//                        mockUploadTransfer.copy(id = "21"),
+//                        mockUploadTransfer.copy(id = "22"),
+//                        mockUploadTransfer.copy(id = "23"),
+//                        mockUploadTransfer.copy(id = "24"),
+//                        mockUploadTransfer.copy(id = "25"),
+//                        mockUploadTransfer.copy(id = "26")
+//                    ))
+//                )
+//        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+//        sheetContentState = BottomSheetContentState(BottomSheetComponent.FileShare, LineState.Expanded)
+//        composeTestRule.waitForIdle()
+//        runBlocking {
+//            delay(3000)
+//            assertEquals(BottomSheetComponent.FileShare, sheetContentState.currentComponent)
+//        }
+//    }
 }

@@ -12,7 +12,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreenAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetContentState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetSection
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.LineState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBarTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardAppBarTag
@@ -29,7 +29,7 @@ internal class CallScreenAppBarTest {
 
     private var bottomSheetContentState by mutableStateOf(
         BottomSheetContentState(
-            initialSection = BottomSheetSection.CallActions,
+            initialComponent = BottomSheetComponent.CallActions,
             initialLineState = LineState.Expanded
         )
     )
@@ -48,25 +48,25 @@ internal class CallScreenAppBarTest {
     }
 
     @Test
-    fun whiteboardSection_whiteboardAppBarDisplayed() {
-        bottomSheetContentState = BottomSheetContentState(initialSection = BottomSheetSection.Whiteboard, initialLineState = LineState.Expanded)
+    fun whiteboardComponent_whiteboardAppBarDisplayed() {
+        bottomSheetContentState = BottomSheetContentState(initialComponent = BottomSheetComponent.Whiteboard, initialLineState = LineState.Expanded)
         composeTestRule.onNodeWithTag(WhiteboardAppBarTag).assertIsDisplayed()
     }
 
     @Test
-    fun fileShareSection_fileShareAppBarDisplayed() {
-        bottomSheetContentState = BottomSheetContentState(initialSection = BottomSheetSection.FileShare, initialLineState = LineState.Expanded)
+    fun fileShareComponent_fileShareAppBarDisplayed() {
+        bottomSheetContentState = BottomSheetContentState(initialComponent = BottomSheetComponent.FileShare, initialLineState = LineState.Expanded)
         composeTestRule.onNodeWithTag(FileShareAppBarTag).assertIsDisplayed()
     }
 
     @Test
-    fun screenShareSection_closeIsDisplayed() {
-        closeIsDisplayed(BottomSheetContentState(initialSection = BottomSheetSection.ScreenShare, initialLineState = LineState.Expanded))
+    fun screenShareComponent_closeIsDisplayed() {
+        closeIsDisplayed(BottomSheetContentState(initialComponent = BottomSheetComponent.ScreenShare, initialLineState = LineState.Expanded))
     }
 
     @Test
-    fun audioOutputSection_closeIsDisplayed() {
-        closeIsDisplayed(BottomSheetContentState(initialSection = BottomSheetSection.AudioOutput, initialLineState = LineState.Expanded))
+    fun audioOutputComponent_closeIsDisplayed() {
+        closeIsDisplayed(BottomSheetContentState(initialComponent = BottomSheetComponent.AudioOutput, initialLineState = LineState.Expanded))
     }
 
     private fun closeIsDisplayed(contentState: BottomSheetContentState) {

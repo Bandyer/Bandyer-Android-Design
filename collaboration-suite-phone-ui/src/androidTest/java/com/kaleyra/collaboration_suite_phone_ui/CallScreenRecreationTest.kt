@@ -11,7 +11,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.LocalBackPressedDispatcher
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.FileShareSectionTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.FileShareComponentTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBarTag
 import org.junit.Rule
 import org.junit.Test
@@ -39,6 +39,6 @@ class CallScreenRecreationTest {
         restorationTester.emulateSavedInstanceStateRestore()
 
         composeTestRule.onNodeWithTag(FileShareAppBarTag).assertIsDisplayed()
-        composeTestRule.onNodeWithTag(FileShareSectionTag).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(FileShareComponentTag).assertIsDisplayed()
     }
 }

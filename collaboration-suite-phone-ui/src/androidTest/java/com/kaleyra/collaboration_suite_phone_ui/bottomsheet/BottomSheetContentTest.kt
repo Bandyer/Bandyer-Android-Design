@@ -24,7 +24,7 @@ class BottomSheetContentTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var contentState by mutableStateOf(BottomSheetContentState(initialSection = BottomSheetSection.CallActions, initialLineState = LineState.Expanded))
+    private var contentState by mutableStateOf(BottomSheetContentState(initialComponent = BottomSheetComponent.CallActions, initialLineState = LineState.Expanded))
 
     private var isLineClicked = false
 
@@ -48,7 +48,7 @@ class BottomSheetContentTest {
 
     @Test
     fun expandLineState_lineIsExpanded() {
-        contentState = BottomSheetContentState(initialSection = BottomSheetSection.CallActions, LineState.Collapsed())
+        contentState = BottomSheetContentState(initialComponent = BottomSheetComponent.CallActions, LineState.Collapsed())
         contentState.expandLine()
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(ExpandedLineWidth)
         assertEquals(LineState.Expanded, contentState.currentLineState)
@@ -56,7 +56,7 @@ class BottomSheetContentTest {
 
     @Test
     fun collapseLineState_lineIsCollapsed() {
-        contentState = BottomSheetContentState(initialSection = BottomSheetSection.CallActions, LineState.Expanded)
+        contentState = BottomSheetContentState(initialComponent = BottomSheetComponent.CallActions, LineState.Expanded)
         contentState.collapseLine()
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
         assertEquals(LineState.Collapsed::class.java, contentState.currentLineState::class.java)
@@ -69,53 +69,53 @@ class BottomSheetContentTest {
     }
 
     @Test
-    fun bottomSheetContentStateInitialSectionIsSet() {
-        composeTestRule.assertSectionIsDisplayed(tag = CallActionsSectionTag, section = BottomSheetSection.CallActions)
+    fun bottomSheetContentStateInitialComponentIsSet() {
+        composeTestRule.assertComponentIsDisplayed(tag = CallActionsComponentTag, component = BottomSheetComponent.CallActions)
     }
 
     @Test
-    fun navigateToCallActionsSection_callActionsIsDisplayed() {
-        contentState = BottomSheetContentState(initialSection = BottomSheetSection.AudioOutput, initialLineState = LineState.Expanded)
-        contentState.navigateToSection(BottomSheetSection.CallActions)
-        composeTestRule.assertSectionIsDisplayed(tag = CallActionsSectionTag, section = BottomSheetSection.CallActions)
+    fun navigateToCallActionsComponent_callActionsIsDisplayed() {
+        contentState = BottomSheetContentState(initialComponent = BottomSheetComponent.AudioOutput, initialLineState = LineState.Expanded)
+        contentState.navigateToComponent(BottomSheetComponent.CallActions)
+        composeTestRule.assertComponentIsDisplayed(tag = CallActionsComponentTag, component = BottomSheetComponent.CallActions)
     }
 
     @Test
-    fun navigateToAudioOutputSection_audioOutputIsDisplayed() {
-        contentState.navigateToSection(BottomSheetSection.AudioOutput)
-        composeTestRule.assertSectionIsDisplayed(tag = AudioOutputSectionTag, section = BottomSheetSection.AudioOutput)
+    fun navigateToAudioOutputComponent_audioOutputIsDisplayed() {
+        contentState.navigateToComponent(BottomSheetComponent.AudioOutput)
+        composeTestRule.assertComponentIsDisplayed(tag = AudioOutputComponentTag, component = BottomSheetComponent.AudioOutput)
     }
 
     @Test
-    fun navigateToWhiteboardSection_whiteboardIsDisplayed() {
-        contentState.navigateToSection(BottomSheetSection.Whiteboard)
-        composeTestRule.assertSectionIsDisplayed(tag = WhiteboardSectionTag, section = BottomSheetSection.Whiteboard)
+    fun navigateToWhiteboardComponent_whiteboardIsDisplayed() {
+        contentState.navigateToComponent(BottomSheetComponent.Whiteboard)
+        composeTestRule.assertComponentIsDisplayed(tag = WhiteboardComponentTag, component = BottomSheetComponent.Whiteboard)
     }
 
     @Test
-    fun navigateToFileShareSection_fileShareIsDisplayed() {
-        contentState.navigateToSection(BottomSheetSection.FileShare)
-        composeTestRule.assertSectionIsDisplayed(tag = FileShareSectionTag, section = BottomSheetSection.FileShare)
+    fun navigateToFileShareComponent_fileShareIsDisplayed() {
+        contentState.navigateToComponent(BottomSheetComponent.FileShare)
+        composeTestRule.assertComponentIsDisplayed(tag = FileShareComponentTag, component = BottomSheetComponent.FileShare)
     }
 
     @Test
-    fun navigateToScreenShareSection_screenShareIsDisplayed() {
-        contentState.navigateToSection(BottomSheetSection.ScreenShare)
-        composeTestRule.assertSectionIsDisplayed(tag = ScreenShareSectionTag, section = BottomSheetSection.ScreenShare)
+    fun navigateToScreenShareComponent_screenShareIsDisplayed() {
+        contentState.navigateToComponent(BottomSheetComponent.ScreenShare)
+        composeTestRule.assertComponentIsDisplayed(tag = ScreenShareComponentTag, component = BottomSheetComponent.ScreenShare)
     }
 
     @Test
     fun userClicksOnAudioOutputButton_audioOutputIsDisplayed() {
         val audioOutput = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route)
         composeTestRule.onNodeWithContentDescription(audioOutput).performClick()
-        composeTestRule.assertSectionIsDisplayed(tag = AudioOutputSectionTag, section = BottomSheetSection.AudioOutput)
+        composeTestRule.assertComponentIsDisplayed(tag = AudioOutputComponentTag, component = BottomSheetComponent.AudioOutput)
     }
 
     @Test
     fun userClicksOnScreenShareButton_screenShareIsDisplayed() {
         val screenShare = composeTestRule.activity.getString(R.string.kaleyra_call_action_screen_share)
         composeTestRule.onNodeWithContentDescription(screenShare).performClick()
-        composeTestRule.assertSectionIsDisplayed(tag = ScreenShareSectionTag, section = BottomSheetSection.ScreenShare)
+        composeTestRule.assertComponentIsDisplayed(tag = ScreenShareComponentTag, component = BottomSheetComponent.ScreenShare)
     }
 
     @Test
@@ -128,28 +128,28 @@ class BottomSheetContentTest {
     fun userClicksOnFileShareButton_fileShareIsDisplayed() {
         val fileShare = composeTestRule.activity.getString(R.string.kaleyra_call_action_file_share)
         composeTestRule.onNodeWithContentDescription(fileShare).performClick()
-        composeTestRule.assertSectionIsDisplayed(tag = FileShareSectionTag, section = BottomSheetSection.FileShare)
+        composeTestRule.assertComponentIsDisplayed(tag = FileShareComponentTag, component = BottomSheetComponent.FileShare)
     }
 
     @Test
-    fun audioOutputSection_userClicksClose_callActionsDisplayed() {
-        userClicksClose_callActionsDisplayed(initialSection = BottomSheetSection.AudioOutput)
+    fun audioOutputComponent_userClicksClose_callActionsDisplayed() {
+        userClicksClose_callActionsDisplayed(initialComponent = BottomSheetComponent.AudioOutput)
     }
 
     @Test
-    fun screenShareSection_userClicksClose_callActionsDisplayed() {
-        userClicksClose_callActionsDisplayed(initialSection = BottomSheetSection.ScreenShare)
+    fun screenShareComponent_userClicksClose_callActionsDisplayed() {
+        userClicksClose_callActionsDisplayed(initialComponent = BottomSheetComponent.ScreenShare)
     }
 
-    private fun userClicksClose_callActionsDisplayed(initialSection: BottomSheetSection) {
-        contentState = BottomSheetContentState(initialSection = initialSection, LineState.Expanded)
+    private fun userClicksClose_callActionsDisplayed(initialComponent: BottomSheetComponent) {
+        contentState = BottomSheetContentState(initialComponent = initialComponent, LineState.Expanded)
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).performClick()
-        composeTestRule.assertSectionIsDisplayed(tag = CallActionsSectionTag, section = BottomSheetSection.CallActions)
+        composeTestRule.assertComponentIsDisplayed(tag = CallActionsComponentTag, component = BottomSheetComponent.CallActions)
     }
 
-    private fun ComposeContentTestRule.assertSectionIsDisplayed(tag: String, section: BottomSheetSection) {
+    private fun ComposeContentTestRule.assertComponentIsDisplayed(tag: String, component: BottomSheetComponent) {
         onNodeWithTag(tag).assertIsDisplayed()
-        assertEquals(section, contentState.currentSection)
+        assertEquals(component, contentState.currentComponent)
     }
 }

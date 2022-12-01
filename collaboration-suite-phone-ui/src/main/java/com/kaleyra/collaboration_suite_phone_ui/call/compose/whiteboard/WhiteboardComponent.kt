@@ -19,13 +19,13 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 @Composable
-internal fun WhiteboardSection(
+internal fun WhiteboardComponent(
     viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onReloadClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    WhiteboardSection(
+    WhiteboardComponent(
         uiState = uiState,
         onReloadClick = onReloadClick,
         modifier = modifier
@@ -34,7 +34,7 @@ internal fun WhiteboardSection(
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-internal fun WhiteboardSection(
+internal fun WhiteboardComponent(
     uiState: WhiteboardUiState,
     onReloadClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -76,8 +76,8 @@ internal fun WhiteboardSection(
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun WhiteboardSectionPreview() {
-    WhiteboardSectionPreview(
+internal fun WhiteboardComponentPreview() {
+    WhiteboardComponentPreview(
         uiState = WhiteboardUiState(
             isLoading = true,
             upload = WhiteboardUploadUi.Uploading(.7f)
@@ -89,14 +89,14 @@ internal fun WhiteboardSectionPreview() {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
 internal fun WhiteboardScreenOfflinePreview() {
-    WhiteboardSectionPreview(uiState = WhiteboardUiState(isOffline = true))
+    WhiteboardComponentPreview(uiState = WhiteboardUiState(isOffline = true))
 }
 
 @Composable
-private fun WhiteboardSectionPreview(uiState: WhiteboardUiState) {
+private fun WhiteboardComponentPreview(uiState: WhiteboardUiState) {
     KaleyraTheme {
         Surface {
-            WhiteboardSection(
+            WhiteboardComponent(
                 uiState = uiState,
                 onReloadClick = {}
             )

@@ -20,13 +20,13 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
 @Composable
-internal fun CallActionsSection(
+internal fun CallActionsComponent(
     viewModel: CallActionsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onItemClick: (action: CallAction, toggled: Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    CallActionsSection(
+    CallActionsComponent(
         uiState = uiState,
         onItemClick = onItemClick,
         modifier = modifier
@@ -35,7 +35,7 @@ internal fun CallActionsSection(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-internal fun CallActionsSection(
+internal fun CallActionsComponent(
     uiState: CallActionsUiState,
     onItemClick: (action: CallAction, toggled: Boolean) -> Unit,
     modifier: Modifier = Modifier
@@ -55,10 +55,10 @@ internal fun CallActionsSection(
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun CallActionsSectionPreview() {
+internal fun CallActionsComponentPreview() {
     KaleyraTheme {
         Surface {
-            CallActionsSection(
+            CallActionsComponent(
                 uiState = CallActionsUiState(actionList = mockCallActions),
                 onItemClick = { _, _ -> }
             )

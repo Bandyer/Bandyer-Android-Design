@@ -35,7 +35,7 @@ internal fun rememberCallScreenState(
         collapsable = true
     ),
     sheetContentState: BottomSheetContentState = rememberBottomSheetContentState(
-        initialSheetSection = BottomSheetSection.CallActions,
+        initialSheetComponent = BottomSheetComponent.CallActions,
         initialLineState = LineState.Expanded
     ),
     systemUiController: SystemUiController = rememberSystemUiController(),
@@ -112,13 +112,13 @@ internal fun CallScreen(callScreenState: CallScreenState = rememberCallScreenSta
 
     LaunchedEffect(callScreenState) {
         snapshotFlow { callScreenState.isSheetLeavingExpandedState }
-            .onEach { if (it) callScreenState.sheetContentState.navigateToSection(BottomSheetSection.CallActions) }
+            .onEach { if (it) callScreenState.sheetContentState.navigateToComponent(BottomSheetComponent.CallActions) }
             .launchIn(this)
     }
 
     LaunchedEffect(callScreenState) {
-        snapshotFlow { callScreenState.sheetContentState.currentSection }
-            .onEach { if (it != BottomSheetSection.CallActions) callScreenState.sheetState.expand() }
+        snapshotFlow { callScreenState.sheetContentState.currentComponent }
+            .onEach { if (it != BottomSheetComponent.CallActions) callScreenState.sheetState.expand() }
             .launchIn(this)
     }
 
@@ -131,7 +131,7 @@ internal fun CallScreen(callScreenState: CallScreenState = rememberCallScreenSta
     }
 
     when {
-        callScreenState.sheetContentState.currentSection != BottomSheetSection.CallActions -> BackPressHandler(onBackPressed = { callScreenState.sheetContentState.navigateToSection(BottomSheetSection.CallActions) })
+        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackPressHandler(onBackPressed = { callScreenState.sheetContentState.navigateToComponent(BottomSheetComponent.CallActions) })
         callScreenState.sheetState.collapsable && !callScreenState.sheetState.isCollapsed -> BackPressHandler(onBackPressed = callScreenState::collapseSheet)
         !callScreenState.sheetState.collapsable && !callScreenState.sheetState.isHalfExpanded -> BackPressHandler(onBackPressed = callScreenState::halfExpandSheet)
     }

@@ -8,7 +8,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutputSection
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutputComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -19,7 +19,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class AudioOutputSectionTest {
+class AudioOutputComponentTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -33,7 +33,7 @@ class AudioOutputSectionTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            AudioOutputSection(
+            AudioOutputComponent(
                 uiState = AudioOutputUiState(audioDeviceList = items),
                 onItemClick = { audioDevice = it },
                 onBackPressed = { isBackPressed = true }

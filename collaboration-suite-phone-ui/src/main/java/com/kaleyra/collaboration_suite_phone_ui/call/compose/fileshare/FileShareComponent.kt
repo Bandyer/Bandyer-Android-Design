@@ -1,9 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,7 +22,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 const val ProgressIndicatorTag = "ProgressIndicatorTag"
 
 @Composable
-internal fun FileShareSection(
+internal fun FileShareComponent(
     viewModel: FileShareViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onFabClick: () -> Unit,
     onItemClick: (TransferUi) -> Unit,
@@ -32,7 +30,7 @@ internal fun FileShareSection(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    FileShareSection(
+    FileShareComponent(
         uiState = uiState,
         onFabClick = onFabClick,
         onItemClick = onItemClick,
@@ -42,7 +40,7 @@ internal fun FileShareSection(
 }
 
 @Composable
-internal fun FileShareSection(
+internal fun FileShareComponent(
     uiState: FileShareUiState,
     onFabClick: () -> Unit,
     onItemClick: (TransferUi) -> Unit,
@@ -80,10 +78,10 @@ internal fun FileShareSection(
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")
 @Composable
-internal fun FileShareSectionPreview() {
+internal fun FileShareComponentPreview() {
     KaleyraTheme {
         Surface {
-            FileShareSection(
+            FileShareComponent(
                 uiState = FileShareUiState(),
                 onFabClick = {},
                 onItemClick = {},

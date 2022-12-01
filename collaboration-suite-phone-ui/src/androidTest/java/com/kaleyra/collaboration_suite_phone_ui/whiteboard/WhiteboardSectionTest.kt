@@ -13,13 +13,13 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardSection
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.LinearProgressIndicatorTag
 
 @RunWith(AndroidJUnit4::class)
-class WhiteboardSectionTest {
+class WhiteboardComponentTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -31,7 +31,7 @@ class WhiteboardSectionTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            WhiteboardSection(
+            WhiteboardComponent(
                 uiState = uiState,
                 onReloadClick = { isReloadClicked = true }
             )

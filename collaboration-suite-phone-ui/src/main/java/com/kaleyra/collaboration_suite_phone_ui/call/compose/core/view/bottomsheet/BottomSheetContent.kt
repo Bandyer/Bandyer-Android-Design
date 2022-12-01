@@ -15,37 +15,37 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutputSection
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.CallActionsSection
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOutputComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.CallActionsComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareSection
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShareSection
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardSection
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShareComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardComponent
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
-const val CallActionsSectionTag = "CallActionsSectionTag"
-const val AudioOutputSectionTag = "AudioOutputSectionTag"
-const val ScreenShareSectionTag = "ScreenShareSectionTag"
-const val FileShareSectionTag = "FileShareSectionTag"
-const val WhiteboardSectionTag = "WhiteboardSectionTag"
+const val CallActionsComponentTag = "CallActionsComponentTag"
+const val AudioOutputComponentTag = "AudioOutputComponentTag"
+const val ScreenShareComponentTag = "ScreenShareComponentTag"
+const val FileShareComponentTag = "FileShareComponentTag"
+const val WhiteboardComponentTag = "WhiteboardComponentTag"
 
-internal enum class BottomSheetSection {
+internal enum class BottomSheetComponent {
     CallActions, AudioOutput, ScreenShare, FileShare, Whiteboard
 }
 
 internal class BottomSheetContentState(
-    initialSection: BottomSheetSection,
+    initialComponent: BottomSheetComponent,
     initialLineState: LineState
 ) {
 
-    var currentSection: BottomSheetSection by mutableStateOf(initialSection)
+    var currentComponent: BottomSheetComponent by mutableStateOf(initialComponent)
         private set
 
     var currentLineState: LineState by mutableStateOf(initialLineState)
         private set
 
-    fun navigateToSection(section: BottomSheetSection) {
-        currentSection = section
+    fun navigateToComponent(component: BottomSheetComponent) {
+        currentComponent = component
     }
 
     fun expandLine() {
@@ -58,7 +58,7 @@ internal class BottomSheetContentState(
 
     companion object {
         fun Saver(): Saver<BottomSheetContentState, *> = Saver(
-            save = { Pair(it.currentSection, it.currentLineState) },
+            save = { Pair(it.currentComponent, it.currentLineState) },
             restore = { BottomSheetContentState(it.first, it.second) }
         )
     }
@@ -66,10 +66,10 @@ internal class BottomSheetContentState(
 
 @Composable
 internal fun rememberBottomSheetContentState(
-    initialSheetSection: BottomSheetSection,
+    initialSheetComponent: BottomSheetComponent,
     initialLineState: LineState
 ) = rememberSaveable(saver = BottomSheetContentState.Saver()) {
-    BottomSheetContentState(initialSheetSection, initialLineState)
+    BottomSheetContentState(initialSheetComponent, initialLineState)
 }
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -92,7 +92,7 @@ internal fun BottomSheetContent(
             exit = fadeOut()
         ) {
             AnimatedContent(
-                targetState = contentState.currentSection,
+                targetState = contentState.currentComponent,
                 transitionSpec = {
                     fadeIn(
                         animationSpec = tween(
@@ -103,54 +103,54 @@ internal fun BottomSheetContent(
                 }
             ) { target ->
                 when (target) {
-                    BottomSheetSection.CallActions -> {
-                        CallActionsSection(
+                    BottomSheetComponent.CallActions -> {
+                        CallActionsComponent(
                             onItemClick = { action, toggled ->
-                                contentState.navigateToSection(
-                                    section = when (action) {
-                                        is CallAction.Audio -> BottomSheetSection.AudioOutput
-                                        is CallAction.ScreenShare -> BottomSheetSection.ScreenShare
-                                        is CallAction.FileShare -> BottomSheetSection.FileShare
-                                        is CallAction.Whiteboard -> BottomSheetSection.Whiteboard
-                                        else -> BottomSheetSection.CallActions
+                                contentState.navigateToComponent(
+                                    component = when (action) {
+                                        is CallAction.Audio -> BottomSheetComponent.AudioOutput
+                                        is CallAction.ScreenShare -> BottomSheetComponent.ScreenShare
+                                        is CallAction.FileShare -> BottomSheetComponent.FileShare
+                                        is CallAction.Whiteboard -> BottomSheetComponent.Whiteboard
+                                        else -> BottomSheetComponent.CallActions
                                     }
                                 )
                             },
-                            modifier = Modifier.testTag(CallActionsSectionTag)
+                            modifier = Modifier.testTag(CallActionsComponentTag)
                         )
                     }
-                    BottomSheetSection.AudioOutput -> {
-                        AudioOutputSection(
+                    BottomSheetComponent.AudioOutput -> {
+                        AudioOutputComponent(
                             onItemClick = {
 
                             },
-                            onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) },
-                            modifier = Modifier.testTag(AudioOutputSectionTag)
+                            onBackPressed = { contentState.navigateToComponent(BottomSheetComponent.CallActions) },
+                            modifier = Modifier.testTag(AudioOutputComponentTag)
                         )
                     }
-                    BottomSheetSection.ScreenShare -> {
-                        ScreenShareSection(
+                    BottomSheetComponent.ScreenShare -> {
+                        ScreenShareComponent(
                             onItemClick = { },
-                            onBackPressed = { contentState.navigateToSection(BottomSheetSection.CallActions) },
-                            modifier = Modifier.testTag(ScreenShareSectionTag)
+                            onBackPressed = { contentState.navigateToComponent(BottomSheetComponent.CallActions) },
+                            modifier = Modifier.testTag(ScreenShareComponentTag)
                         )
                     }
-                    BottomSheetSection.FileShare -> {
-                        FileShareSection(
+                    BottomSheetComponent.FileShare -> {
+                        FileShareComponent(
                             onFabClick = { /*TODO*/ },
                             onItemClick = { /*TODO*/ },
                             onItemActionClick = { /*TODO*/ },
                             modifier = Modifier
                                 .padding(top = 20.dp)
-                                .testTag(FileShareSectionTag)
+                                .testTag(FileShareComponentTag)
                         )
                     }
-                    BottomSheetSection.Whiteboard -> {
-                        WhiteboardSection(
+                    BottomSheetComponent.Whiteboard -> {
+                        WhiteboardComponent(
                             onReloadClick = { /*TODO*/ },
                             modifier = Modifier
                                 .padding(top = 20.dp)
-                                .testTag(WhiteboardSectionTag)
+                                .testTag(WhiteboardComponentTag)
                         )
                     }
                 }
@@ -168,7 +168,7 @@ fun BottomSheetContentPreview() {
         Surface {
 //            BottomSheetContent(
 //                contentState = rememberBottomSheetContentState(
-//                    initialSheetSection = BottomSheetSection.CallActions,
+//                    initialSheetComponent = BottomSheetComponent.CallActions,
 //                    initialLineState = LineState.Expanded
 //                ),
 //                onLineClick = { }
