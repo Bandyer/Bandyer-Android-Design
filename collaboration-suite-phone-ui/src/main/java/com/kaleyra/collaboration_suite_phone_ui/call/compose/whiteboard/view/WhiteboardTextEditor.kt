@@ -25,6 +25,7 @@ internal sealed class TextEditorValue {
     object Discard : TextEditorValue()
 }
 
+@Stable
 internal class TextEditorState(initialValue: TextEditorValue) {
     var currentValue: TextEditorValue by mutableStateOf(initialValue)
         private set
