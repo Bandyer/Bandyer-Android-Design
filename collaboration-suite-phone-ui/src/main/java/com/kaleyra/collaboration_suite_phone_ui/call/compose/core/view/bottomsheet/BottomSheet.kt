@@ -36,7 +36,7 @@ internal enum class BottomSheetValue {
 internal class BottomSheetState(
     initialValue: BottomSheetValue,
     val animationSpec: AnimationSpec<Float> = SwipeableDefaults.AnimationSpec,
-    val collapsable: Boolean = true,
+    val isCollapsable: Boolean = true,
     val confirmStateChange: (BottomSheetValue) -> Boolean = { true }
 ) : SwipeableState<BottomSheetValue>(
     initialValue = initialValue,
@@ -45,7 +45,7 @@ internal class BottomSheetState(
 ) {
 
     init {
-        if (!collapsable) {
+        if (!isCollapsable) {
             require(initialValue != BottomSheetValue.Collapsed) {
                 "The initial value must not be set to Collapsed if collapsable is set to true."
             }
@@ -68,8 +68,8 @@ internal class BottomSheetState(
     suspend fun expand() = animateTo(BottomSheetValue.Expanded)
 
     suspend fun collapse() {
-        if (!collapsable) return
-        animateTo(BottomSheetValue.Collapsed)
+        if (!isCollapsable) halfExpand()
+        else animateTo(BottomSheetValue.Collapsed)
     }
 
     suspend fun halfExpand() = animateTo(BottomSheetValue.HalfExpanded)
@@ -85,7 +85,7 @@ internal class BottomSheetState(
                 BottomSheetState(
                     initialValue = it,
                     animationSpec = animationSpec,
-                    collapsable = collapsable,
+                    isCollapsable = collapsable,
                     confirmStateChange = confirmStateChange
                 )
             }
@@ -112,7 +112,7 @@ internal fun rememberBottomSheetState(
         BottomSheetState(
             initialValue = initialValue,
             animationSpec = animationSpec,
-            collapsable = collapsable,
+            isCollapsable = collapsable,
             confirmStateChange = confirmStateChange
         )
     }
@@ -152,7 +152,7 @@ internal fun BottomSheetScaffold(
         )
         sheetState.minBound = anchors.keys.minOrNull()!!
 
-        if (sheetState.collapsable) anchors[fullHeight - peekHeightPx] = BottomSheetValue.Collapsed
+        if (sheetState.isCollapsable) anchors[fullHeight - peekHeightPx] = BottomSheetValue.Collapsed
 
         val swipeable = Modifier
             .nestedScroll(sheetState.nestedScrollConnection)

@@ -142,7 +142,7 @@ class BottomSheetTest {
         collapsable: Boolean = true,
         sheetGesturesEnabled: Boolean = true
     ) {
-        val sheetState = BottomSheetState(initialValue = initialState, collapsable = collapsable)
+        val sheetState = BottomSheetState(initialValue = initialState, isCollapsable = collapsable)
         composeTestRule.setBottomSheetScaffold(
             sheetState = sheetState,
             sheetGesturesEnabled = sheetGesturesEnabled
@@ -283,7 +283,7 @@ class BottomSheetTest {
     fun sheetHalfExpandedAndNotCollapsable_collapse_sheetHalfExpanded() {
         val sheetState = BottomSheetState(
             initialValue = BottomSheetValue.HalfExpanded,
-            collapsable = false
+            isCollapsable = false
         )
         composeTestRule.setBottomSheetScaffold(
             sheetState = sheetState,
