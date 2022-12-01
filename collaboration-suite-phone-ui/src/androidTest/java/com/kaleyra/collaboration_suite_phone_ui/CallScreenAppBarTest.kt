@@ -45,6 +45,7 @@ internal class CallScreenAppBarTest {
                 onBackPressed = { isBackPressed = true }
             )
         }
+        isBackPressed = false
     }
 
     @Test
@@ -60,23 +61,17 @@ internal class CallScreenAppBarTest {
     }
 
     @Test
-    fun screenShareComponent_closeIsDisplayed() {
-        closeIsDisplayed(BottomSheetContentState(initialComponent = BottomSheetComponent.ScreenShare, initialLineState = LineState.Expanded))
+    fun whiteboardComponent_userClicksClose_onBackPressedInvoked() {
+        userClicksClose_onBackPressedInvoked(BottomSheetComponent.Whiteboard)
     }
 
     @Test
-    fun audioOutputComponent_closeIsDisplayed() {
-        closeIsDisplayed(BottomSheetContentState(initialComponent = BottomSheetComponent.AudioOutput, initialLineState = LineState.Expanded))
+    fun fileShareComponent_userClicksClose_onBackPressedInvoked() {
+        userClicksClose_onBackPressedInvoked(BottomSheetComponent.FileShare)
     }
 
-    private fun closeIsDisplayed(contentState: BottomSheetContentState) {
-        bottomSheetContentState = contentState
-        val close = composeTestRule.activity.getString(R.string.kaleyra_close)
-        composeTestRule.onNodeWithContentDescription(close).assertIsDisplayed()
-    }
-
-    @Test
-    fun userClicksClose_onBackPressedInvoked() {
+    private fun userClicksClose_onBackPressedInvoked(component: BottomSheetComponent) {
+        bottomSheetContentState = BottomSheetContentState(initialComponent = component, initialLineState = LineState.Expanded)
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).performClick()
         assert(isBackPressed)
