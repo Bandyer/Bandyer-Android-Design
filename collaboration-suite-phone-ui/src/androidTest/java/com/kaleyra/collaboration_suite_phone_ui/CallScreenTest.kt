@@ -144,28 +144,33 @@ class CallScreenTest {
     }
 
     @Test
-    fun whiteboardComponent_sheetIsExpanded() {
-        sheetIsExpandedOnComponent(BottomSheetComponent.Whiteboard)
+    fun userClicksWhiteboardAction_sheetIsExpanded() {
+        val whiteboard = composeTestRule.activity.getString(R.string.kaleyra_call_action_whiteboard)
+        userClicksAction_sheetIsExpanded(whiteboard)
     }
 
     @Test
-    fun screenShareComponent_sheetIsExpanded() {
-        sheetIsExpandedOnComponent(BottomSheetComponent.ScreenShare)
+    fun userClicksScreenShareAction_sheetIsExpanded() {
+        val screenShare = composeTestRule.activity.getString(R.string.kaleyra_call_action_screen_share)
+        userClicksAction_sheetIsExpanded(screenShare)
     }
 
     @Test
-    fun fileShareComponent_sheetIsExpanded() {
-        sheetIsExpandedOnComponent(BottomSheetComponent.FileShare)
+    fun userClicksFileShareAction_sheetIsExpanded() {
+        val fileShare = composeTestRule.activity.getString(R.string.kaleyra_call_action_file_share)
+        userClicksAction_sheetIsExpanded(fileShare)
     }
 
     @Test
-    fun audioOutputComponent_sheetIsExpanded() {
-        sheetIsExpandedOnComponent(BottomSheetComponent.AudioOutput)
+    fun userClicksAudioOutputAction_sheetIsExpanded() {
+        val audioOutput = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route)
+        userClicksAction_sheetIsExpanded(audioOutput)
     }
 
-    private fun sheetIsExpandedOnComponent(component: BottomSheetComponent) {
-        sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
-        sheetContentState = BottomSheetContentState(component, LineState.Collapsed())
+    private fun userClicksAction_sheetIsExpanded(actionDescription: String) {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded)
+        composeTestRule.onNodeWithContentDescription(actionDescription).performClick()
         composeTestRule.waitForIdle()
         assertEquals(BottomSheetValue.Expanded, sheetState.currentValue)
     }

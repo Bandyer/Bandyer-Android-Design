@@ -21,14 +21,14 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 internal fun AudioOutputComponent(
     viewModel: AudioOutputViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
     onItemClick: (AudioDeviceUi) -> Unit,
-    onBackPressed: () -> Unit,
+    onCloseClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     AudioOutputComponent(
         uiState = uiState,
         onItemClick = onItemClick,
-        onBackPressed = onBackPressed,
+        onCloseClick = onCloseClick,
         modifier = modifier
     )
 }
@@ -37,12 +37,12 @@ internal fun AudioOutputComponent(
 internal fun AudioOutputComponent(
     uiState: AudioOutputUiState,
     onItemClick: (AudioDeviceUi) -> Unit,
-    onBackPressed: () -> Unit,
+    onCloseClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     SubFeatureLayout(
         title = stringResource(id = R.string.kaleyra_audio_route_title),
-        onCloseClick = onBackPressed,
+        onCloseClick = onCloseClick,
         modifier = modifier
     ) {
         AudioOutputContent(
@@ -65,7 +65,7 @@ internal fun AudioOutputComponentPreview() {
                     playingDeviceId = mockAudioDevices.value[0].id
                 ),
                 onItemClick = { },
-                onBackPressed = { }
+                onCloseClick = { }
             )
         }
     }

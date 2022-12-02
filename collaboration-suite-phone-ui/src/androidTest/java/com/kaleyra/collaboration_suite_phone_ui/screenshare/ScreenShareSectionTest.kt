@@ -31,7 +31,7 @@ class ScreenShareComponentTest {
 
     private var screenShareTarget: ScreenShareTargetUi? = null
 
-    private var isBackPressed = false
+    private var isCloseClicked = false
 
     @Before
     fun setUp() {
@@ -39,7 +39,7 @@ class ScreenShareComponentTest {
             ScreenShareComponent(
                 uiState = ScreenShareUiState(targetList = items),
                 onItemClick = { screenShareTarget = it },
-                onBackPressed = { isBackPressed = true }
+                onCloseClick = { isCloseClicked = true }
             )
         }
         screenShareTarget = null
@@ -55,7 +55,7 @@ class ScreenShareComponentTest {
     fun userClicksClose_onCloseClickInvoked() {
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).performClick()
-        assert(isBackPressed)
+        assert(isCloseClicked)
     }
 
     @Test

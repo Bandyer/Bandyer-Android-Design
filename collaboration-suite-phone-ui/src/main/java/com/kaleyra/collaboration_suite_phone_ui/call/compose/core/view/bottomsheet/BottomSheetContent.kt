@@ -77,7 +77,10 @@ internal fun rememberBottomSheetContentState(
 @Composable
 internal fun BottomSheetContent(
     contentState: BottomSheetContentState,
-    onLineClick: () -> Unit,
+    onLineClick: () -> Unit = { },
+    onCallActionClick: () -> Unit = { },
+    onAudioDeviceClick: () -> Unit = { },
+    onScreenShareTargetClick: () -> Unit = { },
     contentVisible: Boolean = true,
     modifier: Modifier = Modifier
 ) {
@@ -95,12 +98,7 @@ internal fun BottomSheetContent(
             AnimatedContent(
                 targetState = contentState.currentComponent,
                 transitionSpec = {
-                    fadeIn(
-                        animationSpec = tween(
-                            220,
-                            delayMillis = 90
-                        )
-                    ) with fadeOut(animationSpec = tween(90))
+                    fadeIn(animationSpec = tween(220, delayMillis = 90)) with fadeOut(animationSpec = tween(90))
                 }
             ) { target ->
                 when (target) {
@@ -116,23 +114,22 @@ internal fun BottomSheetContent(
                                         else -> BottomSheetComponent.CallActions
                                     }
                                 )
+                                onCallActionClick()
                             },
                             modifier = Modifier.testTag(CallActionsComponentTag)
                         )
                     }
                     BottomSheetComponent.AudioOutput -> {
                         AudioOutputComponent(
-                            onItemClick = {
-
-                            },
-                            onBackPressed = { contentState.navigateToComponent(BottomSheetComponent.CallActions) },
+                            onItemClick = { onAudioDeviceClick() },
+                            onCloseClick = { contentState.navigateToComponent(BottomSheetComponent.CallActions) },
                             modifier = Modifier.testTag(AudioOutputComponentTag)
                         )
                     }
                     BottomSheetComponent.ScreenShare -> {
                         ScreenShareComponent(
-                            onItemClick = { },
-                            onBackPressed = { contentState.navigateToComponent(BottomSheetComponent.CallActions) },
+                            onItemClick = { onScreenShareTargetClick() },
+                            onCloseClick = { contentState.navigateToComponent(BottomSheetComponent.CallActions) },
                             modifier = Modifier.testTag(ScreenShareComponentTag)
                         )
                     }
@@ -167,13 +164,13 @@ internal fun BottomSheetContent(
 fun BottomSheetContentPreview() {
     KaleyraTheme {
         Surface {
-//            BottomSheetContent(
-//                contentState = rememberBottomSheetContentState(
-//                    initialSheetComponent = BottomSheetComponent.CallActions,
-//                    initialLineState = LineState.Expanded
-//                ),
-//                onLineClick = { }
-//            )
+            BottomSheetContent(
+                contentState = rememberBottomSheetContentState(
+                    initialSheetComponent = BottomSheetComponent.CallActions,
+                    initialLineState = LineState.Expanded
+                ),
+                onLineClick = { }
+            )
         }
     }
 }

@@ -28,7 +28,7 @@ class AudioOutputComponentTest {
 
     private var audioDevice: AudioDeviceUi? = null
 
-    private var isBackPressed = false
+    private var isCloseClicked = false
 
     @Before
     fun setUp() {
@@ -36,7 +36,7 @@ class AudioOutputComponentTest {
             AudioOutputComponent(
                 uiState = AudioOutputUiState(audioDeviceList = items),
                 onItemClick = { audioDevice = it },
-                onBackPressed = { isBackPressed = true }
+                onCloseClick = { isCloseClicked = true }
             )
         }
         audioDevice = null
@@ -52,7 +52,7 @@ class AudioOutputComponentTest {
     fun userClicksClose_onCloseClickInvoked() {
         val close = composeTestRule.activity.getString(R.string.kaleyra_close)
         composeTestRule.onNodeWithContentDescription(close).performClick()
-        assert(isBackPressed)
+        assert(isCloseClicked)
     }
 
     @Test
