@@ -20,6 +20,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import java.io.Serializable
 
 internal const val LineTag = "LineTag"
 
@@ -28,7 +29,8 @@ internal val CollapsedLineWidth = 4.dp
 
 private val LineHeight = 4.dp
 
-internal sealed class LineState {
+// Serializable is needed to save the line state in {@link BottomSheetContentState#Saver}
+internal sealed class LineState : Serializable {
     object Expanded : LineState()
     data class Collapsed(val color: Color? = null) : LineState()
 }
