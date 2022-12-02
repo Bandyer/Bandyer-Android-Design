@@ -39,7 +39,7 @@ internal class CallScreenAppBarTest {
     @Test
     fun whiteboardComponent_whiteboardAppBarDisplayed() {
         sheetComponent = BottomSheetComponent.Whiteboard
-        val whiteboard = composeTestRule.activity.getString(R.string.kaleyra_fileshare)
+        val whiteboard = composeTestRule.activity.getString(R.string.kaleyra_whiteboard)
         composeTestRule.onNodeWithText(whiteboard).assertIsDisplayed()
     }
 
