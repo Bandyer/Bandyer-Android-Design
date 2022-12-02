@@ -4,16 +4,11 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreenAppBar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBarTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardAppBarTag
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -44,13 +39,15 @@ internal class CallScreenAppBarTest {
     @Test
     fun whiteboardComponent_whiteboardAppBarDisplayed() {
         sheetComponent = BottomSheetComponent.Whiteboard
-        composeTestRule.onNodeWithTag(WhiteboardAppBarTag).assertIsDisplayed()
+        val whiteboard = composeTestRule.activity.getString(R.string.kaleyra_fileshare)
+        composeTestRule.onNodeWithText(whiteboard).assertIsDisplayed()
     }
 
     @Test
     fun fileShareComponent_fileShareAppBarDisplayed() {
         sheetComponent = BottomSheetComponent.FileShare
-        composeTestRule.onNodeWithTag(FileShareAppBarTag).assertIsDisplayed()
+        val fileShare = composeTestRule.activity.getString(R.string.kaleyra_fileshare)
+        composeTestRule.onNodeWithText(fileShare).assertIsDisplayed()
     }
 
     @Test

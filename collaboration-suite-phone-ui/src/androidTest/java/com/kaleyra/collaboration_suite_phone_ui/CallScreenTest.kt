@@ -8,11 +8,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreenAppBarTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.LocalBackPressedDispatcher
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBarTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.rememberCallScreenState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardAppBarTag
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -22,8 +21,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 // TODO status bar icon must be dark if dark theme and on whiteboard and file sharing
-// TODO add call app bar tests (1)
-// TODO add nested scroll test for file share (2)
+// TODO add nested scroll test for file share
 @RunWith(AndroidJUnit4::class)
 class CallScreenTest {
 
@@ -169,10 +167,7 @@ class CallScreenTest {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
         sheetContentState = BottomSheetContentState(component, LineState.Collapsed())
         composeTestRule.waitForIdle()
-        runBlocking {
-            val value = snapshotFlow { sheetState.currentValue }.first()
-            assertEquals(BottomSheetValue.Expanded, value)
-        }
+        assertEquals(BottomSheetValue.Expanded, sheetState.currentValue)
     }
 
     @Test
@@ -287,17 +282,42 @@ class CallScreenTest {
     }
 
     @Test
-    fun fileShareComponent_fileShareAppBarDisplayed() {
+    fun fileShareComponentExpanded_fileShareAppBarDisplayed() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.FileShare, LineState.Expanded)
-        composeTestRule.onNodeWithTag(FileShareAppBarTag).assertIsDisplayed()
+        val fileShare = composeTestRule.activity.getString(R.string.kaleyra_fileshare)
+        composeTestRule.onNodeWithTag(CallScreenAppBarTag).assertIsDisplayed()
+        composeTestRule.onNodeWithText(fileShare).assertIsDisplayed()
     }
 
     @Test
-    fun whiteboardComponent_whiteboardAppBarDisplayed() {
+    fun whiteboardComponentExpanded_whiteboardAppBarDisplayed() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.Whiteboard, LineState.Expanded)
-        composeTestRule.onNodeWithTag(WhiteboardAppBarTag).assertIsDisplayed()
+        val whiteboard = composeTestRule.activity.getString(R.string.kaleyra_whiteboard)
+        composeTestRule.onNodeWithTag(CallScreenAppBarTag).assertIsDisplayed()
+        composeTestRule.onNodeWithText(whiteboard).assertIsDisplayed()
+    }
+
+    @Test
+    fun callActionsComponentExpanded_appBarNotDisplayed() {
+        componentExpanded_appBarNotDisplayed(BottomSheetComponent.CallActions)
+    }
+
+    @Test
+    fun audioOutputComponentExpanded_appBarNotDisplayed() {
+        componentExpanded_appBarNotDisplayed(BottomSheetComponent.AudioOutput)
+    }
+
+    @Test
+    fun screenShareComponentExpanded_appBarNotDisplayed() {
+        componentExpanded_appBarNotDisplayed(BottomSheetComponent.ScreenShare)
+    }
+
+    private fun componentExpanded_appBarNotDisplayed(component: BottomSheetComponent) {
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(component, LineState.Expanded)
+        composeTestRule.onNodeWithTag(CallScreenAppBarTag).assertDoesNotExist()
     }
 
 //    @Test

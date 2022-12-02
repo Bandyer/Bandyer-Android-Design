@@ -2,17 +2,13 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.LocalBackPressedDispatcher
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.FileShareComponentTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBarTag
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,7 +34,8 @@ class CallScreenRecreationTest {
 
         restorationTester.emulateSavedInstanceStateRestore()
 
-        composeTestRule.onNodeWithTag(FileShareAppBarTag).assertIsDisplayed()
+        val fileShareAppBarTitle = composeTestRule.activity.getString(R.string.kaleyra_fileshare)
+        composeTestRule.onNodeWithText(fileShareAppBarTitle).assertIsDisplayed()
         composeTestRule.onNodeWithTag(FileShareComponentTag).assertIsDisplayed()
     }
 }

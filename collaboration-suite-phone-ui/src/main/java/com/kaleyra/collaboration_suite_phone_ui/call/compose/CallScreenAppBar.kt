@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBar
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view.FileShareAppBarTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardAppBar
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardAppBarTag
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
+
+const val CallScreenAppBarTag = "CallScreenAppBarTag"
 
 @Composable
 internal fun CallScreenAppBar(
@@ -25,7 +25,8 @@ internal fun CallScreenAppBar(
     AnimatedVisibility(
         visible = visible,
         enter = fadeIn() + slideInVertically(),
-        exit = fadeOut() + slideOutVertically()
+        exit = fadeOut() + slideOutVertically(),
+        modifier = Modifier.testTag(CallScreenAppBarTag)
     ) {
         Surface(elevation = AppBarDefaults.TopAppBarElevation) {
             Spacer(
@@ -38,13 +39,11 @@ internal fun CallScreenAppBar(
                 val appBarsModifier = Modifier.horizontalCutoutPadding()
                 when (currentSheetComponent) {
                     BottomSheetComponent.FileShare -> FileShareAppBar(
-                        onBackPressed = onBackPressed,
-                        modifier = appBarsModifier.testTag(FileShareAppBarTag)
+                        onBackPressed = onBackPressed
                     )
                     BottomSheetComponent.Whiteboard -> WhiteboardAppBar(
                         onBackPressed = onBackPressed,
-                        onUploadClick = { /*TODO*/ },
-                        modifier = appBarsModifier.testTag(WhiteboardAppBarTag)
+                        onUploadClick = { /*TODO*/ }
                     )
                 }
             }
