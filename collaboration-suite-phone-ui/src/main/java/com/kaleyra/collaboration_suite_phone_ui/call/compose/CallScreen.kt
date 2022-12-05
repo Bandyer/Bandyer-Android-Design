@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
@@ -134,6 +135,14 @@ internal class CallScreenState(
         scope.launch { sheetState.collapse() }
     }
 
+    // TODO add tests to cover all cases
+    fun onCallActionClick(action: CallAction) {
+        when (action) {
+            is CallAction.Audio, is CallAction.ScreenShare, is CallAction.FileShare, is CallAction.Whiteboard -> expandSheet()
+            else -> Unit
+        }
+    }
+
     fun updateStatusBarIcons(useSystemMode: Boolean) {
         systemUiController.statusBarDarkContentEnabled = if (useSystemMode) !isDarkMode else false
     }
@@ -193,7 +202,7 @@ internal fun CallScreen(callScreenState: CallScreenState = rememberCallScreenSta
                 BottomSheetContent(
                     contentState = callScreenState.sheetContentState,
                     onLineClick = callScreenState::halfExpandSheetIfCollapsed,
-                    onCallActionClick = callScreenState::expandSheet,
+                    onCallActionClick = callScreenState::onCallActionClick,
                     onAudioDeviceClick = callScreenState::halfExpandSheet,
                     onScreenShareTargetClick = callScreenState::halfExpandSheet,
                     contentVisible = !callScreenState.isSheetCollapsed,

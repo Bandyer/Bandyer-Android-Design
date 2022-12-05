@@ -78,7 +78,7 @@ internal fun rememberBottomSheetContentState(
 internal fun BottomSheetContent(
     contentState: BottomSheetContentState,
     onLineClick: () -> Unit = { },
-    onCallActionClick: () -> Unit = { },
+    onCallActionClick: (CallAction) -> Unit = { },
     onAudioDeviceClick: () -> Unit = { },
     onScreenShareTargetClick: () -> Unit = { },
     contentVisible: Boolean = true,
@@ -105,6 +105,7 @@ internal fun BottomSheetContent(
                     BottomSheetComponent.CallActions -> {
                         CallActionsComponent(
                             onItemClick = { action, toggled ->
+                                // TODO move this out to callScreen onCallActionClick
                                 contentState.navigateToComponent(
                                     component = when (action) {
                                         is CallAction.Audio -> BottomSheetComponent.AudioOutput
@@ -114,7 +115,7 @@ internal fun BottomSheetContent(
                                         else -> BottomSheetComponent.CallActions
                                     }
                                 )
-                                onCallActionClick()
+                                onCallActionClick(action)
                             },
                             modifier = Modifier.testTag(CallActionsComponentTag)
                         )
