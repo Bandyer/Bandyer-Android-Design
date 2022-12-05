@@ -29,9 +29,13 @@ private val ContentBottomPadding = 72.dp
 internal fun FileShareContent(
     items: ImmutableList<TransferUi>,
     onItemClick: (TransferUi) -> Unit,
-    onItemActionClick: (TransferUi) -> Unit
+    onItemActionClick: (TransferUi) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    LazyColumn(contentPadding = PaddingValues(bottom = ContentBottomPadding)) {
+    LazyColumn(
+        contentPadding = PaddingValues(bottom = ContentBottomPadding),
+        modifier = modifier
+    ) {
         items(items = items.value, key = { it.id }) {
             FileShareItem(
                 transfer = it,

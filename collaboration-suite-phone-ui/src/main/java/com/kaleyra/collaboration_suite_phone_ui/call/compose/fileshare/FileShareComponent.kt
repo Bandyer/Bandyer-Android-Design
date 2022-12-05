@@ -52,14 +52,18 @@ internal fun FileShareComponent(
             .statusBarsPadding()
             .fillMaxSize()
     ) {
-        Box(modifier = Modifier.weight(1f)) {
+        Box(modifier = Modifier
+            .weight(1f)
+            .fillMaxWidth()
+        ) {
             if (uiState.transferList.count() < 1) {
-                FileShareEmptyContent()
+                FileShareEmptyContent(modifier = Modifier.matchParentSize())
             } else {
                 FileShareContent(
                     items = uiState.transferList,
                     onItemClick = onItemClick,
-                    onItemActionClick = onItemActionClick
+                    onItemActionClick = onItemActionClick,
+                    modifier = Modifier.matchParentSize()
                 )
             }
 
