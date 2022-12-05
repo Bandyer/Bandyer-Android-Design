@@ -3,7 +3,9 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.mockCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 internal class CallActionsViewModel : BaseViewModel<CallActionsUiState>() {
-    override fun initialState() = CallActionsUiState(actionList = mockCallActions)
+    override fun initialState() = CallActionsUiState()
+//    override fun initialState() = CallActionsUiState(actionList = mockCallActions)
 }

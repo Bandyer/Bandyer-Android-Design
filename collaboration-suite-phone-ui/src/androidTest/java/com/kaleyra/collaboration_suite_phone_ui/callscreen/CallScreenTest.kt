@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui
+package com.kaleyra.collaboration_suite_phone_ui.callscreen
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.*
@@ -7,12 +7,13 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.MockCallViewModelsStatesRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreen
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreenAppBarTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.LocalBackPressedDispatcher
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.rememberCallScreenState
-import io.mockk.mockk
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -28,6 +29,9 @@ class CallScreenTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+
+    @get:Rule
+    val mockCallViewModelsStatesRule = MockCallViewModelsStatesRule()
 
     private var sheetState by mutableStateOf(BottomSheetState(BottomSheetValue.Expanded))
 
