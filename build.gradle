@@ -72,6 +72,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+// To run this ./gradlew assembleRelease -PcomposeCompilerReports=true
 subprojects {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         kotlinOptions {
