@@ -26,7 +26,7 @@ internal fun CallActionsContent(
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(modifier = modifier, columns = GridCells.Fixed(count = itemsPerRow)) {
-        items(items = items.value) { action ->
+        items(items = items.value, key = { it::class.java }) { action ->
             CallAction(
                 action = action,
                 onToggle = { onItemClick(action, it) },

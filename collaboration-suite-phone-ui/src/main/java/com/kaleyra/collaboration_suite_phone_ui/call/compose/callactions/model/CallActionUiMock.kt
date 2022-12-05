@@ -10,7 +10,7 @@ val mockCallActions = ImmutableList(
         CallAction.HangUp(true),
         CallAction.Chat(true),
         CallAction.Whiteboard(true),
-        CallAction.Audio(true),
+        CallAction.Audio(true, AudioActionDevice.Bluetooth),
         CallAction.FileShare(true),
         CallAction.ScreenShare(true)
     )

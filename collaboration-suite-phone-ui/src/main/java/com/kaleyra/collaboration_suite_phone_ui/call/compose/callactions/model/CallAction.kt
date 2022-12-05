@@ -31,7 +31,15 @@ sealed interface CallAction {
 
     data class FileShare(override val isEnabled: Boolean = true) : CallAction
 
-    data class Audio(override val isEnabled: Boolean = true) : CallAction
+    data class Audio(override val isEnabled: Boolean = true, val device: AudioActionDevice) : CallAction
 
     data class ScreenShare(override val isEnabled: Boolean = true) : CallAction
+}
+
+enum class AudioActionDevice {
+    LoudSpeaker,
+    Earpiece,
+    WiredHeadset,
+    Bluetooth,
+    Muted
 }

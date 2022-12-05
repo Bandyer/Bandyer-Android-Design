@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.AudioActionDevice
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
@@ -229,7 +230,15 @@ private fun painterFor(action: CallAction): Painter = painterResource(
         is CallAction.Chat -> R.drawable.ic_kaleyra_chat
         is CallAction.Whiteboard -> R.drawable.ic_kaleyra_whiteboard
         is CallAction.FileShare -> R.drawable.ic_kaleyra_file_share
-        is CallAction.Audio -> R.drawable.ic_kaleyra_earpiece
+        is CallAction.Audio -> {
+            when (action.device) {
+                AudioActionDevice.LoudSpeaker -> R.drawable.ic_kaleyra_loud_speaker
+                AudioActionDevice.WiredHeadset -> R.drawable.ic_kaleyra_wired_headset
+                AudioActionDevice.Earpiece -> R.drawable.ic_kaleyra_earpiece
+                AudioActionDevice.Muted -> R.drawable.ic_kaleyra_muted
+                AudioActionDevice.Bluetooth -> R.drawable.ic_kaleyra_bluetooth_headset
+            }
+        }
         is CallAction.ScreenShare -> R.drawable.ic_kaleyra_screen_share
     }
 )
