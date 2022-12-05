@@ -22,7 +22,7 @@ internal fun ScreenShareContent(
     onItemClick: (ScreenShareTargetUi) -> Unit
 ) {
     LazyColumn {
-        items(items = items.value) {
+        items(items = items.value, key = { it.name }) {
             ScreenShareItem(
                 screenShareTarget = it,
                 modifier = Modifier
