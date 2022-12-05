@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
@@ -47,7 +48,7 @@ internal fun ChatAppBar(
     TopAppBar(
         navigationIcon = {
             IconButton(
-                icon = Icons.Filled.ArrowBack,
+                icon = rememberVectorPainter(image = Icons.Filled.ArrowBack),
                 iconDescription = stringResource(id = R.string.kaleyra_back),
                 onClick = onBackPressed
             )
