@@ -210,7 +210,7 @@ internal fun CallScreen(callScreenState: CallScreenState = rememberCallScreenSta
         CallScreenAppBar(
             currentSheetComponent = callScreenState.currentSheetComponent,
             visible = callScreenState.shouldShowAppBar,
-            onBackPressed = callScreenState::halfExpandSheet,
+            onBackPressed = callScreenState::navigateToCallActionsComponent,
         )
     }
 }
