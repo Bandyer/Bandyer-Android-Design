@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,7 +24,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import java.io.Serializable
 
 internal const val LineTag = "LineTag"
-
 internal val ExpandedLineWidth = 28.dp
 internal val CollapsedLineWidth = 4.dp
 
@@ -32,7 +32,8 @@ private val LineHeight = 4.dp
 // Serializable is needed to save the line state in {@link BottomSheetContentState#Saver}
 internal sealed class LineState : Serializable {
     object Expanded : LineState()
-    data class Collapsed(val color: Color? = null) : LineState()
+    // Argb int color to make the parameter serializable
+    data class Collapsed(val argbColor: Int? = null) : LineState()
 }
 
 @Composable
@@ -57,7 +58,7 @@ internal fun Line(
         contentAlignment = Alignment.Center
     ) {
         val width by animateDpAsState(targetValue = if (state is LineState.Collapsed) CollapsedLineWidth else ExpandedLineWidth)
-        val color = if (state is LineState.Collapsed && state.color != null) state.color else contentColor.copy(alpha = 0.6f)
+        val color = if (state is LineState.Collapsed && state.argbColor != null) Color(state.argbColor) else contentColor.copy(alpha = 0.6f)
 
         Spacer(
             modifier = Modifier
@@ -75,7 +76,7 @@ internal fun Line(
 @Composable
 internal fun CollapsedLineNoBackgroundPreview() {
     KaleyraTheme {
-        Line(state = LineState.Collapsed(Color.White), onClickLabel = "onClickLabel", onClick = { })
+        Line(state = LineState.Collapsed(Color.White.toArgb()), onClickLabel = "onClickLabel", onClick = { })
     }
 }
 
@@ -85,7 +86,7 @@ internal fun CollapsedLineNoBackgroundPreview() {
 internal fun CollapsedLinePreview() {
     KaleyraTheme {
         Surface {
-            Line(state = LineState.Collapsed(Color.White), onClickLabel = "onClickLabel", onClick = { })
+            Line(state = LineState.Collapsed(Color.White.toArgb()), onClickLabel = "onClickLabel", onClick = { })
         }
     }
 }

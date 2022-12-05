@@ -10,6 +10,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -54,7 +55,7 @@ internal class BottomSheetContentState(
     }
 
     fun collapseLine(color: Color? = null) {
-        currentLineState = LineState.Collapsed(color = color)
+        currentLineState = LineState.Collapsed(argbColor = color?.toArgb())
     }
 
     companion object {
