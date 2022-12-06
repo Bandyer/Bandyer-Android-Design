@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.min
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -118,15 +119,6 @@ class BottomSheetTest {
         )
 
     @Test
-    fun sheetGesturesDisabled_userPerformsSwipe_sheetStateDoNotChange() =
-        checkStateAfterSwipe(
-            initialState = BottomSheetValue.Collapsed,
-            targetState = BottomSheetValue.Collapsed,
-            swipeAmount = 0.5f,
-            sheetGesturesEnabled = false
-        )
-
-    @Test
     fun sheetHalfExpandedAndNotCollapsable_userPerformsSwipeDown_sheetHalfExpanded() =
         checkStateAfterSwipe(
             initialState = BottomSheetValue.HalfExpanded,
@@ -139,13 +131,11 @@ class BottomSheetTest {
         initialState: BottomSheetValue,
         targetState: BottomSheetValue,
         swipeAmount: Float,
-        collapsable: Boolean = true,
-        sheetGesturesEnabled: Boolean = true
+        collapsable: Boolean = true
     ) {
         val sheetState = BottomSheetState(initialValue = initialState, isCollapsable = collapsable)
         composeTestRule.setBottomSheetScaffold(
             sheetState = sheetState,
-            sheetGesturesEnabled = sheetGesturesEnabled
         )
         composeTestRule.onRoot().performSwipe(swipeAmount)
         composeTestRule.waitForIdle()
@@ -212,7 +202,7 @@ class BottomSheetTest {
     private fun checkBottomSheetInsets(sheetValue: BottomSheetValue) {
         composeTestRule.setBottomSheetScaffold(sheetState = BottomSheetState(initialValue = sheetValue))
         val density = composeTestRule.density
-        val bottomSheet = composeTestRule.onNode(hasTestTag(BottomSheetTag))
+        val bottomSheet = composeTestRule.onNodeWithTag(BottomSheetTag)
         val parentHeight = bottomSheet.onParent().getBoundsInRoot().height
         val expected = parentHeight - bottomSheet.getBoundsInRoot().top
         val result = (sheetInsets.getBottom(density) / density.density).dp
@@ -292,43 +282,42 @@ class BottomSheetTest {
         assertEquals(BottomSheetValue.HalfExpanded, sheetState.currentValue)
     }
 
-    @Test
-    fun onRecreation_stateIsRestored() {
-        val restorationTester = StateRestorationTester(composeTestRule)
-        restorationTester.setContent {
-            val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
-            BottomSheetScaffold(
-                sheetState = sheetState,
-                sheetContent = {
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .height(contentHeight)
-                    )
-                },
-                sheetPeekHeight = peekHeight,
-                sheetHalfExpandedHeight = halfExpandedHeight,
-                content = { }
-            )
-        }
-
-        composeTestRule.onRoot().performSwipe(0.5f)
-        composeTestRule.waitForIdle()
-
-        restorationTester.emulateSavedInstanceStateRestore()
-
-        val bottomSheet = composeTestRule.onNode(hasTestTag(BottomSheetTag))
-        val parentHeight = bottomSheet.onParent().getBoundsInRoot().height
-        val sheetTop = bottomSheet.getBoundsInRoot().top
-        val height = parentHeight - sheetTop
-        val expected = min(parentHeight, contentHeight)
-
-        height.assertIsEqualTo(expected, "sheet height")
-    }
+//    @Test
+//    fun onRecreation_stateIsRestored() {
+//        val restorationTester = StateRestorationTester(composeTestRule)
+//        restorationTester.setContent {
+//            val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
+//            BottomSheetScaffold(
+//                sheetState = sheetState,
+//                sheetContent = {
+//                    Box(
+//                        Modifier
+//                            .fillMaxWidth()
+//                            .height(contentHeight)
+//                    )
+//                },
+//                sheetPeekHeight = peekHeight,
+//                sheetHalfExpandedHeight = halfExpandedHeight,
+//                content = { }
+//            )
+//        }
+//
+//        composeTestRule.onRoot().performSwipe(0.5f)
+//        composeTestRule.waitForIdle()
+//
+//        restorationTester.emulateSavedInstanceStateRestore()
+//
+//        val bottomSheet = composeTestRule.onNode(hasTestTag(BottomSheetTag))
+//        val parentHeight = bottomSheet.onParent().getBoundsInRoot().height
+//        val sheetTop = bottomSheet.getBoundsInRoot().top
+//        val height = parentHeight - sheetTop
+//        val expected = min(parentHeight, contentHeight)
+//
+//        height.assertIsEqualTo(expected, "sheet height")
+//    }
 
     private fun ComposeContentTestRule.setBottomSheetScaffold(
         sheetState: BottomSheetState,
-        sheetGesturesEnabled: Boolean = true,
         launchedEffect: suspend () -> Unit = { }
     ) {
         setContent {
@@ -349,7 +338,6 @@ class BottomSheetTest {
                 },
                 sheetPeekHeight = peekHeight,
                 sheetHalfExpandedHeight = halfExpandedHeight,
-                sheetGesturesEnabled = sheetGesturesEnabled
             ) {
                 sheetInsets = it
             }

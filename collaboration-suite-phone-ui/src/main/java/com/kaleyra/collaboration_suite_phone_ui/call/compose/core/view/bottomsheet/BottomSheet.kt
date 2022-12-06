@@ -25,10 +25,8 @@ import kotlin.math.roundToInt
 
 internal enum class BottomSheetValue {
     Collapsed,
-
-    Expanded,
-
-    HalfExpanded
+    HalfExpanded,
+    Expanded
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -121,14 +119,12 @@ internal fun rememberBottomSheetState(
 internal const val BottomSheetTag = "BottomSheetTag"
 internal const val AnchorTag = "AnchorTag"
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun BottomSheetScaffold(
     sheetContent: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
     sheetState: BottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed),
-    anchor: (@Composable () -> Unit)? = null,
-    sheetGesturesEnabled: Boolean = true,
+    anchor: (@Composable BoxScope.() -> Unit)? = null,
     sheetShape: Shape = MaterialTheme.shapes.large,
     sheetElevation: Dp = BottomSheetDefaults.SheetElevation,
     sheetBackgroundColor: Color = MaterialTheme.colors.surface,
@@ -139,49 +135,10 @@ internal fun BottomSheetScaffold(
     contentColor: Color = contentColorFor(backgroundColor),
     content: @Composable (WindowInsets) -> Unit
 ) {
-    val scope = rememberCoroutineScope()
-
     BoxWithConstraints(modifier.fillMaxSize()) {
         val fullHeight = constraints.maxHeight.toFloat()
         val peekHeightPx = with(LocalDensity.current) { sheetPeekHeight.toPx() }
         val halfExpandedPx = with(LocalDensity.current) { sheetHalfExpandedHeight.toPx() }
-        var bottomSheetHeight by remember { mutableStateOf(fullHeight) }
-        val anchors = mutableMapOf(
-            fullHeight - halfExpandedPx to BottomSheetValue.HalfExpanded,
-            fullHeight - bottomSheetHeight to BottomSheetValue.Expanded
-        )
-        sheetState.minBound = anchors.keys.minOrNull()!!
-
-        if (sheetState.isCollapsable) anchors[fullHeight - peekHeightPx] = BottomSheetValue.Collapsed
-
-        val swipeable = Modifier
-            .nestedScroll(sheetState.nestedScrollConnection)
-            .swipeable(
-                state = sheetState,
-                anchors = anchors,
-                orientation = Orientation.Vertical,
-                enabled = sheetGesturesEnabled,
-                resistance = null
-            )
-            .semantics {
-                if (peekHeightPx != bottomSheetHeight) {
-                    if (sheetState.isCollapsed) {
-                        expand {
-                            if (sheetState.confirmStateChange(BottomSheetValue.Expanded)) {
-                                scope.launch { sheetState.expand() }
-                            }
-                            true
-                        }
-                    } else {
-                        collapse {
-                            if (sheetState.confirmStateChange(BottomSheetValue.Collapsed)) {
-                                scope.launch { sheetState.collapse() }
-                            }
-                            true
-                        }
-                    }
-                }
-            }
 
         BottomSheetScaffoldLayout(
             body = {
@@ -189,39 +146,150 @@ internal fun BottomSheetScaffold(
                     modifier = Modifier.fillMaxWidth(),
                     color = backgroundColor,
                     contentColor = contentColor,
-                    content = { content(sheetPadding(fullHeight, sheetState.offset.value)) }
+                    content = { content(sheetPadding(fullHeight, sheetState.offset)) }
                 )
             },
             bottomSheet = {
-                Surface(
-                    swipeable
-                        .fillMaxWidth()
-                        .requiredHeightIn(min = max(sheetHalfExpandedHeight, sheetPeekHeight))
-                        .testTag(BottomSheetTag)
-                        .onGloballyPositioned {
-                            bottomSheetHeight = it.size.height.toFloat()
-                        },
-                    shape = sheetShape,
-                    elevation = sheetElevation,
-                    color = sheetBackgroundColor,
-                    contentColor = sheetContentColor,
-                    content = { Column(content = sheetContent) }
+                BottomSheet(
+                    sheetState = sheetState,
+                    sheetFullHeight = fullHeight,
+                    sheetPeekHeight = peekHeightPx,
+                    sheetHalfExpandedHeight = halfExpandedPx,
+                    sheetShape = sheetShape,
+                    sheetElevation = sheetElevation,
+                    sheetBackgroundColor = sheetBackgroundColor,
+                    sheetContentColor = sheetContentColor,
+                    sheetContent = sheetContent,
+                    modifier = Modifier.testTag(BottomSheetTag)
                 )
             },
             anchor = {
-                Box(modifier.testTag(AnchorTag)) { anchor?.invoke() }
+                if (anchor != null) {
+                    Box(
+                        modifier = Modifier.testTag(AnchorTag),
+                        content = anchor
+                    )
+                }
             },
-            bottomSheetOffset = sheetState.offset
+            sheetOffset = sheetState.offset
         )
 
     }
 }
 
-private fun sheetPadding(fullHeight: Float, sheetOffset: Float) = object : WindowInsets {
-    override fun getBottom(density: Density) = (fullHeight - sheetOffset).roundToInt()
+private fun sheetPadding(fullHeight: Float, sheetOffset: State<Float>) = object : WindowInsets {
+    override fun getBottom(density: Density) = (fullHeight - sheetOffset.value).roundToInt()
     override fun getLeft(density: Density, layoutDirection: LayoutDirection) = 0
     override fun getRight(density: Density, layoutDirection: LayoutDirection) = 0
     override fun getTop(density: Density) = 0
+}
+
+@Composable
+private fun BottomSheet(
+    sheetState: BottomSheetState,
+    sheetFullHeight: Float,
+    sheetPeekHeight: Float,
+    sheetHalfExpandedHeight: Float,
+    sheetShape: Shape,
+    sheetElevation: Dp,
+    sheetBackgroundColor: Color,
+    sheetContentColor: Color,
+    sheetContent: @Composable ColumnScope.() -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val scope = rememberCoroutineScope()
+    val sheetHeight = remember { mutableStateOf(sheetFullHeight) }
+
+    val swipeable = Modifier
+        .nestedScroll(sheetState.nestedScrollConnection)
+        .sheetSwipeable(
+            sheetState = sheetState,
+            peekHeight = sheetPeekHeight,
+            halfExpandedHeight = sheetHalfExpandedHeight,
+            fullHeight = sheetFullHeight,
+            sheetHeightState = sheetHeight
+        )
+        .semantics {
+            // TODO check this check lol
+            if (sheetPeekHeight != sheetHeight.value) {
+                if (sheetState.isCollapsed) {
+                    expand {
+                        if (sheetState.confirmStateChange(BottomSheetValue.Expanded)) {
+                            scope.launch { sheetState.expand() }
+                        }
+                        true
+                    }
+                } else {
+                    collapse {
+                        if (sheetState.confirmStateChange(BottomSheetValue.Collapsed)) {
+                            scope.launch { sheetState.collapse() }
+                        }
+                        true
+                    }
+                }
+            }
+        }
+
+    val minHeightDp = with(LocalDensity.current) {
+        kotlin.math.max(sheetHalfExpandedHeight, sheetPeekHeight).toDp()
+    }
+
+    Box(modifier) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = sheetBackgroundColor,
+            shape = sheetShape,
+            elevation = sheetElevation,
+            content = { }
+        )
+        Surface(
+            swipeable
+                .fillMaxWidth()
+                .requiredHeightIn(min = minHeightDp)
+                .onGloballyPositioned {
+                    sheetHeight.value = it.size.height.toFloat()
+                },
+            color = Color.Transparent,
+            contentColor = sheetContentColor,
+            content = { Column(content = sheetContent) }
+        )
+    }
+}
+
+@Suppress("ModifierInspectorInfo")
+@OptIn(ExperimentalMaterialApi::class)
+private fun Modifier.sheetSwipeable(
+    sheetState: BottomSheetState,
+    peekHeight: Float,
+    halfExpandedHeight: Float,
+    fullHeight: Float,
+    sheetHeightState: State<Float>
+): Modifier {
+    val sheetHeight = sheetHeightState.value
+    // TODO remove half expanded if not necessary?
+    val anchors = if (sheetState.isCollapsable) {
+        mapOf(
+            fullHeight - peekHeight to BottomSheetValue.Collapsed,
+            fullHeight - halfExpandedHeight to BottomSheetValue.HalfExpanded,
+            fullHeight - sheetHeight to BottomSheetValue.Expanded
+        )
+    } else {
+        mapOf(
+            fullHeight - halfExpandedHeight to BottomSheetValue.HalfExpanded,
+            fullHeight - sheetHeight to BottomSheetValue.Expanded
+        )
+    }
+
+    sheetState.minBound = anchors.keys.minOrNull()!!
+
+    val modifier = Modifier.swipeable(
+        state = sheetState,
+        anchors = anchors,
+        orientation = Orientation.Vertical,
+        resistance = null
+    )
+
+    return this.then(modifier)
 }
 
 @Composable
@@ -229,7 +297,7 @@ private fun BottomSheetScaffoldLayout(
     body: @Composable () -> Unit,
     bottomSheet: @Composable () -> Unit,
     anchor: @Composable () -> Unit,
-    bottomSheetOffset: State<Float>
+    sheetOffset: State<Float>
 ) {
     Layout(
         content = {
@@ -248,7 +316,7 @@ private fun BottomSheetScaffoldLayout(
                     it.measure(constraints.copy(minWidth = 0, minHeight = 0))
                 }
 
-            val sheetOffsetY = bottomSheetOffset.value.roundToInt()
+            val sheetOffsetY = sheetOffset.value.roundToInt()
 
             sheetPlaceable.placeRelative(0, sheetOffsetY)
 
