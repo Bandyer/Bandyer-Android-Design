@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.bottomsheet
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -21,7 +22,7 @@ class BottomSheetLineTest {
 
     @Test
     fun lineStateCollapsed_lineIsCollapsed() {
-        composeTestRule.setUpLineTest(LineState.Collapsed(Color.White))
+        composeTestRule.setUpLineTest(LineState.Collapsed(Color.White.toArgb()))
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).assertWidthIsEqualTo(CollapsedLineWidth)
     }
 
@@ -35,7 +36,7 @@ class BottomSheetLineTest {
 
     @Test
     fun userClicksLine_onClickInvoked() {
-        composeTestRule.setUpLineTest(LineState.Collapsed(Color.White))
+        composeTestRule.setUpLineTest(LineState.Collapsed(Color.White.toArgb()))
         composeTestRule.onRoot().performClick()
         assert(isLineClicked)
     }
