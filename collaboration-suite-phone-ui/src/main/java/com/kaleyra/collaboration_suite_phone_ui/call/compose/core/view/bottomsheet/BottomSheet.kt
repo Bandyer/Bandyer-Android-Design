@@ -8,6 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.nestedscroll.nestedScroll
@@ -130,7 +131,7 @@ internal fun BottomSheetScaffold(
     sheetBackgroundColor: Color = MaterialTheme.colors.surface,
     sheetContentColor: Color = contentColorFor(sheetBackgroundColor),
     sheetPeekHeight: Dp = BottomSheetDefaults.SheetPeekHeight,
-    sheetHalfExpandedHeight: Dp = 0.dp,
+    sheetHalfExpandedHeight: Dp = BottomSheetDefaults.SheetHalfExpandedHeight,
     backgroundColor: Color = MaterialTheme.colors.background,
     contentColor: Color = contentColorFor(backgroundColor),
     content: @Composable (WindowInsets) -> Unit
@@ -228,7 +229,8 @@ private fun BottomSheet(
         }
 
     val minHeightDp = with(LocalDensity.current) {
-        kotlin.math.max(sheetHalfExpandedHeight, sheetPeekHeight).toDp()
+        // Set the min height as the half expanded height plus 1 pixel to avoid having the half expanded height equal to the expanded height
+        (sheetHalfExpandedHeight + 1).toDp()
     }
 
     Box(modifier) {
@@ -261,9 +263,12 @@ private fun Modifier.sheetSwipeable(
     halfExpandedHeight: Float,
     fullHeight: Float,
     sheetHeightState: State<Float>
-): Modifier {
+): Modifier = composed {
+    require(peekHeight <= halfExpandedHeight) {
+        "sheet's peek height must be lower than half expanded height."
+    }
+
     val sheetHeight = sheetHeightState.value
-    // TODO remove half expanded if not necessary?
     val anchors = if (sheetState.isCollapsable) {
         mapOf(
             fullHeight - peekHeight to BottomSheetValue.Collapsed,
@@ -279,14 +284,12 @@ private fun Modifier.sheetSwipeable(
 
     sheetState.minBound = anchors.keys.minOrNull()!!
 
-    val modifier = Modifier.swipeable(
+    swipeable(
         state = sheetState,
         anchors = anchors,
         orientation = Orientation.Vertical,
         resistance = null
     )
-
-    return this.then(modifier)
 }
 
 @Composable
@@ -328,4 +331,5 @@ private fun BottomSheetScaffoldLayout(
 internal object BottomSheetDefaults {
     val SheetElevation = 8.dp
     val SheetPeekHeight = 56.dp
+    val SheetHalfExpandedHeight = 128.dp
 }
