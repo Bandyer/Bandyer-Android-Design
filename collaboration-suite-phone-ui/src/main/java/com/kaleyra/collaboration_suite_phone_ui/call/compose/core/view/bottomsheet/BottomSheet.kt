@@ -124,7 +124,7 @@ internal fun BottomSheetScaffold(
     sheetContent: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
     sheetState: BottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed),
-    anchor: (@Composable BoxScope.() -> Unit)? = null,
+    anchor: (@Composable () -> Unit)? = null,
     sheetShape: Shape = MaterialTheme.shapes.large,
     sheetElevation: Dp = BottomSheetDefaults.SheetElevation,
     sheetBackgroundColor: Color = MaterialTheme.colors.surface,
@@ -164,11 +164,8 @@ internal fun BottomSheetScaffold(
                 )
             },
             anchor = {
-                if (anchor != null) {
-                    Box(
-                        modifier = Modifier.testTag(AnchorTag),
-                        content = anchor
-                    )
+                Box(modifier = Modifier.testTag(AnchorTag)) {
+                    anchor?.invoke()
                 }
             },
             sheetOffset = sheetState.offset
@@ -177,6 +174,7 @@ internal fun BottomSheetScaffold(
     }
 }
 
+// TODO Pass a State outside??
 private fun sheetPadding(fullHeight: Float, sheetOffset: State<Float>) = object : WindowInsets {
     override fun getBottom(density: Density) = (fullHeight - sheetOffset.value).roundToInt()
     override fun getLeft(density: Density, layoutDirection: LayoutDirection) = 0
@@ -210,7 +208,6 @@ private fun BottomSheet(
             sheetHeightState = sheetHeight
         )
         .semantics {
-            // TODO check this check lol
             if (sheetPeekHeight != sheetHeight.value) {
                 if (sheetState.isCollapsed) {
                     expand {

@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.min
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -282,39 +281,39 @@ class BottomSheetTest {
         assertEquals(BottomSheetValue.HalfExpanded, sheetState.currentValue)
     }
 
-//    @Test
-//    fun onRecreation_stateIsRestored() {
-//        val restorationTester = StateRestorationTester(composeTestRule)
-//        restorationTester.setContent {
-//            val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
-//            BottomSheetScaffold(
-//                sheetState = sheetState,
-//                sheetContent = {
-//                    Box(
-//                        Modifier
-//                            .fillMaxWidth()
-//                            .height(contentHeight)
-//                    )
-//                },
-//                sheetPeekHeight = peekHeight,
-//                sheetHalfExpandedHeight = halfExpandedHeight,
-//                content = { }
-//            )
-//        }
-//
-//        composeTestRule.onRoot().performSwipe(0.5f)
-//        composeTestRule.waitForIdle()
-//
-//        restorationTester.emulateSavedInstanceStateRestore()
-//
-//        val bottomSheet = composeTestRule.onNode(hasTestTag(BottomSheetTag))
-//        val parentHeight = bottomSheet.onParent().getBoundsInRoot().height
-//        val sheetTop = bottomSheet.getBoundsInRoot().top
-//        val height = parentHeight - sheetTop
-//        val expected = min(parentHeight, contentHeight)
-//
-//        height.assertIsEqualTo(expected, "sheet height")
-//    }
+    @Test
+    fun onRecreation_stateIsRestored() {
+        val restorationTester = StateRestorationTester(composeTestRule)
+        restorationTester.setContent {
+            val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
+            BottomSheetScaffold(
+                sheetState = sheetState,
+                sheetContent = {
+                    Box(
+                        Modifier
+                            .fillMaxWidth()
+                            .height(contentHeight)
+                    )
+                },
+                sheetPeekHeight = peekHeight,
+                sheetHalfExpandedHeight = halfExpandedHeight,
+                content = { }
+            )
+        }
+
+        composeTestRule.onRoot().performSwipe(0.5f)
+        composeTestRule.waitForIdle()
+
+        restorationTester.emulateSavedInstanceStateRestore()
+
+        val bottomSheet = composeTestRule.onNodeWithTag(BottomSheetTag)
+        val parentHeight = bottomSheet.onParent().getBoundsInRoot().height
+        val sheetTop = bottomSheet.getBoundsInRoot().top
+        val height = parentHeight - sheetTop
+        val expected = min(parentHeight, contentHeight)
+
+        height.assertIsEqualTo(expected, "sheet height")
+    }
 
     private fun ComposeContentTestRule.setBottomSheetScaffold(
         sheetState: BottomSheetState,
