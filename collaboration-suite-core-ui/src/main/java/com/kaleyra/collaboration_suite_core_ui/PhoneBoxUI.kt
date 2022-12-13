@@ -47,7 +47,7 @@ class PhoneBoxUI(
     /**
      * @suppress
      */
-     
+
     override val call: SharedFlow<CallUI> = phoneBox.call.map { getOrCreateCallUI(it) }.shareIn(callScope, SharingStarted.Eagerly, replay = 1)
 
     /**
@@ -73,7 +73,7 @@ class PhoneBoxUI(
     /**
      * @suppress
      */
-    override fun disconnect() = phoneBox.disconnect()
+    override fun disconnect(clearSavedData: Boolean) = phoneBox.disconnect(clearSavedData)
 
     internal fun dispose() {
         disconnect()
@@ -84,27 +84,31 @@ class PhoneBoxUI(
     /**
      * Call
      *
-     * @param users to be called
+     * @param userIDs to be called
      * @param options creation options
      */
-    fun call(users: List<User>, options: (PhoneBox.CreationOptions.() -> Unit)? = null): CallUI = create(users, options).apply { connect() }
+    fun call(userIDs: List<String>, options: (PhoneBox.CreationOptions.() -> Unit)? = null): Result<CallUI> = create(userIDs, options).onSuccess { it.connect() }
 
     /**
      * Join an url
      *
      * @param url to join
      */
-    fun join(url: String): CallUI = create(url).apply { connect() }
+    fun join(url: String): Result<CallUI> = create(url).onSuccess { it.connect() }
 
     /**
      * @suppress
      */
-    override fun create(url: String) = synchronized(this) { createCallUI(phoneBox.create(url)) }
+    override fun create(url: String): Result<CallUI> = synchronized(this) { phoneBox.create(url).map { createCallUI(it) } }
 
     /**
      * @suppress
      */
-    override fun create(users: List<User>, conf: (PhoneBox.CreationOptions.() -> Unit)?) = synchronized(this) { createCallUI(phoneBox.create(users, conf)) }
+    override fun create(userIDs: List<String>, conf: (PhoneBox.CreationOptions.() -> Unit)?): Result<CallUI> = synchronized(this) {
+        phoneBox.create(userIDs, conf).map {
+            createCallUI(it)
+        }
+    }
 
     /**
      * Show the call ui
@@ -134,7 +138,7 @@ class PhoneBoxUI(
             .onEach { state ->
                 when {
                     state is Call.State.Disconnected.Ended -> stopService(Intent(this, CallService::class.java))
-                    !isCallServiceStarted -> {
+                    !isCallServiceStarted                  -> {
                         val intent = Intent(this, CallService::class.java)
                         intent.putExtra(CallService.CALL_ACTIVITY_CLASS, callActivityClazz)
                         startService(intent)

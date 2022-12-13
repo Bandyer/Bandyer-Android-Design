@@ -16,9 +16,9 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
+import android.net.Uri
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
-import com.kaleyra.collaboration_suite.Collaboration.Credentials
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_utils.cached
 import com.kaleyra.collaboration_suite_utils.getValue
@@ -51,12 +51,7 @@ object CollaborationUI {
     private var collaborationUIConnector: CollaborationUIConnector? = null
 
     private var _phoneBox: PhoneBoxUI? by cached { PhoneBoxUI(collaboration!!.phoneBox, callActivityClazz, collaboration!!.configuration.logger) }
-    private var _chatBox: ChatBoxUI? by cached {
-        ChatBoxUI(
-            collaboration!!.chatBox, collaboration!!.configuration.userId, chatActivityClazz, chatNotificationActivityClazz
-//        collaboration!!.configuration.logger
-        )
-    }
+    private var _chatBox: ChatBoxUI? by cached { ChatBoxUI(collaboration!!.chatBox, chatActivityClazz, chatNotificationActivityClazz) }
 
     /**
      * Users description to be used for the UI
@@ -90,7 +85,6 @@ object CollaborationUI {
     /**
      * Configure
      *
-     * @param credentials to use when Collaboration tools need to be connected
      * @param configuration representing a set of info necessary to instantiate the communication
      * @param callActivityClazz class of the call activity
      * @param chatActivityClazz class of the chat activity
@@ -98,46 +92,46 @@ object CollaborationUI {
      * @return
      */
     fun configure(
-        credentials: Credentials,
         configuration: Configuration,
         callActivityClazz: Class<*>,
         chatActivityClazz: Class<*>,
         chatNotificationActivityClazz: Class<*>? = null
     ): Boolean {
         if (collaboration != null) return false
-        Collaboration.create(credentials, configuration).apply {
+        Collaboration.create(configuration).apply {
             collaboration = this
         }
         this.chatActivityClazz = chatActivityClazz
         this.callActivityClazz = callActivityClazz
         this.chatNotificationActivityClazz = chatNotificationActivityClazz
         mainScope = MainScope()
-        collaborationUIConnector = CollaborationUIConnector(this, mainScope!!)
+        collaborationUIConnector = CollaborationUIConnector(collaboration!!, mainScope!!)
         return true
     }
 
     /**
      * Connect
      */
-    fun connect() {
-        collaborationUIConnector?.connect()
+    fun connect(session: Collaboration.Session) {
+        if (collaboration?.session != null && collaboration?.session?.userId != session.userId) disconnect(true)
+        collaborationUIConnector?.connect(session)
     }
 
     /**
      * Disconnect
+     * @param clearSavedData If true, the saved data on DB and SharedPrefs will be cleared.
      */
-    fun disconnect() {
-        collaborationUIConnector?.disconnect()
+    fun disconnect(clearSavedData: Boolean = false) {
+        collaborationUIConnector?.disconnect(clearSavedData)
     }
 
     /**
      * Dispose the collaboration UI and optionally clear saved data.
-     * @param clearSavedData If true, the saved data on DB and SharedPrefs will be cleared.
      */
-    fun dispose(clearSavedData: Boolean = true) {
+    fun dispose() {
         collaboration ?: return
         mainScope?.cancel()
-        collaborationUIConnector?.dispose(clearSavedData)
+        disconnect(true)
         collaboration = null
         _phoneBox = null
         _chatBox = null

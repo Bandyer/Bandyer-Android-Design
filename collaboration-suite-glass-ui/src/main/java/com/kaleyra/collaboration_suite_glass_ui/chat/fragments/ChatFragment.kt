@@ -23,10 +23,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.kaleyra.collaboration_suite.chatbox.Chat.State.Active
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
@@ -50,7 +52,9 @@ import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
 /**
@@ -101,6 +105,8 @@ internal class ChatFragment : BaseFragment(), TiltListener {
             if (DeviceUtils.isRealWear)
                 setListenersForRealWear(kaleyraBottomNavigation)
 
+            kaleyraBottomNavigation.hideFirstItem()
+
             // Init the RecyclerView
             kaleyraMessages.apply {
                 val snapHelper = PagerSnapHelper().also { it.attachToRecyclerView(this) }
@@ -121,7 +127,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
 
                         val chat = viewModel.chat.replayCache.firstOrNull() ?: return
                         if (!isLoading && fastAdapter.itemCount <= (currentMsgItemIndex + LOAD_MORE_THRESHOLD)) {
-                            chat.fetch(LOAD_MORE_THRESHOLD) { isLoading = false }
+                            lifecycleScope.launch { chat.fetch(LOAD_MORE_THRESHOLD).onSuccess { isLoading = false } }
                             isLoading = true
                         }
 
@@ -149,7 +155,14 @@ internal class ChatFragment : BaseFragment(), TiltListener {
 
     fun bindUI() {
         var noMessages = true
+
+        viewModel.chat
+            .flatMapLatest { it.state }
+            .takeWhile { it is Active }
+            .onCompletion { requireActivity().finishAndRemoveTask() }.launchIn(lifecycleScope)
+
         repeatOnStarted {
+
             viewModel.chat.onEach { chat ->
                 unreadMessagesIds =
                     chat.messages.replayCache.firstOrNull()?.other?.filter { it.state.value is Message.State.Received }?.map { it.id } ?: listOf()
@@ -159,29 +172,33 @@ internal class ChatFragment : BaseFragment(), TiltListener {
                 .flatMapLatest { it.messages }
                 .onEach { msgs ->
                     noMessages = msgs.list.isEmpty().also {
-                        if (!it) binding.kaleyraTitle.visibility = View.GONE
+                        if (!it) {
+                            binding.kaleyraTitle.visibility = View.GONE
+                            binding.kaleyraBottomNavigation.showFirstItem()
+                        }
                     }
                     toChatMessagePages(this@repeatOnStarted, msgs.list) { pages ->
                         val items = pages.map { ChatMessageItem(it) }
                         FastAdapterDiffUtil[itemAdapter!!] =
                             FastAdapterDiffUtil.calculateDiff(itemAdapter!!, items, true)
                     }
+
                 }.launchIn(this@repeatOnStarted)
 
             viewModel.call
                 .flatMapLatest { it.state }
                 .onEach {
                     if (it is Call.State.Connected) binding.kaleyraBottomNavigation.hideSecondItem()
-                    else if(it is Call.State.Disconnected.Ended) binding.kaleyraBottomNavigation.showSecondItem()
+                    else if (it is Call.State.Disconnected.Ended) binding.kaleyraBottomNavigation.showSecondItem()
                 }.launchIn(this@repeatOnStarted)
         }
 
         with(binding.kaleyraTitle) {
             postDelayed({
-                if (!noMessages) return@postDelayed
-                text = resources.getString(R.string.kaleyra_glass_no_messages)
-                visibility = View.VISIBLE
-            }, NO_MESSAGES_TIMEOUT)
+                            if (!noMessages) return@postDelayed
+                            text = resources.getString(R.string.kaleyra_glass_no_messages)
+                            visibility = View.VISIBLE
+                        }, NO_MESSAGES_TIMEOUT)
         }
     }
 
@@ -203,8 +220,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
     override fun onTap() = true.also {
         val currentCall = viewModel.call.replayCache.firstOrNull()
         if (currentCall != null && currentCall.state.value !is Call.State.Disconnected) return@also
-        val userId = itemAdapter?.adapterItems?.getOrNull(currentMsgItemIndex)?.page?.userId ?: return@also
-        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt, userId)
+        val action = ChatFragmentDirections.actionChatFragmentToChatMenuFragment(args.enableTilt)
         findNavController().navigate(action)
     }
 

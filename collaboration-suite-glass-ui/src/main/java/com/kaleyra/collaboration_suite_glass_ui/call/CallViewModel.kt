@@ -366,7 +366,7 @@ internal class CallViewModel : ViewModel() {
     private val chat: StateFlow<ChatUI?> =
         participants
             .filter { it.others.isNotEmpty() }
-            .map { CollaborationUI.chatBox.create(it.others.first()) }
+            .map { CollaborationUI.chatBox.create(it.others.map { it.userId }).getOrNull() }
             .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val areThereNewMessages = chat
