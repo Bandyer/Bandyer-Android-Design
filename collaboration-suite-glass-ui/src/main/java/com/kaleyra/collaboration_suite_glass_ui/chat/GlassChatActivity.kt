@@ -1,44 +1,36 @@
 package com.kaleyra.collaboration_suite_glass_ui.chat
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.MotionEvent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.kaleyra.collaboration_suite.chatbox.ChatBox
-import com.kaleyra.collaboration_suite_core_ui.ChatDelegate
-import com.kaleyra.collaboration_suite_core_ui.CollaborationUI
-import com.kaleyra.collaboration_suite_core_ui.notification.DisplayedChatActivity
+import com.kaleyra.collaboration_suite_core_ui.ChatActivity
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOff
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ActivityExtensions.turnScreenOn
-import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.goToLaunchingActivity
-import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
 import com.kaleyra.collaboration_suite_glass_ui.GlassTouchEventManager
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
-import com.kaleyra.collaboration_suite_glass_ui.common.OnDestinationChangedListener
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraChatActivityGlassBinding
 import com.kaleyra.collaboration_suite_glass_ui.status_bar_views.StatusBarView
 import com.kaleyra.collaboration_suite_glass_ui.utils.currentNavigationFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.ActivityExtensions.enableImmersiveMode
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
-import com.kaleyra.collaboration_suite_utils.ContextRetainer
 import com.kaleyra.collaboration_suite_utils.battery_observer.BatteryInfo
 import com.kaleyra.collaboration_suite_utils.network_observer.WiFiInfo
-import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
-internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedListener,
-                                   GlassTouchEventManager.Listener {
+internal class GlassChatActivity : ChatActivity(), GlassTouchEventManager.Listener {
 
     private lateinit var binding: KaleyraChatActivityGlassBinding
 
-    private val viewModel: ChatViewModel by viewModels()
-
+    override val viewModel: GlassChatViewModel by viewModels {
+        GlassChatViewModel.provideFactory(::requestConfiguration)
+    }
     private var glassTouchEventManager: GlassTouchEventManager? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,11 +40,6 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
         glassTouchEventManager = GlassTouchEventManager(this, this)
         if (DeviceUtils.isSmartGlass) enableImmersiveMode()
         turnScreenOn()
-
-        MainScope().launch {
-            configureCollaboration()
-            onNewChatIntent(intent)
-        }
 
         viewModel.chatBoxState
             .onEach {
@@ -77,10 +64,10 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
                 .onEach {
                     binding.kaleyraStatusBar.setWiFiSignalState(
                         when {
-                            it.state == WiFiInfo.State.DISABLED                                     -> StatusBarView.WiFiSignalState.DISABLED
+                            it.state == WiFiInfo.State.DISABLED -> StatusBarView.WiFiSignalState.DISABLED
                             it.level == WiFiInfo.Level.NO_SIGNAL || it.level == WiFiInfo.Level.POOR -> StatusBarView.WiFiSignalState.LOW
-                            it.level == WiFiInfo.Level.FAIR || it.level == WiFiInfo.Level.GOOD      -> StatusBarView.WiFiSignalState.MODERATE
-                            else                                                                    -> StatusBarView.WiFiSignalState.FULL
+                            it.level == WiFiInfo.Level.FAIR || it.level == WiFiInfo.Level.GOOD -> StatusBarView.WiFiSignalState.MODERATE
+                            else -> StatusBarView.WiFiSignalState.FULL
                         }
                     )
                 }
@@ -88,19 +75,11 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
         }
     }
 
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        onNewChatIntent(intent)
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         turnScreenOff()
         glassTouchEventManager = null
-        sendCustomNotificationBroadcast(DisplayedChatActivity.ACTION_CHAT_CLOSE)
     }
-
-    override fun onDestinationChanged(destinationId: Int) = Unit
 
     /**
      * @suppress
@@ -121,30 +100,5 @@ internal class GlassChatActivity : GlassBaseActivity(), OnDestinationChangedList
             supportFragmentManager.currentNavigationFragment as? TouchEventListener
                 ?: return false
         return currentDest.onTouch(glassEvent)
-    }
-
-    private fun onNewChatIntent(intent: Intent) {
-        val userId = intent.extras?.getString("userId") ?: return
-        val chat = viewModel.setChat(userId) ?: return
-        sendCustomNotificationBroadcast(DisplayedChatActivity.ACTION_CHAT_OPEN, chat.id)
-    }
-
-    private suspend fun configureCollaboration() {
-        requestConfigure().let { isConfigured ->
-            if (!isConfigured) {
-                finishAndRemoveTask()
-                return@let ContextRetainer.context.goToLaunchingActivity()
-            }
-            viewModel.chatDelegate = ChatDelegate(CollaborationUI.chatBox.chats, CollaborationUI.usersDescription)
-            viewModel.chatBox = CollaborationUI.chatBox
-            viewModel.phoneBox = CollaborationUI.phoneBox
-        }
-    }
-
-    private fun sendCustomNotificationBroadcast(action: String, chatId: String? = null) {
-        sendBroadcast(Intent(this, DisplayedChatActivity::class.java).apply {
-            this.action = action
-            chatId?.let { putExtra(DisplayedChatActivity.EXTRA_CHAT_ID, it) }
-        })
     }
 }

@@ -20,7 +20,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.NavHostFragment
 import androidx.viewbinding.ViewBinding
-import com.kaleyra.collaboration_suite_glass_ui.GlassBaseActivity
 import com.kaleyra.collaboration_suite_glass_ui.TouchEvent
 import com.kaleyra.collaboration_suite_glass_ui.TouchEventListener
 import com.kaleyra.collaboration_suite_glass_ui.bottom_navigation.BottomNavigationView
@@ -30,13 +29,6 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.TiltFragment
  * BaseFragment. A base class for all the smart glass fragments
  */
 internal abstract class BaseFragment : TiltFragment(), TouchEventListener {
-
-    /**
-     * The activity
-     */
-    @Suppress("UNCHECKED_CAST")
-    private val activity
-        get() = requireActivity() as GlassBaseActivity
 
     /**
      * The fragment's view binding
@@ -78,8 +70,9 @@ internal abstract class BaseFragment : TiltFragment(), TouchEventListener {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val destinationChangedListener = requireActivity() as? OnDestinationChangedListener ?: return
         NavHostFragment.findNavController(this).currentDestination?.id?.also {
-            activity.onDestinationChanged(it)
+            destinationChangedListener.onDestinationChanged(it)
         }
     }
 

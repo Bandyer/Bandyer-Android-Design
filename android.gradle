@@ -37,14 +37,23 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    packagingOptions {
+        resources.excludes.add("META-INF/*")
+    }
+
     // For Kotlin projects
     kotlinOptions {
         jvmTarget = '1.8'
     }
 
     buildFeatures {
+        compose true
         viewBinding true
         dataBinding true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.1.1'
     }
 
     aaptOptions.cruncherEnabled = false

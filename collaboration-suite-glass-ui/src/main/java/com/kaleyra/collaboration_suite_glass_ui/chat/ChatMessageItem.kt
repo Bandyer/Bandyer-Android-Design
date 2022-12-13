@@ -19,6 +19,7 @@ package com.kaleyra.collaboration_suite_glass_ui.chat
 import android.net.Uri
 import android.view.View
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
+import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.StringExtensions.parseToColor
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassChatMessageItemLayoutBinding
@@ -75,7 +76,7 @@ internal class ChatMessageItem(val page: ChatMessagePage) :
                 kaleyraAvatar.setBackground(page.sender.parseToColor())
                 kaleyraAvatar.setText(page.sender.first().toString())
                 kaleyraMessage.text = page.message
-                kaleyraTime.text = Iso8601.parseTimestamp(itemView.context, page.time)
+                kaleyraTime.text = TimestampUtils.parseTimestamp(itemView.context, page.time)
                 if (!page.isFirstPage) kaleyraName.visibility = View.GONE
                 else kaleyraName.text = page.sender
             }

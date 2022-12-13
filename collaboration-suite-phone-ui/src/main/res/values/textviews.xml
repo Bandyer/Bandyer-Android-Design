@@ -54,33 +54,6 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-    <!-- BOUNCING DOTS -->
-
-    <declare-styleable name="KaleyraCollaborationSuiteUI.TextView.Subtitle.BouncingDots">
-        <attr name="kaleyra_period" />
-        <attr name="kaleyra_animationHeight" />
-        <attr name="kaleyra_autoplay" />
-    </declare-styleable>
-
-    <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.BouncingDots" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">
-        <item name="android:textAllCaps">false</item>
-        <item name="android:includeFontPadding">false</item>
-        <item name="android:focusable">false</item>
-        <item name="android:focusableInTouchMode">false</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="kaleyra_autoplay">false</item>
-        <item name="kaleyra_animationHeight">@dimen/kaleyra_dimen_space2</item>
-        <item name="kaleyra_period">1000</item>
-        <item name="android:textStyle">italic</item>
-        <item name="android:textSize">@dimen/kaleyra_dimen_text_bouncing_dots</item>
-        <item name="android:textColor">@color/kaleyra_color_on_primary_50</item>
-        <item name="android:layout_marginStart">@dimen/kaleyra_dimen_space2</item>
-        <item name="android:layout_marginLeft">@dimen/kaleyra_dimen_space2</item>
-        <item name="android:lineSpacingExtra">@dimen/kaleyra_dimen_space0</item>
-        <item name="android:visibility">gone</item>
-    </style>
-
     <!-- ANSWER CALL HELPER TEXTVIEW -->
 
     <style name="KaleyraCollaborationSuiteUI.TextView.Subtitle.AnswerCallHelperText" parent="KaleyraCollaborationSuiteUI.TextView.Subtitle">

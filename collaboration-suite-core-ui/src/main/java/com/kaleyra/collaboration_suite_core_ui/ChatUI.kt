@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.annotation.Keep
 import com.kaleyra.collaboration_suite.chatbox.Chat
 import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite_core_ui.CallUI.Action
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.mapToSharedFlow
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -51,6 +50,7 @@ class ChatUI(
                 setOf(
                     ShowParticipants,
                     CreateCall(preferredType = Call.PreferredType(video = Call.Video.Disabled)),
+                    CreateCall(preferredType = Call.PreferredType(video = null)),
                     CreateCall()
                 )
             }

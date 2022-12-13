@@ -16,14 +16,7 @@
 
 package com.kaleyra.collaboration_suite_core_ui.utils
 
-import android.content.Context
-import com.kaleyra.collaboration_suite_core_ui.R
-import java.time.*
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.time.format.TextStyle
-import java.time.temporal.ChronoUnit
-import java.util.*
+import java.time.Instant
 
 /**
  * @suppress
@@ -31,9 +24,6 @@ import java.util.*
  * "2008-03-01T13:00:00+01:00". It also supports parsing the "Z" timezone.
  */
 object Iso8601 {
-
-    private const val DAY_MILLIS = 86400000L
-    private const val WEEK_MILLIS = 604800000L
 
     /**
      * Get the current time in ISO8601 format
@@ -64,113 +54,4 @@ object Iso8601 {
      * @return String The ISO8601 pattern string
      */
     fun parseMillisToIso8601(millis: Long): String = Instant.ofEpochMilli(millis).toString()
-
-    /**
-     * Parse a UTC millis timestamp into a human readable timestamp. This function takes into account the current zone offset.
-     *
-     * @param context The context
-     * @param timestamp The timestamp in millis
-     * @return String A human readable date time timestamp string
-     */
-    fun parseTimestamp(context: Context, timestamp: Long): String {
-        val zonedDateTime = Instant
-            .ofEpochMilli(timestamp)
-            .atZone(ZoneId.systemDefault())
-
-        return if (zonedDateTime.isLastWeek()) {
-            when {
-                zonedDateTime.isToday() -> parseTime(timestamp)
-                zonedDateTime.isYesterday() -> context.resources.getString(R.string.kaleyra_yesterday) + ", " + parseTime(timestamp)
-                else -> zonedDateTime.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault()).replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() } + ", " + parseTime(timestamp)
-            }
-        } else DateTimeFormatter
-            .ofLocalizedDateTime(FormatStyle.SHORT)
-            .withLocale(Locale.getDefault())
-            .withZone(ZoneId.systemDefault())
-            .format(Instant.ofEpochMilli(timestamp))
-    }
-
-    /**
-     * Parse a UTC millis timestamp into a human readable day. This function takes into account the current zone offset.
-     *
-     * @param context The context
-     * @param timestamp The timestamp in millis
-     * @return String A human readable date day string
-     */
-    fun parseDay(context: Context, timestamp: Long): String {
-        val zonedDateTime = Instant
-            .ofEpochMilli(timestamp)
-            .atZone(ZoneId.systemDefault())
-
-        return when {
-            zonedDateTime.isToday() -> context.resources.getString(R.string.kaleyra_today)
-            zonedDateTime.isYesterday() -> context.resources.getString(R.string.kaleyra_yesterday)
-            else -> DateTimeFormatter
-                .ofLocalizedDate(FormatStyle.LONG)
-                .withLocale(Locale.getDefault())
-                .withZone(ZoneId.systemDefault())
-                .format(Instant.ofEpochMilli(timestamp))
-        }
-    }
-
-    /**
-     * Parse a UTC millis timestamp into a human readable time. This function takes into account the current zone offset.
-     *
-     * @param timestamp The timestamp in millis
-     * @return String A human readable date day string
-     */
-    fun parseTime(timestamp: Long): String =
-        DateTimeFormatter
-            .ofLocalizedTime(FormatStyle.SHORT)
-            .withLocale(Locale.getDefault())
-            .withZone(ZoneId.systemDefault())
-            .format(Instant.ofEpochMilli(timestamp))
-
-    /**
-     * ZonedDateTime extension function. Check if the instant resides in the last week time period.
-     *
-     * @receiver Instant
-     * @return Boolean True is the ZonedDateTime resides in the last week time period, false otherwise
-     */
-    fun ZonedDateTime.isLastWeek(): Boolean =
-        this.isAfter(
-            ZonedDateTime
-                .now(this.zone)
-                .minus(WEEK_MILLIS, ChronoUnit.MILLIS)
-                .setMidnight()
-        )
-
-    /**
-     * ZonedDateTime extension function. Check if the instant resides in the yesterday time period.
-     *
-     * @receiver Instant
-     * @return Boolean True is the ZonedDateTime resides in the yesterday time period, false otherwise
-     */
-    fun ZonedDateTime.isYesterday(): Boolean =
-        this.isAfter(
-            ZonedDateTime
-                .now(this.zone)
-                .minus(DAY_MILLIS, ChronoUnit.MILLIS)
-                .setMidnight()
-        ) && !this.isToday()
-
-
-    /**
-     * ZonedDateTime extension function. Check if the instant resides in the current day time period.
-     *
-     * @receiver Instant
-     * @return Boolean True is the ZonedDateTime resides in the current day time period, false otherwise
-     */
-    fun ZonedDateTime.isToday(): Boolean =
-        this.isAfter(
-            ZonedDateTime
-                .now(this.zone)
-                .setMidnight()
-        )
-
-    private fun ZonedDateTime.setMidnight() =
-        this.withHour(0)
-            .withMinute(0)
-            .withSecond(0)
-            .withNano(0)
 }

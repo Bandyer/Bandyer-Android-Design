@@ -31,12 +31,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.chatbox.Chat.State.Active
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
 import com.kaleyra.collaboration_suite_core_ui.utils.Iso8601
+import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessageItem
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatMessagePage
-import com.kaleyra.collaboration_suite_glass_ui.chat.ChatViewModel
+import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatViewModel
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.ReadProgressDecoration
 import com.kaleyra.collaboration_suite_glass_ui.databinding.KaleyraGlassFragmentChatBinding
@@ -74,7 +76,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
             updateCounter(value.count())
         }
 
-    private val viewModel: ChatViewModel by activityViewModels()
+    private val viewModel: GlassChatViewModel by activityViewModels()
 
     private val args: ChatFragmentArgs by lazy { ChatFragmentArgs.fromBundle(requireActivity().intent?.extras!!) }
 
@@ -239,7 +241,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
         messages: List<Message>,
         callback: (List<ChatMessagePage>) -> Unit
     ) {
-        val usersDescription = viewModel.usersDescription
+        val usersDescription = viewModel.usersDescription.replayCache.firstOrNull() ?: UsersDescription()
         binding.kaleyraChatMessage.root.post {
             scope.launch {
                 val allPages = mutableListOf<ChatMessagePage>()
@@ -273,7 +275,7 @@ internal class ChatFragment : BaseFragment(), TiltListener {
     ): List<CharSequence> =
         with(binding.kaleyraChatMessage) {
             kaleyraName.text = user
-            kaleyraTime.text = Iso8601.parseTimestamp(requireContext(), timestamp)
+            kaleyraTime.text = TimestampUtils.parseTimestamp(requireContext(), timestamp)
             kaleyraMessage.text = if (content is Message.Content.Text) content.message else ""
             return kaleyraMessage.paginate()
         }

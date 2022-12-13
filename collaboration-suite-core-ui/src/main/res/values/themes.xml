@@ -40,16 +40,11 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
 
         <item name="elevationOverlayEnabled">false</item>
-        <item name="toolbarStyle">@style/KaleyraCollaborationSuiteUI.ToolBarStyle</item>
         <item name="android:enforceNavigationBarContrast" tools:targetApi="q">false</item>
         <item name="android:enforceStatusBarContrast" tools:targetApi="q">false</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.Theme.Base" parent="KaleyraCollaborationSuiteUI.Theme.Base.V16"/>
-
-    <style name="KaleyraCollaborationSuiteUI.ToolBarStyle" parent="Widget.MaterialComponents.Toolbar.Primary">
-        <item name="android:textColor">?attr/colorOnPrimary</item>
-    </style>
 
     <style name="KaleyraCollaborationSuiteUI.ToolBarShadow" parent="">
         <item name="android:visibility">visible</item>

@@ -31,9 +31,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.ChatUI
 import com.kaleyra.collaboration_suite_core_ui.utils.DeviceUtils
-import com.kaleyra.collaboration_suite_glass_ui.*
+import com.kaleyra.collaboration_suite_glass_ui.R
 import com.kaleyra.collaboration_suite_glass_ui.chat.ChatAction
-import com.kaleyra.collaboration_suite_glass_ui.chat.ChatViewModel
+import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatViewModel
 import com.kaleyra.collaboration_suite_glass_ui.chat.menu.ChatMenuItem
 import com.kaleyra.collaboration_suite_glass_ui.common.BaseFragment
 import com.kaleyra.collaboration_suite_glass_ui.common.item_decoration.HorizontalCenterItemDecoration
@@ -58,7 +58,7 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
 
     private var itemAdapter: ItemAdapter<ChatMenuItem>? = null
 
-    private val viewModel: ChatViewModel by activityViewModels()
+    private val viewModel: GlassChatViewModel by activityViewModels()
 
     private val args: ChatMenuFragmentArgs by navArgs()
 
@@ -117,7 +117,7 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
             }
         }
 
-        getActions(viewModel.actions.value).map { ChatMenuItem(it) }.also { itemAdapter!!.add(it) }
+        getActions(viewModel.actions.replayCache[0]).map { ChatMenuItem(it) }.also { itemAdapter!!.add(it) }
         return binding.root
     }
 
@@ -149,7 +149,8 @@ internal class ChatMenuFragment : BaseFragment(), TiltListener {
         }
         is ChatAction.VIDEOCALL, is ChatAction.CALL -> true.also {
             val userId = viewModel.chat.replayCache.first().participants.value.others.first().userId
-            viewModel.phoneBox?.call(listOf(userId)) {
+            val phoneBox = viewModel.phoneBox.replayCache.firstOrNull()
+            phoneBox?.call(listOf(userId)) {
                 if (action is ChatAction.CALL) preferredType = Call.PreferredType(video = Call.Video.Disabled)
             }
             findNavController().popBackStack()

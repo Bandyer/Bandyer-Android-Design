@@ -21,11 +21,11 @@ plugins {
 }
 
 def kotlin_coroutines = "1.5.2"
-def kotlinVersion = "1.5.32"
+def kotlinVersion = "1.6.10"
 
 android {
     compileSdkVersion 31
-    buildToolsVersion "30.0.3"
+    buildToolsVersion "31.0.0"
 
     defaultConfig {
         applicationId "com.kaleyra.demo_collaboration_suite_ui"
@@ -40,8 +40,14 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        benchmark {
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            debuggable false
         }
     }
 
@@ -52,7 +58,12 @@ android {
     }
 
     buildFeatures {
+        compose true
         viewBinding true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.1.1'
     }
 
     kotlinOptions {
@@ -90,6 +101,10 @@ dependencies {
     implementation project(':collaboration-suite-phone-ui')
     implementation project(':collaboration-suite-glass-ui')
     implementation project(':collaboration-suite-core-ui')
+//    implementation project(":collaboration-suite")
+
+    implementation("androidx.profileinstaller:profileinstaller:1.1.1")
+
     implementation "com.kaleyra:collaboration-suite-utils:2.0.1"
     implementation "com.bandyer:bandyer-android-audiosession:2.2.1"
 }

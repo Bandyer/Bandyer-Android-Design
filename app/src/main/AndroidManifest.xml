@@ -21,7 +21,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/DesignDemoApp" >
+        android:theme="@style/DesignDemoApp">
+        <profileable
+            android:shell="true"
+            tools:targetApi="q" />
+
         <activity
             android:name=".CallNotificationActivity"
             android:exported="false"
@@ -42,11 +46,21 @@
             android:supportsPictureInPicture="true"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call"
             tools:targetApi="n" />
+<!--        <activity-->
+<!--            android:name=".MainActivity"-->
+<!--            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"-->
+<!--            android:exported="true"-->
+<!--            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
         <activity
-            android:name=".MainActivity"
-            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation"
-            android:exported="true"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call" >
+            android:name="com.kaleyra.collaboration_suite_phone_ui.call.compose.PhoneCallActivity"
+            android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,8 +69,14 @@
         </activity>
         <activity
             android:name=".ChatActivity"
+            android:exported="true"
             android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation|keyboard|keyboardHidden|navigation"
-            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Chat" />
+            android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Chat" >
+            <intent-filter>
+                <action android:name="com.kaleyra.demo_collaboration_suite_ui.CHAT_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".PointerActivity"
             android:theme="@style/KaleyraCollaborationSuiteUI.Theme.Call" />

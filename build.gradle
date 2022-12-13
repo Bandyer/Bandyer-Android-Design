@@ -19,6 +19,23 @@ apply plugin: 'com.github.ben-manes.versions'
 
 buildscript {
 
+
+    ext.sdkVersion = 31
+    ext.buildToolsVersion = "31.0.0"
+    ext.kotlin_version = '1.6.10'
+    ext.bandyer_core_av = "11.0.2"
+    ext.bandyer_comm_center = "9.0.0"
+    ext.bandyer_chat = "0.3.0"
+    ext.bandyer_utils = "2.3.1"
+    ext.collaboration_suite_utils = "2.3.1"
+    ext.bandyer_networking = "4.1.0"
+    ext.collaboration_suite_networking = bandyer_networking
+    ext.collaboration_suite_core_ui = "3.4.3"
+    ext.collaboration_suite_glass_ui = collaboration_suite_core_ui
+    ext.collaboration_suite_phone_ui = collaboration_suite_core_ui
+    ext.serialization_version = '0.5.1'
+    ext.nav_version = "2.3.5"
+
     apply from: 'versions.gradle'
 
     repositories {
@@ -58,4 +75,26 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+// To run this ./gradlew assembleRelease -PcomposeCompilerReports=true
+subprojects {
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            if (project.findProperty("composeCompilerReports") == "true") {
+                freeCompilerArgs += [
+                        "-P",
+                        "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                                project.buildDir.absolutePath + "/compose_compiler"
+                ]
+            }
+            if (project.findProperty("composeCompilerMetrics") == "true") {
+                freeCompilerArgs += [
+                        "-P",
+                        "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                                project.buildDir.absolutePath + "/compose_compiler"
+                ]
+            }
+        }
+    }
 }

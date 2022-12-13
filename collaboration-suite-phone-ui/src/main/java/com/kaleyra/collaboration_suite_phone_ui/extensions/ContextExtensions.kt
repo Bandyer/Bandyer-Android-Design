@@ -22,18 +22,36 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.provider.Settings
+import android.util.TypedValue
+import androidx.annotation.AttrRes
 import androidx.annotation.StyleableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import com.google.android.material.textview.MaterialTextView
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getActivity
 import com.kaleyra.collaboration_suite_core_ui.utils.extensions.ContextExtensions.getThemeAttribute
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.google.android.material.textview.MaterialTextView
 import kotlin.math.min
+
+/**
+ * Retrieve a theme attribute value's resource id
+ *
+ * @receiver Resources.Theme
+ * @param attr Int the theme attribute
+ * @return Int the resource id
+ */
+internal fun Resources.Theme.getAttributeResourceId(
+    @AttrRes attr: Int
+): Int =
+    TypedValue()
+        .also {
+            resolveAttribute(attr, it, true)
+        }.resourceId
 
 /**
  * Extension function used to retrieve an attribute resource from context.
@@ -125,19 +143,6 @@ fun Context.scanForFragmentActivity(): androidx.fragment.app.FragmentActivity? {
 }
 
 /**
- * Get the style for the specified chat info element
- * @receiver Context
- * @param styleAttribute the attribute which defines the style of chat info element
- * @return The style relative to the styleAttribute
- */
-fun Context.getChatInfoStyle(@StyleableRes styleAttribute: Int): Int =
-    this.getThemeAttribute(
-        R.style.KaleyraCollaborationSuiteUI_ChatInfo,
-        R.styleable.KaleyraCollaborationSuiteUI_ChatInfo,
-        styleAttribute
-    )
-
-/**
  * Get the value of an integer attribute relative to smart glass dialog menu
  * @receiver Context
  * @param styleAttribute the pager indicator attribute for which you want to retrieve the value
@@ -190,48 +195,6 @@ fun Context.getPagerIndicatorDimensionPixelSizeAttribute(@StyleableRes styleAttr
     val ta = obtainStyledAttributes(getSmartGlassMenuAttribute(R.styleable.KaleyraCollaborationSuiteUI_SmartGlassMenu_kaleyra_pagerIndicatorStyle), R.styleable.KaleyraCollaborationSuiteUI_PagerIndicator)
     val value = if(ta.hasValue(styleAttribute))
         ta.getDimensionPixelSize(styleAttribute, 0) else 0
-    ta.recycle()
-    return value
-}
-
-/**
- * Get the value of an integer attribute relative to the bouncing dots style
- * @receiver Context
- * @param styleAttribute the bouncing dots attribute for which you want to retrieve the value
- * @return The value relative to the attribute
- */
-fun Context.getBouncingDotsIntAttribute(@StyleableRes styleAttribute: Int): Int {
-    val ta = obtainStyledAttributes(getChatInfoStyle(R.styleable.KaleyraCollaborationSuiteUI_ChatInfo_kaleyra_bouncingDotsStyle), R.styleable.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots)
-    val value = if(ta.hasValue(styleAttribute))
-        ta.getInt(styleAttribute, 0) else 0
-    ta.recycle()
-    return value
-}
-
-/**
- * Get the value of a boolean attribute relative to the bouncing dots style
- * @receiver Context
- * @param styleAttribute the bouncing dots attribute for which you want to retrieve the value
- * @return The value relative to the attribute
- */
-fun Context.getBouncingDotsBooleanAttribute(@StyleableRes styleAttribute: Int): Boolean {
-    val ta = obtainStyledAttributes(getChatInfoStyle(R.styleable.KaleyraCollaborationSuiteUI_ChatInfo_kaleyra_bouncingDotsStyle), R.styleable.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots)
-    val value = if(ta.hasValue(styleAttribute))
-        ta.getBoolean(styleAttribute, false) else false
-    ta.recycle()
-    return value
-}
-
-/**
- * Get the value of a dimension attribute relative to the bouncing dots style
- * @receiver Context
- * @param styleAttribute the bouncing dots attribute for which you want to retrieve the value
- * @return The value relative to the attribute
- */
-fun Context.getBouncingDotsDimensionAttribute(@StyleableRes styleAttribute: Int): Float {
-    val ta = obtainStyledAttributes(getChatInfoStyle(R.styleable.KaleyraCollaborationSuiteUI_ChatInfo_kaleyra_bouncingDotsStyle), R.styleable.KaleyraCollaborationSuiteUI_TextView_Subtitle_BouncingDots)
-    val value = if(ta.hasValue(styleAttribute))
-        ta.getDimension(styleAttribute, 0f) else 0f
     ta.recycle()
     return value
 }

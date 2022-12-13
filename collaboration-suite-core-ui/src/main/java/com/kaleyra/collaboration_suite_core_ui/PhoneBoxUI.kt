@@ -112,9 +112,13 @@ class PhoneBoxUI(
 
     /**
      * Show the call ui
-     * @param call The call object that should be shown.
      */
-    fun show(call: CallUI) {
+    fun showCall() {
+        if (!AppLifecycle.isInForeground.value) return
+        UIProvider.showCall(callActivityClazz)
+    }
+
+    private fun internalShow(call: CallUI) {
         if (!canShowCallActivity(ContextRetainer.context, call)) return
         UIProvider.showCall(callActivityClazz)
     }
@@ -126,7 +130,7 @@ class PhoneBoxUI(
             serviceJob?.cancel()
             serviceJob = callService(it, callScope)
             it.enableAudioRouting(withCallSounds = true, logger = logger, coroutineScope = callScope)
-            if (it.isLink) showOnAppResumed(it) else show(it)
+            if (it.isLink) showOnAppResumed(it) else internalShow(it)
         }.onCompletion {
             with(ContextRetainer.context) { stopService(Intent(this, CallService::class.java)) }
         }.launchIn(callScope)
@@ -158,7 +162,7 @@ class PhoneBoxUI(
                 (!context.isSilent() || (context.isSilent() && (isOutgoing || call.isLink)))
     }
 
-    private fun showOnAppResumed(call: CallUI): Unit = let { AppLifecycle.isInForeground.dropWhile { !it }.take(1).onEach { show(call) }.launchIn(callScope) }
+    private fun showOnAppResumed(call: CallUI): Unit = let { AppLifecycle.isInForeground.dropWhile { !it }.take(1).onEach { internalShow(call) }.launchIn(callScope) }
 
     private fun getOrCreateCallUI(call: Call): CallUI = synchronized(this) { mappedCalls.firstOrNull { it.id == call.id } ?: createCallUI(call) }
 

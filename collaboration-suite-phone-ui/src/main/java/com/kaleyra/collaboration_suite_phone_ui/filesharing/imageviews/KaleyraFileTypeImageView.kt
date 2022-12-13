@@ -49,7 +49,7 @@ class KaleyraFileTypeImageView @JvmOverloads constructor(context: Context, attrs
     private fun setContentDescription(value: Type?) {
         value ?: return
         contentDescription = when (value) {
-            Type.FILE -> resources.getString(R.string.kaleyra_fileshare_file)
+            Type.FILE -> resources.getString(R.string.kaleyra_fileshare_miscellaneous)
             Type.IMAGE -> resources.getString(R.string.kaleyra_fileshare_media)
             else -> resources.getString(R.string.kaleyra_fileshare_archive)
         }

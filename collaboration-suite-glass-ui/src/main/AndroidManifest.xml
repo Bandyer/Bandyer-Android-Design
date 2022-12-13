@@ -29,7 +29,7 @@
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
             android:showForAllUsers="true"
-            tools:targetApi="m" />
+            tools:targetApi="o_mr1" />
         <activity
             android:name=".chat.GlassChatActivity"
             android:taskAffinity="com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatActivity"

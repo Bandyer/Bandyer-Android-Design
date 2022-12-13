@@ -650,7 +650,7 @@ internal var Drawable.alphaCompat: Int? by FieldProperty { DrawableCompat.getAlp
  * @return Typeface retrieved
  */
 @SuppressLint("RestrictedApi")
-fun View.getFont(fontFamily: Int, style: Int): Typeface {
+fun View.getFont(fontFamily: Int, style: Int): Typeface? {
     return ResourcesCompat.getFont(context, fontFamily, TypedValue(), style, null)
 }
 

@@ -7,7 +7,7 @@ import com.kaleyra.collaboration_suite.chatbox.ChatParticipant
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItem
 import com.kaleyra.collaboration_suite_glass_ui.call.adapter_items.ParticipantItemData
-import com.kaleyra.collaboration_suite_glass_ui.chat.ChatViewModel
+import com.kaleyra.collaboration_suite_glass_ui.chat.GlassChatViewModel
 import com.kaleyra.collaboration_suite_glass_ui.common.ParticipantsFragment
 import com.kaleyra.collaboration_suite_glass_ui.utils.extensions.LifecycleOwnerExtensions.repeatOnStarted
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.onEach
 
 internal class ChatParticipantsFragment : ParticipantsFragment() {
 
-    private val viewModel: ChatViewModel by activityViewModels()
+    private val viewModel: GlassChatViewModel by activityViewModels()
 
     private val args: ChatParticipantsFragmentArgs by lazy {
         ChatParticipantsFragmentArgs.fromBundle(
@@ -26,7 +26,7 @@ internal class ChatParticipantsFragment : ParticipantsFragment() {
     }
 
     override val usersDescription: UsersDescription
-        get() = viewModel.usersDescription
+        get() = viewModel.usersDescription.replayCache.firstOrNull() ?: UsersDescription()
 
     private var participantJob: Job? = null
 
@@ -38,16 +38,16 @@ internal class ChatParticipantsFragment : ParticipantsFragment() {
     override fun bindUI() {
         super.bindUI()
         repeatOnStarted {
-            val myUserId = viewModel.participants.replayCache.firstOrNull()?.me?.userId
-                ?: return@repeatOnStarted
+            val myUserId = viewModel.participants.replayCache.firstOrNull()?.me?.userId ?: return@repeatOnStarted
+            val usersDescription = viewModel.usersDescription.replayCache.firstOrNull() ?: return@repeatOnStarted
             viewModel.participants
-                .onEach {
+                .onEach { it ->
                     val sortedList = it.list.sortedBy { myUserId != it.userId }
                     val items = sortedList.map { part ->
                         val data = part.userId.let {
                             ParticipantItemData(
                                 it,
-                                viewModel.usersDescription.name(listOf(it))
+                                usersDescription.name(listOf(it))
                             )
                         }
                         ParticipantItem(data)
