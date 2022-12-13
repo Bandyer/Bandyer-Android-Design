@@ -142,16 +142,9 @@ internal fun CallAction(
     modifier: Modifier = Modifier
 ) {
     val enabled = action.isEnabled
+    val colors = colorsFor(action)
     val initialToggledValue = (action as? CallAction.Toggleable)?.isToggled ?: false
     var toggled by remember { mutableStateOf(initialToggledValue) }
-
-    val colors = colorsFor(action)
-    val backgroundColor by animateColorAsState(
-        colors.backgroundColor(toggled = toggled, enabled = enabled).value
-    )
-    val iconTint by animateColorAsState(
-        colors.iconColor(toggled = toggled, enabled = enabled).value
-    )
 
     Column(
         modifier = modifier,
@@ -168,14 +161,14 @@ internal fun CallAction(
             modifier = Modifier
                 .size(CallActionDefaults.Size)
                 .background(
-                    color = backgroundColor,
+                    color = colors.backgroundColor(toggled = toggled, enabled = enabled).value,
                     shape = CircleShape
                 )
         ) {
             Icon(
                 painter = painterFor(action),
                 contentDescription = descriptionFor(action),
-                tint = iconTint,
+                tint = colors.iconColor(toggled = toggled, enabled = enabled).value,
                 modifier = Modifier.size(CallActionDefaults.IconSize)
             )
         }
