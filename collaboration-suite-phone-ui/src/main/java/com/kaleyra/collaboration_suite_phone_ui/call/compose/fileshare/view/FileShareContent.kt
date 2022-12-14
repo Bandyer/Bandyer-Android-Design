@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.view
 
 import android.content.res.Configuration
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
@@ -24,7 +23,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 const val FileShareItemTag = "FileShareItemTag"
 private val ContentBottomPadding = 72.dp
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun FileShareContent(
     items: ImmutableList<TransferUi>,
@@ -40,7 +38,6 @@ internal fun FileShareContent(
             FileShareItem(
                 transfer = it,
                 modifier = Modifier
-                    .animateItemPlacement()
                     .clickable(
                         enabled = it.state is TransferUi.State.Success,
                         onClickLabel = stringResource(R.string.kaleyra_fileshare_open_file),
