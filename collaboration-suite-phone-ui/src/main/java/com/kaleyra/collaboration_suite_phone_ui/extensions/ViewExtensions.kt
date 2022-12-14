@@ -123,18 +123,18 @@ fun View.resizeAndMove(toSize: Int, toTop: Int, toLeft: Int, toRight: Int, durat
     set.duration = duration
     set.addListener(object : Animator.AnimatorListener {
         private var isCanceled = false
-        override fun onAnimationRepeat(animation: Animator?) {}
-        override fun onAnimationEnd(animation: Animator?) {
+        override fun onAnimationRepeat(animation: Animator) {}
+        override fun onAnimationEnd(animation: Animator) {
             if (isCanceled) return
             invalidate()
             requestLayout()
             onResizedAndMoved.invoke()
         }
 
-        override fun onAnimationCancel(animation: Animator?) {
+        override fun onAnimationCancel(animation: Animator) {
             isCanceled = true
         }
-        override fun onAnimationStart(animation: Animator?) {}
+        override fun onAnimationStart(animation: Animator) {}
     })
     set.start()
     return set
@@ -179,12 +179,12 @@ fun View.makeFloating(container: androidx.coordinatorlayout.widget.CoordinatorLa
 
     val gestureDetector = GestureDetector(this.context, object : GestureDetector.SimpleOnGestureListener() {
 
-        override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
+        override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
             onFloatingViewClickListener?.onClick(this@makeFloating)
             return super.onSingleTapConfirmed(e)
         }
 
-        override fun onDoubleTap(e: MotionEvent?): Boolean {
+        override fun onDoubleTap(e: MotionEvent): Boolean {
             onFloatingViewDoubleClickListener?.onDoubleClick()
             return super.onDoubleTap(e)
         }
@@ -461,10 +461,10 @@ fun View.animateToCorner(corner: CORNER, container: androidx.coordinatorlayout.w
     AnimatorSet().apply {
         this.duration = if (instant) 0 else 350
         this.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {}
+            override fun onAnimationRepeat(animation: Animator) {}
 
             @SuppressLint("RtlHardcoded")
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationEnd(animation: Animator) {
                 if (!isFloating) return
 
                 isFlinging = false
@@ -511,11 +511,11 @@ fun View.animateToCorner(corner: CORNER, container: androidx.coordinatorlayout.w
                 onSnapped?.onSnap(currentCorner!!)
             }
 
-            override fun onAnimationCancel(animation: Animator?) {
+            override fun onAnimationCancel(animation: Animator) {
                 container.requestDisallowInterceptTouchEvent(false)
             }
 
-            override fun onAnimationStart(animation: Animator?) {}
+            override fun onAnimationStart(animation: Animator) {}
         })
         this.playTogether(animatorX, animatorY)
         this.start()

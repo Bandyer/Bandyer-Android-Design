@@ -86,18 +86,18 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
     }
 
     private val gestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
-        override fun onSingleTapUp(e: MotionEvent?): Boolean {
+        override fun onSingleTapUp(e: MotionEvent): Boolean {
             getCurrentMenuItemIndex().takeIf { it != -1 }?.let { currentMenuItemIndex ->
                 onSmartglassMenuSelectionListener?.onSelected(fastItemAdapter.getAdapterItem(currentMenuItemIndex).item)
             }
             return true
         }
 
-        override fun onDown(e: MotionEvent?) = false
-        override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float) = false
-        override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float) = false
-        override fun onLongPress(e: MotionEvent?) = Unit
-        override fun onShowPress(e: MotionEvent?) = Unit
+        override fun onDown(e: MotionEvent) = false
+        override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float) = false
+        override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float) = false
+        override fun onLongPress(e: MotionEvent) = Unit
+        override fun onShowPress(e: MotionEvent) = Unit
     })
 
     private val snapHelper: SnapHelper = PagerSnapHelper()
@@ -115,7 +115,7 @@ class SmartGlassMenuLayout @kotlin.jvm.JvmOverloads constructor(context: Context
 
     private fun getCurrentMenuItemIndex(): Int = snapHelper.findSnapView(linearLayoutManager)?.let { linearLayoutManager.getPosition(it) } ?: -1
 
-    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
         val hasClicked = gestureDetector.onTouchEvent(ev)
         if (!hasClicked) dispatchMotionEventToInterceptor(ev)
         return super.onInterceptTouchEvent(ev)

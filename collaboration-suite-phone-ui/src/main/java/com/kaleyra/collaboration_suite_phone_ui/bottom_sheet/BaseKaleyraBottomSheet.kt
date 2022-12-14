@@ -546,8 +546,8 @@ open class BaseKaleyraBottomSheet(
         valueAnimator?.addListener(
             object : Animator.AnimatorListener {
                 var isCanceled = false
-                override fun onAnimationRepeat(animation: Animator?) {}
-                override fun onAnimationEnd(animation: Animator?) {
+                override fun onAnimationRepeat(animation: Animator) {}
+                override fun onAnimationEnd(animation: Animator) {
                     if (endValue != 0f) fadeRecyclerViewLinesBelowNavigation()
                     isAnimating = false
                     if (isCanceled) return
@@ -555,12 +555,12 @@ open class BaseKaleyraBottomSheet(
                     if (endValue != lp.bottomMargin.toFloat()) moveBottomSheet()
                 }
 
-                override fun onAnimationCancel(animation: Animator?) {
+                override fun onAnimationCancel(animation: Animator) {
                     isCanceled = true
                     isAnimating = false
                 }
 
-                override fun onAnimationStart(animation: Animator?) = Unit
+                override fun onAnimationStart(animation: Animator) = Unit
             })
 
         valueAnimator!!.duration = 200

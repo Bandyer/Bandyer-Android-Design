@@ -68,13 +68,13 @@ class VisibilityToggle(val view: View): ToggleableVisibilityInterface {
         if (view.alpha == endValue) return
 
         val animationListener = object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(p0: Animator?) = Unit
-            override fun onAnimationStart(animation: Animator?) = Unit
-            override fun onAnimationCancel(animation: Animator?) {
+            override fun onAnimationRepeat(p0: Animator) = Unit
+            override fun onAnimationStart(animation: Animator) = Unit
+            override fun onAnimationCancel(animation: Animator) {
                 alphaAnimator = null
                 cancelTimer()
             }
-            override fun onAnimationEnd(p0: Animator?) {
+            override fun onAnimationEnd(p0: Animator) {
                 alphaAnimator = null
                 animationEndCallback.invoke(view.alpha == 1f)
             }

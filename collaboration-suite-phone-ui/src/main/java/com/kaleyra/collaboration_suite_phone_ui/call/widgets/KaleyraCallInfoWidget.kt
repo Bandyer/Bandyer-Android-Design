@@ -201,14 +201,14 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
     private fun animateHide(onHidden: (() -> Unit)? = null) {
         isShowing = false
         animate().translationY(-height.toFloat()).setListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {}
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationRepeat(animation: Animator) {}
+            override fun onAnimationEnd(animation: Animator) {
                 visibility = View.INVISIBLE
                 onHidden?.invoke()
             }
 
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationStart(animation: Animator?) {}
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationStart(animation: Animator) {}
         }).setDuration(AUTO_HIDE_ANIMATION_DURATION_MS).start()
     }
 
@@ -232,13 +232,13 @@ class KaleyraCallInfoWidget @JvmOverloads constructor(context: Context, attrs: A
     fun show(onShown: (() -> Unit)? = null) {
         isShowing = true
         animate().translationY(0f).setListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {}
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationRepeat(animation: Animator) {}
+            override fun onAnimationEnd(animation: Animator) {
                 onShown?.invoke()
             }
 
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationStart(animation: Animator?) {
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationStart(animation: Animator) {
                 visibility = View.VISIBLE
             }
         }).setDuration(AUTO_SHOW_ANIMATION_DURATION_MS).start()

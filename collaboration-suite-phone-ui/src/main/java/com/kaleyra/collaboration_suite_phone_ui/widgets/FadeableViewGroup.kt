@@ -96,13 +96,13 @@ interface FadableViewGroup<T> where T : ViewGroup {
             fadingView!!.alpha = getFadeValue(out, true, viewGroup)
 
         fadingView!!.animate().alpha(finalAlpha).setDuration(durationMillis).setListener(object : Animator.AnimatorListener {
-            override fun onAnimationRepeat(animation: Animator?) {}
-            override fun onAnimationEnd(animation: Animator?) {
+            override fun onAnimationRepeat(animation: Animator) {}
+            override fun onAnimationEnd(animation: Animator) {
                 endAnimationCallback?.invoke()
             }
 
-            override fun onAnimationCancel(animation: Animator?) {}
-            override fun onAnimationStart(animation: Animator?) {}
+            override fun onAnimationCancel(animation: Animator) {}
+            override fun onAnimationStart(animation: Animator) {}
         }).start()
     }
 

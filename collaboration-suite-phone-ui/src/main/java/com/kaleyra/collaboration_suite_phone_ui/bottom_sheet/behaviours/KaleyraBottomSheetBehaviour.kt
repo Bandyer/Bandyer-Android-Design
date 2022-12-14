@@ -495,7 +495,7 @@ class KaleyraBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
     }
 
     private val clickGestureDetector = GestureDetector(context, object : GestureDetector.OnGestureListener {
-        override fun onShowPress(e: MotionEvent?) {
+        override fun onShowPress(e: MotionEvent) {
 
         }
 
@@ -503,19 +503,19 @@ class KaleyraBottomSheetBehaviour<V : View>(context: Context, attrs: AttributeSe
             return e.pointerCount == 1 && (mViewRef?.get()?.parent as? ViewGroup)?.performClick() == true
         }
 
-        override fun onDown(e: MotionEvent?): Boolean {
+        override fun onDown(e: MotionEvent): Boolean {
             return false
         }
 
-        override fun onFling(e1: MotionEvent?, e2: MotionEvent?, velocityX: Float, velocityY: Float): Boolean {
+        override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
             return false
         }
 
-        override fun onScroll(e1: MotionEvent?, e2: MotionEvent?, distanceX: Float, distanceY: Float): Boolean {
+        override fun onScroll(e1: MotionEvent, e2: MotionEvent, distanceX: Float, distanceY: Float): Boolean {
             return false
         }
 
-        override fun onLongPress(e: MotionEvent?) {
+        override fun onLongPress(e: MotionEvent) {
 
         }
 

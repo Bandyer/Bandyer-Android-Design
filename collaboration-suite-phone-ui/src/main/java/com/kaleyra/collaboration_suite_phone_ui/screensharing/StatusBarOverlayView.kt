@@ -135,27 +135,27 @@ class StatusBarOverlayView @JvmOverloads constructor(
     /**
      * @suppress
      */
-    override fun onAnimationRepeat(animation: Animator?) = bringToFront()
+    override fun onAnimationRepeat(animation: Animator) = bringToFront()
 
     /**
      * @suppress
      */
-    override fun onAnimationStart(animation: Animator?) = bringToFront()
+    override fun onAnimationStart(animation: Animator) = bringToFront()
 
     /**
      * @suppress
      */
-    override fun onAnimationEnd(animation: Animator?) = Unit
+    override fun onAnimationEnd(animation: Animator) = Unit
 
     /**
      * @suppress
      */
-    override fun onAnimationCancel(animation: Animator?) = setBackgroundColor(backgroundColor)
+    override fun onAnimationCancel(animation: Animator) = setBackgroundColor(backgroundColor)
 
     /**
      * @suppress
      */
-    override fun onAnimationUpdate(animation: ValueAnimator?) {
+    override fun onAnimationUpdate(animation: ValueAnimator) {
         animation ?: return
         // Use animation position to blend colors.
         val position = animation.animatedFraction
