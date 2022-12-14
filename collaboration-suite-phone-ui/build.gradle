@@ -19,7 +19,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-parcelize'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version("1.6.10")
+    id 'org.jetbrains.dokka' version("1.6.21")
 }
 
 apply from: '../versions.gradle'
@@ -63,17 +63,12 @@ dependencies {
     api google.flexbox
     implementation project(':collaboration-suite-core-ui')
 
-    def composeVersion = "1.1.1"
-    debugImplementation("androidx.compose.ui:ui-tooling:1.1.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.1.1")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.1.1")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.2.1")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.2.1")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.2.1")
 
-    implementation("io.coil-kt:coil-compose:2.0.0")
-    implementation "com.google.accompanist:accompanist-systemuicontroller:0.23.1"
-
-    // Needed to fix compose previews https://issuetracker.google.com/issues/227767363
-    debugImplementation "androidx.customview:customview:1.2.0-alpha01"
-    debugImplementation "androidx.customview:customview-poolingcontainer:1.0.0-beta02"
+    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.25.1"
 
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 

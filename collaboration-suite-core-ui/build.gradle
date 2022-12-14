@@ -19,7 +19,7 @@ plugins {
     id 'kotlin-parcelize'
     id 'kotlin-kapt'
     id 'maven-publish'
-    id 'org.jetbrains.dokka' version("1.6.10")
+    id 'org.jetbrains.dokka' version("1.6.21")
 }
 
 apply from: '../versions.gradle'
@@ -41,20 +41,27 @@ dependencies {
     api google.material
     api picasso.picasso
 
-//    def composeVersion = "1.1.1"
     api 'androidx.activity:activity-compose:1.5.1'
-    api "androidx.compose.material:material:1.1.1"
-    api "androidx.compose.foundation:foundation:1.1.1"
-    api "androidx.compose.runtime:runtime:1.1.1"
-    api 'com.google.android.material:compose-theme-adapter:1.1.10'
-    api 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.0'
+    api "androidx.compose.material:material:1.2.1"
+    api "androidx.compose.foundation:foundation:1.2.1"
+    api "androidx.compose.runtime:runtime:1.2.1"
+    api 'com.google.android.material:compose-theme-adapter:1.1.13'
+    api 'androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1'
+
+//    def composeBom = platform('androidx.compose:compose-bom:2022.10.00')
+//    implementation composeBom
+//    androidTestImplementation composeBom
+//
+//    api 'androidx.compose.material:material'
+//    api 'androidx.compose.foundation:foundation'
+//    api "androidx.compose.runtime:runtime"
 
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 
     testImplementation 'io.mockk:mockk:1.13.2'
 
-    debugImplementation "androidx.compose.ui:ui-tooling:1.1.1"
-    api "androidx.compose.ui:ui-tooling-preview:1.1.1"
+    debugImplementation "androidx.compose.ui:ui-tooling:1.2.1"
+    api "androidx.compose.ui:ui-tooling-preview:1.2.1"
 
     /** Kaleyra **/
     implementation kaleyra.collaboration

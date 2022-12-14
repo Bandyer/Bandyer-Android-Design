@@ -21,16 +21,16 @@ plugins {
 }
 
 def kotlin_coroutines = "1.5.2"
-def kotlinVersion = "1.6.10"
+def kotlinVersion = "1.6.21"
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
     buildToolsVersion "31.0.0"
 
     defaultConfig {
         applicationId "com.kaleyra.demo_collaboration_suite_ui"
         minSdkVersion 21
-        targetSdkVersion 31
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -63,7 +63,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.1.1'
+        kotlinCompilerExtensionVersion '1.2.0-rc02'
     }
 
     kotlinOptions {
@@ -103,7 +103,7 @@ dependencies {
     implementation project(':collaboration-suite-core-ui')
 //    implementation project(":collaboration-suite")
 
-    implementation("androidx.profileinstaller:profileinstaller:1.1.1")
+    implementation("androidx.profileinstaller:profileinstaller:1.2.0")
 
     implementation "com.kaleyra:collaboration-suite-utils:2.0.1"
     implementation "com.bandyer:bandyer-android-audiosession:2.2.1"

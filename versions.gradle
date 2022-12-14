@@ -1,12 +1,12 @@
 ext {
-    sdkVersion = 31
+    sdkVersion = 32
     buildToolsVersion = "31.0.0"
     moduleVersion = "3.4.3"
     moduleGroupId = "com.kaleyra"
 
     // Versions
-    def kotlinVersion = '1.6.10'
-    def gradleVersion = "7.0.4"
+    def kotlinVersion = '1.6.21'
+    def gradleVersion = "7.3.1"
     def androidAptVersion = "1.8"
     def benManesGradleVersion = "0.21.0"
     def navVersion = "2.3.5"
@@ -25,7 +25,7 @@ ext {
 
     def fastAdapterVersion = '5.5.1'
 
-    def materialVersion = "1.4.0"
+    def materialVersion = "1.6.0"
     def flexBoxVersion = "3.0.0"
 
     def picassoVersion = "2.71828"
