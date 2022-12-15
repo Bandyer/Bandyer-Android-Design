@@ -62,6 +62,7 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
     fun disconnect(clearSavedData: Boolean = false) {
         collaboration.disconnect(clearSavedData)
         pause()
+        if (clearSavedData) NotificationManager.cancelAll()
     }
 
     private fun pause() {
@@ -69,7 +70,6 @@ internal class CollaborationUIConnector(val collaboration: Collaboration, privat
         wasChatBoxConnected = collaboration.chatBox.state.value.let { it !is ChatBox.State.Disconnected && it !is ChatBox.State.Disconnecting }
         collaboration.phoneBox.disconnect()
         collaboration.chatBox.disconnect()
-        NotificationManager.cancelAll()
         scope.cancel()
     }
 
