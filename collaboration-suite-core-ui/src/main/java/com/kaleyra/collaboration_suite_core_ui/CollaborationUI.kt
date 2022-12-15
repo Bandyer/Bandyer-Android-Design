@@ -16,7 +16,6 @@
 
 package com.kaleyra.collaboration_suite_core_ui
 
-import android.net.Uri
 import com.kaleyra.collaboration_suite.Collaboration
 import com.kaleyra.collaboration_suite.Collaboration.Configuration
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
@@ -128,7 +127,7 @@ object CollaborationUI {
     /**
      * Dispose the collaboration UI and optionally clear saved data.
      */
-    fun dispose() {
+    fun reset() {
         collaboration ?: return
         mainScope?.cancel()
         disconnect(true)
