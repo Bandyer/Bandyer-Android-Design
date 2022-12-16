@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalComposeUiApi::class, ExperimentalLayoutApi::class)
+@file:OptIn(ExperimentalComposeUiApi::class)
 
 package com.kaleyra.collaboration_suite_phone_ui.chat.conversation
 
