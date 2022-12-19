@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.utility
 
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
@@ -68,3 +69,18 @@ internal fun Modifier.horizontalSystemBarsPadding(): Modifier =
 @Stable
 internal fun Modifier.horizontalCutoutPadding(): Modifier =
     composed { windowInsetsPadding(WindowInsets.displayCutout.only(WindowInsetsSides.Horizontal)) }
+
+
+@Stable
+internal fun Modifier.pulse(durationMillis: Int = 1000): Modifier = composed {
+    val infiniteTransition = rememberInfiniteTransition()
+    val alpha by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 0f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    alpha(alpha)
+}
