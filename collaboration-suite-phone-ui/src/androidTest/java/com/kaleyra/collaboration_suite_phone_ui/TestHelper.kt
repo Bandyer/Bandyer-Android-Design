@@ -1,9 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.test.SemanticsNodeInteraction
-import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.test.swipe
+import androidx.compose.ui.test.*
+import androidx.compose.ui.unit.Dp
 
 internal fun SemanticsNodeInteraction.performScrollUp() {
     performTouchInput {
@@ -13,4 +12,11 @@ internal fun SemanticsNodeInteraction.performScrollUp() {
             durationMillis = 200
         )
     }
+}
+
+internal fun SemanticsNodeInteraction.assertRightPositionInRootIsEqualTo(
+    expectedRight: Dp
+): SemanticsNodeInteraction {
+    getUnclippedBoundsInRoot().right.assertIsEqualTo(expectedRight, "right")
+    return this
 }
