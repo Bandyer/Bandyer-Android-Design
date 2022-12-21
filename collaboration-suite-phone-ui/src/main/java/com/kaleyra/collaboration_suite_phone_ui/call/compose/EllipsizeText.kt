@@ -47,6 +47,12 @@ internal fun EllipsizeText(
                 typeface = tf
                 this.ellipsize = ellipsize.value
 
+                if (ellipsize == Ellipsize.Marquee) {
+                    isSingleLine = true
+                    isSelected = true
+                    marqueeRepeatLimit = -1
+                }
+
                 if (shadow != null) {
                     setShadowLayer(shadow.blurRadius, shadow.offset.x, shadow.offset.y, shadow.color.toArgb())
                 }
