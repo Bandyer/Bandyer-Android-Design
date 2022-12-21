@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -16,6 +17,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.highlightOnFocus
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.supportRtl
 
 private const val DisabledAlpha = 0.25f
+private val MinSize = 48.dp
 
 // TODO move in a common package for call and chat
 @Composable
@@ -33,7 +35,9 @@ internal fun IconButton(
     IconButton(
         onClick = onClick,
         enabled = enabled,
-        modifier = modifier.highlightOnFocus(interactionSource),
+        modifier = modifier
+            .highlightOnFocus(interactionSource)
+            .defaultMinSize(minWidth = MinSize, minHeight = MinSize),
         interactionSource = interactionSource
     ) {
         val tint = if (enabled) iconTint else LocalContentColor.current.copy(alpha = DisabledAlpha)
