@@ -22,14 +22,14 @@ private val MaxWatermarkHeight = 80.dp
 private val MaxWatermarkWidth = 300.dp
 
 @Composable
-internal fun Watermark(logo: Painter, text: String? = null) {
+internal fun Watermark(image: Painter, text: String? = null) {
     Row(
         modifier = Modifier.padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val logoRatio = with(logo.intrinsicSize) { width / height }
+        val logoRatio = with(image.intrinsicSize) { width / height }
         Image(
-            painter = logo,
+            painter = image,
             contentDescription = stringResource(id = R.string.kaleyra_company_logo),
             contentScale = ContentScale.Fit,
             modifier = Modifier
@@ -54,7 +54,7 @@ internal fun Watermark(logo: Painter, text: String? = null) {
 fun CallInfoWidgetPreview() {
     KaleyraTheme {
         Watermark(
-            logo = painterResource(id = R.drawable.kaleyra_z_screen_share),
+            image = painterResource(id = R.drawable.kaleyra_z_screen_share),
             text = "logo text"
         )
     }

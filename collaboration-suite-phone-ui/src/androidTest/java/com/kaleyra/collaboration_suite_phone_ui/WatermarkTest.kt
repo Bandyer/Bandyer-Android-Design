@@ -29,7 +29,7 @@ class WatermarkTest {
     fun setUp() {
         composeTestRule.setContent {
             Watermark(
-                logo = painterResource(id = logoRes),
+                image = painterResource(id = logoRes),
                 text = logoText
             )
         }
