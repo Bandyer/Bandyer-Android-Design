@@ -8,6 +8,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.width
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Watermark
 import org.junit.Before
@@ -21,39 +22,57 @@ class WatermarkTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var logoRes by mutableStateOf(com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo)
+    private var image by mutableStateOf<Int?>(null)
 
-    private val logoText = "logoText"
+    private val text = "text"
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             Watermark(
-                image = painterResource(id = logoRes),
-                text = logoText
+                image = image?.let { painterResource(id = it) },
+                text = text
             )
         }
     }
 
     @Test
-    fun logoIsDisplayed() {
+    fun imageNotNull_watermarkImageIsDisplayed() {
+        image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo
         composeTestRule.onNodeWithContentDescription(findLogo()).assertIsDisplayed()
     }
 
     @Test
-    fun textIsDisplayed() {
-        composeTestRule.onNodeWithText(logoText).assertIsDisplayed()
+    fun textNotNull_textIsDisplayed() {
+        composeTestRule.onNodeWithText(text).assertIsDisplayed()
+    }
+
+    @Test
+    fun imageNull_textIsDisplayedAtTheStart() {
+        image = null
+        val padding = 16.dp
+        composeTestRule.onNodeWithText(text).assertLeftPositionInRootIsEqualTo(padding)
+    }
+
+    @Test
+    fun imageNotNull_textIsDisplayedToImageEnd() {
+        image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo
+        val padding = 16.dp
+        val imageWidth = composeTestRule.onNodeWithContentDescription(findLogo()).getBoundsInRoot().width
+        val imageSpacerWidth = 16.dp
+        val expectedPosition = padding + imageWidth + imageSpacerWidth
+        composeTestRule.onNodeWithText(text).assertLeftPositionInRootIsEqualTo(expectedPosition)
     }
 
     @Test
     fun testLogoExpandsToMaxWidth() {
-        logoRes = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo_clipped
+        image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo_clipped
         composeTestRule.onNodeWithContentDescription(findLogo()).assertWidthIsEqualTo(300.dp)
     }
 
     @Test
     fun testLogoExpandsToMaxHeight() {
-        logoRes = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo
+        image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo
         composeTestRule.onNodeWithContentDescription(findLogo()).assertHeightIsEqualTo(80.dp)
     }
 

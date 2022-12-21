@@ -22,23 +22,25 @@ private val MaxWatermarkHeight = 80.dp
 private val MaxWatermarkWidth = 300.dp
 
 @Composable
-internal fun Watermark(image: Painter, text: String? = null) {
+internal fun Watermark(image: Painter? = null, text: String? = null) {
     Row(
         modifier = Modifier.padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val logoRatio = with(image.intrinsicSize) { width / height }
-        Image(
-            painter = image,
-            contentDescription = stringResource(id = R.string.kaleyra_company_logo),
-            contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .heightIn(max = MaxWatermarkHeight)
-                .widthIn(max = MaxWatermarkWidth)
-                .aspectRatio(logoRatio)
-        )
-        if (text != null) {
+        if (image != null) {
+            val logoRatio = with(image.intrinsicSize) { width / height }
+            Image(
+                painter = image,
+                contentDescription = stringResource(id = R.string.kaleyra_company_logo),
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .heightIn(max = MaxWatermarkHeight)
+                    .widthIn(max = MaxWatermarkWidth)
+                    .aspectRatio(logoRatio)
+            )
             Spacer(modifier = Modifier.width(16.dp))
+        }
+        if (text != null) {
             Text(
                 text = text,
                 fontSize = 16.sp,
