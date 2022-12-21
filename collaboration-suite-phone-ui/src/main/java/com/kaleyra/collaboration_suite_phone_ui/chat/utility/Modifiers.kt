@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.utility
 
+import androidx.annotation.FloatRange
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -9,7 +10,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.InputMode
 import androidx.compose.ui.layout.boundsInRoot
@@ -20,6 +25,9 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.findRoot
+import kotlin.math.max
+import kotlin.math.min
+import kotlin.math.pow
 
 private val FocusHighlightStroke = 2.dp
 private val FocusHighlightColor = Color.Red
@@ -83,4 +91,31 @@ internal fun Modifier.pulse(durationMillis: Int = 1000): Modifier = composed {
         )
     )
     alpha(alpha)
+}
+
+internal fun Modifier.verticalGradientScrim(
+    color: Color,
+    @FloatRange(from = 0.0, to = 1.0) startYPercentage: Float = 0f,
+    @FloatRange(from = 0.0, to = 1.0) endYPercentage: Float = 1f
+): Modifier = composed {
+    val colors = remember(color) {
+        listOf(color.copy(alpha = 0f), color)
+    }
+
+    val brush = remember(colors, startYPercentage, endYPercentage) {
+        Brush.verticalGradient(
+            colors = if (startYPercentage < endYPercentage) colors else colors.reversed(),
+        )
+    }
+
+    drawBehind {
+        val topLeft = Offset(0f, size.height * min(startYPercentage, endYPercentage))
+        val bottomRight = Offset(size.width, size.height * max(startYPercentage, endYPercentage))
+
+        drawRect(
+            topLeft = topLeft,
+            size = Rect(topLeft, bottomRight).size,
+            brush = brush
+        )
+    }
 }
