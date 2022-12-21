@@ -50,17 +50,15 @@ class WatermarkTest {
     @Test
     fun imageNull_textIsDisplayedAtTheStart() {
         image = null
-        val padding = 16.dp
-        composeTestRule.onNodeWithText(text).assertLeftPositionInRootIsEqualTo(padding)
+        composeTestRule.onNodeWithText(text).assertLeftPositionInRootIsEqualTo(0.dp)
     }
 
     @Test
     fun imageNotNull_textIsDisplayedToImageEnd() {
         image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo
-        val padding = 16.dp
         val imageWidth = composeTestRule.onNodeWithContentDescription(findLogo()).getBoundsInRoot().width
         val imageSpacerWidth = 16.dp
-        val expectedPosition = padding + imageWidth + imageSpacerWidth
+        val expectedPosition = imageWidth + imageSpacerWidth
         composeTestRule.onNodeWithText(text).assertLeftPositionInRootIsEqualTo(expectedPosition)
     }
 
