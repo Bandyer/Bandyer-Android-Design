@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Avatar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.BackIconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.chat.custom.MarqueeText
 import com.kaleyra.collaboration_suite_phone_ui.chat.custom.TypingDots
@@ -40,13 +41,7 @@ internal fun ChatAppBar(
     onBackPressed: () -> Unit,
 ) {
     TopAppBar(
-        navigationIcon = {
-            IconButton(
-                icon = rememberVectorPainter(image = Icons.Filled.ArrowBack),
-                iconDescription = stringResource(id = R.string.kaleyra_back),
-                onClick = onBackPressed
-            )
-        },
+        navigationIcon = { BackIconButton(onClick = onBackPressed) },
         content = { ChatDetails(info, state) },
         actions = { Actions(actions = actions) }
     )
