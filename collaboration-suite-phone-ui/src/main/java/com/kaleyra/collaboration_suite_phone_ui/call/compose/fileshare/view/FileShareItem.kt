@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.Ellipsize
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.EllipsizeText
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.ProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
@@ -124,26 +126,12 @@ private fun FileNameAndTransferInfo(
 ) {
     Column(modifier = modifier) {
 
-        val textColor = MaterialTheme.colors.onSurface.toArgb()
-        val fontFamily = LocalTextStyle.current.fontFamily
-
-        // Replace this when compose Text will support overflow middle ellipsize
-        AndroidView(
-            factory = { context ->
-                val tf = createFontFamilyResolver(context).resolve(
-                    fontFamily = fontFamily,
-                    fontWeight = FontWeight.Bold
-                ).value as Typeface
-
-                TextView(context).apply {
-                    maxLines = 1
-                    ellipsize = TextUtils.TruncateAt.MIDDLE
-                    textSize = 14f
-                    setTextColor(textColor)
-                    typeface = tf
-                }
-            },
-            update = { it.text = transfer.file.name }
+        EllipsizeText(
+            text = transfer.file.name,
+            color = MaterialTheme.colors.onSurface,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold,
+            ellipsize = Ellipsize.Middle
         )
 
         LinearProgressIndicator(
