@@ -22,9 +22,9 @@ private val MaxWatermarkHeight = 80.dp
 private val MaxWatermarkWidth = 300.dp
 
 @Composable
-internal fun Watermark(image: Painter? = null, text: String? = null) {
+internal fun Watermark(image: Painter? = null, text: String? = null, modifier: Modifier = Modifier) {
     Row(
-        modifier = Modifier.padding(horizontal = 16.dp),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         if (image != null) {
@@ -45,7 +45,8 @@ internal fun Watermark(image: Painter? = null, text: String? = null) {
                 text = text,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = Color.White,
+                maxLines = 1
             )
         }
     }
