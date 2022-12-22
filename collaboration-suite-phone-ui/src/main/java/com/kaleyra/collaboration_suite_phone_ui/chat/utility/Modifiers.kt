@@ -16,6 +16,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.InputMode
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -67,7 +68,9 @@ internal fun Modifier.fadeBelowOfRootBottomBound(): Modifier =
                 val out = (boundsInRoot.bottom - rootHeight + navigationBarsPadding).coerceIn(0f, height)
                 alpha = (1 - out / height).takeIf { it > FadeVisibilityThreshold } ?: 0f
             }
-            .alpha(alpha)
+            .graphicsLayer {
+                this.alpha = alpha
+            }
     }
 
 @Stable
@@ -90,7 +93,9 @@ internal fun Modifier.pulse(durationMillis: Int = 1000): Modifier = composed {
             repeatMode = RepeatMode.Reverse
         )
     )
-    alpha(alpha)
+    graphicsLayer {
+        this.alpha = alpha
+    }
 }
 
 internal fun Modifier.verticalGradientScrim(
