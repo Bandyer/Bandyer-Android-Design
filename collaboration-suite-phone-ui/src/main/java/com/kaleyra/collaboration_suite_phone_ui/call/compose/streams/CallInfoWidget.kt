@@ -14,36 +14,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.BackIconButton
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.EllipsizeText
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.Watermark
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.verticalGradientScrim
 
 @Composable
 internal fun CallInfoWidget(
-    onBackPressed: () -> Unit,
     callInfo: CallInfoUi,
-    header: Boolean = true,
-    watermark: Boolean = true,
-    recording: Boolean = false,
+    onBackPressed: () -> Unit,
+    showWatermark: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier
+        modifier = Modifier
             .verticalGradientScrim(
                 color = Color.Black.copy(alpha = .5f),
                 startYPercentage = 1f,
                 endYPercentage = 0f
             )
+            .then(modifier)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(min = 56.dp)
                 .padding(horizontal = 4.dp),
-            verticalAlignment = if (watermark) Alignment.Top else Alignment.CenterVertically
+            verticalAlignment = if (showWatermark) Alignment.Top else Alignment.CenterVertically
         ) {
             BackIconButton(onClick = onBackPressed)
 
@@ -52,33 +48,33 @@ internal fun CallInfoWidget(
                     .weight(1f)
                     .padding(horizontal = 4.dp)
             ) {
-                when {
-                    watermark -> Watermark(
-                        image = callInfo.watermarkImage,
-                        text = callInfo.watermarkText
+                if (showWatermark) {
+                    Watermark(
+                        image = callInfo.watermark.image?.let { painterResource(id = it) },
+                        text = callInfo.watermark.text
                     )
-                    header -> Header(
-                        title = callInfo.headerTitle,
-                        subtitle = callInfo.headerSubtitle
+                } else {
+                    Header(
+                        title = callInfo.title,
+                        subtitle = callInfo.subtitle
                     )
-                    else -> Unit
                 }
             }
 
-            if (recording) {
+            if (callInfo.isRecording) {
                 Box(
                     modifier = Modifier
                         .height(48.dp)
-                        .padding(end = 16.dp),
+                        .padding(end = 12.dp),
                     contentAlignment = Alignment.Center,
                     content = { RecordingLabel() }
                 )
             }
         }
-        if (watermark && header) {
+        if (showWatermark) {
             Header(
-                title = callInfo.headerTitle,
-                subtitle = callInfo.headerSubtitle,
+                title = callInfo.title,
+                subtitle = callInfo.subtitle,
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
         }
@@ -122,9 +118,8 @@ internal fun CallInfoWidgetWithWatermarkPreview() {
         CallInfoWidget(
             onBackPressed = { },
             callInfo = callInfoMock.copy(
-                watermarkImage = painterResource(id = R.drawable.ic_100tb)
-            ),
-            recording = true
+                watermark = Watermark(image = R.drawable.ic_kaleyra_screen_share)
+            )
         )
     }
 }
@@ -136,8 +131,7 @@ internal fun CallInfoWidgetNoWatermarkPreview() {
         CallInfoWidget(
             onBackPressed = { },
             callInfo = callInfoMock,
-            watermark = false,
-            recording = true
+            showWatermark = false
         )
     }
 }

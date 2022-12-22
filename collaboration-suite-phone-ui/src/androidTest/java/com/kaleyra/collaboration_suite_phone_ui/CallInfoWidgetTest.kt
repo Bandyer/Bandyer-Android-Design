@@ -4,18 +4,12 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.ViewInteraction
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
-import androidx.test.espresso.assertion.ViewAssertions.matches
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidget
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Watermark
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -27,11 +21,9 @@ class CallInfoWidgetTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var isRecording by mutableStateOf(false)
+    private var callInfo by mutableStateOf(callInfoMock)
 
     private var showWatermark by mutableStateOf(false)
-
-    private var showHeader by mutableStateOf(false)
 
     private var isBackPressed = false
 
@@ -40,15 +32,8 @@ class CallInfoWidgetTest {
         composeTestRule.setContent {
             CallInfoWidget(
                 onBackPressed = { isBackPressed = true },
-                callInfo = CallInfoUi(
-                    headerTitle = "title",
-                    headerSubtitle = "subtitle",
-                    watermarkImage = painterResource(id = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo),
-                    watermarkText = "watermark"
-                ),
-                watermark = showWatermark,
-                header = showHeader,
-                recording = isRecording
+                callInfo = callInfo,
+                showWatermark = showWatermark
             )
         }
     }
@@ -59,6 +44,16 @@ class CallInfoWidgetTest {
     }
 
     @Test
+    fun titleIsDisplayed() {
+        findHeaderTitle().assertIsDisplayed()
+    }
+
+    @Test
+    fun subtitleIsDisplayed() {
+        findHeaderSubtitle().assertIsDisplayed()
+    }
+
+    @Test
     fun userClicksBack_onBackPressedInvoked() {
         findBackButton().performClick()
         assert(isBackPressed)
@@ -66,58 +61,65 @@ class CallInfoWidgetTest {
 
     @Test
     fun recordingFalse_recordingLabelDoesNotExists() {
-        isRecording = false
+        callInfo = callInfoMock.copy(isRecording = false)
         findRecordingLabel().assertDoesNotExist()
     }
 
     @Test
     fun recordingTrue_recordingLabelIsDisplayed() {
-        isRecording = true
+        callInfo = callInfoMock.copy(isRecording = true)
         findRecordingLabel().assertIsDisplayed()
     }
 
     @Test
-    fun watermarkTrue_watermarkIsDisplayed() {
+    fun watermarkImageNotNull_watermarkImageIsDisplayed() {
         showWatermark = true
-        findWatermark().assertIsDisplayed()
+        callInfo = callInfoMock.copy(
+            watermark = Watermark(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = null)
+        )
+        findWatermarkImage().assertIsDisplayed()
     }
 
     @Test
-    fun watermarkFalse_watermarkDoesNotExists() {
+    fun watermarkTextNotNull_watermarkTextIsDisplayed() {
+        showWatermark = true
+        callInfo = callInfoMock.copy(watermark = Watermark(image = null, text = "watermark"))
+        composeTestRule.onNodeWithText("watermark").assertIsDisplayed()
+    }
+
+    @Test
+    fun showWatermarkTrue_watermarkIsDisplayed() {
+        callInfo = callInfoMock.copy(watermark = Watermark(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = "watermark"))
+        showWatermark = true
+        findWatermarkImage().assertIsDisplayed()
+        composeTestRule.onNodeWithText("watermark").assertIsDisplayed()
+    }
+
+    @Test
+    fun showWatermarkFalse_watermarkDoesNotExists() {
+        callInfo = callInfoMock.copy(watermark = Watermark(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = "watermark"))
         showWatermark = false
-        findWatermark().assertDoesNotExist()
+        findWatermarkImage().assertDoesNotExist()
+        composeTestRule.onNodeWithText("watermark").assertDoesNotExist()
     }
 
     @Test
-    fun headerTrue_headerIsDisplayed() {
-        showHeader = true
-        findHeaderTitle().check(matches(isDisplayed()))
-        findHeaderSubtitle().assertIsDisplayed()
+    fun showWatermarkTrue_titleIsDisplayedBelowWatermark() {
+        callInfo = callInfoMock.copy(watermark = Watermark(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = "watermark"))
+        showWatermark = true
+        val titleTop = findHeaderTitle().getBoundsInRoot().top
+        val watermarkBottom = findWatermarkImage().getBoundsInRoot().bottom
+        assert(titleTop > watermarkBottom)
     }
 
     @Test
-    fun headerFalse_headerDoesNotExists() {
-        showHeader = false
-        findHeaderTitle().check(doesNotExist())
-        findHeaderSubtitle().assertDoesNotExist()
+    fun showWatermarkFalse_titleIsDisplayedToEndOfBackButton() {
+        callInfo = callInfoMock.copy(watermark = Watermark(image = null, text = "watermark"))
+        showWatermark = false
+        val subtitleLeft = findHeaderTitle().getBoundsInRoot().left
+        val backRight = findBackButton().getBoundsInRoot().right
+        assert(subtitleLeft > backRight)
     }
-
-//    @Test
-//    fun watermarkTrue_headerIsDisplayedBelowWatermark() {
-//        showWatermark = true
-//        showHeader = true
-//        val subtitleTop = findHeaderSubtitle().getBoundsInRoot().top
-//        val watermarkBottom = findWatermark().getBoundsInRoot().bottom
-//        assert(subtitleTop < watermarkBottom)
-//    }
-
-//    @Test
-//    fun watermarkFalse_headerIsDisplayedToEndOfBackButton() {
-//        showWatermark = false
-//        showHeader = true
-//        val subtitleTop = findHeaderSubtitle().getBoundsInRoot().
-//        val watermarkBottom = findWatermark().getBoundsInRoot().bottom
-//    }
 
     private fun findBackButton(): SemanticsNodeInteraction {
         val back = composeTestRule.activity.getString(R.string.kaleyra_back)
@@ -129,13 +131,12 @@ class CallInfoWidgetTest {
         return composeTestRule.onNodeWithText(rec)
     }
 
-    private fun findWatermark(): SemanticsNodeInteraction {
+    private fun findWatermarkImage(): SemanticsNodeInteraction {
         val logo = composeTestRule.activity.getString(R.string.kaleyra_company_logo)
         return composeTestRule.onNodeWithContentDescription(logo)
     }
 
-    // The title header is a view
-    private fun findHeaderTitle(): ViewInteraction = Espresso.onView(withText("title"))
+    private fun findHeaderTitle(): SemanticsNodeInteraction = composeTestRule.onNodeWithContentDescription("title")
 
     private fun findHeaderSubtitle(): SemanticsNodeInteraction = composeTestRule.onNodeWithText("subtitle")
 }
