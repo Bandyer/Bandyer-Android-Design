@@ -5,9 +5,12 @@ import android.text.TextUtils
 import android.widget.TextView
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.font.createFontFamilyResolver
 import androidx.compose.ui.unit.TextUnit
@@ -58,6 +61,7 @@ internal fun EllipsizeText(
                 }
             }
         },
-        update = { it.text = text }
+        update = { it.text = text },
+        modifier = Modifier.semantics { contentDescription = text }
     )
 }
