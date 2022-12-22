@@ -111,12 +111,14 @@
     <string name="kaleyra_download">Salva</string>
 
     <string name="kaleyra_fullscreen_info">Modalità primo piano</string>
-    <string name="kaleyra_fullscreen_button">Entra/esci modalità primo piano</string>
+    <string name="kaleyra_exit_fullscreen">Esci modalità primo piano</string>
+    <string name="kaleyra_enter_fullscreen">Entra modalità primo piano</string>
 
     <string name="kaleyra_ringing_answer">Rispondi</string>
     <string name="kaleyra_ringing_decline">Rifiuta</string>
 
     <string name="kaleyra_back">Indietro</string>
+    <string name="kaleyra_avatar">Avatar utente</string>
     <string name="kaleyra_company_logo">Logo compagnia</string>
 
     <!-- WHITEBOARD -->

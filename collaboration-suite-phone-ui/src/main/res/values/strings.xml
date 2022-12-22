@@ -116,12 +116,14 @@
     <string name="kaleyra_download">Save</string>
 
     <string name="kaleyra_fullscreen_info">Fullscreen mode</string>
-    <string name="kaleyra_fullscreen_button">Enter/exit fullscreen mode</string>
+    <string name="kaleyra_exit_fullscreen">Exit fullscreen mode</string>
+    <string name="kaleyra_enter_fullscreen">Enter fullscreen mode</string>
 
     <string name="kaleyra_ringing_answer">Answer</string>
     <string name="kaleyra_ringing_decline">Decline</string>
 
     <string name="kaleyra_back">Back</string>
+    <string name="kaleyra_avatar">User avatar</string>
     <string name="kaleyra_company_logo">Company logo</string>
 
     <!-- WHITEBOARD -->

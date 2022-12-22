@@ -92,7 +92,6 @@
         <item name="android:visibility">visible</item>
         <item name="rippleColor">@android:color/white</item>
         <item name="icon">@drawable/kaleyra_call_user_info_fullscreen_icon</item>
-        <item name="android:contentDescription">@string/kaleyra_fullscreen_button</item>
     </style>
 
     <style name="KaleyraCollaborationSuiteUI.ImageButton.Close" parent="KaleyraCollaborationSuiteUI.ImageButton">
