@@ -3,13 +3,14 @@ package com.kaleyra.collaboration_suite_phone_ui.chat.model
 import android.net.Uri
 import androidx.compose.runtime.Immutable
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.util.*
 
 @Immutable
 data class ChatUiState(
-    val info: ChatInfo = ChatInfo("", Uri.EMPTY),
+    val info: ChatInfo = ChatInfo("", null),
     val state: ChatState = ChatState.None,
     val actions: ImmutableSet<ChatAction> = ImmutableSet(setOf()),
     val conversationState: ConversationUiState = ConversationUiState(),
@@ -44,7 +45,7 @@ sealed class ChatState {
 @Immutable
 data class ChatInfo(
     val name: String = "",
-    val image: Uri? = Uri.EMPTY
+    val image: ImmutableUri? = null
 )
 
 @Immutable

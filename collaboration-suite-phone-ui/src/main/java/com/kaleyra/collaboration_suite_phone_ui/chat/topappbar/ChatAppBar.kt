@@ -53,8 +53,8 @@ internal fun ChatDetails(info: ChatInfo, state: ChatState) {
         Avatar(
             uri = info.image,
             contentDescription = stringResource(id = R.string.kaleyra_chat_avatar_desc),
-            placeholder = painterResource(R.drawable.ic_kaleyra_avatar),
-            error = painterResource(R.drawable.ic_kaleyra_avatar),
+            placeholder = R.drawable.ic_kaleyra_avatar,
+            error = R.drawable.ic_kaleyra_avatar,
             contentColor = MaterialTheme.colors.onPrimary,
             backgroundColor = colorResource(R.color.kaleyra_color_grey_light),
             size = 40.dp

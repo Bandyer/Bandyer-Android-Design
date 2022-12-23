@@ -7,6 +7,7 @@ import com.kaleyra.collaboration_suite_core_ui.MessagesUI
 import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_core_ui.model.UsersDescription
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
@@ -75,7 +76,7 @@ internal object UiModelMapper {
         ) { participant, usersDesc ->
             ChatInfo(
                 name = usersDesc.name(listOf(participant.userId)),
-                image = usersDesc.image(listOf(participant.userId))
+                image = ImmutableUri(usersDesc.image(listOf(participant.userId)))
             )
         }
     }
