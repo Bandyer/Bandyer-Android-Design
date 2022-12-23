@@ -78,7 +78,7 @@ val mockConversationUiState = ConversationUiState(
 )
 
 val mockUiState = ChatUiState(
-    info = ChatInfo("John Smith", Uri.EMPTY),
+    info = ChatInfo("John Smith", null),
     state = ChatState.NetworkState.Connecting,
     actions = mockActions,
     conversationState = mockConversationUiState,
