@@ -8,9 +8,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamTile
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamHeaderTestTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamTestTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamTile
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -26,13 +27,11 @@ class StreamTileTest {
 
     private var isFullscreenClicked = false
 
-    private var view by mutableStateOf<View?>(null)
+    private var stream by mutableStateOf(streamUiMock)
 
     private var onBackPressed by mutableStateOf<(() -> Unit)?>(null)
 
     private var isFullscreen by mutableStateOf(false)
-
-    private var showAvatar by mutableStateOf(false)
 
     private var showHeader  by mutableStateOf(false)
 
@@ -40,31 +39,30 @@ class StreamTileTest {
     fun setUp() {
         composeTestRule.setContent {
             StreamTile(
-                view = view,
-                username = "username",
-                onBackPressed = onBackPressed,
-                onFullscreenClick = { isFullscreenClicked = true },
-                showAvatar = showAvatar,
+                stream = stream,
                 showHeader = showHeader,
-                isFullscreen = isFullscreen
+                isFullscreen = isFullscreen,
+                onBackPressed = onBackPressed,
+                onFullscreenClick = { isFullscreenClicked = true }
             )
         }
     }
 
     @Test
     fun viewNotNull_streamViewIsDisplayed() {
-        view = View(composeTestRule.activity)
+        stream = streamUiMock.copy(view = View(composeTestRule.activity))
         findStreamView().assertIsDisplayed()
     }
 
     @Test
     fun viewNull_streamViewDoesNotExists() {
-        view = null
+        stream = streamUiMock.copy(view = null)
         findStreamView().assertDoesNotExist()
     }
 
     @Test
     fun headerDisplaysUsername() {
+        stream = streamUiMock.copy(username = "username")
         showHeader = true
         composeTestRule.onNodeWithText("username").assertIsDisplayed()
     }
@@ -82,14 +80,14 @@ class StreamTileTest {
     }
 
     @Test
-    fun showAvatarTrue_avatarIsDisplayed() {
-        showAvatar = true
+    fun streamVideoIsNotEnabled_avatarIsDisplayed() {
+        stream = streamUiMock.copy(isVideoEnabled = false)
         findAvatar().assertIsDisplayed()
     }
 
     @Test
-    fun showAvatarFalse_avatarDoesNotExists() {
-        showAvatar = false
+    fun streamVideoIsEnabled_avatarDoesNotExists() {
+        stream = streamUiMock.copy(isVideoEnabled = true)
         findAvatar().assertDoesNotExist()
     }
 

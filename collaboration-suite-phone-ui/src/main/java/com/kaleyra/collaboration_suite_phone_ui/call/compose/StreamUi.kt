@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
-import android.net.Uri
 import android.view.View
 import androidx.compose.runtime.Immutable
 
@@ -8,6 +7,6 @@ import androidx.compose.runtime.Immutable
 data class StreamUi(
     val view: View?,
     val username: String,
-    val avatar: Uri?,
-    val videoEnabled: Boolean
+    val avatar: ImmutableUri?,
+    val isVideoEnabled: Boolean
 )

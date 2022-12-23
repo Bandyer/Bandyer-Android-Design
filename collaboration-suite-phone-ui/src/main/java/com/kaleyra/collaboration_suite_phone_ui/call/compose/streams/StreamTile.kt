@@ -1,7 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.streams
 
-import android.net.Uri
-import android.view.View
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -29,6 +27,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Avatar
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
 const val StreamTestTag = "StreamTestTag"
@@ -36,14 +36,12 @@ const val StreamHeaderTestTag = "StreamHeaderTestTag"
 
 @Composable
 internal fun StreamTile(
-    view: View? = null,
-    username: String,
-    avatar: Uri? = null,
-    showAvatar: Boolean = true,
+    stream: StreamUi,
     showHeader: Boolean = true,
     isFullscreen: Boolean = false,
     onFullscreenClick: () -> Unit,
     onBackPressed: (() -> Unit)? = null,
+    headerModifier: Modifier = Modifier,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -52,19 +50,19 @@ internal fun StreamTile(
         contentColor = Color.White
     ) {
         Box {
-            if (view != null) {
+            if (stream.view != null) {
                 AndroidView(
-                    factory = { view },
+                    factory = { stream.view },
                     modifier = Modifier.testTag(StreamTestTag)
                 )
             }
 
-            if (showAvatar) {
+            if (!stream.isVideoEnabled) {
                 Avatar(
-                    uri = avatar,
+                    uri = stream.avatar,
                     contentDescription = stringResource(id = R.string.kaleyra_avatar),
-                    placeholder = painterResource(id = R.drawable.ic_kaleyra_avatar_bold),
-                    error = painterResource(id = R.drawable.ic_kaleyra_avatar_bold),
+                    placeholder = R.drawable.ic_kaleyra_avatar_bold,
+                    error = R.drawable.ic_kaleyra_avatar_bold,
                     contentColor = Color.White,
                     backgroundColor = colorResource(id = R.color.kaleyra_color_background_dark),
                     size = 128.dp,
@@ -76,6 +74,7 @@ internal fun StreamTile(
                 visible = showHeader,
                 enter = fadeIn(),
                 exit = fadeOut(),
+                modifier = headerModifier
             ) {
                 Row(
                     modifier = Modifier
@@ -91,7 +90,7 @@ internal fun StreamTile(
                     }
 
                     Text(
-                        text = username,
+                        text = stream.username,
                         modifier = Modifier
                             .padding(vertical = 12.dp, horizontal = 16.dp)
                             .weight(1f),
@@ -118,7 +117,7 @@ internal fun StreamTile(
 fun StreamPreview() {
     KaleyraTheme() {
         StreamTile(
-            username = "username",
+            stream = streamUiMock,
             onBackPressed = { },
             onFullscreenClick = { }
         )
