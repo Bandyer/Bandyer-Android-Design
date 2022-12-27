@@ -9,8 +9,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamHeaderTestTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamTestTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamTile
 import org.junit.Before
 import org.junit.Rule
@@ -33,14 +32,11 @@ class StreamTileTest {
 
     private var isFullscreen by mutableStateOf(false)
 
-    private var showHeader  by mutableStateOf(false)
-
     @Before
     fun setUp() {
         composeTestRule.setContent {
             StreamTile(
                 stream = stream,
-                showHeader = showHeader,
                 isFullscreen = isFullscreen,
                 onBackPressed = onBackPressed,
                 onFullscreenClick = { isFullscreenClicked = true }
@@ -63,20 +59,7 @@ class StreamTileTest {
     @Test
     fun headerDisplaysUsername() {
         stream = streamUiMock.copy(username = "username")
-        showHeader = true
         composeTestRule.onNodeWithText("username").assertIsDisplayed()
-    }
-
-    @Test
-    fun showHeaderTrue_headerIsDisplayed() {
-        showHeader = true
-        composeTestRule.onNodeWithTag(StreamHeaderTestTag).assertIsDisplayed()
-    }
-
-    @Test
-    fun showHeaderFalse_headerDoesNotExists() {
-        showHeader = false
-        composeTestRule.onNodeWithTag(StreamHeaderTestTag).assertDoesNotExist()
     }
 
     @Test
@@ -93,21 +76,18 @@ class StreamTileTest {
 
     @Test
     fun onBackPressedNull_headerDoesNotHaveBackButton() {
-        showHeader = true
         onBackPressed = null
         findBackButton().assertDoesNotExist()
     }
 
     @Test
     fun onBackPressedNotNull_headerDisplaysBackButton() {
-        showHeader = true
         onBackPressed = { }
         findBackButton().assertIsDisplayed()
     }
 
     @Test
     fun userClicksBackButton_onBackPressedInvoked() {
-        showHeader = true
         onBackPressed = { isBackPressed = true }
         findBackButton().performClick()
         assert(isBackPressed)
@@ -115,7 +95,6 @@ class StreamTileTest {
 
     @Test
     fun isFullscreenTrue_headerDisplaysExitFullscreenButton() {
-        showHeader = true
         isFullscreen = true
         findEnterFullscreenButton().assertDoesNotExist()
         findExitFullscreenButton().assertIsDisplayed()
@@ -123,7 +102,6 @@ class StreamTileTest {
 
     @Test
     fun isFullscreenFalse_headerDisplaysEnterFullscreenButton() {
-        showHeader = true
         isFullscreen = false
         findEnterFullscreenButton().assertIsDisplayed()
         findExitFullscreenButton().assertDoesNotExist()
@@ -131,14 +109,13 @@ class StreamTileTest {
 
     @Test
     fun userClicksFullscreenButton_onFullscreenClickInvoked() {
-        showHeader = true
         isFullscreen = false
         findEnterFullscreenButton().performClick()
         assert(isFullscreenClicked)
     }
 
     private fun findStreamView(): SemanticsNodeInteraction {
-        return composeTestRule.onNodeWithTag(StreamTestTag)
+        return composeTestRule.onNodeWithTag(StreamViewTestTag)
     }
 
     private fun findBackButton(): SemanticsNodeInteraction {

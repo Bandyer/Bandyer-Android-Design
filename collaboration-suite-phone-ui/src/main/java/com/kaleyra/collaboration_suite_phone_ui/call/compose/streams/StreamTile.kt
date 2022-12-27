@@ -1,8 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.streams
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,13 +28,11 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
-const val StreamTestTag = "StreamTestTag"
-const val StreamHeaderTestTag = "StreamHeaderTestTag"
+const val StreamViewTestTag = "StreamTestTag"
 
 @Composable
 internal fun StreamTile(
     stream: StreamUi,
-    showHeader: Boolean = true,
     isFullscreen: Boolean = false,
     onFullscreenClick: () -> Unit,
     onBackPressed: (() -> Unit)? = null,
@@ -53,7 +48,7 @@ internal fun StreamTile(
             if (stream.view != null) {
                 AndroidView(
                     factory = { stream.view },
-                    modifier = Modifier.testTag(StreamTestTag)
+                    modifier = Modifier.testTag(StreamViewTestTag)
                 )
             }
 
@@ -70,43 +65,32 @@ internal fun StreamTile(
                 )
             }
 
-            AnimatedVisibility(
-                visible = showHeader,
-                enter = fadeIn(),
-                exit = fadeOut(),
-                modifier = headerModifier
-            ) {
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = 4.dp)
-                        .testTag(StreamHeaderTestTag)
-                ) {
-                    if (onBackPressed != null) {
-                        IconButton(
-                            icon = rememberVectorPainter(image = Icons.Filled.ArrowBack),
-                            iconDescription = stringResource(id = R.string.kaleyra_back),
-                            onClick = onBackPressed
-                        )
-                    }
-
-                    Text(
-                        text = stream.username,
-                        modifier = Modifier
-                            .padding(vertical = 12.dp, horizontal = 16.dp)
-                            .weight(1f),
-                        fontWeight = FontWeight.SemiBold
-                    )
-
+            Row(modifier = headerModifier.padding(horizontal = 4.dp)) {
+                if (onBackPressed != null) {
                     IconButton(
-                        icon = painterResource(
-                            id = if (isFullscreen) R.drawable.ic_kaleyra_exit_fullscreen else R.drawable.ic_kaleyra_enter_fullscreen
-                        ),
-                        iconDescription = stringResource(
-                            id = if (isFullscreen) R.string.kaleyra_exit_fullscreen else R.string.kaleyra_enter_fullscreen
-                        ),
-                        onClick = onFullscreenClick
+                        icon = rememberVectorPainter(image = Icons.Filled.ArrowBack),
+                        iconDescription = stringResource(id = R.string.kaleyra_back),
+                        onClick = onBackPressed
                     )
                 }
+
+                Text(
+                    text = stream.username,
+                    modifier = Modifier
+                        .padding(vertical = 12.dp, horizontal = 16.dp)
+                        .weight(1f),
+                    fontWeight = FontWeight.SemiBold
+                )
+
+                IconButton(
+                    icon = painterResource(
+                        id = if (isFullscreen) R.drawable.ic_kaleyra_exit_fullscreen else R.drawable.ic_kaleyra_enter_fullscreen
+                    ),
+                    iconDescription = stringResource(
+                        id = if (isFullscreen) R.string.kaleyra_exit_fullscreen else R.string.kaleyra_enter_fullscreen
+                    ),
+                    onClick = onFullscreenClick
+                )
             }
         }
     }
