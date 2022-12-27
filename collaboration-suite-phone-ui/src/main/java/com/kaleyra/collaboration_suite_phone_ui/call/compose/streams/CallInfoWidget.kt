@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -18,11 +17,11 @@ import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.verticalGradientScrim
 
+// NB: The title is actually an AndroidView, because there is not text ellipsize in compose
 @Composable
 internal fun CallInfoWidget(
     callInfo: CallInfoUi,
     onBackPressed: () -> Unit,
-    showWatermark: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -39,7 +38,7 @@ internal fun CallInfoWidget(
                 .fillMaxWidth()
                 .heightIn(min = 56.dp)
                 .padding(horizontal = 4.dp),
-            verticalAlignment = if (showWatermark) Alignment.Top else Alignment.CenterVertically
+            verticalAlignment = if (callInfo.watermarkInfo != null) Alignment.Top else Alignment.CenterVertically
         ) {
             BackIconButton(onClick = onBackPressed)
 
@@ -48,11 +47,8 @@ internal fun CallInfoWidget(
                     .weight(1f)
                     .padding(horizontal = 4.dp)
             ) {
-                if (showWatermark) {
-                    Watermark(
-                        image = callInfo.watermark.image?.let { painterResource(id = it) },
-                        text = callInfo.watermark.text
-                    )
+                if (callInfo.watermarkInfo != null) {
+                    Watermark(watermarkInfo = callInfo.watermarkInfo)
                 } else {
                     Header(
                         title = callInfo.title,
@@ -71,7 +67,7 @@ internal fun CallInfoWidget(
                 )
             }
         }
-        if (showWatermark) {
+        if (callInfo.watermarkInfo != null) {
             Header(
                 title = callInfo.title,
                 subtitle = callInfo.subtitle,
@@ -118,7 +114,7 @@ internal fun CallInfoWidgetWithWatermarkPreview() {
         CallInfoWidget(
             onBackPressed = { },
             callInfo = callInfoMock.copy(
-                watermark = Watermark(image = R.drawable.ic_kaleyra_screen_share)
+                watermarkInfo = WatermarkInfo(image = R.drawable.ic_kaleyra_screen_share)
             )
         )
     }
@@ -130,8 +126,7 @@ internal fun CallInfoWidgetNoWatermarkPreview() {
     KaleyraTheme {
         CallInfoWidget(
             onBackPressed = { },
-            callInfo = callInfoMock,
-            showWatermark = false
+            callInfo = callInfoMock
         )
     }
 }

@@ -8,7 +8,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidget
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Watermark
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
 import org.junit.Before
 import org.junit.Rule
@@ -23,17 +23,14 @@ class CallInfoWidgetTest {
 
     private var callInfo by mutableStateOf(callInfoMock)
 
-    private var showWatermark by mutableStateOf(false)
-
     private var isBackPressed = false
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             CallInfoWidget(
-                onBackPressed = { isBackPressed = true },
                 callInfo = callInfo,
-                showWatermark = showWatermark
+                onBackPressed = { isBackPressed = true }
             )
         }
     }
@@ -73,49 +70,29 @@ class CallInfoWidgetTest {
 
     @Test
     fun watermarkImageNotNull_watermarkImageIsDisplayed() {
-        showWatermark = true
         callInfo = callInfoMock.copy(
-            watermark = Watermark(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = null)
+            watermarkInfo = WatermarkInfo(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = null)
         )
         findWatermarkImage().assertIsDisplayed()
     }
 
     @Test
     fun watermarkTextNotNull_watermarkTextIsDisplayed() {
-        showWatermark = true
-        callInfo = callInfoMock.copy(watermark = Watermark(image = null, text = "watermark"))
+        callInfo = callInfoMock.copy(watermarkInfo = WatermarkInfo(image = null, text = "watermark"))
         composeTestRule.onNodeWithText("watermark").assertIsDisplayed()
     }
 
     @Test
-    fun showWatermarkTrue_watermarkIsDisplayed() {
-        callInfo = callInfoMock.copy(watermark = Watermark(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = "watermark"))
-        showWatermark = true
-        findWatermarkImage().assertIsDisplayed()
-        composeTestRule.onNodeWithText("watermark").assertIsDisplayed()
-    }
-
-    @Test
-    fun showWatermarkFalse_watermarkDoesNotExists() {
-        callInfo = callInfoMock.copy(watermark = Watermark(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = "watermark"))
-        showWatermark = false
-        findWatermarkImage().assertDoesNotExist()
-        composeTestRule.onNodeWithText("watermark").assertDoesNotExist()
-    }
-
-    @Test
-    fun showWatermarkTrue_titleIsDisplayedBelowWatermark() {
-        callInfo = callInfoMock.copy(watermark = Watermark(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = "watermark"))
-        showWatermark = true
+    fun watermarkInfoNotNull_titleIsDisplayedBelowWatermark() {
+        callInfo = callInfoMock.copy(watermarkInfo = WatermarkInfo(image = com.kaleyra.collaboration_suite_phone_ui.test.R.drawable.kaleyra_logo, text = "watermark"))
         val titleTop = findHeaderTitle().getBoundsInRoot().top
         val watermarkBottom = findWatermarkImage().getBoundsInRoot().bottom
         assert(titleTop > watermarkBottom)
     }
 
     @Test
-    fun showWatermarkFalse_titleIsDisplayedToEndOfBackButton() {
-        callInfo = callInfoMock.copy(watermark = Watermark(image = null, text = "watermark"))
-        showWatermark = false
+    fun watermarkInfoNull_titleIsDisplayedToEndOfBackButton() {
+        callInfo = callInfoMock.copy(watermarkInfo = null)
         val subtitleLeft = findHeaderTitle().getBoundsInRoot().left
         val backRight = findBackButton().getBoundsInRoot().right
         assert(subtitleLeft > backRight)
@@ -136,6 +113,8 @@ class CallInfoWidgetTest {
         return composeTestRule.onNodeWithContentDescription(logo)
     }
 
+    // NB: The title is actually an AndroidView, because there is not text ellipsize in compose
+    // It is findable by using the content description because it is added in the AndroidView's semantics
     private fun findHeaderTitle(): SemanticsNodeInteraction = composeTestRule.onNodeWithContentDescription("title")
 
     private fun findHeaderSubtitle(): SemanticsNodeInteraction = composeTestRule.onNodeWithText("subtitle")
