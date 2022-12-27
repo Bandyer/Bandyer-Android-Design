@@ -6,6 +6,6 @@ import androidx.compose.runtime.Immutable
 data class CallInfoUi(
     val title: String,
     val subtitle: String? = null,
-    val watermark: Watermark,
+    val watermarkInfo: WatermarkInfo? = null,
     val isRecording: Boolean = false
 )
