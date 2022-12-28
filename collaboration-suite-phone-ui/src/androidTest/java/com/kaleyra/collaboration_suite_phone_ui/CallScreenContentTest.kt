@@ -1,17 +1,23 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import android.content.res.Configuration
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.height
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import io.mockk.mockk
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -23,127 +29,278 @@ class CallScreenContentTest {
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    private var callInfo by mutableStateOf(callInfoMock)
+    private var state by mutableStateOf(defaultState())
 
     private var isBackPressed = false
 
-    private var isFullscreenClicked: StreamUi? = null
-
     @Before
     fun setUp() {
+        state = defaultState()
         composeTestRule.setContent {
             CallScreenContent(
-                state = rememberCallScreenContentState(
-                    streams = ImmutableList(listOf(streamUiMock, streamUiMock)),
-                    callInfo = callInfo,
-                    configuration = LocalConfiguration.current,
-                    maxWidth = 400.dp
-                ),
-                onBackPressed = { isBackPressed = true },
-                onFullscreenClick = { isFullscreenClicked = it }
+                state = state,
+                onBackPressed = { isBackPressed = true }
             )
         }
         isBackPressed = false
-        isFullscreenClicked = null
     }
 
     @Test
-    fun showCallInfoFalse_callInfoWidgetDoesNotExists() {
-        showCallInfo = false
-        callInfo = callInfoMock.copy(subtitle = "subtitle")
+    fun hideCallInfo_callInfoWidgetDoesNotExists() {
+        state = defaultState(showCallInfo = true)
+        composeTestRule.onNodeWithText("subtitle").assertIsDisplayed()
+        state.hideCallInfo()
         composeTestRule.onNodeWithText("subtitle").assertDoesNotExist()
     }
 
     @Test
-    fun showCallInfoTrue_callInfoWidgetIsDisplayed() {
-        showCallInfo = true
-        callInfo = callInfoMock.copy(subtitle = "subtitle")
+    fun hideCallInfo_showCallInfoIsFalse() {
+        state = defaultState(showCallInfo = true)
+        state.hideCallInfo()
+        assert(!state.showCallInfo)
+    }
+
+    @Test
+    fun showCallInfo_callInfoWidgetIsDisplayed() {
+        composeTestRule.onNodeWithText("subtitle").assertDoesNotExist()
+        state.showCallInfo()
         composeTestRule.onNodeWithText("subtitle").assertIsDisplayed()
     }
 
     @Test
+    fun showCallInfo_showCallInfoIsTrue() {
+        state = defaultState(showCallInfo = false)
+        state.showCallInfo()
+        assert(state.showCallInfo)
+    }
+
+    @Test
     fun userClicksCallInfoWidgetBackButton_onBackPressedInvoked() {
-        val back = composeTestRule.activity.getString(R.string.kaleyra_back)
-        composeTestRule.onNodeWithContentDescription(back).performClick()
+        state.showCallInfo()
+        composeTestRule.onNodeWithContentDescription(getBackText()).performClick()
         assert(isBackPressed)
     }
 
     @Test
     fun userClicksStreamBackButton_onBackPressedInvoked() {
-        showCallInfo = false
-        val back = composeTestRule.activity.getString(R.string.kaleyra_back)
-        composeTestRule.onNodeWithContentDescription(back).performClick()
+        state = defaultState(showCallInfo = false)
+        composeTestRule.onNodeWithContentDescription(getBackText()).performClick()
         assert(isBackPressed)
     }
 
     @Test
-    fun callInfoIsDisplayedRightToBackButtonWhenWatermarkNull() {
-        callInfo = callInfoMock.copy(watermarkInfo = null, subtitle = "subtitle")
-        val back = composeTestRule.activity.getString(R.string.kaleyra_back)
+    fun watermarkIsNull_callInfoWidgetIsDisplayedRightToBackButton() {
+        state = defaultState(
+            showCallInfo = true,
+            callInfo = callInfoMock.copy(watermarkInfo = null, subtitle = "subtitle")
+        )
         val subtitleBounds = composeTestRule.onNodeWithText("subtitle").getBoundsInRoot()
-        val backBounds = composeTestRule.onNodeWithContentDescription(back).getBoundsInRoot()
+        val backBounds = composeTestRule.onNodeWithContentDescription(getBackText()).getBoundsInRoot()
         assert(subtitleBounds.left > backBounds.right)
     }
 
     @Test
     fun userClicksEnterFullscreen_fullscreenStreamIsDisplayed() {
-        val enterFullscreen = composeTestRule.activity.getString(R.string.kaleyra_enter_fullscreen)
-        val exitFullscreen = composeTestRule.activity.getString(R.string.kaleyra_exit_fullscreen)
-        composeTestRule.onAllNodesWithContentDescription(enterFullscreen).onFirst().performClick()
+        composeTestRule.onAllNodesWithContentDescription(getEnterFullscreenText()).onFirst().performClick()
+        composeTestRule.fullscreenStreamIsDisplayed("user1")
+    }
+
+    @Test
+    fun userClicksExitFullscreen_streamsGridIsDisplayed() {
+        state = defaultState(fullscreenStream = streamUiMock.copy(username = "user1"))
+        composeTestRule.onNodeWithContentDescription(getExitFullscreenText()).performClick()
+        composeTestRule.streamGridIsDisplayed("user1", "user2")
+    }
+
+    @Test
+    fun fullscreenStream_userClicksCallInfoWidgetBackButton_streamsGridIsDisplayed() {
+        state = defaultState(showCallInfo = true, fullscreenStream = streamUiMock.copy(username = "user1"))
+        composeTestRule.onAllNodesWithContentDescription(getExitFullscreenText()).assertCountEquals(1)
+        composeTestRule.onNodeWithContentDescription(getBackText()).performClick()
+        composeTestRule.streamGridIsDisplayed("user1", "user2")
+    }
+
+    @Test
+    fun fullscreenStream_userClicksStreamBackButton_streamsGridIsDisplayed() {
+        state = defaultState(showCallInfo = false, fullscreenStream = streamUiMock.copy(username = "user1"))
+        composeTestRule.onAllNodesWithContentDescription(getExitFullscreenText()).assertCountEquals(1)
+        composeTestRule.onNodeWithContentDescription(getBackText()).performClick()
+        composeTestRule.streamGridIsDisplayed("user1", "user2")
+    }
+
+    @Test
+    fun enterFullscreenMode_fullscreenStreamIsDisplayed() {
+        composeTestRule.streamGridIsDisplayed("user1", "user2")
+        state.enterFullscreenMode(streamUiMock.copy(username = "user1"))
+        composeTestRule.fullscreenStreamIsDisplayed("user1")
+    }
+
+    @Test
+    fun exitFullscreenMode_streamsGridIsDisplayed() {
+        state = defaultState(fullscreenStream = streamUiMock.copy(username = "user1"))
         composeTestRule.onNodeWithText("user1").assertIsDisplayed()
+        composeTestRule.onAllNodesWithContentDescription(getExitFullscreenText()).assertCountEquals(1)
+        state.exitFullscreenMode()
+        composeTestRule.streamGridIsDisplayed("user1", "user2")
+    }
+
+    @Test
+    fun enterFullscreenMode_stateFullscreenStreamIsTheCorrect() {
+        val stream = streamUiMock.copy(username = "user1")
+        assertEquals(null, state.fullscreenStream)
+        state.enterFullscreenMode(stream)
+        assertEquals(stream, state.fullscreenStream)
+    }
+
+    @Test
+    fun exitFullscreenMode_stateFullscreenStreamIsNull() {
+        val stream = streamUiMock.copy(username = "user1")
+        state = defaultState(fullscreenStream = stream)
+        assertEquals(stream, state.fullscreenStream, )
+        state.exitFullscreenMode()
+        assertEquals(null, state.fullscreenStream)
+    }
+
+    @Test
+    fun deviceIsInPortraitAndMaxWidthIsLessThan600Dp_oneColumn() {
+       state = defaultState(
+           configuration = mockk { orientation = Configuration.ORIENTATION_PORTRAIT },
+           maxWidth = 599.dp
+       )
+        assertEquals(1, state.columns)
+    }
+
+    @Test
+    fun deviceIsInPortraitAndMaxWidthIsMoreThan600DpAndStreamsCountIsGreaterThanTwo_twoColumns() {
+        state = defaultState(
+            configuration = mockk { orientation = Configuration.ORIENTATION_PORTRAIT },
+            maxWidth = 600.dp
+        )
+        assertEquals(2, state.columns)
+    }
+
+    @Test
+    fun deviceIsNotInPortraitAndStreamsCountIsGreaterThanOne_twoColumns() {
+        state = defaultState(
+            configuration = mockk { orientation = Configuration.ORIENTATION_LANDSCAPE },
+            streams = ImmutableList(
+                listOf(
+                    streamUiMock.copy(username = "user1"),
+                    streamUiMock.copy(username = "user2"),
+                    streamUiMock.copy(username = "user3")
+                )
+            )
+        )
+        assertEquals(2, state.columns)
+    }
+
+    @Test
+    fun deviceIsInPortraitAndMaxWidthIsLessThan600Dp_columnsNumberIsOne() {
+        state = defaultState(
+            configuration = mockk { orientation = Configuration.ORIENTATION_PORTRAIT },
+            maxWidth = 599.dp
+        )
+        assertEquals(1, state.columns)
+    }
+
+    @Test
+    fun gridHasOneColumnAndCallInfoWidgetIsDisplayed_firstStreamHeaderIsShifted() {
+        state = defaultState(
+            configuration = mockk { orientation = Configuration.ORIENTATION_PORTRAIT },
+            maxWidth = 400.dp,
+            showCallInfo = false
+        )
+        val streamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
+        val streamTwoTextTop = composeTestRule.onNodeWithText("user2", useUnmergedTree = true).getBoundsInRoot().top
+        state.showCallInfo()
+        val newStreamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
+        val newStreamTwoTextTop = composeTestRule.onNodeWithText("user2", useUnmergedTree = true).getBoundsInRoot().top
+        val callInfoWidgetHeight = composeTestRule.onNodeWithTag(CallInfoWidgetTag).getBoundsInRoot().height
+        assertEquals(newStreamOneTextTop, streamOneTextTop + callInfoWidgetHeight)
+        assertEquals(streamTwoTextTop, newStreamTwoTextTop)
+    }
+
+    @Test
+    fun gridHasTwoColumnsAndCallInfoWidgetIsDisplayed_bothStreamsHeaderAreShifted() {
+        state = defaultState(
+            configuration = mockk { orientation = Configuration.ORIENTATION_PORTRAIT },
+            maxWidth = 800.dp,
+            showCallInfo = false
+        )
+        val streamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
+        val streamTwoTextTop = composeTestRule.onNodeWithText("user2", useUnmergedTree = true).getBoundsInRoot().top
+        state.showCallInfo()
+        val newStreamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
+        val newStreamTwoTextTop = composeTestRule.onNodeWithText("user2", useUnmergedTree = true).getBoundsInRoot().top
+        val callInfoWidgetHeight = composeTestRule.onNodeWithTag(CallInfoWidgetTag).getBoundsInRoot().height
+        assertEquals(newStreamOneTextTop, streamOneTextTop + callInfoWidgetHeight)
+        assertEquals(newStreamTwoTextTop, streamTwoTextTop + callInfoWidgetHeight)
+    }
+
+    @Test
+    fun fullscreenStreamAndCallInfoWidgetIsDisplayed_streamHeaderIsShifted() {
+        state = defaultState(
+            fullscreenStream = streamUiMock.copy(username = "user1"),
+            showCallInfo = false
+        )
+        val streamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
+        state.showCallInfo()
+        val newStreamOneTextTop = composeTestRule.onNodeWithText("user1", useUnmergedTree = true).getBoundsInRoot().top
+        val callInfoWidgetHeight = composeTestRule.onNodeWithTag(CallInfoWidgetTag).getBoundsInRoot().height
+        assertEquals(newStreamOneTextTop, streamOneTextTop + callInfoWidgetHeight)
+    }
+//
+//    @Test
+//    fun fullscreenStreamIsRemovedFromStreamsList_streamsGridIsDisplayed() {
+//        val stream = streamUiMock.copy(username = "user1")
+//        var streams by mutableStateOf(ImmutableList(listOf(stream, streamUiMock.copy(username = "user2"))))
+//        state = defaultState(
+//            streams = streams,
+//            fullscreenStream = stream,
+//        )
+//        composeTestRule.fullscreenStreamIsDisplayed("user1")
+//        streams = ImmutableList(listOf(streamUiMock.copy(username = "user2"), streamUiMock.copy(username = "user3")))
+//
+//    }
+
+    private fun ComposeContentTestRule.streamGridIsDisplayed(vararg usernames: String) {
+        onAllNodesWithContentDescription(getEnterFullscreenText()).assertCountEquals(usernames.size)
+        usernames.forEach { onNodeWithText(it).assertIsDisplayed() }
+    }
+
+    private fun ComposeContentTestRule.fullscreenStreamIsDisplayed(username: String) {
+        val exitFullscreen = getExitFullscreenText()
+        composeTestRule.onNodeWithText(username).assertIsDisplayed()
+        composeTestRule.onAllNodesWithContentDescription(exitFullscreen).assertCountEquals(1)
         composeTestRule.onNodeWithContentDescription(exitFullscreen).assertIsDisplayed()
-        // check there is only one StreamTile?
     }
 
-    @Test
-    fun pressExitFullscreen_returnToTileViews() {
-        val enterFullscreen = composeTestRule.activity.getString(R.string.kaleyra_enter_fullscreen)
-        val exitFullscreen = composeTestRule.activity.getString(R.string.kaleyra_exit_fullscreen)
-        composeTestRule.onAllNodesWithContentDescription(enterFullscreen).onFirst().performClick()
-        composeTestRule.onNodeWithContentDescription(exitFullscreen).performClick()
-        composeTestRule.onAllNodesWithContentDescription(enterFullscreen).assertCountEquals(2)
-    }
+    private fun getBackText() = composeTestRule.activity.getString(R.string.kaleyra_back)
 
-    @Test
-    fun pressExitFullscreen_returnToTileViews2() {
-        showCallInfo = true
-        val enterFullscreen = composeTestRule.activity.getString(R.string.kaleyra_enter_fullscreen)
-        val exitFullscreen = composeTestRule.activity.getString(R.string.kaleyra_exit_fullscreen)
-        val back = composeTestRule.activity.getString(R.string.kaleyra_back)
-        composeTestRule.onAllNodesWithContentDescription(enterFullscreen).assertCountEquals(2)
-        composeTestRule.onAllNodesWithContentDescription(enterFullscreen).onFirst().performClick()
-        composeTestRule.onAllNodesWithContentDescription(exitFullscreen).assertCountEquals(1)
-        composeTestRule.onNodeWithContentDescription(back).performClick()
-        composeTestRule.onAllNodesWithContentDescription(enterFullscreen).assertCountEquals(2)
-    }
+    private fun getEnterFullscreenText() = composeTestRule.activity.getString(R.string.kaleyra_enter_fullscreen)
 
-    @Test
-    fun pressExitFullscreen_returnToTileViews3() {
-        showCallInfo = false
-        val enterFullscreen = composeTestRule.activity.getString(R.string.kaleyra_enter_fullscreen)
-        val exitFullscreen = composeTestRule.activity.getString(R.string.kaleyra_exit_fullscreen)
-        val back = composeTestRule.activity.getString(R.string.kaleyra_back)
-        composeTestRule.onAllNodesWithContentDescription(enterFullscreen).assertCountEquals(2)
-        composeTestRule.onAllNodesWithContentDescription(enterFullscreen).onFirst().performClick()
-        composeTestRule.onAllNodesWithContentDescription(exitFullscreen).assertCountEquals(1)
-        composeTestRule.onNodeWithContentDescription(back).performClick()
-        composeTestRule.onAllNodesWithContentDescription(enterFullscreen).assertCountEquals(2)
-    }
+    private fun getExitFullscreenText() = composeTestRule.activity.getString(R.string.kaleyra_exit_fullscreen)
 
-    // n of columns decision
-    // quando mostri il callinfowidget, gli header degli stream si spostano
-    // DONE quando sei in full screen, se premi il back esci dal fullscreen (sia per callinfowidget, che per lo stream header)
-    // DONE se immagine e text del watermark sono null, nascondi il watermark
-    // DONE se premi fullscreen su uno degli stream, entri in fullscreen
-    // modifier header applicato solo alla prima riga
-    // quando rimuovi uno stream in full screen, esce dalla mod full screen
-
-    @Test
-    fun test1() {
-        showCallInfo = false
-        val top1 = composeTestRule.onNodeWithText("user1").getBoundsInRoot().top
-        showCallInfo = true
-        val top2 = composeTestRule.onNodeWithText("user1").getBoundsInRoot().top
-        assert(top1 < top2)
+    private fun defaultState(
+        streams: ImmutableList<StreamUi> = ImmutableList(
+            listOf(
+                streamUiMock.copy(username = "user1"),
+                streamUiMock.copy(username = "user2")
+            )
+        ),
+        callInfo: CallInfoUi = callInfoMock.copy(subtitle = "subtitle"),
+        configuration: Configuration = mockk(),
+        maxWidth: Dp = 400.dp,
+        showCallInfo: Boolean = false,
+        fullscreenStream: StreamUi? = null
+    ): CallScreenContentState {
+        return CallScreenContentState(
+            streams = streams,
+            callInfo = callInfo,
+            configuration = configuration,
+            maxWidth = maxWidth,
+            showCallInfo = showCallInfo,
+            fullscreenStream = fullscreenStream
+        )
     }
 }
