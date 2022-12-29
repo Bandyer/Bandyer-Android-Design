@@ -134,7 +134,7 @@ internal fun CallScreenContent(
                 val streams = state.streams
                 repeat(streams.count()) { index ->
                     val stream = streams.value[index]
-                    StreamTile(
+                    FeaturedStream(
                         stream = stream,
                         isFullscreen = false,
                         onBackPressed = if (index == 0 && !state.showCallInfo) onBackPressed else null,
@@ -154,7 +154,7 @@ internal fun CallScreenContent(
                 }
             }
         } else {
-            StreamTile(
+            FeaturedStream(
                 stream = target,
                 isFullscreen = true,
                 onBackPressed = if (!state.showCallInfo) state::exitFullscreenMode else null,
