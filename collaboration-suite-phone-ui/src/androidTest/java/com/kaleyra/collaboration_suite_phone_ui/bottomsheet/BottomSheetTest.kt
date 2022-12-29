@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.StateRestorationTester
@@ -37,7 +38,18 @@ class BottomSheetTest {
     private var sheetInsets by mutableStateOf(WindowInsets(0.dp, 0.dp, 0.dp, 0.dp))
 
     @Test
-    fun initialStateCollapsed_sheetCollapsed() {
+    fun initialStateHidden_sheetIsHidden() {
+        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Hidden)
+        composeTestRule.setBottomSheetScaffold(sheetState = sheetState)
+        runBlocking {
+            val currentValue = snapshotFlow { sheetState.currentValue }.first()
+            assertEquals(BottomSheetValue.Hidden, currentValue)
+            assert(sheetState.isHidden)
+        }
+    }
+
+    @Test
+    fun initialStateCollapsed_sheetIsCollapsed() {
         val sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
         composeTestRule.setBottomSheetScaffold(sheetState = sheetState)
         runBlocking {
@@ -48,7 +60,7 @@ class BottomSheetTest {
     }
 
     @Test
-    fun initialStateHalfExpanded_sheetHalfExpanded() {
+    fun initialStateHalfExpanded_sheetIsHalfExpanded() {
         val sheetState = BottomSheetState(initialValue = BottomSheetValue.HalfExpanded)
         composeTestRule.setBottomSheetScaffold(sheetState = sheetState)
         runBlocking {
@@ -59,7 +71,7 @@ class BottomSheetTest {
     }
 
     @Test
-    fun initialStateExpanded_sheetExpanded() {
+    fun initialStateExpanded_sheetIsExpanded() {
         val sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
         composeTestRule.setBottomSheetScaffold(sheetState = sheetState)
         runBlocking {
@@ -68,6 +80,30 @@ class BottomSheetTest {
             assert(sheetState.isExpanded)
         }
     }
+
+    @Test
+    fun sheetExpanded_userPerformsBigSwipeDown_sheetHidden() =
+        checkStateAfterSwipe(
+            initialState = BottomSheetValue.Expanded,
+            targetState = BottomSheetValue.Hidden,
+            swipeAmount = -0.5f
+        )
+
+    @Test
+    fun sheetHalfExpanded_userPerformsBigSwipeDown_sheetHidden() =
+        checkStateAfterSwipe(
+            initialState = BottomSheetValue.HalfExpanded,
+            targetState = BottomSheetValue.Hidden,
+            swipeAmount = -0.5f
+        )
+
+    @Test
+    fun sheetCollapsed_userPerformsSwipeDown_sheetHidden() =
+        checkStateAfterSwipe(
+            initialState = BottomSheetValue.Collapsed,
+            targetState = BottomSheetValue.Hidden,
+            swipeAmount = -0.3f
+        )
 
     @Test
     fun sheetCollapsed_userPerformsSmallSwipeUp_sheetHalfExpanded() =
@@ -98,7 +134,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.HalfExpanded,
             targetState = BottomSheetValue.Collapsed,
-            swipeAmount = -0.1f
+            swipeAmount = -0.2f
         )
 
     @Test
@@ -110,19 +146,19 @@ class BottomSheetTest {
         )
 
     @Test
-    fun sheetExpanded_userPerformsBigSwipeDown_sheetCollapsed() =
+    fun sheetExpanded_userPerformsMediumSwipeDown_sheetCollapsed() =
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Expanded,
             targetState = BottomSheetValue.Collapsed,
-            swipeAmount = -0.5f
+            swipeAmount = -0.4f
         )
 
     @Test
-    fun sheetHalfExpandedAndNotCollapsable_userPerformsSwipeDown_sheetHalfExpanded() =
+    fun sheetHalfExpandedAndNotCollapsable_userPerformsSmallSwipeDown_sheetHidden() =
         checkStateAfterSwipe(
             initialState = BottomSheetValue.HalfExpanded,
-            targetState = BottomSheetValue.HalfExpanded,
-            swipeAmount = -0.5f,
+            targetState = BottomSheetValue.Hidden,
+            swipeAmount = -0.2f,
             collapsable = false
         )
 
@@ -136,12 +172,18 @@ class BottomSheetTest {
         composeTestRule.setBottomSheetScaffold(
             sheetState = sheetState,
         )
-        composeTestRule.onRoot().performSwipe(swipeAmount)
+        composeTestRule.onNodeWithTag(BottomSheetTag).performSwipe(swipeAmount)
         composeTestRule.waitForIdle()
         runBlocking {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
             assertEquals(targetState, currentValue)
         }
+    }
+
+    @Test
+    fun sheetHidden_sheetIsNotDisplayed() {
+        composeTestRule.setBottomSheetScaffold(sheetState = BottomSheetState(initialValue = BottomSheetValue.Hidden))
+        composeTestRule.onNode(hasTestTag(BottomSheetTag)).assertIsNotDisplayed()
     }
 
     @Test
@@ -166,6 +208,10 @@ class BottomSheetTest {
     }
 
     @Test
+    fun sheetHidden_anchorPositionIsRight() =
+        checkAnchorPosition(sheetValue = BottomSheetValue.Hidden)
+
+    @Test
     fun sheetCollapsed_anchorPositionIsRight() =
         checkAnchorPosition(sheetValue = BottomSheetValue.Collapsed)
 
@@ -188,6 +234,9 @@ class BottomSheetTest {
         anchorBottom.assertIsEqualTo(bottomSheetTop, "anchor bottom position")
         anchorRight.assertIsEqualTo(bottomSheetRight, "anchor right position")
     }
+
+    @Test
+    fun sheetHidden_insetsAreCorrect() = checkBottomSheetInsets(BottomSheetValue.Hidden)
 
     @Test
     fun sheetCollapsed_insetsAreCorrect() = checkBottomSheetInsets(BottomSheetValue.Collapsed)
@@ -301,7 +350,7 @@ class BottomSheetTest {
             )
         }
 
-        composeTestRule.onRoot().performSwipe(0.5f)
+        composeTestRule.onNodeWithTag(BottomSheetTag).performSwipe(0.5f)
         composeTestRule.waitForIdle()
 
         restorationTester.emulateSavedInstanceStateRestore()
@@ -346,11 +395,11 @@ class BottomSheetTest {
     // Swipe for a fraction of the node's height
     private fun SemanticsNodeInteraction.performSwipe(amount: Float) {
         performTouchInput {
-            val startHeight = if (amount.sign == 1f) height else height + height * amount
-            val endHeight = if (amount.sign == 1f) height - height * amount else height
+            val startY = top
+            val endY = top - amount * height
             swipe(
-                start = Offset(center.x, startHeight.toFloat()),
-                end = Offset(center.x, endHeight.toFloat()),
+                start = Offset(center.x, startY),
+                end = Offset(center.x, endY),
                 durationMillis = 200
             )
         }
