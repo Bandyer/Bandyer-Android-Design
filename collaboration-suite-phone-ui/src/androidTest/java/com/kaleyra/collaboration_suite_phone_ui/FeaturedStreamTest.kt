@@ -10,14 +10,14 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamTile
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.FeaturedStream
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class StreamTileTest {
+class FeaturedStreamTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -35,7 +35,7 @@ class StreamTileTest {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            StreamTile(
+            FeaturedStream(
                 stream = stream,
                 isFullscreen = isFullscreen,
                 onBackPressed = onBackPressed,
