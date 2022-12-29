@@ -25,6 +25,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 internal enum class BottomSheetValue {
+    Hidden,
     Collapsed,
     HalfExpanded,
     Expanded
@@ -54,6 +55,9 @@ internal class BottomSheetState(
     var minBound = Float.NEGATIVE_INFINITY
 
     val nestedScrollConnection = this.PreUpPostDownNestedScrollConnection
+
+    val isHidden: Boolean
+        get() = currentValue == BottomSheetValue.Hidden
 
     val isExpanded: Boolean
         get() = currentValue == BottomSheetValue.Expanded
@@ -271,12 +275,14 @@ private fun Modifier.sheetSwipeable(
     val sheetHeight = sheetHeightState.value
     val anchors = if (sheetState.isCollapsable) {
         mapOf(
+            fullHeight to BottomSheetValue.Hidden,
             fullHeight - peekHeight to BottomSheetValue.Collapsed,
             fullHeight - halfExpandedHeight to BottomSheetValue.HalfExpanded,
             fullHeight - sheetHeight to BottomSheetValue.Expanded
         )
     } else {
         mapOf(
+            fullHeight to BottomSheetValue.Hidden,
             fullHeight - halfExpandedHeight to BottomSheetValue.HalfExpanded,
             fullHeight - sheetHeight to BottomSheetValue.Expanded
         )
