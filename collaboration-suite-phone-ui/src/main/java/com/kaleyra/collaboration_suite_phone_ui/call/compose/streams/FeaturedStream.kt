@@ -33,7 +33,7 @@ internal fun FeaturedStream(
         Stream(
             streamView = stream.view,
             avatar = stream.avatar,
-            avatarVisible = stream.isVideoEnabled
+            avatarVisible = !stream.isVideoEnabled
         )
 
         Header(
