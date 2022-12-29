@@ -1,6 +1,5 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
-import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,7 +8,6 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.FeaturedStream
 import org.junit.Before
 import org.junit.Rule
@@ -17,16 +15,16 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class FeaturedStreamTest {
+class FeaturedStreamTest: StreamParentComposableTest() {
 
     @get:Rule
-    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+    override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private var isBackPressed = false
 
     private var isFullscreenClicked = false
 
-    private var stream by mutableStateOf(streamUiMock)
+    override var stream = mutableStateOf(streamUiMock)
 
     private var onBackPressed by mutableStateOf<(() -> Unit)?>(null)
 
@@ -36,7 +34,7 @@ class FeaturedStreamTest {
     fun setUp() {
         composeTestRule.setContent {
             FeaturedStream(
-                stream = stream,
+                stream = stream.value,
                 isFullscreen = isFullscreen,
                 onBackPressed = onBackPressed,
                 onFullscreenClick = { isFullscreenClicked = true }
@@ -45,33 +43,9 @@ class FeaturedStreamTest {
     }
 
     @Test
-    fun viewNotNull_streamViewIsDisplayed() {
-        stream = streamUiMock.copy(view = View(composeTestRule.activity))
-        findStreamView().assertIsDisplayed()
-    }
-
-    @Test
-    fun viewNull_streamViewDoesNotExists() {
-        stream = streamUiMock.copy(view = null)
-        findStreamView().assertDoesNotExist()
-    }
-
-    @Test
     fun headerDisplaysUsername() {
-        stream = streamUiMock.copy(username = "username")
+        stream.value = streamUiMock.copy(username = "username")
         composeTestRule.onNodeWithText("username").assertIsDisplayed()
-    }
-
-    @Test
-    fun streamVideoIsNotEnabled_avatarIsDisplayed() {
-        stream = streamUiMock.copy(isVideoEnabled = false)
-        findAvatar().assertIsDisplayed()
-    }
-
-    @Test
-    fun streamVideoIsEnabled_avatarDoesNotExists() {
-        stream = streamUiMock.copy(isVideoEnabled = true)
-        findAvatar().assertDoesNotExist()
     }
 
     @Test
@@ -114,18 +88,9 @@ class FeaturedStreamTest {
         assert(isFullscreenClicked)
     }
 
-    private fun findStreamView(): SemanticsNodeInteraction {
-        return composeTestRule.onNodeWithTag(StreamViewTestTag)
-    }
-
     private fun findBackButton(): SemanticsNodeInteraction {
         val back = composeTestRule.activity.getString(R.string.kaleyra_back)
         return composeTestRule.onNodeWithContentDescription(back)
-    }
-
-    private fun findAvatar(): SemanticsNodeInteraction {
-        val avatar = composeTestRule.activity.getString(R.string.kaleyra_avatar)
-        return composeTestRule.onNodeWithContentDescription(avatar)
     }
 
     private fun findEnterFullscreenButton(): SemanticsNodeInteraction {

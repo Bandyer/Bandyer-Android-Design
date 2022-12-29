@@ -121,6 +121,8 @@
     <string name="kaleyra_avatar">Avatar utente</string>
     <string name="kaleyra_company_logo">Logo compagnia</string>
 
+    <string name="kaleyra_move_to_featured_streams">Muovi tra gli stream in primo piano</string>
+
     <!-- WHITEBOARD -->
     <string name="kaleyra_whiteboard">Lavagna</string>
     <string name="kaleyra_collaborate_button">Collabora</string>
