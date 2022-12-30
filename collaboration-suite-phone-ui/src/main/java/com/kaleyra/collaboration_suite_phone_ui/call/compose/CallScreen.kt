@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
@@ -16,10 +15,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
@@ -35,7 +32,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
@@ -306,24 +302,6 @@ internal fun CallScreen(
                         state = callScreenContentState,
                         onBackPressed = { if (callScreenContentState.showCallInfo) callScreenContentState.hideCallInfo() else callScreenContentState.showCallInfo() }
                     )
-
-                    var callInfoWidgetHeight by remember { mutableStateOf(0) }
-                    val streamHeaderOffset by animateIntAsState(targetValue = if (state.showCallInfo) callInfoWidgetHeight else 0)
-
-                    AnimatedVisibility(
-                        visible = true,
-                        enter = fadeIn(),
-                        exit = fadeOut()
-                    ) {
-                        CallInfoWidget(
-                            onBackPressed = if (state.fullscreenStream != null) state::exitFullscreenMode else onBackPressed,
-                            callInfo = callInfo,
-                            modifier = Modifier
-                                .statusBarsPadding()
-                                .onGloballyPositioned { callInfoWidgetHeight = it.size.height }
-                                .testTag(CallInfoWidgetTag)
-                        )
-                    }
                 }
             }
         )
