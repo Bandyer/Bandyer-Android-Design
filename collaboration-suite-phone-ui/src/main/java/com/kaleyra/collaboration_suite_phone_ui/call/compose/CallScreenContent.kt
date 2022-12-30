@@ -47,6 +47,7 @@ internal class CallScreenContentState(
     val callInfo: CallInfoUi,
     private val configuration: Configuration,
     private val maxWidth: Dp,
+    // Parameters added for testing purpose
     showCallInfo: Boolean = false,
     fullscreenStream: StreamUi? = null
 ) {
@@ -89,7 +90,6 @@ internal class CallScreenContentState(
         showCallInfo = false
     }
 }
-
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

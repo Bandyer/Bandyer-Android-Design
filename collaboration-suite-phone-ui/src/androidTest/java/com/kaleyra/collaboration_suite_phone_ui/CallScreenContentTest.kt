@@ -249,19 +249,21 @@ class CallScreenContentTest {
         val callInfoWidgetHeight = composeTestRule.onNodeWithTag(CallInfoWidgetTag).getBoundsInRoot().height
         assertEquals(newStreamOneTextTop, streamOneTextTop + callInfoWidgetHeight)
     }
-//
-//    @Test
-//    fun fullscreenStreamIsRemovedFromStreamsList_streamsGridIsDisplayed() {
-//        val stream = streamUiMock.copy(username = "user1")
-//        var streams by mutableStateOf(ImmutableList(listOf(stream, streamUiMock.copy(username = "user2"))))
-//        state = defaultState(
-//            streams = streams,
-//            fullscreenStream = stream,
-//        )
-//        composeTestRule.fullscreenStreamIsDisplayed("user1")
-//        streams = ImmutableList(listOf(streamUiMock.copy(username = "user2"), streamUiMock.copy(username = "user3")))
-//
-//    }
+
+    @Test
+    fun fullscreenStreamIsRemovedFromStreamsList_streamsGridIsDisplayed() {
+        val stream = streamUiMock.copy(username = "user1")
+        state = defaultState(
+            streams = ImmutableList(listOf(stream, streamUiMock.copy(username = "user2"))),
+            fullscreenStream = stream
+        )
+        composeTestRule.fullscreenStreamIsDisplayed("user1")
+        state = defaultState(
+            streams = ImmutableList(listOf(streamUiMock.copy(username = "user2"), streamUiMock.copy(username = "user3"))),
+            fullscreenStream = stream
+        )
+        composeTestRule.streamGridIsDisplayed("user2", "user3")
+    }
 
     private fun ComposeContentTestRule.streamGridIsDisplayed(vararg usernames: String) {
         onAllNodesWithContentDescription(getEnterFullscreenText()).assertCountEquals(usernames.size)
@@ -270,9 +272,9 @@ class CallScreenContentTest {
 
     private fun ComposeContentTestRule.fullscreenStreamIsDisplayed(username: String) {
         val exitFullscreen = getExitFullscreenText()
-        composeTestRule.onNodeWithText(username).assertIsDisplayed()
-        composeTestRule.onAllNodesWithContentDescription(exitFullscreen).assertCountEquals(1)
-        composeTestRule.onNodeWithContentDescription(exitFullscreen).assertIsDisplayed()
+        onNodeWithText(username).assertIsDisplayed()
+        onAllNodesWithContentDescription(exitFullscreen).assertCountEquals(1)
+        onNodeWithContentDescription(exitFullscreen).assertIsDisplayed()
     }
 
     private fun getBackText() = composeTestRule.activity.getString(R.string.kaleyra_back)
