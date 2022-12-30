@@ -1,7 +1,13 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.content.res.Configuration
+import android.net.Uri
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateIntAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -10,18 +16,28 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
+import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidget
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -34,8 +50,9 @@ private val HalfExpandedHeight = 166.dp
 @Composable
 internal fun rememberCallScreenState(
     sheetState: BottomSheetState = rememberBottomSheetState(
-        initialValue = BottomSheetValue.HalfExpanded,
-        collapsable = true
+        initialValue = BottomSheetValue.Hidden,
+        collapsable = true,
+        confirmStateChange = { it != BottomSheetValue.Hidden }
     ),
     sheetContentState: BottomSheetContentState = rememberBottomSheetContentState(
         initialSheetComponent = BottomSheetComponent.CallActions,
@@ -73,6 +90,10 @@ internal class CallScreenState(
 
     val shouldShowAppBar by derivedStateOf {
         isSheetFullScreen && hasCurrentSheetComponentAppBar
+    }
+
+    val isSheetHidden by derivedStateOf {
+        with(sheetState) { targetValue == BottomSheetValue.Hidden && progress.fraction == 1f }
     }
 
     val isSheetCollapsed by derivedStateOf {
@@ -154,7 +175,9 @@ internal class CallScreenState(
 }
 
 @Composable
-internal fun CallScreen(callScreenState: CallScreenState = rememberCallScreenState()) {
+internal fun CallScreen(
+    callScreenState: CallScreenState = rememberCallScreenState()
+) {
     val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
 
     LaunchedEffect(callScreenState) {
@@ -180,8 +203,15 @@ internal fun CallScreen(callScreenState: CallScreenState = rememberCallScreenSta
             .launchIn(this)
     }
 
+    LaunchedEffect(true) {
+        delay(4000)
+        callScreenState.halfExpandSheet()
+    }
+
     when {
-        callScreenState.currentSheetComponent != BottomSheetComponent.CallActions -> BackPressHandler(onBackPressed = callScreenState::navigateToCallActionsComponent)
+        callScreenState.currentSheetComponent != BottomSheetComponent.CallActions -> BackPressHandler(
+            onBackPressed = callScreenState::navigateToCallActionsComponent
+        )
         !callScreenState.isSheetNotDraggableDown -> BackPressHandler(onBackPressed = callScreenState::collapseSheet)
     }
 
@@ -193,7 +223,29 @@ internal fun CallScreen(callScreenState: CallScreenState = rememberCallScreenSta
             sheetState = callScreenState.sheetState,
             sheetPeekHeight = PeekHeight + navBarsBottomPadding,
             sheetHalfExpandedHeight = HalfExpandedHeight + navBarsBottomPadding,
-            anchor = { },
+            sheetElevation = 0.dp,
+            anchor = {
+                AnimatedVisibility(
+                    visible = !callScreenState.isSheetHidden,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
+                    ThumbnailStreams(
+                        streams = ImmutableList(
+                            listOf(
+                                streamUiMock.copy(id = "1"),
+                                streamUiMock.copy(id = "2"),
+                                streamUiMock.copy(id = "3"),
+                                streamUiMock.copy(id = "4"),
+                                streamUiMock.copy(id = "5"),
+                                streamUiMock.copy(id = "6")
+                            )
+                        ),
+                        contentPadding = PaddingValues(16.dp),
+                        onStreamClick = {}
+                    )
+                }
+            },
             sheetBackgroundColor = MaterialTheme.colors.surface.copy(alpha = backgroundAlpha),
             sheetShape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
             backgroundColor = Color.Black,
@@ -206,14 +258,74 @@ internal fun CallScreen(callScreenState: CallScreenState = rememberCallScreenSta
                     onAudioDeviceClick = callScreenState::halfExpandSheet,
                     onScreenShareTargetClick = callScreenState::halfExpandSheet,
                     contentVisible = !callScreenState.isSheetCollapsed,
-                    modifier = Modifier.windowInsetsPadding(
-                        WindowInsets.displayCutout.only(
-                            WindowInsetsSides.Horizontal
-                        )
-                    )
+                    modifier = Modifier.horizontalCutoutPadding()
                 )
             },
-            content = { CallScreenContent(callScreenState, it) }
+            content = {
+
+                BoxWithConstraints(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = Color.Black)
+                ) {
+                    var callInfo by remember { mutableStateOf(callInfoMock) }
+                    var streams by remember {
+                        mutableStateOf(ImmutableList(
+                            listOf(
+                                StreamUi(
+                                    id = "1",
+                                    view = null,
+                                    username = "ste1",
+                                    avatar = ImmutableUri(Uri.EMPTY),
+                                    isVideoEnabled = false
+                                ),
+                                StreamUi(
+                                    id = "2",
+                                    view = null,
+                                    username = "ste2",
+                                    avatar = ImmutableUri(Uri.EMPTY),
+                                    isVideoEnabled = false
+                                )
+                            )
+                        ))
+                    }
+                    val callScreenContentState = rememberCallScreenContentState(
+                        streams = streams,
+                        callInfo = callInfo,
+                        configuration = LocalConfiguration.current,
+                        maxWidth = maxWidth
+                    )
+
+                    LaunchedEffect(true) {
+                        delay(4000)
+                        callInfo = callInfo.copy(title="MODIFIED")
+                        streams = ImmutableList(listOf(streamUiMock.copy(username = "user2"), streamUiMock.copy(username = "user3")))
+                    }
+
+                    CallScreenContent(
+                        state = callScreenContentState,
+                        onBackPressed = { if (callScreenContentState.showCallInfo) callScreenContentState.hideCallInfo() else callScreenContentState.showCallInfo() }
+                    )
+
+                    var callInfoWidgetHeight by remember { mutableStateOf(0) }
+                    val streamHeaderOffset by animateIntAsState(targetValue = if (state.showCallInfo) callInfoWidgetHeight else 0)
+
+                    AnimatedVisibility(
+                        visible = true,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        CallInfoWidget(
+                            onBackPressed = if (state.fullscreenStream != null) state::exitFullscreenMode else onBackPressed,
+                            callInfo = callInfo,
+                            modifier = Modifier
+                                .statusBarsPadding()
+                                .onGloballyPositioned { callInfoWidgetHeight = it.size.height }
+                                .testTag(CallInfoWidgetTag)
+                        )
+                    }
+                }
+            }
         )
 
         CallScreenAppBar(
