@@ -3,11 +3,14 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose.streams
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.LocalContentColor
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -54,32 +57,34 @@ private fun Header(
     onFullscreenClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier.padding(horizontal = 4.dp)) {
-        if (onBackPressed != null) {
+    CompositionLocalProvider(LocalContentColor provides Color.White) {
+        Row(modifier = modifier.padding(horizontal = 4.dp)) {
+            if (onBackPressed != null) {
+                IconButton(
+                    icon = rememberVectorPainter(image = Icons.Filled.ArrowBack),
+                    iconDescription = stringResource(id = R.string.kaleyra_back),
+                    onClick = onBackPressed
+                )
+            }
+
+            Text(
+                text = username,
+                modifier = Modifier
+                    .padding(vertical = 12.dp, horizontal = 16.dp)
+                    .weight(1f),
+                fontWeight = FontWeight.SemiBold
+            )
+
             IconButton(
-                icon = rememberVectorPainter(image = Icons.Filled.ArrowBack),
-                iconDescription = stringResource(id = R.string.kaleyra_back),
-                onClick = onBackPressed
+                icon = painterResource(
+                    id = if (fullscreen) R.drawable.ic_kaleyra_exit_fullscreen else R.drawable.ic_kaleyra_enter_fullscreen
+                ),
+                iconDescription = stringResource(
+                    id = if (fullscreen) R.string.kaleyra_exit_fullscreen else R.string.kaleyra_enter_fullscreen
+                ),
+                onClick = onFullscreenClick
             )
         }
-
-        Text(
-            text = username,
-            modifier = Modifier
-                .padding(vertical = 12.dp, horizontal = 16.dp)
-                .weight(1f),
-            fontWeight = FontWeight.SemiBold
-        )
-
-        IconButton(
-            icon = painterResource(
-                id = if (fullscreen) R.drawable.ic_kaleyra_exit_fullscreen else R.drawable.ic_kaleyra_enter_fullscreen
-            ),
-            iconDescription = stringResource(
-                id = if (fullscreen) R.string.kaleyra_exit_fullscreen else R.string.kaleyra_enter_fullscreen
-            ),
-            onClick = onFullscreenClick
-        )
     }
 }
 
