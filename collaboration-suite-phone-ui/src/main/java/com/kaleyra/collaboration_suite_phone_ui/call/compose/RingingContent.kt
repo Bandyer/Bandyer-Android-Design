@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -14,6 +15,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -22,11 +24,15 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
+const val TapToAnswerTimerMillis = 7000L
+
 @Composable
-internal fun RingingScreenContent(
+internal fun RingingContent(
     stream: StreamUi,
     callInfo: CallInfoUi,
     groupCall: Boolean = false,
+    recording: Recording? = null,
+    tapToAnswerTimerMillis: Long = TapToAnswerTimerMillis,
     onBackPressed: () -> Unit = { },
     onAnswer: () -> Unit = { },
     onDecline: () -> Unit = { },
@@ -40,27 +46,38 @@ internal fun RingingScreenContent(
         onBackPressed = onBackPressed,
         modifier = modifier
     ) {
-        // TODO add helper text
-        Row(
-            horizontalArrangement = Arrangement.SpaceAround,
-            modifier = Modifier
-                .fillMaxWidth()
-                .navigationBarsPadding()
-                .padding(bottom = 32.dp)
-                .align(Alignment.BottomCenter)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RingingActionButton(
-                painter = painterResource(id = R.drawable.ic_kaleyra_decline),
-                text = stringResource(id = R.string.kaleyra_ringing_decline),
-                backgroundColor = colorResource(id = if (isDarkTheme) R.color.kaleyra_color_hang_up_button_night else R.color.kaleyra_color_hang_up_button),
-                onClick = onDecline
-            )
-            RingingActionButton(
-                painter = painterResource(id = R.drawable.ic_kaleyra_answer),
-                text = stringResource(id = R.string.kaleyra_ringing_answer),
-                backgroundColor = colorResource(id = if (isDarkTheme) R.color.kaleyra_color_answer_button_night else R.color.kaleyra_color_answer_button),
-                onClick = onAnswer
-            )
+            Spacer(modifier = Modifier.weight(1f))
+            if (recording != null) {
+                HelperText(text = stringResource(id = if (recording == Recording.AUTOMATIC) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer))
+            }
+            val countDownTimer by rememberCountdownTimerState(tapToAnswerTimerMillis)
+            if (countDownTimer == 0L) {
+                HelperText(text = stringResource(id = R.string.kaleyra_tap_to_answer))
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            Row(
+                horizontalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .navigationBarsPadding()
+                    .padding(bottom = 32.dp)
+            ) {
+                RingingActionButton(
+                    painter = painterResource(id = R.drawable.ic_kaleyra_decline),
+                    text = stringResource(id = R.string.kaleyra_ringing_decline),
+                    backgroundColor = colorResource(id = if (isDarkTheme) R.color.kaleyra_color_hang_up_button_night else R.color.kaleyra_color_hang_up_button),
+                    onClick = onDecline
+                )
+                RingingActionButton(
+                    painter = painterResource(id = R.drawable.ic_kaleyra_answer),
+                    text = stringResource(id = R.string.kaleyra_ringing_answer),
+                    backgroundColor = colorResource(id = if (isDarkTheme) R.color.kaleyra_color_answer_button_night else R.color.kaleyra_color_answer_button),
+                    onClick = onAnswer
+                )
+            }
         }
     }
 }
@@ -75,7 +92,7 @@ private fun RingingActionButton(
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         IconButton(
             icon = painter,
-            iconDescription = null,
+            iconDescription = text,
             iconSize = 48.dp,
             onClick = onClick,
             indication = rememberRipple(bounded = false, radius = 40.dp),
@@ -94,10 +111,13 @@ private fun RingingActionButton(
     }
 }
 
+@Composable
+private fun HelperText(text: String) = Text(text = text, fontSize = 12.sp, fontStyle = FontStyle.Italic)
+
 @Preview
 @Composable
 internal fun RingingActionButtonPreview() {
     KaleyraTheme {
-        RingingScreenContent(streamUiMock, callInfoMock)
+        RingingContent(streamUiMock, callInfoMock)
     }
 }

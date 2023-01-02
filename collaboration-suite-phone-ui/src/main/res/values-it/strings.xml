@@ -122,6 +122,7 @@
     <string name="kaleyra_company_logo">Logo compagnia</string>
 
     <string name="kaleyra_move_to_featured_streams">Muovi tra gli stream in primo piano</string>
+    <string name="kaleyra_tap_to_answer">tap to answer</string>
 
     <!-- WHITEBOARD -->
     <string name="kaleyra_whiteboard">Lavagna</string>

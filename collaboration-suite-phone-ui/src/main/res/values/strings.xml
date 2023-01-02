@@ -127,6 +127,7 @@
     <string name="kaleyra_company_logo">Company logo</string>
 
     <string name="kaleyra_move_to_featured_streams">Move to featured streams</string>
+    <string name="kaleyra_tap_to_answer">tap to answer</string>
 
     <!-- WHITEBOARD -->
     <string name="kaleyra_collaborate_button">Collaborate</string>
