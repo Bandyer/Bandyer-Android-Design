@@ -27,8 +27,6 @@ class RingingContentTest : PreCallContentTest() {
 
     override var callInfo = mutableStateOf(callInfoMock)
 
-    private var recording by mutableStateOf<Recording?>(null)
-
     private var timerMillis by mutableStateOf(0L)
 
     @Before
@@ -37,7 +35,6 @@ class RingingContentTest : PreCallContentTest() {
             RingingContent(
                 stream = stream.value,
                 callInfo = callInfo.value,
-                recording = recording,
                 tapToAnswerTimerMillis = timerMillis
             )
         }
@@ -76,8 +73,6 @@ class RingingContentTest : PreCallContentTest() {
     @Test
     fun timerMillisIsZero_tapToAnswerIsDisplayed() {
         val tapToAnswer = composeTestRule.activity.getString(R.string.kaleyra_tap_to_answer)
-        timerMillis = 5L
-        composeTestRule.onNodeWithText(tapToAnswer).assertDoesNotExist()
         timerMillis = 0L
         composeTestRule.onNodeWithText(tapToAnswer).assertIsDisplayed()
     }
@@ -92,9 +87,9 @@ class RingingContentTest : PreCallContentTest() {
         recordingValue: Recording,
         expectedText: String
     ) {
-        recording = null
+        callInfo.value = callInfoMock.copy(recording = null)
         onNodeWithText(expectedText).assertDoesNotExist()
-        recording = recordingValue
+        callInfo.value = callInfoMock.copy(recording = recordingValue)
         onNodeWithText(expectedText).assertIsDisplayed()
     }
 

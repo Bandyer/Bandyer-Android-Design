@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.Recording
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
@@ -58,13 +59,13 @@ class CallInfoWidgetTest {
 
     @Test
     fun recordingFalse_recordingLabelDoesNotExists() {
-        callInfo = callInfoMock.copy(isRecording = false)
+        callInfo = callInfoMock.copy(recording = null)
         findRecordingLabel().assertDoesNotExist()
     }
 
     @Test
     fun recordingTrue_recordingLabelIsDisplayed() {
-        callInfo = callInfoMock.copy(isRecording = true)
+        callInfo = callInfoMock.copy(recording = Recording.MANUAL)
         findRecordingLabel().assertIsDisplayed()
     }
 

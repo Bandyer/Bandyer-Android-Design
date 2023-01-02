@@ -31,7 +31,6 @@ internal fun RingingContent(
     stream: StreamUi,
     callInfo: CallInfoUi,
     groupCall: Boolean = false,
-    recording: Recording? = null,
     tapToAnswerTimerMillis: Long = TapToAnswerTimerMillis,
     onBackPressed: () -> Unit = { },
     onAnswer: () -> Unit = { },
@@ -50,8 +49,8 @@ internal fun RingingContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.weight(1f))
-            if (recording != null) {
-                HelperText(text = stringResource(id = if (recording == Recording.AUTOMATIC) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer))
+            if (callInfo.recording != null) {
+                HelperText(text = stringResource(id = if (callInfo.recording == Recording.AUTOMATIC) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer))
             }
             val countDownTimer by rememberCountdownTimerState(tapToAnswerTimerMillis)
             if (countDownTimer == 0L) {

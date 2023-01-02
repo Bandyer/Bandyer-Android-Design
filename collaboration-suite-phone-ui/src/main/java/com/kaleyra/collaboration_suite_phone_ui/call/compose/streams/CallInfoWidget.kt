@@ -61,7 +61,7 @@ internal fun CallInfoWidget(
                 }
             }
 
-            if (callInfo.isRecording) {
+            if (callInfo.recording != null) {
                 Box(
                     modifier = Modifier
                         .height(48.dp)
