@@ -52,9 +52,7 @@ internal fun PreCallContent(
             CallInfoWidget(
                 onBackPressed = onBackPressed,
                 callInfo = callInfo,
-                modifier = Modifier
-                    .statusBarsPadding()
-                    .testTag(CallInfoWidgetTag)
+                modifier = Modifier.statusBarsPadding()
             )
         }
     }
