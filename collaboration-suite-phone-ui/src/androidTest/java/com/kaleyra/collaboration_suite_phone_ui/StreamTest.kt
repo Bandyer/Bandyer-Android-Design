@@ -6,16 +6,13 @@ import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
-import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -57,17 +54,12 @@ class StreamTest {
     @Test
     fun avatarVisibleTrue_avatarIsDisplayed() {
         isAvatarVisible = true
-        findAvatar().assertIsDisplayed()
+        composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
     fun avatarVisibleFalse_avatarDoesNotExists() {
         isAvatarVisible = false
-        findAvatar().assertDoesNotExist()
-    }
-
-    private fun findAvatar(): SemanticsNodeInteraction {
-        val avatar = composeTestRule.activity.getString(R.string.kaleyra_avatar)
-        return composeTestRule.onNodeWithContentDescription(avatar)
+        composeTestRule.findAvatar().assertDoesNotExist()
     }
 }

@@ -51,19 +51,19 @@ class FeaturedStreamTest: StreamParentComposableTest() {
     @Test
     fun onBackPressedNull_headerDoesNotHaveBackButton() {
         onBackPressed = null
-        findBackButton().assertDoesNotExist()
+        composeTestRule.findBackButton().assertDoesNotExist()
     }
 
     @Test
     fun onBackPressedNotNull_headerDisplaysBackButton() {
         onBackPressed = { }
-        findBackButton().assertIsDisplayed()
+        composeTestRule.findBackButton().assertIsDisplayed()
     }
 
     @Test
     fun userClicksBackButton_onBackPressedInvoked() {
         onBackPressed = { isBackPressed = true }
-        findBackButton().performClick()
+        composeTestRule.findBackButton().performClick()
         assert(isBackPressed)
     }
 
@@ -86,11 +86,6 @@ class FeaturedStreamTest: StreamParentComposableTest() {
         isFullscreen = false
         findEnterFullscreenButton().performClick()
         assert(isFullscreenClicked)
-    }
-
-    private fun findBackButton(): SemanticsNodeInteraction {
-        val back = composeTestRule.activity.getString(R.string.kaleyra_back)
-        return composeTestRule.onNodeWithContentDescription(back)
     }
 
     private fun findEnterFullscreenButton(): SemanticsNodeInteraction {

@@ -6,7 +6,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
@@ -35,21 +34,16 @@ abstract class StreamParentComposableTest {
     @Test
     fun streamVideoIsNotEnabled_avatarIsDisplayed() {
         stream.value = streamUiMock.copy(isVideoEnabled = false)
-        findAvatar().assertIsDisplayed()
+        composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
     fun streamVideoIsEnabled_avatarDoesNotExists() {
         stream.value = streamUiMock.copy(isVideoEnabled = true)
-        findAvatar().assertDoesNotExist()
+        composeTestRule.findAvatar().assertDoesNotExist()
     }
 
     private fun findStreamView(): SemanticsNodeInteraction {
         return composeTestRule.onNodeWithTag(StreamViewTestTag)
-    }
-
-    private fun findAvatar(): SemanticsNodeInteraction {
-        val avatar = composeTestRule.activity.getString(R.string.kaleyra_avatar)
-        return composeTestRule.onNodeWithContentDescription(avatar)
     }
 }
