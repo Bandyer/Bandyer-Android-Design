@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.height
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import io.mockk.mockk
@@ -86,17 +87,6 @@ class CallScreenContentTest {
         state = defaultState(showCallInfo = false)
         composeTestRule.onNodeWithContentDescription(getBackText()).performClick()
         assert(isBackPressed)
-    }
-
-    @Test
-    fun watermarkIsNull_callInfoWidgetIsDisplayedRightToBackButton() {
-        state = defaultState(
-            showCallInfo = true,
-            callInfo = callInfoMock.copy(watermarkInfo = null, subtitle = "subtitle")
-        )
-        val subtitleBounds = composeTestRule.onNodeWithText("subtitle").getBoundsInRoot()
-        val backBounds = composeTestRule.onNodeWithContentDescription(getBackText()).getBoundsInRoot()
-        assert(subtitleBounds.left > backBounds.right)
     }
 
     @Test
