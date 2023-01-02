@@ -37,7 +37,7 @@ class CallInfoWidgetTest {
 
     @Test
     fun backButtonIsDisplayed() {
-        findBackButton().assertIsDisplayed()
+        composeTestRule.findBackButton().assertIsDisplayed()
     }
 
     @Test
@@ -52,7 +52,7 @@ class CallInfoWidgetTest {
 
     @Test
     fun userClicksBack_onBackPressedInvoked() {
-        findBackButton().performClick()
+        composeTestRule.findBackButton().performClick()
         assert(isBackPressed)
     }
 
@@ -94,13 +94,8 @@ class CallInfoWidgetTest {
     fun watermarkInfoNull_titleIsDisplayedToEndOfBackButton() {
         callInfo = callInfoMock.copy(watermarkInfo = null)
         val subtitleLeft = findHeaderTitle().getBoundsInRoot().left
-        val backRight = findBackButton().getBoundsInRoot().right
+        val backRight = composeTestRule.findBackButton().getBoundsInRoot().right
         assert(subtitleLeft > backRight)
-    }
-
-    private fun findBackButton(): SemanticsNodeInteraction {
-        val back = composeTestRule.activity.getString(R.string.kaleyra_back)
-        return composeTestRule.onNodeWithContentDescription(back)
     }
 
     private fun findRecordingLabel(): SemanticsNodeInteraction {

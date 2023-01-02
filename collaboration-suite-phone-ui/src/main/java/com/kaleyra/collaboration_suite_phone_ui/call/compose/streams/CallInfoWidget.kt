@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -16,6 +17,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.shadow
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.verticalGradientScrim
+
+const val CallInfoWidgetTag = "CallInfoWidgetTag"
 
 // NB: The title is actually an AndroidView, because there is not text ellipsize in compose
 @Composable
@@ -31,6 +34,7 @@ internal fun CallInfoWidget(
                 startYPercentage = 1f,
                 endYPercentage = 0f
             )
+            .testTag(CallInfoWidgetTag)
             .then(modifier)
     ) {
         Row(
