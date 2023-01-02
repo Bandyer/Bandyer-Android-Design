@@ -2,15 +2,19 @@ package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.content.res.Configuration
 import androidx.compose.animation.*
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
@@ -22,8 +26,6 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-
-const val CallInfoWidgetTag = "CallInfoWidgetTag"
 
 private val StatusBarPaddingModifier = Modifier.statusBarsPadding()
 
@@ -108,12 +110,12 @@ internal fun CallScreenContent(
             .launchIn(this)
     }
 
-//    var hideStreamHeaderMillis by remember { mutableStateOf(5000L) }
-//    val countDown = rememberCountdownTimerState(hideStreamHeaderMillis)
-//    val streamsHeaderAlpha by animateFloatAsState(
-//        targetValue = if (countDown.value > 0L) 1f else 0f,
-//        animationSpec = tween()
-//    )
+    var resetCountDown by remember { mutableStateOf(false) }
+    val countDown by rememberCountdownTimerState(initialMillis = 5000L, resetFlag = resetCountDown)
+    val streamsHeaderAlpha by animateFloatAsState(
+        targetValue = if (countDown > 0L) 1f else 0f,
+        animationSpec = tween()
+    )
 
     AnimatedContent(
         targetState = state.fullscreenStream,
@@ -135,8 +137,8 @@ internal fun CallScreenContent(
                         isFullscreen = false,
                         onBackPressed = if (index == 0 && !state.showCallInfo) onBackPressed else null,
                         onFullscreenClick = { state.enterFullscreenMode(stream) },
-                        modifier = Modifier.clickable {
-//                            hideStreamHeaderMillis = 4000
+                        modifier = Modifier.streamClickable {
+                            resetCountDown = !resetCountDown
                         },
                         headerModifier = Modifier
                             .offset {
@@ -145,7 +147,7 @@ internal fun CallScreenContent(
                                     y = if (index < state.columns) streamHeaderOffset else 0
                                 )
                             }
-//                            .graphicsLayer { alpha = streamsHeaderAlpha }
+                            .graphicsLayer { alpha = streamsHeaderAlpha }
                     )
                 }
             }
@@ -156,10 +158,10 @@ internal fun CallScreenContent(
                 onBackPressed = if (!state.showCallInfo) state::exitFullscreenMode else null,
                 onFullscreenClick = state::exitFullscreenMode,
                 headerModifier = Modifier
-                    .offset { IntOffset(x = 0, y = streamHeaderOffset) },
-//                    .graphicsLayer { alpha = streamsHeaderAlpha },
-                modifier = StatusBarPaddingModifier.clickable {
-//                    hideStreamHeaderMillis = 4000
+                    .offset { IntOffset(x = 0, y = streamHeaderOffset) }
+                    .graphicsLayer { alpha = streamsHeaderAlpha },
+                modifier = StatusBarPaddingModifier.streamClickable {
+                    resetCountDown = !resetCountDown
                 }
             )
         }
@@ -175,11 +177,21 @@ internal fun CallScreenContent(
             callInfo = state.callInfo,
             modifier = StatusBarPaddingModifier
                 .onGloballyPositioned { callInfoWidgetHeight = it.size.height }
-                .testTag(CallInfoWidgetTag)
         )
     }
 
 }
+
+private fun Modifier.streamClickable(onClick: () -> Unit): Modifier =
+    composed {
+        clickable(
+            interactionSource = remember { MutableInteractionSource() },
+            indication = null,
+            role = Role.Button,
+            onClick = onClick
+        )
+    }
+
 
 @Preview
 @Composable
