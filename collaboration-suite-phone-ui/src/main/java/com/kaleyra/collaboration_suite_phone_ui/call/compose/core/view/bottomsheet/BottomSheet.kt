@@ -32,7 +32,6 @@ internal enum class BottomSheetValue {
 }
 
 @OptIn(ExperimentalMaterialApi::class)
-@Stable
 internal class BottomSheetState(
     initialValue: BottomSheetValue,
     val animationSpec: AnimationSpec<Float> = SwipeableDefaults.AnimationSpec,

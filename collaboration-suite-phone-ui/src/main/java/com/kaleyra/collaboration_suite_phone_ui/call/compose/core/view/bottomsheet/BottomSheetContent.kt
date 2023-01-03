@@ -34,7 +34,6 @@ internal enum class BottomSheetComponent {
     CallActions, AudioOutput, ScreenShare, FileShare, Whiteboard
 }
 
-@Stable
 internal class BottomSheetContentState(
     initialComponent: BottomSheetComponent,
     initialLineState: LineState
