@@ -6,7 +6,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
 
 @Composable
 internal fun DialingContent(
-    stream: StreamUi,
+    stream: StreamUi? = null,
     callInfo: CallInfoUi,
     groupCall: Boolean = false,
     onBackPressed: () -> Unit = { },

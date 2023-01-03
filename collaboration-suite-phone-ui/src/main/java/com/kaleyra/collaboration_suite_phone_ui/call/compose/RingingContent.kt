@@ -28,13 +28,13 @@ const val TapToAnswerTimerMillis = 7000L
 
 @Composable
 internal fun RingingContent(
-    stream: StreamUi,
+    stream: StreamUi? = null,
     callInfo: CallInfoUi,
     groupCall: Boolean = false,
     tapToAnswerTimerMillis: Long = TapToAnswerTimerMillis,
     onBackPressed: () -> Unit = { },
-    onAnswer: () -> Unit = { },
-    onDecline: () -> Unit = { },
+    onAnswerClick: () -> Unit = { },
+    onDeclineClick: () -> Unit = { },
     modifier: Modifier = Modifier
 ) {
     val isDarkTheme = isSystemInDarkTheme()
@@ -68,13 +68,13 @@ internal fun RingingContent(
                     painter = painterResource(id = R.drawable.ic_kaleyra_decline),
                     text = stringResource(id = R.string.kaleyra_ringing_decline),
                     backgroundColor = colorResource(id = if (isDarkTheme) R.color.kaleyra_color_hang_up_button_night else R.color.kaleyra_color_hang_up_button),
-                    onClick = onDecline
+                    onClick = onDeclineClick
                 )
                 RingingActionButton(
                     painter = painterResource(id = R.drawable.ic_kaleyra_answer),
                     text = stringResource(id = R.string.kaleyra_ringing_answer),
                     backgroundColor = colorResource(id = if (isDarkTheme) R.color.kaleyra_color_answer_button_night else R.color.kaleyra_color_answer_button),
-                    onClick = onAnswer
+                    onClick = onAnswerClick
                 )
             }
         }

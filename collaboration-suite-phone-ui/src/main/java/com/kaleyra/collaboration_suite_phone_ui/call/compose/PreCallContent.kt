@@ -23,7 +23,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 
 @Composable
 internal fun PreCallContent(
-    stream: StreamUi,
+    stream: StreamUi? = null,
     callInfo: CallInfoUi,
     groupCall: Boolean = false,
     onBackPressed: () -> Unit = { },
@@ -34,7 +34,7 @@ internal fun PreCallContent(
         Box(modifier = modifier.fillMaxSize()) {
             content()
 
-            if (stream.view != null && stream.isVideoEnabled) {
+            if (stream?.view != null && stream.isVideoEnabled) {
                 Stream(streamView = stream.view, avatar = stream.avatar)
             } else {
                 Avatar(
