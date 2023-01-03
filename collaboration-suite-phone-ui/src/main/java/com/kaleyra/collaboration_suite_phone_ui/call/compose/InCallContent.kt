@@ -30,13 +30,13 @@ import kotlinx.coroutines.flow.onEach
 private val StatusBarPaddingModifier = Modifier.statusBarsPadding()
 
 @Composable
-internal fun rememberCallScreenContentState(
+internal fun rememberInCallContentState(
     streams: ImmutableList<StreamUi>,
     callInfo: CallInfoUi,
     configuration: Configuration,
     maxWidth: Dp
 ) = remember(streams, callInfo, configuration, maxWidth) {
-    CallScreenContentState(
+    InCallContentState(
         streams = streams,
         callInfo = callInfo,
         configuration = configuration,
@@ -44,7 +44,7 @@ internal fun rememberCallScreenContentState(
     )
 }
 
-internal class CallScreenContentState(
+internal class InCallContentState(
     val streams: ImmutableList<StreamUi>,
     val callInfo: CallInfoUi,
     private val configuration: Configuration,
@@ -95,8 +95,8 @@ internal class CallScreenContentState(
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-internal fun CallScreenContent(
-    state: CallScreenContentState,
+internal fun InCallContent(
+    state: InCallContentState,
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -195,10 +195,10 @@ private fun Modifier.streamClickable(onClick: () -> Unit): Modifier =
 
 @Preview
 @Composable
-fun CallScreenContentPreview() {
+fun InCallContentPreview() {
     KaleyraTheme {
-        CallScreenContent(
-            state = rememberCallScreenContentState(
+        InCallContent(
+            state = rememberInCallContentState(
                 streams = ImmutableList(listOf(streamUiMock, streamUiMock)),
                 callInfo = callInfoMock,
                 configuration = LocalConfiguration.current,

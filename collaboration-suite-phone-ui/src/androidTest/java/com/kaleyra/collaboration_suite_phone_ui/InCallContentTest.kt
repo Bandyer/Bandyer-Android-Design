@@ -25,7 +25,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class CallScreenContentTest {
+class InCallContentTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
@@ -38,7 +38,7 @@ class CallScreenContentTest {
     fun setUp() {
         state = defaultState()
         composeTestRule.setContent {
-            CallScreenContent(
+            InCallContent(
                 state = state,
                 onBackPressed = { isBackPressed = true }
             )
@@ -285,8 +285,8 @@ class CallScreenContentTest {
         maxWidth: Dp = 400.dp,
         showCallInfo: Boolean = false,
         fullscreenStream: StreamUi? = null
-    ): CallScreenContentState {
-        return CallScreenContentState(
+    ): InCallContentState {
+        return InCallContentState(
             streams = streams,
             callInfo = callInfo,
             configuration = configuration,
