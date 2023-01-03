@@ -23,8 +23,10 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
+import com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel.ChatUiViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -51,7 +53,15 @@ internal fun rememberCallScreenState(
     isDarkMode: Boolean = isSystemInDarkTheme(),
     scope: CoroutineScope = rememberCoroutineScope(),
     density: Density = LocalDensity.current
-) = remember(callUiState, sheetState, sheetContentState, systemUiController, isDarkMode, scope, density) {
+) = remember(
+    callUiState,
+    sheetState,
+    sheetContentState,
+    systemUiController,
+    isDarkMode,
+    scope,
+    density
+) {
     CallScreenState(
         callUiState = callUiState,
         sheetState = sheetState,
@@ -77,7 +87,10 @@ internal class CallScreenState(
         sheetContentState.currentComponent == BottomSheetComponent.FileShare || sheetContentState.currentComponent == BottomSheetComponent.Whiteboard
     }
 
-    private val isSheetFullScreen by sheetState.isSheetFullScreen(offsetThreshold = FullScreenThreshold, density = density)
+    private val isSheetFullScreen by sheetState.isSheetFullScreen(
+        offsetThreshold = FullScreenThreshold,
+        density = density
+    )
 
     private val isSheetHalfExpanding by sheetState.isHalfExpanding()
 
@@ -147,6 +160,31 @@ internal class CallScreenState(
 }
 
 @Composable
+fun ChatScreen(
+    onBackPressed: () -> Unit,
+    viewModel: CallUiViewModel
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    // TODO link collapsable flag to viewmodel's call type
+    val callScreenState = rememberCallScreenState(
+        callUiState = uiState,
+        sheetState = rememberBottomSheetState(
+            initialValue = BottomSheetValue.Hidden,
+            collapsable = true,
+            confirmStateChange = { it != BottomSheetValue.Hidden }
+        )
+    )
+
+    CallScreen(
+        callScreenState = callScreenState,
+        onThumbnailStreamClick = { /*TODO*/ },
+        onBackPressed = onBackPressed,
+        onAnswerClick = { /*TODO*/ },
+        onDeclineClick = { /*TODO*/ }
+    )
+}
+
+@Composable
 internal fun CallScreen(
     callScreenState: CallScreenState,
     onThumbnailStreamClick: (StreamUi) -> Unit,
@@ -181,7 +219,9 @@ internal fun CallScreen(
     }
 
     when {
-        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackPressHandler(onBackPressed = callScreenState::navigateToCallActionsComponent)
+        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackPressHandler(
+            onBackPressed = callScreenState::navigateToCallActionsComponent
+        )
         !callScreenState.isSheetNotDraggableDown -> BackPressHandler(onBackPressed = callScreenState::collapseSheet)
     }
 
