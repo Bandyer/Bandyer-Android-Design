@@ -49,9 +49,9 @@ class InCallContentTest {
     @Test
     fun hideCallInfo_callInfoWidgetDoesNotExists() {
         state = defaultState(showCallInfo = true)
-        composeTestRule.onNodeWithText("subtitle").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertIsDisplayed()
         state.hideCallInfo()
-        composeTestRule.onNodeWithText("subtitle").assertDoesNotExist()
+        composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertDoesNotExist()
     }
 
     @Test
@@ -63,9 +63,9 @@ class InCallContentTest {
 
     @Test
     fun showCallInfo_callInfoWidgetIsDisplayed() {
-        composeTestRule.onNodeWithText("subtitle").assertDoesNotExist()
+        composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertDoesNotExist()
         state.showCallInfo()
-        composeTestRule.onNodeWithText("subtitle").assertIsDisplayed()
+        composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertIsDisplayed()
     }
 
     @Test
@@ -280,7 +280,7 @@ class InCallContentTest {
                 streamUiMock.copy(username = "user2")
             )
         ),
-        callInfo: CallInfoUi = callInfoMock.copy(subtitle = "subtitle"),
+        callInfo: CallInfoUi = callInfoMock,
         configuration: Configuration = mockk(),
         maxWidth: Dp = 400.dp,
         showCallInfo: Boolean = false,
