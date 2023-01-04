@@ -6,11 +6,13 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
 import org.junit.Test
 
 abstract class PreCallContentTest {
@@ -23,9 +25,11 @@ abstract class PreCallContentTest {
 
     @Test
     fun callInfoWidgetIsDisplayed() {
+        callInfo.value = callInfoMock.copy(callState = CallState.Connecting)
         composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertIsDisplayed()
         // Check content description rather than text because the title is a TextView under the hood
-        composeTestRule.onNodeWithContentDescription(callInfo.value.title).assertIsDisplayed()
+        val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
+        composeTestRule.onNodeWithContentDescription(connecting).assertIsDisplayed()
         composeTestRule.findBackButton().assertIsDisplayed()
     }
 
