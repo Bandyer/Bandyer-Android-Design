@@ -5,9 +5,12 @@ import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -55,8 +58,8 @@ internal fun CallInfoWidget(
                     Watermark(watermarkInfo = callInfo.watermarkInfo)
                 } else {
                     Header(
-                        title = callInfo.title,
-                        subtitle = callInfo.subtitle
+                        title = titleFor(callInfo.callState, callInfo.otherParticipants),
+                        subtitle = subtitleFor(callState = callInfo.callState, otherParticipants = callInfo.otherParticipants)
                     )
                 }
             }
@@ -73,8 +76,8 @@ internal fun CallInfoWidget(
         }
         if (callInfo.watermarkInfo != null) {
             Header(
-                title = callInfo.title,
-                subtitle = callInfo.subtitle,
+                title = titleFor(callInfo.callState, callInfo.otherParticipants),
+                subtitle = subtitleFor(callState = callInfo.callState, otherParticipants = callInfo.otherParticipants),
                 modifier = Modifier.padding(horizontal = 20.dp)
             )
         }
@@ -110,6 +113,26 @@ private fun Header(
     }
 }
 
+@Composable
+private fun titleFor(callState: CallState, otherParticipants: List<String>) =
+    when(callState) {
+        CallState.Connecting, CallState.Reconnecting -> stringResource(id = R.string.kaleyra_call_status_connecting)
+        is CallState.Disconnected -> stringResource(id = R.string.kaleyra_call_status_ended)
+        CallState.Ringing, CallState.Dialing -> otherParticipants.joinToString(separator = ", ")
+        else -> ""
+    }
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun subtitleFor(callState: CallState, otherParticipants: List<String>) =
+    when(callState) {
+        CallState.Dialing -> stringResource(id = R.string.kaleyra_call_status_dialing)
+        CallState.Disconnected.Ended.AnsweredOnAnotherDevice -> stringResource(id = R.string.kaleyra_call_status_answered_on_other_device)
+        CallState.Disconnected.Ended.Declined -> pluralStringResource(id = R.plurals.kaleyra_call_status_declined, count = otherParticipants.count())
+        CallState.Disconnected.Ended.Timeout -> pluralStringResource(id = R.plurals.kaleyra_call_status_no_answer, count = otherParticipants.count())
+        CallState.Ringing -> pluralStringResource(id = R.plurals.kaleyra_call_status_ringing, count = otherParticipants.count())
+        else -> null
+    }
 
 @Preview
 @Composable
