@@ -14,6 +14,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -27,6 +28,7 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+const val InCallContentTag = "InCallContentTag"
 private val StatusBarPaddingModifier = Modifier.statusBarsPadding()
 
 @Composable
@@ -122,7 +124,7 @@ internal fun InCallContent(
         transitionSpec = {
             fadeIn(animationSpec = tween(220, delayMillis = 90)) with fadeOut(animationSpec = tween(90))
         },
-        modifier = modifier
+        modifier = modifier.testTag(InCallContentTag)
     ) { target ->
         if (target == null) {
             AdaptiveGrid(

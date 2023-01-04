@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,6 +25,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
+const val RingingContentTag = "RingingContentTag"
 const val TapToAnswerTimerMillis = 7000L
 
 @Composable
@@ -43,7 +45,7 @@ internal fun RingingContent(
         callInfo = callInfo,
         groupCall = groupCall,
         onBackPressed = onBackPressed,
-        modifier = modifier
+        modifier = modifier.testTag(RingingContentTag)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
