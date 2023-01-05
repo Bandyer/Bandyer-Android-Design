@@ -28,17 +28,17 @@ import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-const val InCallContentTag = "InCallContentTag"
+const val CallContentTag = "CallContentTag"
 private val StatusBarPaddingModifier = Modifier.statusBarsPadding()
 
 @Composable
-internal fun rememberInCallContentState(
+internal fun rememberCallContentState(
     streams: ImmutableList<StreamUi>,
     callInfo: CallInfoUi,
     configuration: Configuration,
     maxWidth: Dp
 ) = remember(streams, callInfo, configuration, maxWidth) {
-    InCallContentState(
+    CallContentState(
         streams = streams,
         callInfo = callInfo,
         configuration = configuration,
@@ -46,7 +46,7 @@ internal fun rememberInCallContentState(
     )
 }
 
-internal class InCallContentState(
+internal class CallContentState(
     val streams: ImmutableList<StreamUi>,
     val callInfo: CallInfoUi,
     private val configuration: Configuration,
@@ -97,8 +97,8 @@ internal class InCallContentState(
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-internal fun InCallContent(
-    state: InCallContentState,
+internal fun CallContent(
+    state: CallContentState,
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -124,7 +124,7 @@ internal fun InCallContent(
         transitionSpec = {
             fadeIn(animationSpec = tween(220, delayMillis = 90)) with fadeOut(animationSpec = tween(90))
         },
-        modifier = modifier.testTag(InCallContentTag)
+        modifier = modifier.testTag(CallContentTag)
     ) { target ->
         if (target == null) {
             AdaptiveGrid(
@@ -197,10 +197,10 @@ private fun Modifier.streamClickable(onClick: () -> Unit): Modifier =
 
 @Preview
 @Composable
-fun InCallContentPreview() {
+fun CallContentPreview() {
     KaleyraTheme {
-        InCallContent(
-            state = rememberInCallContentState(
+        CallContent(
+            state = rememberCallContentState(
                 streams = ImmutableList(listOf(streamUiMock, streamUiMock)),
                 callInfo = callInfoMock,
                 configuration = LocalConfiguration.current,
