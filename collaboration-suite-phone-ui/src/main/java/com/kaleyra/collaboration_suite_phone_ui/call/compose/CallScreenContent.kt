@@ -11,26 +11,38 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun CallScreenContent(
-    callState: CallState,
     streams: ImmutableList<StreamUi>,
     callInfo: CallInfoUi,
     groupCall: Boolean = false,
     onBackPressed: () -> Unit,
     onAnswerClick: () -> Unit,
-    onDeclineClick: () -> Unit
+    onDeclineClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(color = Color.Black)
     ) {
-        AnimatedContent(targetState = callState) { target ->
+        val targetContent by remember(callInfo) {
+            derivedStateOf {
+                when (callInfo.callState) {
+                    CallState.Ringing -> 0
+                    CallState.Dialing -> 1
+                    else -> 2
+                }
+            }
+        }
+
+        AnimatedContent(targetState = targetContent) { target ->
             when(target) {
-                CallState.Ringing -> {
+                0 -> {
                     RingingContent(
                         stream = streams.getOrNull(0),
                         callInfo = callInfo,
@@ -40,7 +52,7 @@ internal fun CallScreenContent(
                         onDeclineClick = onDeclineClick
                     )
                 }
-                CallState.Dialing -> {
+                1 -> {
                     DialingContent(
                         stream = streams.getOrNull(0),
                         callInfo = callInfo,
@@ -48,18 +60,29 @@ internal fun CallScreenContent(
                         onBackPressed = onBackPressed
                     )
                 }
-                CallState.InCall -> {
-                    val inCallContentState = rememberInCallContentState(
+                2 -> {
+                    val callContentState = rememberCallContentState(
                         streams = streams,
                         callInfo = callInfo,
                         configuration = LocalConfiguration.current,
                         maxWidth = maxWidth
                     )
-                    InCallContent(
-                        state = inCallContentState,
+
+                    LaunchedEffect(callInfo) {
+                        snapshotFlow { callInfo.callState }
+                            .onEach {
+                                if (it is CallState.Reconnecting || it is CallState.Connecting || it is CallState.Disconnected) callContentState.showCallInfo()
+                                else callContentState.hideCallInfo()
+                            }
+                            .launchIn(this)
+                    }
+
+                    CallContent(
+                        state = callContentState,
                         onBackPressed = onBackPressed
                     )
                 }
+                else -> Unit
             }
         }
     }
