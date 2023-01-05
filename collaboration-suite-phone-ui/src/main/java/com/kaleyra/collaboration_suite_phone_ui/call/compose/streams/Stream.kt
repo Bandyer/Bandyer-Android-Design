@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.streams
 
 import android.view.View
+import android.view.ViewGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.LocalContentColor
@@ -40,7 +41,11 @@ internal fun Stream(
         Box {
             if (streamView != null) {
                 AndroidView(
-                    factory = { streamView },
+                    factory = {
+                        val parentView = streamView.parent as? ViewGroup
+                        parentView?.removeView(streamView)
+                        streamView
+                    },
                     modifier = Modifier.testTag(StreamViewTestTag)
                 )
             }
