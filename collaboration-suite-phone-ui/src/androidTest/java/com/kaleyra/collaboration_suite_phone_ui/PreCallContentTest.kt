@@ -19,7 +19,7 @@ abstract class PreCallContentTest {
 
     abstract val composeTestRule: AndroidComposeTestRule<ActivityScenarioRule<ComponentActivity>, ComponentActivity>
 
-    abstract var stream: MutableState<StreamUi>
+    abstract var stream: MutableState<StreamUi?>
 
     abstract var callInfo: MutableState<CallInfoUi>
 
@@ -31,6 +31,13 @@ abstract class PreCallContentTest {
         val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
         composeTestRule.onNodeWithContentDescription(connecting).assertIsDisplayed()
         composeTestRule.findBackButton().assertIsDisplayed()
+    }
+
+    @Test
+    fun streamNull_avatarDisplayed() {
+        stream.value = null
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
+        composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test

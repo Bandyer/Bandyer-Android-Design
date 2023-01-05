@@ -10,6 +10,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Recording
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.RingingContent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
 import org.junit.Before
@@ -23,11 +24,17 @@ class RingingContentTest : PreCallContentTest() {
     @get:Rule
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    override var stream = mutableStateOf(streamUiMock)
+    override var stream = mutableStateOf<StreamUi?>(streamUiMock)
 
     override var callInfo = mutableStateOf(callInfoMock)
 
     private var timerMillis by mutableStateOf(0L)
+
+    private var backPressed = false
+
+    private var answerClicked = false
+
+    private var declineClicked = false
 
     @Before
     fun setUp() {
@@ -35,7 +42,10 @@ class RingingContentTest : PreCallContentTest() {
             RingingContent(
                 stream = stream.value,
                 callInfo = callInfo.value,
-                tapToAnswerTimerMillis = timerMillis
+                tapToAnswerTimerMillis = timerMillis,
+                onBackPressed = { backPressed = true },
+                onAnswerClick = { answerClicked = true },
+                onDeclineClick = { declineClicked = true }
             )
         }
     }
@@ -75,6 +85,26 @@ class RingingContentTest : PreCallContentTest() {
         val tapToAnswer = composeTestRule.activity.getString(R.string.kaleyra_tap_to_answer)
         timerMillis = 0L
         composeTestRule.onNodeWithText(tapToAnswer).assertIsDisplayed()
+    }
+
+    @Test
+    fun usersClicksBackButton_onBackPressedInvoked() {
+        composeTestRule.findBackButton().performClick()
+        assert(backPressed)
+    }
+
+    @Test
+    fun usersClicksAnswerButton_onAnswerClickInvoked() {
+        val answer = composeTestRule.activity.getString(R.string.kaleyra_ringing_answer)
+        composeTestRule.onAllNodesWithContentDescription(answer).onFirst().performClick()
+        assert(answerClicked)
+    }
+
+    @Test
+    fun usersClicksDeclineButton_onDeclineClickInvoked() {
+        val decline = composeTestRule.activity.getString(R.string.kaleyra_ringing_decline)
+        composeTestRule.onAllNodesWithContentDescription(decline).onFirst().performClick()
+        assert(declineClicked)
     }
 
     private fun ComposeTestRule.assertRingingButtonIsDisplayed(text: String) {
