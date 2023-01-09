@@ -9,11 +9,20 @@ import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.MockCallViewModelsStatesRule
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreen
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreenAppBarTag
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.LocalBackPressedDispatcher
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.mockAudioDevices
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.viewmodel.AudioOutputViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.rememberCallScreenState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareTargetUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.model.ScreenShareUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.viewmodel.ScreenShareViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
+import com.kaleyra.collaboration_suite_phone_ui.findBackButton
+import io.mockk.every
+import io.mockk.mockkConstructor
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -22,8 +31,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-// TODO status bar icon must be dark if dark theme and on whiteboard and file sharing
-// TODO add nested scroll test for file share
 @RunWith(AndroidJUnit4::class)
 class CallScreenTest {
 
@@ -33,11 +40,21 @@ class CallScreenTest {
     @get:Rule
     val mockCallViewModelsStatesRule = MockCallViewModelsStatesRule()
 
+    private var callUiState by mutableStateOf(CallUiState())
+
     private var sheetState by mutableStateOf(BottomSheetState(BottomSheetValue.Expanded))
 
     private var sheetContentState by mutableStateOf(BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Expanded))
 
     private var sideEffect by mutableStateOf(suspend { })
+
+    private var thumbnailClickedStream: StreamUi? = null
+
+    private var backPressed = false
+
+    private var answerClicked = false
+
+    private var declineClicked = false
 
     @Before
     fun setUp() {
@@ -46,9 +63,14 @@ class CallScreenTest {
             CompositionLocalProvider(LocalBackPressedDispatcher provides onBackPressedDispatcher) {
                 CallScreen(
                     callScreenState = rememberCallScreenState(
+                        callUiState = callUiState,
                         sheetState = sheetState,
                         sheetContentState = sheetContentState
-                    )
+                    ),
+                    onThumbnailStreamClick = { thumbnailClickedStream = it },
+                    onBackPressed = { backPressed = true },
+                    onAnswerClick = { answerClicked = true },
+                    onDeclineClick = { declineClicked =  true }
                 )
                 LaunchedEffect(sideEffect) {
                     sideEffect.invoke()
@@ -90,7 +112,7 @@ class CallScreenTest {
     }
 
     @Test
-    fun userClicksLine_sheetHalfExpand() {
+    fun sheetCollapsed_userClicksLine_sheetHalfExpand() {
         sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
         sheetContentState = BottomSheetContentState(BottomSheetComponent.CallActions, LineState.Collapsed())
         composeTestRule.onNodeWithTag(LineTag, useUnmergedTree = true).performClick()
@@ -330,47 +352,94 @@ class CallScreenTest {
         composeTestRule.onNodeWithTag(CallScreenAppBarTag).assertDoesNotExist()
     }
 
-//    @Test
-//    fun fileShareComponent_scroll() {
-//        mockkConstructor(FileShareViewModel::class)
-//        every { anyConstructed<FileShareViewModel>().initialState() } returns
-//                FileShareUiState(
-//                    transferList = ImmutableList(listOf(
-//                        mockDownloadTransfer.copy(id = "0", state = TransferUi.State.Success(Uri.EMPTY)),
-//                        mockUploadTransfer.copy(id = "1"),
-//                        mockUploadTransfer.copy(id = "2"),
-//                        mockUploadTransfer.copy(id = "3"),
-//                        mockUploadTransfer.copy(id = "4"),
-//                        mockUploadTransfer.copy(id = "5"),
-//                        mockUploadTransfer.copy(id = "6"),
-//                        mockUploadTransfer.copy(id = "7"),
-//                        mockUploadTransfer.copy(id = "8"),
-//                        mockUploadTransfer.copy(id = "9"),
-//                        mockUploadTransfer.copy(id = "10"),
-//                        mockUploadTransfer.copy(id = "11"),
-//                        mockUploadTransfer.copy(id = "12"),
-//                        mockUploadTransfer.copy(id = "13"),
-//                        mockUploadTransfer.copy(id = "14"),
-//                        mockUploadTransfer.copy(id = "15"),
-//                        mockUploadTransfer.copy(id = "16"),
-//                        mockUploadTransfer.copy(id = "17"),
-//                        mockUploadTransfer.copy(id = "18"),
-//                        mockUploadTransfer.copy(id = "19"),
-//                        mockUploadTransfer.copy(id = "20"),
-//                        mockUploadTransfer.copy(id = "21"),
-//                        mockUploadTransfer.copy(id = "22"),
-//                        mockUploadTransfer.copy(id = "23"),
-//                        mockUploadTransfer.copy(id = "24"),
-//                        mockUploadTransfer.copy(id = "25"),
-//                        mockUploadTransfer.copy(id = "26")
-//                    ))
-//                )
-//        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
-//        sheetContentState = BottomSheetContentState(BottomSheetComponent.FileShare, LineState.Expanded)
-//        composeTestRule.waitForIdle()
-//        runBlocking {
-//            delay(3000)
-//            assertEquals(BottomSheetComponent.FileShare, sheetContentState.currentComponent)
-//        }
-//    }
+    @Test
+    fun sheetHidden_thumbnailStreamsAreNotDisplayed() {
+        checkThumbnailStreamsVisibility(sheetValue = BottomSheetValue.Hidden, areVisible = false)
+    }
+
+    @Test
+    fun sheetCollapsed_thumbnailStreamsAreDisplayed() {
+        checkThumbnailStreamsVisibility(sheetValue = BottomSheetValue.Collapsed, areVisible = true)
+    }
+
+    @Test
+    fun sheetHalfExpanded_thumbnailStreamsAreDisplayed() {
+        checkThumbnailStreamsVisibility(sheetValue = BottomSheetValue.HalfExpanded, areVisible = true)
+    }
+
+    @Test
+    fun sheetExpanded_thumbnailStreamsAreDisplayed() {
+        checkThumbnailStreamsVisibility(sheetValue = BottomSheetValue.Expanded, areVisible = true)
+    }
+
+    private fun checkThumbnailStreamsVisibility(sheetValue: BottomSheetValue, areVisible: Boolean) {
+        sheetState = BottomSheetState(initialValue = sheetValue)
+        callUiState = CallUiState(thumbnailStreams = ImmutableList(listOf(streamUiMock)))
+        composeTestRule.onAllNodesWithTag(ThumbnailTag).assertCountEquals(if (areVisible) 1 else 0)
+    }
+
+    @Test
+    fun audioOutputComponent_userClicksAudioDevice_sheetHalfExpand() {
+        mockkConstructor(AudioOutputViewModel::class)
+        every { anyConstructed<AudioOutputViewModel>().uiState } returns MutableStateFlow(
+            AudioOutputUiState(audioDeviceList = mockAudioDevices, playingDeviceId = "id")
+        )
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.AudioOutput, LineState.Collapsed())
+        val loudspeaker = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route_loudspeaker)
+        composeTestRule.onNodeWithText(loudspeaker).performClick()
+        composeTestRule.waitForIdle()
+        runBlocking {
+            val sheetStateValue = snapshotFlow { sheetState.currentValue }.first()
+            assertEquals(BottomSheetValue.HalfExpanded, sheetStateValue)
+        }
+    }
+
+    @Test
+    fun screenShareComponent_userClicksScreenShareDevice_sheetHalfExpand() {
+        mockkConstructor(ScreenShareViewModel::class)
+        every { anyConstructed<ScreenShareViewModel>().uiState } returns MutableStateFlow(
+            ScreenShareUiState(targetList = ImmutableList(listOf(ScreenShareTargetUi.Device, ScreenShareTargetUi.Application)))
+        )
+        sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        sheetContentState = BottomSheetContentState(BottomSheetComponent.ScreenShare, LineState.Collapsed())
+        val appOnly = composeTestRule.activity.getString(R.string.kaleyra_screenshare_app_only)
+        composeTestRule.onNodeWithText(appOnly).performClick()
+        composeTestRule.waitForIdle()
+        runBlocking {
+            val sheetStateValue = snapshotFlow { sheetState.currentValue }.first()
+            assertEquals(BottomSheetValue.HalfExpanded, sheetStateValue)
+        }
+    }
+
+    @Test
+    fun userClicksThumbnail_onThumbnailStreamClickInvoked() {
+        callUiState = CallUiState(thumbnailStreams = ImmutableList(listOf(streamUiMock)))
+        composeTestRule.onNodeWithTag(ThumbnailTag).performClick()
+        assertEquals(streamUiMock, thumbnailClickedStream)
+    }
+
+    @Test
+    fun userClicksBackButton_onBackPressedInvoked() {
+        composeTestRule.findBackButton().performClick()
+        assert(backPressed)
+    }
+
+    @Test
+    fun userClicksAnswerButton_onAnswerClickInvoked() {
+        sheetState = BottomSheetState(BottomSheetValue.Hidden)
+        callUiState = callUiState.copy(callInfo = callInfoMock.copy(callState = CallState.Ringing))
+        val answer = composeTestRule.activity.getString(R.string.kaleyra_ringing_answer)
+        composeTestRule.onAllNodesWithContentDescription(answer).onFirst().performClick()
+        assert(answerClicked)
+    }
+
+    @Test
+    fun userClicksDeclineButton_onDeclineClickInvoked() {
+        sheetState = BottomSheetState(BottomSheetValue.Hidden)
+        callUiState = callUiState.copy(callInfo = callInfoMock.copy(callState = CallState.Ringing))
+        val decline = composeTestRule.activity.getString(R.string.kaleyra_ringing_decline)
+        composeTestRule.onAllNodesWithContentDescription(decline).onFirst().performClick()
+        assert(declineClicked)
+    }
 }

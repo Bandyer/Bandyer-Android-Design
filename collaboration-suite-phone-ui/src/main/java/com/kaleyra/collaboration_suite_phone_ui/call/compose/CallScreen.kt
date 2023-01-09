@@ -1,12 +1,13 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.content.res.Configuration
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -19,14 +20,10 @@ import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.extensions.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalSystemBarsPadding
-import com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel.ChatUiViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
@@ -94,8 +91,6 @@ internal class CallScreenState(
 
     private val isSheetHalfExpanding by sheetState.isHalfExpanding()
 
-    private val isSheetHiding by sheetState.isHiding()
-
     val isSheetNotDraggableDown by sheetState.isNotDraggableDown()
 
     val isSheetCollapsed by sheetState.isCollapsed()
@@ -109,7 +104,7 @@ internal class CallScreenState(
     }
 
     val shouldShowCallActionsComponent by derivedStateOf {
-        isSheetCollapsing || isSheetHalfExpanding || isSheetHiding
+        isSheetCollapsing || isSheetHalfExpanding
     }
 
     val statusBarIconsShouldUseSystemMode by derivedStateOf {
@@ -138,7 +133,6 @@ internal class CallScreenState(
         sheetContentState.navigateToComponent(BottomSheetComponent.CallActions)
     }
 
-    // TODO add tests to cover all cases
     fun onCallActionClick(action: CallAction) {
         when (action) {
             is CallAction.Audio, is CallAction.ScreenShare, is CallAction.FileShare, is CallAction.Whiteboard -> {
@@ -165,7 +159,7 @@ internal fun ChatScreen(
     viewModel: CallUiViewModel
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    // TODO link collapsable flag to viewmodel's call type
+    // TODO link collapsable flag to call's type
     val callScreenState = rememberCallScreenState(
         callUiState = uiState,
         sheetState = rememberBottomSheetState(
@@ -219,15 +213,13 @@ internal fun CallScreen(
     }
 
     when {
-        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackPressHandler(
-            onBackPressed = callScreenState::navigateToCallActionsComponent
-        )
+        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackPressHandler(onBackPressed = callScreenState::navigateToCallActionsComponent)
         !callScreenState.isSheetNotDraggableDown -> BackPressHandler(onBackPressed = callScreenState::collapseSheet)
     }
 
+    // TODO check if I can remove this
     Box(modifier = Modifier.horizontalSystemBarsPadding()) {
-        val navBarsBottomPadding =
-            WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        val navBarsBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         BottomSheetScaffold(
             modifier = Modifier.fillMaxSize(),
             sheetState = callScreenState.sheetState,
@@ -263,15 +255,16 @@ internal fun CallScreen(
                 )
             },
             content = {
-                CallScreenContent(
-                    callState = callScreenState.callUiState.callState,
-                    streams = callScreenState.callUiState.featuredStream,
-                    callInfo = callScreenState.callUiState.callInfo,
-                    groupCall = callScreenState.callUiState.groupCall,
-                    onBackPressed = onBackPressed,
-                    onAnswerClick = onAnswerClick,
-                    onDeclineClick = onDeclineClick
-                )
+                with(callScreenState.callUiState) {
+                    CallScreenContent(
+                        streams = featuredStream,
+                        callInfo = callInfo,
+                        groupCall = groupCall,
+                        onBackPressed = onBackPressed,
+                        onAnswerClick = onAnswerClick,
+                        onDeclineClick = onDeclineClick
+                    )
+                }
             }
         )
 
