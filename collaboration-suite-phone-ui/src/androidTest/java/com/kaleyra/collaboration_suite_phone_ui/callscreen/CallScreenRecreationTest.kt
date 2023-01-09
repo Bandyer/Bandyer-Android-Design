@@ -9,8 +9,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.MockCallViewModelsStatesRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallScreen
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.LocalBackPressedDispatcher
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.FileShareComponentTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.rememberCallScreenState
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,7 +32,20 @@ class CallScreenRecreationTest {
         restorationTester.setContent {
             val onBackPressedDispatcher = composeTestRule.activity.onBackPressedDispatcher
             CompositionLocalProvider(LocalBackPressedDispatcher provides onBackPressedDispatcher) {
-                CallScreen()
+                CallScreen(
+                    callScreenState = rememberCallScreenState(
+                        callUiState = CallUiState(),
+                        sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Expanded),
+                        sheetContentState = rememberBottomSheetContentState(
+                            initialSheetComponent = BottomSheetComponent.CallActions,
+                            initialLineState = LineState.Expanded
+                        )
+                    ),
+                    onThumbnailStreamClick = { },
+                    onBackPressed = { },
+                    onAnswerClick = { },
+                    onDeclineClick = { }
+                )
             }
         }
 
