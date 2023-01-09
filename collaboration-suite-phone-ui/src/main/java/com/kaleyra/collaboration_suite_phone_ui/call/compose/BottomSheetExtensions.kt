@@ -46,13 +46,6 @@ internal fun BottomSheetState.isHalfExpanding(): State<Boolean> {
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
-internal fun BottomSheetState.isHiding(): State<Boolean> {
-    return derivedStateOf {
-        targetValue == BottomSheetValue.Hidden && progress.fraction >= TargetStateFractionThreshold
-    }
-}
-
 internal fun BottomSheetState.isSheetFullScreen(offsetThreshold: Dp, density: Density): State<Boolean> {
     return derivedStateOf {
         offset.value < with(density) { offsetThreshold.toPx() }
