@@ -1,5 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,10 +9,13 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Recording
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.RingingContent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.view.RingingComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
 import org.junit.Before
 import org.junit.Rule
@@ -19,14 +23,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class RingingContentTest : PreCallContentTest() {
+class RingingComponentTest {
 
     @get:Rule
-    override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
-    override var stream = mutableStateOf<StreamUi?>(streamUiMock)
-
-    override var callInfo = mutableStateOf(callInfoMock)
+    private var uiState by mutableStateOf(RingingUiState())
 
     private var timerMillis by mutableStateOf(0L)
 
@@ -39,15 +41,52 @@ class RingingContentTest : PreCallContentTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            RingingContent(
-                stream = stream.value,
-                callInfo = callInfo.value,
+            RingingComponent(
+                uiState = uiState,
                 tapToAnswerTimerMillis = timerMillis,
                 onBackPressed = { backPressed = true },
                 onAnswerClick = { answerClicked = true },
                 onDeclineClick = { declineClicked = true }
             )
         }
+    }
+
+    @Test
+    fun callInfoWidgetIsDisplayed() {
+        uiState = RingingUiState(callInfo = callInfoMock.copy(callState = CallState.Connecting))
+        composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertIsDisplayed()
+        // Check content description rather than text because the title is a TextView under the hood
+        val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
+        composeTestRule.onNodeWithContentDescription(connecting).assertIsDisplayed()
+        composeTestRule.findBackButton().assertIsDisplayed()
+    }
+
+    @Test
+    fun streamNull_avatarDisplayed() {
+        uiState = RingingUiState(stream = null)
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun streamViewNull_avatarDisplayed() {
+        uiState = RingingUiState(stream = streamUiMock.copy(view = null))
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun streamViewNotNullAndStreamHasVideoDisabled_avatarIsDisplayed() {
+        uiState = RingingUiState(stream = streamUiMock.copy(view = View(composeTestRule.activity), isVideoEnabled = false))
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertDoesNotExist()
+        composeTestRule.findAvatar().assertIsDisplayed()
+    }
+
+    @Test
+    fun streamViewNotNullAndStreamHasVideoEnabled_streamIsDisplayed() {
+        uiState = RingingUiState(stream = streamUiMock.copy(view = View(composeTestRule.activity), isVideoEnabled = true))
+        composeTestRule.onNodeWithTag(StreamViewTestTag).assertIsDisplayed()
+        composeTestRule.findAvatar().assertDoesNotExist()
     }
 
     @Test
@@ -117,9 +156,9 @@ class RingingContentTest : PreCallContentTest() {
         recordingValue: Recording,
         expectedText: String
     ) {
-        callInfo.value = callInfoMock.copy(recording = null)
+        uiState = RingingUiState(callInfo = callInfoMock.copy(recording = null))
         onNodeWithText(expectedText).assertDoesNotExist()
-        callInfo.value = callInfoMock.copy(recording = recordingValue)
+        uiState = RingingUiState(callInfo = callInfoMock.copy(recording = recordingValue))
         onNodeWithText(expectedText).assertIsDisplayed()
     }
 
