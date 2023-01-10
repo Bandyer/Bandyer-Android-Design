@@ -36,6 +36,7 @@ internal fun CallScreenAppBar(
                     .windowInsetsTopHeight(WindowInsets.statusBars)
             )
             Box(modifier = Modifier.statusBarsPadding()) {
+                // TODO check if this modifier is needed
                 val appBarsModifier = Modifier.horizontalCutoutPadding()
                 when (currentSheetComponent) {
                     BottomSheetComponent.FileShare -> FileShareAppBar(

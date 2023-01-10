@@ -154,7 +154,7 @@ internal class CallScreenState(
 }
 
 @Composable
-internal fun ChatScreen(
+internal fun CallScreen(
     onBackPressed: () -> Unit,
     viewModel: CallUiViewModel
 ) {
