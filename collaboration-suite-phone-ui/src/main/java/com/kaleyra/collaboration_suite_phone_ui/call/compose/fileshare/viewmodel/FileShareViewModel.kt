@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.viewmodel
 
 import android.net.Uri
+import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.FileShareUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.TransferUi
@@ -8,7 +9,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.moc
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.model.mockUploadTransfer
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
-internal class FileShareViewModel : BaseViewModel<FileShareUiState>() {
+internal class FileShareViewModel(configure: suspend () -> Configuration) : BaseViewModel<FileShareUiState>(configure) {
 //    override fun initialState() = FileShareUiState()
     override fun initialState() = FileShareUiState(
         transferList = ImmutableList(
