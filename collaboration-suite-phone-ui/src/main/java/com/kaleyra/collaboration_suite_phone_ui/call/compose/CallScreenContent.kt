@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.view.RingingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.launchIn
@@ -42,16 +43,7 @@ internal fun CallScreenContent(
 
         AnimatedContent(targetState = targetContent) { target ->
             when(target) {
-                0 -> {
-                    RingingContent(
-                        stream = streams.getOrNull(0),
-                        callInfo = callInfo,
-                        groupCall = groupCall,
-                        onBackPressed = onBackPressed,
-                        onAnswerClick = onAnswerClick,
-                        onDeclineClick = onDeclineClick
-                    )
-                }
+                0 -> RingingComponent(onBackPressed = onBackPressed)
                 1 -> {
                     DialingContent(
                         stream = streams.getOrNull(0),
