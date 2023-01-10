@@ -75,6 +75,8 @@ dependencies {
     androidTestImplementation "io.mockk:mockk-android:1.13.2"
     testImplementation 'io.mockk:mockk:1.13.2'
 
+    testImplementation kaleyra.collaboration
+
     /** Kaleyra **/
     compileOnly kaleyra.collaboration
     compileOnly kaleyra.collaboration_extension_audio

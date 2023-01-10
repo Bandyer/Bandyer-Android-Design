@@ -19,6 +19,7 @@ import android.net.Uri
 import com.kaleyra.collaboration_suite.chatbox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatAction
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatInfo
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ChatState
@@ -172,7 +173,7 @@ class UiModelMapperTest {
         val uriMock = mockk<Uri>()
         coEvery { usersDescriptionMock.name(any()) } returns otherParticipantMock.userId
         coEvery { usersDescriptionMock.image(any()) } returns uriMock
-        assertEquals(getChatInfo(flowOf(chatParticipantsMock), flowOf(usersDescriptionMock)).first(), ChatInfo(otherParticipantMock.userId, uriMock))
+        assertEquals(getChatInfo(flowOf(chatParticipantsMock), flowOf(usersDescriptionMock)).first(), ChatInfo(otherParticipantMock.userId, ImmutableUri(uriMock)))
     }
 
     @Test
