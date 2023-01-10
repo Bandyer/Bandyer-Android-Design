@@ -15,7 +15,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewT
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
 import org.junit.Test
 
-abstract class PreCallContentTest {
+abstract class PreCallComponentTest {
 
     abstract val composeTestRule: AndroidComposeTestRule<ActivityScenarioRule<ComponentActivity>, ComponentActivity>
 

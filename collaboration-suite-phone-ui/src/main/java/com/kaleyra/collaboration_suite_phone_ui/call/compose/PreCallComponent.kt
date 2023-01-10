@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.net.Uri
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +11,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import com.kaleyra.collaboration_suite_phone_ui.R
@@ -22,7 +20,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.DefaultStre
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 
 @Composable
-internal fun PreCallContent(
+internal fun PreCallComponent(
     stream: StreamUi? = null,
     callInfo: CallInfoUi,
     groupCall: Boolean = false,

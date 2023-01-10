@@ -15,7 +15,7 @@ internal fun DialingContent(
     onBackPressed: () -> Unit = { },
     modifier: Modifier = Modifier
 ) {
-    PreCallContent(
+    PreCallComponent(
         stream = stream,
         callInfo = callInfo,
         groupCall = groupCall,

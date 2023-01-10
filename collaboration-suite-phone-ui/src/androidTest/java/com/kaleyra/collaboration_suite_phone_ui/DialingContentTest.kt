@@ -15,7 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class DialingContentTest: PreCallContentTest() {
+class DialingContentTest: PreCallComponentTest() {
 
     @get:Rule
     override val composeTestRule = createAndroidComposeRule<ComponentActivity>()
