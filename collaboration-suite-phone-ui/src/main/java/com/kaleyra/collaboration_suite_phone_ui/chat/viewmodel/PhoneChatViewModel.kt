@@ -76,8 +76,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
 
     override fun sendMessage(text: String) {
         val chat = chat.getValue() ?: return
-        val message = chat.create(Message.Content.Text(text))
-        chat.add(message)
+        chat.add(Message.Content.Text(text))
         showUnreadHeader.value = false
     }
 
@@ -89,9 +88,8 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
     override fun fetchMessages() {
         viewModelScope.launch {
             isFetching.emit(true)
-            chat.first().fetch(FETCH_COUNT) {
-                isFetching.tryEmit(false)
-            }
+            chat.first().fetch(FETCH_COUNT)
+            isFetching.tryEmit(false)
         }
     }
 
@@ -114,9 +112,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
         val phoneBox = phoneBox.getValue() ?: return
         val chat = chat.getValue() ?: return
         val userId = chat.participants.value.others.first().userId
-        phoneBox.call(listOf(object : User {
-            override val userId = userId
-        })) {
+        phoneBox.call(listOf(userId)) {
             this.preferredType = preferredType
         }
     }

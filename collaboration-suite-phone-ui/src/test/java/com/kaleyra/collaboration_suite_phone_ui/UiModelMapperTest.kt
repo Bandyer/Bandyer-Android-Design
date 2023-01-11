@@ -128,8 +128,20 @@ class UiModelMapperTest {
     }
 
     @Test
-    fun chatBoxInitialized_getChatState_none() = runTest {
-        chatBoxState.value = ChatBox.State.Initialized
+    fun chatBoxStateUserInactive_getChatState_none() = runTest {
+        chatBoxState.value = ChatBox.State.Disconnected.UserInactive
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.None)
+    }
+
+    @Test
+    fun chatBoxStateUnsupportedVersion_getChatState_none() = runTest {
+        chatBoxState.value = ChatBox.State.Disconnected.UnsupportedVersion
+        assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.None)
+    }
+
+    @Test
+    fun chatBoxStateUnknown_getChatState_none() = runTest {
+        chatBoxState.value = ChatBox.State.Disconnected.Unknown
         assertEquals(getChatState(flowOf(chatParticipantsMock), flowOf(chatBoxMock)).first(), ChatState.None)
     }
 
@@ -226,8 +238,8 @@ class UiModelMapperTest {
     fun allMessagesRead_findFirstUnreadMessage_null() = runTest {
         val messages = mockk<Messages>()
         every { messages.other } returns listOf(otherReadMessageMock, otherReadMessageMock, otherReadMessageMock)
-        val fetch = { _: Int, completion: (Result<Messages>) -> Unit ->
-            completion(Result.success(messages))
+        val fetch: (Int) -> Result<Messages> = { _: Int ->
+            Result.success(messages)
         }
         val result = findFirstUnreadMessageId(messages, fetch)
         assertEquals(result, null)
@@ -242,12 +254,12 @@ class UiModelMapperTest {
         every { initMessages.other } returns listOf(otherUnreadMessageMock1)
         every { messages.other } returns listOf(otherUnreadMessageMock1, otherUnreadMessageMock1, otherUnreadMessageMock2)
         every { emptyMessages.other } returns listOf()
-        val fetch = { _: Int, completion: (Result<Messages>) -> Unit ->
+        val fetch: (Int) -> Result<Messages> = { _: Int ->
             if (!fetched) {
                 fetched = true
-                completion(Result.success(messages))
+                Result.success(messages)
             } else {
-                completion(Result.success(emptyMessages))
+                Result.success(emptyMessages)
             }
         }
         val result = findFirstUnreadMessageId(initMessages, fetch)
@@ -258,8 +270,8 @@ class UiModelMapperTest {
     fun mixedMessageState_findFirstUnreadMessage_lastUnreadMessageId() = runTest {
         val messages = mockk<Messages>()
         every { messages.other } returns listOf(otherUnreadMessageMock1, otherUnreadMessageMock2, otherReadMessageMock)
-        val fetch = { _: Int, completion: (Result<Messages>) -> Unit ->
-            completion(Result.success(messages))
+        val fetch: (Int) -> Result<Messages> = { _: Int ->
+            Result.success(messages)
         }
         val result = findFirstUnreadMessageId(messages, fetch)
         assertEquals(result, otherUnreadMessageMock2.id)

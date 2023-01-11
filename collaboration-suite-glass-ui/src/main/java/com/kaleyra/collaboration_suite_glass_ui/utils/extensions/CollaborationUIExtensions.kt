@@ -26,14 +26,11 @@ import com.kaleyra.collaboration_suite_glass_ui.chat.notification.GlassChatNotif
 /**
  * Configure with glass u i
  *
- * @param credentials to use when Collaboration tools need to be connected
  * @param configuration representing a set of info necessary to instantiate the communication
  */
 fun CollaborationUI.configureGlassUI(
-    credentials: Collaboration.Credentials,
     configuration: Collaboration.Configuration
 ) = configure(
-    credentials,
     configuration,
     GlassCallActivity::class.java,
     GlassChatActivity::class.java,

@@ -262,13 +262,13 @@ internal class GlassCallActivity :
         if (!viewModel.micPermission.value.isAllowed)
             viewModel.micPermission
                 .takeWhile { !it.isAllowed }
-                .onCompletion { viewModel.onEnableMic(true) }
+                .onCompletion { viewModel.onEnableMic(this@GlassCallActivity, true) }
                 .launchIn(lifecycleScope)
 
         if (!viewModel.camPermission.value.isAllowed)
             viewModel.camPermission
                 .takeWhile { !it.isAllowed }
-                .onCompletion { viewModel.onEnableCamera(true) }
+                .onCompletion { viewModel.onEnableCamera(this@GlassCallActivity, true) }
                 .launchIn(lifecycleScope)
 
         repeatOnStarted {
@@ -572,10 +572,11 @@ internal class GlassCallActivity :
 //                }
 //            })
         }
-
-        if (wasPausedForBackground) {
-            viewModel.onEnableCamera(wasPausedForBackground)
-            wasPausedForBackground = false
+        lifecycleScope.launch {
+            if (wasPausedForBackground) {
+                viewModel.onEnableCamera(this@GlassCallActivity, wasPausedForBackground)
+                wasPausedForBackground = false
+            }
         }
     }
 
@@ -678,11 +679,12 @@ internal class GlassCallActivity :
 
     override fun onTopResumedActivityChanged(isTopResumedActivity: Boolean) {
         super.onTopResumedActivityChanged(isTopResumedActivity)
-
-        if (!isTopResumedActivity) wasPausedForBackground = viewModel.cameraEnabled.value
-        else if (wasPausedForBackground) {
-            viewModel.onEnableCamera(true)
-            wasPausedForBackground = false
+        lifecycleScope.launch {
+            if (!isTopResumedActivity) wasPausedForBackground = viewModel.cameraEnabled.value
+            else if (wasPausedForBackground) {
+                viewModel.onEnableCamera(this@GlassCallActivity, true)
+                wasPausedForBackground = false
+            }
         }
     }
 

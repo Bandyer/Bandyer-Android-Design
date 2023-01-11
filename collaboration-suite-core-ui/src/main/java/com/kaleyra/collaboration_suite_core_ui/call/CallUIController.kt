@@ -73,16 +73,18 @@ interface CallUIController {
     /**
      * On enable camera
      *
+     * @param context Context
      * @param enable true to enable, false otherwise
      */
-    fun onEnableCamera(enable: Boolean)
+    suspend fun onEnableCamera(context: FragmentActivity, enable: Boolean)
 
     /**
      * On enable mic
      *
+     * @param context Context
      * @param enable true to enable, false otherwise
      */
-    fun onEnableMic(enable: Boolean)
+    suspend fun onEnableMic(context: FragmentActivity,enable: Boolean)
 
     /**
      * On switch camera

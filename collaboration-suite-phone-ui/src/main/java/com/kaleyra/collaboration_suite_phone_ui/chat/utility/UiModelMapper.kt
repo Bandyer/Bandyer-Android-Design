@@ -34,7 +34,8 @@ internal object UiModelMapper {
     }
 
     fun Flow<PhoneBoxUI>.hasActiveCall(): Flow<Boolean> =
-        flatMapLatest { it.call }.flatMapLatest { it.state }.map { it !is Call.State.Disconnected.Ended }
+        flatMapLatest { it.call }.flatMapLatest { it.state }
+            .map { it !is Call.State.Disconnected.Ended }
 
     fun getChatState(
         participants: Flow<ChatParticipants>,
@@ -96,7 +97,11 @@ internal object UiModelMapper {
                     items.add(ConversationItem.UnreadMessagesItem)
                 }
 
-                if (previousMessage == null || !TimestampUtils.isSameDay(message.creationDate.time, previousMessage.creationDate.time)) {
+                if (previousMessage == null || !TimestampUtils.isSameDay(
+                        message.creationDate.time,
+                        previousMessage.creationDate.time
+                    )
+                ) {
                     items.add(ConversationItem.DayItem(message.creationDate.time))
                 }
             }
@@ -106,7 +111,7 @@ internal object UiModelMapper {
 
     suspend fun findFirstUnreadMessageId(
         messages: Messages,
-        fetch: (Int, ((Result<Messages>) -> Unit)) -> Unit
+        fetch: suspend (Int) -> Result<Messages>
     ): String? {
         val flow = MutableSharedFlow<String?>(replay = 1, extraBufferCapacity = 1)
         findFirstUnreadMessageInternal(messages, fetch) {
@@ -115,9 +120,9 @@ internal object UiModelMapper {
         return flow.first()
     }
 
-    private fun findFirstUnreadMessageInternal(
+    private suspend fun findFirstUnreadMessageInternal(
         messages: Messages,
-        fetch: (Int, ((Result<Messages>) -> Unit)) -> Unit,
+        fetch: suspend (Int) -> Result<Messages>,
         continuation: (String?) -> Unit
     ) {
         val list = messages.other
@@ -129,19 +134,17 @@ internal object UiModelMapper {
         val size = list.size
 
         if (index == size - 1) {
-            fetch(5) {
-                val result = it.getOrNull() ?: kotlin.run {
-                    continuation(null)
-                    return@fetch
-                }
-                if (result.other.isEmpty()) continuation(message.id)
-                else findFirstUnreadMessageInternal(result, fetch, continuation)
+            val result = fetch(5).getOrNull()
+            when {
+                result == null -> continuation(null)
+                result.other.isEmpty() -> continuation(message.id)
+                else -> findFirstUnreadMessageInternal(result, fetch, continuation)
             }
-        }
-        else continuation(message.id)
+        } else continuation(message.id)
     }
 
-    private fun Flow<ChatParticipants>.otherParticipant(): Flow<ChatParticipant> = map { it.others.first() }
+    private fun Flow<ChatParticipants>.otherParticipant(): Flow<ChatParticipant> =
+        map { it.others.first() }
 
     private fun Flow<ChatParticipants>.typingEvents(): Flow<ChatParticipant.Event> =
         otherParticipant().flatMapLatest { it.events.filterIsInstance<ChatParticipant.Event.Typing>() }

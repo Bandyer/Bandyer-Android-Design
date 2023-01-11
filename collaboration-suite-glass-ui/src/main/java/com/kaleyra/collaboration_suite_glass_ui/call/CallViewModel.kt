@@ -135,9 +135,9 @@ internal class CallViewModel : ViewModel() {
 
     fun onHangup() = callController?.onHangup()
 
-    fun onEnableCamera(enable: Boolean) = callController?.onEnableCamera(enable)
+    suspend fun onEnableCamera(context: FragmentActivity, enable: Boolean) = callController?.onEnableCamera(context, enable)
 
-    fun onEnableMic(enable: Boolean) = callController?.onEnableMic(enable)
+    suspend fun onEnableMic(context: FragmentActivity, enable: Boolean) = callController?.onEnableMic(context, enable)
 
     fun onSwitchCamera() = callController?.onSwitchCamera()
 
@@ -183,13 +183,13 @@ internal class CallViewModel : ViewModel() {
 
     val hasSwitchCamera: StateFlow<Boolean> =
         call
-            .flatMapLatest { it.inputs.allowList }
+            .flatMapLatest { it.inputs.availableInputs }
             .map { it.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() }
             .map { c -> c?.lenses?.firstOrNull { it.isRear } != null && c.lenses.firstOrNull { !it.isRear } != null }
             .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     val zoom: StateFlow<Input.Video.Camera.Internal.Zoom?> = call
-        .flatMapLatest { it.inputs.allowList }
+        .flatMapLatest { it.inputs.availableInputs }
         .map { it.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() }
         .filter { it != null }
         .flatMapLatest { it!!.currentLens }
@@ -197,7 +197,7 @@ internal class CallViewModel : ViewModel() {
         .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val flashLight: StateFlow<Input.Video.Camera.Internal.FlashLight?> = call
-        .flatMapLatest { it.inputs.allowList }
+        .flatMapLatest { it.inputs.availableInputs }
         .map { it.filterIsInstance<Input.Video.Camera.Internal>().firstOrNull() }
         .filter { it != null }
         .flatMapLatest { it!!.currentLens }
@@ -366,7 +366,7 @@ internal class CallViewModel : ViewModel() {
     private val chat: StateFlow<ChatUI?> =
         participants
             .filter { it.others.isNotEmpty() }
-            .map { CollaborationUI.chatBox.create(it.others.first()) }
+            .map { CollaborationUI.chatBox.create(it.others.map { it.userId }).getOrNull() }
             .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val areThereNewMessages = chat

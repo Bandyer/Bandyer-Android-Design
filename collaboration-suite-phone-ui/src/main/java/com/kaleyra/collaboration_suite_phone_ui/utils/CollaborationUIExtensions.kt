@@ -24,14 +24,11 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.PhoneChatActivity
 /**
  * Configure with phone u i
  *
- * @param credentials to use when Collaboration tools need to be connected
  * @param configuration representing a set of info necessary to instantiate the communication
  */
 fun CollaborationUI.configurePhoneUI(
-    credentials: Collaboration.Credentials,
     configuration: Collaboration.Configuration
 ) = configure(
-    credentials,
     configuration,
     PhoneCallActivity::class.java,
     PhoneChatActivity::class.java,

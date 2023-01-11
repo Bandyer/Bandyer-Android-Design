@@ -40,9 +40,6 @@
             android:name="enableTilt"
             app:argType="boolean"
             android:defaultValue="false" />
-        <argument
-            android:name="userId"
-            app:argType="string" />
         <action
             android:id="@+id/action_chatMenuFragment_to_chatParticipantsFragment"
             app:destination="@id/chatParticipantsFragment" />

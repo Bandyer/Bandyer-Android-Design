@@ -72,15 +72,15 @@ dependencies {
 
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 
-    androidTestImplementation "io.mockk:mockk-android:1.13.2"
-    testImplementation 'io.mockk:mockk:1.13.2'
+    androidTestImplementation "io.mockk:mockk-android:1.13.3"
+    testImplementation 'io.mockk:mockk:1.13.3'
 
     testImplementation kaleyra.collaboration
 
     /** Kaleyra **/
-    compileOnly kaleyra.collaboration
-    compileOnly kaleyra.collaboration_extension_audio
+//    compileOnly kaleyra.collaboration
+//    compileOnly kaleyra.collaboration_extension_audio
 
-//    implementation project(":collaboration-suite")
-//    implementation project(":collaboration-suite-extension-audio")
+    implementation project(":collaboration-suite")
+    implementation project(":collaboration-suite-extension-audio")
 }

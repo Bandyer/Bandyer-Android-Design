@@ -55,6 +55,7 @@ import com.kaleyra.collaboration_suite_glass_ui.utils.safeNavigate
 import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.adapters.ItemAdapter
 import com.mikepenz.fastadapter.diff.FastAdapterDiffUtil
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.filter
@@ -62,8 +63,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.launch
 
 /**
  * KaleyraGlassMenuFragment
@@ -76,9 +76,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
     private var itemAdapter: ItemAdapter<MenuItem>? = null
 
     private var menuItems = listOf<MenuItem>()
-    private val hiddenActions = mutableSetOf<CallAction>()
-
-    private var mutex = Mutex()
+    private val hiddenActions = MutableStateFlow(setOf<CallAction>())
 
     private val args by lazy { MenuFragmentArgs.fromBundle(requireActivity().intent.extras!!) }
 
@@ -178,6 +176,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                 ) { cameraEnabled, flashLight ->
                     updateMenuItems(!cameraEnabled || flashLight == null, action)
                 }.launchIn(this)
+
                 viewModel.cameraEnabled
                     .onEach {
                         if (it) return@onEach
@@ -190,6 +189,7 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                     .onEach { action.toggle(!it) }
                     .launchIn(this)
             }
+
             switchCameraAction?.also { action ->
                 combine(
                     viewModel.cameraEnabled,
@@ -198,6 +198,11 @@ internal class MenuFragment : BaseFragment(), TiltListener {
                     updateMenuItems(!(cameraEnabled && hasSwitchCamera), action)
                 }.launchIn(this)
             }
+
+            hiddenActions.onEach { actions ->
+                val diff = menuItems.filterNot { it.action in actions }
+                FastAdapterDiffUtil[itemAdapter!!] = FastAdapterDiffUtil.calculateDiff(itemAdapter!!, diff, true)
+            }.launchIn(this)
         }
     }
 
@@ -210,13 +215,8 @@ internal class MenuFragment : BaseFragment(), TiltListener {
         itemAdapter = null
     }
 
-    private suspend fun updateMenuItems(hide: Boolean, action: CallAction) {
-        mutex.withLock {
-            hiddenActions.apply { if (hide) add(action) else remove(action) }
-            val diff = menuItems.filterNot { hiddenActions.contains(it.action) }
-            FastAdapterDiffUtil[itemAdapter!!] =
-                FastAdapterDiffUtil.calculateDiff(itemAdapter!!, diff, true)
-        }
+    private fun updateMenuItems(hide: Boolean, action: CallAction) {
+        hiddenActions.value = if (hide) hiddenActions.value + action else hiddenActions.value - action
     }
 
     private fun getActions(actions: Set<Action>): List<CallAction> = CallAction.getActions(
@@ -239,13 +239,13 @@ internal class MenuFragment : BaseFragment(), TiltListener {
             if (!viewModel.micPermission.value.isAllowed) viewModel.onRequestMicPermission(
                 requireActivity()
             )
-            viewModel.onEnableMic(!viewModel.micEnabled.value)
+            lifecycleScope.launch { viewModel.onEnableMic(requireActivity(), !viewModel.micEnabled.value) }
         }
         is CallAction.CAMERA -> true.also {
             if (!viewModel.camPermission.value.isAllowed) viewModel.onRequestCameraPermission(
                 requireActivity()
             )
-            viewModel.onEnableCamera(!viewModel.cameraEnabled.value)
+            lifecycleScope.launch { viewModel.onEnableCamera(requireActivity(), !viewModel.cameraEnabled.value) }
         }
 
         is CallAction.SWITCHCAMERA -> true.also { viewModel.onSwitchCamera() }

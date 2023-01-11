@@ -1,5 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import android.net.Uri
+import com.kaleyra.collaboration_suite.Contact
 import com.kaleyra.collaboration_suite.chatbox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.*
@@ -32,6 +34,9 @@ val otherParticipantMock = object : ChatParticipant {
     override val state: StateFlow<ChatParticipant.State> = otherParticipantState
     override val events: StateFlow<ChatParticipant.Event> = otherParticipantEvents
     override val userId: String = "userId"
+    override val restrictions: Contact.Restrictions = mockk()
+    override val displayName: StateFlow<String?> = MutableStateFlow(null)
+    override val displayImage: StateFlow<Uri?> = MutableStateFlow(null)
 
 }
 

@@ -12,4 +12,6 @@ internal fun <T, M> StateFlow<T>.mapToStateFlow(coroutineScope: CoroutineScope, 
     map { mapper(value) }.stateIn(coroutineScope, SharingStarted.Eagerly, mapper(value))
 
 internal fun <T, M> SharedFlow<T>.mapToSharedFlow(coroutineScope: CoroutineScope, mapper: (value: T) -> M): SharedFlow<M> =
-    map { mapper(replayCache[0]) }.shareIn(coroutineScope, SharingStarted.Eagerly, 1)
+    map {
+        mapper(replayCache[0])
+    }.shareIn(coroutineScope, SharingStarted.Eagerly, 1)

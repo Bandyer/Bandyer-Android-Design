@@ -21,9 +21,7 @@ open class ChatViewModel(configure: suspend () -> Configuration) : Collaboration
 
     fun setChat(userId: String): ChatUI? {
         val chatBox = chatBox.getValue() ?: return null
-        val chat = chatBox.create(object : User {
-            override val userId = userId
-        })
+        val chat = chatBox.create(listOf(userId)).getOrNull() ?: return null
         _chat.tryEmit(chat)
         return chat
     }

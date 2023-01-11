@@ -33,8 +33,7 @@ class PhoneChatViewModelTest {
     fun testSendMessage() {
         val text = "text"
         viewModel.sendMessage(text)
-        verify { chatMock.create(match { it is Message.Content.Text && it.message == text }) }
-        verify { chatMock.add(any()) }
+        verify { chatMock.add(match { it is Message.Content.Text && it.message == text }) }
     }
 
     @Test
@@ -48,12 +47,12 @@ class PhoneChatViewModelTest {
     fun testFetchMessages() = runTest {
         viewModel.fetchMessages()
         advanceUntilIdle()
-        verify { chatMock.fetch(any(), any()) }
+        coVerify { chatMock.fetch(any()) }
     }
 
     @Test
     fun testOnMessageScrolled() {
-        val message = mockk<com.kaleyra.collaboration_suite_phone_ui.chat.model.Message>()
+        val message = mockk<com.kaleyra.collaboration_suite_phone_ui.chat.model.Message.OtherMessage>()
         every { message.id } returns otherUnreadMessageMock1.id
         viewModel.onMessageScrolled(ConversationItem.MessageItem(message))
         verify { otherUnreadMessageMock1.markAsRead() }
