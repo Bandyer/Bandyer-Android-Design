@@ -2,7 +2,10 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallModelMapper.mapToStreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallModelMapper.mapToVideoUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import io.mockk.every
 import io.mockk.mockk
@@ -29,33 +32,21 @@ class CallModelMapperTest {
             every { this@mockk.view } returns MutableStateFlow(view)
             every { enabled } returns MutableStateFlow(true)
         }
-        val inputs = mockk<Inputs>(relaxed = true) {
-            every { availableInputs } returns MutableStateFlow(setOf(video))
-            every { releaseAll() } returns Unit
+        val stream = mockk<Stream> {
+            every { this@mockk.video } returns MutableStateFlow(video)
         }
         val uri = mockk<Uri>()
-        val me = mockk<CallParticipant.Me> {
-            every { displayName } returns MutableStateFlow("displayName")
-            every { displayImage } returns MutableStateFlow(uri)
-        }
-        val participants = mockk<CallParticipants> {
-            every { this@mockk.me } returns me
-        }
-        every { callMock.inputs } returns inputs
-        every { callMock.participants } returns MutableStateFlow(participants)
+        val displayName = MutableStateFlow("displayName")
+        val displayImage = MutableStateFlow(uri)
 
-        advanceUntilIdle()
-
-//        val stream = flowOf(callMock).mapToMyStreamUi(this)
-//        val actual = stream.take(1).first()
-//        val expected = StreamUi(video = null, username = "displayName", avatar = ImmutableUri(uri))
-//        val expected = StreamUi(video = null, username = "", avatar = null)
-//        assertEquals(expected, actual)
-//        advanceUntilIdle()
-//
-//        val actual2 = stream.take(1).first()
-//        val expected2 = StreamUi(video =  VideoUi("videoId", view, true), username = "displayName", avatar = ImmutableUri(uri))
-//        assertEquals(expected2, actual2)
+        val flow = MutableStateFlow(stream)
+        val actual = flow.mapToStreamUi(displayName, displayImage).first()
+        val expected = StreamUi(
+            video = VideoUi(id = "videoId", view = view, isEnabled = true),
+            username = "displayName",
+            avatar = ImmutableUri(uri)
+        )
+        assertEquals(expected, actual)
     }
 
     @Test
