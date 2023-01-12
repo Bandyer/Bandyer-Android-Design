@@ -32,8 +32,8 @@ internal fun PreCallComponent(
         Box(modifier = modifier.fillMaxSize()) {
             content()
 
-            if (stream?.view != null && stream.isVideoEnabled) {
-                Stream(streamView = stream.view, avatar = stream.avatar)
+            if (stream?.video?.view != null && stream.video.isEnabled) {
+                Stream(streamView = stream.video.view, avatar = stream.avatar)
             } else {
                 Avatar(
                     uri = ImmutableUri(Uri.EMPTY),
