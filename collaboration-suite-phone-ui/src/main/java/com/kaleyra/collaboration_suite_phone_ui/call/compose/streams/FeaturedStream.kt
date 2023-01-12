@@ -23,6 +23,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
+// TODO add tests in case stream video = null
 @Composable
 internal fun FeaturedStream(
     stream: StreamUi,
@@ -34,9 +35,9 @@ internal fun FeaturedStream(
 ) {
     Box(modifier) {
         Stream(
-            streamView = stream.view,
+            streamView = stream.video?.view,
             avatar = stream.avatar,
-            avatarVisible = !stream.isVideoEnabled
+            avatarVisible = stream.video == null || !stream.video.isEnabled
         )
 
         Header(

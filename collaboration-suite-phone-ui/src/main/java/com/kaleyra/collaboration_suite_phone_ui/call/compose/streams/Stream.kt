@@ -23,10 +23,11 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 const val StreamViewTestTag = "StreamTestTag"
 val DefaultStreamAvatarSize = 128.dp
 
+// TODO add test when avatar is null
 @Composable
 internal fun Stream(
     streamView: View? = null,
-    avatar: ImmutableUri,
+    avatar: ImmutableUri?,
     backgroundColor: Color = Color.Black,
     contentColor: Color = Color.White,
     avatarSize: Dp = DefaultStreamAvatarSize,

@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
 
+// TODO add tests in case stream video = null
 @Composable
 internal fun ThumbnailStream(
     stream: StreamUi,
@@ -28,9 +29,9 @@ internal fun ThumbnailStream(
         )
     ) {
         Stream(
-            streamView = stream.view,
+            streamView = stream.video?.view,
             avatar = stream.avatar,
-            avatarVisible = !stream.isVideoEnabled,
+            avatarVisible = stream.video == null || !stream.video.isEnabled,
             backgroundColor = Color.DarkGray,
             avatarSize = 64.dp
         )

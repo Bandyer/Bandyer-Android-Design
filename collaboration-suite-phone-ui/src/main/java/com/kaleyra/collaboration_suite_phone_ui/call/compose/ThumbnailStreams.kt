@@ -21,7 +21,7 @@ internal fun ThumbnailStreams(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         modifier = modifier
     ) {
-        items(items = streams.value, key = { it.id }) {
+        items(items = streams.value, key = { it.hashCode() }) {
             ThumbnailStream(it, onClick = { onStreamClick(it) })
         }
     }
