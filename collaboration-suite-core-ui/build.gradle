@@ -56,9 +56,9 @@ dependencies {
 //    api 'androidx.compose.foundation:foundation'
 //    api "androidx.compose.runtime:runtime"
 
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.1'
 
-    testImplementation 'io.mockk:mockk:1.13.2'
+    testImplementation 'io.mockk:mockk:1.13.3'
 
     debugImplementation "androidx.compose.ui:ui-tooling:1.2.1"
     api "androidx.compose.ui:ui-tooling-preview:1.2.1"
