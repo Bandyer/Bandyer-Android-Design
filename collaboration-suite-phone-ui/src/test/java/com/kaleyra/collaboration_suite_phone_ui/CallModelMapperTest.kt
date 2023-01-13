@@ -68,6 +68,27 @@ class CallModelMapperTest {
     )
 
     @Test
+    fun reduceToStreamsUi() = runTest {
+        val participantMock1 = mockk<CallParticipant> {
+            every { userId } returns "userId1"
+            every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+        }
+        val participantMock2 = mockk<CallParticipant> {
+            every { userId } returns "userId2"
+            every { streams } returns MutableStateFlow(listOf(streamMock3))
+        }
+        val callParticipantsMock = mockk<CallParticipants> {
+            every { list } returns listOf(participantMock1, participantMock2)
+        }
+
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.reduceToStreamsUi(displayNameFlow, displayImageFlow)
+        val actual = result.first()
+        val expected = listOf(streamUi1, streamUi2, streamUi3)
+        assertEquals(expected, actual)
+    }
+
+    @Test
     fun emptyList_mapToStreamsUi() = runTest {
         val streams = MutableStateFlow(listOf<Stream>())
         val result = streams.mapToStreamsUi(displayNameFlow, displayImageFlow)

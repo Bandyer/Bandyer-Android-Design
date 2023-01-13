@@ -1,12 +1,36 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose
 
 import android.net.Uri
+import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.sync.Mutex
-import kotlinx.coroutines.sync.withLock
-import java.util.concurrent.ConcurrentHashMap
+
+internal fun Flow<CallParticipants>.reduceToStreamsUi(
+    displayName: Flow<String?>,
+    displayImage: Flow<Uri?>
+): Flow<List<StreamUi>> {
+    return flatMapLatest { participants ->
+        val map = mutableMapOf<String, List<StreamUi>>()
+
+        participants.list
+            .map { participant ->
+                participant.streams
+                    .mapToStreamsUi(displayName, displayImage)
+                    .map {
+                        Pair(participant.userId, it)
+                    }
+            }
+            .merge()
+            .transform { (userId, streamsFlow) ->
+                map[userId] = streamsFlow
+                val values = map.values.toList()
+                if (values.size == participants.list.size) {
+                    emit(values.flatten())
+                }
+            }
+    }
+}
 
 internal fun Flow<List<Stream>>.mapToStreamsUi(
     displayName: Flow<String?>,
