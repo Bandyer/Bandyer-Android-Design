@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class StreamUi(
+    val id: String,
     val video: VideoUi?,
     val username: String,
     val avatar: ImmutableUri?
