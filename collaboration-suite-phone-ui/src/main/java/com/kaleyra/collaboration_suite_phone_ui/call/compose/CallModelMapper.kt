@@ -6,17 +6,16 @@ import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite.phonebox.Stream
 import kotlinx.coroutines.flow.*
 
-internal fun Flow<CallParticipants>.reduceToStreamsUi(
-    displayName: Flow<String?>,
-    displayImage: Flow<Uri?>
-): Flow<List<StreamUi>> {
+internal fun Flow<CallParticipants>.reduceToStreamsUi(): Flow<List<StreamUi>> {
     return flatMapLatest { participants ->
         val map = mutableMapOf<String, List<StreamUi>>()
+        val participantsList = participants.list
 
-        participants.list
+        if (participantsList.isEmpty()) flowOf(listOf())
+        else participantsList
             .map { participant ->
                 participant.streams
-                    .mapToStreamsUi(displayName, displayImage)
+                    .mapToStreamsUi(participant.displayName, participant.displayImage)
                     .map {
                         Pair(participant.userId, it)
                     }

@@ -40,7 +40,26 @@ class CallModelMapperTest {
         every { id } returns "streamId3"
         every { this@mockk.video } returns MutableStateFlow(videoMock)
     }
+
     val uriMock = mockk<Uri>()
+
+    val participantMock1 = mockk<CallParticipant> {
+        every { userId } returns "userId1"
+        every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+        every { displayName } returns MutableStateFlow("displayName1")
+        every { displayImage } returns MutableStateFlow(uriMock)
+    }
+
+    val participantMock2 = mockk<CallParticipant> {
+        every { userId } returns "userId2"
+        every { streams } returns MutableStateFlow(listOf(streamMock3))
+        every { displayName } returns MutableStateFlow("displayName2")
+        every { displayImage } returns MutableStateFlow(uriMock)
+    }
+
+    val callParticipantsMock = mockk<CallParticipants> {
+        every { list } returns listOf(participantMock1, participantMock2)
+    }
 
     val displayNameFlow = MutableStateFlow("displayName")
 
@@ -68,24 +87,144 @@ class CallModelMapperTest {
     )
 
     @Test
-    fun reduceToStreamsUi() = runTest {
-        val participantMock1 = mockk<CallParticipant> {
-            every { userId } returns "userId1"
-            every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
-        }
-        val participantMock2 = mockk<CallParticipant> {
-            every { userId } returns "userId2"
-            every { streams } returns MutableStateFlow(listOf(streamMock3))
-        }
-        val callParticipantsMock = mockk<CallParticipants> {
-            every { list } returns listOf(participantMock1, participantMock2)
-        }
+    fun emptyParticipantsList_reduceToStreamsUi() = runTest {
+        every { callParticipantsMock.list } returns listOf()
 
         val participants = MutableStateFlow(callParticipantsMock)
-        val result = participants.reduceToStreamsUi(displayNameFlow, displayImageFlow)
+        val result = participants.reduceToStreamsUi()
         val actual = result.first()
-        val expected = listOf(streamUi1, streamUi2, streamUi3)
+        val expected = listOf<StreamUi>()
         assertEquals(expected, actual)
+    }
+
+    @Test
+    fun filledParticipantsList_reduceToStreamsUi() = runTest {
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.reduceToStreamsUi()
+        val actual = result.first()
+        val expected = listOf(
+            streamUi1.copy(username = "displayName1"),
+            streamUi2.copy(username = "displayName1"),
+            streamUi3.copy(username = "displayName2")
+        )
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun allParticipantsHaveNoStreams_reduceToStreamsUi() = runTest {
+        every { participantMock1.streams } returns MutableStateFlow(listOf())
+        every { participantMock2.streams } returns MutableStateFlow(listOf())
+
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.reduceToStreamsUi()
+        val actual = result.first()
+        val expected = listOf<StreamUi>()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun addNewParticipant_reduceToStreamsUi() = runTest {
+        every { callParticipantsMock.list } returns listOf(participantMock1)
+
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.reduceToStreamsUi()
+        val actual = result.first()
+        val expected = listOf(
+            streamUi1.copy(username = "displayName1"),
+            streamUi2.copy(username = "displayName1"),
+        )
+        assertEquals(expected, actual)
+
+        // Update participants list
+        val newCallParticipantsMock = mockk<CallParticipants> {
+            every { list } returns listOf(participantMock1, participantMock2)
+        }
+        participants.value = newCallParticipantsMock
+        val newActual = result.first()
+        val newExpected = listOf(
+            streamUi1.copy(username = "displayName1"),
+            streamUi2.copy(username = "displayName1"),
+            streamUi3.copy(username = "displayName2")
+        )
+        assertEquals(newExpected, newActual)
+    }
+
+    @Test
+    fun removeParticipant_reduceToStreamsUi() = runTest {
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.reduceToStreamsUi()
+        val actual = result.first()
+        val expected = listOf(
+            streamUi1.copy(username = "displayName1"),
+            streamUi2.copy(username = "displayName1"),
+            streamUi3.copy(username = "displayName2")
+        )
+        assertEquals(expected, actual)
+
+        // Update participants list
+        val newCallParticipantsMock = mockk<CallParticipants> {
+            every { list } returns listOf(participantMock1)
+        }
+        participants.value = newCallParticipantsMock
+        val newActual = result.first()
+        val newExpected = listOf(
+            streamUi1.copy(username = "displayName1"),
+            streamUi2.copy(username = "displayName1")
+        )
+        assertEquals(newExpected, newActual)
+    }
+
+    @Test
+    fun updateParticipantDisplayName_reduceToStreamsUi() = runTest {
+        val displayNameParticipant1 = MutableStateFlow("displayName1")
+        every { participantMock1.displayName } returns displayNameParticipant1
+
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.reduceToStreamsUi()
+        val actual = result.first()
+        val expected = listOf(
+            streamUi1.copy(username = "displayName1"),
+            streamUi2.copy(username = "displayName1"),
+            streamUi3.copy(username = "displayName2")
+        )
+        assertEquals(expected, actual)
+
+        // Update participants list
+        displayNameParticipant1.value = "displayNameModified"
+        val newActual = result.first()
+        val newExpected = listOf(
+            streamUi1.copy(username = "displayNameModified"),
+            streamUi2.copy(username = "displayNameModified"),
+            streamUi3.copy(username = "displayName2")
+        )
+        assertEquals(newExpected, newActual)
+    }
+
+    @Test
+    fun updateParticipantDisplayImage_reduceToStreamsUi() = runTest {
+        val displayImageParticipant1 = MutableStateFlow(uriMock)
+        every { participantMock1.displayImage } returns displayImageParticipant1
+
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.reduceToStreamsUi()
+        val actual = result.first()
+        val expected = listOf(
+            streamUi1.copy(username = "displayName1"),
+            streamUi2.copy(username = "displayName1"),
+            streamUi3.copy(username = "displayName2")
+        )
+        assertEquals(expected, actual)
+
+        // Update participants list
+        val newUriMock = mockk<Uri>()
+        displayImageParticipant1.value = newUriMock
+        val newActual = result.first()
+        val newExpected = listOf(
+            streamUi1.copy(username = "displayName1", avatar = ImmutableUri(newUriMock)),
+            streamUi2.copy(username = "displayName1", avatar = ImmutableUri(newUriMock)),
+            streamUi3.copy(username = "displayName2")
+        )
+        assertEquals(newExpected, newActual)
     }
 
     @Test
@@ -194,7 +333,13 @@ class CallModelMapperTest {
         val newActual = result.first()
         val newExpected = listOf(
             streamUi1,
-            modifiedStreamUi.copy(video = VideoUi(id = "videoId2", view = viewMock, isEnabled = false)),
+            modifiedStreamUi.copy(
+                video = VideoUi(
+                    id = "videoId2",
+                    view = viewMock,
+                    isEnabled = false
+                )
+            ),
             streamUi3
         )
         assertEquals(newExpected, newActual)
