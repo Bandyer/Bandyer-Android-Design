@@ -9,12 +9,14 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,11 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.PreCallComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.viewmodel.RingingViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
@@ -50,19 +49,22 @@ internal fun RingingComponent(
     )
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun RingingComponent(
     uiState: RingingUiState,
+    modifier: Modifier = Modifier,
     tapToAnswerTimerMillis: Long = TapToAnswerTimerMillis,
-    onBackPressed: () -> Unit = { },
-    onAnswerClick: () -> Unit = { },
-    onDeclineClick: () -> Unit = { },
-    modifier: Modifier = Modifier
+    onBackPressed: () -> Unit,
+    onAnswerClick: () -> Unit,
+    onDeclineClick: () -> Unit,
 ) {
     val isDarkTheme = isSystemInDarkTheme()
     PreCallComponent(
         stream = uiState.stream,
-        callInfo = uiState.callInfo,
+        title = uiState.participants.joinToString(separator = ", "),
+        subtitle = pluralStringResource(id = R.plurals.kaleyra_call_status_ringing, count = uiState.participants.size),
+        watermarkInfo = uiState.watermarkInfo,
         groupCall = uiState.isGroupCall,
         onBackPressed = onBackPressed,
         modifier = modifier.testTag(RingingContentTag)
@@ -71,8 +73,8 @@ internal fun RingingComponent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.weight(1f))
-            if (uiState.callInfo.recording != null) {
-                HelperText(text = stringResource(id = if (uiState.callInfo.recording == Recording.AUTOMATIC) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer))
+            if (uiState.recording != null) {
+                HelperText(text = stringResource(id = if (uiState.recording == Recording.OnConnect) R.string.kaleyra_automatic_recording_disclaimer else R.string.kaleyra_manual_recording_disclaimer))
             }
             val countDownTimer by rememberCountdownTimerState(tapToAnswerTimerMillis)
             if (countDownTimer == 0L) {
@@ -140,7 +142,10 @@ private fun HelperText(text: String) = Text(text = text, fontSize = 12.sp, fontS
 internal fun RingingComponentPreview() {
     KaleyraTheme {
         RingingComponent(
-            RingingUiState(stream = streamUiMock, callInfo = callInfoMock)
+            RingingUiState(stream = streamUiMock),
+            onAnswerClick = {},
+            onDeclineClick = {},
+            onBackPressed = {}
         )
     }
 }

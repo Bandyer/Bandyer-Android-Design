@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.view.RingingComponent
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -19,7 +18,7 @@ import kotlinx.coroutines.flow.onEach
 @Composable
 internal fun CallScreenContent(
     streams: ImmutableList<StreamUi>,
-    callInfo: CallInfoUi,
+    callState: CallState,
     groupCall: Boolean = false,
     onBackPressed: () -> Unit,
     onAnswerClick: () -> Unit,
@@ -31,9 +30,9 @@ internal fun CallScreenContent(
             .fillMaxSize()
             .background(color = Color.Black)
     ) {
-        val targetContent by remember(callInfo) {
+        val targetContent by remember(callState) {
             derivedStateOf {
-                when (callInfo.callState) {
+                when (callState) {
                     CallState.Ringing -> 0
                     CallState.Dialing -> 1
                     else -> 2
@@ -45,9 +44,8 @@ internal fun CallScreenContent(
             when(target) {
                 0 -> RingingComponent(onBackPressed = onBackPressed)
                 1 -> {
-                    DialingContent(
+                    DialingComponent(
                         stream = streams.getOrNull(0),
-                        callInfo = callInfo,
                         groupCall = groupCall,
                         onBackPressed = onBackPressed
                     )
@@ -55,18 +53,15 @@ internal fun CallScreenContent(
                 2 -> {
                     val callContentState = rememberCallContentState(
                         streams = streams,
-                        callInfo = callInfo,
+                        callState = callState,
+                        groupCall = groupCall,
                         configuration = LocalConfiguration.current,
                         maxWidth = maxWidth
                     )
 
-                    LaunchedEffect(callInfo) {
-                        snapshotFlow { callInfo.callState }
-                            .onEach {
-                                if (it is CallState.Reconnecting || it is CallState.Connecting || it is CallState.Disconnected) callContentState.showCallInfo()
-                                else callContentState.hideCallInfo()
-                            }
-                            .launchIn(this)
+                    LaunchedEffect(callState) {
+                        if (callState is CallState.Reconnecting || callState is CallState.Connecting || callState is CallState.Disconnected) callContentState.showCallInfo()
+                        else callContentState.hideCallInfo()
                     }
 
                     CallContent(

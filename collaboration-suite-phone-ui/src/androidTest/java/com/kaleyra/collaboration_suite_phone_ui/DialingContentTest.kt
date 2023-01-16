@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.DialingContent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.DialingComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
@@ -29,7 +29,7 @@ class DialingContentTest: PreCallComponentTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            DialingContent(
+            DialingComponent(
                 stream = stream.value,
                 callInfo = callInfo.value,
                 onBackPressed = { backPressed = true },

@@ -14,18 +14,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.DefaultStreamAvatarSize
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 
 @Composable
 internal fun PreCallComponent(
-    stream: StreamUi? = null,
-    callInfo: CallInfoUi,
-    groupCall: Boolean = false,
-    onBackPressed: () -> Unit = { },
+    title: String,
+    subtitle: String?,
+    watermarkInfo: WatermarkInfo?,
+    groupCall: Boolean,
+    onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
+    stream: StreamUi? = null,
     content: @Composable BoxScope.() -> Unit
 ) {
     CompositionLocalProvider(LocalContentColor provides Color.White) {
@@ -49,7 +51,10 @@ internal fun PreCallComponent(
 
             CallInfoWidget(
                 onBackPressed = onBackPressed,
-                callInfo = callInfo,
+                title = title,
+                subtitle = subtitle,
+                watermarkInfo = watermarkInfo,
+                recording = false,
                 modifier = Modifier.statusBarsPadding()
             )
         }

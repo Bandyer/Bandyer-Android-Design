@@ -258,7 +258,7 @@ internal fun CallScreen(
                 with(callScreenState.callUiState) {
                     CallScreenContent(
                         streams = featuredStream,
-                        callInfo = callInfo,
+                        callState = callState,
                         groupCall = groupCall,
                         onBackPressed = onBackPressed,
                         onAnswerClick = onAnswerClick,

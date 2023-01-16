@@ -9,19 +9,22 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlinx.coroutines.flow.filter
@@ -34,13 +37,15 @@ private val StatusBarPaddingModifier = Modifier.statusBarsPadding()
 @Composable
 internal fun rememberCallContentState(
     streams: ImmutableList<StreamUi>,
-    callInfo: CallInfoUi,
+    callState: CallState,
+    groupCall: Boolean,
     configuration: Configuration,
     maxWidth: Dp
-) = remember(streams, callInfo, configuration, maxWidth) {
+) = remember(streams, callState, groupCall, configuration, maxWidth) {
     CallContentState(
         streams = streams,
-        callInfo = callInfo,
+        callState = callState,
+        groupCall = groupCall,
         configuration = configuration,
         maxWidth = maxWidth
     )
@@ -48,7 +53,8 @@ internal fun rememberCallContentState(
 
 internal class CallContentState(
     val streams: ImmutableList<StreamUi>,
-    val callInfo: CallInfoUi,
+    val callState: CallState,
+    val groupCall: Boolean,
     private val configuration: Configuration,
     private val maxWidth: Dp,
     // Parameters added for testing purpose
@@ -169,6 +175,7 @@ internal fun CallContent(
         }
     }
 
+    // TODO set the watermark and recording
     AnimatedVisibility(
         visible = state.showCallInfo,
         enter = fadeIn(),
@@ -176,13 +183,34 @@ internal fun CallContent(
     ) {
         CallInfoWidget(
             onBackPressed = if (state.fullscreenStream != null) state::exitFullscreenMode else onBackPressed,
-            callInfo = state.callInfo,
+            title = titleFor(state.callState),
+            subtitle = subtitleFor(callState = state.callState, groupCall = state.groupCall),
+            watermarkInfo = null,
+            recording = false,
             modifier = StatusBarPaddingModifier
                 .onGloballyPositioned { callInfoWidgetHeight = it.size.height }
         )
     }
 
 }
+
+@Composable
+private fun titleFor(callState: CallState) =
+    when(callState) {
+        CallState.Connecting, CallState.Reconnecting -> stringResource(id = R.string.kaleyra_call_status_connecting)
+        is CallState.Disconnected -> stringResource(id = R.string.kaleyra_call_status_ended)
+        else -> ""
+    }
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+private fun subtitleFor(callState: CallState, groupCall: Boolean) =
+    when(callState) {
+        CallState.Disconnected.Ended.AnsweredOnAnotherDevice -> stringResource(id = R.string.kaleyra_call_status_answered_on_other_device)
+        CallState.Disconnected.Ended.Declined -> pluralStringResource(id = R.plurals.kaleyra_call_status_declined, count = if (groupCall) 2 else 1)
+        CallState.Disconnected.Ended.Timeout -> pluralStringResource(id = R.plurals.kaleyra_call_status_no_answer, count =  if (groupCall) 2 else 1)
+        else -> null
+    }
 
 private fun Modifier.streamClickable(onClick: () -> Unit): Modifier =
     composed {
@@ -202,7 +230,8 @@ fun CallContentPreview() {
         CallContent(
             state = rememberCallContentState(
                 streams = ImmutableList(listOf(streamUiMock, streamUiMock)),
-                callInfo = callInfoMock,
+                callState = CallState.Connected,
+                groupCall = true,
                 configuration = LocalConfiguration.current,
                 maxWidth = 400.dp
             ),

@@ -9,7 +9,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidgetTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.callInfoMock
