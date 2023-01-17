@@ -42,6 +42,11 @@ internal fun Flow<CallParticipants>.reduceToStreamsUi(): Flow<List<StreamUi>> {
         if (participantsList.isEmpty()) flowOf(listOf())
         else participantsList
             .map { participant ->
+                // TODO add the call participant state check?
+//                combine(participant.streams, participant.state) { streams, state ->
+//                    if (state == CallParticipant.State.InCall) streams
+//                    else listOf()
+//                }
                 participant.streams
                     .mapToStreamsUi(participant.displayName, participant.displayImage)
                     .map {
@@ -88,9 +93,9 @@ internal fun Flow<List<Stream>>.mapToStreamsUi(
             .merge()
             .transform { stream ->
                 map[stream.id] = stream
-                val result = map.values.toList()
-                if (result.size == streams.size) {
-                    emit(result)
+                val values = map.values.toList()
+                if (values.size == streams.size) {
+                    emit(values)
                 }
             }
     }
