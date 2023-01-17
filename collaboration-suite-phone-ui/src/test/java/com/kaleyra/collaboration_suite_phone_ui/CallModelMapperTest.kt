@@ -105,6 +105,79 @@ class CallModelMapperTest {
     }
 
     @Test
+    fun emptyOtherParticipants_toOtherDisplayNames_emptyList() = runTest {
+        every { callParticipantsMock.others } returns listOf()
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.toOtherDisplayNames()
+        val actual = result.first()
+        val expected = listOf<String>()
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun filledOtherParticipants_toOtherDisplayNames_displayNamesList() = runTest {
+        every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.toOtherDisplayNames()
+        val actual = result.first()
+        val expected = listOf("displayName1", "displayName2")
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun addOtherParticipant_toOtherDisplayNames() = runTest {
+        every { callParticipantsMock.others } returns listOf(participantMock1)
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.toOtherDisplayNames()
+        val actual = result.first()
+        val expected = listOf("displayName1")
+        assertEquals(expected, actual)
+
+        val newCallParticipantsMock = mockk<CallParticipants> {
+            every { others } returns listOf(participantMock1, participantMock2)
+        }
+        participants.value = newCallParticipantsMock
+        val newActual = result.first()
+        val newExpected = listOf("displayName1", "displayName2")
+        assertEquals(newExpected, newActual)
+    }
+
+    @Test
+    fun removeOtherParticipant_toOtherDisplayNames() = runTest {
+        every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.toOtherDisplayNames()
+        val actual = result.first()
+        val expected = listOf("displayName1", "displayName2")
+        assertEquals(expected, actual)
+
+        val newCallParticipantsMock = mockk<CallParticipants> {
+            every { others } returns listOf(participantMock1)
+        }
+        participants.value = newCallParticipantsMock
+        val newActual = result.first()
+        val newExpected = listOf("displayName1")
+        assertEquals(newExpected, newActual)
+    }
+
+    @Test
+    fun displayNameUpdate_toOtherDisplayNames() = runTest {
+        val displayNameFlow = MutableStateFlow("displayName2")
+        every { participantMock2.displayName } returns displayNameFlow
+        every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.toOtherDisplayNames()
+        val actual = result.first()
+        val expected = listOf("displayName1", "displayName2")
+        assertEquals(expected, actual)
+
+        displayNameFlow.value = "displayNameModified"
+        val newActual = result.first()
+        val newExpected = listOf("displayName1", "displayNameModified")
+        assertEquals(newExpected, newActual)
+    }
+
+    @Test
     fun mapToRecordingUi_null() = runTest {
         every { recordingMock.type } returns Call.Recording.Type.Never
         val result = MutableStateFlow(recordingMock).mapToRecordingUi()

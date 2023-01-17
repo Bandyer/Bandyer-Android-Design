@@ -32,6 +32,30 @@ internal fun Flow<Call>.toCallStateUi(): Flow<CallState> {
         }
     }
 }
+
+internal fun Flow<CallParticipants>.toOtherDisplayNames(): Flow<List<String>> {
+    return flatMapLatest { participants ->
+        val others = participants.others
+        val map = mutableMapOf<String, String?>()
+
+        if (others.isEmpty()) flowOf(listOf())
+        else others
+            .map { participant ->
+                participant.displayName.map { displayName ->
+                    Pair(participant.userId, displayName)
+                }
+            }
+            .merge()
+            .transform { (userId, displayName) ->
+                map[userId] = displayName
+                val values = map.values.toList().filterNotNull()
+                if (values.size == others.size) {
+                    emit(values)
+                }
+            }
+    }
+}
+
 internal fun Flow<Call.Recording>.mapToRecordingUi(): Flow<Recording?> =
     map {
         when (it.type) {
@@ -43,6 +67,7 @@ internal fun Flow<Call.Recording>.mapToRecordingUi(): Flow<Recording?> =
 
 internal fun Flow<Call>.isRecording(): Flow<Boolean> =
     flatMapLatest { it.extras.recording.state }.map { it == Call.Recording.State.Started }
+
 internal fun Flow<CallParticipants>.isGroupCall(): Flow<Boolean> = map { it.others.size > 1 }
 
 internal fun Flow<CallParticipants>.reduceToStreamsUi(): Flow<List<StreamUi>> {
