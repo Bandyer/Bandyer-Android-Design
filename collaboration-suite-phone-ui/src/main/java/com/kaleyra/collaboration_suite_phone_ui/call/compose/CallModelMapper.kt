@@ -32,6 +32,17 @@ internal fun Flow<Call>.toCallStateUi(): Flow<CallState> {
         }
     }
 }
+internal fun Flow<Call.Recording>.mapToRecordingUi(): Flow<Recording?> =
+    map {
+        when (it.type) {
+            is Call.Recording.Type.OnConnect -> Recording.OnConnect
+            is Call.Recording.Type.OnDemand -> Recording.OnDemand
+            else -> null
+        }
+    }
+
+internal fun Flow<Call>.isRecording(): Flow<Boolean> =
+    flatMapLatest { it.extras.recording.state }.map { it == Call.Recording.State.Started }
 internal fun Flow<CallParticipants>.isGroupCall(): Flow<Boolean> = map { it.others.size > 1 }
 
 internal fun Flow<CallParticipants>.reduceToStreamsUi(): Flow<List<StreamUi>> {

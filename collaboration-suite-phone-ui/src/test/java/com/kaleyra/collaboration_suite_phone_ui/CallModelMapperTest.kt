@@ -69,6 +69,8 @@ class CallModelMapperTest {
         every { list } returns listOf(participantMock1, participantMock2)
     }
 
+    val recordingMock = mockk<Call.Recording>()
+
     val displayNameFlow = MutableStateFlow("displayName")
 
     val displayImageFlow = MutableStateFlow(uriMock)
@@ -100,6 +102,41 @@ class CallModelMapperTest {
         every { callParticipantsMock.me } returns participantMeMock
         every { callParticipantsMock.creator() } returns participantMeMock
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
+    }
+
+    @Test
+    fun mapToRecordingUi_null() = runTest {
+        every { recordingMock.type } returns Call.Recording.Type.Never
+        val result = MutableStateFlow(recordingMock).mapToRecordingUi()
+        assertEquals(null, result.first())
+    }
+
+    @Test
+    fun mapToRecordingUi_onConnect() = runTest {
+        every { recordingMock.type } returns Call.Recording.Type.OnConnect
+        val result = MutableStateFlow(recordingMock).mapToRecordingUi()
+        assertEquals(Recording.OnConnect, result.first())
+    }
+
+    @Test
+    fun mapToRecordingUi_onDemand() = runTest {
+        every { recordingMock.type } returns Call.Recording.Type.OnDemand
+        val result = MutableStateFlow(recordingMock).mapToRecordingUi()
+        assertEquals(Recording.OnDemand, result.first())
+    }
+
+    @Test
+    fun isRecording_true() = runTest {
+        every { callMock.extras.recording.state } returns MutableStateFlow(Call.Recording.State.Started)
+        val result = MutableStateFlow(callMock).isRecording()
+        assertEquals(true, result.first())
+    }
+
+    @Test
+    fun isRecording_false() = runTest {
+        every { callMock.extras.recording.state } returns MutableStateFlow(Call.Recording.State.Stopped)
+        val result = MutableStateFlow(callMock).isRecording()
+        assertEquals(false, result.first())
     }
 
     @Test
