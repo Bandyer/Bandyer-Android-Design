@@ -9,6 +9,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -42,6 +43,13 @@ class CallModelMapperTest {
     }
 
     val uriMock = mockk<Uri>()
+
+    val participantMeMock = mockk<CallParticipant.Me> {
+        every { userId } returns "userId1"
+        every { streams } returns MutableStateFlow(listOf())
+        every { displayName } returns MutableStateFlow("displayNameme")
+        every { displayImage } returns MutableStateFlow(uriMock)
+    }
 
     val participantMock1 = mockk<CallParticipant> {
         every { userId } returns "userId1"
@@ -85,6 +93,139 @@ class CallModelMapperTest {
         username = "displayName",
         avatar = ImmutableUri(uriMock)
     )
+
+    @Before
+    fun setUp() {
+        // only needed for toCallStateUi function
+        every { callParticipantsMock.me } returns participantMeMock
+        every { callParticipantsMock.creator() } returns participantMeMock
+        every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
+    }
+
+    @Test
+    fun connected_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connected)
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Connected, result.first())
+    }
+
+    @Test
+    fun reconnecting_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Reconnecting)
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Reconnecting, result.first())
+    }
+
+    @Test
+    fun connecting_meCreator_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connecting)
+        every { callParticipantsMock.creator() } returns participantMeMock
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Dialing, result.first())
+    }
+
+    @Test
+    fun connecting() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Connecting)
+        every { callParticipantsMock.creator() } returns participantMock1
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Connecting, result.first())
+    }
+
+    @Test
+    fun answeredOnAnotherDevice_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.AnsweredOnAnotherDevice)
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Disconnected.Ended.AnsweredOnAnotherDevice, result.first())
+    }
+
+    @Test
+    fun declined_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.Declined)
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Disconnected.Ended.Declined, result.first())
+    }
+
+    @Test
+    fun lineBusy_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.LineBusy)
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Disconnected.Ended.LineBusy, result.first())
+    }
+
+    @Test
+    fun timeout_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.Timeout)
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Disconnected.Ended.Timeout, result.first())
+    }
+
+    @Test
+    fun serverError_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.Error.Server())
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Disconnected.Ended.Error.Server, result.first())
+    }
+
+    @Test
+    fun unknownError_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.Error.Unknown())
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Disconnected.Ended.Error.Unknown, result.first())
+    }
+
+    @Test
+    fun hangUp_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.HungUp())
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Disconnected.Ended.HangUp, result.first())
+    }
+
+    @Test
+    fun kicked_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.Kicked("userId"))
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Disconnected.Ended.Kicked("userId"), result.first())
+    }
+
+    @Test
+    fun error_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.Error)
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Disconnected.Ended.Error, result.first())
+    }
+
+    @Test
+    fun disconnected_creatorNotMe_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
+        every { callParticipantsMock.creator() } returns participantMock1
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Ringing, result.first())
+    }
+
+    @Test
+    fun disconnected_toCallStateUi() = runTest {
+        every { callMock.state } returns MutableStateFlow(Call.State.Disconnected)
+        every { callParticipantsMock.creator() } returns participantMeMock
+        val result = MutableStateFlow(callMock).toCallStateUi()
+        assertEquals(CallState.Disconnected, result.first())
+    }
+
+    @Test
+    fun singleOtherParticipants_isGroupCall_false() = runTest {
+        every { callParticipantsMock.others } returns listOf(participantMock1)
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.isGroupCall()
+        assertEquals(false, result.first())
+    }
+
+    @Test
+    fun multipleOtherParticipants_isGroupCall_true() = runTest {
+        every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
+        val participants = MutableStateFlow(callParticipantsMock)
+        val result = participants.isGroupCall()
+        assertEquals(true, result.first())
+    }
 
     @Test
     fun emptyParticipantsList_reduceToStreamsUi() = runTest {
