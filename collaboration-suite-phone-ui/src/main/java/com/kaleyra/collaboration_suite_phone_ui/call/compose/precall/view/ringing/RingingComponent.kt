@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.view
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.ringing
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -25,8 +25,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.model.RingingUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.viewmodel.RingingViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.PreCallComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
@@ -35,9 +36,9 @@ const val TapToAnswerTimerMillis = 7000L
 
 @Composable
 internal fun RingingComponent(
-    viewModel: RingingViewModel = viewModel(),
+    modifier: Modifier = Modifier,
+    viewModel: PreCallViewModel = viewModel(),
     onBackPressed: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     RingingComponent(
@@ -52,7 +53,7 @@ internal fun RingingComponent(
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 internal fun RingingComponent(
-    uiState: RingingUiState,
+    uiState: PreCallUiState,
     modifier: Modifier = Modifier,
     tapToAnswerTimerMillis: Long = TapToAnswerTimerMillis,
     onBackPressed: () -> Unit,
@@ -60,12 +61,10 @@ internal fun RingingComponent(
     onDeclineClick: () -> Unit,
 ) {
     val isDarkTheme = isSystemInDarkTheme()
+
     PreCallComponent(
-        stream = uiState.stream,
-        title = uiState.participants.joinToString(separator = ", "),
+        uiState = uiState,
         subtitle = pluralStringResource(id = R.plurals.kaleyra_call_status_ringing, count = uiState.participants.size),
-        watermarkInfo = uiState.watermarkInfo,
-        groupCall = uiState.isGroupCall,
         onBackPressed = onBackPressed,
         modifier = modifier.testTag(RingingContentTag)
     ) {
@@ -135,17 +134,21 @@ private fun RingingActionButton(
 }
 
 @Composable
-private fun HelperText(text: String) = Text(text = text, fontSize = 12.sp, fontStyle = FontStyle.Italic)
+private fun HelperText(text: String) =
+    Text(text = text, fontSize = 12.sp, fontStyle = FontStyle.Italic)
 
 @Preview
 @Composable
 internal fun RingingComponentPreview() {
     KaleyraTheme {
         RingingComponent(
-            RingingUiState(stream = streamUiMock),
-            onAnswerClick = {},
-            onDeclineClick = {},
-            onBackPressed = {}
+            PreCallUiState(
+                stream = streamUiMock,
+                participants = listOf("user1")
+            ),
+            onAnswerClick = { },
+            onDeclineClick = { },
+            onBackPressed = { }
         )
     }
 }

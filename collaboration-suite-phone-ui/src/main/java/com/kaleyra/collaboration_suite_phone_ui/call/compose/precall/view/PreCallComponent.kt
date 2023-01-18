@@ -1,4 +1,4 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view
 
 import android.net.Uri
 import androidx.compose.foundation.layout.Box
@@ -14,34 +14,35 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.Avatar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.CallInfoWidget
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.DefaultStreamAvatarSize
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.Stream
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkInfo
 
 @Composable
 internal fun PreCallComponent(
-    title: String,
-    subtitle: String?,
-    watermarkInfo: WatermarkInfo?,
-    groupCall: Boolean,
+    uiState: PreCallUiState,
+    subtitle: String,
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier,
-    stream: StreamUi? = null,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable (BoxScope.() -> Unit)? = null
 ) {
     CompositionLocalProvider(LocalContentColor provides Color.White) {
         Box(modifier = modifier.fillMaxSize()) {
-            content()
+            content?.invoke(this)
 
-            if (stream?.video?.view != null && stream.video.isEnabled) {
-                Stream(streamView = stream.video.view, avatar = stream.avatar)
+            val video = uiState.stream?.video
+
+            if (video?.view != null && video.isEnabled) {
+                Stream(streamView = video.view, avatar = uiState.stream.avatar)
             } else {
                 Avatar(
                     uri = ImmutableUri(Uri.EMPTY),
                     contentDescription = stringResource(id = R.string.kaleyra_avatar),
-                    placeholder = if (groupCall) R.drawable.ic_kaleyra_avatars_bold else R.drawable.ic_kaleyra_avatar_bold,
-                    error = if (groupCall) R.drawable.ic_kaleyra_avatars_bold else R.drawable.ic_kaleyra_avatar_bold,
+                    placeholder = if (uiState.isGroupCall) R.drawable.ic_kaleyra_avatars_bold else R.drawable.ic_kaleyra_avatar_bold,
+                    error = if (uiState.isGroupCall) R.drawable.ic_kaleyra_avatars_bold else R.drawable.ic_kaleyra_avatar_bold,
                     contentColor = LocalContentColor.current,
                     backgroundColor = colorResource(id = R.color.kaleyra_color_background_dark),
                     size = DefaultStreamAvatarSize,
@@ -49,11 +50,12 @@ internal fun PreCallComponent(
                 )
             }
 
+            // TODO how to show connecting when user answered on dialing?
             CallInfoWidget(
                 onBackPressed = onBackPressed,
-                title = title,
+                title = uiState.participants.joinToString(separator = ", "),
                 subtitle = subtitle,
-                watermarkInfo = watermarkInfo,
+                watermarkInfo = uiState.watermarkInfo,
                 recording = false,
                 modifier = Modifier.statusBarsPadding()
             )

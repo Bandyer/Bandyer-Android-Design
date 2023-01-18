@@ -9,10 +9,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.view.RingingComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.dialing.DialingComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.ringing.RingingComponent
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -44,11 +43,7 @@ internal fun CallScreenContent(
             when(target) {
                 0 -> RingingComponent(onBackPressed = onBackPressed)
                 1 -> {
-                    DialingComponent(
-                        stream = streams.getOrNull(0),
-                        groupCall = groupCall,
-                        onBackPressed = onBackPressed
-                    )
+                    DialingComponent(onBackPressed = onBackPressed)
                 }
                 2 -> {
                     val callContentState = rememberCallContentState(

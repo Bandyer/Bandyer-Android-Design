@@ -18,7 +18,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Recording
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.ringing.viewmodel.RingingViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.viewmodel.PreCallViewModel
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,17 +30,17 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class RingingViewModelTest {
+class PreCallViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @get:Rule
     var mainDispatcherRule = MainDispatcherRule()
 
-    private lateinit var viewModel: RingingViewModel
+    private lateinit var viewModel: PreCallViewModel
 
     @Before
     fun setUp() {
-        viewModel = spyk(RingingViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, usersDescriptionMock) })
+        viewModel = spyk(PreCallViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, usersDescriptionMock) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
         every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
