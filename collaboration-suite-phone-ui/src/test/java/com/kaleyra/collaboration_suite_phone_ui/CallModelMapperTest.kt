@@ -2,12 +2,26 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.*
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.callMock
+import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.callParticipantsMock
+import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.participantMeMock
+import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.participantMock1
+import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.participantMock2
+import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.recordingMock
+import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.streamMock1
+import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.streamMock2
+import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.streamMock3
+import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.uriMock
+import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.videoMock
+import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.viewMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.unmockkAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
@@ -19,77 +33,25 @@ class CallModelMapperTest {
     @get:Rule
     var mainDispatcherRule = MainDispatcherRule()
 
-    val viewMock = mockk<VideoStreamView>()
+    private val displayNameFlow = MutableStateFlow("displayName")
 
-    val videoMock = mockk<Input.Video.Camera>(relaxed = true) {
-        every { id } returns "videoId"
-        every { this@mockk.view } returns MutableStateFlow(viewMock)
-        every { enabled } returns MutableStateFlow(true)
-    }
+    private val displayImageFlow = MutableStateFlow(uriMock)
 
-    val streamMock1 = mockk<Stream> {
-        every { id } returns "streamId1"
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-    }
-
-    val streamMock2 = mockk<Stream> {
-        every { id } returns "streamId2"
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-    }
-
-    val streamMock3 = mockk<Stream> {
-        every { id } returns "streamId3"
-        every { this@mockk.video } returns MutableStateFlow(videoMock)
-    }
-
-    val uriMock = mockk<Uri>()
-
-    val participantMeMock = mockk<CallParticipant.Me> {
-        every { userId } returns "userId1"
-        every { streams } returns MutableStateFlow(listOf())
-        every { displayName } returns MutableStateFlow("displayNameme")
-        every { displayImage } returns MutableStateFlow(uriMock)
-    }
-
-    val participantMock1 = mockk<CallParticipant> {
-        every { userId } returns "userId1"
-        every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
-        every { displayName } returns MutableStateFlow("displayName1")
-        every { displayImage } returns MutableStateFlow(uriMock)
-    }
-
-    val participantMock2 = mockk<CallParticipant> {
-        every { userId } returns "userId2"
-        every { streams } returns MutableStateFlow(listOf(streamMock3))
-        every { displayName } returns MutableStateFlow("displayName2")
-        every { displayImage } returns MutableStateFlow(uriMock)
-    }
-
-    val callParticipantsMock = mockk<CallParticipants> {
-        every { list } returns listOf(participantMock1, participantMock2)
-    }
-
-    val recordingMock = mockk<Call.Recording>()
-
-    val displayNameFlow = MutableStateFlow("displayName")
-
-    val displayImageFlow = MutableStateFlow(uriMock)
-
-    val streamUi1 = StreamUi(
+    private val streamUi1 = StreamUi(
         id = "streamId1",
         video = VideoUi(id = "videoId", view = viewMock, isEnabled = true),
         username = "displayName",
         avatar = ImmutableUri(uriMock)
     )
 
-    val streamUi2 = StreamUi(
+    private val streamUi2 = StreamUi(
         id = "streamId2",
         video = VideoUi(id = "videoId", view = viewMock, isEnabled = true),
         username = "displayName",
         avatar = ImmutableUri(uriMock)
     )
 
-    val streamUi3 = StreamUi(
+    private val streamUi3 = StreamUi(
         id = "streamId3",
         video = VideoUi(id = "videoId", view = viewMock, isEnabled = true),
         username = "displayName",
@@ -101,7 +63,19 @@ class CallModelMapperTest {
         // only needed for toCallStateUi function
         every { callParticipantsMock.me } returns participantMeMock
         every { callParticipantsMock.creator() } returns participantMeMock
+        every { callParticipantsMock.list } returns listOf(participantMock1, participantMock2)
+        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+        every { participantMock2.streams } returns MutableStateFlow(listOf(streamMock3))
+        every { participantMock1.displayName } returns MutableStateFlow("displayName1")
+        every { participantMock2.displayName } returns MutableStateFlow("displayName2")
+        every { participantMock1.displayImage } returns MutableStateFlow(uriMock)
+        every { participantMock2.displayImage } returns MutableStateFlow(uriMock)
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
+    }
+
+    @After
+    fun tearDown() {
+        unmockkAll()
     }
 
     @Test

@@ -2,6 +2,15 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import com.kaleyra.collaboration_suite.chatbox.Message
 import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatBoxMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatParticipantsMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.messagesUIMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherReadMessageMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherUnreadMessageMock1
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.otherUnreadMessageMock2
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.usersDescriptionMock
+import com.kaleyra.collaboration_suite_phone_ui.Mocks.phoneBoxMock
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ConversationItem
 import com.kaleyra.collaboration_suite_phone_ui.chat.viewmodel.PhoneChatViewModel
 import io.mockk.*
