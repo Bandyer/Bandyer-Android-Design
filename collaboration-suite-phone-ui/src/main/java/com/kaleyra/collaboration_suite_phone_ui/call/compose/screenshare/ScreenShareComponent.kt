@@ -27,7 +27,10 @@ internal fun ScreenShareComponent(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     ScreenShareComponent(
         uiState = uiState,
-        onItemClick = onItemClick,
+        onItemClick = { screenShareTarget ->
+            viewModel.shareScreen(screenShareTarget)
+            onItemClick(screenShareTarget)
+        },
         onCloseClick = onCloseClick,
         modifier = modifier
     )
