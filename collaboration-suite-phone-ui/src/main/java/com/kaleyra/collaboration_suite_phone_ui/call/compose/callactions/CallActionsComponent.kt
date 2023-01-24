@@ -19,13 +19,23 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 @Composable
 internal fun CallActionsComponent(
     viewModel: CallActionsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    onItemClick: (action: CallAction, toggled: Boolean) -> Unit,
+    onItemClick: (action: CallAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     CallActionsComponent(
         uiState = uiState,
-        onItemClick = onItemClick,
+        onItemClick = { action, toggled ->
+            // TODO revise this
+            when (action) {
+                is CallAction.Microphone -> viewModel.enableMicrophone(!toggled)
+                is CallAction.Camera -> viewModel.enableCamera(!toggled)
+                is CallAction.SwitchCamera -> viewModel.switchCamera()
+                is CallAction.HangUp -> viewModel.hangUp()
+                is CallAction.ScreenShare -> if (!viewModel.stopScreenShare()) onItemClick(action)
+                else -> onItemClick(action)
+            }
+        },
         modifier = modifier
     )
 }
