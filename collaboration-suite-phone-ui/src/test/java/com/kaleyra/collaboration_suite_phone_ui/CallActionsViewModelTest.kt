@@ -187,4 +187,24 @@ class CallActionsViewModelTest {
         viewModel.switchCamera()
         verify { videoMock.setLens(rearLens) }
     }
+
+    @Test
+    fun testStopDeviceScreenShare() {
+        testStopScreenShare(mockk<Input.Video.Screen>())
+    }
+
+    @Test
+    fun testStopAppScreenShare() {
+        testStopScreenShare(mockk<Input.Video.Application>())
+    }
+
+    private fun testStopScreenShare(videoScreenMock: Input.Video) = runTest {
+        every { videoScreenMock.enabled } returns MutableStateFlow(true)
+        every { videoScreenMock.tryDisable() } returns true
+        every { inputsMock.availableInputs } returns MutableStateFlow(setOf(videoScreenMock))
+        advanceUntilIdle()
+        val isStopped = viewModel.stopScreenShare()
+        verify { videoScreenMock.tryDisable() }
+        assertEquals(true , isStopped)
+    }
 }

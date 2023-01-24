@@ -12,7 +12,8 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.Base
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 
-internal class CallActionsViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallActionsUiState>(configure) {
+internal class CallActionsViewModel(configure: suspend () -> Configuration) :
+    BaseViewModel<CallActionsUiState>(configure) {
     override fun initialState() = CallActionsUiState()
 
     private val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
@@ -64,5 +65,11 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
 
     fun hangUp() {
         call.getValue()?.end()
+    }
+
+    fun stopScreenShare(): Boolean {
+        val screenShareInputs = availableInputs?.filter { it is Input.Video.Screen || it is Input.Video.Application }
+        val enabledInput = screenShareInputs?.firstOrNull { it.enabled.value }
+        return enabledInput?.tryDisable() ?: false
     }
 }
