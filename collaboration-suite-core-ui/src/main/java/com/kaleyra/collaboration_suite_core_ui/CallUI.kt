@@ -5,6 +5,7 @@ import androidx.annotation.Keep
 import com.kaleyra.collaboration_suite.phonebox.Call
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.parcelize.Parcelize
+import java.io.File
 
 /**
  * The Call UI
@@ -41,12 +42,18 @@ class CallUI(
                     ToggleMicrophone,
                     ToggleCamera,
                     SwitchCamera,
+                    HangUp,
+                    FileShare,
+                    ScreenShare,
+                    Audio,
                     ChangeZoom,
                     ChangeVolume,
                     ToggleFlashlight,
                     OpenChat.ViewOnly,
+                    OpenChat.Full,
                     ShowParticipants,
-                    OpenWhiteboard.ViewOnly
+                    OpenWhiteboard.ViewOnly,
+                    OpenWhiteboard.Full
                 )
             }
         }
@@ -75,6 +82,18 @@ class CallUI(
         @Parcelize
         object SwitchCamera : Action()
 
+        @Parcelize
+        object HangUp : Action()
+
+        @Parcelize
+        object FileShare : Action()
+
+        @Parcelize
+        object ScreenShare : Action()
+
+        @Parcelize
+        object Audio : Action()
+
         /**
          * Change zoom action
          */
@@ -102,6 +121,9 @@ class CallUI(
              */
             @Parcelize
             object ViewOnly : OpenChat()
+
+            @Parcelize
+            object Full : OpenChat()
         }
 
         /**
@@ -113,6 +135,9 @@ class CallUI(
              */
             @Parcelize
             object ViewOnly : OpenWhiteboard()
+
+            @Parcelize
+            object Full : OpenChat()
         }
     }
 }

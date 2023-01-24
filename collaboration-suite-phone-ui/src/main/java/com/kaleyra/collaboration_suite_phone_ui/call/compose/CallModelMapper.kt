@@ -23,7 +23,7 @@ internal fun Flow<Call>.toCallStateUi(): Flow<CallState> {
             state is Call.State.Disconnected.Ended.Timeout -> CallState.Disconnected.Ended.Timeout
             state is Call.State.Disconnected.Ended.Error.Server -> CallState.Disconnected.Ended.Error.Server
             state is Call.State.Disconnected.Ended.Error.Unknown -> CallState.Disconnected.Ended.Error.Unknown
-            state is Call.State.Disconnected.Ended.HungUp -> CallState.Disconnected.Ended.HangUp
+            state is Call.State.Disconnected.Ended.HungUp -> CallState.Disconnected.Ended.HungUp
             state is Call.State.Disconnected.Ended.Kicked -> CallState.Disconnected.Ended.Kicked(state.userId)
             state == Call.State.Disconnected.Ended.Error -> CallState.Disconnected.Ended.Error
             state == Call.State.Disconnected.Ended -> CallState.Disconnected.Ended

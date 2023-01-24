@@ -20,7 +20,7 @@ sealed class CallState {
 
             companion object : Ended()
 
-            object HangUp: Ended()
+            object HungUp: Ended()
 
             object Declined : Ended()
 

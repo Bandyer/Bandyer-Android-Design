@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.*
+import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.callMock
 import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.callParticipantsMock
 import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.participantMeMock
@@ -15,6 +16,8 @@ import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.uriMock
 import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.videoMock
 import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.viewMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.toCallActions
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -27,6 +30,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class CallModelMapperTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -64,7 +68,12 @@ class CallModelMapperTest {
         every { callParticipantsMock.me } returns participantMeMock
         every { callParticipantsMock.creator() } returns participantMeMock
         every { callParticipantsMock.list } returns listOf(participantMock1, participantMock2)
-        every { participantMock1.streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+        every { participantMock1.streams } returns MutableStateFlow(
+            listOf(
+                streamMock1,
+                streamMock2
+            )
+        )
         every { participantMock2.streams } returns MutableStateFlow(listOf(streamMock3))
         every { participantMock1.displayName } returns MutableStateFlow("displayName1")
         every { participantMock2.displayName } returns MutableStateFlow("displayName2")
@@ -259,10 +268,10 @@ class CallModelMapperTest {
     }
 
     @Test
-    fun hangUp_toCallStateUi() = runTest {
+    fun hungUp_toCallStateUi() = runTest {
         every { callMock.state } returns MutableStateFlow(Call.State.Disconnected.Ended.HungUp())
         val result = MutableStateFlow(callMock).toCallStateUi()
-        assertEquals(CallState.Disconnected.Ended.HangUp, result.first())
+        assertEquals(CallState.Disconnected.Ended.HungUp, result.first())
     }
 
     @Test

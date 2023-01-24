@@ -1,23 +1,21 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel
 
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
-import com.kaleyra.collaboration_suite.phonebox.CallParticipants
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.CallActionsMappers.isAudioEnabled
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.CallActionsMappers.isCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.isCameraEnabled
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.isMicEnabled
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.toCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 
-internal class CallActionsViewModel(configure: suspend () -> Configuration) :
-    BaseViewModel<CallActionsUiState>(configure) {
+internal class CallActionsViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallActionsUiState>(configure) {
     override fun initialState() = CallActionsUiState()
 
-    val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
+    private val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
 
     private val availableInputs: Set<Input>?
         get() = call.getValue()?.inputs?.availableInputs?.value
@@ -25,31 +23,35 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) :
     init {
         val me = call.flatMapLatest { it.participants }.map { it.me }
 
-        me
-            .isCameraEnabled()
-            .onEach { isEnabled ->
-                _uiState.update { uiState ->
-                    val actionList = uiState.actionList.value.toMutableList()
-                    val cameraIndex = actionList.indexOfFirst { it is CallAction.Camera }
-                    actionList[cameraIndex] = CallAction.Camera(isEnabled = isEnabled)
-                    uiState.copy(actionList = ImmutableList(actionList))
-                }
-            }
-            .launchIn(viewModelScope)
+        // TODO check that only the modified call action will be updated ui side
+        combine(
+            call.toCallActions(),
+            me.isCameraEnabled(),
+            me.isMicEnabled()
+        ) { callActions, isCameraEnabled, isMicEnabled ->
+            val actionList = callActions.toMutableList()
 
-        me
-            .isAudioEnabled()
-            .onEach { }
-            .launchIn(viewModelScope)
+            val cameraIndex = actionList.indexOfFirst { it is CallAction.Camera }
+            val micIndex = actionList.indexOfFirst { it is CallAction.Microphone }
+
+            if (cameraIndex != -1) {
+                actionList[cameraIndex] = CallAction.Camera(isToggled = !isCameraEnabled)
+            }
+            if (micIndex != -1) {
+                actionList[micIndex] = CallAction.Microphone(isToggled = !isMicEnabled)
+            }
+
+            _uiState.update { it.copy(actionList = ImmutableList(actionList)) }
+        }.launchIn(viewModelScope)
     }
 
     fun enableMicrophone(enable: Boolean) {
-        val input = availableInputs?.filterIsInstance<Input.Audio>()?.firstOrNull() ?: return
+        val input = availableInputs?.firstOrNull { it is Input.Audio } ?: return
         if (enable) input.tryEnable() else input.tryDisable()
     }
 
     fun enableCamera(enable: Boolean) {
-        val input = availableInputs?.filterIsInstance<Input.Video.Camera.Internal>()?.firstOrNull() ?: return
+        val input = availableInputs?.firstOrNull { it is Input.Video.Camera.Internal } ?: return
         if (enable) input.tryEnable() else input.tryDisable()
     }
 
