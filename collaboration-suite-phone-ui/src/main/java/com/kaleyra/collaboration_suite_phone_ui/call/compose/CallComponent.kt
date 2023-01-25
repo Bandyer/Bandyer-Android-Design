@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -25,7 +24,6 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.*
-import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -35,26 +33,20 @@ const val CallContentTag = "CallContentTag"
 private val StatusBarPaddingModifier = Modifier.statusBarsPadding()
 
 @Composable
-internal fun rememberCallContentState(
-    streams: ImmutableList<StreamUi>,
-    callState: CallState,
-    groupCall: Boolean,
+internal fun rememberCallComponentState(
+    callUiState: CallUiState,
     configuration: Configuration,
     maxWidth: Dp
-) = remember(streams, callState, groupCall, configuration, maxWidth) {
-    CallContentState(
-        streams = streams,
-        callState = callState,
-        groupCall = groupCall,
+) = remember(callUiState, configuration, maxWidth) {
+    CallComponentState(
+        callUiState = callUiState,
         configuration = configuration,
         maxWidth = maxWidth
     )
 }
 
-internal class CallContentState(
-    val streams: ImmutableList<StreamUi>,
-    val callState: CallState,
-    val groupCall: Boolean,
+internal class CallComponentState(
+    val callUiState: CallUiState,
     private val configuration: Configuration,
     private val maxWidth: Dp,
     // Parameters added for testing purpose
@@ -66,10 +58,14 @@ internal class CallContentState(
         get() = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
     val columns by derivedStateOf {
+        val featuredStreams = callUiState.featuredStream.value
         when {
+            // Smartphone portrait
             isDevicePortrait && maxWidth < 600.dp -> 1
-            isDevicePortrait && streams.count() > 2 -> 2
-            streams.count() > 1 -> 2
+            // Tablet portrait
+            isDevicePortrait && featuredStreams.size > 2 -> 2
+            // Landscape
+            featuredStreams.size > 1 -> 2
             else -> 1
         }
     }
@@ -81,7 +77,8 @@ internal class CallContentState(
         private set
 
     val isFullscreenStreamRemoved by derivedStateOf {
-        fullscreenStream != null && !streams.value.contains(fullscreenStream)
+        val featuredStream = callUiState.featuredStream.value
+        fullscreenStream != null && !featuredStream.contains(fullscreenStream)
     }
 
     fun enterFullscreenMode(stream: StreamUi) {
@@ -91,20 +88,12 @@ internal class CallContentState(
     fun exitFullscreenMode() {
         fullscreenStream = null
     }
-
-    fun showCallInfo() {
-        showCallInfo = true
-    }
-
-    fun hideCallInfo() {
-        showCallInfo = false
-    }
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-internal fun CallContent(
-    state: CallContentState,
+internal fun CallComponent(
+    state: CallComponentState,
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -125,21 +114,19 @@ internal fun CallContent(
         animationSpec = tween()
     )
 
-    AnimatedContent(
+    Crossfade(
         targetState = state.fullscreenStream,
-        transitionSpec = {
-            fadeIn(animationSpec = tween(220, delayMillis = 90)) with fadeOut(animationSpec = tween(90))
-        },
         modifier = modifier.testTag(CallContentTag)
     ) { target ->
         if (target == null) {
+            // TODO use ReusableContent?
             AdaptiveGrid(
                 columns = state.columns,
                 modifier = StatusBarPaddingModifier
             ) {
-                val streams = state.streams
+                val streams = state.callUiState.featuredStream.value
                 repeat(streams.count()) { index ->
-                    val stream = streams.value[index]
+                    val stream = streams[index]
                     FeaturedStream(
                         stream = stream,
                         isFullscreen = false,
@@ -175,24 +162,31 @@ internal fun CallContent(
         }
     }
 
-    // TODO set the watermark and recording
-    AnimatedVisibility(
-        visible = state.showCallInfo,
-        enter = fadeIn(),
-        exit = fadeOut()
-    ) {
-        CallInfoWidget(
-            onBackPressed = if (state.fullscreenStream != null) state::exitFullscreenMode else onBackPressed,
-            title = titleFor(state.callState),
-            subtitle = subtitleFor(callState = state.callState, groupCall = state.groupCall),
-            watermarkInfo = null,
-            recording = false,
-            modifier = StatusBarPaddingModifier
-                .onGloballyPositioned { callInfoWidgetHeight = it.size.height }
-        )
+    with(state) {
+        AnimatedVisibility(
+            visible = callUiState.shouldShowCallInfo(),
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+            CallInfoWidget(
+                onBackPressed = if (fullscreenStream != null) ::exitFullscreenMode else onBackPressed,
+                title = titleFor(callUiState.callState),
+                subtitle = subtitleFor(
+                    callState = callUiState.callState,
+                    groupCall = callUiState.isGroupCall
+                ),
+                watermarkInfo = callUiState.watermarkInfo,
+                recording = callUiState.isRecording,
+                modifier = StatusBarPaddingModifier.onGloballyPositioned {
+                    callInfoWidgetHeight = it.size.height
+                }
+            )
+        }
     }
-
 }
+
+private fun CallUiState.shouldShowCallInfo(): Boolean =
+    callState is CallState.Reconnecting || callState is CallState.Connecting || callState is CallState.Disconnected
 
 @Composable
 private fun titleFor(callState: CallState) =
@@ -227,15 +221,15 @@ private fun Modifier.streamClickable(onClick: () -> Unit): Modifier =
 @Composable
 fun CallContentPreview() {
     KaleyraTheme {
-        CallContent(
-            state = rememberCallContentState(
-                streams = ImmutableList(listOf(streamUiMock, streamUiMock)),
-                callState = CallState.Connected,
-                groupCall = true,
-                configuration = LocalConfiguration.current,
-                maxWidth = 400.dp
-            ),
-            onBackPressed = { }
-        )
+//        CallContent(
+//            state = rememberCallComponentState(
+//                streams = ImmutableList(listOf(streamUiMock, streamUiMock)),
+//                callState = CallState.Connected,
+//                groupCall = true,
+//                configuration = LocalConfiguration.current,
+//                maxWidth = 400.dp
+//            ),
+//            onBackPressed = { }
+//        )
     }
 }

@@ -155,13 +155,13 @@ internal class CallScreenState(
 
 @Composable
 internal fun CallScreen(
-    onBackPressed: () -> Unit,
-    viewModel: CallUiViewModel
+    viewModel: CallViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    onBackPressed: () -> Unit
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
     // TODO link collapsable flag to call's type
     val callScreenState = rememberCallScreenState(
-        callUiState = uiState,
+        callUiState = callUiState,
         sheetState = rememberBottomSheetState(
             initialValue = BottomSheetValue.Hidden,
             collapsable = true,
@@ -172,9 +172,7 @@ internal fun CallScreen(
     CallScreen(
         callScreenState = callScreenState,
         onThumbnailStreamClick = { /*TODO*/ },
-        onBackPressed = onBackPressed,
-        onAnswerClick = { /*TODO*/ },
-        onDeclineClick = { /*TODO*/ }
+        onBackPressed = onBackPressed
     )
 }
 
@@ -182,9 +180,7 @@ internal fun CallScreen(
 internal fun CallScreen(
     callScreenState: CallScreenState,
     onThumbnailStreamClick: (StreamUi) -> Unit,
-    onBackPressed: () -> Unit,
-    onAnswerClick: () -> Unit,
-    onDeclineClick: () -> Unit
+    onBackPressed: () -> Unit
 ) {
     val backgroundAlpha by animateFloatAsState(if (callScreenState.isSheetCollapsing) 0f else 1f)
 
@@ -218,7 +214,7 @@ internal fun CallScreen(
     }
 
     // TODO check if I can remove this
-    Box(modifier = Modifier.horizontalSystemBarsPadding()) {
+    BoxWithConstraints(modifier = Modifier.horizontalSystemBarsPadding()) {
         val navBarsBottomPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
         BottomSheetScaffold(
             modifier = Modifier.fillMaxSize(),
@@ -255,16 +251,11 @@ internal fun CallScreen(
                 )
             },
             content = {
-                with(callScreenState.callUiState) {
-                    CallScreenContent(
-                        streams = featuredStream,
-                        callState = callState,
-                        groupCall = groupCall,
-                        onBackPressed = onBackPressed,
-                        onAnswerClick = onAnswerClick,
-                        onDeclineClick = onDeclineClick
-                    )
-                }
+                CallScreenContent(
+                    callUiState = callScreenState.callUiState,
+                    maxWidth = maxWidth,
+                    onBackPressed = onBackPressed
+                )
             }
         )
 
