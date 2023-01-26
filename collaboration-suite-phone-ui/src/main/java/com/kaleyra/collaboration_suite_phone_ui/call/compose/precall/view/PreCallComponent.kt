@@ -31,8 +31,6 @@ internal fun PreCallComponent(
 ) {
     CompositionLocalProvider(LocalContentColor provides Color.White) {
         Box(modifier = modifier.fillMaxSize()) {
-            content?.invoke(this)
-
             val video = uiState.stream?.video
 
             if (video?.view != null && video.isEnabled) {
@@ -59,6 +57,8 @@ internal fun PreCallComponent(
                 recording = false,
                 modifier = Modifier.statusBarsPadding()
             )
+
+            content?.invoke(this)
         }
     }
 }
