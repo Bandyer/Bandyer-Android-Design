@@ -58,7 +58,7 @@ internal class CallComponentState(
         get() = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
     val columns by derivedStateOf {
-        val featuredStreams = callUiState.featuredStream.value
+        val featuredStreams = callUiState.featuredStreams.value
         when {
             // Smartphone portrait
             isDevicePortrait && maxWidth < 600.dp -> 1
@@ -77,7 +77,7 @@ internal class CallComponentState(
         private set
 
     val isFullscreenStreamRemoved by derivedStateOf {
-        val featuredStream = callUiState.featuredStream.value
+        val featuredStream = callUiState.featuredStreams.value
         fullscreenStream != null && !featuredStream.contains(fullscreenStream)
     }
 
@@ -124,7 +124,7 @@ internal fun CallComponent(
                 columns = state.columns,
                 modifier = StatusBarPaddingModifier
             ) {
-                val streams = state.callUiState.featuredStream.value
+                val streams = state.callUiState.featuredStreams.value
                 repeat(streams.count()) { index ->
                     val stream = streams[index]
                     FeaturedStream(
