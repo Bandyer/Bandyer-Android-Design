@@ -8,7 +8,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.WatermarkIn
 
 // TODO change participants to ImmutableList
 @Immutable
-internal data class PreCallUiState(
+data class PreCallUiState(
     val stream: StreamUi? = null,
     val participants: List<String> = listOf(),
     val watermarkInfo: WatermarkInfo? = null,
