@@ -39,7 +39,7 @@ internal fun Stream(
         color = backgroundColor,
         contentColor = contentColor
     ) {
-        Box {
+        Box(contentAlignment = Alignment.Center) {
             if (streamView != null) {
                 AndroidView(
                     factory = {
@@ -59,8 +59,7 @@ internal fun Stream(
                     error = R.drawable.ic_kaleyra_avatar_bold,
                     contentColor = LocalContentColor.current,
                     backgroundColor = colorResource(id = R.color.kaleyra_color_background_dark),
-                    size = avatarSize,
-                    modifier = Modifier.align(Alignment.Center)
+                    size = avatarSize
                 )
             }
         }
