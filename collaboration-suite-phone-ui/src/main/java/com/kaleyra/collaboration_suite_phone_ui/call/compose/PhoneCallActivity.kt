@@ -5,9 +5,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.core.view.WindowCompat
+import androidx.fragment.app.FragmentActivity
 import com.google.android.material.composethemeadapter.MdcTheme
 
-class PhoneCallActivity : ComponentActivity() {
+class PhoneCallActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,9 +16,7 @@ class PhoneCallActivity : ComponentActivity() {
         setContent {
             CompositionLocalProvider(LocalBackPressedDispatcher provides onBackPressedDispatcher) {
                 MdcTheme(setDefaultFontFamily = true) {
-//                    CallScreen(
-//
-//                    )
+                    CallScreen(onBackPressed = this::finishAndRemoveTask)
                 }
             }
         }
