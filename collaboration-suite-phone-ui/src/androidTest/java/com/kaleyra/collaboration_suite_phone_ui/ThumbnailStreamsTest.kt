@@ -30,9 +30,9 @@ class ThumbnailStreamsTest {
             ThumbnailStreams(
                 streams = ImmutableList(
                     listOf(
-                        streamUiMock.copy(id = "1", isVideoEnabled = false),
-                        streamUiMock.copy(id = "2", isVideoEnabled = false),
-                        streamUiMock.copy(id = "3", isVideoEnabled = false)
+                        streamUiMock.copy(id = "1", video = null),
+                        streamUiMock.copy(id = "2", video = null),
+                        streamUiMock.copy(id = "3", video = null)
                     )
                 ),
                 onStreamClick = { clickedStream = it }
