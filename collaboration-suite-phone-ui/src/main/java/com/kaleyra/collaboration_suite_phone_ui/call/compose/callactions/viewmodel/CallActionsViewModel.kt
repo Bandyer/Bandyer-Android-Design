@@ -1,8 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.isCameraEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.isMicEnabled
@@ -71,5 +74,14 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) :
         val screenShareInputs = availableInputs?.filter { it is Input.Video.Screen || it is Input.Video.Application }
         val enabledInput = screenShareInputs?.firstOrNull { it.enabled.value }
         return enabledInput?.tryDisable() ?: false
+    }
+
+    companion object {
+        fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.NewInstanceFactory() {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                return CallActionsViewModel(configure) as T
+            }
+        }
     }
 }

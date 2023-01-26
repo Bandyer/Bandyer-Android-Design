@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
@@ -18,7 +20,9 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 
 @Composable
 internal fun CallActionsComponent(
-    viewModel: CallActionsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    viewModel: CallActionsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        factory = CallActionsViewModel.provideFactory(::requestConfiguration)
+    ),
     onItemClick: (action: CallAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
