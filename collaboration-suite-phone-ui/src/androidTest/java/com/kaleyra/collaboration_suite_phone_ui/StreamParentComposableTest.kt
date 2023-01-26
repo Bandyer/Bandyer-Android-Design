@@ -9,8 +9,10 @@ import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.VideoUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streamUiMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.StreamViewTestTag
+import io.mockk.mockk
 import org.junit.Test
 
 abstract class StreamParentComposableTest {
@@ -21,25 +23,29 @@ abstract class StreamParentComposableTest {
 
     @Test
     fun viewNotNull_streamViewIsDisplayed() {
-        stream.value = streamUiMock.copy(view = View(composeTestRule.activity))
+        val video =  VideoUi(id = "videoId", view = View(composeTestRule.activity), isEnabled = false)
+        stream.value = streamUiMock.copy(video = video)
         findStreamView().assertIsDisplayed()
     }
 
     @Test
     fun viewNull_streamViewDoesNotExists() {
-        stream.value = streamUiMock.copy(view = null)
+        val video =  VideoUi(id = "videoId", view = null, isEnabled = false)
+        stream.value = streamUiMock.copy(video = video)
         findStreamView().assertDoesNotExist()
     }
 
     @Test
     fun streamVideoIsNotEnabled_avatarIsDisplayed() {
-        stream.value = streamUiMock.copy(isVideoEnabled = false)
+        val video =  VideoUi(id = "videoId", view = null, isEnabled = false)
+        stream.value = streamUiMock.copy(video = video)
         composeTestRule.findAvatar().assertIsDisplayed()
     }
 
     @Test
     fun streamVideoIsEnabled_avatarDoesNotExists() {
-        stream.value = streamUiMock.copy(isVideoEnabled = true)
+        val video =  VideoUi(id = "videoId", view = null, isEnabled = true)
+        stream.value = streamUiMock.copy(video = video)
         composeTestRule.findAvatar().assertDoesNotExist()
     }
 
