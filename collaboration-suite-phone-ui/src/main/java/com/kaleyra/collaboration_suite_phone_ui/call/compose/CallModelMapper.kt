@@ -68,7 +68,8 @@ internal fun Flow<Call.Recording>.mapToRecordingUi(): Flow<Recording?> =
 internal fun Flow<Call>.isRecording(): Flow<Boolean> =
     flatMapLatest { it.extras.recording.state }.map { it == Call.Recording.State.Started }
 
-internal fun Flow<CallParticipants>.isGroupCall(): Flow<Boolean> = map { it.others.size > 1 }
+internal fun Flow<Call>.isGroupCall(): Flow<Boolean> =
+    flatMapLatest { it.participants }.map { it.others.size > 1 }
 
 internal fun Flow<CallParticipants>.reduceToStreamsUi(): Flow<List<StreamUi>> {
     return flatMapLatest { participants ->

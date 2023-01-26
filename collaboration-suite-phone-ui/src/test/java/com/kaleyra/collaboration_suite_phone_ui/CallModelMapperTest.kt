@@ -2,7 +2,6 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.*
-import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_phone_ui.Mocks.callMock
 import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.callParticipantsMock
 import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.participantMeMock
@@ -16,8 +15,6 @@ import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.uriMock
 import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.videoMock
 import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.viewMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.toCallActions
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.unmockkAll
@@ -307,16 +304,16 @@ class CallModelMapperTest {
     @Test
     fun singleOtherParticipants_isGroupCall_false() = runTest {
         every { callParticipantsMock.others } returns listOf(participantMock1)
-        val participants = MutableStateFlow(callParticipantsMock)
-        val result = participants.isGroupCall()
+        val call = MutableStateFlow(callMock)
+        val result = call.isGroupCall()
         assertEquals(false, result.first())
     }
 
     @Test
     fun multipleOtherParticipants_isGroupCall_true() = runTest {
         every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)
-        val participants = MutableStateFlow(callParticipantsMock)
-        val result = participants.isGroupCall()
+        val call = MutableStateFlow(callMock)
+        val result = call.isGroupCall()
         assertEquals(true, result.first())
     }
 

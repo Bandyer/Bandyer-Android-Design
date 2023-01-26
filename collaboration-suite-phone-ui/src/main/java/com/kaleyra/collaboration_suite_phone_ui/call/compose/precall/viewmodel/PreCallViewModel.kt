@@ -34,7 +34,7 @@ internal class PreCallViewModel(configure: suspend () -> Configuration) : BaseVi
             .onEach { parts -> _uiState.update { it.copy(participants = parts) } }
             .launchIn(viewModelScope)
 
-        participants
+        call
             .isGroupCall()
             .onEach { isGroupCall -> _uiState.update { it.copy(isGroupCall = isGroupCall) } }
             .launchIn(viewModelScope)
