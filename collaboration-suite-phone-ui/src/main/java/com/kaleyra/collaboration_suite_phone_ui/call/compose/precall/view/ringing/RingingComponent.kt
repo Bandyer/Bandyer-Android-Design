@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
@@ -37,7 +38,9 @@ const val TapToAnswerTimerMillis = 7000L
 @Composable
 internal fun RingingComponent(
     modifier: Modifier = Modifier,
-    viewModel: PreCallViewModel = viewModel(),
+    viewModel: PreCallViewModel = viewModel(
+        factory = PreCallViewModel.provideFactory(::requestConfiguration)
+    ),
     onBackPressed: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()

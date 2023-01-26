@@ -7,6 +7,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.view.PreCallComponent
@@ -19,7 +20,9 @@ const val DialingContentTag = "DialingContentTag"
 @Composable
 internal fun DialingComponent(
     modifier: Modifier = Modifier,
-    viewModel: PreCallViewModel = viewModel(),
+    viewModel: PreCallViewModel = viewModel(
+        factory = PreCallViewModel.provideFactory(::requestConfiguration)
+    ),
     onBackPressed: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
