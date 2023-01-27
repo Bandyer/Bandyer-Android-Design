@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -23,7 +24,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetState
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetValue
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.*
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -49,8 +53,7 @@ internal class CallComponentState(
     val callUiState: CallUiState,
     private val configuration: Configuration,
     private val maxWidth: Dp,
-    // Parameters added for testing purpose
-    showCallInfo: Boolean = false,
+    // Parameter added for testing purpose
     fullscreenStream: StreamUi? = null
 ) {
 
@@ -69,9 +72,6 @@ internal class CallComponentState(
             else -> 1
         }
     }
-
-    var showCallInfo by mutableStateOf(showCallInfo)
-        private set
 
     var fullscreenStream by mutableStateOf(fullscreenStream)
         private set
@@ -97,8 +97,9 @@ internal fun CallComponent(
     onBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val shouldShowCallInfo by state.callUiState.shouldShowCallInfo()
     var callInfoWidgetHeight by remember { mutableStateOf(0) }
-    val streamHeaderOffset by animateIntAsState(targetValue = if (state.showCallInfo) callInfoWidgetHeight else 0)
+    val streamHeaderOffset by animateIntAsState(targetValue = if (shouldShowCallInfo) callInfoWidgetHeight else 0)
 
     LaunchedEffect(state) {
         snapshotFlow { state.isFullscreenStreamRemoved }
@@ -114,8 +115,11 @@ internal fun CallComponent(
         animationSpec = tween()
     )
 
-    Crossfade(
+    AnimatedContent(
         targetState = state.fullscreenStream,
+        transitionSpec = {
+            fadeIn(animationSpec = tween(220, delayMillis = 90)) with fadeOut(animationSpec = tween(90))
+        },
         modifier = modifier.testTag(CallContentTag)
     ) { target ->
         if (target == null) {
@@ -130,7 +134,7 @@ internal fun CallComponent(
                     FeaturedStream(
                         stream = stream,
                         isFullscreen = false,
-                        onBackPressed = if (index == 0 && !state.showCallInfo) onBackPressed else null,
+                        onBackPressed = if (index == 0 && !shouldShowCallInfo) onBackPressed else null,
                         onFullscreenClick = { state.enterFullscreenMode(stream) },
                         modifier = Modifier.streamClickable {
                             resetCountDown = !resetCountDown
@@ -150,7 +154,7 @@ internal fun CallComponent(
             FeaturedStream(
                 stream = target,
                 isFullscreen = true,
-                onBackPressed = if (!state.showCallInfo) state::exitFullscreenMode else null,
+                onBackPressed = if (!shouldShowCallInfo) state::exitFullscreenMode else null,
                 onFullscreenClick = state::exitFullscreenMode,
                 headerModifier = Modifier
                     .offset { IntOffset(x = 0, y = streamHeaderOffset) }
@@ -164,7 +168,7 @@ internal fun CallComponent(
 
     with(state) {
         AnimatedVisibility(
-            visible = callUiState.shouldShowCallInfo(),
+            visible = shouldShowCallInfo,
             enter = fadeIn(),
             exit = fadeOut()
         ) {
@@ -185,8 +189,11 @@ internal fun CallComponent(
     }
 }
 
-private fun CallUiState.shouldShowCallInfo(): Boolean =
-    callState is CallState.Reconnecting || callState is CallState.Connecting || callState is CallState.Disconnected
+internal fun CallUiState.shouldShowCallInfo(): State<Boolean> {
+    return derivedStateOf {
+        callState is CallState.Reconnecting || callState is CallState.Connecting || callState is CallState.Disconnected
+    }
+}
 
 @Composable
 private fun titleFor(callState: CallState) =
@@ -221,15 +228,17 @@ private fun Modifier.streamClickable(onClick: () -> Unit): Modifier =
 @Composable
 fun CallContentPreview() {
     KaleyraTheme {
-//        CallContent(
-//            state = rememberCallComponentState(
-//                streams = ImmutableList(listOf(streamUiMock, streamUiMock)),
-//                callState = CallState.Connected,
-//                groupCall = true,
-//                configuration = LocalConfiguration.current,
-//                maxWidth = 400.dp
-//            ),
-//            onBackPressed = { }
-//        )
+        CallComponent(
+            state = rememberCallComponentState(
+                callUiState = CallUiState(
+                    featuredStreams = ImmutableList(listOf(streamUiMock, streamUiMock)),
+                    callState = CallState.Connected,
+                    isGroupCall = true
+                ),
+                configuration = LocalConfiguration.current,
+                maxWidth = 400.dp
+            ),
+            onBackPressed = { }
+        )
     }
 }
