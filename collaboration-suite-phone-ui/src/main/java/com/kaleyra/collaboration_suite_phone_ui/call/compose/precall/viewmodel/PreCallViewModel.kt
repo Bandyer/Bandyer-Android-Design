@@ -6,9 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.toOtherDisplayNames
 import kotlinx.coroutines.flow.*
 
 internal class PreCallViewModel(configure: suspend () -> Configuration) : BaseViewModel<PreCallUiState>(configure) {
@@ -54,7 +52,7 @@ internal class PreCallViewModel(configure: suspend () -> Configuration) : BaseVi
     }
 
     companion object {
-        fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.NewInstanceFactory() {
+        fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return PreCallViewModel(configure) as T
