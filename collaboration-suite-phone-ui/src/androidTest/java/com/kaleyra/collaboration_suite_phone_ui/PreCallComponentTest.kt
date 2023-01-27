@@ -21,15 +21,10 @@ abstract class PreCallComponentTest {
 
     abstract var uiState: MutableState<PreCallUiState>
 
-    // TODO add this test
-//    @Test
-//    fun callInfoWidgetIsDisplayed() {
-//        composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertIsDisplayed()
-//        // Check content description rather than text because the title is a TextView under the hood
-//        val connecting = composeTestRule.activity.getString(R.string.kaleyra_call_status_connecting)
-//        composeTestRule.onNodeWithContentDescription(connecting).assertIsDisplayed()
-//        composeTestRule.findBackButton().assertIsDisplayed()
-//    }
+    @Test
+    fun callInfoWidgetIsDisplayed() {
+        composeTestRule.onNodeWithTag(CallInfoWidgetTag).assertIsDisplayed()
+    }
 
     @Test
     fun streamNull_avatarDisplayed() {
