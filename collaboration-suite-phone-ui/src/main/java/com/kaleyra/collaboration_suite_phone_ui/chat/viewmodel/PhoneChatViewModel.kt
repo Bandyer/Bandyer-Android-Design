@@ -120,7 +120,7 @@ class PhoneChatViewModel(configure: suspend () -> Configuration) : ChatViewModel
     companion object {
         private const val FETCH_COUNT = 50
 
-        fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.NewInstanceFactory() {
+        fun provideFactory(configure: suspend () -> Configuration) = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return PhoneChatViewModel(configure) as T
