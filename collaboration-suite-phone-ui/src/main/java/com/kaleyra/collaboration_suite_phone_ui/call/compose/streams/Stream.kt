@@ -40,7 +40,7 @@ internal fun Stream(
         contentColor = contentColor
     ) {
         Box(contentAlignment = Alignment.Center) {
-            if (streamView != null) {
+            if (streamView != null && !avatarVisible) {
                 AndroidView(
                     factory = {
                         val parentView = streamView.parent as? ViewGroup
