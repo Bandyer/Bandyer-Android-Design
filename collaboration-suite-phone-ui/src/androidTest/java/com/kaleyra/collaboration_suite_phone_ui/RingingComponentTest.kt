@@ -105,6 +105,24 @@ class RingingComponentTest: PreCallComponentTest() {
         assert(declineClicked)
     }
 
+
+    @Test
+    fun callStateRinging_otherParticipantsUsernamesAreDisplayed() {
+        uiState.value = PreCallUiState(participants = listOf("user1", "user2"))
+        composeTestRule.onNodeWithContentDescription("user1, user2").assertIsDisplayed()
+    }
+
+        @Test
+    fun callStateRinging_ringingSubtitleIsDisplayed() {
+        val resources = composeTestRule.activity.resources
+        val ringingQuantityOne = resources.getQuantityString(R.plurals.kaleyra_call_status_ringing, 1)
+        val ringingQuantityOther = resources.getQuantityString(R.plurals.kaleyra_call_status_ringing, 2)
+        uiState.value = PreCallUiState(isGroupCall = false)
+        composeTestRule.onNodeWithText(ringingQuantityOne).assertIsDisplayed()
+        uiState.value = PreCallUiState(isGroupCall = true)
+        composeTestRule.onNodeWithText(ringingQuantityOther).assertIsDisplayed()
+    }
+
     private fun ComposeTestRule.assertRingingButtonIsDisplayed(text: String) {
         onAllNodesWithContentDescription(text).onFirst().assertHasClickAction()
         onAllNodesWithContentDescription(text).onFirst().assertIsDisplayed()
