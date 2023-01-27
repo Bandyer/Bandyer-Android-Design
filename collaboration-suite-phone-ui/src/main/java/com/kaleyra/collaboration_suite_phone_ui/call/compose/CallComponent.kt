@@ -23,12 +23,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetState
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.BottomSheetValue
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.streams.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -89,6 +89,29 @@ internal class CallComponentState(
         fullscreenStream = null
     }
 }
+
+@Composable
+internal fun CallComponent(
+    viewModel: CallViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        factory = CallViewModel.provideFactory(::requestConfiguration)
+    ),
+    maxWidth: Dp,
+    onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val callComponentState = rememberCallComponentState(
+        callUiState = callUiState,
+        configuration = LocalConfiguration.current,
+        maxWidth = maxWidth
+    )
+    CallComponent(
+        state = callComponentState,
+        onBackPressed = onBackPressed,
+        modifier = modifier
+    )
+}
+
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
