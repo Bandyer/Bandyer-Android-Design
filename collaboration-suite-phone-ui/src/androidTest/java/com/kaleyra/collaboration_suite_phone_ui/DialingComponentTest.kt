@@ -2,7 +2,10 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
@@ -38,4 +41,17 @@ class DialingComponentTest: PreCallComponentTest() {
         composeTestRule.findBackButton().performClick()
         assert(backPressed)
     }
+
+    @Test
+    fun callStateDialing_otherParticipantsUsernamesAreDisplayed() {
+        uiState.value = PreCallUiState(participants = listOf("user1", "user2"))
+        composeTestRule.onNodeWithContentDescription("user1, user2").assertIsDisplayed()
+    }
+
+    @Test
+    fun callStateDialing_dialingSubtitleIsDisplayed() {
+        val dialing = composeTestRule.activity.getString(R.string.kaleyra_call_status_dialing)
+        composeTestRule.onNodeWithText(dialing).assertIsDisplayed()
+    }
+
 }
