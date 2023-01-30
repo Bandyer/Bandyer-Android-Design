@@ -1,8 +1,8 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model
 
-import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 
-@Immutable
+@Stable
 sealed interface CallAction {
 
     val isEnabled: Boolean

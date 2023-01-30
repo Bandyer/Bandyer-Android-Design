@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.chat.model
 
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.Stable
 import com.kaleyra.collaboration_suite_core_ui.utils.TimestampUtils
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import kotlinx.coroutines.flow.Flow
@@ -61,7 +62,7 @@ sealed class ConversationItem(val id: String) {
     data class MessageItem(val message: Message) : ConversationItem(id = message.id)
 }
 
-@Immutable
+@Stable
 sealed interface Message {
 
     val id: String
