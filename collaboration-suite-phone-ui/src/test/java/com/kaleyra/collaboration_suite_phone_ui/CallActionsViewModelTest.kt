@@ -140,28 +140,28 @@ class CallActionsViewModelTest {
     @Test
     fun testEnableMicrophoneTrue() = runTest {
         advanceUntilIdle()
-        viewModel.enableMicrophone(true)
+        viewModel.toggleMic(true)
         verify { audioMock.tryEnable() }
     }
 
     @Test
     fun testEnableMicrophoneFalse() = runTest {
         advanceUntilIdle()
-        viewModel.enableMicrophone(false)
+        viewModel.toggleMic(false)
         verify { audioMock.tryDisable() }
     }
 
     @Test
     fun testEnableCameraTrue() = runTest {
         advanceUntilIdle()
-        viewModel.enableCamera(true)
+        viewModel.toggleCamera(true)
         verify { videoMock.tryEnable() }
     }
 
     @Test
     fun testEnableCameraFalse() = runTest {
         advanceUntilIdle()
-        viewModel.enableCamera(false)
+        viewModel.toggleCamera(false)
         verify { videoMock.tryDisable() }
     }
 

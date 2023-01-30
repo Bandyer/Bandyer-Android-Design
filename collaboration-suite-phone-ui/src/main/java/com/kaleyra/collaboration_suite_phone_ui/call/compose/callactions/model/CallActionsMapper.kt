@@ -8,6 +8,9 @@ import kotlinx.coroutines.flow.*
 
 internal object CallActionsMapper {
 
+    // TODO add test for this
+    fun Flow<CallUI>.toMe(): Flow<CallParticipant.Me> = flatMapLatest { it.participants }.map { it.me }
+
     fun Flow<CallUI>.toCallActions(): Flow<List<CallAction>> {
         return combine(
             flatMapLatest { it.actions },
