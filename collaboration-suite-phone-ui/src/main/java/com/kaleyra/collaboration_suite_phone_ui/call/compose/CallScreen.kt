@@ -12,15 +12,20 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.FragmentActivity
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.RecordAudioPermission
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.findActivity
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.horizontalCutoutPadding
@@ -163,6 +168,7 @@ internal fun CallScreen(
     ),
     onBackPressed: () -> Unit
 ) {
+    val activity = LocalContext.current.findActivity() as FragmentActivity
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
     // TODO link collapsable flag to call's type
     val sheetState = rememberBottomSheetState(
@@ -174,17 +180,43 @@ internal fun CallScreen(
         callUiState = callUiState,
         sheetState = sheetState
     )
+    val permissions by remember(callScreenState) { getPermissions(callScreenState) }
+    val permissionsState = rememberMultiplePermissionsState(permissions = permissions) { permissionsResult ->
+        permissionsResult.forEach { (permission, isGranted) ->
+            when {
+                permission == RecordAudioPermission && isGranted -> viewModel.requestMicrophonePermission(activity)
+                permission == CameraPermission && isGranted -> viewModel.requestCameraPermission(activity)
+            }
+        }
+    }
+
+    LaunchedEffect(permissionsState) {
+        permissionsState.launchMultiplePermissionRequest()
+    }
 
     CallScreen(
         callScreenState = callScreenState,
+        permissionsState = permissionsState,
         onThumbnailStreamClick = { /*TODO*/ },
         onBackPressed = onBackPressed
     )
 }
 
+private fun getPermissions(callScreenState: CallScreenState): State<List<String>> {
+    return derivedStateOf {
+        with(callScreenState.callUiState) {
+            listOfNotNull(
+                if (isMicPermissionRequired) RecordAudioPermission else null,
+                if (isCameraPermissionRequired) CameraPermission else null
+            )
+        }
+    }
+}
+
 @Composable
 internal fun CallScreen(
     callScreenState: CallScreenState,
+    permissionsState: MultiplePermissionsState,
     onThumbnailStreamClick: (StreamUi) -> Unit,
     onBackPressed: () -> Unit
 ) {
@@ -212,6 +244,11 @@ internal fun CallScreen(
             .filter { it }
             .onEach { callScreenState.navigateToCallActionsComponent() }
             .launchIn(this)
+    }
+
+    LaunchedEffect(callScreenState) {
+        if (callScreenState.callUiState.callState == CallState.Connected)
+            callScreenState.halfExpandSheet()
     }
 
     when {
@@ -248,6 +285,7 @@ internal fun CallScreen(
             sheetContent = {
                 BottomSheetContent(
                     contentState = callScreenState.sheetContentState,
+                    permissionsState = permissionsState,
                     onLineClick = callScreenState::halfExpandSheetIfCollapsed,
                     onCallActionClick = callScreenState::onCallActionClick,
                     onAudioDeviceClick = callScreenState::halfExpandSheet,
