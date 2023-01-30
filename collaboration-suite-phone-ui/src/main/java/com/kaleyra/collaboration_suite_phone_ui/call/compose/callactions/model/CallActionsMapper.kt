@@ -38,10 +38,10 @@ internal object CallActionsMapper {
                     stream.video.firstOrNull { it is Input.Video.Camera } != null
                 }
             }
-            .filter { it != null }
-            .flatMapLatest { it!!.video }
-            .filter { it != null }
-            .flatMapLatest { it!!.enabled }
+            .filterNotNull()
+            .flatMapLatest { it.video }
+            .filterNotNull()
+            .flatMapLatest { it.enabled }
 
     fun Flow<CallParticipant.Me>.isMicEnabled(): Flow<Boolean> =
         this.flatMapLatest { it.streams }
@@ -50,8 +50,8 @@ internal object CallActionsMapper {
                     stream.audio.firstOrNull { it != null } != null
                 }
             }
-            .filter { it != null }
-            .flatMapLatest { it!!.audio }
-            .filter { it != null }
-            .flatMapLatest { it!!.enabled }
+            .filterNotNull()
+            .flatMapLatest { it.audio }
+            .filterNotNull()
+            .flatMapLatest { it.enabled }
 }
