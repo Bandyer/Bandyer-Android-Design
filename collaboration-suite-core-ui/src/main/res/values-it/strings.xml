@@ -26,10 +26,14 @@
     <string name="kaleyra_notification_call_channel_low_priority_name">Chiamate Bassa Priorità</string>
     <string name="kaleyra_notification_chat_channel_name">Chat</string>
     <string name="kaleyra_notification_incoming_call">Chiamata in ingresso</string>
+    <string name="kaleyra_notification_incoming_group_call">Chiamata di gruppo in ingresso</string>
     <string name="kaleyra_notification_outgoing_call">Chiamata in uscita</string>
+    <string name="kaleyra_notification_outgoing_group_call">Chiamata di gruppo in uscita</string>
     <string name="kaleyra_notification_ongoing_call">Chiamata in corso</string>
+    <string name="kaleyra_notification_ongoing_group_call">Chiamata di gruppo in corso</string>
     <string name="kaleyra_notification_connecting_call">Connessione in corso…</string>
-    <string name="kaleyra_notification_tap_to_return">Tocca per tornare alla chiamata</string>
+    <string name="kaleyra_notification_tap_to_return_to_call">Tocca per tornare alla chiamata</string>
+    <string name="kaleyra_notification_tap_to_return_to_group_call">Tocca per tornare alla chiamata di gruppo</string>
     <string name="kaleyra_notification_call_recorded">Registrazione chiamata in corso</string>
     <string name="kaleyra_notification_chat_reply">Rispondi</string>
     <string name="kaleyra_notification_chat_mark_as_read">Segna come letto</string>

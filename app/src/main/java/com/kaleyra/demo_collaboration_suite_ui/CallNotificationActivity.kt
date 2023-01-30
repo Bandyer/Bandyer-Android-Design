@@ -72,7 +72,7 @@ class CallNotificationActivity : AppCompatActivity() {
         val context = ContextRetainer.context
 
         val userText = if (isGroupCall) context.resources.getString(com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_incoming_call) else username
-        val tapToReturnText = context.getString(com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return)
+        val tapToReturnText = context.getString(if (isGroupCall) com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_group_call else com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_call)
         val builder = CallNotification
             .Builder(
                 context = context,
@@ -99,7 +99,7 @@ class CallNotificationActivity : AppCompatActivity() {
         val context = ContextRetainer.context
         val userText =
             if (isGroupCall) context.resources.getString(com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_outgoing_call) else username
-        val tapToReturnText = context.getString(com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return)
+        val tapToReturnText = context.getString(if (isGroupCall) com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_group_call else com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_call)
         val builder = CallNotification
             .Builder(
                 context = context,
@@ -131,7 +131,7 @@ class CallNotificationActivity : AppCompatActivity() {
             when {
                 isConnecting -> com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_connecting_call
                 isCallRecorded -> com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_call_recorded
-                else -> com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return
+                else -> if (isGroupCall) com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_group_call else com.kaleyra.collaboration_suite_core_ui.R.string.kaleyra_notification_tap_to_return_to_call
             }
         )
         val builder = CallNotification
