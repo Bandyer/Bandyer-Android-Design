@@ -1,7 +1,6 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.view
 
 import android.content.res.Configuration
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -141,10 +140,12 @@ internal fun CallAction(
     onToggle: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val enabled = action.isEnabled
     val colors = colorsFor(action)
-    val initialToggledValue = (action as? CallAction.Toggleable)?.isToggled ?: false
-    var toggled by remember { mutableStateOf(initialToggledValue) }
+    val toggled by remember(action) {
+        derivedStateOf {
+            action is CallAction.Toggleable && action.isToggled
+        }
+    }
 
     Column(
         modifier = modifier,
@@ -153,28 +154,30 @@ internal fun CallAction(
         IconToggleButton(
             checked = toggled,
             onCheckedChange = {
-                toggled = action is CallAction.Toggleable && it
                 onToggle(it)
             },
-            enabled = enabled,
+            enabled = action.isEnabled,
             indication = rememberRipple(bounded = false, radius = CallActionDefaults.RippleRadius),
             modifier = Modifier
                 .size(CallActionDefaults.Size)
                 .background(
-                    color = colors.backgroundColor(toggled = toggled, enabled = enabled).value,
+                    color = colors.backgroundColor(
+                        toggled = toggled,
+                        enabled = action.isEnabled
+                    ).value,
                     shape = CircleShape
                 )
         ) {
             Icon(
                 painter = painterFor(action),
                 contentDescription = descriptionFor(action),
-                tint = colors.iconColor(toggled = toggled, enabled = enabled).value,
+                tint = colors.iconColor(toggled = toggled, enabled = action.isEnabled).value,
                 modifier = Modifier.size(CallActionDefaults.IconSize)
             )
         }
         Text(
             text = textFor(action),
-            color = colors.textColor(enabled = enabled).value,
+            color = colors.textColor(enabled = action.isEnabled).value,
             fontSize = 12.sp,
             maxLines = 2,
             textAlign = TextAlign.Center,
