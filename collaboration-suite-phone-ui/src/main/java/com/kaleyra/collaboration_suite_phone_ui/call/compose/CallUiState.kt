@@ -13,5 +13,7 @@ data class CallUiState(
     val watermarkInfo: WatermarkInfo? = null,
     val isGroupCall: Boolean = false,
     val isRecording: Boolean = false,
+    val isCameraPermissionRequired: Boolean = true,
+    val isMicPermissionRequired: Boolean = true,
     override val userMessage: String? = null
 ) : UiState
