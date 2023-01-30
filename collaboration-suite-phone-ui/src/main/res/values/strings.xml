@@ -67,7 +67,7 @@
     <!-- Call -->
     <string name="kaleyra_call_status_connecting">Connecting &#8230;</string>
     <string name="kaleyra_call_status_dialing">Calling &#8230;</string>
-    <plurals name="kaleyra_call_incoming_status_ringing" translatable="false">
+    <plurals name="kaleyra_call_incoming_status_ringing">
         <item quantity="one">Is calling you &#8230;</item>
         <item quantity="other">Are calling you &#8230;</item>
     </plurals>
