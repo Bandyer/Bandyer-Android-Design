@@ -37,4 +37,15 @@ class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<Call
     fun moveThumbnailToFeatured() {
 
     }
+
+    companion object {
+        fun provideFactory(configure: suspend () -> Configuration) =
+            object : ViewModelProvider.Factory {
+                @Suppress("UNCHECKED_CAST")
+                override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                    return CallViewModel(configure) as T
+                }
+            }
+    }
+
 }
