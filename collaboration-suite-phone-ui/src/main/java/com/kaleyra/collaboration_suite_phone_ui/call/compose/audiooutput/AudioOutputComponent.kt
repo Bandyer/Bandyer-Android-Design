@@ -7,6 +7,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputUiState
@@ -19,7 +20,9 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 
 @Composable
 internal fun AudioOutputComponent(
-    viewModel: AudioOutputViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    viewModel: AudioOutputViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        factory = AudioOutputViewModel.provideFactory(::requestConfiguration)
+    ),
     onItemClick: (AudioDeviceUi) -> Unit,
     onCloseClick: () -> Unit,
     modifier: Modifier = Modifier
