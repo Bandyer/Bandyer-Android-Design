@@ -20,6 +20,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.AudioOu
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.CallActionsComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.fileshare.FileShareComponent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.permission.MultiplePermissionsState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.screenshare.ScreenShareComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardComponent
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
@@ -77,12 +78,13 @@ internal fun rememberBottomSheetContentState(
 @Composable
 internal fun BottomSheetContent(
     contentState: BottomSheetContentState,
+    modifier: Modifier = Modifier,
+    permissionsState: MultiplePermissionsState? = null,
     onLineClick: () -> Unit = { },
     onCallActionClick: (CallAction) -> Unit = { },
     onAudioDeviceClick: () -> Unit = { },
     onScreenShareTargetClick: () -> Unit = { },
     contentVisible: Boolean = true,
-    modifier: Modifier = Modifier
 ) {
     Column(modifier) {
         Line(
@@ -104,6 +106,7 @@ internal fun BottomSheetContent(
                 when (target) {
                     BottomSheetComponent.CallActions -> {
                         CallActionsComponent(
+                            permissionsState = permissionsState,
                             onItemClick = { action ->
                                 // TODO move this out to callScreen onCallActionClick
                                 contentState.navigateToComponent(
