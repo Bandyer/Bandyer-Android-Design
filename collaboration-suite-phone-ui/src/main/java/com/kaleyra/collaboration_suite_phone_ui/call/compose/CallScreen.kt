@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
@@ -153,20 +154,25 @@ internal class CallScreenState(
     }
 }
 
+
+
 @Composable
 internal fun CallScreen(
-    viewModel: CallViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+    viewModel: CallViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        factory = CallViewModel.provideFactory(::requestConfiguration)
+    ),
     onBackPressed: () -> Unit
 ) {
     val callUiState by viewModel.uiState.collectAsStateWithLifecycle()
     // TODO link collapsable flag to call's type
+    val sheetState = rememberBottomSheetState(
+        initialValue = BottomSheetValue.Hidden,
+        collapsable = true,
+        confirmStateChange = { it != BottomSheetValue.Hidden }
+    )
     val callScreenState = rememberCallScreenState(
         callUiState = callUiState,
-        sheetState = rememberBottomSheetState(
-            initialValue = BottomSheetValue.Hidden,
-            collapsable = true,
-            confirmStateChange = { it != BottomSheetValue.Hidden }
-        )
+        sheetState = sheetState
     )
 
     CallScreen(
@@ -252,7 +258,7 @@ internal fun CallScreen(
             },
             content = {
                 CallScreenContent(
-                    callUiState = callScreenState.callUiState,
+                    callState = callScreenState.callUiState.callState,
                     maxWidth = maxWidth,
                     onBackPressed = onBackPressed
                 )
