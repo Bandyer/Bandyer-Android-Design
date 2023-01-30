@@ -68,7 +68,7 @@
     <!-- Call -->
     <string name="kaleyra_call_status_connecting">Connessione in corso &#8230;</string>
     <string name="kaleyra_call_status_dialing">Chiamata in corso &#8230;</string>
-    <plurals name="kaleyra_call_incoming_status_ringing" translatable="false">
+    <plurals name="kaleyra_call_incoming_status_ringing">
         <item quantity="one">Ti sta chiamando &#8230;</item>
         <item quantity="other">Ti stanno chiamando &#8230;</item>
     </plurals>
