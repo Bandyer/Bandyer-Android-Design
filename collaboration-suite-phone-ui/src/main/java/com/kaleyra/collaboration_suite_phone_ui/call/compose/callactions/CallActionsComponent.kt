@@ -51,7 +51,7 @@ internal fun CallActionsComponent(
             snapshotFlow { recordAudioPermission?.status }
                 .filterNotNull()
                 .onEach {
-                    if (it.isGranted && recordAudioPermissionLaunched) viewModel.requestMicrophonePermission(activity)
+                    if (it.isGranted && recordAudioPermissionLaunched) viewModel.startMicrophone(activity)
                     recordAudioPermissionLaunched = false
                 }
                 .launchIn(this)
@@ -61,7 +61,7 @@ internal fun CallActionsComponent(
             snapshotFlow { cameraPermission?.status }
                 .filterNotNull()
                 .onEach {
-                    if (it.isGranted && cameraPermissionLaunched) viewModel.requestCameraPermission(activity)
+                    if (it.isGranted && cameraPermissionLaunched) viewModel.startCamera(activity)
                     cameraPermissionLaunched = false
                 }
                 .launchIn(this)
