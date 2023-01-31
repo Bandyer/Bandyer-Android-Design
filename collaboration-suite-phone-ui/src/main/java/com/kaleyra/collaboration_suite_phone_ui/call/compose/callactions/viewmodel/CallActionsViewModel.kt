@@ -110,6 +110,17 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         call.getValue()?.end()
     }
 
+    fun showChat(context: Context) {
+        val chatBox = chatBox.getValue()
+        val call = call.getValue()
+        val participants = call?.participants?.getValue()
+        if (chatBox == null || participants == null) return
+        chatBox.chat(
+            context = context,
+            userIDs = participants.others.map { it.userId }
+        )
+    }
+
     fun stopScreenShare(): Boolean {
         val screenShareInputs = availableInputs?.filter { it is Input.Video.Screen || it is Input.Video.Application }
         val enabledInput = screenShareInputs?.firstOrNull { it.enabled.value }

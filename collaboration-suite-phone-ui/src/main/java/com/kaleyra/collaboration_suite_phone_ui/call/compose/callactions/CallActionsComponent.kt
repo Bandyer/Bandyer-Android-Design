@@ -93,6 +93,7 @@ internal fun CallActionsComponent(
                 is CallAction.SwitchCamera -> viewModel.switchCamera()
                 is CallAction.HangUp -> viewModel.hangUp()
                 is CallAction.ScreenShare -> if (!viewModel.stopScreenShare()) onItemClick(action)
+                is CallAction.Chat -> activity?.let { viewModel.showChat(it.baseContext) }
                 else -> onItemClick(action)
             }
         },

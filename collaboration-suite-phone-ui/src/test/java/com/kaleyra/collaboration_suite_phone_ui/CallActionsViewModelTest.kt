@@ -189,8 +189,23 @@ class CallActionsViewModelTest {
     }
 
     @Test
-    fun testStopDeviceScreenShare() {
-        testStopScreenShare(mockk<Input.Video.Screen>())
+    fun testShowChat() = runTest {
+        val contextMock = mockk<Context>()
+        every { chatBoxMock.chat(any(), any()) } returns Result.success(mockk())
+        advanceUntilIdle()
+        viewModel.showChat(contextMock)
+        val expectedUserIds = listOf(otherParticipantMock.userId)
+        verify {
+            chatBoxMock.chat(
+                context = contextMock,
+                userIDs = withArg { assertEquals(it, expectedUserIds) }
+            )
+        }
+    }
+
+    @Test
+    fun testStopDeviceScreenShare() = runTest {
+
     }
 
     @Test
