@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model
 
 import com.bandyer.android_audiosession.model.AudioOutputDevice
+import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.CallUI
@@ -11,6 +12,9 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.A
 import kotlinx.coroutines.flow.*
 
 internal object CallActionsMapper {
+
+    fun Flow<CallUI>.isConnected(): Flow<Boolean> =
+        flatMapLatest { it.state }.map { it is Call.State.Connected }
 
     fun Flow<CallUI>.toCurrentAudioDeviceUi(): Flow<AudioDeviceUi?> =
         flatMapLatest { it.currentAudioOutputDevice }.map { it?.mapToAudioDeviceUi() }
