@@ -1,20 +1,20 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel
 
+import android.content.Context
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
-import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.requestCameraPermission
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.requestMicPermission
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startCamera
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startMicrophone
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.isCameraEnabled
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.isMicEnabled
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.isMyCameraEnabled
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.isMyMicEnabled
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.toCallActions
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.toMe
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.toCurrentAudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
@@ -24,79 +24,67 @@ import kotlinx.coroutines.launch
 internal class CallActionsViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallActionsUiState>(configure) {
     override fun initialState() = CallActionsUiState()
 
-    private val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
+    private val call = phoneBox
+        .flatMapLatest { it.call }
+        .shareInEagerly(viewModelScope)
 
     private val callActions = call
         .toCallActions()
         .shareInEagerly(viewModelScope)
 
-    private val isCameraEnabled = call
-        .toMe()
-        .isCameraEnabled()
-        .shareInEagerly(viewModelScope)
+    private val isMyCameraEnabled = call
+        .isMyCameraEnabled()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
-    private val isMicEnabled = call
-        .toMe()
-        .isMicEnabled()
-        .shareInEagerly(viewModelScope)
+    private val isMyMicEnabled = call
+        .isMyMicEnabled()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
+
+    private val currentAudioOutput = call
+        .toCurrentAudioDeviceUi()
+        .filterNotNull()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, AudioDeviceUi.Muted)
 
     private val availableInputs: Set<Input>?
         get() = call.getValue()?.inputs?.availableInputs?.value
 
     init {
+        // TODO check that only the modified call action will be updated ui side
 
+        combine(
+            callActions,
+            isMyCameraEnabled,
+            isMyMicEnabled,
+            currentAudioOutput
+        ) { callActions, isMyCameraEnabled, isMyMicEnabled, currentAudioOutput ->
+            val newActions = callActions
+                .updateAction(CallAction.Microphone(isToggled = !isMyMicEnabled))
+                .updateAction(CallAction.Camera(isToggled = !isMyCameraEnabled))
+                .updateAction(CallAction.Audio(device = currentAudioOutput))
+            _uiState.update { it.copy(actionList = ImmutableList(newActions)) }
+        }.launchIn(viewModelScope)
+    }
+
+    fun startMicrophone(context: FragmentActivity) {
         viewModelScope.launch {
-            val actions = callActions.first()
-            _uiState.update { it.copy(actionList = ImmutableList(actions)) }
-
-            // TODO update audio action device
-
-            // TODO check that only the modified call action will be updated ui side
-
-            combine(
-                callActions,
-                isCameraEnabled,
-                isMicEnabled
-            ) { callActions, isCameraEnabled, isMicEnabled ->
-                val actionList = callActions.toMutableList()
-
-                val cameraIndex = actionList.indexOfFirst { it is CallAction.Camera }
-                val micIndex = actionList.indexOfFirst { it is CallAction.Microphone }
-
-                if (cameraIndex != -1) {
-                    actionList[cameraIndex] = CallAction.Camera(isToggled = !isCameraEnabled)
-                }
-                if (micIndex != -1) {
-                    actionList[micIndex] = CallAction.Microphone(isToggled = !isMicEnabled)
-                }
-
-                _uiState.update { it.copy(actionList = ImmutableList(actionList)) }
-            }.launchIn(this)
+            call.getValue()?.startMicrophone(context)
         }
     }
 
-    fun requestMicrophonePermission(context: FragmentActivity) {
+    fun startCamera(context: FragmentActivity) {
         viewModelScope.launch {
-            call.getValue()?.requestMicPermission(context)
-        }
-    }
-
-    fun requestCameraPermission(context: FragmentActivity) {
-        viewModelScope.launch {
-            call.getValue()?.requestCameraPermission(context)
+            call.getValue()?.startCamera(context)
         }
     }
 
     fun toggleMic() {
         val input = availableInputs?.firstOrNull { it is Input.Audio }
-        val isMicEnabled = isMicEnabled.getValue() ?: return
-        if (!isMicEnabled) input?.tryEnable() else input?.tryDisable()
+        if (!isMyMicEnabled.value) input?.tryEnable() else input?.tryDisable()
     }
 
     fun toggleCamera() {
         val input = availableInputs?.firstOrNull { it is Input.Video.Camera.Internal }
-        val isCameraEnabled = isMicEnabled.getValue() ?: return
-        if (!isCameraEnabled) input?.tryEnable() else input?.tryDisable()
+        if (!isMyCameraEnabled.value) input?.tryEnable() else input?.tryDisable()
     }
 
     fun switchCamera() {
@@ -124,11 +112,12 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
     fun stopScreenShare(): Boolean {
         val screenShareInputs = availableInputs?.filter { it is Input.Video.Screen || it is Input.Video.Application }
         val enabledInput = screenShareInputs?.firstOrNull { it.enabled.value }
-        val isScreenShareDisabled = enabledInput?.tryDisable() ?: false
-        if (isScreenShareDisabled) {
-            toggleCamera()
-        }
-        return isScreenShareDisabled
+        return enabledInput?.tryDisable() ?: false
+    }
+
+    private fun List<CallAction>.updateAction(action: CallAction): List<CallAction> {
+        val index = indexOfFirst { it.javaClass == action.javaClass}.takeIf { it != -1 } ?: return this
+        return if (this[index] == action) this else toMutableList().apply { this[index] = action }
     }
 
     companion object {
