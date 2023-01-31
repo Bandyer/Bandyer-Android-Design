@@ -9,13 +9,13 @@ import com.kaleyra.collaboration_suite_core_ui.call.CallStreamDelegate
 
 internal object CallExtensions {
 
-    suspend fun Call.requestMicPermission(context: FragmentActivity) {
+    suspend fun Call.startMicrophone(context: FragmentActivity) {
         val result = inputs.request(context, Inputs.Type.Microphone)
         val audio = result.getOrNull<Input.Audio>() ?: return
         myMainStream()?.audio?.value = audio
     }
 
-    suspend fun Call.requestCameraPermission(context: FragmentActivity) {
+    suspend fun Call.startCamera(context: FragmentActivity) {
         val result = inputs.request(context, Inputs.Type.Camera.Internal)
         val video = result.getOrNull<Input.Video.Camera.Internal>() ?: return
         myMainStream()?.video?.value = video
