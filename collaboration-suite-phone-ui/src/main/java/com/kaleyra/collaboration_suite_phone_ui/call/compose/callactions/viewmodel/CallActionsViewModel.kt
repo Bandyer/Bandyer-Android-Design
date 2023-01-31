@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startCamera
@@ -31,6 +32,11 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
     private val callActions = call
         .toCallActions()
         .shareInEagerly(viewModelScope)
+    
+    private val isCallConnected = call
+        .flatMapLatest { it.state }
+        .map { it is Call.State.Connected }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, false)
 
     private val isMyCameraEnabled = call
         .isMyCameraEnabled()
@@ -53,14 +59,18 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
 
         combine(
             callActions,
+            isCallConnected,
             isMyCameraEnabled,
             isMyMicEnabled,
             currentAudioOutput
-        ) { callActions, isMyCameraEnabled, isMyMicEnabled, currentAudioOutput ->
+        ) { callActions, isCallConnected, isMyCameraEnabled, isMyMicEnabled, currentAudioOutput ->
             val newActions = callActions
-                .updateAction(CallAction.Microphone(isToggled = !isMyMicEnabled))
-                .updateAction(CallAction.Camera(isToggled = !isMyCameraEnabled))
-                .updateAction(CallAction.Audio(device = currentAudioOutput))
+                .updateActionIfExists(CallAction.Microphone(isToggled = !isMyMicEnabled))
+                .updateActionIfExists(CallAction.Camera(isToggled = !isMyCameraEnabled))
+                .updateActionIfExists(CallAction.Audio(device = currentAudioOutput))
+                .updateActionIfExists(CallAction.FileShare(isEnabled = isCallConnected))
+                .updateActionIfExists(CallAction.ScreenShare(isEnabled = isCallConnected))
+                .updateActionIfExists(CallAction.Whiteboard(isEnabled = isCallConnected))
             _uiState.update { it.copy(actionList = ImmutableList(newActions)) }
         }.launchIn(viewModelScope)
     }
@@ -115,7 +125,7 @@ internal class CallActionsViewModel(configure: suspend () -> Configuration) : Ba
         return enabledInput?.tryDisable() ?: false
     }
 
-    private fun List<CallAction>.updateAction(action: CallAction): List<CallAction> {
+    private fun List<CallAction>.updateActionIfExists(action: CallAction): List<CallAction> {
         val index = indexOfFirst { it.javaClass == action.javaClass}.takeIf { it != -1 } ?: return this
         return if (this[index] == action) this else toMutableList().apply { this[index] = action }
     }
