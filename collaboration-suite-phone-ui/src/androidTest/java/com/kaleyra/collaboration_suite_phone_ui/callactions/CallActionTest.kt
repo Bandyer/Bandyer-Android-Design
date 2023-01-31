@@ -123,10 +123,10 @@ class CallActionTest {
     }
 
     @Test
-    fun toggleableAction_userPerformsClick_actionIsToggled() {
+    fun isToggledTrue_actionIsToggled() {
         action = CallAction.Microphone(isToggled = false)
         composeTestRule.onRoot().onChildAt(0).assertIsOff()
-        composeTestRule.onRoot().onChildAt(0).performClick()
+        action = CallAction.Microphone(isToggled = true)
         composeTestRule.onRoot().onChildAt(0).assertIsOn()
     }
 

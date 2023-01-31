@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model
 
 import androidx.compose.runtime.Stable
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 
 @Stable
 sealed interface CallAction {
@@ -31,15 +32,7 @@ sealed interface CallAction {
 
     data class FileShare(override val isEnabled: Boolean = true) : CallAction
 
-    data class Audio(override val isEnabled: Boolean = true, val device: AudioActionDevice = AudioActionDevice.Muted) : CallAction
+    data class Audio(override val isEnabled: Boolean = true, val device: AudioDeviceUi = AudioDeviceUi.Muted) : CallAction
 
     data class ScreenShare(override val isEnabled: Boolean = true) : CallAction
-}
-
-enum class AudioActionDevice {
-    LoudSpeaker,
-    Earpiece,
-    WiredHeadset,
-    Bluetooth,
-    Muted
 }

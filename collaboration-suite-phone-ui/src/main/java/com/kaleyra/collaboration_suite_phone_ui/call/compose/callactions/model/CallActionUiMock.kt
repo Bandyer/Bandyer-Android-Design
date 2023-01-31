@@ -1,5 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model
 
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.BluetoothDeviceState
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 
 val mockCallActions = ImmutableList(
@@ -10,7 +12,7 @@ val mockCallActions = ImmutableList(
         CallAction.HangUp(true),
         CallAction.Chat(true),
         CallAction.Whiteboard(true),
-        CallAction.Audio(true, AudioActionDevice.Bluetooth),
+        CallAction.Audio(true, AudioDeviceUi.Bluetooth(id = "id", name = null, connectionState = BluetoothDeviceState.Connected, batteryLevel = null)),
         CallAction.FileShare(true),
         CallAction.ScreenShare(true)
     )
