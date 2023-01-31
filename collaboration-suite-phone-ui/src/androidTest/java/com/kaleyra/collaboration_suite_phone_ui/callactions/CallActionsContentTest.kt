@@ -29,18 +29,15 @@ class CallActionsContentTest {
     private var items by mutableStateOf(ImmutableList(listOf<CallAction>()))
 
     private var isActionClicked: CallAction? = null
-    
-    private var isToggled: Boolean? = null
-    
+
     @Before
     fun setUp() {
         composeTestRule.setContent {
             CallActionsContent(
                 items = items,
                 itemsPerRow = 4,
-                onItemClick = { action, toggled -> 
-                    this.isActionClicked = action
-                    this.isToggled = toggled
+                onItemClick = { action ->
+                    isActionClicked = action
                 }
             )
         }
@@ -127,13 +124,5 @@ class CallActionsContentTest {
         val audioOutput = composeTestRule.activity.getString(R.string.kaleyra_call_action_audio_route)
         composeTestRule.onNodeWithContentDescription(audioOutput).performClick()
         assertEquals(CallAction.Audio::class.java, isActionClicked!!::class.java)
-    }
-
-    @Test
-    fun userClicksOnToggleableItem_onItemClickReturnsToggledTrue() {
-        items = ImmutableList(listOf(CallAction.Microphone(), CallAction.Audio()))
-        val muteMic = composeTestRule.activity.getString(R.string.kaleyra_call_action_disable_mic_description)
-        composeTestRule.onNodeWithContentDescription(muteMic).performClick()
-        assert(isToggled == true)
     }
 }

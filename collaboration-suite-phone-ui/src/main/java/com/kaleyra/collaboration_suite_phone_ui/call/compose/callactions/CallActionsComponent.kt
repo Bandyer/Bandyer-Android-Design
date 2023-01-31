@@ -71,7 +71,7 @@ internal fun CallActionsComponent(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     CallActionsComponent(
         uiState = uiState,
-        onItemClick = { action, toggled ->
+        onItemClick = { action ->
             // TODO revise this
             when (action) {
                 is CallAction.Microphone -> {
@@ -103,7 +103,7 @@ internal fun CallActionsComponent(
 @Composable
 internal fun CallActionsComponent(
     uiState: CallActionsUiState,
-    onItemClick: (action: CallAction, toggled: Boolean) -> Unit,
+    onItemClick: (action: CallAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier) {
@@ -124,7 +124,7 @@ internal fun CallActionsComponentPreview() {
         Surface {
             CallActionsComponent(
                 uiState = CallActionsUiState(actionList = mockCallActions),
-                onItemClick = { _, _ -> }
+                onItemClick = { }
             )
         }
     }

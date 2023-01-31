@@ -153,9 +153,7 @@ internal fun CallAction(
     ) {
         IconToggleButton(
             checked = toggled,
-            onCheckedChange = {
-                onToggle(it)
-            },
+            onCheckedChange = onToggle,
             enabled = action.isEnabled,
             indication = rememberRipple(bounded = false, radius = CallActionDefaults.RippleRadius),
             modifier = Modifier

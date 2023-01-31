@@ -21,7 +21,7 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.fadeBelowOfRootBott
 internal fun CallActionsContent(
     items: ImmutableList<CallAction>,
     itemsPerRow: Int,
-    onItemClick: (action: CallAction, toggled: Boolean) -> Unit,
+    onItemClick: (action: CallAction) -> Unit,
     enableBottomFade: Boolean = true,
     modifier: Modifier = Modifier
 ) {
@@ -29,7 +29,7 @@ internal fun CallActionsContent(
         items(items = items.value, key = { it::class.java.name }) { action ->
             CallAction(
                 action = action,
-                onToggle = { onItemClick(action, it) },
+                onToggle = { onItemClick(action) },
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 20.dp, bottom = 8.dp)
@@ -48,7 +48,7 @@ internal fun CallActionsContentPreview() {
             CallActionsContent(
                 items = mockCallActions,
                 itemsPerRow = 4,
-                onItemClick = { _, _ -> },
+                onItemClick = { },
                 enableBottomFade = false
             )
         }
