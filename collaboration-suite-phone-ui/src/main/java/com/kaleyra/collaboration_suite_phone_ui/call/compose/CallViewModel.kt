@@ -6,53 +6,51 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.requestCameraPermission
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.requestMicPermission
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startCamera
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startMicrophone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class CallViewModel(configure: suspend () -> Configuration) : BaseViewModel<CallUiState>(configure) {
+class CallViewModel(configure: suspend () -> Configuration) :
+    BaseViewModel<CallUiState>(configure) {
 
     override fun initialState() = CallUiState()
 
     private val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
 
-    private val _maxFeatured = MutableStateFlow(1)
+    private val maxFeatured = MutableStateFlow(1)
+
+    private val streams = call
+        .flatMapLatest { it.participants }
+        .reduceToStreamsUi()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
 
     init {
+        // TODO add watermark
+
         val myStreamsIds = call
             .flatMapLatest { it.participants }
             .flatMapLatest { it.me.streams }
             .map { streams -> streams.map { it.id } }
 
-        val streams = call
-            .flatMapLatest { it.participants }
-            .reduceToStreamsUi()
-
-        combine(streams, myStreamsIds, _maxFeatured) { streams, myStreamsIds, maxFeatured ->
-            val featuredStreams = 
-            streams
-
-        }.launchIn(viewModelScope)
-    fun requestMicrophonePermission(context: FragmentActivity) {
-        viewModelScope.launch {
-            call.getValue()?.requestMicPermission(context)
-        }
-    }
-
-    fun requestCameraPermission(context: FragmentActivity) {
-        viewModelScope.launch {
-            call.getValue()?.requestCameraPermission(context)
-        }
-    }
-
-    fun setNumberOfFeaturedStreams(number: Int) {
-        _maxFeatured.value = number
-    }
-
-    fun moveThumbnailToFeatured() {
-
+        var featuredStreams = listOf<StreamUi>()
+        var thumbnailsStreams = listOf<StreamUi>()
+        streams
+           .onEach { streams ->
+               val added = streams - featuredStreams.toSet() - thumbnailsStreams.toSet()
+               val removedFeatured = featuredStreams - streams.toSet()
+               val removedThumbnails = thumbnailsStreams - streams.toSet()
+               val newFeatured = (featuredStreams + added - removedFeatured.toSet()).take(maxFeatured.value)
+               val newThumbnails = thumbnailsStreams + added - newFeatured.toSet() - removedThumbnails.toSet()
+               featuredStreams = newFeatured
+               thumbnailsStreams = newThumbnails
+               _uiState.update {
+                   it.copy(featuredStreams = ImmutableList(newFeatured), thumbnailStreams = ImmutableList(newThumbnails))
+               }
+           }
+           .launchIn(viewModelScope)
     }
 
     companion object {
