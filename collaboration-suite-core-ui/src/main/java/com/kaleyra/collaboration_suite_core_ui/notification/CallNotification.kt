@@ -297,7 +297,7 @@ class CallNotification {
             val applicationIcon =
                 context.applicationContext.packageManager.getApplicationIcon(HostAppInfo.name)
             val person = Person.Builder()
-                .setName(user)
+                .setName(user?.takeIf { it.isNotEmpty() } ?: " ")
                 .setIcon(Icon.createWithBitmap(applicationIcon.toBitmap()))
                 .build()
 
