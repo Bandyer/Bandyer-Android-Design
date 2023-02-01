@@ -327,7 +327,7 @@ class CallActionsViewModelTest {
 
     @Test
     fun testStopDeviceScreenShare() = runTest {
-
+        testStopScreenShare(mockk<Input.Video.Screen>())
     }
 
     @Test
