@@ -50,7 +50,7 @@ class PreCallViewModelTest {
     }
 
     @Test
-    fun testRingingUiState_streamUpdated() = runTest {
+    fun testPreCallUiState_streamUpdated() = runTest {
         advanceUntilIdle()
         val actual = viewModel.uiState.first().stream
         val expected = StreamUi(
@@ -67,7 +67,7 @@ class PreCallViewModelTest {
     }
 
     @Test
-    fun testRingingUiState_participantsUpdated() = runTest {
+    fun testPreCallUiState_participantsUpdated() = runTest {
         advanceUntilIdle()
         val actual = viewModel.uiState.first().participants
         val expected = listOf("displayName1", "displayName2")
@@ -75,14 +75,14 @@ class PreCallViewModelTest {
     }
 
     @Test
-    fun testRingingUiState_isGroupCallUpdated() = runTest {
+    fun testPreCallUiState_isGroupCallUpdated() = runTest {
         advanceUntilIdle()
         val actual = viewModel.uiState.first().isGroupCall
         assertEquals(true, actual)
     }
 
     @Test
-    fun testRingingUiState_recordingUpdated() = runTest {
+    fun testPreCallUiState_recordingUpdated() = runTest {
         advanceUntilIdle()
         val actual = viewModel.uiState.first().recording
         val expected = Recording.OnConnect
