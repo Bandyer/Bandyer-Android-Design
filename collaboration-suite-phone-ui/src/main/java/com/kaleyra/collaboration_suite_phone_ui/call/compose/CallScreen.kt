@@ -159,8 +159,6 @@ internal class CallScreenState(
     }
 }
 
-
-
 @Composable
 internal fun CallScreen(
     viewModel: CallViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
@@ -184,8 +182,8 @@ internal fun CallScreen(
     val permissionsState = rememberMultiplePermissionsState(permissions = permissions) { permissionsResult ->
         permissionsResult.forEach { (permission, isGranted) ->
             when {
-                permission == RecordAudioPermission && isGranted -> viewModel.requestMicrophonePermission(activity)
-                permission == CameraPermission && isGranted -> viewModel.requestCameraPermission(activity)
+                permission == RecordAudioPermission && isGranted -> viewModel.startMicrophone(activity)
+                permission == CameraPermission && isGranted -> viewModel.startCamera(activity)
             }
         }
     }

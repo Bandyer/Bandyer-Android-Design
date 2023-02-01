@@ -30,10 +30,20 @@ class CallViewModel(configure: suspend () -> Configuration) :
     init {
         // TODO add watermark
 
-        val myStreamsIds = call
+//        call
+//            .map { it.extras.preferredType }
+//            .take(1)
+//            .onEach {
+//                if (!viewModel.micPermission.value.isAllowed && it.hasAudio() && it.isAudioEnabled()) viewModel.onRequestMicPermission(this)
+//                if (!viewModel.camPermission.value.isAllowed && it.hasVideo() && it.isVideoEnabled()) viewModel.onRequestCameraPermission(this)
+//            }
+//            .launchIn(lifecycleScope)
+
+        val myStreams = call
             .flatMapLatest { it.participants }
             .flatMapLatest { it.me.streams }
-            .map { streams -> streams.map { it.id } }
+
+        val myStreamsIds = myStreams.map { streams -> streams.map { it.id } }
 
         var featuredStreams = listOf<StreamUi>()
         var thumbnailsStreams = listOf<StreamUi>()
@@ -51,6 +61,47 @@ class CallViewModel(configure: suspend () -> Configuration) :
                }
            }
            .launchIn(viewModelScope)
+
+        call
+            .toCallStateUi()
+            .onEach { callState ->
+                _uiState.update { it.copy(callState = callState) }
+            }
+            .launchIn(viewModelScope)
+
+        call
+            .isGroupCall()
+            .onEach { isGroupCall ->
+                _uiState.update { it.copy(isGroupCall = isGroupCall) }
+            }
+            .launchIn(viewModelScope)
+
+        call
+            .isRecording()
+            .onEach { isRecording ->
+                _uiState.update { it.copy(isRecording = isRecording) }
+            }
+            .launchIn(viewModelScope)
+    }
+
+    fun startMicrophone(context: FragmentActivity) {
+        viewModelScope.launch {
+            call.getValue()?.startMicrophone(context)
+        }
+    }
+
+    fun startCamera(context: FragmentActivity) {
+        viewModelScope.launch {
+            call.getValue()?.startCamera(context)
+        }
+    }
+
+    fun setNumberOfFeaturedStreams(number: Int) {
+        maxFeatured.value = number
+    }
+
+    fun moveThumbnailToFeatured() {
+
     }
 
     companion object {
