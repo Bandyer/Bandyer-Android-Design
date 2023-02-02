@@ -6,18 +6,19 @@ import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class StreamSorterTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @get:Rule
     var mainDispatcherRule = MainDispatcherRule()
 
-    // test update stream dopo update max featured
     // test che mio stream viene messo nei thumbnail
 
     private val streamMock1 = mockk<StreamUi>()
@@ -31,7 +32,7 @@ class StreamSorterTest {
     fun testSortEmptyList() = runTest {
         val streams = listOf<StreamUi>()
         val flow = MutableStateFlow(streams)
-        val (featuredStreams, thumbnailsStreams) = flow.sortStreams(1).first()
+        val (featuredStreams, thumbnailsStreams) = sortStreams(flow, flowOf(1)).first()
         assertEquals(0, featuredStreams.size)
         assertEquals(0, thumbnailsStreams.size)
     }
@@ -40,7 +41,7 @@ class StreamSorterTest {
     fun testSortFilledList() = runTest {
         val streams = listOf(streamMock1, streamMock2, streamMock3, streamMock4, streamMock5)
         val flow = MutableStateFlow(streams)
-        val (featuredStreams, thumbnailsStreams) = flow.sortStreams(2).first()
+        val (featuredStreams, thumbnailsStreams) = sortStreams(flow, flowOf(2)).first()
         assertEquals(streams.take(2), featuredStreams)
         assertEquals(streams.takeLast(3), thumbnailsStreams)
     }
@@ -49,7 +50,7 @@ class StreamSorterTest {
     fun testRemoveFeaturedStream() = runTest {
         val streams = listOf(streamMock1, streamMock2, streamMock3, streamMock4)
         val flow = MutableStateFlow(streams)
-        val result = flow.sortStreams(2)
+        val result = sortStreams(flow, flowOf(2))
 
         val (featuredStreams, thumbnailsStreams) = result.first()
         assertEquals(streams.take(2), featuredStreams)
@@ -68,7 +69,7 @@ class StreamSorterTest {
     fun testRemoveThumbnailStream() = runTest {
         val streams = listOf(streamMock1, streamMock2, streamMock3, streamMock4)
         val flow = MutableStateFlow(streams)
-        val result = flow.sortStreams(2)
+        val result = sortStreams(flow, flowOf(2))
 
         val (featuredStreams, thumbnailsStreams) = result.first()
         assertEquals(streams.take(2), featuredStreams)
@@ -87,7 +88,7 @@ class StreamSorterTest {
     fun testReplaceSomeStreams() = runTest {
         val streams = listOf(streamMock1, streamMock2, streamMock3, streamMock4)
         val flow = MutableStateFlow(streams)
-        val result = flow.sortStreams(2)
+        val result = sortStreams(flow, flowOf(2))
 
         val (featuredStreams, thumbnailsStreams) = result.first()
         assertEquals(streams.take(2), featuredStreams)
@@ -102,23 +103,59 @@ class StreamSorterTest {
     }
 
     @Test
-    fun testOneStream_streamIsFeatured() = runTest {
-        val streams = listOf(streamMock1)
+    fun testOnlyFeaturedStreams() = runTest {
+        val streams = listOf(streamMock1, streamMock2)
         val flow = MutableStateFlow(streams)
-        val result = flow.sortStreams(2)
-        val (featuredStreams, _) = result.first()
-        assertEquals(streams, featuredStreams)
-        assertEquals(0, featuredStreams.size)
-    }
-
-    @Test
-    fun testTwoStream_oneIsFeatured_oneIsThumbnails() = runTest {
-        val streams = listOf(streamMock1)
-        val flow = MutableStateFlow(streams)
-        val result = flow.sortStreams(2)
+        val result = sortStreams(flow, flowOf(2))
         val (featuredStreams, thumbnailsStreams) = result.first()
         assertEquals(streams, featuredStreams)
         assertEquals(0, thumbnailsStreams.size)
+    }
+
+    @Test
+    fun testOnlyThumbnailsStreams() = runTest {
+        val streams = listOf(streamMock1, streamMock2)
+        val flow = MutableStateFlow(streams)
+        val result = sortStreams(flow, flowOf(0))
+        val (featuredStreams, thumbnailsStreams) = result.first()
+        assertEquals(0, featuredStreams.size)
+        assertEquals(streams, thumbnailsStreams)
+    }
+
+    @Test
+    fun testIncreaseMaxFeaturedStreams() = runTest {
+        val streams = listOf(streamMock1, streamMock2, streamMock3, streamMock4, streamMock5)
+        val nMaxFeatured = MutableStateFlow(2)
+        val result = sortStreams(
+            streams = MutableStateFlow(streams),
+            nMaxFeatured = nMaxFeatured
+        )
+        val (featuredStreams, thumbnailsStreams) = result.first()
+        assertEquals(streams.take(2), featuredStreams)
+        assertEquals(streams.takeLast(3), thumbnailsStreams)
+
+        nMaxFeatured.value = 4
+        val (newFeaturedStreams, newThumbnailsStreams) = result.first()
+        assertEquals(streams.take(4), newFeaturedStreams)
+        assertEquals(streams.takeLast(1), newThumbnailsStreams)
+    }
+
+    @Test
+    fun testDecreaseMaxFeaturedStreams() = runTest {
+        val streams = listOf(streamMock1, streamMock2, streamMock3, streamMock4, streamMock5)
+        val nMaxFeatured = MutableStateFlow(3)
+        val result = sortStreams(
+            streams = MutableStateFlow(streams),
+            nMaxFeatured = nMaxFeatured
+        )
+        val (featuredStreams, thumbnailsStreams) = result.first()
+        assertEquals(streams.take(3), featuredStreams)
+        assertEquals(streams.takeLast(2), thumbnailsStreams)
+
+        nMaxFeatured.value = 1
+        val (newFeaturedStreams, newThumbnailsStreams) = result.first()
+        assertEquals(streams.take(1), newFeaturedStreams)
+        assertEquals(streams.takeLast(4), newThumbnailsStreams)
     }
 
     @Test

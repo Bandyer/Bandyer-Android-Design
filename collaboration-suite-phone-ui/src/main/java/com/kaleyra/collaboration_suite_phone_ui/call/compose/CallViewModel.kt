@@ -46,8 +46,8 @@ class CallViewModel(configure: suspend () -> Configuration) :
 
         val myStreamsIds = myStreams.map { streams -> streams.map { it.id } }
 
-        streams
-            .sortStreams(maxFeatured.value)
+
+        sortStreams(streams, maxFeatured)
             .onEach { (featuredStreams, thumbnailsStreams) ->
                 _uiState.update {
                     it.copy(
@@ -56,7 +56,7 @@ class CallViewModel(configure: suspend () -> Configuration) :
                     )
                 }
             }
-           .launchIn(viewModelScope)
+            .launchIn(viewModelScope)
 
         call
             .toCallStateUi()
@@ -79,7 +79,6 @@ class CallViewModel(configure: suspend () -> Configuration) :
             }
             .launchIn(viewModelScope)
     }
-
 
 
     fun startMicrophone(context: FragmentActivity) {
