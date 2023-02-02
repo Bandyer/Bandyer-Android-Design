@@ -8,6 +8,7 @@ import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startCamera
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startMicrophone
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamSorter.sortStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
@@ -45,21 +46,16 @@ class CallViewModel(configure: suspend () -> Configuration) :
 
         val myStreamsIds = myStreams.map { streams -> streams.map { it.id } }
 
-        var featuredStreams = listOf<StreamUi>()
-        var thumbnailsStreams = listOf<StreamUi>()
         streams
-           .onEach { streams ->
-               val added = streams - featuredStreams.toSet() - thumbnailsStreams.toSet()
-               val removedFeatured = featuredStreams - streams.toSet()
-               val removedThumbnails = thumbnailsStreams - streams.toSet()
-               val newFeatured = (featuredStreams + added - removedFeatured.toSet()).take(maxFeatured.value)
-               val newThumbnails = thumbnailsStreams + added - newFeatured.toSet() - removedThumbnails.toSet()
-               featuredStreams = newFeatured
-               thumbnailsStreams = newThumbnails
-               _uiState.update {
-                   it.copy(featuredStreams = ImmutableList(newFeatured), thumbnailStreams = ImmutableList(newThumbnails))
-               }
-           }
+            .sortStreams(maxFeatured.value)
+            .onEach { (featuredStreams, thumbnailsStreams) ->
+                _uiState.update {
+                    it.copy(
+                        featuredStreams = ImmutableList(featuredStreams),
+                        thumbnailStreams = ImmutableList(thumbnailsStreams)
+                    )
+                }
+            }
            .launchIn(viewModelScope)
 
         call
@@ -83,6 +79,8 @@ class CallViewModel(configure: suspend () -> Configuration) :
             }
             .launchIn(viewModelScope)
     }
+
+
 
     fun startMicrophone(context: FragmentActivity) {
         viewModelScope.launch {
