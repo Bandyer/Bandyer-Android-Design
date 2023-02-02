@@ -195,7 +195,7 @@ internal fun CallScreen(
     CallScreen(
         callScreenState = callScreenState,
         permissionsState = permissionsState,
-        onThumbnailStreamClick = { /*TODO*/ },
+        onThumbnailStreamClick = viewModel::swapThumbnail,
         onBackPressed = onBackPressed
     )
 }

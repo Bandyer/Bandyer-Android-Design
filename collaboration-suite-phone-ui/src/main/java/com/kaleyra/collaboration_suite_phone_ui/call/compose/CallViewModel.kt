@@ -27,6 +27,8 @@ class CallViewModel(configure: suspend () -> Configuration) :
         .reduceToStreamsUi()
         .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
 
+    private val streamsHandler = StreamsHandler(streams = streams, nMaxFeatured = maxFeatured, coroutineScope = viewModelScope)
+
     init {
         // TODO add watermark
 
@@ -44,8 +46,6 @@ class CallViewModel(configure: suspend () -> Configuration) :
             .flatMapLatest { it.me.streams }
 
         val myStreamsIds = myStreams.map { streams -> streams.map { it.id } }
-
-        val streamsHandler = StreamsHandler(streams = streams, nMaxFeatured = maxFeatured)
 
         streamsHandler.streamsArrangement
             .onEach { (featuredStreams, thumbnailsStreams) ->
@@ -97,9 +97,7 @@ class CallViewModel(configure: suspend () -> Configuration) :
         maxFeatured.value = number
     }
 
-    fun moveThumbnailToFeatured() {
-
-    }
+    fun swapThumbnail(streamUi: StreamUi) = streamsHandler.swapThumbnail(streamUi)
 
     companion object {
         fun provideFactory(configure: suspend () -> Configuration) =
