@@ -8,7 +8,6 @@ import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startCamera
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startMicrophone
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamSorter.sortStreams
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
@@ -46,8 +45,9 @@ class CallViewModel(configure: suspend () -> Configuration) :
 
         val myStreamsIds = myStreams.map { streams -> streams.map { it.id } }
 
+        val streamsHandler = StreamsHandler(streams = streams, nMaxFeatured = maxFeatured)
 
-        sortStreams(streams, maxFeatured)
+        streamsHandler.streamsArrangement
             .onEach { (featuredStreams, thumbnailsStreams) ->
                 _uiState.update {
                     it.copy(
