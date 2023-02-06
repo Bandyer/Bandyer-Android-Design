@@ -57,7 +57,7 @@ class StreamsHandlerTest {
     fun setUp() {
         streamsHandler = StreamsHandler(
             streams = streamsFlow,
-            nMaxFeatured = nMaxFeaturedFlow,
+            nOfMaxFeatured = nMaxFeaturedFlow,
             coroutineScope = MainScope()
         )
     }
@@ -151,15 +151,15 @@ class StreamsHandlerTest {
     }
 
     @Test
-    fun testFeaturedStreamsOnly() = runTest {
+    fun testThereIsAtLeastAThumbnailStream() = runTest {
         val streams = listOf(streamMock1, streamMock2)
         streamsFlow.value = streams
-        nMaxFeaturedFlow.value = 2
+        nMaxFeaturedFlow.value = 3
 
         advanceUntilIdle()
         val (featuredStreams, thumbnailsStreams) = streamsHandler.streamsArrangement.first()
-        assertEquals(streams, featuredStreams)
-        assertEquals(0, thumbnailsStreams.size)
+        assertEquals(streams.take(1), featuredStreams)
+        assertEquals(streams.takeLast(1), thumbnailsStreams)
     }
 
     @Test
