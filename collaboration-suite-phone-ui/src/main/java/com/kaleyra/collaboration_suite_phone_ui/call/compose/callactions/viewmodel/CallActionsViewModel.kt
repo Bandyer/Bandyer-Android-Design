@@ -12,7 +12,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.star
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startMicrophone
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsMapper.toCallActions
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallActionsMapper.toCallActions
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallActionsUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.AudioMapper.toCurrentAudioDeviceUi

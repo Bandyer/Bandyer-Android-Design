@@ -1,6 +1,7 @@
-package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model
+package com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper
 
 import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
