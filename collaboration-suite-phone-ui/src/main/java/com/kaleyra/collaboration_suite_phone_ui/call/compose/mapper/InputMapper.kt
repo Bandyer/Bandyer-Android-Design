@@ -5,7 +5,7 @@ import com.kaleyra.collaboration_suite.phonebox.CallParticipant
 import com.kaleyra.collaboration_suite.phonebox.Input
 import kotlinx.coroutines.flow.*
 
-object InputMapper {
+internal object InputMapper {
 
     fun Flow<Call>.isMyCameraEnabled(): Flow<Boolean> =
         this.toMe()
