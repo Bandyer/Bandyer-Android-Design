@@ -1,22 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model
 
-import com.bandyer.android_audiosession.model.AudioOutputDevice
-import com.kaleyra.collaboration_suite.phonebox.Call
-import com.kaleyra.collaboration_suite.phonebox.CallParticipant
-import com.kaleyra.collaboration_suite.phonebox.Input
 import com.kaleyra.collaboration_suite_core_ui.CallUI
-import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.currentAudioOutputDevice
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioOutputMapper.mapToBluetoothDeviceState
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 
 internal object CallActionsMapper {
-
-    fun Flow<CallUI>.isConnected(): Flow<Boolean> =
-        flatMapLatest { it.state }.map { it is Call.State.Connected }
-
-    fun Flow<CallUI>.toCurrentAudioDeviceUi(): Flow<AudioDeviceUi?> =
-        flatMapLatest { it.currentAudioOutputDevice }.map { it?.mapToAudioDeviceUi() }
 
     fun Flow<CallUI>.toCallActions(): Flow<List<CallAction>> {
         return flatMapLatest { it.actions }
@@ -37,47 +26,4 @@ internal object CallActionsMapper {
                 }
             }
     }
-
-    fun Flow<CallUI>.isMyCameraEnabled(): Flow<Boolean> =
-        this.toMe()
-            .flatMapLatest { it.streams }
-            .map { streams ->
-                streams.firstOrNull { stream ->
-                    stream.video.firstOrNull { it is Input.Video.Camera } != null
-                }
-            }
-            .filterNotNull()
-            .flatMapLatest { it.video }
-            .filterNotNull()
-            .flatMapLatest { it.enabled }
-
-    fun Flow<CallUI>.isMyMicEnabled(): Flow<Boolean> =
-        this.toMe()
-            .flatMapLatest { it.streams }
-            .map { streams ->
-                streams.firstOrNull { stream ->
-                    stream.audio.firstOrNull { it != null } != null
-                }
-            }
-            .filterNotNull()
-            .flatMapLatest { it.audio }
-            .filterNotNull()
-            .flatMapLatest { it.enabled }
-
-    private fun Flow<CallUI>.toMe(): Flow<CallParticipant.Me> =
-        flatMapLatest { it.participants }.map { it.me }
-
-    fun AudioOutputDevice.mapToAudioDeviceUi(): AudioDeviceUi =
-        when (this) {
-            is AudioOutputDevice.NONE -> AudioDeviceUi.Muted
-            is AudioOutputDevice.EARPIECE -> AudioDeviceUi.EarPiece
-            is AudioOutputDevice.LOUDSPEAKER -> AudioDeviceUi.LoudSpeaker
-            is AudioOutputDevice.WIRED_HEADSET -> AudioDeviceUi.WiredHeadset
-            is AudioOutputDevice.BLUETOOTH -> AudioDeviceUi.Bluetooth(
-                id = identifier,
-                name = name,
-                connectionState = bluetoothConnectionStatus.mapToBluetoothDeviceState(),
-                batteryLevel = batteryLevel
-            )
-        }
 }

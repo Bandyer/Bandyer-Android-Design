@@ -1,19 +1,11 @@
 package com.kaleyra.collaboration_suite_phone_ui
 
+import android.net.Uri
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
+import com.kaleyra.collaboration_suite_core_ui.CallUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatBoxMock
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.usersDescriptionMock
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.callMock
-import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.callParticipantsMock
-import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.myVideoMock
-import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.participantMeMock
-import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.participantMock1
-import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.participantMock2
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.phoneBoxMock
-import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.recordingMock
-import com.kaleyra.collaboration_suite_phone_ui.PhoneBoxMocks.uriMock
+import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.ImmutableUri
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.Recording
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
@@ -30,6 +22,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PreCallViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -38,9 +31,74 @@ class PreCallViewModelTest {
 
     private lateinit var viewModel: PreCallViewModel
 
+    private val phoneBoxMock = mockk<PhoneBoxUI>()
+
+    private val callMock = mockk<CallUI>(relaxed = true)
+
+    private val uriMock = mockk<Uri>()
+
+    private val viewMock = mockk<VideoStreamView>()
+
+    private val videoMock = mockk<Input.Video.Camera>(relaxed = true) {
+        every { id } returns "videoId"
+        every { this@mockk.view } returns MutableStateFlow(viewMock)
+        every { enabled } returns MutableStateFlow(true)
+    }
+
+    private val myVideoMock = mockk<Input.Video.Camera.Internal>(relaxed = true) {
+        every { id } returns "myVideoId"
+        every { this@mockk.view } returns MutableStateFlow(viewMock)
+        every { enabled } returns MutableStateFlow(true)
+    }
+
+    private val streamMock1 = mockk<Stream> {
+        every { id } returns "streamId1"
+        every { this@mockk.video } returns MutableStateFlow(videoMock)
+    }
+
+    private val streamMock2 = mockk<Stream> {
+        every { id } returns "streamId2"
+        every { this@mockk.video } returns MutableStateFlow(videoMock)
+    }
+
+    private val streamMock3 = mockk<Stream> {
+        every { id } returns "streamId3"
+        every { this@mockk.video } returns MutableStateFlow(videoMock)
+    }
+
+    private val myStreamMock = mockk<Stream.Mutable> {
+        every { id } returns "myStreamId"
+        every { this@mockk.video } returns MutableStateFlow(myVideoMock)
+    }
+
+    private val callParticipantsMock = mockk<CallParticipants>()
+
+    private val participantMeMock = mockk<CallParticipant.Me> {
+        every { userId } returns "userId1"
+        every { streams } returns MutableStateFlow(listOf(myStreamMock))
+        every { displayName } returns MutableStateFlow("myDisplayName")
+        every { displayImage } returns MutableStateFlow(uriMock)
+    }
+
+    private val participantMock1 = mockk<CallParticipant> {
+        every { userId } returns "userId1"
+        every { streams } returns MutableStateFlow(listOf(streamMock1, streamMock2))
+        every { displayName } returns MutableStateFlow("displayName1")
+        every { displayImage } returns MutableStateFlow(uriMock)
+    }
+
+    private val participantMock2 = mockk<CallParticipant> {
+        every { userId } returns "userId2"
+        every { streams } returns MutableStateFlow(listOf(streamMock3))
+        every { displayName } returns MutableStateFlow("displayName2")
+        every { displayImage } returns MutableStateFlow(uriMock)
+    }
+
+    private val recordingMock = mockk<Call.Recording>()
+
     @Before
     fun setUp() {
-        viewModel = spyk(PreCallViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, usersDescriptionMock) })
+        viewModel = spyk(PreCallViewModel { Configuration.Success(phoneBoxMock, mockk(), mockk()) })
         every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.participants } returns MutableStateFlow(callParticipantsMock)
         every { callParticipantsMock.others } returns listOf(participantMock1, participantMock2)

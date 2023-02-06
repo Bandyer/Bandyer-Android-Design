@@ -8,7 +8,11 @@ import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startCamera
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.CallExtensions.startMicrophone
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.isRecording
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.CallStateMapper.toCallStateUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
 import com.kaleyra.collaboration_suite_phone_ui.chat.model.ImmutableList
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -23,8 +27,7 @@ class CallViewModel(configure: suspend () -> Configuration) :
     private val maxFeatured = MutableStateFlow(2)
 
     private val streams = call
-        .flatMapLatest { it.participants }
-        .reduceToStreamsUi()
+        .toStreamsUi()
         .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
 
 //    private val myStreams = call

@@ -5,7 +5,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.kaleyra.collaboration_suite_core_ui.Configuration
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.*
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.RecordingMapper.toRecordingUi
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.StreamMapper.toMyStreamsUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.viewmodel.BaseViewModel
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.isGroupCall
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.mapper.ParticipantMapper.toOtherDisplayNames
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.precall.model.PreCallUiState
 import kotlinx.coroutines.flow.*
 
@@ -15,19 +19,14 @@ internal class PreCallViewModel(configure: suspend () -> Configuration) : BaseVi
     val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
 
     init {
-        val participants = call.flatMapLatest { it.participants }
-        val recording = call.map { it.extras.recording }
         // TODO add watermark
 
-        participants
-            .map { it.me }
-            .flatMapLatest { me ->
-                me.streams.mapToStreamsUi(me.displayName, me.displayImage)
-            }
+        call
+            .toMyStreamsUi()
             .onEach { streams -> _uiState.update { it.copy(stream = streams.firstOrNull()) } }
             .launchIn(viewModelScope)
 
-        participants
+        call
             .toOtherDisplayNames()
             .onEach { parts -> _uiState.update { it.copy(participants = parts) } }
             .launchIn(viewModelScope)
@@ -37,8 +36,8 @@ internal class PreCallViewModel(configure: suspend () -> Configuration) : BaseVi
             .onEach { isGroupCall -> _uiState.update { it.copy(isGroupCall = isGroupCall) } }
             .launchIn(viewModelScope)
 
-        recording
-            .mapToRecordingUi()
+        call
+            .toRecordingUi()
             .onEach { rec -> _uiState.update { it.copy(recording = rec) } }
             .launchIn(viewModelScope)
     }
