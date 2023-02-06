@@ -5,11 +5,11 @@ import com.bandyer.android_audiosession.model.AudioOutputDevice
 import com.kaleyra.collaboration_suite.phonebox.*
 import com.kaleyra.collaboration_suite.phonebox.Call
 import com.kaleyra.collaboration_suite_core_ui.CallUI
+import com.kaleyra.collaboration_suite_core_ui.ChatBoxUI
 import com.kaleyra.collaboration_suite_core_ui.Configuration
+import com.kaleyra.collaboration_suite_core_ui.PhoneBoxUI
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions
 import com.kaleyra.collaboration_suite_extension_audio.extensions.CollaborationAudioExtensions.currentAudioOutputDevice
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.callMock
-import com.kaleyra.collaboration_suite_phone_ui.Mocks.chatBoxMock
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.audiooutput.model.AudioDeviceUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.model.CallAction
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.callactions.viewmodel.CallActionsViewModel
@@ -32,6 +32,12 @@ class CallActionsViewModelTest {
     var mainDispatcherRule = MainDispatcherRule()
 
     private lateinit var viewModel: CallActionsViewModel
+
+    private val phoneBoxMock = mockk<PhoneBoxUI>()
+
+    private val chatBoxMock = mockk<ChatBoxUI>(relaxed = true)
+
+    private val callMock = mockk<CallUI>(relaxed = true)
 
     private val callParticipantsMock = mockk<CallParticipants>()
 
@@ -59,8 +65,8 @@ class CallActionsViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = spyk(CallActionsViewModel { Configuration.Success(Mocks.phoneBoxMock, Mocks.chatBoxMock, Mocks.usersDescriptionMock) })
-        every { Mocks.phoneBoxMock.call } returns MutableStateFlow(callMock)
+        viewModel = spyk(CallActionsViewModel { Configuration.Success(phoneBoxMock, chatBoxMock, mockk()) })
+        every { phoneBoxMock.call } returns MutableStateFlow(callMock)
         every { callMock.inputs } returns inputsMock
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.HangUp, CallUI.Action.Audio))
         every { callMock.state } returns MutableStateFlow(mockk())
@@ -83,10 +89,12 @@ class CallActionsViewModelTest {
 
     @Test
     fun testCallActionsUiState_actionsUpdated() = runTest {
+        val current = viewModel.uiState.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
         advanceUntilIdle()
-        val actual = viewModel.uiState.first().actionList.value
+        val new = viewModel.uiState.first().actionList.value
         val expected = listOf(CallAction.HangUp(), CallAction.Audio())
-        assertEquals(expected, actual)
+        assertEquals(expected, new)
     }
 
     @Test
@@ -147,23 +155,29 @@ class CallActionsViewModelTest {
 
     @Test
     fun testCallActionsUiState_cameraActionUpdated() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.ToggleCamera))
         every { videoMock.enabled } returns MutableStateFlow(false)
 
         advanceUntilIdle()
-        val result = viewModel.uiState
-        val actual = result.first().actionList.value
+        val new = result.first().actionList.value
         val expected = listOf(CallAction.Camera(isToggled = true))
-        assertEquals(expected, actual)
+        assertEquals(expected, new)
     }
 
     @Test
     fun testCallActionsUiState_micActionUpdated() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.ToggleMicrophone))
         every { videoMock.enabled } returns MutableStateFlow(false)
 
         advanceUntilIdle()
-        val result = viewModel.uiState
         val actual = result.first().actionList.value
         val expected = listOf(CallAction.Microphone(isToggled = true))
         assertEquals(expected, actual)
@@ -172,12 +186,15 @@ class CallActionsViewModelTest {
 
     @Test
     fun testCallActionsUiState_audioActionUpdated() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
         mockkObject(CollaborationAudioExtensions)
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.Audio))
         every { any<Call>().currentAudioOutputDevice } returns MutableStateFlow(AudioOutputDevice.LOUDSPEAKER())
 
         advanceUntilIdle()
-        val result = viewModel.uiState
         val actual = result.first().actionList.value
         val expected = listOf(CallAction.Audio(device = AudioDeviceUi.LoudSpeaker))
         assertEquals(expected, actual)
@@ -185,11 +202,14 @@ class CallActionsViewModelTest {
 
     @Test
     fun callIsNotConnected_callActionsUiState_fileShareIsDisabled() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
         every { callMock.state } returns MutableStateFlow(mockk())
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.FileShare))
 
         advanceUntilIdle()
-        val result = viewModel.uiState
         val actual = result.first().actionList.value
         val expected = listOf(CallAction.FileShare(isEnabled = false))
         assertEquals(expected, actual)
@@ -197,11 +217,14 @@ class CallActionsViewModelTest {
 
     @Test
     fun callIsNotConnected_callActionsUiState_screenShareIsDisabled() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
         every { callMock.state } returns MutableStateFlow(mockk())
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.ScreenShare))
 
         advanceUntilIdle()
-        val result = viewModel.uiState
         val actual = result.first().actionList.value
         val expected = listOf(CallAction.ScreenShare(isEnabled = false))
         assertEquals(expected, actual)
@@ -209,11 +232,14 @@ class CallActionsViewModelTest {
 
     @Test
     fun callIsNotConnected_callActionsUiState_whiteboardIsDisabled() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
         every { callMock.state } returns MutableStateFlow(mockk())
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.OpenWhiteboard.Full))
 
         advanceUntilIdle()
-        val result = viewModel.uiState
         val actual = result.first().actionList.value
         val expected = listOf(CallAction.Whiteboard(isEnabled = false))
         assertEquals(expected, actual)
@@ -221,11 +247,14 @@ class CallActionsViewModelTest {
 
     @Test
     fun callIsConnected_callActionsUiState_fileShareIsEnabled() = runTest {
+        val result = viewModel.uiState
+        val current = result.first().actionList.value
+        assertEquals(listOf<CallAction>(), current)
+
         every { callMock.state } returns MutableStateFlow(Call.State.Connected)
         every { callMock.actions } returns MutableStateFlow(setOf(CallUI.Action.FileShare))
 
         advanceUntilIdle()
-        val result = viewModel.uiState
         val actual = result.first().actionList.value
         val expected = listOf(CallAction.FileShare(isEnabled = true))
         assertEquals(expected, actual)

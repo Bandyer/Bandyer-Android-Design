@@ -109,8 +109,10 @@ class PreCallViewModelTest {
 
     @Test
     fun testPreCallUiState_streamUpdated() = runTest {
+        val current = viewModel.uiState.first().stream
+        assertEquals(null, current)
         advanceUntilIdle()
-        val actual = viewModel.uiState.first().stream
+        val new = viewModel.uiState.first().stream
         val expected = StreamUi(
             id = "myStreamId",
             video = VideoUi(
@@ -121,30 +123,36 @@ class PreCallViewModelTest {
             username = "myDisplayName",
             avatar = ImmutableUri(uriMock)
         )
-        assertEquals(expected, actual)
+        assertEquals(expected, new)
     }
 
     @Test
     fun testPreCallUiState_participantsUpdated() = runTest {
+        val current = viewModel.uiState.first().participants
+        assertEquals(listOf<String>(), current)
         advanceUntilIdle()
-        val actual = viewModel.uiState.first().participants
+        val new = viewModel.uiState.first().participants
         val expected = listOf("displayName1", "displayName2")
-        assertEquals(expected, actual)
+        assertEquals(expected, new)
     }
 
     @Test
     fun testPreCallUiState_isGroupCallUpdated() = runTest {
+        val current = viewModel.uiState.first().isGroupCall
+        assertEquals(false, current)
         advanceUntilIdle()
-        val actual = viewModel.uiState.first().isGroupCall
-        assertEquals(true, actual)
+        val new = viewModel.uiState.first().isGroupCall
+        assertEquals(true, new)
     }
 
     @Test
     fun testPreCallUiState_recordingUpdated() = runTest {
+        val current = viewModel.uiState.first().recording
+        assertEquals(null, current)
         advanceUntilIdle()
-        val actual = viewModel.uiState.first().recording
+        val new = viewModel.uiState.first().recording
         val expected = Recording.OnConnect
-        assertEquals(expected, actual)
+        assertEquals(expected, new)
     }
 
     @Test
