@@ -20,14 +20,23 @@ class CallViewModel(configure: suspend () -> Configuration) :
 
     private val call = phoneBox.flatMapLatest { it.call }.shareInEagerly(viewModelScope)
 
-    private val maxFeatured = MutableStateFlow(1)
+    private val maxFeatured = MutableStateFlow(2)
 
     private val streams = call
         .flatMapLatest { it.participants }
         .reduceToStreamsUi()
         .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
 
-    private val streamsHandler = StreamsHandler(streams = streams, nMaxFeatured = maxFeatured, coroutineScope = viewModelScope)
+//    private val myStreams = call
+//        .flatMapLatest { it.participants }
+//        .flatMapLatest { it.me.streams.mapToStreamsUi(it.me.displayName, it.me.displayImage) }
+//        .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
+
+    private val streamsHandler = StreamsHandler(
+        streams = streams,
+        nMaxFeatured = maxFeatured,
+        coroutineScope = viewModelScope
+    )
 
     init {
         // TODO add watermark
@@ -40,12 +49,6 @@ class CallViewModel(configure: suspend () -> Configuration) :
 //                if (!viewModel.camPermission.value.isAllowed && it.hasVideo() && it.isVideoEnabled()) viewModel.onRequestCameraPermission(this)
 //            }
 //            .launchIn(lifecycleScope)
-
-        val myStreams = call
-            .flatMapLatest { it.participants }
-            .flatMapLatest { it.me.streams }
-
-        val myStreamsIds = myStreams.map { streams -> streams.map { it.id } }
 
         streamsHandler.streamsArrangement
             .onEach { (featuredStreams, thumbnailsStreams) ->
