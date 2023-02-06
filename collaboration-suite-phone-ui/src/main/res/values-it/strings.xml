@@ -72,7 +72,7 @@
         <item quantity="one">Ti sta chiamando &#8230;</item>
         <item quantity="other">Ti stanno chiamando &#8230;</item>
     </plurals>
-    <string name="kaleyra_call_status_ringing">Ringing &#8230;</string>
+    <string name="kaleyra_call_status_ringing">Sta squillando &#8230;</string>
     <string name="kaleyra_call_status_ended">Chiamata terminata</string>
     <string name="kaleyra_call_status_user_disconnected">La connessione di rete è stata interrotta.</string>
     <string name="kaleyra_call_status_answered_on_other_device">Hai risposto su un altro dispositivo.</string>
