@@ -154,23 +154,25 @@ internal fun CallComponent(
                 val streams = state.callUiState.featuredStreams.value
                 repeat(streams.count()) { index ->
                     val stream = streams[index]
-                    FeaturedStream(
-                        stream = stream,
-                        isFullscreen = false,
-                        onBackPressed = if (index == 0 && !shouldShowCallInfo) onBackPressed else null,
-                        onFullscreenClick = { state.enterFullscreenMode(stream) },
-                        modifier = Modifier.streamClickable {
-                            resetCountDown = !resetCountDown
-                        },
-                        headerModifier = Modifier
-                            .offset {
-                                IntOffset(
-                                    x = 0,
-                                    y = if (index < state.columns) streamHeaderOffset else 0
-                                )
-                            }
-                            .graphicsLayer { alpha = streamsHeaderAlpha }
-                    )
+                    key(stream.id) {
+                        FeaturedStream(
+                            stream = stream,
+                            isFullscreen = false,
+                            onBackPressed = if (index == 0 && !shouldShowCallInfo) onBackPressed else null,
+                            onFullscreenClick = { state.enterFullscreenMode(stream) },
+                            modifier = Modifier.streamClickable {
+                                resetCountDown = !resetCountDown
+                            },
+                            headerModifier = Modifier
+                                .offset {
+                                    IntOffset(
+                                        x = 0,
+                                        y = if (index < state.columns) streamHeaderOffset else 0
+                                    )
+                                }
+                                .graphicsLayer { alpha = streamsHeaderAlpha }
+                        )
+                    }
                 }
             }
         } else {
