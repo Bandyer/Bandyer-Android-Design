@@ -2,6 +2,7 @@ package com.kaleyra.collaboration_suite_phone_ui
 
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamsHandler
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.StreamUi
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.MainScope
@@ -28,17 +29,29 @@ class StreamsHandlerTest {
 
     private val nMaxFeaturedFlow = MutableStateFlow(DefaultMaxFeatured)
 
-    private val streamMock1 = mockk<StreamUi>()
+    private val streamMock1 = mockk<StreamUi> {
+        every { id } returns "streamId1"
+    }
 
-    private val streamMock2 = mockk<StreamUi>()
+    private val streamMock2 = mockk<StreamUi> {
+        every { id } returns "streamId2"
+    }
 
-    private val streamMock3 = mockk<StreamUi>()
+    private val streamMock3 = mockk<StreamUi> {
+        every { id } returns "streamId3"
+    }
 
-    private val streamMock4 = mockk<StreamUi>()
+    private val streamMock4 = mockk<StreamUi> {
+        every { id } returns "streamId4"
+    }
 
-    private val streamMock5 = mockk<StreamUi>()
+    private val streamMock5 = mockk<StreamUi> {
+        every { id } returns "streamId5"
+    }
 
-    private val streamMock6 = mockk<StreamUi>()
+    private val streamMock6 = mockk<StreamUi> {
+        every { id } returns "streamId6"
+    }
 
     @Before
     fun setUp() {
@@ -58,7 +71,7 @@ class StreamsHandlerTest {
     // test che mio stream viene messo nei thumbnail
 
     @Test
-    fun testSortEmptyList() = runTest {
+    fun testEmptyStreamListArrangement() = runTest {
         streamsFlow.value = listOf()
         nMaxFeaturedFlow.value = 1
 
@@ -68,7 +81,7 @@ class StreamsHandlerTest {
     }
 
     @Test
-    fun testSortFilledList() = runTest {
+    fun testFilledStreamListArrangement() = runTest {
         val streams = listOf(streamMock1, streamMock2, streamMock3, streamMock4, streamMock5)
         streamsFlow.value = streams
 
@@ -119,7 +132,7 @@ class StreamsHandlerTest {
     }
 
     @Test
-    fun testReplaceSomeStreams() = runTest {
+    fun testStreamsArrangementAfterStreamListUpdate() = runTest {
         val streams = listOf(streamMock1, streamMock2, streamMock3, streamMock4)
         streamsFlow.value = streams
 
@@ -138,7 +151,7 @@ class StreamsHandlerTest {
     }
 
     @Test
-    fun testOnlyFeaturedStreams() = runTest {
+    fun testFeaturedStreamsOnly() = runTest {
         val streams = listOf(streamMock1, streamMock2)
         streamsFlow.value = streams
         nMaxFeaturedFlow.value = 2
@@ -150,7 +163,7 @@ class StreamsHandlerTest {
     }
 
     @Test
-    fun testOnlyThumbnailsStreams() = runTest {
+    fun testThumbnailsStreamsOnly() = runTest {
         val streams = listOf(streamMock1, streamMock2)
         streamsFlow.value = streams
         nMaxFeaturedFlow.value = 0
@@ -204,12 +217,7 @@ class StreamsHandlerTest {
     }
 
     @Test
-    fun testMyStreamIsInThumbnail() = runTest {
-
-    }
-
-    @Test
-    fun swapThumbnailStream() = runTest {
+    fun testSwapThumbnailStream() = runTest {
         val streams = listOf(streamMock1, streamMock2, streamMock3, streamMock4, streamMock5)
         streamsFlow.value = streams
 
@@ -227,7 +235,7 @@ class StreamsHandlerTest {
     }
 
     @Test
-    fun streamUpdatedKeepArrangementAfterSwapThumbnail() = runTest {
+    fun testStreamsArrangementPreservedAfterThumbnailSwap() = runTest {
         val streams = listOf(streamMock1, streamMock2, streamMock3, streamMock4, streamMock5)
         streamsFlow.value = streams
 
@@ -249,7 +257,29 @@ class StreamsHandlerTest {
     }
 
     @Test
-    fun tryToSwapARemovedStream() = runTest {
+    fun testStreamsArrangementPreservedAfterStreamUpdate() = runTest {
+        val streams = listOf(streamMock1, streamMock2, streamMock3)
+        streamsFlow.value = streams
+
+        advanceUntilIdle()
+        val (featuredStreams, thumbnailsStreams) = streamsHandler.streamsArrangement.first()
+        assertEquals(streams.take(DefaultMaxFeatured), featuredStreams)
+        assertEquals(streams.takeLast(streams.size - DefaultMaxFeatured), thumbnailsStreams)
+
+        val updatedStreamMock = mockk<StreamUi> {
+            every { id } returns "streamId1"
+        }
+        val newStreams = listOf(updatedStreamMock, streamMock2, streamMock3)
+        streamsFlow.value = newStreams
+
+        advanceUntilIdle()
+        val (newFeaturedStreams, newThumbnailsStreams) = streamsHandler.streamsArrangement.first()
+        assertEquals(newStreams.take(DefaultMaxFeatured), newFeaturedStreams)
+        assertEquals(newStreams.takeLast(streams.size - DefaultMaxFeatured), newThumbnailsStreams)
+    }
+
+    @Test
+    fun testSwapARemovedStream() = runTest {
         val streams = listOf(streamMock1, streamMock2, streamMock3, streamMock4, streamMock5)
         streamsFlow.value = streams
 

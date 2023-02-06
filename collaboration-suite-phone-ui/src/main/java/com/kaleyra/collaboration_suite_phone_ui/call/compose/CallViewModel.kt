@@ -30,11 +30,6 @@ class CallViewModel(configure: suspend () -> Configuration) :
         .toStreamsUi()
         .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
 
-//    private val myStreams = call
-//        .flatMapLatest { it.participants }
-//        .flatMapLatest { it.me.streams.mapToStreamsUi(it.me.displayName, it.me.displayImage) }
-//        .stateIn(viewModelScope, SharingStarted.Eagerly, listOf())
-
     private val streamsHandler = StreamsHandler(
         streams = streams,
         nMaxFeatured = maxFeatured,
