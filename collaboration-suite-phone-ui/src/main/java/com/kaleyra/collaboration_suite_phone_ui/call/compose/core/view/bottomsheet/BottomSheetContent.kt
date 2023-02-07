@@ -149,7 +149,6 @@ internal fun BottomSheetContent(
                     }
                     BottomSheetComponent.Whiteboard -> {
                         WhiteboardComponent(
-                            onReloadClick = { /*TODO*/ },
                             modifier = Modifier
                                 .padding(top = 20.dp)
                                 .testTag(WhiteboardComponentTag)

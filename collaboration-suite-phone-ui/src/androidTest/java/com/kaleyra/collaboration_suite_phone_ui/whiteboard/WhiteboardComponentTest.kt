@@ -17,6 +17,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.Whiteboa
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.LinearProgressIndicatorTag
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardViewTag
 
 @RunWith(AndroidJUnit4::class)
 class WhiteboardComponentTest {
@@ -33,9 +34,38 @@ class WhiteboardComponentTest {
         composeTestRule.setContent {
             WhiteboardComponent(
                 uiState = uiState,
-                onReloadClick = { isReloadClicked = true }
+                onReloadClick = { isReloadClicked = true },
+                onTextConfirm = { },
+                onTextDismiss = {},
+                onWhiteboardViewCreated = {},
+                onWhiteboardViewDispose = {},
             )
         }
+    }
+
+    // test per onTextEditorDismiss
+    // test per onTextConfirmed
+    // test per onWhiteboardViewCreated
+    // test per onWhiteboardViewDispose
+
+    @Test
+    fun textNull_whiteboardIsDisplayed() {
+        val confirm = composeTestRule.activity.getString(R.string.kaleyra_action_confirm)
+        uiState = WhiteboardUiState(text = null)
+        composeTestRule.onNodeWithTag(WhiteboardViewTag).assertIsDisplayed()
+        composeTestRule.onNodeWithText(confirm).assertIsNotDisplayed()
+    }
+
+    @Test
+    fun textNotNull_textEditorIsDisplayed() {
+        uiState = WhiteboardUiState(text = "text")
+        composeTestRule.onNodeWithText("text").assertIsDisplayed()
+    }
+
+    @Test
+    fun textEditorIsDisplayed_userClicksDismissButton_onTextDismissInvoked() {
+        uiState = WhiteboardUiState(text = "text")
+        composeTestRule.onNodeWithText("text").assertIsDisplayed()
     }
 
     @Test
@@ -46,7 +76,7 @@ class WhiteboardComponentTest {
         composeTestRule.onNodeWithText(title).assertDoesNotExist()
         composeTestRule.onNodeWithText(subtitle).assertDoesNotExist()
         composeTestRule.onNodeWithContentDescription(reload).assertDoesNotExist()
-        uiState = WhiteboardUiState(isOffline = true)
+        uiState =   WhiteboardUiState(isOffline = true)
         composeTestRule.onNodeWithText(title).assertIsDisplayed()
         composeTestRule.onNodeWithText(subtitle).assertIsDisplayed()
         composeTestRule.onNodeWithContentDescription(reload).assertIsDisplayed()

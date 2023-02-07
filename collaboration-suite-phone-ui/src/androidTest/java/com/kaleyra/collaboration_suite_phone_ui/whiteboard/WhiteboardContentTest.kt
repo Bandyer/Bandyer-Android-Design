@@ -9,9 +9,11 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.LinearProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardContent
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardViewTag
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -32,9 +34,17 @@ class WhiteboardContentTest {
         composeTestRule.setContent {
             WhiteboardContent(
                 loading = loading,
-                upload = upload
+                upload = upload,
+                onWhiteboardViewCreated = {},
+                onWhiteboardViewDispose = {}
             )
         }
+    }
+
+    // TODO test onWhiteboardViewCreated
+    @Test
+    fun whiteboardViewIsDisplayed() {
+        composeTestRule.onNodeWithTag(WhiteboardViewTag).assertIsDisplayed()
     }
 
     @Test

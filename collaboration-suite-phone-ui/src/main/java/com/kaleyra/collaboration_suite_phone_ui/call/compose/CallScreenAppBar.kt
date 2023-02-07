@@ -39,13 +39,8 @@ internal fun CallScreenAppBar(
                 // TODO check if this modifier is needed
                 val appBarsModifier = Modifier.horizontalCutoutPadding()
                 when (currentSheetComponent) {
-                    BottomSheetComponent.FileShare -> FileShareAppBar(
-                        onBackPressed = onBackPressed
-                    )
-                    BottomSheetComponent.Whiteboard -> WhiteboardAppBar(
-                        onBackPressed = onBackPressed,
-                        onUploadClick = { /*TODO*/ }
-                    )
+                    BottomSheetComponent.FileShare -> FileShareAppBar(onBackPressed = onBackPressed)
+                    BottomSheetComponent.Whiteboard -> WhiteboardAppBar(onBackPressed = onBackPressed)
                 }
             }
         }

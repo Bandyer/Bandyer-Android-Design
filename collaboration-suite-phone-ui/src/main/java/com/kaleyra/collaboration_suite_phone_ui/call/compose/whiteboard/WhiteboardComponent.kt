@@ -9,6 +9,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.kaleyra.collaboration_suite.phonebox.WhiteboardView
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.NavigationBarsSpacer
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
@@ -20,14 +22,19 @@ import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithL
 
 @Composable
 internal fun WhiteboardComponent(
-    viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
-    onReloadClick: () -> Unit,
+    viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        factory = WhiteboardViewModel.provideFactory(::requestConfiguration)
+    ),
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     WhiteboardComponent(
         uiState = uiState,
-        onReloadClick = onReloadClick,
+        onReloadClick = viewModel::onReloadClick,
+        onTextDismiss = viewModel::onTextDismiss,
+        onTextConfirm = viewModel::onTextConfirm,
+        onWhiteboardViewCreated = viewModel::onWhiteboardViewCreated,
+        onWhiteboardViewDispose = viewModel::onWhiteboardViewDispose,
         modifier = modifier
     )
 }
@@ -37,17 +44,31 @@ internal fun WhiteboardComponent(
 internal fun WhiteboardComponent(
     uiState: WhiteboardUiState,
     onReloadClick: () -> Unit,
+    onTextDismiss: () -> Unit,
+    onTextConfirm: (String) -> Unit,
+    onWhiteboardViewCreated: (WhiteboardView) -> Unit,
+    onWhiteboardViewDispose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val sheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
         skipHalfExpanded = true
     )
+    LaunchedEffect(uiState) {
+        if (uiState.text != null) sheetState.show()
+    }
 
     ModalBottomSheetLayout(
         sheetState = sheetState,
         modifier = modifier.statusBarsPadding(),
-        sheetContent = { WhiteboardModalBottomSheetContent(sheetState = sheetState) },
+        sheetContent = {
+            WhiteboardModalBottomSheetContent(
+                text = uiState.text ?: "",
+                sheetState = sheetState,
+                onTextEditorDismiss = onTextDismiss,
+                onTextConfirmed = onTextConfirm
+            )
+        },
         content = {
             Column {
                 val contentModifier = Modifier
@@ -63,6 +84,8 @@ internal fun WhiteboardComponent(
                     WhiteboardContent(
                         loading = uiState.isLoading,
                         upload = uiState.upload,
+                        onWhiteboardViewCreated = onWhiteboardViewCreated,
+                        onWhiteboardViewDispose = onWhiteboardViewDispose,
                         modifier = contentModifier
                     )
                 }
@@ -98,7 +121,11 @@ private fun WhiteboardComponentPreview(uiState: WhiteboardUiState) {
         Surface {
             WhiteboardComponent(
                 uiState = uiState,
-                onReloadClick = {}
+                onReloadClick = {},
+                onTextDismiss = {},
+                onTextConfirm = {},
+                onWhiteboardViewCreated = {},
+                onWhiteboardViewDispose = {}
             )
         }
     }
