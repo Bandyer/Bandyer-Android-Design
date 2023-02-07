@@ -1,5 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view
 
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -7,10 +9,31 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
 import com.kaleyra.collaboration_suite_phone_ui.R
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.appbar.CallAppBar
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmodel.WhiteboardViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
+
+@Composable
+internal fun WhiteboardAppBar(
+    viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        factory = WhiteboardViewModel.provideFactory(::requestConfiguration)
+    ),
+    onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) viewModel.uploadMediaFile(uri)
+    }
+
+    WhiteboardAppBar(
+        onBackPressed = onBackPressed,
+        onUploadClick = { launcher.launch("image/*") },
+        modifier = modifier
+    )
+}
 
 @Composable
 internal fun WhiteboardAppBar(
