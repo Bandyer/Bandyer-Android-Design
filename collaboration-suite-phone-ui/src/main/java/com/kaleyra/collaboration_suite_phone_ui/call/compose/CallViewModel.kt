@@ -32,7 +32,7 @@ class CallViewModel(configure: suspend () -> Configuration) :
 
     private val streamsHandler = StreamsHandler(
         streams = streams,
-        nMaxFeatured = maxFeatured,
+        nOfMaxFeatured = maxFeatured,
         coroutineScope = viewModelScope
     )
 
