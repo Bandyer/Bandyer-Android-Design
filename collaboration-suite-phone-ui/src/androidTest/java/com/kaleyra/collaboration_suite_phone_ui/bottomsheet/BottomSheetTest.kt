@@ -19,6 +19,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomshe
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -167,14 +168,36 @@ class BottomSheetTest {
         collapsable: Boolean = true
     ) {
         val sheetState = BottomSheetState(initialValue = initialState, isCollapsable = collapsable)
-        composeTestRule.setBottomSheetScaffold(
-            sheetState = sheetState,
-        )
+        composeTestRule.setBottomSheetScaffold(sheetState = sheetState)
         composeTestRule.onNodeWithTag(BottomSheetTag).performSwipe(swipeAmount)
         composeTestRule.waitForIdle()
         runBlocking {
             val currentValue = snapshotFlow { sheetState.currentValue }.first()
             assertEquals(targetState, currentValue)
+        }
+    }
+
+    @Test
+    fun sheetGesturesEnabledTrue_userPerformsSwipe_sheetStateChanged() {
+        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        composeTestRule.setBottomSheetScaffold(sheetState = sheetState, sheetGestureEnabled = true)
+        composeTestRule.onNodeWithTag(BottomSheetTag).performSwipe(-0.5f)
+        composeTestRule.waitForIdle()
+        runBlocking {
+            val currentValue = snapshotFlow { sheetState.currentValue }.first()
+            assertNotEquals(BottomSheetValue.Expanded, currentValue)
+        }
+    }
+
+    @Test
+    fun sheetGesturesEnabledFalse_userPerformsSwipe_sheetStateNotChanged() {
+        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        composeTestRule.setBottomSheetScaffold(sheetState = sheetState, sheetGestureEnabled = false)
+        composeTestRule.onNodeWithTag(BottomSheetTag).performSwipe(-0.5f)
+        composeTestRule.waitForIdle()
+        runBlocking {
+            val currentValue = snapshotFlow { sheetState.currentValue }.first()
+            assertEquals(BottomSheetValue.Expanded, currentValue)
         }
     }
 
@@ -424,6 +447,7 @@ class BottomSheetTest {
 
     private fun ComposeContentTestRule.setBottomSheetScaffold(
         sheetState: BottomSheetState,
+        sheetGestureEnabled: Boolean = true,
         launchedEffect: suspend () -> Unit = { }
     ) {
         setContent {
@@ -432,6 +456,7 @@ class BottomSheetTest {
             }
             BottomSheetScaffold(
                 sheetState = sheetState,
+                sheetGesturesEnabled = sheetGestureEnabled,
                 sheetContent = {
                     Box(
                         modifier = Modifier

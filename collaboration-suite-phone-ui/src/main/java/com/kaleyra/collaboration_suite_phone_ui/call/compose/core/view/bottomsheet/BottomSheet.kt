@@ -131,6 +131,7 @@ internal fun BottomSheetScaffold(
     modifier: Modifier = Modifier,
     sheetState: BottomSheetState = rememberBottomSheetState(BottomSheetValue.Collapsed),
     anchor: (@Composable () -> Unit)? = null,
+    sheetGesturesEnabled: Boolean = true,
     sheetShape: Shape = MaterialTheme.shapes.large,
     sheetElevation: Dp = BottomSheetDefaults.SheetElevation,
     sheetBackgroundColor: Color = MaterialTheme.colors.surface,
@@ -158,6 +159,7 @@ internal fun BottomSheetScaffold(
             bottomSheet = {
                 BottomSheet(
                     sheetState = sheetState,
+                    sheetGesturesEnabled = sheetGesturesEnabled,
                     sheetFullHeight = fullHeight,
                     sheetPeekHeight = peekHeightPx,
                     sheetHalfExpandedHeight = halfExpandedPx,
@@ -191,6 +193,7 @@ private fun sheetPadding(fullHeight: Float, sheetOffset: State<Float>) = object 
 @Composable
 private fun BottomSheet(
     sheetState: BottomSheetState,
+    sheetGesturesEnabled: Boolean,
     sheetFullHeight: Float,
     sheetPeekHeight: Float,
     sheetHalfExpandedHeight: Float,
@@ -208,6 +211,7 @@ private fun BottomSheet(
         .nestedScroll(sheetState.nestedScrollConnection)
         .sheetSwipeable(
             sheetState = sheetState,
+            sheetGesturesEnabled = sheetGesturesEnabled,
             peekHeight = sheetPeekHeight,
             halfExpandedHeight = sheetHalfExpandedHeight,
             fullHeight = sheetFullHeight,
@@ -264,6 +268,7 @@ private fun BottomSheet(
 @OptIn(ExperimentalMaterialApi::class)
 private fun Modifier.sheetSwipeable(
     sheetState: BottomSheetState,
+    sheetGesturesEnabled: Boolean,
     peekHeight: Float,
     halfExpandedHeight: Float,
     fullHeight: Float,
@@ -294,6 +299,7 @@ private fun Modifier.sheetSwipeable(
     swipeable(
         state = sheetState,
         anchors = anchors,
+        enabled = sheetGesturesEnabled,
         orientation = Orientation.Vertical,
         resistance = null
     )
