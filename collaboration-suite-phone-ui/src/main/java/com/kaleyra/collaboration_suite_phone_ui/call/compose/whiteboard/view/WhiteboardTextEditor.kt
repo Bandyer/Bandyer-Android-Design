@@ -54,7 +54,7 @@ internal class TextEditorState(initialValue: TextEditorValue) {
         return currentText.also { clearState() }
     }
 
-    private fun clearState() {
+    fun clearState() {
         currentValue = TextEditorValue.Empty
         textFieldValue = TextFieldValue()
     }

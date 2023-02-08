@@ -59,14 +59,16 @@ internal fun WhiteboardComponent(
     onWhiteboardViewDispose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val textEditorState = rememberTextEditorState(initialValue = textEditorValue(uiState.text))
+    val textEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty)
 
     val shouldShowTextEditor by rememberUpdatedState(newValue = uiState.text != null)
-    LaunchedEffect(shouldShowTextEditor, editorSheetState) {
+    LaunchedEffect(shouldShowTextEditor, editorSheetState,uiState.text) {
         if (shouldShowTextEditor) {
+            textEditorState.type(TextFieldValue(uiState.text ?: ""))
             editorSheetState.show()
         } else {
             editorSheetState.hide()
+            textEditorState.clearState()
         }
     }
 
@@ -106,16 +108,6 @@ internal fun WhiteboardComponent(
         },
     )
 }
-
-@Composable
-private fun textEditorValue(text: String?): TextEditorValue {
-    return remember {
-        derivedStateOf {
-            if (text.isNullOrBlank()) TextEditorValue.Empty else TextEditorValue.Editing(TextFieldValue(text))
-        }.value
-    }
-}
-
 
 @Preview(name = "Light Mode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Dark Mode")

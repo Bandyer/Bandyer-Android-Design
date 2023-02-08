@@ -178,4 +178,28 @@ class WhiteboardTextEditorTest {
         assertEquals(TextFieldValue(), textEditorState.textFieldValue)
     }
 
+    @Test
+    fun emptyState_clearState_editorStateIsCleared() {
+        textEditorState = TextEditorState(initialValue = TextEditorValue.Empty)
+        textEditorState.clearState()
+        assertEquals(TextEditorValue.Empty, textEditorState.currentValue)
+        assertEquals(TextFieldValue(), textEditorState.textFieldValue)
+    }
+
+    @Test
+    fun editingState_clearState_editorStateIsCleared() {
+        textEditorState = TextEditorState(initialValue = TextEditorValue.Editing(TextFieldValue("text")))
+        textEditorState.clearState()
+        assertEquals(TextEditorValue.Empty, textEditorState.currentValue)
+        assertEquals(TextFieldValue(), textEditorState.textFieldValue)
+    }
+
+    @Test
+    fun discardState_clearState_editorStateIsCleared() {
+        textEditorState = TextEditorState(initialValue = TextEditorValue.Discard)
+        textEditorState.clearState()
+        assertEquals(TextEditorValue.Empty, textEditorState.currentValue)
+        assertEquals(TextFieldValue(), textEditorState.textFieldValue)
+    }
+
 }

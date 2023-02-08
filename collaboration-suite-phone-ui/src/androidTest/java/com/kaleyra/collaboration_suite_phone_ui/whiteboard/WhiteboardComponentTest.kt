@@ -81,6 +81,18 @@ class WhiteboardComponentTest {
     }
 
     @Test
+    fun textNull_textEditorCleaned() {
+        // Check text editor before
+        uiState = WhiteboardUiState(text = "text")
+        composeTestRule.onNodeWithText("text").assertIsDisplayed()
+        // Check after setting text to null
+        uiState = WhiteboardUiState(text = null)
+        val hint = composeTestRule.activity.getString(R.string.kaleyra_edit_text_input_placeholder)
+        composeTestRule.onNodeWithText(hint).assertExists()
+        composeTestRule.onNode(hasSetTextAction()).assert(hasText(""))
+    }
+
+    @Test
     fun textNotNull_textEditorIsDisplayed() {
         uiState = WhiteboardUiState(text = "text")
         composeTestRule.onNodeWithText("text").assertIsDisplayed()
