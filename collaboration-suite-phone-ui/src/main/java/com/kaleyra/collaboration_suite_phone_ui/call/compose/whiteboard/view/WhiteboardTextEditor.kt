@@ -69,9 +69,10 @@ internal fun rememberTextEditorState(initialValue: TextEditorValue) = remember(i
 internal fun WhiteboardTextEditor(
     textEditorState: TextEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty),
     onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit
+    onConfirm: (String) -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 48.dp)) {
+    Column(modifier.padding(start = 16.dp, end = 16.dp, bottom = 48.dp)) {
         if (textEditorState.currentValue != TextEditorValue.Discard) {
             Box(Modifier.weight(1f)) {
                 UserInputText(

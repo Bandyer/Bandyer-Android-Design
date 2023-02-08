@@ -77,7 +77,8 @@ internal fun WhiteboardComponent(
             WhiteboardModalBottomSheetContent(
                 textEditorState = textEditorState,
                 onTextDismiss = onTextDismiss,
-                onTextConfirmed = onTextConfirm
+                onTextConfirmed = onTextConfirm,
+                modifier = Modifier.navigationBarsPadding()
             )
         },
         content = {
