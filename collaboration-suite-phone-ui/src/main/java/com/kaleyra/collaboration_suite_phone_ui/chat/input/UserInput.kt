@@ -7,10 +7,10 @@ import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.LocalContentColor
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -94,6 +94,7 @@ internal fun UserInputText(
     ) {
         BasicTextField(
             value = textFieldValue,
+            textStyle = MaterialTheme.typography.subtitle1.copy(color = LocalContentColor.current),
             onValueChange = { onTextChanged(it) },
             modifier = Modifier
                 .fillMaxWidth()
