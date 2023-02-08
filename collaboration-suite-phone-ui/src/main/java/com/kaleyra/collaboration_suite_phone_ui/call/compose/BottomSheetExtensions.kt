@@ -28,7 +28,7 @@ internal fun BottomSheetState.isCollapsed(): State<Boolean> {
 @OptIn(ExperimentalMaterialApi::class)
 internal fun BottomSheetState.isNotDraggableDown(): State<Boolean> {
     return derivedStateOf {
-        targetValue == BottomSheetValue.Collapsed || (targetValue == BottomSheetValue.HalfExpanded && !isCollapsable)
+        targetValue == BottomSheetValue.Collapsed || (targetValue == BottomSheetValue.HalfExpanded && !isCollapsable) || targetValue == BottomSheetValue.Hidden
     }
 }
 
