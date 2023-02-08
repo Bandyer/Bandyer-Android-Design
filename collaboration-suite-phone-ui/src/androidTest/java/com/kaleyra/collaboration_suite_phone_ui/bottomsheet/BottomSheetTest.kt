@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.test.junit4.StateRestorationTester
@@ -23,7 +22,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.math.sign
 
 @RunWith(AndroidJUnit4::class)
 class BottomSheetTest {
@@ -86,7 +84,7 @@ class BottomSheetTest {
         checkStateAfterSwipe(
             initialState = BottomSheetValue.Expanded,
             targetState = BottomSheetValue.Hidden,
-            swipeAmount = -0.5f
+            swipeAmount = -0.7f
         )
 
     @Test
@@ -258,6 +256,36 @@ class BottomSheetTest {
     }
 
     @Test
+    fun sheetExpanded_hide_sheetHidden() {
+        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Expanded)
+        composeTestRule.setBottomSheetScaffold(
+            sheetState = sheetState,
+            launchedEffect = sheetState::hide
+        )
+        assertEquals(BottomSheetValue.Hidden, sheetState.currentValue)
+    }
+
+    @Test
+    fun sheetHalfExpanded_hide_sheetHidden() {
+        val sheetState = BottomSheetState(initialValue = BottomSheetValue.HalfExpanded)
+        composeTestRule.setBottomSheetScaffold(
+            sheetState = sheetState,
+            launchedEffect = sheetState::hide
+        )
+        assertEquals(BottomSheetValue.Hidden, sheetState.currentValue)
+    }
+
+    @Test
+    fun sheetCollapsed_hide_sheetHidden() {
+        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
+        composeTestRule.setBottomSheetScaffold(
+            sheetState = sheetState,
+            launchedEffect = sheetState::hide
+        )
+        assertEquals(BottomSheetValue.Hidden, sheetState.currentValue)
+    }
+
+    @Test
     fun sheetCollapsed_halfExpand_sheetHalfExpanded() {
         val sheetState = BottomSheetState(initialValue = BottomSheetValue.Collapsed)
         composeTestRule.setBottomSheetScaffold(
@@ -265,6 +293,36 @@ class BottomSheetTest {
             launchedEffect = sheetState::halfExpand
         )
         assertEquals(BottomSheetValue.HalfExpanded, sheetState.currentValue)
+    }
+
+    @Test
+    fun sheetHidden_collapse_sheetCollapsed() {
+        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Hidden)
+        composeTestRule.setBottomSheetScaffold(
+            sheetState = sheetState,
+            launchedEffect = sheetState::collapse
+        )
+        assertEquals(BottomSheetValue.Collapsed, sheetState.currentValue)
+    }
+
+    @Test
+    fun sheetHidden_halfExpand_sheetHalfExpanded() {
+        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Hidden)
+        composeTestRule.setBottomSheetScaffold(
+            sheetState = sheetState,
+            launchedEffect = sheetState::halfExpand
+        )
+        assertEquals(BottomSheetValue.HalfExpanded, sheetState.currentValue)
+    }
+
+    @Test
+    fun sheetHidden_expand_sheetExpanded() {
+        val sheetState = BottomSheetState(initialValue = BottomSheetValue.Hidden)
+        composeTestRule.setBottomSheetScaffold(
+            sheetState = sheetState,
+            launchedEffect = sheetState::expand
+        )
+        assertEquals(BottomSheetValue.Expanded, sheetState.currentValue)
     }
 
     @Test

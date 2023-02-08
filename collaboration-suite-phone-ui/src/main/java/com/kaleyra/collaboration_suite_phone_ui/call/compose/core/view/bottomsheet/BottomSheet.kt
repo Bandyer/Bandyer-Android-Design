@@ -76,6 +76,8 @@ internal class BottomSheetState(
 
     suspend fun halfExpand() = animateTo(BottomSheetValue.HalfExpanded)
 
+    suspend fun hide() = animateTo(BottomSheetValue.Hidden)
+
     companion object {
         fun Saver(
             animationSpec: AnimationSpec<Float>,
