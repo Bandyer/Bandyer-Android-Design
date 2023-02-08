@@ -8,8 +8,8 @@ import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.kaleyra.collaboration_suite.phonebox.WhiteboardView
 import com.kaleyra.collaboration_suite_phone_ui.R
-import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.LinearProgressIndicatorTag
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.WhiteboardContent
@@ -29,22 +29,28 @@ class WhiteboardContentTest {
 
     private var upload by mutableStateOf<WhiteboardUploadUi>(WhiteboardUploadUi.Uploading(.7f))
 
+    private var whiteboardView: WhiteboardView? = null
+
     @Before
     fun setUp() {
         composeTestRule.setContent {
             WhiteboardContent(
                 loading = loading,
                 upload = upload,
-                onWhiteboardViewCreated = {},
-                onWhiteboardViewDispose = {}
+                onWhiteboardViewCreated = { whiteboardView = it },
+                onWhiteboardViewDispose = { }
             )
         }
     }
 
-    // TODO test onWhiteboardViewCreated
     @Test
     fun whiteboardViewIsDisplayed() {
         composeTestRule.onNodeWithTag(WhiteboardViewTag).assertIsDisplayed()
+    }
+
+    @Test
+    fun launchComposable_onWhiteboardViewCreatedInvoked() {
+        assert(whiteboardView != null)
     }
 
     @Test

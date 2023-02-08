@@ -1,49 +1,33 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view
 
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.input.TextFieldValue
-import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun WhiteboardModalBottomSheetContent(
-    text: String,
-    sheetState: ModalBottomSheetState,
-    onTextEditorDismiss: () -> Unit,
+    textEditorState: TextEditorState,
+    onTextDismiss: () -> Unit,
     onTextConfirmed: (String) -> Unit
 ) {
-    val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
-    val closeSheet = remember {
-        {
-            scope.launch {
-                sheetState.hide()
-                focusManager.clearFocus()
-            }
-        }
+    val clearFocus = remember {
+        { focusManager.clearFocus() }
     }
-    val currentOnDismiss by rememberUpdatedState(newValue = onTextEditorDismiss)
+    val currentOnDismiss by rememberUpdatedState(newValue = onTextDismiss)
     val currentOnConfirm by rememberUpdatedState(newValue = onTextConfirmed)
-    val textEditorState = rememberTextEditorState(
-        initialValue = if (text.isBlank()) TextEditorValue.Empty else TextEditorValue.Editing(
-            TextFieldValue(text)
-        )
-    )
 
     WhiteboardTextEditor(
         textEditorState = textEditorState,
-        onDismissClick = {
-            closeSheet.invoke()
+        onDismiss = {
+            clearFocus.invoke()
             currentOnDismiss.invoke()
-            textEditorState.type(TextFieldValue())
         },
-        onConfirmClick = { newText ->
-            closeSheet.invoke()
+        onConfirm = { newText ->
+            clearFocus.invoke()
             currentOnConfirm.invoke(newText)
-            textEditorState.type(TextFieldValue())
         }
     )
 }

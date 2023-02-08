@@ -26,21 +26,21 @@ class WhiteboardTextEditorTest {
 
     private var textEditorState by mutableStateOf(TextEditorState(initialValue = TextEditorValue.Empty))
 
-    private var isDismissClicked = false
+    private var onDismissInvoked = false
 
-    private var isConfirmClicked = false
+    private var textConfirmed: String? = null
 
     @Before
     fun setUp() {
         composeTestRule.setContent {
             WhiteboardTextEditor(
                 textEditorState = textEditorState,
-                onDismissClick = { isDismissClicked = true },
-                onConfirmClick = { isConfirmClicked = true }
+                onDismiss = { onDismissInvoked = true },
+                onConfirm = { textConfirmed = it }
             )
         }
-        isDismissClicked = false
-        isConfirmClicked = false
+        onDismissInvoked = false
+        textConfirmed = null
     }
 
     @Test
@@ -81,11 +81,11 @@ class WhiteboardTextEditorTest {
     }
 
     @Test
-    fun emptyState_userClicksDismiss_onDismissClickInvoked() {
+    fun emptyState_userClicksDismiss_onDismissInvoked() {
         textEditorState = TextEditorState(initialValue = TextEditorValue.Empty)
         val dismiss = composeTestRule.activity.getString(R.string.kaleyra_action_dismiss)
         composeTestRule.onNodeWithContentDescription(dismiss).performClick()
-        assert(isDismissClicked)
+        assert(onDismissInvoked)
     }
 
     @Test
@@ -105,18 +105,34 @@ class WhiteboardTextEditorTest {
     }
 
     @Test
-    fun emptyText_userClicksConfirm_onDismissClickInvoked() {
+    fun emptyText_userClicksConfirm_onDismissInvoked() {
         val confirm = composeTestRule.activity.getString(R.string.kaleyra_action_confirm)
         composeTestRule.onNodeWithContentDescription(confirm).performClick()
-        assert(isDismissClicked)
+        assert(onDismissInvoked)
     }
 
     @Test
-    fun textTyped_userClicksConfirm_onConfirmClickInvoked() {
-        composeTestRule.onNode(hasSetTextAction()).performTextInput("Text")
+    fun editingState_userClicksConfirm_onConfirmInvokedWithText() {
+        textEditorState = TextEditorState(initialValue = TextEditorValue.Editing(TextFieldValue("text")))
         val confirm = composeTestRule.activity.getString(R.string.kaleyra_action_confirm)
         composeTestRule.onNodeWithContentDescription(confirm).performClick()
-        assert(isConfirmClicked)
+        assertEquals("text", textConfirmed)
+    }
+
+    @Test
+    fun emptyState_userClicksConfirm_onConfirmInvokedWithNullText() {
+        textEditorState = TextEditorState(initialValue = TextEditorValue.Empty)
+        val confirm = composeTestRule.activity.getString(R.string.kaleyra_action_confirm)
+        composeTestRule.onNodeWithContentDescription(confirm).performClick()
+        assertEquals(null, textConfirmed)
+    }
+
+    @Test
+    fun discardState_userClicksConfirm_onConfirmInvokedWithNullText() {
+        textEditorState = TextEditorState(initialValue = TextEditorValue.Discard)
+        val confirm = composeTestRule.activity.getString(R.string.kaleyra_action_confirm)
+        composeTestRule.onNodeWithContentDescription(confirm).performClick()
+        assertEquals(null, textConfirmed)
     }
 
     @Test
@@ -125,6 +141,41 @@ class WhiteboardTextEditorTest {
         val textFieldValue = (textEditorState.currentValue as? TextEditorValue.Editing)?.textFieldValue
         assertEquals("Text", textFieldValue!!.text)
         assertEquals(textEditorState.textFieldValue, textFieldValue)
+    }
+    @Test
+    fun emptyState_userClicksDismiss_editorStateIsCleared() {
+        textEditorState = TextEditorState(initialValue = TextEditorValue.Empty)
+        val dismiss = composeTestRule.activity.getString(R.string.kaleyra_action_dismiss)
+        composeTestRule.onNodeWithContentDescription(dismiss).performClick()
+        assertEquals(TextEditorValue.Empty, textEditorState.currentValue)
+        assertEquals(TextFieldValue(), textEditorState.textFieldValue)
+    }
+
+    @Test
+    fun emptyState_userClicksConfirm_editorStateIsCleared() {
+        textEditorState = TextEditorState(initialValue = TextEditorValue.Empty)
+        val confirm = composeTestRule.activity.getString(R.string.kaleyra_action_confirm)
+        composeTestRule.onNodeWithContentDescription(confirm).performClick()
+        assertEquals(TextEditorValue.Empty, textEditorState.currentValue)
+        assertEquals(TextFieldValue(), textEditorState.textFieldValue)
+    }
+
+    @Test
+    fun editingState_userClicksConfirm_editorStateIsCleared() {
+        textEditorState = TextEditorState(initialValue = TextEditorValue.Editing(TextFieldValue("text")))
+        val confirm = composeTestRule.activity.getString(R.string.kaleyra_action_confirm)
+        composeTestRule.onNodeWithContentDescription(confirm).performClick()
+        assertEquals(TextEditorValue.Empty, textEditorState.currentValue)
+        assertEquals(TextFieldValue(), textEditorState.textFieldValue)
+    }
+
+    @Test
+    fun discardState_userClicksConfirm_editorStateIsCleared() {
+        textEditorState = TextEditorState(initialValue = TextEditorValue.Discard)
+        val confirm = composeTestRule.activity.getString(R.string.kaleyra_action_confirm)
+        composeTestRule.onNodeWithContentDescription(confirm).performClick()
+        assertEquals(TextEditorValue.Empty, textEditorState.currentValue)
+        assertEquals(TextFieldValue(), textEditorState.textFieldValue)
     }
 
 }

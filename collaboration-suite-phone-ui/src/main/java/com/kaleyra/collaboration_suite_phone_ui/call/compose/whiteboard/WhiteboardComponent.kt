@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.kaleyra.collaboration_suite.phonebox.WhiteboardView
 import com.kaleyra.collaboration_suite_core_ui.requestConfiguration
@@ -20,6 +21,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmode
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 internal fun WhiteboardComponent(
     viewModel: WhiteboardViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
@@ -27,9 +29,15 @@ internal fun WhiteboardComponent(
     ),
     modifier: Modifier = Modifier
 ) {
+    val sheetState = rememberModalBottomSheetState(
+        initialValue = ModalBottomSheetValue.Hidden,
+        skipHalfExpanded = true
+    )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     WhiteboardComponent(
         uiState = uiState,
+        editorSheetState = sheetState,
         onReloadClick = viewModel::onReloadClick,
         onTextDismiss = viewModel::onTextDismiss,
         onTextConfirm = viewModel::onTextConfirm,
@@ -43,6 +51,7 @@ internal fun WhiteboardComponent(
 @Composable
 internal fun WhiteboardComponent(
     uiState: WhiteboardUiState,
+    editorSheetState: ModalBottomSheetState,
     onReloadClick: () -> Unit,
     onTextDismiss: () -> Unit,
     onTextConfirm: (String) -> Unit,
@@ -50,22 +59,24 @@ internal fun WhiteboardComponent(
     onWhiteboardViewDispose: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val sheetState = rememberModalBottomSheetState(
-        initialValue = ModalBottomSheetValue.Hidden,
-        skipHalfExpanded = true
-    )
-    LaunchedEffect(uiState) {
-        if (uiState.text != null) sheetState.show()
+    val textEditorState = rememberTextEditorState(initialValue = textEditorValue(uiState.text))
+
+    val shouldShowTextEditor by rememberUpdatedState(newValue = uiState.text != null)
+    LaunchedEffect(shouldShowTextEditor, editorSheetState) {
+        if (shouldShowTextEditor) {
+            editorSheetState.show()
+        } else {
+            editorSheetState.hide()
+        }
     }
 
     ModalBottomSheetLayout(
-        sheetState = sheetState,
+        sheetState = editorSheetState,
         modifier = modifier.statusBarsPadding(),
         sheetContent = {
             WhiteboardModalBottomSheetContent(
-                text = uiState.text ?: "",
-                sheetState = sheetState,
-                onTextEditorDismiss = onTextDismiss,
+                textEditorState = textEditorState,
+                onTextDismiss = onTextDismiss,
                 onTextConfirmed = onTextConfirm
             )
         },
@@ -91,8 +102,17 @@ internal fun WhiteboardComponent(
                 }
                 NavigationBarsSpacer()
             }
-        }
+        },
     )
+}
+
+@Composable
+private fun textEditorValue(text: String?): TextEditorValue {
+    return remember {
+        derivedStateOf {
+            if (text.isNullOrBlank()) TextEditorValue.Empty else TextEditorValue.Editing(TextFieldValue(text))
+        }.value
+    }
 }
 
 
@@ -115,12 +135,14 @@ internal fun WhiteboardScreenOfflinePreview() {
     WhiteboardComponentPreview(uiState = WhiteboardUiState(isOffline = true))
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 private fun WhiteboardComponentPreview(uiState: WhiteboardUiState) {
     KaleyraTheme {
         Surface {
             WhiteboardComponent(
                 uiState = uiState,
+                editorSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Expanded),
                 onReloadClick = {},
                 onTextDismiss = {},
                 onTextConfirm = {},

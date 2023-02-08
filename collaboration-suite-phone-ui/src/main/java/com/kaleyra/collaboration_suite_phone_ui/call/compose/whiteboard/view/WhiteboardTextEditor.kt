@@ -20,6 +20,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.IconButton
 import com.kaleyra.collaboration_suite_phone_ui.chat.input.UserInputText
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 
+@Immutable
 internal sealed class TextEditorValue {
     object Empty : TextEditorValue()
     data class Editing(val textFieldValue: TextFieldValue) : TextEditorValue()
@@ -31,36 +32,31 @@ internal class TextEditorState(initialValue: TextEditorValue) {
     var currentValue: TextEditorValue by mutableStateOf(initialValue)
         private set
 
-    var textFieldValue: TextFieldValue by mutableStateOf(TextFieldValue())
+    var textFieldValue: TextFieldValue by mutableStateOf((initialValue as? TextEditorValue.Editing)?.textFieldValue ?: TextFieldValue())
         private set
-
-    init {
-        textFieldValue = (initialValue as? TextEditorValue.Editing)?.textFieldValue ?: TextFieldValue()
-    }
 
     fun type(textFieldValue: TextFieldValue) {
         if (currentValue == TextEditorValue.Discard) return
-        currentValue = if (textFieldValue.text.isBlank()) TextEditorValue.Empty else TextEditorValue.Editing(
-            textFieldValue
-        )
+        currentValue = if (textFieldValue.text.isBlank()) TextEditorValue.Empty else TextEditorValue.Editing(textFieldValue)
         this.textFieldValue = textFieldValue
     }
 
-    fun dismiss(): Boolean {
+    fun cancel(): Boolean {
         return when (currentValue) {
-            TextEditorValue.Empty -> true
-            is TextEditorValue.Editing -> {
-                currentValue = TextEditorValue.Discard; false
-            }
-            TextEditorValue.Discard -> {
-                currentValue = TextEditorValue.Editing(textFieldValue); false
-            }
+            TextEditorValue.Empty -> { clearState(); true }
+            is TextEditorValue.Editing -> { currentValue = TextEditorValue.Discard; false }
+            TextEditorValue.Discard -> { currentValue = TextEditorValue.Editing(textFieldValue); false }
         }
     }
 
     fun confirm(): String? {
-        val currentValue = currentValue
-        return if (currentValue is TextEditorValue.Editing) currentValue.textFieldValue.text else null
+        val currentText = (currentValue as? TextEditorValue.Editing)?.textFieldValue?.text
+        return currentText.also { clearState() }
+    }
+
+    private fun clearState() {
+        currentValue = TextEditorValue.Empty
+        textFieldValue = TextFieldValue()
     }
 }
 
@@ -72,8 +68,8 @@ internal fun rememberTextEditorState(initialValue: TextEditorValue) = remember(i
 @Composable
 internal fun WhiteboardTextEditor(
     textEditorState: TextEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty),
-    onDismissClick: () -> Unit,
-    onConfirmClick: (String) -> Unit
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit
 ) {
     Column(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 48.dp)) {
         if (textEditorState.currentValue != TextEditorValue.Discard) {
@@ -100,8 +96,8 @@ internal fun WhiteboardTextEditor(
                 icon = iconFor(textEditorState.currentValue),
                 text = textFor(textEditorState.currentValue),
                 onClick = {
-                    if (textEditorState.dismiss()) {
-                        onDismissClick()
+                    if (textEditorState.cancel()) {
+                        onDismiss()
                     }
                 },
                 modifier = Modifier.weight(1f)
@@ -111,8 +107,8 @@ internal fun WhiteboardTextEditor(
                 text = stringResource(id = R.string.kaleyra_action_confirm),
                 onClick = {
                     val text = textEditorState.confirm()
-                    if (text != null) onConfirmClick(text)
-                    else onDismissClick()
+                    if (text != null) onConfirm(text)
+                    else onDismiss()
                 },
                 modifier = Modifier.weight(1f)
             )
@@ -178,8 +174,8 @@ private fun TextEditorPreview(textEditorInitialValue: TextEditorValue) {
         Surface {
             WhiteboardTextEditor(
                 textEditorState = rememberTextEditorState(initialValue = textEditorInitialValue),
-                onDismissClick = {},
-                onConfirmClick = {}
+                onDismiss = {},
+                onConfirm = {}
             )
         }
     }
