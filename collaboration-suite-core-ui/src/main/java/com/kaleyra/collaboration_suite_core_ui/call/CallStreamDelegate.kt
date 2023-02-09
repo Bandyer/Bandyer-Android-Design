@@ -112,8 +112,8 @@ interface CallStreamDelegate {
                             streams.forEach { stream ->
                                 stream.open()
                                 streamsJobs += stream.video.onEach { video ->
-                                    if (video?.view?.value != null) return@onEach
-                                    video?.view?.value = VideoStreamView(context.applicationContext)
+                                    if (video?.view?.value != null || video !is Input.Video.Camera) return@onEach
+                                    video.view.value = VideoStreamView(context.applicationContext)
                                 }.launchIn(coroutineScope)
                             }
                             sJobs[participant.userId] = streamsJobs
