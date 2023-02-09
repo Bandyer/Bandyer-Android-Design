@@ -61,6 +61,10 @@ class WhiteboardComponentTest {
                 onWhiteboardViewDispose = { },
             )
         }
+        isReloadClicked = false
+        confirmedText = null
+        isTextDismissed = false
+        whiteboardView = null
     }
 
     @Test
@@ -209,5 +213,21 @@ class WhiteboardComponentTest {
         uiState = WhiteboardUiState(text = "")
         Espresso.pressBack()
         assertEquals(ModalBottomSheetValue.Hidden, sheetState.currentValue)
+    }
+
+    @Test
+    fun textEditorDisplayed_userPerformsBack_onTextDismissedInvoked() {
+        sheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded)
+        uiState = WhiteboardUiState(text = "")
+        Espresso.pressBack()
+        assert(isTextDismissed)
+    }
+
+    @Test
+    fun textEditorDisplayed_userSwipeDownBottomSheet_onTextDismissedInvoked() {
+        sheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded)
+        uiState = WhiteboardUiState(text = "")
+        composeTestRule.onNode(hasSetTextAction()).performTouchInput { swipeDown(startY = 0f, endY = 3000f) }
+        assert(isTextDismissed)
     }
 }

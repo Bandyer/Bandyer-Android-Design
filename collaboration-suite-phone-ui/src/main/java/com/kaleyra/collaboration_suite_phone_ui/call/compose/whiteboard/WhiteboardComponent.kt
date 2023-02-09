@@ -21,6 +21,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmodel.WhiteboardViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -72,6 +73,14 @@ internal fun WhiteboardComponent(
             editorSheetState.hide()
             textEditorState.clearState()
         }
+    }
+
+    // Needed when the user dismisses the modal bottom sheet by swiping down or on back press
+    LaunchedEffect(editorSheetState) {
+        snapshotFlow { editorSheetState.targetValue }
+            .filter { it == ModalBottomSheetValue.Hidden }
+            .onEach { onTextDismissed() }
+            .launchIn(this)
     }
 
     if (editorSheetState.currentValue != ModalBottomSheetValue.Hidden) {
