@@ -63,6 +63,7 @@ internal fun WhiteboardComponent(
 
     val shouldShowTextEditor by rememberUpdatedState(newValue = uiState.text != null)
     LaunchedEffect(shouldShowTextEditor, editorSheetState,uiState.text) {
+    LaunchedEffect(shouldShowTextEditor, editorSheetState) {
         if (shouldShowTextEditor) {
             textEditorState.type(TextFieldValue(uiState.text ?: ""))
             editorSheetState.show()
