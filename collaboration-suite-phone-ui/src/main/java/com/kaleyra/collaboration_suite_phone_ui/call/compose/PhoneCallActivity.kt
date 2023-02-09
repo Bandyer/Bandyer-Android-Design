@@ -14,10 +14,8 @@ class PhoneCallActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
-            CompositionLocalProvider(LocalBackPressedDispatcher provides onBackPressedDispatcher) {
-                MdcTheme(setDefaultFontFamily = true) {
-                    CallScreen(onBackPressed = this::finishAndRemoveTask)
-                }
+            MdcTheme(setDefaultFontFamily = true) {
+                CallScreen(onBackPressed = this::finishAndRemoveTask)
             }
         }
     }
