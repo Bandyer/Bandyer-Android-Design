@@ -1,6 +1,7 @@
 package com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard
 
 import android.content.res.Configuration
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -20,6 +21,7 @@ import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.view.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.viewmodel.WhiteboardViewModel
 import com.kaleyra.collaboration_suite_phone_ui.chat.theme.KaleyraTheme
 import com.kaleyra.collaboration_suite_phone_ui.chat.utility.collectAsStateWithLifecycle
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -62,7 +64,6 @@ internal fun WhiteboardComponent(
     val textEditorState = rememberTextEditorState(initialValue = TextEditorValue.Empty)
 
     val shouldShowTextEditor by rememberUpdatedState(newValue = uiState.text != null)
-    LaunchedEffect(shouldShowTextEditor, editorSheetState,uiState.text) {
     LaunchedEffect(shouldShowTextEditor, editorSheetState) {
         if (shouldShowTextEditor) {
             textEditorState.type(TextFieldValue(uiState.text ?: ""))
@@ -71,6 +72,13 @@ internal fun WhiteboardComponent(
             editorSheetState.hide()
             textEditorState.clearState()
         }
+    }
+
+    if (editorSheetState.currentValue != ModalBottomSheetValue.Hidden) {
+        val scope = rememberCoroutineScope()
+        BackHandler(onBack = {
+            scope.launch { editorSheetState.hide() }
+        })
     }
 
     ModalBottomSheetLayout(

@@ -11,6 +11,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.test.espresso.Espresso
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.kaleyra.collaboration_suite.phonebox.WhiteboardView
 import org.junit.Before
@@ -18,6 +19,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import com.kaleyra.collaboration_suite_phone_ui.R
+import com.kaleyra.collaboration_suite_phone_ui.call.compose.core.view.bottomsheet.*
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.WhiteboardComponent
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUiState
 import com.kaleyra.collaboration_suite_phone_ui.call.compose.whiteboard.model.WhiteboardUploadUi
@@ -199,5 +201,13 @@ class WhiteboardComponentTest {
             .onNodeWithTag(LinearProgressIndicatorTag)
             .assertIsDisplayed()
             .assertRangeInfoEquals(ProgressBarRangeInfo.Indeterminate)
+    }
+
+    @Test
+    fun textEditorDisplayed_userPerformsBack_editorIsHidden() {
+        sheetState = ModalBottomSheetState(ModalBottomSheetValue.Expanded)
+        uiState = WhiteboardUiState(text = "")
+        Espresso.pressBack()
+        assertEquals(ModalBottomSheetValue.Hidden, sheetState.currentValue)
     }
 }
