@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 @Composable
 internal fun WhiteboardModalBottomSheetContent(
     textEditorState: TextEditorState,
-    onTextDismiss: () -> Unit,
+    onTextDismissed: () -> Unit,
     onTextConfirmed: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -18,7 +18,7 @@ internal fun WhiteboardModalBottomSheetContent(
     val clearFocus = remember {
         { focusManager.clearFocus() }
     }
-    val currentOnDismiss by rememberUpdatedState(newValue = onTextDismiss)
+    val currentOnDismiss by rememberUpdatedState(newValue = onTextDismissed)
     val currentOnConfirm by rememberUpdatedState(newValue = onTextConfirmed)
 
     WhiteboardTextEditor(
