@@ -250,8 +250,8 @@ internal fun CallScreen(
     }
 
     when {
-        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackPressHandler(onBackPressed = callScreenState::navigateToCallActionsComponent)
-        !callScreenState.isSheetNotDraggableDown -> BackPressHandler(onBackPressed = callScreenState::collapseSheet)
+        callScreenState.sheetContentState.currentComponent != BottomSheetComponent.CallActions -> BackHandler(onBack = callScreenState::navigateToCallActionsComponent)
+        !callScreenState.isSheetNotDraggableDown -> BackHandler(onBack = callScreenState::collapseSheet)
     }
 
     // TODO check if I can remove this
